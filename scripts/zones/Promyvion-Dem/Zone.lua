@@ -25,7 +25,7 @@ zone_object.onZoneIn = function(player, prevZone)
 end
 
 zone_object.afterZoneIn = function(player)
-    if xi.settings.ENABLE_COP_ZONE_CAP == 1 then
+    if xi.settings.ENABLE_COP_ZONE_CAP == 1 or player:getCharVar("Hardmode") then
         player:addStatusEffect(xi.effect.LEVEL_RESTRICTION, 30, 0, 0)
     end
 end

@@ -5,7 +5,7 @@
 
 cmdprops =
 {
-    permission = 1,
+    permission = 0,
     parameters = "s"
 }
 
@@ -17,7 +17,7 @@ end
 function onTrigger(player, target)
     -- validate target
     local targ
-    if (target == nil) then
+    if (target == nil) and (player:getCharVar("Hardmode") == 0) then
         targ = player
     else
         targ = GetPlayerByName( target )
