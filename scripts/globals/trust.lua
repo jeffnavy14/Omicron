@@ -242,9 +242,9 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
         return xi.msg.basic.TRUST_NO_CAST_TRUST
     end
 
-    -- Trusts only allowed in certain zones (Remove this for trusts everywhere)
+    --Trusts only allowed in certain zones (Remove this for trusts everywhere)
     if not caster:canUseMisc(xi.zoneMisc.TRUST) then
-        return xi.msg.basic.TRUST_NO_CALL_AE
+      return xi.msg.basic.TRUST_NO_CALL_AE
     end
 
     -- You can only summon trusts if you are the party leader or solo
@@ -317,7 +317,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
     end
 
     -- Limits set by ROV Key Items
-    if num_trusts >= 3 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_WHITE) then
+    if num_trusts == 1 and caster:getCharVar("Hardmode") == 1 then
+        caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
+        return -1		
+	elseif num_trusts >= 3 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_WHITE) then
         caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
         return -1
     elseif num_trusts >= 4 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_CRIMSON) then

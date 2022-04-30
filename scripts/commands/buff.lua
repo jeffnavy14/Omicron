@@ -10,7 +10,9 @@ cmdprops =
 }
 
 function onTrigger(player)
-    if (player:getCharVar("Regen") == 0) then
+    if player:getCharVar("Hardmode") then
+	   player:PrintToPlayer("You are in Hardmode.... No cheating")
+	elseif (player:getCharVar("Regen") == 0) then
         -- Toggle Regen on..
         player:setCharVar("Regen", 1)
 		
