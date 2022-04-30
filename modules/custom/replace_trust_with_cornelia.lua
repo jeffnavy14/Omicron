@@ -8,7 +8,7 @@ require("modules/module_utils")
 require("scripts/globals/trust")
 -----------------------------------
 local m = Module:new("replace_trust_with_cornelia")
-m:setEnabled(false)
+m:setEnabled(true)
 
 -- This is the filename of the trust you're trying to replace, without the ".lua" extension
 local trustToReplaceName = "kuyin_hathdenna"

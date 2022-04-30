@@ -10,11 +10,7 @@ require('scripts/globals/zone')
 require('scripts/globals/interaction/quest')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.NOT_SURE)
-quest.reward =
-{
-    fameArea = xi.quest.fame_area.JEUNO,
-}
+local quest = Quest:new(xi.quest.log_id.JEUNO,187)
 
 quest.sections =
 {
