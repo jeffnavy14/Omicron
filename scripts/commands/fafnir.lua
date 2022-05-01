@@ -36,53 +36,21 @@ function onTrigger(player)
 
         groupId = 5,
         groupZoneId = 154,
-	
-	onMobSpawn = function(mob, target, player)
-    mob:setMod(xi.mod.MOVE, 100)
-	mob:setMod(xi.mod.MATT, 600)
-    mob:setMod(xi.mod.MACC, 2800)
-	mob:setMod(xi.mod.DEF, 3000)
-	mob:setMod(xi.mod.MDEF, 3000)
-	mob:setMod(xi.mod.TRIPLE_ATTACK, 80)
-	mob:setMod(xi.mod.ENSPELL_DMG, 100)
-    mob:setMod(xi.mod.HASTE_MAGIC, 200)
-	mob:setMod(xi.mod.ATT, 3000)
-	mob:setMod(xi.mod.ACC, 1800)
-	
-		end,
-		onMobFight = function(mob, target, player)
-   local lifePercent = mob:getHPP()
-
-    
-    if lifePercent < 70 then
-       
-		player:setCharVar('fafnir_NM', 1)
-        mob:setMod(xi.mod.MOVE, 100)
-		mob:setMod(xi.mod.MATT, 650)
-		mob:setMod(xi.mod.MACC, 3000)
-		mob:setMod(xi.mod.DEF, 3300)
-		mob:setMod(xi.mod.MDEF, 3300)
-		mob:setMod(xi.mod.TRIPLE_ATTACK, 100)
-		mob:setMod(xi.mod.ENSPELL_DMG, 100)
-		mob:setMod(xi.mod.HASTE_MAGIC, 200)
-		mob:setMod(xi.mod.ATT, 3300)
-		mob:setMod(xi.mod.ACC, 2000)
-		
-		
-    end
-
-
-        if lifePercent < 5 then
-           mob:setMod(xi.mod.TRIPLE_ATTACK, 100)
-            mob:setMod(xi.mod.UDMGPHYS, -100)
-            mob:setMod(xi.mod.UDMGRANGE, -100)
-            mob:setMod(xi.mod.UDMGMAGIC, -100)    
-
-        end
+    onMobSpawn = function(mob)
+        print(string.format("onMobSpawn = function is working"))
+		mob:setMobFlags(CALL_FOR_HELP)
     end,
-        onMobDeath = function(mob, playerArg, isKiller)
+	onMobInitialize = function(mob)
+	    print(string.format("onMobInitialize = function is working"))
+	end,
+	
+	onMobFight = function(mob, target, playerArg)
+	    print(string.format("onMobFight = function is working"))
+    end,
 
-        end,
+    onMobDeath = function(mob, playerArg, isKiller)
+       print(string.format("On death is working"))
+    end,
     })
 
     mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
@@ -90,4 +58,5 @@ function onTrigger(player)
     mob:setDropID(0)
 
     mob:spawn()
+	print(string.format("onTrigger is working"))
 end

@@ -251,7 +251,6 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
             PNpc->m_triggerable = true;
             cacheEntry["onTrigger"] = onTrigger;
         }
-
         m_pLuaZone->InsertNPC(PNpc);
     }
     else if (auto* PMob = dynamic_cast<CMobEntity*>(PEntity))
@@ -265,7 +264,24 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         {
             cacheEntry["onMobDeath"] = [](){}; // Empty func
         }
-
+        auto onMobSpawn = table["onMobSpawn"].get_or<sol::function>(sol::lua_nil);
+        if (onMobSpawn.valid())
+        {
+            cacheEntry["onMobSpawn"] = onMobSpawn;
+        }
+        else
+        {
+            cacheEntry["onMobSpawn"] = []() {}; // Empty func
+        }
+        auto onMobFight = table["onMobFight"].get_or<sol::function>(sol::lua_nil);
+        if (onMobFight.valid())
+        {
+            cacheEntry["onMobFight"] = onMobFight;
+        }
+        else
+        {
+            cacheEntry["onMobFight"] = []() {}; // Empty func
+        }
         m_pLuaZone->InsertMOB(PMob);
     }
 
