@@ -37,22 +37,21 @@ function onTrigger(player)
         groupId = 5,
         groupZoneId = 154,
     onMobSpawn = function(mob)
-        print(string.format("onMobSpawn = function is working"))
-		mob:setMobFlags(CALL_FOR_HELP)
+        mob:setMobFlags(CALL_FOR_HELP)
     end,
 	onMobInitialize = function(mob)
-	    print(string.format("onMobInitialize = function is working"))
+	    
 	end,
 	
 	onMobFight = function(mob, target, playerArg)
-	    print(string.format("onMobFight = function is working"))
+	    
     end,
 
     onMobDeath = function(mob, playerArg, isKiller)
 	    local Addon = GetServerVariable("Addon_Test")
         local AddonLeft = math.floor(Addon / 4)
 		SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-       print(string.format("On death is working"))
+       
     end,
     })
 
@@ -61,5 +60,5 @@ function onTrigger(player)
     mob:setDropID(0)
 
     mob:spawn()
-	print(string.format("onTrigger is working"))
+	
 end

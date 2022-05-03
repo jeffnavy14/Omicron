@@ -61,8 +61,8 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
 			    SetServerVariable("[Domain]NMSpawned", 1)
 
                 -- Debug
-			    printf("SPAWNING MOB!!!!!!!!!!")
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+			    printf("Jeronimo Spawned")
+				
 			end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
@@ -72,10 +72,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
 				SetServerVariable("[Domain]NMSpawned", 0)
 
                 -- Server-wide message
-                player:PrintToArea("Fuck you.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+                player:PrintToArea("Jeronimo has been defeated, please talk to the lilith to be ported to the next fight.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
             end,
         })
 
@@ -110,25 +107,25 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
 
             onMobSpawn = function(mob)
 			    SetServerVariable("[Domain]NMSpawned", 1)
-			    SetServerVariable("[Domain]PushMessage", 1)
 
                 -- Debug
-                printf("SPAWNING MOB!!!!!!!!!!")
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
-
+                printf("Tortuga is Spawned")
 			end,	
 
             onMobDeath = function(mob, player, isKiller, noKiller)
-                -- Variable control
-			    SetServerVariable("[Domain]NMToD", os.time())
-    		    SetServerVariable("[Domain]NM", 2)
-				SetServerVariable("[Domain]NMSpawned", 0)
-
-                -- Server-wide message
-                player:PrintToArea("Fuck you too.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+			local final = math.random(1, 100)
+                if final < 49 then
+				SetServerVariable("[Domain]NM", 2)
+				player:PrintToArea("Battosai and his minions are ready for battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+				SetServerVariable("[Domain]NMToD", os.time())
+    		    SetServerVariable("[Domain]NMSpawned", 0)
+				end
+				if final > 50 then
+				SetServerVariable("[Domain]NM", 3)
+				player:PrintToArea("Oh no not Bahamut, please defeat the team of minions as quick as possible.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+				SetServerVariable("[Domain]NMToD", os.time())
+    		    SetServerVariable("[Domain]NMSpawned", 0)
+				end
             end,
         })
     
@@ -148,7 +145,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 	    GetServerVariable("Addon_Test") == 0 and
         GetServerVariable("[Domain]NM") == 2 and              -- Correct NM
         GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
-        (os.time() - GetServerVariable("[Domain]Addon_Test")) > 30 -- NM Cooldown
+        (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
@@ -165,11 +162,9 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 			    SetServerVariable("[Domain]NMSpawned", 1)
-			    SetServerVariable("[Domain]PushMessage", 1)
 
                 -- Debug
-                printf("SPAWNING MOB!!!!!!!!!!")
-                printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+                printf("Battosai is spawned")
 			end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
@@ -183,7 +178,58 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 				SetServerVariable("Addon_Test", 4)
 
                 -- Server-wide message
-                player:PrintToArea("Fuck you three.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("Battosai has been defeated got to the nearest lilth to goto the next battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+            end,
+        })
+    
+        mob:setSpawn(-580, -228, 540, 65)
+        mob:setDropID(0) -- No loot!
+        mob:spawn()
+		SetServerVariable("[Domain]NMSpawned", 1)
+    end
+	    
+end)
+-- Alt/bahamut 
+m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
+    super(zone)
+
+    -- Spawn mob if its the correct mob and if it isnt spawned already.
+    if
+	    GetServerVariable("Addon_Test") == 4 and
+        GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
+        GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
+        (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
+    then
+        local mob = zone:insertDynamicEntity({
+            objtype = xi.objType.MOB,
+            name = "Bahamut",
+            x = -580,
+            y = -228,
+            z = 540,
+            rotation = 65,
+            widescan = 1,
+    
+            groupId = 17,
+            groupZoneId = 29,
+			
+            onMobSpawn = function(mob)
+			    SetServerVariable("[Domain]NMSpawned", 1)
+                -- Debug
+                printf("Bahamut is Spawned")
+			end,
+
+            onMobDeath = function(mob, player, isKiller, noKiller)
+                -- Variable control
+			    SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
+    		    SetServerVariable("[Domain]NM", 0)            -- Set NM to be spawned next
+				SetServerVariable("[Domain]NMSpawned", 0)     -- Set NM spawned flag (To not spawn infinite NMs)
+				SetServerVariable("[Domain]Addon_Spawned", 0)
+				SetServerVariable("[Domain]Addon_Spawned_2", 0)
+				SetServerVariable("[Domain]Addon_Spawned_3", 0)
+				SetServerVariable("Addon_Test", 4)
+
+                -- Server-wide message
+                player:PrintToArea("Oh wow Bahamut and his Minions have been defeated!!!!!! Speak to lilith for your next battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 
                 -- Debug
 				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
@@ -222,29 +268,20 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned", 1)
-			    SetServerVariable("[Domain]PushMessage", 1)
 
-                -- Debug
-                printf("SPAWNING MOB!!!!!!!!!!")
-                printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+                printf("Test 1 Spawned")
 			end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
-                -- Variable control
-	            local Addon = GetServerVariable("Addon_Test")
+                local Addon = GetServerVariable("Addon_Test")
                 local AddonLeft = math.floor(Addon / 4)
 		            SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-					print(string.format("On death is working"))
 				if GetServerVariable("Addon_Test", 0 ) then
-				   SetServerVariable("[Domain]Addon_Test", os.time()) -- Set NM ToD
-				   print(string.format("ToD is working"))
+				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM time
 				end
 
                 -- Server-wide message
                 player:PrintToArea("Test 1 Has been Defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
             end,
         })
     
@@ -281,29 +318,23 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned_2", 1)
-			    SetServerVariable("[Domain]PushMessage", 1)
 
                 -- Debug
-                printf("SPAWNING MOB!!!!!!!!!!")
-                printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
-			end,
+                printf("Test 2 Spawned")
+            end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
                 -- Variable control
 	            local Addon = GetServerVariable("Addon_Test")
                 local AddonLeft = math.floor(Addon / 4)
 		            SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-                    print(string.format("On death is working"))
 				if GetServerVariable("Addon_Test", 0 ) then
-				   SetServerVariable("[Domain]Addon_Test", os.time()) -- Set NM ToD
-				   print(string.format("ToD is working"))
+				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				end
 
                 -- Server-wide message
                 player:PrintToArea("Test 2 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
             end,
         })
     
@@ -340,11 +371,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned_3", 1)
-			    SetServerVariable("[Domain]PushMessage", 1)
-
                 -- Debug
-                printf("SPAWNING MOB!!!!!!!!!!")
-                printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+                printf("Test 3 Spawned")
 			end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
@@ -352,18 +380,13 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 	            local Addon = GetServerVariable("Addon_Test")
                 local AddonLeft = math.floor(Addon / 4)
 		            SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-                    print(string.format("On death is working"))
 				if GetServerVariable("Addon_Test", 0 ) then
-				   SetServerVariable("[Domain]Addon_Test", os.time()) -- Set NM ToD
-				   print(string.format("ToD is working"))
+				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				   end
 						
 
                 -- Server-wide message
                 player:PrintToArea("Test 3 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
             end,
         })
     

@@ -317,13 +317,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
     end
 
     -- Limits set by ROV Key Items
-    if num_trusts == 1 and caster:getCharVar("Hardmode") == 1 then
-        caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
-        return -1		
-	elseif num_trusts >= 3 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_WHITE) then
+	if num_trusts >= 4 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_WHITE) then
         caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
         return -1
-    elseif num_trusts >= 4 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_CRIMSON) then
+    elseif num_trusts >= 5 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_CRIMSON) then
         caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
         return -1
     end

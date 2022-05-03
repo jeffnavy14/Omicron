@@ -1542,6 +1542,11 @@ bool CCharEntity::IsMobOwner(CBattleEntity* PBattleTarget)
         return true;
     }
 
+    if (PTreasurePool != nullptr && PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+    {
+        return true;
+    }
+
     bool found = false;
 
     static_cast<CCharEntity*>(this)->ForAlliance([&PBattleTarget, &found](CBattleEntity* PEntity) {

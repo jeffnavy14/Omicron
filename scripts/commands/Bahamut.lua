@@ -37,8 +37,6 @@ function onTrigger(player)
         print(string.format("onMobSpawn = function is working"))
     end,
 	onMobInitialize = function(mob)
-	 mob:setMobMod(xi.mobMod.HP_STANDBACK, -1)
-	    print(string.format("onMobInitialize = function is working"))
 	end,
 	
 	onMobFight = function(mob, target)
@@ -65,7 +63,6 @@ function onTrigger(player)
     onMobDeath = function(mob, playerArg, isKiller)
 	SetServerVariable("MegaFlareUsed", 0)
 	SetServerVariable("GigaFlareUsed", 0)
-       print(string.format("On death is working"))
     end,
     })
 
@@ -74,7 +71,9 @@ function onTrigger(player)
     mob:setDropID(0)
 
     mob:spawn()
-	mob:setMobLevel(135)
+	mob:setMobLevel(145)
+	mob:addMod(xi.mod.CURE_CAST_TIME, 225)
+	mob:addMod(xi.mod.CURE_POTENCY, 500)
 	mob:setMod(xi.mod.MATT, 600)
     mob:setMod(xi.mod.MACC, 2800)
 	mob:setMod(xi.mod.DEF, 3000)
