@@ -49,6 +49,9 @@ function onTrigger(player)
     end,
 
     onMobDeath = function(mob, playerArg, isKiller)
+	    local Addon = GetServerVariable("Addon_Test")
+        local AddonLeft = math.floor(Addon / 4)
+		SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
        print(string.format("On death is working"))
     end,
     })

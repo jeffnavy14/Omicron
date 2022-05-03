@@ -149,6 +149,7 @@ end
 xi.player.onGameIn = function(player, firstLogin, zoning)
     if not zoning then
         -- things checked ONLY during logon go here
+		 player:PrintToArea(string.format("%s has come online!", player:getName()), xi.msg.area.SYSTEM_2);
         if firstLogin then
             xi.player.charCreate(player)
         end
