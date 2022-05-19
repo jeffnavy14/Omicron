@@ -21,16 +21,17 @@ local level = player:getMainLvl();
     elseif (page == 1) then -- HQ Crystals
         local stock_1 =
         {
-            4238,   5000,   -- HQ Fire Crystal
-            4239,   5000,   -- HQ Ice Crystal
-            4240,   5000,   -- HQ Wind Crystal
-            4241,   5000,   -- HQ Earth Crystal
-            4242,   5000,   -- HQ Lightning Crystal
-            4243,   5000,   -- HQ Water Crystal
-            4244,   5000,   -- HQ Light Crystal
-            4245,   5000    -- HQ Dark Crystal
+            4238,  1000,  -- HQ Fire Crystal
+            4239,  1000,  -- HQ Ice Crystal
+            4240,  1000,  -- HQ Wind Crystal
+            4241,  1000,  -- HQ Earth Crystal
+            4242,  1000,  -- HQ Lightning Crystal
+            4243,  1000,  -- HQ Water Crystal
+            4244,  1000,  -- HQ Light Crystal
+            4245,  1000  -- HQ Dark Crystal
         };
-        xi.shop.general(player, stock_1);
+		
+        xi.shop.general(player, stock_1, price);
         player:PrintToPlayer( "Merchant Moogle : Welcome to Crystal Depot Kupo!", 0x1F);
     elseif (page == 2) then -- Pharmacy
         local stock_2 =
