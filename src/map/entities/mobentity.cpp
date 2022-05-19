@@ -66,6 +66,12 @@ CMobEntity::CMobEntity()
     MPscale = 1.0;
     m_flags = 0;
 
+    m_unk0 = 0;
+    m_unk1 = 8;
+    m_unk2 = 0;
+
+    m_CallForHelpBlocked = false;
+
     allegiance = ALLEGIANCE_TYPE::MOB;
 
     // default to normal roaming
@@ -433,7 +439,7 @@ bool CMobEntity::IsHPHidden() const
     return m_flags & FLAG_HIDE_HP;
 }
 
-void CMobEntity::CallForHelp(bool call)
+void CMobEntity::SetCallForHelpFlag(bool call)
 {
     if (call)
     {
@@ -447,7 +453,7 @@ void CMobEntity::CallForHelp(bool call)
     updatemask |= UPDATE_COMBAT;
 }
 
-bool CMobEntity::CalledForHelp() const
+bool CMobEntity::GetCallForHelpFlag() const
 {
     return m_flags & FLAG_CALL_FOR_HELP;
 }
@@ -472,11 +478,12 @@ bool CMobEntity::IsUntargetable() const
 
 void CMobEntity::PostTick()
 {
-    TracyZoneScoped;
     CBattleEntity::PostTick();
-    if (loc.zone && updatemask)
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    if (loc.zone && updatemask && now > m_nextUpdateTimer)
     {
-        loc.zone->PushPacket(this, CHAR_INRANGE, new CEntityUpdatePacket(this, ENTITY_UPDATE, updatemask));
+        m_nextUpdateTimer = now + 250ms;
+        loc.zone->UpdateEntityPacket(this, ENTITY_UPDATE, updatemask);
 
         // If this mob is charmed, it should sync with its master
         if (PMaster && PMaster->PPet == this && PMaster->objtype == TYPE_PC)
@@ -541,7 +548,7 @@ void CMobEntity::Spawn()
     m_ItemStolen   = false;
     m_DropItemTime = 1000;
     animationsub   = (uint8)getMobMod(MOBMOD_SPAWN_ANIMATIONSUB);
-    CallForHelp(false);
+    SetCallForHelpFlag(false);
 
     PEnmityContainer->Clear();
 
@@ -808,7 +815,7 @@ void CMobEntity::DistributeRewards()
         // NOTE: this is called for all alliance / party members!
         luautils::OnMobDeath(this, PChar);
 
-        if (!CalledForHelp())
+        if (!GetCallForHelpFlag())
         {
             blueutils::TryLearningSpells(PChar, this);
             m_UsedSkillIds.clear();

@@ -35,7 +35,7 @@
 #include <list>
 #include <map>
 
-#include "commandhandler.h"
+#include "command_handler.h"
 #include "zone.h"
 
 enum SKILLUP_STYLE
@@ -56,8 +56,6 @@ enum SKILLUP_STYLE
 
 struct map_config_t
 {
-    uint32 buffer_size; // max size of recv buffer -> default 1800 bytes
-
     uint16 usMapPort; // port of map server      -> xxxxx
     uint32 uiMapIp;   // ip of map server        -> INADDR_ANY
 
@@ -200,7 +198,6 @@ int32 parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_data_t*
 int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_data_t*); // main function is building big packet
 
 void map_helpscreen(int32 flag);    // Map-Server Version Screen [venom]
-void map_versionscreen(int32 flag); // Map-Server Version Screen [venom]
 
 int32 map_config_read(const int8* cfgName); // Map-Server Config [venom]
 int32 map_config_default();
