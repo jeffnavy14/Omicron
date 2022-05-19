@@ -1660,6 +1660,7 @@ namespace luautils
             ShowError("luautils::onZoneTick: %s", err.what());
         }
     }
+
     /************************************************************************
      *                                                                       *
      *  We perform the script at the entrance of the character to the server *

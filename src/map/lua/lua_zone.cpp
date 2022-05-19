@@ -254,10 +254,13 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         {
             PNpc->m_triggerable = true;
         }
+
         m_pLuaZone->InsertNPC(PNpc);
     }
     else if (auto* PMob = dynamic_cast<CMobEntity*>(PEntity))
     {
+        // Ensure mobs get a function for onMobDeath
+
         auto onMobSpawn = table["onMobSpawn"].get_or<sol::function>(sol::lua_nil);
         if (onMobSpawn.valid())
         {
@@ -281,10 +284,9 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         if (!onMobDeath.valid())
         {
             cacheEntry["onMobDeath"] = [](){}; // Empty func
-        }     
+        }
         m_pLuaZone->InsertMOB(PMob);
     }
-
     if (table["look"].get_type() == sol::type::number)
     {
         PEntity->SetModelId(table.get<uint16>("look"));

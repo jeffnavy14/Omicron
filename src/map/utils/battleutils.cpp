@@ -70,7 +70,6 @@
 #include "../trait.h"
 #include "../utils/petutils.h"
 #include "../weapon_skill.h"
-#include "../treasure_pool.h"
 #include "attackutils.h"
 #include "battleutils.h"
 #include "charutils.h"
@@ -6101,14 +6100,6 @@ namespace battleutils
         XI_DEBUG_BREAK_IF(PTarget == nullptr);
         CBattleEntity* PMaster = PEntity;
 
-        if (PEntity->objtype == TYPE_PC)
-        {
-            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
-            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
-            {
-                return true;
-            }
-        }
         if (PEntity->PMaster != nullptr)
         {
             PMaster = PEntity->PMaster;
