@@ -3,7 +3,7 @@
 -----------------------------------
 require("modules/module_utils")
 -----------------------------------
-local m = Module:new("wings_alpha_test_npcs")
+local m = Module:new("start_npc")
 m:setEnabled(true)
 
 m:addOverride("xi.zones.Bastok_Mines.Zone.onInitialize", function(zone)
@@ -168,11 +168,54 @@ local menu =
         end,
 
         onTrigger = function(player, npc)
- 
-            player:PrintToPlayer(" Welcome to Omicron 2.0!", 0,npc:getPacketName())
-            player:PrintToPlayer(" My name is Lilith and I am not fully scripted yet.", 0,npc:getPacketName())
-            player:PrintToPlayer(" Please feel free to talk to any of the other NPC's Lilisette or Cait Sith they can help you better than I can.", 0, npc:getPacketName())
-        end,
+		local plevel = player:getMainLvl();
+            if (plevel > 98) then
+        local menu =
+        {
+            title = "Domain Invasion",
+            onStart = function(playerArg)
+	    
+                playerArg:PrintToPlayer("Would you like to be ported to the next Domain Invasion?", xi.msg.channel.NS_SAY)
+            end,
+            options =
+            {
+                {
+                    "Yes",
+                    function(playerArg)
+                        if GetServerVariable("[Domain]NM") == 0 then
+                            player:setPos(-0.927, -43.600, -234.829, 195, 289)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+	                    
+                        if GetServerVariable("[Domain]NM") == 1 then
+                            player:setPos(-3.202, 5.250, -19.560, 195, 292)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                        
+	                    if GetServerVariable("[Domain]NM") == 2 or
+                            GetServerVariable("[Domain]NM") == 3 then
+                            player:setPos(-582.14, -228.00, 506.58, 180, 222)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                    end,
+                },
+                {
+                    "No",
+                    function(playerArg)
+ 	    				player:PrintToPlayer("Let me know when you are ready for the next battle!!", 0x1F)
+                    end,
+                },
+            },
+	    	    onCancelled = function(playerArg)
+	    		end,
+	    		onEnd = function(playerArg)
+	    		end,
+        }
+	    		player:customMenu(menu)
+	    	else
+                player:PrintToPlayer("Sorry not avail till LVL 99", 0x1F);
+	    	end
+            end,
     })
 
     utils.unused(Lili)
@@ -341,15 +384,59 @@ local menu =
         player:PrintToPlayer("No, thanks!", 0, npc:getPacketName())
         end,
         onTrigger = function(player, npc)
-            player:PrintToPlayer(" Welcome to Omicron 2.0!", 0,npc:getPacketName())
-            player:PrintToPlayer(" My name is Lilith and I am not fully scripted yet.", 0,npc:getPacketName())
-            player:PrintToPlayer(" Please feel free to talk to any of the other NPC's Lilisette or Cait Sith they can help you better than I can.", 0, npc:getPacketName())
-        end,
-    })
-
-    utils.unused(Lili)
-    utils.unused(Cait)
-    utils.unused(Lilit)
+		local plevel = player:getMainLvl();
+        if (plevel > 98) then
+        local menu =
+        {
+            title = "Domain Invasion",
+            onStart = function(playerArg)
+	    
+                playerArg:PrintToPlayer("Would you like to be ported to the next Domain Invasion?", xi.msg.channel.NS_SAY)
+            end,
+            options =
+            {
+                {
+                    "Yes",
+                    function(playerArg)
+                        if GetServerVariable("[Domain]NM") == 0 then
+                            player:setPos(-0.927, -43.600, -234.829, 195, 289)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+	                    
+                        if GetServerVariable("[Domain]NM") == 1 then
+                            player:setPos(-3.202, 5.250, -19.560, 195, 292)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                        
+	                    if GetServerVariable("[Domain]NM") == 2 or
+                            GetServerVariable("[Domain]NM") == 3 then
+                            player:setPos(-582.14, -228.00, 506.58, 180, 222)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                    end,
+                },
+                {
+                    "No",
+                    function(playerArg)
+ 	    				player:PrintToPlayer("Let me know when you are ready for the next battle!!", 0x1F)
+                    end,
+                },
+            },
+	    	    onCancelled = function(playerArg)
+	    		end,
+	    		onEnd = function(playerArg)
+	    		end,
+        }
+	    		player:customMenu(menu)
+	    	else
+                player:PrintToPlayer("Sorry not avail till LVL 99", 0x1F);
+	    	end
+            end,
+        })
+	    
+        utils.unused(Lili)
+        utils.unused(Cait)
+        utils.unused(Lilit)
 end)
 
 m:addOverride("xi.zones.Northern_San_dOria.Zone.onInitialize", function(zone)
@@ -518,10 +605,54 @@ local menu =
         end,
 
         onTrigger = function(player, npc)
-            player:PrintToPlayer(" Welcome to Omicron 2.0!", 0,npc:getPacketName())
-            player:PrintToPlayer(" My name is Lilith and I am not fully scripted yet.", 0,npc:getPacketName())
-            player:PrintToPlayer(" Please feel free to talk to any of the other NPC's Lilisette or Cait Sith they can help you better than I can.", 0, npc:getPacketName())
-        end,
+		local plevel = player:getMainLvl();
+        if (plevel > 98) then
+        local menu =
+        {
+            title = "Domain Invasion",
+            onStart = function(playerArg)
+	    
+                playerArg:PrintToPlayer("Would you like to be ported to the next Domain Invasion?", xi.msg.channel.NS_SAY)
+            end,
+            options =
+            {
+                {
+                    "Yes",
+                    function(playerArg)
+                        if GetServerVariable("[Domain]NM") == 0 then
+                            player:setPos(-0.927, -43.600, -234.829, 195, 289)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+	                    
+                        if GetServerVariable("[Domain]NM") == 1 then
+                            player:setPos(-3.202, 5.250, -19.560, 195, 292)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                        
+	                    if GetServerVariable("[Domain]NM") == 2 or
+                            GetServerVariable("[Domain]NM") == 3 then
+                            player:setPos(-582.14, -228.00, 506.58, 180, 222)
+                            player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
+                        end
+                    end,
+                },
+                {
+                    "No",
+                    function(playerArg)
+ 	    				player:PrintToPlayer("Let me know when you are ready for the next battle!!", 0x1F)
+                    end,
+                },
+            },
+	    	    onCancelled = function(playerArg)
+	    		end,
+	    		onEnd = function(playerArg)
+	    		end,
+        }
+	    		player:customMenu(menu)
+	    	else
+                player:PrintToPlayer("Sorry not avail till LVL 99", 0x1F);
+	    	end
+            end,
     })
 
     utils.unused(Lili)

@@ -5,6 +5,7 @@ require("modules/module_utils")
 require("scripts/zones/Escha_RuAun/Zone")
 -----------------------------------
 local m = Module:new("domain_invasion")
+m:setEnabled(true)
 
 -- Server Crash Failsafe
 m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
@@ -14,15 +15,12 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
     if GetServerVariable("[Domain]NMToD") < 1 then
 	    SetServerVariable("[Domain]NMToD", 1)
 	end
-	if GetServerVariable("[Domain]Addon_Test") < 1 then
-	    SetServerVariable("[Domain]Addon_Test", 1)
-	end
 	
 	if GetServerVariable("[Domain]NMSpawned") == 1 then
 	    SetServerVariable("[Domain]NMSpawned", 0)
 	end
-	if GetServerVariable("Addon_Test") < 1 then
-	    SetServerVariable("Addon_Test", 4)
+	if GetServerVariable("[Domain]Addon") < 1 then
+	    SetServerVariable("[Domain]Addon", 4)
 	end
     if GetServerVariable("[Domain]Addon_Spawned") == 1 then
 	    SetServerVariable("[Domain]Addon_Spawned", 0)
@@ -72,17 +70,27 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
 			local reward = math.random(100, 225)
-		        if player:getLocalVar("[Escha_Points]") == 1 then
-		               player:addCurrency('escha_beads', reward)
-                       player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	            end	
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end
                 -- Variable control
 			    SetServerVariable("[Domain]NMToD", os.time())
     		    SetServerVariable("[Domain]NM", 1)
 				SetServerVariable("[Domain]NMSpawned", 0)
 
                 -- Server-wide message
-                player:PrintToArea("Jeronimo has been defeated, please talk to the lilith to be ported to the next fight.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                -- Server-wide message
+                player:PrintToArea("{Apururu} Oh dear, one of our members-wembers in Reisenjima Henge says that Tortuga could appear anytime in the next 5 minutes.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Would you please go and see if she's alrightaru?", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
             end,
         })
 
@@ -121,11 +129,15 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
         mob:setMod(xi.mod.PARALYZERES, 100)
         mob:setMod(xi.mod.LULLABYRES, 100)
         mob:setMod(xi.mod.FASTCAST, 10)
+		mob:setMod(xi.mod.LIGHT_ABSORB, 100)
+		mob:setMod(xi.mod.DARK_ABSORB, 100)
         mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 50, 0, 0)
         mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
         mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
         mob:addStatusEffect(xi.effect.ENFIRE_II, 100, 0, 0)
         mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
+        mob:setMobMod(xi.mobMod.SKILL_LIST, 817)
+        mob:setMobMod(xi.mobMod.SPELL_LIST, 0)
         end
 
 end)
@@ -143,14 +155,15 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
 		local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
             name = "Tortuga",
+			look = "0x0000480900000000000000000000000000000000",
             x = 0.195,
             y = 5.50,
             z = -1.378,
             rotation = 65,
             widescan = 1,
     
-            groupId = 89,
-            groupZoneId = 291,
+            groupId = 1,
+            groupZoneId = 222,
 
             onMobSpawn = function(mob)
 			    SetServerVariable("[Domain]NMSpawned", 1)
@@ -159,30 +172,37 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
                 printf("Tortuga is Spawned")
 			end,	
 			onMobFight = function(mob, target)
-                if target:hasEnmity() then
-                   target:setLocalVar("[Escha_Points]", 1)
-	        	end
+            
 	        end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
 			local final = math.random(1, 100)
-                if final < 49 then
-				SetServerVariable("[Domain]NM", 2)
-				player:PrintToArea("Battosai and his minions are ready for battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-				SetServerVariable("[Domain]NMToD", os.time())
+            if final > 16 then
+			    SetServerVariable("[Domain]NM", 2)
+			    player:PrintToArea("{Apururu} Oh dear, one of our members-wembers in Provenance says that Battosai could appear anytime in the next 5 minutes.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Would you please go and see if she's alrightaru?", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+			    SetServerVariable("[Domain]NMToD", os.time())
     		    SetServerVariable("[Domain]NMSpawned", 0)
-				end
-				if final > 50 then
-				SetServerVariable("[Domain]NM", 3)
-				player:PrintToArea("Oh no not Bahamut, please defeat the team of minions as quick as possible.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-				SetServerVariable("[Domain]NMToD", os.time())
+			else
+			    SetServerVariable("[Domain]NM", 3)
+			    player:PrintToArea("{Apururu} Ohsie-nosey! We just received a report from our scouts that Bahamut has entered the airspace in Provenance!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Rally the troops, we can't let him get away!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+			    SetServerVariable("[Domain]NMToD", os.time())
     		    SetServerVariable("[Domain]NMSpawned", 0)
-				end
+			end
 			local reward = math.random(100, 225)
-		        if player:getLocalVar("[Escha_Points]") == 1 then
-		           player:addCurrency('escha_beads', reward)
-                   player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	            end	
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end
             end,
         })
     
@@ -223,6 +243,8 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
         mob:addStatusEffect(xi.effect.SHOCK_SPIKES, 50, 0, 0)
         mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
         mob:addStatusEffect(xi.effect.ENTHUNDER_II, 100, 0, 0)
+        mob:setMobMod(xi.mobMod.SKILL_LIST, 277)
+        mob:setMobMod(xi.mobMod.SPELL_LIST, 24)
         end
 	    
 end)
@@ -233,7 +255,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-	    GetServerVariable("Addon_Test") == 0 and
+	    GetServerVariable("[Domain]Addon") == 4 and
         GetServerVariable("[Domain]NM") == 2 and              -- Correct NM
         GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
@@ -258,17 +280,23 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                 printf("Battosai is spawned")
 			end,
 			onMobFight = function(mob, target)
-                if target:hasEnmity() then
-                   target:setLocalVar("[Escha_Points]", 1)
-	        	end
+
 	        end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
 				local reward = math.random(100, 225)
-		           if player:getLocalVar("[Escha_Points]") == 1 then
-		              player:addCurrency('escha_beads', reward)
-                      player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	                end	 
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end 
                 -- Variable control
 			    SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
     		    SetServerVariable("[Domain]NM", 0)            -- Set NM to be spawned next
@@ -276,10 +304,11 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 				SetServerVariable("[Domain]Addon_Spawned", 0)
 				SetServerVariable("[Domain]Addon_Spawned_2", 0)
 				SetServerVariable("[Domain]Addon_Spawned_3", 0)
-				SetServerVariable("Addon_Test", 4)
+				SetServerVariable("[Domain]Addon", 4)
 
                 -- Server-wide message
-                player:PrintToArea("Battosai has been defeated got to the nearest lilth to goto the next battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Oh dear, one of our members-wembers in Escha Ru'Aun says that Amphisbaena could appear anytime in the next 5 minutes.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Would you please go and see if she's alrightaru?", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
             end,
         })
     
@@ -323,6 +352,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setMod(xi.effect.FAST_CAST, 25)
         mob:addStatusEffect(xi.effect.ENSTONE_II, 100, 0, 0)
         mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
+        mob:setMobMod(xi.mobMod.SKILL_LIST, 313)
+        mob:setMobMod(xi.mobMod.SPELL_LIST, 24)
         end
 	    
 end)
@@ -332,7 +363,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-	    GetServerVariable("Addon_Test") == 4 and
+	    GetServerVariable("[Domain]Addon") == 0 and
         GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
         GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
@@ -383,11 +414,19 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
-			   local reward = math.random(200, 325)
-		       if player:getLocalVar("[Escha_Points]") == 1 then
-		          player:addCurrency('escha_beads', reward)
-                  player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	           end	 
+			   local reward = math.random(100, 225)
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end
                 -- Variable control
 			    SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
     		    SetServerVariable("[Domain]NM", 0)            -- Set NM to be spawned next
@@ -395,43 +434,46 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 				SetServerVariable("[Domain]Addon_Spawned", 0)
 				SetServerVariable("[Domain]Addon_Spawned_2", 0)
 				SetServerVariable("[Domain]Addon_Spawned_3", 0)
-				SetServerVariable("Addon_Test", 4)
+				SetServerVariable("[Domain]Addon", 4)
 				SetServerVariable("MegaFlareUsed", 0)
 	            SetServerVariable("GigaFlareUsed", 0)
 
                 -- Server-wide message
-                player:PrintToArea("Oh wow Bahamut and his Minions have been defeated!!!!!! Speak to lilith for your next battle.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Oh dear, one of our members-wembers in Escha Ru'Aun says that Amphisbaena could appear anytime in the next 5 minutes.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("{Apururu} Would you please go and see if she's alrightaru?", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 
-                -- Debug
-				printf("Current value of Spawned flag should be 0: %s", GetServerVariable("[Domain]NMSpawned"))
+                
             end,
         })
     
-                mob:setSpawn(-580, -228, 540, 65)
-                mob:setDropID(0) -- No loot!
-                mob:spawn()
-	        	SetServerVariable("[Domain]NMSpawned", 1)
-             	mob:setMobLevel(145)
-             	mob:addMod(xi.mod.CURE_CAST_TIME, 225)
-             	mob:addMod(xi.mod.CURE_POTENCY, 500)
-             	mob:setMod(xi.mod.MATT, 600)
-                mob:setMod(xi.mod.MACC, 2800)
-             	mob:setMod(xi.mod.DEF, 3000)
-             	mob:setMod(xi.mod.MDEF, 3000)
-             	mob:setMod(xi.mod.TRIPLE_ATTACK, 30)
-             	mob:setMod(xi.mod.ENSPELL_DMG, 100)
-                mob:setMod(xi.mod.HASTE_MAGIC, 200)
-             	mob:setMod(xi.mod.ATT, 3000)
-             	mob:setMod(xi.mod.ACC, 1800)
-             	mob:setMod(xi.mod.TRIPLE_ATTACK, 20)
-             	mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
-             	mob:setMod(xi.mod.HASTE_MAGIC, 200)
-             	mob:setMobMod(xi.mobMod.SKILL_LIST, 726)
-             	mob:setMobMod(xi.mobMod.SPELL_LIST, 144)
-             	mob:setMod(xi.mod.PETRIFYRES, 500) -- "Possesses a resist petrify trait"
-             	mob:setMod(xi.mod.STUNRES, 1000)
-                mob:setMod(xi.mod.COUNTER, 10) -- "Possesses a Counter trait"		
-            end
+        mob:setSpawn(-580, -228, 540, 65)
+        mob:setDropID(0) -- No loot!
+        mob:spawn()
+	    SetServerVariable("[Domain]NMSpawned", 1)
+        mob:setMobLevel(145)
+        mob:addMod(xi.mod.CURE_CAST_TIME, 225)
+        mob:addMod(xi.mod.CURE_POTENCY, 500)
+        mob:setMod(xi.mod.MATT, 600)
+        mob:setMod(xi.mod.MACC, 2800)
+        mob:setMod(xi.mod.DEF, 3000)
+        mob:setMod(xi.mod.MDEF, 3000)
+        mob:setMod(xi.mod.TRIPLE_ATTACK, 30)
+        mob:setMod(xi.mod.ENSPELL_DMG, 100)
+        mob:setMod(xi.mod.HASTE_MAGIC, 200)
+        mob:setMod(xi.mod.ATT, 3000)
+        mob:setMod(xi.mod.ACC, 1800)
+        mob:setMod(xi.mod.TRIPLE_ATTACK, 20)
+        mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
+        mob:setMod(xi.mod.HASTE_MAGIC, 200)
+        mob:setMobMod(xi.mobMod.SKILL_LIST, 726)
+        mob:setMobMod(xi.mobMod.SPELL_LIST, 144)
+        mob:setMod(xi.mod.PETRIFYRES, 500) -- "Possesses a resist petrify trait"
+        mob:setMod(xi.mod.STUNRES, 1000)
+        mob:setMod(xi.mod.COUNTER, 10) -- "Possesses a Counter trait"		
+        mob:addStatusEffect(xi.effect.SHOCK_SPIKES, 10, 0, 0)
+        mob:addStatusEffect(xi.effect.REGEN, 10, 3, 0)
+        mob:addStatusEffect(xi.effect.ENTHUNDER_II, 10, 0, 0)            
+		end
 	    
 end)
 -- Addon 1
@@ -440,8 +482,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-        GetServerVariable("Addon_Test") == 4 and
-        GetServerVariable("[Domain]NM") == 2 and              -- Correct NM
+        GetServerVariable("[Domain]Addon") == 4 and
+        GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
 		GetServerVariable("[Domain]Addon_Spawned") == 0 and
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
@@ -460,28 +502,32 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned", 1)
 
-                printf("Test 1 Spawned")
 			end,
             onMobFight = function(mob, target)
-                if target:hasEnmity() then
-                   target:setLocalVar("[Escha_Points]", 1)
-	        	end
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
-				local reward = math.random(10, 25)
-		            if player:getLocalVar("[Escha_Points]") == 1 then
-		               player:addCurrency('escha_beads', reward)
-                       player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	                end	 
-                local Addon = GetServerVariable("Addon_Test")
+				local reward = math.random(15, 100)
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end
+                local Addon = GetServerVariable("[Domain]Addon")
                 local AddonLeft = math.floor(Addon / 4)
-		                SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-				    if GetServerVariable("Addon_Test", 0 ) then
+		                SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
+				    if GetServerVariable("[Domain]Addon", 0 ) then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM time
 				    end
 
                 -- Server-wide message
-                player:PrintToArea("Test 1 Has been Defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("Minion 1 Has been Defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
             end,
         })
     
@@ -522,6 +568,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setMod(xi.mod.LULLABYRES, 100)
         mob:setMod(xi.mod.FASTCAST, 10)
 	    mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
+		mob:setMod(xi.mod.ICE_ABSORB, 100)
+        mob:setMod(xi.mod.WIND_ABSORB, 100)
         mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 50, 0, 0)
         end
 	    
@@ -532,8 +580,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-        GetServerVariable("Addon_Test") == 4 and
-        GetServerVariable("[Domain]NM") == 2 and              -- Correct NM
+        GetServerVariable("[Domain]Addon") == 4 and
+        GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
 		GetServerVariable("[Domain]Addon_Spawned_2") == 0 and
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
@@ -552,30 +600,34 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned_2", 1)
 
-                -- Debug
-                printf("Test 2 Spawned")
             end,
             onMobFight = function(mob, target)
-                if target:hasEnmity() then
-                   target:setLocalVar("[Escha_Points]", 1)
-	        	end
+
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
-			    local reward = math.random(10, 25)
-		            if player:getLocalVar("[Escha_Points]") == 1 then
-		               player:addCurrency('escha_beads', reward)
-                       player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	                end	  
+			    local reward = math.random(15, 100)
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end	  
                 -- Variable control
-	            local Addon = GetServerVariable("Addon_Test")
+	            local Addon = GetServerVariable("[Domain]Addon")
                 local AddonLeft = math.floor(Addon / 4)
-		            SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-				if GetServerVariable("Addon_Test", 0 ) then
+		            SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
+				if GetServerVariable("[Domain]Addon", 0 ) then
 				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				end
 
                 -- Server-wide message
-                player:PrintToArea("Test 2 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("Minion 2 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 
             end,
         })
@@ -627,8 +679,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-        GetServerVariable("Addon_Test") == 4 and
-        GetServerVariable("[Domain]NM") == 2 and              -- Correct NM
+        GetServerVariable("[Domain]Addon") == 4 and
+        GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
 		GetServerVariable("[Domain]Addon_Spawned_3") == 0 and
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
@@ -650,27 +702,32 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                 printf("Test 3 Spawned")
 			end,
             onMobFight = function(mob, target)
-                if target:hasEnmity() then
-                   target:setLocalVar("[Escha_Points]", 1)
-	        	end
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
-                local reward = math.random(10, 25)
-		            if player:getLocalVar("[Escha_Points]") == 1 then
-		               player:addCurrency('escha_beads', reward)
-                       player:PrintToPlayer(string.format("You have gained %s Escha Beads for your participation in this battle.", reward), xi.msg.channel.SYSTEM_3)
-	                end	  
+                local reward = math.random(15, 100)
+		        -- Reward escha beads
+                local players = mob:getZone():getPlayers()
+                
+                for i, participant in pairs(players) do
+                    if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
+                        participant:delStatusEffect(xi.effect.ELVORSEAL)
+                        participant:addCurrency("escha_beads", reward)
+                        participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
+                    else
+                        participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
+                    end
+                end  
 		            		-- Variable control
-	            local Addon = GetServerVariable("Addon_Test")
+	            local Addon = GetServerVariable("[Domain]Addon")
                 local AddonLeft = math.floor(Addon / 4)
-		            SetServerVariable("Addon_Test", Addon - AddonLeft - 1)
-				    if GetServerVariable("Addon_Test", 0 ) then
+		            SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
+				    if GetServerVariable("[Domain]Addon", 0 ) then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				    end
 						
 
                 -- Server-wide message
-                player:PrintToArea("Test 3 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
+                player:PrintToArea("Minion 3 has been defeated.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
             end,
         })
     
@@ -712,6 +769,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setMod(xi.mod.LULLABYRES, 100)
         mob:setMod(xi.mod.FASTCAST, 10)
 	    mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
+	    mob:setMod(xi.mod.DARK_ABSORB, 100)
+        mob:setMod(xi.mod.LTNG_ABSORB, 100)
         mob:addStatusEffect(xi.effect.SHOCK_SPIKES, 50, 0, 0)
         mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
         mob:addStatusEffect(xi.effect.ENTHUNDER_II, 100, 0, 0)
