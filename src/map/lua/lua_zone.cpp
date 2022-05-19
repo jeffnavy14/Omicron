@@ -258,12 +258,6 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
     }
     else if (auto* PMob = dynamic_cast<CMobEntity*>(PEntity))
     {
-        // Ensure mobs get a function for onMobDeath
-        auto onMobDeath = table["onMobDeath"].get_or<sol::function>(sol::lua_nil);
-        if (!onMobDeath.valid())
-        {
-            cacheEntry["onMobDeath"] = [](){}; // Empty func
-        }
         auto onMobSpawn = table["onMobSpawn"].get_or<sol::function>(sol::lua_nil);
         if (onMobSpawn.valid())
         {
@@ -273,6 +267,7 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         {
             cacheEntry["onMobSpawn"] = []() {}; // Empty func
         }
+
         auto onMobFight = table["onMobFight"].get_or<sol::function>(sol::lua_nil);
         if (onMobFight.valid())
         {
@@ -282,6 +277,11 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         {
             cacheEntry["onMobFight"] = []() {}; // Empty func
         }
+        auto onMobDeath = table["onMobDeath"].get_or<sol::function>(sol::lua_nil);
+        if (!onMobDeath.valid())
+        {
+            cacheEntry["onMobDeath"] = [](){}; // Empty func
+        }     
         m_pLuaZone->InsertMOB(PMob);
     }
 

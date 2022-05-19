@@ -35,6 +35,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include <cmath>
 
 #include "../../packets/action.h"
+#include "../../treasure_pool.h"
 
 CTargetFind::CTargetFind(CBattleEntity* PBattleEntity)
 {

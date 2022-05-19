@@ -1647,6 +1647,7 @@ namespace luautils
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
         auto onZoneTick = GetCacheEntryFromFilename(filename)["onZoneTick"];
+
         if (!onZoneTick.valid())
         {
             return;
@@ -1659,7 +1660,6 @@ namespace luautils
             ShowError("luautils::onZoneTick: %s", err.what());
         }
     }
-
     /************************************************************************
      *                                                                       *
      *  We perform the script at the entrance of the character to the server *
