@@ -1,5 +1,7 @@
 -----------------------------------
--- Add some test NPCs to GM_HOME (zone 210)
+-- Domain Invasion (custom module)
+-- Coded with love by Carver, Xaver, Graves, Demetrie
+-- 2022, CatsEyeXI (http://catseyexi.com) / --server server.catseyexi.com
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Escha_RuAun/Zone")

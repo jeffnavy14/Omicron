@@ -1,5 +1,7 @@
 -----------------------------------
--- Domain Reward NPC
+-- Domain Invasion (Reward NPC)
+-- Coded with love by Carver, Xaver, Graves, Demetrie
+-- 2022, CatsEyeXI (http://catseyexi.com) / --server server.catseyexi.com
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Port_Bastok/Zone")
