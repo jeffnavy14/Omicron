@@ -6109,8 +6109,6 @@ namespace battleutils
         {
             return true;
         }
-
-<<<<<<< .mine
         if (PEntity->objtype == TYPE_PC) 
         {
             CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
@@ -6119,18 +6117,6 @@ namespace battleutils
                 return true;
             }
         }
-        
-=======
-        if (PEntity->objtype == TYPE_PC)
-        {
-            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
-            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
-            {
-                return true;
-            }
-        }
-
->>>>>>> .theirs
         bool found = false;
 
         // clang-format off

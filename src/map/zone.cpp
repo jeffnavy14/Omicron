@@ -986,7 +986,6 @@ void CZone::CharZoneIn(CCharEntity* PChar)
     }
     else
     {
-<<<<<<< .mine
 //        PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
 //        PChar->PTreasurePool->AddMember(PChar);
             if (m_TreasurePool != nullptr)
@@ -1000,21 +999,6 @@ void CZone::CharZoneIn(CCharEntity* PChar)
             PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
             PChar->PTreasurePool->AddMember(PChar);
         }
-=======
-//        PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-//        PChar->PTreasurePool->AddMember(PChar);
-        if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-        else
-        {
-            PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-
->>>>>>> .theirs
     }
 
     if (m_zoneType != ZONE_TYPE::DUNGEON_INSTANCED)

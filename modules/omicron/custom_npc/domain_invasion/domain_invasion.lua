@@ -46,8 +46,8 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
-            objtype = xi.objType.MOB,
-            name = "Jeronimo",
+            name = "Amphisbaena",
+            look = "0x0000950100000000000000000000000000000000",
             x = 0.421,
             y = -43.600,
             z = -196.322,
@@ -71,7 +71,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
 	        end,
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-			local reward = math.random(100, 225)
+			local reward = math.random(200, 350)
 		        -- Reward escha beads
                 local players = mob:getZone():getPlayers()
                 
@@ -99,7 +99,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
         mob:setSpawn(0.421, -43.600, -196.322, 65)
         mob:setDropID(0) -- No loot!
         mob:spawn()
-		mob:setMobLevel(135)
+		mob:setMobLevel(125)
 	    mob:addMod(xi.mod.MAIN_DMG_RATING, 50)
         mob:addMod(xi.mod.STR, 50)
         mob:addMod(xi.mod.VIT, 20)
@@ -179,7 +179,7 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
 
             onMobDeath = function(mob, player, isKiller, noKiller)
 			local final = math.random(1, 100)
-            if final > 16 then
+            if final > 25 then
 			    SetServerVariable("[Domain]NM", 2)
 			    player:PrintToArea("{Apururu} Oh dear, one of our members-wembers in Provenance says that Battosai could appear anytime in the next 5 minutes.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
                 player:PrintToArea("{Apururu} Would you please go and see if she's alrightaru?", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
@@ -211,7 +211,7 @@ m:addOverride("xi.zones.Reisenjima_Henge.Zone.onZoneTick", function(zone)
         mob:setSpawn(0.195, 5.500, -1.378, 65)
         mob:setDropID(0) -- No loot!
         mob:spawn()
-		mob:setMobLevel(135)
+		mob:setMobLevel(125)
 	    mob:addMod(xi.mod.MAIN_DMG_RATING, 50)
         mob:addMod(xi.mod.STR, 40)
         mob:addMod(xi.mod.VIT, 20)
@@ -272,8 +272,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
             rotation = 65,
             widescan = 1,
     
-            groupId = 64,
-            groupZoneId = 288,
+            groupId     = 1,
+            groupZoneId = 222,
 			
             onMobSpawn = function(mob)
 			    SetServerVariable("[Domain]NMSpawned", 1)
@@ -318,7 +318,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 		SetServerVariable("[Domain]NMSpawned", 1)
-		mob:setMobLevel(135)
+		mob:setMobLevel(125)
 		mob:addMod(xi.mod.MAIN_DMG_RATING, 50)
         mob:addMod(xi.mod.STR, 40)
         mob:addMod(xi.mod.VIT, 20)
@@ -452,7 +452,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 	    SetServerVariable("[Domain]NMSpawned", 1)
-        mob:setMobLevel(145)
+        mob:setMobLevel(140)
         mob:addMod(xi.mod.CURE_CAST_TIME, 225)
         mob:addMod(xi.mod.CURE_POTENCY, 500)
         mob:setMod(xi.mod.MATT, 600)
@@ -474,7 +474,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setMod(xi.mod.COUNTER, 10) -- "Possesses a Counter trait"		
         mob:addStatusEffect(xi.effect.SHOCK_SPIKES, 10, 0, 0)
         mob:addStatusEffect(xi.effect.REGEN, 10, 3, 0)
-        mob:addStatusEffect(xi.effect.ENTHUNDER_II, 10, 0, 0)            
+        mob:addStatusEffect(xi.effect.ENTHUNDER_II, 10, 0, 0) 
+		
 		end
 	    
 end)
