@@ -46,6 +46,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
+		    objtype = xi.objType.MOB,
             name = "Amphisbaena",
             look = "0x0000950100000000000000000000000000000000",
             x = 0.421,
@@ -452,17 +453,17 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 	    SetServerVariable("[Domain]NMSpawned", 1)
-        mob:setMobLevel(140)
+        mob:setMobLevel(135)
         mob:addMod(xi.mod.CURE_CAST_TIME, 225)
         mob:addMod(xi.mod.CURE_POTENCY, 500)
-        mob:setMod(xi.mod.MATT, 600)
+        mob:setMod(xi.mod.MATT, 500)
         mob:setMod(xi.mod.MACC, 2800)
         mob:setMod(xi.mod.DEF, 3000)
         mob:setMod(xi.mod.MDEF, 3000)
         mob:setMod(xi.mod.TRIPLE_ATTACK, 30)
         mob:setMod(xi.mod.ENSPELL_DMG, 100)
         mob:setMod(xi.mod.HASTE_MAGIC, 200)
-        mob:setMod(xi.mod.ATT, 3000)
+        mob:setMod(xi.mod.ATT, 567)
         mob:setMod(xi.mod.ACC, 1800)
         mob:setMod(xi.mod.TRIPLE_ATTACK, 20)
         mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
