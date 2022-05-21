@@ -22,9 +22,10 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
 
         onTrigger = function(player, npc)
 		local escha = player:getCurrency("escha_beads")
+		if (escha >= 5000) then
 		local menu =
             {
-                title = "10000 Escha Beads",
+                title = "5000 Escha Beads",
                 onStart = function(playerArg)
                     -- NOTE: This could be used to lock the player in place
                     playerArg:PrintToPlayer("Alluvian Skirmish Armor Set", xi.msg.channel.NS_SAY)
@@ -41,7 +42,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
                             player:addItem(28161)  --otronif_brais_+1  
                             player:addItem(28298)  --otronif_boots_+1
 		    				player:PrintToPlayer( "Enjoy your Otronif Set!", 0xd )
-		    				player:delCurrency("escha_beads", 20000)
+		    				player:delCurrency("escha_beads", 5000)
                         end,
                     },
                     {
@@ -53,7 +54,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
                             player:addItem(28162)  --iuitl_tights_+1   
                             player:addItem(28299)  --iuitl_gaiters_+1
 		    				player:PrintToPlayer( "Enjoy your Iuitl Set!", 0xd )
-		    				player:delCurrency("escha_beads", 20000)						
+		    				player:delCurrency("escha_beads", 5000)						
                         end,
                     },
                     {
@@ -65,7 +66,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
                             player:addItem(28164)  --hagondes_pants_+1
                             player:addItem(28301)  --hag-sabots-1
 		    				player:PrintToPlayer("Enjoy your Hagondes Set!", 0xd )
-		    				player:delCurrency("escha_beads", 20000)
+		    				player:delCurrency("escha_beads", 5000)
                         end,
                     },
 		    		{
@@ -77,7 +78,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
                             player:addItem(28163)  --gende._spats_+1   
                             player:addItem(28300)  --gende._galosh._+1 
 		    				player:PrintToPlayer("Enjoy your Gendewitha Set!", 0xd )
-		    				player:delCurrency("escha_beads", 20000)
+		    				player:delCurrency("escha_beads", 5000)
                         end,
                     },
                     {
@@ -89,7 +90,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
                             player:addItem(28160)  --cizin_breeches_+1 
                             player:addItem(28297)  --cizin_greaves_+1 
 		    				player:PrintToPlayer("Enjoy your Cizin Set!", 0xd )
-		    				player:delCurrency("escha_beads", 20000)
+		    				player:delCurrency("escha_beads", 5000)
                         end,
                     },
                 },
@@ -99,8 +100,8 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
 		    	end,
               }
               player:customMenu(menu)
-		  	
-	        end,
+		  	end
+		end,
     })
     utils.unused(domain)
 end)
