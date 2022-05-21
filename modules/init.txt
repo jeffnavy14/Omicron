@@ -36,5 +36,5 @@
 #
 # Live example:
 
-custom/lua/test_npcs_in_gm_home.lua
+custom/cpp/
 omicron/
