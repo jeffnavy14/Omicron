@@ -14,22 +14,7 @@ function error(player, msg)
     player:PrintToPlayer("!homepoint {player}")
 end
 
-function onTrigger(player, target)
-    -- validate target
-    local targ
-    if (target == nil) and (player:getCharVar("Hardmode") == 0) then
-        targ = player
-    else
-        targ = GetPlayerByName( target )
-        if (targ == nil) then
-            error(player, string.format( "Player named '%s' not found!", target ) )
-            return
-        end
-    end
-
+function onTrigger(player)
     -- homepoint target
-    targ:warp()
-    if (targ:getID() ~= player:getID()) then
-        player:PrintToPlayer(string.format("Sent %s to their homepoint.", targ:getName()))
-    end
+    player:warp()
 end
