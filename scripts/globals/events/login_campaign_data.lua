@@ -13,8 +13,8 @@ local prizes =
         ["price"] = 10,
         ["items"] =
         {
-            1126, -- Beastmen's Seal
-            1127, -- Kindred's Seal
+            1234, -- Beastmen's Seal
+            5432, -- Kindred's Seal
             2955, -- Kindred's Crest
             2956, -- High Kindred's Crest
             2957, -- Sacred Kindred's Crest

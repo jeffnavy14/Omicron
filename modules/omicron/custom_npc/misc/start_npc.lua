@@ -2,6 +2,7 @@
 -- Add some npcs for testers in starter cities.
 -----------------------------------
 require("modules/module_utils")
+require("scripts/globals/events/domain_invasion")
 -----------------------------------
 local m = Module:new("start_npc")
 m:setEnabled(true)
@@ -223,6 +224,7 @@ local menu =
     utils.unused(Lilit)
 
 end)
+
 
 m:addOverride("xi.zones.Port_Windurst.Zone.onInitialize", function(zone)
     super(zone)
@@ -659,5 +661,32 @@ local menu =
     utils.unused(Cait)
     utils.unused(Lilit)
 end)
+-- SKIRMISH REWARD NPC
+m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
+    super(zone)
+    local domain = zone:insertDynamicEntity({
+        objtype = xi.objType.NPC,
+        name = "Skirmish Moogle",
+        look = 2419,
+        x = 87.928,
+        y = 7.500,
+        z = -192.295,
+        rotation = 128,
+        widescan = 1,
+		
+		
+        onEventUpdate = function(player, csid, option)
+            xi.events.domainCampaign.onEventUpdate(player, csid, option)
+        end,
+        onTrigger = function(player, npc)
+		require("scripts/zones/Port_Bastok/IDs")
+            local csid = 425
+            xi.events.domainCampaign.onTrigger(player, csid)
+		end,
+		
+		})
+	utils.unused(skirmoogle)
+end)
+
 
 return m

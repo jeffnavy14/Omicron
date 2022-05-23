@@ -374,14 +374,15 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
             name = "Bahamut",
+			look = "00001B0500000000000000000000000000000000",
             x = -580,
             y = -228,
             z = 540,
             rotation = 65,
             widescan = 1,
     
-            groupId = 17,
-            groupZoneId = 29,
+            groupId     = 1,
+            groupZoneId = 222,
 				onMobFight = function(mob, target)
 	    	local lifePercent = mob:getHPP()
             if lifePercent < 70 and GetServerVariable("MegaFlareUsed") == 0 then
@@ -539,8 +540,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 		SetServerVariable("[Domain]Addon_Spawned", 1)
-        mob:setMobLevel(119)
-        mob:addMod(xi.mod.MAIN_DMG_RATING, 50)
+        mob:setMobLevel(100)
         mob:addMod(xi.mod.STR, 50)
         mob:addMod(xi.mod.VIT, 20)
         mob:addMod(xi.mod.INT, 50)
@@ -640,7 +640,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 		SetServerVariable("[Domain]Addon_Spawned_2", 1)
-        mob:setMobLevel(119)
+        mob:setMobLevel(100)
         mob:addMod(xi.mod.STR, 40)
         mob:addMod(xi.mod.VIT, 20)
         mob:addMod(xi.mod.INT, 65)
@@ -739,8 +739,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 		SetServerVariable("[Domain]Addon_Spawned_3", 1)
-        mob:setMobLevel(119)
-        mob:addMod(xi.mod.MAIN_DMG_RATING, 50)
+        mob:setMobLevel(100)
         mob:addMod(xi.mod.STR, 40)
         mob:addMod(xi.mod.VIT, 20)
         mob:addMod(xi.mod.INT, 50)
