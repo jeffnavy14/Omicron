@@ -11542,14 +11542,7 @@ INSERT INTO `item_equipment` VALUES (23754,'sandogasa_+1',1,0,4194303,0,0,0,16,0
 INSERT INTO `item_equipment` VALUES (23761,'nyame_helm',99,119,4194303,470,0,0,16,0,0);
 INSERT INTO `item_equipment` VALUES (23768,'nyame_mail',99,119,4194303,470,0,0,32,0,0);
 INSERT INTO `item_equipment` VALUES (23775,'nyame_gauntlets',99,119,4194303,470,0,0,64,0,0);
-INSERT INTO `item_equipment` VALUES (23781,'bunzis_pants',99,119,16916,470,0,0,128,0,0);    -- TODO: capture model from retail
 INSERT INTO `item_equipment` VALUES (23782,'nyame_flanchard',99,119,4194303,470,0,0,128,0,0);
-INSERT INTO `item_equipment` VALUES (23783,'ikengas_clogs',99,119,66560,470,0,0,256,0,0);   -- TODO: capture model from retail
-INSERT INTO `item_equipment` VALUES (23784,'gletis_boots',99,119,303392,470,0,0,256,0,0);   -- TODO: capture model from retail
-INSERT INTO `item_equipment` VALUES (23785,'sakpatas_leggings',99,119,193,470,0,0,256,0,0); -- TODO: capture model from retail
-INSERT INTO `item_equipment` VALUES (23786,'mpacas_boots',99,119,137218,470,0,0,256,0,0);   -- TODO: capture model from retail
-INSERT INTO `item_equipment` VALUES (23787,'agwus_pigaches',99,119,3670024,470,0,0,256,0,0); -- TODO: capture model from retail
-INSERT INTO `item_equipment` VALUES (23788,'bunzis_sabots',99,119,16916,470,0,0,256,0,0);   -- TODO: capture model from retail
 INSERT INTO `item_equipment` VALUES (23789,'nyame_sollerets',99,119,4194303,470,0,0,256,0,0);
 INSERT INTO `item_equipment` VALUES (23790,'adenium_masque',1,0,4194303,172,0,0,16,0,0);    -- TODO: capture model from retail
 INSERT INTO `item_equipment` VALUES (23791,'adenium_suit',1,0,4194303,172,0,0,32,448,0);    -- TODO: capture model from retail
@@ -14308,6 +14301,36 @@ INSERT INTO `item_equipment` VALUES (21926,'tsuru',99,119,4096,312,0,0,3,0,0);
 INSERT INTO `item_equipment` VALUES (26116,'schere_earring',99,0,133251,0,0,0,6144,0,0);
 INSERT INTO `item_equipment` VALUES (26362,'tellen_belt',99,0,66560,0,0,0,1024,0,0);
 INSERT INTO `item_equipment` VALUES (26363,'obstin._sash',99,0,524820,0,0,0,1024,0,0);
+INSERT INTO `item_equipment` VALUES (23784, 'gletis_boots', 99, 119, 303392,0,0, 465, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23777, 'gletis_breeches', 99, 119, 303392,0,0, 465, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23770, 'gletis_gauntlets', 99, 119, 303392,0,0, 465, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23763, 'gletis_cuirass', 99, 119, 303392,0,0, 465, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23756, 'gletis_mask', 99, 119, 303392,0,0, 465, 16,0,0);
+INSERT INTO `item_equipment` VALUES (23785, 'sakpatas_leggings', 99, 119, 193,0,0, 466, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23757, 'sakpatas_helm', 99, 119, 193,0,0, 466, 16,0,0);
+INSERT INTO `item_equipment` VALUES (23764, 'sakpatas_plate', 99, 119, 193,0,0, 466, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23771, 'sakpatas_gauntlets', 99, 119, 193,0,0, 466, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23778, 'sakpatas_cuisses', 99, 119, 193,0,0, 466, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23786, 'mpacas_boots', 99, 119, 137218,0,0, 467, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23779, 'mpacas_hose', 99, 119, 137218,0,0, 467, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23772, 'mpacas_gloves', 99, 119, 137218,0,0, 467, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23765, 'mpacas_doublet', 99, 119, 137218,0,0, 467, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23758, 'mpacas_cap', 99, 119, 137218,0,0, 467, 16,0,0);
+INSERT INTO `item_equipment` VALUES (23783, 'ikengas_clogs', 99, 119, 66560,0,0, 464, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23776, 'ikengas_trousers', 99, 119, 66560,0,0, 464, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23769, 'ikengas_gloves', 99, 119, 66560,0,0, 464, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23762, 'ikengas_vest', 99, 119, 66560,0,0, 464, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23755, 'ikengas_hat', 99, 119, 66560,0,0, 464, 16,0,0);
+INSERT INTO `item_equipment` VALUES (23781, 'bunzis_pants', 99, 119, 16916,0,0, 469, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23788, 'bunzis_sabots', 99, 119, 16916,0,0, 469, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23760, 'bunzis_hat', 99, 119, 16916,0,0, 469, 16,0,0);
+INSERT INTO `item_equipment` VALUES (23767, 'bunzis_rob', 99, 119, 16916,0,0, 469, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23774, 'bunzis_gloves', 99, 119, 16916,0,0, 469, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23787, 'agwus_pigaches', 99, 119, 3670024,0,0, 468, 256,0,0);
+INSERT INTO `item_equipment` VALUES (23780, 'agwus_slops', 99, 119, 3670024,0,0, 468, 128,0,0);
+INSERT INTO `item_equipment` VALUES (23773, 'agwus_gages', 99, 119, 3670024,0,0, 468, 64,0,0);
+INSERT INTO `item_equipment` VALUES (23766, 'agwus_robe', 99, 119, 3670024,0,0, 468, 32,0,0);
+INSERT INTO `item_equipment` VALUES (23759, 'agwus_cap', 99, 119, 3670024,0,0, 468, 16,0,0);
 /*!40000 ALTER TABLE `item_equipment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

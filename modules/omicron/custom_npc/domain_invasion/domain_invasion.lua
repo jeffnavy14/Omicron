@@ -55,14 +55,11 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
             rotation = 65,
             widescan = 1,
     
-            groupId = 96,
-            groupZoneId = 289,
+            groupId = 1,
+            groupZoneId = 222,
 
             onMobSpawn = function(mob)
 			    SetServerVariable("[Domain]NMSpawned", 1)
-
-                -- Debug
-			    printf("Jeronimo Spawned")
 				
 			end,	
 			onMobFight = function(mob, target)
