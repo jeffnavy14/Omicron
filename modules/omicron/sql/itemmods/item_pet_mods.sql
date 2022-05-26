@@ -1,47 +1,47 @@
-INSERT INTO `item_mods_pet` VALUES (23760,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23760,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23760,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23767,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23767,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23767,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23774,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23774,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23774,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23781,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23781,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23781,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23788,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23788,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23788,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23758,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23758,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23758,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23765,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23765,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23765,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23772,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23772,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23772,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23772,840,10,0);      -- Pet Weaponskill Damage 10%
-INSERT INTO `item_mods_pet` VALUES (23779,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23779,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23779,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23786,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23786,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23786,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23756,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23756,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23756,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23763,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23763,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23763,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23770,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23770,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23770,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23770,160,-10,0);   -- Pet Damage Taken
-INSERT INTO `item_mods_pet` VALUES (23777,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23777,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23777,30,50,0);       -- MAccuracy
-INSERT INTO `item_mods_pet` VALUES (23784,26,50,0);       -- RAccuracy
-INSERT INTO `item_mods_pet` VALUES (23784,25,50,0);       -- Accuracy
-INSERT INTO `item_mods_pet` VALUES (23784,30,50,0);       -- MAccuracy
+INSERT INTO `item_mods_pet` VALUES (23760,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23760,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23760,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23767,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23767,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23767,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23774,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23774,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23774,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23781,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23781,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23781,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23788,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23788,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23788,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23758,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23758,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23758,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23765,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23765,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23765,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23772,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23772,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23772,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23772,840,10,0); 
+INSERT INTO `item_mods_pet` VALUES (23779,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23779,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23779,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23786,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23786,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23786,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23756,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23756,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23756,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23763,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23763,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23763,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23770,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23770,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23770,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23770,160,-10,0);
+INSERT INTO `item_mods_pet` VALUES (23777,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23777,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23777,30,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23784,26,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23784,25,50,0);  
+INSERT INTO `item_mods_pet` VALUES (23784,30,50,0);  
