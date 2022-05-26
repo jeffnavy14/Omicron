@@ -2292,3 +2292,38 @@ INSERT INTO `item_mods` VALUES (27280,29,6);
 INSERT INTO `item_mods` VALUES (27280,384,600);
 INSERT INTO `item_mods` VALUES (27280,963,200);
 INSERT INTO `item_mods` VALUES (27280,480,-500);
+INSERT INTO `item_mods` VALUES (26783,1,105);
+INSERT INTO `item_mods` VALUES (26783,2,91);   -- 
+INSERT INTO `item_mods` VALUES (26783,5,35);   -- 
+INSERT INTO `item_mods` VALUES (26783,8,20);   -- 
+INSERT INTO `item_mods` VALUES (26783,9,20);   -- 
+INSERT INTO `item_mods` VALUES (26783,10,14);  -- 
+INSERT INTO `item_mods` VALUES (26783,11,20);  -- 
+INSERT INTO `item_mods` VALUES (26783,12,19);  -- 
+INSERT INTO `item_mods` VALUES (26783,13,16);  -- 
+INSERT INTO `item_mods` VALUES (26783,14,17);  -- 
+INSERT INTO `item_mods` VALUES (26783,68,47);  --
+INSERT INTO `item_mods` VALUES (26783,31,69); --
+INSERT INTO `item_mods` VALUES (26783,29,5);   -- 
+INSERT INTO `item_mods` VALUES (26783,384,800);  --
+INSERT INTO `item_mods` VALUES (26783,890,15);   --
+INSERT INTO `item_mods` VALUES (26783,529,2);   --
+INSERT INTO `item_mods` VALUES (26783,1013,10);   --
+INSERT INTO `item_mods` VALUES (26783,480,-500);
+INSERT INTO `item_mods` VALUES (27095,1,94);
+INSERT INTO `item_mods` VALUES (27095,2,29);   -- 
+INSERT INTO `item_mods` VALUES (27095,5,17);   -- 
+INSERT INTO `item_mods` VALUES (27095,8,16);   -- 
+INSERT INTO `item_mods` VALUES (27095,9,42);   -- 
+INSERT INTO `item_mods` VALUES (27095,10,30);  -- 
+INSERT INTO `item_mods` VALUES (27095,11,7);  -- 
+INSERT INTO `item_mods` VALUES (27095,12,16);  -- 
+INSERT INTO `item_mods` VALUES (27095,13,30);  -- 
+INSERT INTO `item_mods` VALUES (27095,14,19);  -- 
+INSERT INTO `item_mods` VALUES (27095,68,33);  --
+INSERT INTO `item_mods` VALUES (27095,31,37); --
+INSERT INTO `item_mods` VALUES (27095,29,3);   -- 
+INSERT INTO `item_mods` VALUES (27095,384,500);  --
+INSERT INTO `item_mods` VALUES (27095,83,28);   --
+INSERT INTO `item_mods` VALUES (27095,958,6);   --
+INSERT INTO `item_mods` VALUES (27095,480,-500);
