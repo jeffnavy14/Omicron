@@ -25655,10 +25655,6 @@ INSERT INTO `item_mods` VALUES (20511,582,30); -- Stringing Pummel WS DMG +30%
 INSERT INTO `item_mods` VALUES (20512,8,50);   -- Verethragna 119 III - STR+50
 INSERT INTO `item_mods` VALUES (20512,256,45); -- Aftermath
 INSERT INTO `item_mods` VALUES (20512,355,14); -- Victory Smite
-INSERT INTO `item_mods` VALUES (20515,73,10); -- iLvl 119 Godhands - STP+10
--- INSERT INTO `item_mods` VALUES (20515,256,10); -- Increases sc potency Increases mb potency
-INSERT INTO `item_mods` VALUES (20515,345,500); -- TP Bonus +500
-INSERT INTO `item_mods` VALUES (20515,355,15); -- Shijin Spiral
 INSERT INTO `item_mods` VALUES (20516,25,25); -- Denouements: Accuracy+25
 INSERT INTO `item_mods` VALUES (20516,430,3); -- Quadruple Attack+3%
 INSERT INTO `item_mods` VALUES (20516,958,4); -- "resistance to all status ailments" +4
@@ -33609,9 +33605,7 @@ INSERT INTO `item_mods` VALUES (23775,160,-700);    -- Nyame Gauntlets: Damage T
 INSERT INTO `item_mods` VALUES (23775,174,5);     -- Nyame Gauntlets: Skillchain Bonus+5
 INSERT INTO `item_mods` VALUES (23775,384,300);   -- Nyame Gauntlets: Haste+3%
 INSERT INTO `item_mods` VALUES (23775,487,5);     -- Nyame Gauntlets: Magic Burst Damage+5
-INSERT INTO `item_mods` VALUES (23781,1,142);     -- Bunzi's Pants: DEF:142
 INSERT INTO `item_mods` VALUES (23781,2,61);      -- HP+61
-INSERT INTO `item_mods` VALUES (23781,5,44);      -- MP+44
 INSERT INTO `item_mods` VALUES (23781,8,25);      -- STR+25
 INSERT INTO `item_mods` VALUES (23781,10,12);     -- VIT+12
 INSERT INTO `item_mods` VALUES (23781,11,19);     -- AGI+19
@@ -33653,140 +33647,6 @@ INSERT INTO `item_mods` VALUES (23782,160,-800);    -- Nyame Flanchard: Damage T
 INSERT INTO `item_mods` VALUES (23782,174,6);     -- Nyame Flanchard: Skillchain Bonus+6
 INSERT INTO `item_mods` VALUES (23782,384,500);   -- Nyame Flanchard: Haste+5%
 INSERT INTO `item_mods` VALUES (23782,487,6);     -- Nyame Flanchard: Magic Burst Damage+6
-INSERT INTO `item_mods` VALUES (23783,1,106);     -- Ikenga's Clogs: DEF:106
-INSERT INTO `item_mods` VALUES (23783,2,45);      -- HP+45
-INSERT INTO `item_mods` VALUES (23783,8,21);      -- STR+21
-INSERT INTO `item_mods` VALUES (23783,9,33);      -- DEX+33
-INSERT INTO `item_mods` VALUES (23783,10,14);     -- VIT+14
-INSERT INTO `item_mods` VALUES (23783,11,52);     -- AGI+52
-INSERT INTO `item_mods` VALUES (23783,13,16);     -- MND+16
-INSERT INTO `item_mods` VALUES (23783,14,32);     -- CHR+32
-INSERT INTO `item_mods` VALUES (23783,24,40);     -- Ranged Attack+40
-INSERT INTO `item_mods` VALUES (23783,26,40);     -- Ranged Accuracy+40
-INSERT INTO `item_mods` VALUES (23783,27,-6);     -- Enmity-6
-INSERT INTO `item_mods` VALUES (23783,29,5);      -- "Magic Def. Bonus"+5
-INSERT INTO `item_mods` VALUES (23783,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23783,31,123);    -- Magic Evasion+123
-INSERT INTO `item_mods` VALUES (23783,68,105);    -- Evasion+105
-INSERT INTO `item_mods` VALUES (23783,73,7);      -- "Store TP"+7
-INSERT INTO `item_mods` VALUES (23783,365,5);     -- "Snapshot"+5
--- INSERT INTO `item_mods` VALUES (23783,,3);     -- Physical damage limit +3%
-INSERT INTO `item_mods` VALUES (23784,1,119);     -- Gleti's Boots: DEF:119
-INSERT INTO `item_mods` VALUES (23784,2,57);      -- HP+57
-INSERT INTO `item_mods` VALUES (23784,8,28);      -- STR+28
-INSERT INTO `item_mods` VALUES (23784,9,29);      -- DEX+29
-INSERT INTO `item_mods` VALUES (23784,10,26);     -- VIT+26
-INSERT INTO `item_mods` VALUES (23784,11,33);     -- AGI+33
-INSERT INTO `item_mods` VALUES (23784,13,12);     -- MND+12
-INSERT INTO `item_mods` VALUES (23784,14,26);     -- CHR+26
-INSERT INTO `item_mods` VALUES (23784,23,40);     -- Attack+40
-INSERT INTO `item_mods` VALUES (23784,25,40);     -- Accuracy+40
-INSERT INTO `item_mods` VALUES (23784,29,13);     -- "Magic Def. Bonus"+13
-INSERT INTO `item_mods` VALUES (23784,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23784,31,112);    -- Magic Evasion+112
-INSERT INTO `item_mods` VALUES (23784,68,110);    -- Evasion+110
-INSERT INTO `item_mods` VALUES (23784,161,-500);  -- Physical damage taken -5%
-INSERT INTO `item_mods` VALUES (23784,165,4);     -- Critical hit rate +4%
-INSERT INTO `item_mods` VALUES (23784,384,300);   -- Haste+3%
-INSERT INTO `item_mods` VALUES (23784,368,20);    -- "Regain"+2
--- INSERT INTO `item_mods` VALUES (23784,,5);     -- Physical damage limit +5%
-INSERT INTO `item_mods` VALUES (23785,1,125);     -- Sakpata's Leggings: DEF:125
-INSERT INTO `item_mods` VALUES (23785,2,68);      -- HP+68
-INSERT INTO `item_mods` VALUES (23785,5,35);      -- MP+35
-INSERT INTO `item_mods` VALUES (23785,8,29);      -- STR+29
-INSERT INTO `item_mods` VALUES (23785,9,20);      -- DEX+20
-INSERT INTO `item_mods` VALUES (23785,10,30);     -- VIT+30
-INSERT INTO `item_mods` VALUES (23785,11,35);     -- AGI+35
-INSERT INTO `item_mods` VALUES (23785,13,19);     -- MND+19
-INSERT INTO `item_mods` VALUES (23785,14,32);     -- CHR+32
-INSERT INTO `item_mods` VALUES (23785,23,40);     -- Attack+40
-INSERT INTO `item_mods` VALUES (23785,25,40);     -- Accuracy+40
-INSERT INTO `item_mods` VALUES (23785,29,7);      -- "Magic Def. Bonus"+7
-INSERT INTO `item_mods` VALUES (23785,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23785,31,150);    -- Magic Evasion+150
-INSERT INTO `item_mods` VALUES (23785,68,91);     -- Evasion+91
-INSERT INTO `item_mods` VALUES (23785,160,-600);  -- Damage taken -6%
-INSERT INTO `item_mods` VALUES (23785,288,4);     -- "Double Attack"+4%
-INSERT INTO `item_mods` VALUES (23785,291,5);     -- "Counter"+5
-INSERT INTO `item_mods` VALUES (23785,384,200);   -- Haste+2%
--- INSERT INTO `item_mods` VALUES (23785,,4);     -- Physical damage limit +4%
-INSERT INTO `item_mods` VALUES (23786,1,112);     -- Mpaca's Boots: DEF:112
-INSERT INTO `item_mods` VALUES (23786,2,50);      -- HP+50
-INSERT INTO `item_mods` VALUES (23786,8,28);      -- STR+28
-INSERT INTO `item_mods` VALUES (23786,9,32);      -- DEX+32
-INSERT INTO `item_mods` VALUES (23786,10,23);     -- VIT+23
-INSERT INTO `item_mods` VALUES (23786,11,34);     -- AGI+34
-INSERT INTO `item_mods` VALUES (23786,13,11);     -- MND+11
-INSERT INTO `item_mods` VALUES (23786,14,28);     -- CHR+28
-INSERT INTO `item_mods` VALUES (23786,23,40);     -- Attack+40
-INSERT INTO `item_mods` VALUES (23786,25,40);     -- Accuracy+40
-INSERT INTO `item_mods` VALUES (23786,29,12);     -- "Magic Def. Bonus"+12
-INSERT INTO `item_mods` VALUES (23786,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23786,31,96);     -- Magic Evasion+96
-INSERT INTO `item_mods` VALUES (23786,68,119);    -- Evasion+119
-INSERT INTO `item_mods` VALUES (23786,161,-600);  -- Physical damage taken -6%
-INSERT INTO `item_mods` VALUES (23786,165,3);     -- Critical hit rate +3%
-INSERT INTO `item_mods` VALUES (23786,224,2);     -- "Killer" effects +2 Enhances "Vermin Killer" effect
-INSERT INTO `item_mods` VALUES (23786,225,2);     -- "Killer" effects +2 Enhances "Bird Killer" effect
-INSERT INTO `item_mods` VALUES (23786,226,2);     -- "Killer" effects +2 Enhances "Amorph Killer" effect
-INSERT INTO `item_mods` VALUES (23786,227,2);     -- "Killer" effects +2 Enhances "Lizard Killer" effect
-INSERT INTO `item_mods` VALUES (23786,228,2);     -- "Killer" effects +2 Enhances "Aquan Killer" effect
-INSERT INTO `item_mods` VALUES (23786,229,2);     -- "Killer" effects +2 Enhances "Plantiod Killer" effect
-INSERT INTO `item_mods` VALUES (23786,230,2);     -- "Killer" effects +2 Enhances "Beast Killer" effect
-INSERT INTO `item_mods` VALUES (23786,231,2);     -- "Killer" effects +2 Enhances "Undead Killer" effect
-INSERT INTO `item_mods` VALUES (23786,232,2);     -- "Killer" effects +2 Enhances "Arcana Killer" effect
-INSERT INTO `item_mods` VALUES (23786,233,2);     -- "Killer" effects +2 Enhances "Dragon Killer" effect
-INSERT INTO `item_mods` VALUES (23786,234,2);     -- "Killer" effects +2 Enhances "Demon Killer" effect
-INSERT INTO `item_mods` VALUES (23786,235,2);     -- "Killer" effects +2 Enhances "Empty Killer" effect
-INSERT INTO `item_mods` VALUES (23786,236,2);     -- "Killer" effects +2 Enhances "Humanoid Killer" effect
-INSERT INTO `item_mods` VALUES (23786,237,2);     -- "Killer" effects +2 Enhances "Lumorian Killer" effect
-INSERT INTO `item_mods` VALUES (23786,238,2);     -- "Killer" effects +2 Enhances "Luminion Killer" effect
-INSERT INTO `item_mods` VALUES (23786,302,3);     -- "Triple Attack"+3%
-INSERT INTO `item_mods` VALUES (23786,384,300);   -- Haste+3%
-INSERT INTO `item_mods` VALUES (23787,1,99);      -- Agwu's Pigaches: DEF:99
-INSERT INTO `item_mods` VALUES (23787,2,27);      -- HP+27
-INSERT INTO `item_mods` VALUES (23787,5,44);      -- MP+44
-INSERT INTO `item_mods` VALUES (23787,8,21);      -- STR+21
-INSERT INTO `item_mods` VALUES (23787,9,25);      -- DEX+25
-INSERT INTO `item_mods` VALUES (23787,10,8);      -- VIT+8
-INSERT INTO `item_mods` VALUES (23787,11,30);     -- AGI+30
-INSERT INTO `item_mods` VALUES (23787,12,30);     -- INT+30
-INSERT INTO `item_mods` VALUES (23787,13,26);     -- MND+26
-INSERT INTO `item_mods` VALUES (23787,14,39);     -- CHR+39
-INSERT INTO `item_mods` VALUES (23787,25,40);     -- Accuracy+40
-INSERT INTO `item_mods` VALUES (23787,28,35);     -- "Magic Atk. Bonus"+35
-INSERT INTO `item_mods` VALUES (23787,29,6);      -- "Magic Def. Bonus"+6
-INSERT INTO `item_mods` VALUES (23787,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23787,31,134);    -- Magic Evasion+134
-INSERT INTO `item_mods` VALUES (23787,68,99);     -- Evasion+99
-INSERT INTO `item_mods` VALUES (23787,170,4);     -- "Fast Cast"+4%
-INSERT INTO `item_mods` VALUES (23787,244,8);     -- "Resist Silence"+8
-INSERT INTO `item_mods` VALUES (23787,311,20);    -- Magic Damage +20
-INSERT INTO `item_mods` VALUES (23787,315,20);    -- "Drain" and "Aspir" potency +20
-INSERT INTO `item_mods` VALUES (23787,384,300);   -- Haste+3%
-INSERT INTO `item_mods` VALUES (23787,487,6);     -- Magic burst damage +6
-INSERT INTO `item_mods` VALUES (23788,1,102);     -- Bunzi's Sabots: DEF:102
-INSERT INTO `item_mods` VALUES (23788,2,38);      -- HP+38
-INSERT INTO `item_mods` VALUES (23788,5,35);      -- MP+35
-INSERT INTO `item_mods` VALUES (23788,8,12);      -- STR+12
-INSERT INTO `item_mods` VALUES (23788,9,12);      -- DEX+12
-INSERT INTO `item_mods` VALUES (23788,10,12);     -- VIT+12
-INSERT INTO `item_mods` VALUES (23788,11,32);     -- AGI+32
-INSERT INTO `item_mods` VALUES (23788,12,32);     -- INT+32
-INSERT INTO `item_mods` VALUES (23788,13,33);     -- MND+33
-INSERT INTO `item_mods` VALUES (23788,14,34);     -- CHR+44
-INSERT INTO `item_mods` VALUES (23788,23,40);     -- Attack+40
-INSERT INTO `item_mods` VALUES (23788,25,40);     -- Accuracy+40
-INSERT INTO `item_mods` VALUES (23788,27,-6);     -- Enmity-6
-INSERT INTO `item_mods` VALUES (23788,28,30);     -- "Magic Atk. Bonus"+30
-INSERT INTO `item_mods` VALUES (23788,29,8);      -- "Magic Def. Bonus"+8
-INSERT INTO `item_mods` VALUES (23788,30,40);     -- Magic Accuracy+40
-INSERT INTO `item_mods` VALUES (23788,31,150);    -- Magic Evasion+150
-INSERT INTO `item_mods` VALUES (23788,68,91);     -- Evasion+91
-INSERT INTO `item_mods` VALUES (23788,160,-600);  -- Damage taken -6%
-INSERT INTO `item_mods` VALUES (23788,311,30);    -- Magic Damage +30
-INSERT INTO `item_mods` VALUES (23788,384,300);   -- Haste+3%
-INSERT INTO `item_mods` VALUES (23788,487,6);     -- Magic burst damage +6
 INSERT INTO `item_mods` VALUES (23789,1,122);     -- Nyame Sollerets: DEF+122
 INSERT INTO `item_mods` VALUES (23789,2,68);      -- Nyame Sollerets: HP+68
 INSERT INTO `item_mods` VALUES (23789,5,44);      -- Nyame Sollerets: MP+44
@@ -53466,14 +53326,6 @@ INSERT INTO `item_mods` VALUES (28628,1,17);
 INSERT INTO `item_mods` VALUES (28628,23,15);
 INSERT INTO `item_mods` VALUES (28628,25,15);
 INSERT INTO `item_mods` VALUES (28628,73,10);
-INSERT INTO `item_mods` VALUES (28629,1,16);
-INSERT INTO `item_mods` VALUES (28629,2,50);
-INSERT INTO `item_mods` VALUES (28629,23,15);
-INSERT INTO `item_mods` VALUES (28629,25,15);
-INSERT INTO `item_mods` VALUES (28629,26,15);
-INSERT INTO `item_mods` VALUES (28629,30,15);
-INSERT INTO `item_mods` VALUES (28629,68,15);     -- Evasion +15
-INSERT INTO `item_mods` VALUES (28629,288,2);
 INSERT INTO `item_mods` VALUES (28630,1,16);
 INSERT INTO `item_mods` VALUES (28630,10,8);
 INSERT INTO `item_mods` VALUES (28630,23,20);
@@ -54384,6 +54236,856 @@ INSERT INTO `item_mods` VALUES (26362,11,3); -- AGI
 INSERT INTO `item_mods` VALUES (26362,73,4); -- Store TP
 INSERT INTO `item_mods` VALUES (26363,13,5); -- Mnd
 INSERT INTO `item_mods` VALUES (26363,114,5); -- Enfeebling
+INSERT INTO `item_mods` VALUES (23784,1,119);  -- gletis_boots DEF+119
+INSERT INTO `item_mods` VALUES (23784,2,57);   -- HP
+INSERT INTO `item_mods` VALUES (23784,8,28);   -- STR
+INSERT INTO `item_mods` VALUES (23784,9,29);   -- DEX
+INSERT INTO `item_mods` VALUES (23784,10,26);  -- VIT
+INSERT INTO `item_mods` VALUES (23784,11,33);  -- AGI
+INSERT INTO `item_mods` VALUES (23784,13,12);  -- MND
+INSERT INTO `item_mods` VALUES (23784,14,26);  -- CHR
+INSERT INTO `item_mods` VALUES (23784,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23784,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23784,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23784,68,110);  -- Evasion
+INSERT INTO `item_mods` VALUES (23784,31,112);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23784,29,13);   -- MDB
+INSERT INTO `item_mods` VALUES (23784,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23784,165,4);   -- Crit Rate
+INSERT INTO `item_mods` VALUES (23784,368,2);  -- Regain
+INSERT INTO `item_mods` VALUES (23784,161,-500);  -- PDT
+INSERT INTO `item_mods` VALUES (23784,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23777,1,165);  -- gletis_breeches DEF+165
+INSERT INTO `item_mods` VALUES (23777,2,79);   -- HP
+INSERT INTO `item_mods` VALUES (23777,8,49);   -- STR
+INSERT INTO `item_mods` VALUES (23777,12,30);   -- 
+INSERT INTO `item_mods` VALUES (23777,10,37);  -- VIT
+INSERT INTO `item_mods` VALUES (23777,11,23);  -- AGI
+INSERT INTO `item_mods` VALUES (23777,13,20);  -- MND
+INSERT INTO `item_mods` VALUES (23777,14,17);  -- CHR
+INSERT INTO `item_mods` VALUES (23777,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23777,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23777,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23777,68,77);  -- Evasion
+INSERT INTO `item_mods` VALUES (23777,31,112);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23777,29,14);   -- MDB
+INSERT INTO `item_mods` VALUES (23777,384,500);  -- Haste
+INSERT INTO `item_mods` VALUES (23777,165,7);   -- Crit Rate
+INSERT INTO `item_mods` VALUES (23777,368,3);  -- Regain
+INSERT INTO `item_mods` VALUES (23777,161,-800);  -- PDT
+INSERT INTO `item_mods` VALUES (23777,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23777,,5);     -- Sic and Ready ability delay !!!
+INSERT INTO `item_mods` VALUES (23770,1,138);  -- gletis_gauntlets DEF+138
+INSERT INTO `item_mods` VALUES (23770,2,68);   -- HP
+INSERT INTO `item_mods` VALUES (23770,8,20);   -- STR
+INSERT INTO `item_mods` VALUES (23770,9,42);   -- 
+INSERT INTO `item_mods` VALUES (23770,12,14);  -- 
+INSERT INTO `item_mods` VALUES (23770,10,43);  -- VIT
+INSERT INTO `item_mods` VALUES (23770,11,15);  -- AGI
+INSERT INTO `item_mods` VALUES (23770,13,30);  -- MND
+INSERT INTO `item_mods` VALUES (23770,14,24);  -- CHR
+INSERT INTO `item_mods` VALUES (23770,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23770,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23770,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23770,68,72);  -- Evasion
+INSERT INTO `item_mods` VALUES (23770,31,75);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23770,29,12);   -- MDB
+INSERT INTO `item_mods` VALUES (23770,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23770,165,6);   -- Crit Rate
+INSERT INTO `item_mods` VALUES (23770,368,2);  -- Regain
+INSERT INTO `item_mods` VALUES (23770,161,-700);  -- PDT
+INSERT INTO `item_mods` VALUES (23770,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23763,1,184);  -- gletis_cuirass DEF+184
+INSERT INTO `item_mods` VALUES (23763,2,91);   -- HP
+INSERT INTO `item_mods` VALUES (23763,8,39);   -- STR
+INSERT INTO `item_mods` VALUES (23763,9,34);   -- 
+INSERT INTO `item_mods` VALUES (23763,12,26);  -- 
+INSERT INTO `item_mods` VALUES (23763,10,39);  -- VIT
+INSERT INTO `item_mods` VALUES (23763,11,26);  -- AGI
+INSERT INTO `item_mods` VALUES (23763,13,26);  -- MND
+INSERT INTO `item_mods` VALUES (23763,14,26);  -- CHR
+INSERT INTO `item_mods` VALUES (23763,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23763,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23763,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23763,68,94);  -- Evasion
+INSERT INTO `item_mods` VALUES (23763,31,102);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23763,29,15);   -- MDB
+INSERT INTO `item_mods` VALUES (23763,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23763,165,8);   -- Crit Rate
+INSERT INTO `item_mods` VALUES (23763,368,3);  -- Regain
+INSERT INTO `item_mods` VALUES (23763,491,10);  -- Waltz Potency
+INSERT INTO `item_mods` VALUES (23763,161,-900);  -- PDT
+INSERT INTO `item_mods` VALUES (23763,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23756,1,152);  -- gletis_mask DEF+152
+INSERT INTO `item_mods` VALUES (23756,2,68);   -- HP
+INSERT INTO `item_mods` VALUES (23756,8,33);   -- STR
+INSERT INTO `item_mods` VALUES (23756,9,28);   -- 
+INSERT INTO `item_mods` VALUES (23756,12,19);  -- 
+INSERT INTO `item_mods` VALUES (23756,10,30);  -- VIT
+INSERT INTO `item_mods` VALUES (23756,11,23);  -- AGI
+INSERT INTO `item_mods` VALUES (23756,13,19);  -- MND
+INSERT INTO `item_mods` VALUES (23756,14,19);  -- CHR
+INSERT INTO `item_mods` VALUES (23756,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23756,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23756,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23756,68,83);  -- Evasion
+INSERT INTO `item_mods` VALUES (23756,31,86);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23756,29,13);   -- MDB
+INSERT INTO `item_mods` VALUES (23756,384,600);  -- Haste
+INSERT INTO `item_mods` VALUES (23756,165,5);   -- Crit Rate
+INSERT INTO `item_mods` VALUES (23756,368,2);  -- Regain
+INSERT INTO `item_mods` VALUES (23756,161,-600);  -- PDT
+INSERT INTO `item_mods` VALUES (23756,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23785,1,125);  -- sakpatas_leggings DEF+125
+INSERT INTO `item_mods` VALUES (23785,2,68);   -- HP
+INSERT INTO `item_mods` VALUES (23785,3,35);   -- MP
+INSERT INTO `item_mods` VALUES (23785,8,29);   -- STR
+INSERT INTO `item_mods` VALUES (23785,9,20);   -- DEX
+INSERT INTO `item_mods` VALUES (23785,10,30);  -- VIT
+INSERT INTO `item_mods` VALUES (23785,11,35);  -- AGI
+INSERT INTO `item_mods` VALUES (23785,13,19);  -- MND
+INSERT INTO `item_mods` VALUES (23785,14,32);  -- CHR
+INSERT INTO `item_mods` VALUES (23785,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23785,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23785,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23785,68,91);  -- Evasion
+INSERT INTO `item_mods` VALUES (23785,31,150);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23785,29,9);   -- MDB
+INSERT INTO `item_mods` VALUES (23785,384,200);  -- Haste
+INSERT INTO `item_mods` VALUES (23785,288,4);   -- Double Att
+INSERT INTO `item_mods` VALUES (23785,291,5);  -- Counter
+INSERT INTO `item_mods` VALUES (23785,160,-600);  -- Damage Taken
+INSERT INTO `item_mods` VALUES (23785,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23757,1,160);  -- sakpatas_helm DEF+160
+INSERT INTO `item_mods` VALUES (23757,2,91);   -- HP
+INSERT INTO `item_mods` VALUES (23757,3,44);   -- MP
+INSERT INTO `item_mods` VALUES (23757,8,33);   -- STR
+INSERT INTO `item_mods` VALUES (23757,9,20);   -- DEX
+INSERT INTO `item_mods` VALUES (23757,10,40);  -- VIT
+INSERT INTO `item_mods` VALUES (23757,11,21);  -- AGI
+INSERT INTO `item_mods` VALUES (23757,12,19);  -- INT
+INSERT INTO `item_mods` VALUES (23757,13,23);  -- MND
+INSERT INTO `item_mods` VALUES (23757,14,21);  -- CHR
+INSERT INTO `item_mods` VALUES (23757,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23757,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23757,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23757,68,63);  -- Evasion
+INSERT INTO `item_mods` VALUES (23757,31,123);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23757,29,7);   -- MDB
+INSERT INTO `item_mods` VALUES (23757,384,400);  -- Haste
+INSERT INTO `item_mods` VALUES (23757,288,5);   -- Double Att
+INSERT INTO `item_mods` VALUES (23757,170,8);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23757,160,-700);  -- Damage Taken
+INSERT INTO `item_mods` VALUES (23757,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23764,1,194);  -- sakpatas_plate DEF+194
+INSERT INTO `item_mods` VALUES (23764,2,136);   -- HP
+INSERT INTO `item_mods` VALUES (23764,3,59);   -- MP
+INSERT INTO `item_mods` VALUES (23764,8,42);   -- STR
+INSERT INTO `item_mods` VALUES (23764,9,25);   -- DEX
+INSERT INTO `item_mods` VALUES (23764,10,42);  -- VIT
+INSERT INTO `item_mods` VALUES (23764,11,25);  -- AGI
+INSERT INTO `item_mods` VALUES (23764,12,24);  -- INT
+INSERT INTO `item_mods` VALUES (23764,13,28);  -- MND
+INSERT INTO `item_mods` VALUES (23764,14,26);  -- CHR
+INSERT INTO `item_mods` VALUES (23764,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23764,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23764,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23764,68,74);  -- Evasion
+INSERT INTO `item_mods` VALUES (23764,31,139);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23764,29,10);   -- MDB
+INSERT INTO `item_mods` VALUES (23764,384,200);  -- Haste
+INSERT INTO `item_mods` VALUES (23764,288,8);   -- Double Att
+INSERT INTO `item_mods` VALUES (23764,375,10);  -- Cure Received
+INSERT INTO `item_mods` VALUES (23764,160,-1000);  -- Damage Taken
+INSERT INTO `item_mods` VALUES (23764,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23771,1,146);  -- sakpatas_gauntlets DEF+146
+INSERT INTO `item_mods` VALUES (23771,2,91);   -- HP
+INSERT INTO `item_mods` VALUES (23771,3,53);   -- MP
+INSERT INTO `item_mods` VALUES (23771,8,24);   -- STR
+INSERT INTO `item_mods` VALUES (23771,9,35);   -- DEX
+INSERT INTO `item_mods` VALUES (23771,10,46);  -- VIT
+INSERT INTO `item_mods` VALUES (23771,12,14);  -- INT
+INSERT INTO `item_mods` VALUES (23771,13,33);  -- MND
+INSERT INTO `item_mods` VALUES (23771,14,26);  -- CHR
+INSERT INTO `item_mods` VALUES (23771,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23771,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23771,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23771,68,52);  -- Evasion
+INSERT INTO `item_mods` VALUES (23771,31,112);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23771,29,6);   -- MDB
+INSERT INTO `item_mods` VALUES (23771,384,400);  -- Haste
+INSERT INTO `item_mods` VALUES (23771,288,6);   -- Double Att
+INSERT INTO `item_mods` VALUES (23771,289,8);  -- Subtle Blow
+INSERT INTO `item_mods` VALUES (23771,160,-800);  -- Damage Taken
+INSERT INTO `item_mods` VALUES (23771,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23778,1,174);  -- sakpatas_cuisses DEF+174
+INSERT INTO `item_mods` VALUES (23778,2,114);   -- HP
+INSERT INTO `item_mods` VALUES (23778,3,44);   -- MP
+INSERT INTO `item_mods` VALUES (23778,8,48);   -- STR
+INSERT INTO `item_mods` VALUES (23778,11,23);  -- AGI
+INSERT INTO `item_mods` VALUES (23778,10,34);  -- VIT
+INSERT INTO `item_mods` VALUES (23778,12,32);  -- INT
+INSERT INTO `item_mods` VALUES (23778,13,21);  -- MND
+INSERT INTO `item_mods` VALUES (23778,14,17);  -- CHR
+INSERT INTO `item_mods` VALUES (23778,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23778,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23778,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23778,68,58);  -- Evasion
+INSERT INTO `item_mods` VALUES (23778,31,150);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23778,29,9);   -- MDB
+INSERT INTO `item_mods` VALUES (23778,384,400);  -- Haste
+INSERT INTO `item_mods` VALUES (23778,288,7);   -- Double Att
+INSERT INTO `item_mods` VALUES (23778,113,10);  -- Phalanx Received not yet added
+INSERT INTO `item_mods` VALUES (23778,160,-900);  -- Damage Taken
+INSERT INTO `item_mods` VALUES (23778,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23786,1,112);  -- mpacas_boots DEF+112
+INSERT INTO `item_mods` VALUES (23786,2,50);   -- HP
+INSERT INTO `item_mods` VALUES (23786,8,28);   -- STR
+INSERT INTO `item_mods` VALUES (23786,9,32);   -- DEX
+INSERT INTO `item_mods` VALUES (23786,10,23);  -- VIT
+INSERT INTO `item_mods` VALUES (23786,11,34);  -- AGI
+INSERT INTO `item_mods` VALUES (23786,13,11);  -- MND
+INSERT INTO `item_mods` VALUES (23786,14,28);  -- CHR
+INSERT INTO `item_mods` VALUES (23786,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23786,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23786,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23786,68,85);  -- Evasion
+INSERT INTO `item_mods` VALUES (23786,31,96); -- MEvasion
+INSERT INTO `item_mods` VALUES (23786,29,12);   -- MDB
+INSERT INTO `item_mods` VALUES (23786,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23786,302,3);   -- Triple Attack
+INSERT INTO `item_mods` VALUES (23786,165,3);  -- Crit Rate
+INSERT INTO `item_mods` VALUES (23786,161,-600);  -- PDT
+INSERT INTO `item_mods` VALUES (23786,224,2);     -- Vermin Killer
+INSERT INTO `item_mods` VALUES (23786,225,2);     -- Bird Killer
+INSERT INTO `item_mods` VALUES (23786,226,2);     -- Amorph Killer
+INSERT INTO `item_mods` VALUES (23786,227,2);     -- Lizard Killer
+INSERT INTO `item_mods` VALUES (23786,228,2);     -- Aquan Killer
+INSERT INTO `item_mods` VALUES (23786,229,2);     -- Plantoid Killer
+INSERT INTO `item_mods` VALUES (23786,230,2);     -- Beast Killer
+INSERT INTO `item_mods` VALUES (23786,231,2);     -- Undead Killer
+INSERT INTO `item_mods` VALUES (23786,232,2);     -- Arcana Killer
+INSERT INTO `item_mods` VALUES (23786,233,2);     -- Dragon Killer
+INSERT INTO `item_mods` VALUES (23786,234,2);     -- Demon Killer
+INSERT INTO `item_mods` VALUES (23786,235,2);     -- Empty Killer
+INSERT INTO `item_mods` VALUES (23786,236,2);     -- Humanoid Killer
+INSERT INTO `item_mods` VALUES (23786,237,2);     -- Lumorian Killer
+INSERT INTO `item_mods` VALUES (23786,238,2);     -- Luminion Killer
+INSERT INTO `item_mods` VALUES (23779,1,156);  -- mpacas_hose DEF+156
+INSERT INTO `item_mods` VALUES (23779,2,72);   -- HP
+INSERT INTO `item_mods` VALUES (23779,8,49);   -- STR
+INSERT INTO `item_mods` VALUES (23779,12,32);  -- INT
+INSERT INTO `item_mods` VALUES (23779,10,32);  -- VIT
+INSERT INTO `item_mods` VALUES (23779,11,25);  -- AGI
+INSERT INTO `item_mods` VALUES (23779,13,19);  -- MND
+INSERT INTO `item_mods` VALUES (23779,14,19);  -- CHR
+INSERT INTO `item_mods` VALUES (23779,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23779,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23779,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23779,68,85);  -- Evasion
+INSERT INTO `item_mods` VALUES (23779,31,96); -- MEvasion
+INSERT INTO `item_mods` VALUES (23779,29,13);   -- MDB
+INSERT INTO `item_mods` VALUES (23779,384,900);  -- Haste
+INSERT INTO `item_mods` VALUES (23779,302,4);   -- Triple Attack
+INSERT INTO `item_mods` VALUES (23779,165,6);  -- Crit Rate
+INSERT INTO `item_mods` VALUES (23779,973,5);  -- Subtle Blow II
+INSERT INTO `item_mods` VALUES (23779,161,-900);  -- PDT
+INSERT INTO `item_mods` VALUES (23779,224,5);     -- Vermin Killer
+INSERT INTO `item_mods` VALUES (23779,225,5);     -- Bird Killer
+INSERT INTO `item_mods` VALUES (23779,226,5);     -- Amorph Killer
+INSERT INTO `item_mods` VALUES (23779,227,5);     -- Lizard Killer
+INSERT INTO `item_mods` VALUES (23779,228,5);     -- Aquan Killer
+INSERT INTO `item_mods` VALUES (23779,229,5);     -- Plantoid Killer
+INSERT INTO `item_mods` VALUES (23779,230,5);     -- Beast Killer
+INSERT INTO `item_mods` VALUES (23779,231,5);     -- Undead Killer
+INSERT INTO `item_mods` VALUES (23779,232,5);     -- Arcana Killer
+INSERT INTO `item_mods` VALUES (23779,233,5);     -- Dragon Killer
+INSERT INTO `item_mods` VALUES (23779,234,5);     -- Demon Killer
+INSERT INTO `item_mods` VALUES (23779,235,5);     -- Empty Killer
+INSERT INTO `item_mods` VALUES (23779,236,5);     -- Humanoid Killer
+INSERT INTO `item_mods` VALUES (23779,237,5);     -- Lumorian Killer
+INSERT INTO `item_mods` VALUES (23779,238,5);     -- Luminion Killer
+INSERT INTO `item_mods` VALUES (23772,1,131);  -- mpacas_gloves DEF+131
+INSERT INTO `item_mods` VALUES (23772,2,61);   -- HP
+INSERT INTO `item_mods` VALUES (23772,8,20);   -- STR
+INSERT INTO `item_mods` VALUES (23772,12,15);  -- INT
+INSERT INTO `item_mods` VALUES (23772,9,44);   -- DEX
+INSERT INTO `item_mods` VALUES (23772,10,38);  -- VIT
+INSERT INTO `item_mods` VALUES (23772,11,16);  -- AGI
+INSERT INTO `item_mods` VALUES (23772,13,29);  -- MND
+INSERT INTO `item_mods` VALUES (23772,14,25);  -- CHR
+INSERT INTO `item_mods` VALUES (23772,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23772,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23772,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23772,68,80);  -- Evasion
+INSERT INTO `item_mods` VALUES (23772,31,59); -- MEvasion
+INSERT INTO `item_mods` VALUES (23772,29,11);   -- MDB
+INSERT INTO `item_mods` VALUES (23772,384,400);  -- Haste
+INSERT INTO `item_mods` VALUES (23772,302,3);   -- Triple Attack
+INSERT INTO `item_mods` VALUES (23772,165,5);  -- Crit Rate
+INSERT INTO `item_mods` VALUES (23772,161,-800);  -- PDT
+INSERT INTO `item_mods` VALUES (23772,224,2);     -- Vermin Killer
+INSERT INTO `item_mods` VALUES (23772,225,2);     -- Bird Killer
+INSERT INTO `item_mods` VALUES (23772,226,2);     -- Amorph Killer
+INSERT INTO `item_mods` VALUES (23772,227,2;     -- Lizard Killer
+INSERT INTO `item_mods` VALUES (23772,228,2);     -- Aquan Killer
+INSERT INTO `item_mods` VALUES (23772,229,2);     -- Plantoid Killer
+INSERT INTO `item_mods` VALUES (23772,230,2);     -- Beast Killer
+INSERT INTO `item_mods` VALUES (23772,231,2);     -- Undead Killer
+INSERT INTO `item_mods` VALUES (23772,232,2);     -- Arcana Killer
+INSERT INTO `item_mods` VALUES (23772,233,2);     -- Dragon Killer
+INSERT INTO `item_mods` VALUES (23772,234,2);     -- Demon Killer
+INSERT INTO `item_mods` VALUES (23772,235,2);     -- Empty Killer
+INSERT INTO `item_mods` VALUES (23772,236,2);     -- Humanoid Killer
+INSERT INTO `item_mods` VALUES (23772,237,2);     -- Lumorian Killer
+INSERT INTO `item_mods` VALUES (23772,238,2);     -- Luminion Killer
+INSERT INTO `item_mods` VALUES (23765,1,174);  -- mpacas_doublet DEF+174
+INSERT INTO `item_mods` VALUES (23765,2,84);   -- HP
+INSERT INTO `item_mods` VALUES (23765,8,39);   -- STR
+INSERT INTO `item_mods` VALUES (23765,12,28);  -- INT
+INSERT INTO `item_mods` VALUES (23765,9,37);   -- DEX
+INSERT INTO `item_mods` VALUES (23765,10,34);  -- VIT
+INSERT INTO `item_mods` VALUES (23765,11,28);  -- AGI
+INSERT INTO `item_mods` VALUES (23765,13,25);  -- MND
+INSERT INTO `item_mods` VALUES (23765,14,28);  -- CHR
+INSERT INTO `item_mods` VALUES (23765,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23765,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23765,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23765,68,102);  -- Evasion
+INSERT INTO `item_mods` VALUES (23765,31,86); -- MEvasion
+INSERT INTO `item_mods` VALUES (23765,29,14);   -- MDB
+INSERT INTO `item_mods` VALUES (23765,384,400);  -- Haste
+INSERT INTO `item_mods` VALUES (23765,302,4);   -- Triple Attack
+INSERT INTO `item_mods` VALUES (23765,165,7);  -- Crit Rate
+INSERT INTO `item_mods` VALUES (23765,291,10);  -- Counter
+INSERT INTO `item_mods` VALUES (23765,161,-1000);  -- PDT
+INSERT INTO `item_mods` VALUES (23765,224,5);     -- Vermin Killer
+INSERT INTO `item_mods` VALUES (23765,225,5);     -- Bird Killer
+INSERT INTO `item_mods` VALUES (23765,226,5);     -- Amorph Killer
+INSERT INTO `item_mods` VALUES (23765,227,5;     -- Lizard Killer
+INSERT INTO `item_mods` VALUES (23765,228,5);     -- Aquan Killer
+INSERT INTO `item_mods` VALUES (23765,229,5);     -- Plantoid Killer
+INSERT INTO `item_mods` VALUES (23765,230,5);     -- Beast Killer
+INSERT INTO `item_mods` VALUES (23765,231,5);     -- Undead Killer
+INSERT INTO `item_mods` VALUES (23765,232,5);     -- Arcana Killer
+INSERT INTO `item_mods` VALUES (23765,233,5);     -- Dragon Killer
+INSERT INTO `item_mods` VALUES (23765,234,5);     -- Demon Killer
+INSERT INTO `item_mods` VALUES (23765,235,5);     -- Empty Killer
+INSERT INTO `item_mods` VALUES (23765,236,5);     -- Humanoid Killer
+INSERT INTO `item_mods` VALUES (23765,237,5);     -- Lumorian Killer
+INSERT INTO `item_mods` VALUES (23765,238,5);     -- Luminion Killer
+INSERT INTO `item_mods` VALUES (23758,1,143);  -- mpacas_cap DEF+143
+INSERT INTO `item_mods` VALUES (23758,2,61);   -- HP
+INSERT INTO `item_mods` VALUES (23758,8,33);   -- STR
+INSERT INTO `item_mods` VALUES (23758,12,20);  -- INT
+INSERT INTO `item_mods` VALUES (23758,9,30);   -- DEX
+INSERT INTO `item_mods` VALUES (23758,10,26);  -- VIT
+INSERT INTO `item_mods` VALUES (23758,11,24);  -- AGI
+INSERT INTO `item_mods` VALUES (23758,13,17);  -- MND
+INSERT INTO `item_mods` VALUES (23758,14,20);  -- CHR
+INSERT INTO `item_mods` VALUES (23758,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23758,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23758,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23758,68,91);  -- Evasion
+INSERT INTO `item_mods` VALUES (23758,31,69); -- MEvasion
+INSERT INTO `item_mods` VALUES (23758,29,12);   -- MDB
+INSERT INTO `item_mods` VALUES (23758,384,600);  -- Haste
+INSERT INTO `item_mods` VALUES (23758,302,3);   -- Triple Attack
+INSERT INTO `item_mods` VALUES (23758,165,4);  -- Crit Rate
+INSERT INTO `item_mods` VALUES (23758,345,200); -- TP Bonus
+INSERT INTO `item_mods` VALUES (23758,161,-700);  -- PDT
+INSERT INTO `item_mods` VALUES (23758,224,2);     -- Vermin Killer
+INSERT INTO `item_mods` VALUES (23758,225,2);     -- Bird Killer
+INSERT INTO `item_mods` VALUES (23758,226,2);     -- Amorph Killer
+INSERT INTO `item_mods` VALUES (23758,227,2;     -- Lizard Killer
+INSERT INTO `item_mods` VALUES (23758,228,2);     -- Aquan Killer
+INSERT INTO `item_mods` VALUES (23758,229,2);     -- Plantoid Killer
+INSERT INTO `item_mods` VALUES (23758,230,2);     -- Beast Killer
+INSERT INTO `item_mods` VALUES (23758,231,2);     -- Undead Killer
+INSERT INTO `item_mods` VALUES (23758,232,2);     -- Arcana Killer
+INSERT INTO `item_mods` VALUES (23758,233,2);     -- Dragon Killer
+INSERT INTO `item_mods` VALUES (23758,234,2);     -- Demon Killer
+INSERT INTO `item_mods` VALUES (23758,235,2);     -- Empty Killer
+INSERT INTO `item_mods` VALUES (23758,236,2);     -- Humanoid Killer
+INSERT INTO `item_mods` VALUES (23758,237,2);   -- Lumorian Killer
+INSERT INTO `item_mods` VALUES (23758,238,2);    -- Luminion Killer
+INSERT INTO `item_mods` VALUES (23783,1,106);  -- ikengas_clogs DEF+106
+INSERT INTO `item_mods` VALUES (23783,2,45);   -- HP
+INSERT INTO `item_mods` VALUES (23783,8,21);   -- STR
+INSERT INTO `item_mods` VALUES (23783,9,33);   -- DEX
+INSERT INTO `item_mods` VALUES (23783,10,14);  -- VIT
+INSERT INTO `item_mods` VALUES (23783,11,52);  -- AGI
+INSERT INTO `item_mods` VALUES (23783,13,16);  -- MND
+INSERT INTO `item_mods` VALUES (23783,14,32);  -- CHR
+INSERT INTO `item_mods` VALUES (23783,24,40);  -- RAttack
+INSERT INTO `item_mods` VALUES (23783,26,40);  -- RAccuracy
+INSERT INTO `item_mods` VALUES (23783,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23783,68,105);  -- Evasion
+INSERT INTO `item_mods` VALUES (23783,31,123); -- MEvasion
+INSERT INTO `item_mods` VALUES (23783,29,5);   -- MDB
+INSERT INTO `item_mods` VALUES (23783,365,5);  -- Snapshot
+INSERT INTO `item_mods` VALUES (23783,73,7);   -- StoreTP
+INSERT INTO `item_mods` VALUES (23783,27,-6);  -- Enmity
+INSERT INTO `item_mods` VALUES (23783,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23776,1,146);  -- ikengas_trousers DEF+146
+INSERT INTO `item_mods` VALUES (23776,2,68);   -- HP
+INSERT INTO `item_mods` VALUES (23776,8,38);   -- STR
+INSERT INTO `item_mods` VALUES (23776,10,20);  -- VIT
+INSERT INTO `item_mods` VALUES (23776,11,40);  -- AGI
+INSERT INTO `item_mods` VALUES (23776,12,32);  -- INT
+INSERT INTO `item_mods` VALUES (23776,13,20);  -- MND
+INSERT INTO `item_mods` VALUES (23776,14,15);  -- CHR
+INSERT INTO `item_mods` VALUES (23776,24,40);  -- RAttack
+INSERT INTO `item_mods` VALUES (23776,26,40);  -- RAccuracy
+INSERT INTO `item_mods` VALUES (23776,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23776,68,72);  -- Evasion
+INSERT INTO `item_mods` VALUES (23776,31,123); -- MEvasion
+INSERT INTO `item_mods` VALUES (23776,29,7);   -- MDB
+INSERT INTO `item_mods` VALUES (23776,365,8);  -- Snapshot
+INSERT INTO `item_mods` VALUES (23776,73,10);   -- StoreTP
+INSERT INTO `item_mods` VALUES (23776,27,-9);  -- Enmity
+INSERT INTO `item_mods` VALUES (23776,,6);     -- Physical damage limit +6%
+INSERT INTO `item_mods` VALUES (23769,1,123);  -- ikengas_gloves DEF+123
+INSERT INTO `item_mods` VALUES (23769,2,57);   -- HP
+INSERT INTO `item_mods` VALUES (23769,8,21);   -- STR
+INSERT INTO `item_mods` VALUES (23769,9,48);   -- DEX
+INSERT INTO `item_mods` VALUES (23769,10,34);  -- VIT
+INSERT INTO `item_mods` VALUES (23769,11,19);  -- AGI
+INSERT INTO `item_mods` VALUES (23769,12,16);  -- INT
+INSERT INTO `item_mods` VALUES (23769,13,32);  -- MND
+INSERT INTO `item_mods` VALUES (23769,14,24);  -- CHR
+INSERT INTO `item_mods` VALUES (23769,24,40);  -- RAttack
+INSERT INTO `item_mods` VALUES (23769,26,40);  -- RAccuracy
+INSERT INTO `item_mods` VALUES (23769,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23769,68,66);  -- Evasion
+INSERT INTO `item_mods` VALUES (23769,31,86); -- MEvasion
+INSERT INTO `item_mods` VALUES (23769,29,4);   -- MDB
+INSERT INTO `item_mods` VALUES (23769,365,7);  -- Snapshot
+INSERT INTO `item_mods` VALUES (23769,73,9);   -- StoreTP
+INSERT INTO `item_mods` VALUES (23769,27,-8);  -- Enmity
+INSERT INTO `item_mods` VALUES (23769,,5);     -- Physical damage limit +5%
+INSERT INTO `item_mods` VALUES (23762,1,164);  -- ikengas_vest DEF+164
+INSERT INTO `item_mods` VALUES (23762,2,79);   -- HP
+INSERT INTO `item_mods` VALUES (23762,8,33);   -- STR
+INSERT INTO `item_mods` VALUES (23762,9,43);   -- DEX
+INSERT INTO `item_mods` VALUES (23762,10,28);  -- VIT
+INSERT INTO `item_mods` VALUES (23762,11,39);  -- AGI
+INSERT INTO `item_mods` VALUES (23762,12,24);  -- INT
+INSERT INTO `item_mods` VALUES (23762,13,25);  -- MND
+INSERT INTO `item_mods` VALUES (23762,14,26);  -- CHR
+INSERT INTO `item_mods` VALUES (23762,24,40);  -- RAttack
+INSERT INTO `item_mods` VALUES (23762,26,40);  -- RAccuracy
+INSERT INTO `item_mods` VALUES (23762,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23762,68,88);  -- Evasion
+INSERT INTO `item_mods` VALUES (23762,31,112); -- MEvasion
+INSERT INTO `item_mods` VALUES (23762,29,8);   -- MDB
+INSERT INTO `item_mods` VALUES (23762,365,9);  -- Snapshot
+INSERT INTO `item_mods` VALUES (23762,73,11);   -- StoreTP
+INSERT INTO `item_mods` VALUES (23762,27,-10);  -- Enmity
+INSERT INTO `item_mods` VALUES (23762,,7);     -- Physical damage limit +7%
+INSERT INTO `item_mods` VALUES (23755,1,135);  -- ikengas_hat DEF+135
+INSERT INTO `item_mods` VALUES (23755,2,57);   -- HP
+INSERT INTO `item_mods` VALUES (23755,8,25);   -- STR
+INSERT INTO `item_mods` VALUES (23755,9,32);   -- DEX
+INSERT INTO `item_mods` VALUES (23755,10,20);  -- VIT
+INSERT INTO `item_mods` VALUES (23755,11,29);  -- AGI
+INSERT INTO `item_mods` VALUES (23755,12,17);  -- INT
+INSERT INTO `item_mods` VALUES (23755,13,19);  -- MND
+INSERT INTO `item_mods` VALUES (23755,14,20);  -- CHR
+INSERT INTO `item_mods` VALUES (23755,24,40);  -- RAttack
+INSERT INTO `item_mods` VALUES (23755,26,40);  -- RAccuracy
+INSERT INTO `item_mods` VALUES (23755,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23755,68,77);  -- Evasion
+INSERT INTO `item_mods` VALUES (23755,31,96);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23755,29,5);   -- MDB
+INSERT INTO `item_mods` VALUES (23755,365,6);  -- Snapshot
+INSERT INTO `item_mods` VALUES (23755,73,8);   -- StoreTP
+INSERT INTO `item_mods` VALUES (23755,27,-7);  -- Enmity
+INSERT INTO `item_mods` VALUES (23755,,4);     -- Physical damage limit +4%
+INSERT INTO `item_mods` VALUES (23781,1,142);  -- bunzis_pants DEF+142
+INSERT INTO `item_mods` VALUES (23781,2,61);   -- HP
+INSERT INTO `item_mods` VALUES (23781,5,44);   -- MP
+INSERT INTO `item_mods` VALUES (23781,8,25);   -- STR
+INSERT INTO `item_mods` VALUES (23781,10,12);  -- VIT
+INSERT INTO `item_mods` VALUES (23781,12,51);  -- INT
+INSERT INTO `item_mods` VALUES (23781,13,38);  -- MND
+INSERT INTO `item_mods` VALUES (23781,14,30);  -- CHR
+INSERT INTO `item_mods` VALUES (23781,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23781,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23781,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23781,28,30);  -- MAB
+INSERT INTO `item_mods` VALUES (23781,311,30); -- MDamage
+INSERT INTO `item_mods` VALUES (23781,68,58);  -- Evasion
+INSERT INTO `item_mods` VALUES (23781,31,150); -- MEvasion
+INSERT INTO `item_mods` VALUES (23781,29,10);   -- MDB
+INSERT INTO `item_mods` VALUES (23781,384,500);  -- Haste
+INSERT INTO `item_mods` VALUES (23781,487,9);   -- Burst Damage
+INSERT INTO `item_mods` VALUES (23781,27,-9);    -- Enmity
+INSERT INTO `item_mods` VALUES (23781,161,-900); -- Damage Taken
+INSERT INTO `item_mods` VALUES (23781,374,20); -- Spell Interruption Rate Down
+INSERT INTO `item_mods` VALUES (23788,1,102);  -- bunzis_sabots DEF+102
+INSERT INTO `item_mods` VALUES (23788,2,38);   -- HP
+INSERT INTO `item_mods` VALUES (23788,5,35);   -- MP
+INSERT INTO `item_mods` VALUES (23788,8,12);   -- STR
+INSERT INTO `item_mods` VALUES (23788,9,12);   -- DEX
+INSERT INTO `item_mods` VALUES (23788,10,12);  -- VIT
+INSERT INTO `item_mods` VALUES (23788,11,32);  -- AGI
+INSERT INTO `item_mods` VALUES (23788,12,32);  -- INT
+INSERT INTO `item_mods` VALUES (23788,13,33);  -- MND
+INSERT INTO `item_mods` VALUES (23788,14,44);  -- CHR
+INSERT INTO `item_mods` VALUES (23788,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23788,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23788,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23788,28,30);  -- MAB
+INSERT INTO `item_mods` VALUES (23788,311,30); -- MDamage
+INSERT INTO `item_mods` VALUES (23788,68,91);  -- Evasion
+INSERT INTO `item_mods` VALUES (23788,31,150); -- MEvasion
+INSERT INTO `item_mods` VALUES (23788,29,8);   -- MDB
+INSERT INTO `item_mods` VALUES (23788,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23788,487,6);    -- Burst Damage
+INSERT INTO `item_mods` VALUES (23788,27,-6);    -- Enmity
+INSERT INTO `item_mods` VALUES (23788,161,-600); -- Damage Taken
+INSERT INTO `item_mods` VALUES (23760,1,131);  -- bunzis_hat DEF+131
+INSERT INTO `item_mods` VALUES (23760,2,50);   -- HP
+INSERT INTO `item_mods` VALUES (23760,5,44);   -- MP
+INSERT INTO `item_mods` VALUES (23760,8,16);   -- STR
+INSERT INTO `item_mods` VALUES (23760,9,16);   -- DEX
+INSERT INTO `item_mods` VALUES (23760,10,16);  -- VIT
+INSERT INTO `item_mods` VALUES (23760,12,34);  -- INT
+INSERT INTO `item_mods` VALUES (23760,13,33);  -- MND
+INSERT INTO `item_mods` VALUES (23760,14,30);  -- CHR
+INSERT INTO `item_mods` VALUES (23760,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23760,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23760,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23760,28,30);  -- MAB
+INSERT INTO `item_mods` VALUES (23760,311,30); -- MDamage
+INSERT INTO `item_mods` VALUES (23760,68,63);  -- Evasion
+INSERT INTO `item_mods` VALUES (23760,31,123); -- MEvasion
+INSERT INTO `item_mods` VALUES (23760,29,8);   -- MDB
+INSERT INTO `item_mods` VALUES (23760,384,600);  -- Haste
+INSERT INTO `item_mods` VALUES (23760,487,7);    -- Burst Damage
+INSERT INTO `item_mods` VALUES (23760,170,10);   -- Fast Cast
+INSERT INTO `item_mods` VALUES (23760,27,-7);    -- Enmity
+INSERT INTO `item_mods` VALUES (23760,161,-700); -- Damage Taken
+INSERT INTO `item_mods` VALUES (23767,1,159);  -- bunzis_robe DEF+159
+INSERT INTO `item_mods` VALUES (23767,2,72);   -- HP
+INSERT INTO `item_mods` VALUES (23767,5,59);   -- MP
+INSERT INTO `item_mods` VALUES (23767,8,23);   -- STR
+INSERT INTO `item_mods` VALUES (23767,9,25);   -- DEX
+INSERT INTO `item_mods` VALUES (23767,10,23);  -- VIT
+INSERT INTO `item_mods` VALUES (23767,12,48);  -- INT
+INSERT INTO `item_mods` VALUES (23767,13,43);  -- MND
+INSERT INTO `item_mods` VALUES (23767,14,42);  -- CHR
+INSERT INTO `item_mods` VALUES (23767,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23767,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23767,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23767,28,30);  -- MAB
+INSERT INTO `item_mods` VALUES (23767,311,30); -- MDamage
+INSERT INTO `item_mods` VALUES (23767,68,74);  -- Evasion
+INSERT INTO `item_mods` VALUES (23767,31,139); -- MEvasion
+INSERT INTO `item_mods` VALUES (23767,29,11);   -- MDB
+INSERT INTO `item_mods` VALUES (23767,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23767,487,10);   -- Burst Damage
+INSERT INTO `item_mods` VALUES (23767,27,-7);    -- Enmity
+INSERT INTO `item_mods` VALUES (23767,161,-1000); -- Damage Taken
+INSERT INTO `item_mods` VALUES (23767,374,15);   -- Cure Potency
+INSERT INTO `item_mods` VALUES (23774,1,119);  -- bunzis_gloves DEF+119
+INSERT INTO `item_mods` VALUES (23774,2,50);   -- HP
+INSERT INTO `item_mods` VALUES (23774,5,53);   -- MP
+INSERT INTO `item_mods` VALUES (23774,8,10);   -- STR
+INSERT INTO `item_mods` VALUES (23774,9,29);   -- DEX
+INSERT INTO `item_mods` VALUES (23774,10,26);  -- VIT
+INSERT INTO `item_mods` VALUES (23774,12,34);  -- INT
+INSERT INTO `item_mods` VALUES (23774,13,47);  -- MND
+INSERT INTO `item_mods` VALUES (23774,14,30);  -- CHR
+INSERT INTO `item_mods` VALUES (23774,23,40);  -- Attack
+INSERT INTO `item_mods` VALUES (23774,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23774,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23774,28,30);  -- MAB
+INSERT INTO `item_mods` VALUES (23774,311,30); -- MDamage
+INSERT INTO `item_mods` VALUES (23774,68,52);  -- Evasion
+INSERT INTO `item_mods` VALUES (23774,31,112); -- MEvasion
+INSERT INTO `item_mods` VALUES (23774,29,7);   -- MDB
+INSERT INTO `item_mods` VALUES (23774,384,300);  -- Haste
+INSERT INTO `item_mods` VALUES (23774,487,8);   -- Burst Damage
+INSERT INTO `item_mods` VALUES (23774,27,-8);    -- Enmity
+INSERT INTO `item_mods` VALUES (23774,161,-800); -- Damage Taken
+INSERT INTO `item_mods` VALUES (23774,288,8);   -- Double Attack
+INSERT INTO `item_mods` VALUES (23787,1,99);   -- agwus_pigaches DEF+99
+INSERT INTO `item_mods` VALUES (23787,2,27);   -- HP
+INSERT INTO `item_mods` VALUES (23787,5,44);   -- MP
+INSERT INTO `item_mods` VALUES (23787,8,21);   -- STR
+INSERT INTO `item_mods` VALUES (23787,9,25);   -- DEX
+INSERT INTO `item_mods` VALUES (23787,10,8);   -- VIT
+INSERT INTO `item_mods` VALUES (23787,11,30);  -- AGI
+INSERT INTO `item_mods` VALUES (23787,12,30);  -- INT
+INSERT INTO `item_mods` VALUES (23787,13,26);  -- MND
+INSERT INTO `item_mods` VALUES (23787,14,39);  -- CHR
+INSERT INTO `item_mods` VALUES (23787,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23787,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23787,28,35);  -- MAB
+INSERT INTO `item_mods` VALUES (23787,311,20); -- MDamage
+INSERT INTO `item_mods` VALUES (23787,68,99);  -- Evasion
+INSERT INTO `item_mods` VALUES (23787,31,134); -- MEvasion
+INSERT INTO `item_mods` VALUES (23787,29,6);   -- MDB
+INSERT INTO `item_mods` VALUES (23787,384,300); -- Haste
+INSERT INTO `item_mods` VALUES (23787,487,6);  -- Burst Damage
+INSERT INTO `item_mods` VALUES (23787,170,4);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23787,244,8);  -- Resist Silence
+INSERT INTO `item_mods` VALUES (23787,315,20); -- Drain & Aspir Potency
+INSERT INTO `item_mods` VALUES (23780,1,137);   -- agwus_slops DEF+137
+INSERT INTO `item_mods` VALUES (23780,2,50);   -- HP
+INSERT INTO `item_mods` VALUES (23780,5,59);   -- MP
+INSERT INTO `item_mods` VALUES (23780,8,43);   -- STR
+INSERT INTO `item_mods` VALUES (23780,10,8);   -- VIT
+INSERT INTO `item_mods` VALUES (23780,11,17);  -- AGI
+INSERT INTO `item_mods` VALUES (23780,12,49);  -- INT
+INSERT INTO `item_mods` VALUES (23780,13,32);  -- MND
+INSERT INTO `item_mods` VALUES (23780,14,25);  -- CHR
+INSERT INTO `item_mods` VALUES (23780,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23780,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23780,28,35);  -- MAB
+INSERT INTO `item_mods` VALUES (23780,311,20); -- MDamage
+INSERT INTO `item_mods` VALUES (23780,68,66);  -- Evasion
+INSERT INTO `item_mods` VALUES (23780,31,134); -- MEvasion
+INSERT INTO `item_mods` VALUES (23780,29,8);   -- MDB
+INSERT INTO `item_mods` VALUES (23780,384,500); -- Haste
+INSERT INTO `item_mods` VALUES (23780,487,9);  -- Burst Damage
+INSERT INTO `item_mods` VALUES (23780,170,7);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23780,244,11);  -- Resist Silence
+INSERT INTO `item_mods` VALUES (23780,,10); -- Elemental status ailment effect not yet added
+INSERT INTO `item_mods` VALUES (23773,1,116);   -- agwus_gages DEF+116
+INSERT INTO `item_mods` VALUES (23773,2,38);   -- HP
+INSERT INTO `item_mods` VALUES (23773,5,73);   -- MP
+INSERT INTO `item_mods` VALUES (23773,8,14);   -- STR
+INSERT INTO `item_mods` VALUES (23773,9,38);   -- DEX
+INSERT INTO `item_mods` VALUES (23773,10,23);  -- VIT
+INSERT INTO `item_mods` VALUES (23773,11,6);   -- AGI
+INSERT INTO `item_mods` VALUES (23773,12,33);  -- INT
+INSERT INTO `item_mods` VALUES (23773,13,40);  -- MND
+INSERT INTO `item_mods` VALUES (23773,14,25);  -- CHR
+INSERT INTO `item_mods` VALUES (23773,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23773,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23773,28,35);  -- MAB
+INSERT INTO `item_mods` VALUES (23773,311,20); -- MDamage
+INSERT INTO `item_mods` VALUES (23773,68,60);  -- Evasion
+INSERT INTO `item_mods` VALUES (23773,31,96);  -- MEvasion
+INSERT INTO `item_mods` VALUES (23773,29,5);   -- MDB
+INSERT INTO `item_mods` VALUES (23773,384,300); -- Haste
+INSERT INTO `item_mods` VALUES (23773,487,8);  -- Burst Damage
+INSERT INTO `item_mods` VALUES (23773,170,6);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23773,244,10);  -- Resist Silence
+INSERT INTO `item_mods` VALUES (23773,375,10); -- Potency of Cure received
+INSERT INTO `item_mods` VALUES (23766,1,154);   -- agwus_robe DEF+154
+INSERT INTO `item_mods` VALUES (23766,2,61);   -- HP
+INSERT INTO `item_mods` VALUES (23766,5,88);   -- MP
+INSERT INTO `item_mods` VALUES (23766,8,33);   -- STR
+INSERT INTO `item_mods` VALUES (23766,9,30);   -- DEX
+INSERT INTO `item_mods` VALUES (23766,10,19);  -- VIT
+INSERT INTO `item_mods` VALUES (23766,11,20);  -- AGI
+INSERT INTO `item_mods` VALUES (23766,12,47);  -- INT
+INSERT INTO `item_mods` VALUES (23766,13,37);  -- MND
+INSERT INTO `item_mods` VALUES (23766,14,35);  -- CHR
+INSERT INTO `item_mods` VALUES (23766,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23766,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23766,28,35);  -- MAB
+INSERT INTO `item_mods` VALUES (23766,311,20); -- MDamage
+INSERT INTO `item_mods` VALUES (23766,68,83);  -- Evasion
+INSERT INTO `item_mods` VALUES (23766,31,123); -- MEvasion
+INSERT INTO `item_mods` VALUES (23766,29,9);   -- MDB
+INSERT INTO `item_mods` VALUES (23766,384,300); -- Haste
+INSERT INTO `item_mods` VALUES (23766,487,10); -- Burst Damage
+INSERT INTO `item_mods` VALUES (23766,170,8);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23766,244,12); -- Resist Silence
+INSERT INTO `item_mods` VALUES (23766,369,3);  -- Refresh
+INSERT INTO `item_mods` VALUES (23759,1,126);   -- agwus_cap DEF+126
+INSERT INTO `item_mods` VALUES (23759,2,38);   -- HP
+INSERT INTO `item_mods` VALUES (23759,5,59);   -- MP
+INSERT INTO `item_mods` VALUES (23759,8,26);   -- STR
+INSERT INTO `item_mods` VALUES (23759,9,24);   -- DEX
+INSERT INTO `item_mods` VALUES (23759,10,11);  -- VIT
+INSERT INTO `item_mods` VALUES (23759,11,5);   -- AGI
+INSERT INTO `item_mods` VALUES (23759,12,33);  -- INT
+INSERT INTO `item_mods` VALUES (23759,13,26);  -- MND
+INSERT INTO `item_mods` VALUES (23759,14,25);  -- CHR
+INSERT INTO `item_mods` VALUES (23759,25,40);  -- Accuracy
+INSERT INTO `item_mods` VALUES (23759,30,40);  -- MAccuracy
+INSERT INTO `item_mods` VALUES (23759,28,35);  -- MAB
+INSERT INTO `item_mods` VALUES (23759,311,20); -- MDamage
+INSERT INTO `item_mods` VALUES (23759,68,72);  -- Evasion
+INSERT INTO `item_mods` VALUES (23759,31,107); -- MEvasion
+INSERT INTO `item_mods` VALUES (23759,29,6);   -- MDB
+INSERT INTO `item_mods` VALUES (23759,384,600); -- Haste
+INSERT INTO `item_mods` VALUES (23759,487,7);  -- Burst Damage
+INSERT INTO `item_mods` VALUES (23759,170,5);  -- Fast Cast
+INSERT INTO `item_mods` VALUES (23759,244,9);  -- Resist Silence
+INSERT INTO `item_mods` VALUES (23759,168,10); -- Spell Interruption Rate Down
+INSERT INTO `item_mods` VALUES (21685,311,186);   -- Epeolatry 119 Magic Damage+186
+INSERT INTO `item_mods` VALUES (21685,256,43);    -- Aftermath
+INSERT INTO `item_mods` VALUES (21685,110,269);   --
+INSERT INTO `item_mods` VALUES (21685,83,269);    --
+INSERT INTO `item_mods` VALUES (21685,30,242);    --
+INSERT INTO `item_mods` VALUES (21685,27,23);     --
+INSERT INTO `item_mods` VALUES (21685,355,61);    -- Dimidiation
+INSERT INTO `item_mods` VALUES (21685,831,-2500); -- Physical Damage Taken II -25% 
+INSERT INTO `item_mods` VALUES (26403,1,150);
+INSERT INTO `item_mods` VALUES (26403,2,150);
+INSERT INTO `item_mods` VALUES (26403,5,150);
+INSERT INTO `item_mods` VALUES (26403,23,35);
+INSERT INTO `item_mods` VALUES (26403,25,35);
+INSERT INTO `item_mods` VALUES (26403,27,15);
+INSERT INTO `item_mods` VALUES (26403,160,800);
+INSERT INTO `item_mods` VALUES (26403,109,129);
+INSERT INTO `item_mods` VALUES (26403,190,-2500);
+INSERT INTO `item_mods` VALUES (26403,426,35);
+INSERT INTO `item_mods` VALUES (20515,73,10); -- iLvl 119 Godhands - STP+10
+-- INSERT INTO `item_mods` VALUES (20515,256,10); -- Increases sc potency Increases mb potency
+INSERT INTO `item_mods` VALUES (20515,345,500); -- TP Bonus +500
+INSERT INTO `item_mods` VALUES (20515,355,15); -- Shijin Spiral
+INSERT INTO `item_mods` VALUES (20515,256,43);    -- Aftermath
+INSERT INTO `item_mods` VALUES (20515,80,269); --
+INSERT INTO `item_mods` VALUES (20515,107,269); --
+INSERT INTO `item_mods` VALUES (20515,30,228); --
+INSERT INTO `item_mods` VALUES (27783,1,100);
+INSERT INTO `item_mods` VALUES (27783,2,36);  
+INSERT INTO `item_mods` VALUES (27783,8,20);
+INSERT INTO `item_mods` VALUES (27783,9,22);
+INSERT INTO `item_mods` VALUES (27783,10,22);
+INSERT INTO `item_mods` VALUES (27783,11,22);
+INSERT INTO `item_mods` VALUES (27783,12,21);
+INSERT INTO `item_mods` VALUES (27783,13,21);
+INSERT INTO `item_mods` VALUES (27783,14,21);
+INSERT INTO `item_mods` VALUES (27783,25,26);
+INSERT INTO `item_mods` VALUES (27783,31,43);
+INSERT INTO `item_mods` VALUES (27783,384,800);
+INSERT INTO `item_mods` VALUES (27783,302,400);
+INSERT INTO `item_mods` VALUES (27783,163,3);
+INSERT INTO `item_mods` VALUES (27783,29,4);
+INSERT INTO `item_mods` VALUES (27783,68,38);
+INSERT INTO `item_mods` VALUES (26963,1,428);  -- 
+INSERT INTO `item_mods` VALUES (26963,2,164);  --
+INSERT INTO `item_mods` VALUES (26963,3,88);  --
+INSERT INTO `item_mods` VALUES (26963,8,93);   -- 
+INSERT INTO `item_mods` VALUES (26963,9,76);   -- 
+INSERT INTO `item_mods` VALUES (26963,10,102);  -- 
+INSERT INTO `item_mods` VALUES (26963,11,70);  -- 
+INSERT INTO `item_mods` VALUES (26963,12,51);  -- 
+INSERT INTO `item_mods` VALUES (26963,13,60);  -- 
+INSERT INTO `item_mods` VALUES (26963,14,65);  -- 
+INSERT INTO `item_mods` VALUES (26963,23,147);  -- 
+INSERT INTO `item_mods` VALUES (26963,25,124);  -- 
+INSERT INTO `item_mods` VALUES (26963,30,40);  -- 
+INSERT INTO `item_mods` VALUES (26963,68,149);  -- 
+INSERT INTO `item_mods` VALUES (26963,31,252); -- 
+INSERT INTO `item_mods` VALUES (26963,29,22);   -- 
+INSERT INTO `item_mods` VALUES (26963,384,1600);  -- 
+INSERT INTO `item_mods` VALUES (26963,302,10);   -- 
+INSERT INTO `item_mods` VALUES (26963,165,3);  -- 
+INSERT INTO `item_mods` VALUES (26963,160,-1000);  --
+INSERT INTO `item_mods` VALUES (26963,251,90);  --
+INSERT INTO `item_mods` VALUES (27600,23,20);    --
+INSERT INTO `item_mods` VALUES (27600,302,200);  --
+INSERT INTO `item_mods` VALUES (27600,1,16);	 --
+INSERT INTO `item_mods` VALUES (26004,25,8);      --
+INSERT INTO `item_mods` VALUES (26004,73,4);      --
+INSERT INTO `item_mods` VALUES (26004,288,100);     --
+INSERT INTO `item_mods` VALUES (26004,838,1);     --
+INSERT INTO `item_mods` VALUES (28629,1,16);
+INSERT INTO `item_mods` VALUES (28629,2,50);
+INSERT INTO `item_mods` VALUES (28629,23,15);
+INSERT INTO `item_mods` VALUES (28629,25,15);
+INSERT INTO `item_mods` VALUES (28629,26,15);
+INSERT INTO `item_mods` VALUES (28629,30,15);
+INSERT INTO `item_mods` VALUES (28629,68,15);     -- Evasion +15
+INSERT INTO `item_mods` VALUES (28629,288,2);
+INSERT INTO `item_mods` VALUES (27604,915,30);
+INSERT INTO `item_mods` VALUES (27604,1,14);
+INSERT INTO `item_mods` VALUES (20695,311,186);
+INSERT INTO `item_mods` VALUES (20695,82,269);
+INSERT INTO `item_mods` VALUES (20695,110,269);
+INSERT INTO `item_mods` VALUES (20695,30,242);
+INSERT INTO `item_mods` VALUES (20695,256,43);
+INSERT INTO `item_mods` VALUES (26175,165,1);
+INSERT INTO `item_mods` VALUES (26175,302,2);
+INSERT INTO `item_mods` VALUES (26175,409,5);
+INSERT INTO `item_mods` VALUES (27615,27,6);
+INSERT INTO `item_mods` VALUES (27615,1,19);
+INSERT INTO `item_mods` VALUES (27615,2,130);
+INSERT INTO `item_mods` VALUES (27615,166,3);
+INSERT INTO `item_mods` VALUES (27615,163,-800);
+INSERT INTO `item_mods` VALUES (26941,1,137);
+INSERT INTO `item_mods` VALUES (26941,2,123);   -- 
+INSERT INTO `item_mods` VALUES (26941,5,61);   -- 
+INSERT INTO `item_mods` VALUES (26941,8,28);   -- 
+INSERT INTO `item_mods` VALUES (26941,9,30);   -- 
+INSERT INTO `item_mods` VALUES (26941,10,23);  -- 
+INSERT INTO `item_mods` VALUES (26941,12,25);  -- 
+INSERT INTO `item_mods` VALUES (26941,13,24);  -- 
+INSERT INTO `item_mods` VALUES (26941,14,24);  -- 
+INSERT INTO `item_mods` VALUES (26941,23,28);  -- 
+INSERT INTO `item_mods` VALUES (26941,25,28);  -- 
+INSERT INTO `item_mods` VALUES (26941,68,52);  --
+INSERT INTO `item_mods` VALUES (26941,31,80); --
+INSERT INTO `item_mods` VALUES (26941,29,6);   -- 
+INSERT INTO `item_mods` VALUES (26941,384,400);  --
+INSERT INTO `item_mods` VALUES (26941,426,600); 
+INSERT INTO `item_mods` VALUES (26941,427,12);   --
+INSERT INTO `item_mods` VALUES (26941,480,-500);
+INSERT INTO `item_mods` VALUES (27555,166,-5);
+INSERT INTO `item_mods` VALUES (27555,161,-300);
+INSERT INTO `item_mods` VALUES (27280,1,117);
+INSERT INTO `item_mods` VALUES (27280,2,80);   -- 
+INSERT INTO `item_mods` VALUES (27280,5,74);   -- 
+INSERT INTO `item_mods` VALUES (27280,8,33);   -- 
+INSERT INTO `item_mods` VALUES (27280,9,15);   -- 
+INSERT INTO `item_mods` VALUES (27280,10,21);  -- 
+INSERT INTO `item_mods` VALUES (27280,12,33);  -- 
+INSERT INTO `item_mods` VALUES (27280,13,17);  -- 
+INSERT INTO `item_mods` VALUES (27280,14,12);  -- 
+INSERT INTO `item_mods` VALUES (27280,23,28);  -- 
+INSERT INTO `item_mods` VALUES (27280,25,28);  -- 
+INSERT INTO `item_mods` VALUES (27280,68,44);  --
+INSERT INTO `item_mods` VALUES (27280,31,107); --
+INSERT INTO `item_mods` VALUES (27280,29,6);   -- 
+INSERT INTO `item_mods` VALUES (27280,384,600);  --
+INSERT INTO `item_mods` VALUES (27280,963,200);   --
+INSERT INTO `item_mods` VALUES (27280,480,-500);
+INSERT INTO `item_mods` VALUES (26783,1,105);
+INSERT INTO `item_mods` VALUES (26783,2,91);   -- 
+INSERT INTO `item_mods` VALUES (26783,5,35);   -- 
+INSERT INTO `item_mods` VALUES (26783,8,20);   -- 
+INSERT INTO `item_mods` VALUES (26783,9,20);   -- 
+INSERT INTO `item_mods` VALUES (26783,10,14);  -- 
+INSERT INTO `item_mods` VALUES (26783,11,20);  -- 
+INSERT INTO `item_mods` VALUES (26783,12,19);  -- 
+INSERT INTO `item_mods` VALUES (26783,13,16);  -- 
+INSERT INTO `item_mods` VALUES (26783,14,17);  -- 
+INSERT INTO `item_mods` VALUES (26783,68,47);  --
+INSERT INTO `item_mods` VALUES (26783,31,69); --
+INSERT INTO `item_mods` VALUES (26783,29,5);   -- 
+INSERT INTO `item_mods` VALUES (26783,384,800);  --
+INSERT INTO `item_mods` VALUES (26783,890,15);   --
+INSERT INTO `item_mods` VALUES (26783,529,2);   --
+INSERT INTO `item_mods` VALUES (26783,1013,10);   --
+INSERT INTO `item_mods` VALUES (26783,480,-500);
+INSERT INTO `item_mods` VALUES (27095,1,94);
+INSERT INTO `item_mods` VALUES (27095,2,29);   -- 
+INSERT INTO `item_mods` VALUES (27095,5,17);   -- 
+INSERT INTO `item_mods` VALUES (27095,8,16);   -- 
+INSERT INTO `item_mods` VALUES (27095,9,42);   -- 
+INSERT INTO `item_mods` VALUES (27095,10,30);  -- 
+INSERT INTO `item_mods` VALUES (27095,11,7);  -- 
+INSERT INTO `item_mods` VALUES (27095,12,16);  -- 
+INSERT INTO `item_mods` VALUES (27095,13,30);  -- 
+INSERT INTO `item_mods` VALUES (27095,14,19);  -- 
+INSERT INTO `item_mods` VALUES (27095,68,33);  --
+INSERT INTO `item_mods` VALUES (27095,31,37); --
+INSERT INTO `item_mods` VALUES (27095,29,3);   -- 
+INSERT INTO `item_mods` VALUES (27095,384,500);  --
+INSERT INTO `item_mods` VALUES (27095,83,28);   --
+INSERT INTO `item_mods` VALUES (27095,958,6);   --
+INSERT INTO `item_mods` VALUES (27095,480,-500);
+
 /*!40000 ALTER TABLE `item_mods` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
