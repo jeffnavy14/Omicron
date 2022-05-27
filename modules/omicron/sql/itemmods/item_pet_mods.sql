@@ -45,7 +45,7 @@ INSERT INTO `item_mods_pet` VALUES (23777,30,50,0);
 INSERT INTO `item_mods_pet` VALUES (23784,26,50,0);  
 INSERT INTO `item_mods_pet` VALUES (23784,25,50,0);  
 INSERT INTO `item_mods_pet` VALUES (23784,30,50,0);  
-INSERT INTO `item_mods_pet` VALUES (14625,1,500,0); --test
+INSERT INTO `item_mods_pet` VALUES (14625,1,500,0);
 INSERT INTO `item_mods_pet` VALUES (14625,2,3000,0);
 INSERT INTO `item_mods_pet` VALUES (14625,5,3000,0);
 INSERT INTO `item_mods_pet` VALUES (14625,8,200,0);
@@ -68,5 +68,4 @@ INSERT INTO `item_mods_pet` VALUES (14625,68,300,0);
 INSERT INTO `item_mods_pet` VALUES (14625,160,-5000,0);
 INSERT INTO `item_mods_pet` VALUES (14625,165,25,0);
 INSERT INTO `item_mods_pet` VALUES (14625,421,50,0);
-INSERT INTO `item_mods_pet` VALUES (14625,384,5000,0); --test
-
+INSERT INTO `item_mods_pet` VALUES (14625,384,5000,0);
