@@ -114,3 +114,5 @@ INSERT INTO `item_mods_pet` VALUES (25593,26,38,0);
 INSERT INTO `item_mods_pet` VALUES (25593,30,38,0);
 INSERT INTO `item_mods_pet` VALUES (25593,28,38,0);
 INSERT INTO `item_mods_pet` VALUES (25593,126,10,0);
+INSERT INTO `item_mods_pet` VALUES (28491,160,-400,0);
+INSERT INTO `item_mods_pet` VALUES (28490,160,-400,0);
