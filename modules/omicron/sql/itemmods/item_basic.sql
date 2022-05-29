@@ -1,0 +1,1 @@
+INSERT INTO `item_basic` VALUES (18566,0,'crepuscular_scythe','crepuscular_scythe',1,64596,0,1,0);

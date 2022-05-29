@@ -2616,6 +2616,7 @@ xi.items =
     ARK_TABAR                       = 18545,
     TWILIGHT_SCYTHE                 = 18551,
     ARK_SCYTHE                      = 18563,
+    CREPUSCULAR_SCYTHE              = 18566,
     PYF_HARP                        = 18573,
     IMPERIAL_POLE                   = 18583,
     PERDU_STAFF                     = 18588,
