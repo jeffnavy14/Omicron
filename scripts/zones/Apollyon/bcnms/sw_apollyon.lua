@@ -11,7 +11,6 @@ local battlefield_object = {}
 
 battlefield_object.onBattlefieldInitialise = function(battlefield)
     battlefield:setLocalVar("loot", 1)
-    battlefield:setLocalVar("lootSpawned", 1)
     SetServerVariable("[SW_Apollyon]Time", battlefield:getTimeLimit() / 60)
     xi.limbus.handleDoors(battlefield)
 
