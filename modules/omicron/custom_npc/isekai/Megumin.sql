@@ -86,7 +86,7 @@ end
         })
 
         mob:setSpawn(431, -0, -603)
-        mob:setDropID(0) -- No loot!
+        mob:setDropID(5474)
         mob:setMobLevel(145)
         mob:addMod(xi.mod.STR, 40)
         mob:addMod(xi.mod.VIT, 40)
