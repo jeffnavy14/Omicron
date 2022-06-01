@@ -34,20 +34,13 @@ end)
 
             groupId = 1,
             groupZoneId = 222,:updateClaim(player)
-    end
-end
-
-
+   		
             onMobSpawn = function(mob)			   
               -- Server-wide message
               player:PrintToArea("{Megumin} Wahahahahaha! My name is Megumin, the number one mage of Axel! Come, you shall all become my experience points today!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-            end,
-
-
-            onMobFight = function(mob, target)
-
+             
+                    onMobFight = function(mob, target)
             local lifePercent = mob:getHPP()
-
         	if lifePercent < 75 and GetServerVariable("GigaFlareUsed") == 0 then
                 mob:useMobAbility(1552)
  			mob:setMod(xi.mod.MATT, 200)
@@ -74,7 +67,7 @@ end
 			player:PrintToArea("{Megumin} come together I call upon the crimson realm, my ultimate destruction magic!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 			player:PrintToArea("{Megumin} EX-PLO~SION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 	    		SetServerVariable("GigaFlareUsed", 4)
-
+			end
 
               end,
             onMobSpawn = function(mob)
@@ -136,4 +129,7 @@ end
 
 		end
 	    
-end)
+	end)
+
+
+return m
