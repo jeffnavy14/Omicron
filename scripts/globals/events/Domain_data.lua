@@ -84,6 +84,8 @@ local prizes =
             28018,  --cizin_mufflers_+1 
             28160,  --cizin_breeches_+1 
             28297,  --cizin_greaves_+1 
+		26108,  --odr-earring
+		26107,  --thrud-earring
         },
 
     },
