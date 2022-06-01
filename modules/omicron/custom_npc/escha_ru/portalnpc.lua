@@ -69,7 +69,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -99,7 +99,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -129,7 +129,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -159,7 +159,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -189,7 +189,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -219,7 +219,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -249,7 +249,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -279,7 +279,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -309,7 +309,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -340,7 +340,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -370,7 +370,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
@@ -401,7 +401,7 @@ local menu =
     {
         title = "return",
         onStart = function(playerArg)
-            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
         end,
         options =
         {
