@@ -42,6 +42,7 @@ local prizes =
             8959, --snoworb_stone_+2
 			4035, --verdigris_stone_+2
 			3953, --wailing_stone_+2
+			22293, --hauksbok-arrow
         },
     },
 
