@@ -30,3 +30,4 @@ INSERT INTO `item_equipment` VALUES (23766,'agwus_robe', 99, 119, 3670024, 468, 
 INSERT INTO `item_equipment` VALUES (23759,'agwus_cap', 99, 119, 3670024, 468, 0, 0, 16, 0, 0);
 INSERT INTO `item_equipment` VALUES (18566,'crepuscular_scythe',99,119,128,526,0,0,1,0,0);
 INSERT INTO `item_equipment` VALUES (26359,'orpheuss_sash',99,119,4194303,0,0,0,1024,0,0);
+INSERT INTO `item_equipment` VALUES (26115,'balder_earring_+1',99,119,4194303,0,0,0,512,0,0);

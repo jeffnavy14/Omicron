@@ -42,6 +42,7 @@ local prizes =
             8959, --snoworb_stone_+2
 			4035, --verdigris_stone_+2
 			3953, --wailing_stone_+2
+			22293, --hauksbok-arrow
         },
     },
 
@@ -84,6 +85,8 @@ local prizes =
             28018,  --cizin_mufflers_+1 
             28160,  --cizin_breeches_+1 
             28297,  --cizin_greaves_+1 
+		26108,  --odr-earring
+		26107,  --thrud-earring
         },
 
     },
