@@ -1,0 +1,430 @@
+-------------------------------------------
+-- Escha RuAun Portal NPC'select
+-------------------------------------------
+require("modules/module_utils")
+require("scripts/globals/items")
+require("scripts/globals/treasure")
+require("scripts/globals/zone")
+-------------------------------------------
+local m = Module:new("Eschan_Portal")
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#1.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "Sky Gods 2.0",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Where would you like to go?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Suzaku",
+                function(playerarg)
+                player:setPos(-454.030, -3.626, -147.184)
+                end,
+            },
+            {
+                "Byakko",
+                function(playerArg)
+                player:setPos(-280.484, -3.626, 386.104)
+                end,
+            },
+            {
+                "Genbu",
+                function(playerArg)
+                player:setPos(278.092, -3.998, 382.416)
+                end,
+            },
+            {
+                "Seiryu",
+                function(playerArg)
+                player:setPos(451.753, -3.790, -146.248)
+                end,
+            },
+            {
+                "???",
+                function(playerArg)
+                    playerArg:PrintToPlayer("Not ready yet, come back later", xi.msg.channel.NS_SAY)
+					playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
+                end,
+            },
+			{
+                "Nevermind",
+                function(playerArg)
+                    playerArg:PrintToPlayer("When you are ready to test your might come back and see me", xi.msg.channel.NS_SAY)
+                    playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#2.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#3.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#4.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#5.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#6.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                 xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#7.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#8.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#9.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#10.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#11.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#12.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#13.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you liek to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
+
+
+return m

@@ -368,6 +368,15 @@ bool CTargetFind::isMobOwner(CBattleEntity* PTarget)
             return true;
         }
     }
+    if (m_PBattleEntity->objtype == TYPE_PC)
+    {
+        CCharEntity* PChar = static_cast<CCharEntity*>(m_PBattleEntity);
+        if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+        {
+            return true;
+        }
+    }
+
     bool found = false;
 
     m_PBattleEntity->ForAlliance([&found, &PTarget](CBattleEntity* PMember) {
