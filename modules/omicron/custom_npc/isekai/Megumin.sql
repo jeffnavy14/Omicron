@@ -13,7 +13,19 @@ m:addOverride("xi.zones.AlTaieu.Zone.onInitialize", function(zone)
 
 end)
 
- entity.onTrade = function(player, npc, trade)
+ local DeathOrb = zone:insertDynamicEntity({
+
+        objtype = xi.objType.NPC,
+        name = "Isekai Portal",
+		look = "0x0000340000000000000000000000000000000000",
+        x = 431,
+        y = -0,
+        z = -603,
+        rotation = 28,
+        widescan = 1,
+
+
+       onTrade = function(player, npc, trade)
     
     if (
         trade:hasItemQty(3454, 1) and -- zelos_orb
@@ -22,7 +34,7 @@ end)
     ) then
       
         player:tradeComplete()
-        local mob = zone:insertDynamicEntity({
+        local byaport = zone:insertDynamicEntity({
 		    objtype = xi.objType.MOB,
             name = "Megumin",
             look = "2373",
@@ -31,9 +43,8 @@ end)
             z = -603,
             rotation = 33,
             widescan = 1,
-
             groupId = 1,
-            groupZoneId = 222,:updateClaim(player)
+            groupZoneId = 222,
    		
             onMobSpawn = function(mob)			   
               -- Server-wide message
@@ -76,9 +87,14 @@ end)
                 mob:addStatusEffect(xi.effect.PROTECT, 175, 0, 1800)
                 mob:addStatusEffect(xi.effect.SHELL, 84, 0, 1800)
               end,
+
+                onMobDeath = function(mob, playerArg, isKiller)
+                    -- Do stuff
+                end,
+	        
+                releaseIdOnDeath = true,
         })
 
-        mob:setSpawn(431, -0, -603)
         mob:setDropID(5474)
         mob:setMobLevel(145)
         mob:addMod(xi.mod.STR, 40)
@@ -129,7 +145,7 @@ end)
 
 		end
 	    
-	end)
-
+	end,
+   })
 
 return m
