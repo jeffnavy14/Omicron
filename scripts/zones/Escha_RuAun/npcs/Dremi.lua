@@ -9,31 +9,27 @@ require("scripts/globals/utils")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-	local genbu = npcUtil.tradeHas(trade, {{ 3275, 5 }})
-    local suzac = npcUtil.tradeHas(trade, {{ 3276, 5 }})
-    local seriu = npcUtil.tradeHas(trade, {{ 3277, 5 }})
-    local byakk = npcUtil.tradeHas(trade, {{ 3278, 5 }})
+	local genbu = npcUtil.tradeHas(trade, {{ 3275, 3 }})
+    local suzac = npcUtil.tradeHas(trade, {{ 3276, 3 }})
+    local seriu = npcUtil.tradeHas(trade, {{ 3277, 3 }})
+    local byakk = npcUtil.tradeHas(trade, {{ 3278, 3 }})
   
-	    if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and npcUtil.tradeHas(trade, {{3277, 3}}, 1418, 1419) then
+	    if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and suzac then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.SEIRYUS_NOBILITY)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and npcUtil.tradeHas(trade, {{3276, 3}}, 1420, 1421) then
+        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL)  seriu then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.SUZAKUS_BENEFACTION)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and npcUtil.tradeHas(trade, {{3278, 3}}, 1422, 1423) then
+        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and byakk then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.BYAKKOS_PRIDE)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and npcUtil.tradeHas(trade, {{3275, 3}}, 1424, 1425) then
+        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and genbu then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.GENBUS_HONOR)
         end       
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and npcUtil.tradeHas(trade, 1404, 1405, 1406, 1407) and genbu and suzac and seriu and byakk  then
-	        player:tradeComplete()
-        	npcUtil.giveKeyItem(player, xi.keyItem.KIRINS_FERVOR)
-        end		
     end
 
 entity.onTrigger = function(player, npc)
