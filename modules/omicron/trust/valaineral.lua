@@ -16,7 +16,7 @@ m:addOverride("xi.globals.spells.trust.valaineral.onSpellCast", function(caster,
 
     mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_HAS_TOP_ENMITY, 0, ai.r.JA, ai.s.SPECIFIC, xi.ja.PROVOKE)
 
-    mob:addSimpleGambit(ai.t.TARGET, ai.c.OT_HAS_TOP_ENMITY, xi.effect.FLASH, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.FLASH)
+    mob:addSimpleGambit(ai.t.TARGET, ai.c.NOT_HAS_TOP_ENMITY, xi.effect.FLASH, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.FLASH)
 
     trust:addSimpleGambit(ai.t.SELF, ai.c.NOT_HAS_TOP_ENMITY, 0, xi.effect.SENTINEL, ai.r.JA, ai.s.SPECIFIC, xi.ja.SENTINEL)
 
@@ -35,3 +35,4 @@ local power = trust:getMainLvl()
 	trust:addMod(xi.mod.CURE_POTENCY, power)
 	trust:addMod(xi.mod.ENMITY, power*25)
 	trust:addMod(xi.mod.WSACC, power*3)
+end)

@@ -1,5 +1,5 @@
-DELETE FROM item_mods WHERE itemId=27116;
-DELETE FROM item_mods WHERE itemId=22143;
+DELETE FROM `item_mods` WHERE itemId=27116;
+DELETE FROM `item_mods` WHERE itemId=22143;
 INSERT INTO `item_mods` VALUES (27116,1,106);
 INSERT INTO `item_mods` VALUES (27116,2,29);
 INSERT INTO `item_mods` VALUES (27116,8,12);
