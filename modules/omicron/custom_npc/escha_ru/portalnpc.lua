@@ -44,6 +44,8 @@ local menu =
             {
                 "???",
                 function(playerArg)
+				if (player:getCharVar("[Eschan]Byakko") == 1) and (player:getCharVar("[Eschan]Suzaku") == 1) and
+				   (player:getCharVar("[Eschan]Genbu") == 1) and (player:getCharVar("[Eschan]Seiryu") == 1) then 
                     playerArg:PrintToPlayer("Not ready yet, come back later", xi.msg.channel.NS_SAY)
 					playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
                 end,

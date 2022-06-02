@@ -30,7 +30,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+			    player:setCharVar("[Eschan]Byakko",1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -61,7 +61,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                player:setCharVar("[Eschan]Suzaku",1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -92,7 +92,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                player:setCharVar("[Eschan]Genbu",1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -123,7 +123,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                player:setCharVar("[Eschan]Seiryu",1)
             end,
 			releaseIdOnDeath = true,
         })

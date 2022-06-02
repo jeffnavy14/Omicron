@@ -9,7 +9,10 @@ require("scripts/globals/utils")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-  if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and
+local GodsWin = (player:getCharVar("[Eschan]Byakko") == 1) and (player:getCharVar("[Eschan]Suzaku") == 1) and
+				(player:getCharVar("[Eschan]Genbu") == 1) and (player:getCharVar("[Eschan]Seiryu") == 1) 
+				
+    if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and
          player:getRank(player:getNation()) >= 10 then
 	    if npcUtil.tradeHas(trade, {{ 3277, 3 }}) then
 	        player:tradeComplete()
@@ -27,6 +30,10 @@ entity.onTrade = function(player, npc, trade)
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.GENBUS_HONOR)
         end       
+		if npcUtil.tradeHas(trade, 1404, 1405, 1406, 1407) and GodsWin then
+		   player:tradeComplete()
+		   npcUtil.giveKeyItem(player, xi.keyItem.KIRINS_FERVOR)
+		end
     end
 end
 
