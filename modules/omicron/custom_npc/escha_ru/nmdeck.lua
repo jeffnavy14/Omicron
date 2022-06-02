@@ -1,7 +1,4 @@
 -----------------------------------
--- (zone 123)
--- Relic Weapons
------------------------------------
 require("modules/module_utils")
 require("scripts/zones/Escha_RuAun/Zone")
 -----------------------------------
@@ -100,29 +97,10 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
 		   player:hasKeyItem(xi.keyItem.SUZAKUS_BENEFACTION) then
-		   player:delKeyItem(xi.keyItem.SUZAKUS_BENEFACTION)
-		
-		    local zone = player:getZone()
-            local mob = zone:insertDynamicEntity({
-                objtype = xi.objType.MOB,
-                name = "Eschan Suzaku",
-                x = -513.394,
-                y = -70.020,
-                z = -269.371,
-                rotation = 50,
-                groupId = 81,
-                groupZoneId = 289,
-	        
-                onMobDeath = function(mob, playerArg, isKiller)
-                    -- Do stuff
-                end,
-	        
-                releaseIdOnDeath = true,
-            })
-	        
-            mob:setDropID(4054)
-	        mob:setSpawn(-513.394, -70.020, -269.371, 50)
-            mob:spawn()
+		   player:delKeyItem(xi.keyItem.SUZAKUS_BENEFACTION) 
+		   SetServerVariable("[Eschan]Suzaku_Time", os.time())
+		   SetServerVariable("[Eschan]Suzaku", 1)
+
         end
 	end,
     })
@@ -141,27 +119,8 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
 		   player:hasKeyItem(xi.keyItem.BYAKKOS_PRIDE) then
 		   player:delKeyItem(xi.keyItem.BYAKKOS_PRIDE)
-		    local zone = player:getZone()
-            local mob = zone:insertDynamicEntity({
-                objtype = xi.objType.MOB,
-                name = "Eschan Byakko",
-                x = -417.141,
-                y = -70.298,
-                z = 409.665,
-                rotation = player:getRotPos(),
-                groupId = 78,
-                groupZoneId = 289,
-	        
-                onMobDeath = function(mob, playerArg, isKiller)
-                    -- Do stuff
-                end,
-	        
-                releaseIdOnDeath = true,
-            })
-	        
-            mob:setDropID(4050)
-	        mob:setSpawn(-417.141, -70.298, 409.665, player:getRotPos())
-            mob:spawn()
+		   SetServerVariable("[Eschan]Byakko_Time", os.time())
+		   SetServerVariable("[Eschan]Byakko", 1)
         end
 	end,
     })
@@ -179,28 +138,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
 		   player:hasKeyItem(xi.keyItem.GENBUS_HONOR) then
+		   SetServerVariable("[Eschan]Genbu_Time", os.time())
+		   SetServerVariable("[Eschan]Genbu", 1)
 		   player:delKeyItem(xi.keyItem.GENBUS_HONOR)
-		    local zone = player:getZone()
-            local mob = zone:insertDynamicEntity({
-                objtype = xi.objType.MOB,
-                name = "Eschan Genbu",
-                x = 260.208,
-                y = -70.298,
-                z = 523.173,
-                rotation = player:getRotPos(),
-                groupId = 79,
-                groupZoneId = 289,
-	        
-                onMobDeath = function(mob, playerArg, isKiller)
-                    -- Do stuff
-                end,
-	        
-                releaseIdOnDeath = true,
-            })
-	        
-            mob:setDropID(4051)
-	        mob:setSpawn(260.208, -70.298, 523.173, player:getRotPos())
-            mob:spawn()
         end
 	end,
     })
@@ -218,28 +158,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
 		   player:hasKeyItem(xi.keyItem.SEIRYUS_NOBILITY) then
+		   SetServerVariable("[Eschan]Seiryu_Time", os.time())
+		   SetServerVariable("[Eschan]Seiryu", 1)
 		   player:delKeyItem(xi.keyItem.SEIRYUS_NOBILITY)
-		    local zone = player:getZone()
-            local mob = zone:insertDynamicEntity({
-                objtype = xi.objType.MOB,
-                name = "Eschan Seiryu",
-                x = 581.474,
-                y = -70.298,
-                z = -86.974,
-                rotation = player:getRotPos(),
-                groupId = 80,
-                groupZoneId = 289,
-	        
-                onMobDeath = function(mob, playerArg, isKiller)
-                    -- Do stuff
-                end,
-	        
-                releaseIdOnDeath = true,
-            })
-	        
-            mob:setDropID(4053)
-	        mob:setSpawn(581.474, -70.298, -86.974, player:getRotPos())
-            mob:spawn()
         end
 	end,
 	})
