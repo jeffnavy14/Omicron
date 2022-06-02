@@ -26,7 +26,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         widescan = 1,
 
         onTrigger = function(player, npc)
-		player:setPos(-454.702, -71.552, -308.579)
+		    if player:hasKeyItem(xi.keyItem.SUZAKUS_BENEFACTION) then
+		        player:setPos(-454.702, -71.552, -308.579)
+		    end
 		end,
     })
 
@@ -41,7 +43,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-		player:setPos(-443.993, -71.552, 336.419)
+		    if player:hasKeyItem(xi.keyItem.BYAKKOS_PRIDE) then
+		        player:setPos(-443.993, -71.552, 336.419)
+		    end
 		end,
     })
 
@@ -56,7 +60,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-		player:setPos(186.160, -71.552, 515.480)
+		    if player:hasKeyItem(xi.keyItem.GENBUS_HONOR) then
+		        player:setPos(186.160, -71.552, 515.480)
+		    end
 		end,
     })
 
@@ -71,7 +77,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-		player:setPos(548.250, -71.552, -17.000)
+		    if player:hasKeyItem(xi.keyItem.SEIRYUS_NOBILITY) then
+		        player:setPos(548.250, -71.552, -17.000)
+		    end
 		end,
     })
 	
@@ -90,7 +98,10 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         widescan = 1,
 
         onTrigger = function(player, npc)
-        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
+        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
+		   player:hasKeyItem(xi.keyItem.SUZAKUS_BENEFACTION) then
+		   player:delKeyItem(xi.keyItem.SUZAKUS_BENEFACTION)
+		
 		    local zone = player:getZone()
             local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -127,7 +138,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
+        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
+		   player:hasKeyItem(xi.keyItem.BYAKKOS_PRIDE) then
+		   player:delKeyItem(xi.keyItem.BYAKKOS_PRIDE)
 		    local zone = player:getZone()
             local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -164,7 +177,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
+        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
+		   player:hasKeyItem(xi.keyItem.GENBUS_HONOR) then
+		   player:delKeyItem(xi.keyItem.GENBUS_HONOR)
 		    local zone = player:getZone()
             local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -201,7 +216,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         rotation = 28,
 
         onTrigger = function(player, npc)
-        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
+        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
+		   player:hasKeyItem(xi.keyItem.SEIRYUS_NOBILITY) then
+		   player:delKeyItem(xi.keyItem.SEIRYUS_NOBILITY)
 		    local zone = player:getZone()
             local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
