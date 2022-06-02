@@ -32,7 +32,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 	                        ------------------
     if
         GetServerVariable("[Eschan]Byakko") == 1 and                -- Correct NM
-        (os.time() - GetServerVariable("[Eschan]Byakko_Time")) > 5 -- NM Cooldown
+        (os.time() - GetServerVariable("[Eschan]Byakko_Time")) > 5  -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -63,7 +63,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 	                        ------------------
     if
         GetServerVariable("[Eschan]Suzaku") == 1 and                -- Correct NM
-        (os.time() - GetServerVariable("[Eschan]Suzaku_Time")) > 5 -- NM Cooldown
+        (os.time() - GetServerVariable("[Eschan]Suzaku_Time")) > 5  -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -125,7 +125,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 	                        ------------------
     if
         GetServerVariable("[Eschan]Seiryu") == 1 and                -- Correct NM
-        (os.time() - GetServerVariable("[Eschan]Seiryu_Time")) > 5 -- NM Cooldown
+        (os.time() - GetServerVariable("[Eschan]Seiryu_Time")) > 5  -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -157,6 +157,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
         GetServerVariable("[Eschan]Kirin") == 1 and                -- Correct NM
         (os.time() - GetServerVariable("[Eschan]Kirin_Time")) > 5  -- NM Cooldown
     then
+	        
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
                 name = "Eschan Kirin",
@@ -169,9 +170,16 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 
             onMobSpawn = function(mob)
        	        SetServerVariable("[Eschan]Kirin", 0)
+				SetServerVariable("[Escha]Avatar", 4)
+				mob:setUnkillable(true)
+                mob:hideHP(true)
             end,	
 			
     		onMobFight = function(mob, target)
+			    if GetServerVariable("[Escha]Avatar") == 0 then
+				    mob:hideHP(false)
+                    mob:setUnkillable(false)
+				end
 	    	    local lifePercent = mob:getHPP()
                 if lifePercent < 70 and GetServerVariable("Avatar1") == 0 then
 			        SetServerVariable("Avatar1", 1)
@@ -201,6 +209,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
         mob:setDropID(0)
         mob:setSpawn(-1.52, -54.039, -597.508, 50)
         mob:spawn()
+		mob:setMod(xi.mod.DEF, 450)
+        mob:setMod(xi.mod.MEVA, 380)
+        mob:setMod(xi.mod.MDEF, 50)
     end
 	
 	              --------------------
@@ -224,7 +235,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                local Addon = GetServerVariable("[Escha]Avatar")
+                local AddonLeft = math.floor(Addon / 8)
+		            SetServerVariable("[Escha]Avatar", Addon - AddonLeft - 1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -250,7 +263,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                local Addon = GetServerVariable("[Escha]Avatar")
+                local AddonLeft = math.floor(Addon / 8)
+		                SetServerVariable("[Escha]Avatar", Addon - AddonLeft - 1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -275,7 +290,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                local Addon = GetServerVariable("[Escha]Avatar")
+                local AddonLeft = math.floor(Addon / 8)
+		                SetServerVariable("[Escha]Avatar", Addon - AddonLeft - 1)
             end,
 			releaseIdOnDeath = true,
         })
@@ -301,7 +318,9 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-
+                local Addon = GetServerVariable("[Escha]Avatar")
+                local AddonLeft = math.floor(Addon / 8)
+		            SetServerVariable("[Escha]Avatar", Addon - AddonLeft - 1)
             end,
 			releaseIdOnDeath = true,
         })

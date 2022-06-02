@@ -73,7 +73,7 @@ UPDATE `mob_groups` SET `HP`='120000' WHERE  `zoneid`=289 AND `groupid`=82;
 -- Genbu Sky 2.0
 UPDATE `mob_groups` SET `HP`='60000' WHERE  `zoneid`=289 AND `groupid`=79;
 -- Suzaku Sky 2.0
-UPDATE `mob_groups` SET `HP`='420000' WHERE  `zoneid`=289 AND `groupid`=81;
+UPDATE `mob_groups` SET `HP`='42000' WHERE  `zoneid`=289 AND `groupid`=81;
 -- Seiryu Sky 2.0
 UPDATE `mob_groups` SET `HP`='44000' WHERE  `zoneid`=289 AND `groupid`=80;
 -- Byakko Sky 2.0
