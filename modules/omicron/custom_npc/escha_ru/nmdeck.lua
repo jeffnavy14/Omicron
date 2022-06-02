@@ -120,7 +120,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
                 releaseIdOnDeath = true,
             })
 	        
-            mob:setDropID(0)
+            mob:setDropID(4054)
 	        mob:setSpawn(-513.394, -70.020, -269.371, 50)
             mob:spawn()
         end
@@ -159,7 +159,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
                 releaseIdOnDeath = true,
             })
 	        
-            mob:setDropID(0)
+            mob:setDropID(4050)
 	        mob:setSpawn(-417.141, -70.298, 409.665, player:getRotPos())
             mob:spawn()
         end
@@ -198,7 +198,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
                 releaseIdOnDeath = true,
             })
 	        
-            mob:setDropID(0)
+            mob:setDropID(4051)
 	        mob:setSpawn(260.208, -70.298, 523.173, player:getRotPos())
             mob:spawn()
         end
@@ -237,7 +237,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
                 releaseIdOnDeath = true,
             })
 	        
-            mob:setDropID(0)
+            mob:setDropID(4053)
 	        mob:setSpawn(581.474, -70.298, -86.974, player:getRotPos())
             mob:spawn()
         end
