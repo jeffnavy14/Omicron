@@ -164,6 +164,27 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
         end
 	end,
 	})
+	
+	local kirpop = zone:insertDynamicEntity({
+
+        objtype = xi.objType.NPC,
+        name = "Kirin Pop",
+		look = "0600900400000000000000000000000000000000",
+        x = -1.069,
+        y = -55.240,
+        z = -634.199,
+        rotation = 28,
+
+        onTrigger = function(player, npc)
+        if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) or
+		   player:hasKeyItem(xi.keyItem.KIRINS_FERVOR) then
+		   SetServerVariable("[Eschan]Kirin_Time", os.time())
+		   SetServerVariable("[Eschan]Kirin", 1)
+		   player:delKeyItem(xi.keyItem.KIRINS_FERVOR)
+        end
+	end,
+	})
+	
 end)
 
 return m

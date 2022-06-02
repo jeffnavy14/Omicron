@@ -48,8 +48,7 @@ local menu =
                 "???",
                 function(playerArg)
 				    if GodsWin then
-                        playerArg:PrintToPlayer("Thank you for the good fight, but I am not ready yet.", xi.msg.channel.NS_SAY)
-                        playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
+                         player:setPos(-1.626, -52.365, -583.528)
 				    else 
 				    	playerArg:PrintToPlayer("You have not proven your worth just yet!", xi.msg.channel.NS_SAY)
                     end
@@ -427,5 +426,34 @@ local menu =
     player:customMenu(menu)
 end)
 
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#15.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
 
 return m
