@@ -1,4 +1,4 @@
-DELETE FROM item_equipment WHERE ItemID=22143;
+DELETE FROM `item_equipment` WHERE itemID=22143;
 INSERT INTO `item_equipment` VALUES (23784,'gletis_boots', 99, 119, 303392,465,0,0, 256,0,0);
 INSERT INTO `item_equipment` VALUES (23777,'gletis_breeches', 99, 119, 303392,465,0,0, 128,0,0);
 INSERT INTO `item_equipment` VALUES (23770,'gletis_gauntlets', 99, 119, 303392,465,0,0, 64,0,0);
