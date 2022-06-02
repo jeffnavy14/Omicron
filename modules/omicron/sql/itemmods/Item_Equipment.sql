@@ -1,3 +1,4 @@
+DELETE FROM item_equipment WHERE ItemID=22143
 INSERT INTO `item_equipment` VALUES (23784,'gletis_boots', 99, 119, 303392,465,0,0, 256,0,0);
 INSERT INTO `item_equipment` VALUES (23777,'gletis_breeches', 99, 119, 303392,465,0,0, 128,0,0);
 INSERT INTO `item_equipment` VALUES (23770,'gletis_gauntlets', 99, 119, 303392,465,0,0, 64,0,0);
@@ -33,3 +34,4 @@ INSERT INTO `item_equipment` VALUES (26359,'orpheuss_sash',99,119,4194303,0,0,0,
 INSERT INTO `item_equipment` VALUES (26115,'balder_earring_+1',99,119,4194303,0,0,0,512,0,0);
 INSERT INTO `item_equipment` VALUES (26221,'sroda_ring',99,119,4194303,0,0,0,24576,0,0);
 INSERT INTO `item_equipment` VALUES (26115,'sroda_earring',99,119,4194303,0,0,0,512,0,0);
+INSERT INTO `item_equipment` VALUES (22143,'fomalhaut',99,119,66560,83,0,0,4,0,0);
