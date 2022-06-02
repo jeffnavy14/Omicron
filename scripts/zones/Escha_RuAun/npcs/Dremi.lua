@@ -9,28 +9,26 @@ require("scripts/globals/utils")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-	local genbu = npcUtil.tradeHas(trade, {{ 3275, 3 }})
-    local suzac = npcUtil.tradeHas(trade, {{ 3276, 3 }})
-    local seriu = npcUtil.tradeHas(trade, {{ 3277, 3 }})
-    local byakk = npcUtil.tradeHas(trade, {{ 3278, 3 }})
-  
-	    if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and suzac then
+  if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and
+         player:getRank(player:getNation()) >= 10 then
+	    if npcUtil.tradeHas(trade, {{ 3277, 3 }}) then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.SEIRYUS_NOBILITY)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL)  seriu then
+        if npcUtil.tradeHas(trade, {{ 3276, 3 }}) then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.SUZAKUS_BENEFACTION)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and byakk then
+        if npcUtil.tradeHas(trade, {{ 3278, 3 }}) then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.BYAKKOS_PRIDE)
         end
-        if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and genbu then
+        if npcUtil.tradeHas(trade, {{ 3275, 3 }}) then
 	        player:tradeComplete()
         	npcUtil.giveKeyItem(player, xi.keyItem.GENBUS_HONOR)
         end       
     end
+end
 
 entity.onTrigger = function(player, npc)
     if player:hasKeyItem(xi.keyItem.CERULEAN_CRYSTAL) and
