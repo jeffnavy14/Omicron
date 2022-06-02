@@ -11,7 +11,6 @@ local battlefield_object = {}
 
 battlefield_object.onBattlefieldInitialise = function(battlefield)
     battlefield:setLocalVar("loot", 1)
-    battlefield:setLocalVar("lootSpawned", 1)
     SetServerVariable("[SW_Apollyon]Time", battlefield:getTimeLimit() / 60)
     xi.limbus.handleDoors(battlefield)
 
@@ -19,6 +18,11 @@ battlefield_object.onBattlefieldInitialise = function(battlefield)
     battlefield:setLocalVar("timePH", ID.npc.APOLLYON_SW_CRATE[3] + random)
     battlefield:setLocalVar("restorePH", ID.npc.APOLLYON_SW_CRATE[3] + random + 1)
     battlefield:setLocalVar("itemPH", ID.npc.APOLLYON_SW_CRATE[3] + random + 2)
+
+    -- Since this BC does not have a default "kill to win" mob set in the database like the other Apollyons
+    -- We have to manage it with this phaseChange variable. This allows the "kill to win" mobs to be the
+    -- elementals that correspond with the day you enter
+    battlefield:setLocalVar("phaseChange", 1)
 
     xi.limbus.setupArmouryCrates(battlefield:getID())
 end

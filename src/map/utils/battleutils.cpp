@@ -6158,6 +6158,15 @@ namespace battleutils
                 return true;
             }
         }
+        if (PEntity->objtype == TYPE_PC)
+        {
+            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+            {
+                return true;
+            }
+        }
+
         bool found = false;
 
         // clang-format off
