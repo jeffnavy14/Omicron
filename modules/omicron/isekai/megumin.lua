@@ -1,7 +1,4 @@
 -----------------------------------
--- Area: Al'Taieu
---   NM: Megumin
------------------------------------
 require("modules/module_utils")
 require("scripts/zones/AlTaieu/Zone")
 -----------------------------------
@@ -11,9 +8,7 @@ m:setEnabled(true)
 m:addOverride("xi.zones.AlTaieu.Zone.onInitialize", function(zone)
     super(zone)
 
-end)
-
- local DeathOrb = zone:insertDynamicEntity({
+ local megpop = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
         name = "Isekai Portal",
@@ -25,16 +20,18 @@ end)
         widescan = 1,
 
 
-       onTrade = function(player, npc, trade)
-    
-    if (
-        trade:hasItemQty(3454, 1) and -- zelos_orb
-	  trade:hasItemQty(3455, 1) and -- bia_orb
-        trade:getItemCount() == 2
-    ) then
-      
-        player:tradeComplete()
-        local byaport = zone:insertDynamicEntity({
+     onTrade = function(player, npc, trade)
+     if npcUtil.tradeHas(trade, xi.items.BIA_ORB) then
+            player:confirmTrade()
+            end
+        end,
+    end,
+    })
+end,
+
+ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
+
+        local mob = zone:insertDynamicEntity({
 		objtype = xi.objType.MOB,
             name = "Megumin",
             look = "2373",
@@ -45,11 +42,12 @@ end)
             groupId = 1,
             groupZoneId = 222,
    		
-            onMobSpawn = function(mob)			   
+          onMobSpawn = function(mob)			   
               -- Server-wide message
               player:PrintToArea("{Megumin} Wahahahahaha! My name is Megumin, the number one mage of Axel! Come, you shall all become my experience points today!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-             
-                    onMobFight = function(mob, target)
+             end,
+
+          onMobFight = function(mob, target)
             local lifePercent = mob:getHPP()
         	if lifePercent < 75 and GetServerVariable("GigaFlareUsed") == 0 then
                 mob:useMobAbility(1552)
@@ -78,13 +76,6 @@ end)
 			player:PrintToArea("{Megumin} EX-PLO~SION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 	    		SetServerVariable("GigaFlareUsed", 4)
 			end
-
-              end,
-            onMobSpawn = function(mob)
-	          mob:addStatusEffect(xi.effect.PHALANX, 35, 0, 180)
-                mob:addStatusEffect(xi.effect.STONESKIN, 350, 0, 300)
-                mob:addStatusEffect(xi.effect.PROTECT, 175, 0, 1800)
-                mob:addStatusEffect(xi.effect.SHELL, 84, 0, 1800)
               end,
 
                 onMobDeath = function(mob, playerArg, isKiller)
@@ -141,10 +132,10 @@ end)
         mob:addStatusEffect(xi.effect.REFRESH, 100, 3, 0)
 	  mob:setMobMod(xi.mobMod.SKILL_LIST, 361)
         mob:setMobMod(xi.mobMod.SPELL_LIST, 86)
+        mob:setSpawn(-431.141, -0.298, 603.665, player:getRotPos())
+            mob:spawn()
 
-		end
-	    
-	end,
-   })
+	end
+end)
 
 return m
