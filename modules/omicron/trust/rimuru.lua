@@ -22,24 +22,23 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
     trust:addSimpleGambit(ai.t.TARGET, ai.c.READYING_JA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.STUN)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.CASTING_MA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.STUN)
     trust:addSimpleGambit(ai.t.SELF, ai.c.ALWAYS, 0, ai.r.JA, ai.s.SPECIFIC, xi.ja.LAST_RESORT)
-    trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spell.BLIZZAJA)
-    trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spell.THUNDAJA)
+    trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.NONE)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 10, ai.r.JA, ai.s.SPECIFIC, xi.ja.BLOOD_WEAPON)
-
-    trust:setTrustTPSkillSettings(ai.tp.ASAP, ai.s.HIGHEST)
+   	
+    trust:setTrustTPSkillSettings(ai.tp.ASAP, ai.s.RANDOM)
 
 
 	local power = trust:getMainLvl()
-      trust:addMod(xi.mod.MATT, power*30)
+      trust:addMod(xi.mod.MATT, power*15)
       trust:addMod(xi.mod.MACC, 1000)
-	trust:addMod(xi.mod.MDEF, power*100)
+	trust:addMod(xi.mod.MDEF, power*150)
 	trust:addMod(xi.mod.DOUBLE_ATTACK, 75)
 	trust:addMod(xi.mod.REFRESH, 50)
-      trust:addMod(xi.mod.REGAIN, 100)
+      trust:addMod(xi.mod.REGAIN, 50)
 	trust:addMod(xi.mod.DEF, power*70)
 	trust:addMod(xi.mod.ACC, power*255)
 	trust:addMod(xi.mod.ATT, power*255)
-      trust:addMod(xi.mod.HASTE_MAGIC, power*2)
+      trust:addMod(xi.mod.HASTE_MAGIC, power*4)
 
 
  trust:setLocalVar("MASTER_ID", trust:getMaster():getID())
