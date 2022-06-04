@@ -36,3 +36,4 @@ INSERT INTO `item_equipment` VALUES (26221,'sroda_ring',99,119,4194303,0,0,0,245
 INSERT INTO `item_equipment` VALUES (26118,'sroda_earring',99,119,4194303,0,0,0,512,0,0);
 INSERT INTO `item_equipment` VALUES (22143,'fomalhaut',99,119,66560,83,0,0,4,0,0);
 INSERT INTO `item_equipment` VALUES (26361,'gerdr_belt+1',99,119,4194303,0,0,0,1024,0,0);
+INSERT INTO `item_equipment` VALUES (22301,'sroda_tathlum',99,0,4194303,0,0,0,8,4,0);
