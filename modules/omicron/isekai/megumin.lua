@@ -29,7 +29,7 @@ m:addOverride("xi.zones.AlTaieu.Zone.onInitialize", function(zone)
     })
 end,
 
-m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
+m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
     super(zone)
         local mob = zone:insertDynamicEntity({
 		objtype = xi.objType.MOB,
