@@ -1,7 +1,10 @@
+DELETE FROM mob_skill_lists WHERE skill_list_id = "1110";
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5505" AND `name` = 'Balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5505" AND `name` = 'Balamor';
+UPDATE mob_pools SET mJob = 16 WHERE poolid = "5995" AND `name` = 'aatt';
+UPDATE mob_pools SET sJob = 4 WHERE poolid = "5995" AND `name` = 'aatt';
 UPDATE `mob_pools` VALUES (5983,'balamor','Balamor',492,0x00001B0C00000000000000000000000000000000,4,8,3,100,100,0,0,0,0,0,0,32,0,3,0,0,396,0,0,1098,492);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			  -- Guillotine
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    			  -- Amon Drive
@@ -46,4 +49,15 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,218,99,255); 	   	  --
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,255,80,255); 		  -- Break
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,311,80,255); 		  -- Endark
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,367,80,255); 		  -- Death
-INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,246,1,255);		 -- Drain II
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,245, 1, 255);         -- Drain
+
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,270,39,255); -- Absorb-int
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AATT',1110,935);       -- Amon Drive
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,593,36,255); -- Magic Fruit
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,533,50,255); -- self Destruct
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,575,48,255); -- Jettatura
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,592,38,255); -- Blank Gaze
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,623,12,255); -- Head Butt
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,245,1,255);  -- Drain
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,311,80,255); -- Endark
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,604,61,255); -- Bad Breath

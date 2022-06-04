@@ -23,7 +23,7 @@ m:addOverride("xi.globals.spells.trust.balamor.onSpellCast", function(caster, ta
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.BLIZZARD)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.THUNDER)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.FIRE)
-    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 50, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DRAIN_II)
+    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 50, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DRAIN)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 25, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.METEOR)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 15, ai.r.JA, ai.s.SPECIFIC, xi.ja.BLOOD_WEAPON)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 5, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DEATH)
