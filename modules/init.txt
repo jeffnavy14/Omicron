@@ -36,5 +36,5 @@
 #
 # Live example:
 
-custom/cpp/
+
 omicron/
