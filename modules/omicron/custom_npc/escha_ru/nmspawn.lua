@@ -206,7 +206,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 			
 			releaseIdOnDeath = true,
         })
-        mob:setDropID(0)
+        mob:setDropID(4052)
         mob:setSpawn(-1.52, -54.039, -597.508, 50)
         mob:spawn()
 		mob:setMod(xi.mod.DEF, 450)
