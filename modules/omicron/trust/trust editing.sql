@@ -1,11 +1,10 @@
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1110";
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5983" AND `name` = 'balamor';
-UPDATE mob_pools SET mJob = 4 WHERE poolid = "5505" AND `name` = 'Balamor';
-UPDATE mob_pools SET sJob = 8 WHERE poolid = "5505" AND `name` = 'Balamor';
+UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5983" AND `name` = 'balamor';
+UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5995" AND `name` = 'aatt';
 UPDATE mob_pools SET mJob = 16 WHERE poolid = "5995" AND `name` = 'aatt';
 UPDATE mob_pools SET sJob = 4 WHERE poolid = "5995" AND `name` = 'aatt';
-UPDATE `mob_pools` VALUES (5983,'balamor','Balamor',492,0x00001B0C00000000000000000000000000000000,4,8,3,100,100,0,0,0,0,0,0,32,0,3,0,0,396,0,0,1098,492);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			  -- Guillotine
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    			  -- Amon Drive
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,144,13,255);               -- Fire
