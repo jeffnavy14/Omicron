@@ -28,6 +28,7 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
     trust:addSimpleGambit(ai.t.TARGET, ai.c.READYING_MS, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.READYING_JA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.CASTING_MA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
+    trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.NONE)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.NOT_STATUS, xi.effect.PLAGUE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.BAD_BREATH)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.NOT_STATUS, xi.effect.TERROR, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.JETTATURA)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 30, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DRAIN)
