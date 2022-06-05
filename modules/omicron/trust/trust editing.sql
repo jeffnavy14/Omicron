@@ -1,11 +1,15 @@
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1110";
+DELETE FROM mob_skill_lists WHERE skill_list_id = "1046";
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5983" AND `name` = 'balamor';
-UPDATE mob_pools SET mJob = 4 WHERE poolid = "5505" AND `name` = 'Balamor';
-UPDATE mob_pools SET sJob = 8 WHERE poolid = "5505" AND `name` = 'Balamor';
+UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5983" AND `name` = 'balamor';
+UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5995" AND `name` = 'aatt';
 UPDATE mob_pools SET mJob = 16 WHERE poolid = "5995" AND `name` = 'aatt';
 UPDATE mob_pools SET sJob = 4 WHERE poolid = "5995" AND `name` = 'aatt';
-UPDATE `mob_pools` VALUES (5983,'balamor','Balamor',492,0x00001B0C00000000000000000000000000000000,4,8,3,100,100,0,0,0,0,0,0,32,0,3,0,0,396,0,0,1098,492);
+UPDATE mob_pools SET mJob = 14 WHERE poolid = "5931" AND `name` = 'moogle';
+UPDATE mob_pools SET sJob = 19 WHERE poolid = "5931" AND `name` = 'moogle';
+UPDATE mob_pools SET cmbSkill = 2 WHERE poolid = "5931" AND `name` = 'moogle';
+UPDATE mob_pools SET cmbDelay = 80 WHERE poolid = "5931" AND `name` = 'moogle';
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			  -- Guillotine
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    			  -- Amon Drive
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,144,13,255);               -- Fire
@@ -50,7 +54,6 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,255,80,255); 		  -- Br
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,311,80,255); 		  -- Endark
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,367,80,255); 		  -- Death
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,245, 1, 255);         -- Drain
-
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,270,39,255); -- Absorb-int
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_AATT',1110,935);       -- Amon Drive
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,593,36,255); -- Magic Fruit
@@ -61,3 +64,47 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,623,12,255); -- Head Butt
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,245,1,255);  -- Drain
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,311,80,255); -- Endark
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,604,61,255); -- Bad Breath
+
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,186);	-- Drain Samba 3		
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,128);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,129);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,130);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,131);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,132);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,133);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,134);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,135);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,136);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,137);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,138);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,139);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,140);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,141);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,319,1,255); -- 	aisha_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,320,1,255);  -- 	katon_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,321,50,255); -- 	katon_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,322,80,255); -- 	katon_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,323,1,255); 	-- 	hyoton_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,324,50,255); 	-- 	hyoton_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,325,80,255);	-- 	hyoton_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,326,1,255);	-- 	huton_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,327,50,255);	-- 	huton_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,328,80,255);	-- 	huton_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,329,1,255); 	-- 	doton_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,330,50,255); 	-- 	doton_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,331,80,255);	-- 	doton_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,332,1,255);	-- 	raiton_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,333,50,255);	-- 	raiton_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,334,80,255); 	-- 	raiton_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,335,1,255); 	-- 	suiton_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,336,50,255);	-- 	suiton_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,337,80,255);	-- 	suiton_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,338,12,255);	-- 	utsusemi_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,339,37,255);	-- 	utsusemi_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,340,99,255);	-- 	utsusemi_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,341,1,255);	-- 	jubaku_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,342,50,255);	-- 	jubaku_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,343,80,255);	-- 	jubaku_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,344,1,255);	-- 	hojo_ichi
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,345,50,255);	-- 	hojo_ni
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,346,80,255);	-- 	hojo_san
