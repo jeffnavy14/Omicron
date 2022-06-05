@@ -9,6 +9,9 @@ require("scripts/globals/zone")
 local m = Module:new("Eschan_Portal")
 
 m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#1.onTrigger", function(player, npc)
+local GodsWin = (player:getCharVar("[Eschan]Byakko") == 1) and (player:getCharVar("[Eschan]Suzaku") == 1) and
+				(player:getCharVar("[Eschan]Genbu") == 1) and (player:getCharVar("[Eschan]Seiryu") == 1) 
+
 local menu =
     {
         title = "Sky Gods 2.0",
@@ -44,17 +47,14 @@ local menu =
             {
                 "???",
                 function(playerArg)
-                    playerArg:PrintToPlayer("Not ready yet, come back later", xi.msg.channel.NS_SAY)
-					playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
-                end,
+				    if GodsWin then
+                         player:setPos(-1.626, -52.365, -583.528)
+				    else 
+				    	playerArg:PrintToPlayer("You have not proven your worth just yet!", xi.msg.channel.NS_SAY)
+                    end
+				end,
             },
-			{
-                "Nevermind",
-                function(playerArg)
-                    playerArg:PrintToPlayer("When you are ready to test your might come back and see me", xi.msg.channel.NS_SAY)
-                    playerArg:independentAnimation(playerArg, 250, 4) -- Lightbulb
-                end,
-            },
+
         },
         onCancelled = function(playerArg)
         end,
@@ -426,5 +426,34 @@ local menu =
     player:customMenu(menu)
 end)
 
+m:addOverride("xi.zones.Escha_RuAun.npcs.Eschan_Portal_#15.onTrigger", function(player, npc)
+local menu =
+    {
+        title = "return",
+        onStart = function(playerArg)
+            playerArg:PrintToPlayer("Would you like to go back?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerarg)
+                  xi.teleport.to(player, xi.teleport.id.ESCHA_RUAUN)
+                end,
+            },
+            {
+                "No",
+                function(playerArg)
+
+                end,
+            },
+        },
+        onCancelled = function(playerArg)
+        end,
+        onEnd = function(playerArg)
+        end,
+    }
+    player:customMenu(menu)
+end)
 
 return m
