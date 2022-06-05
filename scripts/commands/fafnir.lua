@@ -14,40 +14,67 @@ function onTrigger(player)
     local zone = player:getZone()
 
     local mob = zone:insertDynamicEntity({
-        -- NPC or MOB
-        objtype = xi.objType.MOB,
 
-        -- The name visible to players
-        -- NOTE: Even if you plan on making the name invisible, we're using it internally for lookups
-        --     : So populate it with something unique-ish even if you aren't going to use it.
-        --     : You can then hide the name with entity:hideName(true)
-        -- NOTE: This name CAN include spaces and underscores.
-        name = "Fafnir",
+        objtype = xi.objType.MOB,
+        name = "Kirin",
 
         -- Set the position using in-game x, y and z
         x = player:getXPos(),
         y = player:getYPos(),
         z = player:getZPos(),
         rotation = player:getRotPos(),
+        groupId = 64,
+        groupZoneId = 288,
 
-        -- Fafnir's entry in mob_groups:
-        -- INSERT INTO `mob_groups` VALUES (5,1280,154,'Fafnir',0,128,805,70000,0,90,90,0);
-        --                       groupId ---^       ^--- groupZoneId
-        groupId = 5,
-        groupZoneId = 154,
+        onMobSpawn = function(mob)
+            mob:setMod(xi.mod.DEF, 450)
+            mob:setMod(xi.mod.MEVA, 380)
+            mob:setMod(xi.mod.MDEF, 50)
+            -- Make sure model is reset back to start
+            mob:setModelId(403)
+			mob:setMobMod(xi.mobMod.SKILL_LIST, 281)
+            mob:setMobMod(xi.mobMod.SPELL_LIST, 23)
+            -- Prevent death and hide HP until final phase
+        mob:hideHP(true)
+		end,
+        onMobFight = function(mob, target)
 
-        -- You can provide an onMobDeath function if you want: if you don't
-        -- add one, an empty one will be inserted for you behind the scenes.
+	        local lifePercent = mob:getHPP()
+            if lifePercent < 70 then
+			    mob:setModelId(407) -- Genbu
+				mob:setMobMod(xi.mobMod.SKILL_LIST, 277)
+                mob:setMobMod(xi.mobMod.SPELL_LIST, 24)
+	        end
+	        if lifePercent < 60 then
+			    mob:setModelId(399) -- Seiryu
+				mob:setMobMod(xi.mobMod.SKILL_LIST, 278)
+                mob:setMobMod(xi.mobMod.SPELL_LIST, 25)
+	        end
+	        if lifePercent < 50 then
+			    mob:setModelId(338) -- Suzaku
+				mob:setMobMod(xi.mobMod.SKILL_LIST, 280)
+                mob:setMobMod(xi.mobMod.SPELL_LIST, 27)
+		    end
+	        if lifePercent < 40 then
+			    mob:setModelId(309) -- Byakko
+				mob:setMobMod(xi.mobMod.SKILL_LIST, 279)
+                mob:setMobMod(xi.mobMod.SPELL_LIST, 26)
+
+		    end
+			if lifePercent < 30 then
+			    mob:setModelId(403) -- Kirin
+				mob:setMobMod(xi.mobMod.SKILL_LIST, 281)
+                mob:setMobMod(xi.mobMod.SPELL_LIST, 23)
+		    end
+	    end,
+			
         onMobDeath = function(mob, playerArg, isKiller)
-            -- Do stuff
+
         end,
 
-        -- If set to true, the internal id assigned to this mob will be released for other dynamic entities to use
-        -- after this mob has died. Defaults to false.
         releaseIdOnDeath = true,
     })
 
-    -- Use the mob object as you normally would
     mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
 
     mob:setDropID(0) -- No loot!
