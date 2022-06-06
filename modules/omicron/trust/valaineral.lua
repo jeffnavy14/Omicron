@@ -12,7 +12,7 @@ m:addOverride("xi.globals.spells.trust.valaineral.onSpellCast", function(caster,
 
     local trust = caster:spawnTrust(spell:getID())
 
-    trust:addSimpleGambit(ai.t.SELF, ai.c.CASTING_MA, xi.effect.RAMPART, ai.r.JA, ai.s.SPECIFIC, xi.ja.RAMPART)
+    trust:addSimpleGambit(ai.t.TARGET, ai.c.CASTING_MA, xi.effect.RAMPART, ai.r.JA, ai.s.SPECIFIC, xi.ja.RAMPART)
     trust:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.PHALANX, ai.r.MA, ai.s.HIGHEST, xi.magic.spellFamily.PHALANX)
 
 local power = trust:getMainLvl()
