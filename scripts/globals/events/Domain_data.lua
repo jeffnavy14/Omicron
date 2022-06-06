@@ -67,6 +67,7 @@ local prizes =
             20989, --izuna
             21404, --linos
 			27627, --svalinn
+			 9130, --echitite Ore
         },
     },
 

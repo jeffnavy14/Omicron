@@ -2146,7 +2146,7 @@ else
 end
 
 entity.onTrigger = function(player, npc)
-    player:PrintToPlayer( "The Furnace is powered by the souls [GM]Xaver has collected.", 0xd )
+    player:PrintToPlayer( "The Furnace is powered by the souls [GM]Stinkiefoot has collected.", 0xd )
 end
 
 return entity
