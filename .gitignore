@@ -230,3 +230,6 @@ modules/omicron/sql/CatseyeXI/CatsEyeXI-Oupire.sql
 modules/omicron/sql/CatseyeXI/CatsEyeXI-Restore Pre-RMT Drops.sql
 modules/omicron/sql/CatseyeXI/CatsEyeXI_Buff_HNM_Levels.sql
 modules/omicron/sql/CatseyeXI/CatsEyeXI_Fomor_NMs.sql
+scripts/commands/fafnir.lua
+modules/omicron/custom_npc/escha_ru/NMspawn Backup.txt
+scripts/commands/fafnir.lua
