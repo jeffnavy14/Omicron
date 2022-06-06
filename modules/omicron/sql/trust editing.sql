@@ -10,6 +10,11 @@ UPDATE mob_pools SET mJob = 14 WHERE poolid = "5931" AND `name` = 'moogle';
 UPDATE mob_pools SET sJob = 19 WHERE poolid = "5931" AND `name` = 'moogle';
 UPDATE mob_pools SET cmbSkill = 2 WHERE poolid = "5931" AND `name` = 'moogle';
 UPDATE mob_pools SET cmbDelay = 80 WHERE poolid = "5931" AND `name` = 'moogle';
+UPDATE mob_pools SET mJob = 22 WHERE poolid = "5979" AND `name` = 'Selhteus';
+UPDATE mob_pools SET sJob = 7 WHERE poolid = "5979" AND `name` = 'Selhteus';
+UPDATE mob_pools SET cmbSkill = 3 WHERE poolid = "5979" AND `name` = 'Selhteus';
+UPDATE mob_pools SET cmbDelay = 180 WHERE poolid = "5979" AND `name` = 'Selhteus';
+UPDATE mob_pools SET cmbDmgMult = 105 WHERE poolid = "5979" AND `name` = 'Selhteus';
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			  -- Guillotine
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    			  -- Amon Drive
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,144,13,255);               -- Fire
@@ -64,7 +69,6 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,623,12,255); -- Head Butt
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,245,1,255);  -- Drain
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,311,80,255); -- Endark
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AATT',408,604,61,255); -- Bad Breath
-
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,186);	-- Drain Samba 3		
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,128);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Moogle',1046,129);
@@ -108,3 +112,14 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,343,80,255);	-- 	jubaku
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,344,1,255);	-- 	hojo_ichi
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,345,50,255);	-- 	hojo_ni
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Moogle',343,346,80,255);	-- 	hojo_san
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,106,1,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,107,40,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,108,1,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,110,30,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,111,45,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,55,25,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Selh_teus',392,99,45,255); 
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Selh_teus',1094,1509);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Selh_teus',1094,937);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Selh_teus',1094,933);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Selh_teus',1094,1510);

@@ -28,16 +28,16 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
     trust:addSimpleGambit(ai.t.TARGET, ai.c.READYING_MS, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.READYING_JA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.CASTING_MA, 0, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.HEAD_BUTT)
-    trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.NONE)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.NOT_STATUS, xi.effect.PLAGUE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.BAD_BREATH)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.NOT_STATUS, xi.effect.TERROR, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.JETTATURA)
-    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 30, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DRAIN)
-    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 10, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.SELF_DESTRUCT)
-    trust:addSimpleGambit(ai.t.PARTY, ai.c.HPP_LT, 25, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.MAGIC_FRUIT)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.STATUS_FLAG, xi.effectFlag.DISPELABLE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.BLANK_GAZE)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.BLIZZARD)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.THUNDER)
     trust:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.FIRE)
+    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 30, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.DRAIN)
+    trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 10, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.SELF_DESTRUCT)
+    trust:addSimpleGambit(ai.t.PARTY, ai.c.HPP_LT, 25, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.MAGIC_FRUIT)
+
    	
     trust:setTrustTPSkillSettings(ai.tp.ASAP, ai.s.HIGHEST)
 
@@ -61,7 +61,7 @@ end)
 m:addOverride(string.format("xi.globals.spells.trust.%s.onMobSpawn", trustToReplaceName), function(mob)
     for _, member in ipairs(mob:getMaster():getParty()) do
         if member:isPC() then
-            member:PrintToPlayer("Warui suraimu janai yo 悪いスライムじゃないよ", 4, "Rimuru") -- 4: MESSAGE_PARTY
+            member:PrintToPlayer("Warui suraimu janai yo!", 4, "Rimuru") -- 4: MESSAGE_PARTY
         end
     end
 end)
@@ -71,7 +71,7 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onMobDespawn", trustToRe
     local master = GetPlayerByID(masterId)
     for _, member in ipairs(master:getParty()) do
         if member:isPC() then
-            member:PrintToPlayer("As you have just learned, I am strong!", 4, "Rimuru") -- 4: MESSAGE_PARTY
+            member:PrintToPlayer("As you have just learned through experience, I am strong!", 4, "Rimuru") -- 4: MESSAGE_PARTY
         end
     end
 end)
@@ -81,7 +81,7 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onMobDeath", trustToRepl
     local master = GetPlayerByID(masterId)
     for _, member in ipairs(master:getParty()) do
         if member:isPC() then
-            member:PrintToPlayer("As you have just learned, I am strong!", 4, "Rimuru") -- 4: MESSAGE_PARTY
+            member:PrintToPlayer("I underestimated you, but not as much as you underestimated me.", 4, "Rimuru") -- 4: MESSAGE_PARTY
 	  end
     end
 end)
