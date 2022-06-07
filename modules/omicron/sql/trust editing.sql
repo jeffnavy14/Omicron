@@ -15,6 +15,10 @@ UPDATE mob_pools SET sJob = 7 WHERE poolid = "5979" AND `name` = 'Selhteus';
 UPDATE mob_pools SET cmbSkill = 3 WHERE poolid = "5979" AND `name` = 'Selhteus';
 UPDATE mob_pools SET cmbDelay = 180 WHERE poolid = "5979" AND `name` = 'Selhteus';
 UPDATE mob_pools SET cmbDmgMult = 105 WHERE poolid = "5979" AND `name` = 'Selhteus';
+UPDATE mob_pools SET sJob = 1 WHERE poolid = "5940" AND `name` = 'semih_lafihna';
+UPDATE mob_pools SET cmbSkill = 5 WHERE poolid = "5940" AND `name` = 'semih_lafihna';
+UPDATE mob_pools SET cmbDelay = 200 WHERE poolid = "5940" AND `name` = 'semih_lafihna';
+UPDATE mob_pools SET cmbDmgMult = 900 WHERE poolid = "5940" AND `name` = 'semih_lafihna';
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			  -- Guillotine
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    			  -- Amon Drive
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Balamor',396,144,13,255);               -- Fire
