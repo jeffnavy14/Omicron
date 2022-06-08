@@ -1,5 +1,6 @@
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1110";
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1046";
+DELETE FROM mob_skill_lists WHERE skill_list_id = "1109";
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5983" AND `name` = 'balamor';
@@ -21,6 +22,8 @@ UPDATE mob_pools SET cmbDelay = 200 WHERE poolid = "5940" AND `name` = 'semih_la
 UPDATE mob_pools SET cmbDmgMult = 900 WHERE poolid = "5940" AND `name` = 'semih_lafihna';
 UPDATE mob_pools SET mJob = 3 WHERE poolid = "5999" AND `name` = 'monberaux';
 UPDATE mob_pools SET sJob = 5 WHERE poolid = "5999" AND `name` = 'monberaux';
+UPDATE mob_pools SET mJob = 6 WHERE poolid = "5994" AND `name` = 'aamr';
+UPDATE mob_pools SET sJob = 9 WHERE poolid = "5994" AND `name` = 'aamr';
 
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			 
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    	
@@ -161,3 +164,7 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,132,68,255);
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,133,75,255);   
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,134,32,255);   
 
+
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,69);        -- Rampage
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,70);        -- Calamity
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,76);        -- Cloudsplitter
