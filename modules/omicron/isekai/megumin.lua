@@ -5,6 +5,15 @@ require("scripts/zones/AlTaieu/Zone")
 local m = Module:new("isekai")
 m:setEnabled(true)
 
+m:addOverride("xi.zones.GM_Home.Zone.onInitialize", function(zone)
+    super(zone)
+
+
+    if GetServerVariable("Megumin") > 1 then
+       SetServerVariable("Megumin", 0)
+	end
+end)
+
 m:addOverride("xi.zones.AlTaieu.Zone.onInitialize", function(zone)
     super(zone)
 
@@ -17,20 +26,24 @@ m:addOverride("xi.zones.AlTaieu.Zone.onInitialize", function(zone)
         y = -0,
         z = -603,
         rotation = 28,
-        widescan = 1,
 
 
-        onTrade = function(player, npc, trade)
-            if npcUtil.tradeHas(trade, xi.items.BIA_ORB) then
-                player:confirmTrade()
+        onTrigger = function(player, npc)
+            if player:hasItem(xi.items.BIA_ORB) then
+                player:delItem(xi.items.BIA_ORB)
+  			setServerVariable ("Megumin" 1)
             end
-        end,
-    end,
+    	  end,
     })
-end,
+
 
 m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
     super(zone)
+
+ if
+        GetServerVariable("Megumin") == 1 
+    then
+
         local mob = zone:insertDynamicEntity({
 		objtype = xi.objType.MOB,
             name = "Megumin",
@@ -39,10 +52,12 @@ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
             y = -0,
             z = -603,
             rotation = player:getRotPos(),
+
             groupId = 1,
             groupZoneId = 222,
 
           onMobSpawn = function(mob)
+            SetServerVariable("[Megumin", 0)
               -- Server-wide message
               player:PrintToArea("{Megumin} Wahahahahaha! My name is Megumin, the number one mage of Axel! Come, you shall all become my experience points today!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
           end,
@@ -57,16 +72,16 @@ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
 	    	if lifePercent < 50 and GetServerVariable("GigaFlareUsed") == 1 then
                 mob:useMobAbility(1552)
 	    		mob:setMod(xi.mod.MATT, 300)
-                  player:PrintToArea("{Megumin} Ex-PLOSION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
                	SetServerVariable("GigaFlareUsed", 2)
+                  player:PrintToArea("{Megumin} Ex-PLOSION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 	         end
 	    	if lifePercent < 25 and GetServerVariable("GigaFlareUsed") == 2 then
                 mob:useMobAbility(1552)
 			mob:setMod(xi.mod.MATT, 400)
+ 			SetServerVariable("GigaFlareUsed", 3)
 	      	player:PrintToArea("{Megumin} I beseech thee, combine with my deep crimson. The time of awakening cometh.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 	    		player:PrintToArea("{Megumin} Justice, fallen upon the infallible boundary, appear now as an intangible distortions!.", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 			player:PrintToArea("{Megumin} Ex-PLOSION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
-			SetServerVariable("GigaFlareUsed", 3)
 	        end
 	    	if lifePercent < 5 and GetServerVariable("GigaFlareUsed") == 3 then
                 mob:useMobAbility(1552)
@@ -76,8 +91,9 @@ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
 			player:PrintToArea("{Megumin} EX-PLO~SION~!", xi.msg.channel.SYSTEM_3, xi.msg.area.SYSTEM)
 	    		SetServerVariable("GigaFlareUsed", 4)
 			end
-        end,
-		onMobDeath = function(mob, playerArg, isKiller)
+		end,
+        
+		onMobDeath = function(mob, player, isKiller, noKiller)
                     -- Do stuff
         end,
 
@@ -97,7 +113,6 @@ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
         mob:setMod(xi.mod.MACC, 3000)
         mob:setMod(xi.mod.DEF, 3000)
         mob:setMod(xi.mod.MDEF, 4000)
-        mob:setMod(xi.mod.ENSPELL_DMG, 100)
         mob:setMod(xi.mod.HASTE_MAGIC, 300)
         mob:setMod(xi.mod.ATT, 567)
         mob:setMod(xi.mod.ACC, 1800)
@@ -117,12 +132,9 @@ m:addOverride("xi.zones.AlTaieu.Zone.onZoneTick", function(zone, mob)
         mob:setMod(xi.mod.POISONRES, 100)
         mob:setMod(xi.mod.PARALYZERES, 100)
         mob:setMod(xi.mod.LULLABYRES, 100)
-        mob:setMobMod(xi.mobMod.SKILL_LIST, 726)
-        mob:setMobMod(xi.mobMod.SPELL_LIST, 144)
         mob:setMod(xi.mod.PETRIFYRES, 500)
         mob:setMod(xi.mod.STUNRES, 2000)
         mob:setMod(xi.mod.FAST_CAST, 200)
-	  mob:setMobMod(xi.mobMod.MAGIC_COOL, 50)
         mob:addStatusEffect(xi.effect.REGEN, 10, 3, 0)
         mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 70, 0, 0)
         mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
