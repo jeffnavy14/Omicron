@@ -238,6 +238,13 @@ function onTrigger(player)
         end,
 
         releaseIdOnDeath = true,
+
+        -- You can apply mixins like you would with regular mobs. mixinOptions aren't supported yet.
+        mixins =
+        {
+            require("scripts/mixins/rage"),
+            require("scripts/mixins/job_special"),
+        }
     })
 
     mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
