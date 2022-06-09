@@ -164,7 +164,14 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,132,68,255);
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,133,75,255);   
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Monberaux',412,134,32,255);   
 
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,69);        
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,70);      
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,76);       
 
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,69);        -- Rampage
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,70);        -- Calamity
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAMR',1109,76);        -- Cloudsplitter
+      
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rahal',363,5,75,255);              
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rahal',363,107,77,255);             
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal',1066,40);          
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal',1066,47);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal',1066,225);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal',1066,933);
