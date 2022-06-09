@@ -51,12 +51,12 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
 
 
     local power = trust:getMainLvl()
-	trust:addMod(xi.mod.MACC, power)
-	trust:addMod(xi.mod.DEF, power)
-	trust:addMod(xi.mod.MDEF, power)
-	trust:addMod(xi.mod.REFRESH, 20)
+	trust:addMod(xi.mod.DEF, power*3)
+	trust:addMod(xi.mod.MDEF, power*5)
+	trust:addMod(xi.mod.ENMITY_DOWN, power)
+	trust:addMod(xi.mod.REFRESH, 25)
       trust:addMod(xi.mod.CURE_CAST_TIME, power)
-	trust:addMod(xi.mod.CURE_POTENCY, power)
+	trust:addMod(xi.mod.CURE_POTENCY, power*2)
 
 	trust:setLocalVar("MASTER_ID", trust:getMaster():getID())
 end)
