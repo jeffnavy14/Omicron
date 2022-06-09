@@ -2353,7 +2353,6 @@ bool CCharEntity::isNpcLocked()
     return isInEvent() || inSequence;
 }
 
-
 void CCharEntity::endCurrentEvent()
 {
     currentEvent->reset();
