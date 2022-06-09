@@ -32,7 +32,7 @@ m:addOverride("xi.globals.spells.trust.balamor.onSpellCast", function(caster, ta
 
 
 	local power = trust:getMainLvl()
-      trust:addMod(xi.mod.MATT, power*5)
+      trust:addMod(xi.mod.MATT, power*4)
       trust:addMod(xi.mod.MACC, 1000)
 	trust:addMod(xi.mod.MDEF, power*70)
 	trust:addMod(xi.mod.DOUBLE_ATTACK, 25)
