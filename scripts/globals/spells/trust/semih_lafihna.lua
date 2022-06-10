@@ -24,14 +24,14 @@ spell_object.onMobSpawn = function(mob)
         [xi.magic.spell.AJIDO_MARUJIDO] = xi.trust.message_offset.TEAMWORK_2,
     })
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.BARRAGE,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.BARRAGE)
+   -- mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.BARRAGE,
+   --                     ai.r.JA, ai.s.SPECIFIC, xi.ja.BARRAGE)
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.SHARPSHOT,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.SHARPSHOT)
+   -- mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.SHARPSHOT,
+    --                    ai.r.JA, ai.s.SPECIFIC, xi.ja.SHARPSHOT)
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.DOUBLE_SHOT,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.DOUBLE_SHOT)
+   -- mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.DOUBLE_SHOT,
+     --                   ai.r.JA, ai.s.SPECIFIC, xi.ja.DOUBLE_SHOT)
 
     -- TODO: Stealth Shot not yet implemented
     -- mob:addSimpleGambit(ai.t.SELF, ai.c.HAS_TOP_ENMITY, 0,
