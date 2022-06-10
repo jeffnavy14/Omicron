@@ -933,6 +933,7 @@ INSERT INTO `item_usable` VALUES (5079,'scroll_of_foe_lullaby_ii',1,1,15,5,0,0,0
 INSERT INTO `item_usable` VALUES (5082,'scroll_of_cura_ii',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5083,'scroll_of_cura_iii',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5085,'scroll_of_regen_iv',1,1,11,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5086,'scroll_of_regen_v',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5087,'scroll_of_gain-str',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5088,'scroll_of_gain-dex',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5089,'scroll_of_gain-vit',1,1,11,5,0,0,0,0);
@@ -1933,6 +1934,7 @@ INSERT INTO `item_usable` VALUES (6568,'crepe_des_rois',1,1,28,1,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6569,'scroll_of_slow_ii',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6570,'scroll_of_paralyze_ii',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6571,'scroll_of_phalanx_ii',1,1,11,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6576,'turkey_with_rolanberry_sauce',1,1,28,0,0,0,0,0); -- TODO: verify animation from retail
 INSERT INTO `item_usable` VALUES (6601,'omelette_sandwich',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6602,'omelette_sandwich_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (10250,'moogle_suit',1,8,0,0,1,30,86400,0);
@@ -2330,6 +2332,7 @@ INSERT INTO `item_usable` VALUES (26271,'hi-elixir_tank',1,2,55,0,3,30,60,0);
 INSERT INTO `item_usable` VALUES (26272,'super_reraiser_tank',1,2,55,0,5,30,60,0);
 INSERT INTO `item_usable` VALUES (26517,'shadow_lord_shirt',1,8,79,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (26720,'sheep_cap_+1',1,2,55,0,1,30,86400,0);
+INSERT INTO `item_usable` VALUES (26955,'behemoth_suit_+1',1,2,55,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (27556,'echad_ring',1,3,76,0,1,5,7200,0);
 INSERT INTO `item_usable` VALUES (28540,'warp_ring',1,8,80,3,1,8,600,0);
 /*!40000 ALTER TABLE `item_usable` ENABLE KEYS */;

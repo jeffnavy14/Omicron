@@ -221,12 +221,6 @@ memcheck.out.*
 
 # Auto-generated files
 /src/common/version.cpp
-modules/omicron/sql/CatseyeXI/CatsEyeI-Gessho_Cushion.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-Custom_Trust_Changes.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-DisableLimbusMobLinks.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-DynamisJeuno_NM_Fix.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-MobLevelCorrection Single.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-Oupire.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI-Restore Pre-RMT Drops.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI_Buff_HNM_Levels.sql
-modules/omicron/sql/CatseyeXI/CatsEyeXI_Fomor_NMs.sql
+
+# Module init file
+modules/init.txt
