@@ -1,6 +1,7 @@
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1110";
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1046";
 DELETE FROM mob_skill_lists WHERE skill_list_id = "1109";
+DELETE FROM mob_skill_lists WHERE skill_list_id = "1130";
 UPDATE mob_pools SET mJob = 4 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET sJob = 8 WHERE poolid = "5983" AND `name` = 'balamor';
 UPDATE mob_pools SET cmbDelay = 100 WHERE poolid = "5983" AND `name` = 'balamor';
@@ -24,6 +25,11 @@ UPDATE mob_pools SET mJob = 3 WHERE poolid = "5999" AND `name` = 'monberaux';
 UPDATE mob_pools SET sJob = 5 WHERE poolid = "5999" AND `name` = 'monberaux';
 UPDATE mob_pools SET mJob = 6 WHERE poolid = "5994" AND `name` = 'aamr';
 UPDATE mob_pools SET sJob = 9 WHERE poolid = "5994" AND `name` = 'aamr';
+UPDATE mob_pools SET sJob = 19 WHERE poolid = "6015" AND `name` = 'mumor_ii';
+
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mumor_II',1130,2142);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mumor_II',1130,2144);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mumor_II',1130,2146);
 
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,102);      			 
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,935);    	

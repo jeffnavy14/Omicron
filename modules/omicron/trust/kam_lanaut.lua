@@ -52,4 +52,32 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
       trust:addStatusEffect(xi.effect.ENLIGHT, 50, 3, 0)
 end)
 
+m:addOverride(string.format("xi.globals.spells.trust.%s.onMobSpawn", trustToReplaceName), function(mob)
+    for _, member in ipairs(mob:getMaster():getParty()) do
+        if member:isPC() then
+            member:PrintToPlayer("This world is nothing but a grave and you are the maggots that squirm through the rotting corpse.", 4, "Kam'lanaut") -- 4: MESSAGE_PARTY
+        end
+    end
+end)
+
+m:addOverride(string.format("xi.globals.spells.trust.%s.onMobDespawn", trustToReplaceName), function(mob)
+    local masterId = mob:getLocalVar("MASTER_ID")
+    local master = GetPlayerByID(masterId)
+    for _, member in ipairs(master:getParty()) do
+        if member:isPC() then
+            member:PrintToPlayer("*claps slowly* Quite an interesting show you put on.", 4, "Kam'lanaut") -- 4: MESSAGE_PARTY
+        end
+    end
+end)
+
+m:addOverride(string.format("xi.globals.spells.trust.%s.onMobDeath", trustToReplaceName), function(mob)
+    local masterId = mob:getLocalVar("MASTER_ID")
+    local master = GetPlayerByID(masterId)
+    for _, member in ipairs(master:getParty()) do
+        if member:isPC() then
+            member:PrintToPlayer("Etch this moment, now, deep in your hearts and minds! For victory belongs to us, the children of Altana!", 4, "Kam'lanaut") -- 4: MESSAGE_PARTY
+	  end
+    end
+end)
+
 return m
