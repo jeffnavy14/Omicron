@@ -5,7 +5,7 @@ require("scripts/zones/Behemoths_Dominion/Zone")
 local m = Module:new("KBPop")
 m:setEnabled(true)
 
-m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
+m:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(zone)
        super(zone)
 
 local kbpop = zone:insertDynamicEntity({
@@ -24,3 +24,5 @@ local kbpop = zone:insertDynamicEntity({
         end
 	end,
 	})
+
+return m
