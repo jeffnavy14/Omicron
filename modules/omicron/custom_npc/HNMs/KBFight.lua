@@ -9,7 +9,8 @@ m:addOverride("xi.zones.GM_Home.Zone.onInitialize", function(zone)
 
     if GetServerVariable("EschanKB") > 1 then
        SetServerVariable("EschanKB", 0)
-    end)
+	end
+end)
 
 
 m:addOverride("xi.zones.Behemoths_Dominion.Zone.onZoneTick", function(zone, mob)

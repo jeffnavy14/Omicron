@@ -20,7 +20,7 @@ local kbpop = zone:insertDynamicEntity({
 
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
-		   SetServerVariable("[EschanNid]", 1)
+		   SetServerVariable("EschanNid", 1)
         end
 	end,
 	})
@@ -37,9 +37,11 @@ local kbpop = zone:insertDynamicEntity({
 
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
-		   SetServerVariable("[EschanFaf]", 1)
+		   SetServerVariable("EschanFaf", 1)
         end
 	end,
 	})
+
+end)
 
 return m

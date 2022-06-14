@@ -9,11 +9,12 @@ m:addOverride("xi.zones.GM_Home.Zone.onInitialize", function(zone)
 
     if GetServerVariable("EschanNid") > 1 then
        SetServerVariable("EschanNid", 0)
-
+    end
     if GetServerVariable("EschanFaf") > 1 then
        SetServerVariable("EschanFaf", 0)
+    end
 
-    end)
+ end)
 
 
 m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
@@ -161,7 +162,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
 	      end
 
-
+	
 end)
 
 return m

@@ -24,5 +24,6 @@ local kbpop = zone:insertDynamicEntity({
         end
 	end,
 	})
+end)
 
 return m
