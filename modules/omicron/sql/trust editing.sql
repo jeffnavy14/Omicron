@@ -26,6 +26,25 @@ UPDATE mob_pools SET sJob = 5 WHERE poolid = "5999" AND `name` = 'monberaux';
 UPDATE mob_pools SET mJob = 6 WHERE poolid = "5994" AND `name` = 'aamr';
 UPDATE mob_pools SET sJob = 9 WHERE poolid = "5994" AND `name` = 'aamr';
 UPDATE mob_pools SET sJob = 19 WHERE poolid = "6015" AND `name` = 'mumor_ii';
+UPDATE mob_pools SET sJob = 8 WHERE poolid = "5960" AND `name` = 'rughadjeen';
+
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1127);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1128);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1129);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1130);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1131);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1133);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rughadjeen',1075,1134);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,1,5,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,2,17,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,3,30,255);  
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,4,55,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,5,75,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,6,95,255); 
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,148,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,153,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,168,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Rughadjeen',373,367,1,255);
 
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mumor_II',1130,2142);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mumor_II',1130,2144);
