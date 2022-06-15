@@ -7,11 +7,11 @@ local m = Module:new("FafHoggFight")
 m:addOverride("xi.zones.GM_Home.Zone.onInitialize", function(zone)
     super(zone)
 
-    if GetServerVariable("EschanNid") > 1 then
-       SetServerVariable("EschanNid", 0)
+    if GetServerVariable("[EschanNid]") > 1 then
+       SetServerVariable("[EschanNid]", 0)
     end
-    if GetServerVariable("EschanFaf") > 1 then
-       SetServerVariable("EschanFaf", 0)
+    if GetServerVariable("[EschanFaf]") > 1 then
+       SetServerVariable("[EschanFaf]", 0)
     end
 
  end)
@@ -21,7 +21,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
     super(zone)
 
     if
-        GetServerVariable("EschanNid") == 1
+        GetServerVariable("[EschanNid]") == 1
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -34,7 +34,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 groupZoneId = 154,
 
         onMobSpawn = function(mob)
-		    SetServerVariable("EschanNid", 0)
+		    SetServerVariable("[EschanNid]", 0)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
@@ -61,9 +61,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 mob:setMod(xi.mod.CHR, 120)
                 mob:setMod(xi.mod.AGI, 120)
                 mob:setMod(xi.mod.DEX, 140)
-                mob:setMod(xi.mod.MATT, 250)
-                mob:setMod(xi.mod.DEFP, 0)
-                mob:setMod(xi.mod.RATTP, 0)
+                mob:setMod(xi.mod.MATT, 200)
                 mob:setMod(xi.mod.DEFP, 475)
                 mob:setMod(xi.mod.RATTP, 475)
                 mob:setMod(xi.mod.ACC, 1000)
@@ -85,7 +83,6 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 mob:setMod(xi.mod.PARALYZERES, 100)
                 mob:setMod(xi.mod.LULLABYRES, 1000)
                 mob:setMod(xi.mod.FASTCAST, 100)
-                mob:setMod(xi.mod.ALL_WSDMG_ALL_HITS, 25)
                 mob:addStatusEffect(xi.effect.REGEN, 50, 3, 0)
                 mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
 	      end
@@ -95,7 +92,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
 
 
     if
-        GetServerVariable("EschanFaf") == 1
+        GetServerVariable("[EschanFaf]") == 1
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -108,7 +105,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 groupZoneId = 154,
 
         onMobSpawn = function(mob)
-		    SetServerVariable("EschanFaf", 0)
+		    SetServerVariable("[EschanFaf]", 0)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
@@ -136,8 +133,6 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 mob:setMod(xi.mod.AGI, 120)
                 mob:setMod(xi.mod.DEX, 140)
                 mob:setMod(xi.mod.MATT, 250)
-                mob:setMod(xi.mod.DEFP, 0)
-                mob:setMod(xi.mod.RATTP, 0)
                 mob:setMod(xi.mod.DEFP, 475)
                 mob:setMod(xi.mod.RATTP, 475)
                 mob:setMod(xi.mod.ACC, 1000)
@@ -159,7 +154,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
                 mob:setMod(xi.mod.PARALYZERES, 100)
                 mob:setMod(xi.mod.LULLABYRES, 1000)
                 mob:setMod(xi.mod.FASTCAST, 100)
-                mob:setMod(xi.mod.ALL_WSDMG_ALL_HITS, 25)
+                mob:setMod(xi.mod.ALL_WSDMG_ALL_HITS, 5)
                 mob:addStatusEffect(xi.effect.REGEN, 50, 3, 0)
                 mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
 	      end
