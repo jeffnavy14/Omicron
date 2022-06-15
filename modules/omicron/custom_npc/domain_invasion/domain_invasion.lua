@@ -515,7 +515,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                 
                 for i, participant in pairs(players) do
                     if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
-                        participant:delStatusEffect(xi.effect.ELVORSEAL)
                         participant:addCurrency("escha_beads", reward)
                         participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
                     else
@@ -614,7 +613,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                 
                 for i, participant in pairs(players) do
                     if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
-                        participant:delStatusEffect(xi.effect.ELVORSEAL)
                         participant:addCurrency("escha_beads", reward)
                         participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
                     else
@@ -715,7 +713,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                 
                 for i, participant in pairs(players) do
                     if participant:hasStatusEffect(xi.effect.ELVORSEAL) then
-                        participant:delStatusEffect(xi.effect.ELVORSEAL)
                         participant:addCurrency("escha_beads", reward)
                         participant:PrintToPlayer(string.format("You've earned %s escha beads for your efforts in battle.", reward), xi.msg.channel.SYSTEM_3)
                     else

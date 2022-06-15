@@ -11,7 +11,7 @@ m:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(zone)
 local kbpop = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "King X",
+        name = "???",
 		look = 2445,
         x = -267.4073,
         y = -19.5450,
