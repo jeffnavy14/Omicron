@@ -22,7 +22,7 @@ function onTrigger(player)
 		player:addStatusEffect(xi.effect.DEDICATION, 250, 0, 14400, 0, 30000)
 		player:setMod(915, 1000)
 
-		-- Remove bonus mods..
+		-- Add bonus mods..
         player:addMod(xi.mod.RACC, 100)
         player:addMod(xi.mod.RATT, 100)
         player:addMod(xi.mod.ACC, 100)

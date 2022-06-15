@@ -26,13 +26,12 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
 
 
 	local power = trust:getMainLvl()
-      trust:addMod(xi.mod.MATT, power*255)
+      trust:addMod(xi.mod.MATT, power*25)
       trust:addMod(xi.mod.MACC, 1000)
-	trust:addMod(xi.mod.MDEF, power*255)
-	trust:addMod(xi.mod.DEF, power*255)
-      trust:addMod(xi.mod.ALL_WSDMG_ALL_HITS, power*255)
+	trust:addMod(xi.mod.MDEF, power*25)
+	trust:addMod(xi.mod.DEF, power*25)
+      trust:addMod(xi.mod.ALL_WSDMG_ALL_HITS, power*2)
 	trust:addMod(xi.mod.REFRESH, 3000)
-      trust:addMod(xi.mod.REGAIN, 3000)
       trust:addStatusEffect(xi.effect.CHAINSPELL)
 
 end)

@@ -161,6 +161,7 @@ m:addOverride("xi.globals.spells.trust.semih_lafihna.onSpellCast", function(cast
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 1, xi.effect.BARRAGE, ai.r.JA, ai.s.SPECIFIC, xi.ja.BARRAGE)
     trust:addSimpleGambit(ai.t.SELF, ai.c.HPP_LT, 1, xi.effect.SHARPSHOT, ai.r.JA, ai.s.SPECIFIC, xi.ja.SHARPSHOT)
     trust:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.DOUBLE_SHOT, ai.r.JA, ai.s.SPECIFIC, xi.ja.DOUBLE_SHOT)
+    mob:SetMobSkillAttack(1163)
 
     trust:SetAutoAttackEnabled(false)
 
@@ -172,9 +173,9 @@ local power = trust:getMainLvl()
 	trust:addMod(xi.mod.DEX, power*2)
 	trust:addMod(xi.mod.MDEF, power)
       trust:addMod(xi.mod.RACC, power*6)	
-	trust:addMod(xi.mod.ATT, 2222)
-	trust:addMod(xi.mod.RATT, 9999)
-      trust:addMod(xi.mod.RATTP, power*255)
+	trust:addMod(xi.mod.ATT, power*5)
+	trust:addMod(xi.mod.RATT, power*99)
+      trust:addMod(xi.mod.RATTP, power*25)
       trust:addMod(xi.mod.WSACC, power*3)
 end)
 
