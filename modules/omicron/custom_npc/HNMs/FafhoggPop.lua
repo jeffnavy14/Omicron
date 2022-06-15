@@ -11,7 +11,7 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onInitialize", function(zone)
 local kbpop = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "???",
+        name = "??",
 		look = 2445,
         x = 88.7748,
         y = 4,
