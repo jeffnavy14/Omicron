@@ -76,6 +76,7 @@ CZoneEntities::CZoneEntities(CZone* zone)
 : m_zone(zone)
 , m_Transport(nullptr)
 {
+    lastCharComputeTargId = 0;
 }
 
 CZoneEntities::~CZoneEntities() = default;
@@ -1353,6 +1354,11 @@ void CZoneEntities::ZoneServer(time_point tick, bool check_regions)
             {
                 CMobEntity* PCurrentMob = (CMobEntity*)PMobIt.second;
                 PCurrentMob->PEnmityContainer->Clear(PMob->id);
+            }
+
+            if (PMob->PParty)
+            {
+                PMob->PParty->RemoveMember(PMob);
             }
 
             entitiesToRelease.insert(PMob->targid);
