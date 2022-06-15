@@ -20,7 +20,7 @@ local kbpop = zone:insertDynamicEntity({
 
         onTrigger = function(player, npc)
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
-		   SetServerVariable("[EschanKB]", 1)
+		   SetServerVariable("EschanKB", 1)
         end
 	end,
 	})
