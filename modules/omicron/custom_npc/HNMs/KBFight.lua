@@ -41,12 +41,12 @@ m:addOverride("xi.zones.Behemoths_Dominion.Zone.onZoneTick", function(zone, mob)
 
 		mob:setMobMod(xi.mobMod.SKILL_LIST, 479)
             mob:setMobMod(xi.mobMod.SPELL_LIST, 126)
-		mob:setMobLevel(125)
             mob:hideHP(true)
 
         mob:setDropID(4055)
         mob:setSpawn(-271.3363, -19.3878, 61.8363, 50)
         mob:spawn()
+		    mob:setMobLevel(125)
 		    mob:setMod(xi.mod.DEF, 1400)
                 mob:setMod(xi.mod.MDEF, 1400)
                 mob:setMod(xi.mod.MEVA, 500)
