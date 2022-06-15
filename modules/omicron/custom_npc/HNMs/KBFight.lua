@@ -9,7 +9,8 @@ m:addOverride("xi.zones.GM_Home.Zone.onInitialize", function(zone)
 
     if GetServerVariable("EschanKB") > 1 then
        SetServerVariable("EschanKB", 0)
-    end)
+	end
+end)
 
 
 m:addOverride("xi.zones.Behemoths_Dominion.Zone.onZoneTick", function(zone, mob)
@@ -40,6 +41,7 @@ m:addOverride("xi.zones.Behemoths_Dominion.Zone.onZoneTick", function(zone, mob)
 
 		mob:setMobMod(xi.mobMod.SKILL_LIST, 479)
             mob:setMobMod(xi.mobMod.SPELL_LIST, 126)
+		mob:setMobLevel(125)
             mob:hideHP(true)
 
         mob:setDropID(4055)
@@ -61,7 +63,7 @@ m:addOverride("xi.zones.Behemoths_Dominion.Zone.onZoneTick", function(zone, mob)
                 mob:setMod(xi.mod.RATTP, 0)
                 mob:setMod(xi.mod.DEFP, 475)
                 mob:setMod(xi.mod.RATTP, 475)
-                mob:setMod(xi.mod.ACC, 100)
+                mob:setMod(xi.mod.ACC, 1000)
                 mob:setMod(xi.mod.DOUBLE_ATTACK, 15)
                 mob:setMod(xi.mod.EARTH_RES, 200)
                 mob:setMod(xi.mod.DARK_RES, 250)
