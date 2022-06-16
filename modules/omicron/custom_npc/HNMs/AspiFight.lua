@@ -26,8 +26,8 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
                 y = 0.1944,
                 z = -33.4813,
                 rotation = 50,
-                groupId = 10,
-                groupZoneId = 127,
+                groupId = 7,
+                groupZoneId = 128,
 
         onMobSpawn = function(mob)
 		    SetServerVariable("[EschanAspi]", 0)
