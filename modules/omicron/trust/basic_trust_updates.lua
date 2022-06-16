@@ -151,7 +151,12 @@ local power = trust:getMainLvl()
 end)
 
 m:addOverride("xi.globals.spells.trust.excenmille.onSpellCast", function(caster, target, spell)
+    local sandoriaFirstTrust = caster:getCharVar("SandoriaFirstTrust")
+    local zone = caster:getZoneID()
 
+    if sandoriaFirstTrust == 1 and (zone == xi.zone.WEST_RONFAURE or zone == xi.zone.EAST_RONFAURE) then
+        caster:setCharVar("SandoriaFirstTrust", 2)
+    end
     local trust = caster:spawnTrust(spell:getID())
 
 
