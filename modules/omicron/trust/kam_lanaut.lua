@@ -48,7 +48,7 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
 	trust:addMod(xi.mod.SHIELDBLOCKRATE, power)
 	trust:addMod(xi.mod.ABSORB_DMG_TO_MP, 10)
 	trust:addMod(xi.mod.FASTCAST, power/2)
-	trust:addMod(xi.mod.ENMITY, power*222)
+	trust:addMod(xi.mod.ENMITY, 2000)
       trust:addStatusEffect(xi.effect.ENLIGHT, 50, 3, 0)
 end)
 
