@@ -116,6 +116,15 @@ local power = trust:getMainLvl()
 end)
 
 m:addOverride("xi.globals.spells.trust.naji.onSpellCast", function(caster, target, spell)
+    local bastokFirstTrust = caster:getCharVar("Quest[1][92]Prog")
+    local zone = caster:getZoneID()
+
+    if
+        bastokFirstTrust == 1 and
+        (zone == xi.zone.NORTH_GUSTABERG or zone == xi.zone.SOUTH_GUSTABERG)
+    then
+        caster:setCharVar("Quest[1][92]Prog", 2)
+    end
 
     local trust = caster:spawnTrust(spell:getID())
 
@@ -142,7 +151,12 @@ local power = trust:getMainLvl()
 end)
 
 m:addOverride("xi.globals.spells.trust.excenmille.onSpellCast", function(caster, target, spell)
+    local sandoriaFirstTrust = caster:getCharVar("SandoriaFirstTrust")
+    local zone = caster:getZoneID()
 
+    if sandoriaFirstTrust == 1 and (zone == xi.zone.WEST_RONFAURE or zone == xi.zone.EAST_RONFAURE) then
+        caster:setCharVar("SandoriaFirstTrust", 2)
+    end
     local trust = caster:spawnTrust(spell:getID())
 
 
