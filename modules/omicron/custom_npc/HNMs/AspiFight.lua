@@ -17,7 +17,7 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
     super(zone)
 
     if
-        GetServerVariable("[EschanAspi]") == 1 and GetServerVariable("[NinjaTurtle]") == 0
+        GetServerVariable("[EschanAspi]") == 1 and player:setCharVar("[NinjaTurtle]") == 0
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -31,25 +31,24 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
 
         onMobSpawn = function(mob)
 		    SetServerVariable("[EschanAspi]", 0)
-		    SetServerVariable("[NinjaTurtle]", 1)
+		     player:setCharVar("[NinjaTurtle]", 1)
 		
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-		    SetServerVariable("[NinjaTurtle]", 0)
+		     player:setCharVar("[NinjaTurtle]", 0)
             end,
 			releaseIdOnDeath = true,
         })
 
-		mob:setMobMod(xi.mobMod.SKILL_LIST, 479)
-            mob:setMobMod(xi.mobMod.SPELL_LIST, 126)
             mob:hideHP(true)
 
-        mob:setDropID(4055)
+        mob:setDropID(4056)
         mob:setSpawn(-5.4115, 0.1944, -33.4813, 50)
         mob:spawn()
+		mob:setMobMod(xi.mobMod.SKILL_LIST, 479)
+            mob:setMobMod(xi.mobMod.SPELL_LIST, 126)
 		    mob:setMobLevel(125)
-                mob:setModelId(2382)
 		    mob:setMod(xi.mod.DEF, 2000)
                 mob:setMod(xi.mod.MDEF, 1100)
                 mob:setMod(xi.mod.MEVA, 900)
@@ -85,8 +84,6 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
                 mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
 	      end
 
-
-		 end
 end)
 
 return m
