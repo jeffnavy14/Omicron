@@ -54,7 +54,8 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
 	trust:addMod(xi.mod.DEF, power*3)
 	trust:addMod(xi.mod.MDEF, power*5)
 	trust:addMod(xi.mod.ENMITY_DOWN, power)
-	trust:addMod(xi.mod.REFRESH, 25)
+	trust:addMod(xi.mod.REFRESH, 75)
+	trust:addMod(xi.mod.CONSERVE_MP, 75)
       trust:addMod(xi.mod.CURE_CAST_TIME, power)
 	trust:addMod(xi.mod.CURE_POTENCY, power*2)
 
