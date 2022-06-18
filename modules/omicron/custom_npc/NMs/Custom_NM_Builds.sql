@@ -10,7 +10,18 @@ INSERT INTO `mob_family_system` VALUES (999,'Seven_Sins',78,'Supreme_Being',0,'U
 INSERT INTO `mob_groups` VALUES (99,9990,288,'Rage',1800,128,4059,51000,5001,124,125,0);
 INSERT INTO `mob_pools` VALUES (9990,'Rage','Rage',999,0x00008D0700000000000000000000000000000000,1,8,12,180,100,0,1,1,0,2,0,0,7,135,0,0,2,0,0,9000,9000);
 INSERT INTO `mob_resistances` VALUES (9000,'Rage',1,2,2,2,2500,2500,2500,2500,2500,2500,-2500,2500,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_family_mods` VALUES (999,8,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,8,150,0);
+INSERT INTO `mob_family_mods` VALUES (999,9,100,0);
+INSERT INTO `mob_family_mods` VALUES (999,10,150,0);
+INSERT INTO `mob_family_mods` VALUES (999,11,150,0);
+INSERT INTO `mob_family_mods` VALUES (999,12,100,0);
+INSERT INTO `mob_family_mods` VALUES (999,13,100,0);
+INSERT INTO `mob_family_mods` VALUES (999,14,100,0);
+INSERT INTO `mob_family_mods` VALUES (999,25,600,0);
+INSERT INTO `mob_family_mods` VALUES (999,1,500,0);
+INSERT INTO `mob_family_mods` VALUES (999,28,300,0);
+INSERT INTO `mob_family_mods` VALUES (999,23,400,0);
+INSERT INTO `mob_family_mods` VALUES (999,288,40,0);
 
 
 -- ------------------------------------------------------------
