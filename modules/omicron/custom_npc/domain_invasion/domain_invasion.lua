@@ -451,7 +451,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
         mob:setDropID(0) -- No loot!
         mob:spawn()
 	    SetServerVariable("[Domain]NMSpawned", 1)
-        mob:setMobLevel(135)
+        mob:setMobLevel(119)
         mob:addMod(xi.mod.CURE_CAST_TIME, 225)
         mob:addMod(xi.mod.CURE_POTENCY, 500)
         mob:setMod(xi.mod.MATT, 500)
