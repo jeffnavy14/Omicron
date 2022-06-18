@@ -491,7 +491,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
     then
         local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
-            name = "Kukki-Chebukki",
+            name = "Beelzebub",
+		look = 2399,
             x = -570,
             y = -228,
             z = 538,
@@ -503,7 +504,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned", 1)
-			 mob:setModelId(1444)
 
 			end,
             onMobFight = function(mob, target)
@@ -589,7 +589,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
     then
         local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
-            name = "Makki-Chebukki",
+            name = "Asmodeus",
+		look = 2210,
             x = -580,
             y = -228,
             z = 540,
@@ -601,7 +602,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned_2", 1)
-			mob:setModelId(1445)
             end,
             onMobFight = function(mob, target)
 
@@ -688,7 +688,8 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
     then
         local mob = zone:insertDynamicEntity({
             objtype = xi.objType.MOB,
-            name = "Cherukiki",
+            name = "Belphegor",
+		look = 2398,
             x = -590,
             y = -228,
             z = 540,
@@ -700,7 +701,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 			
             onMobSpawn = function(mob)
 		        SetServerVariable("[Domain]Addon_Spawned_3", 1)
-			mob:setModelId(1443)
                 -- Debug
                 printf("Test 3 Spawned")
 			end,
