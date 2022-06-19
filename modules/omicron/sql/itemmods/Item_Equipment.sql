@@ -7,6 +7,6 @@ INSERT INTO `item_equipment` VALUES (23797,'crepuscular_helm',99,119,10689,103,0
 INSERT INTO `item_equipment` VALUES (26107,'thrud_earring',99,119,10689,0,0,0,6114,0,0);
 INSERT INTO `item_equipment` VALUES (22042,'wizards_rod',99,119,1605656,845,0,0,3,0,0);
 INSERT INTO `item_equipment` VALUES (21585,'crepuscular_knife',99,0,333617,527,0,0,3,0,0);
-INSERT INTO `item_equipment` VALUES (21664,'zantetsuken_x',99,119,193,808,5,1,1,0,0);
+INSERT INTO `item_equipment` VALUES (21664,'zantetsuken_x',99,119,2097344,808,5,1,1,0,0);
 INSERT INTO `item_equipment` VALUES (19320,'lu_sh._f.rod+1',1,0,4194303,14,0,0,4,0,0);
 INSERT INTO `item_equipment` VALUES (19321,'ebisu_f.rod+1',1,0,4194303,15,0,0,4,0,0);
