@@ -1,28 +1,25 @@
 -- ------------------------------------------------------------
 -- Escha_ZiTah (Zone 288)
 -- ------------------------------------------------------------
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2790);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2789);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2788);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2787);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2786);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2785);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2784);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,1758);
+INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,2412);
+INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,3393);
+INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,281);
 INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,688);
-INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,692);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,177,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,178,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,365,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,359,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,357,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Rage',9000,496,1,255);
+INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,821);
+INSERT INTO `mob_skill_lists` VALUES ('Rage',9000,1110);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,176,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,148,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,365,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,359,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,357,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,496,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',486,219,1,255);
 INSERT INTO `mob_spawn_points` VALUES (17957500,'Rage','Rage',99,17.3168,0.8648,-2.1185,86);
 INSERT INTO `mob_spawn_mods` VALUES (17957500,1,18000,1); -- min gil 18000
 INSERT INTO `mob_spawn_mods` VALUES (17957500,2,30000,1); -- max gil 30000
 INSERT INTO `mob_family_system` VALUES (999,'Seven_Sins',78,'Supreme_Being',0,'Unclassified',3,100,128,11,6,6,6,6,6,6,6,6,6,6,6,0,3,0);
 INSERT INTO `mob_groups` VALUES (99,9990,288,'Rage',1800,128,4059,51000,5001,124,125,0);
-INSERT INTO `mob_pools` VALUES (9990,'Rage','Rage',999,0x00008D0700000000000000000000000000000000,1,8,12,180,100,0,1,1,0,2,0,0,7,135,0,0,9000,0,0,9000,9000);
+INSERT INTO `mob_pools` VALUES (9990,'Rage','Rage',999,0x00008D0700000000000000000000000000000000,4,5,12,180,100,0,1,1,0,2,0,0,7,135,0,0,486,0,0,9000,9000);
 INSERT INTO `mob_resistances` VALUES (9000,'Rage',1,2,2,2,2500,2500,2500,2500,2500,2500,-2500,2500,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_family_mods` VALUES (999,8,150,0);
 INSERT INTO `mob_family_mods` VALUES (999,9,100,0);
