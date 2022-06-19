@@ -8,7 +8,7 @@ m:setEnabled(true)
 m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onInitialize", function(zone)
        super(zone)
 
-local kbpop = zone:insertDynamicEntity({
+local aspi = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
         name = "???",
@@ -22,6 +22,11 @@ local kbpop = zone:insertDynamicEntity({
         if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
 		   SetServerVariable("[EschanAspi]", 1)
         end
+        if GetServerVariable("[EschanAspi]") == 2 then
+            player:PrintToPlayer("Mob is still active, please wait!")
+        elseif GetServerVariable("[EschanAspi]") == 0 then
+            SetServerVariable("[EschanAspi]", 1) 
+        end            
 	end,
 	})
 end)

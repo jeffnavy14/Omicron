@@ -43,12 +43,13 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
 			releaseIdOnDeath = true,
         })
 
-		mob:setMobMod(xi.mobMod.SKILL_LIST, 263)
+
             mob:hideHP(true)
 
         mob:setDropID(4056)
         mob:setSpawn(79.4922, 6.9080, 39.6400, 50)
         mob:spawn()
+		mob:setMobMod(xi.mobMod.SKILL_LIST, 263)
 	 		mob:setMobLevel(125)
 		    mob:setMod(xi.mod.DEF, 1100)
                 mob:setMod(xi.mod.MDEF, 1400)
@@ -113,12 +114,13 @@ m:addOverride("xi.zones.Dragons_Aery.Zone.onZoneTick", function(zone, mob)
 			releaseIdOnDeath = true,
         })
 
-		mob:setMobMod(xi.mobMod.SKILL_LIST, 260)
+
             mob:hideHP(true)
 
         mob:setDropID(4057)
         mob:setSpawn(79.4922, 6.9080, 39.6400, 50)
         mob:spawn()
+		mob:setMobMod(xi.mobMod.SKILL_LIST, 260)
 	 		mob:setMobLevel(125)
 		    mob:setMod(xi.mod.DEF, 1100)
                 mob:setMod(xi.mod.MDEF, 1400)
