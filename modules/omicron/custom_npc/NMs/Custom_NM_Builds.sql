@@ -119,19 +119,23 @@ INSERT INTO `mob_family_system` VALUES (999,'Seven_Sins',78,'Supreme_Being',0,'U
 
 
 -- MOB_FAMILY_MODS (familyid,modid,value,is_mob_mod)
-INSERT INTO `mob_family_mods` VALUES (999,8,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,9,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,10,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,11,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,12,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,13,150,0);
-INSERT INTO `mob_family_mods` VALUES (999,14,150,0);
+INSERT INTO `mob_family_mods` VALUES (999,8,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,9,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,10,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,11,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,12,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,13,200,0);
+INSERT INTO `mob_family_mods` VALUES (999,14,200,0);
 INSERT INTO `mob_family_mods` VALUES (999,25,600,0);
 INSERT INTO `mob_family_mods` VALUES (999,1,500,0);
-INSERT INTO `mob_family_mods` VALUES (999,28,300,0);
-INSERT INTO `mob_family_mods` VALUES (999,23,400,0);
+INSERT INTO `mob_family_mods` VALUES (999,28,400,0);
+INSERT INTO `mob_family_mods` VALUES (999,30,500,0);
+INSERT INTO `mob_family_mods` VALUES (999,31,500,0);
+INSERT INTO `mob_family_mods` VALUES (999,23,550,0);
 INSERT INTO `mob_family_mods` VALUES (999,166,-40,0);
 INSERT INTO `mob_family_mods` VALUES (999,908,30,0);
+INSERT INTO `mob_family_mods` VALUES (999,334,60,0);
+INSERT INTO `mob_family_mods` VALUES (999,432,35,0);
 
 
 
@@ -146,6 +150,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Deceit',9010,588);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,148,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,176,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,219,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,250,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,357,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,359,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,365,1,255);
