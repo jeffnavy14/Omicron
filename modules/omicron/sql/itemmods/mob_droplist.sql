@@ -66,3 +66,12 @@ INSERT INTO `mob_droplist` VALUES (4058,0,0,1000,8766,100);
 INSERT INTO `mob_droplist` VALUES (4058,0,0,1000,8776,100);
 INSERT INTO `mob_droplist` VALUES (4058,0,0,1000,8783,100);
 -- Rage Drop List (4059)
+-- Pride Drop List (4060)
+-- Wrath Drop List (4061)
+-- Envy Drop List (4062)
+-- Lust Drop List (4063)
+-- Greed Drop List (4064)
+-- Fear Drop List (4065)
+-- Gluttony Drop List (4066)
+-- Sloth Drop List (4067)
+-- Deceit Drop List (4068)
