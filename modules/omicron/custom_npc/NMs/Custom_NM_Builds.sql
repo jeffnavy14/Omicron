@@ -11,17 +11,17 @@ INSERT INTO `mob_spawn_points` VALUES (17957504,'Deceit','Deceit',95,17.3768,0.8
 -- ------------------------------------------------------------
 -- Escha_RuAun (Zone 289)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (17962500,'Envy','Envy',99,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17962501,'Lust','Lust',98,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17962502,'Greed','Greed',97,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17962503,'Deceit','Deceit',95,17.3368,0.8648,-2.1185,86);
+INSERT INTO `mob_spawn_points` VALUES (17962500,'Envy','Envy',99,-6.1596,-34.0001,-453.8906,86);
+INSERT INTO `mob_spawn_points` VALUES (17962501,'Lust','Lust',98,1.1596,-34.0001,-453.8906,86);
+INSERT INTO `mob_spawn_points` VALUES (17962502,'Greed','Greed',97,8.1596,-34.0001,-453.8906,86);
+INSERT INTO `mob_spawn_points` VALUES (17962503,'Deceit','Deceit',95,1.0496,-37.0849,-443.0017,86);
 
 -- ------------------------------------------------------------
 -- Reisenjima (Zone 291)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (17970000,'Gluttony','Gluttony',98,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17970001,'Fear','Fear',99,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',97,17.3368,0.8648,-2.1185,86);
+INSERT INTO `mob_spawn_points` VALUES (17970000,'Gluttony','Gluttony',98,-487.3272,-21.7547,-450.7563,86);
+INSERT INTO `mob_spawn_points` VALUES (17970001,'Fear','Fear',99,-492.3272,-21.7547,-450.7563,86);
+INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',97,-498.3272,-21.7547,-450.7563,86);
 INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',95,17.3368,0.8648,-2.1185,86);
 
 
