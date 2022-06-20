@@ -24,7 +24,9 @@ spell_object.onSpellCast = function(caster, target, spell)
     params.bonus = 0
     params.effect = xi.effect.LULLABY
     local resm = applyResistanceEffect(caster, target, spell, params)
-
+	if target:isNM() then
+   	  return 0
+		end
     if resm < 0.5 then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST) -- resist message
     else
