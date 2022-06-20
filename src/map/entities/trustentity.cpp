@@ -34,20 +34,23 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "../mob_spell_container.h"
 #include "../mob_spell_list.h"
 #include "../packets/char_health.h"
+#include "../packets/entity_set_name.h"
 #include "../packets/entity_update.h"
-#include "../packets/trust_sync.h"
 #include "../recast_container.h"
 #include "../status_effect_container.h"
 #include "../utils/battleutils.h"
 #include "../utils/trustutils.h"
 
 CTrustEntity::CTrustEntity(CCharEntity* PChar)
+: CMobEntity()
 {
     objtype        = TYPE_TRUST;
     m_EcoSystem    = ECOSYSTEM::UNCLASSIFIED;
     allegiance     = ALLEGIANCE_TYPE::PLAYER;
     m_MobSkillList = 0;
     PMaster        = PChar;
+    m_MovementType = MELEE_RANGE;
+
     PAI            = std::make_unique<CAIContainer>(this, std::make_unique<CPathFind>(this), std::make_unique<CTrustController>(PChar, this),
                                          std::make_unique<CTargetFind>(this));
 }
@@ -55,7 +58,7 @@ CTrustEntity::CTrustEntity(CCharEntity* PChar)
 void CTrustEntity::PostTick()
 {
     // NOTE: This is purposefully calling CBattleEntity's impl.
-    // TODO: Calling a grand-parent's impl. of an overrideden function is bad
+    // TODO: Calling a grand-parent's impl. of an overridden function is bad
     CBattleEntity::PostTick();
     std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
     if (loc.zone && updatemask && status != STATUS_TYPE::DISAPPEAR && now > m_nextUpdateTimer)
@@ -91,18 +94,18 @@ void CTrustEntity::Die()
     ((CCharEntity*)PMaster)->RemoveTrust(this);
 
     // NOTE: This is purposefully calling CBattleEntity's impl.
-    // TODO: Calling a grand-parent's impl. of an overrideden function is bad
+    // TODO: Calling a grand-parent's impl. of an overridden function is bad
     CBattleEntity::Die();
 }
 
 void CTrustEntity::Spawn()
 {
     // NOTE: This is purposefully calling CBattleEntity's impl.
-    // TODO: Calling a grand-parent's impl. of an overrideden function is bad
+    // TODO: Calling a grand-parent's impl. of an overridden function is bad
     // we need to skip CMobEntity's spawn because it calculates stats (and our stats are already calculated)
     CBattleEntity::Spawn();
     luautils::OnMobSpawn(this);
-    ((CCharEntity*)PMaster)->pushPacket(new CTrustSyncPacket((CCharEntity*)PMaster, this));
+    ((CCharEntity*)PMaster)->pushPacket(new CEntitySetNamePacket(this));
 }
 
 void CTrustEntity::OnAbility(CAbilityState& state, action_t& action)
@@ -483,7 +486,7 @@ void CTrustEntity::OnDespawn(CDespawnState& /*unused*/)
 void CTrustEntity::OnCastFinished(CMagicState& state, action_t& action)
 {
     // NOTE: This is purposefully calling CBattleEntity's impl.
-    // TODO: Calling a grand-parent's impl. of an overrideden function is bad
+    // TODO: Calling a grand-parent's impl. of an overridden function is bad
     CBattleEntity::OnCastFinished(state, action);
 
     auto* PSpell = state.GetSpell();
@@ -499,7 +502,7 @@ void CTrustEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 void CTrustEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& action)
 {
     // NOTE: This is purposefully calling CBattleEntity's impl.
-    // TODO: Calling a grand-parent's impl. of an overrideden function is bad
+    // TODO: Calling a grand-parent's impl. of an overridden function is bad
     CBattleEntity::OnWeaponSkillFinished(state, action);
 
     auto* PWeaponSkill  = state.GetSkill();
@@ -579,5 +582,18 @@ void CTrustEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& act
                 }
             }
         }
+    }
+    else
+    {
+        actionList_t& actionList     = action.getNewActionList();
+        actionList.ActionTargetID    = PBattleTarget->id;
+        action.actiontype            = ACTION_MAGIC_FINISH; // all "too far" messages use cat 4
+
+        actionTarget_t& actionTarget = actionList.getNewActionTarget();
+        actionTarget.animation       = 0x1FC; // seems hardcoded, 2 bits away from 0x1FF.
+        actionTarget.messageID       = MSGBASIC_TOO_FAR_AWAY;
+
+        actionTarget.speceffect      = SPECEFFECT::NONE; // It seems most mobs use NONE, but player-like models use BLOOD for their weaponskills
+                                                         // TODO: figure out a good way to differentiate between the two. There does not seem to be a functional difference.
     }
 }

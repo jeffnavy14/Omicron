@@ -98,6 +98,7 @@ CCharEntity::CCharEntity()
     gotMessage = false;
     m_Locked   = false;
 
+    accid = 0;
     m_GMlevel    = 0;
     m_isGMHidden = false;
 
@@ -127,15 +128,9 @@ CCharEntity::CCharEntity()
     m_Wardrobe8  = std::make_unique<CItemContainer>(LOC_WARDROBE8);
     m_RecycleBin = std::make_unique<CItemContainer>(LOC_RECYCLEBIN);
 
-    memset(&jobs, 0, sizeof(jobs));
     keys = {};
     memset(&equip, 0, sizeof(equip));
     memset(&equipLoc, 0, sizeof(equipLoc));
-    memset(&RealSkills, 0, sizeof(RealSkills));
-    memset(&expChain, 0, sizeof(expChain));
-    memset(&capacityChain, 0, sizeof(capacityChain));
-    memset(&nameflags, 0, sizeof(nameflags));
-    memset(&menuConfigFlags, 0, sizeof(menuConfigFlags));
 
     m_SpellList = {};
     memset(&m_LearnedAbilities, 0, sizeof(m_LearnedAbilities));
@@ -151,14 +146,7 @@ CCharEntity::CCharEntity()
 
     memset(&m_questLog, 0, sizeof(m_questLog));
     memset(&m_missionLog, 0, sizeof(m_missionLog));
-    memset(&m_assaultLog, 0, sizeof(m_assaultLog));
-    memset(&m_campaignLog, 0, sizeof(m_campaignLog));
-    memset(&m_eminenceLog, 0, sizeof(m_eminenceLog));
     m_eminenceCache.activemap.reset();
-
-    memset(&teleport, 0, sizeof(teleport));
-    memset(&teleport.homepoint.menu, -1, sizeof(teleport.homepoint.menu));
-    memset(&teleport.survival.menu, -1, sizeof(teleport.survival.menu));
 
     for (uint8 i = 0; i <= 3; ++i)
     {
@@ -197,7 +185,11 @@ CCharEntity::CCharEntity()
     m_StatsDebilitation = 0;
     m_EquipSwap         = false;
 
-    MeritMode = false;
+    MeritMode    = false;
+    PMeritPoints = nullptr;
+    PJobPoints   = nullptr;
+
+    PGuildShop   = nullptr;
 
     m_isStyleLocked = false;
     m_isBlockingAid = false;
@@ -243,6 +235,18 @@ CCharEntity::CCharEntity()
     nextFishTime = 0;
     fishingToken = 0;
     hookDelay    = 13;
+
+    profile     = {};
+    search      = {};
+    std::memset(&styleItems, 0, sizeof(styleItems));
+
+    m_StartActionPos   = {};
+    m_ActionOffsetPos  = {};
+    m_previousLocation = {};
+
+    m_mentorUnlocked   = false;
+    m_jobMasterDisplay = false;
+    m_EffectsChanged   = false;
 }
 
 CCharEntity::~CCharEntity()
@@ -262,9 +266,10 @@ CCharEntity::~CCharEntity()
     delete CraftContainer;
     delete PMeritPoints;
     delete PJobPoints;
-
+    PGuildShop = nullptr;
     delete eventPreparation;
     delete currentEvent;
+
     while (!eventQueue.empty())
     {
         auto head = eventQueue.front();
@@ -959,6 +964,8 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
     PLatentEffectContainer->CheckLatentsTP();
 
     SLOTTYPE damslot = SLOT_MAIN;
+    bool isRangedWS = (PWeaponSkill->getID() >= 192 && PWeaponSkill->getID() <= 218);
+
     if (distance(loc.p, PBattleTarget->loc.p) - PBattleTarget->m_ModelRadius <= PWeaponSkill->getRange())
     {
         if (PWeaponSkill->getID() >= 192 && PWeaponSkill->getID() <= 221)
@@ -1013,7 +1020,7 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
 
             if (primary)
             {
-                if (PWeaponSkill->getID() >= 192 && PWeaponSkill->getID() <= 218)
+                if (isRangedWS)
                 {
                     uint16 recycleChance = getMod(Mod::RECYCLE) + PMeritPoints->GetMeritValue(MERIT_RECYCLE, this) + this->PJobPoints->GetJobPointValue(JP_AMMO_CONSUMPTION);
 
@@ -1078,7 +1085,23 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
     }
     else
     {
-        loc.zone->PushPacket(this, CHAR_INRANGE_SELF, new CMessageBasicPacket(this, this, 0, 0, MSGBASIC_TOO_FAR_AWAY));
+        actionList_t& actionList     = action.getNewActionList();
+        actionList.ActionTargetID    = PBattleTarget->id;
+        action.actiontype            = ACTION_MAGIC_FINISH; // all "Too Far" messages use cat 4
+
+        actionTarget_t& actionTarget = actionList.getNewActionTarget();
+        actionTarget.animation       = 0x1FC; // Seems hardcoded, two bits away from 0x1FF
+        actionTarget.messageID       = MSGBASIC_TOO_FAR_AWAY;
+
+        // While it doesn't seem that speceffect is actually used at all in this "do nothing" animation, this is here for accuracy.
+        if (isRangedWS) // Ranged WS seem to stay 0 on Reaction
+        {
+            actionTarget.speceffect = SPECEFFECT::NONE;
+        }
+        else // Always 2 observed on various melee weapons
+        {
+            actionTarget.speceffect = SPECEFFECT::BLOOD;
+        }
     }
 }
 
@@ -1609,7 +1632,12 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
 bool CCharEntity::IsMobOwner(CBattleEntity* PBattleTarget)
 {
     TracyZoneScoped;
-    XI_DEBUG_BREAK_IF(PBattleTarget == nullptr);
+
+    if (PBattleTarget == nullptr)
+    {
+        ShowWarning("CCharEntity::IsMobOwner() - PBattleTarget was null.")
+        return false;
+    }
 
     if (PBattleTarget->m_OwnerID.id == 0 || PBattleTarget->m_OwnerID.id == this->id || PBattleTarget->objtype == TYPE_PC)
     {
