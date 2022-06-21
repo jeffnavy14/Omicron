@@ -1,8 +1,0 @@
-
-m:addOverride("xi.globals.scripts.zone.mobs.Wrath.onmobfight", function(mob, target)
-
-
-
-
-Phase 2 Look
-0x0000710A00000000000000000000000000000000
