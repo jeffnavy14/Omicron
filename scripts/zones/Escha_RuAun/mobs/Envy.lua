@@ -46,14 +46,14 @@ end
 		mob:addMod(xi.mod.ATT, 40)
 		mob:addMod(xi.mod.DEF, 40)
 		mob:addMod(xi.mod.MDEF, 40)
-	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 0)
+	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
 		mob:addStatusEffect(xi.effect.FAST_CAST, 120)
         mob:setLocalVar("twoHours", 3)
 	end
 
 	if
 		not mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and twoHours == 3 then
-	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
+	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 10)
 	end
 end
 
