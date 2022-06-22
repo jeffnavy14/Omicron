@@ -1,64 +1,62 @@
-
-
-Rage
-Bztavian wing 3981
-Bztavian stinger  3980
-plovid flesh 9003
-gabbrath horn 3977
-penelope cloth 3544
+RAGE
+Bztavian wing 
+Bztavian stinger  
+plovid flesh 
+gabbrath horn 
+penelope cloth 
 9110
 9105
 9117
-22056*
+22056
 
-Fear
+FEAR
 Bztavian wing 
-Cehuetzi claw 8752
-malatrix shard 8992
-pitriv thread 8976
+Cehuetzi claw 
+malatrix shard 
+pitriv thread 
 penelope cloth
 9125
 9115
 9127
-21083*
+21083
 
-Greed
+GREED
 Cehuetzi claw 
-rockfin tooth 3979
-abyssdiver feather 8981
+rockfin tooth 
+abyssdiver feather 
 plovid flesh
-sealord leather 3548
+sealord leather 
 9120
 9112
 9107
-21022*
+21022
 
 
-Pride
-moonbow leather (rare) 4079
-ruthenium ingot (vrare) 9250
+PRIDE
+moonbow leather 
+ruthenium ingot 
 Bztavian stinger  
-Cehuetzi pelt 8754
+Cehuetzi pelt 
 pitriv thread
 gabbrath horn
 9122
 9109
-20982*
+20982
 
-Envy
-ruthenium ingot (rare)
-moonbow leather (rare)
+ENVY
+ruthenium ingot 
+moonbow leather 
 Cehuetzi pelt 
-Yggdreant root 4015
+Yggdreant root 
 abyssdiver feather
-arthro shell 8983
+arthro shell 
 9114
 9119
-20932*
+20932
 
-Sloth
-ruthenium ingot (rare)
-moonbow leather (rare)
+SLOTH
+ruthenium ingot 
+moonbow leather 
 rockfin tooth
 Yggdreant root 
 malatrix shard
@@ -67,35 +65,35 @@ sealord leather
 9118
 9129
 9124
-20889*
+20889
 
 
-Wrath
-Relic Adaman (Vrare) 9845
-khoma cloth (Vrare) 9252
-Dark Matter (Vrare) 9062
+WRATH
+Relic Adaman  
+khoma cloth 
+Dark Matter
 9111
 9106
 9128
-20678*
-21687*
+20678
+21687
 
-Lust
-Relic Adaman (Vrare)
-khoma cloth (Vrare)
-Dark Matter (Vrare)
+LUST
+Relic Adaman 
+khoma cloth 
+Dark Matter 
 9126
 9116
 9123
-21567*
-21747*
+21567
+21747
 
-Gluttony
-Relic Adaman (Vrare)
-khoma cloth (Vrare)
-Dark Matter (Vrare)
+GLUTTONY
+Relic Adaman 
+khoma cloth
+Dark Matter 
 9121
 9113
 9108
-20506*
-21755*
+20506
+21755
