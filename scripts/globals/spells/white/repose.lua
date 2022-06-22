@@ -20,6 +20,9 @@ spell_object.onSpellCast = function(caster, target, spell)
     params.bonus = 0
     params.effect = xi.effect.SLEEP_II
     local resist = applyResistanceEffect(caster, target, spell, params)
+		if target:isNM() then
+   	  return 0
+		end
     if (resist < 0.5) then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST) -- Resist
         return xi.effect.SLEEP_II

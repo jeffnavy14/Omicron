@@ -2407,7 +2407,7 @@ INSERT INTO `mob_skills` VALUES (2576,1803,'mercurial_strike',1,7.0,2000,1500,4,
 INSERT INTO `mob_skills` VALUES (2577,1804,'mercurial_strike',1,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (2578,1805,'colossal_slam',1,15.0,2000,3000,4,0,0,1,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2579,2323,'phaeosynthesis',0,7.0,2000,1500,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (2580,2324,'pandoras_curse',0,7.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (2580,2324,'pandoras_curse',0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2581,2325,'pandoras_gift',0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2582,2326,'.',0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2583,2327,'.',0,7.0,2000,1500,4,0,0,0,0,0,0);
