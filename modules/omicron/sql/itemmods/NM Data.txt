@@ -9,6 +9,7 @@ penelope cloth 3544
 9110
 9105
 9117
+22056*
 
 Fear
 Bztavian wing 
@@ -19,6 +20,7 @@ penelope cloth
 9125
 9115
 9127
+21083*
 
 Greed
 Cehuetzi claw 
@@ -29,6 +31,7 @@ sealord leather 3548
 9120
 9112
 9107
+21022*
 
 
 Pride
@@ -40,6 +43,7 @@ pitriv thread
 gabbrath horn
 9122
 9109
+20982*
 
 Envy
 ruthenium ingot (rare)
@@ -50,6 +54,7 @@ abyssdiver feather
 arthro shell 8983
 9114
 9119
+20932*
 
 Sloth
 ruthenium ingot (rare)
@@ -62,6 +67,7 @@ sealord leather
 9118
 9129
 9124
+20889*
 
 
 Wrath
@@ -71,6 +77,8 @@ Dark Matter (Vrare) 9062
 9111
 9106
 9128
+20678*
+21687*
 
 Lust
 Relic Adaman (Vrare)
@@ -79,7 +87,8 @@ Dark Matter (Vrare)
 9126
 9116
 9123
-
+21567*
+21747*
 
 Gluttony
 Relic Adaman (Vrare)
@@ -88,3 +97,5 @@ Dark Matter (Vrare)
 9121
 9113
 9108
+20506*
+21755*
