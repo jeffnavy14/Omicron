@@ -1,51 +1,90 @@
-2445 (portals?)
 
-NM Skin IDs:
-2433
-2091
-2399
-2389
-2210
-2211
-2092
-1846
-1796
-2070
-2106
-2147
-2111 
-1801
-1933
 
-Misc Crafting Drops:
-sealord leather
-penelope cloth
-moonbow leather (rare)
-arthro shell
-pitriv thread
-ruthenium ingot (rare)
-abyssdiver feather
-malatrix shard
-Dark Matter (Vrare)
-gabbrath horn
-plovid flesh
-khoma cloth (Vrare)
-Bztavian stinger 
-Yggdreant root 
-Relic Adaman (Vrare)
-Cehuetzi pelt 
-rockfin tooth
-Cehuetzi claw 
+Rage
+Bztavian wing 3981
+Bztavian stinger  3980
+plovid flesh 9003
+gabbrath horn 3977
+penelope cloth 3544
+9110
+9105
+9117
+
+Fear
 Bztavian wing 
+Cehuetzi claw 8752
+malatrix shard 8992
+pitriv thread 8976
+penelope cloth
+9125
+9115
+9127
+
+Greed
+Cehuetzi claw 
+rockfin tooth 3979
+abyssdiver feather 8981
+plovid flesh
+sealord leather 3548
+9120
+9112
+9107
 
 
-ABJURATIONS:
-Always in ID order Head+4
-Arean 9110
-Cronian 9105
-Cyllenian 9125
-Jovian 9115
-Venerian 9120
+Pride
+moonbow leather (rare) 4079
+ruthenium ingot (vrare) 9250
+Bztavian stinger  
+Cehuetzi pelt 8754
+pitriv thread
+gabbrath horn
+9122
+9109
+
+Envy
+ruthenium ingot (rare)
+moonbow leather (rare)
+Cehuetzi pelt 
+Yggdreant root 4015
+abyssdiver feather
+arthro shell 8983
+9114
+9119
+
+Sloth
+ruthenium ingot (rare)
+moonbow leather (rare)
+rockfin tooth
+Yggdreant root 
+malatrix shard
+arthro shell
+sealord leather
+9118
+9129
+9124
 
 
+Wrath
+Relic Adaman (Vrare) 9845
+khoma cloth (Vrare) 9252
+Dark Matter (Vrare) 9062
+9111
+9106
+9128
 
+Lust
+Relic Adaman (Vrare)
+khoma cloth (Vrare)
+Dark Matter (Vrare)
+9126
+9116
+9123
+
+
+Gluttony
+Relic Adaman (Vrare)
+khoma cloth (Vrare)
+Dark Matter (Vrare)
+9121
+9113
+9108
