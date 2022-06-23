@@ -235,7 +235,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
                 y = -70.298,
                 z = 409.665,
                 rotation = 50,
-                groupId = 78,
+                groupId = 80,
                 groupZoneId = 289,
 
             onMobSpawn = function(mob)
