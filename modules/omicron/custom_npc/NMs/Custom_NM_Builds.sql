@@ -142,15 +142,16 @@ INSERT INTO `mob_family_mods` VALUES (999,25,600,0);
 INSERT INTO `mob_family_mods` VALUES (999,1,500,0);
 INSERT INTO `mob_family_mods` VALUES (999,68,350,0);
 INSERT INTO `mob_family_mods` VALUES (999,28,330,0);
-INSERT INTO `mob_family_mods` VALUES (999,29,350,0);
+INSERT INTO `mob_family_mods` VALUES (999,163,7000,0);
+INSERT INTO `mob_family_mods` VALUES (999,29,100,0);
 INSERT INTO `mob_family_mods` VALUES (999,30,500,0);
-INSERT INTO `mob_family_mods` VALUES (999,31,500,0);
+INSERT INTO `mob_family_mods` VALUES (999,31,300,0);
 INSERT INTO `mob_family_mods` VALUES (999,23,550,0);
 INSERT INTO `mob_family_mods` VALUES (999,166,-40,0);
 INSERT INTO `mob_family_mods` VALUES (999,908,30,0);
 INSERT INTO `mob_family_mods` VALUES (999,334,60,0);
 INSERT INTO `mob_family_mods` VALUES (999,432,35,0);
-INSERT INTO `mob_family_mods` VALUES (999,244,1000,0);
+INSERT INTO `mob_family_mods` VALUES (999,244,800,0);
 
 
 
