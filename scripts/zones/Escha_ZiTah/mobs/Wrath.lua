@@ -9,10 +9,12 @@ local entity = {}
 		mob:setModelId(2674)
     mob:setLocalVar("twoHourPer", 50)
     mob:setLocalVar("canTwoHour", 0)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
     	mob:setLocalVar("gigaflare", 0)
 	mob:setLocalVar("phase", 0)
 	mob:setLocalVar("pet", 0)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 30)
+	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
     mob:setAggressive(true)
 		
 		end

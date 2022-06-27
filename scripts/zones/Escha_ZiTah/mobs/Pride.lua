@@ -7,7 +7,9 @@ local entity = {}
 entity.onMobSpawn = function(mob)
     mob:renameEntity("Pride")
     mob:setLocalVar("TwoHours", 0)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
     mob:setAggressive(true)
+	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 end
 
 

@@ -12,6 +12,8 @@ local entity = {}
   	  mob:renameEntity("Lust")
 		mob:setModelId(2189)
 	 mob:setMobMod(xi.mobMod.MAGIC_COOL, 35)
+	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
     	mob:setLocalVar("chainspell", 0)
     	mob:setLocalVar("twoHourPer", 40)
     	mob:setLocalVar("canTwoHour", 0)
