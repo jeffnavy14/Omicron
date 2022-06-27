@@ -41,7 +41,7 @@ xi.settings.map =
     AH_LIST_LIMIT = 7,
 
     -- Misc EXP related settings
-    EXP_RATE                = 1.0,
+    EXP_RATE                = 3.0,
     EXP_LOSS_RATE           = 1.0,
     EXP_PARTY_GAP_PENALTIES = 1,
 
@@ -90,12 +90,12 @@ xi.settings.map =
     MOB_SPEED_MOD = 40,
 
     -- Allows you to manipulate the constant multiplier in the skill-up rate formulas, having a potent effect on skill-up rates.
-    SKILLUP_CHANCE_MULTIPLIER = 1.0,
-    CRAFT_CHANCE_MULTIPLIER   = 1.0,
+    SKILLUP_CHANCE_MULTIPLIER = 5.0,
+    CRAFT_CHANCE_MULTIPLIER   = 3.0,
 
     -- Multiplier for skillup amounts. Using anything above 1 will break the 0.5 cap, the cap will become 0.9 (For maximum, set to 5)
-    SKILLUP_AMOUNT_MULTIPLIER = 1,
-    CRAFT_AMOUNT_MULTIPLIER   = 1,
+    SKILLUP_AMOUNT_MULTIPLIER = 3,
+    CRAFT_AMOUNT_MULTIPLIER   = 5,
 
     -- Gardening Factors        = DO NOT change defaults without verifiable proof that your change IS how retail does it. Myths need to be optional.
     GARDEN_DAY_MATTERS       = 0,
@@ -145,10 +145,10 @@ xi.settings.map =
     -- 1            = 1/2   (default, 75/37, 99/49)
     -- 2            = 2/3   (75/50, 99/66)
     -- 3            = equal (75/75, 99/99)
-    SUBJOB_RATIO = 1,
+    SUBJOB_RATIO = 2,
 
     -- Also adjust monsters subjob in ratio adjustments? 1 = true / 0 = false
-    INCLUDE_MOB_SJ = false,
+    INCLUDE_MOB_SJ = true,
 
     -- Adjust base stats (str/vit/etc.) for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
     NM_STAT_MULTIPLIER        = 1.0,
@@ -202,7 +202,7 @@ xi.settings.map =
 
     -- Command Audit [logging] commands with lower permission than this will not be logged.
     -- Zero for no logging at all. Commands given to non GMs are not logged.
-    AUDIT_GM_CMD = 0,
+    AUDIT_GM_CMD = 1,
 
     -- Todo = other logging including anti-cheat messages
 
@@ -227,6 +227,6 @@ xi.settings.map =
 
 
     --  Gobbie Mystery Box settings
-    DAILY_TALLY_AMOUNT = 10,
+    DAILY_TALLY_AMOUNT = 50,
     DAILY_TALLY_LIMIT  = 50000,
 }

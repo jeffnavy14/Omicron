@@ -12,7 +12,7 @@ xi.settings = xi.settings or {}
 xi.settings.search =
 {
     -- After EXPIRE_DAYS, will listed auctions expire?
-    EXPIRE_AUCTIONS = true,
+    EXPIRE_AUCTIONS = false,
 
     -- Expire items older than this number of days
     EXPIRE_DAYS = 3,
