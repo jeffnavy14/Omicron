@@ -11,6 +11,8 @@ mob:setLocalVar("twoHours", 0)
     mob:setLocalVar("phase", 0)
    	 mob:setAggressive(true)
 	 mob:setMobMod(xi.mobMod.MAGIC_COOL, 75)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
+	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 
 end
 

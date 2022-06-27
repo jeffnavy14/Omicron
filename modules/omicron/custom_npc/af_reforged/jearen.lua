@@ -6,7 +6,7 @@ local ID = require("scripts/zones/Norg/IDs")
 require("scripts/globals/shop")
 require("scripts/globals/chocobo")
 require("scripts/globals/keyitems")
-require("scripts/settings/main")
+
 require("scripts/globals/status")
 require("scripts/zones/Yuhtunga_Jungle/Zone")
 -----------------------------------

@@ -9,6 +9,8 @@ entity.onMobSpawn = function(mob)
     mob:setLocalVar("twoHours", 0)
     mob:setAggressive(true)
     mob:setLocalVar("phase", 0)
+	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
    	 mob:setAggressive(true)
 		mob:setModelId(2672)
 

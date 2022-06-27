@@ -84,7 +84,6 @@ INSERT INTO `mob_spell_lists` VALUES ('Oupire_Fire', 460, 365, 1, 255); -- Break
 INSERT INTO `mob_spell_lists` VALUES ('Oupire_Fire', 460, 362, 1, 255); -- Bindga
 INSERT INTO `mob_spell_lists` VALUES ('Oupire_Fire', 460, 361, 1, 255); -- Blindga
 INSERT INTO `mob_spell_lists` VALUES ('Oupire_Fire', 460, 366, 1, 255); -- Graviga
-INSERT INTO `mob_spell_lists` VALUES ('Oupire_Fire', 460, 274, 1, 255); -- Sleepga II
 -- Oupire Spell List (Non-Elemental)
 INSERT INTO `mob_spell_lists` VALUES ('Oupire', 150, 227, 1, 255); -- Poisonga III
 INSERT INTO `mob_spell_lists` VALUES ('Oupire', 150, 360, 1, 255); -- Dispelga

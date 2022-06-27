@@ -1,7 +1,6 @@
 ------------------------------------
 -- Domain Invasion Events and Rewards
 ------------------------------------
-require("scripts/settings/main")
 require("scripts/globals/npc_util")
 local prizes = require("scripts/globals/events/Domain_data")
 ------------------------------------
