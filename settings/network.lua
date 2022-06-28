@@ -29,6 +29,6 @@ xi.settings.network =
     SEARCH_PORT = 54002,
 
     -- Central message server settings (ensure these are the same on both all map servers and the central (lobby) server
-    ZMQ_IP   = "127.0.0.1",
+    ZMQ_IP   = "192.168.1.55",
     ZMQ_PORT = 54003,
 }
