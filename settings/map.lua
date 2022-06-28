@@ -38,7 +38,7 @@ xi.settings.map =
     -- Max open listings per player, 0 = no limit. (Default 7)
     -- Note = Settings over 7 may need client-side plugin to work under all circumstances.
     -- If this is the case, consider using the ah_pagination module
-    AH_LIST_LIMIT = 7,
+    AH_LIST_LIMIT = 0,
 
     -- Misc EXP related settings
     EXP_RATE                = 3.0,
@@ -46,7 +46,7 @@ xi.settings.map =
     EXP_PARTY_GAP_PENALTIES = 1,
 
     --  Capacity Point Settings
-    CAPACITY_RATE = 1.0,
+    CAPACITY_RATE = 1.5,
 
     -- Determines Vana'diel time epoch (886/1/1 Firesday)
     --  current timestamp - vanadiel_time_epoch = vana'diel time
@@ -172,7 +172,7 @@ xi.settings.map =
     MOB_GIL_MULTIPLIER = 1.0,
 
     -- All mobs drop this much extra gil per mob LV even if they normally drop zero.
-    ALL_MOBS_GIL_BONUS = 0,
+    ALL_MOBS_GIL_BONUS = 10,
 
     -- Maximum total bonus gil that can be dropped. Default 9999 gil.
     MAX_GIL_BONUS = 9999,
@@ -195,7 +195,7 @@ xi.settings.map =
     -- Max allowed merits points players can hold
     --  10 classic
     --  30 abyssea
-    MAX_MERIT_POINTS = 30,
+    MAX_MERIT_POINTS = 60,
 
     -- Minimum time between uses of yell command (in seconds).
     YELL_COOLDOWN = 30,

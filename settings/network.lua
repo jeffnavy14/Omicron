@@ -17,11 +17,11 @@ xi.settings.network =
     SQL_PASSWORD = "5y5t3m",
     SQL_DATABASE = "catxidb",
 
-    LOGIN_DATA_IP   = "127.0.0.1",
+    LOGIN_DATA_IP   = "192.168.1.55",
     LOGIN_DATA_PORT = 54230,
-    LOGIN_VIEW_IP   = "127.0.0.1",
+    LOGIN_VIEW_IP   = "192.168.1.55",
     LOGIN_VIEW_PORT = 54001,
-    LOGIN_AUTH_IP   = "127.0.0.1",
+    LOGIN_AUTH_IP   = "192.168.1.55",
     LOGIN_AUTH_PORT = 54231,
 
     MAP_PORT = 54230,
