@@ -2,26 +2,26 @@
 -- ------------------------------------------------------------
 -- Escha_ZiTah (Zone 288)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (17957500,'Rage','Rage',199,17.3168,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17957501,'Pride','Pride',198,17.3268,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17957502,'Wrath','Wrath',197,17.3368,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17957503,'Wraths_Pup','Wraths_Pup',196,17.3368,0.8648,-1.1185,86);
+INSERT INTO `mob_spawn_points` VALUES (17957500,'Rage','Rage',199,498.3563,-0.0165,-496.8427,86);
+INSERT INTO `mob_spawn_points` VALUES (17957501,'Pride','Pride',198,69.3468,1.5689,56.9379,86);
+INSERT INTO `mob_spawn_points` VALUES (17957502,'Wrath','Wrath',197,-290.1503,-0.0523,489.6764,86);
+INSERT INTO `mob_spawn_points` VALUES (17957503,'Wraths_Pup','Wraths_Pup',-290.1503,-0.0523,489.6764,86);
 INSERT INTO `mob_spawn_points` VALUES (17957504,'Deceit','Deceit',195,17.3768,0.8648,-2.1185,86);
 
 -- ------------------------------------------------------------
 -- Escha_RuAun (Zone 289)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (17961850,'Envy','Envy',199,-6.1596,-34.0001,-453.8906,86);
-INSERT INTO `mob_spawn_points` VALUES (17961851,'Lust','Lust',198,1.1596,-34.0001,-453.8906,86);
-INSERT INTO `mob_spawn_points` VALUES (17961852,'Greed','Greed',197,8.1596,-34.0001,-453.8906,86);
+INSERT INTO `mob_spawn_points` VALUES (17961850,'Envy','Envy',199,-103.8806,-32,-159.1412,86);
+INSERT INTO `mob_spawn_points` VALUES (17961851,'Lust','Lust',198,-331.0125,-8,-107.5367,86);
+INSERT INTO `mob_spawn_points` VALUES (17961852,'Greed','Greed',197,430.8464,-36,-140.1014,86);
 INSERT INTO `mob_spawn_points` VALUES (17961853,'Deceit','Deceit',195,1.0496,-37.0849,-443.0017,86);
 
 -- ------------------------------------------------------------
 -- Reisenjima (Zone 291)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (17970000,'Gluttony','Gluttony',198,-487.3272,-21.7547,-450.7563,86);
-INSERT INTO `mob_spawn_points` VALUES (17970001,'Fear','Fear',199,-492.3272,-21.7547,-450.7563,86);
-INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',197,-498.3272,-21.7547,-450.7563,86);
+INSERT INTO `mob_spawn_points` VALUES (17970000,'Gluttony','Gluttony',198,131.1574,-81.1757,348.8067,86);
+INSERT INTO `mob_spawn_points` VALUES (17970001,'Fear','Fear',199,54.4282,-93.2464,524.0075,86);
+INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',197,-437.6767,-41.4000,41.6887,86);
 INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',195,-498.3272,-21.7547,-450.7563,86);
 
 
@@ -42,16 +42,16 @@ INSERT INTO `mob_pools` VALUES (10000,'Deceit','Deceit',999,0x00000B010000000000
 
 
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
-INSERT INTO `mob_groups` VALUES (199,9990,288,'Rage',1800,128,4059,61000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (198,9991,288,'Pride',1800,128,4060,71000,0,124,125,0);
-INSERT INTO `mob_groups` VALUES (197,9992,288,'Wrath',1800,128,4061,91000,50000,124,125,0);
+INSERT INTO `mob_groups` VALUES (199,9990,288,'Rage',1800,0,4059,61000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (198,9991,288,'Pride',1800,0,4060,71000,0,124,125,0);
+INSERT INTO `mob_groups` VALUES (197,9992,288,'Wrath',1800,0,4061,91000,50000,124,125,0);
 INSERT INTO `mob_groups` VALUES (196,9993,288,'Wraths_Pup',1800,128,0,41000,10000,124,125,0);
-INSERT INTO `mob_groups` VALUES (199,9994,289,'Envy',1800,128,4062,61000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (198,9995,289,'Lust',1800,128,4063,91000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (197,9996,289,'Greed',1800,128,4064,71000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (199,9997,291,'Fear',1800,128,4065,61000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (198,9998,291,'Gluttony',1800,128,4066,91000,50001,124,125,0);
-INSERT INTO `mob_groups` VALUES (197,9999,291,'Sloth',1800,128,4067,71000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (199,9994,289,'Envy',1800,0,4062,61000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (198,9995,289,'Lust',1800,0,4063,91000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (197,9996,289,'Greed',1800,0,4064,71000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (199,9997,291,'Fear',1800,0,4065,61000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (198,9998,291,'Gluttony',1800,0,4066,91000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (197,9999,291,'Sloth',1800,0,4067,71000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (195,10000,291,'Deceit',1800,128,4068,110000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (195,10000,289,'Deceit',1800,128,4068,110000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (195,10000,288,'Deceit',1800,128,4068,110000,50001,124,125,0);
@@ -76,6 +76,7 @@ INSERT INTO `mob_pool_mods` VALUES (9999,480,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,476,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,506,800,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,507,150,0);
+INSERT INTO `mob_pool_mods` VALUES (9999,840,-25,0);
 
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
