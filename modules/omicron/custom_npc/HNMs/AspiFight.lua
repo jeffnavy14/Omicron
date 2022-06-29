@@ -17,7 +17,7 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
     super(zone)
 
     if
-        GetServerVariable("[EschanAspi]") == 1 and player:setCharVar("[NinjaTurtle]") == 0
+        GetServerVariable("[EschanAspi]") == 1
     then
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
@@ -31,12 +31,11 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
 
         onMobSpawn = function(mob)
 		    SetServerVariable("[EschanAspi]", 0)
-		     player:setCharVar("[NinjaTurtle]", 1)
 		
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-		     player:setCharVar("[NinjaTurtle]", 0)
+		     mob:setCharVar("[NinjaTurtle]", 0)
             end,
 			releaseIdOnDeath = true,
         })
