@@ -48,7 +48,10 @@ function onTrigger(player)
         {
             require("scripts/mixins/rage"),
             require("scripts/mixins/job_special"),
-        }
+        },
+
+        -- The "whooshy" special animation that plays when Trusts or Dynamis mobs spawn
+        specialSpawnAnimation = true,
     })
 
     mob:setSpawn(-5.4115, 0.1944, -33.4813, 50)
