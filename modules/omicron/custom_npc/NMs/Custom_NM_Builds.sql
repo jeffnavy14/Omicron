@@ -5,7 +5,7 @@
 INSERT INTO `mob_spawn_points` VALUES (17957500,'Rage','Rage',199,498.3563,-0.0165,-496.8427,86);
 INSERT INTO `mob_spawn_points` VALUES (17957501,'Pride','Pride',198,69.3468,1.5689,56.9379,86);
 INSERT INTO `mob_spawn_points` VALUES (17957502,'Wrath','Wrath',197,-290.1503,-0.0523,489.6764,86);
-INSERT INTO `mob_spawn_points` VALUES (17957503,'Wraths_Pup','Wraths_Pup',196,17.3368,0.8648,-1.1185,86);
+INSERT INTO `mob_spawn_points` VALUES (17957503,'Wraths_Pup','Wraths_Pup',-290.1503,-0.0523,489.6764,86);
 INSERT INTO `mob_spawn_points` VALUES (17957504,'Deceit','Deceit',195,17.3768,0.8648,-2.1185,86);
 
 -- ------------------------------------------------------------
@@ -76,6 +76,7 @@ INSERT INTO `mob_pool_mods` VALUES (9999,480,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,476,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,506,800,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,507,150,0);
+INSERT INTO `mob_pool_mods` VALUES (9999,840,-25,0);
 
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
