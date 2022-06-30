@@ -154,4 +154,4 @@ INSERT INTO `mob_droplist` VALUES (4067,0,0,1000,9118,100);
 INSERT INTO `mob_droplist` VALUES (4067,0,0,1000,9129,100);
 INSERT INTO `mob_droplist` VALUES (4067,0,0,1000,9124,100);
 INSERT INTO `mob_droplist` VALUES (4067,0,0,1000,20889,100);
--- Deceit Drop List (4068)
+-- Deceit Drop List (4068-4080)
