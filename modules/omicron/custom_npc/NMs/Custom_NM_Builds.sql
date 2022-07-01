@@ -84,6 +84,22 @@ INSERT INTO `mob_pool_mods` VALUES (9999,476,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,506,800,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,507,150,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,840,-25,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,8,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,9,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,10,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,11,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,12,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,13,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,14,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,23,-200,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,68,-200,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,28,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,1,-200,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,29,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,30,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,31,-100,0);
+
+
 
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
@@ -131,7 +147,7 @@ INSERT INTO `mob_resistances` VALUES (9006,'Greed',2,1,2,2,2000,2000,2000,10000,
 INSERT INTO `mob_resistances` VALUES (9007,'Fear',2,2,1,2,2000,2000,2000,2000,-2000,2000,1000,4000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,2000,-2000,2000,-2000,10000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,3,1,2,4000,-2000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
 
 -- MOB_FAMILY_SYSTEM (familyid,family,superFamilyID,superfamily,ecosystemID,exosystem,mobradius,speed,
 -- hp,mp,str,dex,vit,agi,int,mnd,chr,att,def,acc,eva,element,detects,charmable)
