@@ -2,6 +2,7 @@
 -- Mimic Spawner 
 ----------------------------------
 require("scripts/globals/status")
+require("modules/module_utils")
 require("scripts/zones/Escha_ZiTah/Zone")
 -----------------------------------
 local m = Module:new("mimic")
@@ -41,7 +42,7 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onInitialize", function(zone)
 
 	  	local coffer1 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer1",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 17.3768,
@@ -53,17 +54,21 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onInitialize", function(zone)
 
         onTrigger = function(player, npc)        
 		   if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
-		   SpawnMob(17957504)
+		   SpawnMob(17957504):updateClaim(player)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
+		   npc:setStatus(xi.status.DISAPPEAR)
 		    end
+	
 		end,
     })
 
+	
+
+
 	  	local coffer2 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer2",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 17.3768,
@@ -85,7 +90,7 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onInitialize", function(zone)
 
 	  	local coffer3 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer3",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 17.3768,
@@ -114,7 +119,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 
 	  	local coffer4 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer4",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 1.0496,
@@ -128,7 +133,6 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 		   SpawnMob(17961854)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
@@ -137,7 +141,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 
 	  	local coffer5 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer5",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 1.0496,
@@ -152,7 +156,6 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 		   SpawnMob(17961855)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
@@ -161,7 +164,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 
 	  	local coffer6 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer6",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = 1.0496,
@@ -176,7 +179,6 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onInitialize", function(zone)
 		   SpawnMob(17961856)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
@@ -190,7 +192,7 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
 
 	  	local coffer7 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer7",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = -498.3272,
@@ -205,7 +207,6 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
 		   SpawnMob(17970003)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
@@ -213,7 +214,7 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
 
 	  	local coffer8 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer8",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = -498.3272,
@@ -228,7 +229,6 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
 		   SpawnMob(17970004)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
@@ -236,7 +236,7 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
 
 	  	local coffer9 = zone:insertDynamicEntity({
         	objtype = xi.objType.NPC,
-        	name = "Glorious Coffer",
+        	name = "Coffer9",
         	look = "0x00000B0100000000000000000000000000000000",
 
    	      x = -498.3272,
@@ -245,13 +245,11 @@ m:addOverride("xi.zones.Reisenjima.Zone.onInitialize", function(zone)
      	      rotation = 28,
             widescan = 0,
 
-
         onTrigger = function(player, npc)        
 		   if player:getGMLevel() > 0 and player:checkNameFlags(0x04000000) then
 		   SpawnMob(17970005)
 		   SetServerVariable("[Mimic]", 1)
 		   SetServerVariable("[Coffer]", 0)
-		  npc:setStatus(xi.status.DISAPPEAR)
 		    end
 		end,
     })
