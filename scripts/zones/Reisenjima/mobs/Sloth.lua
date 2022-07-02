@@ -36,7 +36,7 @@ end
         mob:getLocalVar("twoHours") == 1 and
         mob:getHPP() < 48
     then
-	 mob:useMobAbility(1552)
+	 mob:useMobAbility(341)
 		mob:addMod(xi.mod.ATT, 100)
 		mob:addMod(xi.mod.DEF, 150)
 		mob:addMod(xi.mod.MDEF, 60)
@@ -69,7 +69,7 @@ if
 		mob:addMod(xi.mod.DEF, 250)
 		mob:addMod(xi.mod.MDEF, 100)
 		mob:addMod(xi.mod.MATT, 50)
-		mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 40, 3, 0)
+		mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 60, 3, 0)
 		mob:addStatusEffect(xi.effect.ENSTONE, 100)
 		mob:setLocalVar("phase", 2)
 	end

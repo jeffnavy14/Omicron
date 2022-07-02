@@ -42,7 +42,6 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
     trust:addSimpleGambit(ai.t.PARTY, ai.c.STATUS, xi.effect.PARALYSIS, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.PARALYNA)
     trust:addSimpleGambit(ai.t.PARTY, ai.c.STATUS, xi.effect.SILENCE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.SILENA)
     trust:addSimpleGambit(ai.t.PARTY, ai.c.STATUS, xi.effect.PETRIFICATION, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.STONA)
-
     trust:addSimpleGambit(ai.t.SELF, ai.c.STATUS_FLAG, xi.effectFlag.ERASABLE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.ERASE)
     trust:addSimpleGambit(ai.t.PARTY, ai.c.STATUS_FLAG, xi.effectFlag.ERASABLE, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.ERASE)
 
@@ -52,13 +51,12 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
 
     local power = trust:getMainLvl()
 	trust:addMod(xi.mod.DEF, power*3)
-	trust:addMod(xi.mod.MPP, 150)
+	trust:addMod(xi.mod.MACC, power)
 	trust:addMod(xi.mod.MDEF, power*5)
-	trust:addMod(xi.mod.ENMITY_DOWN, power)
-	trust:addMod(xi.mod.REFRESH, 150)
-	trust:addMod(xi.mod.CONSERVE_MP, 95)
+	trust:addMod(xi.mod.REFRESH, 50)
       trust:addMod(xi.mod.CURE_CAST_TIME, power)
-	trust:addMod(xi.mod.CURE_POTENCY, power*3)
+	trust:addMod(xi.mod.CURE_POTENCY, power*5)
+
 
 	trust:setLocalVar("MASTER_ID", trust:getMaster():getID())
 end)
