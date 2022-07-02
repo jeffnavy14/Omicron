@@ -8,7 +8,7 @@ require("scripts/globals/utils")
 require("scripts/globals/weaponskillids")
 require("scripts/globals/zone")
 -----------------------------------
-local m = Module:new("aamr")
+local m = Module:new("arkmr")
 
 m:addOverride("xi.globals.spells.trust.aamr.onSpellCast", function(caster, target, spell)
    
