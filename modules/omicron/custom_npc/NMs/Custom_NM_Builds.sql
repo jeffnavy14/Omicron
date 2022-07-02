@@ -6,9 +6,9 @@ INSERT INTO `mob_spawn_points` VALUES (17957500,'Rage','Rage',199,498.3563,-0.01
 INSERT INTO `mob_spawn_points` VALUES (17957501,'Pride','Pride',198,69.3468,1.5689,56.9379,86);
 INSERT INTO `mob_spawn_points` VALUES (17957502,'Wrath','Wrath',197,-290.1503,-0.0523,489.6764,86);
 INSERT INTO `mob_spawn_points` VALUES (17957503,'Wraths_Pup','Wraths_Pup',196,-290.1503,-0.0523,489.6764,86);
-INSERT INTO `mob_spawn_points` VALUES (17957504,'Deceit','Deceit',195,17.3768,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17957505,'Deceit','Deceit',195,17.3768,0.8648,-2.1185,86);
-INSERT INTO `mob_spawn_points` VALUES (17957506,'Deceit','Deceit',195,17.3768,0.8648,-2.1185,86);
+INSERT INTO `mob_spawn_points` VALUES (17957504,'Deceit','Deceit',195,8.5587,0.1019,-5.2075,86);
+INSERT INTO `mob_spawn_points` VALUES (17957505,'Deceit','Deceit',195,-222.9745,0.3304,-381.1261,86);
+INSERT INTO `mob_spawn_points` VALUES (17957506,'Deceit','Deceit',195,-290.1389,0.1294,206.7605,86);
 
 -- ------------------------------------------------------------
 -- Escha_RuAun (Zone 289)
@@ -16,9 +16,9 @@ INSERT INTO `mob_spawn_points` VALUES (17957506,'Deceit','Deceit',195,17.3768,0.
 INSERT INTO `mob_spawn_points` VALUES (17961850,'Envy','Envy',199,-103.8806,-32,-159.1412,86);
 INSERT INTO `mob_spawn_points` VALUES (17961851,'Lust','Lust',198,-331.0125,-8,-107.5367,86);
 INSERT INTO `mob_spawn_points` VALUES (17961852,'Greed','Greed',197,430.8464,-36,-140.1014,86);
-INSERT INTO `mob_spawn_points` VALUES (17961854,'Deceit','Deceit',195,1.0496,-37.0849,-443.0017,86);
-INSERT INTO `mob_spawn_points` VALUES (17961855,'Deceit','Deceit',195,1.0496,-37.0849,-443.0017,86);
-INSERT INTO `mob_spawn_points` VALUES (17961856,'Deceit','Deceit',195,1.0496,-37.0849,-443.0017,86);
+INSERT INTO `mob_spawn_points` VALUES (17961854,'Deceit','Deceit',195,-187.9955,-41.0259,-403.7397,86);
+INSERT INTO `mob_spawn_points` VALUES (17961855,'Deceit','Deceit',195,-341.9503,-24.0002,-231.4209,86);
+INSERT INTO `mob_spawn_points` VALUES (17961856,'Deceit','Deceit',195,-224.7619,-20.0001,313.5689,86);
 
 -- ------------------------------------------------------------
 -- Reisenjima (Zone 291)
@@ -26,9 +26,9 @@ INSERT INTO `mob_spawn_points` VALUES (17961856,'Deceit','Deceit',195,1.0496,-37
 INSERT INTO `mob_spawn_points` VALUES (17970000,'Gluttony','Gluttony',198,131.1574,-81.1757,348.8067,86);
 INSERT INTO `mob_spawn_points` VALUES (17970001,'Fear','Fear',199,54.4282,-93.2464,524.0075,86);
 INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',197,-437.6767,-41.4000,41.6887,86);
-INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',195,-498.3272,-21.7547,-450.7563,86);
-INSERT INTO `mob_spawn_points` VALUES (17970004,'Deceit','Deceit',195,-498.3272,-21.7547,-450.7563,86);
-INSERT INTO `mob_spawn_points` VALUES (17970005,'Deceit','Deceit',195,-498.3272,-21.7547,-450.7563,86);
+INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',195,-616.9898,-32.6716,-313.1386,86);
+INSERT INTO `mob_spawn_points` VALUES (17970004,'Deceit','Deceit',195,-419.8232,-41.4000,104.0153,86);
+INSERT INTO `mob_spawn_points` VALUES (17970005,'Deceit','Deceit',195,-260.9930,-82.7192,340.4691,86);
 
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,
