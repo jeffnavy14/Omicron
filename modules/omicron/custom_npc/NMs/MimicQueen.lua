@@ -14,7 +14,7 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onInitialize", function(zone)
 
 	if
        GetServerVariable("[Mimic]") > 0 then
-       SetServerVariable("[Mimic]", math.random(1,9))
+       SetServerVariable("[Mimic]", 0)
 	end
 
 
@@ -32,13 +32,6 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onZoneTick", function(zone)
 	if 
 	  	GetServerVariable("[Mimic]") == 0 and             
         	GetServerVariable("[Spawned]") == 0 
-	then
-		SetServerVariable("[WaitTime]", os.time() + 30)
-	end
-	
-
-	if
-		os.time() > GetServerVariable("[WaitTime]")
 	then
 		SetServerVariable("[Mimic]", math.random(1,9))
 	end
@@ -91,6 +84,7 @@ m:addOverride("xi.zones.Escha_ZiTah.Zone.onZoneTick", function(zone)
 	then
 		SpawnMob(17970005)
 	end
+
 
 end)
 
