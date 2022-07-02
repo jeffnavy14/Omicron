@@ -55,11 +55,12 @@ entity.onMobFight = function(mob)
         mob:getHPP() < 30	
 	then
 	  mob:setLocalVar("Queen", math.random(1,50))
+		mob:setLocalVar("trueform", 1)
 	end
 
 	if
 	  mob:getLocalVar("Queen") == 13 and
-	  mob:getLocalVar("trueform") == 0
+	  mob:getLocalVar("trueform") == 1
 	then
 		mob:setModelId(3011)
     mob:renameEntity("Mimic Queen")
@@ -76,7 +77,7 @@ entity.onMobFight = function(mob)
 		mob:addMod(xi.mod.CHR, math.random(1,350))
 		mob:addMod(xi.mod.DOUBLE_ATTACK, math.random(1,50))
 		mob:addMod(xi.mod.TRIPLE_ATTACK, math.random(1,25))
-		mob:setLocalVar("trueform", 1)
+		mob:setLocalVar("trueform", 2)
     		mob:setDropID(4081)
 	end
 
