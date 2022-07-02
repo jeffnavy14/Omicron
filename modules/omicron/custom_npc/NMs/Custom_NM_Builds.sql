@@ -77,7 +77,7 @@ INSERT INTO `mob_pool_mods` VALUES (9999,480,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,476,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,506,800,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,507,150,0);
-INSERT INTO `mob_pool_mods` VALUES (9999,840,-25,0);
+INSERT INTO `mob_pool_mods` VALUES (9999,840,-50,0);
 
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
