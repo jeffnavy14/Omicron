@@ -29,6 +29,16 @@ INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',197,-437.6767,-4
 INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',195,-616.9898,-32.6716,-313.1386,86);
 INSERT INTO `mob_spawn_points` VALUES (17970004,'Deceit','Deceit',195,-419.8232,-41.4000,104.0153,86);
 INSERT INTO `mob_spawn_points` VALUES (17970005,'Deceit','Deceit',195,-260.9930,-82.7192,340.4691,86);
+INSERT INTO `mob_spawn_points` VALUES (17970006,'Sin_Eater','Sin_Eater',194,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970007,'RageP','RageP',193,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970008,'PrideP','PrideP',192,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970009,'WrathP','WrathP',191,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970010,'EnvyP','EnvyP',190,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970011,'LustP','LustP',189,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970012,'GreedP','GreedP',188,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970013,'GluttonyP','GluttonyP',186,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970014,'FearP','FearP',187,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970015,'SlothP','SlothP',185,259.9805,-87,82.1235,86);
 
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,
@@ -44,7 +54,16 @@ INSERT INTO `mob_pools` VALUES (9997,'Fear','Fear',999,0x00007E0B000000000000000
 INSERT INTO `mob_pools` VALUES (9998,'Gluttony','Gluttony',999,0x00001F0C00000000000000000000000000000000,8,19,7,180,110,0,1,1,0,2,0,0,7,135,0,0,432,0,0,252,9008);
 INSERT INTO `mob_pools` VALUES (9999,'Sloth','Sloth',999,0x0000C90900000000000000000000000000000000,7,16,6,300,120,0,1,1,0,2,0,0,7,135,0,0,4959,0,0,9009,9009);
 INSERT INTO `mob_pools` VALUES (10000,'Deceit','Deceit',999,0x00000B0100000000000000000000000000000000,8,12,10,90,110,0,1,1,0,2,0,0,7,135,0,0,440,0,0,9010,9010);
-
+INSERT INTO `mob_pools` VALUES (10001,'Sin_Eater','Sin_Eater',999,0x00007E0100000000000000000000000000000000,8,4,7,50,90,0,1,1,0,2,0,0,7,135,0,0,4961,0,0,9011,9011);
+INSERT INTO `mob_pools` VALUES (10002,'RageP','RageP',999,0x00008D0700000000000000000000000000000000,8,4,12,180,85,0,1,1,0,2,0,0,7,135,0,0,4950,0,0,316,9000);
+INSERT INTO `mob_pools` VALUES (10003,'PrideP','PrideP',999,0x0000D30900000000000000000000000000000000,1,2,6,180,85,0,1,1,0,2,0,0,7,135,0,0,4951,0,0,179,9001);
+INSERT INTO `mob_pools` VALUES (10004,'WrathP','WrathP',999,0x0000720A00000000000000000000000000000000,8,1,7,160,85,0,1,1,0,2,0,0,7,135,0,0,150,0,0,359,9002);
+INSERT INTO `mob_pools` VALUES (10005,'EnvyP','EnvyP',999,0x0000320A00000000000000000000000000000000,5,3,1,180,85,0,1,1,0,2,0,0,7,135,0,0,431,0,0,1010,9004);
+INSERT INTO `mob_pools` VALUES (10006,'LustP','LustP',999,0x00008D0800000000000000000000000000000000,8,4,12,180,85,0,1,1,0,2,0,0,7,135,0,0,290,0,0,9005,9005);
+INSERT INTO `mob_pools` VALUES (10007,'GreedP','GreedP',999,0x0000530500000000000000000000000000000000,16,21,8,180,85,0,1,1,0,2,0,0,7,135,0,0,162,0,0,292,9006);
+INSERT INTO `mob_pools` VALUES (10008,'FearP','FearP',999,0x00007E0B00000000000000000000000000000000,8,3,4,180,85,0,1,1,0,2,0,0,7,135,0,0,149,0,0,9007,9007);
+INSERT INTO `mob_pools` VALUES (10009,'GluttonyP','GluttonyP',999,0x00001F0C00000000000000000000000000000000,8,19,7,180,95,0,1,1,0,2,0,0,7,135,0,0,432,0,0,252,9008);
+INSERT INTO `mob_pools` VALUES (10010,'SlothP','SlothP',999,0x0000C90900000000000000000000000000000000,7,16,6,300,105,0,1,1,0,2,0,0,7,135,0,0,4959,0,0,9009,9009);
 
 
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
@@ -61,6 +80,17 @@ INSERT INTO `mob_groups` VALUES (197,9999,291,'Sloth',1800,0,4067,71000,50001,12
 INSERT INTO `mob_groups` VALUES (195,10000,291,'Deceit',1800,128,4068,80000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (195,10000,289,'Deceit',1800,128,4068,80000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (195,10000,288,'Deceit',1800,128,4068,80000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (194,10001,291,'Sin_Eater',1800,0,4082,500000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (193,10002,291,'RageP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (192,10003,291,'PrideP',1800,128,0,40000,0,124,125,0);
+INSERT INTO `mob_groups` VALUES (191,10004,291,'WrathP',1800,128,0,40000,50000,124,125,0);
+INSERT INTO `mob_groups` VALUES (190,10005,291,'EnvyP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (189,10006,291,'LustP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (188,10007,291,'GreedP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (187,10008,291,'FearP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (186,10009,291,'GluttonyP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (185,10010,291,'SlothP',1800,128,0,40000,50001,124,125,0);
+
 
 -- MOB_POOL_MODS (poolid, modid, value, is_mob_mod)
 INSERT INTO `mob_pool_mods` VALUES (9990,288,40,0);
@@ -87,27 +117,58 @@ INSERT INTO `mob_pool_mods` VALUES (9999,416,10,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,506,500,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,507,200,0);
 INSERT INTO `mob_pool_mods` VALUES (9999,840,-60,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,8,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,9,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,10,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,11,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,12,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,13,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,14,-150,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,23,-200,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,68,-200,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,28,-100,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,1,-200,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,29,-100,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,30,-100,0);
-INSERT INTO `mob_pool_mods` VALUES (10000,31,-100,0);
-
+INSERT INTO `mob_pool_mods` VALUES (10010,25,1000,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,23,1000,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,160,-2500,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,165,100,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,370,35,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,480,10,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,476,10,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,475,10,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,416,10,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,506,500,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,507,200,0);
+INSERT INTO `mob_pool_mods` VALUES (10010,840,-60,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,8,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,9,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,10,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,11,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,12,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,13,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,14,-100,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,23,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,68,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,28,-50,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,1,-150,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,29,-50,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,30,-50,0);
+INSERT INTO `mob_pool_mods` VALUES (10000,31,-50,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,160,-3000,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,23,800,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,8,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,9,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,10,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,11,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,12,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,13,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,14,400,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,68,-200,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,1,1000,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,29,300,0);
 
 
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
 INSERT INTO `mob_pets` VALUES (17957502,1,2,'Wrath','Wraths_Pup');
-
+INSERT INTO `mob_pets` VALUES (17970006,1,5,'Sin_Eater','RageP');
+INSERT INTO `mob_pets` VALUES (17970007,1,4,'RageP','PrideP');
+INSERT INTO `mob_pets` VALUES (17970008,1,16,'PrideP','WrathP');
+INSERT INTO `mob_pets` VALUES (17970009,1,4,'WrathP','EnvyP');
+INSERT INTO `mob_pets` VALUES (17970010,1,8,'EnvyP','LustP');
+INSERT INTO `mob_pets` VALUES (17970011,1,7,'LustP','GreedP');
+INSERT INTO `mob_pets` VALUES (17970012,1,8,'GreedP','GluttonyP');
+INSERT INTO `mob_pets` VALUES (17970013,1,1,'GluttonyP','FearP');
+INSERT INTO `mob_pets` VALUES (17970014,1,8,'FearP','SlothP');
 
 -- MOB_SPAWN_MODS (mobid,modid,value,is_mob_mod)
 INSERT INTO `mob_spawn_mods` VALUES (17957500,1,18000,1); -- min gil 18000
@@ -151,6 +212,8 @@ INSERT INTO `mob_resistances` VALUES (9007,'Fear',2,2,1,2,2000,2000,2000,2000,-2
 INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,2000,-2000,2000,-2000,10000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',1,3,3,2,6000,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0);
+
 
 -- MOB_FAMILY_SYSTEM (familyid,family,superFamilyID,superfamily,ecosystemID,exosystem,mobradius,speed,
 -- hp,mp,str,dex,vit,agi,int,mnd,chr,att,def,acc,eva,element,detects,charmable)
@@ -212,13 +275,24 @@ INSERT INTO `mob_skill_lists` VALUES ('Lust',9005,533);
 INSERT INTO `mob_skill_lists` VALUES ('Lust',9005,1326);
 INSERT INTO `mob_skill_lists` VALUES ('Lust',9005,2638);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2022);
-INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2024);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2025);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2026);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2027);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2028);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2031);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2057);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1332);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1793);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2142);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2146);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,866);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,835);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1533);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2668);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2669);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2670);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2671);
+
 
 -- MOB_SPELL_LISTS (spell_list_name,spell_list_id,spell_id,min_level,max_level)
 INSERT INTO `mob_spell_lists` VALUES ('Rage',4950,148,1,255);
@@ -235,4 +309,20 @@ INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,356,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,357,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,359,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,365,1,255);
-
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 177, 1, 255); -- Firaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 182, 1, 255); -- Blizzaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 187, 1, 255); -- Aeroga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 192, 1, 255); -- Stonega 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 197, 1, 255); -- Thundaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 202, 1, 255); -- Waterga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 274, 1, 255); -- Sleepga 2
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 356, 1, 255); -- Paralyga
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 359, 1, 255); -- Silencega 
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,738,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,739,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,365,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,197,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,356,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,604,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,647,1,255);
+INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,359,1,255);

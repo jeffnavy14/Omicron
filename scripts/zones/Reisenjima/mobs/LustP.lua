@@ -9,7 +9,7 @@ require("scripts/globals/utils")
 local entity = {}
 
 	entity.onMobSpawn = function(mob)
-  	  mob:renameEntity("Lust")
+  	  mob:renameEntity("Faded Lust")
 		mob:setModelId(2189)
 	 mob:setMobMod(xi.mobMod.MAGIC_COOL, 35)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
@@ -19,6 +19,7 @@ local entity = {}
     	mob:setLocalVar("twoHourPer", 40)
     	mob:setLocalVar("canTwoHour", 0)
 	mob:setLocalVar("phase", 0)
+	mob:setLocalVar("Sins5", 0)
    	 mob:setAggressive(true)
 
 end
@@ -35,6 +36,13 @@ end
     		    mob:setAnimationSub(state)
     		    mob:setLocalVar("changeTime", mob:getBattleTime())
   	 	 end
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins5") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins5", 1)
+	end
 
      if
         mob:getLocalVar("canTwoHour") == 0 and
@@ -67,10 +75,6 @@ if
 		mob:getLocalVar("phase") == 1
 	then
 		mob:setModelId(2190)
-		mob:addMod(xi.mod.ATT, 150)
-		mob:addMod(xi.mod.DEF, 150)
-		mob:addMod(xi.mod.MDEF, 100)
-		mob:addMod(xi.mod.MATT, 50)
 	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
 		mob:setLocalVar("phase", 2)
 	end
@@ -78,7 +82,6 @@ if
 		if 
 		mob:hasStatusEffect(xi.effect.CHAINSPELL) and chainspell == 0 then
             	mob:setMobMod(xi.mobMod.MAGIC_COOL, 3)
-		player:PrintToArea("{Lust} Let's see if you can handle a taste of my true power!", xi.msg.channel.SHOUT, xi.msg.area.SAY)
 		mob:setLocalVar("chainspell", 1)
 	end
 		if 

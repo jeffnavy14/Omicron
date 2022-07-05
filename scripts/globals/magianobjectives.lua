@@ -289,7 +289,7 @@ xi.magian.trials =
 [2273] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.RANDGRITH }, mobSystem = set{ xi.eco.BIRD } } },      -- 80 -> 85
 [2684] = { check = checks.checkTrials, reqs = { mobid = set{ 17326087 } } }, -- 85 -> 90 (Quiebitiel)
 [3117] = { check = checks.checkTrials, reqs = { mobid = set{ 17330209 } } }, -- 90 -> 95 (Animated Tachi)
-[3581] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3502 } } }, -- 95 -> 99 (Umbral Marrow x5)
+[3583] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3502 } } }, -- 95 -> 99 (Umbral Marrow x5)
 [3630] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3502 } } }, -- 99 -> 99 (Umbral Marrow x250)
 
 -- Claustrum
@@ -688,4 +688,147 @@ xi.magian.trials =
 -- Abyssean Armor
 -- Unkai Kote
 [4327] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3161 } } }, -- 0 -> +1 (Unkai Seal: Hn.)
+
+
+
+[1845] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2262] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.PRIMAL_REND }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2673] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3106] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3569] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3619] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1869] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2274] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.MYSTIC_BOON }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2685] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3118] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3580] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3631] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1821] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2250] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.MANDALIC_STAB }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2661] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3094] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3557] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3607] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1823] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2251] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.MORDANT_RIME }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2662] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3095] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3558] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3608] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1825] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2252] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.PYRRHIC_KLEOS }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2663] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3096] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3559] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3609] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1849] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2264] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.KINGS_JUSTICE }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2675] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3108] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3571] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3621] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1865] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2272] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.TACHI_RANA }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2683] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3116] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3579] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3629] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1829] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2254] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.ASCETICS_FURY }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2665] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3098] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3561] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3611] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1831] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2255] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.STRINGING_PUMMEL }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2666] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3099] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3562] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3612] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1861] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2270] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.BLADE_KAMU }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2681] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3114] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3577] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3627] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1881] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2281] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.TRUEFLIGHT }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2692] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3125] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3588] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3638] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1883] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2282] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.LEADEN_SALUTE }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2693] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3126] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3589] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3639] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1853] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2268] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.DRAKESBANE }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2679] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3112] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3575] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3625] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1857] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2266] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.INSURGENCY }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2677] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3110] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3573] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3623] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1873] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2276] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.VIDOHUNIR }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2687] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3120] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3583] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3633] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1875] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2277] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.GARLAND_OF_BLISS }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2688] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3121] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3584] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3634] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1877] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2278] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.OMNISCIENCE }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2689] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3122] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3585] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3635] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1835] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2257] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.DEATH_BLOSSOM }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2668] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3101] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3564] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3614] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1837] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2258] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.ATONEMENT }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2669] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3102] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3565] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3615] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
+[1839] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1819 } } }, -- Luminion Chip x24
+[2259] = { check = checks.checkTrials, reqs = { killWithWs=true, wSkill = set{ xi.weaponskill.EXPIACION }, mobSystem = set{ xi.eco.DRAGON } } }, 
+[2670] = { check = checks.checkTrials, reqs = { mobid = set{ 17957502 } } }, -- Wrath x3
+[3103] = { check = checks.checkTrials, reqs = { mobid = set{ 17961851 } } }, -- Lust x3
+[3566] = { check = checks.checkTrials, reqs = { mobid = set{ 17970000 } } }, -- Gluttony x3
+[3616] = { check = checks.checkTrials, reqs = { mobid = set{ 17970006 } } }, -- Sin Eater x1
+
 }
