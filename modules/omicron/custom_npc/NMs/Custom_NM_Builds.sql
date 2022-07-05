@@ -302,3 +302,12 @@ INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,357,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,359,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sloth',4959,365,1,255);
 
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 177, 1, 255); -- Firaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 182, 1, 255); -- Blizzaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 187, 1, 255); -- Aeroga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 192, 1, 255); -- Stonega 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 197, 1, 255); -- Thundaga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 202, 1, 255); -- Waterga 4
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 274, 1, 255); -- Sleepga 2
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 356, 1, 255); -- Paralyga
+INSERT INTO `mob_spell_lists` VALUES ('Greed',4956, 359, 1, 255); -- Silencega
