@@ -19,6 +19,7 @@ local entity = {}
     	mob:setLocalVar("twoHourPer", 40)
     	mob:setLocalVar("canTwoHour", 0)
 	mob:setLocalVar("phase", 0)
+	mob:setLocalVar("Sins5", 0)
    	 mob:setAggressive(true)
 
 end
@@ -35,6 +36,13 @@ end
     		    mob:setAnimationSub(state)
     		    mob:setLocalVar("changeTime", mob:getBattleTime())
   	 	 end
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins5") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins5", 1)
+	end
 
      if
         mob:getLocalVar("canTwoHour") == 0 and

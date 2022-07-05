@@ -8,6 +8,7 @@ entity.onMobSpawn = function(mob)
     mob:renameEntity("Devoured Envy")
     mob:setLocalVar("twoHours", 0)
     mob:setAggressive(true)
+	mob:setLocalVar("Sins4", 0)
     mob:setMobMod(xi.mobMod.SPELL_LIST, 431)
     mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
@@ -17,6 +18,13 @@ end
 
 	entity.onMobFight = function(mob, target)
   	local twoHours = mob:getLocalVar("twoHours")
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins4") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins4", 1)
+	end
 
 	if
         mob:getLocalVar("twoHours") == 0 and

@@ -23,14 +23,6 @@ if
 		mob:getHPP() <100 and mob:getLocalVar("Sins") == 0
       then 
 		SpawnMob(mob:getID() + 1)
-		SpawnMob(mob:getID() + 2)
-		SpawnMob(mob:getID() + 3)
-		SpawnMob(mob:getID() + 4)
-		SpawnMob(mob:getID() + 5)
-		SpawnMob(mob:getID() + 6)
-		SpawnMob(mob:getID() + 7)
-		SpawnMob(mob:getID() + 8)
-		SpawnMob(mob:getID() + 9)
 		mob:setLocalVar("Sins", 1)
 	end
 

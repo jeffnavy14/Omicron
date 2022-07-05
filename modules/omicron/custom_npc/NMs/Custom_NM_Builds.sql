@@ -163,16 +163,15 @@ INSERT INTO `mob_pool_mods` VALUES (10001,29,300,0);
 
 -- MOB_PETS (mob_mobid,pet_offset,job,mobname,petname)
 INSERT INTO `mob_pets` VALUES (17957502,1,2,'Wrath','Wraths_Pup');
-INSERT INTO `mob_pets` VALUES (17970006,1,5,'Sin_Eater','EnvyP');
-INSERT INTO `mob_pets` VALUES (17970007,1,4,'RageP','LustP');
-INSERT INTO `mob_pets` VALUES (17970008,1,16,'PrideP','GreedP');
-INSERT INTO `mob_pets` VALUES (17970009,1,4,'WrathP','RageP');
-INSERT INTO `mob_pets` VALUES (17970010,1,8,'EnvyP','WrathP');
-INSERT INTO `mob_pets` VALUES (17970011,1,7,'LustP','SlothP');
-INSERT INTO `mob_pets` VALUES (17970012,1,8,'GreedP','FearP');
-INSERT INTO `mob_pets` VALUES (17970013,1,1,'GluttonyP','PrideP');
-INSERT INTO `mob_pets` VALUES (17970014,1,8,'FearP','GluttonyP');
-
+INSERT INTO `mob_pets` VALUES (17970006,1,5,'Sin_Eater','RageP');
+INSERT INTO `mob_pets` VALUES (17970007,1,4,'RageP','PrideP');
+INSERT INTO `mob_pets` VALUES (17970008,1,16,'PrideP','WrathP');
+INSERT INTO `mob_pets` VALUES (17970009,1,4,'WrathP','EnvyP');
+INSERT INTO `mob_pets` VALUES (17970010,1,8,'EnvyP','LustP');
+INSERT INTO `mob_pets` VALUES (17970011,1,7,'LustP','GreedP');
+INSERT INTO `mob_pets` VALUES (17970012,1,8,'GreedP','GluttonyP');
+INSERT INTO `mob_pets` VALUES (17970013,1,1,'GluttonyP','FearP');
+INSERT INTO `mob_pets` VALUES (17970014,1,8,'FearP','SlothP');
 
 -- MOB_SPAWN_MODS (mobid,modid,value,is_mob_mod)
 INSERT INTO `mob_spawn_mods` VALUES (17957500,1,18000,1); -- min gil 18000

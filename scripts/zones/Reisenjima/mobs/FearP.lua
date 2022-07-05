@@ -8,11 +8,19 @@ entity.onMobSpawn = function(mob)
     mob:renameEntity("Devoured Fear")
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
+	mob:setLocalVar("Sins8", 0)
 	    mob:setLocalVar("SkillUse", 0)
 end
 
 
 	entity.onMobFight = function(mob, target)
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins8") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins8, 1)
+	end
 
 	if
         mob:getLocalVar("SkillUse") == 0 and

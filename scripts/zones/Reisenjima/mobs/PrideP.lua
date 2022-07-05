@@ -8,6 +8,7 @@ entity.onMobSpawn = function(mob)
     mob:renameEntity("Devoured Pride")
     mob:setLocalVar("TwoHours", 0)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
+	mob:setLocalVar("Sins2", 0)
     mob:setAggressive(true)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 end
@@ -15,6 +16,14 @@ end
 
 	entity.onMobFight = function(mob, target)
   	local twoHourPer = mob:getLocalVar("twoHourPer")
+
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins2") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins2", 1)
+	end
 
 	if
         mob:getLocalVar("TwoHours") == 0 and

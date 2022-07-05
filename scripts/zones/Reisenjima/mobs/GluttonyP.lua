@@ -9,6 +9,7 @@ entity.onMobSpawn = function(mob)
     mob:setLocalVar("twoHours", 0)
     mob:setAggressive(true)
     mob:setLocalVar("phase", 0)
+	mob:setLocalVar("Sins7", 0)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
    	 mob:setAggressive(true)
@@ -20,6 +21,14 @@ end
 
 	  entity.onMobFight = function(mob, target, player)
   		local twoHours = mob:getLocalVar("twoHours")
+
+
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins7") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins7", 1)
+	end
 
 	if
         mob:getLocalVar("twoHours") == 0 and

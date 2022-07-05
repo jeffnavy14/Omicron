@@ -13,6 +13,7 @@ local entity = {}
     	mob:setLocalVar("gigaflare", 0)
 	mob:setLocalVar("phase", 0)
 	mob:setLocalVar("pet", 0)
+	mob:setLocalVar("Sins3", 0)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 30)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
     mob:setAggressive(true)
@@ -29,6 +30,12 @@ local entity = {}
     		    mob:setAnimationSub(state)
     		    mob:setLocalVar("changeTime", mob:getBattleTime())
   	 	 end
+if 
+		mob:getHPP() <25 and mob:getLocalVar("Sins3") == 0
+      then 
+		SpawnMob(mob:getID() + 1)
+		mob:setLocalVar("Sins3", 1)
+	end
 
      if
         mob:getLocalVar("canTwoHour") == 0 and
