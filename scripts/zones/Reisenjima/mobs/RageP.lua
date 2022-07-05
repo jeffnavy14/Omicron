@@ -5,7 +5,7 @@
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Devoured Rage")
+    mob:renameEntity("Faded Rage")
 	    mob:setLocalVar("SkillUse", 0)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
     mob:setAggressive(true)

@@ -5,7 +5,7 @@
 local entity = {}
 
 		entity.onMobSpawn = function(mob)
-   		 mob:renameEntity("Devoured Wrath")
+   		 mob:renameEntity("Faded Wrath")
 		mob:setModelId(2674)
     mob:setLocalVar("twoHourPer", 50)
     mob:setLocalVar("canTwoHour", 0)

@@ -5,7 +5,7 @@
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Devoured Pride")
+    mob:renameEntity("Faded Pride")
     mob:setLocalVar("TwoHours", 0)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
 	mob:setLocalVar("Sins2", 0)

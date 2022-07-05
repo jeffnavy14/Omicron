@@ -5,7 +5,7 @@
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Devoured Sloth")
+    mob:renameEntity("Faded Sloth")
 mob:setLocalVar("twoHours", 0)
     mob:setAggressive(true)
     mob:setLocalVar("phase", 0)
@@ -59,6 +59,10 @@ if
 		mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 60, 3, 0)
 		mob:addStatusEffect(xi.effect.ENSTONE, 100)
 		mob:setLocalVar("phase", 2)
+	end
+
+entity.onMobDeath = function(mob, player)
+    SetServerVariable("[Innocence]", 1)
 	end
 end
 

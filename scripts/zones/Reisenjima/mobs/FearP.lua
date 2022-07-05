@@ -5,7 +5,7 @@
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Devoured Fear")
+    mob:renameEntity("Faded Fear")
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
 	mob:setLocalVar("Sins8", 0)
@@ -19,7 +19,7 @@ if
 		mob:getHPP() <25 and mob:getLocalVar("Sins8") == 0
       then 
 		SpawnMob(mob:getID() + 1)
-		mob:setLocalVar("Sins8, 1)
+		mob:setLocalVar("Sins8", 1)
 	end
 
 	if

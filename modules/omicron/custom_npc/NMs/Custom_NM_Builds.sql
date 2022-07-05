@@ -29,16 +29,16 @@ INSERT INTO `mob_spawn_points` VALUES (17970002,'Sloth','Sloth',197,-437.6767,-4
 INSERT INTO `mob_spawn_points` VALUES (17970003,'Deceit','Deceit',195,-616.9898,-32.6716,-313.1386,86);
 INSERT INTO `mob_spawn_points` VALUES (17970004,'Deceit','Deceit',195,-419.8232,-41.4000,104.0153,86);
 INSERT INTO `mob_spawn_points` VALUES (17970005,'Deceit','Deceit',195,-260.9930,-82.7192,340.4691,86);
-INSERT INTO `mob_spawn_points` VALUES (17970006,'Sin_Eater','Sin_Eater',194,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970007,'RageP','RageP',193,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970008,'PrideP','PrideP',192,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970009,'WrathP','WrathP',191,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970010,'EnvyP','EnvyP',190,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970011,'LustP','LustP',189,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970012,'GreedP','GreedP',188,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970013,'GluttonyP','GluttonyP',187,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970014,'FearP','FearP',186,131.1574,-81.1757,348.8067,86);
-INSERT INTO `mob_spawn_points` VALUES (17970015,'SlothP','SlothP',185,131.1574,-81.1757,348.8067,86);
+INSERT INTO `mob_spawn_points` VALUES (17970006,'Sin_Eater','Sin_Eater',194,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970007,'RageP','RageP',193,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970008,'PrideP','PrideP',192,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970009,'WrathP','WrathP',191,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970010,'EnvyP','EnvyP',190,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970011,'LustP','LustP',189,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970012,'GreedP','GreedP',188,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970013,'GluttonyP','GluttonyP',186,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970014,'FearP','FearP',187,259.9805,-87,82.1235,86);
+INSERT INTO `mob_spawn_points` VALUES (17970015,'SlothP','SlothP',185,259.9805,-87,82.1235,86);
 
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,
@@ -154,7 +154,6 @@ INSERT INTO `mob_pool_mods` VALUES (10001,12,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,13,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,14,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,68,-100,0);
-INSERT INTO `mob_pool_mods` VALUES (10001,288,100,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,1,1000,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,29,300,0);
 

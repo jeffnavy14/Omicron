@@ -9,7 +9,7 @@ require("scripts/globals/utils")
 local entity = {}
 
 	entity.onMobSpawn = function(mob)
-  	  mob:renameEntity("Devoured Lust")
+  	  mob:renameEntity("Faded Lust")
 		mob:setModelId(2189)
 	 mob:setMobMod(xi.mobMod.MAGIC_COOL, 35)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)

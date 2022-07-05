@@ -5,7 +5,7 @@
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Devoured Gluttony")
+    mob:renameEntity("Faded Gluttony")
     mob:setLocalVar("twoHours", 0)
     mob:setAggressive(true)
     mob:setLocalVar("phase", 0)

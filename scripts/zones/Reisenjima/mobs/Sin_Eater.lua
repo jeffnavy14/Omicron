@@ -8,6 +8,7 @@ entity.onMobSpawn = function(mob)
     mob:renameEntity("Sin Eater")
     mob:setLocalVar("twoHours", 0)
     mob:setLocalVar("Sins", 0)
+    SetServerVariable("[Innocence]", 0)
     mob:setAggressive(true)
     mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
@@ -18,6 +19,7 @@ end
 
 	entity.onMobFight = function(mob, target)
   	local twoHours = mob:getLocalVar("twoHours")
+    mob:setUnkillable(true)
 
 if 
 		mob:getHPP() <100 and mob:getLocalVar("Sins") == 0
@@ -50,6 +52,10 @@ if
         mob:setLocalVar("twoHours", 3)
 	end
 
+if   	GetServerVariable("[Innocence]") == 1
+    then
+    mob:setUnkillable(false)
+	end
 end
 
 return entity
