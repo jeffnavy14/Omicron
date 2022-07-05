@@ -1,38 +1,22 @@
 -----------------------------------
--- Area: Reisenjima
---  Mob: Sin Eater
+-- Area: Escha Ru'Ahn
+--  Mob: Envy
 -----------------------------------
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Sin Eater")
+    mob:renameEntity("Devoured Envy")
     mob:setLocalVar("twoHours", 0)
-    mob:setLocalVar("Sins", 0)
     mob:setAggressive(true)
+    mob:setMobMod(xi.mobMod.SPELL_LIST, 431)
     mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
-	mob:setMobMod(xi.mobMod.DRAW_IN, 2)
-	mob:addStatusEffect(xi.effect.DRAIN_SAMBA, 100, 0, 0)
+	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
 end
 
 
 	entity.onMobFight = function(mob, target)
   	local twoHours = mob:getLocalVar("twoHours")
-
-if 
-		mob:getHPP() <100 and mob:getLocalVar("Sins") == 0
-      then 
-		SpawnMob(mob:getID() + 1)
-		SpawnMob(mob:getID() + 2)
-		SpawnMob(mob:getID() + 3)
-		SpawnMob(mob:getID() + 4)
-		SpawnMob(mob:getID() + 5)
-		SpawnMob(mob:getID() + 6)
-		SpawnMob(mob:getID() + 7)
-		SpawnMob(mob:getID() + 8)
-		SpawnMob(mob:getID() + 9)
-		mob:setLocalVar("Sins", 1)
-	end
 
 	if
         mob:getLocalVar("twoHours") == 0 and
@@ -55,9 +39,16 @@ if
         mob:getHPP() <30
     then
 	 mob:useMobAbility(688)
+        mob:setMobMod(xi.mobMod.SPELL_LIST, 299)
+	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
+		mob:addStatusEffect(xi.effect.FAST_CAST, 120)
         mob:setLocalVar("twoHours", 3)
 	end
 
+	if
+		not mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and twoHours == 3 then
+	 	mob:setMobMod(xi.mobMod.MAGIC_COOL, 10)
+	end
 end
 
 return entity
