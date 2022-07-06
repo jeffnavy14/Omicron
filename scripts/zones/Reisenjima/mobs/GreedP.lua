@@ -12,6 +12,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 1)
+		mob:setUnkillable(true)
 	mob:setLocalVar("Sins6", 0)
 end
 
@@ -22,6 +23,7 @@ if
       then 
 		SpawnMob(mob:getID() + 1)
 		mob:setLocalVar("Sins6", 1)
+		mob:setUnkillable(false)
 	end
 
 end

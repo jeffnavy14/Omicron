@@ -11,6 +11,7 @@ entity.onMobSpawn = function(mob)
     mob:setAggressive(true)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setLocalVar("Sins1", 0)
+		mob:setUnkillable(true)
 end
 
 
@@ -20,6 +21,7 @@ if
       then 
 		SpawnMob(mob:getID() + 1)
 		mob:setLocalVar("Sins1", 1)
+		mob:setUnkillable(false)
 	end
 
 	if
@@ -30,13 +32,6 @@ if
         mob:setLocalVar("SkillUse", 1)
 	end
 
-	if
-        mob:getLocalVar("SkillUse") == 1 and
-        mob:getHPP() < 42
-    then
-	 mob:useMobAbility(952)
-        mob:setLocalVar("SkillUse", 2)
-	end
 
 	if
         mob:getLocalVar("SkillUse") == 2 and

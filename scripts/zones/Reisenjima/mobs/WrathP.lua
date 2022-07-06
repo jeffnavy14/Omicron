@@ -16,6 +16,7 @@ local entity = {}
 	mob:setLocalVar("Sins3", 0)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 30)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
+		mob:setUnkillable(true)
     mob:setAggressive(true)
 		
 		end
@@ -35,6 +36,7 @@ if
       then 
 		SpawnMob(mob:getID() + 1)
 		mob:setLocalVar("Sins3", 1)
+		mob:setUnkillable(false)
 	end
 
      if
