@@ -18,7 +18,6 @@ end
 
 
 	entity.onMobFight = function(mob, target)
-  	local twoHours = mob:getLocalVar("twoHours")
     mob:setUnkillable(true)
 
 if 
