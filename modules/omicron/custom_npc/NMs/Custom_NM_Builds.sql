@@ -154,7 +154,7 @@ INSERT INTO `mob_pool_mods` VALUES (10001,13,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,14,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,68,-200,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,1,1000,0);
-INSERT INTO `mob_pool_mods` VALUES (10001,29,300,0);
+INSERT INTO `mob_pool_mods` VALUES (10001,29,200,0);
 
 
 
@@ -212,7 +212,7 @@ INSERT INTO `mob_resistances` VALUES (9007,'Fear',2,2,1,2,2000,2000,2000,2000,-2
 INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,2000,-2000,2000,-2000,10000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',1,3,3,2,6000,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',2,3,1,2,0,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0);
 
 
 -- MOB_FAMILY_SYSTEM (familyid,family,superFamilyID,superfamily,ecosystemID,exosystem,mobradius,speed,
@@ -281,17 +281,15 @@ INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2027);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2028);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2031);
 INSERT INTO `mob_skill_lists` VALUES ('Sloth',9009,2057);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1332);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,319);
 INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1793);
 INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2142);
 INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2146);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,866);
 INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,835);
 INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1533);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2668);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2669);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2670);
-INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,2671);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1820);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1821);
+INSERT INTO `mob_skill_lists` VALUES ('Sin_Eater',9011,1822);
 
 
 -- MOB_SPELL_LISTS (spell_list_name,spell_list_id,spell_id,min_level,max_level)
@@ -323,6 +321,5 @@ INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,739,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,365,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,197,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,356,1,255);
-INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,604,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,647,1,255);
 INSERT INTO `mob_spell_lists` VALUES ('Sin_Eater',4961,359,1,255);

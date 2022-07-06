@@ -20,6 +20,7 @@ local entity = {}
     	mob:setLocalVar("canTwoHour", 0)
 	mob:setLocalVar("phase", 0)
 	mob:setLocalVar("Sins5", 0)
+		mob:setUnkillable(true)
    	 mob:setAggressive(true)
 
 end
@@ -42,6 +43,7 @@ if
       then 
 		SpawnMob(mob:getID() + 1)
 		mob:setLocalVar("Sins5", 1)
+		mob:setUnkillable(false)
 	end
 
      if
