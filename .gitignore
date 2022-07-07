@@ -227,3 +227,4 @@ modules/init.txt
 
 # Doxygen
 doxygen/
+settings/network.lua
