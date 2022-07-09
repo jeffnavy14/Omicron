@@ -13,106 +13,102 @@ m:addOverride("xi.zones.Wajaom_Woodlands.Zone.onInitialize", function(zone)
     super(zone)
 
 	if
-       GetServerVariable("[Egg]") > 0 then
-       SetServerVariable("[Egg]", 0)
+       GetServerVariable("[EggHunt]") > 0 then
+       SetServerVariable("[EggHunt]", 0)
 	end
 
-
-
 	if
-       GetServerVariable("[Hatched]") > 0 then
-       SetServerVariable("[Hatched]", 0)
+       GetServerVariable("[Hatch]") > 0 then
+       SetServerVariable("[Hatch]", 0)
 	end
 end)
 
-m:addOverride("xi.zones.Escha_ZiTah.Zone.onZoneTick", function(zone)
+m:addOverride("xi.zones.Wajaom_Woodlands.Zone.onZoneTick", function(zone)
     super(zone)
 
 
 	if 
-	  	GetServerVariable("[Egg]") == 0 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 0 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
-		SetServerVariable("[Egg]", math.random(1,12))
+		SetServerVariable("[EggHunt]", math.random(1,12))
 	end
 
 
-
 	if 
-	  	GetServerVariable("[Egg]") == 1 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 1 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986695)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 2 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 2 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986696)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 3 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 3 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986697)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 4 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 4 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986698)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 5 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 5 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986699)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 6 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 6 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986700)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 7 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 7 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986701)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 8 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 8 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986702)
-     SetServerVariable("[Hatched]", 1)
+
 	elseif
-	  	GetServerVariable("[Egg]") == 9 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 9 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986703)
-     SetServerVariable("[Hatched]", 1)
 
 	elseif
-	  	GetServerVariable("[Egg]") == 10 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 10 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986704)
-     SetServerVariable("[Hatched]", 1)
+
 
 	elseif
-	  	GetServerVariable("[Egg]") == 11 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 11 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986705)
-     SetServerVariable("[Hatched]", 1)
+
 
 	elseif
-	  	GetServerVariable("[Egg]") == 12 and             
-        	GetServerVariable("[Hatched]") == 0 
+	  	GetServerVariable("[EggHunt]") == 12 and             
+        	GetServerVariable("[Hatch]") == 0 
 	then
 		SpawnMob(16986706)
-     SetServerVariable("[Hatched]", 1)
+
 	end
 
 
