@@ -35,5 +35,5 @@ xi.settings.login =
     CHARACTER_DELETION = false,
 
     -- Number of simultaneous game sessions per IP (0 for no limit)
-    LOGIN_LIMIT = 1,
+    LOGIN_LIMIT = 2,
 }
