@@ -35,7 +35,7 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
             end,	
     		
             onMobDeath = function(mob, player, isKiller, noKiller)
-		     mob:setCharVar("[NinjaTurtle]", 0)
+
             end,
 			releaseIdOnDeath = true,
         })

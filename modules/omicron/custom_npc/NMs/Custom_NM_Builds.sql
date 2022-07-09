@@ -40,6 +40,32 @@ INSERT INTO `mob_spawn_points` VALUES (17970013,'GluttonyP','GluttonyP',186,259.
 INSERT INTO `mob_spawn_points` VALUES (17970014,'FearP','FearP',187,259.9805,-87,82.1235,86);
 INSERT INTO `mob_spawn_points` VALUES (17970015,'SlothP','SlothP',185,259.9805,-87,82.1235,86);
 
+-- ------------------------------------------------------------
+-- Wajaom Woodlands (Zone 51)
+-- ------------------------------------------------------------
+INSERT INTO `mob_spawn_points` VALUES (16986695,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986696,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986697,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986698,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986699,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986700,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986701,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986702,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986703,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986704,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986705,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986706,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986707,'Diablo','Diablo',198,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986708,'Midgardsormr','Midgardsormr',197,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986709,'Chaurli','Chaurli',196,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986710,'Uni_Satou','Uni_Satou',195,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986711,'Jor-El','Jor-El',194,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986712,'Audrey_II','Audrey_II',193,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986713,'Hans','Hans',192,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986714,'Tien_Lung','Tien_Lung',191,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986715,'Derflinger','Derflinger',190,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986716,'Astaroth','Astaroth',189,610,-23,356,86);
+
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,
 -- immunity,name_prefix,flag,entityflags,animationsub,hasspellscript,spelllist,namevis,roamflag,skill_list_id,resist_id)
@@ -64,6 +90,17 @@ INSERT INTO `mob_pools` VALUES (10007,'GreedP','GreedP',999,0x000053050000000000
 INSERT INTO `mob_pools` VALUES (10008,'FearP','FearP',999,0x00007E0B00000000000000000000000000000000,8,3,4,180,85,0,1,1,0,2,0,0,7,135,0,0,149,0,0,9007,9007);
 INSERT INTO `mob_pools` VALUES (10009,'GluttonyP','GluttonyP',999,0x00001F0C00000000000000000000000000000000,8,19,7,180,95,0,1,1,0,2,0,0,7,135,0,0,432,0,0,252,9008);
 INSERT INTO `mob_pools` VALUES (10010,'SlothP','SlothP',999,0x0000C90900000000000000000000000000000000,7,16,6,300,105,0,1,1,0,2,0,0,7,135,0,0,4959,0,0,9009,9009);
+INSERT INTO `mob_pools` VALUES (10011,'Diablo','Diablo',999,0x0000D40600000000000000000000000000000000,2,1,2,20,100,0,1,1,0,2,6,0,7,137,8,0,0,0,0,9012,9012);
+INSERT INTO `mob_pools` VALUES (10012,'Midgardsormr','Midgardsormr',999,0x00004F0900000000000000000000000000000000,8,6,2,200,150,0,1,1,0,2,6,0,7,137,0,0,174,0,0,807,9013);
+INSERT INTO `mob_pools` VALUES (10013,'Chaurli','Chaurli',999,0x00004E0900000000000000000000000000000000,8,12,10,200,120,0,1,1,0,2,0,0,7,135,0,0,79,0,0,164,9014);
+INSERT INTO `mob_pools` VALUES (10014,'Uni_Satou','Uni_Satou',999,0x0000B30800000000000000000000000000000000,8,12,10,90,110,0,1,1,0,2,0,0,7,135,0,0,111,0,0,39,9015);
+INSERT INTO `mob_pools` VALUES (10015,'Jor-El','Jor-El',999,0x0000930500000000000000000000000000000000,8,12,10,150,110,0,1,1,0,2,0,0,7,135,0,0,467,0,0,234,9016);
+INSERT INTO `mob_pools` VALUES (10016,'Audrey_II','Audrey_II',999,0x0000500900000000000000000000000000000000,8,12,10,150,110,0,1,1,0,2,0,0,7,135,0,0,293,0,0,411,9017);
+INSERT INTO `mob_pools` VALUES (10017,'Hans','Hans',999,0x0000260100000000000000000000000000000000,8,12,10,150,150,0,1,1,0,2,0,0,7,135,0,0,150,0,0,54,9018);
+INSERT INTO `mob_pools` VALUES (10018,'Tien_Lung','Tien_Lung',999,0x0000EC0700000000000000000000000000000000,8,12,10,200,180,0,1,1,0,2,0,0,7,135,0,0,156,0,0,214,9019);
+INSERT INTO `mob_pools` VALUES (10019,'Derflinger','Derflinger',999,0x0000270700000000000000000000000000000000,8,12,10,120,150,0,1,1,0,2,0,0,7,135,0,0,159,0,0,1048,9020);
+INSERT INTO `mob_pools` VALUES (10020,'Astaroth','Astaroth',999,0x0000C00600000000000000000000000000000000,8,12,10,90,110,0,1,1,0,2,0,0,7,135,0,0,218,0,0,165,9021);
+INSERT INTO `mob_pools` VALUES (10021,'Cosmic_Egg','Cosmic_Egg',999,0x0000700900000000000000000000000000000000,8,12,10,0,10,0,1,1,0,2,0,0,7,135,0,0,4969,0,0,9022,9022);
 
 
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
@@ -90,6 +127,19 @@ INSERT INTO `mob_groups` VALUES (188,10007,291,'GreedP',1800,128,0,40000,50001,1
 INSERT INTO `mob_groups` VALUES (187,10008,291,'FearP',1800,128,0,40000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (186,10009,291,'GluttonyP',1800,128,0,40000,50001,124,125,0);
 INSERT INTO `mob_groups` VALUES (185,10010,291,'SlothP',1800,128,0,40000,50001,124,125,0);
+INSERT INTO `mob_groups` VALUES (199,10021,51,'Cosmic_Egg',10,128,4083,100,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (198,10011,51,'Diablo',1800,128,4084,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (197,10012,51,'Midgardsormr',1800,128,4085,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (196,10013,51,'Chaurli',1800,128,4086,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (195,10014,51,'Uni_Satou',1800,128,4087,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (194,10015,51,'Jor-El',1800,128,4088,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (193,10016,51,'Audrey_II',1800,128,4089,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (192,10017,51,'Hans',1800,128,4090,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (191,10018,51,'Tien_Lung',1800,128,4091,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (190,10019,51,'Derflinger',1800,128,4092,300000,99999,129,130,0);
+INSERT INTO `mob_groups` VALUES (189,10020,51,'Astaroth',1800,128,4093,300000,99999,129,130,0);
+
+
 
 
 -- MOB_POOL_MODS (poolid, modid, value, is_mob_mod)
@@ -155,6 +205,7 @@ INSERT INTO `mob_pool_mods` VALUES (10001,14,400,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,68,-200,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,1,1000,0);
 INSERT INTO `mob_pool_mods` VALUES (10001,29,200,0);
+INSERT INTO `mob_pool_mods` VALUES (10011,23,-500,0);
 
 
 
@@ -213,6 +264,19 @@ INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,200
 INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
 INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',2,3,1,2,0,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9012,'Diablo',2,3,2,1,6000,6000,0,6000,6000,-4000,10000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9022,'Cosmic_Egg',9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9013,'Midgardsormr',9,9,9,9,10000,-6000,6000,6000,6000,-6000,6000,6000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9014,'Chaurli',6,4,3,4,6000,6000,6000,6000,-6000,10000,6000,6000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9015,'Uni_Satou',2,4,4,2,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9016,'Jor-El',4,1,4,6,6000,-4000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9017,'Audrey_II',1,4,4,2,-6000,6000,6000,10000,6000,6000,6000,6000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9018,'Hans',9,9,9,9,2000,-6000,2000,2000,2000,10000,2000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9019,'Tien_Lung',4,4,1,1,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9020,'Derflinger',4,4,4,1,6000,-6000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9021,'Astaroth',1,4,4,4,10000,10000,-6000,6000,6000,6000,6000,6000,0,0,0,0,0,0,0,0);
+
+
 
 
 -- MOB_FAMILY_SYSTEM (familyid,family,superFamilyID,superfamily,ecosystemID,exosystem,mobradius,speed,
