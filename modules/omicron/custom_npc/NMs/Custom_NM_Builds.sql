@@ -43,28 +43,28 @@ INSERT INTO `mob_spawn_points` VALUES (17970015,'SlothP','SlothP',185,259.9805,-
 -- ------------------------------------------------------------
 -- Wajaom Woodlands (Zone 51)
 -- ------------------------------------------------------------
-INSERT INTO `mob_spawn_points` VALUES (16986695,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986696,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986697,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986698,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986699,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986700,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986701,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986702,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986703,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986704,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986705,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986706,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986707,'Diablo','Diablo',198,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986708,'Midgardsormr','Midgardsormr',197,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986709,'Chaurli','Chaurli',196,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986710,'Uni_Satou','Uni_Satou',195,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986711,'Jor-El','Jor-El',194,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986712,'Audrey_II','Audrey_II',193,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986713,'Hans','Hans',192,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986714,'Tien_Lung','Tien_Lung',191,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986715,'Derflinger','Derflinger',190,610,-23,356,86);
-INSERT INTO `mob_spawn_points` VALUES (16986716,'Astaroth','Astaroth',189,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986829,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986830,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986831,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986832,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986833,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986834,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986835,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986836,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986837,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986838,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986839,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986840,'Cosmic_Egg','Cosmic_Egg',199,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986841,'Diablo','Diablo',198,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986842,'Midgardsormr','Midgardsormr',197,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986843,'Chaurli','Chaurli',196,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986844,'Uni_Satou','Uni_Satou',195,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986845,'Jor-El','Jor-El',194,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986846,'Audrey_II','Audrey_II',193,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986847,'Hans','Hans',192,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986848,'Tien_Lung','Tien_Lung',191,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986849,'Derflinger','Derflinger',190,610,-23,356,86);
+INSERT INTO `mob_spawn_points` VALUES (16986850,'Astaroth','Astaroth',189,610,-23,356,86);
 
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,

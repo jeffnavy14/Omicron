@@ -39,75 +39,75 @@ m:addOverride("xi.zones.Wajaom_Woodlands.Zone.onZoneTick", function(zone)
 	  	GetServerVariable("[EggHunt]") == 1 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986695)
+		SpawnMob(16986829)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 2 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986696)
+		SpawnMob(16986830)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 3 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986697)
+		SpawnMob(16986831)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 4 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986698)
+		SpawnMob(16986832)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 5 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986699)
+		SpawnMob(16986833)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 6 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986700)
+		SpawnMob(16986834)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 7 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986701)
+		SpawnMob(16986835)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 8 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986702)
+		SpawnMob(16986836)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 9 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986703)
+		SpawnMob(16986837)
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 10 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986704)
+		SpawnMob(16986838)
 
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 11 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986705)
+		SpawnMob(16986839)
 
 
 	elseif
 	  	GetServerVariable("[EggHunt]") == 12 and             
         	GetServerVariable("[Hatch]") == 0 
 	then
-		SpawnMob(16986706)
+		SpawnMob(16986840)
 
 	end
 
