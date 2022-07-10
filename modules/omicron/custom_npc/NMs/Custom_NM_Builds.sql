@@ -251,30 +251,31 @@ INSERT INTO `mob_spawn_mods` VALUES (17970003,2,30000,1); -- max gil 30000
 
 
 -- MOB_RESISTANCES (resistid,name,slash_sdt,piece_sdt,h2h_sdt,impact_sdt,fire_sdt,ice_sdt,wind_sdt,earth_sdt,lightning_sdt
--- water_sdt,light_sdt,dark_sdt,fire_res,ice_res,wind_res,earth_res,lightning_res,water_res,light_res,dark_res)
-INSERT INTO `mob_resistances` VALUES (9000,'Rage',1,2,2,2,2500,2500,2500,2500,2500,2500,-2500,2500,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9001,'Pride',2,1,2,2,2000,2000,2000,2000,-2000,2000,2000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9002,'Wrath',2,2,1,2,10000,3000,2000,2000,2000,-2000,2000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9003,'Wraths_Pup',2,1,2,2,1000,-3000,1000,1000,1000,-2000,1000,1000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9004,'Envy',2,2,2,1,-2000,2000,2000,2000,10000,2000,2000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9005,'Lust',1,2,2,2,2000,2000,10000,2000,-2000,2000,2000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9006,'Greed',2,1,2,2,2000,2000,2000,10000,-2000,2000,2000,6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9007,'Fear',2,2,1,2,2000,2000,2000,2000,-2000,2000,1000,4000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,2000,-2000,2000,-2000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',2,3,1,2,0,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9012,'Diablo',2,3,2,1,6000,6000,0,6000,6000,-4000,10000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9022,'Cosmic_Egg',9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9013,'Midgardsormr',9,9,9,9,10000,-6000,6000,6000,6000,-6000,6000,6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9014,'Chaurli',6,4,3,4,6000,6000,6000,6000,-6000,10000,6000,6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9015,'Uni_Satou',2,4,4,2,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9016,'Jor-El',4,1,4,6,6000,-4000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9017,'Audrey_II',1,4,4,2,-6000,6000,6000,10000,6000,6000,6000,6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9018,'Hans',9,9,9,9,2000,-6000,2000,2000,2000,10000,2000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9019,'Tien_Lung',4,4,1,1,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9020,'Derflinger',4,4,4,1,6000,-6000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (9021,'Astaroth',1,4,4,4,10000,10000,-6000,6000,6000,6000,6000,6000,0,0,0,0,0,0,0,0);
+-- water_sdt,light_sdt,dark_sdt,fire_meva,ice_meva,wind_meva,earth_meva,lightning_meva,water_meva,light_meva,dark_meva
+-- fire_res_rank,ice_res_rank,wind_res_rank,earth,_res_rank,lightning_res_rank,water_res_rank,light_res_rank,dark_res_rank)
+INSERT INTO `mob_resistances` VALUES (9000,'Rage',1,2,2,2,2500,2500,2500,2500,2500,2500,-2500,2500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9001,'Pride',2,1,2,2,2000,2000,2000,2000,-2000,2000,2000,2000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9002,'Wrath',2,2,1,2,10000,3000,2000,2000,2000,-2000,2000,2000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9003,'Wraths_Pup',2,1,2,2,1000,-3000,1000,1000,1000,-2000,1000,1000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9004,'Envy',2,2,2,1,-2000,2000,2000,2000,10000,2000,2000,2000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9005,'Lust',1,2,2,2,2000,2000,10000,2000,-2000,2000,2000,2000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9006,'Greed',2,1,2,2,2000,2000,2000,10000,-2000,2000,2000,6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9007,'Fear',2,2,1,2,2000,2000,2000,2000,-2000,2000,1000,4000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9008,'Gluttony',2,2,2,1,2000,2000,2000,2000,-2000,2000,-2000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9009,'Sloth',1,2,2,2,2000,2000,2000,2000,-2000,2000,10000,2000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9010,'Deceit',1,1,1,1,4000,-4000,4000,4000,4000,4000,4000,4000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9011,'Sin_Eater',2,3,1,2,0,6000,6000,6000,6000,6000,-4000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9012,'Diablo',2,3,2,1,6000,6000,0,6000,6000,-4000,10000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9022,'Cosmic_Egg',9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9013,'Midgardsormr',9,9,9,9,10000,-6000,6000,6000,6000,-6000,6000,6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9014,'Chaurli',6,4,3,4,6000,6000,6000,6000,-6000,10000,6000,6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9015,'Uni_Satou',2,4,4,2,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9016,'Jor-El',4,1,4,6,6000,-4000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9017,'Audrey_II',1,4,4,2,-6000,6000,6000,10000,6000,6000,6000,6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9018,'Hans',9,9,9,9,2000,-6000,2000,2000,2000,10000,2000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9019,'Tien_Lung',4,4,1,1,6000,6000,6000,6000,6000,6000,10000,-6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9020,'Derflinger',4,4,4,1,6000,-6000,6000,6000,6000,6000,-6000,10000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (9021,'Astaroth',1,4,4,4,10000,10000,-6000,6000,6000,6000,6000,6000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 
 
