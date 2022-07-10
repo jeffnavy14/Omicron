@@ -13,12 +13,17 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
 	mob:setMobMod(xi.mobMod.DRAW_IN, 2)
+	mob:setMobMod(xi.mobMod.LINK_RADIUS, 20)
+	mob:setMobMod(xi.mobMod.SIGHT_RANGE, 30)
+	mob:setMobMod(xi.mobMod.SOUND_RANGE, 30)
+	mob:setMobMod(xi.mobMod.ROAM_COOL, 1) 
 	mob:addStatusEffect(xi.effect.DRAIN_SAMBA, 100, 0, 0)
+    mob:setUnkillable(true)
 end
 
 
 	entity.onMobFight = function(mob, target)
-    mob:setUnkillable(true)
+
 
 if 
 		mob:getHPP() <100 and mob:getLocalVar("Sins") == 0
