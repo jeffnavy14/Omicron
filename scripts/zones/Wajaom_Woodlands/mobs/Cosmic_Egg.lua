@@ -31,80 +31,80 @@ entity.onMobFight = function(mob, target)
 		GetServerVariable("Summoning") == 1 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986707):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986707):updateEnmity(target)
+		GetMobByID(16986841):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986841):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 2 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986708):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986708):updateEnmity(target)
+		GetMobByID(16986842):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986842):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 3 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986709):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986709):updateEnmity(target)
+		GetMobByID(16986843):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986843):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 4 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986710):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986710):updateEnmity(target)
+		GetMobByID(16986844):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986844):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 5 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986711):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986711):updateEnmity(target)
+		GetMobByID(16986845):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986845):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 6 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986712):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986712):updateEnmity(target)
+		GetMobByID(16986846):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986846):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 7 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986713):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986713):updateEnmity(target)
+		GetMobByID(16986847):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986847):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 8 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986714):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986714):updateEnmity(target)
+		GetMobByID(16986848):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986848):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 9 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986715):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986715):updateEnmity(target)
+		GetMobByID(16986849):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986849):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 
 	elseif
 		GetServerVariable("Summoning") == 10 and
 		GetServerVariable("Summoned") == 1
 	then
-		GetMobByID(16986716):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
-		SpawnMob(16986716):updateEnmity(target)
+		GetMobByID(16986850):setSpawn(mob:getXPos(), mob:getYPos(), mob:getZPos())
+		SpawnMob(16986850):updateEnmity(target)
 		SetServerVariable("Summoned", 2)
 	end
 
