@@ -70,7 +70,7 @@ zones[xi.zone.ABYSSEA_VUNKERL] =
     {
 	  KHALKOTAUR		 = 17666487,
 	  QUASIMODO			 = 17666488,
-	  IKU-TURSO			 = 17666489,
+	  IKUTURSO			 = 17666489,
 	  DVALINN			 = 17666490,
 	  KADRAETH_THE_HATESPAWN = 17666491,
   	  RAKSHAS			 = 17666492,
@@ -93,7 +93,6 @@ zones[xi.zone.ABYSSEA_VUNKERL] =
 	  DURINN_2			 = 17666509,
 	  KARKADANN_2		 = 17666510,
     },
-
     npc =
     {
         QM_POPS =
