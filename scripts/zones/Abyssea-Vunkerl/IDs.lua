@@ -92,7 +92,6 @@ zones[xi.zone.ABYSSEA_VUNKERL] =
 	  SEDNA_2  			 = 17666508,
 	  DURINN_2			 = 17666509,
 	  KARKADANN_2		 = 17666510,
-	  
     },
 
     npc =
