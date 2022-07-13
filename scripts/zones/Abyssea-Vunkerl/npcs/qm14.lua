@@ -4,7 +4,8 @@
 -- Spawns Sedna
 -- !pos 403 -31 390 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 

@@ -4,7 +4,8 @@
 -- Spawns Karkadann
 -- !pos -158 -32 118 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 

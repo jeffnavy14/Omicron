@@ -4,7 +4,8 @@
 -- Spawns Chhir Batti
 -- !pos -395.665 -31.565 358.085 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

@@ -4,7 +4,8 @@
 -- Spawns Armillaria
 -- !pos -396 -31 196 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 entity.onTrade = function(player, npc, trade)

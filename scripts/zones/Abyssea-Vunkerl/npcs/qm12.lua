@@ -4,7 +4,8 @@
 -- Spawns Gnawtooth Gary
 -- !pos -343 -39 -644 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

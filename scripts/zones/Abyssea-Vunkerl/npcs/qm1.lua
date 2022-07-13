@@ -4,7 +4,8 @@
 -- Spawns Khalkotaur
 -- !pos -115.911 -40.034 -201.988 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

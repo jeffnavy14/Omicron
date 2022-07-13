@@ -4,7 +4,8 @@
 -- Spawns Iku-Turso
 -- !pos 244 -32 240 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

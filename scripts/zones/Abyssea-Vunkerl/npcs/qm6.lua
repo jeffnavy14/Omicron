@@ -4,7 +4,8 @@
 -- Spawns Rakshas
 -- !pos -203 -39 -26 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

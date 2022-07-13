@@ -4,7 +4,8 @@
 -- Spawns Xan
 -- !pos 120 -39 -551 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

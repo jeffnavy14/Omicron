@@ -4,7 +4,8 @@
 -- Spawns Karkadann
 -- !pos -157 -31 88 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 
@@ -14,7 +15,7 @@ end
 
 entity.onTrigger = function(player, npc)
     local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.KARKADANN, { xi.ki.WARPED_SMILODON_CHOKER, xi.ki.MALODOROUS_MARID_FUR })
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.KARKADANN_2, { xi.ki.WARPED_SMILODON_CHOKER, xi.ki.MALODOROUS_MARID_FUR })
 end
 
 

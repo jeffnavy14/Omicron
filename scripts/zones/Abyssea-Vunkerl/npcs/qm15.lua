@@ -4,7 +4,8 @@
 -- Spawns Durinn
 -- !pos -571 -47 -554 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

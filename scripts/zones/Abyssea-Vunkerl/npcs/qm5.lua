@@ -4,7 +4,8 @@
 -- Spawns Kadraeth the Hatespawn
 -- !pos -475 -40 -280 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

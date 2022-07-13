@@ -4,7 +4,8 @@
 -- Spawns Dvalinn
 -- !pos -634 -48 -476 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 

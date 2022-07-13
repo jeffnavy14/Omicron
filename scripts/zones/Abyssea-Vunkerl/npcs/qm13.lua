@@ -4,7 +4,8 @@
 -- Spawns Bukhis
 -- !pos -202 -40 -280 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 

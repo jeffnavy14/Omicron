@@ -4,7 +4,8 @@
 -- Spawns Seps
 -- !pos -238 -39 -717 217
 -----------------------------------
-require("scripts/globals/abyssea")
+require('scripts/globals/abyssea')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 
