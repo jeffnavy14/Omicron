@@ -998,7 +998,7 @@ bool CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, ui
 {
     // Don't process if not a COR roll.
     if (!((PStatusEffect->GetStatusID() >= EFFECT_FIGHTERS_ROLL && PStatusEffect->GetStatusID() <= EFFECT_NATURALISTS_ROLL) ||
-                        (PStatusEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL)))
+          (PStatusEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL)))
     {
         return false;
     }
@@ -1584,7 +1584,7 @@ void CStatusEffectContainer::LoadStatusEffects()
             }
             CStatusEffect* PStatusEffect =
                 new CStatusEffect(effectID, (uint16)sql->GetUIntData(1), (uint16)sql->GetUIntData(2),
-                                  sql->GetUIntData(3), duration, (uint16)sql->GetUIntData(5), (uint16)sql->GetUIntData(6),
+                                  sql->GetUIntData(3), duration, sql->GetUIntData(5), (uint16)sql->GetUIntData(6),
                                   (uint16)sql->GetUIntData(7), flags);
 
             PEffectList.push_back(PStatusEffect);
@@ -1784,7 +1784,7 @@ void CStatusEffectContainer::HandleAura(CStatusEffect* PStatusEffect)
                     PMember->StatusEffectContainer->AddStatusEffect(PEffect, true);
                 }
             });
-             // clang-format on
+            // clang-format on
         }
         else if (auraTarget == AURA_TARGET::ENEMIES)
         {
@@ -1904,6 +1904,12 @@ void CStatusEffectContainer::TickRegen(time_point tick)
                     {
                         CPetEntity* PPet  = (CPetEntity*)m_POwner->PPet;
                         CItem*      hands = PChar->getEquip(SLOT_HANDS);
+
+                        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_AVATARS_FAVOR) &&
+                            PPet->m_PetID >= PETID_CARBUNCLE && PPet->m_PetID <= PETID_CAIT_SITH)
+                        {
+                            perpetuation = static_cast<int16>(perpetuation * 1.2);
+                        }
 
                         // carbuncle mitts only work on carbuncle
                         if (hands && hands->getID() == 14062 && PPet->name == "Carbuncle")

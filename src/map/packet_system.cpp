@@ -183,7 +183,7 @@ std::function<void(map_session_data_t* const, CCharEntity* const, CBasicPacket)>
 void PrintPacket(CBasicPacket data)
 {
     std::string message;
-    char buffer[5];
+    char        buffer[5];
 
     for (size_t y = 0; y < data.getSize(); y++)
     {
@@ -241,10 +241,16 @@ void SmallPacket0x00A(map_session_data_t* const PSession, CCharEntity* const PCh
     TracyZoneScoped;
     data.ref<uint32>(0x5C) = 0;
 
-    PChar->clearPacketList();
-
-    if (PChar->status == STATUS_TYPE::DISAPPEAR)
+    if (PSession->blowfish.status == BLOWFISH_ACCEPTED && PChar->status == STATUS_TYPE::NORMAL) // Do nothing if character is zoned in
     {
+        ShowWarning("packet_system::SmallPacket0x00A player '%' attempting to send 0x00A when already logged in", PChar->GetName());
+        return;
+    }
+
+    if (PSession->blowfish.status == BLOWFISH_WAITING) // Generate new blowfish session, call zone in, etc, only once.
+    {
+        PChar->clearPacketList();
+
         if (PChar->loc.zone != nullptr)
         {
             // Remove the char from previous zone, and unset shuttingDown (already in next zone)
@@ -313,28 +319,20 @@ void SmallPacket0x00A(map_session_data_t* const PSession, CCharEntity* const PCh
                 PChar->loc.zoning = true;
             }
         }
-        PChar->status = STATUS_TYPE::NORMAL;
-    }
-    else if (PChar->loc.zone != nullptr)
-    {
-        // TODO: this should only happen ONCE, instead of spamming the log dozens of times..
-        ShowWarning("Client cannot receive packet or key is invalid: %s, Zone: %s (%i)",
-                    PChar->GetName(), PChar->loc.zone->GetName(), PChar->loc.zone->GetID());
 
-        // TODO: work out how to drop player in moghouse that exits them to the zone they were in before this happened, like we used to.
-        ShowWarning("packet_system::SmallPacket0x00A dumping player `%s` to homepoint!", PChar->GetName());
-        charutils::HomePoint(PChar);
-    }
+        charutils::SaveCharPosition(PChar);
+        charutils::SaveZonesVisited(PChar);
+        charutils::SavePlayTime(PChar);
 
-    charutils::SaveCharPosition(PChar);
-    charutils::SaveZonesVisited(PChar);
-    charutils::SavePlayTime(PChar);
+        if (PChar->m_moghouseID != 0)
+        {
+            PChar->m_charHistory.mhEntrances++;
+            gardenutils::UpdateGardening(PChar, false);
+        }
+    }
 
     if (PChar->m_moghouseID != 0)
     {
-        PChar->m_charHistory.mhEntrances++;
-        gardenutils::UpdateGardening(PChar, false);
-
         // Update any mannequins that might be placed on zonein
         // Build Mannequin model id list
         auto getModelIdFromStorageSlot = [](CCharEntity* PChar, uint8 slot) -> uint16
@@ -386,12 +384,9 @@ void SmallPacket0x00A(map_session_data_t* const PSession, CCharEntity* const PCh
             }
         }
     }
-
     PChar->pushPacket(new CDownloadingDataPacket());
     PChar->pushPacket(new CZoneInPacket(PChar, PChar->currentEvent->eventId));
     PChar->pushPacket(new CZoneVisitedPacket(PChar));
-
-    PChar->PAI->QueueAction(queueAction_t(400ms, false, luautils::AfterZoneIn));
 }
 
 /************************************************************************
@@ -454,6 +449,12 @@ void SmallPacket0x00C(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x00D(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket data)
 {
     TracyZoneScoped;
+
+    if (PChar->status == STATUS_TYPE::DISAPPEAR && (PSession->blowfish.status == BLOWFISH_WAITING || PSession->blowfish.status == BLOWFISH_SENT)) // Character has already requested to zone, do nothing.
+    {
+        return;
+    }
+
     PSession->blowfish.status = BLOWFISH_WAITING;
 
     PChar->TradePending.clean();
@@ -583,7 +584,7 @@ void SmallPacket0x011(map_session_data_t* const PSession, CCharEntity* const PCh
 {
     TracyZoneScoped;
     PSession->blowfish.status = BLOWFISH_ACCEPTED;
-
+    PChar->status = STATUS_TYPE::NORMAL;
     PChar->health.tp = 0;
 
     for (uint8 i = 0; i < 16; ++i)
@@ -593,6 +594,8 @@ void SmallPacket0x011(map_session_data_t* const PSession, CCharEntity* const PCh
             PChar->pushPacket(new CEquipPacket(PChar->equip[i], i, PChar->equipLoc[i]));
         }
     }
+
+    luautils::AfterZoneIn(PChar);
 
     // todo: kill player til theyre dead and bsod
     const char* fmtQuery = "SELECT version_mismatch FROM accounts_sessions WHERE charid = %u";
@@ -625,8 +628,14 @@ void SmallPacket0x015(map_session_data_t* const PSession, CCharEntity* const PCh
         uint16 newTargID   = data.ref<uint16>(0x16);
         uint8  newRotation = data.ref<uint8>(0x14);
 
-        bool   moved       = (PChar->loc.p.x != newX || PChar->loc.p.y != newY || PChar->loc.p.z != newZ || PChar->m_TargID != newTargID
-                           || PChar->loc.p.rotation != newRotation);
+        // clang-format off
+        bool moved =
+            PChar->loc.p.x != newX ||
+            PChar->loc.p.y != newY ||
+            PChar->loc.p.z != newZ ||
+            PChar->m_TargID != newTargID ||
+            PChar->loc.p.rotation != newRotation;
+        // clang-format on
 
         // Cache previous location
         PChar->m_previousLocation = PChar->loc;
@@ -656,11 +665,11 @@ void SmallPacket0x015(map_session_data_t* const PSession, CCharEntity* const PCh
         }
 
         // Request updates for all entity types
-        PChar->loc.zone->SpawnNPCs(PChar);   // Some NPCs can move, some rotate when other players talk to them, always request NPC updates.
+        PChar->loc.zone->SpawnNPCs(PChar); // Some NPCs can move, some rotate when other players talk to them, always request NPC updates.
         PChar->loc.zone->SpawnMOBs(PChar);
         PChar->loc.zone->SpawnPETs(PChar);
         PChar->loc.zone->SpawnTRUSTs(PChar);
-        PChar->requestedInfoSync = true;     // Ask to update PCs during CZoneEntities::ZoneServer
+        PChar->requestedInfoSync = true; // Ask to update PCs during CZoneEntities::ZoneServer
 
         if (PChar->PWideScanTarget != nullptr)
         {
@@ -1662,7 +1671,7 @@ void SmallPacket0x034(map_session_data_t* const PSession, CCharEntity* const PCh
                     else
                     {
                         ShowInfo("%s->%s trade updating trade slot id %d with item %s, quantity %d", PChar->GetName(), PTarget->GetName(),
-                                   tradeSlotID, PItem->getName(), quantity);
+                                 tradeSlotID, PItem->getName(), quantity);
                         PItem->setReserve(quantity + PItem->getReserve());
                         PChar->UContainer->SetItem(tradeSlotID, PItem);
                     }
@@ -1670,7 +1679,7 @@ void SmallPacket0x034(map_session_data_t* const PSession, CCharEntity* const PCh
                 else
                 {
                     ShowInfo("%s->%s trade updating trade slot id %d with item %s, quantity %d", PChar->GetName(), PTarget->GetName(),
-                               tradeSlotID, PItem->getName(), quantity);
+                             tradeSlotID, PItem->getName(), quantity);
                     PItem->setReserve(quantity + PItem->getReserve());
                     PChar->UContainer->SetItem(tradeSlotID, PItem);
                 }
@@ -1678,7 +1687,7 @@ void SmallPacket0x034(map_session_data_t* const PSession, CCharEntity* const PCh
             else
             {
                 ShowInfo("%s->%s trade updating trade slot id %d with item %s, quantity 0", PChar->GetName(), PTarget->GetName(),
-                           tradeSlotID, PItem->getName());
+                         tradeSlotID, PItem->getName());
                 PItem->setReserve(0);
                 PChar->UContainer->SetItem(tradeSlotID, nullptr);
             }
@@ -3693,7 +3702,7 @@ void SmallPacket0x05E(map_session_data_t* const PSession, CCharEntity* const PCh
             {
                 PChar->m_moghouseID    = 0;
                 PChar->loc.destination = destinationZone;
-                PChar->loc.p = {};
+                PChar->loc.p           = {};
             }
             else
             {
@@ -4761,8 +4770,8 @@ void SmallPacket0x096(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x0AA(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket data)
 {
     TracyZoneScoped;
-    uint16     itemID     = data.ref<uint16>(0x04);
-    uint8      quantity   = data.ref<uint8>(0x07);
+    uint16 itemID   = data.ref<uint16>(0x04);
+    uint8  quantity = data.ref<uint8>(0x07);
 
     if (!PChar->PGuildShop)
     {
