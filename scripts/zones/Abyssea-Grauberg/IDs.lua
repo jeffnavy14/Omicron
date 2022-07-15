@@ -71,6 +71,28 @@ zones[xi.zone.ABYSSEA_GRAUBERG] =
     },
     mob =
     {
+       IRONCLAD_SUNDERER            = 17818041,
+       NINGISHZIDA                  = 17818042,
+       TEUGGHIA                     = 17818043,
+       BOMBLIX_FLAMEFINGER          = 17818044,
+       TEEKEESELCHEN                = 17818045,
+       MINARUJA                     = 17818046,
+       XIBALBA                      = 17818047,
+       IKA_ROA                      = 17818048,
+       LORELEI                      = 17818049,
+       BURSTROX_POWDERPATE          = 17818050,
+       RAJA                         = 17818051,
+       ALFARD                       = 17818052,
+       AZDAJA                       = 17818053,
+       AMPHITRITE                   = 17818054,
+       RAJA_1                       = 17818055,
+       ALFARD_1                     = 17818056,
+       AZDAJA_1                     = 17818057,
+       AMPHITRITE_1                 = 17818058,
+       RAJA_2                       = 17818059,
+       ALFARD_2                     = 17818060,
+       AZDAJA_2                     = 17818061,
+       AMPHITRITE_2                 = 17818062,
     },
     npc =
     {
