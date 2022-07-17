@@ -138,7 +138,7 @@ xi.settings.map =
     ALTER_EGO_MP_MULTIPLIER = 1.3,
 
     -- Sets the fraction of MP a subjob provides to the main job. Retail is half and this acts as a divisor so default is 2
-    SJ_MP_DIVISOR = 2.0,
+    SJ_MP_DIVISOR = 1.8,
 
     --  Modify ratio of subjob-to-mainjob
     -- 0            = no subjobs
