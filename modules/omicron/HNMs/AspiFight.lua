@@ -42,7 +42,7 @@ m:addOverride("xi.zones.Valley_of_Sorrows.Zone.onZoneTick", function(zone, mob)
 
             mob:hideHP(true)
 
-        mob:setDropID(4056)
+        mob:setDropID(4058)
         mob:setSpawn(-5.4115, 0.1944, -33.4813, 50)
         mob:spawn()
 		mob:setMobMod(xi.mobMod.SKILL_LIST, 479)

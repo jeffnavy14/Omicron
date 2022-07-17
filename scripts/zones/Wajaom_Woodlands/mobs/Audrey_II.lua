@@ -6,7 +6,6 @@ local entity = {}
 
 entity.onMobSpawn = function(mob)
     mob:renameEntity("Audrey II")
-		mob:setModelId(2384)
 end
 
 entity.onMobDeath = function(mob)
