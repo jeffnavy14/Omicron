@@ -5944,7 +5944,7 @@ INSERT INTO `item_equipment` VALUES (16195,'aegis',80,0,64,51,5,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16196,'aegis',85,0,64,51,5,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16197,'aegis',90,0,64,51,5,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16198,'aegis',95,0,64,51,5,0,2,0,0);
-INSERT INTO `item_equipment` VALUES (16199,'ochain',99,0,64,57,6,0,2,0,0);
+INSERT INTO `item_equipment` VALUES (16199,'ochain',99,119,64,57,6,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16200,'aegis',99,0,64,59,5,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16201,'genesis_shield',88,0,2421,46,2,0,2,0,0);
 INSERT INTO `item_equipment` VALUES (16202,'dagdas_shield',90,0,193,26,3,0,2,0,0);

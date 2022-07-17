@@ -1,0 +1,15 @@
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_war' AND `zoneid` = "139";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_blm' AND `zoneid` = "139";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_rng' AND `zoneid` = "139";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000",  `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_rdm' AND `zoneid` = "144";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_thf' AND `zoneid` = "144";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_bst' AND `zoneid` = "144";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_mnk' AND `zoneid` = "146";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000",  `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_whm' AND `zoneid` = "146";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_smn' AND `zoneid` = "146";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000",  `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_sam' AND `zoneid` = "168";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_nin' AND `zoneid` = "168";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_drg' AND `zoneid` = "168";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000",  `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_pld' AND `zoneid` = "206";
+UPDATE `mob_groups` SET	`HP` = "100000",	`MP` = "90000",  `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_drk' AND `zoneid` = "206";
+UPDATE `mob_groups` SET	`HP` = "100000", `minLevel` = "135", `maxLevel` = "135" WHERE `name` =	'Maat_brd' AND `zoneid` = "206";

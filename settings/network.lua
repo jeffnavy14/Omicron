@@ -14,14 +14,14 @@ xi.settings.network =
     SQL_HOST     = "127.0.0.1",
     SQL_PORT     = 3306,
     SQL_LOGIN    = "root",
-    SQL_PASSWORD = "5y5t3m",
-    SQL_DATABASE = "catxidb",
+    SQL_PASSWORD = "liliana",
+    SQL_DATABASE = "xidb",
 
-    LOGIN_DATA_IP   = "192.168.1.55",
+    LOGIN_DATA_IP   = "127.0.0.1",
     LOGIN_DATA_PORT = 54230,
-    LOGIN_VIEW_IP   = "192.168.1.55",
+    LOGIN_VIEW_IP   = "127.0.0.1",
     LOGIN_VIEW_PORT = 54001,
-    LOGIN_AUTH_IP   = "192.168.1.55",
+    LOGIN_AUTH_IP   = "127.0.0.1",
     LOGIN_AUTH_PORT = 54231,
 
     MAP_PORT = 54230,
@@ -29,6 +29,6 @@ xi.settings.network =
     SEARCH_PORT = 54002,
 
     -- Central message server settings (ensure these are the same on both all map servers and the central (lobby) server
-    ZMQ_IP   = "192.168.1.55",
+    ZMQ_IP   = "127.0.0.1",
     ZMQ_PORT = 54003,
 }

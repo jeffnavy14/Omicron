@@ -11,3 +11,4 @@ INSERT INTO `item_equipment` VALUES (21664,'zantetsuken_x',99,119,2097344,808,5,
 INSERT INTO `item_equipment` VALUES (19320,'lu_sh._f.rod+1',1,0,4194303,14,0,0,4,0,0);
 INSERT INTO `item_equipment` VALUES (19321,'ebisu_f.rod+1',1,0,4194303,15,0,0,4,0,0);
 INSERT INTO `item_equipment` VALUES (21567,'gletis_knife',99,119,333360,615,0,0,3,0,0);
+INSERT INTO `item_equipment` VALUES (25592,'hjarrandi_helm',99,119,8385,199,0,0,16,0,0);
