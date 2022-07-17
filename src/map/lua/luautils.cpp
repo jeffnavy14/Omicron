@@ -1829,6 +1829,12 @@ namespace luautils
     {
         TracyZoneScoped;
 
+        // Clicking objects does nothing if the player is mid synthesis
+        if (PChar->animation == ANIMATION_SYNTH)
+        {
+            return 0;
+        }
+
         auto zone     = (const char*)PChar->loc.zone->GetName();
         auto name     = (const char*)PNpc->GetName();
         auto filename = fmt::format("./scripts/zones/{}/npcs/{}.lua", zone, name);
