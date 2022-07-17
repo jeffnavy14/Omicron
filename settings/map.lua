@@ -74,7 +74,7 @@ xi.settings.map =
 
     -- Weaponskill points per skillchain element - whole numbers only, retail is 1
     --  (tier 3 sc's have 4 elements, plus 1 for the ws itself, giving 5 points to the closer).
-    WS_POINTS_SKILLCHAIN = 1,
+    WS_POINTS_SKILLCHAIN = 2,
 
     -- Enable/disable jobs other than BST and RNG having widescan
     ALL_JOBS_WIDESCAN = 1,
@@ -110,13 +110,13 @@ xi.settings.map =
     CRAFT_COMMON_CAP = 700,
 
     -- Amount of points allowed in crafts over the level defined above. Points are shared across all crafting skills. (Retail = 400; All skills can go to max = 3200)
-    CRAFT_SPECIALIZATION_POINTS = 400,
+    CRAFT_SPECIALIZATION_POINTS = 3200,
 
     -- Enables fishing. 0 = Disbaled. 1 = Enable. ENABLE AT YOUR OWN RISK.
-    FISHING_ENABLE     = 0,
+    FISHING_ENABLE     = 1,
 
     -- Multipler for fishing skill-up chance. Default = 1.0, very hard.
-    FISHING_SKILL_MULTIPLIER = 1.0,
+    FISHING_SKILL_MULTIPLIER = 3.0,
 
     -- Enable/disable skill-ups from bloodpacts
     SKILLUP_BLOODPACT = 1,
@@ -129,13 +129,13 @@ xi.settings.map =
     NM_HP_MULTIPLIER        = 1.0,
     MOB_HP_MULTIPLIER       = 1.0,
     PLAYER_HP_MULTIPLIER    = 1.0,
-    ALTER_EGO_HP_MULTIPLIER = 1.0,
+    ALTER_EGO_HP_MULTIPLIER = 1.2,
 
     -- Adjust max MP pool for NMs, regular mobs, players, and trusts/fellows. Acts as a multiplier, so default is 1.
     NM_MP_MULTIPLIER        = 1.0,
     MOB_MP_MULTIPLIER       = 1.0,
     PLAYER_MP_MULTIPLIER    = 1.0,
-    ALTER_EGO_MP_MULTIPLIER = 1.0,
+    ALTER_EGO_MP_MULTIPLIER = 1.3,
 
     -- Sets the fraction of MP a subjob provides to the main job. Retail is half and this acts as a divisor so default is 2
     SJ_MP_DIVISOR = 2.0,
@@ -154,10 +154,10 @@ xi.settings.map =
     NM_STAT_MULTIPLIER        = 1.0,
     MOB_STAT_MULTIPLIER       = 1.0,
     PLAYER_STAT_MULTIPLIER    = 1.0,
-    ALTER_EGO_STAT_MULTIPLIER = 1.0,
+    ALTER_EGO_STAT_MULTIPLIER = 1.1,
 
     -- Adjust skill caps for trusts/fellows. Acts as a multiplier, so default is 1.
-    ALTER_EGO_SKILL_MULTIPLIER = 1.0,
+    ALTER_EGO_SKILL_MULTIPLIER = 1.1,
 
     -- Adjust the recast time for abilities. Acts as a multiplier, so default is 1
     ABILITY_RECAST_MULTIPLIER = 1.0,
