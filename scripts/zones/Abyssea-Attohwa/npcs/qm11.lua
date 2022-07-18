@@ -11,7 +11,7 @@ local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob., { xi.items.WITHERED_BUD })
+    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.NIGHTSHADE, { xi.items.WITHERED_BUD })
 end
 
 entity.onTrigger = function(player, npc)
