@@ -13,18 +13,18 @@ local optionToItem =
     [1] = { -- Items page
         [ 0] = { cost =    10, id =  4181 }, -- Scroll of Instant Warp
         [ 1] = { cost =    10, id =  4182 }, -- Scroll of Instant Reraise
-        [ 2] = { cost =  7500, id =  4064 }, -- Copy of Rem's Tale, chapter 1
-        [ 3] = { cost =  7500, id =  4065 }, -- Copy of Rem's Tale, chapter 2
-        [ 4] = { cost =  7500, id =  4066 }, -- Copy of Rem's Tale, chapter 3
-        [ 5] = { cost =  7500, id =  4067 }, -- Copy of Rem's Tale, chapter 4
-        [ 6] = { cost =  7500, id =  4068 }, -- Copy of Rem's Tale, chapter 5
-        [ 7] = { cost = 15000, id =  4069 }, -- Copy of Rem's Tale, chapter 6
-        [ 8] = { cost = 15000, id =  4070 }, -- Copy of Rem's Tale, chapter 7
-        [ 9] = { cost = 15000, id =  4071 }, -- Copy of Rem's Tale, chapter 8
-        [10] = { cost = 15000, id =  4072 }, -- Copy of Rem's Tale, chapter 9
-        [11] = { cost = 15000, id =  4073 }, -- Copy of Rem's Tale, chapter 10
+        [ 2] = { cost =  1500, id =  4064 }, -- Copy of Rem's Tale, chapter 1
+        [ 3] = { cost =  1500, id =  4065 }, -- Copy of Rem's Tale, chapter 2
+        [ 4] = { cost =  1500, id =  4066 }, -- Copy of Rem's Tale, chapter 3
+        [ 5] = { cost =  1500, id =  4067 }, -- Copy of Rem's Tale, chapter 4
+        [ 6] = { cost =  1500, id =  4068 }, -- Copy of Rem's Tale, chapter 5
+        [ 7] = { cost = 2500, id =  4069 }, -- Copy of Rem's Tale, chapter 6
+        [ 8] = { cost = 2500, id =  4070 }, -- Copy of Rem's Tale, chapter 7
+        [ 9] = { cost = 2500, id =  4071 }, -- Copy of Rem's Tale, chapter 8
+        [10] = { cost = 2500, id =  4072 }, -- Copy of Rem's Tale, chapter 9
+        [11] = { cost = 2500, id =  4073 }, -- Copy of Rem's Tale, chapter 10
         [12] = { cost =  5000, id = 28546 }, -- Capacity Ring
-        [13] = { cost = 10000, id =  9009 }, -- Etched Memory
+        [13] = { cost = 2000, id =  9009 }, -- Etched Memory
     },
     [2] = { -- Skill-increasing tomes
         [ 0] = { cost = 200, id = 6147 }, -- Mikehe's memo
