@@ -483,5 +483,45 @@ INSERT INTO `mob_droplist` VALUES (4093,0,0,1000,15004,100);
 INSERT INTO `mob_droplist` VALUES (4093,0,0,1000,16311,100);
 INSERT INTO `mob_droplist` VALUES (4093,0,0,1000,6180,1000);
 
+    
+INSERT INTO `mob_droplist` VALUES (730,0,0,1000,3429,1000);  
+-- ZoneID: 135 - Dynamis Lord
 
+INSERT INTO `mob_droplist` VALUES (4094,0,0,1000,3502,1000);    
+INSERT INTO `mob_droplist` VALUES (4094,0,0,1000,17669,10);  
+-- ZoneID: 135 - Arch Dynamis Lord
 
+INSERT INTO `mob_droplist` VALUES (4095,0,0,1000,3403,50); -- Odious Pen
+-- ZoneID: 135 - Kindred Beastmaster
+-- ZoneID: 135 - Kindred Black Mage
+-- ZoneID: 135 - Kindred Paladin
+-- ZoneID: 135 - Kindred Ranger
+
+INSERT INTO `mob_droplist` VALUES (4096,0,0,1000,3402,50); -- Odious Blood
+-- ZoneID: 135 - Kindred Dragoon
+-- ZoneID: 135 - Kindred Thief
+-- ZoneID: 135 - Kindred Monk
+-- ZoneID: 135 - Kindred White Mage
+
+INSERT INTO `mob_droplist` VALUES (4097,0,0,1000,3401,50); -- Odious Horn
+-- ZoneID: 135 - Kindred Bard
+-- ZoneID: 135 - Kindred Ninja
+-- ZoneID: 135 - Kindred Summoner
+-- ZoneID: 135 - Kindred Warrior
+
+INSERT INTO `mob_droplist` VALUES (4098,0,0,1000,3400,50); -- Odious Skull
+-- ZoneID: 135 - Kindred Samurai
+-- ZoneID: 135 - Kindred Dark Knight
+-- ZoneID: 135 - Kindred Red Mage
+
+INSERT INTO `mob_droplist` VALUES (4099,0,0,1000,3433,1000);
+-- ZoneID: 135 - Count Haagenti
+
+INSERT INTO `mob_droplist` VALUES (4100,0,0,1000,3430,1000);
+-- ZoneID: 135 - Duke Haures
+
+INSERT INTO `mob_droplist` VALUES (4101,0,0,1000,3431,1000);
+-- ZoneID: 135 - Marquis Caim
+
+INSERT INTO `mob_droplist` VALUES (4102,0,0,1000,3432,1000);
+-- ZoneID: 135 - Baron Avnas
