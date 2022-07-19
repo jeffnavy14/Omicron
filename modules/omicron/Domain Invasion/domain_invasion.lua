@@ -363,13 +363,14 @@ end)
 -- Alt
 m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
     super(zone)
-
     if
         GetServerVariable("[Domain]Addon_Spawned") == 2 and
 	  GetServerVariable("[Domain]Addon_Spawned_2") == 2 and
-	  GetServerVariable("[Domain]Addon_Spawned_3") == 2 and
+	  GetServerVariable("[Domain]Addon_Spawned_3") == 2
     then
-        SetServerVariable("[Domain]Addon, 0)
+        SetServerVariable("[Domain]Addon", 0)
+   end
+
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
@@ -534,7 +535,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end
-				    if GetServerVariable("[Domain]Addon", 0 ) then
+				if GetServerVariable("[Domain]Addon") == 0 then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM time
 				    end
 
@@ -615,9 +616,9 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 		        SetServerVariable("[Domain]Addon_Spawned_2", 1)
             end,
             onMobFight = function(mob, target)
-		        SetServerVariable("[Domain]Addon_Spawned_2", 2)
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
+		        SetServerVariable("[Domain]Addon_Spawned_2", 2)
 			    local reward = math.random(15, 100)
 		        -- Reward escha beads
                 local players = mob:getZone():getPlayers()
@@ -630,7 +631,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end	  
-				if GetServerVariable("[Domain]Addon", 0 ) then
+				if GetServerVariable("[Domain]Addon") == 0 then
 				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				end
 
@@ -728,7 +729,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end  
-				    if GetServerVariable("[Domain]Addon", 0 ) then
+				if GetServerVariable("[Domain]Addon") == 0 then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				    end
 						
