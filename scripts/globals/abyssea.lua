@@ -737,7 +737,6 @@ xi.abyssea.qmOnEventFinish = function(player, csid, option)
 
             if player:hasKeyItem(keyItem) then
                 player:delKeyItem(keyItem)
-                player:messageSpecial(ID.text.LOST_KEYITEM, keyItem)
             end
         end
 
