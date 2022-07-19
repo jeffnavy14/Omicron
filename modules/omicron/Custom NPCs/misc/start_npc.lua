@@ -284,16 +284,30 @@ local menu =
         rotation = 50,
         widescan = 1,
 
-              onTrade = function(player, npc, trade)
+        onTrade = function(player, npc, trade)
+		
             player:PrintToPlayer("No, thanks!", 0, npc:getPacketName())
         end,
 
-onTrigger = function(player, playerArg, npc)
+        onTrigger = function(player, playerArg, npc)
+local menu =
+    {
+        title = "Head Start",
+        onStart = function(playerArg)
 
-                    player:PrintToPlayer("Welcome to OmicronXI, here is a Head Start for you!")
+            playerArg:PrintToPlayer("Would you like to take a short cut and not enjoy the game?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerArg)
+                    player:PrintToPlayer("I Guess doing missions and quests are not you thing!")
+					player:changeContainerSize(xi.inv.INVENTORY, xi.settings.START_INVENTORY - 80)
+                    player:changeContainerSize(xi.inv.MOGSATCHEL, xi.settings.START_INVENTORY - 80)		
                     player:setLevelCap(99)
 					player:unlockJob(0)
-					for i = xi.job.PLD, xi.job.RUN do
+					for i = xi.job.PLD, xi.job.SCH do
                         player:unlockJob(i)
                     end
                     for i = xi.ki.MAP_OF_THE_SAN_DORIA_AREA, xi.ki.MAP_OF_DIO_ABDHALJS_GHELSBA do
@@ -310,7 +324,21 @@ onTrigger = function(player, playerArg, npc)
                     end
 					npcUtil.giveKeyItem(player, xi.ki.LIMIT_BREAKER)
 					npcUtil.giveKeyItem(player, xi.ki.JOB_BREAKER)
-               
+                end,
+            },
+            {
+                "No thanks",
+                function(playerArg)
+ 					player:PrintToPlayer("Sorry to hear that, please leave me be", xi.msg.channel.NS_SAY)
+                end,
+            },
+        },
+			onCancelled = function(playerArg)
+			end,
+			onEnd = function(playerArg)
+			end,
+    }
+			player:customMenu(menu)
         end,
     })
 
@@ -477,15 +505,29 @@ local menu =
         widescan = 1,
 
         onTrade = function(player, npc, trade)
+
             player:PrintToPlayer("No, thanks!", 0, npc:getPacketName())
         end,
 
-onTrigger = function(player, playerArg, npc)
+        onTrigger = function(player, playerArg, npc)
+local menu =
+    {
+        title = "Head Start",
+        onStart = function(playerArg)
 
-                    player:PrintToPlayer("Welcome to OmicronXI, here is a Head Start for you!")
+            playerArg:PrintToPlayer("Would you like to take a short cut and not enjoy the game?", xi.msg.channel.NS_SAY)
+        end,
+        options =
+        {
+            {
+                "Yes",
+                function(playerArg)
+                    player:PrintToPlayer("I Guess doing missions and quests are not you thing!")
+					player:changeContainerSize(xi.inv.INVENTORY, xi.settings.START_INVENTORY - 80)
+                    player:changeContainerSize(xi.inv.MOGSATCHEL, xi.settings.START_INVENTORY - 80)		
                     player:setLevelCap(99)
 					player:unlockJob(0)
-					for i = xi.job.PLD, xi.job.RUN do
+					for i = xi.job.PLD, xi.job.SCH do
                         player:unlockJob(i)
                     end
                     for i = xi.ki.MAP_OF_THE_SAN_DORIA_AREA, xi.ki.MAP_OF_DIO_ABDHALJS_GHELSBA do
@@ -502,7 +544,21 @@ onTrigger = function(player, playerArg, npc)
                     end
 					npcUtil.giveKeyItem(player, xi.ki.LIMIT_BREAKER)
 					npcUtil.giveKeyItem(player, xi.ki.JOB_BREAKER)
-               
+                end,
+            },
+            {
+                "No thanks",
+                function(playerArg)
+ 					player:PrintToPlayer("Sorry to hear that, please leave me be", xi.msg.channel.NS_SAY)
+                end,
+            },
+        },
+			onCancelled = function(playerArg)
+			end,
+			onEnd = function(playerArg)
+			end,
+    }
+			player:customMenu(menu)
         end,
     })
 
