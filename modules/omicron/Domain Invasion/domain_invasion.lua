@@ -364,11 +364,20 @@ end)
 m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
     super(zone)
 
+    if
+        GetServerVariable("[Domain]Addon_Spawned") == 2 and
+	  GetServerVariable("[Domain]Addon_Spawned_2") == 2 and
+	  GetServerVariable("[Domain]Addon_Spawned_3") == 2 and
+    then
+        SetServerVariable("[Domain]Addon, 0)
+
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-	    GetServerVariable("[Domain]Addon") == 0 and
         GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
         GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
+	  GetServerVariable("[Domain]Addon_Spawned") == 2 and
+	  GetServerVariable("[Domain]Addon_Spawned_2") == 2 and
+	  GetServerVariable("[Domain]Addon_Spawned_3") == 2 and
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown
     then
         local mob = zone:insertDynamicEntity({
@@ -512,6 +521,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
             onMobFight = function(mob, target)
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
+		        SetServerVariable("[Domain]Addon_Spawned", 2)
 				local reward = math.random(15, 100)
 		        -- Reward escha beads
                 local players = mob:getZone():getPlayers()
@@ -524,9 +534,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end
-                local Addon = GetServerVariable("[Domain]Addon")
-                local AddonLeft = math.floor(Addon / 4)
-		                SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
 				    if GetServerVariable("[Domain]Addon", 0 ) then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM time
 				    end
@@ -608,7 +615,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 		        SetServerVariable("[Domain]Addon_Spawned_2", 1)
             end,
             onMobFight = function(mob, target)
-
+		        SetServerVariable("[Domain]Addon_Spawned_2", 2)
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
 			    local reward = math.random(15, 100)
@@ -623,10 +630,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end	  
-                -- Variable control
-	            local Addon = GetServerVariable("[Domain]Addon")
-                local AddonLeft = math.floor(Addon / 4)
-		            SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
 				if GetServerVariable("[Domain]Addon", 0 ) then
 				   SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				end
@@ -712,6 +715,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
             onMobFight = function(mob, target)
 	        end,
             onMobDeath = function(mob, player, isKiller, noKiller)
+		        SetServerVariable("[Domain]Addon_Spawned_3", 2)
                 local reward = math.random(15, 100)
 		        -- Reward escha beads
                 local players = mob:getZone():getPlayers()
@@ -724,10 +728,6 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
                         participant:PrintToPlayer("You have not contributed enough to claim a reward.", xi.msg.channel.SYSTEM_3)
                     end
                 end  
-		            		-- Variable control
-	            local Addon = GetServerVariable("[Domain]Addon")
-                local AddonLeft = math.floor(Addon / 4)
-		            SetServerVariable("[Domain]Addon", Addon - AddonLeft - 1)
 				    if GetServerVariable("[Domain]Addon", 0 ) then
 				       SetServerVariable("[Domain]NMToD", os.time()) -- Set NM ToD
 				    end
