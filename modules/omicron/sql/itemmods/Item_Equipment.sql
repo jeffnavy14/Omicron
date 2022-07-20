@@ -2,6 +2,7 @@ DELETE FROM `item_equipment` WHERE itemID=26115;
 DELETE FROM `item_equipment` WHERE itemID=22042;
 DELETE FROM `item_equipment` WHERE itemID=19320;
 DELETE FROM `item_equipment` WHERE itemID=19321;
+DELETE FROM `item_equipment` WHERE itemID=15194;
 INSERT INTO `item_equipment` VALUES (26115,'balder_earring_+1',99,119,4194303,0,0,0,6114,0,0);
 INSERT INTO `item_equipment` VALUES (23797,'crepuscular_helm',99,119,10689,103,0,0,16,0,0);
 INSERT INTO `item_equipment` VALUES (26107,'thrud_earring',99,119,10689,0,0,0,6114,0,0);
@@ -12,3 +13,5 @@ INSERT INTO `item_equipment` VALUES (19320,'lu_sh._f.rod+1',1,0,4194303,14,0,0,4
 INSERT INTO `item_equipment` VALUES (19321,'ebisu_f.rod+1',1,0,4194303,15,0,0,4,0,0);
 INSERT INTO `item_equipment` VALUES (21567,'gletis_knife',99,119,333360,615,0,0,3,0,0);
 INSERT INTO `item_equipment` VALUES (25592,'hjarrandi_helm',99,119,8385,199,0,0,16,0,0);
+INSERT INTO `item_equipment` VALUES (23777,'gletis_breeches',99,119,303392,465,0,0,128,0,0);
+INSERT INTO `item_equipment` VALUES (15194,'maats_cap',99,119,4194303,152,0,0,16,0,0);
