@@ -314,7 +314,7 @@ xi.abyssea.mob =
     ['Sirrush']             = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.GNARLED_LIZARD_NAIL              } },
     ['Sobek']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_GNARLED_HORN      }, ['Normal'] = {                                        } },
     ['Tuskertrap']          = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_LENITY      } },
-    ['Tristitia']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_BLUDGEONING_BRUTE }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT     } },
+    ['Tristitia']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_BLUDGEONING_BRUTE }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT           } },
 
     -- Tahrongi Canyon
     ['Adze']            = { ['Atma'] = { xi.ki.ATMA_OF_CALAMITY                                        }, ['Normal'] = { xi.ki.STICKY_GNAT_WING            } },
@@ -340,7 +340,7 @@ xi.abyssea.mob =
     --Uleguerand
     ['Apademak']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_WAR_LION             }, ['Normal'] = {                                                                  } },
     ['Awahondo']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_PERSISTANT_PREDATOR  }, ['Normal'] = { xi.ki.DECAYING_DIREMITE_FANG                                     } },
-    ['Blanga']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_STONE_GOD            }, ['Normal'] = { xi.ki.                                                           } },
+    ['Blanga']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_STONE_GOD            }, ['Normal'] = {                                                                  } },
     ['Dhorme_Khimaira']       = { ['Atma'] = { xi.ki.ATMA_OF_PURGATORY                }, ['Normal'] = { xi.ki.TORN_KHIMAIRA_WING                                         } },
     ['Empousa']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_SHRIEKING_ONE        }, ['Normal'] = {                                                                  } },
     ['Impervious_Chariot']    = { ['Atma'] = {                                        }, ['Normal'] = { xi.ki.DENTED_CHARIOT_SHIELD, xi.ki.VERMILLION_ABYSSITE_OF_KISMET } },
