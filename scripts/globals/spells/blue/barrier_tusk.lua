@@ -1,17 +1,5 @@
 -----------------------------------
--- Spell: Cocoon
--- Enhances defense
--- Spell cost: 10 MP
--- Monster Type: Vermin
--- Spell Type: Magical (Earth)
--- Blue Magic Points: 1
--- Stat Bonus: VIT+3
--- Level: 8
--- Casting Time: 1.75 seconds
--- Recast Time: 60 seconds
--- Duration: 90 seconds
------------------------------------
--- Combos: None
+-- Spell: Barrier Tusk
 -----------------------------------
 require("scripts/globals/bluemagic")
 require("scripts/globals/settings")
@@ -25,9 +13,9 @@ spell_object.onMagicCastingCheck = function(caster, target, spell)
 end
 
 spell_object.onSpellCast = function(caster, target, spell)
-    local typeEffect = xi.effect.DEFENSE_BOOST
-    local power = 50 -- Percentage, not amount.
-    local duration = 180
+    local typeEffect = xi.effect.PHALANX
+    local power = 90 -- Percentage, not amount.
+    local duration = 300
 
     if (caster:hasStatusEffect(xi.effect.DIFFUSION)) then
         local diffMerit = caster:getMerit(xi.merit.DIFFUSION)

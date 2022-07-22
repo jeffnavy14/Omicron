@@ -11,11 +11,11 @@ local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.KADRAETH_THE_HATESPAWN, { xi.items.STIFF_TENTACLE })
+    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.KADRAETH_THE_HATESPAWN, { xi.items.STIFFENED_TENTACLE })
 end
 
 entity.onTrigger = function(player, npc)
-    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.STIFF_TENTACLE })
+    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.STIFFENED_TENTACLE })
 end
 
 entity.onEventUpdate = function(player, csid, option)
