@@ -13778,7 +13778,7 @@ INSERT INTO `mob_groups` VALUES (29,1212,253,'Empousa',900,0,768,0,0,105,105,0);
 INSERT INTO `mob_groups` VALUES (30,2075,253,'Indrik',900,0,1363,0,0,105,105,0);
 INSERT INTO `mob_groups` VALUES (31,2952,253,'Ogopogo',0,128,1841,0,900,84,86,0);
 INSERT INTO `mob_groups` VALUES (32,2098,253,'Ironclad_Triturator',0,128,1375,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (33,2069,253,'Impervious_Chariot',0,128,1360,0,0,100,100,0);
+INSERT INTO `mob_groups` VALUES (33,2069,253,'Impervious_Chariot',600,0,1360,0,0,100,100,0);
 INSERT INTO `mob_groups` VALUES (34,1025,253,'Dhorme_Khimaira',0,128,648,0,0,95,95,0);
 INSERT INTO `mob_groups` VALUES (35,2298,253,'Kur',900,0,1469,0,0,100,100,0);
 INSERT INTO `mob_groups` VALUES (36,296,253,'Awahondo',900,0,196,0,0,100,100,0);

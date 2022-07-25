@@ -1318,6 +1318,7 @@ xi.items =
     VALOREDGE_FRAME                 = 8225,
     SHARPSHOT_FRAME                 = 8226,
     STORMWAKER_FRAME                = 8227,
+    DUNG                            = 8289,
     RAAZ_TUSK                       = 8709,
     COPPER_AMAN_VOUCHER             = 8711,
     SQUARE_OF_ANCESTRAL_CLOTH       = 8751,

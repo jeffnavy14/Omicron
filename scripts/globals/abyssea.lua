@@ -71,6 +71,81 @@ xi.abyssea.abyssiteType =
     DEMILUNE     = 20,
 }
 
+xi.abyssea.itemType =
+{
+    ITEM        = 1,
+    TEMP        = 2,
+    KEYITEM     = 3,
+    ENHANCEMENT = 4,
+}
+
+local itemType = xi.abyssea.itemType
+
+xi.abyssea.visionsCruorProspectorItems=
+{-- Sel      Item                                       Cost,  Qty
+    [ 1] = { xi.items.PERLE_SALADE,                     4000 },
+    [ 2] = { xi.items.PERLE_HAUBERK,                    5000 },
+    [ 3] = { xi.items.PERLE_MOUFLES,                    3000 },
+    [ 4] = { xi.items.PERLE_BRAYETTES,                  3000 },
+    [ 5] = { xi.items.PERLE_SOLLERETS,                  3000 },
+    [ 6] = { xi.items.AURORE_BERET,                     4000 },
+    [ 7] = { xi.items.AURORE_DOUBLET,                   5000 },
+    [ 8] = { xi.items.AURORE_GLOVES,                    3000 },
+    [ 9] = { xi.items.AURORE_BRAIS,                     3000 },
+    [10] = { xi.items.AURORE_GAITERS,                   3000 },
+    [11] = { xi.items.TEAL_CHAPEAU,                     4000 },
+    [12] = { xi.items.TEAL_SAIO,                        5000 },
+    [13] = { xi.items.TEAL_CUFFS,                       3000 },
+    [14] = { xi.items.TEAL_SLOPS,                       3000 },
+    [15] = { xi.items.TEAL_PIGACHES,                    3000 },
+    [16] = { xi.items.FORBIDDEN_KEY,                     500 },
+    [17] = { xi.items.CIPHER_OF_JOACHIMS_ALTER_EGO,     5000 },
+    [18] = { xi.items.SHADOW_THRONE,                 2000000 },
+}
+
+xi.abyssea.visionsCruorProspectorTemps=
+{-- Sel      Item                          Cost, Qty
+    [ 1] = { xi.items.LUCID_POTION_I,             80 },
+    [ 2] = { xi.items.LUCID_ETHER_I,              80 },
+    [ 3] = { xi.items.BOTTLE_OF_CATHOLICON,       80 },
+    [ 4] = { xi.items.DUSTY_ELIXIR,              120 },
+    [ 5] = { xi.items.TUBE_OF_CLEAR_SALVE_I,     120 },
+    [ 6] = { xi.items.BOTTLE_OF_STALWARTS_TONIC, 150 },
+    [ 7] = { xi.items.BOTTLE_OF_ASCETICS_TONIC,  150 },
+    [ 8] = { xi.items.BOTTLE_OF_CHAMPIONS_TONIC, 150 },
+    [ 9] = { xi.items.LUCID_POTION_II,           200 },
+    [10] = { xi.items.LUCID_ETHER_II,            200 },
+    [11] = { xi.items.LUCID_ELIXIR_I,            300 },
+    [12] = { xi.items.FLASK_OF_HEALING_POWDER,   300 },
+    [13] = { xi.items.PINCH_OF_MANA_POWDER,      300 },
+    [14] = { xi.items.TUBE_OF_HEALING_SALVE_I,   300 },
+    [15] = { xi.items.BOTTLE_OF_VICARS_DRINK,    300 },
+    [16] = { xi.items.TUBE_OF_CLEAR_SALVE_II,    300 },
+    [17] = { xi.items.PRIMEVAL_BREW,         2000000 },
+}
+
+xi.abyssea.visionsCruorProspectorBuffs=
+{-- Sel          Effect (Abyssea)       Actual Effect          Amt, KeyItem for Bonus,           Bonus Mult      Cost
+    [ 6] = { { { xi.effect.ABYSSEA_HP,  xi.effect.MAX_HP_BOOST, 20, xi.abyssea.abyssiteType.MERIT,       10 }, },  50 },
+    [ 7] = { { { xi.effect.ABYSSEA_MP,  xi.effect.MAX_MP_BOOST, 10, xi.abyssea.abyssiteType.MERIT,        5 }, }, 120 },
+    [ 8] = { { { xi.effect.ABYSSEA_STR, xi.effect.STR_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_DEX, xi.effect.DEX_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 }, }, 120 },
+    [ 9] = { { { xi.effect.ABYSSEA_VIT, xi.effect.VIT_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_AGI, xi.effect.AGI_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 }, }, 100 },
+    [10] = { { { xi.effect.ABYSSEA_INT, xi.effect.INT_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_CHR, xi.effect.CHR_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_MND, xi.effect.MND_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 }, }, 100 },
+    [11] = { { { xi.effect.ABYSSEA_HP,  xi.effect.MAX_HP_BOOST, 20, xi.abyssea.abyssiteType.MERIT,       10 },
+               { xi.effect.ABYSSEA_MP,  xi.effect.MAX_MP_BOOST, 10, xi.abyssea.abyssiteType.MERIT,        5 },
+               { xi.effect.ABYSSEA_STR, xi.effect.STR_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_DEX, xi.effect.DEX_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_VIT, xi.effect.VIT_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_AGI, xi.effect.AGI_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_INT, xi.effect.INT_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_CHR, xi.effect.CHR_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 },
+               { xi.effect.ABYSSEA_MND, xi.effect.MND_BOOST,    10, xi.abyssea.abyssiteType.FURTHERANCE, 10 }, }, 470 },
+}
+
 -- Sequential Abyssite Key Items.
 -- NOTE: Demilune is not sequential, and handled in a separate table
 local abyssiteKeyItems =
@@ -114,6 +189,24 @@ local demiluneKeyItems =
 -- TODO: Separate by zone
 xi.abyssea.mob =
 {
+    -- Altepa
+    ['Amarok']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_LONE_WOLF           }, ['Normal'] = { xi.ki.STEAMING_CERBERUS_TONGUE    } },
+    ['Bennu']                 = { ['Atma'] = { xi.ki.ATMA_OF_THE_ASCENDING_ONE       }, ['Normal'] = {                                   } },
+    ['Cuijatender']           = { ['Atma'] = { xi.ki.ATMA_OF_A_THOUSAND_NEEDLES      }, ['Normal'] = {                                   } },
+    ['Dragua']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_EARTH_WYRM          }, ['Normal'] = {                                   } },
+    ['Emperador_de_Altepa']   = { ['Atma'] = { xi.ki.ATMA_OF_THE_SAND_EMPEROR        }, ['Normal'] = {                                   } },
+    ['Hazhdiha']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_CRIMSON_SCALE       }, ['Normal'] = { xi.ki.BLOODIED_DRAGON_EAR         } },
+    ['Hedjedjet']             = { ['Atma'] = { xi.ki.ATMA_OF_THE_SCORPION_QUEEN      }, ['Normal'] = {                                   } },
+    ['Ironclad_Smiter']       = { ['Atma'] = { xi.ki.ATMA_OF_THE_SMITING_BLOW        }, ['Normal'] = { xi.ki.BROKEN_IRON_GIANT_SPIKE     } },
+    ['Long-Barreled_Chariot'] = { ['Atma'] = {                                       }, ['Normal'] = { xi.ki.RUSTED_CHARIOT_GEAR, xi.ki.EMERALD_ABYSSITE_OF_FORTUNE } },
+    ['Orthrus']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_BROTHER_WOLF        }, ['Normal'] = {                                   } },
+    ['Ouzelum']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_SCARLET_WING        }, ['Normal'] = { xi.ki.RESPLENDENT_ROC_QUILL       } },
+    ['Rani']                  = { ['Atma'] = { xi.ki.ATMA_OF_THE_MERCILESS_MATRIARCH }, ['Normal'] = {                                   } },
+    ['Shaula']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_RAISED_TAIL         }, ['Normal'] = {                                   } },
+    ['Waugyl']                = { ['Atma'] = {                                       }, ['Normal'] = { xi.ki.EMERALD_ABYSSITE_OF_SOJOURN } },
+    ['Koios']                 = { ['Atma'] = {                                       }, ['Normal'] = { xi.ki.EMERALD_ABYSSITE_OF_ACUMEN  } },
+    ['Brulo']                 = { ['Atma'] = { xi.ki.ATMA_OF_THE_BURNING_EFFIGY      }, ['Normal'] = {                                   } },
+
     -- Attohwa Chasm
     ['Amun']          = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SHRIVELED_HECTEYES_STALK   } },
     ['Berstuk']       = { ['Atma'] = { xi.ki.ATMA_OF_THE_GLUTINOUS_OOZE    }, ['Normal'] = {                                  } },
@@ -133,9 +226,29 @@ xi.abyssea.mob =
     ['Svarbhanu']     = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.HOLLOW_DRAGON_EYE          } },
     ['Titlacauan']    = { ['Atma'] = { xi.ki.ATMA_OF_UNDYING               }, ['Normal'] = {                                  } },
     ['Tunga']         = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.DISTENDED_CHIGOE_ABDOMEN   } },
-    ['Ulhuadshi']     = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT     } },
+    ['Ulhuadshi']     = { ['Atma'] = { xi.ki.ATMA_OF_THE_DESERT_WORM       }, ['Normal'] = {                                  } },
+    ['Warbler']       = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT     } },
     ['Wherwetrice']   = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_EXPERTISE } },
     ['Yaanei']        = { ['Atma'] = { xi.ki.ATMA_OF_THE_IMPREGNABLE_TOWER }, ['Normal'] = {                                  } },
+    ['Lusca']         = { ['Atma'] = { xi.ki.ATMA_OF_THE_DEMONIC_SKEWER    }, ['Normal'] = {                                  } },
+
+    --Grauberg
+    ['Alfard']                  = { ['Atma'] = { xi.ki.ATMA_OF_THE_SOLITARY_ONE       }, ['Normal'] = {                                     } },
+    ['Amphitrite']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_SEA_DAUGTER        }, ['Normal'] = {                                     } },
+    ['Assailer_Chariot']        = { ['Atma'] = {                                      }, ['Normal'] = { xi.ki.WARPED_CHARIOT_PLATE          } },
+    ['Azdaja']                  = { ['Atma'] = { xi.ki.ATMA_OF_THE_WINGED_GLOOM       }, ['Normal'] = {                                     } },
+    ['Bomblix_Flamefinger']     = { ['Atma'] = { xi.ki.ATMA_OF_FIRES_AND_FLARES       }, ['Normal'] = {                                     } },
+    ['Deelgeed']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_HORNED_BEAST       }, ['Normal'] = { xi.ki.VACANT_BUGARD_EYE             } },
+    ['Fleshflayer_Killakriq']   = { ['Atma'] = { xi.ki.ATMA_OF_THE_FOE_FLAYER         }, ['Normal'] = {                                     } },
+    ['Fuath']                   = { ['Atma'] = { xi.ki.ATMA_OF_THE_HATEFUL_STEAM      }, ['Normal'] = {                                     } },
+    ['Ironclad_Sunderer']       = { ['Atma'] = { xi.ki.ATMA_OF_THE_SUNDERING_SLASH    }, ['Normal'] = { xi.ki.SHATTERED_IRON_GIANT_CHAIN    } },
+    ['Melo_Melo']               = { ['Atma'] = { xi.ki.ATMA_OF_AQUADIC_ARDOR          }, ['Normal'] = { xi.ki.VARIEGATED_URAGNITE_SHELL     } },
+    ['Ningishzida']             = { ['Atma'] = { xi.ki.ATMA_OF_ENTWINED_SERPENTS      }, ['Normal'] = { xi.ki.VENOMOUS_HYDRA_FANG           } },
+    ['Raja']                    = { ['Atma'] = { xi.ki.ATMA_OF_THE_DESPOT             }, ['Normal'] = {                                     } },
+    ['Teugghia']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_FALLEN_ONE         }, ['Normal'] = {                                     } },
+    ['Gamayun']                 = { ['Atma'] = {                                      }, ['Normal'] = { xi.ki.INDIGO_ABYSSITE_OF_THE_REAPER } },
+    ['Maere']                   = { ['Atma'] = { xi.ki.ATMA_OF_THE_ENDLESS_NIGHTMARE  }, ['Normal'] = {                                     } },
+
 
     -- Konschtat Highlands
     ['Gangly_Gean']        = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.FRAGRANT_TREANT_PETAL    } },
@@ -154,6 +267,7 @@ xi.abyssea.mob =
     ['Khalamari']          = { ['Atma'] = { xi.ki.ATMA_OF_THE_DRIFTER          }, ['Normal'] = {                                } },
     ['Pavan']              = { ['Atma'] = { xi.ki.AZURE_ABYSSITE_OF_LENITY     }, ['Normal'] = {                                } },
     ['Turul']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_STORMBIRD        }, ['Normal'] = {                                } },
+    ['Hadal_Satiator']     = { ['Atma'] = { xi.ki.ATMA_OF_THE_BEYOND           }, ['Normal'] = {                                } },
 
     --La Thiene Plateau
     ['Trudging_Thomas']     = { ['Atma'] = {                                                              }, ['Normal'] = { xi.ki.MARBLED_MUTTON_CHOP      } },
@@ -173,30 +287,33 @@ xi.abyssea.mob =
     ['Mangy-tailed_Marvin'] = { ['Atma'] = { xi.ki.SCARLET_ABYSSITE_OF_LENITY                             }, ['Normal'] = {                                } },
     ['Megamaw_Mikey']       = { ['Atma'] = { xi.ki.ATMA_OF_TREMORS                                        }, ['Normal'] = {                                } },
     ['Ovni']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_HEAVENS, xi.ki.SCARLET_ABYSSITE_OF_SOJOURN }, ['Normal'] = {                                } },
+    ['Ruminator']           = { ['Atma'] = { xi.ki.ATMA_OF_ETERNITY                                       }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT   } },
+    ['Nahn']                = { ['Atma'] = {                                                              }, ['Normal'] = { xi.ki.SMOLDERING_CRAB_SHELL    } },
 
     -- Misareaux Coast
-    ['Abyssic_Cluster']     = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.BLAZING_CLUSTER_SOUL             } },
-    ['Amhuluk']             = { ['Atma'] = { xi.ki.ATMA_OF_THE_STRANGLING_WIND  }, ['Normal'] = {                                        } },
-    ['Asanbosam']           = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.BLOODIED_BAT_FUR                 } },
-    ['Avalerion']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_WINGED_ENIGMA    }, ['Normal'] = {                                        } },
-    ['Cep-Kamuy']           = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.GLISTENING_OROBON_LIVER          } },
-    ['Cirein-croin']        = { ['Atma'] = { xi.ki.ATMA_OF_THE_DEEP_DEVOURER    }, ['Normal'] = {                                        } },
-    ['Flame_Skimmer']       = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_FURTHERANCE } },
-    ['Funereal_Apkallu']    = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.JAGGED_APKALLU_BEAK              } },
-    ['Gukumatz']            = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.MOLTED_PEISTE_SKIN               } },
-    ['Heqet']               = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.DOFFED_POROGGO_HAT               } },
-    ['Ironclad_Observer']   = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.SCALDING_IRONCLAD_SPIKE          } },
-    ['Ironclad_Pulverizer'] = { ['Atma'] = { xi.ki.ATMA_OF_THE_RAZED_RUIN       }, ['Normal'] = {                                        } },
-    ['Karkatakam']          = { ['Atma'] = { xi.ki.ATMA_OF_THE_CRADLE           }, ['Normal'] = {                                        } },
-    ['Kutharei']            = { ['Atma'] = { xi.ki.ATMA_OF_THE_MOUNTED_CHAMPION }, ['Normal'] = {                                        } },
-    ['Manohra']             = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.CLIPPED_BIRD_WING                } },
-    ['Minax_Bugard']        = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.BLOODSTAINED_BUGARD_FANG         } },
-    ['Nehebkau']            = { ['Atma'] = { xi.ki.ATMA_OF_THE_RAPID_REPTILIAN  }, ['Normal'] = {                                        } },
-    ['Nonno']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_UNTOUCHED        }, ['Normal'] = {                                        } },
-    ['Npfundlwa']           = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_FORTUNE     } },
-    ['Sirrush']             = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.GNARLED_LIZARD_NAIL              } },
-    ['Sobek']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_GNARLED_HORN     }, ['Normal'] = {                                        } },
-    ['Tuskertrap']          = { ['Atma'] = {                                    }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_LENITY      } },
+    ['Abyssic_Cluster']     = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.BLAZING_CLUSTER_SOUL             } },
+    ['Amhuluk']             = { ['Atma'] = { xi.ki.ATMA_OF_THE_STRANGLING_WIND   }, ['Normal'] = {                                        } },
+    ['Asanbosam']           = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.BLOODIED_BAT_FUR                 } },
+    ['Avalerion']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_WINGED_ENIGMA     }, ['Normal'] = {                                        } },
+    ['Cep-Kamuy']           = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.GLISTENING_OROBON_LIVER          } },
+    ['Cirein-croin']        = { ['Atma'] = { xi.ki.ATMA_OF_THE_DEEP_DEVOURER     }, ['Normal'] = {                                        } },
+    ['Flame_Skimmer']       = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_FURTHERANCE } },
+    ['Funereal_Apkallu']    = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.JAGGED_APKALLU_BEAK              } },
+    ['Gukumatz']            = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.MOLTED_PEISTE_SKIN               } },
+    ['Heqet']               = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.DOFFED_POROGGO_HAT               } },
+    ['Ironclad_Observer']   = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SCALDING_IRONCLAD_SPIKE          } },
+    ['Ironclad_Pulverizer'] = { ['Atma'] = { xi.ki.ATMA_OF_THE_RAZED_RUIN        }, ['Normal'] = {                                        } },
+    ['Karkatakam']          = { ['Atma'] = { xi.ki.ATMA_OF_THE_CRADLE            }, ['Normal'] = {                                        } },
+    ['Kutharei']            = { ['Atma'] = { xi.ki.ATMA_OF_THE_MOUNTED_CHAMPION  }, ['Normal'] = {                                        } },
+    ['Manohra']             = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.CLIPPED_BIRD_WING                } },
+    ['Minax_Bugard']        = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.BLOODSTAINED_BUGARD_FANG         } },
+    ['Nehebkau']            = { ['Atma'] = { xi.ki.ATMA_OF_THE_RAPID_REPTILIAN   }, ['Normal'] = {                                        } },
+    ['Nonno']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_UNTOUCHED         }, ['Normal'] = {                                        } },
+    ['Npfundlwa']           = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_FORTUNE     } },
+    ['Sirrush']             = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.GNARLED_LIZARD_NAIL              } },
+    ['Sobek']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_GNARLED_HORN      }, ['Normal'] = {                                        } },
+    ['Tuskertrap']          = { ['Atma'] = {                                     }, ['Normal'] = { xi.ki.SAPPHIRE_ABYSSITE_OF_LENITY      } },
+    ['Tristitia']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_BLUDGEONING_BRUTE }, ['Normal'] = { xi.ki.JADE_ABYSSITE_OF_MERIT           } },
 
     -- Tahrongi Canyon
     ['Adze']            = { ['Atma'] = { xi.ki.ATMA_OF_CALAMITY                                        }, ['Normal'] = { xi.ki.STICKY_GNAT_WING            } },
@@ -217,6 +334,25 @@ xi.abyssea.mob =
     ['Mictlantecuhtli'] = { ['Atma'] = { xi.ki.ATMA_OF_BALEFUL_BONES, xi.ki.VIRIDIAN_ABYSSITE_OF_MERIT }, ['Normal'] = {                                   } },
     ['Myrmecoleon']     = { ['Atma'] = { xi.ki.ATMA_OF_THE_IMPALER                                     }, ['Normal'] = {                                   } },
     ['Quetzalli']       = { ['Atma'] = { xi.ki.VIRIDIAN_ABYSSITE_OF_AVARICE                            }, ['Normal'] = {                                   } },
+    ['Usurper']         = { ['Atma'] = { xi.ki.ATMA_OF_THE_SIREN_SHADOW                                }, ['Normal'] = {                                   } },
+
+    --Uleguerand
+    ['Apademak']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_WAR_LION             }, ['Normal'] = {                                                                  } },
+    ['Awahondo']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_PERSISTANT_PREDATOR  }, ['Normal'] = { xi.ki.DECAYING_DIREMITE_FANG                                     } },
+    ['Blanga']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_STONE_GOD            }, ['Normal'] = {                                                                  } },
+    ['Dhorme_Khimaira']       = { ['Atma'] = { xi.ki.ATMA_OF_PURGATORY                }, ['Normal'] = { xi.ki.TORN_KHIMAIRA_WING                                         } },
+    ['Empousa']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_SHRIEKING_ONE        }, ['Normal'] = {                                                                  } },
+    ['Impervious_Chariot']    = { ['Atma'] = {                                        }, ['Normal'] = { xi.ki.DENTED_CHARIOT_SHIELD, xi.ki.VERMILLION_ABYSSITE_OF_KISMET } },
+    ['Indrik']                = { ['Atma'] = { xi.ki.ATMA_OF_THE_HOLY_MOUNTAIN        }, ['Normal'] = {                                                                  } },
+    ['Ironclad_Triturator']   = { ['Atma'] = { xi.ki.ATMA_OF_THE_CRUSHING_CUDGEL      }, ['Normal'] = { xi.ki.WARPED_IRON_GIANT_NAIL                                     } },
+    ['Isgebind']              = { ['Atma'] = { xi.ki.ATMA_OF_THE_FROZEN_FETTERS       }, ['Normal'] = {                                                                  } },
+    ['Kur']                   = { ['Atma'] = { xi.ki.ATMA_OF_BLIGHTED_BREATH          }, ['Normal'] = { xi.ki.BEGRIMED_DRAGON_HIDE                                       } },
+    ['Pantokrator']           = { ['Atma'] = { xi.ki.ATMA_OF_THE_OMNIPOTENT           }, ['Normal'] = {                                                                  } },
+    ['Resheph']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_PLAGUEBRINGER        }, ['Normal'] = {                                                                  } },
+    ['Veri_Selen']            = { ['Atma'] = {                                        }, ['Normal'] = { xi.ki.VERMILLION_ABYSSITE_OF_GUERDON                             } },
+    ['Yaguarogui']            = { ['Atma'] = { xi.ki.ATMA_OF_THE_SUN_EATER            }, ['Normal'] = {                                                                  } },
+    ['Chione']                = { ['Atma'] = {                                        }, ['Normal'] = { xi.ki.VERMILLION_ABYSSITE_OF_PERSPICACITY                        } },
+    ['Ogopogo']               = { ['Atma'] = { xi.ki.ATMA_OF_THE_LAKE_LURKER          }, ['Normal'] = {                                                                  } },
 
     -- Vunkerl Inlet
     ['Armillaria']             = { ['Atma'] = {                                       }, ['Normal'] = { xi.ki.CRIMSON_ABYSSITE_OF_ACUMEN     } },
@@ -241,6 +377,7 @@ xi.abyssea.mob =
     ['Sedna']                  = { ['Atma'] = { xi.ki.ATMA_OF_THE_TUSKED_TERROR       }, ['Normal'] = {                                      } },
     ['Sippoy']                 = { ['Atma'] = { xi.ki.ATMA_OF_THE_WOULD_BE_KING       }, ['Normal'] = {                                      } },
     ['Xan']                    = { ['Atma'] = { xi.ki.ATMA_OF_THE_SHIMMERING_SHELL    }, ['Normal'] = {                                      } },
+    ['Ketea']                  = { ['Atma'] = { xi.ki.ATMA_OF_THE_DEMONIC_LASH        }, ['Normal'] = {                                      } },
 }
 
 xi.abyssea.triggerType =
@@ -446,6 +583,73 @@ local popEvents =
 -----------------------------------
 -- public functions
 -----------------------------------
+
+xi.abyssea.visionsCruorProspectorOnTrigger = function(player, npc)
+    local active = xi.extravaganza.campaignActive()
+    local cipher = 0
+    local cruor = player:getCurrency("cruor")
+    local demilune = xi.abyssea.getDemiluneAbyssite(player)
+
+    if active == xi.extravaganza.campaign.SUMMER_NY or active == xi.extravaganza.campaign.BOTH then
+        cipher = 1
+    end
+
+    player:startEvent(2002, cruor, demilune, 0, 0, cipher)
+end
+
+xi.abyssea.visionsCruorProspectorOnEventFinish = function (player, csid, option, prospectorItems)
+    local itemCategory = bit.band(option, 0x07)
+    local itemSelected = bit.band(bit.rshift(option, 16), 0x1F)
+    local cruorTotal = player:getCurrency("cruor")
+
+    if itemCategory == itemType.ITEM then
+        local itemData = prospectorItems[itemCategory][itemSelected]
+        local itemQty = itemData[1] ~= xi.items.FORBIDDEN_KEY and 1 or bit.rshift(option, 24)
+        local itemCost = itemData[2] * itemQty
+
+        if
+            itemCost <= cruorTotal and
+            npcUtil.giveItem(player, {{ itemData[1], itemQty }})
+        then
+            player:delCurrency("cruor", itemCost)
+        end
+    elseif itemCategory == itemType.TEMP then
+        local itemData = prospectorItems[itemCategory][itemSelected]
+        local itemCost = itemData[2]
+
+        if
+            itemCost <= cruorTotal and
+            npcUtil.giveTempItem(player, {{ itemData[1], 1 }})
+        then
+            player:delCurrency("cruor", itemCost)
+        end
+    elseif itemCategory == itemType.KEYITEM then
+        local itemData = prospectorItems[itemCategory][itemSelected]
+
+        if
+            itemData[2] <= cruorTotal and
+            npcUtil.giveKeyItem(player, itemData[1])
+        then
+            player:delCurrency("cruor", itemData[2])
+        end
+    elseif itemCategory == itemType.ENHANCEMENT then
+        local enhanceData = prospectorItems[itemCategory][itemSelected]
+
+        if enhanceData[2] <= cruorTotal then
+            for _, v in ipairs(enhanceData[1]) do
+                player:addStatusEffectEx(v[1], v[2], v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5])
+
+                if v[1] == xi.effect.ABYSSEA_HP then
+                    player:addHP(v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5])
+                elseif v[1] == xi.effect.ABYSSEA_MP then
+                    player:addMP(v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5])
+                end
+            end
+
+            player:delCurrency("cruor", enhanceData[2])
+        end
+    end
+end
 
 -- returns Traverser Stone KI cap
 xi.abyssea.getTraverserCap = function(player)
