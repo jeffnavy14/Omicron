@@ -16027,9 +16027,9 @@ INSERT INTO `mob_droplist` VALUES (1958,0,0,1000,882,20);   -- Sheep Tooth (2.0%
 INSERT INTO `mob_droplist` VALUES (1958,2,0,1000,832,0);    -- Clump Of Sheep Wool (Steal)
 
 -- ZoneID: 218 - Orthrus
-INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,@ALWAYS);    -- Cerberus Claw (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,@ALWAYS);    -- Orthrus Claw (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,16260,@ALWAYS);   -- Atheling Mantle (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,500);        -- Cerberus Claw (50.0%)
+INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,500);        -- Orthrus Claw (50.0%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3216,@UNCOMMON);  -- Jewel Of Ardor (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,4969,@UNCOMMON);  -- Scroll Of Migawari Ichi (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,5006,@UNCOMMON);  -- Scroll Of Valor Minuet V (Uncommon, 10%)
