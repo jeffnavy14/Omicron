@@ -8,6 +8,7 @@ require("scripts/globals/status")
 require("scripts/globals/utils")
 require("scripts/globals/weaponskillids")
 require("scripts/globals/zone")
+require("scripts/globals/extravaganza")
 -----------------------------------
 xi = xi or {}
 xi.abyssea = xi.abyssea or {}
@@ -637,7 +638,7 @@ xi.abyssea.visionsCruorProspectorOnEventFinish = function (player, csid, option,
 
         if enhanceData[2] <= cruorTotal then
             for _, v in ipairs(enhanceData[1]) do
-                player:addStatusEffectEx(v[1], v[2], v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5])
+                player:addStatusEffectEx(v[1], v[2], v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5], 0, 0)
 
                 if v[1] == xi.effect.ABYSSEA_HP then
                     player:addHP(v[3] + xi.abyssea.getAbyssiteTotal(player, v[4]) * v[5])

@@ -27,7 +27,7 @@ end
 spell_object.onSpellCast = function(caster, target, spell)
     local typeEffect = xi.effect.DEFENSE_BOOST
     local power = 50 -- Percentage, not amount.
-    local duration = 90
+    local duration = 180
 
     if (caster:hasStatusEffect(xi.effect.DIFFUSION)) then
         local diffMerit = caster:getMerit(xi.merit.DIFFUSION)

@@ -67,32 +67,36 @@ zones[xi.zone.ABYSSEA_ULEGUERAND] =
     },
     mob =
     {
-        IRONCLAD_TRITURATOR      = 17813925,
-        DHORME_KHIMAIRA          = 17813927,
-        BLANGA                   = 17813930,
-        YAGUAROGUI               = 17813931,
-        KOGHATU                  = 17813933,
-        UPAS_KAMUY               = 17813935,
-        VERI_SELEN               = 17813937,
-        ANEMIC_ALOYSIUS          = 17813956,
-        CHILLWING_HWITTI         = 17813939,
-        AUDUMBLA                 = 17813940,
-        PANTOKRATOR              = 17813910,
-        APADEMAK                 = 17813911,
-        ISGEBIND                 = 17813912,
-        RESHEPH                  = 17813913,
-        PANTOKRATOR_1            = 17813914,
-        APADEMAK_1               = 17813915,
-        ISGEBIND_1               = 17813916,
-        RESHEPH_1                = 17813917,
-        PANTOKRATOR_2            = 17813918,
-        APADEMAK_2               = 17813919,
-        ISGEBIND_2               = 17813920,
-        RESHEPH_2                = 17813921,
     },
     npc =
     {
-        STURDY_PYXIS_BASE = 17813987,
+        QM_POPS =
+        {
+            -- TODO: the first item, e.g. 'qm1', is unused and will be meaningless once I (Wren) finish entity-QC on all Abyssea zones.
+            -- When that is done, I will rewrite Abyssea global and adjust and neaten this table
+            --  [17813949] = { 'qm1',      {3245, 3251},                                                           {}, 17813925}, -- Ironclad Triturator
+            --  [17813950] = { 'qm2', {3246, 3247, 3253},                                                           {}, 17813927}, -- Dhorme Khimaira
+            --  [17813951] = { 'qm3',      {3248, 3257},                                                           {}, 17813930}, -- Blanga
+            --  [17813952] = { 'qm4',      {3249, 3259},                                                           {}, 17813931}, -- Yaguarogui
+            --  [17813953] = { 'qm5',           {3250},                                                           {}, 17813933}, -- Koghatu
+            --  [17813954] = { 'qm6',           {3252},                                                           {}, 17813935}, -- Upas-Kamuy
+            --  [17813955] = { 'qm7',           {3254},                                                           {}, 17813937}, -- Veri Selen
+            --  [17813956] = { 'qm8',           {3255},                                                           {}, 17813938}, -- Anemic Aloysius
+            --  [17813957] = { 'qm9',           {3256},                                                           {}, 17813939}, -- Chillwing Hwitti
+            --  [17813958] = {'qm10',           {3258},                                                           {}, 17813940}, -- Audumbla
+            --  [17813959] = {'qm11',               {}, {xi.ki.WARPED_IRON_GIANT_NAIL, xi.ki.DENTED_CHARIOT_SHIELD}, 17813910}, -- Pantokrator
+            --  [17813960] = {'qm12',               {},                                  {xi.ki.TORN_KHIMAIRA_WING}, 17813911}, -- Apademak
+            --  [17813961] = {'qm13',               {},                                {xi.ki.BEGRIMED_DRAGON_HIDE}, 17813912}, -- Isgebind
+            --  [17813962] = {'qm14',               {},                              {xi.ki.DECAYING_DIREMITE_FANG}, 17813913}, -- Resheph
+            --  [17813963] = {'qm15',               {}, {xi.ki.WARPED_IRON_GIANT_NAIL, xi.ki.DENTED_CHARIOT_SHIELD}, 17813914}, -- Pantokrator
+            --  [17813964] = {'qm16',               {},                                  {xi.ki.TORN_KHIMAIRA_WING}, 17813915}, -- Apademak
+            --  [17813965] = {'qm17',               {},                                {xi.ki.BEGRIMED_DRAGON_HIDE}, 17813916}, -- Isgebind
+            --  [17813966] = {'qm18',               {},                              {xi.ki.DECAYING_DIREMITE_FANG}, 17813917}, -- Resheph
+            --  [17813967] = {'qm19',               {}, {xi.ki.WARPED_IRON_GIANT_NAIL, xi.ki.DENTED_CHARIOT_SHIELD}, 17813918}, -- Pantokrator
+            --  [17813968] = {'qm20',               {},                                  {xi.ki.TORN_KHIMAIRA_WING}, 17813919}, -- Apademak
+            --  [17813969] = {'qm21',               {},                                {xi.ki.BEGRIMED_DRAGON_HIDE}, 17813920}, -- Isgebind
+            --  [17813970] = {'qm22',               {},                              {xi.ki.DECAYING_DIREMITE_FANG}, 17813921}, -- Resheph
+        },
     },
 }
 
