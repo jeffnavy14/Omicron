@@ -35,100 +35,100 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onInitialize", function(zone)
 
     if (trade:hasItemQty(19746, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20481, 1); 
+	    player:addItem(20509, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20481);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20509);
 		
 	elseif (trade:hasItemQty(19747, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20556, 1); 
+	    player:addItem(20583, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20556);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20583);
 		
 	elseif (trade:hasItemQty(19748, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20646, 1); 
+	    player:addItem(20685, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20646);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20685);
 		
 	elseif (trade:hasItemQty(19749, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20746, 1); 
+	    player:addItem(21683, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20746);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21683);
 		
 	elseif (trade:hasItemQty(19750, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20791, 1); 
+	    player:addItem(21750, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20791);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21750);
 		
 	elseif (trade:hasItemQty(19751, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20836, 1); 
+	    player:addItem(21756, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20836);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21756);
 		
 	elseif (trade:hasItemQty(19752, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20881, 1); 
+	    player:addItem(21857, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20881);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21857);
 		
 	elseif (trade:hasItemQty(19753, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20926, 1); 
+	    player:addItem(21808, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20926);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21808);
 		
 	elseif (trade:hasItemQty(19754, 1)) then
 	    player:tradeComplete();
-	    player:addItem(20971, 1); 
+	    player:addItem(21906, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 20971);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21906);
 		
 	elseif (trade:hasItemQty(19755, 1)) then
 	    player:tradeComplete();
-	    player:addItem(21016, 1); 
+	    player:addItem(21954, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21016);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21954);
 		
 	elseif (trade:hasItemQty(19756, 1)) then
 	    player:tradeComplete();
-	    player:addItem(21061, 1); 
+	    player:addItem(21077, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21061);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21077);
 		
 	elseif (trade:hasItemQty(19757, 1)) then
 	    player:tradeComplete();
-	    player:addItem(21136, 1); 
+	    player:addItem(22060, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21136);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 22060);
 		
 	elseif (trade:hasItemQty(19758, 1)) then
 	    player:tradeComplete();
-	    player:addItem(21211, 1); 
+	    player:addItem(22115, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
-	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21211);
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 22115);
 		
 	elseif (trade:hasItemQty(19759, 1)) then
 	    player:tradeComplete();
 	    player:addItem(21261, 1); 
 		-- Message to player.
-	    player:PrintToPlayer( “Anal nathrak, uthvas bethud, do che-ol di-enve.”, 0xd );
+	    player:PrintToPlayer( "Anal nathrak uthvas bethud do che-ol di-enve.", 0xd );
 	    player:messageSpecial(ID.text.ITEM_OBTAINED, 21261);
 		
 		
