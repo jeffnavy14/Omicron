@@ -529,3 +529,8 @@ INSERT INTO `mob_droplist` VALUES (4102,0,0,1000,3432,1000);
 
 -- Rani Fix
 INSERT INTO `mob_droplist` VALUES (2076,0,0,1000,11651,50);
+
+-- Mythic Currency Drops
+INSERT INTO `mob_droplist` VALUES (4103,0,0,1000,4059,1000);
+INSERT INTO `mob_droplist` VALUES (4104,0,0,1000,4060,1000);
+INSERT INTO `mob_droplist` VALUES (4105,0,0,1000,4061,1000);
