@@ -15,7 +15,7 @@ item_object.onItemCheck = function(target)
 end
 
 item_object.onItemUse = function(target)
-    target:addItem(6182, math.random(3,15))
+    target:addItem(4061, math.random(3,15))
 end
 
 return item_object
