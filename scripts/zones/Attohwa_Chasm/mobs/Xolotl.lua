@@ -15,8 +15,8 @@ entity.onMobDeath = function(mob, player, isKiller)
 end
 
 entity.onMobDespawn = function(mob)
-    -- Do not respawn Xolotl for 21-24 hours
-    mob:setRespawnTime(math.random(75600, 86400), true)
+    -- Do not respawn Xolotl for 1-4 hours
+    mob:setRespawnTime(math.random(3600, 14400), true)
 end
 
 return entity
