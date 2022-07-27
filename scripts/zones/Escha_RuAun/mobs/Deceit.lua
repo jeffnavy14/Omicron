@@ -54,7 +54,7 @@ entity.onMobFight = function(mob)
         mob:getLocalVar("trueform") == 0 and
         mob:getHPP() < 25	
 	then
-	  mob:setLocalVar("Queen", math.random(1,50))
+	  mob:setLocalVar("Queen", math.random(1,50)) 
 		mob:setLocalVar("trueform", 1)
 	end
 
