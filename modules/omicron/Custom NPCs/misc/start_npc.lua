@@ -483,57 +483,30 @@ local menu =
         end,
 
         onTrigger = function(player, playerArg, npc)
-local menu =
-    {
-        title = "Head Start",
-        onStart = function(playerArg)
 
-            playerArg:PrintToPlayer("Would you like to take a short cut and not enjoy the game?", xi.msg.channel.NS_SAY)
-        end,
-        options =
-        {
-            {
-                "Yes",
-                function(playerArg)
-                    player:PrintToPlayer("I Guess doing missions and quests are not you thing!")
-					player:changeContainerSize(xi.inv.INVENTORY, xi.settings.START_INVENTORY - 80)
-                    player:changeContainerSize(xi.inv.MOGSATCHEL, xi.settings.START_INVENTORY - 80)		
-                    player:setLevelCap(99)
-					player:unlockJob(0)
-					for i = xi.job.PLD, xi.job.SCH do
-                        player:unlockJob(i)
-                    end
-                    for i = xi.ki.MAP_OF_THE_SAN_DORIA_AREA, xi.ki.MAP_OF_DIO_ABDHALJS_GHELSBA do
-                        player:addKeyItem(i)
-                    end
-                    for i = xi.ki.MAP_OF_AL_ZAHBI, xi.ki.MAP_OF_RAKAZNAR do
-                        player:addKeyItem(i)
-                    end
-                    for i = xi.ki.MAP_OF_RALA_WATERWAYS_U, xi.ki.MAP_OF_RAKAZNAR_U do
-                        player:addKeyItem(i)
-                    end
-                    for i = xi.ki.MAP_OF_ESCHA_ZITAH, xi.ki.MAP_OF_REISENJIMA do
-                    player:addKeyItem(i)
-                    end
-					npcUtil.giveKeyItem(player, xi.ki.LIMIT_BREAKER)
-					npcUtil.giveKeyItem(player, xi.ki.JOB_BREAKER)
-                end,
-            },
-            {
-                "No thanks",
-                function(playerArg)
- 					player:PrintToPlayer("Sorry to hear that, please leave me be", xi.msg.channel.NS_SAY)
-                end,
-            },
-        },
-			onCancelled = function(playerArg)
-			end,
-			onEnd = function(playerArg)
-			end,
-    }
-			player:customMenu(menu)
-        end,
-    })
+            player:PrintToPlayer("Welcome to OmicronXI, here is a Head Start for you!")
+            player:setLevelCap(99)
+            player:unlockJob(0)
+            for i = xi.job.PLD, xi.job.RUN do
+                player:unlockJob(i)
+            end
+            for i = xi.ki.MAP_OF_THE_SAN_DORIA_AREA, xi.ki.MAP_OF_DIO_ABDHALJS_GHELSBA do
+                player:addKeyItem(i)
+            end
+            for i = xi.ki.MAP_OF_AL_ZAHBI, xi.ki.MAP_OF_RAKAZNAR do
+                player:addKeyItem(i)
+            end
+            for i = xi.ki.MAP_OF_RALA_WATERWAYS_U, xi.ki.MAP_OF_RAKAZNAR_U do
+                player:addKeyItem(i)
+            end
+            for i = xi.ki.MAP_OF_ESCHA_ZITAH, xi.ki.MAP_OF_REISENJIMA do
+            player:addKeyItem(i)
+            end
+            npcUtil.giveKeyItem(player, xi.ki.LIMIT_BREAKER)
+            npcUtil.giveKeyItem(player, xi.ki.JOB_BREAKER)
+       
+end,
+})
 
     local Lilit = zone:insertDynamicEntity({
 
