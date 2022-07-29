@@ -605,6 +605,26 @@ local loot =
             {itemid =  4175, droprate =   99}, -- vile_elixir_+1
         },
     },
+
+[112] =
+    {
+        {
+            {itemid =  747, droprate = 1000}, 
+            {itemid =  17275, droprate = 212}, 
+        },
+        {
+            {itemid =  747, droprate = 1000}, 
+            {itemid =  17509, droprate = 309}, 
+        },
+        {
+            {itemid =  747, droprate = 1000}, 
+            {itemid =  17699, droprate = 258}, 
+        },
+        {
+            {itemid =  747, droprate = 1000},
+            {itemid =  18097, droprate = 238}, 
+        },
+     },
 }
 entity.onTrade = function(player, npc, trade)
 end
