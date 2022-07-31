@@ -19,7 +19,7 @@ m:addOverride(string.format("xi.globals.spells.trust.%s.onSpellCast", trustToRep
     trust:setModelId(2445) -- Trust: Rimuru
     trust:renameEntity("Mini Maw")
 
-	trust:addStatusEffectEx(xi.effect.COLURE_ACTIVE, xi.effect.COLURE_ACTIVE, 6, 3, 0, 915, 150, xi.auraTarget.ALLIES, xi.effectFlag.AURA)
+	trust:addStatusEffectEx(xi.effect.COLURE_ACTIVE, xi.effect.COLURE_ACTIVE, 6, 3, 0, 1, 150, xi.auraTarget.ALLIES, xi.effectFlag.AURA)
     mob:SetAutoAttackEnabled(false)
 
 end)
