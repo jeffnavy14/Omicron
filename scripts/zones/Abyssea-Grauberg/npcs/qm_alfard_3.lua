@@ -1,21 +1,20 @@
 -----------------------------------
 -- Zone: Abyssea-Grauberg
---  NPC: qm18 (???)
--- Spawns Amphitrite
--- !pos -136 -31 -231 254
+--  NPC: qm_alfard_3 (???)
+-- Spawns Alfard
+-- !pos 309 -39 189 254
 -----------------------------------
+local ID = require('scripts/zones/Abyssea-Grauberg/IDs')
 require('scripts/globals/abyssea')
 require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.AMPHITRITE_1, { xi.ki.VARIEGATED_URAGNITE_SHELL })
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.ALFARD_3, { xi.ki.VENOMOUS_HYDRA_FANG })
 end
 
 entity.onEventUpdate = function(player, csid, option)

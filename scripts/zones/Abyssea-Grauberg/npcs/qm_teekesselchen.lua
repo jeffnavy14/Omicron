@@ -1,29 +1,27 @@
 -----------------------------------
 -- Zone: Abyssea-Grauberg
---  NPC: qm15 (???)
--- Spawns Raja
--- !pos 495 56 679 254
+--  NPC: qm_teekesselchen (???)
+-- Spawns Teekesselchen
+-- !pos 319 47 643 254
 -----------------------------------
+local ID = require('scripts/zones/Abyssea-Grauberg/IDs')
 require('scripts/globals/abyssea')
-require('scripts/globals/keyitems')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
+    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.TEEKESSELCHEN, { xi.items.FLASK_OF_BUBBLING_OIL })
 end
 
 entity.onTrigger = function(player, npc)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.RAJA_1, { xi.ki.WARPED_CHARIOT_PLATE, xi.ki.SHATTERED_IRON_GIANT_CHAIN })
+    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.FLASK_OF_BUBBLING_OIL })
 end
 
 entity.onEventUpdate = function(player, csid, option)
-    xi.abyssea.qmOnEventUpdate(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
-    xi.abyssea.qmOnEventFinish(player, csid, option)
 end
 
 return entity

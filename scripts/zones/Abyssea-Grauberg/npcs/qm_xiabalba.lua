@@ -1,29 +1,27 @@
 -----------------------------------
 -- Zone: Abyssea-Grauberg
---  NPC: qm13 (???)
--- Spawns Azdaja
--- !pos -568 -167 138 254
+--  NPC: qm_xiabalba (???)
+-- Spawns Xiabalba
+-- !pos -487 -168 211 254
 -----------------------------------
+local ID = require('scripts/zones/Abyssea-Grauberg/IDs')
 require('scripts/globals/abyssea')
-require('scripts/globals/keyitems')
+require('scripts/globals/items')
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
+    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.XIABALBA, { xi.items.DECAYING_MOLAR })
 end
 
 entity.onTrigger = function(player, npc)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.AZDAJA, { xi.ki.VACANT_BUGARD_EYE })
+    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.DECAYING_MOLAR })
 end
 
 entity.onEventUpdate = function(player, csid, option)
-    xi.abyssea.qmOnEventUpdate(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
-    xi.abyssea.qmOnEventFinish(player, csid, option)
 end
 
 return entity
