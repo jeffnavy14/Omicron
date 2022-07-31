@@ -477,6 +477,26 @@ local loot =
         },
     },
 
+[80] =
+    {
+        {
+            {itemid = 65535, droprate = 1000, amount = 15000}, -- Gil
+            {itemid = 17207, droprate = 226}, 
+        },
+        {
+            {itemid = 655, droprate = 1000}, 
+            {itemid = 17275, droprate = 200}, 
+        },
+        {
+            {itemid = 655, droprate = 1000}, 
+            {itemid = 17509, droprate = 310}, 
+        },
+        {
+            {itemid = 655, droprate = 1000}, 
+            {itemid = 17944, droprate = 245}, 
+        },
+    },
+
     -- KSNM Operation Desert Swarm
     [81] =
     {

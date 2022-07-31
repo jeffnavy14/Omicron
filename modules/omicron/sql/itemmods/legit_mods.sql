@@ -2,6 +2,8 @@ DELETE FROM `item_mods` WHERE itemId = 20690;
 DELETE FROM `item_mods` WHERE itemId = 15194;
 DELETE FROM `item_mods` WHERE itemId = 14646;
 DELETE FROM `item_mods` WHERE itemId = 13658;
+DELETE FROM `item_mods` WHERE itemId = 13505;
+DELETE FROM `item_mods` WHERE itemId = 13606;
 INSERT INTO `item_mods` VALUES (14646,255,10);  -- DEATHRES: 10
 INSERT INTO `item_mods` VALUES (14646,476,22); -- MAGIC_NULL: 22
 INSERT INTO `item_mods` VALUES (14646,29,20);

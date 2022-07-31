@@ -1,27 +1,28 @@
 -----------------------------------
 -- Zone: Abyssea-Grauberg
---  NPC: qm4 (???)
--- Spawns Bomblix Flamefinger
--- !pos 555 23 -317 254
+--  NPC: qm_amphitrite_3 (???)
+-- Spawns Amphitrite
+-- !pos -162 -31 -220 254
 -----------------------------------
+local ID = require('scripts/zones/Abyssea-Grauberg/IDs')
 require('scripts/globals/abyssea')
-require('scripts/globals/items')
+require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.BOMBLIX_FLAMEFINGER, { xi.items.JAR_OF_GOBLIN_GUNPOWDER, xi.items.JAR_OF_GOBLIN_OIL })
 end
 
 entity.onTrigger = function(player, npc)
-    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.JAR_OF_GOBLIN_GUNPOWDER, xi.items.JAR_OF_GOBLIN_OIL })
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.AMPHITRITE_3, { xi.ki.VARIEGATED_URAGNITE_SHELL })
 end
 
 entity.onEventUpdate = function(player, csid, option)
+    xi.abyssea.qmOnEventUpdate(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
+    xi.abyssea.qmOnEventFinish(player, csid, option)
 end
 
 return entity

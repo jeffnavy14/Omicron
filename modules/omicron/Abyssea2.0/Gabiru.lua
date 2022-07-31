@@ -328,6 +328,9 @@ elseif (trade:hasItemQty(4068,10)) and (trade:hasItemQty(3208,10)) and (trade:ha
 elseif (trade:hasItemQty(4068,10)) and (trade:hasItemQty(3209,10)) and (trade:hasItemQty(1311,1)) and (trade:hasItemQty(4073,10)) and (trade:hasItemQty(9002,1)) and (trade:hasItemQty(9009,15)) and (trade:hasItemQty(3227,12)) and (trade:hasItemQty(2967,1)) then player:tradeComplete(); player:addItem(27450,1);
 	    player:PrintToPlayer( "Thank You for contributing to the Monster Federation", 0xd );
 	    player:messageSpecial(ID.text.ITEM_OBTAINED, 8289);
+elseif (trade:hasItemQty(3293,50)) and (trade:hasItemQty(3294,75)) then player:tradeComplete(); player:addItem(16199,1);
+	    player:PrintToPlayer( "Thank You for contributing to the Monster Federation", 0xd );
+	    player:messageSpecial(ID.text.ITEM_OBTAINED, 8289);
 		
 	end
         end,

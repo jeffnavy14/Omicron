@@ -19,8 +19,8 @@ function onTrigger(player)
 		player:addStatusEffect(xi.effect.REGEN, 5, 0, 14400)
 		player:addStatusEffect(xi.effect.REFRESH, 5, 0, 14400)
 		player:addStatusEffect(xi.effect.HASTE, 20, 0, 14400)
-		player:addStatusEffect(xi.effect.DEDICATION, 250, 0, 14400, 0, 30000)
-		player:setMod(915, 1000)
+		player:setMod(915, 1200)
+            player:setMod(382, 250)
 
 		-- Add bonus mods..
         player:addMod(xi.mod.RACC, 100)
@@ -42,7 +42,6 @@ function onTrigger(player)
         player:delStatusEffect(xi.effect.REFRESH)
         player:delStatusEffect(xi.effect.REGEN)
 		player:delStatusEffect(xi.effect.HASTE)
-		player:delStatusEffect(xi.effect.DEDICATION)
 		
 		-- Remove bonus mods..
         player:delMod(xi.mod.RACC, 100)

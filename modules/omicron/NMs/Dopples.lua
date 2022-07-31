@@ -453,6 +453,10 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
 		SetServerVariable("[Double3]", 0)
 		end,
 
+            onMobDespawn = function(mob)
+                SetServerVariable("[Double3]", 0)
+            end,
+
             onMobDeath = function(mob, player, isKiller, noKiller)
                 SetServerVariable("[Double3]", 0)
             end,
@@ -593,6 +597,10 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
                     mobShort:setMobMod(xi.mobMod.SKILL_LIST, 903)
                     mobShort:setMobMod(xi.mobMod.SPELL_LIST, 29)
                 end
+            end,
+
+            onMobDespawn = function(mob)
+                SetServerVariable("[Double4]", 0)
             end,
 
             onMobDeath = function(mob, player, isKiller, noKiller)
