@@ -448,6 +448,10 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
                     mobSpara:setMobMod(xi.mobMod.SPELL_LIST, 29)
                 end
             end,
+		
+		onMobDespawn = function(mob)
+		SetServerVariable("[Double3]", 0)
+		end,
 
             onMobDespawn = function(mob)
                 SetServerVariable("[Double3]", 0)
@@ -469,7 +473,7 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
             specialSpawnAnimation = true,
         })
         mobSpara:setDropID(4103)
-        mobSpara:setSpawn(332.6765, -25.5591, -3.5657, 50)
+        mobSpara:setSpawn(332.6765, -25.5591, -3.5657, 20)
         mobSpara:spawn()
     end
 
@@ -493,7 +497,7 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
                 mobShort:hideHP(true)
                 mobShort:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
                 mobShort:setMobLevel(125)
-                mobShort:setMod(xi.mod.DEF, 1200)
+                mobShort:setMod(xi.mod.DEF, 1600)
                 mobShort:setMod(xi.mod.MDEF, 300)
                 mobShort:setMod(xi.mod.MEVA, 400)
                 mobShort:setMod(xi.mod.EVA, 750)
@@ -781,7 +785,7 @@ m:addOverride("xi.zones.Attohwa_Chasm.Zone.onZoneTick", function(zone)
                 mobVil:hideHP(true)
                 mobVil:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
                 mobVil:setMobLevel(125)
-                mobVil:setMod(xi.mod.DEF, 1800)
+                mobVil:setMod(xi.mod.DEF, 2000)
                 mobVil:setMod(xi.mod.MDEF, 300)
                 mobVil:setMod(xi.mod.MEVA, 400)
                 mobVil:setMod(xi.mod.EVA, 750)

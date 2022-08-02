@@ -11,7 +11,6 @@ entity.onMobSpawn = function(mob, target)
     mob:setMobMod(xi.mobMod.DRAW_IN, 2)
     mob:setAggressive(true)
     mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
-mob:setUntargetable(false)
     end
 
 entity.onMobFight = function(mob)
