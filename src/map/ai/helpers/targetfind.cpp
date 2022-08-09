@@ -411,6 +411,15 @@ bool CTargetFind::isMobOwner(CBattleEntity* PTarget)
         }
     }
 
+    if (m_PBattleEntity->objtype == TYPE_PC)
+    {
+        CCharEntity* PChar = static_cast<CCharEntity*>(m_PBattleEntity);
+        if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+        {
+            return true;
+        }
+    }
+
     bool found = false;
 
     // clang-format off
