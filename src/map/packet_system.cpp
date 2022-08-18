@@ -431,8 +431,8 @@ void SmallPacket0x00C(map_session_data_t* const PSession, CCharEntity* const PCh
         {
             switch (PChar->petZoningInfo.petType)
             {
+                case PET_TYPE::AVATAR:
                 case PET_TYPE::AUTOMATON:
-                case PET_TYPE::JUG_PET:
                 case PET_TYPE::WYVERN:
                 case PET_TYPE::LUOPAN:
                     petutils::SpawnPet(PChar, PChar->petZoningInfo.petID, true);
@@ -441,10 +441,10 @@ void SmallPacket0x00C(map_session_data_t* const PSession, CCharEntity* const PCh
                 default:
                     break;
             }
+            // Reset the petZoning info
+            PChar->resetPetZoningInfo();
         }
     }
-    // Reset the petZoning info
-    PChar->resetPetZoningInfo();
 }
 
 /************************************************************************
@@ -1312,7 +1312,7 @@ void SmallPacket0x028(map_session_data_t* const PSession, CCharEntity* const PCh
 
     // Linkshells (other than Linkpearls and Pearlsacks) and temporary items cannot be stored in the Recycle Bin.
     // TODO: Are there any special messages here?
-    if (PItem->isType(ITEM_LINKSHELL) || container == CONTAINER_ID::LOC_TEMPITEMS)
+    if (!settings::get<bool>("map.ENABLE_ITEM_RECYCLE_BIN") || PItem->isType(ITEM_LINKSHELL) || container == CONTAINER_ID::LOC_TEMPITEMS)
     {
         charutils::DropItem(PChar, container, slotID, quantity, ItemID);
         return;
