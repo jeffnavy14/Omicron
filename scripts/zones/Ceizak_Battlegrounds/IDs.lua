@@ -16,7 +16,7 @@ zones[xi.zone.CEIZAK_BATTLEGROUNDS] =
         KEYITEM_OBTAINED           = 6393, -- Obtained key item: <keyitem>.
         KEYITEM_LOST               = 6394, -- Lost key item: <keyitem>.
         CARRIED_OVER_POINTS        = 7001, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER               = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         WAYPOINT_ATTUNED           = 7588, -- Your <keyitem> has been attuned to a geomagnetic fount[/ at the frontier station/ at Frontier Bivouac #1/ at Frontier Bivouac #2/ at Frontier Bivouac #3]!
         EXPENDED_KINETIC_UNITS     = 7603, -- You have expended <number> kinetic unit[/s] and will be transported to another locale.
@@ -27,10 +27,10 @@ zones[xi.zone.CEIZAK_BATTLEGROUNDS] =
         ARTIFACT_TERMINAL_VOLUME   = 7608, -- Your artifact has been charged to its terminal volume of kinetic units.
         SURPLUS_LOST_TO_AETHER     = 7609, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
         HOMEPOINT_SET              = 7791, -- Home point set!
-        LEARNS_SPELL               = 8031, -- <name> learns <spell>!
-        UNCANNY_SENSATION          = 8033, -- You are assaulted by an uncanny sensation.
-        ENERGIES_COURSE            = 8034, -- The arcane energies begin to course within your veins.
-        MYSTICAL_WARMTH            = 8035, -- You feel a mystical warmth welling up inside you!
+        LEARNS_SPELL               = 8034, -- <name> learns <spell>!
+        UNCANNY_SENSATION          = 8036, -- You are assaulted by an uncanny sensation.
+        ENERGIES_COURSE            = 8037, -- The arcane energies begin to course within your veins.
+        MYSTICAL_WARMTH            = 8038, -- You feel a mystical warmth welling up inside you!
     },
     mob =
     {

@@ -15,7 +15,7 @@ zones[xi.zone.MORIMAR_BASALT_FIELDS] =
         GIL_OBTAINED               = 6391, -- Obtained <number> gil.
         KEYITEM_OBTAINED           = 6393, -- Obtained key item: <keyitem>.
         CARRIED_OVER_POINTS        = 7001, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER               = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         BAYLD_OBTAINED             = 7007, -- You have obtained <number> bayld!
         YOU_HAVE_LEARNED           = 7015, -- You have learned <keyitem>!
@@ -27,9 +27,9 @@ zones[xi.zone.MORIMAR_BASALT_FIELDS] =
         ARTIFACT_HAS_BEEN_CHARGED  = 7608, -- Your artifact has been charged with <number> kinetic unit[/s]. Your current stock of kinetic units totals <number>.
         ARTIFACT_TERMINAL_VOLUME   = 7609, -- Your artifact has been charged to its terminal volume of kinetic units.
         SURPLUS_LOST_TO_AETHER     = 7610, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
-        LEARNS_SPELL               = 7855, -- <name> learns <spell>!
-        UNCANNY_SENSATION          = 7857, -- You are assaulted by an uncanny sensation.
-        HOMEPOINT_SET              = 8171, -- Home point set!
+        LEARNS_SPELL               = 7858, -- <name> learns <spell>!
+        UNCANNY_SENSATION          = 7860, -- You are assaulted by an uncanny sensation.
+        HOMEPOINT_SET              = 8174, -- Home point set!
     },
     mob =
     {

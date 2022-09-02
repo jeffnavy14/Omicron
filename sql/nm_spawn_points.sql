@@ -252,6 +252,12 @@ INSERT INTO `nm_spawn_points` VALUES (16806227,49,-549.802,-8.944,-24.848);
 INSERT INTO `nm_spawn_points` VALUES (16806249,0,-490.195,-4.503,145.451); -- Ambusher Antlion
 INSERT INTO `nm_spawn_points` VALUES (16822423,0,4.609,11.472,-101.235); -- Bugbear Strongman (west)
 INSERT INTO `nm_spawn_points` VALUES (16822427,0,60.728,15.487,-118.886); -- Bugbear Strongman (east)
+INSERT INTO `nm_spawn_points` VALUES (16851267,0,-44.317,0,-242.987); -- Satiator
+INSERT INTO `nm_spawn_points` VALUES (16851267,1,-205.880,-0.500,268.850); -- Satiator on inaccessable island. 
+INSERT INTO `nm_spawn_points` VALUES (16843043,0,117.68,-0.307,302.450); -- Cerebrator
+INSERT INTO `nm_spawn_points` VALUES (16843043,1,-236.055,-0.500,124.179); -- Cerebrator on inaccessable island. 
+INSERT INTO `nm_spawn_points` VALUES (16859472,0,-169.471,0.000,84.318); -- Coveter
+INSERT INTO `nm_spawn_points` VALUES (16859472,1,-293.877,-0.500,-122.258); -- Coveter on inaccessable island. 
 INSERT INTO `nm_spawn_points` VALUES (16875552,0,-88.575,-8.221,-272.966);
 INSERT INTO `nm_spawn_points` VALUES (16875552,1,-85.977,-8.096,-277.417);
 INSERT INTO `nm_spawn_points` VALUES (16875552,2,-80.868,-8.000,-281.892);
@@ -6967,6 +6973,9 @@ INSERT INTO `nm_spawn_points` VALUES (17203216,18,-149.255,4.077,426.342);
 INSERT INTO `nm_spawn_points` VALUES (17203216,19,-156.276,0.532,434.495);
 INSERT INTO `nm_spawn_points` VALUES (17203216,20,-156.151,0.633,472.790);
 INSERT INTO `nm_spawn_points` VALUES (17203216,21,-156.857,0.458,485.462);
+INSERT INTO `nm_spawn_points` VALUES (17469747,0,169.270,8.028,-110.580);
+INSERT INTO `nm_spawn_points` VALUES (17469747,1,155.792,8.334,-124.494);
+INSERT INTO `nm_spawn_points` VALUES (17469747,2,169.525,11.964,-128.288);
 
 /*!40000 ALTER TABLE `nm_spawn_points` ENABLE KEYS */;
 UNLOCK TABLES;

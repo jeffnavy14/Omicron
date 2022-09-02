@@ -17,7 +17,7 @@ zones[xi.zone.NASHMAU] =
         KEYITEM_OBTAINED         = 6393,  -- Obtained key item: <keyitem>.
         ITEM_OBTAINEDX           = 6399,  -- You obtain <number> <item>!
         CARRIED_OVER_POINTS      = 7001,  -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY  = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY  = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER             = 7003,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         FISHING_MESSAGE_OFFSET   = 7054,  -- You can't fish here.
         HOMEPOINT_SET            = 7315,  -- Home point set!
@@ -40,7 +40,7 @@ zones[xi.zone.NASHMAU] =
         YOYOROON_SHOP_DIALOG     = 11790, -- Boooss, boooss! Yoyoroon bring yooo goood custooomer! Yoyoroon goood wooorker, nooo?
         PIPIROON_SHOP_DIALOG     = 11791, -- Yes? I'm a busy man. Make it quick.
         RETRIEVE_DIALOG_ID       = 11891, -- You retrieve <item> from the porter moogle's care.
-        COMMON_SENSE_SURVIVAL    = 11928, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        COMMON_SENSE_SURVIVAL    = 11930, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {

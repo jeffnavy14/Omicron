@@ -16,7 +16,7 @@ zones[xi.zone.MARJAMI_RAVINE] =
         KEYITEM_OBTAINED           = 6393, -- Obtained key item: <keyitem>.
         KEYITEM_LOST               = 6394, -- Lost key item: <keyitem>.
         CARRIED_OVER_POINTS        = 7001, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER               = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         BAYLD_OBTAINED             = 7007, -- You have obtained <number> bayld!
         YOU_HAVE_LEARNED           = 7015, -- You have learned <keyitem>!
@@ -30,8 +30,8 @@ zones[xi.zone.MARJAMI_RAVINE] =
         SURPLUS_LOST_TO_AETHER     = 7711, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
         LEATHER_SCRAPS_STREWN      = 7733, -- Leather scraps are strewn about the ground.
         HOMEPOINT_SET              = 7876, -- Home point set!
-        LEARNS_SPELL               = 8174, -- <name> learns <spell>!
-        UNCANNY_SENSATION          = 8176, -- You are assaulted by an uncanny sensation.
+        LEARNS_SPELL               = 8177, -- <name> learns <spell>!
+        UNCANNY_SENSATION          = 8179, -- You are assaulted by an uncanny sensation.
     },
     mob =
     {

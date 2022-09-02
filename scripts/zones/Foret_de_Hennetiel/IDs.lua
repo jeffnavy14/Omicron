@@ -15,7 +15,7 @@ zones[xi.zone.FORET_DE_HENNETIEL] =
         GIL_OBTAINED               = 6391, -- Obtained <number> gil.
         KEYITEM_OBTAINED           = 6393, -- Obtained key item: <keyitem>.
         CARRIED_OVER_POINTS        = 7001, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY    = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER               = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         BAYLD_OBTAINED             = 7007, -- You have obtained <number> bayld!
         YOU_HAVE_LEARNED           = 7015, -- You have learned <keyitem>!
@@ -29,9 +29,9 @@ zones[xi.zone.FORET_DE_HENNETIEL] =
         ARTIFACT_HAS_BEEN_CHARGED  = 7692, -- Your artifact has been charged with <number> kinetic unit[/s]. Your current stock of kinetic units totals <number>.
         ARTIFACT_TERMINAL_VOLUME   = 7693, -- Your artifact has been charged to its terminal volume of kinetic units.
         SURPLUS_LOST_TO_AETHER     = 7694, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
-        LEARNS_SPELL               = 7928, -- <name> learns <spell>!
-        UNCANNY_SENSATION          = 7930, -- You are assaulted by an uncanny sensation.
-        HOMEPOINT_SET              = 8002, -- Home point set!
+        LEARNS_SPELL               = 7931, -- <name> learns <spell>!
+        UNCANNY_SENSATION          = 7933, -- You are assaulted by an uncanny sensation.
+        HOMEPOINT_SET              = 8005, -- Home point set!
     },
     mob =
     {

@@ -19,7 +19,7 @@ zones[xi.zone.WINDURST_WATERS_S] =
         NOT_HAVE_ENOUGH_GIL        = 6395,  -- You do not have enough gil.
         ITEMS_OBTAINED             = 6399,  -- You obtain <number> <item>!
         CARRIED_OVER_POINTS        = 7001,  -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY    = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY    = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER               = 7003,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         FISHING_MESSAGE_OFFSET     = 7057,  -- You can't fish here.
         PELFTRIX_SHOP_DIALOG       = 7208,  -- Boodlix's Emporium open for business! Boodlix's gots whats you wants, at the price yous likes! It's okay, we takes yours gils, too!
@@ -37,9 +37,9 @@ zones[xi.zone.WINDURST_WATERS_S] =
         MIKHE_ARYOHCHA_DIALOG      = 12474, -- Do you like the headpiece? I made it from my firrrst victim. I wear it to let everrryone know what happens when they cross Mikhe Aryohcha!
         LUTETE_DIALOG              = 12476, -- <Yaaawn>... Mastering these Near Eastern magics can be quite taxing. If I had a choice, I'd rather be back in bed, relaxing...
         ALLIED_SIGIL               = 12920, -- You have received the Allied Sigil!
-        RETRIEVE_DIALOG_ID         = 14987, -- You retrieve <item> from the porter moogle's care.
-        NOT_ENOUGH_NOTES           = 15012, -- You tryin' to cheat me? That's not nearly enough notes!
-        COMMON_SENSE_SURVIVAL      = 15048, -- It appears that you have arrived at a new survival guide provided by the Servicemen's Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        RETRIEVE_DIALOG_ID         = 14991, -- You retrieve <item> from the porter moogle's care.
+        NOT_ENOUGH_NOTES           = 15016, -- You tryin' to cheat me? That's not nearly enough notes!
+        COMMON_SENSE_SURVIVAL      = 15052, -- It appears that you have arrived at a new survival guide provided by the Servicemen's Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {

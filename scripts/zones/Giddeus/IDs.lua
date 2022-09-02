@@ -18,7 +18,7 @@ zones[xi.zone.GIDDEUS] =
         SENSE_OF_FOREBODING         = 6405, -- You are suddenly overcome with a sense of foreboding...
         FELLOW_MESSAGE_OFFSET       = 6419, -- I'm ready. I suppose.
         CARRIED_OVER_POINTS         = 7001, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY     = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!<space>
+        LOGIN_CAMPAIGN_UNDERWAY     = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         CONQUEST_BASE               = 7057, -- Tallying conquest results...
         FISHING_MESSAGE_OFFSET      = 7216, -- You can't fish here.
@@ -33,11 +33,6 @@ zones[xi.zone.GIDDEUS] =
     {
         HOO_MJUU_THE_TORRENT_PH   =
         {
-            [17371490] = 17371515, -- -63.000 -0.860 -91.000
-            [17371498] = 17371515, -- -32.000 0.740 -105.000
-            [17371486] = 17371515, -- -37.100 0.582 -127.259
-            [17371504] = 17371515, -- -42.389 0.315 -130.930
-            [17371508] = 17371515, -- -57.000 -2.000 -119.000
             [17371513] = 17371515, -- -39.073 0.597 -115.279
         },
         JUU_DUZU_THE_WHIRLWIND_PH =
