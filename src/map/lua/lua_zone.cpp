@@ -330,33 +330,15 @@ std::optional<CLuaBaseEntity> CLuaZone::insertDynamicEntity(sol::table table)
         PMob->spawnAnimation = static_cast<SPAWN_ANIMATION>(table["specialSpawnAnimation"].get_or(false) ? 1 : 0);
 
         // Ensure mobs get a function for onMobDeath
-
-        auto onMobSpawn = table["onMobSpawn"].get_or<sol::function>(sol::lua_nil);
-        if (onMobSpawn.valid())
-        {
-            cacheEntry["onMobSpawn"] = onMobSpawn;
-        }
-        else
-        {
-            cacheEntry["onMobSpawn"] = []() {}; // Empty func
-        }
-
-        auto onMobFight = table["onMobFight"].get_or<sol::function>(sol::lua_nil);
-        if (onMobFight.valid())
-        {
-            cacheEntry["onMobFight"] = onMobFight;
-        }
-        else
-        {
-            cacheEntry["onMobFight"] = []() {}; // Empty func
-        }
-        auto onMobDeath = table["onMobDeath"].get_or<sol::function>(sol::lua_nil);
+        auto onMobDeath = table["onMobDeath"].get<sol::function>();
         if (!onMobDeath.valid())
         {
             cacheEntry["onMobDeath"] = []() {}; // Empty func
         }
+
         m_pLuaZone->InsertMOB(PMob);
     }
+
     if (table["look"].get_type() == sol::type::number)
     {
         PEntity->SetModelId(table.get<uint16>("look"));
