@@ -4064,6 +4064,13 @@ void CLuaBaseEntity::tradeComplete()
     PChar->pushPacket(new CInventoryFinishPacket());
 }
 
+std::optional<CLuaTradeContainer> CLuaBaseEntity::getTrade()
+{
+    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+    return std::optional<CLuaTradeContainer>(PChar->TradeContainer);
+}
+
 /************************************************************************
  *  Function: canEquipItem()
  *  Purpose : Returns true if a player can equip the item
@@ -4214,46 +4221,14 @@ int8 CLuaBaseEntity::getShieldSize()
 }
 
 /************************************************************************
- *  Function: hasGearSetMod()
- *  Purpose : Need to research functionality more to provide description
- *  Example :  if not player:hasGearSetMod(gearset.id) then
- *  Notes   : Used exclusively in scripts/globals/gear_sets.lua
- ************************************************************************/
-
-bool CLuaBaseEntity::hasGearSetMod(uint8 modNameId)
-{
-    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
-    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
-    {
-        for (auto exsistingMod : PChar->m_GearSetMods)
-        {
-            if (modNameId == exsistingMod.modNameId)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-/************************************************************************
  *  Function: addGearSetMod()
  *  Purpose : Need to research functionality more to provide description
- *  Example : player:addGearSetMod(gearset.id + i, modId, modValue + addSetBonus)
+ *  Example : player:addGearSetMod(setId, modId, modValue)
  *  Notes   : Used exclusively in scripts/globals/gear_sets.lua
  ************************************************************************/
 
-void CLuaBaseEntity::addGearSetMod(uint8 modNameId, Mod modId, uint16 modValue)
+void CLuaBaseEntity::addGearSetMod(uint8 setId, Mod modId, uint16 modValue)
 {
-    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
-    GearSetMod_t gearSetMod = {};
-    gearSetMod.modNameId    = modNameId;
-    gearSetMod.modId        = modId;
-    gearSetMod.modValue     = modValue;
-
     CCharEntity* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
 
     if (!PChar)
@@ -4262,13 +4237,10 @@ void CLuaBaseEntity::addGearSetMod(uint8 modNameId, Mod modId, uint16 modValue)
         return;
     }
 
-    for (auto& exsistingMod : PChar->m_GearSetMods)
-    {
-        if (gearSetMod.modNameId == exsistingMod.modNameId)
-        {
-            return;
-        }
-    }
+    GearSetMod_t gearSetMod = {};
+    gearSetMod.setId        = setId;
+    gearSetMod.modId        = modId;
+    gearSetMod.modValue     = modValue;
 
     PChar->m_GearSetMods.push_back(gearSetMod);
     PChar->addModifier(gearSetMod.modId, gearSetMod.modValue);
@@ -14602,6 +14574,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getFreeSlotsCount", CLuaBaseEntity::getFreeSlotsCount);
     SOL_REGISTER("confirmTrade", CLuaBaseEntity::confirmTrade);
     SOL_REGISTER("tradeComplete", CLuaBaseEntity::tradeComplete);
+    SOL_REGISTER("getTrade", CLuaBaseEntity::getTrade);
 
     // Equipping
     SOL_REGISTER("canEquipItem", CLuaBaseEntity::canEquipItem);
@@ -14614,7 +14587,6 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("getShieldSize", CLuaBaseEntity::getShieldSize);
 
-    SOL_REGISTER("hasGearSetMod", CLuaBaseEntity::hasGearSetMod);
     SOL_REGISTER("addGearSetMod", CLuaBaseEntity::addGearSetMod);
     SOL_REGISTER("clearGearSetMods", CLuaBaseEntity::clearGearSetMods);
 
