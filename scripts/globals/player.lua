@@ -14,14 +14,14 @@ require("scripts/quests/full_speed_ahead")
 
 local startingRaceInfo =
 {
-    [xi.race.HUME_M]   = { gear = { body = 12631, hand = 12754, leg = 12883, feet = 13005 }, homeNation = xi.nation.BASTOK },
-    [xi.race.HUME_F]   = { gear = { body = 12632, hand = 12760, leg = 12884, feet = 13010 }, homeNation = xi.nation.BASTOK },
-    [xi.race.ELVAAN_M] = { gear = { body = 12633, hand = 12755, leg = 12885, feet = 13006 }, homeNation = xi.nation.SANDORIA },
-    [xi.race.ELVAAN_F] = { gear = { body = 12634, hand = 12759, leg = 12889, feet = 13011 }, homeNation = xi.nation.SANDORIA },
-    [xi.race.TARU_M]   = { gear = { body = 12635, hand = 12756, leg = 12886, feet = 13007 }, homeNation = xi.nation.WINDURST },
-    [xi.race.TARU_F]   = { gear = { body = 12635, hand = 12756, leg = 12886, feet = 13007 }, homeNation = xi.nation.WINDURST },
-    [xi.race.MITHRA]   = { gear = { body = 12636, hand = 12757, leg = 12887, feet = 13008 }, homeNation = xi.nation.WINDURST },
-    [xi.race.GALKA]    = { gear = { body = 12637, hand = 12758, leg = 12888, feet = 13009 }, homeNation = xi.nation.BASTOK },
+	[xi.race.HUME_M]   = {gear = {head = 11811, body = 10293, hand = 12754, leg = 12883, feet = 13005}, homeNation = xi.nation.BASTOK},
+    [xi.race.HUME_F]   = {gear = {head = 11811, body = 10293, hand = 12760, leg = 12884, feet = 13010}, homeNation = xi.nation.BASTOK},
+    [xi.race.ELVAAN_M] = {gear = {head = 11811, body = 10293, hand = 12755, leg = 12885, feet = 13006}, homeNation = xi.nation.SANDORIA},
+    [xi.race.ELVAAN_F] = {gear = {head = 11811, body = 10293, hand = 12759, leg = 12889, feet = 13011}, homeNation = xi.nation.SANDORIA},
+    [xi.race.TARU_M]   = {gear = {head = 11811, body = 10293, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
+    [xi.race.TARU_F]   = {gear = {head = 11811, body = 10293, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
+    [xi.race.MITHRA]   = {gear = {head = 11811, body = 10293, hand = 12757, leg = 12887, feet = 13008}, homeNation = xi.nation.WINDURST},
+    [xi.race.GALKA]    = {gear = {head = 11811, body = 10293, hand = 12758, leg = 12888, feet = 13009}, homeNation = xi.nation.BASTOK},
 }
 
 local startingNationInfo =
@@ -149,6 +149,10 @@ end
 -- called by core after a player logs into the server or zones
 xi.player.onGameIn = function(player, firstLogin, zoning)
     if not zoning then
+        -- Send a system message when players come online.
+    	if player:getCharVar("NoOnlineNotification") ~= 1 then
+    	    player:PrintToArea(string.format("%s has come online!", player:getName()), xi.msg.area.SYSTEM_2);
+    	end
         -- things checked ONLY during logon go here
         if firstLogin then
             xi.player.charCreate(player)
