@@ -14,9 +14,9 @@ xi.events.loginCampaign = xi.events.loginCampaign or {}
 -- Change vars below to modify settings for current login campaign
 -- NOTE: the year and month values are used in the Moogle's Event!
 local loginCampaignYear = 2022
-local loginCampaignMonth = 6
-local loginCampaignDay = 23
-local loginCampaignDuration = 23 -- Duration is set in Earth days (Average is 23 days)
+local loginCampaignMonth = 9
+local loginCampaignDay = 6
+local loginCampaignDuration = 128 -- Duration is set in Earth days (Average is 23 days)
 
 -- Checks if a Login Campaign is active.
 xi.events.loginCampaign.isCampaignActive = function()
@@ -208,7 +208,7 @@ xi.events.loginCampaign.onEventUpdate = function(player, csid, option)
             price,
             loginPoints)
     else
-        if npcUtil.giveItem(player, { {currentLoginCampaign[showItems - 2]["items"][itemSelected + 1], itemQuantity} }) then
+        if npcUtil.giveItem(player, { { currentLoginCampaign[showItems - 2]["items"][itemSelected + 1], itemQuantity } }) then
             player:delCurrency("login_points", currentLoginCampaign[showItems - 2]["price"] * itemQuantity)
             player:updateEvent(
                 currentLoginCampaign[showItems - 2]["items"][itemSelected + 1],

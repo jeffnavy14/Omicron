@@ -166,7 +166,7 @@ uint8 CTreasurePool::AddItem(uint16 ItemID, CBaseEntity* PEntity)
         case 2956: // high kindred crest
             for (auto& member : members)
             {
-                member->PRecastContainer->Add(RECAST_LOOT, 1, 300); // 300 = 5 min cooldown
+                member->PRecastContainer->Add(RECAST_LOOT, 1, 120); // 300 = 5 min cooldown
             }
             break;
     }

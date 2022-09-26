@@ -5,13 +5,13 @@
 
 cmdprops =
 {
-    permission = 1,
+    permission = 3,
     parameters = "is"
 }
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!hp <amount> {player}")
+    player:PrintToPlayer("!hp <amount> (player)")
 end
 
 function onTrigger(player, hp, target)

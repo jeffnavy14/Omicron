@@ -6,7 +6,7 @@
 
 cmdprops =
 {
-    permission = 1,
+    permission = 5,
     parameters = ""
 }
 
@@ -16,22 +16,20 @@ function onTrigger(player)
     local mob = zone:insertDynamicEntity({
 
         objtype = xi.objType.MOB,
-        name = "Ninja Turtle",
+        name = "Muffin",
+        look = "0x00000E0100000000000000000000000000000000",
         x = player:getXPos(),
         y = player:getYPos(),
         z = player:getZPos(),
         rotation = player:getRotPos(),
-        groupId = 7,
-        groupZoneId = 128,
+        groupId = 61,
+        groupZoneId = 37,
 
         onMobSpawn = function(mob)
-		    SetServerVariable("[EschanAspi]", 0)
-		    SetServerVariable("[NinjaTurtle]", 1)
-            mob:setModelId(2382)
             mob:hideHP(true)
             mob:setHP(200000)
-            mob:setMobMod(xi.mobMod.SKILL_LIST, 479)
-            mob:setMobMod(xi.mobMod.SPELL_LIST, 126)
+            mob:setMobMod(xi.mobMod.SKILL_LIST, 77)
+            mob:setMobMod(xi.mobMod.SPELL_LIST, 6)
             mob:useMobAbility(1486)
         end,	
         onMobFight = function(mob, target)
@@ -39,7 +37,7 @@ function onTrigger(player)
 	    end,
 			
         onMobDeath = function(mob, player, isKiller, noKiller)
-            SetServerVariable("[NinjaTurtle]", 0)
+
         end,
         releaseIdOnDeath = true,
 
@@ -54,32 +52,33 @@ function onTrigger(player)
         specialSpawnAnimation = true,
     })
 
-    mob:setSpawn(-5.4115, 0.1944, -33.4813, 50)
-    mob:setDropID(4056)
+
+    mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
     mob:spawn()
-    mob:setMobLevel(119)
-    mob:setMod(xi.mod.HPP, 500)
-    mob:setMod(xi.mod.DEF, 2000)
+    mob:setMobLevel(135)
+    mob:setMod(xi.mod.DEF, 1200)
     mob:setMod(xi.mod.MDEF, 250)
+    mob:setMod(xi.mod.HPP, 200)
     mob:setMod(xi.mod.MEVA, 450)
-    mob:setMod(xi.mod.EVA, 600)
+    mob:setMod(xi.mod.EVA, 200)
     mob:setMod(xi.mod.STR, 200)
-    mob:setMod(xi.mod.VIT, 300)
+    mob:setMod(xi.mod.VIT, 200)
     mob:setMod(xi.mod.INT, 150)
     mob:setMod(xi.mod.MND, 150)
     mob:setMod(xi.mod.CHR, 120)
     mob:setMod(xi.mod.AGI, 120)
-    mob:setMod(xi.mod.DEX, 140)
+    mob:setMod(xi.mod.DEX, 240)
     mob:setMod(xi.mod.MATT,150)
     mob:setMod(xi.mod.ACC, 1000)
-    mob:setMod(xi.mod.DOUBLE_ATTACK, 25)
-    mob:setMod(xi.mod.EARTH_RES, 400)
-    mob:setMod(xi.mod.DARK_RES, 450)
-    mob:setMod(xi.mod.LIGHT_RES, 450)
-    mob:setMod(xi.mod.FIRE_RES, 400)
-    mob:setMod(xi.mod.WATER_RES, 400)
-    mob:setMod(xi.mod.THUNDER_RES, 500)
-    mob:setMod(xi.mod.WIND_RES, 400)
+    mob:setMod(xi.mod.ATT, 1100)
+    mob:setMod(xi.mod.DOUBLE_ATTACK, 100)
+    mob:setMod(xi.mod.EARTH_MEVA, 400)
+    mob:setMod(xi.mod.DARK_MEVA, 450)
+    mob:setMod(xi.mod.LIGHT_MEVA, 450)
+    mob:setMod(xi.mod.FIRE_MEVA, 400)
+    mob:setMod(xi.mod.WATER_MEVA, 400)
+    mob:setMod(xi.mod.THUNDER_MEVA, 500)
+    mob:setMod(xi.mod.WIND_MEVA, 400)
     mob:setMod(xi.mod.SILENCERES, 600)
     mob:setMod(xi.mod.FIRE_ABSORB, 100)
     mob:setMod(xi.mod.BINDRES, 1000)
@@ -88,9 +87,8 @@ function onTrigger(player)
     mob:setMod(xi.mod.PARALYZERES, 100)
     mob:setMod(xi.mod.LULLABYRES, 1000)
     mob:setMod(xi.mod.FASTCAST, 100)
-    mob:setMod(xi.mod.ALL_WSDMG_ALL_HITS, -10)
-    mob:addStatusEffect(xi.effect.REGEN, 20, 3, 0)
     mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
+    mob:addStatusEffect(xi.effect.HUNDRED_FISTS, 1, 0)
 
     player:PrintToPlayer(string.format("Spawning Fafnir (Lv: %i, HP: %i)\n%s", mob:getMainLvl(), mob:getMaxHP(), mob))
 end

@@ -5,13 +5,13 @@
 
 cmdprops =
 {
-    permission = 1,
+    permission = 3,
     parameters = "s"
 }
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!immortal {player}")
+    player:PrintToPlayer("!immortal (player)")
 end
 
 function onTrigger(player, target)

@@ -116,7 +116,7 @@ xi.settings.map =
     FISHING_ENABLE     = 1,
 
     -- Multipler for fishing skill-up chance. Default = 1.0, very hard.
-    FISHING_SKILL_MULTIPLIER = 3.0,
+    FISHING_SKILL_MULTIPLIER = 1.5,
 
     -- Enable/disable skill-ups from bloodpacts
     SKILLUP_BLOODPACT = 1,
@@ -169,13 +169,13 @@ xi.settings.map =
     DROP_RATE_MULTIPLIER = 1.0,
 
     -- Multiplier for gil naturally dropped by mobs. Does not apply to the bonus gil from all_mobs_gil_bonus. Default is 1.0.
-    MOB_GIL_MULTIPLIER = 1.0,
+    MOB_GIL_MULTIPLIER = 1.1,
 
     -- All mobs drop this much extra gil per mob LV even if they normally drop zero.
-    ALL_MOBS_GIL_BONUS = 10,
+    ALL_MOBS_GIL_BONUS = 8,
 
     -- Maximum total bonus gil that can be dropped. Default 9999 gil.
-    MAX_GIL_BONUS = 9999,
+    MAX_GIL_BONUS = 1500,
 
     --  Allow mobs to walk back home instead of despawning
     MOB_NO_DESPAWN = 0,

@@ -14,7 +14,7 @@ end
 
 spell_object.onSpellCast = function(caster, target, spell)
     local typeEffect = xi.effect.PHALANX
-    local power = 90 -- Percentage, not amount.
+    local power = 76
     local duration = 300
 
     if (caster:hasStatusEffect(xi.effect.DIFFUSION)) then

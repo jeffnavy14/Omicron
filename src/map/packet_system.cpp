@@ -842,7 +842,7 @@ void SmallPacket0x01A(map_session_data_t* const PSession, CCharEntity* const PCh
             }
 
             CBaseEntity* PNpc = nullptr;
-            PNpc              = PChar->GetEntity(TargID, TYPE_NPC);
+            PNpc              = PChar->GetEntity(TargID, TYPE_NPC | TYPE_MOB);
 
             if (PNpc != nullptr && distance(PNpc->loc.p, PChar->loc.p) <= 10 && (PNpc->PAI->IsSpawned() || PChar->m_moghouseID != 0))
             {
@@ -3414,19 +3414,33 @@ void SmallPacket0x053(map_session_data_t* const PSession, CCharEntity* const PCh
     }
 }
 
-/************************************************************************
- *                                                                        *
- *  Request synthesis suggestion                                            *
- *                                                                        *
+/*************************************************************************
+ *                                                                       *
+ *  Request synthesis suggestion                                         *
+ *                                                                       *
  ************************************************************************/
 
 void SmallPacket0x058(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket data)
 {
     TracyZoneScoped;
-    uint16 skillID    = data.ref<uint16>(0x04);
-    uint16 skillLevel = data.ref<uint16>(0x06);
+    uint16 skillID     = data.ref<uint16>(0x04);
+    uint16 skillLevel  = data.ref<uint16>(0x06); // Player's current skill level (whole number only)
+    uint8  requestType = data.ref<uint8>(0x0A);  // 02 is list view, 03 is recipe
+    uint8  skillRank   = data.ref<uint8>(0x12);  // Requested Rank for item suggestions
 
-    PChar->pushPacket(new CSynthSuggestionPacket(skillID, skillLevel));
+    if (requestType == 2)
+    {
+        // For pagination, the client sends the range in increments of 16. (0..0x10, 0x10..0x20, etc)
+        // uint16 resultMax  = data.ref<uint16>(0x0E); // Unused, maximum in range is always 16 greater
+        uint16 resultMin = data.ref<uint16>(0x0C);
+
+        PChar->pushPacket(new CSynthSuggestionListPacket(skillID, skillLevel, skillRank, resultMin));
+    }
+    else
+    {
+        uint16 selectedRecipeOffset = data.ref<uint16>(0x10);
+        PChar->pushPacket(new CSynthSuggestionRecipePacket(skillID, skillLevel, skillRank, selectedRecipeOffset));
+    }
 }
 
 /************************************************************************
@@ -4757,10 +4771,10 @@ void SmallPacket0x096(map_session_data_t* const PSession, CCharEntity* const PCh
 
     uint8 numItems = data.ref<uint8>(0x09);
 
-    std::vector<uint8> slotQty(MAX_CONTAINER_SIZE);
-
-    if (numItems > 8)
+    auto PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(invSlotID);
+    if (!PItem || ItemID != PItem->getID() || PItem->getQuantity() == 0 || numItems > 8)
     {
+        // Detect invalid crystal usage
         // Prevent crafting exploit to crash on container size > 8
         PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, 316));
         return;
@@ -4768,6 +4782,7 @@ void SmallPacket0x096(map_session_data_t* const PSession, CCharEntity* const PCh
 
     PChar->CraftContainer->setItem(0, ItemID, invSlotID, 0);
 
+    std::vector<uint8> slotQty(MAX_CONTAINER_SIZE);
     for (int32 SlotID = 0; SlotID < numItems; ++SlotID)
     {
         ItemID    = data.ref<uint16>(0x0A + SlotID * 2);
@@ -6156,6 +6171,11 @@ void SmallPacket0x0E8(map_session_data_t* const PSession, CCharEntity* const PCh
         break;
         case ANIMATION_HEALING:
         {
+            if (data.ref<uint8>(0x04) == 0x01)
+            {
+                return;
+            }
+
             PChar->StatusEffectContainer->DelStatusEffect(EFFECT_HEALING);
         }
         break;
@@ -6778,6 +6798,7 @@ void SmallPacket0x100(map_session_data_t* const PSession, CCharEntity* const PCh
             JOBTYPE prevjob = PChar->GetMJob();
             PChar->resetPetZoningInfo();
 
+            charutils::SaveJobChangeGear(PChar);
             charutils::RemoveAllEquipment(PChar);
             PChar->SetMJob(mjob);
             PChar->SetMLevel(PChar->jobs.job[PChar->GetMJob()]);
@@ -6845,8 +6866,9 @@ void SmallPacket0x100(map_session_data_t* const PSession, CCharEntity* const PCh
         PChar->PRecastContainer->ChangeJob();
         charutils::BuildingCharAbilityTable(PChar);
         charutils::BuildingCharWeaponSkills(PChar);
+        charutils::LoadJobChangeGear(PChar);
 
-        PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE | EFFECTFLAG_ON_JOBCHANGE);
+        PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE | EFFECTFLAG_ROLL | EFFECTFLAG_ON_JOBCHANGE);
 
         PChar->ForParty([](CBattleEntity* PMember)
                         { ((CCharEntity*)PMember)->PLatentEffectContainer->CheckLatentsPartyJobs(); });

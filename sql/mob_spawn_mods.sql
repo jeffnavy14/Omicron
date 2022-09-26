@@ -31,6 +31,7 @@ CREATE TABLE `mob_spawn_mods` (
 
 LOCK TABLES `mob_spawn_mods` WRITE;
 /*!40000 ALTER TABLE `mob_spawn_mods` DISABLE KEYS */;
+
 -- Overgrown Ivy
 INSERT INTO `mob_spawn_mods` VALUES (16785709,55,180,1); -- IDLE_DESPAWN: 180
 
@@ -1281,6 +1282,7 @@ INSERT INTO `mob_spawn_mods` VALUES (17531121,55,180,1); -- IDLE_DESPAWN: 180
 -- Cemetery Cherry
 INSERT INTO `mob_spawn_mods` VALUES (17555863,1,20000,1); -- GIL_MIN: 20000
 INSERT INTO `mob_spawn_mods` VALUES (17555863,2,30000,1); -- GIL_MAX: 30000
+INSERT INTO `mob_spawn_mods` VALUES (17555863,15,10000,1); -- MUG_GIL: 10000
 INSERT INTO `mob_spawn_mods` VALUES (17555863,55,600,1);  -- IDLE_DESPAWN: 600
 
 -- Fire Elemental
@@ -1492,6 +1494,17 @@ INSERT INTO `mob_spawn_mods` VALUES (17649860,55,300,1); -- IDLE_DESPAWN: 300
 
 -- Enagakure
 INSERT INTO `mob_spawn_mods` VALUES (17678351,55,600,1); -- IDLE_DESPAWN: 600
+
+-- [Narasimha]
+-- Values taken from wiki on 04/23/2018 (http://ffxiclopedia.wikia.com/wiki/Narasimha)
+INSERT INTO `mob_spawn_mods` VALUES (17649784,1,12000,1); -- min gil 12000
+INSERT INTO `mob_spawn_mods` VALUES (17649784,2,20000,1); -- max gil 30000
+INSERT INTO `mob_spawn_mods` VALUES (17649784,15,4800,1); -- mug gil 4800
+
+-- Sewer Syrup
+INSERT INTO `mob_spawn_mods` VALUES (17461307,1,4000,1);
+INSERT INTO `mob_spawn_mods` VALUES (17461307,2,19000,1);
+INSERT INTO `mob_spawn_mods` VALUES (17461307,15,3500,1);
 
 /*!40000 ALTER TABLE `mob_spawn_mods` ENABLE KEYS */;
 UNLOCK TABLES;

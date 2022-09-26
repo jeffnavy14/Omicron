@@ -26,19 +26,19 @@ local startingRaceInfo =
 
 local startingNationInfo =
 {
-    [xi.nation.SANDORIA] = {ring = 13495, map = xi.ki.MAP_OF_THE_SAN_DORIA_AREA},
-    [xi.nation.BASTOK]   = {ring = 13497, map = xi.ki.MAP_OF_THE_BASTOK_AREA},
-    [xi.nation.WINDURST] = {ring = 13496, map = xi.ki.MAP_OF_THE_WINDURST_AREA},
+    [xi.nation.SANDORIA] = { ring = 13495, map = xi.ki.MAP_OF_THE_SAN_DORIA_AREA },
+    [xi.nation.BASTOK]   = { ring = 13497, map = xi.ki.MAP_OF_THE_BASTOK_AREA },
+    [xi.nation.WINDURST] = { ring = 13496, map = xi.ki.MAP_OF_THE_WINDURST_AREA },
 }
 
 local startingJobGear =
 {
-    [xi.job.WAR] = {16534},       -- onion sword
-    [xi.job.MNK] = {13184},       -- white belt
-    [xi.job.WHM] = {17068, 4608}, -- onion rod, scroll of cure
-    [xi.job.BLM] = {17104, 4607}, -- onion staff, scroll of stone
-    [xi.job.RDM] = {16482, 4606}, -- onion dagger, scroll of dia
-    [xi.job.THF] = {16483},       -- onion knife
+    [xi.job.WAR] = { 16534 },       -- onion sword
+    [xi.job.MNK] = { 13184 },       -- white belt
+    [xi.job.WHM] = { 17068, 4608 }, -- onion rod, scroll of cure
+    [xi.job.BLM] = { 17104, 4607 }, -- onion staff, scroll of stone
+    [xi.job.RDM] = { 16482, 4606 }, -- onion dagger, scroll of dia
+    [xi.job.THF] = { 16483 },       -- onion knife
 }
 
 -----------------------------------
@@ -144,7 +144,6 @@ xi.player.charCreate = function(player)
     player:setCharVar("TutorialProgress", 1) -- Has not started tutorial
     player:setCharVar("EinherjarIntro", 1) -- Has not seen Einherjar intro
     player:setNewPlayer(true) -- apply new player flag
-    player:addLinkpearl("Omicron", true)
 end
 
 -- called by core after a player logs into the server or zones
