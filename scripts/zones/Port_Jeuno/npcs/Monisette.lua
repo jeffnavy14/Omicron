@@ -433,7 +433,127 @@ local tradeTable =
     [408] = { trade = { 16363, {4067,  5}, {1456, 1}, 1464,  836 }, reward = 27190 },
     [409] = { trade = { 11398, {4068, 10}, {1456, 2}, 1464, 1311 }, reward = 27366 },
     [410] = { trade = { 11399, {4068,  5}, {1456, 1}, 1464, 1311 }, reward = 27366 },
+	
+-----------------------------------
+-- AF armor +1 upgrade data (119)
+-- [combinationId] = {trade = {Base AF, Item, Job Ingredient, Slot Ingredient} reward = relicReforged 109},
+-----------------------------------
 
+    [411] = { trade = { 27663, {4069, 8},  862, 8720 }, reward = 27684 }, -- Pummeler's Mask +1 -- War
+    [412] = { trade = { 27807, {4070, 8},  862, 8722 }, reward = 27828 }, -- Pummeler's Lorica +1 
+    [413] = { trade = { 27943, {4071, 8},  862, 8724 }, reward = 27964 }, -- Pummeler's mufflers +1   
+    [414] = { trade = { 28090, {4072, 8},  862, 8726 }, reward = 28111 }, -- Pummeler's cuisses +1
+    [415] = { trade = { 28223, {4073, 8},  862, 8728 }, reward = 28244 }, -- Pummeler's calligae +1
+    [416] = { trade = { 27664, {4069, 8}, 2476, 8720 }, reward = 27685 }, -- Anchorite's crown +1 -- Mnk
+    [417] = { trade = { 27808, {4070, 8}, 2476, 8722 }, reward = 27829 }, -- Anchorite's cyclas +1
+    [418] = { trade = { 27944, {4071, 8}, 2476, 8724 }, reward = 27965 }, -- Anchorite's gloves +1
+    [419] = { trade = { 28091, {4072, 8}, 2476, 8726 }, reward = 28112 }, -- Anchorite's hose +1
+    [420] = { trade = { 28224, {4073, 8}, 2476, 8728 }, reward = 28245 }, -- Anchorite's gaiters +1
+    [421] = { trade = { 27665, {4069, 8}, 1132, 8720 }, reward = 27686 }, -- Theophany cap +1 -- Whm
+    [422] = { trade = { 27809, {4070, 8}, 1132, 8722 }, reward = 27830 }, -- Theophany bliaut +1 
+    [423] = { trade = { 27945, {4071, 8}, 1132, 8724 }, reward = 27966 }, -- Theophany mitts +1
+    [424] = { trade = { 28092, {4072, 8}, 1132, 8726 }, reward = 28113 }, -- Theophany pantaloons +1
+    [425] = { trade = { 28225, {4073, 8}, 1132, 8728 }, reward = 28246 }, -- Theophany duckbills +1
+    [426] = { trade = { 27666, {4069, 8}, 2200, 8720 }, reward = 27687 }, -- Spaekona's petasos +1 -- Blm
+    [427] = { trade = { 27810, {4070, 8}, 2200, 8722 }, reward = 27831 }, -- Spaekona's coat +1
+    [428] = { trade = { 27946, {4071, 8}, 2200, 8724 }, reward = 27967 }, -- Spaekona's gloves +1
+    [429] = { trade = { 28093, {4072, 8}, 2200, 8726 }, reward = 28114 }, -- Spaekona's tonban +1
+    [430] = { trade = { 28226, {4073, 8}, 2200, 8728 }, reward = 28247 }, -- Spaekona's sabots +1
+    [431] = { trade = { 27667, {4069, 8}, 1313, 8720 }, reward = 27688 }, -- Atrophy chapeau +1 -- Rdm
+    [432] = { trade = { 27811, {4070, 8}, 1313, 8722 }, reward = 27832 }, -- Atrophy tabard +1
+    [433] = { trade = { 27947, {4071, 8}, 1313, 8724 }, reward = 27968 }, -- Atrophy gloves +1
+    [434] = { trade = { 28094, {4072, 8}, 1313, 8726 }, reward = 28115 }, -- Atrophy tights +1
+    [435] = { trade = { 28227, {4073, 8}, 1313, 8728 }, reward = 28248 }, -- Atrophy boots +1
+    [436] = { trade = { 27668, {4069, 8}, 2476, 8720 }, reward = 27689 }, -- Pillager's bonnet +1  -- Thf
+    [437] = { trade = { 27812, {4070, 8}, 2476, 8722 }, reward = 27833 }, -- Pillager's vest +1 
+    [438] = { trade = { 27948, {4071, 8}, 2476, 8724 }, reward = 27969 }, -- Pillager's armlets +1
+    [439] = { trade = { 28095, {4072, 8}, 2476, 8726 }, reward = 28116 }, -- Pillager's culottes +1
+    [440] = { trade = { 28228, {4073, 8}, 2476, 8728 }, reward = 28249 }, -- Pillager's poulaines +1
+    [441] = { trade = { 27669, {4069, 8},  668, 8720 }, reward = 27690 }, -- Reverence coronet +1 -- Pld
+    [442] = { trade = { 27813, {4070, 8},  668, 8722 }, reward = 27834 }, -- Reverence surcoat +1
+    [443] = { trade = { 27949, {4071, 8},  668, 8724 }, reward = 27970 }, -- Reverence gauntlets +1
+    [444] = { trade = { 28096, {4072, 8},  668, 8726 }, reward = 28117 }, -- Reverence breeches +1
+    [445] = { trade = { 28229, {4073, 8},  668, 8728 }, reward = 28250 }, -- Reverence leggings +1
+    [446] = { trade = { 27670, {4069, 8},  758, 8720 }, reward = 27691 }, -- Ignominy Burgeonet +1 -- Drk
+    [447] = { trade = { 27814, {4070, 8},  758, 8722 }, reward = 27835 }, -- Ignominy Cuirass +1 
+    [448] = { trade = { 27950, {4071, 8},  758, 8724 }, reward = 27971 }, -- Ignominy gauntlets +1
+    [449] = { trade = { 28097, {4072, 8},  758, 8726 }, reward = 28118 }, -- Ignominy Flanchard +1
+    [450] = { trade = { 28230, {4073, 8},  758, 8728 }, reward = 28251 }, -- Ignominy sollerets +1
+    [451] = { trade = { 27671, {4069, 8},  862, 8720 }, reward = 27692 }, -- Totemic Helm +1 -- Bst
+    [452] = { trade = { 27815, {4070, 8},  862, 8722 }, reward = 27836 }, -- Totemic Jackcoat +1
+    [453] = { trade = { 27951, {4071, 8},  862, 8724 }, reward = 27972 }, -- Totemic Gloves +1
+    [454] = { trade = { 28098, {4072, 8},  862, 8726 }, reward = 28119 }, -- Totemic Trousers +1
+    [455] = { trade = { 28231, {4073, 8},  862, 8728 }, reward = 28252 }, -- Totemic Gaiters +1
+    [456] = { trade = { 27672, {4069, 8}, 1132, 8720 }, reward = 27693 }, -- Brioso Roundlet +1 -- Brd
+    [457] = { trade = { 27816, {4070, 8}, 1132, 8722 }, reward = 27837 }, -- Brioso Justaucorps +1
+    [458] = { trade = { 27952, {4071, 8}, 1132, 8724 }, reward = 27973 }, -- Brioso Cuffs +1
+    [459] = { trade = { 28099, {4072, 8}, 1132, 8726 }, reward = 28120 }, -- Brioso Cannions +1
+    [460] = { trade = { 28232, {4073, 8}, 1132, 8728 }, reward = 28253 }, -- Brioso Slippers +1
+    [461] = { trade = { 27673, {4069, 8}, 2200, 8720 }, reward = 27694 }, -- Orion Beret +1  -- Rng
+    [462] = { trade = { 27817, {4070, 8}, 2200, 8722 }, reward = 27838 }, -- Orion Jerkin +1 
+    [463] = { trade = { 27953, {4071, 8}, 2200, 8724 }, reward = 27974 }, -- Orion Bracers +1
+    [464] = { trade = { 28100, {4072, 8}, 2200, 8726 }, reward = 28121 }, -- Orion Braccae +1
+    [465] = { trade = { 28233, {4073, 8}, 2200, 8728 }, reward = 28254 }, -- Orion Socks +1
+    [466] = { trade = { 27674, {4069, 8},  658, 8720 }, reward = 27695 }, -- Wakido Kabuto +1 -- Sam
+    [467] = { trade = { 27818, {4070, 8},  658, 8722 }, reward = 27839 }, -- Wakido Domaru +1
+    [468] = { trade = { 27954, {4071, 8},  658, 8724 }, reward = 27975 }, -- Wakido Kote +1
+    [469] = { trade = { 28101, {4072, 8},  658, 8726 }, reward = 28122 }, -- Wakido Haidate +1
+    [470] = { trade = { 28234, {4073, 8},  658, 8728 }, reward = 28255 }, -- Wakido Sune-Ate +1 
+    [471] = { trade = { 27675, {4069, 8},  658, 8720 }, reward = 27696 }, -- Hachiya Hatsuburi +1       -- Nin
+    [472] = { trade = { 27819, {4070, 8},  658, 8722 }, reward = 27840 }, -- Hachiya Chainmail +1 
+    [473] = { trade = { 27955, {4071, 8},  658, 8724 }, reward = 27976 }, -- Hachiya Tekko +1
+    [474] = { trade = { 28102, {4072, 8},  658, 8726 }, reward = 28123 }, -- Hachiya Hakama +1
+    [475] = { trade = { 28235, {4073, 8},  658, 8728 }, reward = 28256 }, -- Hachiya Kyahan +1
+    [476] = { trade = { 27676, {4069, 8},  668, 8720 }, reward = 27697 }, -- Vishap Armet +1 -- Drg
+    [477] = { trade = { 27820, {4070, 8},  668, 8722 }, reward = 27841 }, -- Vishap Mail +1
+    [478] = { trade = { 27956, {4071, 8},  668, 8724 }, reward = 27956 }, -- Vishap Finger Gauntlets +1
+    [479] = { trade = { 28103, {4072, 8},  668, 8726 }, reward = 28124 }, -- Vishap Brais +1
+    [480] = { trade = { 28236, {4073, 8},  668, 8728 }, reward = 28257 }, -- Vishap Greaves +1
+    [481] = { trade = { 27677, {4069, 8}, 1313, 8720 }, reward = 27698 }, -- Convoker's Horn +1 -- Smn
+    [482] = { trade = { 27821, {4070, 8}, 1313, 8722 }, reward = 27842 }, -- Convoker's Doublet +1
+    [483] = { trade = { 27957, {4071, 8}, 1313, 8724 }, reward = 27978 }, -- Convoker's Bracers +1
+    [484] = { trade = { 28104, {4072, 8}, 1313, 8726 }, reward = 28125 }, -- Convoker's Spats +1
+    [485] = { trade = { 28237, {4073, 8}, 1313, 8728 }, reward = 28258 }, -- Convoker's Pigaches +1
+    [486] = { trade = { 27678, {4069, 8}, 1132, 8720 }, reward = 27699 }, -- Assimilator's Keffiyeh +1  -- Blu
+    [487] = { trade = { 27822, {4070, 8}, 1132, 8722 }, reward = 27843 }, -- Assimilator's Jubbah +1
+    [488] = { trade = { 87958, {4071, 8}, 1132, 8724 }, reward = 27979 }, -- Assimilator's Bazubands +1
+    [489] = { trade = { 28105, {4072, 8}, 1132, 8726 }, reward = 28126 }, -- Assimilator's Shalwar +1
+    [490] = { trade = { 28238, {4073, 8}, 1132, 8728 }, reward = 28259 }, -- Assimilator's Charuqs +1
+    [491] = { trade = { 27679, {4069, 8}, 2200, 8720 }, reward = 27700 }, -- Laksamana's Tricorne +1 -- Cor
+    [492] = { trade = { 27823, {4070, 8}, 2200, 8722 }, reward = 27844 }, -- Laksamana's Frac +1
+    [493] = { trade = { 27959, {4071, 8}, 2200, 8724 }, reward = 27980 }, -- Laksamana's Gants +1
+    [494] = { trade = { 28106, {4072, 8}, 2200, 8726 }, reward = 28127 }, -- Laksamana's Trews +1
+    [495] = { trade = { 28239, {4073, 8}, 2200, 8728 }, reward = 28260 }, -- Laksamana's Bottes +1
+    [496] = { trade = { 27680, {4069, 8}, 2200, 8720 }, reward = 27701 }, -- Foire Taj +1 -- Pup
+    [497] = { trade = { 27824, {4070, 8}, 2200, 8722 }, reward = 27845 }, -- Foire Tobe +1
+    [498] = { trade = { 27960, {4071, 8}, 2200, 8724 }, reward = 27981 }, -- Foire Dastanas +1
+    [499] = { trade = { 28107, {4072, 8}, 2200, 8726 }, reward = 28128 }, -- Foire Churidars +1
+    [500] = { trade = { 28240, {4073, 8}, 2200, 8728 }, reward = 28270 }, -- Foire Babouches +1
+    [501] = { trade = { 27681, {4069, 8},  754, 8720 }, reward = 27702 }, -- Maxixi Tiara +1 -- DNC M
+    [502] = { trade = { 27825, {4070, 8},  754, 8722 }, reward = 27846 }, -- Maxixi Casaque +1
+    [503] = { trade = { 27961, {4071, 8},  754, 8724 }, reward = 27982 }, -- Maxixi Bangles +1
+    [504] = { trade = { 28108, {4072, 8},  754, 8726 }, reward = 28129 }, -- Maxixi Tights +1
+    [505] = { trade = { 28241, {4073, 8},  754, 8728 }, reward = 28271 }, -- Maxixi Toe Shoes +1
+    [506] = { trade = { 27682, {4069, 8},  754, 8720 }, reward = 27703 }, -- Maxixi Tiara +1 -- DNC F
+    [507] = { trade = { 27826, {4070, 8},  754, 8722 }, reward = 27847 }, -- Maxixi Casaque +1
+    [508] = { trade = { 27962, {4071, 8},  754, 8724 }, reward = 27983 }, -- Maxixi Bangles +1
+    [509] = { trade = { 28109, {4072, 8},  754, 8726 }, reward = 28130 }, -- Maxixi Tights +1
+    [510] = { trade = { 28242, {4073, 8},  754, 8728 }, reward = 28272 }, -- Maxixi Toe Shoes +1
+    [511] = { trade = { 27683, {4069, 8}, 1313, 8720 }, reward = 27704 }, -- Academic's Mortarboard +1 -- Sch
+    [512] = { trade = { 27827, {4070, 8}, 1313, 8722 }, reward = 27848 }, -- Academic's Gown +1
+    [513] = { trade = { 27963, {4071, 8}, 1313, 8724 }, reward = 27984 }, -- Academic's Bracers +1
+    [514] = { trade = { 28110, {4072, 8}, 1313, 8726 }, reward = 28131 }, -- Academic's Pants +1
+    [515] = { trade = { 28243, {4073, 8}, 1313, 8728 }, reward = 28273 }, -- Academic's Loafers +1
+    [516] = { trade = { 27786, {4069, 8}, 1132, 8720 }, reward = 27705 }, -- Geomancy Galero +1 -- Geo
+	[517] = { trade = { 27926, {4070, 8}, 1132, 8722 }, reward = 27849 }, -- Geomancy Tunic +1
+	[518] = { trade = { 28066, {4071, 8}, 1132, 8724 }, reward = 28985 }, -- Geomancy Mitaines +1
+	[519] = { trade = { 28206, {4072, 8}, 1132, 8726 }, reward = 28132 }, -- Geomancy Pants +1
+	[520] = { trade = { 28346, {4073, 8}, 1132, 8728 }, reward = 28265 }, -- Geomancy Sandals +1
+	[521] = { trade = { 27787, {4073, 8}, 1699, 8720 }, reward = 27706 }, -- Runeist Bandeau +1 -- Run
+	[522] = { trade = { 27927, {4073, 8}, 1699, 8722 }, reward = 27850 }, -- Runeist Coat +1
+	[523] = { trade = { 28067, {4073, 8}, 1699, 8724 }, reward = 27986 }, -- Runeist Mitons +1
+	[524] = { trade = { 28207, {4073, 8}, 1699, 8726 }, reward = 28133 }, -- Runeist Trousers +1
+	[525] = { trade = { 28347, {4073, 8}, 1699, 8728 }, reward = 28266 }, -- Runeist Bottes +1
 -----------------------------------
 -- Empyerian armor upgrade data
 -- [combinationId] = {trade = {Base AF, Item, Job Ingredient, Slot Ingredient} reward = empyReforged 109},
