@@ -14,6 +14,7 @@ local prizes =
             8957, --snoworb_stone 
 			4033, --verdigris_stone 
 			3951, --wailing_stone
+			9893, --wyrm Ash
         },
     },
 
