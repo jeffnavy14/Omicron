@@ -14,31 +14,36 @@ function onTrigger(player)
     local zone = player:getZone()
 
     local mob = zone:insertDynamicEntity({
-
+        -- NPC or MOB
         objtype = xi.objType.MOB,
-        name = "Muffin",
-        look = "0x00000E0100000000000000000000000000000000",
+
+        -- The name visible to players
+        -- NOTE: Even if you plan on making the name invisible, we're using it internally for lookups
+        --     : So populate it with something unique-ish even if you aren't going to use it.
+        --     : You can then hide the name with entity:hideName(true)
+        -- NOTE: This name CAN include spaces and underscores.
+        name = "Fafnir",
+
+        -- Set the position using in-game x, y and z
         x = player:getXPos(),
         y = player:getYPos(),
         z = player:getZPos(),
         rotation = player:getRotPos(),
-        groupId = 61,
-        groupZoneId = 37,
 
-        onMobSpawn = function(mob)
-            mob:hideHP(true)
-            mob:setHP(200000)
-            mob:setMobMod(xi.mobMod.SKILL_LIST, 77)
-            mob:setMobMod(xi.mobMod.SPELL_LIST, 6)
-            mob:useMobAbility(1486)
-        end,	
-        onMobFight = function(mob, target)
+        -- Fafnir's entry in mob_groups:
+        -- INSERT INTO `mob_groups` VALUES (5,1280,154,'Fafnir',0,128,805,70000,0,90,90,0);
+        --                       groupId ---^       ^--- groupZoneId
+        groupId = 5,
+        groupZoneId = 154,
 
-	    end,
-			
-        onMobDeath = function(mob, player, isKiller, noKiller)
-
+        -- You can provide an onMobDeath function if you want: if you don't
+        -- add one, an empty one will be inserted for you behind the scenes.
+        onMobDeath = function(mob, playerArg, optParams)
+            -- Do stuff
         end,
+
+        -- If set to true, the internal id assigned to this mob will be released for other dynamic entities to use
+        -- after this mob has died. Defaults to false.
         releaseIdOnDeath = true,
 
         -- You can apply mixins like you would with regular mobs. mixinOptions aren't supported yet.
@@ -52,43 +57,12 @@ function onTrigger(player)
         specialSpawnAnimation = true,
     })
 
-
+    -- Use the mob object as you normally would
     mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
+
+    mob:setDropID(0) -- No loot!
+
     mob:spawn()
-    mob:setMobLevel(135)
-    mob:setMod(xi.mod.DEF, 1200)
-    mob:setMod(xi.mod.MDEF, 250)
-    mob:setMod(xi.mod.HPP, 200)
-    mob:setMod(xi.mod.MEVA, 450)
-    mob:setMod(xi.mod.EVA, 200)
-    mob:setMod(xi.mod.STR, 200)
-    mob:setMod(xi.mod.VIT, 200)
-    mob:setMod(xi.mod.INT, 150)
-    mob:setMod(xi.mod.MND, 150)
-    mob:setMod(xi.mod.CHR, 120)
-    mob:setMod(xi.mod.AGI, 120)
-    mob:setMod(xi.mod.DEX, 240)
-    mob:setMod(xi.mod.MATT,150)
-    mob:setMod(xi.mod.ACC, 1000)
-    mob:setMod(xi.mod.ATT, 1100)
-    mob:setMod(xi.mod.DOUBLE_ATTACK, 100)
-    mob:setMod(xi.mod.EARTH_MEVA, 400)
-    mob:setMod(xi.mod.DARK_MEVA, 450)
-    mob:setMod(xi.mod.LIGHT_MEVA, 450)
-    mob:setMod(xi.mod.FIRE_MEVA, 400)
-    mob:setMod(xi.mod.WATER_MEVA, 400)
-    mob:setMod(xi.mod.THUNDER_MEVA, 500)
-    mob:setMod(xi.mod.WIND_MEVA, 400)
-    mob:setMod(xi.mod.SILENCERES, 600)
-    mob:setMod(xi.mod.FIRE_ABSORB, 100)
-    mob:setMod(xi.mod.BINDRES, 1000)
-    mob:setMod(xi.mod.GRAVITYRES, 200)
-    mob:setMod(xi.mod.SLEEPRES, 1000)
-    mob:setMod(xi.mod.PARALYZERES, 100)
-    mob:setMod(xi.mod.LULLABYRES, 1000)
-    mob:setMod(xi.mod.FASTCAST, 100)
-    mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
-    mob:addStatusEffect(xi.effect.HUNDRED_FISTS, 1, 0)
 
     player:PrintToPlayer(string.format("Spawning Fafnir (Lv: %i, HP: %i)\n%s", mob:getMainLvl(), mob:getMaxHP(), mob))
 end

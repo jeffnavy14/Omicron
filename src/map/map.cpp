@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
 Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -260,8 +260,6 @@ int32 do_init(int32 argc, char** argv)
     fishingutils::InitializeFishingSystem();
     instanceutils::LoadInstanceList();
 
-    luautils::PopulateIDLookups();
-
     ShowInfo("do_init: server is binding with port %u", map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port);
     map_fd = makeBind_udp(INADDR_ANY, map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port);
 
@@ -328,6 +326,14 @@ int32 do_init(int32 argc, char** argv)
             fmt::format("You have been set to GM level {}.", level).c_str(), ""));
 
     });
+
+    gConsoleService->RegisterCommand("exit", "Terminate the program.",
+    [&](std::vector<std::string> inputs)
+    {
+        fmt::print("> Goodbye!\n");
+        gConsoleService->stop();
+        gRunFlag = false;
+    });
     // clang-format on
 
     return 0;
@@ -368,6 +374,13 @@ void do_final(int code)
     socket_final();
     luautils::cleanup();
     logging::ShutDown();
+
+#ifdef WIN32
+    shutdown(map_fd, SD_SEND);
+#else
+    shutdown(map_fd, SHUT_WR);
+#endif
+    close(map_fd);
 
     if (code != EXIT_SUCCESS)
     {
@@ -448,7 +461,6 @@ int32 do_sockets(fd_set* rfd, duration next)
     timeout.tv_usec = std::chrono::duration_cast<std::chrono::microseconds>(next - std::chrono::duration_cast<std::chrono::seconds>(next)).count();
 
     ret = sSelect(fd_max, rfd, nullptr, nullptr, &timeout);
-
     if (ret == SOCKET_ERROR)
     {
         if (sErrno != S_EINTR)
@@ -466,7 +478,7 @@ int32 do_sockets(fd_set* rfd, duration next)
         struct sockaddr_in from;
         socklen_t          fromlen = sizeof(from);
 
-        int32 ret = recvudp(map_fd, g_PBuff, MAX_BUFFER_SIZE, 0, (struct sockaddr*)&from, &fromlen);
+        ret = recvudp(map_fd, g_PBuff, MAX_BUFFER_SIZE, 0, (struct sockaddr*)&from, &fromlen);
         if (ret != -1)
         {
             // find player char
