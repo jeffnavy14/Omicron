@@ -17,6 +17,18 @@ zone_object.onZoneIn = function(player, prevZone)
         player:setPos(521.600, -3.000, 563.000, 64)
     end
     return cs
+	
+end
+
+zone_object.afterZoneIn = function(player)
+    if player:hasKeyItem(xi.ki.LIMIT_BREAKER) then
+		player:ChangeMusic(0, 200)
+		player:ChangeMusic(1, 200)
+		player:ChangeMusic(2, 200)
+		player:ChangeMusic(3, 200)
+		player:ChangeMusic(4, 200)
+		player:PrintToPlayer("The air feels stagnant..." ,13)
+	end
 end
 
 zone_object.onRegionEnter = function(player, region)
