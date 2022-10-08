@@ -1,5 +1,5 @@
 -----------------------------------
--- AF Upgrade +1 to +2 NPC
+-- Gatekeeper, teleporter and random filler NPCs
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -10,7 +10,6 @@ m:setEnabled(true)
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
 
     super(zone)
-
 	
 	local YagMachine = zone:insertDynamicEntity({
 
@@ -124,9 +123,11 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		player:PrintToPlayer("I heard about you from Joachim's friends... been adventuring here in Abyssea by the sounds." ,0, npc:getPacketName())
 		player:PrintToPlayer("This little isle was one of the few safe havens we had from those horrid hoards that dropped from the sky." ,0, npc:getPacketName())
 		player:PrintToPlayer("Sadly our safety here didn't last as long as we had been hoping" ,0, npc:getPacketName())
-		player:PrintToPlayer("In Adoulin, the Naakuals rose up and devastaed everything in their attempt to fight these vorageans, so some of us escaped our homes coming east." ,0, npc:getPacketName())
-		player:PrintToPlayer("We've come to call this 'The Path of Lost Nature' and some of the creatures we saw in Adoulin have arrived here." ,0, npc:getPacketName())
-		player:PrintToPlayer("We've also started seeing strange vortex's here, we know of 3 so far.  Maybe the settlers in the south know more" ,0, npc:getPacketName())
+		player:timer(2000, function(player)
+			player:PrintToPlayer("In Adoulin, the Naakuals rose up and devastaed everything in their attempt to fight these vorageans, so some of us escaped our homes coming east." ,0, npc:getPacketName())
+			player:PrintToPlayer("We've come to call this 'The Path of Lost Nature' and some of the creatures we saw in Adoulin have arrived here." ,0, npc:getPacketName())
+			player:PrintToPlayer("We've also started seeing strange vortex's here, we know of 3 so far.  Maybe the settlers in the south know more" ,0, npc:getPacketName())
+		end)
 	end,
     
 	})
@@ -227,13 +228,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             {
 				"Yes please!",
 				function(playerArg)
-				player:ChangeMusic(0, 247)
-				player:ChangeMusic(1, 247)
-				player:ChangeMusic(2, 247)
-				player:ChangeMusic(3, 247)
-				player:ChangeMusic(4, 247)
-				player:PrintToPlayer("Bob: Here you are, be careful out there.", xi.msg.channel.NS_SAY) 
-				player:addStatusEffect(xi.effect.Ionis, 0, 0, 18000)
+				player:PrintToPlayer("Bob: Be careful out there.", xi.msg.channel.NS_SAY)
 				end,
 			},
             {

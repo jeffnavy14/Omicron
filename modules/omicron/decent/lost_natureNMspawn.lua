@@ -1,5 +1,5 @@
 -----------------------------------
--- Add some Spawn NPCs to Abdhaljs_Isle-Purgonorgo (zone 210)
+-- Add some Spawn NPCs to Abdhaljs_Isle-Purgonorgo (zone 44)
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -48,6 +48,13 @@ local SpawnerA = zone:insertDynamicEntity({
 					SpawnMob(16957516):updateEnmity(player)
 					player:addCurrency("infamy", -200)
 					SetServerVariable("nmColkhab", 1)
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You hear a faint buzzing far in the distance...", 13)
 			end
@@ -79,6 +86,13 @@ local SpawnerB = zone:insertDynamicEntity({
 					SpawnMob(16957607):updateEnmity(player);
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmTchakka", 1);
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You barely hear the flow of gurgling water...", 13)
 			end
@@ -109,6 +123,13 @@ local SpawnerC = zone:insertDynamicEntity({
 					SpawnMob(16957713):updateEnmity(player);
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmYumcax", 1);
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You hear leaves rustling seemingly far...", 13)
 			end
@@ -140,6 +161,13 @@ local SpawnerD = zone:insertDynamicEntity({
 					SpawnMob(16957804):updateEnmity(player);
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmKumhau", 1);
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
 			end
@@ -171,6 +199,13 @@ local SpawnerE = zone:insertDynamicEntity({
 					SpawnMob(16957895):updateEnmity(player);
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmAchuka", 1);
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
 			end
@@ -202,6 +237,13 @@ local SpawnerF = zone:insertDynamicEntity({
 					SpawnMob(16957986):updateEnmity(player);
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmHurkan", 1);
+					for _,v in ipairs (player:getParty()) do
+						v:ChangeMusic(0, 62)
+						v:ChangeMusic(1, 62)
+						v:ChangeMusic(2, 62)
+						v:ChangeMusic(3, 62)
+						v:ChangeMusic(4, 62)
+					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
 			end
