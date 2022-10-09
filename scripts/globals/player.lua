@@ -143,6 +143,7 @@ xi.player.charCreate = function(player)
     player:setCharVar("spokePyropox", 1) -- Pyropox introduction
     player:setCharVar("TutorialProgress", 1) -- Has not started tutorial
     player:setCharVar("EinherjarIntro", 1) -- Has not seen Einherjar intro
+	player:addLinkpearl("Omicron", true)
     player:setNewPlayer(true) -- apply new player flag
 end
 
