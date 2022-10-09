@@ -33,26 +33,32 @@ entity.onTrigger = function(player, npc)
 
     -- Type 2 in Nyzul.lua global
     elseif lampObjective == xi.nyzul.lampsObjective.ACTIVATE_ALL then
-        if npc:getAnimationSub() ~= 1 and wait <= 0 then
-            player:messageSpecial(ID.text.LAMP_SAME_TIME)
-            player:startOptionalCutscene(3, { [0] = 5, cs_option = { 1, 2 } })
-        elseif npc:getAnimationSub() == 1 then
-            player:messageSpecial(ID.text.LAMP_ACTIVE)
+        if player:getLocalVar("Register") == 0 then
+            player:setLocalVar("Register", 1)
+            player:messageSpecial(ID.text.LAMP_CERTIFICATION_REGISTERED)
+            instance:setLocalVar("[Lamp]PartySize", instance:getLocalVar("[Lamp]PartySize") -1)
+
+            if instance:getLocalVar("[Lamp]PartySize") == 0 then
+                npc:setAnimationSub(1)
+                instance:setProgress(15)
+            end
         else
-            player:messageSpecial(ID.text.LAMP_CANNOT_ACTIVATE)
+            player:messageSpecial(ID.text.LAMP_CERTIFICATION_CODE)
         end
 
     -- Type 3 in Nyzul.lua global
     elseif lampObjective == xi.nyzul.lampsObjective.ORDER then
-        if bit.band(lampRegister, bit.lshift(1,lampOrder)) == 0 then
-            player:messageSpecial(ID.text.LAMP_ORDER)
-            player:startOptionalCutscene(3, { [0] = 6, cs_option = { 1, 2 } })
-        elseif npc:getAnimationSub() == 3 then
-            player:messageSpecial(ID.text.LAMP_NOT_ALL_ACTIVE)
-        elseif instance:getLocalVar("procedureTime") > 0 and instance:getLocalVar("procedureTime") < os.time() then
-            player:messageSpecial(ID.text.CONFIRMING_PROCEDURE)
+        if player:getLocalVar("Register") == 0 then
+            player:setLocalVar("Register", 1)
+            player:messageSpecial(ID.text.LAMP_CERTIFICATION_REGISTERED)
+            instance:setLocalVar("[Lamp]PartySize", instance:getLocalVar("[Lamp]PartySize") -1)
+
+            if instance:getLocalVar("[Lamp]PartySize") == 0 then
+                npc:setAnimationSub(1)
+                instance:setProgress(15)
+            end
         else
-            player:messageSpecial(ID.text.LAMP_CANNOT_ACTIVATE)
+            player:messageSpecial(ID.text.LAMP_CERTIFICATION_CODE)
         end
     end
 end

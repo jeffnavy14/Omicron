@@ -6,10 +6,10 @@ require('scripts/globals/keyitems')
 -----------------------------------
 local zoneObject = {}
 
-zoneObject.onInitialize = function(zone)
+zone_Object.onInitialize = function(zone)
 end
 
-zoneObject.onZoneIn = function(player, prevZone)
+zone_Object.onZoneIn = function(player, prevZone)
     local cs = -1
     player:addKeyItem(xi.ki.MAP_OF_ABDH_ISLE_PURGONORGO)
 
@@ -17,15 +17,25 @@ zoneObject.onZoneIn = function(player, prevZone)
         player:setPos(521.600, -3.000, 563.000, 64)
     end
     return cs
+	
 end
 
-zoneObject.onRegionEnter = function(player, region)
+zone_object.afterZoneIn = function(player)
+		player:ChangeMusic(0, 200)
+		player:ChangeMusic(1, 200)
+		player:ChangeMusic(2, 200)
+		player:ChangeMusic(3, 200)
+		player:ChangeMusic(4, 200)
+		player:PrintToPlayer("The air feels stagnant..." ,13)
 end
 
-zoneObject.onEventUpdate = function(player, csid, option)
+zone_Object.onRegionEnter = function(player, region)
 end
 
-zoneObject.onEventFinish = function(player, csid, option)
+zone_Object.onEventUpdate = function(player, csid, option)
 end
 
-return zoneObject
+zone_Object.onEventFinish = function(player, csid, option)
+end
+
+return zone_Object
