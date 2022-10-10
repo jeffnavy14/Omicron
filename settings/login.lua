@@ -19,7 +19,7 @@ xi.settings.login =
     -- 2 - enabled - greater than or equal  (matching or greater than CLIENT_VER allowed, default)
     --
     -- WE STRONGLY ADVISE AGAINST LOCKING THE SERVER TO OLDER VERSIONS. IT IS A UNIVERSALLY BAD IDEA.
-    VER_LOCK = 0,
+    VER_LOCK = 2,
 
     -- 0 - disabled (normal operation)
     -- 1 - enabled (only GM characters allowed online, no new character creation)
