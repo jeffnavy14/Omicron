@@ -246,7 +246,7 @@ local function pickMobs(instance)
 
             -- Activate Lamps Objective
                 [xi.nyzul.objective.ACTIVATE_ALL_LAMPS] = function()
-                    instance:setLocalVar("[Lamps]Objective", math.random(xi.nyzul.lampsObjective.REGISTER, xi.nyzul.lampsObjective.ORDER))
+                    instance:setLocalVar("[Lamps]Objective", math.random(xi.nyzul.lampsObjective.REGISTER))
                     lampsActivate(instance)
                 end,
             }

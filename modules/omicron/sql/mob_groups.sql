@@ -1,0 +1,1 @@
+REPLACE INTO `mob_groups` (`groupid`, `poolid`, `zoneid`, `name`, `respawntime`, `spawntype`, `dropid`, `HP`, `MP`, `minLevel`, `maxLevel`, `allegiance`) VALUES (160, 44, 77, 'Adamantoise', 0, 128, 0, 30000, 0, 99, 109, 0);
