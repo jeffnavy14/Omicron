@@ -4,12 +4,12 @@
 local ID = require('scripts/zones/Abdhaljs_Isle-Purgonorgo/IDs')
 require('scripts/globals/keyitems')
 -----------------------------------
-local zone_Object = {}
+local zone_object = {}
 
-zone_Object.onInitialize = function(zone)
+zone_object.onInitialize = function(zone)
 end
 
-zone_Object.onZoneIn = function(player, prevZone)
+zone_object.onZoneIn = function(player, prevZone)
     local cs = -1
     player:addKeyItem(xi.ki.MAP_OF_ABDH_ISLE_PURGONORGO)
 
@@ -20,32 +20,24 @@ zone_Object.onZoneIn = function(player, prevZone)
 	
 end
 
-<<<<<<< Updated upstream
 zone_object.afterZoneIn = function(player)
+    if player:hasKeyItem(xi.ki.LIMIT_BREAKER) then
 		player:ChangeMusic(0, 200)
 		player:ChangeMusic(1, 200)
 		player:ChangeMusic(2, 200)
 		player:ChangeMusic(3, 200)
 		player:ChangeMusic(4, 200)
 		player:PrintToPlayer("The air feels stagnant..." ,13)
-=======
-zone_Object.afterZoneIn = function(player)
-	player:ChangeMusic(0, 200)
-	player:ChangeMusic(1, 200)
-	player:ChangeMusic(2, 200)
-	player:ChangeMusic(3, 200)
-	player:ChangeMusic(4, 200)
-	player:PrintToPlayer("The air feels stagnant..." ,13)
->>>>>>> Stashed changes
+	end
 end
 
-zone_Object.onRegionEnter = function(player, region)
+zone_object.onRegionEnter = function(player, region)
 end
 
-zone_Object.onEventUpdate = function(player, csid, option)
+zone_object.onEventUpdate = function(player, csid, option)
 end
 
-zone_Object.onEventFinish = function(player, csid, option)
+zone_object.onEventFinish = function(player, csid, option)
 end
 
-return zone_Object
+return zone_object
