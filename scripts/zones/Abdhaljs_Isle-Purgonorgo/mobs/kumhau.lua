@@ -7,12 +7,14 @@ local ID = require("scripts/zones/Abdhaljs_Isle-Purgonorgo/IDs")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
-	mob:renameEntity("Kumhau")
 	mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
-	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
 	mob:hideHP(true)
-	mob:addMod(xi.mod.ACC, 150)
-	
+	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
+	mob:addStatusEffect(xi.effect.REGEN, 50, 3, 0)
+	mob:addMod(xi.mod.DMG,-5000)
+	mob:setMod(xi.mod.ACC, 1000)
+	mob:setMod(xi.mod.MATT, 400)
+	mob:setMod(xi.mod.MACC, 1000)
 end
 
 entity.onMobEngaged = function(mob, player)
