@@ -4,13 +4,13 @@
 require("scripts/globals/trust")
 require("scripts/globals/items")
 -----------------------------------
-local spellObject = {}
+local spell_object = {}
 
-spellObject.onMagicCastingCheck = function(caster, target, spell)
+spell_object.onMagicCastingCheck = function(caster, target, spell)
     return xi.trust.canCast(caster, spell)
 end
 
-spellObject.onSpellCast = function(caster, target, spell)
+spell_object.onSpellCast = function(caster, target, spell)
     return xi.trust.spawn(caster, spell)
 end
 
@@ -19,7 +19,7 @@ local isWearingApururuShirt = function(player)
     return wearingBody
 end
 
-spellObject.onMobSpawn = function(mob)
+spell_object.onMobSpawn = function(mob)
     local master = mob:getMaster()
     if isWearingApururuShirt(master) then
         xi.trust.message(mob, xi.trust.message_offset.TEAMWORK_2)
@@ -66,12 +66,12 @@ spellObject.onMobSpawn = function(mob)
     mob:SetAutoAttackEnabled(false)
 end
 
-spellObject.onMobDespawn = function(mob)
+spell_object.onMobDespawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DESPAWN)
 end
 
-spellObject.onMobDeath = function(mob)
+spell_object.onMobDeath = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DEATH)
 end
 
-return spellObject
+return spell_object

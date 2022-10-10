@@ -9,13 +9,13 @@ require("scripts/globals/utils")
 require("scripts/globals/weaponskillids")
 require("scripts/globals/zone")
 -----------------------------------
-local spellObject = {}
+local spell_object = {}
 
-spellObject.onMagicCastingCheck = function(caster, target, spell)
+spell_object.onMagicCastingCheck = function(caster, target, spell)
     return xi.trust.canCast(caster, spell)
 end
 
-spellObject.onSpellCast = function(caster, target, spell)
+spell_object.onSpellCast = function(caster, target, spell)
     local windurstFirstTrust = caster:getCharVar("WindurstFirstTrust")
     local zone = caster:getZoneID()
 
@@ -26,7 +26,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     return xi.trust.spawn(caster, spell)
 end
 
-spellObject.onMobSpawn = function(mob)
+spell_object.onMobSpawn = function(mob)
     xi.trust.teamworkMessage(mob, {
         [xi.magic.spell.SHANTOTTO] = xi.trust.message_offset.TEAMWORK_1,
         [xi.magic.spell.STAR_SIBYL] = xi.trust.message_offset.TEAMWORK_2,
@@ -59,12 +59,12 @@ spellObject.onMobSpawn = function(mob)
     mob:addSimpleGambit(ai.t.TARGET, ai.c.NOT_STATUS, xi.effect.FLASH, ai.r.MA, ai.s.SPECIFIC, xi.magic.spell.FLASH, 60)
 end
 
-spellObject.onMobDespawn = function(mob)
+spell_object.onMobDespawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DESPAWN)
 end
 
-spellObject.onMobDeath = function(mob)
+spell_object.onMobDeath = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DEATH)
 end
 
-return spellObject
+return spell_object

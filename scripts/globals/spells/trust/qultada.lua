@@ -5,17 +5,17 @@ require("scripts/globals/ability")
 require("scripts/globals/gambits")
 require("scripts/globals/trust")
 -----------------------------------
-local spellObject = {}
+local spell_object = {}
 
-spellObject.onMagicCastingCheck = function(caster, target, spell)
+spell_object.onMagicCastingCheck = function(caster, target, spell)
     return xi.trust.canCast(caster, spell)
 end
 
-spellObject.onSpellCast = function(caster, target, spell)
+spell_object.onSpellCast = function(caster, target, spell)
     return xi.trust.spawn(caster, spell)
 end
 
-spellObject.onMobSpawn = function(mob)
+spell_object.onMobSpawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.SPAWN)
 
     mob:addSimpleGambit(ai.t.PARTY, ai.c.NOT_STATUS, xi.effect.CORSAIRS_ROLL, ai.r.JA, ai.s.SPECIFIC, xi.ja.CORSAIRS_ROLL)
@@ -27,20 +27,18 @@ spellObject.onMobSpawn = function(mob)
     -- TODO: Observe his WS behaviour on retail
     mob:setTrustTPSkillSettings(ai.tp.OPENER, ai.s.RANDOM)
 
-    -- https://forum.square-enix.com/ffxi/threads/49425-Dec-10-2015-%28JST%29-Version-Update?p=567979&viewfull=1#post567979
     -- Per the December 10, 2015 update:
     -- "The "Enhanced Magic Accuracy" attribute has been added."
     local power = mob:getMainLvl() / 5
     mob:addMod(xi.mod.MACC, power)
-
 end
 
-spellObject.onMobDespawn = function(mob)
+spell_object.onMobDespawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DESPAWN)
 end
 
-spellObject.onMobDeath = function(mob)
+spell_object.onMobDeath = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DEATH)
 end
 
-return spellObject
+return spell_object

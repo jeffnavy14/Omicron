@@ -11,20 +11,21 @@
 -----------------------------------
 require("scripts/globals/trust")
 -----------------------------------
-local spellObject = {}
+local spell_object = {}
 
-spellObject.onMagicCastingCheck = function(caster, target, spell)
+spell_object.onMagicCastingCheck = function(caster, target, spell)
     return xi.trust.canCast(caster, spell)
 end
 
-spellObject.onSpellCast = function(caster, target, spell)
+spell_object.onSpellCast = function(caster, target, spell)
     return xi.trust.spawn(caster, spell)
 end
 
-spellObject.onMobSpawn = function(mob)
+spell_object.onMobSpawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.SPAWN)
 
-    -- MPP mod migrated to sql/mob_pool_mods to apply at spawn
+    -- TODO: Load/Apply MODs from mob_pool_mods instead
+    mob:addMod(xi.mod.MPP, 100)
     mob:addMod(xi.mod.STORETP, 174)
     mob:addMod(xi.mod.JUMP_TP_BONUS, 164)
 
@@ -55,12 +56,12 @@ spellObject.onMobSpawn = function(mob)
     mob:setTrustTPSkillSettings(ai.tp.CLOSER_UNTIL_TP, ai.s.HIGHEST, 2000)
 end
 
-spellObject.onMobDespawn = function(mob)
+spell_object.onMobDespawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DESPAWN)
 end
 
-spellObject.onMobDeath = function(mob)
+spell_object.onMobDeath = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DEATH)
 end
 
-return spellObject
+return spell_object

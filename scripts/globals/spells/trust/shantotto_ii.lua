@@ -5,17 +5,17 @@ require("scripts/globals/gambits")
 require("scripts/globals/magic")
 require("scripts/globals/trust")
 -----------------------------------
-local spellObject = {}
+local spell_object = {}
 
-spellObject.onMagicCastingCheck = function(caster, target, spell)
+spell_object.onMagicCastingCheck = function(caster, target, spell)
     return xi.trust.canCast(caster, spell, xi.magic.spell.SHANTOTTO)
 end
 
-spellObject.onSpellCast = function(caster, target, spell)
+spell_object.onSpellCast = function(caster, target, spell)
     return xi.trust.spawn(caster, spell)
 end
 
-spellObject.onMobSpawn = function(mob)
+spell_object.onMobSpawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.SPAWN)
 
     mob:addSimpleGambit(ai.t.TARGET, ai.c.MB_AVAILABLE, 0, ai.r.MA, ai.s.MB_ELEMENT, xi.magic.spellFamily.NONE)
@@ -27,7 +27,7 @@ spellObject.onMobSpawn = function(mob)
 
     mob:addMod(xi.mod.MATT, power)
     mob:addMod(xi.mod.MACC, power)
-    mob:addMod(xi.mod.HASTE_MAGIC, 1000) -- 10% Haste (Magic)
+    mob:addMod(xi.mod.HASTE_MAGIC, 10)
 
     -- Shantotto's tier I spells scale up to mimic tier 2, 3, etc, spells.
     mob:addMod(xi.mod.MAGIC_DAMAGE, spellDamage)
@@ -59,12 +59,12 @@ spellObject.onMobSpawn = function(mob)
     end)
 end
 
-spellObject.onMobDespawn = function(mob)
+spell_object.onMobDespawn = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DESPAWN)
 end
 
-spellObject.onMobDeath = function(mob)
+spell_object.onMobDeath = function(mob)
     xi.trust.message(mob, xi.trust.message_offset.DEATH)
 end
 
-return spellObject
+return spell_object
