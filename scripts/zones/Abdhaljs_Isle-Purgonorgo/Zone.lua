@@ -4,7 +4,7 @@
 local ID = require('scripts/zones/Abdhaljs_Isle-Purgonorgo/IDs')
 require('scripts/globals/keyitems')
 -----------------------------------
-local zoneObject = {}
+local zone_Object = {}
 
 zone_Object.onInitialize = function(zone)
 end
@@ -20,6 +20,7 @@ zone_Object.onZoneIn = function(player, prevZone)
 	
 end
 
+<<<<<<< Updated upstream
 zone_object.afterZoneIn = function(player)
 		player:ChangeMusic(0, 200)
 		player:ChangeMusic(1, 200)
@@ -27,6 +28,15 @@ zone_object.afterZoneIn = function(player)
 		player:ChangeMusic(3, 200)
 		player:ChangeMusic(4, 200)
 		player:PrintToPlayer("The air feels stagnant..." ,13)
+=======
+zone_Object.afterZoneIn = function(player)
+	player:ChangeMusic(0, 200)
+	player:ChangeMusic(1, 200)
+	player:ChangeMusic(2, 200)
+	player:ChangeMusic(3, 200)
+	player:ChangeMusic(4, 200)
+	player:PrintToPlayer("The air feels stagnant..." ,13)
+>>>>>>> Stashed changes
 end
 
 zone_Object.onRegionEnter = function(player, region)
