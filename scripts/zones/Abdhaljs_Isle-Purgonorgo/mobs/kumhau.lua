@@ -7,6 +7,7 @@ local ID = require("scripts/zones/Abdhaljs_Isle-Purgonorgo/IDs")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
+    mob:renameEntity("Kumhau")
 	mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:hideHP(true)
 	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
