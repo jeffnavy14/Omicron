@@ -178,7 +178,7 @@ INSERT INTO `mob_droplist` VALUES (4021,0,0,1000,926,50); -- Lizard Tail
 INSERT INTO `mob_droplist` VALUES (4022,0,0,1000,20801,5); -- Nibiru Tabar
 INSERT INTO `mob_droplist` VALUES (4022,0,0,1000,21031,5); -- Sensui (39)
 INSERT INTO `mob_droplist` VALUES (4022,0,0,1000,8723,20); -- Beryllium Ore
-INSERT INTO `mob_droplist` VALUES (4022,0,0,1000,3834,50); -- Matamata Shell
+INSERT INTO `mob_droplist` VALUES (4022,0,0,1000,3934,50); -- Matamata Shell
 -- Dread Wivre
 INSERT INTO `mob_droplist` VALUES (4023,0,0,1000,28477,5); -- Hermetic Earring
 INSERT INTO `mob_droplist` VALUES (4023,0,0,1000,26792,5); -- Despair Helm
