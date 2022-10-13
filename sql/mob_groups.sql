@@ -1591,11 +1591,11 @@ INSERT INTO `mob_groups` VALUES (89,6113,38,'Apollyon_Ahriman',0,128,3139,0,0,10
 INSERT INTO `mob_groups` VALUES (90,6114,38,'Ahrimans_Avatar',0,128,0,0,0,75,80,0);
 INSERT INTO `mob_groups` VALUES (91,6115,38,'Ahrimans_Avatar',0,128,0,0,0,75,80,0);
 INSERT INTO `mob_groups` VALUES (92,1849,38,'Gunpod',0,128,0,0,0,85,85,0);
-INSERT INTO `mob_groups` VALUES (93,6125,38,'Fir_Bholg_thf_ev',0,128,2856,0,0,75,80,0);
-INSERT INTO `mob_groups` VALUES (94,6126,38,'Fir_Bholg_pld_gk',0,128,2856,0,100,75,80,0);
-INSERT INTO `mob_groups` VALUES (95,6127,38,'Fir_Bholg_sam_hm',0,128,2856,0,0,75,80,0);
-INSERT INTO `mob_groups` VALUES (96,6128,38,'Fir_Bholg_rdm_mr',0,128,2856,0,500,75,80,0);
-INSERT INTO `mob_groups` VALUES (97,6129,38,'Fir_Bholg_blm_tt',0,128,2856,0,500,75,80,0);
+INSERT INTO `mob_groups` VALUES (93,6125,38,'Fir_Bholg_thf_ev',0,128,2856,4250,0,75,80,0);
+INSERT INTO `mob_groups` VALUES (94,6126,38,'Fir_Bholg_pld_gk',0,128,2856,4250,100,75,80,0);
+INSERT INTO `mob_groups` VALUES (95,6127,38,'Fir_Bholg_sam_hm',0,128,2856,4250,0,75,80,0);
+INSERT INTO `mob_groups` VALUES (96,6128,38,'Fir_Bholg_rdm_mr',0,128,2856,4250,500,75,80,0);
+INSERT INTO `mob_groups` VALUES (97,6129,38,'Fir_Bholg_blm_tt',0,128,2856,4250,500,75,80,0);
 INSERT INTO `mob_groups` VALUES (98,6104,38,'Barometz',0,128,2856,8500,0,70,70,0);
 INSERT INTO `mob_groups` VALUES (99,6130,38,'Borametz',0,128,2856,7000,0,70,70,0);
 INSERT INTO `mob_groups` VALUES (100,6131,38,'Apollyon_Cleaner',0,128,2858,8500,800,78,78,0);
@@ -3185,6 +3185,7 @@ INSERT INTO `mob_groups` VALUES (68,6754,65,'Venomfang',0,128,0,0,0,78,78,0);
 INSERT INTO `mob_groups` VALUES (69,6755,65,'Yalungur',0,128,0,0,0,99,99,0);
 INSERT INTO `mob_groups` VALUES (70,6756,65,'Predatory_Colibri',0,128,0,0,0,99,99,0);
 INSERT INTO `mob_groups` VALUES (71,3807,65,'Suhur_Mas',960,0,2359,0,0,68,71,0);
+INSERT INTO `mob_groups` VALUES (72,7056,65,'Hundredfaced_clone',0,128,0,0,0,75,90,0);
 
 -- ------------------------------------------------------------
 -- Mamool_Ja_Training_Grounds (Zone 66)
