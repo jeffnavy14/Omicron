@@ -19,20 +19,20 @@ xi.settings.login =
     -- 2 - enabled - greater than or equal  (matching or greater than CLIENT_VER allowed, default)
     --
     -- WE STRONGLY ADVISE AGAINST LOCKING THE SERVER TO OLDER VERSIONS. IT IS A UNIVERSALLY BAD IDEA.
-    VER_LOCK = 2,
+    VER_LOCK = 0,
 
     -- 0 - disabled (normal operation)
     -- 1 - enabled (only GM characters allowed online, no new character creation)
     MAINT_MODE = 0,
 
     -- Logging of user IP address to database (true/false)
-    LOG_USER_IP = true,
+    LOG_USER_IP = false,
 
     -- Allow account creation via the loader (true/false)
     ACCOUNT_CREATION = true,
 
     -- Allow character deletion through the lobby (true/false)
-    CHARACTER_DELETION = false,
+    CHARACTER_DELETION = true,
 
     -- Number of simultaneous game sessions per IP (0 for no limit)
     LOGIN_LIMIT = 0,

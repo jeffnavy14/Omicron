@@ -17,8 +17,10 @@ entity.onTrigger = function(player, npc)
         npcID == 17092612 or
         npcID == 17092614
     then
+
         xi.nyzul.handleAppraisalItem(player, npc)
     else
+
         xi.nyzul.tempBoxTrigger(player, npc)
     end
 end
