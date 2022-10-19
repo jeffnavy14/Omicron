@@ -234,7 +234,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             {
                 "What's going on?",
                 function(playerArg)
-				player:PrintToPlayer("Bob: This is a battlefield, Amchuchu can explain further. You will need the Ionis effect though.", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Bob: This is a battlefield, Amchuchu can explain further, this was our last safe place but the wildlife decided to come and push back.", xi.msg.channel.NS_SAY)
 				player:PrintToPlayer("Something about it draws out certain creature I won't go near, so if you say yes be careful.", xi.msg.channel.NS_SAY)
                 end,
             },
