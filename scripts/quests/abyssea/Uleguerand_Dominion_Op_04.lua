@@ -7,7 +7,7 @@ require('scripts/globals/abyssea/dominion')
 require('scripts/globals/quests')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_04_ULEGUEGRAND)
+local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_04_ULEGUERAND)
 
 quest.reward = {}
 
@@ -18,7 +18,7 @@ quest.sections =
             return status == QUEST_ACCEPTED
         end,
 
-        [xi.zone.ABYSSEA_ULEGUEGRAND] =
+        [xi.zone.ABYSSEA_ULEGUERAND] =
         {
             ['Snowflake'] =
             {

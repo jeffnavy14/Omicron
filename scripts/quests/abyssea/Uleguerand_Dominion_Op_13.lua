@@ -7,7 +7,7 @@ require('scripts/globals/abyssea/dominion')
 require('scripts/globals/quests')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_14_ULEGUEGRAND)
+local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_13_ULEGUERAND)
 
 quest.reward = {}
 
@@ -18,12 +18,12 @@ quest.sections =
             return status == QUEST_ACCEPTED
         end,
 
-        [xi.zone.ABYSSEA_ULEGUEGRAND] =
+        [xi.zone.ABYSSEA_ULEGUERAND] =
         {
-            ['Sierra_Tiger'] =
+            ['Bluffalo'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    xi.abyssea.dominionOnMobDeath(mob, player, 587)
+                    xi.abyssea.dominionOnMobDeath(mob, player, 586)
                 end,
             },
         },

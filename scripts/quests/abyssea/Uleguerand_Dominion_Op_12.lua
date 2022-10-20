@@ -1,5 +1,5 @@
 -----------------------------------
--- Uleguerand - Dominion Op #13
+-- Uleguerand - Dominion Op #12
 -----------------------------------
 -----------------------------------
 require('scripts/globals/interaction/quest')
@@ -7,7 +7,7 @@ require('scripts/globals/abyssea/dominion')
 require('scripts/globals/quests')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_13_ULEGUEGRAND)
+local quest = Quest:new(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DOMINION_OP_12_ULEGUERAND)
 
 quest.reward = {}
 
@@ -18,12 +18,12 @@ quest.sections =
             return status == QUEST_ACCEPTED
         end,
 
-        [xi.zone.ABYSSEA_ULEGUEGRAND] =
+        [xi.zone.ABYSSEA_ULEGUERAND] =
         {
-            ['Bluffalo'] =
+            ['Benumbed_Vodoriga'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    xi.abyssea.dominionOnMobDeath(mob, player, 586)
+                    xi.abyssea.dominionOnMobDeath(mob, player, 585)
                 end,
             },
         },
