@@ -219,18 +219,18 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         end,
         options =
         {
-			{
-                "No",
-                function(playerArg)
-				player:PrintToPlayer("Bob: At least some people are still sane around here...", xi.msg.channel.NS_SAY)
-                end,
-            },
             {
 				"Yes please!",
 				function(playerArg)
 				player:PrintToPlayer("Bob: Be careful out there.", xi.msg.channel.NS_SAY)
 				end,
-			},
+			},              
+            {
+                "Return to Jeuno",
+				function(playerArg)
+				player:setPos(-4, -0.001, 18.4313, 0, 244)
+				end,
+            },
             {
                 "What's going on?",
                 function(playerArg)
