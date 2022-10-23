@@ -22,11 +22,11 @@ end
 
 zone_object.afterZoneIn = function(player)
     if player:hasKeyItem(xi.ki.LIMIT_BREAKER) then
-		player:ChangeMusic(0, 200)
-		player:ChangeMusic(1, 200)
-		player:ChangeMusic(2, 200)
-		player:ChangeMusic(3, 200)
-		player:ChangeMusic(4, 200)
+		player:ChangeMusic(0, 250)
+		player:ChangeMusic(1, 250)
+		player:ChangeMusic(2, 250)
+		player:ChangeMusic(3, 250)
+		player:ChangeMusic(4, 250)
 		player:PrintToPlayer("The air feels stagnant..." ,13)
 	end
 end
