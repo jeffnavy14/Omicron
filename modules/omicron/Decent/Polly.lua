@@ -134,7 +134,7 @@ local tradeTable =
 	local Polly = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "PollyB",
+        name = "Polly",
         look = 3613,
         x = 576.000,
         y = -1.000,
