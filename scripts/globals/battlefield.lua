@@ -1020,7 +1020,7 @@ function Battlefield:onBattlefieldWipe(battlefield, players)
 end
 
 function Battlefield:addEssentialMobs(mobNames)
-    table.insert(self.groups,{
+    table.insert(self.groups, {
         mobs = mobNames,
         superlink = true,
         allDeath = utils.bind(self.handleAllMonstersDefeated, self),
@@ -1078,7 +1078,7 @@ function Battlefield:handleLootRolls(battlefield, lootTable, npc)
                             end
 
                             if entry.itemid == 65535 then
-                                local gil = entry.amount/#players
+                                local gil = entry.amount / #players
 
                                 for k = 1, #players, 1 do
                                     players[k]:addGil(gil)
@@ -1387,7 +1387,7 @@ function xi.battlefield.HandleLootRolls(battlefield, lootTable, players, npc)
                     if roll > max then
                         if entry.itemid ~= 0 then
                             if entry.itemid == 65535 then
-                                local gil = entry.amount/#players
+                                local gil = entry.amount / #players
 
                                 for j = 1, #players, 1 do
                                     players[j]:addGil(gil)
