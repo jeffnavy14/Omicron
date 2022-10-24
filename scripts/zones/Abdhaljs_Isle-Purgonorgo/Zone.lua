@@ -22,11 +22,12 @@ end
 
 zone_object.afterZoneIn = function(player)
     if player:hasKeyItem(xi.ki.LIMIT_BREAKER) then
-		player:ChangeMusic(0, 250)
-		player:ChangeMusic(1, 250)
-		player:ChangeMusic(2, 250)
-		player:ChangeMusic(3, 250)
-		player:ChangeMusic(4, 250)
+		player:ChangeMusic(0, 33) -- Voracious Resurgence Unknown 7
+		player:ChangeMusic(1, 33)
+		player:ChangeMusic(2, 33)
+		player:ChangeMusic(3, 33)
+		player:ChangeMusic(4, 33)
+        -- For invasion use 30 Oddysey, Bumba
 		player:PrintToPlayer("The air feels stagnant..." ,13)
 	end
 end
