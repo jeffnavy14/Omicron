@@ -89,7 +89,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			elseif (trade:hasItemQty(3294, 5)) and 
 				Virgil == 3
 			then
-				--[[
+				
 				if
 					player:getEquipID(xi.slot.MAIN) == 20509 and
 					(getCharVar("SpharaiLock")) ~= 1
@@ -180,8 +180,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					player:addLearnedWeaponskill(89)
 					player:printToPlayer("You learned the weapon skill 'Tachi: Kaiten'", 29);
 					setCharVar("AmanomurakumoLock", 1);
-				]]
-				--[[else]]if 
+				elseif 
 					player:getEquipID(xi.slot.MAIN) == 21077 and 
 					player:getCharVar("MjollnirLock") ~= 1
 				then
@@ -189,7 +188,6 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					player:addLearnedWeaponskill(170)
 					player:printToPlayer("You learned the weapon skill 'Randgrith'", 29)
 					player:setCharVar("MjollnirLock", 1)
-				--[[
 				elseif 
 					player:getEquipID(xi.slot.MAIN) == 22060 and 
 					(getCharVar("ClaustrumLock")) ~= 1 
@@ -223,7 +221,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 						player:addLearnedWeaponskill(93)
 						player:printToPlayer("You learned the weapon skill 'Coronach'", 29);
 						setCharVar("AnnihilatorLock", 1);
-					end]]
+					end
 				
 				else
 					player:printToPlayer("I need you to have a fully realized Relic Weapon equipe to work my magic...",0 , npc:getPacketName())
