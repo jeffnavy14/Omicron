@@ -1099,21 +1099,21 @@ xi.abyssea.onZoneIn = function(player)
 end
 
 xi.abyssea.afterZoneIn = function(player)
- --   local zoneID = player:getZoneID()
- --   local ID = zones[zoneID]
+    local zoneID = player:getZoneID()
+    local ID = zones[zoneID]
 
     -- Add 5 minutes of hidden time to get "real" visitant status.  The additional 4 seconds
     -- is intentional due to tick variances (up to 3s), and the status will be deleted should
     -- the countdown timer for visitant status reach 0 before actually running out of time on
     -- the effect.
-  --  if not player:hasStatusEffect(xi.effect.VISITANT) then
-  --      player:addStatusEffectEx(xi.effect.VISITANT, 0, 0, 3, 304)
-  --  end
+    if not player:hasStatusEffect(xi.effect.VISITANT) then
+        player:addStatusEffectEx(xi.effect.VISITANT, 0, 0, 3, 304)
+    end
 
-  --  local visitantEffect = player:getStatusEffect(xi.effect.VISITANT)
- --   if visitantEffect and visitantEffect:getIcon() == 0 then
- --       player:messageName(ID.text.ABYSSEA_TIME_OFFSET + 5, nil, 5)
- --   end
+    local visitantEffect = player:getStatusEffect(xi.effect.VISITANT)
+    if visitantEffect and visitantEffect:getIcon() == 0 then
+        player:messageName(ID.text.ABYSSEA_TIME_OFFSET + 5, nil, 5)
+    end
 end
 
 -----------------------------------
