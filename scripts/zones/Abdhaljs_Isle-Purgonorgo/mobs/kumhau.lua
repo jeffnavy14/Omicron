@@ -28,11 +28,11 @@ end
 
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	player:ChangeMusic(0, 200)
-	player:ChangeMusic(1, 200)
-	player:ChangeMusic(2, 200)
-	player:ChangeMusic(3, 200)
-	player:ChangeMusic(4, 200)
+	player:ChangeMusic(0, 33)
+	player:ChangeMusic(1, 33)
+	player:ChangeMusic(2, 33)
+	player:ChangeMusic(3, 33)
+	player:ChangeMusic(4, 33)
 end
 
 entity.onMobDespawn = function(mob)
