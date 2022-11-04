@@ -5,18 +5,18 @@ require('scripts/globals/weaponskillids')
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
 -----------------------------------
-local m = Module:new("VirgilGuy")
+local m = Module:new("Virgil")
 m:setEnabled(true)
 
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
 
     super(zone)
 	
-	local Zalsuhm = zone:insertDynamicEntity({
+	local Virgil = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
         name = "Virgil",
-        look = "0x01000204A510A520AB30A540AB50776100700000",
+        look = 208,
         x = 624.596,
         y = 0.161,
         z = 23.322,
@@ -235,7 +235,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			
 })
 
-utils.unused(Zalsuhm)
+utils.unused(Virgil)
 
 end)
 
