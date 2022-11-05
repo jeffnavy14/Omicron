@@ -286,7 +286,7 @@ local function getRangedHitRate(attacker, target, capHitRate, bonus)
         bonus = 0
     end
 
-    if (target:hasStatusEffect(xi.effect.YONIN) and target:isFacing(attacker, 23)) then -- Yonin evasion boost if defender is facing attacker
+    if target:hasStatusEffect(xi.effect.YONIN) and target:isFacing(attacker, 23) then -- Yonin evasion boost if defender is facing attacker
         bonus = bonus - target:getStatusEffect(xi.effect.YONIN):getPower()
     end
 
@@ -635,7 +635,7 @@ function doPhysicalWeaponskill(attacker, target, wsID, wsParams, tp, action, pri
     -- Determine cratio and ccritratio
     local ignoredDef = 0
 
-    if wsParams.ignoresDef ~= nil and wsParams.ignoresDef == true then
+    if wsParams.ignoresDef then
         ignoredDef = calculatedIgnoredDef(tp, target:getStat(xi.mod.DEF), wsParams.ignored100, wsParams.ignored200, wsParams.ignored300)
     end
     local cratio, ccritratio = cMeleeRatio(attacker, target, wsParams, ignoredDef, tp)
@@ -704,7 +704,7 @@ end
     -- Determine cratio and ccritratio
     local ignoredDef = 0
 
-    if wsParams.ignoresDef ~= nil and wsParams.ignoresDef == true then
+    if wsParams.ignoresDef then
         ignoredDef = calculatedIgnoredDef(tp, target:getStat(xi.mod.DEF), wsParams.ignored100, wsParams.ignored200, wsParams.ignored300)
     end
 
@@ -889,7 +889,7 @@ function takeWeaponskillDamage(defender, attacker, wsParams, primaryMsg, attack,
                 action:messageID(defender:getID(), xi.msg.basic.SELF_HEAL_SECONDARY)
             end
         end
-
+        action:param(defender:getID(), math.abs(finaldmg))
     elseif wsResults.shadowsAbsorbed > 0 then
         action:messageID(defender:getID(), xi.msg.basic.SHADOW_ABSORB)
         action:param(defender:getID(), wsResults.shadowsAbsorbed)
@@ -904,10 +904,14 @@ function takeWeaponskillDamage(defender, attacker, wsParams, primaryMsg, attack,
 
     local targetTPMult = wsParams.targetTPMult or 1
     finaldmg = defender:takeWeaponskillDamage(attacker, finaldmg, attack.type, attack.damageType, attack.slot, primaryMsg, wsResults.tpHitsLanded, (wsResults.extraHitsLanded * 10) + wsResults.bonusTP, targetTPMult)
-    action:param(defender:getID(), math.abs(finaldmg))
+    if wsResults.tpHitsLanded + wsResults.extraHitsLanded > 0 then
+        if finaldmg >= 0 then
+            action:param(defender:getID(), math.abs(finaldmg))
+        end
+    end
     local enmityEntity = wsResults.taChar or attacker
 
-    if (wsParams.overrideCE and wsParams.overrideVE) then
+    if wsParams.overrideCE and wsParams.overrideVE then
         defender:addEnmity(enmityEntity, wsParams.overrideCE, wsParams.overrideVE)
     else
         local enmityMult = wsParams.enmityMult or 1
@@ -976,7 +980,7 @@ function getHitRate(attacker, target, capHitRate, bonus)
 
     if attacker:getMainLvl() > target:getMainLvl() then              -- Accuracy Bonus
         acc = acc + ((attacker:getMainLvl()-target:getMainLvl()) * 4)
-    elseif (attacker:getMainLvl() < target:getMainLvl()) then        -- Accuracy Penalty
+    elseif attacker:getMainLvl() < target:getMainLvl() then        -- Accuracy Penalty
         acc = acc - ((target:getMainLvl()-attacker:getMainLvl()) * 4)
     end
 
