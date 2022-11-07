@@ -1,5 +1,5 @@
 -----------------------------------
--- A unique Mythic Weapon Obtainment Quest (zone 44)
+-- A unique Relic Weapon Obtainment Quest (zone 44)
 -----------------------------------
 require('scripts/globals/weaponskillids')
 require("modules/module_utils")
@@ -12,11 +12,11 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
     super(zone)
 	
-	local Virgil = zone:insertDynamicEntity({
+	local Zalsuhm = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
         name = "Virgil",
-        look = 208,
+        look = "0x01000204A510A520AB30A540AB50776100700000",
         x = 624.596,
         y = 0.161,
         z = 23.322,
@@ -89,142 +89,143 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			elseif (trade:hasItemQty(3294, 5)) and 
 				Virgil == 3
 			then
-				
 				if
 					player:getEquipID(xi.slot.MAIN) == 20509 and
-					(getCharVar("SpharaiLock")) ~= 1
+					player:getCharVar("SpharaiLock") ~= 1
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(80)
-					player:printToPlayer("You learned the weapon skill 'Final Heaven'", 29);
-					setCharVar("SpharaiLock", 1);
+					player:addLearnedWeaponskill(50)
+					player:PrintToPlayer("You learned the weapon skill 'Final Heaven'", 29);
+					player:setCharVar("SpharaiLock", 1);
 					
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 20583 and
-					(getCharVar("MandauLock")) ~= 1 
+					player:getCharVar("MandauLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(81)
-					player:printToPlayer("You learned the weapon skill 'Mercy Stroke'", 29);
-					setCharVar("MandauLock", 1);
+					player:addLearnedWeaponskill(51)
+					player:PrintToPlayer("You learned the weapon skill 'Mercy Stroke'", 29);
+					player:setCharVar("MandauLock", 1);
 				
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 20685 and
-					(getCharVar("ExcaliburLock")) ~= 1 
+					player:getCharVar("ExcaliburLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(82)
-					player:printToPlayer("You learned the weapon skill 'Knights of Round'", 29);
-					setCharVar("ExcaliburLock", 1);
+					player:addLearnedWeaponskill(52)
+					player:PrintToPlayer("You learned the weapon skill 'Knights of Round'", 29);
+					player:setCharVar("ExcaliburLock", 1);
 					
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 21683 and
-					(getCharVar("RagnorokLock")) ~= 1
+					player:getCharVar("RagnorokLock") ~= 1
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(83)
-					player:printToPlayer("You learned the weapon skill 'Scourge'", 29);
-					setCharVar("RagnorokLock", 1);
+					player:addLearnedWeaponskill(53)
+					player:PrintToPlayer("You learned the weapon skill 'Scourge'", 29);
+					player:setCharVar("RagnorokLock", 1);
 
 				elseif 
 					player:getEquipID(xi.slot.MAIN) == 21750 and
-					(getCharVar("GuttlerLock")) ~= 1 
+					player:getCharVar("GuttlerLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(84)
-					player:printToPlayer("You learned the weapon skill 'Onslaught'", 29);
-					setCharVar("GuttlerLock", 1);
+					player:addLearnedWeaponskill(54)
+					player:PrintToPlayer("You learned the weapon skill 'Onslaught'", 29);
+					player:setCharVar("GuttlerLock", 1);
 				
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 21756 and 
-					(getCharVar("BravuraLock")) ~= 1
+					player:getCharVar("BravuraLock") ~= 1
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(85)
-					player:printToPlayer("You learned the weapon skill 'Metatron Torment'", 29);
-					setCharVar("BravuraLock", 1);
+					player:addLearnedWeaponskill(55)
+					player:PrintToPlayer("You learned the weapon skill 'Metatron Torment'", 29);
+					player:setCharVar("BravuraLock", 1);
 				
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 21808 and 
-					(getCharVar("ApocalypseLock")) ~= 1 
+					player:getCharVar("ApocalypseLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(86)
-					player:printToPlayer("You learned the weapon skill 'Catastrophe'", 29);
-					setCharVar("ApocalypseLock", 1);
+					player:addLearnedWeaponskill(56)
+					player:PrintToPlayer("You learned the weapon skill 'Catastrophe'", 29);
+					player:setCharVar("ApocalypseLock", 1);
 				
 				
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 21857 and
-					(getCharVar("GungnirLock")) ~= 1 
+					player:getCharVar("GungnirLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(87)
-					player:printToPlayer("You learned the weapon skill 'Geirskogul'", 29);
-					setCharVar("GungnirLock", 1);
+					player:addLearnedWeaponskill(57)
+					player:PrintToPlayer("You learned the weapon skill 'Geirskogul'", 29);
+					player:setCharVar("GungnirLock", 1);
 				
 				elseif
 					player:getEquipID(xi.slot.MAIN) == 21906 and 
-					(getCharVar("KikokuLock")) ~= 1 
+					player:getCharVar("KikokuLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(88)
-					player:printToPlayer("You learned the weapon skill 'Blade: Metsu'", 29);
-					setCharVar("KikokuLock", 1);
+					player:addLearnedWeaponskill(58)
+					player:PrintToPlayer("You learned the weapon skill 'Blade: Metsu'", 29);
+					player:setCharVar("KikokuLock", 1);
 				
 				elseif 
 					player:getEquipID(xi.slot.MAIN) == 21954 and 
-					(getCharVar("AmanomurakumoLock")) ~= 1 
+					player:getCharVar("AmanomurakumoLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(89)
-					player:printToPlayer("You learned the weapon skill 'Tachi: Kaiten'", 29);
-					setCharVar("AmanomurakumoLock", 1);
+					player:addLearnedWeaponskill(59)
+					player:PrintToPlayer("You learned the weapon skill 'Tachi: Kaiten'", 29);
+					player:setCharVar("AmanomurakumoLock", 1);
+				
 				elseif 
 					player:getEquipID(xi.slot.MAIN) == 21077 and 
 					player:getCharVar("MjollnirLock") ~= 1
 				then
 					player:tradeComplete()
-					player:addLearnedWeaponskill(170)
-					player:printToPlayer("You learned the weapon skill 'Randgrith'", 29)
+					player:addLearnedWeaponskill(60)
+					player:PrintToPlayer("You learned the weapon skill 'Randgrith'", 29)
 					player:setCharVar("MjollnirLock", 1)
+				
 				elseif 
 					player:getEquipID(xi.slot.MAIN) == 22060 and 
-					(getCharVar("ClaustrumLock")) ~= 1 
+					player:getCharVar("ClaustrumLock") ~= 1 
 				then
 					player:tradeComplete();
-					player:addLearnedWeaponskill(91)
-					player:printToPlayer("You learned the weapon skill 'Gate of Tartarus'", 29);
-					setCharVar("ClaustrumLock", 1);
+					player:addLearnedWeaponskill(61)
+					player:PrintToPlayer("You learned the weapon skill 'Gate of Tartarus'", 29);
+					player:setCharVar("ClaustrumLock", 1);
 				
-				elseif (player:getCharVar("YoichinoyumiLock")) ~=1 then
+				elseif player:getCharVar("YoichinoyumiLock") ~=1 then
 					if player:getEquipID(xi.slot.RANGE) == 22115 then
 						player:tradeComplete();
-						player:addLearnedWeaponskill(92)
-						player:printToPlayer("You learned the weapon skill 'Namas Arrow'", 29);
-						setCharVar("YoichinoyumiLock", 1);
+						player:addLearnedWeaponskill(62)
+						player:PrintToPlayer("You learned the weapon skill 'Namas Arrow'", 29);
+						player:setCharVar("YoichinoyumiLock", 1);
 					elseif player:getEquipID(xi.slot.RANGE) == 22129 then
 						player:tradeComplete();
-						player:addLearnedWeaponskill(92)
-						player:printToPlayer("You learned the weapon skill 'Namas Arrow'", 29);
-						setCharVar("YoichinoyumiLock", 1);
+						player:addLearnedWeaponskill(62)
+						player:PrintToPlayer("You learned the weapon skill 'Namas Arrow'", 29);
+						player:setCharVar("YoichinoyumiLock", 1);
 					end
 				
-				elseif (player:getCharVar("AnnihilatorLock")) ~=1 then
+				elseif player:getCharVar("AnnihilatorLock") ~=1 then
 					if player:getEquipID(xi.slot.RANGE) == 21267 then
 						player:tradeComplete();
-						player:addLearnedWeaponskill(93)
-						player:printToPlayer("You learned the weapon skill 'Coronach'", 29);
-						setCharVar("AnnihilatorLock", 1);
+						player:addLearnedWeaponskill(63)
+						player:PrintToPlayer("You learned the weapon skill 'Coronach'", 29);
+						player:setCharVar("AnnihilatorLock", 1);
 					elseif player:getEquipID(xi.slot.RANGE) == 22140 then
 						player:tradeComplete();
-						player:addLearnedWeaponskill(93)
-						player:printToPlayer("You learned the weapon skill 'Coronach'", 29);
-						setCharVar("AnnihilatorLock", 1);
+						player:addLearnedWeaponskill(63)
+						player:PrintToPlayer("You learned the weapon skill 'Coronach'", 29);
+						player:setCharVar("AnnihilatorLock", 1);
 					end
 				
 				else
-					player:printToPlayer("I need you to have a fully realized Relic Weapon equipe to work my magic...",0 , npc:getPacketName())
+					player:PrintToPlayer("I need you to have a fully realized Relic Weapon equipe to work my magic...", 0 , npc:getPacketName())
 				end
 			else
 				player:PrintToPlayer("That's not what I'm looking for sorry.", 0, npc:getPacketName())
