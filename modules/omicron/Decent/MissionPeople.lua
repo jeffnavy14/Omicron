@@ -1,5 +1,5 @@
 -----------------------------------
--- Gatekeeper, teleporter and random filler NPCs
+-- Chapter 1 Help the Locals
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -19,7 +19,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         x = 578.000,
         y = -2.100,
         z = 70.000,
-        rotation = 128,
+        rotation = 162,
 		
 		onTrigger = function(player, npc)
 			FoodMe = player:getCharVar("Mission1AState")
@@ -103,10 +103,10 @@ local Borry = zone:insertDynamicEntity({
 	objtype = xi.objType.NPC,
     name = "Borry",
     look = 101,
-    x = 573.000,
+    x = 578.000,
     y = -2.100,
-    z = 70.000,
-    rotation = 128,
+    z = 75.000,
+    rotation = 82,
 		
 		onTrigger = function(player, npc)
 			OreMe = player:getCharVar("Mission1BState")
@@ -122,8 +122,8 @@ local Borry = zone:insertDynamicEntity({
 			elseif OreMe == 3 then
 				player:PrintToPlayer("Please bring me a full stack of zinc." ,0, npc:getPacketName())
 			elseif OreMe == 4 then
-				player:PrintToPlayer("Thank you for your help it has been greatly appreciated")
-				player:PrintToPlayer("Feel free to bring more iron, copper, or zinc ore, but just one stack at a time please." ,13)
+				player:PrintToPlayer("I greatly appreciate the help," ,0, npc:getPacketName())
+				player:PrintToPlayer("Feel free to bring more iron, copper, or zinc ore, but just a stack at a time please." ,13)
 				player:PrintToPlayer("Don't worry I can pay." ,13)
 			end
 		end,
@@ -190,10 +190,10 @@ local Norry = zone:insertDynamicEntity({
 	objtype = xi.objType.NPC,
     name = "Norry",
     look = 102,
-    x = 573.000,
+    x = 575.000,
     y = -2.100,
-    z = 70.000,
-    rotation = 128,
+    z = 72.000,
+    rotation = 0,
 		
 		onTrigger = function(player, npc)
 			BigFight1 = player:getCharVar("Mission1CState")
@@ -211,25 +211,22 @@ local Norry = zone:insertDynamicEntity({
 						player:PrintToPlayer("Well with that said, Mid over by the big thing was able to confine some of the nastier ones." , 13)
 						player:PrintToPlayer("Now this is where you come in..." ,13)
 					end)
-					player:timer(3000, function(player)
+					player:timer(4000, function(player)
 						player:PrintToPlayer("Back at the pier is a vortex, its the Naakual trying to break free." ,0, npc:getPacketName())
 						player:PrintToPlayer("You'll need to gather this odd currency the locals have calling infamy..." , 13)
 						player:PrintToPlayer("Odd name I know... anyways it holds an odd energy to it that reacts to the vortices." , 13)
 					end)
-					player:timer(5000, function(player)
+					player:timer(6000, function(player)
 						player:PrintToPlayer("If you get about 100 of this stuff you should be able to temporarily bring out a Naakual.",0,npc:getPacketName())
 						player:PrintToPlayer("If you can, bring me the stinger from the one by the insects." , 13)
 						player:setCharVar("Mission1CState", 1)
 					end)
-				elseif BigFight1 == 1 then
-					player:PrintToPlayer("I'm looking for the stinger from the insect Naakual if you can." ,0, npc:getPacketName())
-				elseif BigFight1 == 2 then
-					player:PrintToPlayer("Thank you again for your help." ,0, npc:getPacketName())
 				end
-			elseif BigFight1 == 0 and
-				FoodMe ~= 4 and
-				OreMe ~= 4
-			then
+			elseif BigFight1 == 1 then
+					player:PrintToPlayer("I'm looking for the stinger from the insect Naakual if you can." ,0, npc:getPacketName())
+			elseif BigFight1 == 2 then
+					player:PrintToPlayer("Thank you again for your help." ,0, npc:getPacketName())
+			else 
 				player:PrintToPlayer("Sorry, I'm fairly busy at the moment, maybe my brothers can help you." ,0, npc:getPacketName())
 			end
 		end,
