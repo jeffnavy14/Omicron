@@ -315,7 +315,7 @@ public:
     uint8             m_Abilities[64];        // List of current abilities
     uint8             m_LearnedAbilities[49]; // LearnableAbilities (corsairRolls)
     std::bitset<50>   m_LearnedWeaponskills;  // LearnableWeaponskills
-    uint8             m_TraitList[16];        // List of advance active abilities in the form of a bit mask
+    uint8             m_TraitList[18];        // List of active job traits in the form of a bit mask
     uint8             m_PetCommands[64];      // List of available pet commands
     uint8             m_WeaponSkills[32];
     questlog_t        m_questLog[MAX_QUESTAREA];     // список всех квестов
@@ -419,10 +419,11 @@ public:
     SpawnIDList_t SpawnTRUSTList; // list of visible trust
     SpawnIDList_t SpawnNPCList;   // list of visible npc's
 
-    void SetName(int8* name); // устанавливаем имя персонажа (имя ограничивается 15-ю символами)
+    void SetName(int8* name); // set the name of character, limtied to 15 characters
 
-    EntityID_t   TradePending;    // ID персонажа, предлагающего обмен
-    EntityID_t   InvitePending;   // ID персонажа, отправившего приглашение в группу
+    time_point   lastTradeInvite;
+    EntityID_t   TradePending;    // character ID offering trade
+    EntityID_t   InvitePending;   // character ID sending party invite
     EntityID_t   BazaarID;        // Pointer to the bazaar we are browsing.
     BazaarList_t BazaarCustomers; // Array holding the IDs of the current customers
 
