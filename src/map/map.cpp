@@ -86,6 +86,12 @@ void operator delete(void* ptr) noexcept
     TracyFree(ptr);
     free(ptr);
 }
+
+void operator delete(void* ptr, std::size_t count)
+{
+    TracyFree(ptr);
+    free(ptr);
+}
 #endif // TRACY_ENABLE
 
 const char* MAP_CONF_FILENAME = nullptr;
@@ -103,7 +109,7 @@ map_session_list_t map_session_list = {};
 
 std::thread messageThread;
 
-std::unique_ptr<SqlConnection> sql; // lgtm [cpp/short-global-name]
+std::unique_ptr<SqlConnection> sql;
 
 extern std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 
