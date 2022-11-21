@@ -178,26 +178,26 @@ local tradeTable =
     [158] = { trade = { 16345, {4067,  5}, 2340,  836 }, reward = 28105 }, -- Assimilator's Shalwar
     [159] = { trade = { 15684, {4068, 10}, 2340, 1311 }, reward = 28238 }, -- Assimilator's Charuqs
     [160] = { trade = { 11381, {4068,  5}, 2340, 1311 }, reward = 28238 }, -- Assimilator's Charuqs
-    [161] = { trade = { 15266, {4064, 10}, 2340,  844 }, reward = 27679 }, -- Laksamana's Tricorne -- Cor
-    [162] = { trade = { 11467, {4064,  5}, 2340,  844 }, reward = 27679 }, -- Laksamana's Tricorne
-    [163] = { trade = { 14522, {4065, 10}, 2340,  837 }, reward = 27823 }, -- Laksamana's Frac
-    [164] = { trade = { 11294, {4065,  5}, 2340,  837 }, reward = 27823 }, -- Laksamana's Frac
-    [165] = { trade = { 14929, {4066, 10}, 2340, 1110 }, reward = 27959 }, -- Laksamana's Gants
-    [166] = { trade = { 15027, {4066,  5}, 2340, 1110 }, reward = 27959 }, -- Laksamana's Gants
-    [167] = { trade = { 15601, {4067, 10}, 2340,  836 }, reward = 28106 }, -- Laksamana's Trews
-    [168] = { trade = { 16348, {4067,  5}, 2340,  836 }, reward = 28106 }, -- Laksamana's Trews
-    [169] = { trade = { 15685, {4068, 10}, 2340, 1311 }, reward = 28239 }, -- Laksamana's Bottes
-    [170] = { trade = { 11384, {4068,  5}, 2340, 1311 }, reward = 28239 }, -- Laksamana's Bottes
-    [171] = { trade = { 15267, {4064, 10}, 2340,  844 }, reward = 27680 }, -- Foire Taj -- Pup
-    [172] = { trade = { 11470, {4064,  5}, 2340,  844 }, reward = 27680 }, -- Foire Taj
-    [173] = { trade = { 14523, {4065, 10}, 2340,  837 }, reward = 27824 }, -- Foire Tobe
-    [174] = { trade = { 11297, {4065,  5}, 2340,  837 }, reward = 27824 }, -- Foire Tobe 
-    [175] = { trade = { 14930, {4066, 10}, 2340, 1110 }, reward = 27960 }, -- Foire Dastanas
-    [176] = { trade = { 15030, {4066,  5}, 2340, 1110 }, reward = 27960 }, -- Foire Dastanas
-    [177] = { trade = { 15602, {4067, 10}, 2340,  836 }, reward = 28107 }, -- Foire Churidars
-    [178] = { trade = { 16351, {4067,  5}, 2340,  836 }, reward = 28107 }, -- Foire Churidars 
-    [179] = { trade = { 15686, {4068, 10}, 2340, 1311 }, reward = 28240 }, -- Foire Babouches
-    [180] = { trade = { 11387, {4068,  5}, 2340, 1311 }, reward = 28240 }, -- Foire Babouches
+    [161] = { trade = { 15266, {4064, 10}, 2288,  844 }, reward = 27679 }, -- Laksamana's Tricorne -- Cor
+    [162] = { trade = { 11467, {4064,  5}, 2288,  844 }, reward = 27679 }, -- Laksamana's Tricorne
+    [163] = { trade = { 14522, {4065, 10}, 2288,  837 }, reward = 27823 }, -- Laksamana's Frac
+    [164] = { trade = { 11294, {4065,  5}, 2288,  837 }, reward = 27823 }, -- Laksamana's Frac
+    [165] = { trade = { 14929, {4066, 10}, 2288, 1110 }, reward = 27959 }, -- Laksamana's Gants
+    [166] = { trade = { 15027, {4066,  5}, 2288, 1110 }, reward = 27959 }, -- Laksamana's Gants
+    [167] = { trade = { 15601, {4067, 10}, 2288,  836 }, reward = 28106 }, -- Laksamana's Trews
+    [168] = { trade = { 16348, {4067,  5}, 2288,  836 }, reward = 28106 }, -- Laksamana's Trews
+    [169] = { trade = { 15685, {4068, 10}, 2288, 1311 }, reward = 28239 }, -- Laksamana's Bottes
+    [170] = { trade = { 11384, {4068,  5}, 2288, 1311 }, reward = 28239 }, -- Laksamana's Bottes
+    [171] = { trade = { 15267, {4064, 10}, 2288,  844 }, reward = 27680 }, -- Foire Taj -- Pup
+    [172] = { trade = { 11470, {4064,  5}, 2288,  844 }, reward = 27680 }, -- Foire Taj
+    [173] = { trade = { 14523, {4065, 10}, 2288,  837 }, reward = 27824 }, -- Foire Tobe
+    [174] = { trade = { 11297, {4065,  5}, 2288,  837 }, reward = 27824 }, -- Foire Tobe 
+    [175] = { trade = { 14930, {4066, 10}, 2288, 1110 }, reward = 27960 }, -- Foire Dastanas
+    [176] = { trade = { 15030, {4066,  5}, 2288, 1110 }, reward = 27960 }, -- Foire Dastanas
+    [177] = { trade = { 15602, {4067, 10}, 2288,  836 }, reward = 28107 }, -- Foire Churidars
+    [178] = { trade = { 16351, {4067,  5}, 2288,  836 }, reward = 28107 }, -- Foire Churidars 
+    [179] = { trade = { 15686, {4068, 10}, 2288, 1311 }, reward = 28240 }, -- Foire Babouches
+    [180] = { trade = { 11387, {4068,  5}, 2288, 1311 }, reward = 28240 }, -- Foire Babouches
     [181] = { trade = { 16138, {4064, 10},  823,  844 }, reward = 27681 }, -- Maxixi Tiara         -- DNC M
     [182] = { trade = { 11475, {4064,  5},  823,  844 }, reward = 27681 }, -- Maxixi Tiara
     [183] = { trade = { 14578, {4065, 10},  823,  837 }, reward = 27825 }, -- Maxixi Casaque
@@ -218,7 +218,7 @@ local tradeTable =
     [198] = { trade = { 16358, {4067,  5},  823,  836 }, reward = 28109 }, -- Maxixi Tights
     [199] = { trade = { 15747, {4068, 10},  823, 1311 }, reward = 28242 }, -- Maxixi Toe Shoes
     [200] = { trade = { 11394, {4068,  5},  823, 1311 }, reward = 28242 }, -- Maxixi Toe Shoes
-    [201] = { trade = { 16140, {4064, 10}, 2288,  844 }, reward = 27683 }, -- Academic's Mortarboard   -- Sch
+    [201] = { trade = { 16140, {4064, 10}, 1699,  844 }, reward = 27683 }, -- Academic's Mortarboard   -- Sch
     [202] = { trade = { 11477, {4064,  5}, 1699,  844 }, reward = 27683 }, -- Academic's Mortarboard
     [203] = { trade = { 14580, {4065, 10}, 1699,  837 }, reward = 27827 }, -- Academic's Gown
     [204] = { trade = { 11304, {4065,  5}, 1699,  837 }, reward = 27827 }, -- Academic's Gown 
