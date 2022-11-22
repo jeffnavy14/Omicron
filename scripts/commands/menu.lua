@@ -19,11 +19,12 @@ cmdprops =
 function onTrigger(player)
     local menu =
     {
-        title = "Test Menu (Play Effect)",
+        title   = "Test Menu (Play Effect)",
         onStart = function(playerArg)
             -- NOTE: This could be used to lock the player in place
             playerArg:PrintToPlayer("Test Menu", xi.msg.channel.NS_SAY)
         end,
+
         options =
         {
             {
@@ -47,8 +48,10 @@ function onTrigger(player)
                 end,
             },
         },
+
         onCancelled = function(playerArg)
         end,
+
         onEnd = function(playerArg)
         end,
     }
