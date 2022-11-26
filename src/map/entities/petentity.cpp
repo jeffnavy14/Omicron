@@ -110,7 +110,7 @@ void CPetEntity::setJugDuration(int32 seconds)
     m_jugDuration = std::chrono::seconds(seconds);
 }
 
-std::string CPetEntity::GetScriptName()
+const std::string CPetEntity::GetScriptName()
 {
     switch (getPetType())
     {
@@ -213,7 +213,7 @@ void CPetEntity::Die()
     }
     else
     {
-        PAI->Internal_Die(0s);
+        PAI->Internal_Die(2500ms);
     }
 
     luautils::OnMobDeath(this, nullptr);
