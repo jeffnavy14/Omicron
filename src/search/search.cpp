@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
 Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -36,15 +36,25 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "common/utils.h"
 
 #ifdef WIN32
+#include "../ext/wepoll/wepoll.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
 #include <cerrno>
 #include <netdb.h>
 #include <netinet/in.h>
+
+// MacOS has no epoll
+#ifdef __APPLE__
+#include <sys/ioctl.h>
+#else
+#include <sys/epoll.h>
+#endif
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+typedef int   HANDLE;
 typedef u_int SOCKET;
 #define INVALID_SOCKET (SOCKET)(~0)
 #define SOCKET_ERROR   (-1)
@@ -79,7 +89,7 @@ struct SearchCommInfo
     uint16 port;
 };
 
-void TaskManagerThread();
+void TaskManagerThread(const bool& requestExit);
 
 int32 ah_cleanup(time_point tick, CTaskMgr::CTask* PTask);
 
@@ -118,6 +128,7 @@ void PrintPacket(char* data, int size)
 int32 main(int32 argc, char** argv)
 {
     bool appendDate{};
+    bool requestExit = false;
 #ifdef WIN32
     WSADATA wsaData;
 #endif
@@ -257,7 +268,7 @@ int32 main(int32 argc, char** argv)
                                          std::chrono::seconds(settings::get<uint32>("search.EXPIRE_INTERVAL")));
     }
 
-    std::thread(TaskManagerThread).detach();
+    std::thread taskManagerThread(TaskManagerThread, std::ref(requestExit));
 
     // clang-format off
     gConsoleService = std::make_unique<ConsoleService>();
@@ -274,50 +285,128 @@ int32 main(int32 argc, char** argv)
         CDataLoader data;
         data.ExpireAHItems(0);
     });
+
+    gConsoleService->RegisterCommand("exit", "Terminate the program.",
+    [&](std::vector<std::string> inputs)
+    {
+        fmt::print("> Goodbye!\n");
+        gConsoleService->stop();
+        requestExit = true;
+    });
     // clang-format on
 
     ShowInfo("========================================================");
+#ifndef __APPLE__
+    epoll_event epollEvent  = { EPOLLIN };
+    HANDLE      epollHandle = epoll_create1(0);
+    epoll_ctl(epollHandle, EPOLL_CTL_ADD, ListenSocket, &epollEvent);
+    int ret = 0;
 
-    while (true)
+    while (!requestExit)
     {
+        ret = epoll_wait(epollHandle, &epollEvent, 1, 100);
+        if (ret == SOCKET_ERROR)
+        {
+            if (sErrno != S_EINTR)
+            {
+                ShowCritical("do_sockets: select() failed, error code %d!", sErrno);
+                exit(EXIT_FAILURE);
+            }
+            continue; // interrupted by a signal, just loop and try again
+        }
+        else if (ret == 0 || requestExit)
+        {
+            continue;
+        }
+
         // Accept a client socket
         ClientSocket = accept(ListenSocket, nullptr, nullptr);
         if (ClientSocket == INVALID_SOCKET)
         {
-#ifdef WIN32
-            ShowError("accept failed with error: %d", WSAGetLastError());
-#else
-            ShowError("accept failed with error: %d", errno);
-#endif
+            ShowError("accept failed with error: %d", sErrno);
             continue;
         }
 
         std::thread(TCPComm, ClientSocket).detach();
     }
-    // TODO: The code below this line will never be reached.
 
     gConsoleService = nullptr;
 
-    // shutdown the connection since we're done
-#ifdef WIN32
-    iResult = shutdown(ClientSocket, SD_SEND);
+    // close the connection since we're done
+    epoll_ctl(epollHandle, EPOLL_CTL_DEL, ListenSocket, &epollEvent);
+
+    // __APPLE__ has no epoll, use Select
 #else
-    iResult = shutdown(ClientSocket, SHUT_WR);
+    fd_set fdSet        = {};
+    fd_set workingFdSet = {};
+
+    struct timeval timeout = {};
+
+    FD_ZERO(&fdSet);
+    FD_SET(ListenSocket, &fdSet);
+
+    int usecTimeout = std::chrono::duration_cast<std::chrono::microseconds>(100ms).count();
+
+    int ret = 0;
+    while (!requestExit)
+    {
+        // timeout can be updated by select, set it back every iteration.
+        timeout.tv_sec  = 0;
+        timeout.tv_usec = usecTimeout;
+
+        memcpy(&workingFdSet, &fdSet, sizeof(fdSet));
+        ret = sSelect(ListenSocket + 1, &workingFdSet, nullptr, nullptr, &timeout);
+
+        if (ret == SOCKET_ERROR)
+        {
+            if (sErrno != S_EINTR)
+            {
+                ShowCritical("select() failed, error code %d!", sErrno);
+                exit(EXIT_FAILURE);
+            }
+            continue;
+        }
+
+        if (ret > 0)
+        {
+            // Accept a client socket
+            ClientSocket = accept(ListenSocket, nullptr, nullptr);
+            if (ClientSocket == INVALID_SOCKET)
+            {
+                ShowError("accept failed with error: %d", sErrno);
+                continue;
+            }
+
+            std::thread(TCPComm, ClientSocket).detach();
+        }
+    }
+#endif
+
+#ifdef WIN32
+    epoll_close(epollHandle);
+    iResult = shutdown(ListenSocket, SD_SEND);
+#else
+    iResult = shutdown(ListenSocket, SHUT_WR);
 #endif
     if (iResult == SOCKET_ERROR)
     {
 #ifdef WIN32
-        ShowError("shutdown failed with error: %d", WSAGetLastError());
-        closesocket(ClientSocket);
-        WSACleanup();
+        if (sErrno != WSAENOTCONN) // If the socket isn't connected we throw an error if we try to close it if it's not connected.
+        {
+            ShowError("shutdown failed with error: %d", WSAGetLastError());
+            closesocket(ListenSocket);
+            WSACleanup();
+            return 1;
+        }
 #else
         ShowError("shutdown failed with error: %d", errno);
-        close(ClientSocket);
-#endif
+        close(ListenSocket);
         return 1;
+#endif
     }
 
     logging::ShutDown();
+    taskManagerThread.join();
 
     // cleanup
 #ifdef WIN32
@@ -331,15 +420,13 @@ int32 main(int32 argc, char** argv)
 
 void TCPComm(SOCKET socket)
 {
-    // ShowInfo("TCP connection from client with port: %u", htons(CommInfo.port));
-
     CTCPRequestPacket PTCPRequest(&socket);
 
     if (PTCPRequest.ReceiveFromSocket() == 0)
     {
         return;
     }
-    // PrintPacket((int8*)PTCPRequest->GetData(), PTCPRequest->GetSize());
+
     ShowInfo("= = = = = = = Type: %u Size: %u ", PTCPRequest.GetPacketType(), PTCPRequest.GetSize());
 
     switch (PTCPRequest.GetPacketType())
@@ -417,15 +504,34 @@ void HandleGroupListRequest(CTCPRequestPacket& PTCPRequest)
         uint32                   linkshellid   = linkshellid1 == 0 ? linkshellid2 : linkshellid1;
         std::list<SearchEntity*> LinkshellList = PDataLoader.GetLinkshellList(linkshellid);
 
-        CLinkshellListPacket PLinkshellPacket(linkshellid, (uint32)LinkshellList.size());
+        uint32 totalResults  = (uint32)LinkshellList.size();
+        uint32 currentResult = 0;
 
-        for (auto& it : LinkshellList)
+        // Iterate through the linkshell list, splitting up the results into
+        // smaller chunks.
+        std::list<SearchEntity*>::iterator it = LinkshellList.begin();
+
+        do
         {
-            PLinkshellPacket.AddPlayer(it);
-        }
+            CLinkshellListPacket PLinkshellPacket(linkshellid, totalResults);
 
-        PrintPacket((char*)PLinkshellPacket.GetData(), PLinkshellPacket.GetSize());
-        PTCPRequest.SendToSocket(PLinkshellPacket.GetData(), PLinkshellPacket.GetSize());
+            while (currentResult < totalResults)
+            {
+                bool success = PLinkshellPacket.AddPlayer(*it);
+                if (!success)
+                    break;
+
+                currentResult++;
+                ++it;
+            }
+
+            if (currentResult == totalResults)
+                PLinkshellPacket.SetFinal();
+
+            auto ret = PTCPRequest.SendToSocket(PLinkshellPacket.GetData(), PLinkshellPacket.GetSize());
+            if (ret <= 0)
+                break;
+        } while (currentResult < totalResults);
     }
 }
 
@@ -452,16 +558,35 @@ void HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
 
     CDataLoader              PDataLoader;
     std::list<SearchEntity*> SearchList = PDataLoader.GetPlayersList(sr, &totalCount);
-    // PDataLoader->GetPlayersCount(sr)
-    CSearchListPacket PSearchPacket(totalCount);
 
-    for (auto& it : SearchList)
+    uint32 totalResults  = (uint32)SearchList.size();
+    uint32 currentResult = 0;
+
+    // Iterate through the search list, splitting up the results into
+    // smaller chunks.
+    std::list<SearchEntity*>::iterator it = SearchList.begin();
+
+    do
     {
-        PSearchPacket.AddPlayer(it);
-    }
+        CSearchListPacket PSearchPacket(totalCount);
 
-    // PrintPacket((int8*)PSearchPacket->GetData(), PSearchPacket->GetSize());
-    PTCPRequest.SendToSocket(PSearchPacket.GetData(), PSearchPacket.GetSize());
+        while (currentResult < totalResults)
+        {
+            bool success = PSearchPacket.AddPlayer(*it);
+            if (!success)
+                break;
+
+            currentResult++;
+            ++it;
+        }
+
+        if (currentResult == totalResults)
+            PSearchPacket.SetFinal();
+
+        auto ret = PTCPRequest.SendToSocket(PSearchPacket.GetData(), PSearchPacket.GetSize());
+        if (ret <= 0)
+            break;
+    } while (currentResult < totalResults);
 }
 
 void HandleAuctionHouseRequest(CTCPRequestPacket& PTCPRequest)
@@ -477,8 +602,8 @@ void HandleAuctionHouseRequest(CTCPRequestPacket& PTCPRequest)
     // 7 - defense
     // 8 - resistance
     // 9 - name
-    string_t OrderByString = "ORDER BY";
-    uint8    paramCount    = ref<uint8>(data, 0x12);
+    std::string OrderByString = "ORDER BY";
+    uint8       paramCount    = ref<uint8>(data, 0x12);
     for (uint8 i = 0; i < paramCount; ++i) // параметры сортировки предметов
     {
         uint8 param = ref<uint32>(data, 0x18 + 8 * i);
@@ -511,10 +636,11 @@ void HandleAuctionHouseRequest(CTCPRequestPacket& PTCPRequest)
     for (uint8 i = 0; i < PacketsCount; ++i)
     {
         CAHItemsListPacket PAHPacket(20 * i);
+        uint16             itemListSize = static_cast<uint16>(ItemList.size());
 
-        PAHPacket.SetItemCount((uint16)ItemList.size());
+        PAHPacket.SetItemCount(itemListSize);
 
-        for (uint16 y = 20 * i; (y != 20 * (i + 1)) && (y < ItemList.size()); ++y)
+        for (uint16 y = 20 * i; (y != 20 * (i + 1)) && (y < itemListSize); ++y)
         {
             PAHPacket.AddItem(ItemList.at(y));
         }
@@ -553,8 +679,8 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
     unsigned char isPresent      = 0;
     unsigned char areaCount      = 0;
 
-    char  name[16];
-    uint8 nameLen = 0;
+    char  name[16] = {};
+    uint8 nameLen  = 0;
 
     uint8 minLvl = 0;
     uint8 maxLvl = 0;
@@ -566,7 +692,7 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
     uint8 minRank = 0;
     uint8 maxRank = 0;
 
-    uint16 areas[10];
+    uint16 areas[15] = {};
 
     uint32 flags = 0;
 
@@ -576,9 +702,6 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
     uint16 workloadBits = size * 8;
 
     uint8 commentType = 0;
-
-    memset(areas, 0, sizeof(areas));
-    // ShowInfo("Received a search packet with size %u byte", size);
 
     while (bitOffset < workloadBits)
     {
@@ -626,24 +749,20 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                         name[i] = (char)unpackBitsLE(&data[0x11], bitOffset, 7);
                         bitOffset += 7;
                     }
-                    // ShowInfo("Name Entry Found. (%s).\n",name);
                 }
-                // ShowInfo("SortByName: %s.\n",(sortDescending == 0 ? "ascending" : "descending"));
-                // packetData.sortDescendingByName=sortDescending;
                 break;
             }
             case SEARCH_AREA: // Area Code Entry - 10 bit
             {
                 if (isPresent == 0) // no more Area entries
                 {
-                    // ShowInfo("Area List End found.\n");
+                    ShowTrace("Area List End found.");
                 }
                 else // 8 Bit = 1 Byte per Area Code
                 {
                     areas[areaCount] = (uint16)unpackBitsLE(&data[0x11], bitOffset, 10);
                     areaCount++;
                     bitOffset += 10;
-                    //  ShowInfo("Area List Entry found(%2X)!\n",areas[areaCount-1]);
                 }
                 break;
             }
@@ -666,10 +785,7 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                     unsigned char job = (unsigned char)unpackBitsLE(&data[0x11], bitOffset, 5);
                     bitOffset += 5;
                     jobid = job;
-                    // ShowInfo("Job Entry found. (%2X) Sorting: (%s).\n",job,(sortDescending==0x00)?"ascending":"descending");
                 }
-                // packetData.sortDescendingByJob=sortDescending;
-                // ShowInfo("SortByJob: %s.\n",(sortDescending==0x00)?"ascending":"descending");
                 break;
             }
             case SEARCH_LEVEL: // Level- 16 bit
@@ -682,10 +798,7 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                     bitOffset += 8;
                     minLvl = fromLvl;
                     maxLvl = toLvl;
-                    // ShowInfo("Level Entry found. (%d - %d) Sorting: (%s).\n",fromLvl,toLvl,(sortDescending==0x00)?"ascending":"descending");
                 }
-                // packetData.sortDescendingByLevel=sortDescending;
-                // ShowInfo("SortByLevel: %s.\n",(sortDescending==0x00)?"ascending":"descending");
                 break;
             }
             case SEARCH_RACE: // Race - 4 bit
@@ -699,7 +812,6 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                     ShowInfo("Race Entry found. (%2X) Sorting: (%s).\n", race, (sortDescending == 0x00) ? "ascending" : "descending");
                 }
                 ShowInfo("SortByRace: %s.\n", (sortDescending == 0x00) ? "ascending" : "descending");
-                // packetData.sortDescendingByRace=sortDescending;
                 break;
             }
             case SEARCH_RANK: // Rank - 2 byte
@@ -716,7 +828,6 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                     ShowInfo("Rank Entry found. (%d - %d) Sorting: (%s).\n", fromRank, toRank, (sortDescending == 0x00) ? "ascending" : "descending");
                 }
                 ShowInfo("SortByRank: %s.\n", (sortDescending == 0x00) ? "ascending" : "descending");
-                // packetData.sortDescendingByRank=sortDescending;
                 break;
             }
             case SEARCH_COMMENT: // 4 Byte
@@ -754,7 +865,6 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
                     flags = flags1;
                 }
                 ShowInfo("SortByFlags: %s\n", (sortDescending == 0 ? "ascending" : "descending"));
-                // packetData.sortDescendingByFlags=sortDescending;
                 break;
             }
             case SEARCH_FLAGS2: // Flag Entry #2 - 4 byte
@@ -763,20 +873,11 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
 
                 bitOffset += 32;
                 flags = flags2;
-                /*
-                if ((flags & 0xFFFF)!=(packetData.flags1))
-                {
-                ShowInfo("Flag mismatch: %.8X != %.8X\n",flags,packetData.flags1&0xFFFF);
-                }
-                packetData.flags2=flags;
-                ShowInfo("Flag Entry #2 (%.8X) found.\n",packetData.flags2);
-                */
                 break;
             }
             default:
             {
                 ShowInfo("Unknown Search Param %.2X!\n", EntryType);
-                // outputPacket=true;
                 break;
             }
         }
@@ -798,7 +899,7 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
     sr.commentType = commentType;
 
     sr.nameLen = nameLen;
-    memcpy(sr.zoneid, areas, sizeof(sr.zoneid));
+    memcpy(&sr.zoneid, areas, sizeof(sr.zoneid));
     if (nameLen > 0)
     {
         sr.name.insert(0, name);
@@ -815,10 +916,10 @@ search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest)
  *                                                                       *
  ************************************************************************/
 
-void TaskManagerThread()
+void TaskManagerThread(const bool& requestExit)
 {
     duration next;
-    while (true)
+    while (!requestExit)
     {
         next = CTaskMgr::getInstance()->DoTimer(server_clock::now());
         std::this_thread::sleep_for(next);

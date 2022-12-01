@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(server CXX)
+project(server C CXX)
 
 set_property(GLOBAL PROPERTY CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -14,7 +14,6 @@ include(Platform)
 include(StandardProjectSettings)
 include(CompilerWarnings)
 include(Sanitizers)
-include(Tracy)
 include(Valgrind)
 include(Git)
 
@@ -45,6 +44,10 @@ find_package(ZeroMQ REQUIRED)
 # Find LuaJIT
 find_package(LuaJIT REQUIRED)
 
+if(UNIX AND NOT APPLE)
+    find_package(Binutils REQUIRED)
+endif()
+
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
@@ -60,7 +63,7 @@ set_project_warnings(project_warnings)
 add_definitions(
     -DSOL_ALL_SAFETIES_ON=1
     -DSOL_NO_CHECK_NUMBER_PRECISION=1
-    -DSOL_NO_EXCEPTIONS=1
+    -DSOL_DEFAULT_PASS_ON_ERROR=1
     -DSOL_PRINT_ERRORS=0
 )
 
@@ -68,5 +71,9 @@ add_subdirectory(ext)
 
 include(ClangTidy)
 include(Fuzzing)
+
+message(STATUS "Configuring src/common/version.cpp")
+configure_file(${CMAKE_SOURCE_DIR}/src/common/version.cpp.in
+               ${CMAKE_SOURCE_DIR}/src/common/version.cpp)
 
 add_subdirectory(src)

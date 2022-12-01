@@ -8,19 +8,16 @@ require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
 
-local path =
+local pathNodes =
 {
-    -12.339, -10.000, -29.701,      -- TODO: arrives at location, turns left then waits at location for 8 seconds
-    -13.796, -10.000, -19.127       -- TODO: arrives at location, turns left then waits at location for 8 seconds
+    { x = -13, y = -10, z = -19, rotation = 0, wait = 4000 },
+    { z = -29, rotation = 0, wait = 4000 },
 }
 
 entity.onSpawn = function(npc)
     npc:initNpcAi()
-    npc:setPos(xi.path.first(path))
-end
-
-entity.onPath = function(npc)
-    xi.path.patrol(npc, path)
+    npc:setPos(xi.path.first(pathNodes))
+    npc:pathThrough(pathNodes, xi.path.flag.PATROL)
 end
 
 entity.onTrade = function(player, npc, trade)

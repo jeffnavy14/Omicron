@@ -1,12 +1,13 @@
 -----------------------------------
 -- Trust
 -----------------------------------
+require("scripts/globals/bcnm")
 require("scripts/globals/keyitems")
-require("scripts/globals/settings")
-require("scripts/globals/status")
 require("scripts/globals/magic")
 require("scripts/globals/msg")
 require("scripts/globals/roe")
+require("scripts/globals/settings")
+require("scripts/globals/status")
 -----------------------------------
 
 xi = xi or {}
@@ -179,22 +180,45 @@ local poolIDToMessagePageOffset =
     [6019] = 112, -- Shantotto II
 }
 
+-- TODO: handle Dynamis Divergence, Omen, etc that are not "battlefields" but have a trust upper limit.
+xi.trust.checkBattlefieldTrustCount = function(caster)
+    local battlefield = caster:getBattlefield()
+    if battlefield then
+        local participants     = battlefield:getPlayersAndTrusts()
+        local maxParticipants  = battlefield:getMaxParticipants()
+        local numPlayers       = battlefield:getPlayerCount()
+        local numTrusts        = 0
+
+        for _, entity in ipairs(participants) do
+            local objType = entity:getObjType()
+
+            if objType == xi.objType.TRUST then
+                numTrusts = numTrusts + 1
+            end
+        end
+
+        return (numPlayers + numTrusts) < maxParticipants
+    end
+
+    return true
+end
+
 xi.trust.hasPermit = function(player)
     return player:hasKeyItem(xi.ki.WINDURST_TRUST_PERMIT) or
-           player:hasKeyItem(xi.ki.BASTOK_TRUST_PERMIT) or
-           player:hasKeyItem(xi.ki.SAN_DORIA_TRUST_PERMIT)
+        player:hasKeyItem(xi.ki.BASTOK_TRUST_PERMIT) or
+        player:hasKeyItem(xi.ki.SAN_DORIA_TRUST_PERMIT)
 end
 
 xi.trust.onTradeCipher = function(player, trade, csid, rovCs, arkAngelCs)
-    local itemId = trade:getItemId(0)
-    local subId = trade:getItemSubId(0)
+    local itemId   = trade:getItemId(0)
+    local subId    = trade:getItemSubId(0)
     local isCipher = itemId >= 10112 and itemId <= 10193
 
     -- subId is a smallInt in the database (16 bits).
     -- The bottom 12 bits of the subId are the spellId taught by the ciper
     -- The top 4 bits of the subId are for the flags to be given to the csid
     local spellId = bit.band(subId, 0x0FFF)
-    local flags = bit.rshift(bit.band(subId, 0xF000), 12)
+    local flags   = bit.rshift(bit.band(subId, 0xF000), 12)
 
     -- To generate this packed subId for storage in the db:
     -- local encoded = spellId + bit.lshift(flags, 12)
@@ -280,9 +304,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
     end
 
     -- Check party for trusts
-    local num_pt = 0
+    local num_pt     = 0
     local num_trusts = 0
-    local party = caster:getPartyWithTrusts()
+    local party      = caster:getPartyWithTrusts()
+
     for _, member in pairs(party) do
         if member:getObjType() == xi.objType.TRUST then
             -- Check for same trust
@@ -305,8 +330,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
                     end
                 end
             end
+
             num_trusts = num_trusts + 1
         end
+
         num_pt = num_pt + 1
     end
 
@@ -318,7 +345,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
 
     -- Some battlefields allow trusts after you get this ROV Key Item
     local casterBattlefieldID = caster:getBattlefieldID()
-    if rovKIBattlefieldIDs[casterBattlefieldID] and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_UMBER) then
+    if
+        rovKIBattlefieldIDs[casterBattlefieldID] and
+        not caster:hasKeyItem(xi.ki.RHAPSODY_IN_UMBER)
+    then
         return xi.msg.basic.TRUST_NO_CAST_TRUST
     end
 
@@ -329,6 +359,10 @@ xi.trust.canCast = function(caster, spell, not_allowed_trust_ids)
     elseif num_trusts >= 4 and not caster:hasKeyItem(xi.ki.RHAPSODY_IN_CRIMSON) then
         caster:messageSystem(xi.msg.system.TRUST_MAXIMUM_NUMBER)
         return -1
+    end
+
+    if not xi.trust.checkBattlefieldTrustCount(caster) then
+        return xi.msg.basic.TRUST_NO_CAST_TRUST
     end
 
     return 0
@@ -349,7 +383,7 @@ end
 -- Example: Shantotto II summon message ID: 11201
 -- page_offset: (11201 - 1) / 100 = 112
 xi.trust.message = function(mob, message_offset)
-    local poolID = mob:getPool()
+    local poolID      = mob:getPool()
     local page_offset = poolIDToMessagePageOffset[poolID]
 
     if page_offset == nil then
@@ -370,7 +404,8 @@ xi.trust.teamworkMessage = function(mob, teamwork_messages)
     local messages = {}
 
     local master = mob:getMaster()
-    local party = master:getPartyWithTrusts()
+    local party  = master:getPartyWithTrusts()
+
     for _, member in pairs(party) do
         if member:getObjType() == xi.objType.TRUST then
             for id, message in pairs(teamwork_messages) do
@@ -382,7 +417,7 @@ xi.trust.teamworkMessage = function(mob, teamwork_messages)
     end
 
     if #messages > 0 then
-        xi.trust.message(mob, messages[math.random(#messages)])
+        xi.trust.message(mob, messages[math.random(1, #messages)])
     else
         -- Defaults to regular spawn message
         xi.trust.message(mob, xi.trust.message_offset.SPAWN)
@@ -391,13 +426,13 @@ end
 
 -- For debugging and lining up teamwork messages
 xi.trust.dumpMessages = function(mob, pageOffset)
-    for i=0, 20 do
+    for i = 0, 20 do
         xi.trust.message(mob, pageOffset, i)
     end
 end
 
 xi.trust.dumpMessagePages = function(mob)
-    for i=0, 120 do
+    for i = 0, 120 do
         xi.trust.message(mob, i)
     end
 end

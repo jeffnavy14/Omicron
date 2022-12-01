@@ -16,7 +16,7 @@ entity.onTrade = function(player, npc, trade)
     if
         player:hasKeyItem(xi.ki.TORN_PATCHES_OF_LEATHER)
         and player:getCharVar("sayItWithAHandbagCS") == 2
-        and npcUtil.tradeHasExactly(trade, {2012, 850, 816})
+        and npcUtil.tradeHasExactly(trade, { 2012, 850, 816 })
     then
         player:startEvent(910)
     end
@@ -42,7 +42,10 @@ entity.onTrigger = function(player, npc)
         end
     elseif sayItWithAHandbagCS == 2 then
         player:startEvent(909)
-    elseif player:hasKeyItem(xi.ki.TORN_PATCHES_OF_LEATHER) and sayItWithAHandbagCS == 1 then
+    elseif
+        player:hasKeyItem(xi.ki.TORN_PATCHES_OF_LEATHER) and
+        sayItWithAHandbagCS == 1
+    then
         player:startEvent(908)
     elseif xi.crafting.isGuildMember(player, 7) == 1 then
         if not player:hasStatusEffect(xi.effect.LEATHERCRAFT_IMAGERY) then

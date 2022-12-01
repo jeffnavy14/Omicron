@@ -33,7 +33,7 @@ end
 -----------------------------------
 -- Battle 1: 5 Mammets
 -----------------------------------
-oneToBeFeared.handleMammetDeath = function(mob, player, isKiller)
+oneToBeFeared.handleMammetDeath = function(mob, player, optParams)
     -- Find mob offset for given battlefield instance
     local battlefield      = mob:getBattlefield()
     local mammetOffset     = ID.mob.ONE_TO_BE_FEARED_OFFSET + (7 * (battlefield:getArea() - 1))
@@ -48,7 +48,11 @@ oneToBeFeared.handleMammetDeath = function(mob, player, isKiller)
         end
     end
 
-    if mammetDeathCount == 5 and player:hasStatusEffect(xi.effect.BATTLEFIELD) and player:getLocalVar("[OTBF]MammetCS") == 0 then
+    if
+        mammetDeathCount == 5 and
+        player:hasStatusEffect(xi.effect.BATTLEFIELD) and
+        player:getLocalVar("[OTBF]MammetCS") == 0
+    then
         player:setLocalVar("[OTBF]MammetCS", 1) -- Safety check to not trigger CS more than once when killing multile Mammets at the same time.
         player:startEvent(10)
     end
@@ -69,7 +73,7 @@ end
 -----------------------------------
 -- Battle 2: Omega
 -----------------------------------
-oneToBeFeared.handleOmegaDeath = function(mob, player, isKiller)
+oneToBeFeared.handleOmegaDeath = function(mob, player, optParams)
     if player:hasStatusEffect(xi.effect.BATTLEFIELD) then
         player:startEvent(11)
     end
@@ -86,10 +90,11 @@ oneToBeFeared.handleOmegaBattleEnding = function(player, csid, option)
         returnToAirship(player)
     end
 end
+
 -----------------------------------
 -- Battle 3: Ultima
 -----------------------------------
-oneToBeFeared.handleUltimaDeath = function(mob, player, isKiller)
+oneToBeFeared.handleUltimaDeath = function(mob, player, optParams)
     player:addTitle(xi.title.ULTIMA_UNDERTAKER)
     player:setLocalVar("[OTBF]battleCompleted", 0)
 end

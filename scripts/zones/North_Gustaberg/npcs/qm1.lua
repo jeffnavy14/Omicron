@@ -12,11 +12,11 @@ local entity = {}
 
 local positions =
 {
-    [0] = {309.600, 2.600, 324.000}, -- starting position (from db)
-    [1] = {290.000, 0.600, 332.100}, -- alternative starting position
-    [2] = {296.000, 3.000, 220.000},
-    [3] = {349.480, 3.300, 208.000},
-    [4] = {332.100, 6.000, 150.100},
+    [0] = { 309.600, 2.600, 324.000 }, -- starting position (from db)
+    [1] = { 290.000, 0.600, 332.100 }, -- alternative starting position
+    [2] = { 296.000, 3.000, 220.000 },
+    [3] = { 349.480, 3.300, 208.000 },
+    [4] = { 332.100, 6.000, 150.100 },
 }
 
 -- send the QM to one of the two northern starting locations
@@ -30,7 +30,7 @@ local function resetSirenTear(npc)
     elseif currentPos == 1 then
         nextPos = 0
     else
-        nextPos = math.random(2) - 1
+        nextPos = math.random(0, 1)
     end
 
     npc:setLocalVar("pos", nextPos)
@@ -64,7 +64,10 @@ entity.onEventFinish = function(player, csid, option)
     if csid == 10 and option == 0 then
         local npc = player:getEventTarget()
 
-        if player:getEquipID(xi.slot.MAIN) == 0 and player:getEquipID(xi.slot.SUB) == 0 then
+        if
+            player:getEquipID(xi.slot.MAIN) == 0 and
+            player:getEquipID(xi.slot.SUB) == 0
+        then
             if player:hasItem(xi.items.SIRENS_TEAR) then
                 player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED_TWICE, xi.items.SIRENS_TEAR)
             elseif npcUtil.giveItem(player, xi.items.SIRENS_TEAR) then

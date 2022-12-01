@@ -20,9 +20,15 @@ entity.onTrigger = function(player, npc)
     local lureOfTheWildcat = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.LURE_OF_THE_WILDCAT)
     local wildcatWindurst = player:getCharVar("WildcatWindurst")
 
-    if lureOfTheWildcat == QUEST_ACCEPTED and not utils.mask.getBit(wildcatWindurst, 14) then
+    if
+        lureOfTheWildcat == QUEST_ACCEPTED and
+        not utils.mask.getBit(wildcatWindurst, 14)
+    then
         player:startEvent(939)
-    elseif player:hasKeyItem(xi.ki.NEW_MODEL_HAT) and not utils.mask.getBit(player:getCharVar("QuestHatInHand_var"), 4) then
+    elseif
+        player:hasKeyItem(xi.ki.NEW_MODEL_HAT) and
+        not utils.mask.getBit(player:getCharVar("QuestHatInHand_var"), 4)
+    then
         player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, xi.ki.NEW_MODEL_HAT)
         player:startEvent(60)
     elseif makingHeadlines == QUEST_ACCEPTED then
@@ -52,7 +58,7 @@ entity.onEventFinish = function(player, csid, option)
         player:setCharVar("QuestMakingHeadlines_var", utils.mask.setBit(player:getCharVar("QuestMakingHeadlines_var"), 0, true))
     elseif csid == 60 then
         player:setCharVar("QuestHatInHand_var", utils.mask.setBit(player:getCharVar("QuestHatInHand_var"), 4, true))
-        player:addCharVar("QuestHatInHand_count", 1)
+        player:incrementCharVar("QuestHatInHand_count", 1)
     elseif csid == 939 then
         player:setCharVar("WildcatWindurst", utils.mask.setBit(player:getCharVar("WildcatWindurst"), 14, true))
     end

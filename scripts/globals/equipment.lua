@@ -124,7 +124,8 @@ xi.equipment.relicIDs =
 -----------------------------------
 -- TODO: Should Adoulin exist here as well?
 local artifactArmorRanges =
-{--     Min,   Max
+{
+--      Min,   Max
     { 12511, 12520 }, -- Original Head
     { 13855, 13857 },
     { 13868, 13869 },
@@ -157,10 +158,11 @@ end
 
 xi.equipment.isBaseNyzulWeapon = function(itemId)
     for i, wepId in pairs(xi.equipment.baseNyzulWeapons) do
-        if (itemId == wepId) then
+        if itemId == wepId then
             return true
         end
     end
+
     return false
 end
 

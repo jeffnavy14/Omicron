@@ -26,8 +26,8 @@ entity.onMobSpawn = function(mob)
             mobArg:hideName(false)
             mobArg:setUntargetable(true)
             mobArg:setUnkillable(true)
-            mobArg:SetAutoAttackEnabled(false)
-            mobArg:SetMagicCastingEnabled(false)
+            mobArg:setAutoAttackEnabled(false)
+            mobArg:setMagicCastingEnabled(false)
 
             -- If something goes wrong, the avatar will clean itself up in 5s
             mobArg:timer(5000, function(mobTimerArg)
@@ -40,7 +40,7 @@ entity.onMobSpawn = function(mob)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 392)
 end
 

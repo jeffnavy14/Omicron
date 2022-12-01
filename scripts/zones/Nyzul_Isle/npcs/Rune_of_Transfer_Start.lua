@@ -7,7 +7,10 @@
 local ID = require("scripts/zones/Nyzul_Isle/IDs")
 require("scripts/globals/keyitems")
 require("scripts/globals/npc_util")
+<<<<<<< HEAD
 require("scripts/settings/main")
+=======
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 require("scripts/globals/nyzul")
 require("scripts/zones/Nyzul_Isle/instances/nyzul_isle_investigation")
 -----------------------------------
@@ -17,7 +20,11 @@ entity.onTrigger = function(player, npc)
     local instance      = player:getInstance()
     local tokens        = player:getCurrency("nyzul_isle_assault_point")
     local prefered      = player:getVar("[Nyzul]preferredItems")
+<<<<<<< HEAD
     local floorGroup    = math.floor(player:getVar("NyzulFloorProgress")/5)
+=======
+    local floorGroup    = math.floor(player:getVar("NyzulFloorProgress") / 5)
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
     local floorProgress = 0xFFFFFFFC - bit.bxor(bit.lshift(2, floorGroup + 1) - 1, 3)
 
     if not player:hasKeyItem(xi.ki.RUNIC_DISC) then
@@ -30,14 +37,27 @@ entity.onTrigger = function(player, npc)
     else
         instance:setLocalVar("runeHandler", player:getID())
         player:startEvent(94, xi.ki.RUNIC_DISC, tokens, 1, prefered, 100, 200, 300, floorProgress)
+<<<<<<< HEAD
 	end
+=======
+    end
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
     local instance = npc:getInstance()
     local chars    = instance:getChars()
 
+<<<<<<< HEAD
     if csid == 94 and option > 0 and option < 21 and instance:getLocalVar("runeHandler") == player:getID() then
+=======
+    if
+        csid == 94 and
+        option > 0 and
+        option < 21 and
+        instance:getLocalVar("runeHandler") == player:getID()
+    then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         local floorCost = xi.nyzul.floorCost[option]
 
         if player:getCurrency("nyzul_isle_assault_point") >= floorCost.cost then

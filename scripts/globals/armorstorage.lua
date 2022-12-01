@@ -9,7 +9,7 @@ require("scripts/globals/keyitems")
 xi = xi or {}
 xi.armorStorage = xi.armorStorage or {}
 
--- {SetId, SetGroup, SetMask, SetCount, Head, Body, Hands, Legs, Feet, StorageCost, KeyItem}
+-- { SetId, SetGroup, SetMask, SetCount, Head, Body, Hands, Legs, Feet, StorageCost, KeyItem }
 local armorSets =
 {
     1,  4, 0x000001, 5, 12511, 12638, 13961, 14214, 14089, 500,  xi.ki.FIGHTERS_ARMOR_CLAIM_SLIP,
@@ -185,7 +185,11 @@ xi.armorStorage.onEventFinish = function(player, csid, option, deposit, withdraw
             local cost  = armorSets[idx + 9]
             local ki    = armorSets[idx + 10]
 
-            if player:hasKeyItem(ki) and player:getFreeSlotsCount() >= count and player:getGil() >= cost then
+            if
+                player:hasKeyItem(ki) and
+                player:getFreeSlotsCount() >= count and
+                player:getGil() >= cost
+            then
                 for i = 4, 8 do
                     local itemId = armorSets[idx + i]
                     if itemId > 0 then
@@ -193,6 +197,7 @@ xi.armorStorage.onEventFinish = function(player, csid, option, deposit, withdraw
                         player:messageSpecial(zones[player:getZoneID()].text.ITEM_OBTAINED, itemId)
                     end
                 end
+
                 player:delKeyItem(ki)
                 player:setGil(player:getGil() - cost)
             else

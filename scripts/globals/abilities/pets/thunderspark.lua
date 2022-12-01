@@ -7,13 +7,13 @@ require("scripts/globals/summon")
 require("scripts/globals/magic")
 require("scripts/globals/mobskills")
 -----------------------------------
-local ability_object = {}
+local abilityObject = {}
 
-ability_object.onAbilityCheck = function(player, target, ability)
+abilityObject.onAbilityCheck = function(player, target, ability)
     return 0, 0
 end
 
-ability_object.onPetAbility = function(target, pet, skill)
+abilityObject.onPetAbility = function(target, pet, skill)
     local numhits = 1
     local accmod = 1
     local dmgmod = 2
@@ -28,7 +28,7 @@ ability_object.onPetAbility = function(target, pet, skill)
     --add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
     damage.dmg = xi.mobskills.mobAddBonuses(pet, target, damage.dmg, 1)
 
-    local tp = skill:getTP()
+    local tp = pet:getTP()
     if tp < 1000 then
         tp = 1000
     end
@@ -42,4 +42,4 @@ ability_object.onPetAbility = function(target, pet, skill)
     return totaldamage
 end
 
-return ability_object
+return abilityObject

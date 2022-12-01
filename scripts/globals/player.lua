@@ -14,31 +14,31 @@ require("scripts/quests/full_speed_ahead")
 
 local startingRaceInfo =
 {
-    [xi.race.HUME_M]   = {gear = {body = 12631, hand = 12754, leg = 12883, feet = 13005}, homeNation = xi.nation.BASTOK},
-    [xi.race.HUME_F]   = {gear = {body = 12632, hand = 12760, leg = 12884, feet = 13010}, homeNation = xi.nation.BASTOK},
-    [xi.race.ELVAAN_M] = {gear = {body = 12633, hand = 12755, leg = 12885, feet = 13006}, homeNation = xi.nation.SANDORIA},
-    [xi.race.ELVAAN_F] = {gear = {body = 12634, hand = 12759, leg = 12889, feet = 13011}, homeNation = xi.nation.SANDORIA},
-    [xi.race.TARU_M]   = {gear = {body = 12635, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
-    [xi.race.TARU_F]   = {gear = {body = 12635, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
-    [xi.race.MITHRA]   = {gear = {body = 12636, hand = 12757, leg = 12887, feet = 13008}, homeNation = xi.nation.WINDURST},
-    [xi.race.GALKA]    = {gear = {body = 12637, hand = 12758, leg = 12888, feet = 13009}, homeNation = xi.nation.BASTOK},
+    [xi.race.HUME_M]   = { gear = { body = 12631, hand = 12754, leg = 12883, feet = 13005 }, homeNation = xi.nation.BASTOK },
+    [xi.race.HUME_F]   = { gear = { body = 12632, hand = 12760, leg = 12884, feet = 13010 }, homeNation = xi.nation.BASTOK },
+    [xi.race.ELVAAN_M] = { gear = { body = 12633, hand = 12755, leg = 12885, feet = 13006 }, homeNation = xi.nation.SANDORIA },
+    [xi.race.ELVAAN_F] = { gear = { body = 12634, hand = 12759, leg = 12889, feet = 13011 }, homeNation = xi.nation.SANDORIA },
+    [xi.race.TARU_M]   = { gear = { body = 12635, hand = 12756, leg = 12886, feet = 13007 }, homeNation = xi.nation.WINDURST },
+    [xi.race.TARU_F]   = { gear = { body = 12635, hand = 12756, leg = 12886, feet = 13007 }, homeNation = xi.nation.WINDURST },
+    [xi.race.MITHRA]   = { gear = { body = 12636, hand = 12757, leg = 12887, feet = 13008 }, homeNation = xi.nation.WINDURST },
+    [xi.race.GALKA]    = { gear = { body = 12637, hand = 12758, leg = 12888, feet = 13009 }, homeNation = xi.nation.BASTOK },
 }
 
 local startingNationInfo =
 {
-    [xi.nation.SANDORIA] = {ring = 13495, map = xi.ki.MAP_OF_THE_SAN_DORIA_AREA},
-    [xi.nation.BASTOK]   = {ring = 13497, map = xi.ki.MAP_OF_THE_BASTOK_AREA},
-    [xi.nation.WINDURST] = {ring = 13496, map = xi.ki.MAP_OF_THE_WINDURST_AREA},
+    [xi.nation.SANDORIA] = { ring = 13495, map = xi.ki.MAP_OF_THE_SAN_DORIA_AREA },
+    [xi.nation.BASTOK]   = { ring = 13497, map = xi.ki.MAP_OF_THE_BASTOK_AREA },
+    [xi.nation.WINDURST] = { ring = 13496, map = xi.ki.MAP_OF_THE_WINDURST_AREA },
 }
 
 local startingJobGear =
 {
-    [xi.job.WAR] = {16534},       -- onion sword
-    [xi.job.MNK] = {13184},       -- white belt
-    [xi.job.WHM] = {17068, 4608}, -- onion rod, scroll of cure
-    [xi.job.BLM] = {17104, 4607}, -- onion staff, scroll of stone
-    [xi.job.RDM] = {16482, 4606}, -- onion dagger, scroll of dia
-    [xi.job.THF] = {16483},       -- onion knife
+    [xi.job.WAR] = { 16534 },       -- onion sword
+    [xi.job.MNK] = { 13184 },       -- white belt
+    [xi.job.WHM] = { 17068, 4608 }, -- onion rod, scroll of cure
+    [xi.job.BLM] = { 17104, 4607 }, -- onion staff, scroll of stone
+    [xi.job.RDM] = { 16482, 4606 }, -- onion dagger, scroll of dia
+    [xi.job.THF] = { 16483 },       -- onion knife
 }
 
 -----------------------------------
@@ -102,12 +102,15 @@ xi.player.charCreate = function(player)
         for i = xi.ki.MAP_OF_THE_SAN_DORIA_AREA, xi.ki.MAP_OF_DIO_ABDHALJS_GHELSBA do
             player:addKeyItem(i)
         end
+
         for i = xi.ki.MAP_OF_AL_ZAHBI, xi.ki.MAP_OF_RAKAZNAR do
             player:addKeyItem(i)
         end
+
         for i = xi.ki.MAP_OF_RALA_WATERWAYS_U, xi.ki.MAP_OF_RAKAZNAR_U do
             player:addKeyItem(i)
         end
+
         for i = xi.ki.MAP_OF_ESCHA_ZITAH, xi.ki.MAP_OF_REISENJIMA do
             player:addKeyItem(i)
         end
@@ -133,7 +136,7 @@ xi.player.charCreate = function(player)
     --]]
 
     if player:getGil() < xi.settings.main.START_GIL then
-       player:setGil(xi.settings.main.START_GIL)
+        player:setGil(xi.settings.main.START_GIL)
     end
 
     player:addItem(536) -- adventurer coupon
@@ -258,7 +261,10 @@ xi.player.onPlayerMount = function(player)
 end
 
 xi.player.onPlayerEmote = function(player, emoteId)
-    if emoteId == xi.emote.CHEER and player:hasStatusEffect(xi.effect.FULL_SPEED_AHEAD) then
+    if
+        emoteId == xi.emote.CHEER and
+        player:hasStatusEffect(xi.effect.FULL_SPEED_AHEAD)
+    then
         xi.fsa.onCheer(player)
     end
 end

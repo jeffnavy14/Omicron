@@ -4,6 +4,7 @@
 #include "../../ai/states/ability_state.h"
 #include "../../ai/states/magic_state.h"
 #include "../../ai/states/mobskill_state.h"
+#include "../../ai/states/petskill_state.h"
 #include "../../ai/states/range_state.h"
 #include "../../ai/states/weaponskill_state.h"
 #include "../../enmity_container.h"
@@ -21,7 +22,7 @@ namespace gambits
 {
     // Validate gambit before it's inserted into the gambit list
     // Check levels, etc.
-    void CGambitsContainer::AddGambit(const Gambit_t& gambit)
+    std::string CGambitsContainer::AddGambit(Gambit_t const& gambit)
     {
         TracyZoneScoped;
 
@@ -39,7 +40,23 @@ namespace gambits
         if (available)
         {
             gambits.push_back(gambit);
+            return gambit.identifier;
         }
+        return "";
+    }
+
+    void CGambitsContainer::RemoveGambit(std::string const& id)
+    {
+        gambits.erase(
+            std::remove_if(gambits.begin(), gambits.end(),
+                           [&id](Gambit_t const& gambit)
+                           { return gambit.identifier == id; }),
+            gambits.end());
+    }
+
+    void CGambitsContainer::RemoveAllGambits()
+    {
+        gambits.clear();
     }
 
     void CGambitsContainer::Tick(time_point tick)
@@ -58,7 +75,8 @@ namespace gambits
         // TODO: Is this necessary?
         // Not already doing something
         if (POwner->PAI->IsCurrentState<CAbilityState>() || POwner->PAI->IsCurrentState<CRangeState>() || POwner->PAI->IsCurrentState<CMagicState>() ||
-            POwner->PAI->IsCurrentState<CWeaponSkillState>() || POwner->PAI->IsCurrentState<CMobSkillState>())
+            POwner->PAI->IsCurrentState<CWeaponSkillState>() || POwner->PAI->IsCurrentState<CMobSkillState>() ||
+            POwner->PAI->IsCurrentState<CPetSkillState>())
         {
             return;
         }
@@ -105,6 +123,20 @@ namespace gambits
             else if (predicate.target == G_TARGET::MASTER)
             {
                 return CheckTrigger(POwner->PMaster, predicate);
+            }
+            else if (predicate.target == G_TARGET::PARTY_DEAD)
+            {
+                auto result = false;
+                // clang-format off
+                static_cast<CCharEntity*>(POwner->PMaster)->ForPartyWithTrusts([&](CBattleEntity* PMember)
+                {
+                    if (PMember->isDead())
+                    {
+                        result = true;
+                    }
+                });
+                // clang-format on
+                return result;
             }
             else if (predicate.target == G_TARGET::TANK)
             {
@@ -184,10 +216,8 @@ namespace gambits
                 {
                     if (isValidMember(PMember) && CheckTrigger(PMember, predicate))
                     {
-                        auto name = std::string(reinterpret_cast<const char*>(PMember->GetName()));
-                        std::transform(name.begin(), name.end(), name.begin(),
-                        [](unsigned char c) { return std::tolower(c); });
-                        if (name == "curilla")
+                        auto name = PMember->GetName();
+                        if (strcmpi(name.c_str(), "curilla") == 0)
                         {
                             result = true;
                         }
@@ -258,6 +288,21 @@ namespace gambits
                 else if (gambit.predicates[0].target == G_TARGET::MASTER)
                 {
                     target = POwner->PMaster;
+                }
+                else if (gambit.predicates[0].target == G_TARGET::PARTY_DEAD)
+                {
+                    auto* mob = POwner->GetBattleTarget();
+                    if (mob != nullptr)
+                    {
+                        // clang-format off
+                        static_cast<CCharEntity*>(POwner->PMaster)->ForParty([&](CBattleEntity* PMember) {
+                            if (PMember->isDead())
+                            {
+                                target = PMember;
+                            }
+                        });
+                        // clang-format on
+                    }
                 }
                 else if (gambit.predicates[0].target == G_TARGET::TANK)
                 {
@@ -334,10 +379,8 @@ namespace gambits
                     {
                         if (isValidMember(target, PMember) && CheckTrigger(PMember, gambit.predicates[0]))
                         {
-                            auto name = std::string(reinterpret_cast<const char*>(PMember->GetName()));
-                            std::transform(name.begin(), name.end(), name.begin(),
-                                           [](unsigned char c) { return std::tolower(c); });
-                            if (name == "curilla")
+                            auto name = PMember->GetName();
+                            if (strcmpi(name.c_str(), "curilla") == 0)
                             {
                                 target = PMember;
                             }
@@ -478,7 +521,6 @@ namespace gambits
 
                     if (action.select == G_SELECT::HIGHEST_WALTZ)
                     {
-                        // bool canWaltz = false;
                         auto currentTP = POwner->health.tp;
 
                         // clang-format off
@@ -494,9 +536,8 @@ namespace gambits
 
                         for (ABILITY const& waltz : wlist)
                         {
-                            auto waltzLevel = ability::GetAbility(waltz)->getLevel();
-                            // auto abilityName = ability::GetAbility(waltz)->getName();
-                            uint16 tpCost = 0;
+                            auto   waltzLevel = ability::GetAbility(waltz)->getLevel();
+                            uint16 tpCost     = 0;
 
                             if (mLevel >= waltzLevel)
                             {
@@ -763,6 +804,11 @@ namespace gambits
                 return trigger_target->PAI->IsCurrentState<CMagicState>();
                 break;
             }
+            case G_CONDITION::IS_ECOSYSTEM:
+            {
+                return trigger_target->m_EcoSystem == ECOSYSTEM(predicate.condition_arg);
+                break;
+            }
             case G_CONDITION::RANDOM:
             {
                 return xirand::GetRandomNumber<uint16>(100) < (int16)predicate.condition_arg;
@@ -811,8 +857,25 @@ namespace gambits
                     return result;
                     break;
                 }
-                case G_TP_TRIGGER::CLOSER:
+                case G_TP_TRIGGER::CLOSER: // Hold TP indefinitely to close a SC.
                 {
+                    auto* PSCEffect = target->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN);
+
+                    // TODO: ...and has a valid WS...
+
+                    return PSCEffect && PSCEffect->GetStartTime() + 3s < server_clock::now() && PSCEffect->GetTier() == 0;
+                    break;
+                }
+                case G_TP_TRIGGER::CLOSER_UNTIL_TP: // Will hold TP to close a SC, but WS immediately once specified value is reached.
+                {
+                    if (tp_value <= 1500) // If the value provided by the script is missing or too low
+                    {
+                        tp_value = 1500; // Apply the minimum TP Hold Threshold
+                    }
+                    if (POwner->health.tp >= tp_value) // tp_value reached
+                    {
+                        return true; // Time to WS!
+                    }
                     auto* PSCEffect = target->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN);
 
                     // TODO: ...and has a valid WS...
@@ -940,7 +1003,6 @@ namespace gambits
             }
             else // Mobskill
             {
-                // CMobSkill* PMobSkill = battleutils::GetMobSkill(chosen_skill->skill_id);
                 if (chosen_skill->valid_targets & TARGET_SELF || chosen_skill->valid_targets & TARGET_PLAYER_PARTY)
                 {
                     target = POwner;

@@ -17,8 +17,9 @@ CREATE TABLE `augments` (
 -- Dumping data for table `augments`
 --
 
--- WARNING: do not comment out augmentId records,zero their modId and values instead.
--- zero is MOD_NONE and should be fine.
+-- WARNING: do not comment out augmentId records, zero their modId and values instead.
+-- Zero is MOD_NONE and should be fine..
+-- The IDs follow the packet not the dat so windower resources and polutils dumps will not match
 INSERT INTO `augments` VALUES (1,0,2,1,0,0); -- HP+1
 INSERT INTO `augments` VALUES (2,0,2,33,0,0); -- HP+33
 INSERT INTO `augments` VALUES (3,0,2,65,0,0); -- HP+65
@@ -70,12 +71,12 @@ INSERT INTO `augments` VALUES (42,0,166,-1,0,0); -- Enemy crit. hit rate-1%
 INSERT INTO `augments` VALUES (43,0,391,1,0,0); -- Charm+1 Could not determine retail AUGMENT effect. Duration? Chance to land charm? Just set as chance for now.
 INSERT INTO `augments` VALUES (44,0,73,1,0,0); -- Store TP+1 Subtle Blow+1
 INSERT INTO `augments` VALUES (44,0,289,1,0,0); -- Cont.
-INSERT INTO `augments` VALUES (45,0,366,1,0,0); -- DMG:+1 (melee,not ranged...Mainhand only?)
-INSERT INTO `augments` VALUES (46,0,366,-1,0,0); -- DMG:-1 (melee,not ranged...Mainhand only?)
+INSERT INTO `augments` VALUES (45,0,287,1,0,0);  -- DMG:+(X+1), Increases damage rating of this weapon (Maximum X=31 for DMG+32) (Retail: melee,not ranged...Mainhand only?) Item displays a value 1 larger than stored in item
+INSERT INTO `augments` VALUES (46,0,287,-1,0,0); -- DMG:-(X+1), Decreases damage rating of this weapon (Maximum X=31 for DMG-32) (Retail: melee,not ranged...Mainhand only?) Item displays a (negative) value 1 larger than stored in item
 INSERT INTO `augments` VALUES (47,0,380,1,0,0); -- Delay:+1% (melee,not ranged)
 INSERT INTO `augments` VALUES (48,0,380,-1,0,0); -- Delay:-1% (melee,not ranged)
-INSERT INTO `augments` VALUES (49,0,384,100,0,0); -- Haste+1
-INSERT INTO `augments` VALUES (50,0,384,-100,0,0); -- Slow+1
+INSERT INTO `augments` VALUES (49,100,384,1,0,0); -- Haste+1
+INSERT INTO `augments` VALUES (50,100,384,-1,0,0); -- Slow+1
 INSERT INTO `augments` VALUES (51,0,72,1,0,0); -- HP recovered while healing+1
 INSERT INTO `augments` VALUES (52,0,71,1,0,0); -- MP recovered while healing+1
 INSERT INTO `augments` VALUES (53,0,168,-1,0,0); -- Spell interruption rate down 1%
@@ -84,7 +85,7 @@ INSERT INTO `augments` VALUES (55,100,163,-1,0,0); -- Magic dmg. taken -1%
 INSERT INTO `augments` VALUES (56,100,162,-1,0,0); -- Breath dmg. taken -1%
 INSERT INTO `augments` VALUES (57,0,562,1,0,0); -- Magic crit. hit rate+1%
 INSERT INTO `augments` VALUES (58,0,29,-1,0,0); -- Mag.Def.Bns.-1
-INSERT INTO `augments` VALUES (59,0,0,0,0,0); -- Latent effect: Regain+1 (Do via Latent: triggered with your current weapon drawn for 1 TP/tick.)
+INSERT INTO `augments` VALUES (59,0,0,0,0,0); -- Latent effect: Regain+10 (Do via Latent: triggered with your current weapon drawn for 10 TP/tick.)
 INSERT INTO `augments` VALUES (60,0,0,0,0,0); -- Latent effect: Refresh+1 (Do via Latent: triggered with your current weapon not drawn for 1 MP/tick. Refresh is not present while resting(/heal),chocobo or /sit.)
 INSERT INTO `augments` VALUES (61,0,958,1,0,0); -- Occ. inc. resist to stat ailments+1
 INSERT INTO `augments` VALUES (62,0,25,33,0,0); -- Accuracy+33
@@ -102,8 +103,8 @@ INSERT INTO `augments` VALUES (70,0,28,33,0,0); -- Cont.
 INSERT INTO `augments` VALUES (71,0,160,-100,0,0); -- Damage Taken -1%
 INSERT INTO `augments` VALUES (72,0,0,0,0,0); -- 72 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
 INSERT INTO `augments` VALUES (73,0,0,0,0,0); -- 73 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
-INSERT INTO `augments` VALUES (74,0,0,0,0,0); -- Cap. Point +1%
-INSERT INTO `augments` VALUES (75,0,0,0,0,0); -- Cap. Point +33%
+INSERT INTO `augments` VALUES (74,0,915,1,0,0); -- Cap. Point +1%
+INSERT INTO `augments` VALUES (75,0,915,33,0,0); -- Cap. Point +33%
 INSERT INTO `augments` VALUES (76,0,0,0,0,0); -- DMG+33 Unsure if main hand or off hand so leaving values blank for now,goes up in increments of 1 after the initial 33.
 INSERT INTO `augments` VALUES (77,0,0,0,0,0); -- Delay -33% Unsure if main hand or off hand so leaving values blank for now,goes up in increments of 1 after the initial 33.
 INSERT INTO `augments` VALUES (78,0,2,2,0,0); -- HP+2 (count by 2)
@@ -1031,7 +1032,7 @@ INSERT INTO `augments` VALUES (828,0,0,0,0,0);
 INSERT INTO `augments` VALUES (829,0,0,0,0,0);
 INSERT INTO `augments` VALUES (830,0,0,0,0,0);
 INSERT INTO `augments` VALUES (831,0,0,0,0,0);
--- NOTICE: additional effect augments will not work until we finish refactoring additional effects. See Teo in discrod for details.
+-- NOTICE: additional effect augments will not work until we finish refactoring additional effects and fill in values here.
 INSERT INTO `augments` VALUES (832,0,0,0,0,0); -- Additional Effect: Fire Dmg      (Base of 5,each additional point +1 for range of 5 to 36)
 INSERT INTO `augments` VALUES (833,0,0,0,0,0); -- Additional Effect: Ice Dmg       (Base of 5,each additional point +1 for range of 5 to 36)
 INSERT INTO `augments` VALUES (834,0,0,0,0,0); -- Additional Effect: Wind Dmg      (Base of 5,each additional point +1 for range of 5 to 36)
@@ -1570,7 +1571,7 @@ INSERT INTO `augments` VALUES (1283,0,0,0,0,0); -- Enhances Manafont effect
 INSERT INTO `augments` VALUES (1284,0,0,0,0,0); -- Enhances Chainspell effect
 INSERT INTO `augments` VALUES (1285,0,0,0,0,0); -- Enhances Perfect Dodge effect
 INSERT INTO `augments` VALUES (1286,0,0,0,0,0); -- Enhances Invincible effect
-INSERT INTO `augments` VALUES (1287,0,0,0,0,0); -- Enhances Blood Weapon effect
+INSERT INTO `augments` VALUES (1287,10,1070,1,0,0); -- Enhances Blood Weapon effect
 INSERT INTO `augments` VALUES (1288,0,0,0,0,0); -- Enhances Familiar effect
 INSERT INTO `augments` VALUES (1289,0,0,0,0,0); -- Enhances Soul Voice effect
 INSERT INTO `augments` VALUES (1290,0,0,0,0,0); -- Enhances Eagle Eye Shot effect
@@ -1651,13 +1652,13 @@ INSERT INTO `augments` VALUES (1360,0,0,0,0,0); -- Enhances "Feint" effect
 INSERT INTO `augments` VALUES (1361,0,886,1,0,0); -- Enh. "Assassins Charge" effect
 INSERT INTO `augments` VALUES (1362,0,0,0,0,0); -- 1362 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
 INSERT INTO `augments` VALUES (1363,0,0,0,0,0); -- 1363 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
-INSERT INTO `augments` VALUES (1364,0,0,0,0,0); -- Enhances "Iron Will" effect
-INSERT INTO `augments` VALUES (1365,0,0,0,0,0); -- Enhances "Fealty" effect
-INSERT INTO `augments` VALUES (1366,0,0,0,0,0); -- Enhances "Chivalry" effect
-INSERT INTO `augments` VALUES (1367,0,0,0,0,0); -- Enhances "Guardian" effect
+INSERT INTO `augments` VALUES (1364,3,1064,1,0,0); -- Enhances "Iron Will" effect
+INSERT INTO `augments` VALUES (1365,4,1063,1,0,0); -- Enhances "Fealty" effect
+INSERT INTO `augments` VALUES (1366,5,1061,1,0,0); -- Enhances "Chivalry" effect
+INSERT INTO `augments` VALUES (1367,2,1065,1,0,0); -- Enhances "Guardian" effect
 INSERT INTO `augments` VALUES (1368,0,0,0,0,0); -- 1368 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
 INSERT INTO `augments` VALUES (1369,0,0,0,0,0); -- 1369 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
-INSERT INTO `augments` VALUES (1370,0,0,0,0,0); -- Enhances "Dark Seal" effect
+INSERT INTO `augments` VALUES (1370,10,1073,1,0,0); -- Enhances "Dark Seal" effect
 INSERT INTO `augments` VALUES (1371,0,0,0,0,0); -- Enhances "Diabolic Eye" effect
 INSERT INTO `augments` VALUES (1372,0,0,0,0,0); -- Enhances "Muted Soul" effect
 INSERT INTO `augments` VALUES (1373,0,0,0,0,0); -- Enhances "Desperate Blows" effect
@@ -2348,4 +2349,4 @@ INSERT INTO `augments` VALUES (2045,0,0,0,0,0);
 INSERT INTO `augments` VALUES (2046,0,0,0,0,0);
 -- End unused block
 
-INSERT INTO `augments` VALUES (2047,0,0,0,0,0); -- ??? (it literally just says "???") - used by WotG scenario reward
+INSERT INTO `augments` VALUES (2047,0,0,0,0,0); -- ??? (it literally just says "???")

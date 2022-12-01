@@ -38,9 +38,9 @@ CPetController::CPetController(CPetEntity* _PPet)
 void CPetController::Tick(time_point tick)
 {
     TracyZoneScoped;
-    TracyZoneIString(PPet->GetName());
+    TracyZoneString(PPet->GetName());
 
-    if (PPet->isCharmed && tick > PPet->charmTime)
+    if (PPet->shouldDespawn(tick))
     {
         petutils::DespawnPet(PPet->PMaster);
         return;
@@ -75,7 +75,7 @@ void CPetController::DoRoamTick(time_point tick)
     {
         if (currentDistance < 35.0f && PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
         {
-            PPet->PAI->PathFind->FollowPath();
+            PPet->PAI->PathFind->FollowPath(m_Tick);
         }
         else if (PPet->GetSpeed() > 0)
         {
@@ -117,7 +117,8 @@ bool CPetController::TryDeaggro()
 
     // target is no longer valid, so wipe them from our enmity list
     if (PTarget->isDead() || PTarget->isMounted() || PTarget->loc.zone->GetID() != PPet->loc.zone->GetID() ||
-        PPet->StatusEffectContainer->GetConfrontationEffect() != PTarget->StatusEffectContainer->GetConfrontationEffect())
+        PPet->StatusEffectContainer->GetConfrontationEffect() != PTarget->StatusEffectContainer->GetConfrontationEffect() ||
+        PPet->getBattleID() != PTarget->getBattleID())
     {
         return true;
     }
@@ -130,5 +131,18 @@ bool CPetController::Ability(uint16 targid, uint16 abilityid)
     {
         return PPet->PAI->Internal_Ability(targid, abilityid);
     }
+    return false;
+}
+
+bool CPetController::PetSkill(uint16 targid, uint16 abilityid)
+{
+    TracyZoneScoped;
+    if (POwner)
+    {
+        FaceTarget(targid);
+        PPet->PAI->EventHandler.triggerListener("WEAPONSKILL_BEFORE_USE", PPet, abilityid);
+        return POwner->PAI->Internal_PetSkill(targid, abilityid);
+    }
+
     return false;
 }

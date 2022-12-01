@@ -30,6 +30,7 @@ quest.hasKeyItem = function(player)
             return true
         end
     end
+
     return false
 end
 
@@ -46,7 +47,7 @@ quest.sections =
             ['Dkhaaya'] =
             {
                 onTrigger = function(player, npc)
-                    return quest:checkStartEvent(player, 4)
+                    return quest:progressEvent(4)
                 end
             },
 
@@ -100,13 +101,13 @@ quest.sections =
                         not quest.hasKeyItem(player) and
                         npcUtil.tradeHasExactly(trade, xi.items.PICKAXE)
                     then
-                        if math.random(1,10) > 5 then
-                            quest:setVar(player, 'Prog', math.random(1,3))
+                        if math.random(1, 10) > 5 then
+                            quest:setVar(player, 'Prog', math.random(1, 3))
 
-                            return quest:progressEvent(0, {[0] = keyItems[quest:getVar(player, 'Prog')]})
+                            return quest:progressEvent(0, { [0] = keyItems[quest:getVar(player, 'Prog')] })
                         else
                             player:setLocalVar("mineFail", 1)
-                            return quest:progressEvent(0, {[1] = 1})
+                            return quest:progressEvent(0, { [1] = 1 })
                         end
                     end
                 end,
@@ -140,7 +141,10 @@ quest.sections =
                 onTrigger = function(player, npc)
                     if quest.hasKeyItem(player) then
                         return quest:progressEvent(8)
-                    elseif player:hasItem(xi.items.OLDUUM_RING) or player:hasItem(xi.items.LIGHTNING_BAND) then
+                    elseif
+                        player:hasItem(xi.items.OLDUUM_RING) or
+                        player:hasItem(xi.items.LIGHTNING_BAND)
+                    then
                         return quest:event(7)
                     else
                         local newRingCS = player:getLocalVar("RingCS")
@@ -148,7 +152,8 @@ quest.sections =
                         if newRingCS > 1 then
                             newRingCS = 1
                         end
-                        return quest:event(7, {[7] = newRingCS + 1})
+
+                        return quest:event(7, { [7] = newRingCS + 1 })
                     end
                 end,
             },
@@ -156,7 +161,7 @@ quest.sections =
             onEventFinish =
             {
                 [8] = function(player, csid, option, npc)
-                    npcUtil.giveItem(player,xi.items.LIGHTNING_BAND)
+                    npcUtil.giveItem(player, xi.items.LIGHTNING_BAND)
                     player:delKeyItem(keyItems[quest:getVar(player, 'Prog')])
                     quest:setVar(player, 'Prog', 0)
                 end,
@@ -176,7 +181,7 @@ quest.sections =
                 onTrade = function(player, npc, trade)
                     if npcUtil.tradeHasExactly(trade, xi.items.LIGHTNING_BAND) then
                         if player:getFreeSlotsCount() == 0 then
-                            return quest:messageSpecial(zones[player:getZoneID()].ITEM_CANNOT_BE_OBTAINED)
+                            return quest:messageSpecial(zones[player:getZoneID()].text.ITEM_CANNOT_BE_OBTAINED)
                         else
                             return quest:progressEvent(2)
                         end
@@ -204,13 +209,13 @@ quest.sections =
                         not quest.hasKeyItem(player) and
                         npcUtil.tradeHasExactly(trade, xi.items.PICKAXE)
                     then
-                        if math.random(1,10) > 5 then
-                            quest:setVar(player, 'Prog', math.random(1,3))
+                        if math.random(1, 10) > 5 then
+                            quest:setVar(player, 'Prog', math.random(1, 3))
 
-                            return quest:progressEvent(0, {[0] = keyItems[quest:getVar(player, 'Prog')]})
+                            return quest:progressEvent(0, { [0] = keyItems[quest:getVar(player, 'Prog')] })
                         else
                             player:setLocalVar("mineFail", 1)
-                            return quest:progressEvent(0, {[1] = 1})
+                            return quest:progressEvent(0, { [1] = 1 })
                         end
                     end
                 end,

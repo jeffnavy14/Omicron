@@ -45,6 +45,7 @@ public:
     void   setRecast(uint16 recast);
     uint16 getRecast();
     void   actionID(uint16 actionid);
+    uint16 getParam(uint32 actionTargetID);
     void   param(uint32 actionTargetID, int32 param);
     void   messageID(uint32 actionTargetID, uint16 messageID);
     auto   getAnimation(uint32 actionTargetID) -> std::optional<uint16>;
@@ -55,6 +56,7 @@ public:
     void   additionalEffect(uint32 actionTargetID, uint16 additionalEffect);
     void   addEffectParam(uint32 actionTargetID, int32 addEffectParam);
     void   addEffectMessage(uint32 actionTargetID, uint16 addEffectMessage);
+    bool   addAdditionalTarget(uint32 actionTargetID);
 
     static void Register();
 };

@@ -11,7 +11,7 @@ local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        trade:hasItemQty(555, 1) == true and
+        trade:hasItemQty(555, 1) and
         trade:getItemCount() == 1
     then
         local a = player:getCharVar("saveTheClockTowerNPCz2") -- NPC Zone2
@@ -73,8 +73,8 @@ end
 
 entity.onEventFinish = function(player, csid, option)
     if csid == 74 then
-        player:addCharVar("saveTheClockTowerVar", 1)
-        player:addCharVar("saveTheClockTowerNPCz2", 128)
+        player:incrementCharVar("saveTheClockTowerVar", 1)
+        player:incrementCharVar("saveTheClockTowerNPCz2", 128)
     elseif csid == 29 then
         player:setCharVar("theLostCardianVar", 1)
     end

@@ -5,13 +5,13 @@ require("scripts/globals/magic")
 require("scripts/globals/msg")
 require("scripts/globals/status")
 -----------------------------------
-local spell_object = {}
+local spellObject = {}
 
-spell_object.onMagicCastingCheck = function(caster, target, spell)
+spellObject.onMagicCastingCheck = function(caster, target, spell)
     return 0
 end
 
-spell_object.onSpellCast = function(caster, target, spell)
+spellObject.onSpellCast = function(caster, target, spell)
     local dINT = caster:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
 
     local duration = calculateDuration(60, spell:getSkillType(), spell:getSpellGroup(), caster, target)
@@ -23,10 +23,11 @@ spell_object.onSpellCast = function(caster, target, spell)
     params.effect = xi.effect.SLEEP_I
     local resist = applyResistanceEffect(caster, target, spell, params)
 
-    if (caster:isMob()) then
-        if (caster:getPool() == 5310) then -- Amnaf (Flayer)
+    if caster:isMob() then
+        if caster:getPool() == 5310 then -- Amnaf (Flayer)
             caster:resetEnmity(target)
         end
+
         -- Todo: get rid of this whole block by handling it in the mob script
         -- this requires a multi target enmity without specifying a target (have to get hate list from mob)
         -- OR by altering onSpellPrecast to have a target param..
@@ -47,4 +48,4 @@ spell_object.onSpellCast = function(caster, target, spell)
     return params.effect
 end
 
-return spell_object
+return spellObject

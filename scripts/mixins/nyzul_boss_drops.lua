@@ -29,4 +29,7 @@ g_mixins.nyzul_boss_drop = function(nyzulMob)
 end
 
 return g_mixins.nyzul_boss_drop
+<<<<<<< HEAD
 
+=======
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c

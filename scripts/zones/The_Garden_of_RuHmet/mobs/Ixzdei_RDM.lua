@@ -4,7 +4,7 @@
 -- Note: CoP Mission 8-3
 -----------------------------------
 local ID = require("scripts/zones/The_Garden_of_RuHmet/IDs")
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 require("scripts/globals/magic")
 require("scripts/globals/pathfind")
 require("scripts/globals/status")
@@ -12,8 +12,8 @@ require("scripts/globals/status")
 local entity = {}
 
 local chargeOptic = function(mob)
-    mob:SetAutoAttackEnabled(false)
-    mob:SetMobAbilityEnabled(false)
+    mob:setAutoAttackEnabled(false)
+    mob:setMobAbilityEnabled(false)
 
     if mob:getLocalVar("opticInduration") ~= 1 then
         mob:timer(5000, function(mobArg)
@@ -22,8 +22,8 @@ local chargeOptic = function(mob)
     elseif mob:getLocalVar("opticInduration") == 1 then
         mob:useMobAbility(1465)
         mob:setLocalVar("opticInduration", 0)
-        mob:SetAutoAttackEnabled(true)
-        mob:SetMobAbilityEnabled(true)
+        mob:setAutoAttackEnabled(true)
+        mob:setMobAbilityEnabled(true)
     end
 end
 
@@ -31,13 +31,13 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            {id = xi.jsa.MANAFONT, hpp = math.random(50, 80)},
+            { id = xi.jsa.MANAFONT, hpp = math.random(50, 80) },
         },
     })
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
     mob:setAnimationSub(0)
-    mob:SetAutoAttackEnabled(true)
-    mob:SetMobAbilityEnabled(true)
+    mob:setAutoAttackEnabled(true)
+    mob:setMobAbilityEnabled(true)
     mob:setLocalVar("healpercent", math.random(15, 25))
 end
 
@@ -71,7 +71,7 @@ entity.onMobFight = function(mob, target)
     end
 
     if
-        mob:actionQueueEmpty() == true and
+        mob:actionQueueEmpty() and
         not isBusy
     then -- dont change forms while charging Optic Induration
         if
@@ -121,7 +121,7 @@ entity.onMobFight = function(mob, target)
         {
             [ID.mob.IXZDEI_BASE] = function()
                 local spawnPos = zdeiOne:getSpawnPos()
-                mob:SetMagicCastingEnabled(false)
+                mob:setMagicCastingEnabled(false)
                 mob:pathTo(spawnPos.x, spawnPos.y, spawnPos.z) -- go back to pedastal to heal
                 mob:setBehaviour(bit.bor(mob:getBehaviour(), xi.behavior.STANDBACK))
                 mob:timer(8000, function(mobArg)
@@ -133,13 +133,13 @@ entity.onMobFight = function(mob, target)
                         mob:setHP(6500)
                         mob:setLocalVar("healed", 1)
                         mob:setLocalVar("heal", 1)
-                        mob:SetMagicCastingEnabled(true)
+                        mob:setMagicCastingEnabled(true)
                     end
                 end)
             end,
             [ID.mob.IXZDEI_BASE + 1] = function()
                 local spawnPos = zdeiTwo:getSpawnPos()
-                mob:SetMagicCastingEnabled(false)
+                mob:setMagicCastingEnabled(false)
                 mob:pathTo(spawnPos.x, spawnPos.y, spawnPos.z)
                 mob:setBehaviour(bit.bor(mob:getBehaviour(), xi.behavior.STANDBACK))
                 mob:timer(8000, function(mobArg)
@@ -151,7 +151,7 @@ entity.onMobFight = function(mob, target)
                         mob:setHP(6500)
                         mob:setLocalVar("healed", 1)
                         mob:setLocalVar("heal", 1)
-                        mob:SetMagicCastingEnabled(true)
+                        mob:setMagicCastingEnabled(true)
                     end
                 end)
             end,
@@ -165,7 +165,7 @@ entity.onMobWeaponSkill = function(target, mob, skill)
         mob:setAnimationSub(0)
         local opticCounter = mob:getLocalVar("opticCounter")
 
-        opticCounter = opticCounter +1
+        opticCounter = opticCounter + 1
         mob:setLocalVar("opticCounter", opticCounter)
 
         if opticCounter > 2 then
@@ -182,7 +182,7 @@ entity.onMobDisengage = function(mob)
     mob:setAnimationSub(0)
 end
 
-entity.onMobDeath = function(mob, isKiller, player)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

@@ -106,7 +106,10 @@ quest.sections =
                 end,
 
                 onTrade = function(player, npc, trade)
-                    if quest:getVar(player, 'Prog') == 1 and npcUtil.tradeHas(trade, xi.items.PIECE_OF_ATTOHWA_GINSENG) then
+                    if
+                        quest:getVar(player, 'Prog') == 1 and
+                        npcUtil.tradeHas(trade, xi.items.PIECE_OF_ATTOHWA_GINSENG)
+                    then
                         return quest:progressEvent(29)
                     end
                 end
@@ -168,7 +171,7 @@ quest.sections =
                     if
                         quest:getVar(player, 'Prog') == 3 and
                         npcUtil.tradeHas(trade, xi.items.INGOT_OF_ROYAL_TREASURY_GOLD) and
-                        npcUtil.popFromQM(player, npc, davoiID.mob.HEMATIC_CYST, {radius = 1, hide = 0})
+                        npcUtil.popFromQM(player, npc, davoiID.mob.HEMATIC_CYST, { radius = 1, hide = 0 })
                     then
                         player:confirmTrade()
                         return quest:messageSpecial(davoiID.text.UNDER_ATTACK)
@@ -178,7 +181,7 @@ quest.sections =
 
             ['Hematic_Cyst'] =
             {
-                onMobDeath = function(mob, player, isKiller)
+                onMobDeath = function(mob, player, optParams)
                     if quest:getVar(player, 'Prog') == 3 then
                         quest:setVar(player, 'Prog', 4)
                     end

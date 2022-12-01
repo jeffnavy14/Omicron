@@ -19,7 +19,7 @@ function Message:new(messageId, messageType, ...)
     obj.id = messageId
     obj.priority = Action.Priority.Message -- messages have lowest default priority
     obj.messageType = messageType or Message.Type.Text
-    obj.options = {...}
+    obj.options = { ... }
     return obj
 end
 
@@ -31,6 +31,7 @@ function Message:perform(player, targetEntity)
     else
         player:messageText(self.npcId and GetNPCByID(self.npcId) or targetEntity, self.id, { face = self.face })
     end
+
     return self.returnValue
 end
 

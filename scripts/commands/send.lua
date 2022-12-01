@@ -18,7 +18,7 @@ cmdprops =
 -----------------------------------
 local zone_list =
 {
-    { 0x14, 0xA9, 1 , 0, -2, 0}, -- Phanauet Channel
+    { 0x14, 0xA9, 1 , 0, -2, 0 }, -- Phanauet Channel
     { 0x14, 0xAA, 2 }, -- Carpenters' Landing
     { 0x14, 0x84, 3 }, -- Manaclipper
     { 0x14, 0x85, 4 }, -- Bibiki Bay
@@ -36,8 +36,8 @@ local zone_list =
     { 0x14, 0x9B, 16 }, -- Promyvion - Holla
     { 0x14, 0x9A, 16 }, -- Promyvion - Holla
     { 0x14, 0x9C, 17 }, -- Spire of Holla
-    { 0x14, 0x9E, 18 , 179, 0, -57}, -- Promyvion - Dem
-    { 0x14, 0x9D, 18 , 179, 0, -57}, -- Promyvion - Dem
+    { 0x14, 0x9E, 18 , 179, 0, -57 }, -- Promyvion - Dem
+    { 0x14, 0x9D, 18 , 179, 0, -57 }, -- Promyvion - Dem
     { 0x14, 0x9F, 19 }, -- Spire of Dem
     { 0x14, 0xA0, 20 }, -- Promyvion - Mea
     { 0x14, 0xA1, 20 }, -- Promyvion - Mea
@@ -83,8 +83,8 @@ local zone_list =
     { 0x14, 0xC1, 55 }, -- Ilrusi Atoll
     { 0x14, 0xC2, 56 }, -- Periqia
     { 0x14, 0xC3, 57 }, -- Talacca Cove
-    { 0x14, 0xC4, 58 , 0, -2, 0}, -- Silver Sea route to Nashmau
-    { 0x14, 0xC5, 59 , 0, -2, 0}, -- Silver Sea route to Al Zahbi
+    { 0x14, 0xC4, 58 , 0, -2, 0 }, -- Silver Sea route to Nashmau
+    { 0x14, 0xC5, 59 , 0, -2, 0 }, -- Silver Sea route to Al Zahbi
     { 0x14, 0xC6, 60 }, -- The Ashu Talif
     { 0x14, 0xC7, 61 }, -- Mount Zhayolm
     { 0x14, 0xC8, 62 }, -- Halvung
@@ -95,7 +95,7 @@ local zone_list =
     { 0x14, 0xCD, 67 }, -- Jade Sepulcher
     { 0x14, 0xCE, 68 }, -- Aydeewa Subterrane
     { 0x14, 0xCF, 69 }, -- Leujaoam Sanctum
-    { 0x27, 0x0F, 70 , -324, 0, -473}, -- Chocobo Circuit
+    { 0x27, 0x0F, 70 , -324, 0, -473 }, -- Chocobo Circuit
     { 0x27, 0x10, 71 }, -- The Colosseum
     { 0x14, 0xDD, 72 }, -- Alzadaal Undersea Ruins
     { 0x14, 0xDE, 73 }, -- Zhayolm Remnants
@@ -284,11 +284,12 @@ function error(player, msg)
 end
 
 local function getBytePos(s, needle)
-    for i=1, string.len(s), 1 do
-        if (string.byte(s, i) == needle) then
+    for i = 1, string.len(s), 1 do
+        if string.byte(s, i) == needle then
             return i
         end
     end
+
     return nil
 end
 
@@ -303,10 +304,11 @@ function onTrigger(player, bytes)
     local rot = 0
     local zone
 
-    if (bytes == nil) then
+    if bytes == nil then
         error(player, "You must provide the name of a player to send and a destination.")
         return
     end
+
     bytes = string.sub(bytes, 6)
     local atpos = getBytePos(bytes, 253)
     local sppos = getBytePos(bytes, 32)
@@ -314,25 +316,25 @@ function onTrigger(player, bytes)
     -- validate player to send
     local target
     local targ
-    if (sppos == nil) then
+    if sppos == nil then
         error(player, "You must provide the name of a player to send and a destination.")
         return
     else
         target = string.sub(bytes, 1, sppos-1)
         targ = GetPlayerByName(target)
-        if (targ == nil) then
-            error(player, string.format( "Player named '%s' not found!", target ))
+        if targ == nil then
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
 
     -- validate destination
-    if (atpos ~= nil) then
+    if atpos ~= nil then
         -- destination is an auto-translate phrase
         local groupId = string.byte(bytes, atpos + 3)
         local messageId = string.byte(bytes, atpos + 4)
         for k, v in pairs(zone_list) do
-            if (v[1] == groupId and v[2] == messageId) then
+            if v[1] == groupId and v[2] == messageId then
                 x = v[4] or 0
                 y = v[5] or 0
                 z = v[6] or 0
@@ -341,21 +343,23 @@ function onTrigger(player, bytes)
                 break
             end
         end
-        if (zone == nil) then
+
+        if zone == nil then
             error(player, "Auto-translated phrase is not a zone.")
             return
         end
     else
-        local dest = string.sub(bytes, sppos+1)
-        if (tonumber(dest) ~= nil) then
+        local dest = string.sub(bytes, sppos + 1)
+        if tonumber(dest) ~= nil then
             -- destination is a zone ID.
             zone = tonumber(dest)
-            if (zone < 0 or zone >= xi.zone.MAX_ZONE) then
+            if zone < 0 or zone >= xi.zone.MAX_ZONE then
                 error(player, "Invalid zone ID.")
                 return
             end
+
             for k, v in pairs(zone_list) do
-                if (v[3] == zone) then
+                if v[3] == zone then
                     x = v[4] or 0
                     y = v[5] or 0
                     z = v[6] or 0
@@ -368,10 +372,11 @@ function onTrigger(player, bytes)
             -- destination is a player name.
             target = dest
             dest = GetPlayerByName(dest)
-            if (dest == nil) then
-                error(player, string.format( "Player named '%s' not found!", target ))
+            if dest == nil then
+                error(player, string.format("Player named '%s' not found!", target))
                 return
             end
+
             x = dest:getXPos()
             y = dest:getYPos()
             z = dest:getZPos()
@@ -382,7 +387,7 @@ function onTrigger(player, bytes)
 
     -- send target to destination
     targ:setPos(x, y, z, rot, zone)
-    if (targ:getID() ~= player:getID()) then
-        player:PrintToPlayer( string.format("Sent %s to zone %i.", targ:getName(), zone) )
+    if targ:getID() ~= player:getID() then
+        player:PrintToPlayer(string.format("Sent %s to zone %i.", targ:getName(), zone))
     end
 end

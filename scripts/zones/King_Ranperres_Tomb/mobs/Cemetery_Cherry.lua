@@ -4,6 +4,7 @@
 -- !pos 33.000 0.500 -287.000 190
 -----------------------------------
 local ID = require("scripts/zones/King_Ranperres_Tomb/IDs")
+mixins = { require("scripts/mixins/job_special") }
 require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
@@ -29,7 +30,7 @@ entity.onMobSpawn = function(mob)
     mob:setLocalVar("wasKilled", 0)
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     mob:setLocalVar("wasKilled", 1)
     player:addTitle(xi.title.MON_CHERRY)
 end
@@ -41,6 +42,7 @@ entity.onMobDespawn = function(mob)
     else
         saplingsRespawn = math.random(1800, 3600) -- 30 to 60 minutes
     end
+
     mob:timer(saplingsRespawn * 1000, function(mobArg) spawnSaplings() end)
 end
 

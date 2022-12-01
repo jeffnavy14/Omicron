@@ -6,7 +6,7 @@
 local ID = require("scripts/zones/Mine_Shaft_2716/IDs")
 require("scripts/globals/status")
 require("scripts/globals/status")
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 -----------------------------------
 local entity = {}
 
@@ -17,7 +17,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            {id = xi.jsa.MIGHTY_STRIKES, cooldown = 300, hpp = math.random(85, 95)}, -- 5min cooldown
+            { id = xi.jsa.MIGHTY_STRIKES, cooldown = 300, hpp = math.random(85, 95) }, -- 5min cooldown
         },
     })
 end
@@ -41,6 +41,7 @@ entity.onMobFight = function(mob, target)
                 table.insert(activeMoblins, v)
             end
         end
+
         if #activeMoblins > 0 then
             local randMoblin = GetMobByID(activeMoblins[math.random(#activeMoblins)]) -- choose random moblin from activeMoblins
             mob:disengage()
@@ -50,7 +51,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

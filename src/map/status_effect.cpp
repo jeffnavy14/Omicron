@@ -46,9 +46,9 @@ CStatusEffect::CStatusEffect(EFFECT id, uint16 icon, uint16 power, uint32 tick, 
 
 CStatusEffect::~CStatusEffect() = default;
 
-const int8* CStatusEffect::GetName()
+const std::string& CStatusEffect::GetName()
 {
-    return (const int8*)m_Name.c_str();
+    return m_Name;
 }
 
 void CStatusEffect::SetOwner(CBattleEntity* Owner)
@@ -190,13 +190,7 @@ void CStatusEffect::IncrementElapsedTickCount()
     ++m_tickCount;
 }
 
-void CStatusEffect::SetName(const int8* name)
-{
-    m_Name.clear();
-    m_Name.insert(0, (const char*)name);
-}
-
-void CStatusEffect::SetName(string_t name)
+void CStatusEffect::SetName(std::string name)
 {
     m_Name = std::move(name);
 }

@@ -2,7 +2,7 @@
 -- Area: LaLoff Amphitheater
 --  Mob: Ark Angel HM
 -----------------------------------
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 require("scripts/globals/status")
 -----------------------------------
 local entity = {}
@@ -16,8 +16,8 @@ entity.onMobSpawn = function(mob)
         between = 30,
         specials =
         {
-            {id = xi.jsa.MIGHTY_STRIKES},
-            {id = xi.jsa.MIJIN_GAKURE},
+            { id = xi.jsa.MIGHTY_STRIKES },
+            { id = xi.jsa.MIJIN_GAKURE },
         },
     })
 end
@@ -25,7 +25,7 @@ end
 entity.onMobEngaged = function(mob, target)
     local mobid = mob:getID()
 
-    for member = mobid, mobid+7 do
+    for member = mobid, mobid + 7 do
         local m = GetMobByID(member)
         if m:getCurrentAction() == xi.act.ROAMING then
             m:updateEnmity(target)
@@ -33,7 +33,7 @@ entity.onMobEngaged = function(mob, target)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

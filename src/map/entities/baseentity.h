@@ -44,7 +44,7 @@ enum ENTITYTYPE : uint8
 enum class STATUS_TYPE : uint8
 {
     NORMAL        = 0,
-    MOB           = 1, // STATUS_UPDATE = 1,
+    MOB           = 1,
     DISAPPEAR     = 2,
     INVISIBLE     = 3,
     STATUS_4      = 4,
@@ -140,8 +140,10 @@ enum MOUNTTYPE : uint8
     MOUNT_RED_RAPTOR     = 31,
     MOUNT_IRON_GIANT     = 32,
     MOUNT_BYAKKO         = 33,
+    MOUNT_NOBLE_CHOCOBO  = 34, // NOTE: This is currently blank, probably needs additional packets sent
+    MOUNT_IXION          = 35,
     //
-    MOUNT_MAX = 34,
+    MOUNT_MAX = 36,
 };
 
 enum class ALLEGIANCE_TYPE : uint8
@@ -163,8 +165,8 @@ enum UPDATETYPE : uint8
     UPDATE_HP       = 0x04,
     UPDATE_COMBAT   = 0x07,
     UPDATE_NAME     = 0x08,
-    UPDATE_LOOK     = 0x10,
     UPDATE_ALL_MOB  = 0x0F,
+    UPDATE_LOOK     = 0x10,
     UPDATE_ALL_CHAR = 0x1F,
     UPDATE_DESPAWN  = 0x20,
 };
@@ -226,12 +228,12 @@ struct location_t
     uint16     boundary;    // A certain area in the zone in which the entity is located (used by characters and transport)
 
     location_t()
+    : destination(0)
+    , zone(nullptr)
+    , prevzone(0)
+    , zoning(false)
+    , boundary(0)
     {
-        destination = 0;
-        zone        = nullptr;
-        prevzone    = 0;
-        zoning      = false;
-        boundary    = 0;
     }
 };
 
@@ -254,8 +256,8 @@ public:
     virtual void Spawn();
     virtual void FadeOut();
 
-    virtual const int8* GetName();       // Internal name of entity
-    virtual const int8* GetPacketName(); // Name of entity sent to the client
+    virtual const std::string& GetName();       // Internal name of entity
+    virtual const std::string& GetPacketName(); // Name of entity sent to the client
 
     uint16 getZone() const; // Current zone
     float  GetXPos() const; // Position of co-ordinate X
@@ -263,11 +265,11 @@ public:
     float  GetZPos() const; // Position of co-ordinate Z
     uint8  GetRotPos() const;
 
-    void         HideName(bool hide);    // hide / show name
-    void         GhostPhase(bool ghost); // makes mob semi transparent
-    bool         IsNameHidden() const;   // checks if name is hidden
-    bool         IsTargetable() const;   // checks if entity is targetable
-    virtual bool isWideScannable();      // checks if the entity should show up on wide scan
+    void         HideName(bool hide);     // hide / show name
+    void         GhostPhase(bool ghost);  // makes mob semi transparent
+    bool         IsNameHidden() const;    // checks if name is hidden
+    virtual bool GetUntargetable() const; // checks if entity is untargetable
+    virtual bool isWideScannable();       // checks if the entity should show up on wide scan
 
     CBaseEntity* GetEntity(uint16 targid, uint8 filter = -1) const;
     void         SendZoneUpdate();
@@ -293,8 +295,8 @@ public:
     ENTITYTYPE      objtype;      // Type of entity
     STATUS_TYPE     status;       // Entity status (different entities - different statuses)
     uint16          m_TargID;     // the targid of the object the entity is looking at
-    string_t        name;         // Entity name
-    string_t        packetName;   // Used to override name when being sent to the client
+    std::string     name;         // Entity name
+    std::string     packetName;   // Used to override name when being sent to the client
     look_t          look;         //
     look_t          mainlook;     // only used if mob use changeSkin() or player /lockstyle
     location_t      loc;          // Location of entity

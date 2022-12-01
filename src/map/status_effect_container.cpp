@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -80,8 +80,8 @@ namespace effects
     // Default effect of statuses are overwrite if equal or higher
     struct EffectParams_t
     {
-        uint32   Flag;
-        string_t Name;
+        uint32      Flag;
+        std::string Name;
         // type will erase all other effects that match
         // example: en- spells, spikes
         uint16 Type;
@@ -1461,7 +1461,7 @@ void CStatusEffectContainer::RemoveAllStatusEffectsInIDRange(EFFECT start, EFFEC
 
 /************************************************************************
  *                                                                       *
- *  Устанавливаем имя эффекта для работы со скриптами                    *
+ *  Install the name of the effect to work with scripts                  *
  *                                                                       *
  ************************************************************************/
 
@@ -1471,12 +1471,19 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
     XI_DEBUG_BREAK_IF(StatusEffect->GetStatusID() == EFFECT_FOOD && StatusEffect->GetSubID() == 0);
     XI_DEBUG_BREAK_IF(StatusEffect->GetStatusID() == EFFECT_NONE && StatusEffect->GetSubID() == 0);
 
-    string_t name;
-    EFFECT   effect = StatusEffect->GetStatusID();
+    std::string name;
+    EFFECT      effect = StatusEffect->GetStatusID();
 
     // Determine if this is a BRD Song or COR Effect.
-    if (StatusEffect->GetSubID() == 0 || StatusEffect->GetSubID() > 20000 || (effect >= EFFECT_REQUIEM && effect <= EFFECT_NOCTURNE) ||
-        (effect >= EFFECT_DOUBLE_UP_CHANCE && effect <= EFFECT_NATURALISTS_ROLL) || effect == EFFECT_RUNEISTS_ROLL)
+    if (StatusEffect->GetSubID() == 0 ||
+        StatusEffect->GetSubID() > 20000 ||
+        (effect >= EFFECT_REQUIEM && effect <= EFFECT_NOCTURNE) ||
+        (effect >= EFFECT_DOUBLE_UP_CHANCE && effect <= EFFECT_NATURALISTS_ROLL) ||
+        effect == EFFECT_RUNEISTS_ROLL ||
+        effect == EFFECT_DRAIN_DAZE ||
+        effect == EFFECT_ASPIR_DAZE ||
+        effect == EFFECT_HASTE_DAZE ||
+        effect == EFFECT_BATTLEFIELD)
     {
         name.insert(0, "globals/effects/");
         name.insert(name.size(), effects::EffectsParams[effect].Name);
@@ -1487,9 +1494,10 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
         if (Ptem != nullptr)
         {
             name.insert(0, "globals/items/");
-            name.insert(name.size(), (const char*)Ptem->getName());
+            name.insert(name.size(), Ptem->getName());
         }
     }
+
     StatusEffect->SetName(name);
     StatusEffect->SetFlag(effects::EffectsParams[effect].Flag);
     StatusEffect->SetType(effects::EffectsParams[effect].Type);
@@ -1584,7 +1592,7 @@ void CStatusEffectContainer::LoadStatusEffects()
             }
             CStatusEffect* PStatusEffect =
                 new CStatusEffect(effectID, (uint16)sql->GetUIntData(1), (uint16)sql->GetUIntData(2),
-                                  sql->GetUIntData(3), duration, (uint16)sql->GetUIntData(5), (uint16)sql->GetUIntData(6),
+                                  sql->GetUIntData(3), duration, sql->GetUIntData(5), (uint16)sql->GetUIntData(6),
                                   (uint16)sql->GetUIntData(7), flags);
 
             PEffectList.push_back(PStatusEffect);
@@ -1905,8 +1913,14 @@ void CStatusEffectContainer::TickRegen(time_point tick)
                         CPetEntity* PPet  = (CPetEntity*)m_POwner->PPet;
                         CItem*      hands = PChar->getEquip(SLOT_HANDS);
 
+                        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_AVATARS_FAVOR) &&
+                            ((PPet->m_PetID >= PETID_CARBUNCLE && PPet->m_PetID <= PETID_CAIT_SITH) || PPet->m_PetID == PETID_SIREN))
+                        {
+                            perpetuation = static_cast<int16>(perpetuation * 1.2);
+                        }
+
                         // carbuncle mitts only work on carbuncle
-                        if (hands && hands->getID() == 14062 && PPet->name == "Carbuncle")
+                        if (hands && hands->getID() == 14062 && PPet->m_PetID == PETID_CARBUNCLE)
                         {
                             perpetuation /= 2;
                         }
@@ -1937,7 +1951,10 @@ void CStatusEffectContainer::TickRegen(time_point tick)
             m_POwner->addMP(refresh);
         }
 
-        m_POwner->addTP(regain);
+        if (m_POwner->objtype != TYPE_MOB || m_POwner->PAI->IsEngaged())
+        {
+            m_POwner->addTP(regain);
+        }
 
         if (m_POwner->PPet && ((CPetEntity*)(m_POwner->PPet))->getPetType() == PET_TYPE::AUTOMATON)
         {
@@ -1946,8 +1963,13 @@ void CStatusEffectContainer::TickRegen(time_point tick)
     }
 }
 
-bool CStatusEffectContainer::HasPreventActionEffect()
+bool CStatusEffectContainer::HasPreventActionEffect(bool ignoreCharm)
 {
+    if (ignoreCharm)
+    {
+        return HasStatusEffect(
+            { EFFECT_SLEEP, EFFECT_SLEEP_II, EFFECT_PETRIFICATION, EFFECT_LULLABY, EFFECT_PENALTY, EFFECT_STUN, EFFECT_TERROR });
+    }
     return HasStatusEffect(
         { EFFECT_SLEEP, EFFECT_SLEEP_II, EFFECT_PETRIFICATION, EFFECT_LULLABY, EFFECT_CHARM, EFFECT_CHARM_II, EFFECT_PENALTY, EFFECT_STUN, EFFECT_TERROR });
 }

@@ -20,18 +20,18 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("SmithingExpertQuest") == 1 and
         player:hasKeyItem(xi.keyItem.WAY_OF_THE_BLACKSMITH)
     then
-        if signed ~=0 then
+        if signed ~= 0 then
             player:setSkillRank(xi.skill.SMITHING, newRank)
             player:startEvent(102, 0, 0, 0, 0, newRank, 1)
-            player:setCharVar("SmithingExpertQuest",0)
-            player:setLocalVar("SmithingTraded",1)
+            player:setCharVar("SmithingExpertQuest", 0)
+            player:setLocalVar("SmithingTraded", 1)
         else
             player:startEvent(102, 0, 0, 0, 0, newRank, 0)
         end
-    elseif newRank ~= 0 and newRank <=9 then
+    elseif newRank ~= 0 and newRank <= 9 then
         player:setSkillRank(xi.skill.SMITHING, newRank)
         player:startEvent(102, 0, 0, 0, 0, newRank)
-        player:setLocalVar("SmithingTraded",1)
+        player:setLocalVar("SmithingTraded", 1)
     end
 end
 
@@ -60,19 +60,7 @@ entity.onTrigger = function(player, npc)
         end
     end
 
-    if expertQuestStatus == 550 then
-        --[[
-        Feeding the proper parameter currently hangs the client in cutscene. This may
-        possibly be due to an unimplemented packet or function (display recipe?) Work
-        around to present dialog to player to let them know the trade is ready to be
-        received by triggering with lower rank up parameters.
-        --]]
-        player:showText(npc, 6838)
-        player:showText(npc, 6840)
-        player:startEvent(101, testItem, realSkill, 44, guildMember, 0, 0, 0, 0)
-    else
-        player:startEvent(101, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
-    end
+    player:startEvent(101, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
 end
 
 -- 908  909  910  920  927  101  102
@@ -91,7 +79,7 @@ entity.onEventFinish = function(player, csid, option)
 
     if csid == 101 and option == 2 then
         if guildMember == 1 then
-            player:setCharVar("SmithingExpertQuest",1)
+            player:setCharVar("SmithingExpertQuest", 1)
         end
     elseif csid == 101 and option == 1 then
         if player:getFreeSlotsCount() == 0 then
@@ -104,7 +92,7 @@ entity.onEventFinish = function(player, csid, option)
     else
         if player:getLocalVar("SmithingTraded") == 1 then
             player:tradeComplete()
-            player:setLocalVar("SmithingTraded",0)
+            player:setLocalVar("SmithingTraded", 0)
         end
     end
 

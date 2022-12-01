@@ -29,18 +29,18 @@ xi.rhapsodies.expansion =
 xi.rhapsodies.unavailability =
 {
     [xi.rhapsodies.character.PRISHE] = set{
-       xi.mission.id.cop.DARKNESS_NAMED,
-       xi.mission.id.cop.SLANDEROUS_UTTERINGS,
-       xi.mission.id.cop.DESIRES_OF_EMPTINESS,
-       xi.mission.id.cop.THREE_PATHS,
-       xi.mission.id.cop.FOR_WHOM_THE_VERSE_IS_SUNG,
-       xi.mission.id.cop.A_PLACE_TO_RETURN,
-       xi.mission.id.cop.MORE_QUESTIONS_THAN_ANSWERS,
-       xi.mission.id.cop.ONE_TO_BE_FEARED,
-       xi.mission.id.cop.THE_WARRIORS_PATH,
-       xi.mission.id.cop.GARDEN_OF_ANTIQUITY,
-       xi.mission.id.cop.WHEN_ANGELS_FALL,
-       xi.mission.id.cop.DAWN,
+        xi.mission.id.cop.DARKNESS_NAMED,
+        xi.mission.id.cop.SLANDEROUS_UTTERINGS,
+        xi.mission.id.cop.DESIRES_OF_EMPTINESS,
+        xi.mission.id.cop.THREE_PATHS,
+        xi.mission.id.cop.FOR_WHOM_THE_VERSE_IS_SUNG,
+        xi.mission.id.cop.A_PLACE_TO_RETURN,
+        xi.mission.id.cop.MORE_QUESTIONS_THAN_ANSWERS,
+        xi.mission.id.cop.ONE_TO_BE_FEARED,
+        xi.mission.id.cop.THE_WARRIORS_PATH,
+        xi.mission.id.cop.GARDEN_OF_ANTIQUITY,
+        xi.mission.id.cop.WHEN_ANGELS_FALL,
+        xi.mission.id.cop.DAWN,
     },
     [xi.rhapsodies.character.TENZEN] = set{
         xi.mission.id.cop.THE_CALL_OF_THE_WYRMKING,
@@ -100,7 +100,7 @@ xi.rhapsodies.unavailability =
         xi.mission.id.wotg.DUNGEONS_AND_DANCERS,
         xi.mission.id.wotg.DISTORTER_OF_TIME,
         xi.mission.id.wotg.THE_WILL_OF_THE_WORLD,
-        xi.mission.id.wotg.ADIEU__LILISETTE,
+        xi.mission.id.wotg.ADIEU_LILISETTE,
         xi.mission.id.wotg.BY_THE_FADING_LIGHT,
         xi.mission.id.wotg.EDGE_OF_EXISTENCE,
         xi.mission.id.wotg.HER_MEMORIES,
@@ -220,7 +220,7 @@ xi.rhapsodies.requiredCharacters =
 
     [xi.mission.id.rov.CAUTERIZE] =
     {
-        xi.rhapsodies.character.APHMAU,
+        xi.rhapsodies.character.CAIT_SITH,
     },
 
     [xi.mission.id.rov.UNCERTAIN_DESTINATIONS] =
@@ -230,7 +230,7 @@ xi.rhapsodies.requiredCharacters =
 
     [xi.mission.id.rov.GANGED_UP_ON] =
     {
-        xi.rhapsodies.character.CAIT_SITH,
+        xi.rhapsodies.character.LILLISETTE,
     },
 
     [xi.mission.id.rov.SACRIFICE] =
@@ -249,6 +249,11 @@ xi.rhapsodies.requiredCharacters =
     {
         xi.rhapsodies.character.LILLISETTE,
         xi.rhapsodies.character.CAIT_SITH,
+    },
+
+    [xi.mission.id.rov.PAST_IMPERFECT] =
+    {
+        xi.rhapsodies.character.TENZEN,
     },
 
     [xi.mission.id.rov.THE_CURSED_TEMPLE] =
@@ -386,5 +391,6 @@ xi.rhapsodies.charactersAvailable = function(player)
             return false
         end
     end
+
     return true
 end

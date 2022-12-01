@@ -3,13 +3,17 @@
 --  NPC: ??? (Spawn Dea(ZNM T3))
 -- !pos -34 -32 481 52
 -----------------------------------
-local ID = require("scripts/zones/Bhaflau_Thickets/IDs")
+local ID = zones[xi.zone.BHAFLAU_THICKETS]
 require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if npcUtil.tradeHas(trade, 2576) and npcUtil.popFromQM(player, npc, ID.mob.DEA) then -- Trade Olzhiryan Cactus
+    if
+        npcUtil.tradeHas(trade, 2576) and
+        npcUtil.popFromQM(player, npc, ID.mob.DEA)
+    then
+        -- Trade Olzhiryan Cactus
         player:confirmTrade()
         player:messageSpecial(ID.text.DRAWS_NEAR)
     end

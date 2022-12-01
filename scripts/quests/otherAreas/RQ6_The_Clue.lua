@@ -104,13 +104,13 @@ quest.sections =
                 end,
 
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, {{xi.items.CRAWLER_EGG, 4}}) then
+                    if npcUtil.tradeHasExactly(trade, { { xi.items.CRAWLER_EGG, 4 } }) then
                         return quest:progressEvent(92) -- Quest completed.
                     else
                         local count      = trade:getItemCount()
                         local crawlerEgg = trade:hasItemQty(xi.items.CRAWLER_EGG, trade:getItemCount())
 
-                        if crawlerEgg == true and count < 4 then
+                        if crawlerEgg and count < 4 then
                             return quest:event(93)
                         end
                     end

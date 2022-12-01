@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
 Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -118,7 +118,7 @@ void CInstance::LoadInstance()
 
         // Add to Lua cache
         // TODO: This will happen more often than needed, but not so often that it's a performance concern
-        auto zone     = (const char*)m_zone->GetName();
+        auto zone     = m_zone->GetName();
         auto name     = m_instanceName;
         auto filename = fmt::format("./scripts/zones/{}/instances/{}.lua", zone, name);
         luautils::CacheLuaObjectFromFile(filename);
@@ -150,9 +150,9 @@ uint8 CInstance::GetLevelCap() const
     return m_levelcap;
 }
 
-const int8* CInstance::GetName()
+const std::string& CInstance::GetName()
 {
-    return (const int8*)m_instanceName.c_str();
+    return m_instanceName;
 }
 
 position_t CInstance::GetEntryLoc()
@@ -185,7 +185,7 @@ duration CInstance::GetElapsedTime(time_point tick)
     return tick - m_startTime;
 }
 
-uint64_t CInstance::GetLocalVar(const std::string& name) const
+uint64_t CInstance::GetLocalVar(std::string const& name) const
 {
     auto var = m_LocalVars.find(name);
     return var != m_LocalVars.end() ? var->second : 0;
@@ -225,7 +225,7 @@ void CInstance::SetWipeTime(duration time)
     m_wipeTimer = time + m_startTime;
 }
 
-void CInstance::SetLocalVar(const std::string& name, uint64_t value)
+void CInstance::SetLocalVar(std::string const& name, uint64_t value)
 {
     m_LocalVars[name] = value;
 }

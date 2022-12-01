@@ -27,7 +27,7 @@
 -- - RALA_WATERWAYS_U                = 259,
 -- - YORCIA_WEALD_U                  = 264,
 -- - CIRDAS_CAVERNS_U                = 271,
--- - OUTER_RAKAZNAR_U                = 275,
+-- - OUTER_RAKAZNAR_U1               = 275,
 -- - MAQUETTE_ABDHALJS_LEGION_B      = 287, -- See: ambuscade.lua
 -- - DYNAMIS_SAN_DORIA_D             = 294,
 -- - DYNAMIS_BASTOK_D                = 295,
@@ -109,7 +109,7 @@ xi.instance.lookup =
 
     [xi.zone.MAMOOL_JA_TRAINING_GROUNDS] =
     {
-        {6600, { 505, 11, -4, 0, 60, 0, 1 }, { 505, 4}, { 511, 0 } }, -- Assault: Imperial Agent Rescue
+        { 6600, { 505, 11, -4, 0, 60, 0, 1 }, { 505, 4 }, { 511, 0 } }, -- Assault: Imperial Agent Rescue
         -- Assault: Preemptive Strike
         -- Assault: Sagelord Elimination
         -- Assault: Breaking Morale
@@ -123,7 +123,7 @@ xi.instance.lookup =
 
     [xi.zone.LEUJAOAM_SANCTUM] =
     {
-        {6900, { 140, 1, -4, 0, 50, 0, 1 }, { 140, 4}, { 147, 0 } }, -- Assault: Leujaoam Cleansing
+        { 6900, { 140, 1, -4, 0, 50, 0, 1 }, { 140, 4 }, { 147, 0 } }, -- Assault: Leujaoam Cleansing
         -- Assault: Orichalcum Survey
         -- Assault: Escort Professor Chanoix
         -- Assault: Shanarha Grass Conservation
@@ -268,7 +268,7 @@ xi.instance.lookup =
 
     },
 
-    [xi.zone.OUTER_RAKAZNAR_U] =
+    [xi.zone.OUTER_RAKAZNAR_U1] =
     {
 
     },
@@ -368,11 +368,12 @@ xi.instance.onEventUpdate = function(player, csid, option)
         for _, v in pairs(party) do
             if v:getID() ~= player:getID() then
                 -- Check entry requirements for party
-                if checkEntryReqs(v, instanceId) == false then
+                if not checkEntryReqs(v, instanceId) then
                     player:messageText(npc, ID.text.MEMBER_NO_REQS, false)
                     player:instanceEntry(npc, 1)
                     return false
                 end
+
                 -- Check everyone is in range
                 if v:getZoneID() == player:getZoneID() and v:checkDistance(player) > 50 then
                     player:messageText(npc, ID.text.MEMBER_TOO_FAR, false)
@@ -416,6 +417,7 @@ xi.instance.onInstanceCreatedCallback = function(player, instance)
             if v:getID() ~= player:getID() then
                 v:startEvent(unpack(lookupEntry[4]))
             end
+
             v:setInstance(instance)
             local npc = player:getEventTarget()
             if npc ~= nil then
@@ -440,9 +442,11 @@ xi.instance.onEventFinish = function(player, csid, option)
             for _, v in ipairs(player:getParty()) do
                 v:setPos(0, 0, 0, 0, instance:getZone():getID())
             end
+
             return true
         end
     end
+
     return false
 end
 
@@ -470,6 +474,7 @@ local function setInstanceLastTimeUpdateMessage(instance, players, remainingTime
                 player:messageSpecial(text.TIME_REMAINING_SECONDS, message)
             end
         end
+
         instance:setLastTimeUpdate(message)
     end
 end
@@ -479,7 +484,13 @@ xi.instance.updateInstanceTime = function(instance, elapsed, text)
     local remainingTimeLimit = (instance:getTimeLimit()) * 60 - (elapsed / 1000)
     local wipeTime = instance:getWipeTime()
 
-    if remainingTimeLimit < 0 or (wipeTime ~= 0 and (elapsed - wipeTime) / 1000 > 180) then
+    if
+        remainingTimeLimit < 0 or
+        (
+            wipeTime ~= 0 and
+            (elapsed - wipeTime) / 1000 > 180
+        )
+    then
         instance:fail()
         return
     end
@@ -492,10 +503,12 @@ xi.instance.updateInstanceTime = function(instance, elapsed, text)
                 break
             end
         end
+
         if wipe then
             for i, player in pairs(players) do
                 player:messageSpecial(text.PARTY_FALLEN, 3)
             end
+
             instance:setWipeTime(elapsed)
         end
     else
@@ -506,5 +519,6 @@ xi.instance.updateInstanceTime = function(instance, elapsed, text)
             end
         end
     end
+
     setInstanceLastTimeUpdateMessage(instance, players, remainingTimeLimit, text)
 end

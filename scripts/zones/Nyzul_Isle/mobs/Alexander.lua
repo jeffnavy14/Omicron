@@ -2,8 +2,8 @@
 -- Area: Nyzul Isle (Nashmeira's Plea)
 --  Mob: Alexander
 -----------------------------------
-local ID = require("scripts/zones/Nyzul_Isle/IDs")
-require("scripts/globals/status")
+local ID = require('scripts/zones/Nyzul_Isle/IDs')
+require('scripts/globals/status')
 -----------------------------------
 local entity = {}
 
@@ -63,8 +63,13 @@ entity.onMobFight = function(mob, target)
     end
 end
 
+<<<<<<< HEAD
 entity.onMobDeath = function(mob, player, isKiller)
     if isKiller then
+=======
+entity.onMobDeath = function(mob, player, optParams)
+    if optParams.isKiller then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         mob:showText(mob, ID.text.SHALL_KNOW_OBLIVION)
     end
 end

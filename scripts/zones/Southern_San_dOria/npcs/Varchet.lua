@@ -14,7 +14,7 @@ local gameLost = 2
 local gameTie  = 3
 
 entity.onTrade = function(player, npc, trade)
-    if npcUtil.tradeHas(trade, {{"gil", 5}}) then
+    if npcUtil.tradeHas(trade, { { "gil", 5 } }) then
         player:confirmTrade()
 
         local vdie1 = math.random(1, 6)
@@ -30,6 +30,7 @@ entity.onTrade = function(player, npc, trade)
         elseif ptotal == vtotal then
             result = gameTie
         end
+
         player:setLocalVar('VarchetGame', result)
         player:startEvent(519, vdie1, vdie2, vtotal, pdie1, pdie2, ptotal, result)
     else
@@ -67,6 +68,7 @@ entity.onEventFinish = function(player, csid, option)
         else
             player:messageSpecial(ID.text.VARCHET_BET_LOST)
         end
+
         player:setLocalVar('VarchetGame', 0)
     end
 end

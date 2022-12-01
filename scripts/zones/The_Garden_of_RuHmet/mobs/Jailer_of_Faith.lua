@@ -3,7 +3,7 @@
 --   NM: Jailer of Faith
 -----------------------------------
 local ID = require("scripts/zones/The_Garden_of_RuHmet/IDs")
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 -----------------------------------
 local entity = {}
 
@@ -19,7 +19,7 @@ entity.onMobFight = function(mob)
 
     if mob:getBattleTime() - changeTime > randomTime then
         -- Change close to open.
-        if (mob:getAnimationSub() == 1) then
+        if mob:getAnimationSub() == 1 then
             mob:setAnimationSub(2)
         else -- Change from open to close
             mob:setAnimationSub(1)

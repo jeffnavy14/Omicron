@@ -6,15 +6,14 @@ require("scripts/globals/status")
 require("scripts/globals/magic")
 require("scripts/globals/msg")
 -----------------------------------
-local spell_object = {}
+local spellObject = {}
 
-spell_object.onMagicCastingCheck = function(caster, target, spell)
+spellObject.onMagicCastingCheck = function(caster, target, spell)
     return 0
 end
 
-spell_object.onSpellCast = function(caster, target, spell)
-
-    if (target:hasStatusEffect(xi.effect.PARALYSIS)) then --effect already on, do nothing
+spellObject.onSpellCast = function(caster, target, spell)
+    if target:hasStatusEffect(xi.effect.PARALYSIS) then --effect already on, do nothing
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
     else
         -- Calculate duration.
@@ -24,11 +23,11 @@ spell_object.onSpellCast = function(caster, target, spell)
 
         -- Calculate potency.
         local potency = math.floor(dMND / 4) + 15
-        if (potency > 25) then
+        if potency > 25 then
             potency = 25
         end
 
-        if (potency < 5) then
+        if potency < 5 then
             potency = 5
         end
 
@@ -40,8 +39,8 @@ spell_object.onSpellCast = function(caster, target, spell)
         params.effect = xi.effect.PARALYSIS
         local resist = applyResistanceEffect(caster, target, spell, params)
 
-        if (resist >= 0.5) then --there are no quarter or less hits, if target resists more than .5 spell is resisted completely
-            if (target:addStatusEffect(xi.effect.PARALYSIS, potency, 0, duration*resist)) then
+        if resist >= 0.5 then --there are no quarter or less hits, if target resists more than .5 spell is resisted completely
+            if target:addStatusEffect(xi.effect.PARALYSIS, potency, 0, duration * resist) then
                 spell:setMsg(xi.msg.basic.MAGIC_ENFEEB_IS)
             else
                 -- no effect
@@ -56,4 +55,4 @@ spell_object.onSpellCast = function(caster, target, spell)
     return xi.effect.PARALYSIS
 end
 
-return spell_object
+return spellObject

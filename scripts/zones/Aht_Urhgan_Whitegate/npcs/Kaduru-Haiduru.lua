@@ -13,10 +13,13 @@ local function canUse_KaduruHaiduru_Service(player)
     local shihuDanhuDate = player:getCharVar("ShihuDanhu_TP_date")
 
     -- Kaduru-Haiduru can be used unless the following are true.
-    if (shihuDanhuEncounters > 1 and os.time() < shihuDanhuDate) or
-        (os.time() < caughtUsingShihuDanhuDate) then
+    if
+        (shihuDanhuEncounters > 1 and os.time() < shihuDanhuDate) or
+        os.time() < caughtUsingShihuDanhuDate
+    then
         return false
     end
+
     return true
 end
 
@@ -31,6 +34,7 @@ entity.onTrigger = function(player, npc)
             player:setCharVar("Kaduru_ShihuDanhu_date", getVanaMidnight())
             player:setCharVar("Kaduru_TimesUsed", 0)
         end
+
         player:startEvent(153, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     end
 end
@@ -60,6 +64,7 @@ entity.onTrade = function(player, npc, trade)
             player:setCharVar("Kaduru_ShihuDanhu_date", getVanaMidnight())
             player:setCharVar("Kaduru_TimesUsed", 0)
         end
+
         player:startEvent(155, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     end
 end
@@ -75,12 +80,13 @@ entity.onEventFinish = function(player, csid, option)
         elseif option == 2 then   -- Nation of Allegiance
             local nationDestination =
             {
-                [xi.nation.SANDORIA] = {110,   0,  -7, 175, 231},
-                [xi.nation.BASTOK  ] = { 90,   0, -67, 248, 234},
-                [xi.nation.WINDURST] = {192, -12, 218,  60, 240}
+                [xi.nation.SANDORIA] = { 110,   0,  -7, 175, 231 },
+                [xi.nation.BASTOK  ] = {  90,   0, -67, 248, 234 },
+                [xi.nation.WINDURST] = { 192, -12, 218,  60, 240 }
             }
             player:setPos(unpack(nationDestination[player:getNation()]))
         end
+
         player:tradeComplete()
     elseif csid == 152 then    -- Duchy of Jeuno only
         -- We have either not used Kaduru-Haiduru enough, or we were reset after using Shihu-Danhu.
@@ -88,6 +94,7 @@ entity.onEventFinish = function(player, csid, option)
         if timesUsed < 3 then
             player:setCharVar("Kaduru_TimesUsed", (timesUsed + 1))
         end
+
         player:tradeComplete()
     end
 end

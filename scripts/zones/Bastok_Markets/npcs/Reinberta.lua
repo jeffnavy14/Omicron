@@ -20,18 +20,18 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("GoldsmithingExpertQuest") == 1 and
         player:hasKeyItem(xi.keyItem.WAY_OF_THE_GOLDSMITH)
     then
-        if signed ~=0 then
+        if signed ~= 0 then
             player:setSkillRank(xi.skill.GOLDSMITHING, newRank)
             player:startEvent(301, 0, 0, 0, 0, newRank, 1)
-            player:setCharVar("GoldsmithingExpertQuest",0)
-            player:setLocalVar("GoldsmithingTraded",1)
+            player:setCharVar("GoldsmithingExpertQuest", 0)
+            player:setLocalVar("GoldsmithingTraded", 1)
         else
             player:startEvent(301, 0, 0, 0, 0, newRank, 0)
         end
-    elseif newRank ~= 0 and newRank <=9 then
+    elseif newRank ~= 0 and newRank <= 9 then
         player:setSkillRank(xi.skill.GOLDSMITHING, newRank)
         player:startEvent(301, 0, 0, 0, 0, newRank)
-        player:setLocalVar("GoldsmithingTraded",1)
+        player:setLocalVar("GoldsmithingTraded", 1)
     end
 end
 
@@ -60,19 +60,7 @@ entity.onTrigger = function(player, npc)
         end
     end
 
-    if expertQuestStatus == 600 then
-        --[[
-        Feeding the proper parameter currently hangs the client in cutscene. This may
-        possibly be due to an unimplemented packet or function (display recipe?) Work
-        around to present dialog to player to let them know the trade is ready to be
-        received by triggering with lower rank up parameters.
-        --]]
-        player:showText(npc, 7188)
-        player:showText(npc, 7190)
-        player:startEvent(300, testItem, realSkill, 44, guildMember, 0, 0, 0, 0)
-    else
-        player:startEvent(300, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
-    end
+    player:startEvent(300, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
 end
 
 entity.onEventUpdate = function(player, csid, option)
@@ -90,7 +78,7 @@ entity.onEventFinish = function(player, csid, option)
 
     if csid == 300 and option == 2 then
         if guildMember == 1 then
-            player:setCharVar("GoldsmithingExpertQuest",1)
+            player:setCharVar("GoldsmithingExpertQuest", 1)
         end
     elseif csid == 300 and option == 1 then
         local crystal = 4096 -- fire crystal
@@ -104,7 +92,7 @@ entity.onEventFinish = function(player, csid, option)
     else
         if player:getLocalVar("GoldsmithingTraded") == 1 then
             player:tradeComplete()
-            player:setLocalVar("GoldsmithingTraded",0)
+            player:setLocalVar("GoldsmithingTraded", 0)
         end
     end
 

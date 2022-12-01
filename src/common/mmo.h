@@ -144,10 +144,15 @@ enum MSGSERVTYPE : uint8
     MSG_LINKSHELL_RANK_CHANGE,
     MSG_LINKSHELL_REMOVE,
     MSG_LUA_FUNCTION,
+    MSG_CHARVAR_UPDATE,
 
     // gm commands
     MSG_SEND_TO_ZONE,
     MSG_SEND_TO_ENTITY,
+
+    // rpc
+    MSG_RPC_SEND, // sent by sender -> reciever
+    MSG_RPC_RECV, // sent by reciever -> sender
 };
 
 constexpr auto msgTypeToStr = [](uint8 msgtype)
@@ -184,16 +189,20 @@ constexpr auto msgTypeToStr = [](uint8 msgtype)
             return "MSG_LINKSHELL_REMOVE";
         case MSG_LUA_FUNCTION:
             return "MSG_LUA_FUNCTION";
+        case MSG_CHARVAR_UPDATE:
+            return "MSG_CHARVAR_UPDATE";
         case MSG_SEND_TO_ZONE:
             return "MSG_SEND_TO_ZONE";
         case MSG_SEND_TO_ENTITY:
             return "MSG_SEND_TO_ENTITY";
+        case MSG_RPC_SEND:
+            return "MSG_RPC_SEND";
+        case MSG_RPC_RECV:
+            return "MSG_RPC_RECV";
         default:
             return "Unknown";
     };
 };
-
-typedef std::string string_t;
 
 // For characters, the size is stored in `size`.
 // For NPCs and monsters, something like the type of model is stored.
@@ -238,27 +247,6 @@ struct look_t
         sub     = look[8];
         ranged  = look[9];
     }
-
-    look_t(std::vector<uint16>& look)
-    {
-        if (look.size() == 10)
-        {
-            size    = look[0];
-            modelid = look[1];
-            head    = look[2];
-            body    = look[3];
-            hands   = look[4];
-            legs    = look[5];
-            feet    = look[6];
-            main    = look[7];
-            sub     = look[8];
-            ranged  = look[9];
-        }
-        else // throw exception instead?
-        {
-            look_t();
-        }
-    }
 };
 
 struct skills_t
@@ -295,7 +283,7 @@ struct skills_t
         // index SkillID 0-63
         uint16 skill[64];
     };
-    // The rank is only used in crafts. A size of 64 is required for skill ID compatability.
+    // Rank is used for crafts and loads main job or sub job skill rank, prioritizing main job skill rank.
     uint8 rank[64];
 
     skills_t()
@@ -488,11 +476,18 @@ struct search_t
 
 struct bazaar_t
 {
-    string_t message;
+    std::string message;
 
     bazaar_t()
     {
     }
+};
+
+struct pathpoint_t
+{
+    position_t position;
+    uint32     wait;
+    bool       setRotation = false;
 };
 
 // A comment on the packets below, defined as macros.

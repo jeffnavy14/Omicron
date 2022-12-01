@@ -360,15 +360,17 @@ uint16 CBattleEntity::GetMainWeaponDmg()
     {
         if ((weapon->getReqLvl() > GetMLevel()) && objtype == TYPE_PC)
         {
+            // TODO: Determine the difference between augments and latents w.r.t. equipment scaling.
+            // MAIN_DMG_RATING already has equipment scaling applied elsewhere.
             uint16 dmg = weapon->getDamage();
             dmg *= GetMLevel() * 3;
             dmg /= 4;
             dmg /= weapon->getReqLvl();
-            return dmg + getMod(Mod::MAIN_DMG_RATING);
+            return dmg + weapon->getModifier(Mod::DMG_RATING) + getMod(Mod::MAIN_DMG_RATING);
         }
         else
         {
-            return weapon->getDamage() + getMod(Mod::MAIN_DMG_RATING);
+            return weapon->getDamage() + weapon->getModifier(Mod::DMG_RATING) + getMod(Mod::MAIN_DMG_RATING);
         }
     }
     return 0;
@@ -385,11 +387,11 @@ uint16 CBattleEntity::GetSubWeaponDmg()
             dmg *= GetMLevel() * 3;
             dmg /= 4;
             dmg /= weapon->getReqLvl();
-            return dmg + getMod(Mod::SUB_DMG_RATING);
+            return dmg + weapon->getModifier(Mod::DMG_RATING) + getMod(Mod::SUB_DMG_RATING);
         }
         else
         {
-            return weapon->getDamage() + getMod(Mod::SUB_DMG_RATING);
+            return weapon->getDamage() + weapon->getModifier(Mod::DMG_RATING) + getMod(Mod::SUB_DMG_RATING);
         }
     }
     return 0;
@@ -407,11 +409,11 @@ uint16 CBattleEntity::GetRangedWeaponDmg()
             scaleddmg *= GetMLevel() * 3;
             scaleddmg /= 4;
             scaleddmg /= weapon->getReqLvl();
-            dmg += scaleddmg;
+            dmg += scaleddmg + weapon->getModifier(Mod::DMG_RATING);
         }
         else
         {
-            dmg += weapon->getDamage();
+            dmg += weapon->getDamage() + weapon->getModifier(Mod::DMG_RATING);
         }
     }
     if (auto* ammo = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]))
@@ -422,11 +424,11 @@ uint16 CBattleEntity::GetRangedWeaponDmg()
             scaleddmg *= GetMLevel() * 3;
             scaleddmg /= 4;
             scaleddmg /= ammo->getReqLvl();
-            dmg += scaleddmg;
+            dmg += scaleddmg + ammo->getModifier(Mod::DMG_RATING);
         }
         else
         {
-            dmg += ammo->getDamage();
+            dmg += ammo->getDamage() + ammo->getModifier(Mod::DMG_RATING);
         }
     }
     return dmg + getMod(Mod::RANGED_DMG_RATING);
@@ -479,20 +481,21 @@ int16 CBattleEntity::addTP(int16 tp)
         {
             TPMulti = settings::get<float>("map.PLAYER_TP_MULTIPLIER");
         }
+        else if (objtype == TYPE_PET || (objtype == TYPE_MOB && this->PMaster)) // normal pet or charmed pet
+        {
+            TPMulti = settings::get<float>("map.PET_TP_MULTIPLIER");
+        }
         else if (objtype == TYPE_MOB)
         {
             TPMulti = settings::get<float>("map.MOB_TP_MULTIPLIER");
         }
-        else if (objtype == TYPE_PET)
+        else if (objtype == TYPE_TRUST)
         {
-            if (static_cast<CPetEntity*>(this)->getPetType() != PET_TYPE::AUTOMATON || !this->PMaster)
-            {
-                TPMulti = settings::get<float>("map.MOB_TP_MULTIPLIER") * 3;
-            }
-            else
-            {
-                TPMulti = settings::get<float>("map.PLAYER_TP_MULTIPLIER");
-            }
+            TPMulti = settings::get<float>("map.TRUST_TP_MULTIPLIER");
+        }
+        else if (objtype == TYPE_FELLOW)
+        {
+            TPMulti = settings::get<float>("map.FELLOW_TP_MULTIPLIER");
         }
 
         tp = (int16)(tp * TPMulti);
@@ -1335,6 +1338,7 @@ void CBattleEntity::Spawn()
     HideName(false);
     CBaseEntity::Spawn();
     m_OwnerID.clean();
+    setBattleID(0);
 }
 
 void CBattleEntity::Die()
@@ -1585,25 +1589,37 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
     this->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_MAGIC_END);
 }
 
-void CBattleEntity::OnCastInterrupted(CMagicState& state, action_t& action, MSGBASIC_ID msg)
+void CBattleEntity::OnCastInterrupted(CMagicState& state, action_t& action, MSGBASIC_ID msg, bool blockedCast)
 {
     TracyZoneScoped;
     CSpell* PSpell = state.GetSpell();
     if (PSpell)
     {
         action.id         = id;
-        action.actiontype = ACTION_MAGIC_INTERRUPT;
-        action.actionid   = static_cast<uint16>(PSpell->getID());
         action.spellgroup = PSpell->getSpellGroup();
+        action.recast     = 0;
+        action.actiontype = ACTION_MAGIC_INTERRUPT;
 
         actionList_t& actionList  = action.getNewActionList();
         actionList.ActionTargetID = id;
 
         actionTarget_t& actionTarget = actionList.getNewActionTarget();
         actionTarget.messageID       = 0;
-        actionTarget.animation       = PSpell->getAnimationID();
+        actionTarget.animation       = 0;
+        actionTarget.param           = static_cast<uint16>(PSpell->getID());
 
-        loc.zone->PushPacket(this, CHAR_INRANGE_SELF, new CMessageBasicPacket(this, state.GetTarget() ? state.GetTarget() : this, 0, 0, msg));
+        if (blockedCast)
+        {
+            // In a cutscene or otherwise, it seems the target "evades" the cast, despite the ID being set to the caster?
+            // No message is sent in this case
+            actionTarget.reaction = REACTION::EVADE;
+        }
+        else
+        {
+            actionTarget.reaction = REACTION::HIT;
+            // For some reason, despite the system supporting interrupted message in the action packet (like auto attacks, JA), an 0x029 message is sent for spells.
+            loc.zone->PushPacket(this, CHAR_INRANGE_SELF, new CMessageBasicPacket(this, state.GetTarget() ? state.GetTarget() : this, 0, 0, msg));
+        }
     }
 }
 
@@ -1620,6 +1636,10 @@ void CBattleEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& ac
 bool CBattleEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg)
 {
     TracyZoneScoped;
+    if (PTarget->PAI->IsUntargetable())
+    {
+        return false;
+    }
     return !((distance(loc.p, PTarget->loc.p) - PTarget->m_ModelRadius) > GetMeleeRange() || !PAI->GetController()->IsAutoAttackEnabled());
 }
 
@@ -1639,6 +1659,23 @@ void CBattleEntity::OnChangeTarget(CBattleEntity* PTarget)
 {
 }
 
+void CBattleEntity::setActionInterrupted(action_t& action, CBattleEntity* PTarget, uint16 messageID, uint16 actionID)
+{
+    if (PTarget)
+    {
+        actionList_t& actionList  = action.getNewActionList();
+        actionList.ActionTargetID = PTarget->id;
+        action.id                 = this->id;
+        action.actiontype         = ACTION_MAGIC_FINISH; // all "is paralyzed" messages are cat 4
+        action.actionid           = actionID;
+
+        actionTarget_t& actionTarget = actionList.getNewActionTarget();
+        actionTarget.animation       = 0x1FC; // Seems hardcoded, two bits away from 0x1FF (0x1FC = 1 1111 1100)
+        actionTarget.messageID       = messageID;
+        actionTarget.param           = 0;
+    }
+}
+
 CBattleEntity* CBattleEntity::GetBattleTarget()
 {
     return static_cast<CBattleEntity*>(GetEntity(GetBattleTargetID()));
@@ -1655,16 +1692,19 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         PTarget->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DETECTABLE);
     }
 
+    battleutils::ClaimMob(PTarget, this); // Mobs get claimed whether or not your attack actually is intimidated/paralyzed
+    PTarget->LastAttacked = server_clock::now();
+
     if (battleutils::IsParalyzed(this))
     {
-        loc.zone->PushPacket(this, CHAR_INRANGE_SELF, new CMessageBasicPacket(this, PTarget, 0, 0, MSGBASIC_IS_PARALYZED));
-        return false;
+        setActionInterrupted(action, PTarget, MSGBASIC_IS_PARALYZED_2, 0);
+        return true;
     }
 
     if (battleutils::IsIntimidated(this, PTarget))
     {
-        loc.zone->PushPacket(this, CHAR_INRANGE_SELF, new CMessageBasicPacket(this, PTarget, 0, 0, MSGBASIC_IS_INTIMIDATED));
-        return false;
+        setActionInterrupted(action, PTarget, MSGBASIC_IS_INTIMIDATED, 0);
+        return true;
     }
 
     // Create a new attack round.
@@ -1919,7 +1959,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         }
 
         // try zanshin only on single swing attack rounds - it is last priority in the multi-hit order
-        // if zanshin procs, the attack is repeated
+        // if zanshin procs, add a new zanshin based attack.
         if (attack.IsFirstSwing() && attackRound.GetAttackSwingCount() == 1)
         {
             uint16 zanshinChance = this->getMod(Mod::ZANSHIN) + battleutils::GetMeritValue(this, MERIT_ZASHIN_ATTACK_RATE);
@@ -1929,27 +1969,20 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                  xirand::GetRandomNumber(100) < zanshinChance) ||
                 (GetMJob() == JOB_SAM && this->StatusEffectContainer->HasStatusEffect(EFFECT_HASSO) && xirand::GetRandomNumber(100) < (zanshinChance / 4)))
             {
-                attack.SetAttackType(PHYSICAL_ATTACK_TYPE::ZANSHIN);
-                attack.SetAsFirstSwing(false);
-            }
-            else
-            {
-                attackRound.DeleteAttackSwing();
+                attackRound.AddAttackSwing(PHYSICAL_ATTACK_TYPE::ZANSHIN, PHYSICAL_ATTACK_DIRECTION::RIGHTATTACK, 1);
             }
         }
-        else
-        {
-            attackRound.DeleteAttackSwing();
-        }
+
+        attackRound.DeleteAttackSwing();
+
         if (list.actionTargets.size() == 8)
         {
             break;
         }
     }
-    battleutils::ClaimMob(PTarget, this);
+
     PAI->EventHandler.triggerListener("ATTACK", CLuaBaseEntity(this), CLuaBaseEntity(PTarget), &action);
     PTarget->PAI->EventHandler.triggerListener("ATTACKED", CLuaBaseEntity(PTarget), CLuaBaseEntity(this), &action);
-    PTarget->LastAttacked = server_clock::now();
     /////////////////////////////////////////////////////////////////////////////////////////////
     // End of attack loop
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1999,6 +2032,16 @@ void CBattleEntity::SetBattleStartTime(time_point time)
 duration CBattleEntity::GetBattleTime()
 {
     return server_clock::now() - m_battleStartTime;
+}
+
+void CBattleEntity::setBattleID(uint16 battleID)
+{
+    m_battleID = battleID;
+}
+
+uint16 CBattleEntity::getBattleID()
+{
+    return m_battleID;
 }
 
 void CBattleEntity::Tick(time_point /*unused*/)

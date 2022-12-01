@@ -9,7 +9,7 @@ require("scripts/globals/quests")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if trade:hasItemQty(555, 1) == true and trade:getItemCount() == 1 then
+    if trade:hasItemQty(555, 1) and trade:getItemCount() == 1 then
         local a = player:getCharVar("saveTheClockTowerNPCz1") -- NPC zone1
         if
             a == 0 or
@@ -61,8 +61,8 @@ entity.onEventFinish = function(player, csid, option)
     if csid == 112 then
         player:setCharVar("aClockMostdelicateVar", 1)
     elseif csid == 115 then
-        player:addCharVar("saveTheClockTowerVar", 1)
-        player:addCharVar("saveTheClockTowerNPCz1", 2)
+        player:incrementCharVar("saveTheClockTowerVar", 1)
+        player:incrementCharVar("saveTheClockTowerNPCz1", 2)
     end
 end
 

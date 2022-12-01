@@ -12,13 +12,14 @@ entity.onMobSpawn = function(mob)
     -- adjust drops based on number of HQ Aern Organs traded to QM
     local qm = GetNPCByID(ID.npc.QM_IXAERN_MNK)
     local chance = qm:getLocalVar("[SEA]IxAern_DropRate")
-    if (math.random(0, 1) > 0) then
+    if math.random(0, 1) > 0 then
         SetDropRate(4398, 1851, chance * 10) -- Deed Of Placidity
         SetDropRate(4398, 1901, 0)
     else
         SetDropRate(4398, 1851, 0)
         SetDropRate(4398, 1901, chance * 10) -- Vice of Antipathy
     end
+
     qm:setLocalVar("[SEA]IxAern_DropRate", 0)
 
     mob:setAnimationSub(1) -- Reset the subanim - otherwise it will respawn with bracers on. Note that Aerns are never actually supposed to be in subanim 0.
@@ -27,8 +28,8 @@ end
 entity.onMobFight = function(mob, target)
     -- The mob gains a huge boost when it 2hours to attack speed and attack.
     -- It forces the minions to 2hour as well. Wiki says 50% but all videos show 60%.
-    if (mob:getLocalVar("BracerMode") == 0) then
-        if (mob:getHPP() < math.random(50, 60)) then
+    if mob:getLocalVar("BracerMode") == 0 then
+        if mob:getHPP() < math.random(50, 60) then
             -- Go into bracer mode
             mob:setLocalVar("BracerMode", 1)
             mob:setAnimationSub(2)
@@ -39,7 +40,7 @@ entity.onMobFight = function(mob, target)
             -- Force minions to 2hour
             for i = 1, 2 do
                 local minion = GetMobByID(mob:getID() + i)
-                if (minion:getCurrentAction() ~= xi.act.NONE) then
+                if minion:getCurrentAction() ~= xi.act.NONE then
                     minion:useMobAbility(3411 + i) -- Chainspell or Benediction
                 end
             end
@@ -47,21 +48,22 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
-    DespawnMob(mob:getID()+1)
-    DespawnMob(mob:getID()+2)
+entity.onMobDeath = function(mob, player, optParams)
+    DespawnMob(mob:getID() + 1)
+    DespawnMob(mob:getID() + 2)
 end
 
 entity.onMobDespawn = function(mob)
-    DespawnMob(mob:getID()+1)
-    DespawnMob(mob:getID()+2)
+    DespawnMob(mob:getID() + 1)
+    DespawnMob(mob:getID() + 2)
 
     local qm = GetNPCByID(ID.npc.QM_IXAERN_MNK)
-    if (math.random(0, 1) == 1) then
+    if math.random(0, 1) == 1 then
         qm:setPos(380, 0, 540, 0) -- G-7
     else
         qm:setPos(460, 0, 540, 0) -- I-7
     end
+
     qm:updateNPCHideTime(xi.settings.main.FORCE_SPAWN_QM_RESET_TIME)
 end
 

@@ -1,5 +1,5 @@
 -----------------------------------
--- func: !checkquest <logID> <questID> {player}
+-- func: !checkquest <logID> <questID> (player)
 -- desc: Prints status of the quest to the in game chatlog
 -----------------------------------
 require("scripts/globals/quests")
@@ -14,8 +14,15 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!checkquest <logID> <questID> {player}")
+    player:PrintToPlayer("!checkquest <logID> <questID> (player)")
 end
+
+local questStatusString =
+{
+    [0] = 'AVAILABLE',
+    [1] = 'ACCEPTED',
+    [2] = 'COMPLETED',
+}
 
 function onTrigger(player, logId, questId, target)
 
@@ -45,7 +52,7 @@ function onTrigger(player, logId, questId, target)
     local targ
     if target == nil then
         targ = player:getCursorTarget()
-        if (targ == nil or not targ:isPC()) then
+        if targ == nil or not targ:isPC() then
             targ = player
         end
     else
@@ -58,13 +65,7 @@ function onTrigger(player, logId, questId, target)
 
     -- get quest status
     local status = targ:getQuestStatus(logId, questId)
-    switch (status): caseof
-    {
-        [0] = function (x) status = "AVAILABLE" end,
-        [1] = function (x) status = "ACCEPTED" end,
-        [2] = function (x) status = "COMPLETED" end,
-    }
 
     -- show quest status
-    player:PrintToPlayer( string.format( "%s's status for %s quest ID %i is: %s", targ:getName(), logName, questId, status ) )
+    player:PrintToPlayer(string.format("%s's status for %s quest ID %i is: %s", targ:getName(), logName, questId, questStatusString[status]))
 end

@@ -3,9 +3,15 @@
 -- Area: Nyzul Isle
 -- Info: Floor 60 80 and 100 Boss
 -----------------------------------
+<<<<<<< HEAD
 mixins = { require("scripts/mixins/nyzul_boss_drops") }
 require("scripts/globals/nyzul")
 require("scripts/globals/status")
+=======
+mixins = { require('scripts/mixins/nyzul_boss_drops') }
+require('scripts/globals/nyzul')
+require('scripts/globals/status')
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 -----------------------------------
 local entity = {}
 
@@ -54,8 +60,13 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onCriticalHit = function(mob)
+<<<<<<< HEAD
     local rand       = math.random(1, 100)
     local broken     = mob:getAnimationSub()
+=======
+    local rand   = math.random(1, 100)
+    local broken = mob:getAnimationSub()
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 
     if rand <= 15 and broken < 2 then
         mob:setAnimationSub(broken + 1)
@@ -64,8 +75,13 @@ entity.onCriticalHit = function(mob)
     end
 end
 
+<<<<<<< HEAD
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
     if isKiller or noKiller then
+=======
+entity.onMobDeath = function(mob, player, optParams)
+    if optParams.isKiller or optParams.noKiller then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         xi.nyzul.enemyLeaderKill(mob)
         xi.nyzul.vigilWeaponDrop(player, mob)
         xi.nyzul.handleRunicKey(mob)

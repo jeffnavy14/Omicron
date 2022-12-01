@@ -37,6 +37,7 @@ xi.mix.ladybug.config = function(mob, params)
     if params.nightTime and type(params.nightTime) == "number" then
         mob:setLocalVar("[ladybug]nightTime", params.nightTime)
     end
+
     if params.morning and type(params.morning) == "number" then
         mob:setLocalVar("[ladybug]morning", params.morning)
     end
@@ -45,7 +46,7 @@ end
 g_mixins.families.ladybug = function(mob)
     mob:addListener("SPAWN", "LADYBUG_SPAWN", function(ladybug)
         ladybug:setLocalVar("[ladybug]daySkillList", 170)
-        ladybug:setLocalVar("[ladybug]nightSkillList", 1167)
+        ladybug:setLocalVar("[ladybug]nightSkillList", 1173)
     end)
 
     mob:addListener("ROAM_TICK", "LADYBUG_ROAM_TICK", function(ladybug)

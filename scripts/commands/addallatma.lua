@@ -33,7 +33,7 @@ local keyIds =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!addallatma {player}")
+    player:PrintToPlayer("!addallatma (player)")
 end
 
 function onTrigger(player, target)
@@ -50,8 +50,9 @@ function onTrigger(player, target)
     end
 
     -- add maps
-    for _, v in ipairs( keyIds ) do
+    for _, v in ipairs(keyIds) do
         targ:addKeyItem(v)
     end
+
     player:PrintToPlayer(string.format("%s now has all Abyssea Atma.", targ:getName()))
 end

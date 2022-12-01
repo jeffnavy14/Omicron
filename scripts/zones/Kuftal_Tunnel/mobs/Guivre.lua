@@ -6,309 +6,210 @@ require("scripts/globals/pathfind")
 -----------------------------------
 local entity = {}
 
-local pathNodes =
+local pathStart =
 {
-    106, 0, -3,
-    106, 0, -4,
-    107, 0, -5,
-    107, 0, -6,
-    108, 0, -7,
-    108, 0, -9,
-    109, 0, -10,
-    109, 0, -11,
-    111, 0, -15,
-    112, 0, -16,
-    112, 0, -18,
-    113, 0, -18,
-    113, 0, -19,
-    114, 0, -21,
-    114, 0, -23,
-    115, 0, -24,
-    115, 0, -27,
-    116, 0, -32,
-    117, 0, -33,
-    117, 0, -38,
-    116, 0, -39,
-    116, 0, -40,
-    115, 0, -41,
-    115, 0, -43,
-    114, 0, -44,
-    113, 0, -45,
-    113, 0, -46,
-    112, 0, -46,
-    111, 0, -47,
-    111, 0, -48,
-    110, 0, -48,
-    109, 0, -49,
-    108, 0, -50,
-    107, 0, -50,
-    107, 0, -51,
-    105, 0, -51,
-    105, 0, -52,
-    104, 0, -52,
-    103, -1, -53,
-    101, -1, -54,
-    100, -1, -54,
-    98, -2, -55,
-    94, -4, -57,
-    93, -4, -57,
-    92, -5, -58,
-    89, -5, -58,
-    88, -6, -58,
-    87, -6, -59,
-    85, -7, -59,
-    84, -7, -59,
-    83, -8, -59,
-    79, -8, -59,
-    75, -9, -59,
-    74, -9, -59,
-    71, -8, -59,
-    70, -8, -59,
-    69, -8, -60,
-    69, -8, -60,
-    68, -8, -61,
-    67, -8, -61,
-    66, -8, -62,
-    65, -8, -62,
-    64, -8, -63,
-    64, -9, -64,
-    63, -9, -65,
-    63, -9, -66,
-    62, -9, -67,
-    62, -9, -68,
-    61, -9, -68,
-    61, -9, -70,
-    60, -9, -71,
-    60, -9, -72,
-    58, -8, -78,
-    58, -8, -79,
-    58, -8, -80,
-    57, -8, -81,
-    56, -8, -83,
-    55, -9, -88,
-    54, -9, -90,
-    53, -9, -93,
-    53, -9, -94,
-    52, -9, -94,
-    51, -9, -95,
-    51, -9, -96,
-    50, -9, -96,
-    49, -8, -97,
-    48, -8, -97,
-    47, -8, -98,
-    43, -8, -98,
-    42, -8, -99,
-    38, -8, -99,
-    37, -8, -98,
-    36, -8, -98,
-    35, -7, -98,
-    32, -6, -98,
-    30, -6, -98,
-    29, -5, -98,
-    27, -4, -97,
-    26, -4, -97,
-    24, -3, -97,
-    23, -3, -96,
-    21, -2, -96,
-    20, -2, -96,
-    19, -1, -95,
-    18, -1, -95,
-    17, -1, -94,
-    16, -1, -94,
-    14, 0, -93,
-    13, 0, -92,
-    13, 0, -92,
-    11, 0, -91,
-    8, 0, -89,
-    7, 0, -88,
-    6, 0, -88,
-    5, 0, -87,
-    4, 0, -87,
-    3, 0, -86,
-    3, 0, -85,
-    2, 0, -84,
-    1, 0, -84,
-    0, 0, -83,
-    0, 0, -81,
-    -1, 0, -81,
-    -2, 0, -80,
-    -3, 0, -79,
-    -3, 0, -78,
-    -4, 0, -77,
-    -5, 0, -76,
-    -7, 0, -74,
-    -8, 0, -72,
-    -16, 0, -63,
-    -26, 0, -51,
-    -33, 0, -43,
-    -36, 0, -41,
-    -38, 0, -38,
-    -39, 0, -37,
-    -39, 0, -36,
-    -40, 0, -35,
-    -40, 0, -34,
-    -41, 0, -33,
-    -41, 0, -32,
-    -42, 0, -31,
-    -42, 0, -28,
-    -43, 0, -27,
-    -45, 0, -20,
-    -46, 0, -16,
-    -47, 0, -11,
-    -48, 0, -8,
-    -48, 0, -7,
-    -49, 0, -6,
-    -49, 0, -2,
-    -49, 0, 0,
-    -49, 0, 1,
-    -50, 0, 2,
-    -50, 0, 6,
-    -49, 0, 7,
-    -49, 0, 11,
-    -48, 0, 12,
-    -48, 0, 15,
-    -47, 0, 16,
-    -44, 0, 26,
-    -43, 0, 30,
-    -42, 0, 33,
-    -43, 0, 32,
-    -44, 0, 31,
-    -44, 0, 15,
-    -45, 0, 11,
-    -45, 0, 7,
-    -45, 0, 6,
-    -45, 0, 5,
-    -44, 0, 4,
-    -44, 0, 1,
-    -43, 0, -5,
-    -42, 0, -9,
-    -42, 0, -13,
-    -41, 0, -19,
-    -39, 0, -34,
-    -38, 0, -35,
-    -38, 0, -37,
-    -37, 0, -38,
-    -37, 0, -39,
-    -36, 0, -41,
-    -36, 0, -42,
-    -35, 0, -43,
-    -35, 0, -44,
-    -34, 0, -45,
-    -34, 0, -46,
-    -33, 0, -47,
-    -32, 0, -48,
-    -31, 0, -49,
-    -30, 0, -49,
-    -30, 0, -50,
-    -28, 0, -52,
-    -22, 0, -57,
-    -14, 0, -64,
-    -9, 0, -69,
-    0, 0, -77,
-    8, 0, -84,
-    8, 0, -84,
-    13, -0, -88,
-    18, -1, -93,
-    20, -1, -94,
-    20, -2, -94,
-    22, -2, -95,
-    23, -3, -95,
-    24, -3, -95,
-    25, -4, -96,
-    29, -5, -97,
-    35, -7, -99,
-    36, -8, -99,
-    45, -8, -99,
-    46, -8, -98,
-    47, -8, -98,
-    48, -8, -97,
-    50, -8, -97,
-    51, -8, -96,
-    52, -9, -96,
-    53, -8, -95,
-    54, -9, -94,
-    54, -8, -93,
-    55, -8, -93,
-    56, -8, -92,
-    56, -8, -91,
-    57, -8, -90,
-    57, -8, -87,
-    58, -8, -86,
-    58, -8, -81,
-    57, -8, -80,
-    58, -8, -79,
-    58, -8, -77,
-    59, -8, -76,
-    59, -8, -75,
-    59, -9, -74,
-    60, -8, -73,
-    60, -9, -72,
-    61, -9, -71,
-    61, -9, -70,
-    62, -9, -69,
-    63, -9, -68,
-    63, -9, -67,
-    64, -9, -66,
-    64, -9, -65,
-    65, -9, -64,
-    65, -8, -64,
-    66, -8, -63,
-    67, -8, -62,
-    68, -8, -62,
-    69, -8, -61,
-    71, -8, -61,
-    72, -9, -60,
-    75, -9, -60,
-    76, -9, -59,
-    77, -8, -59,
-    80, -8, -59,
-    88, -6, -57,
-    92, -5, -56,
-    97, -3, -55,
-    101, -1, -54,
-    102, -1, -54,
-    103, -1, -53,
-    104, 0, -53,
-    105, 0, -52,
-    107, 0, -52,
-    108, 0, -51,
-    108, 0, -50,
-    109, 0, -50,
-    110, 0, -49,
-    110, 0, -48,
-    111, 0, -47,
-    111, 0, -45,
-    112, 0, -44,
-    112, 0, -41,
-    113, 0, -40,
-    113, 0, -18,
-    113, 0, -17,
-    112, 0, -16,
-    112, 0, -15,
-    110, 0, -7,
-    110, 0, -4,
-    109, 0, -2,
-    109, 0, -1,
-    108, 0, 1,
-    107, 0, 3
+    { x = 102.00, y = -0.19, z = 3.00 }
 }
 
-entity.onPath = function(mob)
-    xi.path.patrol(mob, pathNodes)
+local pathBranch1 =
+{
+    { x = 102.00, y = -0.19, z = 3.00 },
+    { x = 109.49, y = 0.59, z = -0.07 },
+    { x = 124.47, y = 0.00, z = -42.08 },
+    { x = 91.93, y = -5.15, z = -58.24 },
+    { x = 66.46, y = -8.81, z = -62.91 },
+    { x = 60.86, y = -9.02, z = -73.80 },
+    { x = 57.09, y = -9.37, z = -96.88 },
+    { x = 38.39, y = -8.62, z = -98.74 },
+    { x = 15.73, y = -1.02, z = -94.88 },
+    { x = -0.65, y = 0.00, z = -84.13 },
+}
+
+local pathBranch2 =
+{
+    { x = -40.24, y = 0.00, z = -38.35 },
+    { x = -44.36, y = 0.68, z = 13.98 },
+}
+
+local pathBranch3 =
+{
+    { x = -31.28, y = -0.23, z = 48.64 },
+    { x = -0.52, y = 0.00, z = 82.02 },
+}
+
+local pathBranch4 =
+{
+    { x = 3.06, y = 0.15, z = 125.56 },
+    { x = 40.12, y = 0.000, z = 158.89 },
+    { x = 60.35, y = -4.24, z = 143.23 },
+    { x = 79.86, y = -8.75, z = 139.89 },
+    { x = 85.86, y = -8.82, z = 138.11 },
+    { x = 91.87, y = -8.83, z = 142.52 },
+    { x = 101.60, y = -8.71, z = 143.17 },
+}
+
+local pathBranch5 =
+{
+    { x = 100.62, y = -8.75, z = 78.86 },
+    { x = 108.29, y = -4.60, z = 54.26 },
+    { x = 118.98, y = 0.00, z = 38.12 },
+    { x = 102.00, y = -0.19, z = 3.00 },
+}
+
+local pathFind =
+{
+    ['pathFind1'] = function(mob, reversePath)
+        local pathNodes = {}
+        if reversePath == 0 or reversePath == 1 then
+            mob:setLocalVar("mobPath", 2)
+            local reverseCheck = math.random(0, 2)
+            if reverseCheck == 0 then
+                mob:setLocalVar("reversePath", 0)
+                pathNodes = pathBranch1
+            else
+                mob:setLocalVar("reversePath", 1)
+                pathNodes = pathBranch5
+            end
+
+            return pathNodes
+        end
+    end,
+
+    ['pathFind2'] = function(mob, reversePath)
+        local pathNodes = {}
+        mob:setLocalVar("mobPath", 3)
+        if reversePath == 0 then
+            pathNodes = pathBranch2
+        else
+            pathNodes = pathBranch4
+        end
+
+        return pathNodes
+    end,
+
+    ['pathFind3'] = function(mob, reversePath)
+        local pathNodes = {}
+        mob:setLocalVar("mobPath", 4)
+        if reversePath == 0 or reversePath == 1 then
+            pathNodes = pathBranch3
+        end
+
+        return pathNodes
+    end,
+
+    ['pathFind4'] = function(mob, reversePath)
+        local pathNodes = {}
+        if reversePath == 0 then
+            mob:setLocalVar("mobPath", 5)
+            pathNodes = pathBranch4
+        else
+            local reverseCheck = math.random(0, 2)
+            if reverseCheck == 0 then
+                mob:setLocalVar("mobPath", 4)
+                mob:setLocalVar("reversePath", 0)
+                pathNodes = pathBranch3
+            else
+                mob:setLocalVar("mobPath", 5)
+                mob:setLocalVar("reversePath", 1)
+                pathNodes = pathBranch2
+            end
+        end
+
+        return pathNodes
+    end,
+
+    ['pathFind5'] = function(mob, reversePath)
+        local pathNodes = {}
+        if reversePath == 0 then
+            local reverseCheck = math.random(0, 2)
+            if reverseCheck == 0 then
+                mob:setLocalVar("mobPath", 6)
+                mob:setLocalVar("reversePath", 0)
+                pathNodes = pathBranch5
+            else
+                mob:setLocalVar("mobPath", 3)
+                mob:setLocalVar("reversePath", 1)
+                pathNodes = pathBranch4
+            end
+        else
+            mob:setLocalVar("mobPath", 6)
+            pathNodes = pathBranch1
+        end
+
+        return pathNodes
+    end,
+
+    ['pathFind6'] = function(mob, reversePath)
+        local pathNodes = {}
+        if reversePath == 0 or reversePath == 1 then
+            mob:setLocalVar("mobPath", 1)
+            pathNodes = pathStart
+        end
+
+        return pathNodes
+    end,
+}
+
+entity.onMobInitialize = function(mob)
+    --Guivre has increased movespeed, sight range with
+    --natural double/triple attack.
+    mob:setMod(xi.mod.MOVE, 150)
+    mob:setMobMod(xi.mobMod.SIGHT_RANGE, 30)
+    mob:setMod(xi.mod.DOUBLE_ATTACK, 25)
+    mob:setMod(xi.mod.TRIPLE_ATTACK, 15)
 end
 
 entity.onMobSpawn = function(mob)
-    entity.onPath(mob)
+    --Guivre will despawn if not claimed within 3-5 hours.
+    mob:setLocalVar("despawnTime", math.random(10800, 18000) + os.time())
+    mob:setLocalVar("isPaused", 0)
+    mob:setLocalVar("mobPath", 1)
+    mob:pathThrough(pathStart, xi.path.flag.COORDS)
 end
 
-entity.onMobRoam = function(mob)
-    -- move to start position if not moving
+entity.onPath = function(mob)
     if not mob:isFollowingPath() then
-        mob:pathThrough(xi.path.first(pathNodes))
+        if mob:getLocalVar("isPaused") ~= 0 then
+            local currentPath = "pathFind" .. mob:getLocalVar("mobPath")
+            local reversePath = mob:getLocalVar("reversePath")
+            local pathNodes = {}
+            mob:setLocalVar("isPaused", 0)
+            mob:clearPath()
+            pathNodes = pathFind[currentPath](mob, reversePath)
+            local newReverse = mob:getLocalVar("reversePath")
+            if newReverse == 0 then
+                mob:pathThrough(pathNodes, xi.path.flag.COORDS)
+            else
+                mob:pathThrough(pathNodes, bit.bor(xi.path.flag.COORDS, xi.path.flag.REVERSE))
+            end
+        else
+            -- Guivre is paused, he will wait and rotate
+            -- a random amount of times before resuming his path
+            mob:clearPath()
+            local x = mob:getXPos()
+            local y = mob:getYPos()
+            local z = mob:getZPos()
+            local rotations = {}
+            local count = math.random(2, 6)
+            for i = 0, count do
+                local wait = math.random(1500, 3000)
+                rotations[i + 1] =
+                {
+                    x = x, y = y, z = z, rotation = math.random(0, 255), wait = wait
+                }
+            end
+
+            mob:pathThrough(rotations, xi.path.flag.COORDS)
+            mob:setLocalVar("isPaused", 1)
+        end
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobRoam = function(mob)
+    local despawnCheck = mob:getLocalVar("despawnTime")
+    if despawnCheck <= os.time() then
+        DespawnMob(mob:getID())
+    end
 end
 
 entity.onMobDespawn = function(mob)

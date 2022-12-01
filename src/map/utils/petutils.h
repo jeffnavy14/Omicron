@@ -57,7 +57,8 @@ enum PETID
     PETID_ADVENTURING_FELLOW = 73,
     PETID_CHOCOBO            = 74,
     PETID_LUOPAN             = 75,
-    MAX_PETID                = 76,
+    PETID_SIREN              = 76,
+    MAX_PETID                = 77,
 };
 
 class CBattleEntity;
@@ -77,9 +78,17 @@ namespace petutils
     int16 PerpetuationCost(uint32 id, uint8 level);
     void  Familiar(CBattleEntity* PPet);
     void  LoadPet(CBattleEntity* PMaster, uint32 PetID, bool spawningFromZone);
-    void  LoadWyvernStatistics(CBattleEntity* PMaster, CPetEntity* PPet, bool finalize);
-    void  FinalizePetStatistics(CBattleEntity* PMaster, CPetEntity* PPet);
-    bool  CheckPetModType(CBattleEntity* PPet, PetModType petmod);
+
+    void CalculateAvatarStats(CBattleEntity* PMaster, CPetEntity* PPet);
+    void CalculateWyvernStats(CBattleEntity* PMaster, CPetEntity* PPet);
+    void CalculateJugPetStats(CBattleEntity* PMaster, CPetEntity* PPet);
+    void CalculateAutomatonStats(CBattleEntity* PMaster, CPetEntity* PPet);
+    void CalculateLoupanStats(CBattleEntity* PMaster, CPetEntity* PPet);
+    void FinalizePetStatistics(CBattleEntity* PMaster, CPetEntity* PPet);
+
+    void SetupPetWithMaster(CBattleEntity* PMaster, CPetEntity* PPet);
+
+    bool CheckPetModType(CBattleEntity* PPet, PetModType petmod);
 }; // namespace petutils
 
 #endif

@@ -66,8 +66,8 @@ std::vector<ahHistory*> CDataLoader::GetAHItemHystory(uint16 ItemID, bool stack)
             PAHHistory->Price = sql->GetUIntData(0);
             PAHHistory->Data  = sql->GetUIntData(1);
 
-            snprintf((char*)PAHHistory->Name1, 15, "%s", sql->GetData(2));
-            snprintf((char*)PAHHistory->Name2, 15, "%s", sql->GetData(3));
+            PAHHistory->Name1 = sql->GetStringData(2);
+            PAHHistory->Name2 = sql->GetStringData(3);
 
             HistoryList.push_back(PAHHistory);
         }
@@ -173,8 +173,8 @@ std::list<SearchEntity*> CDataLoader::GetPlayersList(search_req sr, int* count)
     }
     if (sr.zoneid[0] > 0)
     {
-        string_t zoneList;
-        int      i = 1;
+        std::string zoneList;
+        int         i = 1;
         zoneList.append(std::to_string(static_cast<unsigned long long>(sr.zoneid[0])));
         while (i < 10 && sr.zoneid[i] != 0)
         {
@@ -215,10 +215,9 @@ std::list<SearchEntity*> CDataLoader::GetPlayersList(search_req sr, int* count)
         int visibleResults = 0; // capped at first 20
         while (sql->NextRow() == SQL_SUCCESS)
         {
-            SearchEntity* PPlayer = new SearchEntity;
-            memset(PPlayer, 0, sizeof(SearchEntity));
+            SearchEntity* PPlayer = new SearchEntity();
 
-            memcpy(PPlayer->name, sql->GetData(2), 15);
+            PPlayer->name = sql->GetStringData(2);
 
             PPlayer->id       = sql->GetUIntData(0);
             PPlayer->zone     = (uint16)sql->GetIntData(3);
@@ -343,8 +342,8 @@ std::list<SearchEntity*> CDataLoader::GetPlayersList(search_req sr, int* count)
             // filter by name
             if (sr.nameLen > 0)
             {
-                string_t dbname;
-                dbname.insert(0, (char*)PPlayer->name);
+                std::string dbname;
+                dbname.insert(0, PPlayer->name);
 
                 // can't be this name, too long
                 if (sr.nameLen > dbname.length())
@@ -371,7 +370,7 @@ std::list<SearchEntity*> CDataLoader::GetPlayersList(search_req sr, int* count)
             {
                 continue;
             }
-            if (visibleResults < 20)
+            if (visibleResults < 40)
             {
                 PlayersList.push_back(PPlayer);
                 visibleResults++;
@@ -408,7 +407,7 @@ std::list<SearchEntity*> CDataLoader::GetPartyList(uint16 PartyID, uint16 Allian
         "LEFT JOIN char_profile USING(charid) "
         "WHERE IF (allianceid <> 0, allianceid IN (SELECT allianceid FROM accounts_parties WHERE charid = %u) , partyid = %u) "
         "ORDER BY charname ASC "
-        "LIMIT 18";
+        "LIMIT 64";
 
     int32 ret = sql->Query(Query, (!AllianceID ? PartyID : AllianceID), (!PartyID ? AllianceID : PartyID));
 
@@ -416,11 +415,9 @@ std::list<SearchEntity*> CDataLoader::GetPartyList(uint16 PartyID, uint16 Allian
     {
         while (sql->NextRow() == SQL_SUCCESS)
         {
-            SearchEntity* PPlayer = new SearchEntity;
-            memset(PPlayer, 0, sizeof(SearchEntity));
+            SearchEntity* PPlayer = new SearchEntity();
 
-            memcpy(PPlayer->name, sql->GetData(2), 15);
-
+            PPlayer->name        = sql->GetStringData(2);
             PPlayer->id          = sql->GetUIntData(0);
             PPlayer->zone        = (uint16)sql->GetIntData(3);
             PPlayer->nation      = (uint8)sql->GetIntData(4);
@@ -505,11 +502,9 @@ std::list<SearchEntity*> CDataLoader::GetLinkshellList(uint32 LinkshellID)
     {
         while (sql->NextRow() == SQL_SUCCESS)
         {
-            SearchEntity* PPlayer = new SearchEntity;
-            memset(PPlayer, 0, sizeof(SearchEntity));
+            SearchEntity* PPlayer = new SearchEntity();
 
-            memcpy(PPlayer->name, sql->GetData(2), 15);
-
+            PPlayer->name           = sql->GetStringData(2);
             PPlayer->id             = sql->GetUIntData(0);
             PPlayer->zone           = (uint16)sql->GetIntData(3);
             PPlayer->nation         = (uint8)sql->GetIntData(4);
@@ -571,7 +566,7 @@ std::string CDataLoader::GetSearchComment(uint32 playerId)
         return std::string();
     }
 
-    return std::string((const char*)sql->GetData(0));
+    return sql->GetStringData(0);
 }
 
 struct ListingToExpire

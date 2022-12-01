@@ -3,7 +3,7 @@
 --  Mob: Makki-Chebukki
 -----------------------------------
 local ID = require("scripts/zones/Sealions_Den/IDs")
-mixins = {require("scripts/mixins/warriors_path_taru")}
+mixins = { require("scripts/mixins/warriors_path_taru") }
 -----------------------------------
 local entity = {}
 
@@ -32,7 +32,7 @@ entity.onMobFight = function(mob, target)
     local changetime = mob:getLocalVar("changetime")
     if battlefield:getLocalVar("fireworks") == 1 then
         if battletime - changetime >= 3 then
-            mob:SetMagicCastingEnabled(false)
+            mob:setMagicCastingEnabled(false)
             mob:entityAnimationPacket("ffr2")
             mob:setAnimationSub(2)
             mob:setLocalVar("changetime", mob:getBattleTime())

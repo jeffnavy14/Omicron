@@ -84,6 +84,7 @@ entity.onMobSpawn = function(mob)
         mob:setMod(xi.mod.SLEEPRES, 100)
         mob:setMod(xi.mod.LIGHT_MEVA, -27)
     end
+
     mob:setModelId(1167)
 end
 
@@ -114,6 +115,7 @@ entity.onMobFight = function(mob, target)
         elseif mob:getLocalVar("state") == 3 then
             mob:useMobAbility(693) -- perfect dodge
         end
+
         mob:setLocalVar("canTwoHour", 1)
     end
 
@@ -130,8 +132,11 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDeath  = function(mob, player, isKiller)
-    if (player:getCurrentMission(xi.mission.log_id.cop) == xi.mission.id.cop.A_FATE_DECIDED  and player:getCharVar("PromathiaStatus")==1) then
+entity.onMobDeath  = function(mob, player, optParams)
+    if
+        player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.A_FATE_DECIDED and
+        player:getCharVar("PromathiaStatus") == 1
+    then
         player:setCharVar("PromathiaStatus", 2)
     end
 end

@@ -14,18 +14,18 @@ entity.onTrade = function(player, npc, trade)
     local total = player:getCurrency("jetton")
     local max = 100000000
 
-    if (trade:hasItemQty(2184, count)) then
+    if trade:hasItemQty(2184, count) then
         result = 2 * count
-    elseif (trade:hasItemQty(2185, count)) then
+    elseif trade:hasItemQty(2185, count) then
         result = 10 * count
-    elseif (trade:hasItemQty(2186, count)) then
+    elseif trade:hasItemQty(2186, count) then
         result = 30 * count
-    elseif (trade:hasItemQty(2187, count)) then
+    elseif trade:hasItemQty(2187, count) then
         result = 200 * count
     end
 
-    if (result ~= nil) then
-        if ((result + total) > max) then
+    if result ~= nil then
+        if (result + total) > max then
             -- player:startEvent(47); ..it no work..
             npc:showText(npc, ID.text.EXCEED_THE_LIMIT_OF_JETTONS)
         else
@@ -46,23 +46,24 @@ entity.onEventUpdate = function(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
-
-    if (csid == 1900) then -- onTrigger
+    if csid == 1900 then -- onTrigger
         local shop =
         {
-            [1] = {itemID = 18721, price = 2, QTY = 1}, -- SoulTrapper
-            [257] = {itemID = 18724, price = 500, QTY = 1}, -- Soultrapper 2000
-            [513] = {itemID = 16134, price = 5000, QTY = 1}, -- Zoraal Ja's Helm
-            [65537] = {itemID = 18722, price = 2, QTY = 12}, -- Blank Soul Plates
-            [65793] = {itemID = 18725, price = 500, QTY = 12}, -- High Speed Soul plates
-            [66049] = {itemID = 16135, price = 5000, QTY = 1}, -- Dartorgor's Coif
-            [131585] = {itemID = 16136, price = 5000, QTY = 1}, -- Lamia No.3's Garland
-            [197121] = {itemID = 16137, price = 5000, QTY = 1}  -- Cacaroon's Hood
+            -- TODO: Bitwise math here on option
+            [1] =      { itemID = 18721, price = 2,    QTY =  1 }, -- SoulTrapper
+            [257] =    { itemID = 18724, price = 500,  QTY =  1 }, -- Soultrapper 2000
+            [513] =    { itemID = 16134, price = 5000, QTY =  1 }, -- Zoraal Ja's Helm
+            [65537] =  { itemID = 18722, price = 2,    QTY = 12 }, -- Blank Soul Plates
+            [65793] =  { itemID = 18725, price = 500,  QTY = 12 }, -- High Speed Soul plates
+            [66049] =  { itemID = 16135, price = 5000, QTY =  1 }, -- Dartorgor's Coif
+            [131585] = { itemID = 16136, price = 5000, QTY =  1 }, -- Lamia No.3's Garland
+            [197121] = { itemID = 16137, price = 5000, QTY =  1 }, -- Cacaroon's Hood
         }
+
         local result = shop[option]
-        if (result ~= nil) then
-            if (result.itemID ~= nil) then
-                if (player:addItem(result.itemID, result.QTY)) then
+        if result ~= nil then
+            if result.itemID ~= nil then
+                if player:addItem(result.itemID, result.QTY) then
                     player:delCurrency("jetton", result.price)
                     player:messageSpecial(ID.text.ITEM_OBTAINED, result.itemID)
                 else

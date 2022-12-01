@@ -16,7 +16,7 @@ local mission = Mission:new(xi.mission.log_id.TOAU, xi.mission.id.toau.FOILED_AM
 
 mission.reward =
 {
-    item        = {{ xi.items.IMPERIAL_GOLD_PIECE, 5 }},
+    item        = { { xi.items.IMPERIAL_GOLD_PIECE, 5 } },
     title       = xi.title.KARABABAS_SECRET_AGENT,
     nextMission = { xi.mission.log_id.TOAU, xi.mission.id.toau.PLAYING_THE_PART },
 }
@@ -32,9 +32,9 @@ mission.sections =
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
         {
-            onRegionEnter =
+            onTriggerAreaEnter =
             {
-                [3] = function(player, region)
+                [3] = function(player, triggerArea)
                     return mission:progressEvent(3097, { text_table = 0 })
                 end,
             },

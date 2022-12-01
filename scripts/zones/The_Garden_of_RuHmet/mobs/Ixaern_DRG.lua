@@ -27,7 +27,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     -- despawn pets
     local mobId = mob:getID()
     for i = mobId + 1, mobId + 3 do
@@ -37,7 +37,7 @@ entity.onMobDeath = function(mob, player, isKiller)
     end
 end
 
-entity.onMobDespawn = function( mob )
+entity.onMobDespawn = function(mob)
     -- despawn pets
     local mobId = mob:getID()
     for i = mobId + 1, mobId + 3 do

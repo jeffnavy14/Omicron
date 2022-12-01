@@ -1,5 +1,5 @@
 -----------------------------------
--- Unlocking a Myth (All Jobs)
+-- Unlocking a Myth (Most Jobs)
 -- Zalsuhm
 -- !pos -33 6 -117
 -----------------------------------
@@ -10,20 +10,20 @@ require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 require("scripts/globals/status")
 require("scripts/globals/weaponskillids")
--- require("scripts/globals/utils/nyzul")
+require("scripts/globals/nyzul")
 -----------------------------------
 
 quest = quest or {}
 quest.unlockingMyth = quest.unlockingMyth or {}
 
+-- There are several "Unlocking a Myth" quests. 1 per job, except GEO and RUN.
+-- Possible TODO: This was not made with GEO and RUN in mind. Clamp may be needed.
 function quest.unlockingMyth.getQuestId(mainJobId)
-
-    return (UNLOCKING_A_MYTH_WARRIOR - 1 + mainJobId)
-
+    return (xi.quest.id.jeuno.UNLOCKING_A_MYTH_WARRIOR - 1 + mainJobId)
 end
 
 function quest.unlockingMyth.onTrade(player, npc, trade)
-    for jobID, wepId in pairs(nyzul.baseWeapons) do
+    for jobID, wepId in pairs(xi.nyzul.baseWeapons) do
         if npcUtil.tradeHasExactly(trade, wepId) then
             local unlockingAMyth = player:getQuestStatus(xi.quest.log_id.JEUNO, quest.unlockingMyth.getQuestId(jobID))
             if unlockingAMyth == QUEST_ACCEPTED then
@@ -38,7 +38,7 @@ function quest.unlockingMyth.onTrade(player, npc, trade)
                 elseif wsPoints <= 8000 then
                     player:startEvent(10093)
                 elseif wsPoints >= 16000 then
-                     player:startEvent(10088, jobID)
+                    player:startEvent(10088, jobID)
                 end
             end
 
@@ -50,8 +50,8 @@ end
 function quest.unlockingMyth.onTrigger(player, npc)
     local mainJobId = player:getMainJob()
     local unlockingAMyth = player:getQuestStatus(xi.quest.log_id.JEUNO, quest.unlockingMyth.getQuestId(mainJobId))
-    local nyzulWeaponMain = nyzul.isBaseWeapon(player:getEquipID(xi.slot.MAIN))
-    local nyzulWeaponRanged = nyzul.isBaseWeapon(player:getEquipID(xi.slot.RANGED))
+    local nyzulWeaponMain = xi.nyzul.isBaseWeapon(player:getEquipID(xi.slot.MAIN))
+    local nyzulWeaponRanged = xi.nyzul.isBaseWeapon(player:getEquipID(xi.slot.RANGED))
 
     if unlockingAMyth == QUEST_AVAILABLE then
         if player:needToZone() and player:getVar("Quest[3][102]Prog") > 0 then
@@ -119,31 +119,31 @@ end
 Floor     Point
 100     250
 
-80-99 : 500+20(99-x)
+80-99 : 500 + 20(99 - x)
 95     580
 90     680
 85     780
 80     880
 
-60-79 : 1000+40(79-x)
+60-79 : 1000 + 40(79 - x)
 75     1160
 70     1360
 65     1560
 60     1760
 
-40-59 : 2000+80(59-x)
+40-59 : 2000 + 80(59 - x)
 55     2320
 50     2720
 45     3120
 40     3520
 
-20-39 : 4000+160(39-x)
+20-39 : 4000 + 160(39 - x)
 35     4640
 30     5440
 25     6240
 20     7040
 
-01-19 : 8000+320*(19-x)
+01-19 : 8000 + 320 * (19 - x)
 15     9280
 10     10880
 5     12480

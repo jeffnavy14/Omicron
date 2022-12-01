@@ -36,33 +36,35 @@ local manaclipperSchedule =
 {
     [xi.manaclipper.location.SUNSET_DOCKS] =
     {
-        {time =   10, act = act.ARRIVE, dest = dest.DHALMEL_ROCK},      -- 00:10
-        {time =   50, act = act.DEPART, dest = dest.DHALMEL_ROCK},      -- 00:50
-        {time =  290, act = act.ARRIVE, dest = dest.PURGONORGO_ISLE},   -- 04:50
-        {time =  330, act = act.DEPART, dest = dest.PURGONORGO_ISLE},   -- 05:30
-        {time =  730, act = act.ARRIVE, dest = dest.MALIYAKALEYA_REEF}, -- 12:10
-        {time =  770, act = act.DEPART, dest = dest.MALIYAKALEYA_REEF}, -- 12:50
-        {time = 1010, act = act.ARRIVE, dest = dest.PURGONORGO_ISLE},   -- 16:50
-        {time = 1050, act = act.DEPART, dest = dest.PURGONORGO_ISLE},   -- 17:30
-        {time = 1450, act = act.ARRIVE, dest = dest.DHALMEL_ROCK},      -- 24:10
+        { time =   10, act = act.ARRIVE, dest = dest.DHALMEL_ROCK },      -- 00:10
+        { time =   50, act = act.DEPART, dest = dest.DHALMEL_ROCK },      -- 00:50
+        { time =  290, act = act.ARRIVE, dest = dest.PURGONORGO_ISLE },   -- 04:50
+        { time =  330, act = act.DEPART, dest = dest.PURGONORGO_ISLE },   -- 05:30
+        { time =  730, act = act.ARRIVE, dest = dest.MALIYAKALEYA_REEF }, -- 12:10
+        { time =  770, act = act.DEPART, dest = dest.MALIYAKALEYA_REEF }, -- 12:50
+        { time = 1010, act = act.ARRIVE, dest = dest.PURGONORGO_ISLE },   -- 16:50
+        { time = 1050, act = act.DEPART, dest = dest.PURGONORGO_ISLE },   -- 17:30
+        { time = 1450, act = act.ARRIVE, dest = dest.DHALMEL_ROCK },      -- 24:10
     },
+
     [xi.manaclipper.location.PURGONORGO_ISLE] =
     {
-        {time =  510, act = act.ARRIVE, dest = dest.SUNSET_DOCKS}, -- 08:30
-        {time =  555, act = act.DEPART, dest = dest.SUNSET_DOCKS}, -- 09:15
-        {time = 1230, act = act.ARRIVE, dest = dest.SUNSET_DOCKS}, -- 20:30
-        {time = 1275, act = act.DEPART, dest = dest.SUNSET_DOCKS}, -- 21:15
-        {time = 1950, act = act.ARRIVE, dest = dest.SUNSET_DOCKS}, -- 32:30
+        { time =  510, act = act.ARRIVE, dest = dest.SUNSET_DOCKS }, -- 08:30
+        { time =  555, act = act.DEPART, dest = dest.SUNSET_DOCKS }, -- 09:15
+        { time = 1230, act = act.ARRIVE, dest = dest.SUNSET_DOCKS }, -- 20:30
+        { time = 1275, act = act.DEPART, dest = dest.SUNSET_DOCKS }, -- 21:15
+        { time = 1950, act = act.ARRIVE, dest = dest.SUNSET_DOCKS }, -- 32:30
     },
+
     [xi.manaclipper.location.MANACLIPPER] =
     {
-        {time =   10, act = act.ARRIVE, route = dest.SUNSET_DOCKS},      -- 00:10
-        {time =  290, act = act.ARRIVE, route = dest.DHALMEL_ROCK},      -- 04:50
-        {time =  510, act = act.ARRIVE, route = dest.PURGONORGO_ISLE},   -- 08:30
-        {time =  730, act = act.ARRIVE, route = dest.SUNSET_DOCKS},      -- 12:10
-        {time = 1010, act = act.ARRIVE, route = dest.MALIYAKALEYA_REEF}, -- 16:50
-        {time = 1230, act = act.ARRIVE, route = dest.PURGONORGO_ISLE},   -- 20:30
-        {time = 1450, act = act.ARRIVE, route = dest.SUNSET_DOCKS},      -- 24:10
+        { time =   10, act = act.ARRIVE, route = dest.SUNSET_DOCKS },      -- 00:10
+        { time =  290, act = act.ARRIVE, route = dest.DHALMEL_ROCK },      -- 04:50
+        { time =  510, act = act.ARRIVE, route = dest.PURGONORGO_ISLE },   -- 08:30
+        { time =  730, act = act.ARRIVE, route = dest.SUNSET_DOCKS },      -- 12:10
+        { time = 1010, act = act.ARRIVE, route = dest.MALIYAKALEYA_REEF }, -- 16:50
+        { time = 1230, act = act.ARRIVE, route = dest.PURGONORGO_ISLE },   -- 20:30
+        { time = 1450, act = act.ARRIVE, route = dest.SUNSET_DOCKS },      -- 24:10
     },
 }
 
@@ -95,8 +97,8 @@ xi.manaclipper.timekeeperOnTrigger = function(player, location, eventId)
     end
 end
 
-xi.manaclipper.aboard = function(player, regionId, isAboard)
-    player:setCharVar("[manaclipper]aboard", isAboard and regionId or 0)
+xi.manaclipper.aboard = function(player, triggerArea, isAboard)
+    player:setCharVar("[manaclipper]aboard", isAboard and triggerArea or 0)
 end
 
 xi.manaclipper.onZoneIn = function(player)
@@ -139,7 +141,7 @@ xi.manaclipper.onTransportEvent = function(player, transport)
     local ID = zones[player:getZoneID()]
     local aboard = player:getCharVar("[manaclipper]aboard")
 
-    -- leaving Sunset Docks. must be standing in region 1. must have a ticket.
+    -- leaving Sunset Docks. must be standing in trigger area 1. must have a ticket.
     if aboard == 1 then
         if player:hasKeyItem(xi.ki.MANACLIPPER_TICKET) then
             player:delKeyItem(xi.ki.MANACLIPPER_TICKET)
@@ -153,6 +155,7 @@ xi.manaclipper.onTransportEvent = function(player, transport)
             else
                 player:messageSpecial(ID.text.LEFT_BILLET, 0, xi.ki.MANACLIPPER_MULTI_TICKET, uses - 1)
             end
+
             player:setCharVar("Manaclipper_Ticket", uses - 1)
             player:startEvent(14)
         else
@@ -160,7 +163,7 @@ xi.manaclipper.onTransportEvent = function(player, transport)
             player:setPos(489, -3, 713, 200) -- kicked off Manaclipper, returned to Sunset Docks
         end
 
-    -- leaving Purgonorgo Isle. must be standing in region 2. no ticket required.
+    -- leaving Purgonorgo Isle. must be standing in trigger area 2. no ticket required.
     elseif aboard == 2 then
         player:startEvent(16)
     end

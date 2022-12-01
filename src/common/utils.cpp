@@ -89,17 +89,22 @@ bool bin2hex(char* output, unsigned char* input, size_t count)
     return true;
 }
 
-float distance(const position_t& A, const position_t& B)
+float distance(const position_t& A, const position_t& B, bool ignoreVertical)
 {
-    return sqrt(distanceSquared(A, B));
+    return sqrt(distanceSquared(A, B, ignoreVertical));
 }
 
-float distanceSquared(const position_t& A, const position_t& B)
+float distanceSquared(const position_t& A, const position_t& B, bool ignoreVertical)
 {
     float diff_x = A.x - B.x;
-    float diff_y = A.y - B.y;
+    float diff_y = ignoreVertical ? 0 : A.y - B.y;
     float diff_z = A.z - B.z;
     return diff_x * diff_x + diff_y * diff_y + diff_z * diff_z;
+}
+
+bool distanceWithin(const position_t& A, const position_t& B, float within, bool ignoreVertical)
+{
+    return distanceSquared(A, B, ignoreVertical) <= square(within);
 }
 
 int32 intpow32(int32 base, int32 exponent)
@@ -158,7 +163,7 @@ uint8 worldAngle(const position_t& A, const position_t& B)
 {
     uint8 angle = (uint8)(atanf((B.z - A.z) / (B.x - A.x)) * -(128.0f / M_PI));
 
-    return (A.x > B.x ? angle + 128 : angle);
+    return distanceWithin(A, B, 0.1f, true) ? A.rotation : (A.x > B.x ? angle + 128 : angle);
 }
 
 uint8 relativeAngle(uint8 world, int16 diff)
@@ -499,13 +504,12 @@ uint64 unpackBitsLE(const uint8* target, int32 byteOffset, int32 bitOffset, uint
     return retVal;
 }
 
-void EncodeStringLinkshell(int8* signature, int8* target)
+void EncodeStringLinkshell(const std::string& signature, char* target)
 {
-    uint8 encodedSignature[LinkshellStringLength];
-    memset(&encodedSignature, 0, sizeof encodedSignature);
-    uint8 chars    = 0;
-    uint8 leftover = 0;
-    auto  length   = std::min<size_t>(20u, strlen((const char*)signature));
+    uint8 encodedSignature[LinkshellStringLength] = {};
+    uint8 chars                                   = 0;
+    uint8 leftover                                = 0;
+    auto  length                                  = std::min<size_t>(20u, signature.size());
 
     for (std::size_t currChar = 0; currChar < length; ++currChar)
     {
@@ -530,19 +534,18 @@ void EncodeStringLinkshell(int8* signature, int8* target)
     leftover = (leftover == 8 || leftover == 2 ? 6 : leftover);
     packBitsLE(encodedSignature, 0xFF, 6 * chars, leftover);
 
-    strncpy((char*)target, (const char*)encodedSignature, LinkshellStringLength);
+    strncpy(target, reinterpret_cast<const char*>(encodedSignature), LinkshellStringLength);
 }
 
-void DecodeStringLinkshell(int8* signature, int8* target)
+void DecodeStringLinkshell(const std::string& signature, char* target)
 {
-    uint8 decodedSignature[21];
-    memset(&decodedSignature, 0, sizeof decodedSignature);
-    auto length = std::min<size_t>(20u, (strlen((const char*)signature) * 8) / 6);
+    char decodedSignature[21] = {};
+    auto length               = std::min<size_t>(20u, (signature.size() * 8) / 6);
 
     for (std::size_t currChar = 0; currChar < length; ++currChar)
     {
         uint8 tempChar = '\0';
-        tempChar       = (uint8)unpackBitsLE((uint8*)signature, static_cast<uint32>(currChar * 6), 6);
+        tempChar       = (uint8)unpackBitsLE((uint8*)signature.c_str(), static_cast<uint32>(currChar * 6), 6);
         if (tempChar >= 1 && tempChar <= 26)
         {
             tempChar = 'a' - 1 + tempChar;
@@ -572,16 +575,14 @@ void DecodeStringLinkshell(int8* signature, int8* target)
         }
     }
 
-    strncpy((char*)target, (const char*)decodedSignature, LinkshellStringLength);
+    strncpy(target, decodedSignature, LinkshellStringLength);
 }
 
-int8* EncodeStringSignature(int8* signature, int8* target)
+std::string EncodeStringSignature(const std::string& signature, char* target)
 {
-    uint8 encodedSignature[SignatureStringLength];
-    memset(&encodedSignature, 0, sizeof encodedSignature);
-    uint8 chars = 0;
-    // uint8 leftover = 0;
-    auto length = std::min<size_t>(15u, strlen((const char*)signature));
+    uint8 encodedSignature[SignatureStringLength] = {};
+    uint8 chars                                   = 0;
+    auto  length                                  = std::min<size_t>(15u, signature.size());
 
     for (std::size_t currChar = 0; currChar < length; ++currChar)
     {
@@ -601,20 +602,16 @@ int8* EncodeStringSignature(int8* signature, int8* target)
         packBitsLE(encodedSignature, tempChar, static_cast<uint32>(6 * currChar), 6);
         chars++;
     }
-    // leftover = (chars * 6) % 8;
-    // leftover = 8 - leftover;
-    // leftover = (leftover == 8 ? 6 : leftover);
-    // packBitsLE(encodedSignature,0xFF,6*chars, leftover);
 
-    return (int8*)strncpy((char*)target, (const char*)encodedSignature, SignatureStringLength);
+    return strncpy(target, reinterpret_cast<const char*>(encodedSignature), SignatureStringLength);
 }
 
-void DecodeStringSignature(int8* signature, int8* target)
+void DecodeStringSignature(const std::string& signature, char* target)
 {
-    uint8 decodedSignature[PacketNameLength + 1] = { 0 };
+    char decodedSignature[PacketNameLength + 1] = {};
     for (uint8 currChar = 0; currChar < PacketNameLength; ++currChar)
     {
-        uint8 tempChar = (uint8)unpackBitsLE((uint8*)signature, currChar * 6, 6);
+        char tempChar = unpackBitsLE((uint8*)signature.c_str(), currChar * 6, 6);
         if (tempChar >= 1 && tempChar <= 10)
         {
             tempChar = '0' - 1 + tempChar;
@@ -630,7 +627,7 @@ void DecodeStringSignature(int8* signature, int8* target)
 
         decodedSignature[currChar] = tempChar;
     }
-    strncpy((char*)target, (const char*)decodedSignature, SignatureStringLength);
+    strncpy(target, decodedSignature, SignatureStringLength);
 }
 
 // Take a regular string of 8-bit wide chars and packs it down into an
@@ -697,7 +694,8 @@ std::string UnpackSoultrapperName(uint8 input[])
     uint8       remainder = 0;
     uint8       shift     = 1;
     uint8       maxSize   = 13; // capped at 13 based on examples like GoblinBountyH
-    std::string output    = "";
+    char        indexChar;
+    std::string output = "";
 
     // Unpack and shift 7-bit to 8-bit
     for (uint8 i = 0; i <= maxSize; ++i)
@@ -711,8 +709,11 @@ std::string UnpackSoultrapperName(uint8 input[])
             tempLeft = tempLeft >> 1;
         }
 
-        // uint8 orvalue = tempLeft | remainder;
-        output = output + (char)(tempLeft | remainder);
+        indexChar = (char)(tempLeft | remainder);
+        if (indexChar >= '0' && indexChar <= 'z')
+        {
+            output = output + (char)(tempLeft | remainder);
+        }
 
         remainder = tempRight << (7 - shift);
         if (remainder & 128)
@@ -722,7 +723,10 @@ std::string UnpackSoultrapperName(uint8 input[])
 
         if (shift == 7)
         {
-            output    = output + char(remainder);
+            if (char(remainder) >= '0' && char(remainder) <= 'z')
+            {
+                output = output + char(remainder);
+            }
             remainder = 0;
             shift     = 1;
         }
@@ -797,7 +801,7 @@ std::string to_upper(std::string const& s)
 }
 
 // https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
-std::string trim(const std::string& str, const std::string& whitespace)
+std::string trim(std::string const& str, std::string const& whitespace)
 {
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
@@ -811,12 +815,78 @@ std::string trim(const std::string& str, const std::string& whitespace)
     return str.substr(strBegin, strRange);
 }
 
+// Returns true if the given str matches the given pattern.
+// Wildcards can be used in the pattern to match "any character"
+// e.g: %anto% matches Shantotto or Canto-Ranto
+// Modification of https://www.geeksforgeeks.org/wildcard-character-matching/
+bool matches(std::string const& target, std::string const& pattern, std::string const& wildcard)
+{
+    auto matchesRecur = [&](const char* target, const char* pattern, const char* wildcard, auto&& matchesRecur)
+    {
+        // This should never happen as we call this lambda from std::strings converted to const char*,
+        // but good to be safe.
+        if (pattern == nullptr || target == nullptr)
+        {
+            return false;
+        }
+
+        // If we reach at the end of both strings, we are done
+        if (*pattern == '\0' && *target == '\0')
+        {
+            return true;
+        }
+
+        // Make sure to eliminate consecutive '*'
+        if (*pattern == *wildcard)
+        {
+            while (*(pattern + 1) == '*')
+            {
+                pattern++;
+            }
+        }
+
+        // Make sure that the characters after '*' are present
+        // in target string.
+        if (*pattern == *wildcard && *(pattern + 1) != '\0' && *target == '\0')
+        {
+            return false;
+        }
+
+        // If the current characters of both strings match
+        if (*pattern == *target)
+        {
+            return matchesRecur(target + 1, pattern + 1, wildcard, matchesRecur);
+        }
+
+        // If there is *, then there are two possibilities
+        // a) We consider current character of target string
+        // b) We ignore current character of target string.
+        if (*pattern == *wildcard)
+        {
+            return matchesRecur(target + 1, pattern, wildcard, matchesRecur) || matchesRecur(target, pattern + 1, wildcard, matchesRecur);
+        }
+
+        return false;
+    };
+
+    return matchesRecur(target.c_str(), pattern.c_str(), wildcard.c_str(), matchesRecur);
+}
+
 look_t stringToLook(std::string str)
 {
+    look_t out{};
+
+    // Sanity checks
     // Remove "0x" if found
-    if (str[0] == '0' && str[1] == 'x')
+    if (str.size() == 42 && str[0] == '0' && str[1] == 'x')
     {
         str = str.substr(2);
+    }
+
+    // Only support full-string looks
+    if (str.size() != 40)
+    {
+        return out;
     }
 
     // A 16-bit number is represented by *4* string characters
@@ -835,10 +905,24 @@ look_t stringToLook(std::string str)
     for (auto& entry : hex)
     {
         // Swap endian-ness
-        entry = (entry >> 8) | (entry << 8);
+        auto top    = entry << 8;
+        auto bottom = entry >> 8;
+        entry       = top | bottom;
     }
 
-    look_t out(hex);
+    out.size = hex[0];
+
+    out.face = hex[1] & 0x00FF;
+    out.race = hex[1] >> 8;
+
+    out.head   = hex[2] &= ~0x1000;
+    out.body   = hex[3] &= ~0x2000;
+    out.hands  = hex[4] &= ~0x3000;
+    out.legs   = hex[5] &= ~0x4000;
+    out.feet   = hex[6] &= ~0x5000;
+    out.main   = hex[7] &= ~0x6000;
+    out.sub    = hex[8] &= ~0x7000;
+    out.ranged = hex[9] &= ~0x8000;
 
     return out;
 }

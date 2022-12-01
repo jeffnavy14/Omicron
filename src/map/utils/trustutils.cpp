@@ -41,12 +41,12 @@ std::vector<TrustSpell_ID*> g_PTrustIDList;
 
 struct Trust_t
 {
-    uint32    trustID;
-    uint32    pool;
-    look_t    look;        // appearance data
-    string_t  name;        // script name string
-    string_t  packet_name; // packet name string
-    ECOSYSTEM EcoSystem;   // ecosystem
+    uint32      trustID;
+    uint32      pool;
+    look_t      look;        // appearance data
+    std::string name;        // script name string
+    std::string packet_name; // packet name string
+    ECOSYSTEM   EcoSystem;   // ecosystem
 
     uint8  name_prefix;
     uint8  radius; // Model Radius - affects melee range etc.
@@ -356,6 +356,7 @@ namespace trustutils
         CTrustEntity* PTrust = LoadTrust(PMaster, TrustID);
         PMaster->PTrusts.insert(PMaster->PTrusts.end(), PTrust);
         PMaster->StatusEffectContainer->CopyConfrontationEffect(PTrust);
+        PTrust->setBattleID(PMaster->getBattleID());
 
         if (PMaster->PBattlefield)
         {
@@ -473,6 +474,16 @@ namespace trustutils
 
     void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
     {
+        if (settings::get<uint8>("main.ENABLE_TRUST_ALTER_EGO_EXPO") > 0) // Alter Ego Expo HPP/MPP +50%, All Status Resistance +25%
+        {
+            PTrust->addModifier(Mod::HPP, 50);
+            PTrust->addModifier(Mod::MPP, 50);
+            PTrust->addModifier(Mod::STATUSRES, 25);
+        }
+
+        // add mob pool mods ahead of applying stats
+        mobutils::AddCustomMods(PTrust);
+
         JOBTYPE mJob = PTrust->GetMJob();
         JOBTYPE sJob = PTrust->GetSJob();
         uint8   mLvl = PTrust->GetMLevel();

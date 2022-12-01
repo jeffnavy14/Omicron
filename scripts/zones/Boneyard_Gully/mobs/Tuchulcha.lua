@@ -3,7 +3,7 @@
 --  Mob: Tuchulcha
 --  ENM: Sheep in Antlion's Clothing
 -----------------------------------
-mixins = {require("scripts/mixins/families/antlion_ambush")}
+mixins = { require("scripts/mixins/families/antlion_ambush") }
 local ID = require("scripts/zones/Boneyard_Gully/IDs")
 require("scripts/globals/status")
 -----------------------------------
@@ -28,9 +28,11 @@ end
 entity.onMobFight = function(mob, target)
     -- Every 25% of its HP Tuchulcha will bury itself under the sand
     -- accompanied by use of the ability Sandpit
-    if (mob:getHPP() < 75 and mob:getLocalVar('Sandpits') == 0)
-    or (mob:getHPP() < 50 and mob:getLocalVar('Sandpits') == 1)
-    or (mob:getHPP() < 25 and mob:getLocalVar('Sandpits') == 2) then
+    if
+        (mob:getHPP() < 75 and mob:getLocalVar('Sandpits') == 0) or
+        (mob:getHPP() < 50 and mob:getLocalVar('Sandpits') == 1) or
+        (mob:getHPP() < 25 and mob:getLocalVar('Sandpits') == 2)
+    then
         mob:setLocalVar('Sandpits', mob:getLocalVar('Sandpits') + 1)
         mob:useMobAbility(276)
         mob:timer(4000, function(tuchulcha)
@@ -52,10 +54,10 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     -- Used to grab the mob IDs
     -- Despawn the hunters
-    if isKiller then
+    if optParams.isKiller then
         local bfID = mob:getBattlefield():getArea()
         DespawnMob(ID.sheepInAntlionsClothing[bfID].SWIFT_HUNTER_ID)
         DespawnMob(ID.sheepInAntlionsClothing[bfID].SHREWD_HUNTER_ID)

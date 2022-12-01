@@ -46,7 +46,10 @@ quest.sections =
             onEventFinish =
             {
                 [578] = function(player, csid, option, npc)
-                    if player:hasItem(xi.items.CLUB_OF_TRIALS) or npcUtil.giveItem(player, xi.items.CLUB_OF_TRIALS) then
+                    if
+                        player:hasItem(xi.items.CLUB_OF_TRIALS) or
+                        npcUtil.giveItem(player, xi.items.CLUB_OF_TRIALS)
+                    then
                         npcUtil.giveKeyItem(player, xi.keyItem.WEAPON_TRAINING_GUIDE)
                         quest:begin(player)
                     end
@@ -129,7 +132,7 @@ quest.sections =
                     elseif
                         player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) and
                         not player:hasKeyItem(xi.keyItem.ANNALS_OF_TRUTH) and
-                        npcUtil.popFromQM(player, npc, roMaeveID.mob.ELDHRIMNIR, {hide = 0})
+                        npcUtil.popFromQM(player, npc, roMaeveID.mob.ELDHRIMNIR, { hide = 0 })
                     then
                         return quest:messageSpecial(roMaeveID.text.SENSE_OMINOUS_PRESENCE)
                     end
@@ -138,7 +141,7 @@ quest.sections =
 
             ['Eldhrimnir'] =
             {
-                onMobDeath = function(mob, player, isKiller, firstCall)
+                onMobDeath = function(mob, player, optParams)
                     player:setLocalVar('killed_wsnm', 1)
                 end,
             },

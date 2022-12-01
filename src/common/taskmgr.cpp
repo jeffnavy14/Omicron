@@ -61,7 +61,7 @@ CTaskMgr::CTask* CTaskMgr::AddTask(CTask* PTask)
     return PTask;
 }
 
-void CTaskMgr::RemoveTask(const std::string& TaskName)
+void CTaskMgr::RemoveTask(std::string const& TaskName)
 {
     TracyZoneScoped;
     // m_TaskList is a priority_queue, so we can't directly pull members out of it.
@@ -135,7 +135,6 @@ duration CTaskMgr::DoTimer(time_point tick)
             }
             break;
         }
-        diff = std::clamp<duration>(diff, 50ms, 1000ms);
     }
-    return diff;
+    return std::clamp<duration>(diff, 50ms, 1000ms);
 }

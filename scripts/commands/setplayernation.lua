@@ -11,7 +11,7 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!setplayernation {player} <nation>")
+    player:PrintToPlayer("!setplayernation (player) <nation>")
     player:PrintToPlayer("Nations: 0=San d'Oria 1=Bastok 2=Windurst")
 end
 
@@ -24,7 +24,7 @@ function onTrigger(player, arg1, arg2)
         targ = GetPlayerByName(arg1)
 
         if targ == nil then
-            error(player, string.format( "Player named '%s' not found!", arg1 ))
+            error(player, string.format("Player named '%s' not found!", arg1))
             return
         end
 

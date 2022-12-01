@@ -425,6 +425,8 @@
         "RunElevator",
         "GetServerVariable",
         "SetServerVariable",
+        "GetVolatileServerVariable",
+        "SetVolatileServerVariable",
         "ClearVarFromAll",
         "SendEntityVisualPacket",
         "UpdateServerMessage",
@@ -434,6 +436,7 @@
         "UpdateNMSpawnPoint",
         "SetDropRate",
         "NearLocation",
+        "GetFurthestValidPosition",
         "Terminate",
         "GetHealingTickDelay",
         "GetReadOnlyItem",
@@ -445,6 +448,7 @@
         "ForceCrash",
         "BuildString",
         "SendLuaFuncStringToZone",
+        "DYNAMIC_LOOKUP",
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global"
@@ -453,6 +457,7 @@
     "Lua.hint.setType": true,
     "Lua.runtime.version": "LuaJIT",
     "Lua.workspace.preloadFileSize": 10000,
+    "python.formatting.provider": "black",
     "files.associations": {
         "algorithm": "cpp",
         "any": "cpp",
@@ -546,6 +551,12 @@
         "complex": "cpp",
         "coroutine": "cpp",
         "resumable": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "strstream": "cpp",
+        "codecvt": "cpp",
+        "source_location": "cpp",
+        "*.ipp": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     },
 }

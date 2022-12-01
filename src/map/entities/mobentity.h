@@ -51,18 +51,18 @@ enum SPECIALFLAG
 
 enum ROAMFLAG : uint16
 {
-    ROAMFLAG_NONE    = 0x00,
-    ROAMFLAG_NONE0   = 0x01,  //
-    ROAMFLAG_NONE1   = 0x02,  //
-    ROAMFLAG_NONE2   = 0x04,  //
-    ROAMFLAG_NONE3   = 0x08,  //
-    ROAMFLAG_NONE4   = 0x10,  //
-    ROAMFLAG_NONE5   = 0x20,  //
-    ROAMFLAG_WORM    = 0x40,  // pop up and down when moving
-    ROAMFLAG_AMBUSH  = 0x80,  // stays hidden until someone comes close (antlion)
-    ROAMFLAG_EVENT   = 0x100, // calls lua method for roaming logic
-    ROAMFLAG_IGNORE  = 0x200, // ignore all hate, except linking hate
-    ROAMFLAG_STEALTH = 0x400  // stays name hidden and untargetable until someone comes close (chigoe)
+    ROAMFLAG_NONE     = 0x00,
+    ROAMFLAG_NONE0    = 0x01,  //
+    ROAMFLAG_NONE1    = 0x02,  //
+    ROAMFLAG_NONE2    = 0x04,  //
+    ROAMFLAG_NONE3    = 0x08,  //
+    ROAMFLAG_NONE4    = 0x10,  //
+    ROAMFLAG_NONE5    = 0x20,  //
+    ROAMFLAG_WORM     = 0x40,  // pop up and down when moving
+    ROAMFLAG_AMBUSH   = 0x80,  // stays hidden until someone comes close (antlion)
+    ROAMFLAG_SCRIPTED = 0x100, // calls lua method for roaming logic
+    ROAMFLAG_IGNORE   = 0x200, // ignore all hate, except linking hate
+    ROAMFLAG_STEALTH  = 0x400  // stays name hidden and untargetable until someone comes close (chigoe)
 };
 
 enum MOBTYPE
@@ -151,7 +151,7 @@ public:
     void HideHP(bool hide);
     bool IsHPHidden() const;
     void SetUntargetable(bool untargetable);
-    bool GetUntargetable() const;
+    bool GetUntargetable() const override;
 
     void         PostTick() override;
     float        GetRoamDistance();
@@ -222,8 +222,8 @@ public:
     uint8     m_Type; // mob type
     bool      m_Aggro;
     bool      m_TrueDetection; // Has true sight or sound
-    uint16    m_Detects;       // mobs detection methods, sight, sound, etc
     uint8     m_Link;          // link with mobs of it's family
+    bool      m_isAggroable;   // Can be aggroed by other monsters when in the player allegiance
     uint16    m_Behaviour;     // mob behaviour
     SPAWNTYPE m_SpawnType;     // condition for mob to spawn
 
@@ -262,10 +262,9 @@ public:
 
     bool m_IsClaimable;
 
-    bool m_bReleaseTargIDOnDeath = false;
-
     static constexpr float sound_range{ 8.f };
     static constexpr float sight_range{ 15.f };
+    static constexpr float magic_range{ 20.f };
 
 protected:
     void DistributeRewards();

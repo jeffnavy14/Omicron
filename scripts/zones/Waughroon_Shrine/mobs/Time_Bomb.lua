@@ -7,8 +7,8 @@ local entity = {}
 
 entity.onMobEngaged = function(mob, target)
     mob:setLocalVar("selfDestruct", os.time() + 60)
-    mob:SetAutoAttackEnabled(false)
-    mob:SetMobAbilityEnabled(false)
+    mob:setAutoAttackEnabled(false)
+    mob:setMobAbilityEnabled(false)
 end
 
 entity.onMobFight = function(mob, target)
@@ -25,7 +25,7 @@ entity.onMobWeaponSkill = function(target, mob, skill)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

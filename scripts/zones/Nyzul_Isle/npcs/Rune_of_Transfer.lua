@@ -5,7 +5,10 @@
 -----------------------------------
 local ID = require("scripts/zones/Nyzul_Isle/IDs")
 require("scripts/globals/keyitems")
+<<<<<<< HEAD
 require("scripts/settings/main")
+=======
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 require("scripts/globals/status")
 require("scripts/globals/nyzul")
 require("scripts/globals/utils")
@@ -17,6 +20,7 @@ entity.onTrigger = function(player, npc)
     local instance = npc:getInstance()
 
     if npc:getAnimationSub() == 1 and npc:getLocalVar("cued") == 0 then
+<<<<<<< HEAD
        if instance:getLocalVar("menuChoice") > 1 then
             -- Normal Menu
             player:startOptionalCutscene(201, {[0] = 7, cs_option = {1, 2}})
@@ -26,6 +30,17 @@ entity.onTrigger = function(player, npc)
         end
     elseif npc:getAnimationSub() == 0 then
         npc:messageText(npc, ID.text.ELIMINATE_ENEMY_LEADER + instance:getStage(), false)
+=======
+        if instance:getLocalVar("menuChoice") > 1 then
+            -- Normal Menu
+            player:startOptionalCutscene(201, { [0] = 7, cs_option = { 1, 2 } })
+        else
+            -- Left / Right Menu
+            player:startOptionalCutscene(201, { [0] = 27, cs_option = { 1, 2 } })
+        end
+    elseif npc:getAnimationSub() == 0 then
+        npc:messageText(npc, ID.text.OBJECTIVE_TEXT_OFFSET + instance:getStage(), false)
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
     end
 end
 
@@ -33,7 +48,15 @@ entity.onEventUpdate = function(player, csid, option)
     -- Setup 1st person to activate rune to go up to control the porting to next floor
     local instance = player:getInstance()
 
+<<<<<<< HEAD
     if csid == 201 and option ~= 1073741824 and instance:getLocalVar("runeHandler") == 0 then
+=======
+    if
+        csid == 201 and
+        option ~= 1073741824 and
+        instance:getLocalVar("runeHandler") == 0
+    then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         local chars = instance:getChars()
         instance:setLocalVar("runeHandler", player:getID())
 
@@ -56,11 +79,23 @@ entity.onEventFinish = function(player, csid, option, npc)
         for _, players in ipairs(chars) do
             players:setPos(0, 0, 0, 0, xi.zone.ALZADAAL_UNDERSEA_RUINS)
         end
+<<<<<<< HEAD
     elseif csid == 201 and option ~= 1073741824 and instance:getLocalVar("runeHandler") == player:getID() then
         -- Leave Assault
         if option == 1 and npc:getLocalVar("runCompleted") == 0 then
             npc:setLocalVar("runCompleted", 1)
             local currentFloor = utils.clamp(xi.nyzul.get_relative_floor(instance), 1, 100)
+=======
+    elseif
+        csid == 201 and
+        option ~= 1073741824 and
+        instance:getLocalVar("runeHandler") == player:getID()
+    then
+        -- Leave Assault
+        if option == 1 and npc:getLocalVar("runCompleted") == 0 then
+            npc:setLocalVar("runCompleted", 1)
+            local currentFloor = utils.clamp(xi.nyzul.getRelativeFloor(instance), 1, 100)
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
             local startFloor   = instance:getLocalVar("Nyzul_Isle_StartingFloor")
             local diskHolder   = instance:getLocalVar("diskHolder")
 
@@ -85,7 +120,11 @@ entity.onEventFinish = function(player, csid, option, npc)
                     end
                 end
 
+<<<<<<< HEAD
                 local tokens = math.max(0, instance:getLocalVar("potential_tokens") - xi.nyzul.get_token_penalty(instance))
+=======
+                local tokens = math.max(0, instance:getLocalVar("potential_tokens") - xi.nyzul.getTokenPenalty(instance))
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 
                 -- Assault initiator gets 10% more tokens
                 if players:getID() == instance:getLocalVar("assaultInitiator") then

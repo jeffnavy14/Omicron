@@ -56,9 +56,9 @@ quest.sections =
                     elseif
                         not player:needToZone() and
                         quest:getVar(player, 'Prog') == 2 and
-                        npcUtil.tradeHas(trade, {xi.items.MYTHRIL_PICK, xi.items.MYTHRIL_PICK_HQ}, true, true)
+                        npcUtil.tradeHas(trade, { xi.items.MYTHRIL_PICK, xi.items.MYTHRIL_PICK_HQ }, true, true)
                     then
-                        return quest:progressEvent(9, {[0] = trade:getItemId()})
+                        return quest:progressEvent(9, { [0] = trade:getItemId() })
                     end
                 end,
 
@@ -73,6 +73,7 @@ quest.sections =
                     quest:setVar(player, 'Prog', 2)
                     player:needToZone(true)
                 end,
+
                 [9] = function(player, csid, option, npc)
                     if quest:complete(player) then
                         player:tradeComplete()

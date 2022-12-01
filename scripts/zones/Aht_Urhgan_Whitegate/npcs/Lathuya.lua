@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: Aht Urhgan Whitegate
 --  NPC: Lathuya
--- Standard Info NPC
 -- Involved in quests: Omens
 -- !pos -95.081 -6.000 31.638 50
 -----------------------------------
@@ -15,7 +14,7 @@ local craftingItems =
 {
     [1] = -- magus bazubands
     {
-        materials = {754, 828, 879, 4158},
+        materials = { 754, 828, 879, 4158 },
         currency = 2186,
         currencyAmt = 2,
         result = 14928
@@ -23,7 +22,7 @@ local craftingItems =
 
     [2] = -- magus shalwar
     {
-        materials = {761, 828, 2175, 2340},
+        materials = { 761, 828, 2175, 2340 },
         currency = 2186,
         currencyAmt = 2,
         result = 15600
@@ -31,7 +30,7 @@ local craftingItems =
 
     [3] = -- magus jubbah
     {
-        materials = {828, 2229, 2288, 2340},
+        materials = { 828, 2229, 2288, 2340 },
         currency = 2186,
         currencyAmt = 4,
         result = 14521
@@ -47,9 +46,15 @@ entity.onTrade = function(player, npc, trade)
 
         local item = craftingItems[player:getCharVar("[BLUAF]Current")]
         if item then
-            if craftingStage == 0  and npcUtil.tradeHasExactly(trade, item.materials) then
+            if
+                craftingStage == 0 and
+                npcUtil.tradeHasExactly(trade, item.materials)
+            then
                 player:startEvent(732 + artifactOffset, item.result, item.currency, item.currencyAmt)
-            elseif craftingStage == 1 and npcUtil.tradeHasExactly(trade, {{item.currency, item.currencyAmt}}) then
+            elseif
+                craftingStage == 1 and
+                npcUtil.tradeHasExactly(trade, { { item.currency, item.currencyAmt } })
+            then
                 player:startEvent(734 + artifactOffset, 0, item.currency, item.currencyAmt)
             end
         end

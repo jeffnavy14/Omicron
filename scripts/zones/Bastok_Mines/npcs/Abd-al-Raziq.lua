@@ -21,19 +21,19 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("AlchemyExpertQuest") == 1 and
         player:hasKeyItem(xi.keyItem.WAY_OF_THE_ALCHEMIST)
     then
-        if signed ~=0 then
+        if signed ~= 0 then
             player:setSkillRank(xi.skill.ALCHEMY, newRank)
             player:startEvent(121, 0, 0, 0, 0, newRank, 1)
-            player:setCharVar("AlchemyExpertQuest",0)
-            player:setLocalVar("AlchemyTraded",1)
+            player:setCharVar("AlchemyExpertQuest", 0)
+            player:setLocalVar("AlchemyTraded", 1)
         else
             player:startEvent(121, 0, 0, 0, 0, newRank, 0)
         end
 
-    elseif newRank ~= 0 and newRank <=9 then
+    elseif newRank ~= 0 and newRank <= 9 then
         player:setSkillRank(xi.skill.ALCHEMY, newRank)
         player:startEvent(121, 0, 0, 0, 0, newRank)
-        player:setLocalVar("AlchemyTraded",1)
+        player:setLocalVar("AlchemyTraded", 1)
     end
 end
 
@@ -57,7 +57,7 @@ entity.onTrigger = function(player, npc)
 
     if player:getCharVar("AlchemyExpertQuest") == 1 then
         if player:hasKeyItem(xi.keyItem.WAY_OF_THE_ALCHEMIST) then
-            expertQuestStatus = 550
+            expertQuestStatus = 640
         else
             expertQuestStatus = 600
         end
@@ -81,17 +81,6 @@ entity.onTrigger = function(player, npc)
         -- The Parameters are Item IDs for the Recipe
         player:startEvent(590, item, 2774, 929, 4103, 2777, 4103)
 
-    elseif expertQuestStatus == 550 then
-        --[[
-        Feeding the proper parameter currently hangs the client in cutscene. This may
-        possibly be due to an unimplemented packet or function (display recipe?) Work
-        around to present dialog to player to let them know the trade is ready to be
-        received by triggering with lower rank up parameters.
-        --]]
-        player:showText(npc, 7237)
-        player:showText(npc, 7239)
-        player:startEvent(120, testItem, realSkill, 44, guildMember, 0, 0, 0, 0)
-
     else
         player:startEvent(120, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
     end
@@ -112,7 +101,7 @@ entity.onEventFinish = function(player, csid, option)
 
     if csid == 120 and option == 2 then
         if guildMember == 1 then
-            player:setCharVar("AlchemyExpertQuest",1)
+            player:setCharVar("AlchemyExpertQuest", 1)
         end
     elseif csid == 120 and option == 1 then
         local crystal = 4101 -- water crystal
@@ -127,7 +116,7 @@ entity.onEventFinish = function(player, csid, option)
     else
         if player:getLocalVar("AlchemyTraded") == 1 then
             player:tradeComplete()
-            player:setLocalVar("AlchemyTraded",0)
+            player:setLocalVar("AlchemyTraded", 0)
         end
     end
 

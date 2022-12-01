@@ -15,7 +15,7 @@ require("scripts/globals/quests")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if trade:hasItemQty(555, 1) == true and trade:getItemCount() == 1 then
+    if trade:hasItemQty(555, 1) and trade:getItemCount() == 1 then
         local a = player:getCharVar("saveTheClockTowerNPCz1") -- NPC Part1
         if
             a == 0 or
@@ -95,16 +95,16 @@ end
 
 entity.onEventFinish = function(player, csid, option)
     if csid == 91 then
-        player:addCharVar("saveTheClockTowerVar", 1)
-        player:addCharVar("saveTheClockTowerNPCz1", 4)
+        player:incrementCharVar("saveTheClockTowerVar", 1)
+        player:incrementCharVar("saveTheClockTowerNPCz1", 4)
     elseif
         (csid == 33 and option == 0) or
         (csid == 34 and option == 0)
     then
         player:addTitle(xi.title.TWOS_COMPANY)
         player:setCharVar("theLostCardianVar", 0)
-        player:addGil(xi.settings.main.GIL_RATE*2100)
-        player:messageSpecial(ID.text.GIL_OBTAINED, xi.settings.main.GIL_RATE*2100)
+        player:addGil(xi.settings.main.GIL_RATE * 2100)
+        player:messageSpecial(ID.text.GIL_OBTAINED, xi.settings.main.GIL_RATE * 2100)
         player:addKeyItem(xi.ki.TWO_OF_SWORDS)
         player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TWO_OF_SWORDS) -- Two of Swords (Key Item)
         player:addFame(xi.quest.fame_area.JEUNO, 30)

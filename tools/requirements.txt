@@ -1,6 +1,7 @@
-mysql-connector-python
+mariadb
 gitpython
 pylint
 pyyaml
 colorama
 zmq
+black

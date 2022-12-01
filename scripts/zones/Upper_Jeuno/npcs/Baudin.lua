@@ -83,8 +83,8 @@ end
 
 entity.onEventFinish = function(player, csid, option)
     if csid == 177 then
-        player:addCharVar("saveTheClockTowerVar", 1)
-        player:addCharVar("saveTheClockTowerNPCz2", 32)
+        player:incrementCharVar("saveTheClockTowerVar", 1)
+        player:incrementCharVar("saveTheClockTowerNPCz2", 32)
     elseif csid == 105 then
         player:setCharVar("saveMySisterVar", 3)
     elseif csid == 107 then
@@ -92,8 +92,8 @@ entity.onEventFinish = function(player, csid, option)
             player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, 17041)
         else
             player:addTitle(xi.title.EXORCIST_IN_TRAINING)
-            player:addGil(xi.settings.main.GIL_RATE*3000)
-            player:messageSpecial(ID.text.GIL_OBTAINED, xi.settings.main.GIL_RATE*3000)
+            player:addGil(xi.settings.main.GIL_RATE * 3000)
+            player:messageSpecial(ID.text.GIL_OBTAINED, xi.settings.main.GIL_RATE * 3000)
             player:addItem(17041)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 17041)
             player:tradeComplete()

@@ -36,7 +36,7 @@ The NavMesh class will load and find paths given a start point and end point.
 
 #define MAX_NAV_POLYS 256
 
-static const int NAVMESHSET_MAGIC   = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
+static const int NAVMESHSET_MAGIC   = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; // 'MSET'
 static const int NAVMESHSET_VERSION = 1;
 
 struct NavMeshSetHeader
@@ -68,11 +68,11 @@ public:
     CNavMesh(uint16 zoneID);
     ~CNavMesh();
 
-    bool load(const std::string& path);
+    bool load(std::string const& path);
     void reload();
     void unload();
 
-    std::vector<position_t>      findPath(const position_t& start, const position_t& end);
+    std::vector<pathpoint_t>     findPath(const position_t& start, const position_t& end);
     std::pair<int16, position_t> findRandomPosition(const position_t& start, float maxRadius);
 
     // Returns true if the point is in water

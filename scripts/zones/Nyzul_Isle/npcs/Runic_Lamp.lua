@@ -4,13 +4,17 @@
 -- animition sub 1 == glow
 -----------------------------------
 local ID = require("scripts/zones/Nyzul_Isle/IDs")
+<<<<<<< HEAD
 require("scripts/settings/main")
+=======
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 require("scripts/globals/status")
 require("scripts/globals/nyzul")
 -----------------------------------
 local entity = {}
 
 entity.onTrigger = function(player, npc)
+<<<<<<< HEAD
     local instance     = npc:getInstance()
     local OBJECTIVE    = instance:getLocalVar("[Lamps]Objective")
     local lampRegister = instance:getLocalVar("[Lamps]lampRegister")
@@ -19,6 +23,16 @@ entity.onTrigger = function(player, npc)
 
     -- Type 1 in Nyzul.lua global
     if OBJECTIVE == xi.nyzul.lampsObjective.REGISTER then -- 1 lamp spawns and everyone must touch
+=======
+    local instance      = npc:getInstance()
+    local lampObjective = instance:getLocalVar("[Lamps]Objective")
+    local lampRegister  = instance:getLocalVar("[Lamps]lampRegister")
+    local lampOrder     = npc:getLocalVar("[Lamp]order")
+    local wait          = npc:getLocalVar("[Lamp]Wait") - os.time()
+
+    -- Type 1 in Nyzul.lua global
+    if lampObjective == xi.nyzul.lampsObjective.REGISTER then -- 1 lamp spawns and everyone must touch
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         if player:getLocalVar("Register") == 0 then
             player:setLocalVar("Register", 1)
             player:messageSpecial(ID.text.LAMP_CERTIFICATION_REGISTERED)
@@ -33,10 +47,17 @@ entity.onTrigger = function(player, npc)
         end
 
     -- Type 2 in Nyzul.lua global
+<<<<<<< HEAD
     elseif OBJECTIVE == xi.nyzul.lampsObjective.ACTIVATE_ALL then
         if npc:getAnimationSub() ~= 1 and wait <= 0 then
             player:messageSpecial(ID.text.LAMP_SAME_TIME)
             player:startOptionalCutscene(3, {[0] = 5, cs_option = {1, 2}})
+=======
+    elseif lampObjective == xi.nyzul.lampsObjective.ACTIVATE_ALL then
+        if npc:getAnimationSub() ~= 1 and wait <= 0 then
+            player:messageSpecial(ID.text.LAMP_SAME_TIME)
+            player:startOptionalCutscene(3, { [0] = 5, cs_option = { 1, 2 } })
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         elseif npc:getAnimationSub() == 1 then
             player:messageSpecial(ID.text.LAMP_ACTIVE)
         else
@@ -44,6 +65,7 @@ entity.onTrigger = function(player, npc)
         end
 
     -- Type 3 in Nyzul.lua global
+<<<<<<< HEAD
     elseif OBJECTIVE == xi.nyzul.lampsObjective.ORDER then
         if bit.band(lampRegister, bit.lshift(1,lampOrder)) == 0 then
             player:messageSpecial(ID.text.LAMP_ORDER)
@@ -51,6 +73,18 @@ entity.onTrigger = function(player, npc)
         elseif npc:getAnimationSub() == 3 then
             player:messageSpecial(ID.text.LAMP_NOT_ALL_ACTIVE)
         elseif instance:getLocalVar("procedureTime") > 0 and instance:getLocalVar("procedureTime") < os.time() then
+=======
+    elseif lampObjective == xi.nyzul.lampsObjective.ORDER then
+        if bit.band(lampRegister, bit.lshift(1, lampOrder)) == 0 then
+            player:messageSpecial(ID.text.LAMP_ORDER)
+            player:startOptionalCutscene(3, { [0] = 6, cs_option = { 1, 2 } })
+        elseif npc:getAnimationSub() == 3 then
+            player:messageSpecial(ID.text.LAMP_NOT_ALL_ACTIVE)
+        elseif
+            instance:getLocalVar("procedureTime") > 0 and
+            instance:getLocalVar("procedureTime") < os.time()
+        then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
             player:messageSpecial(ID.text.CONFIRMING_PROCEDURE)
         else
             player:messageSpecial(ID.text.LAMP_CANNOT_ACTIVATE)
@@ -62,6 +96,7 @@ entity.onEventUpdate = function(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
+<<<<<<< HEAD
     local instance     = npc:getInstance()
     local OBJECTIVE    = instance:getLocalVar("[Lamps]Objective")
     local lampCount    = instance:getLocalVar("[Lamp]count") +1
@@ -73,6 +108,19 @@ entity.onEventFinish = function(player, csid, option, npc)
     -- TODO: Change this comment with what is option 1
     if csid == 3 and option == 1 then
         if OBJECTIVE == xi.nyzul.lampsObjective.ACTIVATE_ALL then
+=======
+    local instance      = npc:getInstance()
+    local lampObjective = instance:getLocalVar("[Lamps]Objective")
+    local lampCount     = instance:getLocalVar("[Lamp]count") + 1
+    local pressCount    = instance:getLocalVar("[Lamp]pressCount")
+    local lampOrder     = npc:getLocalVar("[Lamp]order")
+    local lampRegister  = instance:getLocalVar("[Lamps]lampRegister")
+    local winCondition  = false
+
+    -- TODO: Change this comment with what is option 1
+    if csid == 3 and option == 1 then
+        if lampObjective == xi.nyzul.lampsObjective.ACTIVATE_ALL then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
             npc:setAnimationSub(1)
             npc:timer(xi.settings.ACTIVATE_LAMP_TIME, function(lamp) lamp:setAnimationSub(0) lamp:setLocalVar("[Lamp]Wait", os.time() + 30) end)
 
@@ -95,7 +143,11 @@ entity.onEventFinish = function(player, csid, option, npc)
 
     -- TODO: Change this comment with what is option 2
     elseif csid == 3 and option == 2 then
+<<<<<<< HEAD
         if OBJECTIVE == xi.nyzul.lampsObjective.ORDER then
+=======
+        if lampObjective == xi.nyzul.lampsObjective.ORDER then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
             print("registering lamp, register: "..instance:getLocalVar("[Lamps]lampRegister"))
             lampRegister = lampRegister + bit.lshift(1, lampOrder)
             instance:setLocalVar("[Lamps]lampRegister", lampRegister)
@@ -179,7 +231,11 @@ entity.onEventFinish = function(player, csid, option, npc)
             end
 
             -- Finish.
+<<<<<<< HEAD
             if winCondition == true then
+=======
+            if winCondition then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
                 instance:setLocalVar("procedureTime", os.time() + 6)
                 npc:timer(6000, function(npcLamp)
                     instance:setLocalVar("lampsCorrect", 0)

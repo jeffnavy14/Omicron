@@ -186,8 +186,8 @@ xi.mission.id =
         THE_GATE_OF_THE_GODS          = 24, -- ±
         ARK_ANGELS                    = 26, -- ±
         THE_SEALED_SHRINE             = 27, -- ±
-        THE_CELESTIAL_NEXUS           = 28,
-        AWAKENING                     = 30,
+        THE_CELESTIAL_NEXUS           = 28, -- ±
+        AWAKENING                     = 30, -- ±
         THE_LAST_VERSE                = 31,
         NONE                          = 65535,
     },
@@ -343,40 +343,40 @@ xi.mission.id =
         TRAITOR_IN_THE_MIDST       = 17, -- ±
         BETRAYAL_AT_BEAUCEDINE     = 18, -- ±
         ON_THIN_ICE                = 19, -- ±
-        PROOF_OF_VALOR             = 20,
-        A_SANGUINARY_PRELUDE       = 21,
-        DUNGEONS_AND_DANCERS       = 22,
-        DISTORTER_OF_TIME          = 23,
-        THE_WILL_OF_THE_WORLD      = 24,
-        FATE_IN_HAZE               = 25,
-        THE_SCENT_OF_BATTLE        = 26,
-        ANOTHER_WORLD              = 27,
-        A_HAWK_IN_REPOSE           = 28,
-        THE_BATTLE_OF_XARCABARD    = 29,
-        PRELUDE_TO_A_STORM         = 30,
-        STORM_S_CRESCENDO          = 31,
-        INTO_THE_BEAST_S_MAW       = 32,
-        THE_HUNTER_ENSNARED        = 33,
-        FLIGHT_OF_THE_LION         = 34,
-        FALL_OF_THE_HAWK           = 35,
-        DARKNESS_DESCENDS          = 36,
-        ADIEU__LILISETTE           = 37,
-        BY_THE_FADING_LIGHT        = 38,
-        EDGE_OF_EXISTENCE          = 39,
-        HER_MEMORIES               = 40,
-        FORGET_ME_NOT              = 41,
-        PILLAR_OF_HOPE             = 42,
-        GLIMMER_OF_LIFE            = 43,
-        TIME_SLIPS_AWAY            = 44,
-        WHEN_WILLS_COLLIDE         = 45,
-        WHISPERS_OF_DAWN           = 46,
-        A_DREAMY_INTERLUDE         = 47,
-        CAIT_IN_THE_WOODS          = 48,
-        FORK_IN_THE_ROAD           = 49,
-        MAIDEN_OF_THE_DUSK         = 50,
-        WHERE_IT_ALL_BEGAN         = 51,
-        A_TOKEN_OF_TROTH           = 52,
-        LEST_WE_FORGET             = 53,
+        PROOF_OF_VALOR             = 20, -- ±
+        A_SANGUINARY_PRELUDE       = 21, -- ±
+        DUNGEONS_AND_DANCERS       = 22, -- ±
+        DISTORTER_OF_TIME          = 23, -- ±
+        THE_WILL_OF_THE_WORLD      = 24, -- ±
+        FATE_IN_HAZE               = 25, -- ±
+        THE_SCENT_OF_BATTLE        = 26, -- ±
+        ANOTHER_WORLD              = 27, -- ±
+        A_HAWK_IN_REPOSE           = 28, -- ±
+        THE_BATTLE_OF_XARCABARD    = 29, -- ±
+        PRELUDE_TO_A_STORM         = 30, -- ±
+        STORMS_CRESCENDO           = 31, -- ±
+        INTO_THE_BEASTS_MAW        = 32, -- ±
+        THE_HUNTER_ENSNARED        = 33, -- ±
+        FLIGHT_OF_THE_LION         = 34, -- ±
+        FALL_OF_THE_HAWK           = 35, -- ±
+        DARKNESS_DESCENDS          = 36, -- ±
+        ADIEU_LILISETTE            = 37, -- ±
+        BY_THE_FADING_LIGHT        = 38, -- ±
+        EDGE_OF_EXISTENCE          = 39, -- ±
+        HER_MEMORIES               = 40, -- ±
+        FORGET_ME_NOT              = 41, -- ±
+        PILLAR_OF_HOPE             = 42, -- ±
+        GLIMMER_OF_LIFE            = 43, -- ±
+        TIME_SLIPS_AWAY            = 44, -- ±
+        WHEN_WILLS_COLLIDE         = 45, -- ±
+        WHISPERS_OF_DAWN           = 46, -- ±
+        A_DREAMY_INTERLUDE         = 47, -- ±
+        CAIT_IN_THE_WOODS          = 48, -- ±
+        FORK_IN_THE_ROAD           = 49, -- ±
+        MAIDEN_OF_THE_DUSK         = 50, -- ±
+        WHERE_IT_ALL_BEGAN         = 51, -- ±
+        A_TOKEN_OF_TROTH           = 52, -- ±
+        LEST_WE_FORGET             = 53, -- ±
     },
 
     -----------------------------------
@@ -598,16 +598,16 @@ xi.mission.id =
         TAKE_WING                       = 66,  -- ±
         PRIME_NUMBER                    = 68,  -- ±
         FROM_THE_RUINS                  = 70,  -- ±
-        CAUTERIZE                       = 72,
-        UNCERTAIN_DESTINATIONS          = 78,
-        GANGED_UP_ON                    = 80,
-        SACRIFICE                       = 83,
-        SOMBER_DREAMS                   = 86,
-        OF_LIGHT_AND_DARKNESS           = 92,
-        TEMPORARY_FAREWELLS             = 94,
-        BRUSHING_UP                     = 96,
-        KEEP_ON_GIVING                  = 98,
-        PAST_IMPERFECT                  = 100,
+        CAUTERIZE                       = 72,  -- ±
+        UNCERTAIN_DESTINATIONS          = 78,  -- ±
+        GANGED_UP_ON                    = 80,  -- ±
+        SACRIFICE                       = 83,  -- ±
+        SOMBER_DREAMS                   = 86,  -- ±
+        OF_LIGHT_AND_DARKNESS           = 92,  -- ±
+        TEMPORARY_FAREWELLS             = 94,  -- ±
+        BRUSHING_UP                     = 96,  -- ±
+        KEEP_ON_GIVING                  = 98,  -- ±
+        PAST_IMPERFECT                  = 100, -- ±
         THE_CURSED_TEMPLE               = 102,
         WISDOM_OF_OUR_FOREFATHERS       = 103,
         WHERE_DIVINITIES_COLLIDE        = 104,
@@ -677,7 +677,7 @@ xi.mission.id =
 -- None yet!
 
 local function rankPointMath(rank)
-    return 0.372*rank^2 - 1.62*rank + 6.2
+    return 0.372 * rank^2 - 1.62 * rank + 6.2
 end
 
 xi.mission.getMissionRankPoints = function(player, missionID)
@@ -704,7 +704,7 @@ xi.mission.getMissionRankPoints = function(player, missionID)
         crystals = 0
     end
 
-    local points_needed = 1024 * (crystals-.25) / (3*rankPointMath(player:getRank(player:getNation())))
+    local points_needed = 1024 * (crystals - 0.25) / (3 * rankPointMath(player:getRank(player:getNation())))
 
     if player:getRankPoints() >= points_needed then
         return true
@@ -810,8 +810,8 @@ local function getVarPrefix(areaId, questId)
     return string.format("Mission[%d][%d]", areaId, questId)
 end
 
-xi.mission.addVar = function(player, areaId, questId, name, value)
-    return player:addCharVar(getVarPrefix(areaId, questId) .. name, value)
+xi.mission.incrementVar = function(player, areaId, questId, name, value)
+    return player:incrementCharVar(getVarPrefix(areaId, questId) .. name, value)
 end
 
 xi.mission.getVar = function(player, areaId, questId, name)

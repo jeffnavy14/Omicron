@@ -43,6 +43,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const CLuaBattlefield& battlefield);
 
     uint16   getID();
+    uint16   getZoneID();
     uint8    getArea();
     uint32   getTimeLimit();
     uint32   getTimeInside();
@@ -50,7 +51,10 @@ public:
     uint32   getFightTick();
     uint32   getWipeTime();
     uint32   getFightTime();
+    uint32   getMaxParticipants();
+    uint32   getPlayerCount();
     auto     getPlayers() -> sol::table;
+    auto     getPlayersAndTrusts() -> sol::table;
     auto     getMobs(bool required, bool adds) -> sol::table;
     auto     getNPCs() -> sol::table;
     auto     getAllies() -> sol::table;
@@ -59,6 +63,7 @@ public:
     uint64_t getLocalVar(std::string const& name);
     uint32   getLastTimeUpdate();
     auto     getInitiator() -> std::pair<uint32, std::string>;
+    uint32   getArmouryCrate();
 
     void setLastTimeUpdate(uint32 seconds);
     void setTimeLimit(uint32 seconds);
@@ -72,6 +77,7 @@ public:
     bool cleanup(bool cleanup);
     void win();
     void lose();
+    void addGroups(sol::table groups, bool hasMultipleArenas);
 
     static void Register();
 };

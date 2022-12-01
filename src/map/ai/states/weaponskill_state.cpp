@@ -51,8 +51,6 @@ CWeaponSkillState::CWeaponSkillState(CBattleEntity* PEntity, uint16 targid, uint
     }
     m_PSkill = std::make_unique<CWeaponSkill>(*skill);
 
-    // m_castTime = std::chrono::milliseconds(m_PSkill->getActivationTime());
-
     action_t action;
     action.id         = m_PEntity->id;
     action.actiontype = ACTION_WEAPONSKILL_START;
@@ -93,7 +91,7 @@ void CWeaponSkillState::SpendCost()
 
         if (m_PEntity->getMod(Mod::WS_NO_DEPLETE) <= xirand::GetRandomNumber(100))
         {
-            m_PEntity->health.tp = 0;
+            m_PEntity->addTP(-tp);
         }
     }
 
@@ -115,6 +113,15 @@ bool CWeaponSkillState::Update(time_point tick)
         m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
 
         auto* PTarget{ GetTarget() };
+
+        // Reset Restraint bonus and trackers on weaponskill use
+        if (m_PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_RESTRAINT))
+        {
+            uint16 WSBonus = m_PEntity->StatusEffectContainer->GetStatusEffect(EFFECT_RESTRAINT)->GetPower();
+            m_PEntity->StatusEffectContainer->GetStatusEffect(EFFECT_RESTRAINT)->SetPower(0);
+            m_PEntity->StatusEffectContainer->GetStatusEffect(EFFECT_RESTRAINT)->SetSubPower(0);
+            m_PEntity->delModifier(Mod::ALL_WSDMG_FIRST_HIT, WSBonus);
+        }
 
         if (action.actiontype == ACTION_WEAPONSKILL_FINISH) // category changes upon being out of range. This does not count for RoE and delay is not increased beyond the normal delay.
         {

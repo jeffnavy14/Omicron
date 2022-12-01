@@ -2,8 +2,8 @@
 -- Area: Nyzul Isle (Path of Darkness)
 --  Mob: Imperial Gear
 -----------------------------------
-local ID = require("scripts/zones/Nyzul_Isle/IDs")
-require("scripts/globals/status")
+local ID = require('scripts/zones/Nyzul_Isle/IDs')
+require('scripts/globals/status')
 -----------------------------------
 local entity = {}
 
@@ -37,7 +37,7 @@ entity.onMobEngaged = function(mob, target)
     naja:setLocalVar("ready", 1)
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)

@@ -6,7 +6,7 @@
 -- Wiki: http://ffxiclopedia.wikia.com/wiki/Sarameya
 -- TODO: PostAIRewrite: Code the Howl effect and gradual resists.
 -----------------------------------
-mixins = {require("scripts/mixins/rage")}
+mixins = { require("scripts/mixins/rage") }
 require("scripts/globals/status")
 require("scripts/globals/magic")
 require("scripts/globals/msg")
@@ -67,7 +67,7 @@ entity.onMobFight = function(mob, target)
 
     -- Regens 1% of his HP a tick with Blaze Spikes on
     if mob:hasStatusEffect(xi.effect.BLAZE_SPIKES) then
-        mob:setMod(xi.mod.REGEN, math.floor(mob:getMaxHP()/100))
+        mob:setMod(xi.mod.REGEN, math.floor(mob:getMaxHP() / 100))
     else
         if mob:getMod(xi.mod.REGEN) > 0 then
             mob:setMod(xi.mod.REGEN, 0)
@@ -76,10 +76,10 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.POISON, {chance = 40, power = 50})
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.POISON, { chance = 40, power = 50 })
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

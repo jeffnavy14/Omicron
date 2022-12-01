@@ -5,16 +5,16 @@ require("scripts/globals/status")
 require("scripts/globals/magic")
 require("scripts/globals/msg")
 -----------------------------------
-local spell_object = {}
+local spellObject = {}
 
-spell_object.onMagicCastingCheck = function(caster, target, spell)
+spellObject.onMagicCastingCheck = function(caster, target, spell)
     return 0
 end
 
-spell_object.onSpellCast = function(caster, target, spell)
+spellObject.onSpellCast = function(caster, target, spell)
     local effectType = xi.effect.SILENCE
 
-    if (target:hasStatusEffect(effectType)) then
+    if target:hasStatusEffect(effectType) then
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT) -- no effect
         return effectType
     end
@@ -34,8 +34,8 @@ spell_object.onSpellCast = function(caster, target, spell)
     params.effect = xi.effect.SILENCE
     local resist = applyResistanceEffect(caster, target, spell, params)
 
-    if (resist >= 0.5) then --Do it!
-        if (target:addStatusEffect(effectType, 1, 0, duration * resist)) then
+    if resist >= 0.5 then --Do it!
+        if target:addStatusEffect(effectType, 1, 0, duration * resist) then
             spell:setMsg(xi.msg.basic.MAGIC_ENFEEB_IS)
         else
             spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT) -- no effect
@@ -48,4 +48,4 @@ spell_object.onSpellCast = function(caster, target, spell)
 
 end
 
-return spell_object
+return spellObject

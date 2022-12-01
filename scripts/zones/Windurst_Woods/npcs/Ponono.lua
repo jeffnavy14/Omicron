@@ -25,7 +25,7 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("ClothcraftExpertQuest") == 1 and
         player:hasKeyItem(xi.keyItem.WAY_OF_THE_WEAVER)
     then
-        if signed ~=0 then
+        if signed ~= 0 then
             player:setSkillRank(xi.skill.CLOTHCRAFT, newRank)
             player:startEvent(10012, 0, 0, 0, 0, newRank, 1)
             player:setCharVar("ClothcraftExpertQuest", 0)
@@ -38,7 +38,7 @@ entity.onTrade = function(player, npc, trade)
         player:startEvent(10012, 0, 0, 0, 0, newRank)
         player:setLocalVar("ClothcraftTraded", 1)
     elseif moralManifest == QUEST_ACCEPTED and player:getCharVar("moral") == 2 then
-        if npcUtil.tradeHas(trade, {828, 830, {"gil", 10000}}) then -- Trade Velvet Cloth, Rainbow Cloth and 10k
+        if npcUtil.tradeHas(trade, { 828, 830, { "gil", 10000 } }) then -- Trade Velvet Cloth, Rainbow Cloth and 10k
             player:setCharVar("moral", 3)
             player:setLocalVar('moralZone', 1)
             player:setCharVar("moralWait", getVanaMidnight())
@@ -76,21 +76,18 @@ entity.onTrigger = function(player, npc)
 
     if moralManifest == QUEST_ACCEPTED and player:getCharVar("moral") == 1 then
         player:startEvent(700)
-    elseif moralManifest == QUEST_COMPLETED or moralManifest == QUEST_ACCEPTED and player:getCharVar("moral") >= 4 then
+    elseif
+        moralManifest == QUEST_COMPLETED or
+        moralManifest == QUEST_ACCEPTED and
+        player:getCharVar("moral") >= 4
+    then
         player:startEvent(704)
-    elseif player:getCharVar("moral") == 3 and player:getLocalVar("moralZone") == 0 and player:getCharVar("moralWait") <= os.time() then
+    elseif
+        player:getCharVar("moral") == 3 and
+        player:getLocalVar("moralZone") == 0 and
+        player:getCharVar("moralWait") <= os.time()
+    then
         player:startEvent(705)
-
-    elseif expertQuestStatus == 600 then
-        --[[
-        Feeding the proper parameter currently hangs the client in cutscene. This may
-        possibly be due to an unimplemented packet or function (display recipe?) Work
-        around to present dialog to player to let them know the trade is ready to be
-        received by triggering with lower rank up parameters.
-        --]]
-        player:showText(npc, 7339)
-        player:showText(npc, 7341)
-        player:startEvent(10011, testItem, realSkill, 44, guildMember, 0, 0, 0, 0)
     else
         player:startEvent(10011, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
     end
@@ -118,7 +115,7 @@ entity.onEventFinish = function(player, csid, option)
         end
     elseif csid == 10011 and option == 2 then
         if guildMember == 1 then
-            player:setCharVar("ClothcraftExpertQuest",1)
+            player:setCharVar("ClothcraftExpertQuest", 1)
         end
     elseif csid == 10011 and option == 1 then
         if player:getFreeSlotsCount() == 0 then

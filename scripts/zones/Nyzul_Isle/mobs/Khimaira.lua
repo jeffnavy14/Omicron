@@ -3,9 +3,15 @@
 -- Area: Nyzul Isle
 -- Info : Floor 60 80 100 Boss
 -----------------------------------
+<<<<<<< HEAD
 mixins = { require("scripts/mixins/nyzul_boss_drops") }
 require("scripts/globals/nyzul")
 require("scripts/globals/status")
+=======
+mixins = { require('scripts/mixins/nyzul_boss_drops') }
+require('scripts/globals/nyzul')
+require('scripts/globals/status')
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 -----------------------------------
 local entity = {}
 
@@ -16,15 +22,24 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.MAIN_DMG_RATING, 33)
     mob:setMod(xi.mod.DOUBLE_ATTACK, 15)
     mob:addMod(xi.mod.ATT, 100)
+<<<<<<< HEAD
     mob:addResist({ xi.resist.ENFEEBLING_STUN, 10, 0 })
+=======
+    -- TODO: mob:addResist({ xi.resist.ENFEEBLING_STUN, 10, 0 })
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
     mob:setMobMod(xi.mobMod.ROAM_DISTANCE, 15)
 end
 
 entity.onMobFight = function(mob, target)
 end
 
+<<<<<<< HEAD
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
     if isKiller or noKiller then
+=======
+entity.onMobDeath = function(mob, player, optParams)
+    if optParams.isKiller or optParams.noKiller then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         xi.nyzul.enemyLeaderKill(mob)
         xi.nyzul.vigilWeaponDrop(player, mob)
         xi.nyzul.handleRunicKey(mob)

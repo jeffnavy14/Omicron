@@ -11,22 +11,21 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!despawnmob {mobID}")
+    player:PrintToPlayer("!despawnmob (mobID)")
 end
 
 function onTrigger(player, mobId)
-
     -- validate mobId
     local targ
-    if (mobId == nil) then
+    if mobId == nil then
         targ = player:getCursorTarget()
-        if (targ == nil or not targ:isMob()) then
+        if targ == nil or not targ:isMob() then
             error(player, "You must either provide a mobID or target a mob.")
             return
         end
     else
         targ = GetMobByID(mobId)
-        if (targ == nil) then
+        if targ == nil then
             error(player, "Invalid mobID.")
             return
         end

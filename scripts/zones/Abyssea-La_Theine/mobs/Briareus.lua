@@ -5,7 +5,7 @@
 require("scripts/globals/status")
 require("scripts/globals/titles")
 -----------------------------------
-mixins = {require("scripts/mixins/rage")}
+mixins = { require("scripts/mixins/rage") }
 -----------------------------------
 local entity = {}
 
@@ -35,6 +35,7 @@ entity.onMobFight = function(mob, target)
         if type(mercurialEffects[mercDamage][2]) == "function" then
             mercurialEffects[mercDamage][2](mob)
         end
+
         mob:setLocalVar("MERCURIAL_STRIKE_DAMAGE", 0)
     end
 
@@ -59,7 +60,7 @@ entity.onMobWeaponSkillPrepare = function(mob, target)
     return cueMove
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     player:addTitle(xi.title.BRIAREUS_FELLER)
 end
 

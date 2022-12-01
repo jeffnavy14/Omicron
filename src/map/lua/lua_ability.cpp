@@ -52,20 +52,29 @@ uint16 CLuaAbility::getRecast()
     return m_PLuaAbility->getRecastTime();
 }
 
+uint16 CLuaAbility::getRecastID()
+{
+    return m_PLuaAbility->getRecastId();
+}
+
 uint16 CLuaAbility::getRange()
 {
     return static_cast<uint16>(m_PLuaAbility->getRange());
 }
 
-const char* CLuaAbility::getName()
+const std::string& CLuaAbility::getName()
 {
-    // TODO: C-Style cast is bad
-    return (const char*)m_PLuaAbility->getName();
+    return m_PLuaAbility->getName();
 }
 
 uint16 CLuaAbility::getAnimation()
 {
     return m_PLuaAbility->getAnimationID();
+}
+
+uint16 CLuaAbility::getAddType()
+{
+    return m_PLuaAbility->getAddType();
 }
 
 void CLuaAbility::setMsg(uint16 messageID)
@@ -116,9 +125,11 @@ void CLuaAbility::Register()
     SOL_REGISTER("getID", CLuaAbility::getID);
     SOL_REGISTER("getMsg", CLuaAbility::getMsg);
     SOL_REGISTER("getRecast", CLuaAbility::getRecast);
+    SOL_REGISTER("getRecastID", CLuaAbility::getRecastID);
     SOL_REGISTER("getRange", CLuaAbility::getRange);
     SOL_REGISTER("getName", CLuaAbility::getName);
     SOL_REGISTER("getAnimation", CLuaAbility::getAnimation);
+    SOL_REGISTER("getAddType", CLuaAbility::getAddType);
     SOL_REGISTER("setMsg", CLuaAbility::setMsg);
     SOL_REGISTER("setAnimation", CLuaAbility::setAnimation);
     SOL_REGISTER("setRecast", CLuaAbility::setRecast);

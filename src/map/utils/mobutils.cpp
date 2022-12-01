@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -23,6 +23,7 @@
 
 #include <cmath>
 
+#include "../battlefield.h"
 #include "../grades.h"
 #include "../items/item_weapon.h"
 #include "../lua/luautils.h"
@@ -36,6 +37,7 @@
 #include "battleutils.h"
 #include "mobutils.h"
 #include "petutils.h"
+#include "zone_entities.h"
 #include "zoneutils.h"
 #include <vector>
 
@@ -543,6 +545,10 @@ namespace mobutils
         {
             SetupDungeonMob(PMob);
         }
+        else if (zoneType == ZONE_TYPE::LIMBUS)
+        {
+            SetupLimbusMob(PMob);
+        }
         else if (zoneType == ZONE_TYPE::BATTLEFIELD || PMob->m_Type & MOBTYPE_BATTLEFIELD)
         {
             SetupBattlefieldMob(PMob);
@@ -550,10 +556,6 @@ namespace mobutils
         else if (zoneType == ZONE_TYPE::DYNAMIS)
         {
             SetupDynamisMob(PMob);
-        }
-        else if (zoneType == ZONE_TYPE::LIMBUS)
-        {
-            SetupLimbusMob(PMob);
         }
 
         if (PMob->m_Type & MOBTYPE_NOTORIOUS)
@@ -582,7 +584,7 @@ namespace mobutils
             ShowError("Mobutils::CalculateMobStats Mob (%s, %d) with magic but no cool down set!", PMob->GetName(), PMob->id);
         }
 
-        if (PMob->m_Detects == 0)
+        if (PMob->getMobMod(MOBMOD_DETECTION) == 0)
         {
             ShowError("Mobutils::CalculateMobStats Mob (%s, %d, %d) has no detection methods!", PMob->GetName(), PMob->id, PMob->m_Family);
         }
@@ -731,15 +733,11 @@ namespace mobutils
         uint16 cool     = 20;
         uint16 rate     = 15;
 
-        switch (PMob->m_EcoSystem)
+        if (PMob->m_EcoSystem == ECOSYSTEM::BEASTMAN)
         {
-            case ECOSYSTEM::BEASTMAN:
-                distance = 20;
-                turns    = 5;
-                cool     = 45;
-                break;
-            default:
-                break;
+            distance = 20;
+            turns    = 5;
+            cool     = 45;
         }
 
         // default mob roaming mods
@@ -755,6 +753,11 @@ namespace mobutils
             PMob->m_maxRoamDistance = 2.0f;
             PMob->setMobMod(MOBMOD_ROAM_DISTANCE, 5);
             PMob->setMobMod(MOBMOD_ROAM_TURNS, 1);
+        }
+
+        if (PMob->m_roamFlags & ROAMFLAG_SCRIPTED)
+        {
+            PMob->setMobMod(MOBMOD_ROAM_RESET_FACING, 1);
         }
     }
 
@@ -843,8 +846,16 @@ namespace mobutils
 
         // never despawn
         PMob->SetDespawnTime(0s);
+
+        // Stop early if this is a new battlefield
+        if (PMob->PBattlefield != nullptr && PMob->PBattlefield->isInteraction())
+        {
+            return;
+        }
+
         // do not roam around
-        PMob->m_roamFlags |= ROAMFLAG_EVENT;
+        PMob->m_roamFlags |= ROAMFLAG_SCRIPTED;
+        PMob->setMobMod(MOBMOD_ROAM_RESET_FACING, 1);
         PMob->m_maxRoamDistance = 0.5f;
         if ((PMob->m_bcnmID != 864) && (PMob->m_bcnmID != 704) && (PMob->m_bcnmID != 706))
         {
@@ -862,7 +873,8 @@ namespace mobutils
     void SetupEventMob(CMobEntity* PMob)
     {
         // event mob types will always have custom roaming
-        PMob->m_roamFlags |= ROAMFLAG_EVENT;
+        PMob->m_roamFlags |= ROAMFLAG_SCRIPTED;
+        PMob->setMobMod(MOBMOD_ROAM_RESET_FACING, 1);
         PMob->m_maxRoamDistance = 0.5f; // always go back to spawn
 
         PMob->setMobMod(MOBMOD_NO_DESPAWN, 1);
@@ -959,6 +971,7 @@ namespace mobutils
                             92); // 92 = 0.92% chance per 400ms tick (50% chance by 30 seconds) while mob HPP>25 and mob TP >=1000 but <3000
         PMob->defaultMobMod(MOBMOD_SIGHT_RANGE, (int16)CMobEntity::sight_range);
         PMob->defaultMobMod(MOBMOD_SOUND_RANGE, (int16)CMobEntity::sound_range);
+        PMob->defaultMobMod(MOBMOD_MAGIC_RANGE, (int16)CMobEntity::magic_range);
 
         // Killer Effect
         switch (PMob->m_EcoSystem)
@@ -1364,15 +1377,21 @@ Usage:
                 PMob->m_Aggro         = sql->GetUIntData(66);
                 PMob->m_MobSkillList  = sql->GetUIntData(67);
                 PMob->m_TrueDetection = sql->GetUIntData(68);
-                PMob->m_Detects       = sql->GetUIntData(69);
+                PMob->setMobMod(MOBMOD_DETECTION, sql->GetUIntData(69));
+
+                CZone* newZone = zoneutils::GetZone(zoneID);
+
+                // Get dynamic targid
+                newZone->GetZoneEntities()->AssignDynamicTargIDandLongID(PMob);
+
+                // Ensure dynamic targid is released on death
+                PMob->m_bReleaseTargIDOnDeath = true;
+
+                // Insert ally into zone's mob list. TODO: Do we need to assign party for allies?
+                newZone->GetZoneEntities()->m_mobList[PMob->targid] = PMob;
 
                 // must be here first to define mobmods
                 mobutils::InitializeMob(PMob, zoneutils::GetZone(zoneID));
-
-                // TODO: This shouldn't go into the pet list, it appears to only
-                //     : do this because that was the only way to have temporary
-                //     : entities at the time.
-                zoneutils::GetZone(zoneID)->InsertPET(PMob);
 
                 luautils::OnEntityLoad(PMob);
 
@@ -1518,7 +1537,7 @@ Usage:
                 PMob->m_Aggro         = sql->GetUIntData(66);
                 PMob->m_MobSkillList  = sql->GetUIntData(67);
                 PMob->m_TrueDetection = sql->GetUIntData(68);
-                PMob->m_Detects       = sql->GetUIntData(69);
+                PMob->setMobMod(MOBMOD_DETECTION, sql->GetUIntData(69));
 
                 // must be here first to define mobmods
                 mobutils::InitializeMob(PMob, zoneutils::GetZone(targetZoneId));

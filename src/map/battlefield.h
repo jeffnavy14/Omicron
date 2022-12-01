@@ -29,6 +29,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
+#include "sol/sol.hpp"
 #include <unordered_map>
 
 enum BCRULES : uint8
@@ -42,9 +43,10 @@ enum BCRULES : uint8
 
 enum BATTLEFIELDMOBCONDITION : uint8
 {
-    CONDITION_NONE             = 0x00,
-    CONDITION_SPAWNED_AT_START = 0x01,
-    CONDITION_WIN_REQUIREMENT  = 0x02
+    CONDITION_NONE               = 0x00,
+    CONDITION_SPAWNED_AT_START   = 0x01,
+    CONDITION_WIN_REQUIREMENT    = 0x02,
+    CONDITION_DISAPPEAR_AT_START = 0x04,
 };
 
 enum BATTLEFIELD_LEAVE_CODE : uint8
@@ -117,16 +119,27 @@ struct BattlefieldInitiator_t
     }
 };
 
+struct BattlefieldGroup
+{
+    std::vector<uint32> mobIds;
+    sol::function       deathCallback;
+    sol::function       randomDeathCallback;
+    sol::function       allDeathCallback;
+    sol::function       setupCallback;
+    uint8               deathCount  = 0;
+    uint32              randomMobId = 0;
+};
+
 class CBattlefield : public std::enable_shared_from_this<CBattlefield>
 {
 public:
-    CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator);
+    CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator, bool isInteraction);
     ~CBattlefield();
 
     uint16                        GetID() const;
     CZone*                        GetZone() const;
     uint16                        GetZoneID() const;
-    const std::string&            GetName() const;
+    std::string const&            GetName() const;
     const BattlefieldInitiator_t& GetInitiator() const;
     uint8                         GetArea() const;
     const BattlefieldRecord_t&    GetRecord() const;
@@ -143,10 +156,13 @@ public:
     duration                      GetFinishTime() const;
     duration                      GetRemainingTime() const;
     duration                      GetLastTimeUpdate() const;
-    uint64_t                      GetLocalVar(const std::string& name) const;
+    uint64_t                      GetLocalVar(std::string const& name) const;
+    uint32                        GetArmouryCrate() const;
 
     bool CheckInProgress();
     bool IsOccupied() const;
+    bool isInteraction() const;
+    bool isEntered(CCharEntity* PChar) const;
 
     void ForEachPlayer(const std::function<void(CCharEntity*)>& func);
     void ForEachEnemy(const std::function<void(CMobEntity*)>& func);
@@ -156,10 +172,10 @@ public:
     void ForEachAlly(const std::function<void(CMobEntity*)>& func);
 
     void SetID(uint16 id);
-    void SetName(const std::string& name);
-    void SetInitiator(const std::string& name);
+    void SetName(std::string const& name);
+    void SetInitiator(std::string const& name);
     void SetArea(uint8 area);
-    void SetRecord(const std::string& name, duration time, size_t partySize);
+    void SetRecord(std::string const& name, duration time, size_t partySize);
     void SetStatus(uint8 status);
     void SetRuleMask(uint16 rulemask);
     void SetStartTime(time_point time);
@@ -168,21 +184,27 @@ public:
     void SetWipeTime(time_point time);
     void SetMaxParticipants(uint8 max);
     void SetLevelCap(uint8 cap);
-    void SetLocalVar(const std::string& name, uint64_t value);
+    void SetLocalVar(std::string const& name, uint64_t value);
     void SetLastTimeUpdate(duration time);
+    void setArmouryCrate(uint32 entityId);
 
     void         ApplyLevelRestrictions(CCharEntity* PChar) const;
-    void         ClearEnmityForEntity(CBattleEntity* PEntity);
     bool         InsertEntity(CBaseEntity* PEntity, bool inBattlefield = false, BATTLEFIELDMOBCONDITION conditions = CONDITION_NONE, bool ally = false);
     CBaseEntity* GetEntity(CBaseEntity* PEntity);
     bool         IsRegistered(CCharEntity* PChar);
     bool         RemoveEntity(CBaseEntity* PEntity, uint8 leavecode = 0);
     void         onTick(time_point time);
     bool         CanCleanup(bool cleanup = false);
-    void         Cleanup();
+    bool         Cleanup(time_point time, bool force);
     bool         LoadMobs();
     bool         SpawnLoot(CBaseEntity* PEntity = nullptr);
-    uint8        m_isMission;
+
+    // Groups
+    void addGroup(BattlefieldGroup group);
+    void handleDeath(CBaseEntity* PEntity);
+
+    uint8 m_isMission;
+    bool  m_showTimer = true;
 
     std::set<uint32>              m_RegisteredPlayers;
     std::set<uint32>              m_EnteredPlayers;
@@ -209,11 +231,17 @@ private:
     duration               m_LastPromptTime;
     size_t                 m_MaxParticipants;
     uint8                  m_LevelCap;
+    // Entity id of the Armoury Crate that appears upon victory
+    uint32     m_armouryCrate = 0;
+    const bool m_isInteraction;
 
-    bool m_Cleanup{ false };
-    bool m_Attacked{ false };
+    time_point m_cleanupTime;
+    bool       m_cleanedPlayers = false;
+    bool       m_Cleanup        = false;
+    bool       m_Attacked       = false;
 
     std::unordered_map<std::string, uint64_t> m_LocalVars;
+    std::vector<BattlefieldGroup>             m_groups;
 };
 
 #endif

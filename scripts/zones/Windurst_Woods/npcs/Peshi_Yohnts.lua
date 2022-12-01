@@ -20,18 +20,18 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("BonecraftExpertQuest") == 1 and
         player:hasKeyItem(xi.keyItem.WAY_OF_THE_BONEWORKER)
     then
-        if signed ~=0 then
+        if signed ~= 0 then
             player:setSkillRank(xi.skill.BONECRAFT, newRank)
             player:startEvent(10017, 0, 0, 0, 0, newRank, 1)
-            player:setCharVar("BonecraftExpertQuest",0)
-            player:setLocalVar("BonecraftTraded",1)
+            player:setCharVar("BonecraftExpertQuest", 0)
+            player:setLocalVar("BonecraftTraded", 1)
         else
             player:startEvent(10017, 0, 0, 0, 0, newRank, 0)
         end
-    elseif newRank ~= 0 and newRank <=9 then
+    elseif newRank ~= 0 and newRank <= 9 then
         player:setSkillRank(xi.skill.BONECRAFT, newRank)
         player:startEvent(10017, 0, 0, 0, 0, newRank)
-        player:setLocalVar("BonecraftTraded",1)
+        player:setLocalVar("BonecraftTraded", 1)
     end
 end
 
@@ -60,19 +60,7 @@ entity.onTrigger = function(player, npc)
         end
     end
 
-    if expertQuestStatus == 600 then
-        --[[
-        Feeding the proper parameter currently hangs the client in cutscene. This may
-        possibly be due to an unimplemented packet or function (display recipe?) Work
-        around to present dialog to player to let them know the trade is ready to be
-        received by triggering with lower rank up parameters.
-        --]]
-        player:showText(npc, 7450)
-        player:showText(npc, 7452)
-        player:startEvent(10016, testItem, realSkill, 44, guildMember, 0, 0, 0, 0)
-    else
-        player:startEvent(10016, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
-    end
+    player:startEvent(10016, testItem, realSkill, rankCap, guildMember, expertQuestStatus, 0, 0, 0)
 end
 
 -- 10016  10017  710  711  712  713  714  715  764
@@ -91,7 +79,7 @@ entity.onEventFinish = function(player, csid, option)
 
     if csid == 10016 and option == 2 then
         if guildMember == 1 then
-            player:setCharVar("BonecraftExpertQuest",1)
+            player:setCharVar("BonecraftExpertQuest", 1)
         end
     elseif csid == 10016 and option == 1 then
         local crystal = 4098 -- wind crystal
@@ -105,7 +93,7 @@ entity.onEventFinish = function(player, csid, option)
     else
         if player:getLocalVar("BonecraftTraded") == 1 then
             player:tradeComplete()
-            player:setLocalVar("BonecraftTraded",0)
+            player:setLocalVar("BonecraftTraded", 0)
         end
     end
 

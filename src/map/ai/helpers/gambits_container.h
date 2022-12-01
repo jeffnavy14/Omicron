@@ -26,6 +26,7 @@ namespace gambits
         CASTER     = 7,
         TOP_ENMITY = 8,
         CURILLA    = 9, // Special case for Rainemard
+        PARTY_DEAD = 10,
     };
 
     enum class G_CONDITION : uint16
@@ -53,6 +54,7 @@ namespace gambits
         NO_STORM           = 20,
         PT_HAS_TANK        = 21,
         NOT_PT_HAS_TANK    = 22,
+        IS_ECOSYSTEM       = 23,
     };
 
     enum class G_REACTION : uint16
@@ -85,10 +87,11 @@ namespace gambits
 
     enum class G_TP_TRIGGER : uint16
     {
-        ASAP   = 0,
-        RANDOM = 1,
-        OPENER = 2,
-        CLOSER = 3,
+        ASAP            = 0,
+        RANDOM          = 1,
+        OPENER          = 2,
+        CLOSER          = 3, // Will Hold TP Indefinitely to close a SC
+        CLOSER_UNTIL_TP = 4, // Will Hold TP to close a SC until a certain threshold
     };
 
     struct Predicate_t
@@ -167,6 +170,7 @@ namespace gambits
         std::vector<Action_t>    actions;
         uint16                   retry_delay;
         time_point               last_used;
+        std::string              identifier;
 
         Gambit_t()
         {
@@ -222,13 +226,16 @@ namespace gambits
         }
         ~CGambitsContainer() = default;
 
-        void AddGambit(const Gambit_t& gambit);
+        auto AddGambit(Gambit_t const& gambit) -> std::string;
+        void RemoveGambit(std::string const& id);
+        void RemoveAllGambits();
         void Tick(time_point tick);
 
         // TODO: make private
         std::vector<TrustSkill_t> tp_skills;
         G_TP_TRIGGER              tp_trigger;
         G_SELECT                  tp_select;
+        uint16                    tp_value;
 
     private:
         bool CheckTrigger(CBattleEntity* trigger_target, Predicate_t& predicate);

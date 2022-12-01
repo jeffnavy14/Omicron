@@ -14,7 +14,7 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!mobhere {mobID} {noDepop}")
+    player:PrintToPlayer("!mobhere (mobID) (noDepop)")
 end
 
 function onTrigger(player, mobId, noDepop)
@@ -37,10 +37,12 @@ function onTrigger(player, mobId, noDepop)
                 return
             end
         end
+
         if not targ:isSpawned() then
             SpawnMob(mobId, instance)
             player:PrintToPlayer("Mob state changed to: Spawned.")
         end
+
         targ:setPos(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
     else
         -- validate mobId
@@ -58,20 +60,22 @@ function onTrigger(player, mobId, noDepop)
                 return
             end
         end
+
         mobId = targ:getID()
 
         if not targ:isSpawned() then
-            SpawnMob( mobId )
+            SpawnMob(mobId)
             player:PrintToPlayer("Mob state changed to: Spawned.")
         end
 
         if player:getZoneID() == targ:getZoneID() then
-            targ:setPos( player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos(), player:getZoneID() )
+            targ:setPos(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos(), player:getZoneID())
         else
-            if (noDepop == nil or noDepop == 0) then
-                DespawnMob( mobId )
+            if noDepop == nil or noDepop == 0 then
+                DespawnMob(mobId)
                 player:PrintToPlayer("Despawned the mob because of an error.")
             end
+
             player:PrintToPlayer("Mob could not be moved to current pos - you are probably in the wrong zone.")
         end
     end

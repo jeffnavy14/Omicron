@@ -2,9 +2,9 @@
 -- Area: Nyzul Isle (Path of Darkness)
 --  Mob: Amnaf Psycheflayer
 -----------------------------------
-local ID = require("scripts/zones/Nyzul_Isle/IDs")
-require("scripts/globals/status")
-require("scripts/globals/msg")
+local ID = require('scripts/zones/Nyzul_Isle/IDs')
+require('scripts/globals/status')
+require('scripts/globals/msg')
 -----------------------------------
 local entity = {}
 
@@ -33,7 +33,7 @@ entity.onSpikesDamage = function(mob, target, damage)
     local rnd = math.random (1, 100)
     -- This res check is a little screwy till we get the server's resistance handling closer to retail.
     -- looks like applyResistanceAddEffect() doesn't even handle status resistance, only elemental.
-    if (resist > rnd or rnd <= 20) then
+    if resist > rnd or rnd <= 20 then
         return 0, 0, 0
     else
         -- Estimated from https://youtu.be/7jsXnwkqMM4?t=5m42s
@@ -48,8 +48,13 @@ entity.onSpellPrecast = function(mob, spell)
     mob:showText(mob, ID.text.PHSHOOO)
 end
 
+<<<<<<< HEAD
 entity.onMobDeath = function(mob, player, isKiller)
     if isKiller then
+=======
+entity.onMobDeath = function(mob, player, optParams)
+    if optParams.isKiller then
+>>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         mob:showText(mob, ID.text.NOT_POSSIBLE)
     end
 end

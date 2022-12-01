@@ -8,6 +8,7 @@ local ID = require("scripts/zones/Bastok_Markets_[S]/IDs")
 require("scripts/globals/campaign")
 require("scripts/globals/status")
 require("scripts/globals/utils")
+require("scripts/globals/extravaganza")
 -----------------------------------
 local entity = {}
 
@@ -17,7 +18,7 @@ end
 entity.onTrigger = function(player, npc)
     local notes = player:getCurrency("allied_notes")
     local freelances = 99 -- Faking it for now
-    local ciphers = 0
+    local cipher = xi.extravaganza.campaignActive() * 4
     -- 0 for not displaying ciphers
     -- 4 for Valaneiral (New Year's & Summer Alter Ego Extravaganzas)
     -- 8 for Adelheid (Spring & Autumn Alter Ego Extravaganzas)
@@ -35,7 +36,7 @@ entity.onTrigger = function(player, npc)
     if medalRank == 0 then
         player:startEvent(14)
     else
-        player:startEvent(13, allegiance, notes, freelances, ciphers, medalRank, bonusEffects, timeStamp, 0)
+        player:startEvent(13, allegiance, notes, freelances, cipher, medalRank, bonusEffects, timeStamp, 0)
     end
 end
 
@@ -65,6 +66,7 @@ entity.onEventFinish = function(player, csid, option)
             if player:getCampaignAllegiance() == 2 and adj ~= nil then
                 price = adj
             end
+
             if player:getFreeSlotsCount() >= 1 then
                 player:delCurrency("allied_notes", price)
                 player:addItem(item)
@@ -76,8 +78,8 @@ entity.onEventFinish = function(player, csid, option)
         -- Please, don't change this elseif without knowing ALL the option results first.
         elseif utils.contains(option, optionList) then
             local cost = 0
-            local power = ( (option - 1) / 4096 )
-            local duration = 10800+((15*medalRank)*60) -- 3hrs +15 min per medal (minimum 3hr 15 min with 1st medal)
+            local power = ((option - 1) / 4096)
+            local duration = 10800 + ((15 * medalRank) * 60) -- 3hrs +15 min per medal (minimum 3hr 15 min with 1st medal)
             local subPower = 35 -- Sets % trigger for regen/refresh. Static at minimum value (35%) for now.
 
             if power == 1 or power == 2 or power == 4 then
@@ -87,7 +89,14 @@ entity.onEventFinish = function(player, csid, option)
             -- 3: Regen + Refresh,  5: Regen + Meal Duration,  6: Refresh + Meal Duration,
             -- 8: Reduced EXP loss,  12: Meal Duration + Reduced EXP loss
                 cost = 100
-            elseif power == 7 or power == 9 or power == 10 or power == 11 or power == 13 or power == 14 then
+            elseif
+                power == 7 or
+                power == 9 or
+                power == 10 or
+                power == 11 or
+                power == 13 or
+                power == 14
+            then
             -- 7: Regen + Refresh + Meal Duration,  9: Regen + Reduced EXP loss,
             -- 10: Refresh + Reduced EXP loss,  11: Regen + Refresh + Reduced EXP loss,
             -- 13: Regen + Meal Duration + Reduced EXP loss,  14: Refresh + Meal Duration + Reduced EXP loss

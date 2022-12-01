@@ -4,7 +4,7 @@
 -----------------------------------
 require("scripts/globals/status")
 local ID = require("scripts/zones/The_Ashu_Talif/IDs")
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 -----------------------------------
 local entity = {}
 
@@ -14,14 +14,14 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onMobFight = function(mob, target)
-    if (mob:hasStatusEffect(xi.effect.AZURE_LORE))then
+    if mob:hasStatusEffect(xi.effect.AZURE_LORE) then
         mob:setMobMod(xi.mobMod.MAGIC_COOL, 0)
     else
         mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     mob:showText(mob, ID.text.GOWAM_DEATH)
 end
 

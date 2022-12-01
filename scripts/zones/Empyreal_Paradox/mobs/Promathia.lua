@@ -50,7 +50,7 @@ entity.onSpellPrecast = function(mob, spell)
     end
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
     local battlefield = mob:getBattlefield()
     if player then
         player:startEvent(32004, battlefield:getArea())
@@ -68,7 +68,7 @@ end
 entity.onEventFinish = function(player, csid, option, target)
     if csid == 32004 then
         DespawnMob(target:getID())
-        local mob = SpawnMob(target:getID()+1)
+        local mob = SpawnMob(target:getID() + 1)
         local bcnmAllies = mob:getBattlefield():getAllies()
         for i, v in pairs(bcnmAllies) do
             v:resetLocalVars()

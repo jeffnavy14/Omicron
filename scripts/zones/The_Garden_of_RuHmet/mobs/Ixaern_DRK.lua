@@ -7,7 +7,7 @@
 -- !pos -600 5.00 440 35
 -----------------------------------
 local ID = require("scripts/zones/The_Garden_of_RuHmet/IDs")
-mixins = {require("scripts/mixins/job_special")}
+mixins = { require("scripts/mixins/job_special") }
 require("scripts/globals/mobskills")
 require("scripts/globals/settings")
 require("scripts/globals/status")
@@ -17,7 +17,7 @@ local entity = {}
 entity.onMobInitialize = function(IxAernDrkMob)
     IxAernDrkMob:addListener("DEATH", "AERN_DEATH", function(mob, killer)
         local timesReraised = mob:getLocalVar("AERN_RERAISES")
-        if(math.random (1, 10) < 10) then
+        if math.random (1, 10) < 10 then
             -- reraise
             local target = mob:getTarget()
             if
@@ -85,9 +85,9 @@ entity.onMobSpawn = function(mob)
                 hpp = math.random(90, 95),
                 cooldown = 120,
                 endCode = function(mobArg)
-                    mobArg:SetMagicCastingEnabled(false)
+                    mobArg:setMagicCastingEnabled(false)
                     mobArg:timer(30000, function(mobTimerArg)
-                        mobTimerArg:SetMagicCastingEnabled(true)
+                        mobTimerArg:setMagicCastingEnabled(true)
                     end)
                 end,
             }
@@ -95,7 +95,7 @@ entity.onMobSpawn = function(mob)
     })
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)

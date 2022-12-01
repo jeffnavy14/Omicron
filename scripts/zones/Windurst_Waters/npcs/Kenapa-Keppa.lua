@@ -19,10 +19,16 @@ entity.onTrigger = function(player, npc)
     local sayItWithFlowers = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.SAY_IT_WITH_FLOWERS)
     local flowerProgress = player:getCharVar("FLOWER_PROGRESS") -- progress of Say It with Flowers
 
-    if player:hasKeyItem(xi.ki.NEW_MODEL_HAT) and not utils.mask.getBit(player:getCharVar("QuestHatInHand_var"), 2) then
+    if
+        player:hasKeyItem(xi.ki.NEW_MODEL_HAT) and
+        not utils.mask.getBit(player:getCharVar("QuestHatInHand_var"), 2)
+    then
         player:messageSpecial(ID.text.YOU_SHOW_OFF_THE, 0, xi.ki.NEW_MODEL_HAT)
         player:startEvent(56)
-    elseif (sayItWithFlowers == QUEST_ACCEPTED or sayItWithFlowers == QUEST_COMPLETED) and flowerProgress == 2 then
+    elseif
+        (sayItWithFlowers == QUEST_ACCEPTED or sayItWithFlowers == QUEST_COMPLETED) and
+        flowerProgress == 2
+    then
         player:startEvent(519)
     else
         if math.random(1, 2) == 1 then
@@ -39,7 +45,7 @@ end
 entity.onEventFinish = function(player, csid, option)
     if csid == 56 then
         player:setCharVar("QuestHatInHand_var", utils.mask.setBit(player:getCharVar("QuestHatInHand_var"), 2, true))
-        player:addCharVar("QuestHatInHand_count", 1)
+        player:incrementCharVar("QuestHatInHand_count", 1)
     elseif csid == 519 then
         player:setCharVar("FLOWER_PROGRESS", 3)
     end

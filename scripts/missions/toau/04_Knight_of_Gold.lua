@@ -35,7 +35,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 1 and
-                        (npcUtil.tradeHasExactly(trade, {{ 'gil', 1000 }}) or
+                        (npcUtil.tradeHasExactly(trade, { { 'gil', 1000 } }) or
                         npcUtil.tradeHasExactly(trade, xi.items.IMPERIAL_BRONZE_PIECE))
                     then
                         return mission:progressEvent(3022, { text_table = 0 })
@@ -73,15 +73,15 @@ mission.sections =
                 end,
             },
 
-            onRegionEnter =
+            onTriggerAreaEnter =
             {
-                [4] = function(player, region)
+                [4] = function(player, triggerArea)
                     if player:getMissionStatus(mission.areaId) == 2 then
                         return mission:progressEvent(3024, { text_table = 0 })
                     end
                 end,
 
-                [5] = function(player, region)
+                [5] = function(player, triggerArea)
                     if player:getMissionStatus(mission.areaId) == 3 then
                         return mission:progressEvent(3026, { text_table = 0 })
                     end

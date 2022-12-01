@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
 Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -65,8 +65,13 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "utils/mobutils.h"
 #include "utils/moduleutils.h"
 #include "utils/petutils.h"
+#include "utils/serverutils.h"
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
+
+#ifdef WIN32
+#include <io.h>
+#endif
 
 #ifdef TRACY_ENABLE
 void* operator new(std::size_t count)
@@ -77,6 +82,12 @@ void* operator new(std::size_t count)
 }
 
 void operator delete(void* ptr) noexcept
+{
+    TracyFree(ptr);
+    free(ptr);
+}
+
+void operator delete(void* ptr, std::size_t count)
 {
     TracyFree(ptr);
     free(ptr);
@@ -159,13 +170,14 @@ map_session_data_t* mapsession_createsession(uint32 ip, uint16 port)
     ipp |= port64 << 32;
     map_session_list[ipp] = map_session_data;
 
-    const char* fmtQuery = "SELECT charid FROM accounts_sessions WHERE inet_ntoa(client_addr) = '%s' LIMIT 1;";
+    auto ipstr    = ip2str(map_session_data->client_addr);
+    auto fmtQuery = fmt::format("SELECT charid FROM accounts_sessions WHERE inet_ntoa(client_addr) = '{}' LIMIT 1;", ipstr);
 
-    int32 ret = sql->Query(fmtQuery, ip2str(map_session_data->client_addr));
+    int32 ret = sql->Query(fmtQuery.c_str());
 
     if (ret == SQL_ERROR || sql->NumRows() == 0)
     {
-        ShowError("recv_parse: Invalid login attempt from %s", ip2str(map_session_data->client_addr));
+        ShowError(fmt::format("recv_parse: Invalid login attempt from {}", ipstr));
         return nullptr;
     }
     return map_session_data;
@@ -201,14 +213,20 @@ int32 do_init(int32 argc, char** argv)
         }
     }
 
+    ShowInfo(fmt::format("map_port: {}", map_port));
+
     srand((uint32)time(nullptr));
     xirand::seed();
 
-    luautils::init();
-    PacketParserInitialize();
-
     ShowInfo("do_init: connecting to database");
     sql = std::make_unique<SqlConnection>();
+
+    ShowInfo(sql->GetClientVersion().c_str());
+    ShowInfo(sql->GetServerVersion().c_str());
+
+    luautils::init(); // Also calls moduleutils::LoadLuaModules();
+
+    PacketParserInitialize();
 
     sql->Query("DELETE FROM accounts_sessions WHERE IF(%u = 0 AND %u = 0, true, server_addr = %u AND server_port = %u);",
                map_ip.s_addr, map_port, map_ip.s_addr, map_port);
@@ -244,6 +262,7 @@ int32 do_init(int32 argc, char** argv)
     ability::LoadAbilitiesList();
     battleutils::LoadWeaponSkillsList();
     battleutils::LoadMobSkillsList();
+    battleutils::LoadPetSkillsList();
     battleutils::LoadSkillChainDamageModifiers();
     petutils::LoadPetList();
     trustutils::LoadTrustList();
@@ -270,6 +289,7 @@ int32 do_init(int32 argc, char** argv)
     CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, time_server, 2400ms);
     CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_cleanup, 5s);
     CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_garbage_collect, 15min);
+    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, serverutils::PersistVolatileServerVars, 1min);
 
     g_PBuff   = new int8[MAX_BUFFER_SIZE + 20];
     PTempBuff = new int8[MAX_BUFFER_SIZE + 20];
@@ -304,8 +324,7 @@ int32 do_init(int32 argc, char** argv)
             return;
         }
 
-        // TODO: Replace all usages of int8* with const char* or std::string.
-        auto* name  = (int8*)inputs[1].c_str();
+        auto  name  = inputs[1];
         auto* PChar = zoneutils::GetCharByName(name);
         if (!PChar)
         {
@@ -320,8 +339,16 @@ int32 do_init(int32 argc, char** argv)
 
         fmt::print("Promoting {} to GM level {}\n", PChar->name, level);
         PChar->pushPacket(new CChatMessagePacket(PChar, MESSAGE_SYSTEM_3,
-            fmt::format("You have been set to GM level {}.", level).c_str(), ""));
+            fmt::format("You have been set to GM level {}.", level), ""));
 
+    });
+
+    gConsoleService->RegisterCommand("exit", "Terminate the program.",
+    [&](std::vector<std::string> inputs)
+    {
+        fmt::print("> Goodbye!\n");
+        gConsoleService->stop();
+        gRunFlag = false;
     });
     // clang-format on
 
@@ -345,6 +372,7 @@ void do_final(int code)
     itemutils::FreeItemList();
     battleutils::FreeWeaponSkillsList();
     battleutils::FreeMobSkillList();
+    battleutils::FreePetSkillList();
 
     petutils::FreePetList();
     trustutils::FreeTrustList();
@@ -360,8 +388,15 @@ void do_final(int code)
 
     timer_final();
     socket_final();
-
+    luautils::cleanup();
     logging::ShutDown();
+
+#ifdef WIN32
+    shutdown(map_fd, SD_SEND);
+#else
+    shutdown(map_fd, SHUT_WR);
+#endif
+    close(map_fd);
 
     if (code != EXIT_SUCCESS)
     {
@@ -442,7 +477,6 @@ int32 do_sockets(fd_set* rfd, duration next)
     timeout.tv_usec = std::chrono::duration_cast<std::chrono::microseconds>(next - std::chrono::duration_cast<std::chrono::seconds>(next)).count();
 
     ret = sSelect(fd_max, rfd, nullptr, nullptr, &timeout);
-
     if (ret == SOCKET_ERROR)
     {
         if (sErrno != S_EINTR)
@@ -460,7 +494,7 @@ int32 do_sockets(fd_set* rfd, duration next)
         struct sockaddr_in from;
         socklen_t          fromlen = sizeof(from);
 
-        int32 ret = recvudp(map_fd, g_PBuff, MAX_BUFFER_SIZE, 0, (struct sockaddr*)&from, &fromlen);
+        ret = recvudp(map_fd, g_PBuff, MAX_BUFFER_SIZE, 0, (struct sockaddr*)&from, &fromlen);
         if (ret != -1)
         {
             // find player char
@@ -554,7 +588,7 @@ int32 map_decipher_packet(int8* buff, size_t size, sockaddr_in* from, map_sessio
         return 0;
     }
 
-    ShowError("map_encipher_packet: bad packet from <%s>", ip2str(ip));
+    ShowError(fmt::format("map_encipher_packet: bad packet from <{}>", ip2str(ip)));
     return -1;
 }
 
@@ -573,11 +607,15 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
     try
     {
+        if (size <= (FFXI_HEADER_SIZE + 16)) // check for underflow or no-data packet
+        {
+            return -1;
+        }
         checksumResult = checksum((uint8*)(buff + FFXI_HEADER_SIZE), (uint32)(size - (FFXI_HEADER_SIZE + 16)), (char*)(buff + size - 16));
     }
     catch (...)
     {
-        ShowError("Possible crash attempt from: %s", ip2str(map_session_data->client_addr));
+        ShowError(fmt::format("Possible crash attempt from: {}", ip2str(map_session_data->client_addr)));
         return -1;
     }
 
@@ -677,7 +715,7 @@ int32 parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_data_t*
 
     CCharEntity* PChar = map_session_data->PChar;
 
-    TracyZoneIString(PChar->GetName());
+    TracyZoneString(PChar->GetName());
 
     uint16 SmallPD_Size = 0;
     uint16 SmallPD_Type = 0;
@@ -808,7 +846,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
             PacketList_t packetList = PChar->getPacketList();
             packets                 = 0;
 
-            while (!packetList.empty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && packets < PacketCount)
+            while (!packetList.empty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
             {
                 PSmallPacket = packetList.front();
                 packetList.pop_front();
@@ -892,11 +930,21 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
     auto remainingPackets = PChar->getPacketList().size();
     TotalPacketsDelayedPerTick += static_cast<uint32>(remainingPackets);
-    TracyZoneString(fmt::format("{} packets remaining", remainingPackets));
-    if (remainingPackets > MAX_PACKET_BACKLOG_SIZE)
+
+    if (settings::get<bool>("logging.DEBUG_PACKET_BACKLOG"))
     {
-        ShowWarning(fmt::format("Packet backlog for char {} in {} is {}! Limit is: {}",
-                                PChar->name, PChar->loc.zone->GetName(), remainingPackets, MAX_PACKET_BACKLOG_SIZE));
+        TracyZoneString(fmt::format("{} packets remaining", remainingPackets));
+        if (remainingPackets > MAX_PACKET_BACKLOG_SIZE)
+        {
+            if (PChar->loc.zone == nullptr)
+            {
+                ShowWarning(fmt::format("Packet backlog exists for char {} with a nullptr zone. Clearing packet list.", PChar->name));
+                PChar->clearPacketList();
+                return 0;
+            }
+            ShowWarning(fmt::format("Packet backlog for char {} in {} is {}! Limit is: {}",
+                                    PChar->name, PChar->loc.zone->GetName(), remainingPackets, MAX_PACKET_BACKLOG_SIZE));
+        }
     }
 
     return 0;
@@ -943,8 +991,8 @@ int32 map_close_session(time_point tick, map_session_data_t* map_session_data)
 
 /************************************************************************
  *                                                                       *
- *  Timer function that clenup all timed out players                     *
- *                                                                       *
+ *  Timer function that cleans up all timed out players                  *
+ *  and removes stale dynamic targIDs after some time                    *
  ************************************************************************/
 
 int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
@@ -1048,6 +1096,28 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
         }
         ++it;
     }
+
+    // clang-format off
+    zoneutils::ForEachZone([](CZone* PZone)
+    {
+        auto& staledynamicTargIds = PZone->GetZoneEntities()->dynamicTargIdsToDelete;
+
+        auto it = staledynamicTargIds.begin();
+        while(it != staledynamicTargIds.end())
+        {
+            // Erase dynamic targid if it's stale enough
+            if ((server_clock::now() - it->second) > 60s)
+            {
+                PZone->GetZoneEntities()->dynamicTargIds.erase(it->first);
+                it = staledynamicTargIds.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+    });
+    // clang-format on
     return 0;
 }
 

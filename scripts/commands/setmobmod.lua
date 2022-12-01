@@ -13,7 +13,7 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!setmod {modifier} {amount}")
+    player:PrintToPlayer("!setmod <modifier> <amount>")
 end
 
 function onTrigger(player, modifier, amount)
@@ -35,7 +35,7 @@ function onTrigger(player, modifier, amount)
         return
     end
 
-    if target:isMob() == false then
+    if not target:isMob() then
         error(player, "No valid target found. Place cursor on a mob. ")
         return
     end

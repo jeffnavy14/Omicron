@@ -48,8 +48,8 @@ end
 entity.onMobFight = function(mob, target)
     -- Gains regain at under 25% HP
     if
-       mob:getHPP() < 25 and not
-       mob:hasStatusEffect(xi.effect.REGAIN)
+        mob:getHPP() < 25 and not
+        mob:hasStatusEffect(xi.effect.REGAIN)
     then
         mob:addStatusEffect(xi.effect.REGAIN, 5, 3, 0)
         mob:getStatusEffect(xi.effect.REGAIN):setFlag(xi.effectFlag.DEATH)
@@ -57,18 +57,18 @@ entity.onMobFight = function(mob, target)
 
     if mob:getLocalVar("nuclearWaste") == 1 then
         -- after nuclear waste immediately uses a random element ability
-        local ability = math.random(1262,1267)
+        local ability = math.random(1262, 1267)
         mob:useMobAbility(ability)
         mob:setLocalVar("nuclearWaste", 0)
     end
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.PARALYZE, {duration = 60})
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.PARALYZE, { duration = 60 })
 end
 
-entity.onMobDeath = function(mob, player, isKiller)
-    oneToBeFeared.handleUltimaDeath(mob, player, isKiller)
+entity.onMobDeath = function(mob, player, optParams)
+    oneToBeFeared.handleUltimaDeath(mob, player, optParams)
 end
 
 return entity

@@ -35,7 +35,8 @@ entity.onTrigger = function(player, npc)
         (
             player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.DARKNESS_NAMED) and
             wakingDreams == QUEST_AVAILABLE
-        ) or
+        )
+        or
         (
             wakingDreams == QUEST_COMPLETED and
             os.time() > player:getCharVar("Darkness_Named_date")
@@ -54,7 +55,7 @@ entity.onEventFinish = function(player, csid, option)
         player:addQuest(xi.quest.log_id.WINDURST, xi.quest.id.windurst.WAKING_DREAMS)
         npcUtil.giveKeyItem(player, xi.ki.VIAL_OF_DREAM_INCENSE)
     elseif csid == 920 then
-        local reward = {fame = 0}
+        local reward = { fame = 0 }
 
         if option == 1 and not player:hasItem(17599) then
             reward.item = 17599

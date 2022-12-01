@@ -11,7 +11,7 @@ cmdprops =
 
 function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer("!immortal {player}")
+    player:PrintToPlayer("!immortal (player)")
 end
 
 function onTrigger(player, target)
@@ -22,7 +22,7 @@ function onTrigger(player, target)
     if target then
         targ = GetPlayerByName(target)
         if not targ then
-            error(player, string.format( "Player named '%s' not found!", target ) )
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     elseif cursor_target and not cursor_target:isNPC() then
