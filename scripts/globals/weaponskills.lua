@@ -399,7 +399,6 @@ local function getSingleHitDamage(attacker, target, dmg, wsParams, calcParams)
                 end
 
                 finaldmg = finaldmg + magicdmg
-
             end
 
             calcParams.hitsLanded = calcParams.hitsLanded + 1
@@ -604,7 +603,10 @@ function calculateRawWSDmg(attacker, target, wsID, tp, action, wsParams, calcPar
     local firstHitBonus = (finaldmg * attacker:getMod(xi.mod.ALL_WSDMG_FIRST_HIT)) / 100
 
     -- Reset fTP if it's not supposed to carry over across all hits for this WS
-    if not wsParams.multiHitfTP then ftp = 1 end -- We'll recalculate our mainhand damage after doing offhand
+    -- We'll recalculate our mainhand damage after doing offhand
+    if not wsParams.multiHitfTP then
+        ftp = 1
+    end
 
     -- Do the extra hit for our offhand if applicable
     if calcParams.extraOffhandHit and finaldmg < targetHp then
@@ -671,7 +673,6 @@ end
 -- Sets up the necessary calcParams for a melee WS before passing it to calculateRawWSDmg. When the raw
 -- damage is returned, handles reductions based on target resistances and passes off to takeWeaponskillDamage.
 function doPhysicalWeaponskill(attacker, target, wsID, wsParams, tp, action, primaryMsg, taChar)
-
     -- Determine cratio and ccritratio
     local ignoredDef = 0
 
@@ -750,7 +751,6 @@ end
 -- Sets up the necessary calcParams for a ranged WS before passing it to calculateRawWSDmg. When the raw
 -- damage is returned, handles reductions based on target resistances and passes off to takeWeaponskillDamage.
 function doRangedWeaponskill(attacker, target, wsID, wsParams, tp, action, primaryMsg)
-
     -- Determine cratio and ccritratio
     local ignoredDef = 0
 
@@ -819,7 +819,6 @@ end
 --         ele (xi.magic.ele.FIRE), skill (xi.skill.STAFF)
 
 function doMagicWeaponskill(attacker, target, wsID, wsParams, tp, action, primaryMsg)
-
     -- Set up conditions and wsParams used for calculating weaponskill damage
     local attack =
     {

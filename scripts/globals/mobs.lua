@@ -263,7 +263,9 @@ local additionalEffects =
         msg                = xi.msg.basic.ADD_EFFECT_HP_DRAIN,
         mod                = xi.mod.INT,
         bonusAbilityParams = { bonusmab = 0, includemab = false },
-        code               = function(mob, target, power) mob:addHP(power) end,
+        code               = function(mob, target, power)
+            mob:addHP(power)
+        end,
     },
 
     [xi.mob.ae.MP_DRAIN] =
@@ -274,7 +276,11 @@ local additionalEffects =
         msg                = xi.msg.basic.ADD_EFFECT_MP_DRAIN,
         mod                = xi.mod.INT,
         bonusAbilityParams = { bonusmab = 0, includemab = false },
-        code               = function(mob, target, power) local mp = math.min(power, target:getMP()) target:delMP(mp) mob:addMP(mp) end,
+        code               = function(mob, target, power)
+            local mp = math.min(power, target:getMP())
+            target:delMP(mp)
+            mob:addMP(mp)
+        end,
     },
 
     [xi.mob.ae.PARALYZE] =
@@ -381,7 +387,9 @@ local additionalEffects =
         applyEffect = true,
         eff         = xi.effect.TERROR,
         duration    = 5,
-        code        = function(mob, target, power) mob:resetEnmity(target) end,
+        code        = function(mob, target, power)
+            mob:resetEnmity(target)
+        end,
     },
 
     [xi.mob.ae.TP_DRAIN] =
@@ -392,7 +400,11 @@ local additionalEffects =
         msg                = xi.msg.basic.ADD_EFFECT_TP_DRAIN,
         mod                = xi.mod.INT,
         bonusAbilityParams = { bonusmab = 0, includemab = false },
-        code               = function(mob, target, power) local tp = math.min(power, target:getTP()) target:delTP(tp) mob:addTP(tp) end,
+        code               = function(mob, target, power)
+            local tp = math.min(power, target:getTP())
+            target:delTP(tp)
+            mob:addTP(tp)
+        end,
     },
 
     [xi.mob.ae.WEIGHT] =
@@ -431,7 +443,9 @@ local additionalEffects =
     params will override effect's default settings
 --]]
 xi.mob.onAddEffect = function(mob, target, damage, effect, params)
-    if type(params) ~= "table" then params = {} end
+    if type(params) ~= "table" then
+        params = {}
+    end
 
     local ae = additionalEffects[effect]
 
