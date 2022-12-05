@@ -445,7 +445,7 @@ local MakeItem = function(player, itemid, npc)
 	local multival1 = aug1.max / (5 - tier) 
 	local multival1 = math.floor(multival1)
 	
-	augment1 = aug1.aug
+	local augment1 = aug1.aug
 	
 	--Determine Augment 2
 	local secondaugment = math.random(1, 100)
@@ -461,9 +461,9 @@ local MakeItem = function(player, itemid, npc)
 			local multival2 = aug2.max / (5 - tier) 
 			local multival2 = math.floor(multival2)
 			
-			augment2 = aug2.aug
+			local augment2 = aug2.aug
 		else
-			randaugment2 = 0
+			local randaugment2 = 0
 		end
 	end
 	
@@ -486,17 +486,16 @@ local MakeItem = function(player, itemid, npc)
 			local multival3 = aug3.max / (5 - tier) 
 			local multival3 = math.floor(multival3)
 			
-			augment3 = aug3.aug
+			local augment3 = aug3.aug
 		else
-			randaugment3 = 0
+			local randaugment3 = 0
 		end
 	end
 	
 	local testVar = aug1.max / (5 - tier) 
 	local testVar = math.floor(testVar)
 	
-	
-	player:addTreasure(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
+	--player:addTreasure(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
 	player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, item1)
 	
 end
@@ -516,6 +515,7 @@ local beginInvasion = function(player, npc)
 
     xi.confrontation.start(player, npc, invaderIds, function(playerArg)
 		MakeItem(player, itemid, npc)
+		player:addTreasure(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
 		player:ChangeMusic(0, 33)
 		player:ChangeMusic(1, 33)
 		player:ChangeMusic(2, 33)
@@ -549,6 +549,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Well done ol' chap!, I say never have I seen a finer display.",0, npc:getPacketName())
 			player:PrintToPlayer("The leader was Teodor... something odd about that one...",13)
 			player:PrintToPlayer("And who is his master he refered to?",13)
+			player:setCharVar("Mission2State", 3)
 		elseif player:getCharVar("Mission2State") == 1 then
 			player:PrintToPlayer("I can let you relive the last invsion...", 0, npc:getPacketName())
 			player:PrintToPlayer("I just need 100 infamy and a shadow geode to do so.",13)
@@ -603,7 +604,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					}
 					player:customMenu(menu)	
 				else
-					player:PrintToPlayer("I will need to wait until tomorrow to be able to redo the conjuring...")
+					player:PrintToPlayer("I will need to wait until tomorrow to be able to redo the conjuring...",0, npc:getPacketName())
 				end
 			end
 		end
