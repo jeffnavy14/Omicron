@@ -28,7 +28,7 @@ local Tim = zone:insertDynamicEntity({
 
     onTrade = function(player, npc, trade)
 		if player:getCharVar("TimStuff") == 1 then
-			if trade:hasItemQty(3934, 4) and trade:hasItemQty(8986, 2) and trade:hasItemQty(8709, 2) then
+			if trade:hasItemQty(3934, 4) and trade:hasItemQty(8986, 2) and trade:hasItemQty(8707, 2) then
 				player:PrintToPlayer("Thank Altana, we'll be able to make a nice secure door with this.",0, npc:getPacketName())
 				player:PrintToPlayer("These materials will kill the scent left behind by survivors, thank you.", 13)
 				player:setCharVar("TimStuff", 2)
