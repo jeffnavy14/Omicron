@@ -1035,10 +1035,6 @@ xi.nyzul.getTokenPenalty = function(instance)
     local floorPenalities = instance:getLocalVar("tokenPenalty")
     local rate            = getTokenRate(instance)
 
-<<<<<<< HEAD
-    return math.floor(117 * rate) * floor_penalities
-end
-=======
     return math.floor(117 * rate) * floorPenalities
 end
->>>>>>> upstream/base
+
