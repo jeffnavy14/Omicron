@@ -145,7 +145,7 @@ INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,1626,10); -- Avatar Blood
 INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,2570,10); -- Dawon Pelt
 --Dread Yztarg
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,21699,15); -- Nibiru Faussar
-INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,20600,15); -- Nibiru Knige
+INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,20600,15); -- Nibiru Knife
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,27097,15); -- Eschite Gauntlets
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,8721,20); -- Hepatizon Ore
 -- Kumhau

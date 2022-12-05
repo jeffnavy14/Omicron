@@ -1,5 +1,5 @@
 -----------------------------------
--- Chapter 1 Help the Locals
+-- Gatekeeper, teleporter and random filler NPCs
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")

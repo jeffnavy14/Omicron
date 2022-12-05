@@ -541,8 +541,6 @@ INSERT INTO `mob_spawn_points` VALUES (16957983,'Dread_Hippogryph','Dread Hippog
 INSERT INTO `mob_spawn_points` VALUES (16957984,'Dread_Hippogryph','Dread Hippogryph',29,459,-3.5,282,190);
 INSERT INTO `mob_spawn_points` VALUES (16957985,'Dread_Hippogryph','Dread Hippogryph',29,459,-3.5,287,190);
 INSERT INTO `mob_spawn_points` VALUES (16957986,'Hurkan','Hurkan',30,393,-3.2,201,190);
---HUMANOID GROUP West Beach
-
 ---------------------------------------
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype (2=NM),
 -- immunity,name_prefix,flag,entityflags,animationsub,hasspellscript,spelllist,namevis,roamflag,skill_list_id,resist_id)
@@ -576,16 +574,18 @@ INSERT INTO `mob_pools` VALUES (8020,'Lost_Eft','Lost_Eft',98,0x0000450500000000
 INSERT INTO `mob_pools` VALUES (8021,'Dread_Lizard','Dread_Lizard',174,0x0000490100000000000000000000000000000000,1,1,11,240,100,0,0,0,1,0,0,0,0,1155,0,0,0,0,0,174,174);
 INSERT INTO `mob_pools` VALUES (8022,'Dread_Matamata','Dread_Matamata',275,0x0000000A00000000000000000000000000000000,1,1,6,240,100,0,1,0,0,0,0,0,0,131,8,0,0,0,0,275,275);
 INSERT INTO `mob_pools` VALUES (8023,'Dread_Wivre','Dread_Wivre',257,0x0000FC0600000000000000000000000000000000,1,1,5,240,100,0,1,0,0,0,0,0,448,129,0,0,0,0,0,257,257);
-INSERT INTO `mob_pools` VALUES (8024,'Achuka','Achuka',461,0x0000D30900000000000000000000000000000000,14,4,7,240,100,0,1,0,1,0,0,0,1,131,0,0,449,0,0,461,461);
+INSERT INTO `mob_pools` VALUES (8024,'Achuka','Achuka',461,0x0000D30900000000000000000000000000000000,14,4,7,240,100,0,1,0,1,0,0,0,1,131,0,0,449,0,256,461,461);
 -- Avian
 INSERT INTO `mob_pools` VALUES (8025,'Lost_Tulfaires','Lost_Tulfaires',454,0x0000230A00000000000000000000000000000000,1,1,2,240,100,0,1,0,0,0,0,0,7,131,8,0,0,0,0,454,454);
 INSERT INTO `mob_pools` VALUES (8026,'Dread_Apkallu','Dread_Apkallu',27,0x0000170800000000000000000000000000000000,2,2,1,480,100,0,1,0,1,0,0,0,7,131,0,0,0,0,0,27,27);
 INSERT INTO `mob_pools` VALUES (8027,'Dread_Colibri','Dread_Colibri',287,0x0000B80600000000000000000000000000000000,1,1,2,220,100,0,1,0,0,2,56,0,1,131,4,0,0,0,0,287,287);
 INSERT INTO `mob_pools` VALUES (8028,'Dread_Hippogryph','Dread_Hippogryph',140,0x0000550500000000000000000000000000000000,6,6,2,240,100,0,1,1,0,0,0,0,1,131,0,0,0,0,0,140,140);
 INSERT INTO `mob_pools` VALUES (8029,'Hurkan','Hurkan',460,0x0000140A00000000000000000000000000000000,1,4,7,240,100,0,0,0,1,0,0,0,1,129,0,0,448,0,0,460,460);
+--test
+--INSERT INTO `mob_pools` VALUES (8024,'test','test',461,0x0000D30900000000000000000000000000000000,14,4,7,240,100,0,1,0,1,0,0,0,20,129,0,0,0,0,0,135,135);
 ---------------------------------------
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
----------------------------------------
+--------------------------------------
 INSERT INTO `mob_groups` VALUES (1,8000,44,'Lost_Gnat',300,0,4000,10000,1000,119,119,0);
 INSERT INTO `mob_groups` VALUES (2,8001,44,'Dread_Fly',0,128,4001,10500,1000,119,119,0);
 INSERT INTO `mob_groups` VALUES (3,8002,44,'Dread_Spider',0,128,4002,10000,1000,117,117,0);
@@ -616,3 +616,4 @@ INSERT INTO `mob_groups` VALUES (27,8026,44,'Dread_Apkallu',0,128,4026,14500,100
 INSERT INTO `mob_groups` VALUES (28,8027,44,'Dread_Colibri',0,128,4027,14000,1000,120,120,0);
 INSERT INTO `mob_groups` VALUES (29,8028,44,'Dread_Hippogryph',0,128,4028,14250,1000,121,121,0);
 INSERT INTO `mob_groups` VALUES (30,8029,44,'Hurkan',0,128,4029,104000,5000,125,125,0);
+--INSERT INTO `mob_groups` VALUES (50,8009,44,'test',0,128,4009,101000,5000,123,123,0);
