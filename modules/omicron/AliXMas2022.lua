@@ -8,12 +8,19 @@ require("scripts/zones/Port_Windurst/Zone")
 require("scripts/zones/Xarcabard/Zone")
 -----------------------------------
 local m = Module:new("XMasPeople")
+if
+        (month == 12 and day >= 5) or
+        (month == 1 and day <= 5)
+    then
+    	
+
 m:setEnabled(true)
 
 m:addOverride("xi.zones.Bastok_Mines.Zone.onInitialize", function(zone)
 
     super(zone)
-	
+
+
 	local Mogger = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
@@ -670,5 +677,5 @@ m:addOverride("xi.zones.Xarcabard.Zone.onInitialize", function(zone)
 	utils.unused(TheLair)		
 
 end)
-
+end
 return m
