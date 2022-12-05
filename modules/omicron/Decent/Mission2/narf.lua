@@ -406,6 +406,69 @@ local augs =
 	},
 }
 
+local augdrops =
+{
+	--xi.items.DESPAIR_HELM,
+	xi.items.DESPAIR_MAIL,
+	--[[xi.items.DESPAIR_FINGER_GAUNTLETS,
+	xi.items.DESPAIR_CUISSES,
+	xi.items.DESPAIR_GREAVES,]]
+}
+
+-- Use the other table if LSB is not updated
+local augs =
+{
+	[xi.items.DESPAIR_HELM] =
+	{
+		augments =
+		{	
+			{ aug = 512, min = 4, max = 14 },
+			{ aug = 39,  min = 2, max = 6  },
+			{ aug = 142, min = 1, max = 2  },
+		},
+	},
+
+	[xi.items.DESPAIR_MAIL] =
+	{
+		augments =
+		{	
+			{ aug = 25,  min = 14, max = 24 },
+			{ aug = 37,  min = 9, max = 19 },
+			{ aug = 143, min = 1,  max = 2  },
+		},
+	},
+	
+	[xi.items.DESPAIR_FINGER_GAUNTLETS] =
+	{
+		augments =
+		{	
+			{ aug = 27,  min = 14, max = 24 },
+			{ aug = 29,  min = 9, max = 19  },
+			{ aug = 212, min = 1, max = 9   },
+		},
+	},
+	
+	[xi.items.DESPAIR_CUISSES] =
+	{
+		augments =
+		{	
+			{ aug = 515, min = 1, max = 9  },
+			{ aug = 31,  min = 9, max = 19 },
+			{ aug = 195, min = 1, max = 6  },
+		},
+	},
+	
+	[xi.items.DESPAIR_GREAVES] =
+	{
+		augments =
+		{	
+			{ aug = 513, min = 1, max = 9 },
+			{ aug = 512, min = 1, max = 6 },
+			{ aug = 54,  min = 1, max = 2 },
+		},
+	},
+}
+
 local MakeItem = function(player, itemid, npc)
 	local baseTier = math.random(1, 100)
 	if baseTier >= 85 then
@@ -421,7 +484,6 @@ local MakeItem = function(player, itemid, npc)
 	end
 	
 	--reset
-	local item1 = 0
 	local secondaugment = 0
 	local thirdaugment =0
 	local randaugment1 = 0
@@ -435,8 +497,8 @@ local MakeItem = function(player, itemid, npc)
 	local multival3 = 0
 	
 	--Determine Base
-	local item1 = augdrops[math.random(1, #augdrops)]
-		
+	--local item1 = augdrops[math.random(1, #augdrops)]
+	local item1 = player:getCharVar("Thingy")
 	--Determine Augment 1
 	
 	local randaugment1 = math.random(1, #augs[item1].augments)
@@ -495,10 +557,11 @@ local MakeItem = function(player, itemid, npc)
 	local testVar = aug1.max / (5 - tier) 
 	local testVar = math.floor(testVar)
 	
-	--player:addTreasure(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
+	player:addItem(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
 	player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, item1)
-	
+
 end
+
 local beginInvasion = function(player, npc)
     player:ChangeMusic(0, 247)
 	player:ChangeMusic(1, 247)
@@ -506,7 +569,7 @@ local beginInvasion = function(player, npc)
 	player:ChangeMusic(3, 247)
 	player:ChangeMusic(4, 247)
 	
-	local numToSpawn = 9
+    local numToSpawn = 9
 
     local invaderIds = {}
     for invaderId = islandID.mob.INVADER_OFFSET, islandID.mob.INVADER_OFFSET + numToSpawn - 1, 1 do
@@ -515,14 +578,20 @@ local beginInvasion = function(player, npc)
 
     xi.confrontation.start(player, npc, invaderIds, function(playerArg)
 		MakeItem(player, itemid, npc)
-		player:addTreasure(item1, 1, augment1, multival1, augment2, multival2, augment3, multival3)
 		player:ChangeMusic(0, 33)
 		player:ChangeMusic(1, 33)
 		player:ChangeMusic(2, 33)
 		player:ChangeMusic(3, 33)
 		player:ChangeMusic(4, 33)
-		player:setCharVar("Mission2State", 2)
-		player:setCharVar("[Narf]time", getVanaMidnight())
+		if tier = 3 then
+			player:addItem(4074, 1)
+		elseif tier = 4 then
+			player:addItem(4075, 1)
+		elseif tier = 3 then
+			player:addItem(4076, 1)
+		end
+        player:setCharVar("Mission2State", 2)
+        player:setCharVar("[Narf]time", getVanaMidnight())
     end)
 end
 
@@ -565,7 +634,9 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	
 	onTrade = function(player, npc, trade)
 		if player:getCharVar("Mission2State") >= 0 then
-			if trade:hasItemQty(3304, 1) then
+			for k, v in ipairs(augdrops) do
+				local base = (v)
+				player:setCharVar("Thingy", base)
 				if os.time() > player:getCharVar("[Narf]time") then
 						
 					local menu =
@@ -588,6 +659,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 							"Begin, cost 100 infamy",
 							function(playerArg)
 								if player:getCurrency("infamy") >= 99 then
+									player:tradeComplete()
 									player:delCurrency("infamy", 100)
 									beginInvasion(player, npc)
 								else
