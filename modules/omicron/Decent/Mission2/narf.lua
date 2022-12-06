@@ -406,69 +406,6 @@ local augs =
 	},
 }
 
-local augdrops =
-{
-	--xi.items.DESPAIR_HELM,
-	xi.items.DESPAIR_MAIL,
-	--[[xi.items.DESPAIR_FINGER_GAUNTLETS,
-	xi.items.DESPAIR_CUISSES,
-	xi.items.DESPAIR_GREAVES,]]
-}
-
--- Use the other table if LSB is not updated
-local augs =
-{
-	[xi.items.DESPAIR_HELM] =
-	{
-		augments =
-		{	
-			{ aug = 512, min = 4, max = 14 },
-			{ aug = 39,  min = 2, max = 6  },
-			{ aug = 142, min = 1, max = 2  },
-		},
-	},
-
-	[xi.items.DESPAIR_MAIL] =
-	{
-		augments =
-		{	
-			{ aug = 25,  min = 14, max = 24 },
-			{ aug = 37,  min = 9, max = 19 },
-			{ aug = 143, min = 1,  max = 2  },
-		},
-	},
-	
-	[xi.items.DESPAIR_FINGER_GAUNTLETS] =
-	{
-		augments =
-		{	
-			{ aug = 27,  min = 14, max = 24 },
-			{ aug = 29,  min = 9, max = 19  },
-			{ aug = 212, min = 1, max = 9   },
-		},
-	},
-	
-	[xi.items.DESPAIR_CUISSES] =
-	{
-		augments =
-		{	
-			{ aug = 515, min = 1, max = 9  },
-			{ aug = 31,  min = 9, max = 19 },
-			{ aug = 195, min = 1, max = 6  },
-		},
-	},
-	
-	[xi.items.DESPAIR_GREAVES] =
-	{
-		augments =
-		{	
-			{ aug = 513, min = 1, max = 9 },
-			{ aug = 512, min = 1, max = 6 },
-			{ aug = 54,  min = 1, max = 2 },
-		},
-	},
-}
-
 local MakeItem = function(player, itemid, npc)
 	local baseTier = math.random(1, 100)
 	if baseTier >= 85 then
