@@ -583,11 +583,11 @@ local beginInvasion = function(player, npc)
 		player:ChangeMusic(2, 33)
 		player:ChangeMusic(3, 33)
 		player:ChangeMusic(4, 33)
-		if tier = 3 then
+		if tier == 3 then
 			player:addItem(4074, 1)
-		elseif tier = 4 then
+		elseif tier == 4 then
 			player:addItem(4075, 1)
-		elseif tier = 3 then
+		elseif tier == 5 then
 			player:addItem(4076, 1)
 		end
         player:setCharVar("Mission2State", 2)
