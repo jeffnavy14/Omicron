@@ -406,69 +406,6 @@ local augs =
 	},
 }
 
-local augdrops =
-{
-	--xi.items.DESPAIR_HELM,
-	xi.items.DESPAIR_MAIL,
-	--[[xi.items.DESPAIR_FINGER_GAUNTLETS,
-	xi.items.DESPAIR_CUISSES,
-	xi.items.DESPAIR_GREAVES,]]
-}
-
--- Use the other table if LSB is not updated
-local augs =
-{
-	[xi.items.DESPAIR_HELM] =
-	{
-		augments =
-		{	
-			{ aug = 512, min = 4, max = 14 },
-			{ aug = 39,  min = 2, max = 6  },
-			{ aug = 142, min = 1, max = 2  },
-		},
-	},
-
-	[xi.items.DESPAIR_MAIL] =
-	{
-		augments =
-		{	
-			{ aug = 25,  min = 14, max = 24 },
-			{ aug = 37,  min = 9, max = 19 },
-			{ aug = 143, min = 1,  max = 2  },
-		},
-	},
-	
-	[xi.items.DESPAIR_FINGER_GAUNTLETS] =
-	{
-		augments =
-		{	
-			{ aug = 27,  min = 14, max = 24 },
-			{ aug = 29,  min = 9, max = 19  },
-			{ aug = 212, min = 1, max = 9   },
-		},
-	},
-	
-	[xi.items.DESPAIR_CUISSES] =
-	{
-		augments =
-		{	
-			{ aug = 515, min = 1, max = 9  },
-			{ aug = 31,  min = 9, max = 19 },
-			{ aug = 195, min = 1, max = 6  },
-		},
-	},
-	
-	[xi.items.DESPAIR_GREAVES] =
-	{
-		augments =
-		{	
-			{ aug = 513, min = 1, max = 9 },
-			{ aug = 512, min = 1, max = 6 },
-			{ aug = 54,  min = 1, max = 2 },
-		},
-	},
-}
-
 local MakeItem = function(player, itemid, npc)
 	local baseTier = math.random(1, 100)
 	if baseTier >= 85 then
@@ -569,7 +506,7 @@ local beginInvasion = function(player, npc)
 	player:ChangeMusic(3, 247)
 	player:ChangeMusic(4, 247)
 	
-    local numToSpawn = 9
+	local numToSpawn = 9 -- want 12 but can't get allies to work
 
     local invaderIds = {}
     for invaderId = islandID.mob.INVADER_OFFSET, islandID.mob.INVADER_OFFSET + numToSpawn - 1, 1 do
@@ -590,8 +527,8 @@ local beginInvasion = function(player, npc)
 		elseif tier == 5 then
 			player:addItem(4076, 1)
 		end
-        player:setCharVar("Mission2State", 2)
-        player:setCharVar("[Narf]time", getVanaMidnight())
+		player:setCharVar("Mission2State", 2)
+		player:setCharVar("[Narf]time", getVanaMidnight())
     end)
 end
 
@@ -634,11 +571,14 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	
 	onTrade = function(player, npc, trade)
 		if player:getCharVar("Mission2State") >= 0 then
+			
 			for k, v in ipairs(augdrops) do
 				local base = (v)
 				player:setCharVar("Thingy", base)
-				if os.time() > player:getCharVar("[Narf]time") then
-						
+				break
+			end
+				if os.time() > player:getCharVar("[Narf]time") and player:getCharVar("Thingy") ~= 1 then
+					local MenuOpen = 1	
 					local menu =
 					{
 						title = "Ready?",
@@ -670,15 +610,19 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 					},
 					onCancelled = function(playerArg)
+						local MenuOpen = 0
 					end,
 					onEnd = function(playerArg)
+						local MenuOpen = 0
 					end,
 					}
-					player:customMenu(menu)	
+					
+					player:customMenu(menu)
+					
 				else
 					player:PrintToPlayer("I will need to wait until tomorrow to be able to redo the conjuring...",0, npc:getPacketName())
 				end
-			end
+			
 		end
 	end,
 
