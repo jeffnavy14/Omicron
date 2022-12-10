@@ -19,20 +19,20 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onMobEngaged = function(mob, player)
-	player:ChangeMusic(0, 62)
-	player:ChangeMusic(1, 62)
-	player:ChangeMusic(2, 62)
-	player:ChangeMusic(3, 62)
-	player:ChangeMusic(4, 62)
+	player:changeMusic(0, 62)
+	player:changeMusic(1, 62)
+	player:changeMusic(2, 62)
+	player:changeMusic(3, 62)
+	player:changeMusic(4, 62)
 end
 
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	player:ChangeMusic(0, 33)
-	player:ChangeMusic(1, 33)
-	player:ChangeMusic(2, 33)
-	player:ChangeMusic(3, 33)
-	player:ChangeMusic(4, 33)
+	player:changeMusic(0, 33)
+	player:changeMusic(1, 33)
+	player:changeMusic(2, 33)
+	player:changeMusic(3, 33)
+	player:changeMusic(4, 33)
 end
 
 entity.onMobDespawn = function(mob)
