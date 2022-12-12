@@ -43,99 +43,6 @@ local loot =
         },
     },
 
-    -- central temenos floor 2
-    [1304] =
-    {
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1944, droprate = 250 },
-            { itemid = 1936, droprate =  94 },
-            { itemid = 1950, droprate =  63 },
-            { itemid = 1942, droprate = 125 },
-            { itemid = 1946, droprate =  63 },
-            { itemid = 2660, droprate = 281 },
-            { itemid = 2714, droprate = 125 },
-        },
-
-        {
-            { itemid = 1908, droprate = 1000 },
-        },
-    },
-
-    -- central temenos floor 3
-    [1305] =
-    {
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1875, droprate = 1000 },
-        },
-
-        {
-            { itemid = 1934, droprate =  53 },
-            { itemid = 1940, droprate = 132 },
-            { itemid = 1954, droprate = 105 },
-            { itemid = 1932, droprate = 211 },
-            { itemid = 1956, droprate = 211 },
-            { itemid = 1930, droprate = 100 },
-            { itemid = 2658, droprate = 211 },
-            { itemid = 2716, droprate = 105 },
-        },
-
-        {
-            { itemid = 1907, droprate = 1000 },
-        },
-    },
-
     -- central temenos floor 4
     [1306] =
     {
@@ -246,18 +153,6 @@ entity.onTrigger = function(player, npc)
         switch (bfid): caseof
         {
             [1301] = function() -- Temenos Central Basement Crate Handling
-                xi.limbus.handleLootRolls(battlefield, loot[bfid], nil, npc)
-                battlefield:setLocalVar("cutsceneTimer", 10)
-                battlefield:setLocalVar("lootSeen", 1)
-            end,
-
-            [1304] = function() -- Temenos Central F2 Crate Handling
-                xi.limbus.handleLootRolls(battlefield, loot[bfid], nil, npc)
-                battlefield:setLocalVar("cutsceneTimer", 10)
-                battlefield:setLocalVar("lootSeen", 1)
-            end,
-
-            [1305] = function() -- Temenos Central F3 Crate Handling
                 xi.limbus.handleLootRolls(battlefield, loot[bfid], nil, npc)
                 battlefield:setLocalVar("cutsceneTimer", 10)
                 battlefield:setLocalVar("lootSeen", 1)

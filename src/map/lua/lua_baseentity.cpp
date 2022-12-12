@@ -2630,12 +2630,20 @@ void CLuaBaseEntity::setPos(sol::variadic_args va)
                 return;
             }
 
+            auto ipp = zoneutils::GetZoneIPP(zoneid);
+            if (ipp == 0)
+            {
+                ShowWarning(fmt::format("Char {} requested zone ({}) returned IPP of 0", PChar->name, zoneid));
+                PChar->pushPacket(new CMessageSystemPacket(0, 0, 2)); // You could not enter the next area.
+                return;
+            }
+
             PChar->loc.destination = zoneid;
             PChar->status          = STATUS_TYPE::DISAPPEAR;
             PChar->loc.boundary    = 0;
             PChar->m_moghouseID    = 0;
             PChar->clearPacketList();
-            charutils::SendToZone(PChar, 2, zoneutils::GetZoneIPP(PChar->loc.destination));
+            charutils::SendToZone(PChar, 2, ipp);
         }
         else if (PChar->status != STATUS_TYPE::DISAPPEAR)
         {
@@ -12315,14 +12323,54 @@ std::optional<CLuaBaseEntity> CLuaBaseEntity::getPet()
 
 uint32 CLuaBaseEntity::getPetID()
 {
-    auto* PBattle = static_cast<CBattleEntity*>(m_PBaseEntity);
-
-    if (PBattle->PPet)
+    if (m_PBaseEntity->objtype == TYPE_PET)
     {
-        return static_cast<CPetEntity*>(PBattle->PPet)->m_PetID;
+        return static_cast<CPetEntity*>(m_PBaseEntity)->m_PetID;
     }
 
     return 0;
+}
+
+/************************************************************************
+ *  Function: isAutomaton()
+ *  Purpose : Returns true if entity is an automaton
+ *  Example : local isAutomaton = pet:isAutomaton()
+ *  Notes   :
+ ************************************************************************/
+
+bool CLuaBaseEntity::isAutomaton()
+{
+    if (m_PBaseEntity->objtype == TYPE_PET)
+    {
+        uint32 petID = static_cast<CPetEntity*>(m_PBaseEntity)->m_PetID;
+        if (petID >= PETID_HARLEQUINFRAME and petID <= PETID_STORMWAKERFRAME)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/************************************************************************
+ *  Function: isAvatar()
+ *  Purpose : Returns true if entity is an avatar
+ *  Example : local isAvatar = pet:isAvatar()
+ *  Notes   :
+ ************************************************************************/
+
+bool CLuaBaseEntity::isAvatar()
+{
+    if (m_PBaseEntity->objtype == TYPE_PET)
+    {
+        uint32 petID = static_cast<CPetEntity*>(m_PBaseEntity)->m_PetID;
+        if ((petID >= PETID_CARBUNCLE && petID <= PETID_CAIT_SITH) || petID == PETID_SIREN)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /************************************************************************
@@ -15408,6 +15456,8 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasPet", CLuaBaseEntity::hasPet);
     SOL_REGISTER("getPet", CLuaBaseEntity::getPet);
     SOL_REGISTER("getPetID", CLuaBaseEntity::getPetID);
+    SOL_REGISTER("isAutomaton", CLuaBaseEntity::isAutomaton);
+    SOL_REGISTER("isAvatar", CLuaBaseEntity::isAvatar);
     SOL_REGISTER("getPetElement", CLuaBaseEntity::getPetElement);
     SOL_REGISTER("setPet", CLuaBaseEntity::setPet);
     SOL_REGISTER("getMaster", CLuaBaseEntity::getMaster);
