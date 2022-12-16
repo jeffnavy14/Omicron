@@ -500,11 +500,11 @@ local MakeItem = function(player, itemid, npc)
 end
 
 local beginInvasion = function(player, npc)
-    player:changeMusic(0, 247)
-	player:changeMusic(1, 247)
-	player:changeMusic(2, 247)
-	player:changeMusic(3, 247)
-	player:changeMusic(4, 247)
+    player:ChangeMusic(0, 247)
+	player:ChangeMusic(1, 247)
+	player:ChangeMusic(2, 247)
+	player:ChangeMusic(3, 247)
+	player:ChangeMusic(4, 247)
 	
 	local numToSpawn = 9 -- want 12 but can't get allies to work
 
@@ -515,11 +515,11 @@ local beginInvasion = function(player, npc)
 
     xi.confrontation.start(player, npc, invaderIds, function(playerArg)
 		MakeItem(player, itemid, npc)
-		player:changeMusic(0, 33)
-		player:changeMusic(1, 33)
-		player:changeMusic(2, 33)
-		player:changeMusic(3, 33)
-		player:changeMusic(4, 33)
+		player:ChangeMusic(0, 33)
+		player:ChangeMusic(1, 33)
+		player:ChangeMusic(2, 33)
+		player:ChangeMusic(3, 33)
+		player:ChangeMusic(4, 33)
 		if tier == 3 then
 			player:addItem(4074, 1)
 		elseif tier == 4 then
@@ -572,10 +572,76 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	onTrade = function(player, npc, trade)
 		if player:getCharVar("Mission2State") >= 0 then
 			
-			for k, v in ipairs(augdrops) do
-				local base = (v)
-				player:setCharVar("Thingy", base)
-				break
+			if trade:hasItemQty(26791, 1) then -- Eschite Helm
+				player:setCharVar("Thingy", 26791)
+			elseif trade:hasItemQty(26792, 1) then -- Despair Helm
+				player:setCharVar("Thingy", 26792)
+			elseif trade:hasItemQty(26793, 1) then -- Naga Somen
+				player:setCharVar("Thingy", 26793)
+			elseif trade:hasItemQty(26794, 1) then -- Rawhide Mask
+				player:setCharVar("Thingy", 26794)
+			elseif trade:hasItemQty(26795, 1) then -- Pursuers Beret
+				player:setCharVar("Thingy", 26795)
+			elseif trade:hasItemQty(26796, 1) then -- Psycloth Tiara
+				player:setCharVar("Thingy", 26796)
+			elseif trade:hasItemQty(26797, 1) then -- Vanya Hood
+				player:setCharVar("Thingy", 26797)
+			elseif trade:hasItemQty(26947, 1) then -- Eschite Breastplate
+				player:setCharVar("Thingy", 26947)
+			elseif trade:hasItemQty(26948, 1) then -- Despair Mail 
+				player:setCharVar("Thingy", 26948)
+			elseif trade:hasItemQty(26949, 1) then -- Naga Samue
+				player:setCharVar("Thingy", 26949)
+			elseif trade:hasItemQty(26950, 1) then -- Rawhide Vest
+				player:setCharVar("Thingy", 26950)
+			elseif trade:hasItemQty(26951, 1) then -- Pursuers Doublet
+				player:setCharVar("Thingy", 26951)
+			elseif trade:hasItemQty(26952, 1) then -- Psycloth Vest
+				player:setCharVar("Thingy", 26952)
+			elseif trade:hasItemQty(26953, 1) then -- Vanya Robe
+				player:setCharVar("Thingy", 26953)
+			elseif trade:hasItemQty(27097, 1) then -- Eschite Gauntlets
+				player:setCharVar("Thingy", 27097)
+			elseif trade:hasItemQty(27098, 1) then -- Despair Finger Gauntlets 
+				player:setCharVar("Thingy", 27098)
+			elseif trade:hasItemQty(27099, 1) then -- Naga Tekko
+				player:setCharVar("Thingy", 27099)
+			elseif trade:hasItemQty(27100, 1) then -- Rawhide Gloves
+				player:setCharVar("Thingy", 27100)
+			elseif trade:hasItemQty(27101, 1) then -- Pursuers Cuffs
+				player:setCharVar("Thingy", 27101)
+			elseif trade:hasItemQty(27102, 1) then -- Psycloth Manillas
+				player:setCharVar("Thingy", 27102)
+			elseif trade:hasItemQty(27103, 1) then -- Vanya Cuffs
+				player:setCharVar("Thingy", 27103)
+			elseif trade:hasItemQty(27282, 1) then -- Eschite Cuisses
+				player:setCharVar("Thingy", 27282)
+			elseif trade:hasItemQty(27283, 1) then -- Despair Cuisses 
+				player:setCharVar("Thingy", 27283)
+			elseif trade:hasItemQty(27284, 1) then -- Naga Hakama
+				player:setCharVar("Thingy", 27284)
+			elseif trade:hasItemQty(27285, 1) then -- Rawhide Trousers
+				player:setCharVar("Thingy", 27285)
+			elseif trade:hasItemQty(27286, 1) then -- Pursuers Pants
+				player:setCharVar("Thingy", 27286)
+			elseif trade:hasItemQty(27287, 1) then -- Psycloth Lappas
+				player:setCharVar("Thingy", 27287)
+			elseif trade:hasItemQty(27288, 1) then -- Vanya Slops
+				player:setCharVar("Thingy", 27288)
+			elseif trade:hasItemQty(27457, 1) then -- Eschite Greaves
+				player:setCharVar("Thingy", 27457)
+			elseif trade:hasItemQty(27458, 1) then -- Despair Greaves 
+				player:setCharVar("Thingy", 27458)
+			elseif trade:hasItemQty(27459, 1) then -- Naga Kyahan
+				player:setCharVar("Thingy", 27459)
+			elseif trade:hasItemQty(27460, 1) then -- Rawhide Boots
+				player:setCharVar("Thingy", 27460)
+			elseif trade:hasItemQty(27461, 1) then -- Pursuers Gaiters
+				player:setCharVar("Thingy", 27461)
+			elseif trade:hasItemQty(27462, 1) then -- Psycloth Boots
+				player:setCharVar("Thingy", 27462)
+			elseif trade:hasItemQty(27463, 1) then -- Vanya Clogs
+				player:setCharVar("Thingy", 27463)
 			end
 				if os.time() > player:getCharVar("[Narf]time") and player:getCharVar("Thingy") ~= 1 then
 					local MenuOpen = 1	
