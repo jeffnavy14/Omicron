@@ -22,6 +22,7 @@ zones[xi.zone.ABDHALJS_ISLE_PURGONORGO] =
     },
     mob =
     {
+	INVADER_OFFSET = 16957987,
     },
     npc =
     {

@@ -8,7 +8,12 @@ require("scripts/zones/Port_Windurst/Zone")
 require("scripts/zones/Xarcabard/Zone")
 -----------------------------------
 local m = Module:new("XMasPeople")
-if
+    local cs = -1
+    local month = tonumber(os.date("%m"))
+    local day = tonumber(os.date("%d"))
+
+    -- Retail start/end dates vary, set to Dec 5th through Jan 5th.
+    if
         (month == 12 and day >= 5) or
         (month == 1 and day <= 5)
     then
