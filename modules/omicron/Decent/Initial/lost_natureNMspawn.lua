@@ -18,13 +18,6 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	SetServerVariable("nmHurkan", 0) -- SE Tunnel
 	SetServerVariable("nmAchuka", 0) -- SE Tunnel
 	SetServerVariable("nmTeodor", 0)
-	-- For part III
-	--SetServerVariable("nmFu", 0)
-	--SetServerVariable("nmKyou", 0)
-	--SetServerVariable("nmKin", 0)
-	--SetServerVariable("nmKei", 0)
-	--SetServerVariable("nmGin", 0)
-	--SetServerVariable("nmOu", 0)
 	
     -- Spawn A (Colkhab)
 local SpawnerA = zone:insertDynamicEntity({
@@ -49,11 +42,11 @@ local SpawnerA = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200)
 					SetServerVariable("nmColkhab", 1)
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You hear a faint buzzing far in the distance...", 13)
@@ -87,11 +80,11 @@ local SpawnerB = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmTchakka", 1);
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You barely hear the flow of gurgling water...", 13)
@@ -124,11 +117,11 @@ local SpawnerC = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmYumcax", 1);
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You hear leaves rustling seemingly far...", 13)
@@ -162,11 +155,11 @@ local SpawnerD = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmKumhau", 1);
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
@@ -200,11 +193,11 @@ local SpawnerE = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmAchuka", 1);
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
@@ -238,11 +231,11 @@ local SpawnerF = zone:insertDynamicEntity({
 					player:addCurrency("infamy", -200);
 					SetServerVariable("nmHurkan", 1);
 					for _,v in ipairs (player:getParty()) do
-						v:ChangeMusic(0, 62)
-						v:ChangeMusic(1, 62)
-						v:ChangeMusic(2, 62)
-						v:ChangeMusic(3, 62)
-						v:ChangeMusic(4, 62)
+						v:changeMusic(0, 62)
+						v:changeMusic(1, 62)
+						v:changeMusic(2, 62)
+						v:changeMusic(3, 62)
+						v:changeMusic(4, 62)
 					end
 			else
 				player:PrintToPlayer("You hear distant soft growling...", 13)
