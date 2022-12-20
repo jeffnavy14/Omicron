@@ -72,7 +72,7 @@ local tradeTable =
     [ 52] = { trade = { 15230, {4064,  5},  823,  844 }, reward = 27668 }, -- Pillager's bonnet
     [ 53] = { trade = { 12643, {4065, 10},  823,  837 }, reward = 27812 }, -- Pillager's vest 
     [ 54] = { trade = { 14478, {4065,  5},  823,  837 }, reward = 27812 }, -- Pillager's vest
-    [ 55] = { trade = { 13966, {4066, 10},  823, 1110 }, reward = 27948 }, -- Pillager's armlets
+    [ 55] = { trade = { 13966, {4066, 10},  823,  836 }, reward = 27948 }, -- Pillager's armlets
     [ 56] = { trade = { 14895, {4066,  5},  823, 1110 }, reward = 27948 }, -- Pillager's armlets
     [ 57] = { trade = { 14219, {4067, 10},  823,  836 }, reward = 28095 }, -- Pillager's culottes
     [ 58] = { trade = { 15566, {4067,  5},  823,  836 }, reward = 28095 }, -- Pillager's culottes
