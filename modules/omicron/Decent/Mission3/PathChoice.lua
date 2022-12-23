@@ -1,20 +1,11 @@
 -----------------------------------
 -- NPC: Choose Path and Initiate
--- for mission 2-1 of Decent
+-- for mission 3-1 of Decent
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Outer_RaKaznar_[U1]/Zone")
 require("scripts/globals/npc_util")
 require("scripts/globals/utils")
------------------------------------
-
------------------------------------
---[[ ToDo List:
-- Add Hades (Elvaan + God Form)
-- drops sql
-- new section for Monisette (Empy gear)
-- means to force stop and despawn
-]]
 -----------------------------------
 
 local m = Module:new("VagaryGate")
@@ -298,9 +289,10 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag1Active") ~= 1) then
-									player:getCharVar("VagPathActive", 1)
+									player:setCharVar("VagPathActive", 1)
 									player:setPos(-460,-140,38,190)
 									Path1(player, npc)
+									player:tradeComplete()
 								else
 									player:PrintToPlayer("The path cannot be traveled at this time...", 13)
 								end
@@ -320,8 +312,10 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag2Active") ~= 1) then
+									player:setCharVar("VagPathActive", 2)
 									player:setPos(-399,-160,-180,63)
 									Path2(player, npc)
+									player:tradeComplete()
 								else
 									player:PrintToPlayer("The path cannot be traveled at this time...", 13)
 								end
@@ -340,19 +334,14 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag3Active") ~= 1) then
+									player:setCharVar("VagPathActive", 3)
 									player:setPos(-540,-155,100,190)
 									Path3(player, npc)
+									player:tradeComplete()
 								else
 									player:PrintToPlayer("The path cannot be traveled at this time...", 13)
 								end
 							end
-						end,
-					},
-					
-					{
-						"Return",
-						function(playerArg)
-							player:setPos(0,0,4)
 						end,
 					},
 					
