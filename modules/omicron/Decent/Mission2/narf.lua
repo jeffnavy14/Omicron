@@ -500,11 +500,11 @@ local MakeItem = function(player, itemid, npc)
 end
 
 local beginInvasion = function(player, npc)
-    player:ChangeMusic(0, 247)
-	player:ChangeMusic(1, 247)
-	player:ChangeMusic(2, 247)
-	player:ChangeMusic(3, 247)
-	player:ChangeMusic(4, 247)
+    player:changeMusic(0, 247)
+	player:changeMusic(1, 247)
+	player:changeMusic(2, 247)
+	player:changeMusic(3, 247)
+	player:changeMusic(4, 247)
 	
 	local numToSpawn = 9 -- want 12 but can't get allies to work
 
@@ -515,11 +515,11 @@ local beginInvasion = function(player, npc)
 
     xi.confrontation.start(player, npc, invaderIds, function(playerArg)
 		MakeItem(player, itemid, npc)
-		player:ChangeMusic(0, 33)
-		player:ChangeMusic(1, 33)
-		player:ChangeMusic(2, 33)
-		player:ChangeMusic(3, 33)
-		player:ChangeMusic(4, 33)
+		player:changeMusic(0, 33)
+		player:changeMusic(1, 33)
+		player:changeMusic(2, 33)
+		player:changeMusic(3, 33)
+		player:changeMusic(4, 33)
 		if tier == 3 then
 			player:addItem(4074, 1)
 		elseif tier == 4 then
