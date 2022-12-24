@@ -7,7 +7,7 @@ require('scripts/globals/npc_util')
 require("scripts/globals/alitems")
 -----------------------------------
 
-local m = Module:new("ElTaz")
+local m = Module:new("Yota")
 m:setEnabled(true)
 		
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
@@ -30,26 +30,33 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		if (player:getCharVar("Mission3State") == 1) then
 			player:PrintToPlayer("Sadly still no word on the chapters I'm missing... my research is at a standstill for now...", 0, npc:getPacketName())
 			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 25, I would very much like to have them", 13)
-		elseif (player:getCharVar("Mission3State") == 2) and (os.time() > player:getCharVar("YotaTime")) then
-			player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts you provided", 0, npc:getPacketName())
-			player:PrintToPlayer("It seems the leader of the invasions, a man known as Teodor was not truly himself...", 13)
-			player:timer(2000, function(player)
-				player:PrintToPlayer("He was under the control of a creature, part of something called the Xol Triumvirate.", 13)
-				player:PrintToPlayer("As the name implies, there are 3 creatures listed in the time.", 13)
-			end)
-			player:timer(4000, function(player)
-				player:PrintToPlayer("Dhokmak the Brash, Ashrakk the Duskbrood, and Balamor the Deathborne.", 0, npc:getPacketName())
-				player:PrintToPlayer("Of these three, Balamor seems to be the most likely to have possessed someone.", 13)
-				player:PrintToPlayer("I'll see if I can muster up something about tracking one down.", 13)
-			end)
-			player:setCharVar("Mission3State", 3)
-			player:setCharVar("YotaTimeB", getVanaMidnight())
-		elseif (player:getCharVar("Mission3State") == 2) and (os.time() < player:getCharVar("YotaTime")) then
-			player:PrintToPlayer("Sorry I haven't come up with anything as yet.", 0, npc:getPacketName())
-		elseif (player:getCharVar("Mission3State") == 3) and (os.time() > player:getCharVar("YotaTimeB")) then
-			player:PrintToPlayer("It seems these creatures reside in a realm known as Ra'Kaznar...", 0, npc:getPacketName())
-			player:PrintToPlayer("I can provide the means... I'll need a bottle of distilled water, a dark crystal, and a piece of rotten meat.", 13)
-			player:setCharVar("Mission3State", 4)
+		
+		elseif (player:getCharVar("Mission3State") == 2) then
+			if (os.time() > player:getCharVar("YotaTime")) then
+				player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts you provided", 0, npc:getPacketName())
+				player:PrintToPlayer("It seems the leader of the invasions, a man known as Teodor was not truly himself...", 13)
+				player:timer(2000, function(player)
+					player:PrintToPlayer("He was under the control of a creature, part of something called the Xol Triumvirate.", 13)
+					player:PrintToPlayer("As the name implies, there are 3 creatures listed in the time.", 13)
+				end)
+				player:timer(4000, function(player)
+					player:PrintToPlayer("Dhokmak the Brash, Ashrakk the Duskbrood, and Balamor the Deathborne.", 0, npc:getPacketName())
+					player:PrintToPlayer("Of these three, Balamor seems to be the most likely to have possessed someone.", 13)
+					player:PrintToPlayer("I'll see if I can muster up something about tracking one down.", 13)
+				end)
+				player:setCharVar("Mission3State", 3)
+				player:setCharVar("YotaTimeB", getVanaMidnight())
+			elseif (os.time() < player:getCharVar("YotaTime")) then
+				player:PrintToPlayer("Sorry I haven't come up with anything as yet.", 0, npc:getPacketName())
+			end
+		elseif (player:getCharVar("Mission3State") == 3)
+			elseif (os.time() < player:getCharVar("YotaTimeB")) then
+				player:PrintToPlayer("I think I have something, return tomorrow so I can be sure.", 0, npc:getPacketName())
+			elseif (os.time() > player:getCharVar("YotaTimeB")) then
+				player:PrintToPlayer("It seems these creatures reside in a realm known as Ra'Kaznar...", 0, npc:getPacketName())
+				player:PrintToPlayer("I can provide the means... I'll need a bottle of distilled water, a dark crystal, and a piece of rotten meat.", 13)
+				player:setCharVar("Mission3State", 4)
+			end
 		elseif (player:getCharVar("Mission3State") == 4) then
 			player:PrintToPlayer("To reach that realm I'll need a bottle of distilled water, a dark crystal, and a piece of rotten meat.", 0, npc:getPacketName())
 		elseif (player:getCharVar("Mission3State") == 5) then
@@ -125,7 +132,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 })
 
-	utils.unused(ElTaz)	
+	utils.unused(Yota)	
 	
 end)
 
