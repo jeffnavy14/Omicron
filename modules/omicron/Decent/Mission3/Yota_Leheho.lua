@@ -122,8 +122,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 9008)
 			player:PrintToPlayer("Here you go.", 0, npc:getPacketName())
 			player:PrintToPlayer("Take it to the center of the island, it should take you to the Vagarous realm of the Xol.", 13)
-			player:setCharVar("Mission3State", 5)
-			player:tradeComplete()
+			if (player:getCharVar("Mission3State") == 4) then
+				player:setCharVar("Mission3State", 5)
+				player:tradeComplete()
+			end
 		else
 			player:PrintToPlayer("Thank you for the offer, but I must pass.", 0, npc:getPacketName())
 		end
