@@ -49,8 +49,8 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			elseif (os.time() < player:getCharVar("YotaTime")) then
 				player:PrintToPlayer("Sorry I haven't come up with anything as yet.", 0, npc:getPacketName())
 			end
-		elseif (player:getCharVar("Mission3State") == 3)
-			elseif (os.time() < player:getCharVar("YotaTimeB")) then
+		elseif (player:getCharVar("Mission3State") == 3) then
+			if (os.time() < player:getCharVar("YotaTimeB")) then
 				player:PrintToPlayer("I think I have something, return tomorrow so I can be sure.", 0, npc:getPacketName())
 			elseif (os.time() > player:getCharVar("YotaTimeB")) then
 				player:PrintToPlayer("It seems these creatures reside in a realm known as Ra'Kaznar...", 0, npc:getPacketName())
