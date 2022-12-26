@@ -22,6 +22,7 @@ zones[xi.zone.ESCHA_ZITAH] =
     },
     mob =
     {
+	Rage 			= 17957500,
     },
     npc =
     {

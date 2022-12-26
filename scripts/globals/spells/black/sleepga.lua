@@ -22,9 +22,17 @@ spellObject.onSpellCast = function(caster, target, spell)
     params.bonus = 0
     params.effect = xi.effect.SLEEP_I
     local resist = applyResistanceEffect(caster, target, spell, params)
+<<<<<<< HEAD
 
     if caster:isMob() then
         if caster:getPool() == 5310 then -- Amnaf (Flayer)
+=======
+	if target:isNM() then
+   	  return 0
+		end
+    if (caster:isMob()) then
+        if (caster:getPool() == 5310) then -- Amnaf (Flayer)
+>>>>>>> d37dd4cd8142648c3444793af107889151db07e8
             caster:resetEnmity(target)
         end
 

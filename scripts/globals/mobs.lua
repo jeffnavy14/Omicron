@@ -127,6 +127,7 @@ xi.mob.additionalEffect =
     TERROR     = 20,
     TP_DRAIN   = 21,
     WEIGHT     = 22,
+    DEATH	   = 23,
 }
 xi.mob.ae = xi.mob.additionalEffect
 
@@ -406,6 +407,16 @@ local additionalEffects =
         duration    = 30,
         minDuration = 1,
         maxDuration = 45,
+    },
+    [xi.mob.ae.DEATH] =
+    {
+        chance = 100,
+        ele = xi.magic.ele.DARK,
+        sub = xi.subEffect.DEATH,
+        msg = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff = xi.effect.KO,
+        power = 1,
     },
 }
 

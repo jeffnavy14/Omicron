@@ -75,6 +75,7 @@
 #include "battleutils.h"
 #include "charutils.h"
 #include "zoneutils.h"
+#include "../treasure_pool.h"
 
 /************************************************************************
  *   lists used in battleutils                                           *
@@ -6225,6 +6226,31 @@ namespace battleutils
         if (PTarget->m_OwnerID.id == PMaster->id)
         {
             return true;
+        }
+        if (PEntity->objtype == TYPE_PC) 
+        {
+            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+            {
+                return true;
+            }
+        }
+        if (PEntity->objtype == TYPE_PC)
+        {
+            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+            {
+                return true;
+            }
+        }
+
+        if (PEntity->objtype == TYPE_PC)
+        {
+            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+            {
+                return true;
+            }
         }
 
         bool found = false;

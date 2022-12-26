@@ -2,16 +2,20 @@
 -- Area: Port Bastok
 --  NPC: Zeldaff
 -----------------------------------
+require("scripts/globals/events/domain_invasion")
+-----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(30)
+    local csid = 425
+    xi.events.domainCampaign.onTrigger(player, csid)
 end
 
 entity.onEventUpdate = function(player, csid, option)
+    xi.events.domainCampaign.onEventUpdate(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)

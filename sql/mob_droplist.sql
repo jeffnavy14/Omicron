@@ -6156,9 +6156,7 @@ INSERT INTO `mob_droplist` VALUES (729,0,0,1000,4249,@ALWAYS); -- Copy Of Schult
 
 -- ZoneID: 135 - Dynamis Lord
 -- ZoneID: 135 - Arch Dynamis Lord
-INSERT INTO `mob_droplist` VALUES (730,0,0,1000,13658,520);   -- Shadow Mantle (52.0%)
 INSERT INTO `mob_droplist` VALUES (730,0,0,1000,1450,350);    -- Lungo-Nango Jadeshell (35.0%)
-INSERT INTO `mob_droplist` VALUES (730,0,0,1000,14646,210);   -- Shadow Ring (21.0%)
 INSERT INTO `mob_droplist` VALUES (730,0,0,1000,1453,180);    -- Montiont Silverpiece (18.0%)
 INSERT INTO `mob_droplist` VALUES (730,0,0,1000,1456,130);    -- One Hundred Byne Bill (13.0%)
 INSERT INTO `mob_droplist` VALUES (730,0,0,1000,3429,@VRARE); -- Fiendish Tome Chapter 26 (Very Rare, 1%)
@@ -16023,9 +16021,9 @@ INSERT INTO `mob_droplist` VALUES (1958,0,0,1000,882,20);   -- Sheep Tooth (2.0%
 INSERT INTO `mob_droplist` VALUES (1958,2,0,1000,832,0);    -- Clump Of Sheep Wool (Steal)
 
 -- ZoneID: 218 - Orthrus
-INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,2168,@ALWAYS);    -- Cerberus Claw (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,@ALWAYS);    -- Orthrus Claw (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,16260,@ALWAYS);   -- Atheling Mantle (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,2168,500);        -- Cerberus Claw (50.0%)
+INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3287,500);        -- Orthrus Claw (50.0%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,3216,@UNCOMMON);  -- Jewel Of Ardor (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,4969,@UNCOMMON);  -- Scroll Of Migawari Ichi (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1959,0,0,1000,5006,@UNCOMMON);  -- Scroll Of Valor Minuet V (Uncommon, 10%)

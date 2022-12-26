@@ -6261,6 +6261,7 @@ INSERT INTO `item_basic` VALUES (8224,0,'harlequin_frame','harlequin_frame',1,0,
 INSERT INTO `item_basic` VALUES (8225,0,'valoredge_x-900_frame','valoredge_frame',1,0,0,1,0);
 INSERT INTO `item_basic` VALUES (8226,0,'sharpshot_z-500_frame','sharpshot_frame',1,0,0,1,0);
 INSERT INTO `item_basic` VALUES (8227,0,'stormwaker_y-700_frame','stormwaker_frame',1,0,0,1,0);
+INSERT INTO `item_basic` VALUES (8289,0,'dung','dung',1,0,0,1,0);
 INSERT INTO `item_basic` VALUES (8449,0,'strobe','strobe',1,0,0,0,585);
 INSERT INTO `item_basic` VALUES (8450,0,'tension_spring','tension_spring',1,0,0,0,261);
 INSERT INTO `item_basic` VALUES (8451,0,'inhibitor','inhibitor',1,0,0,0,397);
