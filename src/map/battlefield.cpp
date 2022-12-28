@@ -527,9 +527,16 @@ bool CBattlefield::RemoveEntity(CBaseEntity* PEntity, uint8 leavecode)
 
         m_Zone->updateCharLevelRestriction(PChar);
 
-        if (PChar->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_CONFRONTATION))
+        if (leavecode == BATTLEFIELD_LEAVE_CODE_EXIT && PChar->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_CONFRONTATION))
         {
-            PChar->StatusEffectContainer->GetStatusEffect(EFFECT_BATTLEFIELD)->SetSubPower(0);
+            if (GetStatus() == BATTLEFIELD_STATUS_LOCKED)
+            {
+                PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_CONFRONTATION, true);
+            }
+            else
+            {
+                setPlayerEntered(PChar, false);
+            }
         }
 
         if (PChar->isDead())
@@ -611,9 +618,14 @@ bool CBattlefield::RemoveEntity(CBaseEntity* PEntity, uint8 leavecode)
                 {
                     if (std::find(m_AllyList.begin(), m_AllyList.end(), PMobEntity) != m_AllyList.end())
                     {
+                        if (PMobEntity->isAlive() && PMobEntity->PAI->IsSpawned())
+                        {
+                            PEntity->status = STATUS_TYPE::DISAPPEAR;
+                            PEntity->loc.zone->UpdateEntityPacket(PEntity, ENTITY_DESPAWN, UPDATE_NONE);
+                        }
+
                         m_AllyList.erase(std::remove_if(m_AllyList.begin(), m_AllyList.end(), check), m_AllyList.end());
                     }
-                    PEntity->status = STATUS_TYPE::DISAPPEAR;
                 }
             }
             else
@@ -763,6 +775,16 @@ bool CBattlefield::Cleanup(time_point time, bool force)
         {
             PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_CONFRONTATION, true);
             m_Zone->updateCharLevelRestriction(PChar);
+
+            // Remove allies from player's spawn list
+            for (auto* ally : tempAllies)
+            {
+                SpawnIDList_t::iterator MOB = PChar->SpawnMOBList.find(ally->id);
+                if (MOB != PChar->SpawnMOBList.end())
+                {
+                    PChar->SpawnMOBList.erase(MOB);
+                }
+            }
 
             if (PChar->PPet)
             {
@@ -990,4 +1012,25 @@ void CBattlefield::handleDeath(CBaseEntity* PEntity)
             }
         }
     }
+}
+
+void CBattlefield::setPlayerEntered(CCharEntity* PChar, bool entered)
+{
+    CStatusEffect* effect = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_BATTLEFIELD);
+    effect->SetTier(entered ? 1 : 0);
+}
+
+bool CBattlefield::hasPlayerEntered(CCharEntity* PChar)
+{
+    if (!PChar->StatusEffectContainer->HasStatusEffect(EFFECT_BATTLEFIELD))
+    {
+        return false;
+    }
+
+    return PChar->StatusEffectContainer->GetStatusEffect(EFFECT_BATTLEFIELD)->GetTier() == 1;
+}
+
+uint16 CBattlefield::getBattlefieldArea(CCharEntity* PChar)
+{
+    return PChar->StatusEffectContainer->GetStatusEffect(EFFECT_BATTLEFIELD)->GetSubPower();
 }

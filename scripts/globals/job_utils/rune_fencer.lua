@@ -431,7 +431,6 @@ xi.job_utils.rune_fencer.useVallationValiance = function(player, target, ability
             elseif member:getID() == player:getID() then    -- caster has Vallation, set no effect message.
                 ability:setMsg(xi.msg.basic.JA_NO_EFFECT_2) -- "<Player> uses Valiance.\nNo effect on <Player>."
             end
-
         end
     else -- apply effects to target (Vallation)
         if target:hasStatusEffect(xi.effect.LIEMENT) then -- no effect if Liement is up
@@ -651,7 +650,7 @@ xi.job_utils.rune_fencer.useSwipeLunge = function(player, target, ability, actio
     end
 
     if magicBursted then -- Note: the vanilla client does not report a healed magic burst, but this bit is set.
-        action:modifier(target:getID(), xi.actionModifier.MAGIC_BURST)
+        action:modifier(target:getID(), xi.msg.actionModifier.MAGIC_BURST)
     end
 
     return math.abs(cumulativeDamage)

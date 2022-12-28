@@ -5,6 +5,7 @@
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
 
     "editor.bracketPairColorization.enabled": true,
+    "editor.inlayHints.enabled": "offUnlessPressed",
     "editor.renderWhitespace": "all",
     "editor.renderControlCharacters": true,
     "editor.trimAutoWhitespace": true,
@@ -448,7 +449,7 @@
         "ForceCrash",
         "BuildString",
         "SendLuaFuncStringToZone",
-        "DYNAMIC_LOOKUP",
+        "GetFirstID",
     ],
     "Lua.diagnostics.disable": [
         "lowercase-global"

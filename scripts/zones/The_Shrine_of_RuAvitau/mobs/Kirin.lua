@@ -16,10 +16,10 @@ end
 
 entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.WIND_MEVA, -64) -- Todo: Move to mob_resists.sql
-    mob:setMod(xi.mod.SILENCERES, 35)
-    mob:setMod(xi.mod.STUNRES, 35)
-    mob:setMod(xi.mod.BINDRES, 35)
-    mob:setMod(xi.mod.GRAVITYRES, 35)
+    mob:setMod(xi.mod.SILENCE_MEVA, 35)
+    mob:setMod(xi.mod.STUN_MEVA, 35)
+    mob:setMod(xi.mod.BIND_MEVA, 35)
+    mob:setMod(xi.mod.GRAVITY_MEVA, 35)
     mob:addStatusEffect(xi.effect.REGEN, 50, 3, 0)
     mob:setLocalVar("numAdds", 1)
 end
@@ -34,6 +34,7 @@ entity.onMobFight = function(mob, target)
                 table.insert(godsRemaining, i)
             end
         end
+
         if #godsRemaining > 0 then
             local g   = godsRemaining[math.random(1, #godsRemaining)]
             local god = SpawnMob(ID.mob.KIRIN + g)

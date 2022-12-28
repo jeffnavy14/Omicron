@@ -41,7 +41,7 @@ REPLACE INTO `mob_spawn_points` VALUES (17903648,'Jaundiced_Slime','Jaundiced Sl
 REPLACE INTO `mob_spawn_points` VALUES (17903649,'Jaundiced_Slime','Jaundiced Slime',8,-393,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903650,'Jaundiced_Slime','Jaundiced Slime',8,-407,-169,-248,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903651,'Jaundiced_Slime','Jaundiced Slime',8,-400,-169,-248,0);
-REPLACE INTO `mob_spawn_points` VALUES (17903652,'Jaundiced_Slime','Jaundiced Slime',8,-393,-169,-248,0);
+REPLACE INTO `mob_spawn_points` VALUES (17903652,'Jaundiced_Slime','Jaundiced Slime',8,-393,169,-248,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903653,'Gangerous_Leech','Gangerous Leech',9,-407,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903654,'Gangerous_Leech','Gangerous Leech',9,-393,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903655,'Gangerous_Leech','Gangerous Leech',9,-407,-169,-248,0);
@@ -120,8 +120,8 @@ REPLACE INTO `mob_spawn_points` VALUES (17903726,'Palloritus','Palloritus',42,-5
 -- The 2 Hidden bosses per path
 REPLACE INTO `mob_spawn_points` VALUES (17903727,'Perfidien','Perfidien',43,-419,-164,252,63);
 REPLACE INTO `mob_spawn_points` VALUES (17903728,'Plouton','Plouton',44,-419,-164,252,63);
-REPLACE INTO `mob_spawn_points` VALUES (17903729,'Perfidien','Perfidien',43,-380,-150,-100,189);
-REPLACE INTO `mob_spawn_points` VALUES (17903730,'Plouton','Plouton',44,-380,-150,-100,189);
+REPLACE INTO `mob_spawn_points` VALUES (17903729,'Perfidien','Perfidien',43,-380,-150,100,189);
+REPLACE INTO `mob_spawn_points` VALUES (17903730,'Plouton','Plouton',44,-380,-150,100,189);
 REPLACE INTO `mob_spawn_points` VALUES (17903731,'Perfidien','Perfidien',43,-540,-150,60,189);
 REPLACE INTO `mob_spawn_points` VALUES (17903732,'Plouton','Plouton',44,-540,-150,60,189);
 ---------------------------------------
@@ -134,18 +134,18 @@ REPLACE INTO `mob_spawn_points` VALUES (17903732,'Plouton','Plouton',44,-540,-15
 --Path 1
 REPLACE INTO `mob_pools` VALUES (8100,'Lost_Byrgden','Lost Byrgden',100,0x0000640800000000000000000000000000000000,4,5,11,240,100,0,1,0,0,2,0,0,0,129,16,0,2,0,0,100,100);
 REPLACE INTO `mob_pools` VALUES (8101,'Lost_Gefyrst','Lost Gefyrst',103,0x0000670800000000000000000000000000000000,5,3,11,240,100,0,1,0,0,2,0,0,7,129,0,0,14,0,0,103,103);
-REPLACE INTO `mob_pools` VALUES (8102,'Blightslither','Blightslither',468,0x0000050A00000000000000000000000000000000,4,4,12,240,100,0,1,0,0,2,0,2,7,1155,5,0,0,0,0,468,1000);
+REPLACE INTO `mob_pools` VALUES (8102,'Blightslither','Blightslither',468,0x0000050A00000000000000000000000000000000,4,4,12,240,100,0,1,0,0,2,0,2,7,1155,5,0,0,0,0,468,468);
 REPLACE INTO `mob_pools` VALUES (8103,'Lost_Baelfyr','Lost Baelfyr',101,0x0000650800000000000000000000000000000000,5,3,11,240,100,0,1,0,0,2,0,0,7,129,0,0,14,0,0,101,101);
 REPLACE INTO `mob_pools` VALUES (8104,'Lost_Ungeweder','Lost Ungeweder',99,0x0000660800000000000000000000000000000000,4,5,12,240,100,0,1,0,0,2,0,0,7,129,0,0,14,0,0,99,99);
-REPLACE INTO `mob_pools` VALUES (8105,'Insidivo','Insidivo',195,0x0000EF0700000000000000000000000000000000,3,3,12,240,100,0,1,0,0,2,7,0,0,0,0,0,453,0,0,195,1001);
-REPLACE INTO `mob_pools` VALUES (8106,'Putraxia','Putraxia',493,0x00003C0A00000000000000000000000000000000,1,1,3,240,100,0,1,0,0,2,0,32,1,129,0,0,0,4,0,493,1002);
+REPLACE INTO `mob_pools` VALUES (8105,'Insidivo','Insidivo',195,0x0000EF0700000000000000000000000000000000,3,3,12,240,100,0,1,0,0,2,7,0,0,0,0,0,453,0,0,195,195);
+REPLACE INTO `mob_pools` VALUES (8106,'Putraxia','Putraxia',493,0x00003C0A00000000000000000000000000000000,1,1,3,240,100,0,1,0,0,2,0,32,1,129,0,0,0,4,0,493,493);
 -- Path 2
 REPLACE INTO `mob_pools` VALUES (8107,'Jaundiced_Slime','Jaundiced Slime',229,0x0000240100000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,7,131,0,0,0,0,0,229,229);
 REPLACE INTO `mob_pools` VALUES (8108,'Gangerous_Leech','Gangerous Leech',172,0x0000150100000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,1,643,0,0,0,0,0,172,172);
 REPLACE INTO `mob_pools` VALUES (8109,'Dreary_Obdella','Dreary Obdella',172,0x00008E0700000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,1,643,8,0,0,0,0,172,172);
-REPLACE INTO `mob_pools` VALUES (8110,'Murkcrawler','Murkcrawler',345,0x00000A0A00000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,344,131,4,0,0,0,0,345,1003);
-REPLACE INTO `mob_pools` VALUES (8111,'Brimboil','Brimboil',66,0x0000250100000000000000000000000000000000,9,9,5,240,100,0,1,0,0,2,0,0,1,131,8,0,0,0,0,798,1004);
-REPLACE INTO `mob_pools` VALUES (8112,'Rancibus','Rancibus',490,0x0000410A00000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,1,129,4,0,0,0,0,490,1005);
+REPLACE INTO `mob_pools` VALUES (8110,'Murkcrawler','Murkcrawler',345,0x00000A0A00000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,344,131,4,0,0,0,0,345,345);
+REPLACE INTO `mob_pools` VALUES (8111,'Brimboil','Brimboil',66,0x0000250100000000000000000000000000000000,9,9,5,240,100,0,1,0,0,2,0,0,1,131,8,0,0,0,0,798,66);
+REPLACE INTO `mob_pools` VALUES (8112,'Rancibus','Rancibus',490,0x0000410A00000000000000000000000000000000,1,1,7,240,100,0,1,0,0,2,0,0,1,129,4,0,0,0,0,490,490);
 -- Path 3
 REPLACE INTO `mob_pools` VALUES (8113,'Shunned_Ravager','Shunned Ravager',115,0x0500FC0300000000000000000000000000000000,1,1,6,240,100,0,1,0,0,2,0,0,79,131,0,0,0,0,0,115,115);
 REPLACE INTO `mob_pools` VALUES (8114,'Shunned_Tantran','Shunned Tantran',115,0x0500040400000000000000000000000000000000,2,2,1,480,100,0,1,0,0,2,0,0,26,131,0,0,0,0,0,115,115);
@@ -174,11 +174,13 @@ REPLACE INTO `mob_pools` VALUES (8136,'Shunneds_Wyvern','Shunned Wyvern',193,0x0
 REPLACE INTO `mob_pools` VALUES (8137,'Shunneds_Elemental','Shunneds Elemental',34,0x0000190300000000000000000000000000000000,4,4,7,240,100,0,0,0,1,8,0,0,0,131,0,0,0,0,0,34,34);
 REPLACE INTO `mob_pools` VALUES (8138,'Shunneds_Automaton','Shunneds Automaton',145,0x0500D50400000000000000000000000000000000,7,7,4,240,100,0,0,0,0,8,0,0,6345,1155,0,0,4,0,0,145,145); -- PLD
 REPLACE INTO `mob_pools` VALUES (8139,'Ashen_Soul','Ashen Soul',74,0x0000530500000000000000000000000000000000,4,4,11,290,100,0,1,0,0,2,0,0,1,129,0,0,28,0,0,74,74);
-REPLACE INTO `mob_pools` VALUES (8140,'Light_Reaper','Light Reaper',447,0x00002D0A00000000000000000000000000000000,1,1,10,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,447,1006);
-REPLACE INTO `mob_pools` VALUES (8141,'Palloritus','Palloritus',492,0x0000460A00000000000000000000000000000000,1,1,10,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,492,1007);
-REPLACE INTO `mob_pools` VALUES (8142,'Brimboil','Brimboil',66,0x0000250100000000000000000000000000000000,9,9,5,240,100,0,1,0,0,2,0,0,1,131,8,0,0,0,0,798,1004);
-REPLACE INTO `mob_pools` VALUES (8143,'Perfidien','Perfidien',485,0x0000720A00000000000000000000000000000000,6,5,3,240,100,0,1,0,0,2,0,0,1,129,0,0,4,0,0,485,1008);
-REPLACE INTO `mob_pools` VALUES (8144,'Plouton','Plouton',487,0x0000710A00000000000000000000000000000000,8,5,3,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,487,1009);
+REPLACE INTO `mob_pools` VALUES (8140,'Light_Reaper','Light Reaper',447,0x00002D0A00000000000000000000000000000000,1,1,10,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,447,447);
+REPLACE INTO `mob_pools` VALUES (8141,'Palloritus','Palloritus',492,0x0000460A00000000000000000000000000000000,1,1,10,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,492,492);
+REPLACE INTO `mob_pools` VALUES (8142,'Brimboil','Brimboil',66,0x0000250100000000000000000000000000000000,9,9,5,240,100,0,1,0,0,2,0,0,1,131,8,0,0,0,0,798,66);
+REPLACE INTO `mob_pools` VALUES (8143,'Perfidien','Perfidien',485,0x0000720A00000000000000000000000000000000,6,5,3,240,100,0,1,0,0,2,0,0,1,129,0,0,4,0,0,485,485);
+REPLACE INTO `mob_pools` VALUES (8144,'Plouton','Plouton',487,0x0000710A00000000000000000000000000000000,8,5,3,240,100,0,1,0,0,2,0,0,1,129,0,0,0,0,0,487,487);
+
+
 ---------------------------------------
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
 --------------------------------------
@@ -288,9 +290,6 @@ INSERT INTO `npc_list` VALUES (17904619,'Pillar','Pillar',0,-393,-169,-236,0,0,0
 INSERT INTO `npc_list` VALUES (17904620,'Pillar','Pillar',0,-407,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
 INSERT INTO `npc_list` VALUES (17904621,'Pillar','Pillar',0,-400,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
 INSERT INTO `npc_list` VALUES (17904622,'Pillar','Pillar',0,-393,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
-INSERT INTO `npc_list` VALUES (17904623,'Connection','Connection',0,-460,-140,38,0,0,0,0,0,0,0,27,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 1 Enter/Exit
-INSERT INTO `npc_list` VALUES (17904624,'Connection','Connection',0,-399,-160,-180,0,0,0,0,0,0,0,27,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 2 Enter/Exit
-INSERT INTO `npc_list` VALUES (17904625,'Connection','Connection',0,-540,-155,100,0,0,0,0,0,0,0,27,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 3 Enter/Exit
 ---------------------------------------
 -- Zone Setting
 ---------------------------------------
@@ -400,21 +399,3 @@ INSERT INTO `mob_droplist` VALUES (4041,0,0,1000,28418,100); -- Incarnation Sash
 INSERT INTO `mob_droplist` VALUES (4041,0,0,1000,20605,150); -- Odium
 INSERT INTO `mob_droplist` VALUES (4041,0,0,1000,20605,100); -- Odium
 INSERT INTO `mob_droplist` VALUES (4041,0,0,1000,26944,10); -- Tartarus Platemail
----------------------------------------
--- Mob Resistances
--- `resist_id`,`name`,
--- `slash_sdt`.`pierce_sdt`,`h2h_sdt`,`impact_sdt`,
--- `fire_sdt`,`ice_sdt`,`wind_sdt`.`earth_sdt`,`lightning_sdt`,`water_sdt`,`light_sdt`,`dark_sdt`
--- `fire_meva`,`ice_meva`,`wind_meva`,`earth_meva`,`lightning_meva`,`water_meva`,`light_meva`,`dark_meva`
--- `fire_res_rank`.`ice_res_rank`,`wind_res_rank`,`earth_res_rank`,`lightning_res_rank`.`water_res_rank`,`light_res_rank`,`dark_res_rank`
----------------------------------------
-INSERT INTO `mob_resistances` VALUES (1000,'Blightslither',0.50,0.10,0.50,0.50,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1001,'Insidivo',0.50,0.75,0.50,0.50,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1002,'Putraxia',0.25,0.20,0.40,0.30,3000,5000,5000,5000,5000,5000,3000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1003,'Murkcrawler',0.60,0.50,0.10,0.10,5000,5000,5000,5000,3000,7000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1004,'Brimboil',0.50,0.50,0.10,0.10,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1005,'Rancibus',0.20,0.20,0.10,0.10,3000,5000,5000,5000,2000,9000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1006,'Light_Reaper',0.40,0.30,0.20,0.20,5000,5000,5000,5000,5000,5000,500,9500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1007,'Palloritus',0.30,0.30,0.30,0.30,7000,3000,3000,2000,5000,2000,5000,500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1008,'Perfidien',0.40,0.40,0.40,0.40,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-INSERT INTO `mob_resistances` VALUES (1009,'Plouton',0.20,0.20,0.20,0.20,5000,9000,5000,9000,5000,9000,0,9500,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);

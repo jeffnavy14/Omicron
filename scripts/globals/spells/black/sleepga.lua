@@ -1,9 +1,7 @@
 -----------------------------------
 -- Spell: Sleepga
 -----------------------------------
-require("scripts/globals/magic")
-require("scripts/globals/msg")
-require("scripts/globals/status")
+require("scripts/globals/spells/enfeebling_spell")
 -----------------------------------
 local spellObject = {}
 
@@ -12,27 +10,8 @@ spellObject.onMagicCastingCheck = function(caster, target, spell)
 end
 
 spellObject.onSpellCast = function(caster, target, spell)
-    local dINT = caster:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
-
-    local duration = calculateDuration(60, spell:getSkillType(), spell:getSpellGroup(), caster, target)
-
-    local params = {}
-    params.diff = dINT
-    params.skillType = xi.skill.ENFEEBLING_MAGIC
-    params.bonus = 0
-    params.effect = xi.effect.SLEEP_I
-    local resist = applyResistanceEffect(caster, target, spell, params)
-<<<<<<< HEAD
-
     if caster:isMob() then
         if caster:getPool() == 5310 then -- Amnaf (Flayer)
-=======
-	if target:isNM() then
-   	  return 0
-		end
-    if (caster:isMob()) then
-        if (caster:getPool() == 5310) then -- Amnaf (Flayer)
->>>>>>> d37dd4cd8142648c3444793af107889151db07e8
             caster:resetEnmity(target)
         end
 
@@ -43,17 +22,7 @@ spellObject.onSpellCast = function(caster, target, spell)
         -- You'd have to script the use of every individual spell in Amnaf's list..
     end
 
-    if resist >= 0.5 then
-        if target:addStatusEffect(params.effect, 1, 0, duration * resist) then
-            spell:setMsg(xi.msg.basic.MAGIC_ENFEEB_IS)
-        else
-            spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT) -- No effect
-        end
-    else
-        spell:setMsg(xi.msg.basic.MAGIC_RESIST)
-    end
-
-    return params.effect
+    return xi.spells.enfeebling.useEnfeeblingSpell(caster, target, spell)
 end
 
 return spellObject

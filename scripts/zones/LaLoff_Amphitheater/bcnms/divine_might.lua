@@ -58,8 +58,4 @@ battlefieldObject.onEventFinish = function(player, csid, option)
     end
 end
 
-<<<<<<< HEAD
 return battlefieldObject
-=======
-return battlefield_object
->>>>>>> d37dd4cd8142648c3444793af107889151db07e8

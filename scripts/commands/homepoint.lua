@@ -5,7 +5,7 @@
 
 cmdprops =
 {
-    permission = 0,
+    permission = 1,
     parameters = "s"
 }
 
@@ -14,7 +14,6 @@ function error(player, msg)
     player:PrintToPlayer("!homepoint (player)")
 end
 
-<<<<<<< HEAD
 function onTrigger(player, target)
     -- validate target
     local targ
@@ -33,9 +32,4 @@ function onTrigger(player, target)
     if targ:getID() ~= player:getID() then
         player:PrintToPlayer(string.format("Sent %s to their homepoint.", targ:getName()))
     end
-=======
-function onTrigger(player)
-    -- homepoint target
-    player:warp()
->>>>>>> d37dd4cd8142648c3444793af107889151db07e8
 end

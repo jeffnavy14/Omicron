@@ -24,13 +24,4 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     return dmg
 end
 
-<<<<<<< HEAD
 return mobskillObject
-=======
-return mobskill_object
-AL, xi.damageType.PIERCING)
-    return dmg
-end
-
-return mobskill_object
->>>>>>> d37dd4cd8142648c3444793af107889151db07e8

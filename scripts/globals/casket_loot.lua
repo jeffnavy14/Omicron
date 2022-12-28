@@ -4468,4 +4468,60 @@ xi.casket_loot.casketItems =
             {  340,  9068 }, -- Barrier Module
         },
     },
+	    [xi.zone.NYZUL_ISLE] =
+    {
+        regionalItems = {10949}, -- Smithy's Torque  -- TODO: CHANGE THIS!!!
+        temps =
+        {
+        -----------------------------------
+        -- {weight, itemId}
+        -----------------------------------
+            { 900, 5385 }, -- Barbarian's Drink
+            { 500, 5386 }, -- Fighter's Drink
+            { 300, 5387 }, -- Orcale's Drink
+            { 450, 5388 }, -- Assassin's Drink
+            { 320, 5389 }, -- Spy's Drink
+            { 650, 5394 }, -- Gnostic's Drink
+            { 430, 4743 }, -- Scroll of Reriase
+            {1000, 5437 }, -- Strange Milk
+            { 690, 5438 }, -- Strange Juice
+            { 250, 5397 }, -- Sprinter's Drink
+            { 730, 5439 }, -- Healing Mist
+            { 420, 5390 }, -- Vicar's Drink
+            {1010, 5391 }, -- Braver's Drink
+            { 875, 5392 }, -- Soldier's Drink
+            { 210, 5393 }, -- Champion's Drink
+            { 920, 5395 }, -- Monarch's Drink
+            { 190, 5431 }, -- Cleric's Drink
+            { 310, 5432 }, -- Dusty Potion
+            { 205, 5434 }, -- Dusty Ether
+            { 410, 5435 }, -- Fanatic's Drink
+            { 305, 5440 }, -- Fool's Drink
+            { 310, 4200 }, -- Mana Boost
+            { 200, 5433 }, -- Dusty Elixir
+        },
+        items =
+        {
+        -----------------------------------
+        -- {weight, itemId}
+        -----------------------------------
+            {2700, 2190 }, -- ??? Sword
+            { 310, 2191 }, -- ??? Dagger
+            { 580, 2192 }, -- ??? Polearm
+            {4700, 2193 }, -- ??? Axe
+            {1540, 2194 }, -- ??? Bow
+            {1700, 2195 }, -- ??? Gloves
+            {2050, 2196 }, -- ??? Footwear
+            {3670, 2276 }, -- ??? Headpiece
+            {3100, 2277 }, -- ??? Earring
+            {1050, 2278 }, -- ??? Ring
+            {2100, 2279 }, -- ??? Cape
+            { 340, 2280 }, -- ??? Sash
+            {1650, 2281 }, -- ??? Shield
+            {1430, 2282 }, -- ??? Necklace
+            {1625, 2283 }, -- ??? Ingot
+            {1725, 2284 }, -- ??? Potion
+            {2635, 2285 }, -- ??? Cloth
+        },
+    },
 }

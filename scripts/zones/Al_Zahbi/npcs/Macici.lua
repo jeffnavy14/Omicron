@@ -11,9 +11,7 @@ local ID = require("scripts/zones/Al_Zahbi/IDs")
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local guildMember = xi.crafting.isGuildMember(player, 8)
-
-    if guildMember == 1 then
+    if xi.crafting.hasJoinedGuild(player, xi.crafting.guild.SMITHING) then
         if trade:hasItemQty(2184, 1) and trade:getItemCount() == 1 then
             if not player:hasStatusEffect(xi.effect.SMITHING_IMAGERY) then
                 player:tradeComplete()
@@ -26,10 +24,9 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local guildMember = xi.crafting.isGuildMember(player, 8)
     local skillLevel = player:getSkillLevel(xi.skill.SMITHING)
 
-    if guildMember == 1 then
+    if xi.crafting.hasJoinedGuild(player, xi.crafting.guild.SMITHING) then
         if not player:hasStatusEffect(xi.effect.SMITHING_IMAGERY) then
             player:startEvent(232, 8, skillLevel, 0, 511, 188, 0, 2, 2184)
         else
@@ -44,7 +41,6 @@ entity.onEventUpdate = function(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
-
     if csid == 232 and option == 1 then
         player:messageSpecial(ID.text.IMAGE_SUPPORT, 0, 2, 1)
         player:addStatusEffect(xi.effect.SMITHING_IMAGERY, 1, 0, 120)

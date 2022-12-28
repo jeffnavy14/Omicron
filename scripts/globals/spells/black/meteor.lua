@@ -23,24 +23,16 @@ spellObject.onMagicCastingCheck = function(caster, target, spell)
 end
 
 spellObject.onSpellCast = function(caster, target, spell)
-
     --calculate raw damage
     --Byrthnoth @ Random Facts Thread: Magic @ BG:
-    --Spell Base Damage = MAB/MDB*floor(Int + Elemental Magic Skill/5)*3.5
+    --Spell Base Damage = MAB/MDB*floor(Int + Elemental Magic Skill/6)*3.5
     --NOT AFFECTED BY DARK BONUSES (bonus ETC)
     --I'll just point this out again. It can't resist, there's no dINT, and the damage is non-elemental. The only terms that affect it for monsters (that we know of) are MDB and MDT. If a --normal monster would take 50k damage from your group, Botulus would take 40k damage. Every. Time.
     local dmg = 0
-<<<<<<< HEAD
     if caster:isPC() then
         dmg = ((100 + caster:getMod(xi.mod.MATT)) / (100 + target:getMod(xi.mod.MDEF))) * (caster:getStat(xi.mod.INT) + caster:getSkillLevel(xi.skill.ELEMENTAL_MAGIC) / 6) * 3.5
     else
         dmg = ((100 + caster:getMod(xi.mod.MATT)) / (100 + target:getMod(xi.mod.MDEF))) * (caster:getStat(xi.mod.INT) + (caster:getMaxSkillLevel(caster:getMainLvl(), xi.job.BLM, xi.skill.ELEMENTAL_MAGIC)) / 6) * 9.4
-=======
-    if (caster:isPC()) then
-        dmg = ((100+caster:getMod(xi.mod.MATT))/(100+target:getMod(xi.mod.MDEF))) * (caster:getStat(xi.mod.INT) + caster:getSkillLevel(xi.skill.ELEMENTAL_MAGIC)/5) * 3.5
-    else
-        dmg = ((100+caster:getMod(xi.mod.MATT))/(100+target:getMod(xi.mod.MDEF))) * (caster:getStat(xi.mod.INT) + (caster:getMaxSkillLevel(caster:getMainLvl(), xi.job.BLM, xi.skill.ELEMENTAL_MAGIC))/5) * 9.4
->>>>>>> d37dd4cd8142648c3444793af107889151db07e8
     end
 
     --add in target adjustment
@@ -48,7 +40,6 @@ spellObject.onSpellCast = function(caster, target, spell)
     --add in final adjustments
     dmg = finalMagicAdjustments(caster, target, spell, dmg)
     return dmg
-
 end
 
 return spellObject

@@ -14,10 +14,10 @@ zoneObject.onChocoboDig = function(player, precheck)
 end
 
 local function registerRegionAroundNPC(zone, NPCID, zoneID)
-    local npc = GetNPCByID(NPCID)
-    local x = npc:getXPos()
-    local y = npc:getYPos()
-    local z = npc:getZPos()
+    local npc      = GetNPCByID(NPCID)
+    local x        = npc:getXPos()
+    local y        = npc:getYPos()
+    local z        = npc:getZPos()
     local distance = 7
 
     zone:registerTriggerArea(zoneID,
@@ -28,14 +28,6 @@ end
 zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.AHTU)
     GetMobByID(ID.mob.AHTU):setRespawnTime(math.random(900, 10800))
-
-    -- Prepare everything for Full Speed Ahead!
-    local syrillia   = zone:queryEntitiesByName("Syrillia")[1]
-    local syrilliaID = syrillia:getID()
-
-    ID.npc.SYRILLIA         = syrilliaID
-    ID.npc.BLUE_BEAM_BASE   = syrilliaID + 1
-    ID.npc.RAPTOR_FOOD_BASE = syrilliaID + 9
 
     for i = 0, 7 do
         registerRegionAroundNPC(zone, ID.npc.RAPTOR_FOOD_BASE + i, i + 1)
@@ -91,10 +83,16 @@ end
 zoneObject.onEventFinish = function(player, csid, option)
     if csid == 24 then
         xi.fsa.completeGame(player)
-    elseif csid == 26 and option == 0 then
+    elseif
+        csid == 26 and
+        option == 0
+    then
         player:setCharVar("[QUEST]FullSpeedAhead", 1)
         player:setPos(475, 8.8, -159, 128, 105)
-    elseif csid == 26 and option == 1 then
+    elseif
+        csid == 26 and
+        option == 1
+    then
         player:setCharVar("[QUEST]FullSpeedAhead", 2)
         player:setPos(475, 8.8, -159, 128, 105)
     end

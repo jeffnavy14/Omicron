@@ -4,12 +4,12 @@
 local ID = require('scripts/zones/Abdhaljs_Isle-Purgonorgo/IDs')
 require('scripts/globals/keyitems')
 -----------------------------------
-local zoneObject = {}
+local zone_object = {}
 
-zoneObject.onInitialize = function(zone)
+zone_object.onInitialize = function(zone)
 end
 
-zoneObject.onZoneIn = function(player, prevZone)
+zone_object.onZoneIn = function(player, prevZone)
     local cs = -1
     player:addKeyItem(xi.ki.MAP_OF_ABDH_ISLE_PURGONORGO)
 
@@ -37,13 +37,13 @@ zone_object.afterZoneIn = function(player)
 	end
 end
 
-zoneObject.onTriggerAreaEnter = function(player, triggerArea)
+zone_object.onRegionEnter = function(player, region)
 end
 
-zoneObject.onEventUpdate = function(player, csid, option)
+zone_object.onEventUpdate = function(player, csid, option)
 end
 
-zoneObject.onEventFinish = function(player, csid, option)
+zone_object.onEventFinish = function(player, csid, option)
 end
 
-return zoneObject
+return zone_object

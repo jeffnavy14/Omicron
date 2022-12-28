@@ -18,6 +18,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     if
         target:isUndead() or
         target:hasStatusEffect(xi.effect.MAGIC_SHIELD) or
+		target:isMobType(xi.mobskills.mobType.NOTORIOUS) or -- this line was missing
         -- Todo: DeathRes has no place in the resistance functions so far..
         math.random(1, 100) <= target:getMod(xi.mod.DEATHRES)
     then

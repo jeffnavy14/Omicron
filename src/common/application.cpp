@@ -22,13 +22,15 @@
 #include "application.h"
 #include "debug.h"
 #include "logging.h"
+#include "lua.h"
+#include "settings.h"
 #include "taskmgr.h"
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-Application::Application(std::string const& serverName, std::unique_ptr<argparse::ArgumentParser>&& pArgParser)
+Application::Application(std::string serverName, std::unique_ptr<argparse::ArgumentParser>&& pArgParser)
 : m_ServerName(serverName)
 , m_IsRunning(true)
 , gArgParser(std::move(pArgParser))
@@ -38,6 +40,8 @@ Application::Application(std::string const& serverName, std::unique_ptr<argparse
 #endif
 
     logging::InitializeLog(serverName, fmt::format("log/{}-server.log", serverName), false);
+    lua_init();
+    settings::init();
     ShowInfo("Begin %s-server initialisation...", serverName);
 
     debug::init();
