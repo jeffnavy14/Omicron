@@ -558,11 +558,11 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:setCharVar("Mission2State", 3)
 		elseif player:getCharVar("Mission2State") == 1 then
 			player:PrintToPlayer("I can let you relive the last invsion...", 0, npc:getPacketName())
-			player:PrintToPlayer("I just need 100 infamy and a shadow geode to do so.",13)
+			player:PrintToPlayer("I just need 100 infamy and a piece of first tier Geas Fete gear to do so.",13)
 		elseif player:getCharVar("TimStuff") == 2 then
 			player:PrintToPlayer("There was a point back when these people first came to this island that there were invasions...",0, npc:getPacketName())
 			player:PrintToPlayer("I can let you relive one of those instances if you like...", 13)
-			player:PrintToPlayer("I would need 100 of the local currency... Infamy I believe, and a shadow geode",13)
+			player:PrintToPlayer("I would need 100 of the local currency... Infamy I believe, and a piece of Geas Fete gear, the first tier of it please",13)
 			player:setCharVar("Mission2State", 1)
 		else
 			player:PrintToPlayer("I am a pretty light, oh how I sparkle, oh how I shiiiiiiiine..." ,0, npc:getPacketName())

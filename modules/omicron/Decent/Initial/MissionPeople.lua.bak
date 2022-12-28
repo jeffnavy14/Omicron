@@ -242,6 +242,7 @@ local Norry = zone:insertDynamicEntity({
 					player:addItem(13454, 1, 137, 4, 353, 1, 138, 4, 142, 9)
 					player:PrintToPlayer("You recieve 20 Infamy, and an augmented copper ring", 29)
 					player:setCharVar("Mission1CState", 2)
+					quest:complete(player)
 				else
 					player:PrintToPlayer("Sorry that wasn't what I asked for." ,0, npc:getPacketName())
 				end
@@ -251,6 +252,7 @@ local Norry = zone:insertDynamicEntity({
 					player:PrintToPlayer("You... killed... more?." ,0, npc:getPacketName())
 					player:PrintToPlayer("All I have at this time is some more Infamy to give, along with my thanks." , 13)
 					player:addCurrency('infamy', 10)
+					quest:complete(player)
 					player:PrintToPlayer("You recieve 10 Infamy", 29)
 				else
 					player:PrintToPlayer("Sorry I'm not in need of anything at this time" ,0, npc:getPacketName())
