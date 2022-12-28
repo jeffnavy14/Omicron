@@ -500,11 +500,11 @@ local MakeItem = function(player, itemid, npc)
 end
 
 local beginInvasion = function(player, npc)
-    player:ChangeMusic(0, 247)
-	player:ChangeMusic(1, 247)
-	player:ChangeMusic(2, 247)
-	player:ChangeMusic(3, 247)
-	player:ChangeMusic(4, 247)
+    player:changeMusic(0, 247)
+	player:changeMusic(1, 247)
+	player:changeMusic(2, 247)
+	player:changeMusic(3, 247)
+	player:changeMusic(4, 247)
 	
 	local numToSpawn = 9 -- want 12 but can't get allies to work
 
@@ -515,11 +515,11 @@ local beginInvasion = function(player, npc)
 
     xi.confrontation.start(player, npc, invaderIds, function(playerArg)
 		MakeItem(player, itemid, npc)
-		player:ChangeMusic(0, 33)
-		player:ChangeMusic(1, 33)
-		player:ChangeMusic(2, 33)
-		player:ChangeMusic(3, 33)
-		player:ChangeMusic(4, 33)
+		player:changeMusic(0, 33)
+		player:changeMusic(1, 33)
+		player:changeMusic(2, 33)
+		player:changeMusic(3, 33)
+		player:changeMusic(4, 33)
 		if tier == 3 then
 			player:addItem(4074, 1)
 		elseif tier == 4 then
@@ -550,7 +550,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	onTrigger = function(player, npc)
 		if player:getCharVar("Mission2State") == 3 then
 			player:PrintToPlayer("You wish to once again contend against the old invaders eh?",0, npc:getPacketName())
-			player:PrintToPlayer("Bring me more of that infamy, and an armor piece and I can make it happen",13)
+			player:PrintToPlayer("Bring me more of that infamy and I can make it happen",13)
 		elseif player:getCharVar("Mission2State") == 2 then
 			player:PrintToPlayer("Well done ol' chap!, I say never have I seen a finer display.",0, npc:getPacketName())
 			player:PrintToPlayer("The leader was Teodor... something odd about that one...",13)
@@ -558,11 +558,11 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:setCharVar("Mission2State", 3)
 		elseif player:getCharVar("Mission2State") == 1 then
 			player:PrintToPlayer("I can let you relive the last invsion...", 0, npc:getPacketName())
-			player:PrintToPlayer("I just need 100 infamy and one of the armor pieces known as Gaes Fete armor to do so.",13)
+			player:PrintToPlayer("I just need 100 infamy and a piece of first tier Geas Fete gear to do so.",13)
 		elseif player:getCharVar("TimStuff") == 2 then
 			player:PrintToPlayer("There was a point back when these people first came to this island that there were invasions...",0, npc:getPacketName())
 			player:PrintToPlayer("I can let you relive one of those instances if you like...", 13)
-			player:PrintToPlayer("I would need 100 of the local currency... Infamy I believe, and a an armor piece of the Gaes Fete category.",13)
+			player:PrintToPlayer("I would need 100 of the local currency... Infamy I believe, and a piece of Geas Fete gear, the first tier of it please",13)
 			player:setCharVar("Mission2State", 1)
 		else
 			player:PrintToPlayer("I am a pretty light, oh how I sparkle, oh how I shiiiiiiiine..." ,0, npc:getPacketName())

@@ -616,36 +616,4 @@ INSERT INTO `mob_groups` VALUES (27,8026,44,'Dread_Apkallu',0,128,4026,14500,100
 INSERT INTO `mob_groups` VALUES (28,8027,44,'Dread_Colibri',0,128,4027,14000,1000,120,120,0);
 INSERT INTO `mob_groups` VALUES (29,8028,44,'Dread_Hippogryph',0,128,4028,14250,1000,121,121,0);
 INSERT INTO `mob_groups` VALUES (30,8029,44,'Hurkan',0,128,4029,104000,5000,125,125,0);
----------------------------------------
--- mob pool mods
----------------------------------------
-INSERT INTO `mob_pool_mods` VALUES (8000,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8001,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8002,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8003,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8004,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8005,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8006,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8007,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8008,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8009,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8010,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8011,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8013,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8012,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8014,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8015,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8016,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8017,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8018,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8019,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8020,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8021,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8022,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8023,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8024,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8025,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8026,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8027,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8028,28,-100,1); -- EXP_BONUS: -100
-INSERT INTO `mob_pool_mods` VALUES (8029,28,-100,1); -- EXP_BONUS: -100
+--INSERT INTO `mob_groups` VALUES (50,8009,44,'test',0,128,4009,101000,5000,123,123,0);
