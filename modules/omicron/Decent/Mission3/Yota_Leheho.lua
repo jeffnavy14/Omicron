@@ -61,7 +61,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:setCharVar("Mission3State", 7)
 		elseif (player:getCharVar("Mission3State") == 7) then
 			player:PrintToPlayer("I'll need a bottle of distilled water, a dark crystal, and a piece of rotten meat to make what you need.", 0, npc:getPacketName())
-		    player:PrintToPlayer("Take it to the center of the island, it should take you to the Vagarous realm of the Xol.", 0, npc:getPacketName())
+			player:PrintToPlayer("Take it to the center of the island, it should take you to the Vagarous realm of the Xol.", 0, npc:getPacketName())
 		elseif (player:getCharVar("Mission2State") == 3) and (player:getCharVar("Mission3State") == 0) then
 			player:PrintToPlayer("Hello young one, I have traveled far to reach this island. Seeking answers into various things is why I came.", 0, npc:getPacketName())
 			player:PrintToPlayer("Questions like; these Naakuals of Mid's. Why did nature's protectors come here and become so violent...", 13)
