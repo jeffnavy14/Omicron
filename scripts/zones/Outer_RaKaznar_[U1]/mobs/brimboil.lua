@@ -42,7 +42,7 @@ entity.onMobEngaged = function(mob, player)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	
+	SetServerVariable("P2Boss2", 2)
 end
 
 entity.onMobRoam = function(mob, player)

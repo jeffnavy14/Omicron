@@ -13,10 +13,13 @@ end
 
 entity.onMobEngaged = function(mob, player)
 	
-end
+end3
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	
+	if (GetServerVariable("P2Boss3") == 2) then
+		player:PrintToPlayer("You have cleared the second path of Vagary.", 29)
+		player:PrintToPlayer("Please make your way to the connection.", 29)
+	end
 end
 
 entity.onMobRoam = function(mob, player)
@@ -24,6 +27,7 @@ entity.onMobRoam = function(mob, player)
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
+	
 end
 
 entity.onMobDespawn = function(mob)
@@ -64,9 +68,6 @@ entity.onMobDespawn = function(mob)
 					SetServerVariable("P2Kills", 0)
 				end
 			end
-		elseif (GetServerVariable("P2Boss3") == 2) then
-			player:PrintToPlayer("You have cleared the second path of Vagary.", 29)
-				player:PrintToPlayer("Please make your way to the connection.", 29)
 		end
 	end
 end
