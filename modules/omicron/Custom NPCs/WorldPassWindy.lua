@@ -2,25 +2,25 @@
 -- Gatekeeper, teleporter and random filler NPCs
 -----------------------------------
 require("modules/module_utils")
-require("scripts/zones/Heavens_Tower/Zone")
+require("scripts/zones/Port_San_dOria/Zone")
 -----------------------------------
-local m = Module:new("WorldPassWindy")
+local m = Module:new("WorldPassSandy")
 m:setEnabled(true)
 
-m:addOverride("xi.zones.Heavens_Tower.Zone.onInitialize", function(zone)
+m:addOverride("xi.zones.Port_San_dOria.Zone.onInitialize", function(zone)
 
     super(zone)
 ---------------------------------------
 
-local Norry = zone:insertDynamicEntity({
+local Borry = zone:insertDynamicEntity({
 
 	objtype = xi.objType.NPC,
-    name = "Norry",
-    look = 102,
-    x = -1.23,
-    y = 0.078,
-    z = 32.902,
-    rotation = 0,
+    name = "Borry",
+    look = 101,
+    x = -6.984,
+    y = -4,
+    z = 70.138,
+    rotation = 127.5,
 		
 		onTrigger = function(player, npc)
 				-- Forward declarations (required)
@@ -179,13 +179,13 @@ local Norry = zone:insertDynamicEntity({
 		end,
 
 		onTrade = function(player, npc, trade)
-			player:PrintToPlayer("Hmmm? Oh that's quite nice, but no thanks though.", 0, npc:getPacketName())
+			player:PrintToPlayer("Well that do be pretty and all, but I'm not needing that right now. Thanks though.", 0, npc:getPacketName())
 		end,
 
     })
 
-	utils.unused(Norry)
-		
+	utils.unused(Borry)		
+
 end)
 
 return m

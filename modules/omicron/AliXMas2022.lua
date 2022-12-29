@@ -608,11 +608,11 @@ m:addOverride("xi.zones.Xarcabard.Zone.onInitialize", function(zone)
 			then
 				if GetServerVariable("KrampusUp") == 0 then
 					
-					KrampusILevel = player:getAverageItemLevel()
-					KrampusLevel = player:getMainLvl()
+					local KrampusILevel = player:getAverageItemLevel()
+					local KrampusLevel = player:getMainLvl()
 					
 					if KrampusILevel >= 100 then
-						KrampusLevel = KrampusILevel
+						local KrampusLevel = KrampusILevel
 					end
 					
 					SetServerVariable("KrampusUp", 1)
@@ -641,14 +641,14 @@ m:addOverride("xi.zones.Xarcabard.Zone.onInitialize", function(zone)
 					end,
 					
 					onMobFight = function(mob, target)
-						lifeRem = mob:getHPP()
-						if lifeRem < 70 and getServerVariable("Blah") == 0 then
+						local lifeRem = mob:getHPP()
+						if lifeRem < 70 and GetServerVariable("Blah") == 0 then
 							player:PrintToPlayer("Krampus: Why won't you people just let me have my fun??!!", 13)
 							SetServerVariable("Blah", 1)
-						elseif lifeRem < 45 and getServerVariable("Blah") == 1 then
+						elseif lifeRem < 45 and GetServerVariable("Blah") == 1 then
 							player:PrintToPlayer("Krampus: These are mine I said!!", 13)
 							SetServerVariable("Blah", 2)
-						elseif lifeRem < 5 and getServerVariable("Blah") == 2 then
+						elseif lifeRem < 5 and GetServerVariable("Blah") == 2 then
 							player:PrintToPlayer("Krampus: Noo! All I wanted was a pony!", 13)
 							SetServerVariable("Blah", 3)
 						end					
