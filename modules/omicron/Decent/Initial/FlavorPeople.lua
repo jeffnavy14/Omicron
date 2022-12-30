@@ -258,6 +258,59 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 	utils.unused(Bob)	
 	
+---------------------------------------
+	local Campfire1 = zone:insertDynamicEntity({
+
+        objtype = xi.objType.NPC,
+        name = "   ",
+        look = 2411,
+        x = 579,
+        y = -0.6,
+        z = 60,
+        rotation = 128,
+		
+		onTrigger = function(player, npc)
+			player:PrintToPlayer("A warm welcoming fire..." ,13)
+		end
+	})
+
+	utils.unused(Fire1)		
+
+---------------------------------------
+	local Campfire2 = zone:insertDynamicEntity({
+
+        objtype = xi.objType.NPC,
+        name = "   ",
+        look = 2411,
+        x = 610,
+		y = -2,
+		z = 66.5,
+        rotation = 128,
+		
+		onTrigger = function(player, npc)
+			player:PrintToPlayer("A warm welcoming fire..." ,13)
+		end
+	})
+
+	utils.unused(Fire2)
+
+---------------------------------------
+	local Cook = zone:insertDynamicEntity({
+
+        objtype = xi.objType.NPC,
+        name = "Sasarron",
+        look = 2722,
+        x = 583,
+		y = -1.3,
+		z = 60,
+        rotation = 128,
+		
+		onTrigger = function(player, npc)
+			player:PrintToPlayer("Yum, yum..." ,13)
+		end
+	})
+
+	utils.unused(Cook)
 end)
 
 return m
