@@ -16,6 +16,10 @@ entity.onMobEngaged = function(mob, player)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
+	if (GetServerVariable("P2Kills") == 5) then
+		player:PrintToPlayer("You have cleared the second path of Vagary.", 29)
+		player:PrintToPlayer("Please make your way to the connection.", 29)
+	end
 	SetServerVariable("P2Boss3", 2)
 	player:setCharVar("VagPath2Win", 1)
 end
@@ -35,15 +39,7 @@ entity.onMobRoam = function(mob, player)
 end
 
 entity.onMobDespawn = function(mob)
-	if (GetServerVariable("P2Kills") == 5) then
-		GetNPCByID(17904617):setStatus(xi.status.NORMAL)
-		GetNPCByID(17904618):setStatus(xi.status.NORMAL)
-		GetNPCByID(17904619):setStatus(xi.status.NORMAL)
-		GetNPCByID(17904620):setStatus(xi.status.NORMAL)
-		GetNPCByID(17904621):setStatus(xi.status.NORMAL)
-		GetNPCByID(17904622):setStatus(xi.status.NORMAL)
-		SetServerVariable("P2Kills", 0)
-	end
+	
 end
 
 return entity
