@@ -66,7 +66,8 @@ entity.onMobDespawn = function(mob)
 			end
 		elseif (GetServerVariable("P2Boss3") == 2) then
 			if (GetServerVariable("P2Kills") == 5) then
-				player:setPos(0,0,0)
+				player:PrintToPlayer("You have cleared the second path of Vagary.", 29)
+				player:PrintToPlayer("Please make your way to the connection.", 29)
 				player:changeMusic(0, 73)
 				player:changeMusic(1, 73)
 				player:changeMusic(2, 73)

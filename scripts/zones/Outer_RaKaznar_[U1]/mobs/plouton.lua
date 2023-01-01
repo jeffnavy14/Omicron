@@ -9,6 +9,9 @@ local entity = {}
 	
 entity.onMobSpawn = function(mob)
 	mob:renameEntity("Plouton")
+	mob:setMod(xi.mod.ACC, 1000)
+	mob:setMod(xi.mod.MATT, 400)
+	mob:setMod(xi.mod.MACC, 1000)
 end
 
 entity.onMobEngaged = function(mob, player)
@@ -37,13 +40,13 @@ end
 
 entity.onMobRoam = function(mob, player)
 	if GetServerVariable("Vag1Active") == 0 then
-		Mob:DespawnMob(17903727)
+		DespawnMob(17903727)
 	end
 	if GetServerVariable("Vag2Active") == 0 then
-		Mob:DespawnMob(17903729)
+		DespawnMob(17903729)
 	end
 	if GetServerVariable("Vag3Active") == 0 then
-		Mob:DespawnMob(17903731)
+		DespawnMob(17903731)
 	end
 end
 

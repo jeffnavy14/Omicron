@@ -16,7 +16,8 @@ entity.onMobEngaged = function(mob, player)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	player:setPos(0,0,0)
+	player:PrintToPlayer("You have cleared the first path of Vagary.", 29)
+	player:PrintToPlayer("Please make your way to the connection.", 29)
 	player:changeMusic(0, 73)
 	player:changeMusic(1, 73)
 	player:changeMusic(2, 73)

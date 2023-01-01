@@ -40,7 +40,7 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 		SetServerVariable("P3W4Kills", (P3W4Kills + 1))
 		if GetServerVariable("P3W4Kills") == 7 then
 			local mobID = mob:getID()
-			player:setPos(0,0,0)
+			player:PrintToPlayer("You have cleared the third path of Vagary.", 29)
 			player:changeMusic(0, 73)
 			player:changeMusic(1, 73)
 			player:changeMusic(2, 73)
