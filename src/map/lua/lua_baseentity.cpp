@@ -3209,11 +3209,13 @@ void CLuaBaseEntity::goToEntity(uint32 targetID, sol::object const& option)
 
 bool CLuaBaseEntity::gotoPlayer(std::string const& playerName)
 {
-    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+    bool found = false;
 
-    bool        found    = false;
+    char escapedCharName[16 * 2 + 1];
+    sql->EscapeString(escapedCharName, playerName.c_str());
+
     const char* fmtQuery = "SELECT charid FROM chars WHERE charname = '%s';";
-    int32       ret      = sql->Query(fmtQuery, playerName.c_str());
+    int32       ret      = sql->Query(fmtQuery, escapedCharName);
 
     if (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
     {
@@ -3241,8 +3243,11 @@ bool CLuaBaseEntity::bringPlayer(std::string const& playerName)
 {
     bool found = false;
 
+    char escapedCharName[16 * 2 + 1];
+    sql->EscapeString(escapedCharName, playerName.c_str());
+
     const char* fmtQuery = "SELECT charid FROM chars WHERE charname = '%s';";
-    int32       ret      = sql->Query(fmtQuery, playerName.c_str());
+    int32       ret      = sql->Query(fmtQuery, escapedCharName);
 
     if (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
     {
@@ -3961,6 +3966,13 @@ auto CLuaBaseEntity::addSoulPlate(std::string const& name, uint16 mobFamily, uin
 
         // Used Soul Plate
         CItem* PItem = itemutils::GetItem(2477);
+
+        if (PItem == nullptr)
+        {
+            ShowError("PItem was null for soulplate");
+            return std::nullopt;
+        }
+
         PItem->setQuantity(1);
         PItem->setSoulPlateData(name, mobFamily, zeni, skillIndex, fp);
         auto SlotID = charutils::AddItem(PChar, LOC_INVENTORY, PItem, true);
@@ -4117,6 +4129,12 @@ bool CLuaBaseEntity::canEquipItem(uint16 itemID, sol::object const& chkLevel)
 
     auto* PItem = static_cast<CItemEquipment*>(itemutils::GetItem(itemID));
     auto* PChar = static_cast<CBattleEntity*>(m_PBaseEntity);
+
+    if (PItem == nullptr)
+    {
+        ShowError("PItem was null, itemID = %d.", itemID);
+        return false;
+    }
 
     if (!(PItem->getJobs() & (1 << (PChar->GetMJob() - 1))))
     {
@@ -4357,6 +4375,12 @@ uint8 CLuaBaseEntity::storeWithPorterMoogle(uint16 slipId, sol::table const& ext
 
     auto* slip = PChar->getStorage(LOC_INVENTORY)->GetItem(slipSlotId);
 
+    if (slip == nullptr)
+    {
+        ShowError("Slip Item was null.");
+        return 0;
+    }
+
     auto extraVec  = extraTable.as<std::vector<uint8>>();
     auto extraSize = extraVec.size();
     for (size_t i = 0; i < extraSize; i++)
@@ -4437,6 +4461,12 @@ sol::table CLuaBaseEntity::getRetrievableItemsForSlip(uint16 slipId)
 
     auto* slip = PChar->getStorage(LOC_INVENTORY)->GetItem(slipSlotId);
 
+    if (slip == nullptr)
+    {
+        ShowError("Slip item was null.");
+        return {};
+    }
+
     sol::table table = lua.create_table();
     // TODO Is extra sized defined anywhere?
     for (int i = 0; i < 24; i++)
@@ -4467,6 +4497,12 @@ void CLuaBaseEntity::retrieveItemFromSlip(uint16 slipId, uint16 itemId, uint16 e
     }
 
     auto* slip = PChar->getStorage(LOC_INVENTORY)->GetItem(slipSlotId);
+
+    if (slip == nullptr)
+    {
+        ShowError("Slip item was null.");
+        return;
+    }
 
     slip->m_extra[extraId] &= extraData;
 
