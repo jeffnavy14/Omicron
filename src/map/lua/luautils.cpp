@@ -3464,6 +3464,8 @@ namespace luautils
 
                     // onMobDeath(mob, player, optParams)
                     auto result = onMobDeathFramework(LuaMobEntity, optLuaAllyEntity, optParams, onMobDeath);
+
+                    // NOTE: result is only NOT valid if the function call fails. If it returns nil its still valid (this is expected)
                     if (!result.valid())
                     {
                         sol::error err = result;
@@ -3482,6 +3484,8 @@ namespace luautils
 
             // onMobDeath(mob, player, optParams)
             auto result = onMobDeathFramework(CLuaBaseEntity(PMob), sol::lua_nil, optParams, onMobDeath);
+
+            // NOTE: result is only NOT valid if the function call fails. If it returns nil its still valid (this is expected)
             if (!result.valid())
             {
                 sol::error err = result;
@@ -4875,6 +4879,7 @@ namespace luautils
     }
 
     /************************************************************************
+     *   DEPRECATED: Use mob:addListener("ITEM_DROPS", ...) instead.         *
      *   Change drop rate of a mob                                           *
      *   1st number: dropid in mob_droplist.sql                              *
      *   2nd number: itemid in mob_droplist.sql                              *
