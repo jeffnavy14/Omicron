@@ -60,7 +60,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 							"I've dealt with crazier",
 							function(playerArg)
 							player:PrintToPlayer("Zalsuhm: Perfect, I will need samples from each of the mighty beast trapped on this island", xi.msg.channel.NS_SAY)
-							player:PrintToPlayer("A gabbrath horn, yggdreant bole, bztavian stinger, waktza rostrum, rockfin tooth, and cehuetzi claw.", 13), xi.msg.channel.NS_SAY)
+							player:PrintToPlayer("A gabbrath horn, yggdreant bole, bztavian stinger, waktza rostrum, rockfin tooth, and cehuetzi claw.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Virgil]Unlock", 1)
 							end,
 							},
