@@ -1200,7 +1200,9 @@ xi.abyssea.searingWardTimer = function(player)
         end
 
         player:setLocalVar('tetherTimer', tetherTimer - 1)
-        player:timer(1500, function() xi.abyssea.searingWardTimer(player) end)
+        player:timer(1500, function()
+            xi.abyssea.searingWardTimer(player)
+        end)
     elseif tetherTimer == 1 then
         player:setLocalVar('tetherTimer', 0)
         player:messageSpecial(ID.text.RETURNING_TO_WARD)

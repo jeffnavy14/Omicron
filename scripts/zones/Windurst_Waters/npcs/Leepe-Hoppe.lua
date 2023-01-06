@@ -37,12 +37,29 @@ end
 local function getFenrirRewardMask(player)
     local rewardMask = 0
 
-    if player:findItem(18165) then rewardMask = rewardMask + 1;  end -- Fenrir's Stone
-    if player:findItem(13572) then rewardMask = rewardMask + 2;  end -- Fenrir's Cape
-    if player:findItem(13138) then rewardMask = rewardMask + 4;  end -- Fenrir's Torque
-    if player:findItem(13399) then rewardMask = rewardMask + 8;  end -- Fenrir's Earring
-    if player:findItem(1208)  then rewardMask = rewardMask + 16; end -- Ancient's Key
-    if player:hasSpell(297)   then rewardMask = rewardMask + 64; end  -- Pact
+    if player:findItem(18165) then
+        rewardMask = rewardMask + 1
+    end -- Fenrir's Stone
+
+    if player:findItem(13572) then
+        rewardMask = rewardMask + 2
+    end -- Fenrir's Cape
+
+    if player:findItem(13138) then
+        rewardMask = rewardMask + 4
+    end -- Fenrir's Torque
+
+    if player:findItem(13399) then
+        rewardMask = rewardMask + 8
+    end -- Fenrir's Earring
+
+    if player:findItem(1208) then
+        rewardMask = rewardMask + 16
+    end -- Ancient's Key
+
+    if player:hasSpell(297) then
+        rewardMask = rewardMask + 64
+    end  -- Pact
 
     if
         not player:hasKeyItem(xi.ki.TRAINERS_WHISTLE) or
@@ -172,8 +189,7 @@ entity.onEventFinish = function(player, csid, option)
         elseif option == 5 then
             reward = 1208 -- Ancient's Key
         elseif option == 6 then
-            player:addGil(xi.settings.main.GIL_RATE * 15000)
-            player:messageSpecial(ID.text.GIL_OBTAINED, xi.settings.main.GIL_RATE * 15000) -- Gil
+            npcUtil.giveCurrency(player, 'gil', 15000)
         elseif option == 7 then
             player:addSpell(297) -- Pact
         elseif option == 8 then

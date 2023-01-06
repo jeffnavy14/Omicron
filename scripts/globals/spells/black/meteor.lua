@@ -23,7 +23,6 @@ spellObject.onMagicCastingCheck = function(caster, target, spell)
 end
 
 spellObject.onSpellCast = function(caster, target, spell)
-
     --calculate raw damage
     --Byrthnoth @ Random Facts Thread: Magic @ BG:
     --Spell Base Damage = MAB/MDB*floor(Int + Elemental Magic Skill/5)*3.5
@@ -48,7 +47,6 @@ spellObject.onSpellCast = function(caster, target, spell)
     --add in final adjustments
     dmg = finalMagicAdjustments(caster, target, spell, dmg)
     return dmg
-
 end
 
 return spellObject

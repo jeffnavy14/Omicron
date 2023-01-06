@@ -2087,8 +2087,8 @@ void SmallPacket0x03D(map_session_data_t* const PSession, CCharEntity* const PCh
 {
     TracyZoneScoped;
 
-    char blacklistedName[15] = {};
-    memcpy(&blacklistedName, data[0x08], sizeof(blacklistedName));
+    char blacklistedName[PacketNameLength] = {};
+    memcpy(&blacklistedName, data[0x08], PacketNameLength - 1);
 
     std::string name = blacklistedName;
     uint8       cmd  = data.ref<uint8>(0x18);
@@ -2414,8 +2414,14 @@ void SmallPacket0x04D(map_session_data_t* const PSession, CCharEntity* const PCh
 
                     CItem* PUBoxItem = itemutils::GetItem(PItem->getID());
 
-                    char receiver[15] = {};
-                    memcpy(&receiver, data[0x10], sizeof(receiver));
+                    if (PUBoxItem == nullptr)
+                    {
+                        ShowError("PUBoxItem was null.");
+                        return;
+                    }
+
+                    char receiver[PacketNameLength] = {};
+                    memcpy(&receiver, data[0x10], PacketNameLength - 1);
                     PUBoxItem->setReceiver(receiver);
                     PUBoxItem->setSender(PChar->GetName());
                     PUBoxItem->setQuantity(quantity);
@@ -3359,7 +3365,7 @@ void SmallPacket0x052(map_session_data_t* const PSession, CCharEntity* const PCh
     // in this list the slot of whats being updated is old value, replace with new in 116
     // Should Push 0x116 (size 68) in responce
     // 0x04 is start, contains 16 4 byte parts repersently each slot in order
-    PChar->pushPacket(new CAddtoEquipSet(data));
+    PChar->pushPacket(new CAddtoEquipSet(PChar, data));
 }
 
 /************************************************************************
@@ -3391,42 +3397,69 @@ void SmallPacket0x053(map_session_data_t* const PSession, CCharEntity* const PCh
     {
         charutils::SetStyleLock(PChar, true);
 
-        for (int i = 0x08; i < 0x08 + (0x08 * count); i += 0x08)
+        // Build new lockstyle
+        for (int i = 0; i < count; i++)
         {
-            uint8  equipSlotId = data.ref<uint8>(i + 0x01);
-            uint16 itemId      = data.ref<uint16>(i + 0x04);
+            uint8  equipSlotId = data.ref<uint8>(0x09 + 0x08 * i);
+            uint16 itemId      = data.ref<uint16>(0x0C + 0x08 * i);
 
-            if (equipSlotId > SLOT_BACK)
+            // Skip non-visible items
+            if (equipSlotId > SLOT_FEET)
             {
                 continue;
             }
 
-            auto* PItem = itemutils::GetItem(itemId);
+            CItemEquipment* PItem = dynamic_cast<CItemEquipment*>(itemutils::GetItemPointer(itemId));
             if (PItem == nullptr || !(PItem->isType(ITEM_WEAPON) || PItem->isType(ITEM_EQUIPMENT)))
             {
                 itemId = 0;
             }
-            else if (!(((CItemEquipment*)PItem)->getEquipSlotId() & (1 << equipSlotId)))
+            else if ((PItem->getEquipSlotId() & (1 << equipSlotId)) == 0) // item doesnt fit in slot
             {
                 itemId = 0;
             }
 
             PChar->styleItems[equipSlotId] = itemId;
+        }
 
-            switch (equipSlotId)
+        // Check if we need to remove conflicting slots. Essentially, packet injection shenanigan detector.
+        for (int i = 0; i < 10; i++)
+        {
+            CItemEquipment* PItemEquipment = dynamic_cast<CItemEquipment*>(itemutils::GetItemPointer(PChar->styleItems[i]));
+
+            if (PItemEquipment)
+            {
+                auto removeSlotID = PItemEquipment->getRemoveSlotId();
+
+                for (uint8 x = 0; x < sizeof(removeSlotID) * 8; ++x)
+                {
+                    if (removeSlotID & (1 << x))
+                    {
+                        PChar->styleItems[x] = 0;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            // variable initialized here due to case/switch optimization throwing warnings inside the case
+            CItemEquipment* PItem = PChar->getEquip((SLOTTYPE)i);
+
+            switch (i)
             {
                 case SLOT_MAIN:
                 case SLOT_SUB:
                 case SLOT_RANGED:
                 case SLOT_AMMO:
-                    charutils::UpdateWeaponStyle(PChar, equipSlotId, (CItemWeapon*)PChar->getEquip((SLOTTYPE)equipSlotId));
+                    charutils::UpdateWeaponStyle(PChar, i, PItem);
                     break;
                 case SLOT_HEAD:
                 case SLOT_BODY:
                 case SLOT_HANDS:
                 case SLOT_LEGS:
                 case SLOT_FEET:
-                    charutils::UpdateArmorStyle(PChar, equipSlotId);
+                    charutils::UpdateArmorStyle(PChar, i);
                     break;
             }
         }
@@ -3697,6 +3730,7 @@ void SmallPacket0x05E(map_session_data_t* const PSession, CCharEntity* const PCh
     uint8  requestedZone = data.ref<uint8>(0x17);
 
     uint16 startingZone = PChar->getZone();
+    auto   startingPos  = PChar->loc.p;
 
     PChar->ClearTrusts();
 
@@ -3781,7 +3815,7 @@ void SmallPacket0x05E(map_session_data_t* const PSession, CCharEntity* const PCh
 
                 PChar->loc.p.rotation += 128;
 
-                PChar->pushPacket(new CMessageSystemPacket(0, 0, 2));
+                PChar->pushPacket(new CMessageSystemPacket(0, 0, 2)); // You could not enter the next area.
                 PChar->pushPacket(new CCSPositionPacket(PChar));
 
                 PChar->status = STATUS_TYPE::NORMAL;
@@ -3797,7 +3831,7 @@ void SmallPacket0x05E(map_session_data_t* const PSession, CCharEntity* const PCh
 
                     PChar->loc.p.rotation += 128;
 
-                    PChar->pushPacket(new CMessageSystemPacket(0, 0, 2));
+                    PChar->pushPacket(new CMessageSystemPacket(0, 0, 2)); // You could not enter the next area.
                     PChar->pushPacket(new CCSPositionPacket(PChar));
 
                     PChar->status = STATUS_TYPE::NORMAL;
@@ -3828,7 +3862,23 @@ void SmallPacket0x05E(map_session_data_t* const PSession, CCharEntity* const PCh
         return;
     }
 
-    uint64 ipp = zoneutils::GetZoneIPP(PChar->loc.destination == 0 ? PChar->getZone() : PChar->loc.destination);
+    auto   destination = PChar->loc.destination == 0 ? PChar->getZone() : PChar->loc.destination;
+    uint64 ipp         = zoneutils::GetZoneIPP(destination);
+    if (ipp == 0)
+    {
+        ShowWarning(fmt::format("Char {} requested zone ({}) returned IPP of 0", PChar->name, destination));
+        PChar->loc.destination = startingZone;
+        PChar->loc.p           = startingPos;
+
+        PChar->loc.p.rotation += 128;
+
+        PChar->pushPacket(new CMessageSystemPacket(0, 0, 2)); // You could not enter the next area.
+        PChar->pushPacket(new CCSPositionPacket(PChar));
+
+        PChar->status = STATUS_TYPE::NORMAL;
+
+        return;
+    }
 
     charutils::SendToZone(PChar, 2, ipp);
 }
@@ -4243,8 +4293,8 @@ void SmallPacket0x071(map_session_data_t* const PSession, CCharEntity* const PCh
         case 0: // party - party leader may remove member of his own party
             if (PChar->PParty && PChar->PParty->GetLeader() == PChar)
             {
-                char charName[15] = {};
-                memcpy(&charName, data[0x0C], sizeof(charName));
+                char charName[PacketNameLength] = {};
+                memcpy(&charName, data[0x0C], PacketNameLength - 1);
 
                 CCharEntity* PVictim = dynamic_cast<CCharEntity*>(PChar->PParty->GetMemberByName(charName));
                 if (PVictim)
@@ -4331,8 +4381,8 @@ void SmallPacket0x071(map_session_data_t* const PSession, CCharEntity* const PCh
                 CCharEntity* PVictim = nullptr;
                 for (std::size_t i = 0; i < PChar->PParty->m_PAlliance->partyList.size(); ++i)
                 {
-                    char charName[15] = {};
-                    memcpy(&charName, data[0x0C], sizeof(charName));
+                    char charName[PacketNameLength] = {};
+                    memcpy(&charName, data[0x0C], PacketNameLength - 1);
 
                     PVictim = dynamic_cast<CCharEntity*>(PChar->PParty->m_PAlliance->partyList[i]->GetMemberByName(charName));
                     if (PVictim && PVictim->PParty && PVictim->PParty->m_PAlliance) // victim is in this party
@@ -4542,10 +4592,10 @@ void SmallPacket0x077(map_session_data_t* const PSession, CCharEntity* const PCh
         {
             if (PChar->PParty != nullptr && PChar->PParty->GetLeader() == PChar)
             {
-                char memberName[15] = {};
-                memcpy(&memberName, data[0x04], sizeof(memberName));
+                char memberName[PacketNameLength] = {};
+                memcpy(&memberName, data[0x04], PacketNameLength - 1);
 
-                ShowDebug("(Party)Changing leader to %s", data[0x04]);
+                ShowDebug("(Party)Altering permissions of %s to %d", data[0x04], data[0x15]);
                 PChar->PParty->AssignPartyRole(memberName, data.ref<uint8>(0x15));
             }
         }
@@ -5707,7 +5757,15 @@ void SmallPacket0x0DC(map_session_data_t* const PSession, CCharEntity* const PCh
     {
         case NFLAG_INVITE:
             // /invite [on|off]
-            PChar->nameflags.flags ^= FLAG_INVITE;
+            if (PChar->PParty)
+            {
+                // Can't put flag up while in a party
+                PChar->nameflags.flags &= ~FLAG_INVITE;
+            }
+            else
+            {
+                PChar->nameflags.flags ^= FLAG_INVITE;
+            }
             break;
         case NFLAG_AWAY:
             // /away | /online
@@ -5721,17 +5779,26 @@ void SmallPacket0x0DC(map_session_data_t* const PSession, CCharEntity* const PCh
             }
             break;
         case NFLAG_ANON:
+        {
             // /anon [on|off]
-            PChar->nameflags.flags ^= FLAG_ANON;
-            if (PChar->nameflags.flags & FLAG_ANON)
+            auto flags = PChar->nameflags.flags;
+            auto param = data.ref<uint8>(0x10);
+            if (param == 1)
             {
-                PChar->pushPacket(new CMessageSystemPacket(0, 0, 175));
+                PChar->nameflags.flags |= FLAG_ANON;
+                PChar->menuConfigFlags.flags |= NFLAG_ANON;
             }
-            else
+            else if (param == 2)
             {
-                PChar->pushPacket(new CMessageSystemPacket(0, 0, 176));
+                PChar->nameflags.flags &= ~FLAG_ANON;
+                PChar->menuConfigFlags.flags &= ~NFLAG_ANON;
+            }
+            if (flags != PChar->nameflags.flags)
+            {
+                PChar->pushPacket(new CMessageSystemPacket(0, 0, param == 1 ? 175 : 176));
             }
             break;
+        }
         case NFLAG_AUTOTARGET:
             // /autotarget [on|off]
             if (data.ref<uint8>(0x10) == 1)
@@ -6811,7 +6878,7 @@ void SmallPacket0x0FF(map_session_data_t* const PSession, CCharEntity* const PCh
     CItemContainer* PItemContainer = PChar->getStorage(containerID);
     CItemFlowerpot* PItem          = (CItemFlowerpot*)PItemContainer->GetItem(slotID);
 
-    if (PItem->isPlanted() && PItem->getStage() > FLOWERPOT_STAGE_INITIAL && PItem->getStage() < FLOWERPOT_STAGE_WILTED && !PItem->isDried())
+    if (PItem != nullptr && PItem->isPlanted() && PItem->getStage() > FLOWERPOT_STAGE_INITIAL && PItem->getStage() < FLOWERPOT_STAGE_WILTED && !PItem->isDried())
     {
         PChar->pushPacket(new CMessageStandardPacket(itemID, 133)); // Your moogle dries the plant in the <item>.
         PChar->pushPacket(new CFurnitureInteractPacket(PItem, containerID, slotID));
@@ -6915,6 +6982,8 @@ void SmallPacket0x100(map_session_data_t* const PSession, CCharEntity* const PCh
         charutils::BuildingCharAbilityTable(PChar);
         charutils::BuildingCharWeaponSkills(PChar);
         charutils::LoadJobChangeGear(PChar);
+        charutils::SaveCharEquip(PChar);
+        charutils::SaveCharLook(PChar);
 
         PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE | EFFECTFLAG_ROLL | EFFECTFLAG_ON_JOBCHANGE);
 

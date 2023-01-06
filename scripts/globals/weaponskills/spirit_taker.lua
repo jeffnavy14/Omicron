@@ -18,7 +18,6 @@ require("scripts/globals/weaponskills")
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-
     local params = {}
     params.numHits = 1
     params.ftp100 = 1 params.ftp200 = 1.5 params.ftp300 = 2
@@ -26,11 +25,10 @@ weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary,
     params.crit100 = 0.0 params.crit200 = 0.0 params.crit300 = 0.0
     params.canCrit = false
     params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    params.atk100 = 1; params.atk200 = 1; params.atk300 = 1
+    params.atk100 = 1 params.atk200 = 1 params.atk300 = 1
     local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
     player:addMP(damage)
     return tpHits, extraHits, criticalHit, damage
-
 end
 
 return weaponskillObject

@@ -14,10 +14,9 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local guildMember = xi.crafting.isGuildMember(player, 1)
     local skillLevel = player:getSkillLevel(xi.skill.ALCHEMY)
 
-    if guildMember == 1 then
+    if xi.crafting.hasJoinedGuild(player, xi.crafting.guild.ALCHEMY) then
         if not player:hasStatusEffect(xi.effect.ALCHEMY_IMAGERY) then
             player:startEvent(638, 4, skillLevel, 1, 511, 187, 0, 7, 2184)
         else
@@ -32,7 +31,6 @@ entity.onEventUpdate = function(player, csid, option)
 end
 
 entity.onEventFinish = function(player, csid, option)
-
     if csid == 638 and option == 1 then
         player:messageSpecial(ID.text.IMAGE_SUPPORT, 0, 7, 1)
         player:addStatusEffect(xi.effect.ALCHEMY_IMAGERY, 1, 0, 120)
