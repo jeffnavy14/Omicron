@@ -218,25 +218,19 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             playerArg:PrintToPlayer("Join the Path of Lost Nature fight?", xi.msg.channel.NS_SAY)
         end,
         options =
-        {
-            {
-				"Yes please!",
-				function(playerArg)
-				player:PrintToPlayer("Bob: Be careful out there.", xi.msg.channel.NS_SAY)
-				end,
-			},              
-            {
-                "Return to Jeuno",
-				function(playerArg)
-				player:setPos(-4, -0.001, 18.4313, 0, 244)
-				end,
-            },
+        {           
             {
                 "What's going on?",
                 function(playerArg)
 				player:PrintToPlayer("Bob: This is a battlefield, Amchuchu can explain further, this was our last safe place but the wildlife decided to come and push back.", xi.msg.channel.NS_SAY)
 				player:PrintToPlayer("Something about it draws out certain creature I won't go near, so if you say yes be careful.", xi.msg.channel.NS_SAY)
                 end,
+            },
+            {
+                "Return to Jeuno",
+				function(playerArg)
+				player:setPos(-4, -0.001, 18.4313, 0, 244)
+				end,
             },
             {
 				"Send me to the South Camp",
@@ -306,7 +300,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 128,
 		
 		onTrigger = function(player, npc)
-			player:PrintToPlayer("Yum, yum..." ,13)
+			player:PrintToPlayer("Yum, yum...", 0, mpc:getPacketName())
 		end
 	})
 
