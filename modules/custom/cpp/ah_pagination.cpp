@@ -24,7 +24,7 @@ class AHPaginationModule : public CPPModule
 
         // If this is set to 7, the client won't let you put up more than 7 items. So, 6.
         auto ITEMS_PER_PAGE = 6U;
-        auto TOTAL_PAGES = 6;
+        auto TOTAL_PAGES = 12;
 
         ShowInfo("[AH PAGES] Setting AH_LIST_LIMIT to %i.", ITEMS_PER_PAGE * TOTAL_PAGES)
         lua["xi"]["settings"]["search"]["AH_LIST_LIMIT"] = ITEMS_PER_PAGE * TOTAL_PAGES;
@@ -36,7 +36,8 @@ class AHPaginationModule : public CPPModule
             TracyZoneScoped;
 
             // Only intercept for action 0x05: Open List Of Sales / Wait
-            auto action = data.ref<uint8>(0x04);
+            auto action   = data.ref<uint8>(0x04);
+            auto quantity = data.ref<uint8>(0x10);
             if (action == 0x05)
             {
                 uint32 curTick = gettick();
@@ -93,7 +94,7 @@ class AHPaginationModule : public CPPModule
                 }
                 else
                 {
-                    PChar->pushPacket(new CAuctionHousePacket(action, 246, 0, 0)); // try again in a little while msg
+                    PChar->pushPacket(new CAuctionHousePacket(action, 246, 0, 0, quantity)); // try again in a little while msg
                 }
             }
             else // Otherwise, call original handler

@@ -4,6 +4,7 @@
 require("modules/module_utils")
 require("scripts/globals/conquest")
 require("scripts/globals/zone")
+require("settings/main")
 
 -----------------------------------
 -- ID Requires
@@ -28,6 +29,7 @@ local hnmSystem = Module:new("era_HNM_System")
 hnmSystem:addOverride("xi.zones.Dragons_Aery.Zone.onInitialize", function(zone)
     local hnmPopTime   = GetServerVariable("[HNM]Fafnir")   -- Time the NM will spawn at.
     local hnmKillCount = GetServerVariable("[HNM]Fafnir_C") -- Number of times NQ King has been slain in a row.
+    xi.settings.main.LandKingSystem_NQ = 0
 
     -- First-time setup.
     if hnmPopTime == 0 then
@@ -37,7 +39,7 @@ hnmSystem:addOverride("xi.zones.Dragons_Aery.Zone.onInitialize", function(zone)
     end
 
     -- HQ King.
-    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) then
+    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) and not GetMobByID(dragonsAeryID.mob.FAFNIR):isAlive() then
         UpdateNMSpawnPoint(dragonsAeryID.mob.NIDHOGG)
 
         -- Spawn mob or set spawn time.
@@ -48,7 +50,7 @@ hnmSystem:addOverride("xi.zones.Dragons_Aery.Zone.onInitialize", function(zone)
         end
 
     -- NQ King.
-    else
+    elseif not GetMobByID(dragonsAeryID.mob.FAFNIR):isAlive() and not GetMobByID(dragonsAeryID.mob.NIDHOGG):isAlive() then
         UpdateNMSpawnPoint(dragonsAeryID.mob.FAFNIR)
 
         -- Spawn mob or set spawn time.
@@ -61,6 +63,17 @@ hnmSystem:addOverride("xi.zones.Dragons_Aery.Zone.onInitialize", function(zone)
 
     -- Hide ??? NPC.
     GetNPCByID(dragonsAeryID.npc.FAFNIR_QM):setStatus(xi.status.DISAPPEAR)
+end)
+
+hnmSystem:addOverride("xi.zones.Dragons_Aery.mobs.Fafnir.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(805, 1526, 100) -- wyrm beard 10%
+    SetDropRate(805, 3340, 0)   -- do not drop cup_of_sweet_tea
+end)
+
+hnmSystem:addOverride("xi.zones.Dragons_Aery.mobs.Nidhogg.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(1781, 1526, 1000) -- wyrm beard 100%
 end)
 
 hnmSystem:addOverride("xi.zones.Dragons_Aery.mobs.Fafnir.onMobDespawn", function(mob)
@@ -108,6 +121,7 @@ end)
 hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.Zone.onInitialize", function(zone)
     local hnmPopTime   = GetServerVariable("[HNM]Adamantoise")   -- Time the NM will spawn at.
     local hnmKillCount = GetServerVariable("[HNM]Adamantoise_C") -- Number of times NQ King has been slain in a row.
+    xi.settings.main.LandKingSystem_NQ = 0
 
     -- First-time setup.
     if hnmPopTime == 0 then
@@ -117,7 +131,7 @@ hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.Zone.onInitialize", function(z
     end
 
     -- HQ King.
-    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) then
+    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) and not GetMobByID(valleySorrowsID.mob.ADAMANTOISE):isAlive() then
         UpdateNMSpawnPoint(valleySorrowsID.mob.ASPIDOCHELONE)
 
         -- Spawn mob or set spawn time.
@@ -128,7 +142,7 @@ hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.Zone.onInitialize", function(z
         end
 
     -- NQ King.
-    else
+    elseif not GetMobByID(valleySorrowsID.mob.ADAMANTOISE):isAlive() and not GetMobByID(valleySorrowsID.mob.ASPIDOCHELONE):isAlive() then
         UpdateNMSpawnPoint(valleySorrowsID.mob.ADAMANTOISE)
 
         -- Spawn mob or set spawn time.
@@ -141,6 +155,17 @@ hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.Zone.onInitialize", function(z
 
     -- Hide ??? NPC.
     GetNPCByID(valleySorrowsID.npc.ADAMANTOISE_QM):setStatus(xi.status.DISAPPEAR)
+end)
+
+hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.mobs.Adamantoise.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(21, 1525, 100) -- adamantoise egg 10%
+    SetDropRate(21, 3344, 0)   -- do not drop clump_of_red_pondweed
+end)
+
+hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.mobs.Aspidochelone.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(183, 1525, 1000) -- adamantoise egg 10%
 end)
 
 hnmSystem:addOverride("xi.zones.Valley_of_Sorrows.mobs.Adamantoise.onMobDespawn", function(mob)
@@ -188,6 +213,7 @@ end)
 hnmSystem:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(zone)
     local hnmPopTime   = GetServerVariable("[HNM]Behemoth")   -- Time the NM will spawn at.
     local hnmKillCount = GetServerVariable("[HNM]Behemoth_C") -- Number of times NQ King has been slain in a row.
+    xi.settings.main.LandKingSystem_NQ = 0
 
     -- First-time setup.
     if hnmPopTime == 0 then
@@ -197,7 +223,7 @@ hnmSystem:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(
     end
 
     -- HQ King.
-    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) then
+    if hnmKillCount > 3 and (math.random(1, 5) == 3 or hnmKillCount > 6) and not GetMobByID(behemothDomID.mob.BEHEMOTH):isAlive() then
         UpdateNMSpawnPoint(behemothDomID.mob.KING_BEHEMOTH)
 
         -- Spawn mob or set spawn time.
@@ -208,7 +234,7 @@ hnmSystem:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(
         end
 
     -- NQ King.
-    else
+    elseif not GetMobByID(behemothDomID.mob.BEHEMOTH):isAlive() and not GetMobByID(behemothDomID.mob.KING_BEHEMOTH):isAlive() then
         UpdateNMSpawnPoint(behemothDomID.mob.BEHEMOTH)
 
         -- Spawn mob or set spawn time.
@@ -221,6 +247,19 @@ hnmSystem:addOverride("xi.zones.Behemoths_Dominion.Zone.onInitialize", function(
 
     -- Hide ??? NPC.
     GetNPCByID(behemothDomID.npc.BEHEMOTH_QM):setStatus(xi.status.DISAPPEAR)
+end)
+
+hnmSystem:addOverride("xi.zones.Behemoths_Dominion.mobs.Behemoth.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(251, 1527, 100) -- behemoth tongue 10%
+    SetDropRate(251, 3342, 0) -- do not drop savory_shank
+end)
+
+hnmSystem:addOverride("xi.zones.Behemoths_Dominion.mobs.King_Behemoth.onMobInitialize", function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 0)
+    SetDropRate(1450, 1527, 1000) -- behemoth tongue 10%
+    mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+    mob:setMobMod(xi.mobMod.MAGIC_COOL, 60)
 end)
 
 hnmSystem:addOverride("xi.zones.Behemoths_Dominion.mobs.Behemoth.onMobDespawn", function(mob)
