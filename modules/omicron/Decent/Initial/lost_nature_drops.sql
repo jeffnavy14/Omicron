@@ -1,9 +1,5 @@
----------------------------------------
 -- Drops  (dropId, dropType, groupId, groupRate, itemId, itemRate)
----------------------------------------
----------------------------------------
---Vermin group
----------------------------------------
+
 --Lost Gnat
 INSERT INTO `mob_droplist` VALUES (4000,0,0,1000,9281,10); -- Paragon WAR Card
 INSERT INTO `mob_droplist` VALUES (4000,0,0,1000,9282,10); -- Paragon MNK Card
@@ -27,7 +23,7 @@ INSERT INTO `mob_droplist` VALUES (4003,0,0,1000,26952,15); -- Psycloth Vest
 INSERT INTO `mob_droplist` VALUES (4003,0,0,1000,26948,15); -- Despair Mail
 INSERT INTO `mob_droplist` VALUES (4003,0,0,1000,846,200); -- Insect Wing
 INSERT INTO `mob_droplist` VALUES (4003,0,0,1000,2885,20); -- Orcus Mandible
---Colkhab
+-- Colkhab
 INSERT INTO `mob_droplist` VALUES (4004,0,0,1000,27553,15); -- Resonance Ring
 INSERT INTO `mob_droplist` VALUES (4004,0,0,1000,22250,15); -- Seraphic Ampulla
 INSERT INTO `mob_droplist` VALUES (4004,0,0,1000,27513,15); -- Subtlety Spectacles
@@ -43,10 +39,7 @@ INSERT INTO `mob_droplist` VALUES (4004,0,2,1000,3980,1000); -- Bztavian Stinger
 INSERT INTO `mob_droplist` VALUES (4004,0,2,1000,3981,200); -- Bztavian Wing
 INSERT INTO `mob_droplist` VALUES (4004,0,0,1000,3294,20); -- Colorless Soul
 INSERT INTO `mob_droplist` VALUES (4004,0,0,1000,8979,20); -- Imperator's Wing
----------------------------------------
--- Aquan group
----------------------------------------
---Lost Frog
+-- Lost Frog
 INSERT INTO `mob_droplist` VALUES (4005,0,0,1000,9283,10); -- Paragon WHM Card
 INSERT INTO `mob_droplist` VALUES (4005,0,0,1000,9284,10); -- Paragon BLM Card
 INSERT INTO `mob_droplist` VALUES (4005,0,0,1000,9285,10); -- Paragon RDM Card
@@ -86,27 +79,24 @@ INSERT INTO `mob_droplist` VALUES (4009,0,2,1000,3978,1000); -- Rockfin Fin
 INSERT INTO `mob_droplist` VALUES (4009,0,2,1000,3979,200); -- Rockfin Tooth
 INSERT INTO `mob_droplist` VALUES (4009,0,0,1000,3294,20); -- Colorless Soul
 INSERT INTO `mob_droplist` VALUES (4009,0,0,1000,8983,10); -- Arthro's Shell
----------------------------------------
--- Plantoid group
----------------------------------------
---Lost Panopt
+-- Lost Panopt
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,9292,10); -- Paragon SAM Card
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,9293,10); -- Paragon NIN Card
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,9294,10); -- Paragon DRG Card
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,9295,10); -- Paragon SMN Card
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,27286,15); -- Pursuer's Pants
 INSERT INTO `mob_droplist` VALUES (4010,0,0,1000,26951,15); -- Pursuer's Doublet
---Dread Goobue
+-- Dread Goobue
 INSERT INTO `mob_droplist` VALUES (4011,0,0,1000,26960,15); -- Annointed Kalasiris
 INSERT INTO `mob_droplist` VALUES (4011,0,0,1000,26959,15); -- Kubira Meikogai
 INSERT INTO `mob_droplist` VALUES (4011,0,0,1000,959,100); -- Dahlia
 INSERT INTO `mob_droplist` VALUES (4011,0,0,1000,8725,20); -- Exhalted Log
---Dread Morbol
+-- Dread Morbol
 INSERT INTO `mob_droplist` VALUES (4012,0,0,1000,27462,15); -- Psycloth Boots
 INSERT INTO `mob_droplist` VALUES (4012,0,0,1000,26797,15); -- Vanya Hood
 INSERT INTO `mob_droplist` VALUES (4012,0,0,1000,920,20); -- Morbol Vine
 INSERT INTO `mob_droplist` VALUES (4012,0,0,1000,2877,20); -- Befouled Silver
---Dread Mandradora
+-- Dread Mandradora
 INSERT INTO `mob_droplist` VALUES (4013,0,0,1000,20939,15); -- Nibiru Lance
 INSERT INTO `mob_droplist` VALUES (4013,0,0,1000,26953,15); -- Vanya Robe
 INSERT INTO `mob_droplist` VALUES (4013,0,0,1000,2876,20); -- Musculent Ingot
@@ -122,28 +112,26 @@ INSERT INTO `mob_droplist` VALUES (4014,0,1,1000,27721,15); -- Umuthi Hat
 INSERT INTO `mob_droplist` VALUES (4014,0,1,1000,28014,15); -- Umuthi Gloves
 INSERT INTO `mob_droplist` VALUES (4014,0,2,1000,4014,1000); --Yggdreant Bole
 INSERT INTO `mob_droplist` VALUES (4014,0,2,1000,4015,200); -- Yggdreant Root
----------------------------------------
---Beast Group
----------------------------------------
---Lost Gnole
+
+-- Lost Gnole
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,9288,10); -- Paragon DRK Card
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,9297,10); -- Paragon COR Card
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,9290,10); -- Paragon BRD Card
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,9298,10); -- Paragon PUP Card
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,27283,15); -- Despair Cuisses
 INSERT INTO `mob_droplist` VALUES (4015,0,0,1000,27461,15); -- Pursuer's Gaiters
---Dread Raaz
+-- Dread Raaz
 INSERT INTO `mob_droplist` VALUES (4016,0,0,1000,27103,15); -- Vanya Cuffs (23)
 INSERT INTO `mob_droplist` VALUES (4016,0,0,1000,27458,15); -- Despair Greaves
 INSERT INTO `mob_droplist` VALUES (4016,0,0,1000,8709,20); -- Raaz Tusk
 INSERT INTO `mob_droplist` VALUES (4016,0,0,1000,8707,25); -- Raaz Hide
 INSERT INTO `mob_droplist` VALUES (4016,0,0,1000,6222,15); -- Warthog Meat
---Dread Rabbit
+-- Dread Rabbit
 INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,20848,15); -- Nibiru Chopper
 INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,21092,15); -- Nibiru Cudgel
 INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,1626,10); -- Avatar Blood
 INSERT INTO `mob_droplist` VALUES (4017,0,0,1000,2570,10); -- Dawon Pelt
---Dread Yztarg
+-- Dread Yztarg
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,21699,15); -- Nibiru Faussar
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,20600,15); -- Nibiru Knife
 INSERT INTO `mob_droplist` VALUES (4018,0,0,1000,27097,15); -- Eschite Gauntlets
@@ -160,9 +148,7 @@ INSERT INTO `mob_droplist` VALUES (4019,0,1,1000,28564,15); -- Kucheckula Ring
 INSERT INTO `mob_droplist` VALUES (4019,0,2,1000,8752,1000); -- Cehuetzi Claw
 INSERT INTO `mob_droplist` VALUES (4019,0,2,1000,8753,200); -- Cehuetzi Ice Shard
 INSERT INTO `mob_droplist` VALUES (4019,0,2,1000,8754,200); -- Cehuetzi Pelt
----------------------------------------
---Reptile Group
----------------------------------------
+
 -- Lost Eft
 INSERT INTO `mob_droplist` VALUES (4020,0,0,1000,9300,10); -- Paragon SCH Card
 INSERT INTO `mob_droplist` VALUES (4020,0,0,1000,9291,10); -- Paragon RNG Card
@@ -200,28 +186,25 @@ INSERT INTO `mob_droplist` VALUES (4024,0,0,1000,28612,15); -- Buquwik Cape
 INSERT INTO `mob_droplist` VALUES (4024,0,0,1000,28386,15); -- Cuamiz Collar
 INSERT INTO `mob_droplist` VALUES (4024,0,0,1000,21385,15); -- Aqreqaq Bomblet
 INSERT INTO `mob_droplist` VALUES (4024,0,0,1000,8988,10); -- Warblade's Hide (Going with reptile even though its a bird drop)
----------------------------------------
--- Avian Group
----------------------------------------
 -- Lost Tulfaires
 INSERT INTO `mob_droplist` VALUES (4025,0,0,1000,9299,10); -- Paragon DNC Card
 INSERT INTO `mob_droplist` VALUES (4025,0,0,1000,9301,10); -- Paragon GEO Card
 INSERT INTO `mob_droplist` VALUES (4025,0,0,1000,9302,10); -- Paragon RUN Card
 INSERT INTO `mob_droplist` VALUES (4025,0,0,1000,26794,15); -- Rawhide Mask
 INSERT INTO `mob_droplist` VALUES (4025,0,0,1000,27287,15); -- Psycloth Lappas
---Dread Apkallu
+-- Dread Apkallu
 INSERT INTO `mob_droplist` VALUES (4026,0,0,1000,27098,15); -- Despair Finger Gauntlets
 INSERT INTO `mob_droplist` VALUES (4026,0,0,1000,26950,15); -- Rawhide Vest
 INSERT INTO `mob_droplist` VALUES (4026,0,0,1000,8727,10); -- Sif's Lock
 INSERT INTO `mob_droplist` VALUES (4026,0,0,1000,5568,50); -- Apkallu Egg
 INSERT INTO `mob_droplist` VALUES (4026,0,0,1000,2149,100); -- Apkallu Feather
---Dread Colibri
+-- Dread Colibri
 INSERT INTO `mob_droplist` VALUES (4027,0,0,1000,27514,15); -- Empath Necklace
 INSERT INTO `mob_droplist` VALUES (4027,0,0,1000,26961,15); -- Makora Meikogai
 INSERT INTO `mob_droplist` VALUES (4027,0,0,1000,2875,20); -- Ethereal Squama
 INSERT INTO `mob_droplist` VALUES (4027,0,0,1000,2171,50); -- Colibri Beak
 INSERT INTO `mob_droplist` VALUES (4027,0,0,1000,2150,100); -- Colibri Feather
---Dread Hippogryph
+-- Dread Hippogryph
 INSERT INTO `mob_droplist` VALUES (4028,0,0,1000,22253,15); -- Falcon Eye
 INSERT INTO `mob_droplist` VALUES (4028,0,0,1000,27606,15); -- Disperser's Cape
 INSERT INTO `mob_droplist` VALUES (4028,0,0,1000,27460,15); -- Rawhide Boots

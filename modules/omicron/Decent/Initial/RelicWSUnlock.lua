@@ -30,6 +30,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			
 			if Virgil == 1 then
 				player:PrintToPlayer("Samples from each of the mighty beast trapped on this island, and bring the samples all at once please.", 0, npc:getPacketName())
+				player:PrintToPlayer("A gabbrath horn, yggdreant bole, bztavian stinger, waktza rostrum, rockfin tooth, and cehuetzi claw.", 13)
 			elseif Virgil == 2 and os.time() < player:getCharVar("[Virgil]time") then
 				player:PrintToPlayer("Still working on it...", 0, npc:getPacketName())
 			elseif Virgil == 2 and os.time() > player:getCharVar("[Virgil]time") then
@@ -59,7 +60,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 							"I've dealt with crazier",
 							function(playerArg)
 							player:PrintToPlayer("Zalsuhm: Perfect, I will need samples from each of the mighty beast trapped on this island", xi.msg.channel.NS_SAY)
-							player:PrintToPlayer("The kind powerful enough for reforging, and all at once please, easier tracking that way.", xi.msg.channel.NS_SAY)
+							player:PrintToPlayer("A gabbrath horn, yggdreant bole, bztavian stinger, waktza rostrum, rockfin tooth, and cehuetzi claw.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Virgil]Unlock", 1)
 							end,
 							},
@@ -80,7 +81,14 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		
 		onTrade = function(player, npc, trade)
 			Virgil = player:getCharVar("[Virgil]Unlock")
-			if Virgil == 1 and (trade:hasItemQty(3977, 1)) and (trade:hasItemQty(4014, 1)) and (trade:hasItemQty(3980, 1)) and (trade:hasItemQty(4012, 1)) and (trade:hasItemQty(3979, 1)) and (trade:hasItemQty(8752, 1)) then
+			if Virgil == 1 and
+			  (trade:hasItemQty(3977, 1)) and 
+			  (trade:hasItemQty(4014, 1)) and
+			  (trade:hasItemQty(3980, 1)) and
+			  (trade:hasItemQty(4012, 1)) and
+			  (trade:hasItemQty(3979, 1)) and
+			  (trade:hasItemQty(8752, 1))
+			then
 				player:PrintToPlayer("Virgil: Alright, I'll get to work on this right away...", 13);
 				player:PrintToPlayer("Tomorrow I should be ready for the rituals", 13);
 				player:setCharVar("[Virgil]time", getVanaMidnight());
