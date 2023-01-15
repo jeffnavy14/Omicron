@@ -5,29 +5,45 @@
 require("scripts/globals/status")
 -----------------------------------
 local entity = {}
-local raceTable =
+local jobTable =
 {
--- [race] = { model, skill, spell, lootpool },
-    [  1] = { 603, 108, 201 },
-    [  2] = { 604, 107, 202 },
-    [  3] = { 605, 106, 203 },
-    [  4] = { 606, 105, 204 },
-    [  5] = { 607, 104, 205 },
-    [  6] = { 608, 103, 206 },
-    [  7] = { 609, 102, 207 },
+-- [job] = { model, skill, spell, lootpool },
+    [  1] = { 403, 108, 201, 4052 },
+    [  2] = { 407, 107, 202, 4052 },
+    [  3] = { 399, 106, 203, 4052 },
+    [  4] = { 338, 105, 204, 4052 },
+    [  5] = { 309, 104, 205, 4052 },
+    [  6] = { 2399, 103, 206, 4052 },
+    [  7] = { 2210, 102, 207, 4052 },
     [  8] = { 610, 259, 109, 4052 },
+	[  9] = { 2398, 108, 201, 4052 },
+    [ 10] = { 1075, 107, 202, 4052 },
+    [ 11] = { 1076, 106, 203, 4052 },
+    [ 12] = { 1145, 105, 204, 4052 },
+    [ 13] = { 1182, 104, 205, 4052 },
+    [ 14] = { 1362, 103, 206, 4052 },
+    [ 15] = { 1420, 102, 207, 4052 },
+    [ 16] = { 1430, 108, 201, 4052 },
+    [ 17] = { 1431, 107, 202, 4052 },
+    [ 18] = { 1432, 106, 203, 4052 },
+    [ 19] = { 1433, 105, 204, 4052 },
+    [ 20] = { 1434, 104, 205, 4052 },
+    [ 21] = { 1639, 103, 206, 4052 },
+    [ 22] = { 1730, 102, 207, 4052 },	
+	
 }
 entity.onMobSpawn = function(mob)
-    mob:renameEntity("Opps Sorry")
+    mob:renameEntity("Oops Sorry")
     SetServerVariable("[Found]", 3)
-   end
+	mob:setModelId(969)
+end
 
-entity.onMobFight = function(mob, target)
-    local race      = target:getRace()
-    local model     = raceTable[race][1]
-    local skillList = raceTable[race][2]
-    local spellList = raceTable[race][3]
-    local dropList  = raceTable[race][4]
+entity.onMobEngaged = function(mob, target)
+    local job       = target:getMainJob()
+    local model     = jobTable[job][1]
+    local skillList = jobTable[job][2]
+    local spellList = jobTable[job][3]
+    local dropList  = jobTable[job][4]
     mob:setModelId(model)
     mob:setMobMod(xi.mobMod.SKILL_LIST, skillList)
     mob:setMobMod(xi.mobMod.SPELL_LIST, spellList)
@@ -37,6 +53,6 @@ end
 entity.onMobDeath = function(mob, player)
     SetServerVariable("[TreasureHunt]", 0)
     SetServerVariable("[Found]", 0)
-  end
+end
 
 return entity
