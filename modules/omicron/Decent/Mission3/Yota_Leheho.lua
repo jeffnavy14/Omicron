@@ -7,14 +7,14 @@ require('scripts/globals/npc_util')
 require("scripts/globals/alitems")
 -----------------------------------
 
-local m = Module:new("ElTaz")
+local m = Module:new("YotaLeheho")
 m:setEnabled(true)
 		
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
 
     super(zone)
 
-	local ElTaz = zone:insertDynamicEntity({
+	local YotaLeheho = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
         name = "Yota Leheho",
@@ -127,7 +127,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 })
 
-	utils.unused(ElTaz)	
+	utils.unused(YotaLeheho)	
 	
 end)
 
