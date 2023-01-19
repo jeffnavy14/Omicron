@@ -33,8 +33,8 @@ DELETE FROM `mob_groups` WHERE `groupid`=38 AND `zoneid`=197;
 DELETE FROM `mob_groups` WHERE `groupid`=42 AND `zoneid`=200;
 DELETE FROM `mob_groups` WHERE `groupid`=24 AND `zoneid`=205;
 DELETE FROM `mob_groups` WHERE `groupid`=6  AND `zoneid`=208; 
-
-DELETE FROM `mob_pools` WHERE `poolid`=2664;
+DELETE FROM `mob_resistances` WHERE  `resist_id`=183;
+DELETE FROM `mob_pools` WHERE  `poolid`=2664;
 
 
 
@@ -47,7 +47,7 @@ INSERT INTO `mob_spawn_points` VALUES (17391805,'Mimic','Mimic',19,220,-2,-108,6
 INSERT INTO `mob_spawn_points` VALUES (17396144,'Mimic','Mimic',43,185.513,-16.250,-139.871,236);
 INSERT INTO `mob_spawn_points` VALUES (17404336,'Mimic','Mimic',34,51.167,-18.547,-154.090,214);
 INSERT INTO `mob_spawn_points` VALUES (17428497,'Mimic','Mimic',15,37.509,35.500,-85.849,80);
-INSERT INTO `mob_spawn_points` VALUES (17432583,'Mimic','Mimic',6,185.654,-28.001,-107.475,127);
+INSERT INTO `mob_spawn_points` VALUES (17432583,'Mimic','Mimic',6,118,36,-283,127);
 INSERT INTO `mob_spawn_points` VALUES (17436965,'Mimic','Mimic',49,-35.780,18.5,3.481,127);
 INSERT INTO `mob_spawn_points` VALUES (17469761,'Mimic','Mimic',42,139.77,20,-219.77,10);
 INSERT INTO `mob_spawn_points` VALUES (17490230,'Mimic','Mimic',34,128.642,-0.003,-12.849,54);
@@ -60,7 +60,7 @@ INSERT INTO `mob_spawn_points` VALUES (17617157,'Mimic','Mimic',24,-114.419,2.62
 INSERT INTO `mob_spawn_points` VALUES (17629190,'Mimic','Mimic',6 ,41.024,-0.500,-130.467,45);
 
 -- MOB_POOLS (poolid,name,packet_name,familyid,modelid,mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,behavior,aggro,true_detection,links,mobtype,
-INSERT INTO `mob_pools` VALUES (2664,'Mimic','Mimic',522,0x0000030100000000000000000000000000000000,7,1,7,100,100,0,1,0,0,2,0,0,0,131,13,0,0,0,0,183,183);
+INSERT INTO `mob_pools` VALUES (2664,'Mimic','Mimic',183,0x0000030100000000000000000000000000000000,7,1,7,100,100,0,1,0,0,2,0,0,0,131,13,0,0,0,0,183,183);
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
 INSERT INTO `mob_groups` VALUES (14,2664,130,'Mimic',0,128,0,308300,0,137,139,0);
 INSERT INTO `mob_groups` VALUES (37,2664,147,'Mimic',0,128,0,308300,0,137,139,0);
@@ -83,4 +83,4 @@ INSERT INTO `mob_groups` VALUES (6,2664,208, 'Mimic',0,128,0,308300,0,137,139,0)
 -- MOB_RESISTANCES (resistid,name,slash_sdt,piece_sdt,h2h_sdt,impact_sdt,fire_sdt,ice_sdt,wind_sdt,earth_sdt,lightning_sdt
 -- water_sdt,light_sdt,dark_sdt,fire_meva,ice_meva,wind_meva,earth_meva,lightning_meva,water_meva,light_meva,dark_meva
 -- fire_res_rank,ice_res_rank,wind_res_rank,earth,_res_rank,lightning_res_rank,water_res_rank,light_res_rank,dark_res_rank)
-INSERT INTO `mob_resistances` VALUES (522,'Mimic',2,2,2,2,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (183,'Mimic',2,2,2,2,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
