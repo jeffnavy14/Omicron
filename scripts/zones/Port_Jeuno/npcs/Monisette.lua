@@ -559,377 +559,318 @@ local tradeTable =
 -- [combinationId] = {trade = {Base AF, Item, Job Ingredient, Slot Ingredient} reward = empyReforged 109},
 -----------------------------------
 -- From +1 Pieces >> Reforge NQ
-	[511] = { trade = { 11164, {4064, 10}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
-	[512] = { trade = { 11184, {4065, 10}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
-	[513] = { trade = { 11204, {4066, 10}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
-	[514] = { trade = { 11224, {4067, 10}, {2929 ,1},  836 }, reward = 27237 }, -- Boii Cuises
-	[515] = { trade = { 11244, {4068, 10}, {2929 ,1}, 1131 }, reward = 27411 }, -- Boii Calligae
-	
-	[516] = { trade = { 11165, {4064, 10}, {2962, 1},  488 }, reward = 26742 }, -- Bhikku Crown
-	[517] = { trade = { 11185, {4065, 10}, {2962, 1},  837 }, reward = 26900 }, -- Bhikku Cyclas
-	[518] = { trade = { 11205, {4066, 10}, {2962, 1}, 1110 }, reward = 27054 }, -- Bhikku Gloves
-	[519] = { trade = { 11225, {4067, 10}, {2962, 1},  836 }, reward = 27239 }, -- Bhikku Hose
-	[520] = { trade = { 11245, {4068, 10}, {2962, 1}, 1131 }, reward = 27413 }, -- Bhikku Gaiters
-	
-	[521] = { trade = { 11166, {4064, 10}, {3287, 1},  488 }, reward = 26744 }, -- Eber Cap
-	[522] = { trade = { 11186, {4065, 10}, {3287, 1},  837 }, reward = 26902 }, -- Eber Bliaut
-	[523] = { trade = { 11206, {4066, 10}, {3287, 1}, 1110 }, reward = 27056 }, -- Eber Mitts
-	[524] = { trade = { 11226, {4067, 10}, {3287, 1},  836 }, reward = 27241 }, -- Eber Pantaloons
-	[525] = { trade = { 11246, {4068, 10}, {3287, 1}, 1131 }, reward = 27415 }, -- Eber Duckbills
-	
-	[526] = { trade = { 11167, {4064, 10}, {2927, 1},  488 }, reward = 26746 }, -- Wicce Petasos
-	[527] = { trade = { 11187, {4065, 10}, {2927, 1},  837 }, reward = 26904 }, -- Wicce Coat
-	[528] = { trade = { 11207, {4066, 10}, {2927, 1}, 1110 }, reward = 27058 }, -- Wicce Gloves
-	[529] = { trade = { 11227, {4067, 10}, {2927, 1},  836 }, reward = 27243 }, -- Wicce Chausses
-	[530] = { trade = { 11247, {4068, 10}, {2927, 1}, 1131 }, reward = 27417 }, -- Wicce Sabot
-	
-	[531] = { trade = { 11168, {4064, 10}, {2965, 1},  488 }, reward = 26748 }, -- Lethargy Chappel
-	[532] = { trade = { 11188, {4065, 10}, {2965, 1},  837 }, reward = 26906 }, -- Lethargy Sayon
-	[533] = { trade = { 11208, {4066, 10}, {2965, 1}, 1110 }, reward = 27060 }, -- Lethargy Gantherots
-	[534] = { trade = { 11228, {4067, 10}, {2965, 1},  836 }, reward = 27245 }, -- Lethargy Fuseau
-	[535] = { trade = { 11248, {4068, 10}, {2965, 1}, 1131 }, reward = 27419 }, -- Lethargy Houseaux
-	
-	[536] = { trade = { 11169, {4064, 10}, {3291, 1},  488 }, reward = 26750 }, -- Skulker's Bonnet
-	[537] = { trade = { 11189, {4065, 10}, {3291, 1},  837 }, reward = 26908 }, -- Skulker's Vest
-	[538] = { trade = { 11209, {4066, 10}, {3291, 1}, 1110 }, reward = 27062 }, -- Skulker's Armlets
-	[539] = { trade = { 11229, {4067, 10}, {3291, 1},  836 }, reward = 27247 }, -- Skulker's Culottes
-	[540] = { trade = { 11249, {4068, 10}, {3291, 1}, 1131 }, reward = 27421 }, -- Skulker's Poulaines
-	
-	[541] = { trade = { 11170, {4064, 10}, {2932, 1},  488 }, reward = 26752 }, -- Chevalier Armet
-	[542] = { trade = { 11190, {4065, 10}, {2932, 1},  837 }, reward = 26910 }, -- Chevalier Cuirass
-	[543] = { trade = { 11210, {4066, 10}, {2932, 1}, 1110 }, reward = 27064 }, -- Chevalier Gauntlets
-	[544] = { trade = { 11230, {4067, 10}, {2932, 1},  836 }, reward = 27249 }, -- Chevalier Cuisses
-	[545] = { trade = { 11250, {4068, 10}, {2932, 1}, 1131 }, reward = 27423 }, -- Chevalier Sabatons
-	
-	[546] = { trade = { 11171, {4064, 10}, {2929, 1},  488 }, reward = 26754 }, -- Heathen's Burgonet
-	[547] = { trade = { 11191, {4065, 10}, {2929, 1},  837 }, reward = 26912 }, -- Heathen's Cuirass
-	[548] = { trade = { 11211, {4066, 10}, {2929, 1}, 1110 }, reward = 27066 }, -- Heathen's Gauntlets
-	[549] = { trade = { 11231, {4067, 10}, {2929, 1},  836 }, reward = 27251 }, -- Heathen's Flanchard
-	[550] = { trade = { 11251, {4068, 10}, {2929, 1}, 1131 }, reward = 27425 }, -- Heathen's Sollerets
-	
-	[551] = { trade = { 11172, {4064, 10}, {2930, 1},  488 }, reward = 26756 }, -- Nukumi Cabasset
-	[552] = { trade = { 11192, {4065, 10}, {2930, 1},  837 }, reward = 26914 }, -- Nukumi Gausape
-	[553] = { trade = { 11212, {4066, 10}, {2930, 1}, 1110 }, reward = 27068 }, -- Nukumi Manoplas
-	[554] = { trade = { 11232, {4067, 10}, {2930, 1},  836 }, reward = 27253 }, -- Nukumi Quijotes
-	[555] = { trade = { 11252, {4068, 10}, {2930, 1}, 1131 }, reward = 27427 }, -- Nukumi Ocreae
-	
-	[556] = { trade = { 11173, {4064, 10}, {3288, 1},  488 }, reward = 26758 }, -- Fili Calot
-	[557] = { trade = { 11193, {4065, 10}, {3288, 1},  837 }, reward = 26916 }, -- Fili Hongreline
-	[558] = { trade = { 11213, {4066, 10}, {3288, 1}, 1110 }, reward = 27070 }, -- Fili Manchettes
-	[559] = { trade = { 11233, {4067, 10}, {3288, 1},  836 }, reward = 27255 }, -- Fili Rhingrave
-	[560] = { trade = { 11253, {4068, 10}, {3288, 1}, 1131 }, reward = 27429 }, -- Fili Cothurnes
-	
-	[561] = { trade = { 11174, {4064, 10}, {2963, 1},  488 }, reward = 26760 }, -- Amini Gapette
-	[562] = { trade = { 11194, {4065, 10}, {2963, 1},  837 }, reward = 26918 }, -- Amini Caban
-	[563] = { trade = { 11214, {4066, 10}, {2963, 1}, 1110 }, reward = 27072 }, -- Amini Glovelettes
-	[564] = { trade = { 11234, {4067, 10}, {2963, 1},  836 }, reward = 27257 }, -- Amini Bragues
-	[565] = { trade = { 11254, {4068, 10}, {2963, 1}, 1131 }, reward = 27431 }, -- Amini Bottillons
-	
-	[566] = { trade = { 11175, {4064, 10}, {3289, 1},  488 }, reward = 26762 }, -- Kasuga Kabuto
-	[567] = { trade = { 11195, {4065, 10}, {3289, 1},  837 }, reward = 26920 }, -- Kasuga Domaru
-	[568] = { trade = { 11215, {4066, 10}, {3289, 1}, 1110 }, reward = 27074 }, -- Kasuga Kote
-	[569] = { trade = { 11235, {4067, 10}, {3289, 1},  836 }, reward = 27259 }, -- Kasuga Haidate
-	[570] = { trade = { 11255, {4068, 10}, {3289, 1}, 1131 }, reward = 27433 }, -- Kasuga Sune-Ate
-	
-	[571] = { trade = { 11176, {4064, 10}, {2966, 1},  488 }, reward = 26764 }, -- Hattori Zukin
-	[572] = { trade = { 11196, {4065, 10}, {2966, 1},  837 }, reward = 26922 }, -- Hattori Ningi
-	[573] = { trade = { 11216, {4066, 10}, {2966, 1}, 1110 }, reward = 27076 }, -- Hattori Tekko
-	[574] = { trade = { 11236, {4067, 10}, {2966, 1},  836 }, reward = 27261 }, -- Hattori Hakama
-	[575] = { trade = { 11256, {4068, 10}, {2966, 1}, 1131 }, reward = 27435 }, -- Hattori Kyahan
-	
-	[576] = { trade = { 11177, {4064, 10}, {3292, 1},  488 }, reward = 26766 }, -- Peltast's Mezail
-	[577] = { trade = { 11197, {4065, 10}, {3292, 1},  837 }, reward = 26924 }, -- Peltast's Plackart
-	[578] = { trade = { 11217, {4066, 10}, {3292, 1}, 1110 }, reward = 27078 }, -- Peltast's Vambraces
-	[579] = { trade = { 11237, {4067, 10}, {3292, 1},  836 }, reward = 27263 }, -- Peltast's Cuissots
-	[580] = { trade = { 11257, {4068, 10}, {3292, 1}, 1131 }, reward = 27437 }, -- Peltast's Schynbalds
-	
-	[581] = { trade = { 11178, {4064, 10}, {2930, 1},  488 }, reward = 26768 }, -- Beckoner's Horn
-	[582] = { trade = { 11198, {4065, 10}, {2930, 1},  837 }, reward = 26926 }, -- Beckoner's Doublet
-	[583] = { trade = { 11218, {4066, 10}, {2930, 1}, 1110 }, reward = 27080 }, -- Beckoner's Bracers
-	[584] = { trade = { 11238, {4067, 10}, {2930, 1},  836 }, reward = 27265 }, -- Beckoner's Spats
-	[585] = { trade = { 11258, {4068, 10}, {2930, 1}, 1131 }, reward = 27439 }, -- Beckoner's Pigaches
-	
-	[586] = { trade = { 11179, {4064, 10}, {3290, 1},  488 }, reward = 26770 }, -- Hashishin Kavuk
-	[587] = { trade = { 11199, {4065, 10}, {3290, 1},  837 }, reward = 26928 }, -- Hashishin Mintan
-	[588] = { trade = { 11219, {4066, 10}, {3290, 1}, 1110 }, reward = 27082 }, -- Hashishin Bazubands
-	[589] = { trade = { 11239, {4067, 10}, {3290, 1},  836 }, reward = 27267 }, -- Hashishin Tayt
-	[590] = { trade = { 11259, {4068, 10}, {3290, 1}, 1131 }, reward = 27441 }, -- Hashishin Basmak
-	
-	[591] = { trade = { 11180, {4064, 10}, {2964, 1},  488 }, reward = 26772 }, -- Chasseur's Tricorne 
-	[592] = { trade = { 11200, {4065, 10}, {2964, 1},  837 }, reward = 26930 }, -- Chasseur's Frac
-	[593] = { trade = { 11220, {4066, 10}, {2964, 1}, 1110 }, reward = 27084 }, -- Chasseur's Gants
-	[594] = { trade = { 11240, {4067, 10}, {2964, 1},  836 }, reward = 27269 }, -- Chasseur's Culottes
-	[595] = { trade = { 11260, {4068, 10}, {2964, 1}, 1131 }, reward = 27443 }, -- Chasseur's Bottes
-	
-	[596] = { trade = { 11181, {4064, 10}, {2930, 1},  488 }, reward = 26774 }, -- Karagoz Cappello
-	[597] = { trade = { 11201, {4065, 10}, {2930, 1},  837 }, reward = 26932 }, -- Karagoz Farsetto
-	[598] = { trade = { 11221, {4066, 10}, {2930, 1}, 1110 }, reward = 27086 }, -- Karagoz Guanti
-	[599] = { trade = { 11241, {4067, 10}, {2930, 1},  836 }, reward = 27271 }, -- Karagoz Pantaloni
-	[600] = { trade = { 11261, {4068, 10}, {2930, 1}, 1131 }, reward = 27445 }, -- Karagoz Scarpe
-	
-	[601] = { trade = { 11182, {4064, 10}, {2928, 1},  488 }, reward = 26776 }, -- Maculele Tiara
-	[602] = { trade = { 11202, {4065, 10}, {2928, 1},  837 }, reward = 26934 }, -- Maculele Casaque
-	[603] = { trade = { 11222, {4066, 10}, {2928, 1}, 1110 }, reward = 27088 }, -- Maculele Bangles
-	[604] = { trade = { 11242, {4067, 10}, {2928, 1},  836 }, reward = 27273 }, -- Maculele Tights
-	[605] = { trade = { 11262, {4068, 10}, {2928, 1}, 1131 }, reward = 27447 }, -- Maculele Toeshoes
-	
-	[606] = { trade = { 11183, {4064, 10}, {2967, 1},  488 }, reward = 26778 }, -- Arbatel Bonnet
-	[607] = { trade = { 11203, {4065, 10}, {2967, 1},  837 }, reward = 26936 }, -- Arbatel Gown
-	[608] = { trade = { 11223, {4066, 10}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
-	[609] = { trade = { 11243, {4067, 10}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
-	[610] = { trade = { 11263, {4068, 10}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
+	[526] = { trade = { 11164, {4064, 10}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
+	[527] = { trade = { 11184, {4065, 10}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
+	[528] = { trade = { 11204, {4066, 10}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
+	[529] = { trade = { 11224, {4067, 10}, {2929 ,1},  836 }, reward = 27237 }, -- Boii Cuises
+	[530] = { trade = { 11244, {4068, 10}, {2929 ,1}, 1131 }, reward = 27411 }, -- Boii Calligae	
+	[531] = { trade = { 11165, {4064, 10}, {2962, 1},  488 }, reward = 26742 }, -- Bhikku Crown
+	[532] = { trade = { 11185, {4065, 10}, {2962, 1},  837 }, reward = 26900 }, -- Bhikku Cyclas
+	[533] = { trade = { 11205, {4066, 10}, {2962, 1}, 1110 }, reward = 27054 }, -- Bhikku Gloves
+	[534] = { trade = { 11225, {4067, 10}, {2962, 1},  836 }, reward = 27239 }, -- Bhikku Hose
+	[535] = { trade = { 11245, {4068, 10}, {2962, 1}, 1131 }, reward = 27413 }, -- Bhikku Gaiters
+	[536] = { trade = { 11166, {4064, 10}, {3287, 1},  488 }, reward = 26744 }, -- Eber Cap
+	[537] = { trade = { 11186, {4065, 10}, {3287, 1},  837 }, reward = 26902 }, -- Eber Bliaut
+	[538] = { trade = { 11206, {4066, 10}, {3287, 1}, 1110 }, reward = 27056 }, -- Eber Mitts
+	[539] = { trade = { 11226, {4067, 10}, {3287, 1},  836 }, reward = 27241 }, -- Eber Pantaloons
+	[540] = { trade = { 11246, {4068, 10}, {3287, 1}, 1131 }, reward = 27415 }, -- Eber Duckbills
+	[541] = { trade = { 11167, {4064, 10}, {2927, 1},  488 }, reward = 26746 }, -- Wicce Petasos
+	[542] = { trade = { 11187, {4065, 10}, {2927, 1},  837 }, reward = 26904 }, -- Wicce Coat
+	[543] = { trade = { 11207, {4066, 10}, {2927, 1}, 1110 }, reward = 27058 }, -- Wicce Gloves
+	[544] = { trade = { 11227, {4067, 10}, {2927, 1},  836 }, reward = 27243 }, -- Wicce Chausses
+	[545] = { trade = { 11247, {4068, 10}, {2927, 1}, 1131 }, reward = 27417 }, -- Wicce Sabot
+	[546] = { trade = { 11168, {4064, 10}, {2965, 1},  488 }, reward = 26748 }, -- Lethargy Chappel
+	[547] = { trade = { 11188, {4065, 10}, {2965, 1},  837 }, reward = 26906 }, -- Lethargy Sayon
+	[548] = { trade = { 11208, {4066, 10}, {2965, 1}, 1110 }, reward = 27060 }, -- Lethargy Gantherots
+	[549] = { trade = { 11228, {4067, 10}, {2965, 1},  836 }, reward = 27245 }, -- Lethargy Fuseau
+	[550] = { trade = { 11248, {4068, 10}, {2965, 1}, 1131 }, reward = 27419 }, -- Lethargy Houseaux
+	[551] = { trade = { 11169, {4064, 10}, {3291, 1},  488 }, reward = 26750 }, -- Skulker's Bonnet
+	[552] = { trade = { 11189, {4065, 10}, {3291, 1},  837 }, reward = 26908 }, -- Skulker's Vest
+	[553] = { trade = { 11209, {4066, 10}, {3291, 1}, 1110 }, reward = 27062 }, -- Skulker's Armlets
+	[554] = { trade = { 11229, {4067, 10}, {3291, 1},  836 }, reward = 27247 }, -- Skulker's Culottes
+	[555] = { trade = { 11249, {4068, 10}, {3291, 1}, 1131 }, reward = 27421 }, -- Skulker's Poulaines
+	[556] = { trade = { 11170, {4064, 10}, {2932, 1},  488 }, reward = 26752 }, -- Chevalier Armet
+	[557] = { trade = { 11190, {4065, 10}, {2932, 1},  837 }, reward = 26910 }, -- Chevalier Cuirass
+	[558] = { trade = { 11210, {4066, 10}, {2932, 1}, 1110 }, reward = 27064 }, -- Chevalier Gauntlets
+	[559] = { trade = { 11230, {4067, 10}, {2932, 1},  836 }, reward = 27249 }, -- Chevalier Cuisses
+	[560] = { trade = { 11250, {4068, 10}, {2932, 1}, 1131 }, reward = 27423 }, -- Chevalier Sabatons
+	[561] = { trade = { 11171, {4064, 10}, {2929, 1},  488 }, reward = 26754 }, -- Heathen's Burgonet
+	[562] = { trade = { 11191, {4065, 10}, {2929, 1},  837 }, reward = 26912 }, -- Heathen's Cuirass
+	[563] = { trade = { 11211, {4066, 10}, {2929, 1}, 1110 }, reward = 27066 }, -- Heathen's Gauntlets
+	[564] = { trade = { 11231, {4067, 10}, {2929, 1},  836 }, reward = 27251 }, -- Heathen's Flanchard
+	[565] = { trade = { 11251, {4068, 10}, {2929, 1}, 1131 }, reward = 27425 }, -- Heathen's Sollerets
+	[566] = { trade = { 11172, {4064, 10}, {2930, 1},  488 }, reward = 26756 }, -- Nukumi Cabasset
+	[567] = { trade = { 11192, {4065, 10}, {2930, 1},  837 }, reward = 26914 }, -- Nukumi Gausape
+	[568] = { trade = { 11212, {4066, 10}, {2930, 1}, 1110 }, reward = 27068 }, -- Nukumi Manoplas
+	[569] = { trade = { 11232, {4067, 10}, {2930, 1},  836 }, reward = 27253 }, -- Nukumi Quijotes
+	[570] = { trade = { 11252, {4068, 10}, {2930, 1}, 1131 }, reward = 27427 }, -- Nukumi Ocreae
+	[571] = { trade = { 11173, {4064, 10}, {3288, 1},  488 }, reward = 26758 }, -- Fili Calot
+	[572] = { trade = { 11193, {4065, 10}, {3288, 1},  837 }, reward = 26916 }, -- Fili Hongreline
+	[573] = { trade = { 11213, {4066, 10}, {3288, 1}, 1110 }, reward = 27070 }, -- Fili Manchettes
+	[574] = { trade = { 11233, {4067, 10}, {3288, 1},  836 }, reward = 27255 }, -- Fili Rhingrave
+	[575] = { trade = { 11253, {4068, 10}, {3288, 1}, 1131 }, reward = 27429 }, -- Fili Cothurnes
+	[576] = { trade = { 11174, {4064, 10}, {2963, 1},  488 }, reward = 26760 }, -- Amini Gapette
+	[577] = { trade = { 11194, {4065, 10}, {2963, 1},  837 }, reward = 26918 }, -- Amini Caban
+	[578] = { trade = { 11214, {4066, 10}, {2963, 1}, 1110 }, reward = 27072 }, -- Amini Glovelettes
+	[579] = { trade = { 11234, {4067, 10}, {2963, 1},  836 }, reward = 27257 }, -- Amini Bragues
+	[580] = { trade = { 11254, {4068, 10}, {2963, 1}, 1131 }, reward = 27431 }, -- Amini Bottillons
+	[581] = { trade = { 11175, {4064, 10}, {3289, 1},  488 }, reward = 26762 }, -- Kasuga Kabuto
+	[582] = { trade = { 11195, {4065, 10}, {3289, 1},  837 }, reward = 26920 }, -- Kasuga Domaru
+	[583] = { trade = { 11215, {4066, 10}, {3289, 1}, 1110 }, reward = 27074 }, -- Kasuga Kote
+	[584] = { trade = { 11235, {4067, 10}, {3289, 1},  836 }, reward = 27259 }, -- Kasuga Haidate
+	[585] = { trade = { 11255, {4068, 10}, {3289, 1}, 1131 }, reward = 27433 }, -- Kasuga Sune-Ate
+	[586] = { trade = { 11176, {4064, 10}, {2966, 1},  488 }, reward = 26764 }, -- Hattori Zukin
+	[587] = { trade = { 11196, {4065, 10}, {2966, 1},  837 }, reward = 26922 }, -- Hattori Ningi
+	[588] = { trade = { 11216, {4066, 10}, {2966, 1}, 1110 }, reward = 27076 }, -- Hattori Tekko
+	[589] = { trade = { 11236, {4067, 10}, {2966, 1},  836 }, reward = 27261 }, -- Hattori Hakama
+	[590] = { trade = { 11256, {4068, 10}, {2966, 1}, 1131 }, reward = 27435 }, -- Hattori Kyahan
+	[591] = { trade = { 11177, {4064, 10}, {3292, 1},  488 }, reward = 26766 }, -- Peltast's Mezail
+	[592] = { trade = { 11197, {4065, 10}, {3292, 1},  837 }, reward = 26924 }, -- Peltast's Plackart
+	[593] = { trade = { 11217, {4066, 10}, {3292, 1}, 1110 }, reward = 27078 }, -- Peltast's Vambraces
+	[594] = { trade = { 11237, {4067, 10}, {3292, 1},  836 }, reward = 27263 }, -- Peltast's Cuissots
+	[595] = { trade = { 11257, {4068, 10}, {3292, 1}, 1131 }, reward = 27437 }, -- Peltast's Schynbalds
+	[596] = { trade = { 11178, {4064, 10}, {2930, 1},  488 }, reward = 26768 }, -- Beckoner's Horn
+	[597] = { trade = { 11198, {4065, 10}, {2930, 1},  837 }, reward = 26926 }, -- Beckoner's Doublet
+	[598] = { trade = { 11218, {4066, 10}, {2930, 1}, 1110 }, reward = 27080 }, -- Beckoner's Bracers
+	[599] = { trade = { 11238, {4067, 10}, {2930, 1},  836 }, reward = 27265 }, -- Beckoner's Spats
+	[600] = { trade = { 11258, {4068, 10}, {2930, 1}, 1131 }, reward = 27439 }, -- Beckoner's Pigaches
+	[601] = { trade = { 11179, {4064, 10}, {3290, 1},  488 }, reward = 26770 }, -- Hashishin Kavuk
+	[602] = { trade = { 11199, {4065, 10}, {3290, 1},  837 }, reward = 26928 }, -- Hashishin Mintan
+	[603] = { trade = { 11219, {4066, 10}, {3290, 1}, 1110 }, reward = 27082 }, -- Hashishin Bazubands
+	[604] = { trade = { 11239, {4067, 10}, {3290, 1},  836 }, reward = 27267 }, -- Hashishin Tayt
+	[605] = { trade = { 11259, {4068, 10}, {3290, 1}, 1131 }, reward = 27441 }, -- Hashishin Basmak
+	[606] = { trade = { 11180, {4064, 10}, {2964, 1},  488 }, reward = 26772 }, -- Chasseur's Tricorne 
+	[607] = { trade = { 11200, {4065, 10}, {2964, 1},  837 }, reward = 26930 }, -- Chasseur's Frac
+	[608] = { trade = { 11220, {4066, 10}, {2964, 1}, 1110 }, reward = 27084 }, -- Chasseur's Gants
+	[609] = { trade = { 11240, {4067, 10}, {2964, 1},  836 }, reward = 27269 }, -- Chasseur's Culottes
+	[610] = { trade = { 11260, {4068, 10}, {2964, 1}, 1131 }, reward = 27443 }, -- Chasseur's Bottes
+	[611] = { trade = { 11181, {4064, 10}, {2930, 1},  488 }, reward = 26774 }, -- Karagoz Cappello
+	[612] = { trade = { 11201, {4065, 10}, {2930, 1},  837 }, reward = 26932 }, -- Karagoz Farsetto
+	[613] = { trade = { 11221, {4066, 10}, {2930, 1}, 1110 }, reward = 27086 }, -- Karagoz Guanti
+	[614] = { trade = { 11241, {4067, 10}, {2930, 1},  836 }, reward = 27271 }, -- Karagoz Pantaloni
+	[615] = { trade = { 11261, {4068, 10}, {2930, 1}, 1131 }, reward = 27445 }, -- Karagoz Scarpe
+	[616] = { trade = { 11182, {4064, 10}, {2928, 1},  488 }, reward = 26776 }, -- Maculele Tiara
+	[617] = { trade = { 11202, {4065, 10}, {2928, 1},  837 }, reward = 26934 }, -- Maculele Casaque
+	[618] = { trade = { 11222, {4066, 10}, {2928, 1}, 1110 }, reward = 27088 }, -- Maculele Bangles
+	[619] = { trade = { 11242, {4067, 10}, {2928, 1},  836 }, reward = 27273 }, -- Maculele Tights
+	[620] = { trade = { 11262, {4068, 10}, {2928, 1}, 1131 }, reward = 27447 }, -- Maculele Toeshoes
+	[621] = { trade = { 11183, {4064, 10}, {2967, 1},  488 }, reward = 26778 }, -- Arbatel Bonnet
+	[622] = { trade = { 11203, {4065, 10}, {2967, 1},  837 }, reward = 26936 }, -- Arbatel Gown
+	[623] = { trade = { 11223, {4066, 10}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
+	[624] = { trade = { 11243, {4067, 10}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
+	[625] = { trade = { 11263, {4068, 10}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
 -- From +2 Pieces >> Reforge NQ
-	[611] = { trade = { 11064, {4064, 5}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
-	[612] = { trade = { 11084, {4065, 5}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
-	[613] = { trade = { 11104, {4066, 5}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
-	[614] = { trade = { 11124, {4067, 5}, {2929 ,1},  836 }, reward = 27237 }, -- Boii Cuises
-	[615] = { trade = { 11144, {4068, 5}, {2929 ,1}, 1131 }, reward = 27411 }, -- Boii Calligae
-	
-	[616] = { trade = { 11065, {4064, 5}, {2962, 1},  488 }, reward = 26742 }, -- Bhikku Crown
-	[617] = { trade = { 11085, {4065, 5}, {2962, 1},  837 }, reward = 26900 }, -- Bhikku Cyclas
-	[618] = { trade = { 11105, {4066, 5}, {2962, 1}, 1110 }, reward = 27054 }, -- Bhikku Gloves
-	[619] = { trade = { 11125, {4067, 5}, {2962, 1},  836 }, reward = 27239 }, -- Bhikku Hose
-	[620] = { trade = { 11145, {4068, 5}, {2962, 1}, 1131 }, reward = 27413 }, -- Bhikku Gaiters
-	
-	[621] = { trade = { 11066, {4064, 5}, {3287, 1},  488 }, reward = 26744 }, -- Eber Cap
-	[622] = { trade = { 11086, {4065, 5}, {3287, 1},  837 }, reward = 26902 }, -- Eber Bliaut
-	[623] = { trade = { 11106, {4066, 5}, {3287, 1}, 1110 }, reward = 27056 }, -- Eber Mitts
-	[624] = { trade = { 11126, {4067, 5}, {3287, 1},  836 }, reward = 27241 }, -- Eber Pantaloons
-	[625] = { trade = { 11146, {4068, 5}, {3287, 1}, 1131 }, reward = 27415 }, -- Eber Duckbills
-	
-	[626] = { trade = { 11067, {4064, 5}, {2927, 1},  488 }, reward = 26746 }, -- Wicce Petasos
-	[627] = { trade = { 11087, {4065, 5}, {2927, 1},  837 }, reward = 26904 }, -- Wicce Coat
-	[628] = { trade = { 11107, {4066, 5}, {2927, 1}, 1110 }, reward = 27058 }, -- Wicce Gloves
-	[629] = { trade = { 11127, {4067, 5}, {2927, 1},  836 }, reward = 27243 }, -- Wicce Chausses
-	[630] = { trade = { 11147, {4068, 5}, {2927, 1}, 1131 }, reward = 27417 }, -- Wicce Sabots
-	
-	[631] = { trade = { 11068, {4064, 5}, {2965, 1},  488 }, reward = 26748 }, -- Lethargy Chappel
-	[632] = { trade = { 11088, {4065, 5}, {2965, 1},  837 }, reward = 26906 }, -- Lethargy Sayon
-	[633] = { trade = { 11108, {4066, 5}, {2965, 1}, 1110 }, reward = 27060 }, -- Lethargy Gantherots
-	[634] = { trade = { 11128, {4067, 5}, {2965, 1},  836 }, reward = 27245 }, -- Lethargy Fuseau
-	[635] = { trade = { 11148, {4068, 5}, {2965, 1}, 1131 }, reward = 27419 }, -- Lethargy Houseaux
-	
-	[636] = { trade = { 11069, {4064, 5}, {3291, 1},  488 }, reward = 26750 }, -- Skulker's Bonnet
-	[637] = { trade = { 11089, {4065, 5}, {3291, 1},  837 }, reward = 26908 }, -- Skulker's Vest
-	[638] = { trade = { 11109, {4066, 5}, {3291, 1}, 1110 }, reward = 27062 }, -- Skulker's Armlets
-	[639] = { trade = { 11129, {4067, 5}, {3291, 1},  836 }, reward = 27247 }, -- Skulker's Culottes
-	[640] = { trade = { 11149, {4068, 5}, {3291, 1}, 1131 }, reward = 27421 }, -- Skulker's Poulaines
-	
-	[641] = { trade = { 11070, {4064, 5}, {2932, 1},  488 }, reward = 26752 }, -- Chevalier Armet
-	[642] = { trade = { 11090, {4065, 5}, {2932, 1},  837 }, reward = 26910 }, -- Chevalier Cuirass
-	[643] = { trade = { 11110, {4066, 5}, {2932, 1}, 1110 }, reward = 27064 }, -- Chevalier Gauntlets
-	[644] = { trade = { 11130, {4067, 5}, {2932, 1},  836 }, reward = 27249 }, -- Chevalier Cuisses
-	[645] = { trade = { 11150, {4068, 5}, {2932, 1}, 1131 }, reward = 27423 }, -- Chevalier Sabatons
-	
-	[646] = { trade = { 11071, {4064, 5}, {2929, 1},  488 }, reward = 26754 }, -- Heathen's Burgonet
-	[647] = { trade = { 11091, {4065, 5}, {2929, 1},  837 }, reward = 26912 }, -- Heathen's Cuirass
-	[648] = { trade = { 11111, {4066, 5}, {2929, 1}, 1110 }, reward = 27066 }, -- Heathen's Gauntlets
-	[649] = { trade = { 11131, {4067, 5}, {2929, 1},  836 }, reward = 27251 }, -- Heathen's Flanchard
-	[650] = { trade = { 11151, {4068, 5}, {2929, 1}, 1131 }, reward = 27425 }, -- Heathen's Sollerets
-	
-	[651] = { trade = { 11072, {4064, 5}, {2930, 1},  488 }, reward = 26756 }, -- Nukumi Cabasset
-	[652] = { trade = { 11092, {4065, 5}, {2930, 1},  837 }, reward = 26914 }, -- Nukumi Gausape
-	[653] = { trade = { 11112, {4066, 5}, {2930, 1}, 1110 }, reward = 27068 }, -- Nukumi Manoplas
-	[654] = { trade = { 11132, {4067, 5}, {2930, 1},  836 }, reward = 27253 }, -- Nukumi Quijotes
-	[655] = { trade = { 11152, {4068, 5}, {2930, 1}, 1131 }, reward = 27427 }, -- Nukumi Ocreae
-	
-	[656] = { trade = { 11073, {4064, 5}, {3288, 1},  488 }, reward = 26758 }, -- Fili Calot
-	[657] = { trade = { 11093, {4065, 5}, {3288, 1},  837 }, reward = 26916 }, -- Fili Hongreline
-	[658] = { trade = { 11113, {4066, 5}, {3288, 1}, 1110 }, reward = 27070 }, -- Fili Manchettes
-	[659] = { trade = { 11133, {4067, 5}, {3288, 1},  836 }, reward = 27255 }, -- Fili Rhingrave
-	[660] = { trade = { 11153, {4068, 5}, {3288, 1}, 1131 }, reward = 27429 }, -- Fili Cothurnes
-	
-	[661] = { trade = { 11074, {4064, 5}, {2963, 1},  488 }, reward = 26760 }, -- Amini Gapette
-	[662] = { trade = { 11094, {4065, 5}, {2963, 1},  837 }, reward = 26918 }, -- Amini Caban
-	[663] = { trade = { 11114, {4066, 5}, {2963, 1}, 1110 }, reward = 27072 }, -- Amini Glovelettes
-	[664] = { trade = { 11134, {4067, 5}, {2963, 1},  836 }, reward = 27257 }, -- Amini Bragues
-	[665] = { trade = { 11154, {4068, 5}, {2963, 1}, 1131 }, reward = 27431 }, -- Amini Bottillons
-	
-	[666] = { trade = { 11075, {4064, 5}, {3289, 1},  488 }, reward = 26762 }, -- Kasuga Kabuto
-	[667] = { trade = { 11095, {4065, 5}, {3289, 1},  837 }, reward = 26920 }, -- Kasuga Domaru
-	[668] = { trade = { 11115, {4066, 5}, {3289, 1}, 1110 }, reward = 27074 }, -- Kasuga Kote
-	[669] = { trade = { 11135, {4067, 5}, {3289, 1},  836 }, reward = 27259 }, -- Kasuga Haidate
-	[670] = { trade = { 11155, {4068, 5}, {3289, 1}, 1131 }, reward = 27433 }, -- Kasuga Sune-Ate
-	
-	[671] = { trade = { 11076, {4064, 5}, {2966, 1},  488 }, reward = 26764 }, -- Hattori Zukin
-	[672] = { trade = { 11096, {4065, 5}, {2966, 1},  837 }, reward = 26922 }, -- Hattori Ningi
-	[673] = { trade = { 11116, {4066, 5}, {2966, 1}, 1110 }, reward = 27076 }, -- Hattori Tekko
-	[674] = { trade = { 11136, {4067, 5}, {2966, 1},  836 }, reward = 27261 }, -- Hattori Hakama
-	[675] = { trade = { 11156, {4068, 5}, {2966, 1}, 1131 }, reward = 27435 }, -- Hattori Kyahan
-	
-	[676] = { trade = { 11077, {4064, 5}, {3292, 1},  488 }, reward = 26766 }, -- Peltast's Mezail
-	[677] = { trade = { 11097, {4065, 5}, {3292, 1},  837 }, reward = 26924 }, -- Peltast's Plackart
-	[678] = { trade = { 11117, {4066, 5}, {3292, 1}, 1110 }, reward = 27078 }, -- Peltast's Vambraces
-	[679] = { trade = { 11137, {4067, 5}, {3292, 1},  836 }, reward = 27263 }, -- Peltast's Cuissots
-	[680] = { trade = { 11157, {4068, 5}, {3292, 1}, 1131 }, reward = 27437 }, -- Peltast's Schynbalds
-	
-	[681] = { trade = { 11078, {4064, 5}, {2930, 1},  488 }, reward = 26768 }, -- Beckoner's Horn
-	[682] = { trade = { 11098, {4065, 5}, {2930, 1},  837 }, reward = 26926 }, -- Beckoner's Doublet
-	[683] = { trade = { 11118, {4066, 5}, {2930, 1}, 1110 }, reward = 27080 }, -- Beckoner's Bracers
-	[684] = { trade = { 11138, {4067, 5}, {2930, 1},  836 }, reward = 27265 }, -- Beckoner's Spats
-	[685] = { trade = { 11158, {4068, 5}, {2930, 1}, 1131 }, reward = 27439 }, -- Beckoner's Pigaches
-	
-	[686] = { trade = { 11079, {4064, 5}, {3290, 1},  488 }, reward = 26770 }, -- Hashishin Kavuk
-	[687] = { trade = { 11099, {4065, 5}, {3290, 1},  837 }, reward = 26928 }, -- Hashishin Mintan
-	[688] = { trade = { 11119, {4066, 5}, {3290, 1}, 1110 }, reward = 27082 }, -- Hashishin Bazubands
-	[689] = { trade = { 11139, {4067, 5}, {3290, 1},  836 }, reward = 27267 }, -- Hashishin Tayt
-	[690] = { trade = { 11159, {4068, 5}, {3290, 1}, 1131 }, reward = 27441 }, -- Hashishin Basmak
-	
-	[691] = { trade = { 11080, {4064, 5}, {2964, 1},  488 }, reward = 26772 }, -- Chasseur's Tricorne
-	[692] = { trade = { 11100, {4065, 5}, {2964, 1},  837 }, reward = 26930 }, -- Chasseur's Frac
-	[693] = { trade = { 11120, {4066, 5}, {2964, 1}, 1110 }, reward = 27084 }, -- Chasseur's Gants
-	[694] = { trade = { 11140, {4067, 5}, {2964, 1},  836 }, reward = 27269 }, -- Chasseur's Culottes
-	[695] = { trade = { 11160, {4068, 5}, {2964, 1}, 1131 }, reward = 27443 }, -- Chasseur's Bottes
-	
-	[696] = { trade = { 11081, {4064, 5}, {2930, 1},  488 }, reward = 26774 }, -- Karagoz Cappello
-	[697] = { trade = { 11101, {4065, 5}, {2930, 1},  837 }, reward = 26932 }, -- Karagoz Farsetto
-	[698] = { trade = { 11121, {4066, 5}, {2930, 1}, 1110 }, reward = 27086 }, -- Karagoz Guanti
-	[699] = { trade = { 11141, {4067, 5}, {2930, 1},  836 }, reward = 27271 }, -- Karagoz Pantaloni
-	[600] = { trade = { 11161, {4068, 5}, {2930, 1}, 1131 }, reward = 27445 }, -- Karagoz Scarpe
-	
-	[601] = { trade = { 11082, {4064, 5}, {2928, 1},  488 }, reward = 26776 }, -- Maculele Tiara
-	[602] = { trade = { 11102, {4065, 5}, {2928, 1},  837 }, reward = 26934 }, -- Maculele Casaque
-	[603] = { trade = { 11122, {4066, 5}, {2928, 1}, 1110 }, reward = 27088 }, -- Maculele Bangles
-	[604] = { trade = { 11142, {4067, 5}, {2928, 1},  836 }, reward = 27273 }, -- Maculele Tights
-	[605] = { trade = { 11162, {4068, 5}, {2928, 1}, 1131 }, reward = 27447 }, -- Maculele Toeshoes
-	
-	[606] = { trade = { 11083, {4064, 5}, {2967, 1},  488 }, reward = 26778 }, -- Arbatel Bonnet
-	[607] = { trade = { 11103, {4065, 5}, {2967, 1},  837 }, reward = 26936 }, -- Arbatel Gown
-	[608] = { trade = { 11123, {4066, 5}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
-	[609] = { trade = { 11143, {4067, 5}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
-	[610] = { trade = { 11163, {4068, 5}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
+	[626] = { trade = { 11064, {4064, 5}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
+	[627] = { trade = { 11084, {4065, 5}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
+	[628] = { trade = { 11104, {4066, 5}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
+	[629] = { trade = { 11124, {4067, 5}, {2929 ,1},  836 }, reward = 27237 }, -- Boii Cuises
+	[630] = { trade = { 11144, {4068, 5}, {2929 ,1}, 1131 }, reward = 27411 }, -- Boii Calligae
+	[631] = { trade = { 11065, {4064, 5}, {2962, 1},  488 }, reward = 26742 }, -- Bhikku Crown
+	[632] = { trade = { 11085, {4065, 5}, {2962, 1},  837 }, reward = 26900 }, -- Bhikku Cyclas
+	[633] = { trade = { 11105, {4066, 5}, {2962, 1}, 1110 }, reward = 27054 }, -- Bhikku Gloves
+	[634] = { trade = { 11125, {4067, 5}, {2962, 1},  836 }, reward = 27239 }, -- Bhikku Hose
+	[635] = { trade = { 11145, {4068, 5}, {2962, 1}, 1131 }, reward = 27413 }, -- Bhikku Gaiters
+	[636] = { trade = { 11066, {4064, 5}, {3287, 1},  488 }, reward = 26744 }, -- Eber Cap
+	[637] = { trade = { 11086, {4065, 5}, {3287, 1},  837 }, reward = 26902 }, -- Eber Bliaut
+	[638] = { trade = { 11106, {4066, 5}, {3287, 1}, 1110 }, reward = 27056 }, -- Eber Mitts
+	[639] = { trade = { 11126, {4067, 5}, {3287, 1},  836 }, reward = 27241 }, -- Eber Pantaloons
+	[640] = { trade = { 11146, {4068, 5}, {3287, 1}, 1131 }, reward = 27415 }, -- Eber Duckbills
+	[641] = { trade = { 11067, {4064, 5}, {2927, 1},  488 }, reward = 26746 }, -- Wicce Petasos
+	[642] = { trade = { 11087, {4065, 5}, {2927, 1},  837 }, reward = 26904 }, -- Wicce Coat
+	[643] = { trade = { 11107, {4066, 5}, {2927, 1}, 1110 }, reward = 27058 }, -- Wicce Gloves
+	[644] = { trade = { 11127, {4067, 5}, {2927, 1},  836 }, reward = 27243 }, -- Wicce Chausses
+	[645] = { trade = { 11147, {4068, 5}, {2927, 1}, 1131 }, reward = 27417 }, -- Wicce Sabots
+	[646] = { trade = { 11068, {4064, 5}, {2965, 1},  488 }, reward = 26748 }, -- Lethargy Chappel
+	[647] = { trade = { 11088, {4065, 5}, {2965, 1},  837 }, reward = 26906 }, -- Lethargy Sayon
+	[648] = { trade = { 11108, {4066, 5}, {2965, 1}, 1110 }, reward = 27060 }, -- Lethargy Gantherots
+	[649] = { trade = { 11128, {4067, 5}, {2965, 1},  836 }, reward = 27245 }, -- Lethargy Fuseau
+	[650] = { trade = { 11148, {4068, 5}, {2965, 1}, 1131 }, reward = 27419 }, -- Lethargy Houseaux
+	[651] = { trade = { 11069, {4064, 5}, {3291, 1},  488 }, reward = 26750 }, -- Skulker's Bonnet
+	[652] = { trade = { 11089, {4065, 5}, {3291, 1},  837 }, reward = 26908 }, -- Skulker's Vest
+	[653] = { trade = { 11109, {4066, 5}, {3291, 1}, 1110 }, reward = 27062 }, -- Skulker's Armlets
+	[654] = { trade = { 11129, {4067, 5}, {3291, 1},  836 }, reward = 27247 }, -- Skulker's Culottes
+	[656] = { trade = { 11149, {4068, 5}, {3291, 1}, 1131 }, reward = 27421 }, -- Skulker's Poulaines
+	[657] = { trade = { 11070, {4064, 5}, {2932, 1},  488 }, reward = 26752 }, -- Chevalier Armet
+	[658] = { trade = { 11090, {4065, 5}, {2932, 1},  837 }, reward = 26910 }, -- Chevalier Cuirass
+	[659] = { trade = { 11110, {4066, 5}, {2932, 1}, 1110 }, reward = 27064 }, -- Chevalier Gauntlets
+	[660] = { trade = { 11130, {4067, 5}, {2932, 1},  836 }, reward = 27249 }, -- Chevalier Cuisses
+	[661] = { trade = { 11150, {4068, 5}, {2932, 1}, 1131 }, reward = 27423 }, -- Chevalier Sabatons
+	[662] = { trade = { 11071, {4064, 5}, {2929, 1},  488 }, reward = 26754 }, -- Heathen's Burgonet
+	[663] = { trade = { 11091, {4065, 5}, {2929, 1},  837 }, reward = 26912 }, -- Heathen's Cuirass
+	[664] = { trade = { 11111, {4066, 5}, {2929, 1}, 1110 }, reward = 27066 }, -- Heathen's Gauntlets
+	[665] = { trade = { 11131, {4067, 5}, {2929, 1},  836 }, reward = 27251 }, -- Heathen's Flanchard
+	[666] = { trade = { 11151, {4068, 5}, {2929, 1}, 1131 }, reward = 27425 }, -- Heathen's Sollerets
+	[667] = { trade = { 11072, {4064, 5}, {2930, 1},  488 }, reward = 26756 }, -- Nukumi Cabasset
+	[668] = { trade = { 11092, {4065, 5}, {2930, 1},  837 }, reward = 26914 }, -- Nukumi Gausape
+	[669] = { trade = { 11112, {4066, 5}, {2930, 1}, 1110 }, reward = 27068 }, -- Nukumi Manoplas
+	[670] = { trade = { 11132, {4067, 5}, {2930, 1},  836 }, reward = 27253 }, -- Nukumi Quijotes
+	[671] = { trade = { 11152, {4068, 5}, {2930, 1}, 1131 }, reward = 27427 }, -- Nukumi Ocreae
+	[672] = { trade = { 11073, {4064, 5}, {3288, 1},  488 }, reward = 26758 }, -- Fili Calot
+	[673] = { trade = { 11093, {4065, 5}, {3288, 1},  837 }, reward = 26916 }, -- Fili Hongreline
+	[674] = { trade = { 11113, {4066, 5}, {3288, 1}, 1110 }, reward = 27070 }, -- Fili Manchettes
+	[675] = { trade = { 11133, {4067, 5}, {3288, 1},  836 }, reward = 27255 }, -- Fili Rhingrave
+	[676] = { trade = { 11153, {4068, 5}, {3288, 1}, 1131 }, reward = 27429 }, -- Fili Cothurnes
+	[677] = { trade = { 11074, {4064, 5}, {2963, 1},  488 }, reward = 26760 }, -- Amini Gapette
+	[678] = { trade = { 11094, {4065, 5}, {2963, 1},  837 }, reward = 26918 }, -- Amini Caban
+	[679] = { trade = { 11114, {4066, 5}, {2963, 1}, 1110 }, reward = 27072 }, -- Amini Glovelettes
+	[680] = { trade = { 11134, {4067, 5}, {2963, 1},  836 }, reward = 27257 }, -- Amini Bragues
+	[681] = { trade = { 11154, {4068, 5}, {2963, 1}, 1131 }, reward = 27431 }, -- Amini Bottillons
+	[682] = { trade = { 11075, {4064, 5}, {3289, 1},  488 }, reward = 26762 }, -- Kasuga Kabuto
+	[683] = { trade = { 11095, {4065, 5}, {3289, 1},  837 }, reward = 26920 }, -- Kasuga Domaru
+	[684] = { trade = { 11115, {4066, 5}, {3289, 1}, 1110 }, reward = 27074 }, -- Kasuga Kote
+	[685] = { trade = { 11135, {4067, 5}, {3289, 1},  836 }, reward = 27259 }, -- Kasuga Haidate
+	[686] = { trade = { 11155, {4068, 5}, {3289, 1}, 1131 }, reward = 27433 }, -- Kasuga Sune-Ate
+	[687] = { trade = { 11076, {4064, 5}, {2966, 1},  488 }, reward = 26764 }, -- Hattori Zukin
+	[688] = { trade = { 11096, {4065, 5}, {2966, 1},  837 }, reward = 26922 }, -- Hattori Ningi
+	[689] = { trade = { 11116, {4066, 5}, {2966, 1}, 1110 }, reward = 27076 }, -- Hattori Tekko
+	[690] = { trade = { 11136, {4067, 5}, {2966, 1},  836 }, reward = 27261 }, -- Hattori Hakama
+	[691] = { trade = { 11156, {4068, 5}, {2966, 1}, 1131 }, reward = 27435 }, -- Hattori Kyahan
+	[692] = { trade = { 11077, {4064, 5}, {3292, 1},  488 }, reward = 26766 }, -- Peltast's Mezail
+	[693] = { trade = { 11097, {4065, 5}, {3292, 1},  837 }, reward = 26924 }, -- Peltast's Plackart
+	[694] = { trade = { 11117, {4066, 5}, {3292, 1}, 1110 }, reward = 27078 }, -- Peltast's Vambraces
+	[695] = { trade = { 11137, {4067, 5}, {3292, 1},  836 }, reward = 27263 }, -- Peltast's Cuissots
+	[696] = { trade = { 11157, {4068, 5}, {3292, 1}, 1131 }, reward = 27437 }, -- Peltast's Schynbalds
+	[697] = { trade = { 11078, {4064, 5}, {2930, 1},  488 }, reward = 26768 }, -- Beckoner's Horn
+	[698] = { trade = { 11098, {4065, 5}, {2930, 1},  837 }, reward = 26926 }, -- Beckoner's Doublet
+	[699] = { trade = { 11118, {4066, 5}, {2930, 1}, 1110 }, reward = 27080 }, -- Beckoner's Bracers
+	[700] = { trade = { 11138, {4067, 5}, {2930, 1},  836 }, reward = 27265 }, -- Beckoner's Spats
+	[701] = { trade = { 11158, {4068, 5}, {2930, 1}, 1131 }, reward = 27439 }, -- Beckoner's Pigaches
+	[702] = { trade = { 11079, {4064, 5}, {3290, 1},  488 }, reward = 26770 }, -- Hashishin Kavuk
+	[703] = { trade = { 11099, {4065, 5}, {3290, 1},  837 }, reward = 26928 }, -- Hashishin Mintan
+	[704] = { trade = { 11119, {4066, 5}, {3290, 1}, 1110 }, reward = 27082 }, -- Hashishin Bazubands
+	[705] = { trade = { 11139, {4067, 5}, {3290, 1},  836 }, reward = 27267 }, -- Hashishin Tayt
+	[706] = { trade = { 11159, {4068, 5}, {3290, 1}, 1131 }, reward = 27441 }, -- Hashishin Basmak
+	[707] = { trade = { 11080, {4064, 5}, {2964, 1},  488 }, reward = 26772 }, -- Chasseur's Tricorne
+	[708] = { trade = { 11100, {4065, 5}, {2964, 1},  837 }, reward = 26930 }, -- Chasseur's Frac
+	[709] = { trade = { 11120, {4066, 5}, {2964, 1}, 1110 }, reward = 27084 }, -- Chasseur's Gants
+	[710] = { trade = { 11140, {4067, 5}, {2964, 1},  836 }, reward = 27269 }, -- Chasseur's Culottes
+	[711] = { trade = { 11160, {4068, 5}, {2964, 1}, 1131 }, reward = 27443 }, -- Chasseur's Bottes
+	[712] = { trade = { 11081, {4064, 5}, {2930, 1},  488 }, reward = 26774 }, -- Karagoz Cappello
+	[713] = { trade = { 11101, {4065, 5}, {2930, 1},  837 }, reward = 26932 }, -- Karagoz Farsetto
+	[714] = { trade = { 11121, {4066, 5}, {2930, 1}, 1110 }, reward = 27086 }, -- Karagoz Guanti
+	[715] = { trade = { 11141, {4067, 5}, {2930, 1},  836 }, reward = 27271 }, -- Karagoz Pantaloni
+	[716] = { trade = { 11161, {4068, 5}, {2930, 1}, 1131 }, reward = 27445 }, -- Karagoz Scarpe
+	[717] = { trade = { 11082, {4064, 5}, {2928, 1},  488 }, reward = 26776 }, -- Maculele Tiara
+	[718] = { trade = { 11102, {4065, 5}, {2928, 1},  837 }, reward = 26934 }, -- Maculele Casaque
+	[719] = { trade = { 11122, {4066, 5}, {2928, 1}, 1110 }, reward = 27088 }, -- Maculele Bangles
+	[720] = { trade = { 11142, {4067, 5}, {2928, 1},  836 }, reward = 27273 }, -- Maculele Tights
+	[721] = { trade = { 11162, {4068, 5}, {2928, 1}, 1131 }, reward = 27447 }, -- Maculele Toeshoes
+	[722] = { trade = { 11083, {4064, 5}, {2967, 1},  488 }, reward = 26778 }, -- Arbatel Bonnet
+	[723] = { trade = { 11103, {4065, 5}, {2967, 1},  837 }, reward = 26936 }, -- Arbatel Gown
+	[724] = { trade = { 11123, {4066, 5}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
+	[725] = { trade = { 11143, {4067, 5}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
+	[726] = { trade = { 11163, {4068, 5}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
 	-- Reforge >> Reforge +1
-	[611] = { trade = { 26740, {4069, 8}, {9009, 15}, 9006 }, reward = 26741 }, -- Boii Mask +1
-	[612] = { trade = { 26898, {4070, 8}, {9009, 25}, 9062 }, reward = 26899 }, -- Boii Lorica +1
-	[613] = { trade = { 26052, {4071, 8}, {9009, 15}, 9005 }, reward = 27053 }, -- Boii Mufflers +1
-	[614] = { trade = { 27237, {4072, 8}, {9009, 20}, 9064 }, reward = 27238 }, -- Boii Cuisses +1
-	[615] = { trade = { 27411, {4073, 8}, {9009, 15}, 9002 }, reward = 27412 }, -- Boii Calligae +1
-	
-	[616] = { trade = { 26742, {4069, 8}, {9009, 15}, 9006 }, reward = 26743 }, -- Bhikku Crown +1
-	[617] = { trade = { 26900, {4070, 8}, {9009, 25}, 9062 }, reward = 26901 }, -- Bhikku Cyclas +1
-	[618] = { trade = { 27054, {4071, 8}, {9009, 15}, 9005 }, reward = 27055 }, -- Bhikku Gloves +1
-	[619] = { trade = { 27239, {4072, 8}, {9009, 20}, 9064 }, reward = 27240 }, -- Bhikku Hose +1
-	[620] = { trade = { 27413, {4073, 8}, {9009, 15}, 9002 }, reward = 27414 }, -- Bhikku Gaiters +1
-	
-	[621] = { trade = { 26744, {4069, 8}, {9009, 15}, 9006 }, reward = 26745 }, -- Eber Cap +1
-	[622] = { trade = { 26902, {4070, 8}, {9009, 25}, 9062 }, reward = 26903 }, -- Eber Bliaut +1
-	[623] = { trade = { 27056, {4071, 8}, {9009, 15}, 9005 }, reward = 27057 }, -- Eber Mitts +1
-	[624] = { trade = { 27241, {4072, 8}, {9009, 20}, 9064 }, reward = 27242 }, -- Eber Pantaloons +1
-	[625] = { trade = { 27415, {4073, 8}, {9009, 15}, 9002 }, reward = 27416 }, -- Eber Duckbills +1
-	
-	[626] = { trade = { 26746, {4069, 8}, {9009, 15}, 9006 }, reward = 26747 }, -- Wicce Petasos +1
-	[627] = { trade = { 26904, {4070, 8}, {9009, 25}, 9062 }, reward = 26905 }, -- Wicce Coiat +1
-	[628] = { trade = { 27058, {4071, 8}, {9009, 15}, 9005 }, reward = 27059 }, -- Wicce Glvoes +1
-	[629] = { trade = { 27243, {4072, 8}, {9009, 20}, 9064 }, reward = 27244 }, -- Wicce Chausses +1
-	[630] = { trade = { 27417, {4073, 8}, {9009, 15}, 9002 }, reward = 27418 }, -- Wicce Sabots +1
-	
-	[631] = { trade = { 26748, {4069, 8}, {9009, 15}, 9006 }, reward = 26749 }, -- Lethargy Chappel +1
-	[632] = { trade = { 26906, {4070, 8}, {9009, 25}, 9062 }, reward = 26907 }, -- Lethargy Sayon +1
-	[633] = { trade = { 27060, {4071, 8}, {9009, 15}, 9005 }, reward = 27061 }, -- Lethargy Gantherots +1
-	[634] = { trade = { 27245, {4072, 8}, {9009, 20}, 9064 }, reward = 27246 }, -- Lethargy Fuseau +1
-	[635] = { trade = { 27419, {4073, 8}, {9009, 15}, 9002 }, reward = 27420 }, -- Lethargy Houseaux +1
-	
-	[636] = { trade = { 26750, {4069, 8}, {9009, 15}, 9006 }, reward = 26751 }, -- Skulker's Bonnet +1
-	[637] = { trade = { 26908, {4070, 8}, {9009, 25}, 9062 }, reward = 26909 }, -- Skulker's Vest +1
-	[638] = { trade = { 27062, {4071, 8}, {9009, 15}, 9005 }, reward = 27063 }, -- Skulker's Armlets +1
-	[639] = { trade = { 27247, {4072, 8}, {9009, 20}, 9064 }, reward = 27248 }, -- Skulker's Culottes +1
-	[640] = { trade = { 27421, {4073, 8}, {9009, 15}, 9002 }, reward = 27422 }, -- Skulker's Poulaines +1
-	
-	[641] = { trade = { 26752, {4069, 8}, {9009, 15}, 9006 }, reward = 26753 }, -- Chevalier Armet +1
-	[642] = { trade = { 26910, {4070, 8}, {9009, 25}, 9062 }, reward = 26911 }, -- Chevalier Cuirass +1
-	[643] = { trade = { 27064, {4071, 8}, {9009, 15}, 9005 }, reward = 27065 }, -- Chevalier Gauntlets +1
-	[644] = { trade = { 27249, {4072, 8}, {9009, 20}, 9064 }, reward = 27250 }, -- Chevalier Cuisses +1
-	[645] = { trade = { 27423, {4073, 8}, {9009, 15}, 9002 }, reward = 27424 }, -- Chevalier Sabatons +1
-	
-	[646] = { trade = { 26754, {4069, 8}, {9009, 15}, 9006 }, reward = 26755 }, -- Heathen's Burgonet +1
-	[647] = { trade = { 26912, {4070, 8}, {9009, 25}, 9062 }, reward = 26913 }, -- Heathen's Cuirass +1
-	[648] = { trade = { 27066, {4071, 8}, {9009, 15}, 9005 }, reward = 27067 }, -- Heathen's Gauntlets +1
-	[649] = { trade = { 27251, {4072, 8}, {9009, 20}, 9064 }, reward = 27252 }, -- Heathen's Flanchard +1
-	[650] = { trade = { 27425, {4073, 8}, {9009, 15}, 9002 }, reward = 27426 }, -- Heathen's Sollerets +1
-	
-	[651] = { trade = { 26756, {4069, 8}, {9009, 15}, 9006 }, reward = 26757 }, -- Nukumi Cabasset +1
-	[652] = { trade = { 26914, {4070, 8}, {9009, 25}, 9062 }, reward = 26915 }, -- Nukumi Gausape +1
-	[653] = { trade = { 27068, {4071, 8}, {9009, 15}, 9005 }, reward = 27069 }, -- Nukumi Manoplas +1
-	[654] = { trade = { 27253, {4072, 8}, {9009, 20}, 9064 }, reward = 27254 }, -- Nukumi Quijotes +1
-	[655] = { trade = { 27427, {4073, 8}, {9009, 15}, 9002 }, reward = 27428 }, -- Nukumi Ocreae +1
-	
-	[656] = { trade = { 26758, {4069, 8}, {9009, 15}, 9006 }, reward = 26759 }, -- Fili Calot +1
-	[657] = { trade = { 26916, {4070, 8}, {9009, 25}, 9062 }, reward = 26917 }, -- Fili Hongreline +1
-	[658] = { trade = { 27070, {4071, 8}, {9009, 15}, 9005 }, reward = 27071 }, -- Fili Manchettes +1
-	[659] = { trade = { 27255, {4072, 8}, {9009, 20}, 9064 }, reward = 27256 }, -- Fili Rhingrave +1
-	[660] = { trade = { 27429, {4073, 8}, {9009, 15}, 9002 }, reward = 27430 }, -- Fili Cothurnes +1
-	
-	[661] = { trade = { 26760, {4069, 8}, {9009, 15}, 9006 }, reward = 26761 }, -- Amini Gapette +1
-	[662] = { trade = { 26918, {4070, 8}, {9009, 25}, 9062 }, reward = 26919 }, -- Amini Caban +1
-	[663] = { trade = { 27072, {4071, 8}, {9009, 15}, 9005 }, reward = 27073 }, -- Amini Glovettes +1
-	[664] = { trade = { 27257, {4072, 8}, {9009, 20}, 9064 }, reward = 27258 }, -- Amini Bragues +1
-	[665] = { trade = { 27431, {4073, 8}, {9009, 15}, 9002 }, reward = 27432 }, -- Amini Bottillons +1
-	
-	[666] = { trade = { 26762, {4069, 8}, {9009, 15}, 9006 }, reward = 26763 }, -- Kasuga Kabuto +1
-	[667] = { trade = { 26920, {4070, 8}, {9009, 25}, 9062 }, reward = 26921 }, -- Kasuga Domaru +1
-	[668] = { trade = { 27074, {4071, 8}, {9009, 15}, 9005 }, reward = 27075 }, -- Kasuga Kote +1
-	[669] = { trade = { 27259, {4072, 8}, {9009, 20}, 9064 }, reward = 27260 }, -- Kasuga Haidate +1
-	[670] = { trade = { 27433, {4073, 8}, {9009, 15}, 9002 }, reward = 27434 }, -- Kasuga Sune-Ate +1
-	
-	[671] = { trade = { 26764, {4069, 8}, {9009, 15}, 9006 }, reward = 26765 }, -- Hattori Zukin +1
-	[672] = { trade = { 26922, {4070, 8}, {9009, 25}, 9062 }, reward = 26923 }, -- Hattori Ningi +1
-	[673] = { trade = { 27076, {4071, 8}, {9009, 15}, 9005 }, reward = 27077 }, -- Hattori Tekko +1
-	[674] = { trade = { 27261, {4072, 8}, {9009, 20}, 9064 }, reward = 27262 }, -- Hattori Hakama +1
-	[675] = { trade = { 27435, {4073, 8}, {9009, 15}, 9002 }, reward = 27436 }, -- Hattori Kyahan +1 
-	
-	[676] = { trade = { 26766, {4069, 8}, {9009, 15}, 9006 }, reward = 26767 }, -- Peltast's Mezail +1
-	[677] = { trade = { 26924, {4070, 8}, {9009, 25}, 9062 }, reward = 26925 }, -- Peltast's Plackart +1
-	[678] = { trade = { 27078, {4071, 8}, {9009, 15}, 9005 }, reward = 27079 }, -- Peltast's Vambraces +1
-	[679] = { trade = { 27263, {4072, 8}, {9009, 20}, 9064 }, reward = 27264 }, -- Peltast's Cuissots +1
-	[680] = { trade = { 27437, {4073, 8}, {9009, 15}, 9002 }, reward = 27438 }, -- Peltast's Schynbalds +1
-	
-	[681] = { trade = { 26768, {4069, 8}, {9009, 15}, 9006 }, reward = 26769 }, -- Beckoner's Horn +1
-	[682] = { trade = { 26926, {4070, 8}, {9009, 25}, 9062 }, reward = 26927 }, -- Beckoner's Doublet +1
-	[683] = { trade = { 27080, {4071, 8}, {9009, 15}, 9005 }, reward = 27081 }, -- Beckoner's Bracers
-	[684] = { trade = { 27265, {4072, 8}, {9009, 20}, 9064 }, reward = 27266 }, -- Beckoner's Spats +1
-	[685] = { trade = { 27439, {4073, 8}, {9009, 15}, 9002 }, reward = 27440 }, -- Beckoner's Pigaches +1
-	
-	[686] = { trade = { 26770, {4069, 8}, {9009, 15}, 9006 }, reward = 26771 }, -- Hashishin Kavuk +1
-	[687] = { trade = { 26928, {4070, 8}, {9009, 20}, 9062 }, reward = 26929 }, -- Hashishin Mintan +1
-	[688] = { trade = { 27082, {4071, 8}, {9009, 15}, 9005 }, reward = 27083 }, -- Hashishin Bazubands +1
-	[689] = { trade = { 27267, {4072, 8}, {9009, 20}, 9064 }, reward = 27268 }, -- Hashishin Tayt +1
-	[690] = { trade = { 27441, {4073, 8}, {9009, 15}, 9002 }, reward = 27442 }, -- Hashishin Basmak +1
-	
-	[691] = { trade = { 26772, {4069, 8}, {9009, 15}, 9006 }, reward = 26773 }, -- Chasseur's Tricorne +1
-	[692] = { trade = { 26930, {4070, 8}, {9009, 25}, 9062 }, reward = 26931 }, -- Chasseur's Frac +1
-	[693] = { trade = { 27084, {4071, 8}, {9009, 15}, 9005 }, reward = 27085 }, -- Chasseur's Gants +1
-	[694] = { trade = { 27269, {4072, 8}, {9009, 20}, 9064 }, reward = 27270 }, -- Chasseur's Culottes +1
-	[695] = { trade = { 27443, {4073, 8}, {9009, 15}, 9002 }, reward = 27444 }, -- Chasseur's Bottes +1
-	
-	[696] = { trade = { 26774, {4069, 8}, {9009, 15}, 9006 }, reward = 26775 }, -- Karagoz Cappello +1
-	[697] = { trade = { 26932, {4070, 8}, {9009, 25}, 9062 }, reward = 26933 }, -- Karagoz Farsetto +1
-	[698] = { trade = { 27086, {4071, 8}, {9009, 15}, 9005 }, reward = 27087 }, -- Karagoz Guanti +1
-	[699] = { trade = { 27271, {4072, 8}, {9009, 20}, 9064 }, reward = 27272 }, -- Karagoz Pantaloni +1
-	[700] = { trade = { 27445, {4073, 8}, {9009, 15}, 9002 }, reward = 27446 }, -- Karagoz Scarpoe +1
-	
-	[701] = { trade = { 26776, {4069, 8}, {9009, 15}, 9006 }, reward = 26777 }, -- Maculele Tiara +1
-	[702] = { trade = { 26934, {4070, 8}, {9009, 25}, 9062 }, reward = 26935 }, -- Maculele Casaque +1
-	[703] = { trade = { 27088, {4071, 8}, {9009, 15}, 9005 }, reward = 27089 }, -- Maculele Bangles +1
-	[704] = { trade = { 27273, {4072, 8}, {9009, 20}, 9064 }, reward = 27274 }, -- Maculele Tights +1
-	[705] = { trade = { 27447, {4073, 8}, {9009, 15}, 9002 }, reward = 27448 }, -- Maculele Toeshoes +1
-
-	[706] = { trade = { 26778, {4069, 8}, {9009, 15}, 9006 }, reward = 26779 }, -- Arbatel Bonnet +1
-	[707] = { trade = { 26936, {4070, 8}, {9009, 25}, 9062 }, reward = 26937 }, -- Arbatel Gown +1
-	[708] = { trade = { 27090, {4071, 8}, {9009, 15}, 9005 }, reward = 27091 }, -- Arbatel Bracers +1
-	[709] = { trade = { 27276, {4072, 8}, {9009, 20}, 9064 }, reward = 27276 }, -- Arbatel Pants +1
-	[710] = { trade = { 27449, {4073, 8}, {9009, 15}, 9002 }, reward = 27450 }, -- Arbatel Loafers +1
-	
-	[711] = { trade = { 26780, {4073, 8}, {9009, 15}, 9002 }, reward = 26781 }, -- Azimuth Hood +1
-	[712] = { trade = { 26938, {4069, 8}, {9009, 15}, 9006 }, reward = 26938 }, -- Azimuth Coat +1
-	[713] = { trade = { 27092, {4070, 8}, {9009, 25}, 9062 }, reward = 27093 }, -- Azimuth Gloves +1
-	[714] = { trade = { 27277, {4071, 8}, {9009, 15}, 9005 }, reward = 27277 }, -- Azimuth Tights +1
-	[715] = { trade = { 27451, {4072, 8}, {9009, 20}, 9064 }, reward = 27451 }, -- Azimuth Gaiters +1
-	
-	[716] = { trade = { 26782, {4073, 8}, {9009, 15}, 9002 }, reward = 26783 }, -- Erilaz Galea +1
-	[717] = { trade = { 26940, {4069, 8}, {9009, 15}, 9006 }, reward = 26941 }, -- Erilaz Surcoat +1
-	[718] = { trade = { 27094, {4070, 8}, {9009, 25}, 9062 }, reward = 27095 }, -- Erilaz Gauntlets +1
-	[719] = { trade = { 27279, {4071, 8}, {9009, 15}, 9005 }, reward = 27279 }, -- Erilaz Leg Guards +1
-	[720] = { trade = { 27453, {4072, 8}, {9009, 20}, 9064 }, reward = 27454 }, -- Erilaz Greaves +1
+	[727] = { trade = { 26740, {4069, 8}, {9009, 15}, 9006 }, reward = 26741 }, -- Boii Mask +1
+	[728] = { trade = { 26898, {4070, 8}, {9009, 25}, 9062 }, reward = 26899 }, -- Boii Lorica +1
+	[729] = { trade = { 26052, {4071, 8}, {9009, 15}, 9005 }, reward = 27053 }, -- Boii Mufflers +1
+	[730] = { trade = { 27237, {4072, 8}, {9009, 20}, 9064 }, reward = 27238 }, -- Boii Cuisses +1
+	[731] = { trade = { 27411, {4073, 8}, {9009, 15}, 9002 }, reward = 27412 }, -- Boii Calligae +1
+	[732] = { trade = { 26742, {4069, 8}, {9009, 15}, 9006 }, reward = 26743 }, -- Bhikku Crown +1
+	[733] = { trade = { 26900, {4070, 8}, {9009, 25}, 9062 }, reward = 26901 }, -- Bhikku Cyclas +1
+	[734] = { trade = { 27054, {4071, 8}, {9009, 15}, 9005 }, reward = 27055 }, -- Bhikku Gloves +1
+	[735] = { trade = { 27239, {4072, 8}, {9009, 20}, 9064 }, reward = 27240 }, -- Bhikku Hose +1
+	[736] = { trade = { 27413, {4073, 8}, {9009, 15}, 9002 }, reward = 27414 }, -- Bhikku Gaiters +1
+	[737] = { trade = { 26744, {4069, 8}, {9009, 15}, 9006 }, reward = 26745 }, -- Eber Cap +1
+	[738] = { trade = { 26902, {4070, 8}, {9009, 25}, 9062 }, reward = 26903 }, -- Eber Bliaut +1
+	[739] = { trade = { 27056, {4071, 8}, {9009, 15}, 9005 }, reward = 27057 }, -- Eber Mitts +1
+	[740] = { trade = { 27241, {4072, 8}, {9009, 20}, 9064 }, reward = 27242 }, -- Eber Pantaloons +1
+	[741] = { trade = { 27415, {4073, 8}, {9009, 15}, 9002 }, reward = 27416 }, -- Eber Duckbills +1
+	[742] = { trade = { 26746, {4069, 8}, {9009, 15}, 9006 }, reward = 26747 }, -- Wicce Petasos +1
+	[743] = { trade = { 26904, {4070, 8}, {9009, 25}, 9062 }, reward = 26905 }, -- Wicce Coiat +1
+	[745] = { trade = { 27058, {4071, 8}, {9009, 15}, 9005 }, reward = 27059 }, -- Wicce Glvoes +1
+	[746] = { trade = { 27243, {4072, 8}, {9009, 20}, 9064 }, reward = 27244 }, -- Wicce Chausses +1
+	[747] = { trade = { 27417, {4073, 8}, {9009, 15}, 9002 }, reward = 27418 }, -- Wicce Sabots +1
+	[748] = { trade = { 26748, {4069, 8}, {9009, 15}, 9006 }, reward = 26749 }, -- Lethargy Chappel +1
+	[749] = { trade = { 26906, {4070, 8}, {9009, 25}, 9062 }, reward = 26907 }, -- Lethargy Sayon +1
+	[750] = { trade = { 27060, {4071, 8}, {9009, 15}, 9005 }, reward = 27061 }, -- Lethargy Gantherots +1
+	[751] = { trade = { 27245, {4072, 8}, {9009, 20}, 9064 }, reward = 27246 }, -- Lethargy Fuseau +1
+	[752] = { trade = { 27419, {4073, 8}, {9009, 15}, 9002 }, reward = 27420 }, -- Lethargy Houseaux +1
+	[753] = { trade = { 26750, {4069, 8}, {9009, 15}, 9006 }, reward = 26751 }, -- Skulker's Bonnet +1
+	[754] = { trade = { 26908, {4070, 8}, {9009, 25}, 9062 }, reward = 26909 }, -- Skulker's Vest +1
+	[755] = { trade = { 27062, {4071, 8}, {9009, 15}, 9005 }, reward = 27063 }, -- Skulker's Armlets +1
+	[756] = { trade = { 27247, {4072, 8}, {9009, 20}, 9064 }, reward = 27248 }, -- Skulker's Culottes +1
+	[757] = { trade = { 27421, {4073, 8}, {9009, 15}, 9002 }, reward = 27422 }, -- Skulker's Poulaines +1
+	[758] = { trade = { 26752, {4069, 8}, {9009, 15}, 9006 }, reward = 26753 }, -- Chevalier Armet +1
+	[759] = { trade = { 26910, {4070, 8}, {9009, 25}, 9062 }, reward = 26911 }, -- Chevalier Cuirass +1
+	[760] = { trade = { 27064, {4071, 8}, {9009, 15}, 9005 }, reward = 27065 }, -- Chevalier Gauntlets +1
+	[761] = { trade = { 27249, {4072, 8}, {9009, 20}, 9064 }, reward = 27250 }, -- Chevalier Cuisses +1
+	[762] = { trade = { 27423, {4073, 8}, {9009, 15}, 9002 }, reward = 27424 }, -- Chevalier Sabatons +1
+	[763] = { trade = { 26754, {4069, 8}, {9009, 15}, 9006 }, reward = 26755 }, -- Heathen's Burgonet +1
+	[764] = { trade = { 26912, {4070, 8}, {9009, 25}, 9062 }, reward = 26913 }, -- Heathen's Cuirass +1
+	[765] = { trade = { 27066, {4071, 8}, {9009, 15}, 9005 }, reward = 27067 }, -- Heathen's Gauntlets +1
+	[766] = { trade = { 27251, {4072, 8}, {9009, 20}, 9064 }, reward = 27252 }, -- Heathen's Flanchard +1
+	[767] = { trade = { 27425, {4073, 8}, {9009, 15}, 9002 }, reward = 27426 }, -- Heathen's Sollerets +1
+	[768] = { trade = { 26756, {4069, 8}, {9009, 15}, 9006 }, reward = 26757 }, -- Nukumi Cabasset +1
+	[769] = { trade = { 26914, {4070, 8}, {9009, 25}, 9062 }, reward = 26915 }, -- Nukumi Gausape +1
+	[770] = { trade = { 27068, {4071, 8}, {9009, 15}, 9005 }, reward = 27069 }, -- Nukumi Manoplas +1
+	[771] = { trade = { 27253, {4072, 8}, {9009, 20}, 9064 }, reward = 27254 }, -- Nukumi Quijotes +1
+	[772] = { trade = { 27427, {4073, 8}, {9009, 15}, 9002 }, reward = 27428 }, -- Nukumi Ocreae +1
+	[773] = { trade = { 26758, {4069, 8}, {9009, 15}, 9006 }, reward = 26759 }, -- Fili Calot +1
+	[774] = { trade = { 26916, {4070, 8}, {9009, 25}, 9062 }, reward = 26917 }, -- Fili Hongreline +1
+	[775] = { trade = { 27070, {4071, 8}, {9009, 15}, 9005 }, reward = 27071 }, -- Fili Manchettes +1
+	[776] = { trade = { 27255, {4072, 8}, {9009, 20}, 9064 }, reward = 27256 }, -- Fili Rhingrave +1
+	[777] = { trade = { 27429, {4073, 8}, {9009, 15}, 9002 }, reward = 27430 }, -- Fili Cothurnes +1
+	[778] = { trade = { 26760, {4069, 8}, {9009, 15}, 9006 }, reward = 26761 }, -- Amini Gapette +1
+	[779] = { trade = { 26918, {4070, 8}, {9009, 25}, 9062 }, reward = 26919 }, -- Amini Caban +1
+	[780] = { trade = { 27072, {4071, 8}, {9009, 15}, 9005 }, reward = 27073 }, -- Amini Glovettes +1
+	[781] = { trade = { 27257, {4072, 8}, {9009, 20}, 9064 }, reward = 27258 }, -- Amini Bragues +1
+	[782] = { trade = { 27431, {4073, 8}, {9009, 15}, 9002 }, reward = 27432 }, -- Amini Bottillons +1
+	[783] = { trade = { 26762, {4069, 8}, {9009, 15}, 9006 }, reward = 26763 }, -- Kasuga Kabuto +1
+	[784] = { trade = { 26920, {4070, 8}, {9009, 25}, 9062 }, reward = 26921 }, -- Kasuga Domaru +1
+	[785] = { trade = { 27074, {4071, 8}, {9009, 15}, 9005 }, reward = 27075 }, -- Kasuga Kote +1
+	[786] = { trade = { 27259, {4072, 8}, {9009, 20}, 9064 }, reward = 27260 }, -- Kasuga Haidate +1
+	[787] = { trade = { 27433, {4073, 8}, {9009, 15}, 9002 }, reward = 27434 }, -- Kasuga Sune-Ate +1
+	[788] = { trade = { 26764, {4069, 8}, {9009, 15}, 9006 }, reward = 26765 }, -- Hattori Zukin +1
+	[789] = { trade = { 26922, {4070, 8}, {9009, 25}, 9062 }, reward = 26923 }, -- Hattori Ningi +1
+	[790] = { trade = { 27076, {4071, 8}, {9009, 15}, 9005 }, reward = 27077 }, -- Hattori Tekko +1
+	[791] = { trade = { 27261, {4072, 8}, {9009, 20}, 9064 }, reward = 27262 }, -- Hattori Hakama +1
+	[792] = { trade = { 27435, {4073, 8}, {9009, 15}, 9002 }, reward = 27436 }, -- Hattori Kyahan +1 
+	[793] = { trade = { 26766, {4069, 8}, {9009, 15}, 9006 }, reward = 26767 }, -- Peltast's Mezail +1
+	[794] = { trade = { 26924, {4070, 8}, {9009, 25}, 9062 }, reward = 26925 }, -- Peltast's Plackart +1
+	[795] = { trade = { 27078, {4071, 8}, {9009, 15}, 9005 }, reward = 27079 }, -- Peltast's Vambraces +1
+	[796] = { trade = { 27263, {4072, 8}, {9009, 20}, 9064 }, reward = 27264 }, -- Peltast's Cuissots +1
+	[797] = { trade = { 27437, {4073, 8}, {9009, 15}, 9002 }, reward = 27438 }, -- Peltast's Schynbalds +1
+	[798] = { trade = { 26768, {4069, 8}, {9009, 15}, 9006 }, reward = 26769 }, -- Beckoner's Horn +1
+	[799] = { trade = { 26926, {4070, 8}, {9009, 25}, 9062 }, reward = 26927 }, -- Beckoner's Doublet +1
+	[800] = { trade = { 27080, {4071, 8}, {9009, 15}, 9005 }, reward = 27081 }, -- Beckoner's Bracers
+	[801] = { trade = { 27265, {4072, 8}, {9009, 20}, 9064 }, reward = 27266 }, -- Beckoner's Spats +1
+	[802] = { trade = { 27439, {4073, 8}, {9009, 15}, 9002 }, reward = 27440 }, -- Beckoner's Pigaches +1
+	[803] = { trade = { 26770, {4069, 8}, {9009, 15}, 9006 }, reward = 26771 }, -- Hashishin Kavuk +1
+	[804] = { trade = { 26928, {4070, 8}, {9009, 20}, 9062 }, reward = 26929 }, -- Hashishin Mintan +1
+	[805] = { trade = { 27082, {4071, 8}, {9009, 15}, 9005 }, reward = 27083 }, -- Hashishin Bazubands +1
+	[806] = { trade = { 27267, {4072, 8}, {9009, 20}, 9064 }, reward = 27268 }, -- Hashishin Tayt +1
+	[807] = { trade = { 27441, {4073, 8}, {9009, 15}, 9002 }, reward = 27442 }, -- Hashishin Basmak +1
+	[808] = { trade = { 26772, {4069, 8}, {9009, 15}, 9006 }, reward = 26773 }, -- Chasseur's Tricorne +1
+	[809] = { trade = { 26930, {4070, 8}, {9009, 25}, 9062 }, reward = 26931 }, -- Chasseur's Frac +1
+	[810] = { trade = { 27084, {4071, 8}, {9009, 15}, 9005 }, reward = 27085 }, -- Chasseur's Gants +1
+	[811] = { trade = { 27269, {4072, 8}, {9009, 20}, 9064 }, reward = 27270 }, -- Chasseur's Culottes +1
+	[812] = { trade = { 27443, {4073, 8}, {9009, 15}, 9002 }, reward = 27444 }, -- Chasseur's Bottes +1
+	[813] = { trade = { 26774, {4069, 8}, {9009, 15}, 9006 }, reward = 26775 }, -- Karagoz Cappello +1
+	[814] = { trade = { 26932, {4070, 8}, {9009, 25}, 9062 }, reward = 26933 }, -- Karagoz Farsetto +1
+	[815] = { trade = { 27086, {4071, 8}, {9009, 15}, 9005 }, reward = 27087 }, -- Karagoz Guanti +1
+	[816] = { trade = { 27271, {4072, 8}, {9009, 20}, 9064 }, reward = 27272 }, -- Karagoz Pantaloni +1
+	[817] = { trade = { 27445, {4073, 8}, {9009, 15}, 9002 }, reward = 27446 }, -- Karagoz Scarpoe +1
+	[818] = { trade = { 26776, {4069, 8}, {9009, 15}, 9006 }, reward = 26777 }, -- Maculele Tiara +1
+	[819] = { trade = { 26934, {4070, 8}, {9009, 25}, 9062 }, reward = 26935 }, -- Maculele Casaque +1
+	[820] = { trade = { 27088, {4071, 8}, {9009, 15}, 9005 }, reward = 27089 }, -- Maculele Bangles +1
+	[821] = { trade = { 27273, {4072, 8}, {9009, 20}, 9064 }, reward = 27274 }, -- Maculele Tights +1
+	[822] = { trade = { 27447, {4073, 8}, {9009, 15}, 9002 }, reward = 27448 }, -- Maculele Toeshoes +1
+	[823] = { trade = { 26778, {4069, 8}, {9009, 15}, 9006 }, reward = 26779 }, -- Arbatel Bonnet +1
+	[824] = { trade = { 26936, {4070, 8}, {9009, 25}, 9062 }, reward = 26937 }, -- Arbatel Gown +1
+	[825] = { trade = { 27090, {4071, 8}, {9009, 15}, 9005 }, reward = 27091 }, -- Arbatel Bracers +1
+	[826] = { trade = { 27276, {4072, 8}, {9009, 20}, 9064 }, reward = 27276 }, -- Arbatel Pants +1
+	[827] = { trade = { 27449, {4073, 8}, {9009, 15}, 9002 }, reward = 27450 }, -- Arbatel Loafers +1
+	[828] = { trade = { 26780, {4073, 8}, {9009, 15}, 9002 }, reward = 26781 }, -- Azimuth Hood +1
+	[829] = { trade = { 26938, {4069, 8}, {9009, 15}, 9006 }, reward = 26938 }, -- Azimuth Coat +1
+	[830] = { trade = { 27092, {4070, 8}, {9009, 25}, 9062 }, reward = 27093 }, -- Azimuth Gloves +1
+	[831] = { trade = { 27277, {4071, 8}, {9009, 15}, 9005 }, reward = 27277 }, -- Azimuth Tights +1
+	[832] = { trade = { 27451, {4072, 8}, {9009, 20}, 9064 }, reward = 27451 }, -- Azimuth Gaiters +1
+	[833] = { trade = { 26782, {4073, 8}, {9009, 15}, 9002 }, reward = 26783 }, -- Erilaz Galea +1
+	[834] = { trade = { 26940, {4069, 8}, {9009, 15}, 9006 }, reward = 26941 }, -- Erilaz Surcoat +1
+	[835] = { trade = { 27094, {4070, 8}, {9009, 25}, 9062 }, reward = 27095 }, -- Erilaz Gauntlets +1
+	[836] = { trade = { 27279, {4071, 8}, {9009, 15}, 9005 }, reward = 27279 }, -- Erilaz Leg Guards +1
+	[837] = { trade = { 27453, {4072, 8}, {9009, 20}, 9064 }, reward = 27454 }, -- Erilaz Greaves +1
 	
 }
 
