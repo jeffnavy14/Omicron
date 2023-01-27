@@ -21,9 +21,6 @@
 #pragma once
 
 #include "common/cbasetypes.h"
-#include "common/sql.h"
-
-#include "map/navmesh.h"
 
 #include <concurrentqueue.h>
 
@@ -89,9 +86,9 @@ class WorkerThread<R(Args...)>
 public:
     template <typename... CArgs>
     WorkerThread(CArgs... args)
-    : m_running(true)
+    : m_thread(std::thread(&WorkerThread::_inner_loop, this))
+    , m_running(true)
     , m_context(std::make_unique<NothingOrContext>(std::forward<CArgs>(args)...))
-    , m_thread(std::thread(&WorkerThread::_inner_loop, this))
     {
     }
 
