@@ -19,6 +19,7 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	if (GetServerVariable("P2Boss3") == 2) then
 		player:PrintToPlayer("You have cleared the second path of Vagary.", 29)
 		player:PrintToPlayer("Please make your way to the connection.", 29)
+		player:setCharVar("VagPathActive", 0)
 	end
 end
 

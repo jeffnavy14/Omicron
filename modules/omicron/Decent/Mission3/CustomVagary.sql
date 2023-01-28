@@ -41,7 +41,7 @@ REPLACE INTO `mob_spawn_points` VALUES (17903648,'Jaundiced_Slime','Jaundiced Sl
 REPLACE INTO `mob_spawn_points` VALUES (17903649,'Jaundiced_Slime','Jaundiced Slime',8,-393,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903650,'Jaundiced_Slime','Jaundiced Slime',8,-407,-169,-248,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903651,'Jaundiced_Slime','Jaundiced Slime',8,-400,-169,-248,0);
-REPLACE INTO `mob_spawn_points` VALUES (17903652,'Jaundiced_Slime','Jaundiced Slime',8,-393,169,-248,0);
+REPLACE INTO `mob_spawn_points` VALUES (17903652,'Jaundiced_Slime','Jaundiced Slime',8,-393,-169,-248,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903653,'Gangerous_Leech','Gangerous Leech',9,-407,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903654,'Gangerous_Leech','Gangerous Leech',9,-393,-169,-236,0);
 REPLACE INTO `mob_spawn_points` VALUES (17903655,'Gangerous_Leech','Gangerous Leech',9,-407,-169,-248,0);
@@ -290,6 +290,9 @@ INSERT INTO `npc_list` VALUES (17904619,'Pillar','Pillar',0,-393,-169,-236,0,0,0
 INSERT INTO `npc_list` VALUES (17904620,'Pillar','Pillar',0,-407,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
 INSERT INTO `npc_list` VALUES (17904621,'Pillar','Pillar',0,-400,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
 INSERT INTO `npc_list` VALUES (17904622,'Pillar','Pillar',0,-393,-169,-248,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0);
+---------------------------------------
+-- Exits
+---------------------------------------
 INSERT INTO `npc_list` VALUES (17904623,'Connection','Connection',0,-460,-140,38,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 1 Enter/Exit
 INSERT INTO `npc_list` VALUES (17904624,'Connection','Connection',0,-399,-160,-180,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 2 Enter/Exit
 INSERT INTO `npc_list` VALUES (17904625,'Connection','Connection',0,-540,-155,100,0,0,0,0,0,0,2,3,0x0000080B00000000000000000000000000000000,0,'SOA',0); -- Path 3 Enter/Exit

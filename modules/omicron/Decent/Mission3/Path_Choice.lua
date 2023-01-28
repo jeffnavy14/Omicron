@@ -8,7 +8,7 @@ require("scripts/globals/npc_util")
 require("scripts/globals/utils")
 -----------------------------------
 
-local m = Module:new("VagaryGate")
+local m = Module:new("PathChoice")
 m:setEnabled(true)
 
 m:addOverride("xi.zones.Outer_RaKaznar_[U1].Zone.onInitialize", function(zone)
@@ -52,6 +52,8 @@ local Path1 = function(player, npc)
 	player:changeMusic(2, 62)
 	player:changeMusic(3, 62)
 	player:changeMusic(4, 62)
+	GetNPCByID(17904623):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904623):renameEntity("Connection")
 	local secret = math.random(1, 10)
 	if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
 		SpawnMob(17903727)
@@ -96,12 +98,14 @@ local Path2 = function(player, npc)
 	SetServerVariable("P2Boss2", 0)
 	SetServerVariable("P2Boss3", 0)
 	player:setCharVar("VagPathActive", 2)
+	GetNPCByID(17904624):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904617):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904618):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904619):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904620):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904621):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904622):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904624):renameEntity("Connection")
 	GetNPCByID(17904617):renameEntity("Pillar")
 	GetNPCByID(17904618):renameEntity("Pillar")
 	GetNPCByID(17904619):renameEntity("Pillar")
@@ -199,6 +203,8 @@ local Path3 = function(player, npc)
 	SpawnMob(17903698)
 	SpawnMob(17903699)
 	SpawnMob(17903700)
+	GetNPCByID(17904625):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904625):renameEntity("Connection")
 	player:changeMusic(0, 62)
 	player:changeMusic(1, 62)
 	player:changeMusic(2, 62)
@@ -294,8 +300,10 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag1Active") ~= 1) then
-									player:setCharVar("VagPathActive", 1)
-									player:setPos(-460,-140,38,190)
+									for i, v in pairs(party) do
+										player:setCharVar("VagPathActive", 1)
+										player:setPos(-460,-140,38,190)
+									end
 									Path1(player, npc)
 									player:tradeComplete()
 								else
@@ -317,8 +325,10 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag2Active") ~= 1) then
-									player:setCharVar("VagPathActive", 2)
-									player:setPos(-399,-160,-180,63)
+									for i, v in pairs(party) do
+										player:setCharVar("VagPathActive", 2)
+										player:setPos(-399,-160,-180,63)
+									end
 									Path2(player, npc)
 									player:tradeComplete()
 								else
@@ -339,8 +349,10 @@ local VagaryGate = zone:insertDynamicEntity({
 									end
 								end
 								if (GetServerVariable("Vag3Active") ~= 1) then
-									player:setCharVar("VagPathActive", 3)
-									player:setPos(-540,-155,100,190)
+									for i, v in pairs(party) do
+										player:setCharVar("VagPathActive", 3)
+										player:setPos(-540,-155,100,190)
+									end
 									Path3(player, npc)
 									player:tradeComplete()
 								else
@@ -406,12 +418,6 @@ local VagaryGate = zone:insertDynamicEntity({
 						player:PrintToPlayer("Something about trading Befouled Water...", 13)
 					end,
 				},
-				--[[{
-					"I cannot proceed (Remove active path)",
-					function(playerArg)
-						player:getCharVar("VagPathActive", 0)
-					end,
-				},]]
 				{
 					"Return",
 					function(playerArg)
@@ -433,7 +439,7 @@ local VagaryGate = zone:insertDynamicEntity({
 	end,
 
     })
-    utils.unused(VagaryGate)
+    utils.unused(PathChoice)
 end)
 
 return m
