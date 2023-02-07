@@ -37,32 +37,16 @@ local Path1 = function(player, npc)
 	SetServerVariable("P1W3Kills", 0)
 	SetServerVariable("P1Boss1", 0)
 	SetServerVariable("P1Boss2", 0)
-	SpawnMob(17903617)
-	SpawnMob(17903618)
-	SpawnMob(17903619)
-	SpawnMob(17903620)
-	SpawnMob(17903621)
-	SpawnMob(17903622)
-	SpawnMob(17903623)
-	SpawnMob(17903624)
-	SpawnMob(17903625)
-	SpawnMob(17903626)
-	player:changeMusic(0, 62)
-	player:changeMusic(1, 62)
-	player:changeMusic(2, 62)
-	player:changeMusic(3, 62)
-	player:changeMusic(4, 62)
+	GetNPCByID(17904626):setStatus(xi.status.INVISIBLE)
+	local p1ID = 17903617
+	repeat
+		SpawnMob(p1ID)
+		p1ID = p1ID + 1
+	until p1ID == 17903647
 	GetNPCByID(17904623):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904623):renameEntity("Connection")
 	local secret = math.random(1, 10)
-	if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
-		SpawnMob(17903727)
-		player:changeMusic(0, 65)
-		player:changeMusic(1, 65)
-		player:changeMusic(2, 65)
-		player:changeMusic(3, 65)
-		player:changeMusic(4, 65)
-	end
+	
 	player:setCharVar("VagPathActive", 1)
 	npc:timer(3600000, function(player, mob, npc)
 		SetServerVariable("Vag1Active", 0)
@@ -98,34 +82,21 @@ local Path2 = function(player, npc)
 	SetServerVariable("P2Boss2", 0)
 	SetServerVariable("P2Boss3", 0)
 	player:setCharVar("VagPathActive", 2)
-	GetNPCByID(17904624):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904617):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904618):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904619):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904620):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904621):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904622):setStatus(xi.status.NORMAL)
-	GetNPCByID(17904624):renameEntity("Connection")
 	GetNPCByID(17904617):renameEntity("Pillar")
 	GetNPCByID(17904618):renameEntity("Pillar")
 	GetNPCByID(17904619):renameEntity("Pillar")
 	GetNPCByID(17904620):renameEntity("Pillar")
 	GetNPCByID(17904621):renameEntity("Pillar")
 	GetNPCByID(17904622):renameEntity("Pillar")
-	player:changeMusic(0, 62)
-	player:changeMusic(1, 62)
-	player:changeMusic(2, 62)
-	player:changeMusic(3, 62)
-	player:changeMusic(4, 62)
-	local secret = math.random(1, 10)
-	if (player:getCharVar("VagPath3Win") == 1) and (secret > 8) then
-		SpawnMob(17903729)
-		player:changeMusic(0, 65)
-		player:changeMusic(1, 65)
-		player:changeMusic(2, 65)
-		player:changeMusic(3, 65)
-		player:changeMusic(4, 65)
-	end
+	GetNPCByID(17904624):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904624):renameEntity("Connection")
+	
 	npc:timer(3600000, function(player, mob, npc)
 		SetServerVariable("Vag2Active", 0)
 	end)
@@ -177,48 +148,14 @@ local Path3 = function(player, npc)
 	SetServerVariable("P3Boss1", 0)
 	SetServerVariable("P3Wave3", 0)
 	SetServerVariable("P3Wave4", 0)
-	SpawnMob(17903675)
-	SpawnMob(17903676)
-	SpawnMob(17903677)
-	SpawnMob(17903678)
-	SpawnMob(17903679)
-	SpawnMob(17903680)
-	SpawnMob(17903681)
-	SpawnMob(17903682)
-	SpawnMob(17903683)
-	SpawnMob(17903684)
-	SpawnMob(17903685)
-	SpawnMob(17903686)
-	SpawnMob(17903687)
-	SpawnMob(17903688)
-	SpawnMob(17903689)
-	SpawnMob(17903690)
-	SpawnMob(17903691)
-	SpawnMob(17903692)
-	SpawnMob(17903693)
-	SpawnMob(17903694)
-	SpawnMob(17903695)
-	SpawnMob(17903696)
-	SpawnMob(17903697)
-	SpawnMob(17903698)
-	SpawnMob(17903699)
-	SpawnMob(17903700)
+	local p1ID = 17903769
+	repeat
+		SpawnMob(p1ID)
+		p1ID = p1ID + 1
+	until p1ID == 17903795
 	GetNPCByID(17904625):setStatus(xi.status.NORMAL)
 	GetNPCByID(17904625):renameEntity("Connection")
-	player:changeMusic(0, 62)
-	player:changeMusic(1, 62)
-	player:changeMusic(2, 62)
-	player:changeMusic(3, 62)
-	player:changeMusic(4, 62)
-	local secret = math.random(1, 10)
-	if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
-		SpawnMob(17903731)
-		player:changeMusic(0, 65)
-		player:changeMusic(1, 65)
-		player:changeMusic(2, 65)
-		player:changeMusic(3, 65)
-		player:changeMusic(4, 65)
-	end
+	
 	player:setCharVar("VagPathActive", 3)
 	npc:timer(3600000, function(player, mob, npc)
 		SetServerVariable("Vag3Active", 0)
@@ -291,18 +228,33 @@ local VagaryGate = zone:insertDynamicEntity({
 					{
 						"Path 1",
 						function(playerArg)
-							
 							if party ~= nil then
-								for i, v in pairs(party) do
+								for i, v in pairs(player:getParty()) do
 									if not (v:getCharVar("Mission3State") >= 5) then
 										player:PrintToPlayer("One or more members do not meet the requirements.", 13)
 										return
 									end
 								end
 								if (GetServerVariable("Vag1Active") ~= 1) then
-									for i, v in pairs(party) do
-										player:setCharVar("VagPathActive", 1)
-										player:setPos(-460,-140,38,190)
+									for i, partyMember in pairs(party) do
+										if partyMember:isPC() then
+											partyMember:setCharVar("VagPathActive", 1)
+											partyMember:setPos(-460,-140,38,190)
+											partyMember:changeMusic(0, 62)
+											partyMember:changeMusic(1, 62)
+											partyMember:changeMusic(2, 62)
+											partyMember:changeMusic(3, 62)
+											partyMember:changeMusic(4, 62)
+											local secret = math.random(1, 10)
+											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
+												SpawnMob(17903708)
+												partyMember:changeMusic(0, 65)
+												partyMember:changeMusic(1, 65)
+												partyMember:changeMusic(2, 65)
+												partyMember:changeMusic(3, 65)
+												partyMember:changeMusic(4, 65)
+											end
+										end
 									end
 									Path1(player, npc)
 									player:tradeComplete()
@@ -318,16 +270,32 @@ local VagaryGate = zone:insertDynamicEntity({
 						"Path 2",
 						function(playerArg)
 							if party ~= nil then
-								for i, v in pairs(party) do
+								for i, v in pairs(player:getParty()) do
 									if not (v:getCharVar("VagPath1Win") >= 1) then
 										player:PrintToPlayer("One or more members do not meet the requirements.", 13)
 										return
 									end
 								end
 								if (GetServerVariable("Vag2Active") ~= 1) then
-									for i, v in pairs(party) do
-										player:setCharVar("VagPathActive", 2)
-										player:setPos(-399,-160,-180,63)
+									for i, partyMember in pairs(party) do
+										if partyMember:isPC() then
+											partyMember:setCharVar("VagPathActive", 2)
+											partyMember:setPos(-399,-160,-180,63)
+											partyMember:changeMusic(0, 62)
+											partyMember:changeMusic(1, 62)
+											partyMember:changeMusic(2, 62)
+											partyMember:changeMusic(3, 62)
+											partyMember:changeMusic(4, 62)
+											local secret = math.random(1, 10)
+											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
+												SpawnMob(17903767)
+												partyMember:changeMusic(0, 65)
+												partyMember:changeMusic(1, 65)
+												partyMember:changeMusic(2, 65)
+												partyMember:changeMusic(3, 65)
+												partyMember:changeMusic(4, 65)
+											end
+										end
 									end
 									Path2(player, npc)
 									player:tradeComplete()
@@ -342,16 +310,32 @@ local VagaryGate = zone:insertDynamicEntity({
 						"Path 3",
 						function(playerArg)
 							if party ~= nil then
-								for i, v in pairs(party) do
+								for i, v in pairs(player:getParty()) do
 									if not (v:getCharVar("VagPath2Win") >= 1) then
 										player:PrintToPlayer("One or more members do not meet the requirements.", 13)
 										return
 									end
 								end
 								if (GetServerVariable("Vag3Active") ~= 1) then
-									for i, v in pairs(party) do
-										player:setCharVar("VagPathActive", 3)
-										player:setPos(-540,-155,100,190)
+									for i, partyMember in pairs(party) do
+										if partyMember:isPC() then
+											partyMember:setCharVar("VagPathActive", 3)
+											partyMember:setPos(-540,-155,100,190)
+											partyMember:changeMusic(0, 62)
+											partyMember:changeMusic(1, 62)
+											partyMember:changeMusic(2, 62)
+											partyMember:changeMusic(3, 62)
+											partyMember:changeMusic(4, 62)
+											local secret = math.random(1, 10)
+											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
+												SpawnMob(17903824)
+												partyMember:changeMusic(0, 65)
+												partyMember:changeMusic(1, 65)
+												partyMember:changeMusic(2, 65)
+												partyMember:changeMusic(3, 65)
+												partyMember:changeMusic(4, 65)
+											end
+										end
 									end
 									Path3(player, npc)
 									player:tradeComplete()
@@ -386,18 +370,21 @@ local VagaryGate = zone:insertDynamicEntity({
 			player:changeMusic(2, 62)
 			player:changeMusic(3, 62)
 			player:changeMusic(4, 62)
+			player:PrintToPlayer("The mysterious energies leave your body, you feel you may enter again...", 13)
 		elseif (GetServerVariable("Vag2Active") == 1) and (player:getCharVar("VagPathActive") == 2) then
 			player:setPos(-399,-160,-180,63)
 			player:changeMusic(0, 62)
 			player:changeMusic(1, 62)
 			player:changeMusic(2, 62)
 			player:changeMusic(3, 62)
+			player:PrintToPlayer("The mysterious energies leave your body, you feel you may enter again...", 13)
 		elseif (GetServerVariable("VagActive") == 1) and (player:getCharVar("VagPathActive") == 3) then
 			player:setPos(-540,-155,100,190)
 			player:changeMusic(0, 62)
 			player:changeMusic(1, 62)
 			player:changeMusic(2, 62)
 			player:changeMusic(3, 62)
+			player:PrintToPlayer("The mysterious energies leave your body, you feel you may enter again...", 13)
 		else			
 			local MenuOpen = 1	
 			local menu =
