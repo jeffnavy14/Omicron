@@ -1,6 +1,6 @@
 -----------------------------------
 -- Zone: Outer_RaKaznar_[U1]
--- Achuka
+-- Palloritus
 -----------------------------------
 local ID = require("scripts/zones/Outer_RaKaznar_[U1]/IDs")
 require("scripts/globals/pathfind")
@@ -9,6 +9,28 @@ local entity = {}
 	
 entity.onMobSpawn = function(mob)
 	mob:renameEntity("Palloritus")
+	mob:setMod(xi.mod.DMG, -6000)
+	mob:setMod(xi.mod.ACC, 1250)
+	mob:setMod(xi.mod.ATT, 1250)
+	mob:setMod(xi.mod.MATT, 500)
+	mob:setMod(xi.mod.MACC, 1250)
+	mob:setMod(xi.mod.FIRE_SDT, 700)
+    mob:setMod(xi.mod.ICE_SDT, 300)
+    mob:setMod(xi.mod.WIND_SDT, 300)
+	mob:setMod(xi.mod.EARTH_SDT, 200)
+    mob:setMod(xi.mod.THUNDER_SDT, 500)
+    mob:setMod(xi.mod.WATER_SDT, 200)
+    mob:setMod(xi.mod.LIGHT_SDT, 500)
+    mob:setMod(xi.mod.DARK_SDT, 50)
+	mob:setMod(xi.mod.SLASH_SDT, 1000)
+    mob:setMod(xi.mod.PIERCE_SDT, 1000)
+    mob:setMod(xi.mod.IMPACT_SDT, 1000)
+    mob:setMod(xi.mod.HTH_SDT, 1000)
+	player:changeMusic(0, 74)
+	player:changeMusic(1, 74)
+	player:changeMusic(2, 74)
+	player:changeMusic(3, 74)
+	player:changeMusic(4, 74)
 end
 
 entity.onMobEngaged = function(mob, player)

@@ -1,6 +1,6 @@
 -----------------------------------
 -- Zone: Outer_RaKaznar_[U1]
--- Shunned_Aoidos
+-- Shunned_Estocade
 -----------------------------------
 local ID = require("scripts/zones/Outer_RaKaznar_[U1]/IDs")
 require("scripts/globals/pathfind")
@@ -9,7 +9,7 @@ require("scripts/mixins/job_special")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
-	mob:renameEntity("Shunned Aoidos")
+	mob:renameEntity("Shunned Estocade")
 	mob:setMod(xi.mod.DMG, -5000)
 	mob:setMod(xi.mod.ACC, 1300)
 	mob:setMod(xi.mod.ATT, 1300)
