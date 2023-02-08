@@ -35,11 +35,11 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onMobEngaged = function(mob, player)
-	SpawnMob(17903789):renameEntity("Shunned's Puppet")
+	SpawnMob(17903790):renameEntity("Shunned's Puppet")
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	DespawnMob(17903789)
+	DespawnMob(17903790)
 end
 
 entity.onMobRoam = function(mob, player)

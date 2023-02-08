@@ -8,6 +8,8 @@ require("scripts/globals/pathfind")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
+	SetServerVariable("PerfStance", 0)
+	mob:setAnimationSub(1)
 	mob:renameEntity("Perfidien")
 	mob:setMobMod(xi.mobMod.DRAW_IN, 10)
 	mob:setMod(xi.mod.DMG, -6000)
@@ -28,6 +30,16 @@ end
 
 entity.onMobEngaged = function(mob, player)
 	player:PrintToPlayer("Perfidien: This is my realm... come to leave the mortal coil so soon?", 13)
+end
+
+entity.onMobFight = function(mob, target, player)
+	local HPP = mob:getHPP()
+	if HPP < 50 and GetServerVariable("PerfStance") == 0 then
+		mob:setAnimationSub(1)
+		mob:setMod(xi.mod.DMG, -8000)
+		target:PrintToPlayer("Perfidien: Hmmm... surprising coming from mortals...", 13)
+		SetServerVariable("PerfStance", 1)
+	end
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)

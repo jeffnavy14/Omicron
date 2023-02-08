@@ -26,15 +26,14 @@ entity.onMobSpawn = function(mob)
 	mob:setMod(xi.mod.REGAIN, 10)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 50)
 	SetServerVariable("IncessantVoidUse", 0)
-	local pos = player:getPos()
-	mob:setPos(pos.x, pos.y, pos.z, pos.r)
 end
 
 entity.onMobEngaged = function(mob, player)
+	local player = player:getID()
 	player:PrintToPlayer("Plouton: Not even Twilight can devour me! What chance do you think you have!", 13)
 end
 
-entity.onMobFight = function(mob, target)
+entity.onMobFight = function(mob, target, player)
 	local HPP = mob:getHPP()
 	if HPP <= 90 and GetServerVariable("IncessantVoidUse") == 0 then
         mob:useMobAbility(437) -- should all be 3144
@@ -60,7 +59,7 @@ entity.onMobFight = function(mob, target)
 		mob:setMod(xi.mod.PIERCE_SDT, 1000)
 		mob:setMod(xi.mod.IMPACT_SDT, 1000)
 		mob:setMod(xi.mod.HTH_SDT, 1000)
-		player:PrintToPlayer("Plouton: Have we gotten serious yet?", 13)
+		target:PrintToPlayer("Plouton: Have we gotten serious yet?", 13)
 	elseif HPP <= 80 and GetServerVariable("IncessantVoidUse") == 1 then
         mob:useMobAbility(562) -- might be 3144
 		SetServerVariable("IncessantVoidUse", 2)
@@ -107,7 +106,7 @@ entity.onMobFight = function(mob, target)
 		mob:setMod(xi.mod.PIERCE_SDT, 1000)
 		mob:setMod(xi.mod.IMPACT_SDT, 1000)
 		mob:setMod(xi.mod.HTH_SDT, 1000)
-		player:PrintToPlayer("Plouton: It seems I may have slightly underestimated you, as you have I.", 13)
+		target:PrintToPlayer("Plouton: It seems I may have slightly underestimated you, as you have I.", 13)
 	elseif HPP <= 60 and GetServerVariable("IncessantVoidUse") == 3 then
         mob:useMobAbility(671) -- might be 3144
 		SetServerVariable("IncessantVoidUse", 4)
@@ -201,7 +200,7 @@ entity.onMobFight = function(mob, target)
 		mob:setMod(xi.mod.PIERCE_SDT, 10)
 		mob:setMod(xi.mod.IMPACT_SDT, 10)
 		mob:setMod(xi.mod.HTH_SDT, 10)
-		player:PrintToPlayer("Plouton: You shall regret crossing me.", 13)
+		target:PrintToPlayer("Plouton: You shall regret crossing me.", 13)
 	elseif HPP <= 20 and GetServerVariable("IncessantVoidUse") == 7 then
         mob:useMobAbility(951) -- might be 3144
 		SetServerVariable("IncessantVoidUse", 8)

@@ -46,7 +46,7 @@ entity.onMobEngaged = function(mob, player)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-
+	local person = player:getID()
 end
 
 entity.onMobRoam = function(mob, player)
@@ -68,22 +68,6 @@ entity.onMobDespawn = function(mob)
 				SpawnMob(p1ID)
 				p1ID = p1ID + 1
 			until p1ID == 17903802
-		end
-	elseif (GetServerVariable("P3Wave4") == 1) then
-		local P3W4Kills = GetServerVariable("P3W4Kills")
-		SetServerVariable("P3W4Kills", (P3W4Kills + 1))
-		if GetServerVariable("P3W4Kills") == 7 then
-			local mobID = mob:getID()
-			player:PrintToPlayer("You have cleared the third path of Vagary.", 29)
-			player:PrintToPlayer("Please make your way to the connection.", 29)
-			player:changeMusic(0, 73)
-			player:changeMusic(1, 73)
-			player:changeMusic(2, 73)
-			player:changeMusic(3, 73)
-			player:changeMusic(4, 73)
-			player:setCharVar("VagPathActive", 0)
-			SetServerVariable("Vag3Active", 0)
-			SetServerVariable("P3Boss2", 0)
 		end
 	end
 end
