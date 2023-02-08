@@ -1,6 +1,6 @@
 -----------------------------------
 -- Zone: Outer_RaKaznar_[U1]
--- Shunned_Unkai
+-- Shunned_Estocade
 -----------------------------------
 local ID = require("scripts/zones/Outer_RaKaznar_[U1]/IDs")
 require("scripts/globals/pathfind")
@@ -9,7 +9,7 @@ require("scripts/mixins/job_special")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
-	mob:renameEntity("Shunned Unkai")
+	mob:renameEntity("Shunned Estocade")
 	mob:setMod(xi.mod.DMG, -5000)
 	mob:setMod(xi.mod.ACC, 1300)
 	mob:setMod(xi.mod.ATT, 1300)
@@ -31,13 +31,6 @@ entity.onMobSpawn = function(mob)
 		mob:setDropID(4038)
 	else
 		mob:setDropID(4030)
-	end
-	if (GetServerVariable("P3Wave4") == 1) then
-		player:changeMusic(0, 74)
-		player:changeMusic(1, 74)
-		player:changeMusic(2, 74)
-		player:changeMusic(3, 74)
-		player:changeMusic(4, 74)
 	end
 end
 
@@ -68,6 +61,23 @@ entity.onMobDespawn = function(mob)
 				SpawnMob(p1ID)
 				p1ID = p1ID + 1
 			until p1ID == 17903802
+		end
+	elseif (GetServerVariable("P3Wave3") == 1) then
+		local P3W3Kills = GetServerVariable("P3W3Kills")
+		SetServerVariable("P3W3Kills", (P3W3Kills + 1))
+		if GetServerVariable("P3W3Kills") == 12 then
+			SetServerVariable("P3Wave3", 0)
+			SetServerVariable("P3Wave4", 1)
+			local p1ID = 17903814
+			repeat
+				SpawnMob(p1ID)
+				p1ID = p1ID + 1
+			until p1ID == 17903824
+			player:changeMusic(0, 74)
+			player:changeMusic(1, 74)
+			player:changeMusic(2, 74)
+			player:changeMusic(3, 74)
+			player:changeMusic(4, 74)
 		end
 	end
 end

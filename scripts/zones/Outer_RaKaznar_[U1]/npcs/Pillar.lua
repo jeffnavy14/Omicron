@@ -1,5 +1,6 @@
 -----------------------------------
---
+-- npc: Pillar
+-- used to spawn mob groups in Path 2 Custom Vagary
 -----------------------------------
 local entity = {}
 
@@ -22,53 +23,59 @@ entity.onTrigger = function(player, npc)
 			SetServerVariable("P2Boss2", 0)
 			SetServerVariable("P2Boss3", 0)
 		elseif isBoss < 3 then
-			SpawnMob(17903648)
-			SpawnMob(17903649)
-			SpawnMob(17903650)
-			SpawnMob(17903651)
-			SpawnMob(17903652)
+			-- Slime group
+			local p1ID = 17903710
+			repeat
+				SpawnMob(p1ID)
+				p1ID = p1ID + 1
+			until p1ID == 17903725
 			player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 		elseif isBoss > 2 and isBoss < 5 then
-			SpawnMob(17903653)
-			SpawnMob(17903654)
-			SpawnMob(17903655)
-			SpawnMob(17903656)
-			SpawnMob(17903657)
+			-- Leech Group
+			local p1ID = 17903725
+			repeat
+				SpawnMob(p1ID)
+				p1ID = p1ID + 1
+			until p1ID == 17903740
 			player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 		elseif isBoss > 4 and isBoss < 7 then
-			SpawnMob(17903658)
-			SpawnMob(17903659)
-			SpawnMob(17903660)
-			SpawnMob(17903661)
-			SpawnMob(17903662)
+			-- Obdella Group
+			local p1ID = 17903740
+			repeat
+				SpawnMob(p1ID)
+				p1ID = p1ID + 1
+			until p1ID == 17903755
 			player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 		elseif isBoss > 6 then
 			if (GetServerVariable("P2Boss1") == 0) then
+				-- Leech Group w/ Murkcrawler
 				SetServerVariable("P2Boss1", 1)
-				SpawnMob(17903653)
-				SpawnMob(17903654)
-				SpawnMob(17903655)
-				SpawnMob(17903656)
-				SpawnMob(17903657)
-				SpawnMob(17903663)
+				local p1ID = 17903725
+				repeat
+					SpawnMob(p1ID)
+					p1ID = p1ID + 1
+				until p1ID == 17903740
+				SpawnMob(17903755) -- Murkcrawler
 				player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 			elseif (GetServerVariable("P2Boss1") == 2) and (GetServerVariable("P2Boss2") == 0) then
+				-- Slime group w/ Brimboil
 				SetServerVariable("P2Boss2", 1)
-				SpawnMob(17903648):updateEnmity(player)
-				SpawnMob(17903649):updateEnmity(player)
-				SpawnMob(17903650):updateEnmity(player)
-				SpawnMob(17903651):updateEnmity(player)
-				SpawnMob(17903652):updateEnmity(player)
-				SpawnMob(17903664)
+				local p1ID = 17903710
+				repeat
+					SpawnMob(p1ID)
+					p1ID = p1ID + 1
+				until p1ID == 17903725
+				SpawnMob(17903756) -- Brimboil
 				player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 			elseif (GetServerVariable("P2Boss1") == 2) and (GetServerVariable("P2Boss2") == 2) and (GetServerVariable("P2Boss3") == 0) then
+				-- Obdella Group w/ Rancibus
 				SetServerVariable("P2Boss3", 1)
-				SpawnMob(17903658)
-				SpawnMob(17903659)
-				SpawnMob(17903660)
-				SpawnMob(17903661)
-				SpawnMob(17903662)
-				SpawnMob(17903674)
+				local p1ID = 17903740
+				repeat
+					SpawnMob(p1ID)
+					p1ID = p1ID + 1
+				until p1ID == 17903755
+				SpawnMob(17903766) -- Rancibus
 				player:changeMusic(0, 74)
 				player:changeMusic(1, 74)
 				player:changeMusic(2, 74)
@@ -76,11 +83,12 @@ entity.onTrigger = function(player, npc)
 				player:changeMusic(4, 74)
 				player:PrintToPlayer("A thousand scattered memories begin to take shape!", 13)
 			else
-				SpawnMob(17903648)
-				SpawnMob(17903649)
-				SpawnMob(17903650)
-				SpawnMob(17903651)
-				SpawnMob(17903652)
+				-- Slime group in place of boss 1 or 2 if they are already dead
+				local p1ID = 17903617
+				repeat
+					SpawnMob(p1ID)
+					p1ID = p1ID + 1
+				until p1ID == 17903647
 				player:PrintToPlayer("Fragments of scattered memories begin to coalesce!", 13)
 			end
 		end

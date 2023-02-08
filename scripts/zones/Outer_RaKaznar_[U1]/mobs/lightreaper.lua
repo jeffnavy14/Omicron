@@ -1,6 +1,6 @@
 -----------------------------------
 -- Zone: Outer_RaKaznar_[U1]
--- Ashen_Soul
+-- Lightreaper
 -----------------------------------
 local ID = require("scripts/zones/Outer_RaKaznar_[U1]/IDs")
 require("scripts/globals/pathfind")
@@ -8,24 +8,24 @@ require("scripts/globals/pathfind")
 local entity = {}
 	
 entity.onMobSpawn = function(mob)
-	mob:renameEntity("Ashen Soul")
+	mob:renameEntity("Lightreaper")
 	mob:setMod(xi.mod.DMG, -6000)
 	mob:setMod(xi.mod.ACC, 1250)
 	mob:setMod(xi.mod.ATT, 1250)
 	mob:setMod(xi.mod.MATT, 500)
 	mob:setMod(xi.mod.MACC, 1250)
 	mob:setMod(xi.mod.FIRE_SDT, 1300)
-    mob:setMod(xi.mod.ICE_SDT, 700)
-    mob:setMod(xi.mod.WIND_SDT, 1150)
-	mob:setMod(xi.mod.EARTH_SDT, 700)
-    mob:setMod(xi.mod.THUNDER_SDT, 1150)
-    mob:setMod(xi.mod.WATER_SDT, 1150)
-    mob:setMod(xi.mod.LIGHT_SDT, 1500)
-    mob:setMod(xi.mod.DARK_SDT, 600)
-	mob:setMod(xi.mod.SLASH_SDT, 500)
-    mob:setMod(xi.mod.PIERCE_SDT, 1250)
-    mob:setMod(xi.mod.IMPACT_SDT, 1250)
-    mob:setMod(xi.mod.HTH_SDT, 250)
+    mob:setMod(xi.mod.ICE_SDT, 300)
+    mob:setMod(xi.mod.WIND_SDT, 700)
+	mob:setMod(xi.mod.EARTH_SDT, 600)
+    mob:setMod(xi.mod.THUNDER_SDT, 700)
+    mob:setMod(xi.mod.WATER_SDT, 600)
+    mob:setMod(xi.mod.LIGHT_SDT, 1300)
+    mob:setMod(xi.mod.DARK_SDT, 150)
+	mob:setMod(xi.mod.SLASH_SDT, 875)
+    mob:setMod(xi.mod.PIERCE_SDT, 8750)
+    mob:setMod(xi.mod.IMPACT_SDT, 1000)
+    mob:setMod(xi.mod.HTH_SDT, 1000)
 	mob:setMod(xi.mod.REGAIN, 10)
 end
 
@@ -40,7 +40,14 @@ end
 entity.onMobRoam = function(mob, player)
 	if GetServerVariable("Vag3Active") == 0 then
 		local mobID = mob:getID()
-		DespawnMob(mobID)
+		mob:DespawnMob(mobID)
+		player:setPos(0,0,0)
+		player:changeMusic(0, 73)
+		player:changeMusic(1, 73)
+		player:changeMusic(2, 73)
+		player:changeMusic(3, 73)
+		player:changeMusic(4, 73)
+		player:setCharVar("VagPathActive", 0)
 	end
 end
 
