@@ -1,0 +1,88 @@
+----------------------------------------
+-- List of variables in Abyssean Decent (Island content and custom Vagary)
+----------------------------------------
+-- Misc
+-- Polly
+CharVar("[Polly]item") itemID for item recieved at end
+CharVar("[Polly]time") to compare to when vana midnight happens (based on os.times)
+
+--Part 1
+-- Dorry
+CharVar("Mission1AState") 1 (enabled wants 48 Lizard eggs (4362))
+  2 (1st trade done, now wants 24 San D'Orian flour (610))
+  3 (2nd trade done, now wants 12 Selbina milk (4378))
+  4 (Quest complete can do any trade at this point, only need 1 stack per)
+  
+-- Borry
+CharVar("Mission1BState") 1 (Enabled, requires CharVar("Mission1AState", 4) wants 48 Iron Ore (643))
+  2 (1st trade done, now wants 48 Copper Ore (640))
+  3 (2nd trade done, now wants 12 Zinc Ore (642))
+  4 (Quest done, can do repeat trades, need only 1 stack per)
+  
+-- Norry
+CharVar("Mission1CState") 1 (Enabled, requires CharVar("Mission1BState", 4) wants Bztavian Stinger (3980)
+  2 (Quest done, can trade stinger for infamy)
+  
+-- Part 2
+-- Tim Allen (Requires CharVar("Mission1CState", 2)
+CharVar("TimStuff") 1 (Enabled, wants 4 matamata shells(3934), 2 Joyous's Moss(8986), 2 Raaz Hides(8707)
+  2 (Quest complete, does not repeat)
+  
+-- Narf (Requires CharVar("TimStuff", 2)
+CharVar("Mission2State") 1 (enabled, wants a Gaes Fete(Zitah) gear piece and 100 Infamy
+  2 (Finished fight, need to collect reward)
+  3 (Complete, collected reward, can repeat)
+
+-- Part 3  
+-- El'Taz (Requires CharVar("Mission2State", 3)
+CharVar("NibState") 0 (Ready to start, resets to this)
+  1 (enabled, wants a Nibiru weapon)
+  2 (1st trade done, wants 3 Bztavian Stingers (3980)
+  3 (2nd trade done, now wants 4 Yggdreant Boles (4014))
+  4 (3rd trade done, now wants 3 Rockfin Fins (3978))
+  5 (4th trade done, now wants 4 Gabbrath Horns (3977))
+  6 (5th trade done, now wants 4 Waktza Rostrums (4012))
+  7 (6th trade done, now wants 3 Cehuetzi Claws (8752))
+  8 (last trade done, need to talk to again for pickup)
+CharVar("NibReward") the specific reward (1 - 16)
+
+-- Yota Le'heho (requires CharVar("Mission2State", 3)
+CharVar("Mission3State") 1 (enabled, wants Fiendish Tomes (3429, 3430, 3431, 3432, 3433))
+  2 (Trade done, waiting for 1st vana midnight)
+  3 (Got update and waiting for 2nd vana midnight)
+  4 (Has told player wants distilled water (4509), a dark crystal (4103), piece of rotten meat (16995))
+  5 (Done trade, recieved Befouled Water(9008) and told to go to Vagary)
+  6 (Finished 1st Vagary Path, need to talk to the NPC)
+  7 (Completed quest, can now trade for more Befouled Waters)
+  8 (Did trade, now need to redo Vagary)
+  
+-- Custom Vagary (zone 275)
+CharVar("VagPathActive") Which path is active for char (0 none, 1 Path 1, 2 Path 2, 3 Path 3)
+local secret determines if Perfidien is spawned or not (random 1-10, 6+ spawns) requires CharVar("VagPath3Win", 1)
+-- Path 1
+ServerVariable("Vag1Active") 0 Path 1 not active, 1 active
+ServerVariable("P1W1Kills") Path 1 wave 1 kills
+ServerVariable("P1W2Kills") Path 1 wave 2 kills
+ServerVariable("P1W3Kills") Path 1 wave 3 kills
+ServerVariable("P1Boss1") Path 1 Boss 1 (0 Not spawned, 1 has spawned)
+ServerVariable("P1Boss2") Path 1 Boss 2 (0 Not spawned, 1 has spawned)
+ServerVariable("P1Boss3") Path 1 Boss 3 (0 Not spawned, 1 has spawned)
+CharVar("VagPath1Win") 0 not done, 1 completed
+-- Path 2
+ServerVariable("Vag2Active") 0 Path 2 not active, 1 active
+ServerVariable("P2Kills") Kills for active group
+ServerVariable("P2Boss1") Path 2 Boss 1 (0 Not spawned, 1 has spawned)
+ServerVariable("P2Boss2") Path 2 Boss 2 (0 Not spawned, 1 has spawned)
+ServerVariable("P2Boss3") Path 2 Boss 3 (0 Not spawned, 1 has spawned)
+CharVar("VagPath2Win") 0 not done, 1 completed
+-- Path 3
+ServerVariable("Vag3Active") 0 Path 3 not active, 1 active
+ServerVariable("P3W1Kills") Path 3 Wave 1 kills
+ServerVariable("P3W2Kills") Path 3 Wave 2 kills
+ServerVariable("P3W3Kills") Path 3 Wave 3 kills
+ServerVariable("P3W4Kills") Path 3 Wave 4 kills
+ServerVariable("P3Boss1") Path 3 Boss 1 (0 Not spawned, 1 has spawned)
+ServerVariable("P3Boss2") Path 3 Boss 2 (0 Not spawned, 1 has spawned)
+CharVar("VagPath3Win") 0 not done, 1 completed
+CharVar("VagPath4Win") (Perfidien defeated) 0 not done, 1 completed
+CharVar("VagPath5Win") (Plouton defeated) 0 not done, 1 completed
