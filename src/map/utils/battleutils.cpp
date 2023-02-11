@@ -320,8 +320,7 @@ namespace battleutils
     {
         for (int32 SkillId = 0; SkillId < MAX_WEAPONSKILL_ID; ++SkillId)
         {
-            delete g_PWeaponSkillList[SkillId];
-            g_PWeaponSkillList[SkillId] = nullptr;
+            destroy(g_PWeaponSkillList[SkillId]);
         }
     }
 
@@ -332,8 +331,7 @@ namespace battleutils
     {
         for (auto& mobskill : g_PMobSkillList)
         {
-            delete mobskill;
-            mobskill = nullptr;
+            destroy(mobskill);
         }
     }
 
@@ -344,7 +342,7 @@ namespace battleutils
     {
         for (auto& petskill : g_PPetSkillList)
         {
-            delete petskill.second;
+            destroy(petskill.second);
         }
         g_PPetSkillList.clear();
     }

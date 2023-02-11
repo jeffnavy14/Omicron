@@ -46,6 +46,7 @@ SqlConnection::SqlConnection()
 
 SqlConnection::SqlConnection(const char* user, const char* passwd, const char* host, uint16 port, const char* db)
 : m_LatencyWarning(false)
+, m_ThreadId(std::this_thread::get_id())
 {
     TracyZoneScoped;
 
@@ -90,7 +91,7 @@ SqlConnection::~SqlConnection()
     {
         mysql_close(&self->handle);
         FreeResult();
-        delete self;
+        destroy(self);
     }
 }
 
@@ -192,30 +193,31 @@ void SqlConnection::SetupKeepalive()
     m_PingInterval = timeout + reserve;
 }
 
-void SqlConnection::CheckCollation()
+void SqlConnection::CheckCharset()
 {
-    // Check collation is what we require
-    auto ret = QueryStr("SHOW VARIABLES LIKE 'collation%';");
+    // Check that the SQL charset is what we require
+    auto ret = QueryStr("SELECT @@character_set_database, @@collation_database;");
     if (ret != SQL_ERROR && NumRows())
     {
         bool foundError = false;
         while (NextRow() == SQL_SUCCESS)
         {
-            auto collationType     = GetStringData(0);
-            auto collectionSetting = GetStringData(1);
-            if (!starts_with(collectionSetting, "utf8"))
+            auto charsetSetting   = GetStringData(0);
+            auto collationSetting = GetStringData(1);
+            if (!starts_with(charsetSetting, "utf8") || !starts_with(collationSetting, "utf8"))
             {
                 foundError = true;
                 // clang-format off
-                ShowWarning(fmt::format("Unexpected collation setting in database: {}: {}. Expected utf8*.",
-                    collationType, collectionSetting).c_str());
+                ShowWarning(fmt::format("Unexpected character_set or collation setting in database: {}: {}. Expected utf8*.",
+                    charsetSetting, collationSetting).c_str());
                 // clang-format on
             }
         }
 
         if (foundError)
         {
-            ShowWarning("This can result in data reads and writes being corrupted!");
+            ShowWarning("Non utf8 charset can result in data reads and writes being corrupted!");
+            ShowWarning("Non utf8 collation can be indicative that the database was not set up per required specifications.");
         }
     }
 }
@@ -261,6 +263,7 @@ int32 SqlConnection::TryPing()
 
 size_t SqlConnection::EscapeStringLen(char* out_to, const char* from, size_t from_len)
 {
+    TracyZoneScoped;
     if (self)
     {
         return mysql_real_escape_string(&self->handle, out_to, from, (uint32)from_len);
@@ -270,13 +273,29 @@ size_t SqlConnection::EscapeStringLen(char* out_to, const char* from, size_t fro
 
 size_t SqlConnection::EscapeString(char* out_to, const char* from)
 {
+    TracyZoneScoped;
     return EscapeStringLen(out_to, from, strlen(from));
+}
+
+std::string SqlConnection::EscapeString(std::string const& input)
+{
+    TracyZoneScoped;
+    std::string escaped_full_string;
+    escaped_full_string.reserve(input.size() * 2 + 1);
+    EscapeString(escaped_full_string.data(), input.data());
+    return escaped_full_string;
 }
 
 int32 SqlConnection::QueryStr(const char* query)
 {
     TracyZoneScoped;
     TracyZoneCString(query);
+
+    auto currentThreadId = std::this_thread::get_id();
+    if (currentThreadId != m_ThreadId)
+    {
+        ShowError("SqlConnection::Query called on thread that doesn't own it. SqlConnection is not thread-safe!");
+    }
 
     DebugSQL(query);
 
