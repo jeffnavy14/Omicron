@@ -23,8 +23,8 @@ local Tim = zone:insertDynamicEntity({
     y = -3,
     z = 220,
 	
-	onTrade = function(player, npc, trade)
-		if (trade:hasItemQty(9008,1)) and (player:getCharVar("Mission3State") >= 5) then
+	onTrigger = function(player, npc, trade)
+		if player:getCharVar("Mission3State") >= 5 then
 			
 			local party = player:getParty()
 			

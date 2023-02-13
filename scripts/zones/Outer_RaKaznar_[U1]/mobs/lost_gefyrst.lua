@@ -1,6 +1,6 @@
 -----------------------------------
 -- Zone: Outer_RaKaznar_[U1]
--- Achuka
+-- Lost Gefyrst
 -----------------------------------
 local ID = require("scripts/zones/Outer_RaKaznar_[U1]/IDs")
 require("scripts/globals/pathfind")
@@ -9,43 +9,87 @@ local entity = {}
 	
 entity.onMobSpawn = function(mob)
 	mob:renameEntity("Lost Gefyrst")
+	mob:setMod(xi.mod.FIRE_NULL,1)
+	mob:setMod(xi.mod.WIND_NULL,1)
+	mob:setMod(xi.mod.CAPACITY_BONUS,-100)
+	mob:setMod(xi.mod.DMG,-5000)
+	mob:setMod(xi.mod.DMGPHYS_II,-3000)
+	mob:setMod(xi.mod.WATER_ABSORB, 100)
+	mob:setMod(xi.mod.ICE_ABSORB, 100)
+	mob:setMod(xi.mod.ACC, 1250)
+	mob:setMod(xi.mod.MATT, 400)
+	mob:setMod(xi.mod.MACC, 1250)
 end
 
 entity.onMobEngaged = function(mob, player)
 	
 end
 
-entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	if (GetServerVariable("P1Boss1") == 0) then
-		local P1W1Kills = GetServerVariable("P1W1Kills")
-		SetServerVariable("P1W1Kills", P1W1Kills + 1)
-		if GetServerVariable("P1W1Kills") == 10 then
-			SpawnMob(17903627):updateEnmity(player)
-		end
-	elseif (GetServerVariable("P1Boss2") == 1) and (GetServerVariable("P1Boss3") == 0) then
-		local P1W3Kills = GetServerVariable("P1W3Kills")
-		SetServerVariable("P1W3Kills", (P1W3Kills + 1))
-		if GetServerVariable("P1W3Kills") == 8 then
-			SpawnMob(17903647):updateEnmity(player)
-			GetServerVariable("P1Boss3", 1)
-			player:changeMusic(0, 74)
-			player:changeMusic(1, 74)
-			player:changeMusic(2, 74)
-			player:changeMusic(3, 74)
-			player:changeMusic(4, 74)
-		end
+entity.onMobFight = function(mob, target)
+	local mobID = mob:getID()
+	if GetServerVariable("P1Boss1") == 1 and
+		GetServerVariable("P1Boss2", 0) and
+		mobID < 17903647
+	then
+		DespawnMob(mobID)
 	end
-end
-
-entity.onMobRoam = function(mob, player)
 	if GetServerVariable("Vag1Active") == 0 then
-		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
 end
 
-entity.onMobDespawn = function(mob)
+entity.onMobRoam = function(mob, player)
+	local mobID = mob:getID()
+	if GetServerVariable("P1Boss1") == 1 and
+		GetServerVariable("P1Boss2", 0) and
+		mobID < 17903647
+	then
+		DespawnMob(mobID)
+	end
+	if GetServerVariable("Vag1Active") == 0 then
+		DespawnMob(mobID)
+	end
+end
 
+entity.onMobDeath = function(mob, player, isKiller, noKiller)
+	local person = player:getID()
+	SetServerVariable("P1Killer", person)
+	local party = player:getParty()
+	local P1W1Kills = GetServerVariable("P1W1Kills")
+	local P1W3Kills = GetServerVariable("P1W3Kills")
+end
+
+entity.onMobDespawn = function(mob)
+	local P1W1Kills = GetServerVariable("P1W1Kills")
+	local P1W3Kills = GetServerVariable("P1W3Kills")
+	if (GetServerVariable("P1Boss1") == 0) then
+		SetServerVariable("P1W1Kills", P1W1Kills + 1)
+	elseif (GetServerVariable("P1Boss2") == 1) and (GetServerVariable("P1Boss3") == 0) then
+		SetServerVariable("P1W3Kills", P1W3Kills + 1)
+	end
+	if
+		(GetServerVariable("P1Boss1") == 0) and
+		(GetServerVariable("P1W1Kills") == 25)
+	then
+		SpawnMob(17903647):updateEnmity(player)
+	elseif
+		(GetServerVariable("P1Boss2") == 1)	and
+		(GetServerVariable("P1Boss3") == 0) and
+		(GetServerVariable("P1W3Kills") == 20)
+	then
+		SpawnMob(17903707):updateEnmity(P1Killer)
+		local party = P1Killer:getParty()
+		SetServerVariable("P1Boss3", 1)
+		for i, partyMember in pairs(party) do
+			if partyMember:isPC() then
+				partyMember:changeMusic(0, 74)
+				partyMember:changeMusic(1, 74)
+				partyMember:changeMusic(2, 74)
+				partyMember:changeMusic(3, 74)
+				partyMember:changeMusic(4, 74)
+			end
+		end
+	end
 end
 
 return entity

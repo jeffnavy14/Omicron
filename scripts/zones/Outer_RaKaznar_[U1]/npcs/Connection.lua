@@ -3,6 +3,12 @@
 -----------------------------------
 local entity = {}
 
+entity.onInitialize = function(player, npc, trade)
+	GetNPCByID(17904623):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904624):setStatus(xi.status.NORMAL)
+	GetNPCByID(17904625):setStatus(xi.status.NORMAL)
+end
+
 entity.onTrade = function(player, npc, trade)
 end
 
@@ -22,7 +28,7 @@ entity.onTrigger = function(player, npc)
 			end,
 		},
 		{
-			"Leave",
+			"Leave (This will end your part in the claim.)",
 			function(playerArg)
 				player:setPos(0,0,0)
 				player:changeMusic(0, 73)
@@ -33,13 +39,19 @@ entity.onTrigger = function(player, npc)
 				local path = player:getCharVar("VagPathActive")
 				if path == 1 then
 					player:setCharVar("VagPathActive", 0)
-					SetServerVariable("Vag1Active", 0)
+					if party ~= nil then
+						SetServerVariable("Vag1Active", 0)
+					end
 				elseif path == 2 then
 					player:setCharVar("VagPathActive", 0)
-					SetServerVariable("Vag2Active", 0)
+					if party ~= nil then
+						SetServerVariable("Vag2Active", 0)
+					end
 				elseif path == 3 then
 					player:setCharVar("VagPathActive", 0)
-					SetServerVariable("Vag3Active", 0)
+					if party ~= nil then	
+						SetServerVariable("Vag3Active", 0)
+					end
 				end
 			end,
 		},
