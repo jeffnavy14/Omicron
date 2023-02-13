@@ -1,23 +1,13 @@
 -----------------------------------
 -- Area: Ru'Lude Gardens
 --  NPC: Magian Moogle (Blue Bobble)
--- Type: Magian Trials NPC (Relic Armor)
+-- Type: Magian Trials NPC (Armor)
 -- !pos -6.843 2.459 121.9 64
 -----------------------------------
-require("scripts/globals/settings")
 require("scripts/globals/magiantrials")
 require("scripts/globals/status")
 -----------------------------------
 local entity = {}
-
-local eventIds =
-{
-    [2] = 10141,
-    [3] = 10142,
-    [4] = 10143,
-    [5] = 10144,
-    [6] = 10148,
-}
 
 entity.onTrade = function(player, npc, trade)
     if xi.settings.main.ENABLE_MAGIAN_TRIALS ~= 1 then
@@ -28,11 +18,7 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    if xi.settings.main.ENABLE_MAGIAN_TRIALS ~= 1 then
-        return
-    end
-
-    xi.magian.magianOnTrigger(player, npc, eventIds)
+    xi.magian.magianOnTrigger(player, npc)
 end
 
 entity.onEventUpdate = function(player, csid, option)
