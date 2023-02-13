@@ -32,6 +32,16 @@ end
 
 entity.onMobEngaged = function(mob, player)
 	player:PrintToPlayer("Putraxia: Hmmph, intruders in the master's realm... corrupting your souls may be worth... a dime...", 13)
+	local party = player:getParty()
+	for i, partyMember in pairs(party) do
+		if partyMember:isPC() then
+			partyMember:changeMusic(0, 74)
+			partyMember:changeMusic(1, 74)
+			partyMember:changeMusic(2, 74)
+			partyMember:changeMusic(3, 74)
+			partyMember:changeMusic(4, 74)
+		end
+	end
 end
 
 entity.onMobFight = function(mob, target)
@@ -42,6 +52,7 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
+	player:PrintToPlayer("Putraxia: Maas...ter... I have... fa~iled... ... ...", 13)
 	player:PrintToPlayer("You have cleared the first path of Vagary.", 29)
 	player:PrintToPlayer("Please make your way to the connection.", 29)
 	local party = player:getParty()
@@ -66,7 +77,6 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	if (player:getCharVar("Mission3State") == 5) then
 		player:setCharVar("Mission3State", 6)
 	end
-	player:PrintToPlayer("Putraxia: Maas...ter... I have... fa~iled... ... ...", 13)
 	GetNPCByID(17904626):setStatus(xi.status.NORMAL)
 end
 
@@ -75,17 +85,6 @@ entity.onMobRoam = function(mob, player)
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 		local party = player:getParty()
-		for i, partyMember in pairs(party) do
-			if partyMember:isPC() then
-				partyMember:setPos(0,0,0)
-				partyMember:changeMusic(0, 73)
-				partyMember:changeMusic(1, 73)
-				partyMember:changeMusic(2, 73)
-				partyMember:changeMusic(3, 73)
-				partyMember:changeMusic(4, 73)
-				partyMember:setCharVar("VagPathActive", 0)
-			end
-		end
 	end
 end
 

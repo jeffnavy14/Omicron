@@ -23,35 +23,6 @@ entity.onMobEngaged = function(mob, player)
 	
 end
 
-entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	local party = player:getParty()
-	local partySize = player:getPartySize()
-	local P1W1Kills = GetServerVariable("P1W1Kills")
-	local P1W3Kills = GetServerVariable("P1W3Kills")
-	if
-		(GetServerVariable("P1Boss1") == 0) and
-		(GetServerVariable("P1W1Kills") == 25)
-	then
-		SpawnMob(17903647):updateEnmity(player)
-	elseif
-		(GetServerVariable("P1Boss2") == 1)	and
-		(GetServerVariable("P1Boss3") == 0) and
-		(GetServerVariable("P1W3Kills") == 20)
-	then
-		SpawnMob(17903707):updateEnmity(player)
-		SetServerVariable("P1Boss3", 1)
-		for i, partyMember in pairs(party) do
-			if partyMember:isPC() then
-				partyMember:changeMusic(0, 74)
-				partyMember:changeMusic(1, 74)
-				partyMember:changeMusic(2, 74)
-				partyMember:changeMusic(3, 74)
-				partyMember:changeMusic(4, 74)
-			end
-		end
-	end
-end
-
 entity.onMobFight = function(mob, target)
 	local mobID = mob:getID()
 	if GetServerVariable("P1Boss1") == 1 and
@@ -78,6 +49,14 @@ entity.onMobRoam = function(mob, player)
 	end
 end
 
+entity.onMobDeath = function(mob, player, isKiller, noKiller)
+	local person = player:getID()
+	SetServerVariable("P1Killer", person)
+	local party = player:getParty()
+	local P1W1Kills = GetServerVariable("P1W1Kills")
+	local P1W3Kills = GetServerVariable("P1W3Kills")
+end
+
 entity.onMobDespawn = function(mob)
 	local P1W1Kills = GetServerVariable("P1W1Kills")
 	local P1W3Kills = GetServerVariable("P1W3Kills")
@@ -85,6 +64,29 @@ entity.onMobDespawn = function(mob)
 		SetServerVariable("P1W1Kills", P1W1Kills + 1)
 	elseif (GetServerVariable("P1Boss2") == 1) and (GetServerVariable("P1Boss3") == 0) then
 		SetServerVariable("P1W3Kills", P1W3Kills + 1)
+	end
+	if
+		(GetServerVariable("P1Boss1") == 0) and
+		(GetServerVariable("P1W1Kills") == 25)
+	then
+		SpawnMob(17903647):updateEnmity(player)
+	elseif
+		(GetServerVariable("P1Boss2") == 1)	and
+		(GetServerVariable("P1Boss3") == 0) and
+		(GetServerVariable("P1W3Kills") == 20)
+	then
+		SpawnMob(17903707):updateEnmity(P1Killer)
+		local party = P1Killer:getParty()
+		SetServerVariable("P1Boss3", 1)
+		for i, partyMember in pairs(party) do
+			if partyMember:isPC() then
+				partyMember:changeMusic(0, 74)
+				partyMember:changeMusic(1, 74)
+				partyMember:changeMusic(2, 74)
+				partyMember:changeMusic(3, 74)
+				partyMember:changeMusic(4, 74)
+			end
+		end
 	end
 end
 
