@@ -4,30 +4,24 @@
 -- Type: Magian Trials NPC (Weapons)
 -- !pos -11 2.453 118 64
 -----------------------------------
-require("scripts/globals/settings")
-require("scripts/globals/magiantrials")
-require("scripts/globals/status")
+require("scripts/globals/magian")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if xi.settings.main.ENABLE_MAGIAN_TRIALS ~= 1 then
-        return
-    end
-
-    xi.magian.magianOnTrade(player, npc, trade, xi.itemType.WEAPON, eventIds)
+    xi.magian.magianOnTrade(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
     xi.magian.magianOnTrigger(player, npc)
 end
 
-entity.onEventUpdate = function(player, csid, option)
-    xi.magian.magianEventUpdate(player, csid, option, eventIds)
+entity.onEventUpdate = function(player, csid, option, npc)
+    xi.magian.magianEventUpdate(player, csid, option, npc)
 end
 
-entity.onEventFinish = function(player, csid, option)
-    xi.magian.magianOnEventFinish(player, csid, option, eventIds)
+entity.onEventFinish = function(player, csid, option, npc)
+    xi.magian.magianOnEventFinish(player, csid, option, npc)
 end
 
 return entity
