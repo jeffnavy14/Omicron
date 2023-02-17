@@ -47,6 +47,7 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 		player:setCharVar("VagPathActive", 0)
 	end
 	SetServerVariable("P2Boss3", 2)
+	SetServerVariable("Vag2Active", 0)
 	player:setCharVar("VagPath2Win", 1)
 end
 
