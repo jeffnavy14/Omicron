@@ -13,15 +13,15 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local beads = player:getCurrency("escha_beads")
-    player:startEvent(9100, 0, 2046820351, 288, 3, 0, beads, 50, 0)
-	player:PrintToPlayer("WARNING: You are about to consume escha beads, not silt.", xi.msg.channel.SYSTEM)
+    local silt = player:getCurrency("escha_silt")
+    player:startEvent(9100, 0, 2046820351, 288, 3, 0, silt, 50, 0)
+
 end
 
 entity.onEventUpdate = function(player, csid, option)
-    local beads = player:getCurrency("escha_beads")
+    local silt = player:getCurrency("escha_silt")
     if option > 0 then
-	    player:setCurrency("escha_beads", beads - warpCost)
+	    player:setCurrency("escha_silt", silt - warpCost)
 	end
 end
 
