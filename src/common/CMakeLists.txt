@@ -42,6 +42,8 @@ set(COMMON_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/version.h
     ${CMAKE_CURRENT_SOURCE_DIR}/watchdog.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/watchdog.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/worker_group.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/worker_thread.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zlib.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/zlib.h
     $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/debug_windows.cpp>

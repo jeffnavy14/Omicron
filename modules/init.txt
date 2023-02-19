@@ -36,4 +36,5 @@
 #
 # Live example:
 
-omicron/
+omicron/mimic
+omicron/commands
