@@ -54,7 +54,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -66,7 +66,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -78,7 +78,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.CUNNASTS_TALON)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.CUNNASTS_TALON)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -90,7 +90,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FERRODONS_SCALE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.FERRODONS_SCALE)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -102,7 +102,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GESTALTS_RETINA)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.GESTALTS_RETINA)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -114,7 +114,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GULLTOPS_SHELL)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.GULLTOPS_SHELL)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -138,7 +138,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.LYDIAS_VINE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.LYDIAS_VINE)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -150,7 +150,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.REVETAURS_HORN)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.REVETAURS_HORN)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -162,7 +162,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TANGATAS_WING)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.TANGATAS_WING)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -174,7 +174,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VIDALAS_CLAW)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED), xi.ki.VIDALAS_CLAW)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -186,7 +186,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VYALAS_PREY)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.VYALAS_PREY)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -198,7 +198,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 					end
 				end,
 			},
@@ -232,7 +232,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BRITTLISS_RING)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.BRITTLISS_RING)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -244,7 +244,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SANDYS_LASHER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.SANDYS_LASHER)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -257,7 +257,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -296,7 +296,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.IONOSS_WEBBING)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.IONOSS_WEBBING)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -309,7 +309,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -322,7 +322,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.NOSOIS_FEATHER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.NOSOIS_FEATHER)
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 						end
 					end,
 				},
@@ -348,7 +348,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(4060, 5)) then -- Beitetsu x5 -- SHOCKMAWS_BLUBBER 2918
 		if not player:hasKeyItem(xi.ki.SHOCKMAWS_BLUBBER) then
@@ -356,7 +356,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(4059, 5)) then -- Pluton x5 -- URMAHLULLUS_ARMOR KI 2919
 		if not player:hasKeyItem(xi.ki.URMAHLULLUS_ARMOR) then
@@ -364,7 +364,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) then -- Ashweed and Gravewood Log -- COVENS_DUST KI 2908
 		if not player:hasKeyItem(xi.ki.COVENS_DUST) then
@@ -372,7 +372,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.COVENS_DUST)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.COVENS_DUST)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Gravewood log and Duskcrawler -- BLAZEWINGS_PINCER KI 2907
 		if not player:hasKeyItem(xi.ki.BLAZEWINGS_PINCER) then
@@ -380,7 +380,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed and Duskcrawler -- PAZUZUS_BLADE_HILT KI 2909
 		if not player:hasKeyItem(xi.ki.PAZUZUS_BLADE_HILT) then
@@ -388,7 +388,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed, Gravewood log and Duskcrawler -- WRATHARES_CARROT 2910
 		if not player:hasKeyItem(xi.ki.WRATHARES_CARROT) then
@@ -396,7 +396,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WRATHARES_CARROT)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.WRATHARES_CARROT)
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
 		end
 	else
 		player:PrintToPlayer("What am I suppose to do with that?", npc:getPacketName())
