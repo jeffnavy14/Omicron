@@ -11,9 +11,9 @@ end
 entity.onMobSpawn = function(mob, player)
 	mob:addListener("WEAPONSKILL_USE", "ALPLUACHRA_WEAPONSKILL_USE", function(mobArg, target, wsid, tp, action)
 		if GetMobByID(17957382):isSpawned() then
-			GetMobByID((17957382):setTP(3000)
+			GetMobByID(17957382):setTP(3000)
 		if GetMobByID(17957385):isSpawned() then
-			GetMobByID((17957385):setTP(3000)
+			GetMobByID(17957385):setTP(3000)
 		end
 	end)
 	mob:setMod(xi.mod.DMGMAGIC, 750)
