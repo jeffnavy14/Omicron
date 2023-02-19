@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Escha Zi'Tah
--- 
+-- Wrathare KI 2910
 -----------------------------------
 local entity = {}
 
@@ -40,25 +40,25 @@ entity.onMobFight = function(mob, target)
 	local GonnaDie = math.random(1, 1000) -- endeath... yay
 	local HPP = mob:getHPP()
 	if HPP > 80 and GonnaDie > 990 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND) -- message not in ID's yet
 		target:setHP(0)
 	elseif HPP > 60 and GonnaDie > 980 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	elseif HPP > 50 and GonnaDie > 970 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	elseif HPP > 40 and GonnaDie > 960 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	elseif HPP > 30 and GonnaDie > 950 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	elseif HPP > 20 and GonnaDie > 925 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	elseif HPP > 10 and GonnaDie > 900 then
-		target:setMsg(xi.msg.basic.FALL_TO_GROUND)
+		--target:setMsg(xi.msg.basic.FALL_TO_GROUND)
 		target:setHP(0)
 	end	
 end
