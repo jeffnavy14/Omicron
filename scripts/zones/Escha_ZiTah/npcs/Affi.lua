@@ -25,9 +25,6 @@ entity.onTrade = function(player, npc, trade)
 		local menu  = {}
 		local page1 = {}
 		local page2 = {}
-		local page3 = {}
-		local page4 = {}
-		local page5 = {}
 	
 		--menu to show all mobs, choose w/o KI list what KI needed, else confirm then pop
 		local delaySendMenu = function(player)
@@ -52,49 +49,73 @@ entity.onTrade = function(player, npc, trade)
 			{
 				"Aglaophotis' Bud", -- Aglaophotis KI 2897
 				function(playerArg)
-					player:addKeyItem(xi.ki.AGLAOPHOTIS_BUD)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.AGLAOPHOTIS_BUD) then
+						player:addKeyItem(xi.ki.AGLAOPHOTIS_BUD)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
+					end
 				end,
 			},
 			{
 				"Angrboda's Necklace",
 				function(playerArg) -- Angrboda KI 2901
-					player:addKeyItem(xi.ki.ANGRBODAS_NECKLACE)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.ANGRBODAS_NECKLACE) then
+						player:addKeyItem(xi.ki.ANGRBODAS_NECKLACE)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
+					end
 				end,
 			},
 			{
 				"Cunnast's Talon",
 				function(playerArg) -- Cunnast KI 2902
-					player:addKeyItem(xi.ki.CUNNASTS_TALON)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.CUNNASTS_TALON)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.CUNNASTS_TALON) then
+						player:addKeyItem(xi.ki.CUNNASTS_TALON)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.CUNNASTS_TALON)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.CUNNASTS_TALON)
+					end
 				end,
 			},
 			{
 				"Ferrodon's Scale",
 				function(playerArg) -- Ferrodon KI 2904
-					player:addKeyItem(xi.ki.FERRODONS_SCALE)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FERRODONS_SCALE)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.FERRODONS_SCALE) then
+						player:addKeyItem(xi.ki.FERRODONS_SCALE)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FERRODONS_SCALE)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.FERRODONS_SCALE)
+					end
 				end,
 			},
 			{
 				"Gestalt's Retina",
 				function(playerArg) -- Gestalt KI 2900
-					player:addKeyItem(xi.ki.GESTALTS_RETINA)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GESTALTS_RETINA)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.GESTALTS_RETINA) then	
+						player:addKeyItem(xi.ki.GESTALTS_RETINA)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GESTALTS_RETINA)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.GESTALTS_RETINA)
+					end
 				end,
 			},
 			{
 				"Gulltop's Shell",
 				function(playerArg) -- Gulltop KI 2905
-					player:addKeyItem(xi.ki.GULLTOPS_SHELL)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GULLTOPS_SHELL)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.GULLTOPS_SHELL) then	
+						player:addKeyItem(xi.ki.GULLTOPS_SHELL)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GULLTOPS_SHELL)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.GULLTOPS_SHELL)
+					end
 				end,
 			},
 		
@@ -112,49 +133,73 @@ entity.onTrade = function(player, npc, trade)
 			{
 				"Lydia's Vine",
 				function(playerArg) -- Lustful Lydia KI 2896
-					player:addKeyItem(xi.ki.LYDIAS_VINE)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.LYDIAS_VINE)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.LYDIAS_VINE) then
+						player:addKeyItem(xi.ki.LYDIAS_VINE)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.LYDIAS_VINE)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.LYDIAS_VINE)
+					end
 				end,
 			},
 			{
 				"Revetaur;s Horn",
 				function(playerArg) -- Revetaur KI 2903
-					player:addKeyItem(xi.ki.REVETAURS_HORN)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.REVETAURS_HORN)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.REVETAURS_HORN) then	
+						player:addKeyItem(xi.ki.REVETAURS_HORN)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.REVETAURS_HORN)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.REVETAURS_HORN)
+					end
 				end,
 			},
 			{
 				"Tangata's Wing",
 				function(playerArg) -- Tangata Manu KI 2898
-					player:addKeyItem(xi.ki.TANGATAS_WING)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TANGATAS_WING)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.TANGATAS_WING) then
+						player:addKeyItem(xi.ki.TANGATAS_WING)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TANGATAS_WING)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.TANGATAS_WING)
+					end
 				end,
 			},
 			{
 				"Vidala's Claw",
 				function(playerArg) -- Vidala KI 2899
-					player:addKeyItem(xi.ki.VIDALAS_CLAW)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VIDALAS_CLAW)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.VIDALAS_CLAW) then
+						player:addKeyItem(xi.ki.VIDALAS_CLAW)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VIDALAS_CLAW)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED), xi.ki.VIDALAS_CLAW)
+					end
 				end,
 			},
 			{
 				"Vyala's Prey",
 				function(playerArg) -- Vyala KI 2906
-					player:addKeyItem(xi.ki.VYALAS_PREY)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VYALAS_PREY)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.VYALAS_PREY) then
+						player:addKeyItem(xi.ki.VYALAS_PREY)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VYALAS_PREY)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.VYALAS_PREY)
+					end
 				end,
 			},
 			{
 				"Wepwaet's Tooth",
 				function(playerArg) -- Wepwaet KI 2895
-					player:addKeyItem(xi.ki.WEPWAWETS_TOOTH)
-					player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
-					player:tradeComplete()
+					if not player:hasKeyItem(xi.ki.WEPWAWETS_TOOTH) then
+						player:addKeyItem(xi.ki.WEPWAWETS_TOOTH)
+						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
+						player:tradeComplete()
+					else
+						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
+					end
 				end,
 			},
 		{
@@ -182,25 +227,38 @@ entity.onTrade = function(player, npc, trade)
 				{
 					"Brittlis' Ring",
 					function(playerArg) -- Brittlis KI 2914
-						player:addKeyItem(xi.ki.BRITTLISS_RING)
-						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BRITTLISS_RING)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.BRITTLISS_RING) then
+							player:addKeyItem(xi.ki.BRITTLISS_RING)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BRITTLISS_RING)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.BRITTLISS_RING)
+						end
 					end,
 				},
 				{
 					"Sandy's Lasher",
 					function(playerArg) -- Sensual Sandy KI 2912
-						player:addKeyItem(xi.ki.SANDYS_LASHER)
-						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SANDYS_LASHER)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.SANDYS_LASHER) then
+							player:addKeyItem(xi.ki.SANDYS_LASHER)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SANDYS_LASHER)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.SANDYS_LASHER)
+						end
 					end,
 				},
 				{
 					"Umdhlebi's Flower",
+					
 					function(playerArg) -- Umdhlebi KI 2916
-						player:addKeyItem(xi.ki.UMDHLEBIS_FLOWER)
-						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.UMDHLEBIS_FLOWER) then
+							player:addKeyItem(xi.ki.UMDHLEBIS_FLOWER)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
+						end
 					end,
 				},
 				
@@ -233,25 +291,39 @@ entity.onTrade = function(player, npc, trade)
 				{
 					"Ionos' Webbing",
 					function(playerArg) -- Ionos KI 2911
-						player:addKeyItem(xi.ki.IONOSS_WEBBING)
-						 player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.IONOSS_WEBBING)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.IONOSS_WEBBING) then
+							player:addKeyItem(xi.ki.IONOSS_WEBBING)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.IONOSS_WEBBING)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.IONOSS_WEBBING)
+						end
 					end,
 				},
 				{
 					"Kamohoalii's Fin",
+					
 					function(playerArg) -- Kamohoalii KI 2915
-						player:addKeyItem(xi.ki.KAMOHOALIIS_FIN)
-						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.KAMOHOALIIS_FIN) then
+							player:addKeyItem(xi.ki.KAMOHOALIIS_FIN)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
+						end
 					end,
 				},
 				{
 					"Nosoi's Feather",
+					
 					function(playerArg) -- Nosoi KI 2913
-						player:addKeyItem(xi.ki.NOSOIS_FEATHER)
-						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.NOSOIS_FEATHER)
-						player:tradeComplete()
+						if not player:hasKeyItem(xi.ki.NOSOIS_FEATHER) then
+							player:addKeyItem(xi.ki.NOSOIS_FEATHER)
+							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.NOSOIS_FEATHER)
+							player:tradeComplete()
+						else
+							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.NOSOIS_FEATHER)
+						end
 					end,
 				},
 				
@@ -271,33 +343,61 @@ entity.onTrade = function(player, npc, trade)
 		
 	end		
 	if (trade:hasItemQty(4061, 5)) then -- Riftborn Boulder x5 -- FLEETSTALKERS_CLAW 2917
-		player:addKeyItem(xi.ki.FLEETSTALKERS_CLAW)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.FLEETSTALKERS_CLAW) then
+			player:addKeyItem(xi.ki.FLEETSTALKERS_CLAW)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
+		end
 	elseif (trade:hasItemQty(4060, 5)) then -- Beitetsu x5 -- SHOCKMAWS_BLUBBER 2918
-		player:addKeyItem(xi.ki.SHOCKMAWS_BLUBBER)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.SHOCKMAWS_BLUBBER) then
+			player:addKeyItem(xi.ki.SHOCKMAWS_BLUBBER)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
+		end
 	elseif (trade:hasItemQty(4059, 5)) then -- Pluton x5 -- URMAHLULLUS_ARMOR KI 2919
-		player:addKeyItem(xi.ki.URMAHLULLUS_ARMOR)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.URMAHLULLUS_ARMOR) then
+			player:addKeyItem(xi.ki.URMAHLULLUS_ARMOR)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
+		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) then -- Ashweed and Gravewood Log -- COVENS_DUST KI 2908
-		player:addKeyItem(xi.ki.COVENS_DUST)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.COVENS_DUST)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.COVENS_DUST) then
+			player:addKeyItem(xi.ki.COVENS_DUST)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.COVENS_DUST)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.COVENS_DUST)
+		end
 	elseif (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Gravewood log and Duskcrawler -- BLAZEWINGS_PINCER KI 2907
-		player:addKeyItem(xi.ki.BLAZEWINGS_PINCER)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.BLAZEWINGS_PINCER) then
+			player:addKeyItem(xi.ki.BLAZEWINGS_PINCER)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
+		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed and Duskcrawler -- PAZUZUS_BLADE_HILT KI 2909
-		player:addKeyItem(xi.ki.PAZUZUS_BLADE_HILT)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.PAZUZUS_BLADE_HILT) then
+			player:addKeyItem(xi.ki.PAZUZUS_BLADE_HILT)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
+		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed, Gravewood log and Duskcrawler -- WRATHARES_CARROT 2910
-		player:addKeyItem(xi.ki.WRATHARES_CARROT)
-		player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WRATHARES_CARROT)
-		player:tradeComplete()
+		if not player:hasKeyItem(xi.ki.WRATHARES_CARROT) then
+			player:addKeyItem(xi.ki.WRATHARES_CARROT)
+			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WRATHARES_CARROT)
+			player:tradeComplete()
+		else
+			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.ki.WRATHARES_CARROT)
+		end
 	else
 		player:PrintToPlayer("What am I suppose to do with that?", npc:getPacketName())
 	end
