@@ -25,6 +25,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.PIERCE_SDT, 500)
 	mob:setMod(xi.mod.IMPACT_SDT, 500)
 	mob:setMod(xi.mod.HTH_SDT, 500)
+	mob:setMod(xi.mod.REGAIN, 10)
 	mob:setMod(xi.mod.SLOWRES, 90)
 	mob:setMod(xi.mod.BLINDRES, 90)
 	mob:setMod(xi.mod.PARALYZERES, 90)
@@ -65,6 +66,10 @@ end
 
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("WrathareKill", 1)
+	local siltGain = math.random(1, 4)
+	local beadGain = 5 + math.random(1, 4)
+	player:addCurrency("escha_silt", 9 + siltGain)
+	player:addCurrency("escha_silt", beadGain)
 end
 
 entity.onMobDespawn = function(mob)

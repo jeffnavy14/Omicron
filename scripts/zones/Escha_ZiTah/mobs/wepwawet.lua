@@ -39,6 +39,10 @@ end
 entity.onMobDeath = function(mob, player)
 	mob:removeListener("WEAPONSKILL_TAKE")
 	player:setCharVar("WepwawetKill", 1)
+	local siltGain = math.random(1, 4)
+	local beadGain = 5 + math.random(1, 4)
+	player:addCurrency("escha_silt", 9 + siltGain)
+	player:addCurrency("escha_silt", beadGain)
 end
 
 entity.onMobDespawn = function(mob)

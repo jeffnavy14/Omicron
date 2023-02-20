@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Escha Zi'Tah
--- 
+-- Pazuzu KI 2909
 -----------------------------------
 local entity = {}
 
@@ -33,6 +33,10 @@ end
 
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("PazuzuKill", 1)
+	local siltGain = math.random(1, 4)
+	local beadGain = 5 + math.random(1, 4)
+	player:addCurrency("escha_silt", 9 + siltGain)
+	player:addCurrency("escha_silt", beadGain)
 end
 
 entity.onMobDespawn = function(mob)

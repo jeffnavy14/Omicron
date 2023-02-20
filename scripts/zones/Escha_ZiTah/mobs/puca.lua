@@ -12,7 +12,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:addListener("WEAPONSKILL_USE", "ALPLUACHRA_WEAPONSKILL_USE", function(mobArg, target, wsid, tp, action)
 		if GetMobByID(17957382):isSpawned() then
 			GetMobByID(17957382):setTP(3000)
-		if GetMobByID(17957385):isSpawned() then
+		elseif GetMobByID(17957385):isSpawned() then
 			GetMobByID(17957385):setTP(3000)
 		end
 	end)
@@ -45,6 +45,10 @@ entity.onMobDeath = function(mob, player)
 	then
 		player:setCharVar("FaeKill", 1)
 	end
+	local siltGain = math.random(1, 4)
+	local beadGain = 5 + math.random(1, 4)
+	player:addCurrency("escha_silt", 9 + siltGain)
+	player:addCurrency("escha_silt", beadGain)
 end
 
 entity.onMobDespawn = function(mob)
