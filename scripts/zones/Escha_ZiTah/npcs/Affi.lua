@@ -54,7 +54,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.AGLAOPHOTIS_BUD)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -66,7 +66,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.ANGRBODAS_NECKLACE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -78,7 +78,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.CUNNASTS_TALON)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -90,7 +90,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FERRODONS_SCALE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -102,7 +102,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GESTALTS_RETINA)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -114,7 +114,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.GULLTOPS_SHELL)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -138,7 +138,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.LYDIAS_VINE)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -150,7 +150,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.REVETAURS_HORN)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -162,7 +162,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TANGATAS_WING)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -174,7 +174,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VIDALAS_CLAW)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -186,7 +186,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.VYALAS_PREY)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -198,7 +198,7 @@ entity.onTrade = function(player, npc, trade)
 						player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WEPWAWETS_TOOTH)
 						player:tradeComplete()
 					else
-						player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+						player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 					end
 				end,
 			},
@@ -214,13 +214,13 @@ entity.onTrade = function(player, npc, trade)
 		delaySendMenu(player)
 	end
 	
-	if (trade:hasItemQty(9060, 5)) then-- Ethereal Insence x5
+	if (trade:hasItemQty(9060, 5)) then-- Ethereal Incense x5
 		local menu2 =
 		{
 			title = "Plenty to go around.",
 			onStart = function(playerArg)
 			
-				playerArg:PrintToPlayer("Which grissly trinket you want eh?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 			end,
 			options =
 			{
@@ -232,7 +232,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BRITTLISS_RING)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -244,7 +244,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SANDYS_LASHER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -257,7 +257,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.UMDHLEBIS_FLOWER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -296,7 +296,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.IONOSS_WEBBING)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -309,7 +309,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.KAMOHOALIIS_FIN)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -322,7 +322,7 @@ entity.onTrade = function(player, npc, trade)
 							player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.NOSOIS_FEATHER)
 							player:tradeComplete()
 						else
-							player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+							player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 						end
 					end,
 				},
@@ -348,7 +348,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.FLEETSTALKERS_CLAW)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(4060, 5)) then -- Beitetsu x5 -- SHOCKMAWS_BLUBBER 2918
 		if not player:hasKeyItem(xi.ki.SHOCKMAWS_BLUBBER) then
@@ -356,7 +356,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.SHOCKMAWS_BLUBBER)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(4059, 5)) then -- Pluton x5 -- URMAHLULLUS_ARMOR KI 2919
 		if not player:hasKeyItem(xi.ki.URMAHLULLUS_ARMOR) then
@@ -364,7 +364,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.URMAHLULLUS_ARMOR)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) then -- Ashweed and Gravewood Log -- COVENS_DUST KI 2908
 		if not player:hasKeyItem(xi.ki.COVENS_DUST) then
@@ -372,7 +372,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.COVENS_DUST)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Gravewood log and Duskcrawler -- BLAZEWINGS_PINCER KI 2907
 		if not player:hasKeyItem(xi.ki.BLAZEWINGS_PINCER) then
@@ -380,7 +380,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.BLAZEWINGS_PINCER)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed and Duskcrawler -- PAZUZUS_BLADE_HILT KI 2909
 		if not player:hasKeyItem(xi.ki.PAZUZUS_BLADE_HILT) then
@@ -388,7 +388,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.PAZUZUS_BLADE_HILT)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	elseif (trade:hasItemQty(9078, 1)) and (trade:hasItemQty(9076, 1)) and (trade:hasItemQty(9077, 1)) then -- Ashweed, Gravewood log and Duskcrawler -- WRATHARES_CARROT 2910
 		if not player:hasKeyItem(xi.ki.WRATHARES_CARROT) then
@@ -396,7 +396,7 @@ entity.onTrade = function(player, npc, trade)
 			player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.WRATHARES_CARROT)
 			player:tradeComplete()
 		else
-			player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED)
+			player:PrintToPlayer("Affi: You already have that!", xi.msg.channel.NS_SAY)
 		end
 	else
 		player:PrintToPlayer("What am I suppose to do with that?", npc:getPacketName())
@@ -405,6 +405,324 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
+
+	player:PrintToPlayer("Affi: Wanna learn about a grissly trinket eh?", xi.msg.channel.NS_SAY)
+	local gfZitahNPC = npc:getID()
+	SetServerVariable("GFZitahNPC", gfZitahNPC)
+	local menu  = {}
+	local page1 = {}
+	local page2 = {}
+	local page3 = {}
+	local page4 = {}
+	local page5 = {}
+	
+	--menu to show all mobs, choose w/o KI list what KI needed, else confirm then pop
+	local delaySendMenu = function(player)
+		player:timer(50, function(playerArg)
+			playerArg:customMenu(menu)
+		end)
+	end
+
+	menu =
+	{
+		title = "Which one interests you?",
+		options = {},
+	}
+
+	page1 =
+	{
+		{
+			"Not now",
+			function(playerArg)
+			end,
+		},
+		-- T1
+		-- Aglaophotis
+		{
+			"Aglaophotis's Bud",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... I get hungry.", xi.msg.channel.NS_SAY)			
+			end,
+		},
+		-- Angrboda
+		{
+			"Angrboda's Necklace",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... what? I like them...", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Cunnast
+		{
+			"Cunnast's Talon",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Ferrodon
+		{
+			"Ferrodon's Scale",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... I get hungry.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Gestalt
+		{
+			"Gestalt's Retina",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... what? I like them...", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Gulltop
+		{
+			"Gulltop's Shell",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		
+		{
+			">>",
+			function(playerArg)
+				menu.options = page2
+				delaySendMenu(playerArg)
+			end,
+		},
+	}
+
+	page2 =
+	{
+		-- Lustful Lydia
+		{
+			"Lydia's Vine",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... I get hungry.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Revetaur
+		{
+			"Revetaur's Horn",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... what? I like them...", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Tangata Manu
+		{
+			"Tangata's Wing",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Vidala
+		{
+			"Vidala's Claw",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... I get hungry.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Vyala
+		{
+			"Vyala's Prey",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Wepwaet
+		{
+			"Wepwaet's Tooth",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, a pair of any of the following; ready to right this down?", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Darksteel Ingot, Silk Cloth, Buffalo Leather, or Gold Ingot. I'll also accept the following;", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Three Mahogany Lumber , or a Carapace Gorget, Flame Blade, Holy Sword, or 6 Fish Mithkabobs... what? I like them...", xi.msg.channel.NS_SAY)
+			end,
+		},
+		{
+			"<<",
+			function(playerArg)
+				menu.options = page1
+				delaySendMenu(playerArg)
+			end,
+		},
+		{
+			">>",
+			function(playerArg)
+				menu.options = page3
+				delaySendMenu(playerArg)
+			end,
+		},
+	}
+			
+	page3 =
+	{
+		-- Ionos
+		{
+			"Ionos's Webbing",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ayapec's Shells.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Sensual Sandy
+		{
+			"Sandy's Lasher",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ethereal Incense.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Nosoi
+		{
+			"Nosoi's Feather",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ayapec's Shells.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Brittlis
+		{
+			"Brittlis's Ring",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ethereal Incense.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Kamohoalii
+		{
+			"Kamohoalii's Fin",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ayapec's Shells.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Umdhlebi
+		{
+			"Umdhlebi's Flower",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Ethereal Incense.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		{
+			"<<",
+			function(playerArg)
+				menu.options = page2
+				delaySendMenu(playerArg)
+			end,
+		},
+		{
+			">>",
+			function(playerArg)
+				menu.options = page4
+				delaySendMenu(playerArg)
+			end,
+		},
+	}
+
+	page4 =
+	{
+		-- T3
+		-- Fleetstalker -- FLEETSTALKERS_CLAW 2917
+		{
+			"Fleetstalker's Claw",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Riftborn Boulders.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Shockmaw -- SHOCKMAWS_BLUBBER 2918
+		{
+			"Shockmaw's Blubber",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Beitetsu.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Urmahlulu -- URMAHLULLUS_ARMOR KI 2919
+		{
+			"Urmahlulu's Armor",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me five Pluton.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- HELM
+		-- Alpluachra, Bucca, Puca -- COVENS_DUST KI 2908
+		{
+			"Coven's Dust",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me an Ashweed and a Gravewood Log.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Blazewing -- BLAZEWINGS_PINCER KI 2907
+		{
+			"Blazewing's Pincer",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me a Duskcrawler and a Gravewood Log.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		-- Pazuzu -- PAZUZUS_BLADE_HILT KI 2909
+		{
+			"Pazuzu's Blade Hilt",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me an Ashweed, a Duskcrawler.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		{
+			"<<",
+			function(playerArg)
+				menu.options = page3
+				delaySendMenu(playerArg)
+			end,
+		},
+		{
+			">>",
+			function(playerArg)
+				menu.options = page5
+				delaySendMenu(playerArg)
+			end,
+		},
+	}
+
+	page5 =
+	{
+	-- Wrathare -- WRATHARES_CARROT 2910
+		{
+			"Wrathare's Carrot",
+			function(playerArg)
+				player:PrintToPlayer("Affi: For that, you'll need to give me an Ashweed, a Duskcrawler and a Gravewood Log.", xi.msg.channel.NS_SAY)
+			end,
+		},
+	--	 The secret domain invasion dragon, might have to use CharVar
+		{
+			"?????",
+			function(playerArg)
+				player:PrintToPlayer("Affi: I'll get back to you on that...one...", xi.msg.channel.NS_SAY)
+				player:PrintToPlayer("Affi: (Who the hell put this in the list...) ... toodles.", xi.msg.channel.NS_SAY)
+			end,
+		},
+		
+		{
+			"<<",
+			function(playerArg)
+				menu.options = page4
+				delaySendMenu(playerArg)
+			end,
+		},
+	}
+		menu.options = page1
+		delaySendMenu(player)
 	
 end
 
