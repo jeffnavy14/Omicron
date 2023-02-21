@@ -11,6 +11,31 @@ require("scripts/globals/utils")
 local m = Module:new("PathChoice")
 m:setEnabled(true)
 
+local PathTele = function(player, npc, actionId, animationId, speceffect, reaction, message)
+	if
+		player:getCharVar("VagPathActive") == 1
+	then
+		player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		player:timer(2000, function(player)
+			player:setPos(-460,-140,38,190)
+		end)
+	elseif
+		player:getCharVar("VagPathActive") == 2
+	then
+		player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		player:timer(2000, function(player)
+			player:setPos(-399,-160,-180,63)
+		end)
+	elseif
+		player:getCharVar("VagPathActive") == 3
+	then
+		player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		player:timer(2000, function(player)
+			partyMember:setPos(-540,-155,100,190)
+		end)
+	end
+end
+
 m:addOverride("xi.zones.Outer_RaKaznar_[U1].Zone.onInitialize", function(zone)
 
 SetServerVariable("Vag1Active", 0)
@@ -239,12 +264,13 @@ local VagaryGate = zone:insertDynamicEntity({
 									for i, partyMember in pairs(party) do
 										if partyMember:isPC() then
 											partyMember:setCharVar("VagPathActive", 1)
-											partyMember:setPos(-460,-140,38,190)
+											--partyMember:setPos(-460,-140,38,190)
 											partyMember:changeMusic(0, 62)
 											partyMember:changeMusic(1, 62)
 											partyMember:changeMusic(2, 62)
 											partyMember:changeMusic(3, 62)
 											partyMember:changeMusic(4, 62)
+											PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 											local secret = math.random(1, 10)
 											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
 												SpawnMob(17903708)
@@ -280,12 +306,13 @@ local VagaryGate = zone:insertDynamicEntity({
 									for i, partyMember in pairs(party) do
 										if partyMember:isPC() then
 											partyMember:setCharVar("VagPathActive", 2)
-											partyMember:setPos(-399,-160,-180,63)
+											--partyMember:setPos(-399,-160,-180,63)
 											partyMember:changeMusic(0, 62)
 											partyMember:changeMusic(1, 62)
 											partyMember:changeMusic(2, 62)
 											partyMember:changeMusic(3, 62)
 											partyMember:changeMusic(4, 62)
+											PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 											local secret = math.random(1, 10)
 											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
 												SpawnMob(17903767)
@@ -320,12 +347,13 @@ local VagaryGate = zone:insertDynamicEntity({
 									for i, partyMember in pairs(party) do
 										if partyMember:isPC() then
 											partyMember:setCharVar("VagPathActive", 3)
-											partyMember:setPos(-540,-155,100,190)
+											--partyMember:setPos(-540,-155,100,190)
 											partyMember:changeMusic(0, 62)
 											partyMember:changeMusic(1, 62)
 											partyMember:changeMusic(2, 62)
 											partyMember:changeMusic(3, 62)
 											partyMember:changeMusic(4, 62)
+											PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 											local secret = math.random(1, 10)
 											if (player:getCharVar("VagPath3Win") == 1) and (secret > 6) then
 												SpawnMob(17903824)
@@ -364,7 +392,8 @@ local VagaryGate = zone:insertDynamicEntity({
 
 	onTrigger = function(player, npc, status)
 		if (GetServerVariable("Vag1Active") == 1) and (player:getCharVar("VagPathActive") == 1) then
-			player:setPos(-460,-140,38,190)
+			--player:setPos(-460,-140,38,190)
+			PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 			player:changeMusic(0, 62)
 			player:changeMusic(1, 62)
 			player:changeMusic(2, 62)
@@ -372,14 +401,16 @@ local VagaryGate = zone:insertDynamicEntity({
 			player:changeMusic(4, 62)
 			player:PrintToPlayer("The mysterious energies leave your body, you feel you may enter again...", 13)
 		elseif (GetServerVariable("Vag2Active") == 1) and (player:getCharVar("VagPathActive") == 2) then
-			player:setPos(-399,-160,-180,63)
+			--player:setPos(-399,-160,-180,63)
+			PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 			player:changeMusic(0, 62)
 			player:changeMusic(1, 62)
 			player:changeMusic(2, 62)
 			player:changeMusic(3, 62)
 			player:PrintToPlayer("The mysterious energies leave your body, you feel you may enter again...", 13)
 		elseif (GetServerVariable("VagActive") == 1) and (player:getCharVar("VagPathActive") == 3) then
-			player:setPos(-540,-155,100,190)
+			--player:setPos(-540,-155,100,190)
+			PathTele(player, npc, actionId, animationId, speceffect, reaction, message) -- new tele method
 			player:changeMusic(0, 62)
 			player:changeMusic(1, 62)
 			player:changeMusic(2, 62)
