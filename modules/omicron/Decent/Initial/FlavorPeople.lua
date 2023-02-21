@@ -7,6 +7,29 @@ require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
 local m = Module:new("FlavourPeople")
 m:setEnabled(true)
 
+local BobTele = function(player, npc, actionId, animationId, speceffect, reaction, message)
+	if player:getCharVar("BobAction") == 1 then
+		player:setCharVar("BobAction", 0)
+		player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		player:timer(2000, function(player)
+			player:setPos(-4, -0.001, 18.4313, 0, 244)
+		end)
+	elseif player:getCharVar("BobAction") == 2 then
+		player:setCharVar("BobAction", 0)
+		player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		player:timer(2000, function(player)
+			player:setPos(560.359, -3.4, -2.738)
+		end)
+	end
+end
+
+local MidTele = function(player, npc, actionId, animationId, speceffect, reaction, message)
+	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+	player:timer(2000, function(player)
+		player:setPos(521, -3.038, 540)
+	end)
+end
+
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
 
     super(zone)
@@ -173,7 +196,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             {
 				"Send me to the Pier",
 				function(playerArg)
-				player:setPos(521, -3.038, 540)
+					MidTele(player, npc, actionId, animationId, speceffect, reaction, message)
 				end,
 			},
 
@@ -207,7 +230,6 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 190,
 		widescan = 1,
 		
-		
 		onTrigger = function(player, playerArg, npc)
 		
 		local menu =
@@ -218,7 +240,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             playerArg:PrintToPlayer("Join the Path of Lost Nature fight?", xi.msg.channel.NS_SAY)
         end,
         options =
-        {           
+        {
             {
                 "What's going on?",
                 function(playerArg)
@@ -229,13 +251,15 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
             {
                 "Return to Jeuno",
 				function(playerArg)
-				player:setPos(-4, -0.001, 18.4313, 0, 244)
+					player:setCharVar("BobAction", 1)
+					BobTele(player, npc, actionId, animationId, speceffect, reaction, message)
 				end,
             },
             {
 				"Send me to the South Camp",
 				function(playerArg)
-				player:setPos(560.359, -3.4, -2.738)
+					player:setCharVar("BobAction", 2)
+					BobTele(player, npc, actionId, animationId, speceffect, reaction, message)
 				end,
 			},
 
@@ -244,8 +268,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         end,
         onEnd = function(playerArg)
         end,
+		
     }
 		player:customMenu(menu)	
+		
 	end
 	
 	})
@@ -256,7 +282,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	local Campfire1 = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "   ",
+        name = "Polly's Fire",
         look = 2411,
         x = 579,
         y = -0.6,
@@ -264,7 +290,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 128,
 		
 		onTrigger = function(player, npc)
-			player:PrintToPlayer("A warm welcoming fire..." ,13)
+			player:PrintToPlayer("Polly: You better not be looking at my food smoothskin..." ,13)
 		end
 	})
 
@@ -274,7 +300,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	local Campfire2 = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "   ",
+        name = "Campfire",
         look = 2411,
         x = 610,
 		y = -2,
@@ -300,7 +326,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 128,
 		
 		onTrigger = function(player, npc)
-			player:PrintToPlayer("Yum, yum...", 0, mpc:getPacketName())
+			player:PrintToPlayer("Yum, yum..." ,13)
 		end
 	})
 
