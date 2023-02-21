@@ -2,6 +2,13 @@
 --
 -----------------------------------
 local entity = {}
+local GetOut = function(player, npc, actionId, animationId, speceffect, reaction, message)
+	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+	player:timer(2000, function(player)
+		player:setPos(0,0,0)
+	end)
+end
+
 
 entity.onInitialize = function(player, npc, trade)
 	GetNPCByID(17904623):setStatus(xi.status.NORMAL)
@@ -30,7 +37,6 @@ entity.onTrigger = function(player, npc)
 		{
 			"Leave (This will end your part in the claim.)",
 			function(playerArg)
-				player:setPos(0,0,0)
 				player:changeMusic(0, 73)
 				player:changeMusic(1, 73)
 				player:changeMusic(2, 73)
@@ -53,6 +59,7 @@ entity.onTrigger = function(player, npc)
 						SetServerVariable("Vag3Active", 0)
 					end
 				end
+				GetOut(player, npc, actionId, animationId, speceffect, reaction, message)
 			end,
 		},
 	},
