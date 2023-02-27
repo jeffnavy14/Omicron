@@ -83,4 +83,4 @@ INSERT INTO `mob_groups` VALUES (6,2664,208, 'Mimic',0,128,0,308300,0,137,139,0)
 -- MOB_RESISTANCES (resistid,name,slash_sdt,piece_sdt,h2h_sdt,impact_sdt,fire_sdt,ice_sdt,wind_sdt,earth_sdt,lightning_sdt
 -- water_sdt,light_sdt,dark_sdt,fire_meva,ice_meva,wind_meva,earth_meva,lightning_meva,water_meva,light_meva,dark_meva
 -- fire_res_rank,ice_res_rank,wind_res_rank,earth,_res_rank,lightning_res_rank,water_res_rank,light_res_rank,dark_res_rank)
-INSERT INTO `mob_resistances` VALUES (183,'Mimic',2,2,2,2,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (183,'Mimic',2,2,2,2,5000,5000,5000,5000,5000,5000,5000,5000,0,0,0,0,0,0,0,0);
