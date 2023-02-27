@@ -1,0 +1,68 @@
+---------------------------------------
+-- Geas Fete Zi'Tah Variables
+---------------------------------------
+All 0 not killed, 1 killed
+-- t1
+CharVar("AngrbodaKill")
+CharVar("AglaophotisKill")
+CharVar("CunnastKill")
+CharVar("FerrodonKill")
+CharVar("GestaltKill")
+CharVar("GulltopKill")
+CharVar("LydiaKill")
+CharVar("RevetaurKill")
+CharVar("TangataKill")
+CharVar("VidalaKill")
+CharVar("VyalaKill")
+CharVar("WepwawetKill")
+-- t2
+CharVar("BrittlisKill")
+CharVar("IonosKill")
+CharVar("KamohoaliiKill")
+CharVar("NosoiKill")
+CharVar("SandyKill")
+CharVar("UmdhlebiKill")
+-- t3
+CharVar("FleetstalkerKill")
+CharVar("ShockmawKill")
+CharVar("UrmahlulluKill")
+-- HELM t1
+CharVar("FaeKill") -- need to kill all 3
+CharVar("BlazewingKill")
+CharVar("PazuzuKill")
+-- HELM t2
+CharVar("WrathareKill")
+
+--KI List
+-- T1
+Wepwaet KI 2895
+Lustful Lydia KI 2896
+Aglaophotis KI 2897
+Tangata Manu KI 2898
+Vidala KI 2899
+Gestalt KI 2900
+Angrboda KI 2901
+Cunnast KI 2902
+Revetaur KI 2903
+Ferrodon KI 2904
+Gulltop KI 2905
+Vyala KI 2906
+-- T2
+Ionos KI 2911
+Sensual Sandy KI 2912
+Nosoi KI 2913
+Brittlis KI 2914
+Kamohoalii KI 2915
+Umdhlebi KI 2916
+-- T3
+Fleetstalker 2917
+Shockmaw KI 2918
+Urmahlulu KI 2919
+-- HELM T1
+Alpluachra KI 2908
+Blazewing KI 2907
+Pazuzu KI 2909
+-- HELM T2
+Wrathare KI 2910
+
+All needed to spawn the final dragons (From Retail Domain Invasion)
