@@ -13,7 +13,40 @@ xi.job_utils.dancer = xi.job_utils.dancer or {}
 -----------------------------------
 
 -----------------------------------
--- Local functions and tables.
+-- Local tables.
+-----------------------------------
+local waltzAbilities =
+{
+--  [Ability ID] =     { tpCost, statMultiplier, baseHp }
+    [xi.jobAbility.CURING_WALTZ    ] = { 200, 0.25,  60 },
+    [xi.jobAbility.CURING_WALTZ_II ] = { 350, 0.50, 130 },
+    [xi.jobAbility.CURING_WALTZ_III] = { 500, 0.75, 270 },
+    [xi.jobAbility.CURING_WALTZ_IV ] = { 650, 1.00, 450 },
+    [xi.jobAbility.CURING_WALTZ_V  ] = { 800, 1.25, 600 },
+    [xi.jobAbility.DIVINE_WALTZ    ] = { 400, 0.25,  60 },
+    [xi.jobAbility.DIVINE_WALTZ_II ] = { 800, 0.75, 270 },
+}
+
+local animationTable =
+{
+-- [weapon type] = { step, flourish }
+    [ 0] = { 15, 25 },
+    [ 1] = { 15, 25 },
+    [ 2] = { 14, 24 },
+    [ 3] = { 14, 24 },
+    [ 4] = { 19, 29 },
+    [ 5] = { 16, 26 },
+    [ 6] = { 18, 28 },
+    [ 7] = { 18, 28 },
+    [ 8] = { 20, 30 },
+    [ 9] = { 21, 31 },
+    [10] = { 22, 32 },
+    [11] = { 17, 27 },
+    [12] = { 23, 33 },
+}
+
+-----------------------------------
+-- Local functions.
 -----------------------------------
 local function getMaxFinishingMoves(player)
     return 5 + player:getMod(xi.mod.MAX_FINISHING_MOVE_BONUS)
@@ -57,7 +90,7 @@ local function setFinishingMoves(player, numMoves)
     numMoves              = math.min(numMoves, getMaxFinishingMoves(player))
 
     if finishingEffect then
-        if numMoves <= 0 then
+        if numMoves == 0 then
             player:delStatusEffect(xi.effect.FINISHING_MOVE_1)
         else
             finishingEffect:setPower(numMoves)
@@ -69,17 +102,21 @@ local function setFinishingMoves(player, numMoves)
     end
 end
 
-local waltzAbilities =
-{
---  [Ability ID] =     { tpCost, statMultiplier, baseHp }
-    [xi.jobAbility.CURING_WALTZ    ] = { 200, 0.25,  60 },
-    [xi.jobAbility.CURING_WALTZ_II ] = { 350, 0.50, 130 },
-    [xi.jobAbility.CURING_WALTZ_III] = { 500, 0.75, 270 },
-    [xi.jobAbility.CURING_WALTZ_IV ] = { 650, 1.00, 450 },
-    [xi.jobAbility.CURING_WALTZ_V  ] = { 800, 1.25, 600 },
-    [xi.jobAbility.DIVINE_WALTZ    ] = { 400, 0.25,  60 },
-    [xi.jobAbility.DIVINE_WALTZ_II ] = { 800, 0.75, 270 },
-}
+local function getStepAnimation(weaponSkillType)
+    if weaponSkillType <= 12 then
+        return animationTable[weaponSkillType][1]
+    else
+        return 0
+    end
+end
+
+local function getFlourishAnimation(weaponSkillType)
+    if weaponSkillType <= 12 then
+        return animationTable[weaponSkillType][2]
+    else
+        return 0
+    end
+end
 
 -----------------------------------
 -- Ability Check.
@@ -121,9 +158,9 @@ xi.job_utils.dancer.checkFlourishAbility = function(player, target, ability, com
     end
 
     -- Finishing Move check.
-    local finishingMoves = player:getStatusEffect(xi.effect.FINISHING_MOVE_1):getPower()
+    local numFinishingMoves = player:getStatusEffect(xi.effect.FINISHING_MOVE_1):getPower()
 
-    if finishingMoves >= minimumCost then
+    if numFinishingMoves >= minimumCost then
         return 0, 0
     else
         return xi.msg.basic.NO_FINISHINGMOVES, 0
@@ -375,7 +412,7 @@ xi.job_utils.dancer.useBuildingFlourishAbility = function(player, target, abilit
     local power = utils.clamp(availableMoves, 0, 3)
 
     player:addStatusEffect(xi.effect.BUILDING_FLOURISH, power, 0, 60, 0, flourishMerits)
-    setFinishingMoves(player, availableMoves - 3)
+    setFinishingMoves(player, availableMoves - power)
 end
 
 xi.job_utils.dancer.useWildFlourishAbility = function(player, target, ability, action)
