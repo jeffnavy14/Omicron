@@ -4,6 +4,7 @@
 require('scripts/globals/common')
 require('scripts/globals/items')
 require('scripts/globals/magian_data')
+require('scripts/globals/msg')
 require('scripts/globals/npc_util')
 require('scripts/globals/status')
 -----------------------------------
@@ -11,6 +12,9 @@ local ruludeID = require('scripts/zones/RuLude_Gardens/IDs')
 -----------------------------------
 xi = xi or {}
 xi.magian = xi.magian or {}
+
+-- NOTE: This table should never be accessed directly, and is not guaranteed to contain
+-- data unless returned via getPlayerTrialData().
 xi.magian.playerCache = xi.magian.playerCache or {}
 
 local magianMoogleInfo =
@@ -20,7 +24,7 @@ local magianMoogleInfo =
 }
 
 -- Returns a table of data containing the player's currently active trials, and caches this data
--- keyed by player ID into xi.magian.playerCache
+-- keyed by player ID into xi.magian.playerCache.
 local function getPlayerTrialData(player)
     local playerId  = player:getID()
     local trialData = xi.magian.playerCache[playerId]
@@ -680,7 +684,7 @@ xi.magian.deliveryCrateOnEventUpdate = function(player, csid, option, npc)
 
             for i = 5, 1, -1 do
                 local currentTrial = activeTradeTrials[i]
-                
+
                 if currentTrial and currentTrial.trialId ~= 0 then
                     local remainingObjectives = currentTrial.objectiveTotal - currentTrial.progress
 
@@ -705,7 +709,7 @@ xi.magian.deliveryCrateOnEventFinish = function(player, csid, option)
         if optionMod == 0 then
             player:messageSpecial(ruludeID.text.RETURN_ITEM, itemTrialId)
         elseif optionMod == 102 then
-            checkAndSetProgression(player, trialId, { itemId = itemTrialId, quantity = itemTrialQuantity }, xi.settings.main.MAGIAN_TRIALS_TRADE_MULTIPLIER)
+            checkAndSetProgression(player, trialId, { itemId = itemTrialId, quantity = itemTrialQuantity })
         end
 
         -- TODO: Find out what's really necessary for all of these locals
@@ -740,5 +744,41 @@ xi.magian.onItemUnequip = function(player, item)
 end
 
 xi.magian.onMobDeath = function(mob, player, optParams, trialTable)
-    -- For each in trialTable, if not noKiller and cached active trialTable[x], add progress
+    local activeTrials   = getPlayerTrialData(player)
+    local relevantTrials = {}
+
+    -- TODO: Can this move elsewhere onEquip/onUnequip?
+    -- TODO: Since this is just NM kills, are there armor pieces that follow this, or can we just do main/sub/ranged?
+    for equipSlot = xi.slot.MAIN, xi.slot.FEET do
+        local itemObj = player:getEquippedItem(equipSlot)
+
+        if itemObj then
+            local trialId = itemObj:getTrialNumber()
+
+            if
+                trialId > 0 and
+                trialTable[trialId]
+            then
+                table.insert(relevantTrials, trialId)
+            end
+        end
+    end
+
+    for _, trialId in ipairs(relevantTrials) do
+        local trialSlot = activeTrials.slotLookup[trialId]
+
+        if
+            trialSlot and
+            activeTrials.trialData[trialSlot].progress < activeTrials.trialData[trialSlot].objectiveTotal
+        then
+            updatePlayerTrial(player, trialSlot, trialId, activeTrials.trialData[trialSlot].progress + 1)
+
+            local remainingObjectives = activeTrials.trialData[trialSlot].objectiveTotal - activeTrials.trialData[trialSlot].progress
+            if remainingObjectives == 0 then
+                player:messageBasic(xi.msg.basic.MAGIAN_TRIAL_COMPLETE, trialId)
+            else
+                player:messageBasic(xi.msg.basic.MAGIAN_TRIAL_COMPLETE - 1, trialId, remainingObjectives)
+            end
+        end
+    end
 end

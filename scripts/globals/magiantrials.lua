@@ -19,7 +19,7 @@ local function hasTrial(player, trialId)
     return false
 end
 
-local function checkAndSetProgression(player, trialId, conditions, multiplier)
+local function checkAndSetProgression(player, trialId, conditions)
     local trials                   = xi.magian.trials
     local cachePosition, cacheData = hasTrial(player, trialId)
 
@@ -28,7 +28,7 @@ local function checkAndSetProgression(player, trialId, conditions, multiplier)
 
         if increment > 0 then
             if cacheData.progress < cacheData.objectiveTotal then
-                local newProgress         = math.min(cacheData.progress + (increment * multiplier), cacheData.objectiveTotal)
+                local newProgress         = math.min(cacheData.progress + increment, cacheData.objectiveTotal)
                 local remainingObjectives = cacheData.objectiveTotal - newProgress
 
                 setTrial(player, cachePosition, trialId, newProgress)
@@ -52,7 +52,7 @@ xi.magian.checkMagianTrial = function(player, conditions)
         local trialIdOnItem = player:getEquippedItem(slot) and player:getEquippedItem(slot):getTrialNumber()
 
         if trialIdOnItem ~= 0 then
-            checkAndSetProgression(player, trialIdOnItem, conditions, xi.settings.main.MAGIAN_TRIALS_MOBKILL_MULTIPLIER)
+            checkAndSetProgression(player, trialIdOnItem, conditions)
         end
     end
 end
