@@ -27,7 +27,7 @@ super(zone)
     --    player:PrintToPlayer("Collect red, blue and yellow institute cards, and I'll reward you with something special.", 0, npc:getPacketName())	
     --    end)
     --    return
-	end)		
+	end	
 end)
 
 return rainemard

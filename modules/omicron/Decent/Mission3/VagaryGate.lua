@@ -10,6 +10,13 @@ require("scripts/globals/utils")
 local m = Module:new("VagaryGate")
 m:setEnabled(true)
 
+local VagaryTele = function(player, npc, actionId, animationId, speceffect, reaction, message)
+	player:injectActionPacket(player:getID(), 6, 597, 0, 0, 0, 10, 1)
+	player:timer(2000, function(player)
+		player:setPos(0,0,4,65,275)
+	end)
+end
+
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
 
     super(zone)
@@ -52,7 +59,7 @@ local Tim = zone:insertDynamicEntity({
 									return
 								end
 							end
-							player:setPos(0,0,4,65,275)
+							VagaryTele(player, npc, actionId, animationId, speceffect, reaction, message)
 						end
 					end,
 				},
