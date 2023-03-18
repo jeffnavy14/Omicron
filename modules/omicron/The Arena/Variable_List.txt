@@ -1,0 +1,13 @@
+---------------------------------------
+-- Arena Variable List
+---------------------------------------
+
+ServerVariable("[Arena]FightMonth", tonumber(os.date("%m"))) will be 1 to 12
+ServerVariable("[Arena]T1active")) 0 or 1
+ServerVariable("[Arena]T2active")) 0 or 1
+ServerVariable("[Arena]T3active")) 0 or 1
+ServerVariable("[Arena]T4active")) 0 or 1
+ServerVariable("[Arena]T5active")) 0 or 1
+
+CharVar("[Arena]Month") will be 1 to 12
+CharVar("[Arena]tier")) 1 to 5
