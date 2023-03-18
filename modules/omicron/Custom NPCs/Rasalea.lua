@@ -1,6 +1,6 @@
 -----------------------------------
--- NPC: Tim Allen
--- for mission 2-1 of Decent
+-- NPC: Rasalea
+-- RUN AF
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -40,12 +40,12 @@ local Rasalea = zone:insertDynamicEntity({
 			player:setCharVar("RunAF", 2)
 			player:tradeComplete()
 		elseif player:getCharVar("RunAF") == 3 and
-			trade:hasItemQty(2793, 1) and
-			trade:hasItemQty(2794, 1) and
-			trade:hasItemQty(2795, 1) and
-			trade:hasItemQty(2796, 1) and
-			trade:hasItemQty(2797, 1) and
-			trade:hasItemQty(2798, 1)
+			trade:hasItemQty(3520, 1) and
+			trade:hasItemQty(3521, 1) and
+			trade:hasItemQty(3522, 1) and
+			trade:hasItemQty(3523, 1) and
+			trade:hasItemQty(3524, 1) and
+			trade:hasItemQty(3525, 1)
 		then 
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
 			player:PrintToPlayer("...", 13)
@@ -114,10 +114,10 @@ local Rasalea = zone:insertDynamicEntity({
 		elseif 	player:getCharVar("RunAF") == 2 then
 			player:PrintToPlayer("Oh your wanting more of that gear I see, well alright then...", 0, npc:getPacketName())
 			player:PrintToPlayer("Now for some fancy pants to go with that fancy coat.", 13)
-			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone from each of the protocrystals.", 13)
+			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone, each with power of a Celestial Avatar.", 13)
 			player:setCharVar("RunAF", 3)
 		elseif 	player:getCharVar("RunAF") == 3 then
-			player:PrintToPlayer("Please bring me imbued material from near each protocrystal", 0, npc:getPacketName())
+			player:PrintToPlayer("Please bring me an imbued stone each with power of a Celestial Avatar.", 0, npc:getPacketName())
 		elseif 	player:getCharVar("RunAF") == 4 then
 			player:PrintToPlayer("For your next piece, we shall need a few things. These will be used for your boots.",0,npc:getPacketName())
 			player:PrintToPlayer("I'll need a spool of redoubtable silk thread, some runeweave, an uragnite shell...",13)
