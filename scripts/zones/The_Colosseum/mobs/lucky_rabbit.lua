@@ -79,6 +79,7 @@ entity.onMobFight = function(mob)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
+        local LR2hr = 3
 	end
 end
 
