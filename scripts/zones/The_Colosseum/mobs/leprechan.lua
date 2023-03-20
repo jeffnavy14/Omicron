@@ -72,23 +72,23 @@ entity.onMobFight = function(mob)
 		player:PrintToPlayer("Leprechan?: They be my charms, not yers lads!...", 13)
 		player:PrintToPlayer("Ye be lads right?", 13)
 		mob:castSpell(626)
-		local phaseUSE = 1
+		mob:setLocalVar("phase", 1)
 	elseif HPP < 60 and phaseUSE == 1 then
 		mob:castSpell(626)
 		mob:castSpell(693)
-		local phaseUSE = 2
+		mob:setLocalVar("phase", 2)
 	elseif HPP < 40 and phaseUSE == 2 then
 		player:PrintToPlayer("Leprechan?: Argh ye be a stubborn lot!", 13)
 		mob:castSpell(626)
 		mob:castSpell(693)
 		mob:castSpell(277)
-		local phaseUSE = 3
+		mob:setLocalVar("phase", 3)
 	elseif HPP < 20 and phaseUSE == 3 then
 		mob:castSpell(626)
 		mob:castSpell(693)
 		mob:castSpell(277)
 		mob:castSpell(310)
-		local phaseUSE = 4
+		mob:setLocalVar("phase", 4)
 	elseif HPP < 10 and phaseUSE == 4 then
 		player:PrintToPlayer("Leprechan?: Ye kin there be no charms right?", 13)
 		mob:castSpell(626)
@@ -96,7 +96,7 @@ entity.onMobFight = function(mob)
 		mob:castSpell(277)
 		mob:castSpell(310)
 		mob:castSpell(478)
-		local phaseUSE = 5
+		mob:setLocalVar("phase", 5)
 	end
 end
 
