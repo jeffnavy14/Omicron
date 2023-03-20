@@ -171,8 +171,6 @@ namespace luautils
         lua.set_function("DespawnMob", &luautils::DespawnMob);
         lua.set_function("GetPlayerByName", &luautils::GetPlayerByName);
         lua.set_function("GetPlayerByID", &luautils::GetPlayerByID);
-        lua.set_function("GetMagianTrial", &luautils::GetMagianTrial);
-        lua.set_function("GetMagianTrialsWithParent", &luautils::GetMagianTrialsWithParent);
         lua.set_function("JstMidnight", &luautils::JstMidnight);
         lua.set_function("JstWeekday", &luautils::JstWeekday);
         lua.set_function("VanadielTime", &luautils::VanadielTime);
@@ -1596,113 +1594,6 @@ namespace luautils
         }
 
         return std::nullopt;
-    }
-
-    /*******************************************************************************
-     *                                                                              *
-     *  Returns data of Magian trials                                               *
-     *  Will return a single table with keys matching the SQL table column          *
-     *  names if given one trial #, or will return a table of likewise trial        *
-     *  columns if given a table of trial #s.                                       *
-     *  examples: GetMagianTrial(2)          returns {column = value, ...}          *
-     *            GetMagianTrial({2, 16})    returns { 2 = { column = value, ...},  *
-     *                                                16 = { column = value, ...}}  *
-     *******************************************************************************/
-
-    sol::table GetMagianTrial(sol::variadic_args va)
-    {
-        TracyZoneScoped;
-
-        sol::table table = lua.create_table();
-
-        if (va.size())
-        {
-            // Get all magian table columns to build lua keys
-            const char*              ColumnQuery = "SHOW COLUMNS FROM `magian`;";
-            std::vector<std::string> magianColumns;
-            if (sql->Query(ColumnQuery) == SQL_SUCCESS && sql->NumRows() != 0)
-            {
-                while (sql->NextRow() == SQL_SUCCESS)
-                {
-                    magianColumns.push_back(sql->GetStringData(0));
-                }
-            }
-            else
-            {
-                ShowError("Error: No columns in `magian` table?");
-                return sol::lua_nil;
-            }
-
-            const char* Query = "SELECT * FROM `magian` WHERE trialId = %u;";
-
-            if (va[0].is<lua_Number>())
-            {
-                int32 trial = va[0].as<int32>();
-                int32 field{ 0 };
-                if (sql->Query(Query, trial) != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
-                {
-                    for (auto column : magianColumns)
-                    {
-                        table[column] = sql->GetIntData(field++);
-                    }
-                }
-            }
-            else if (va[0].is<sol::table>())
-            {
-                auto trials = va[0].as<std::vector<int32>>();
-
-                // one inner table each trial { trial# = { column = value, ... } }
-                for (auto trial : trials)
-                {
-                    int32 ret = sql->Query(Query, trial);
-                    if (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
-                    {
-                        auto  inner_table = table.create_named(trial);
-                        int32 field{ 0 };
-                        for (auto column : magianColumns)
-                        {
-                            inner_table[column] = sql->GetIntData(field++);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                return sol::lua_nil;
-            }
-
-            return table;
-        }
-
-        return sol::lua_nil;
-    }
-
-    /*******************************************************************************
-     *                                                                              *
-     *  Returns a list of trial numbers who have the given parent trial             *
-     *                                                                              *
-     *******************************************************************************/
-
-    sol::table GetMagianTrialsWithParent(int32 parentTrial)
-    {
-        TracyZoneScoped;
-
-        const char* Query = "SELECT `trialId` from `magian` WHERE `previousTrial` = %u;";
-        int32       ret   = sql->Query(Query, parentTrial);
-        if (ret != SQL_ERROR && sql->NumRows() > 0)
-        {
-            auto  table = lua.create_table();
-            int32 field{ 0 };
-            while (sql->NextRow() == 0)
-            {
-                int32 childTrial = sql->GetIntData(0);
-                table[++field]   = childTrial;
-            }
-
-            return table;
-        }
-
-        return sol::lua_nil;
     }
 
     /************************************************************************
