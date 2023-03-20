@@ -71,22 +71,22 @@ entity.onMobFight = function(mob)
 	local Cycle = mob:getLocalVar("cycle")
 	if TPP < 999 and Cycle == 0 then
 		mob:useMobAbility(3073)
-		local Cycle = 1
+		mob:setLocalVar("cycle", 1)
 	elseif TPP < 999 and Cycle == 1 then
 		mob:useMobAbility(3074)
-		local Cycle = 2
+		mob:setLocalVar("cycle", 2)
 	elseif TPP < 999 and Cycle == 2 then
 		mob:useMobAbility(3075)
-		local Cycle = 3
+		mob:setLocalVar("cycle",3)
 	elseif TPP < 999 and Cycle == 3 then
 		mob:useMobAbility(3076)
-		local Cycle = 4
+		mob:setLocalVar("cycle", 4)
 	elseif TPP < 999 and Cycle == 4 then
 		mob:useMobAbility(3077)
-		local Cycle = 5
+		mob:setLocalVar("cycle", 5)
 	elseif TPP < 999 and Cycle == 5 then
 		mob:useMobAbility(3078)
-		local Cycle = 0
+		mob:setLocalVar("cycle", 6)
 	end
 end
 
