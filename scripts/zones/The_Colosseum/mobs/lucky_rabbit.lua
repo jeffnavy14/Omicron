@@ -69,17 +69,17 @@ entity.onMobFight = function(mob)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
-		local LR2hr = 1
+		mob:setLocalVar("2HRused", 1)
 	elseif HPP < 50 and LR2hr == 1 then
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
-		local LR2hr = 2
+		mob:setLocalVar("2HRused", 2)
 	elseif HPP < 10 and LR2hr == 2 then
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
-        local LR2hr = 3
+        mob:setLocalVar("2HRused", 3)
 	end
 end
 
