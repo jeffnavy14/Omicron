@@ -24,7 +24,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 local Tim = zone:insertDynamicEntity({
 
     objtype = xi.objType.NPC,
-    name = " ",
+    name = "Dark Sphere",
     look = 2941,
     x = 600,
     y = -3,
