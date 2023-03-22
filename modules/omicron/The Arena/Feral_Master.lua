@@ -22,9 +22,12 @@ local T1MobFight = function(player, npc, zone)
 	player:changeMusic(4, 85)
 	if GetServerVariable("[Arena]FightMonth") == 3 then
 		SpawnMob(17068033)
-	elseif GetServerVariable("[Arena]FightMonth") == 4 then	
+	elseif GetServerVariable("[Arena]FightMonth") == 4 then
 		SpawnMob(17068038)
 	end
+	--[[ for testing
+		SpawnMob()
+	]]
 end
 -----------------------------------
 -----------------------------------
@@ -44,6 +47,9 @@ local T2MobFight = function(player, npc, zone)
 	elseif GetServerVariable("[Arena]FightMonth") == 4 then	
 		SpawnMob(17068039)
 	end
+	--[[ for testing
+		SpawnMob()
+	]]
 end
 -----------------------------------
 -----------------------------------
@@ -63,6 +69,9 @@ local T3MobFight = function(player, npc, zone)
 	elseif GetServerVariable("[Arena]FightMonth") == 4 then	
 		SpawnMob(17068040)
 	end
+	--[[ for testing
+		SpawnMob()
+	]]
 end
 -----------------------------------
 -----------------------------------
@@ -77,11 +86,15 @@ local T4MobFight = function(player, npc, zone)
 	player:changeMusic(2, 85)
 	player:changeMusic(3, 85)
 	player:changeMusic(4, 85)
+	
 	if GetServerVariable("[Arena]FightMonth") == 3 then
 		SpawnMob(17068036)
 	elseif GetServerVariable("[Arena]FightMonth") == 4 then	
 		SpawnMob(17068041)
 	end
+	--[[ for testing
+		SpawnMob()
+	]]
 end
 -----------------------------------
 -----------------------------------
@@ -101,6 +114,9 @@ local T5MobFight = function(player, npc, zone)
 	elseif GetServerVariable("[Arena]FightMonth") == 4 then	
 		SpawnMob(17068042)
 	end
+	--[[ for testing 
+		SpawnMob()
+	]]
 end
 -----------------------------------
 -----------------------------------
