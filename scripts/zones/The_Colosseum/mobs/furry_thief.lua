@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Albatross (MAR T4 Fight)
+-- Furry Thief (APR T2 Fight)
 -----------------------------------
 local entity = {}
 
@@ -9,14 +9,14 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Albatross")
-	mob:setLocalVar("cycle", 0)
+	mob:renameEntity("Furry Thief")
+	mob:setLocalVar("T2Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
-	mob:setMod(xi.mod.ACC, 1250)
-	mob:setMod(xi.mod.ATT, 1050)
-	mob:setMod(xi.mod.MATT, 850)
-	mob:setMod(xi.mod.MACC, 1550)
+	mob:setMod(xi.mod.ACC, 1150)
+	mob:setMod(xi.mod.ATT, 900)
+	mob:setMod(xi.mod.MATT, 750)
+	mob:setMod(xi.mod.MACC, 1450)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 10)
 	
 	mob:setMod(xi.mod.FIRE_SDT, 1000)
@@ -28,7 +28,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.LIGHT_SDT, 50)
 	mob:setMod(xi.mod.DARK_SDT, 1250)
 	
-	mob:setMod(xi.mod.FIRE_ABSORB, 0) -- MAY NEED ADJUSTMENT
+	mob:setMod(xi.mod.FIRE_ABSORB, 0)
 	mob:setMod(xi.mod.ICE_ABSORB, 0)
 	mob:setMod(xi.mod.WIND_ABSORB, 0)
 	mob:setMod(xi.mod.EARTH_ABSORB, 0)
@@ -36,7 +36,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.WATER_ABSORB, 0)
 	mob:setMod(xi.mod.LIGHT_ABSORB, 100)
 	mob:setMod(xi.mod.DARK_ABSORB, 0)
-	
+			
 	mob:setMod(xi.mod.STATUSRES, 50) -- NEED TO BE SET STILL
 	mob:setMod(xi.mod.SLEEPRES, 20)
 	mob:setMod(xi.mod.POISONRES, 0)
@@ -52,9 +52,9 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.STUNRES, 0)
 	mob:setMod(xi.mod.AMNESIARES, 0)
 	mob:setMod(xi.mod.LULLABYRES, 0)
-
+			
 	mob:setMod(xi.mod.FASTCAST, 30)
-	
+		
 	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
 	mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
 	mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
@@ -65,34 +65,33 @@ entity.onMobEngaged = function(mob, player)
 end
 
 entity.onMobFight = function(mob)
-	local TPP = mob:getTP()
-	local Cycle = mob:getLocalVar("cycle")
-	if TPP < 999 and Cycle == 0 then
-		mob:useMobAbility(3073)
-		local Cycle = 1
-	elseif TPP < 999 and Cycle == 1 then
-		mob:useMobAbility(3074)
-		local Cycle = 2
-	elseif TPP < 999 and Cycle == 2 then
-		mob:useMobAbility(3075)
-		local Cycle = 3
-	elseif TPP < 999 and Cycle == 3 then
-		mob:useMobAbility(3076)
-		local Cycle = 4
-	elseif TPP < 999 and Cycle == 4 then
-		mob:useMobAbility(3077)
-		local Cycle = 5
-	elseif TPP < 999 and Cycle == 5 then
-		mob:useMobAbility(3078)
-		local Cycle = 0
+	local HPP = mob:getHPP()
+	local T2Phase = mob:getLocalVar("T2Phase")
+	if HPP < 75 and T2Phase == 0 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(259)
+		mob:useMobAbility(257)
+		mob:setLocalVar("T2Phase", 1)
+	elseif HPP < 50 and T2Phase == 1 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(323)
+		mob:useMobAbility(323)
+		mob:setLocalVar("T2Phase", 2)
+	elseif HPP < 25 and T2Phase == 2 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(258)
+		mob:useMobAbility(257)
+		mob:useMobAbility(323)
+		mob:useMobAbility(259)
+		mob:setLocalVar("T2Phase", 3)
 	end
 end
 
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("[Arena]tier", 0)
-	player:addCurrency("jetton", 45)
-	player:addItem(2488, 7)
-	player:PrintToPlayer("You have cleared the Tier 4 Arena fight! For your efforts you have been rewarded 45 Jettons and 7 Alexandrite.", 29)
+	player:addCurrency("jetton", 35)
+	player:addItem(2488, 6)
+	player:PrintToPlayer("You have cleared the Tier 2 Arena fight! For your efforts you have been rewarded 35 Jettons and 6 Alexandrite.", 29)
 	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
 	player:timer(2000, function(player)
 		player:setPos(-600,0,40, 0)
@@ -105,7 +104,7 @@ entity.onMobDeath = function(mob, player)
 end
 
 entity.onMobDespawn = function(mob)
-	SetServerVariable("[Arena]T4active", 0)
+	SetServerVariable("[Arena]T2active", 0)
 end
 
 return entity

@@ -1,16 +1,16 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Albatross (MAR T4 Fight)
+-- Proto Egg (APR T4 Fight)
 -----------------------------------
 local entity = {}
-
+	
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 1800)
 end
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Albatross")
-	mob:setLocalVar("cycle", 0)
+	mob:renameEntity("Proto Egg")
+	mob:setLocalVar("T4phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1250)
@@ -64,28 +64,86 @@ entity.onMobEngaged = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 
-entity.onMobFight = function(mob)
-	local TPP = mob:getTP()
-	local Cycle = mob:getLocalVar("cycle")
-	if TPP < 999 and Cycle == 0 then
-		mob:useMobAbility(3073)
-		local Cycle = 1
-	elseif TPP < 999 and Cycle == 1 then
-		mob:useMobAbility(3074)
-		local Cycle = 2
-	elseif TPP < 999 and Cycle == 2 then
-		mob:useMobAbility(3075)
-		local Cycle = 3
-	elseif TPP < 999 and Cycle == 3 then
-		mob:useMobAbility(3076)
-		local Cycle = 4
-	elseif TPP < 999 and Cycle == 4 then
-		mob:useMobAbility(3077)
-		local Cycle = 5
-	elseif TPP < 999 and Cycle == 5 then
-		mob:useMobAbility(3078)
-		local Cycle = 0
+entity.onMobFight = function(mob, player, target)
+	local HPP = mob:getHPP()
+	local T4Phase = mob:getLocalVar("T4phase")
+	if HPP < 85 and T4Phase == 0 then
+		player:PrintToPlayer("Proto Egg: Executing function 3A5t3r_1", 13)
+		mob:setAnimationSub(0)
+		mob:setTP(3000)
+		mob:setLocalVar("T4phase", 1)
+	elseif HPP < 70 and T4Phase == 1 then
+		player:PrintToPlayer("Proto Egg: Executing function 3A5t3r_2", 13)
+		mob:setAnimationSub(1)
+		mob:setTP(3000)
+		mob:timer(3000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:setLocalVar("T4phase", 2)
+	elseif HPP < 55 and T4Phase == 2 then
+		player:PrintToPlayer("Proto Egg: Executing function 3A5t3r_3", 13)
+		mob:setAnimationSub(2)
+		mob:setTP(3000)
+		mob:timer(3000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(6000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:setLocalVar("T4phase", 3)
+	elseif HPP < 40 and T4Phase == 3 then
+		player:PrintToPlayer("Proto Egg: Executing function 3A5t3r_4", 13)
+		mob:setAnimationSub(3)
+		mob:setTP(3000)
+		mob:timer(3000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(6000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(9000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:setLocalVar("T4phase", 4)
+	elseif HPP < 25 and T4Phase == 4 then
+		player:PrintToPlayer("Proto Egg: Executing function 3A5t3r_5", 13)
+		mob:setAnimationSub(2)
+		mob:setTP(3000)
+		mob:timer(3000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(6000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(9000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(12000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:setLocalVar("T4phase", 5)
+	elseif HPP < 10 and T4Phase == 5 then
+		player:PrintToPlayer("Proto Egg: This unit is not to have its exterior colour altered.", 13)
+		mob:setAnimationSub(1)
+		mob:setTP(3000)
+		mob:timer(3000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(6000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(9000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(12000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:timer(15000, function(mob)
+			mob:setTP(3000)
+		end)
+		mob:setLocalVar("T4phase", 6)
 	end
+	
 end
 
 entity.onMobDeath = function(mob, player)
