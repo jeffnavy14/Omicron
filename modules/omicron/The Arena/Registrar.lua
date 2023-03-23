@@ -33,7 +33,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 			local page3 = {}
 			SetServerVariable("[Arena]FightMonth", tonumber(os.date("%m")))
 			local month = GetServerVariable("[Arena]FightMonth")
-			--menu to show all mobs, choose w/o KI list what KI needed, else confirm then pop
+			--menu to show tiers and some basic explaning
 			local delaySendMenu = function(player)
 				player:timer(50, function(playerArg)
 					playerArg:customMenu(menu)
@@ -77,7 +77,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					function(playerArg)
 						player:PrintToPlayer("Registrar: We be givin' out some shiny alexandrites, and jettons. That's the money in here see?.", xi.msg.channel.NS_SAY)
 						player:PrintToPlayer("Get enough of that alexandrite, then you can use it to get a purdy like weapon.", xi.msg.channel.NS_SAY)
-						player:PrintToPlayer("Pankeki and Tiny handle that stuff.", xi.msg.channel.NS_SAY)
+						player:PrintToPlayer("Pankeki an' Tiny handle that stuff.", xi.msg.channel.NS_SAY)
 					end,
 				},
 				{
