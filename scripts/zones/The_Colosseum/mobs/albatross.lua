@@ -17,8 +17,6 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.ATT, 1050)
 	mob:setMod(xi.mod.MATT, 850)
 	mob:setMod(xi.mod.MACC, 1550)
-	mob:addMod(xi.mod.DEFP, 475)
-	mob:addMod(xi.mod.RATTP, 475)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 10)
 	
 	mob:setMod(xi.mod.FIRE_SDT, 1000)
@@ -69,24 +67,24 @@ end
 entity.onMobFight = function(mob)
 	local TPP = mob:getTP()
 	local Cycle = mob:getLocalVar("cycle")
-	if TPP <= 999 and Cycle == 0 then
+	if TPP < 999 and Cycle == 0 then
 		mob:useMobAbility(3073)
-		mob:setLocalVar("cycle", 1)
-	elseif TPP <= 999 and Cycle == 1 then
+		local Cycle = 1
+	elseif TPP < 999 and Cycle == 1 then
 		mob:useMobAbility(3074)
-		mob:setLocalVar("cycle", 2)
-	elseif TPP <= 999 and Cycle == 2 then
+		local Cycle = 2
+	elseif TPP < 999 and Cycle == 2 then
 		mob:useMobAbility(3075)
-		mob:setLocalVar("cycle",3)
-	elseif TPP <= 999 and Cycle == 3 then
+		local Cycle = 3
+	elseif TPP < 999 and Cycle == 3 then
 		mob:useMobAbility(3076)
-		mob:setLocalVar("cycle", 4)
-	elseif TPP <= 999 and Cycle == 4 then
+		local Cycle = 4
+	elseif TPP < 999 and Cycle == 4 then
 		mob:useMobAbility(3077)
-		mob:setLocalVar("cycle", 5)
-	elseif TPP <= 999 and Cycle == 5 then
+		local Cycle = 5
+	elseif TPP < 999 and Cycle == 5 then
 		mob:useMobAbility(3078)
-		mob:setLocalVar("cycle", 6)
+		local Cycle = 0
 	end
 end
 

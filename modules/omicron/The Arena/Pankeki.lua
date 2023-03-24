@@ -147,6 +147,30 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					end,
 				},
 				{
+					"Trial Wand 1000 Jetton",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 1000 then
+							player:addItem(21066)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 21066)
+							player:delCurrency("jetton", 1000)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
+					"Trial Blade 1000 Jetton",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 1000 then
+							player:addItem(20749)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 20749)
+							player:delCurrency("jetton", 1000)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
 					"<<",
 					function(playerArg)
 						menu.options = page2

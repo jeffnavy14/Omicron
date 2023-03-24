@@ -17,7 +17,6 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.ATT, 900)
 	mob:setMod(xi.mod.MATT, 750)
 	mob:setMod(xi.mod.MACC, 1450)
-	mob:addMod(xi.mod.RATTP, 475)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 10)
 	
 	mob:setMod(xi.mod.FIRE_SDT, 1000)
@@ -68,15 +67,15 @@ end
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
 	local LT2hr = mob:getLocalVar("2HRused")
-	if HPP <= 75 and LT2hr == 0 then
+	if HPP < 75 and LT2hr == 0 then
 		mob:useMobAbility(692)
-		mob:setLocalVar("2HRused", 1)
-	elseif HPP <= 50 and LT2hr == 1 then
+		local LT2hr = 1
+	elseif HPP < 50 and LT2hr == 1 then
 		mob:useMobAbility(692)
-		mob:setLocalVar("2HRused", 2)
-	elseif HPP <= 25 and LT2hr == 2 then
+		local LT2hr = 2
+	elseif HPP < 25 and LT2hr == 2 then
 		mob:useMobAbility(692)
-		mob:setLocalVar("2HRused", 3)
+		local LT2hr = 3
 	end
 end
 

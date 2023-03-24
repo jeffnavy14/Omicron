@@ -14,11 +14,9 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1300)
-	mob:setMod(xi.mod.ATT, 1100)
+	mob:setMod(xi.mod.ATT, 1050)
 	mob:setMod(xi.mod.MATT, 900)
 	mob:setMod(xi.mod.MACC, 1600)
-	mob:addMod(xi.mod.DEFP, 475)
-	mob:addMod(xi.mod.RATTP, 475)
 	mob:setMod(xi.mod.DOUBLE_ATTACK, 60)
 
 	mob:setMod(xi.mod.FIRE_SDT, 1000)
