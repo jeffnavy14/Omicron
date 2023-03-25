@@ -10,7 +10,7 @@ end
 
 entity.onMobSpawn = function(mob, player)
 	mob:renameEntity("Albatross")
-	mob:setLocalVar("cycle", 0)
+	mob:setLocalVar("T4Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1250)
@@ -66,25 +66,25 @@ end
 
 entity.onMobFight = function(mob)
 	local TPP = mob:getTP()
-	local Cycle = mob:getLocalVar("cycle")
-	if TPP < 999 and Cycle == 0 then
+	local T4Phase = mob:getLocalVar("T4Phase")
+	if TPP < 999 and T4Phase == 0 then
 		mob:useMobAbility(3073)
-		local Cycle = 1
-	elseif TPP < 999 and Cycle == 1 then
+		mob:setLocalVar("T4Phase", 1)
+	elseif TPP < 999 and T4Phase == 1 then
 		mob:useMobAbility(3074)
-		local Cycle = 2
-	elseif TPP < 999 and Cycle == 2 then
+		mob:setLocalVar("T4Phase", 2)
+	elseif TPP < 999 and T4Phase == 2 then
 		mob:useMobAbility(3075)
-		local Cycle = 3
-	elseif TPP < 999 and Cycle == 3 then
+		mob:setLocalVar("T4Phase", 3)
+	elseif TPP < 999 and T4Phase == 3 then
 		mob:useMobAbility(3076)
-		local Cycle = 4
-	elseif TPP < 999 and Cycle == 4 then
+		mob:setLocalVar("T4Phase", 4)
+	elseif TPP < 999 and T4Phase == 4 then
 		mob:useMobAbility(3077)
-		local Cycle = 5
-	elseif TPP < 999 and Cycle == 5 then
+		mob:setLocalVar("T4Phase", 5)
+	elseif TPP < 999 and T4Phase == 5 then
 		mob:useMobAbility(3078)
-		local Cycle = 0
+		mob:setLocalVar("T4Phase", 0)
 	end
 end
 

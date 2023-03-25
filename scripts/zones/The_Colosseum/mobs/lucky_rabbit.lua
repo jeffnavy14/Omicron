@@ -10,7 +10,7 @@ end
 
 entity.onMobSpawn = function(mob, player)
 	mob:renameEntity("Lucky Rabbit")
-	mob:setLocalVar("2HRused", 0)
+	mob:setLocalVar("T1Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	mob:setMod(xi.mod.ACC, 1100)
 	mob:setMod(xi.mod.ATT, 900)
@@ -63,21 +63,22 @@ end
 
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
-	local LR2hr = mob:getLocalVar("2HRused")
-	if HPP < 80 and LR2hr == 0 then
+	local T1Phase = mob:getLocalVar("T1Phase")
+	if HPP < 80 and T1Phase == 0 then
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
-		local LR2hr = 1
-	elseif HPP < 50 and LR2hr == 1 then
+		mob:setLocalVar("T1Phase", 1)
+	elseif HPP < 50 and T1Phase == 1 then
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
-		local LR2hr = 2
-	elseif HPP < 10 and LR2hr == 2 then
+		mob:setLocalVar("T1Phase", 2)
+	elseif HPP < 10 and T1Phase == 2 then
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
 		mob:useMobAbility(323)
+		mob:setLocalVar("T1Phase", 3)
 	end
 end
 
