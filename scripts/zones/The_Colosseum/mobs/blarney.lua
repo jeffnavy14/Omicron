@@ -10,7 +10,7 @@ end
 
 entity.onMobSpawn = function(mob, player)
 	mob:renameEntity("Blarney")
-	mob:setLocalVar("2HRused", 0)
+	mob:setLocalVar("T5Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1300)

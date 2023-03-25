@@ -10,7 +10,7 @@ end
 
 entity.onMobSpawn = function(mob, player)
 	mob:renameEntity("Lucky Tink")
-	mob:setLocalVar("2HRused", 0)
+	mob:setLocalVar("T2Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1150)
@@ -66,16 +66,16 @@ end
 
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
-	local LT2hr = mob:getLocalVar("2HRused")
+	local T2Phase = mob:getLocalVar("T2Phase")
 	if HPP < 75 and LT2hr == 0 then
 		mob:useMobAbility(692)
-		local LT2hr = 1
+		mob:setLocalVar("T2Phase", 1)
 	elseif HPP < 50 and LT2hr == 1 then
 		mob:useMobAbility(692)
-		local LT2hr = 2
+		mob:setLocalVar("T2Phase", 2)
 	elseif HPP < 25 and LT2hr == 2 then
 		mob:useMobAbility(692)
-		local LT2hr = 3
+		mob:setLocalVar("T2Phase", 3)
 	end
 end
 
