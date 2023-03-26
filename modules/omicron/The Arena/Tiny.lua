@@ -60,7 +60,9 @@ local tradeTable =
 				player:PrintToPlayer("Also I will need a Copy of Wyrmseeker Areuhat.", 13)
 			elseif player:getCharVar("[TinyFighter]Stage") == 2 then
 				player:PrintToPlayer("I know. its the painfully tedious part, one Catseye please.", 0, npc:getPacketName())
-			elseif player:getCharVar("[TinyFighter]Stage") == 3 and
+			elseif player:getCharVar("[TinyFighter]Stage") == 2 then
+				player:PrintToPlayer("We are on the final component which will need 300 Beitetsu.", 0, npc:getPacketName())
+			elseif player:getCharVar("[TinyFighter]Stage") == 4 and
 				os.time() > player:getCharVar("[TinyFighter]time")
 			then
 				local reward = player:getCharVar("[TinyFighter]item")				
@@ -69,7 +71,7 @@ local tradeTable =
        		    	   player:setCharVar("[TinyFighter]time", 0)
 					   player:setCharVar("[TinyFighter]Stage", 0)
        		    end
-			elseif player:getCharVar("[TinyFighter]Stage") == 3 and
+			elseif player:getCharVar("[TinyFighter]Stage") == 4 and
 				os.time() < player:getCharVar("[TinyFighter]time")
 			then
 				player:PrintToPlayer("We're almost there, please return tomorrow.", 0, npc:getPacketName())
@@ -90,9 +92,14 @@ local tradeTable =
 				end
 				
 			elseif player:getCharVar("[TinyFighter]Stage") == 2 then
-			
 				if trade:hasItemQty(3443, 1) then
 					player:setCharVar("[TinyFighter]Stage", 3)
+					player:PrintToPlayer("We are on the final component which will need 300 Beitetsu.", 0, npc:getPacketName())
+					player:tradeComplete()
+				end
+			elseif player:getCharVar("[TinyFighter]Stage") == 3 then
+				if trade:hasItemQty(4060, 300) then
+					player:setCharVar("[TinyFighter]Stage", 4)
 					player:PrintToPlayer("Excellent work my friend. The weapon will be ready by tomorrow.", 0, npc:getPacketName())
 					player:setCharVar("[TinyFighter]time", getVanaMidnight())
 					player:tradeComplete()

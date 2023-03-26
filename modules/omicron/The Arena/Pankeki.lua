@@ -147,6 +147,18 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					end,
 				},
 				{
+					"Beitetsu 50 Jetton",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 50 then
+							player:addItem(4060)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 21066)
+							player:delCurrency("jetton", 50)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
 					"Trial Wand 1000 Jetton",
 					function(playerArg)
 						if (player:getCurrency("jetton")) >= 1000 then
