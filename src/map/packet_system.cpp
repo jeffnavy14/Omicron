@@ -3099,7 +3099,7 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
 
     if (PChar->m_GMlevel == 0 && !PChar->loc.zone->CanUseMisc(MISC_AH))
     {
-        ShowDebug("%s is trying to use the auction house in a disallowed zone [%s]", PChar->GetName(), PChar->loc.zone->GetName());
+        ShowWarning("%s is trying to use the auction house in a disallowed zone [%s]", PChar->GetName(), PChar->loc.zone->GetName());
         return;
     }
 
@@ -5476,13 +5476,17 @@ void SmallPacket0x0BE(map_session_data_t* const PSession, CCharEntity* const PCh
 
                 if (PChar->PMeritPoints->IsMeritExist(merit))
                 {
+                    const Merit_t* PMerit = PChar->PMeritPoints->GetMerit(merit);
+
                     switch (operation)
                     {
                         case 0:
                             PChar->PMeritPoints->LowerMerit(merit);
+                            PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, data.ref<uint16>(0x06), PMerit->count, MSGBASIC_MERIT_DECREASE));
                             break;
                         case 1:
                             PChar->PMeritPoints->RaiseMerit(merit);
+                            PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, data.ref<uint16>(0x06), PMerit->count, MSGBASIC_MERIT_INCREASE));
                             break;
                     }
                     PChar->pushPacket(new CMenuMeritPacket(PChar));
