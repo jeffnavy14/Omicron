@@ -66,7 +66,7 @@ REPLACE INTO `mob_groups` VALUES (7,8151,71,'Furry_Thief',0,128,0,140000,5000,12
 REPLACE INTO `mob_groups` VALUES (8,8152,71,'Sad_Egghunter',0,128,0,160000,5000,125,125,0);
 REPLACE INTO `mob_groups` VALUES (9,8153,71,'Proto_Egg',0,128,0,180000,5000,128,128,0);
 REPLACE INTO `mob_groups` VALUES (10,8154,71,'Easter_Turkey',0,128,0,200000,5000,133,133,0);
-REPLACE INTO `mob_groups` VALUES (11,8150,71,'Berated_Birdie',0,128,0,10000,5000,115,115,0);
+REPLACE INTO `mob_groups` VALUES (11,8155,71,'Berated_Birdie',0,128,0,10000,5000,115,115,0);
 ---------------------------------------
 -- Spawn Mods (poolid, modid, value, is_mob_mod)
 ---------------------------------------
