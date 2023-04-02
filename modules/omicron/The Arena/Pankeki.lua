@@ -183,6 +183,18 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					end,
 				},
 				{
+					"Rune Weave 3000 Jetton",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 3000 then
+							player:addItem(4029)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4029)
+							player:delCurrency("jetton", 3000)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
 					"<<",
 					function(playerArg)
 						menu.options = page2
