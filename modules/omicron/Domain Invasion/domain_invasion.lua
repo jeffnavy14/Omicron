@@ -366,7 +366,7 @@ m:addOverride("xi.zones.Provenance.Zone.onZoneTick", function(zone)
 
     -- Spawn mob if its the correct mob and if it isnt spawned already.
     if
-	    GetServerVariable("[Domain]Addon") == -1 and
+	    GetServerVariable("[Domain]Addon") == 1 and
         GetServerVariable("[Domain]NM") == 3 and              -- Correct NM
         GetServerVariable("[Domain]NMSpawned") == 0 and       -- NM isn't spawned
         (os.time() - GetServerVariable("[Domain]NMToD")) > 30 -- NM Cooldown

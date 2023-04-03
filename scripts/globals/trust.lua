@@ -273,9 +273,9 @@ xi.trust.canCast = function(caster, spell, notAllowedTrustIds)
     end
 
     --Trusts only allowed in certain zones (Remove this for trusts everywhere)
-    if not caster:canUseMisc(xi.zoneMisc.TRUST) then
-      return xi.msg.basic.TRUST_NO_CALL_AE
-    end
+    -- if not caster:canUseMisc(xi.zoneMisc.TRUST) then
+    --   return xi.msg.basic.TRUST_NO_CALL_AE
+    -- end
 
     -- You can only summon trusts if you are the party leader or solo
     local leader = caster:getPartyLeader()
