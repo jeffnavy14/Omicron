@@ -33,16 +33,16 @@ end
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
 	local ChainUse = mob:getLocalVar("GestaltCSused")
-	if HPP <= 80 and ChainUse == 0 then
+	if HPP < 80 and ChainUse == 0 then
 		mob:useMobAbility(692)
 		mob:setLocalVar("GestaltCSused", 1)
-	elseif HPP <= 60 and ChainUse == 1 then
+	elseif HPP < 60 and ChainUse == 1 then
 		mob:useMobAbility(692)
 		SetServerVariable("GestaltCSused", 2)
-	elseif HPP <= 40 and ChainUse == 2 then
+	elseif HPP < 40 and ChainUse == 2 then
 		mob:useMobAbility(692)
 		SetServerVariable("GestaltCSused", 3)
-	elseif HPP <= 20 and ChainUse == 3 then
+	elseif HPP < 20 and ChainUse == 3 then
 		mob:useMobAbility(692)
 		SetServerVariable("GestaltCSused", 4)
 	end
