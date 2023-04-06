@@ -236,7 +236,9 @@ local Norry = zone:insertDynamicEntity({
 					player:PrintToPlayer("At the very least some other medicines may come from this who knows." , 13)
 					player:addCurrency('infamy', 20)
 					player:addItem(13454, 1, 137, 4, 353, 1, 138, 4, 142, 9)
+                    player:injectActionPacket(player:getID(), 6, 701, 0, 0, 0, 10, 1)
 					player:PrintToPlayer("You recieve 20 Infamy, and an augmented copper ring", 29)
+                    player:PrintToPlayer("Congratulations, you completed the first chapter of the Abyssean Decent", 29)
 					player:setCharVar("Mission1CState", 2)
 				else
 					player:PrintToPlayer("Sorry that wasn't what I asked for." ,0, npc:getPacketName())
