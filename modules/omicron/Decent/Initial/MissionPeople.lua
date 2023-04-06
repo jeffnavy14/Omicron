@@ -69,8 +69,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					player:PrintToPlayer("Please take this for your troubles." , 13)
 					player:PrintToPlayer("You recieve 20 Infamy", 29)
 					player:addCurrency('infamy', 20)
-					player:setCharVar("Mission1AState", 4)
-					quest:complete(player)
+					player:setCharVar("Mission1AState", 4
 				else
 					player:PrintToPlayer("Thats not what we need, we need Selbina milk, total of 12 bottles please in one shipment." ,0, npc:getPacketName())
 				end
@@ -82,7 +81,6 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					player:tradeComplete();
 					player:PrintToPlayer("Please take this for your troubles." ,0, npc:getPacketName())
 					player:addCurrency('infamy', 10)
-					quest:complete(player)
 					player:PrintToPlayer("You recieve 10 Infamy", 29)
 				else
 					player:PrintToPlayer("Sorry I'm not in need of anything at this time" ,0, npc:getPacketName())
@@ -157,7 +155,6 @@ local Borry = zone:insertDynamicEntity({
 					player:PrintToPlayer("You recieve 20 Infamy", 29)
 					player:addCurrency('infamy', 20)
 					player:setCharVar("Mission1BState", 4)
-					quest:complete(player)
 				else
 					player:PrintToPlayer("We needed 12 pieces of zinc ore, here take this back." ,0, npc:getPacketName())
 				end
@@ -169,7 +166,6 @@ local Borry = zone:insertDynamicEntity({
 					player:tradeComplete();
 					player:PrintToPlayer("Thank you, this will greatly help the other survivors." ,0, npc:getPacketName())
 					player:addCurrency('infamy', 10)
-					quest:complete(player)
 					player:PrintToPlayer("You recieve 10 Infamy", 29)
 				else
 					player:PrintToPlayer("Thanks, but no thank you" ,0, npc:getPacketName())
@@ -232,7 +228,7 @@ local Norry = zone:insertDynamicEntity({
 		end,
 		
 		onTrade = function(player, npc, trade)
-			FoodMe = player:getCharVar("Mission1CState")
+			BigFight1 = player:getCharVar("Mission1CState")
 			if BigFight1 == 1 then
 				if (trade:hasItemQty(3980, 1)) then
 					player:tradeComplete();
