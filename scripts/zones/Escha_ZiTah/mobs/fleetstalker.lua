@@ -43,7 +43,7 @@ entity.onMobFight = function(mob)
 		mob:setLocalVar("FSpdUsed", 1)
 	elseif HPP < 25 and CSUsed == 1 and PDUsed == 1 then
 		mob:useMobAbility(692)
-		mob:setLocalVar("FScsUsed", 1)
+		mob:setLocalVar("FScsUsed", 2)
 		mob:useMobAbility(693)
 		mob:setLocalVar("FSpdused", 2)
 	end

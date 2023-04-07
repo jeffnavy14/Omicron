@@ -68,19 +68,19 @@ end
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
 	local T5Stage = mob:getLocalVar("T5Stage")
-	if HPP == 90 and T5Stage == 0 then
+	if HPP < 90 and T5Stage == 0 then
 		mob:castSpell(668)
 		mob:setLocalVar("T5Stage", 1)
-	elseif HPP == 70 and T5Stage == 1 then
+	elseif HPP < 70 and T5Stage == 1 then
 		mob:castSpell(685)
 		mob:setLocalVar("T5Stage", 2)
-	elseif HPP == 50 and T5Stage == 2 then
+	elseif HPP < 50 and T5Stage == 2 then
 		mob:castSpell(780)
 		mob:setLocalVar("T5Stage", 3)
-	elseif HPP == 30 and T5Stage == 3 then
+	elseif HPP < 30 and T5Stage == 3 then
 		mob:castSpell(768)
 		mob:setLocalVar("T5Stage", 4)
-	elseif HPP == 10 and T5Stage == 4 then
+	elseif HPP < 10 and T5Stage == 4 then
 		mob:castSpell(771)
 		mob:setLocalVar("T5Stage", 5)
 	end
