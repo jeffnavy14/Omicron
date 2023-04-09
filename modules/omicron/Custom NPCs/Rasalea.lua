@@ -114,10 +114,10 @@ local Rasalea = zone:insertDynamicEntity({
 		elseif 	player:getCharVar("RunAF") == 2 then
 			player:PrintToPlayer("Oh your wanting more of that gear I see, well alright then...", 0, npc:getPacketName())
 			player:PrintToPlayer("Now for some fancy pants to go with that fancy coat.", 13)
-			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone, each with power of a Celestial Avatar.", 13)
+			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone with power of each Celestial Avatar.", 13)
 			player:setCharVar("RunAF", 3)
 		elseif 	player:getCharVar("RunAF") == 3 then
-			player:PrintToPlayer("Please bring me an imbued stone each with power of a Celestial Avatar.", 0, npc:getPacketName())
+			player:PrintToPlayer("Please bring me materials imbued with power of each Celestial Avatar.", 0, npc:getPacketName())
 		elseif 	player:getCharVar("RunAF") == 4 then
 			player:PrintToPlayer("For your next piece, we shall need a few things. These will be used for your boots.",0,npc:getPacketName())
 			player:PrintToPlayer("I'll need a spool of redoubtable silk thread, some runeweave, an uragnite shell...",13)
