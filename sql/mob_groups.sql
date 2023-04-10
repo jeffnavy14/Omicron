@@ -596,7 +596,7 @@ INSERT INTO `mob_groups` VALUES (10,2404,15,'Ley_Clionid',300,0,1516,5000,999,74
 INSERT INTO `mob_groups` VALUES (11,1244,15,'Ephemeral_Clionid',300,0,781,5000,1000,74,75,0);
 INSERT INTO `mob_groups` VALUES (12,3696,15,'Sods_Limule',300,0,2291,0,1000,74,75,0);
 INSERT INTO `mob_groups` VALUES (13,1245,15,'Ephemeral_Limule',300,0,783,5000,1000,74,75,0);
-INSERT INTO `mob_groups` VALUES (14,261,15,'Ashtaerh_the_Gallvexed',0,128,0,0,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (14,261,15,'Ashtaerh_the_Gallvexed',0,128,0,0,0,85,85,0);
 INSERT INTO `mob_groups` VALUES (15,1457,15,'Gangly_Gean',900,0,928,0,999,80,83,0);
 INSERT INTO `mob_groups` VALUES (16,3334,15,'Razorback',300,0,2079,0,0,78,88,0);
 INSERT INTO `mob_groups` VALUES (17,3466,15,'Sarcophilus',0,128,2163,0,0,78,88,0);
@@ -3022,7 +3022,7 @@ INSERT INTO `mob_groups` VALUES (55,5191,61,'Vanasarvik',0,128,0,0,25000,99,99,0
 INSERT INTO `mob_groups` VALUES (56,6751,61,'Elders_Imp',0,128,0,0,0,99,99,0);
 INSERT INTO `mob_groups` VALUES (57,6752,61,'Grand_Grenade',0,128,0,0,0,99,99,0);
 INSERT INTO `mob_groups` VALUES (58,6753,61,'Sarama',0,128,0,0,0,99,99,0);
-INSERT INTO `mob_groups` VALUES (59,6750,61,'Fahrafahr_the_Bloodied',0,32,0,0,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (59,6750,61,'Fahrafahr_the_Bloodied',0,32,3259,0,0,80,80,0);
 
 -- ------------------------------------------------------------
 -- Halvung (Zone 62)
