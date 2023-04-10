@@ -72,37 +72,37 @@ REPLACE INTO `mob_pools` VALUES (5713,'Wrathare','Wrathare',206,0x00000C01000000
 -- Geas Fete Groups
 ---------------------------------------
 -- t1
-REPLACE INTO `mob_groups` VALUES (39,5618,288,'Aglaophotis',0,128,100,100000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (43,5703,288,'Angrboda',0,128,101,105000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (44,5704,288,'Cunnast',0,128,102,110000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (46,5706,288,'Ferrodon',0,128,103,115000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (42,5702,288,'Gestalt',0,128,104,120000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (47,5707,288,'Gulltop',0,128,105,125000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (38,5617,288,'Lustful_Lydia',0,128,106,130000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (45,5705,288,'Revetaur',0,128,105,135000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (40,5619,288,'Tangata_Manu',0,128,107,140000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (41,5701,288,'Vidala',0,128,108,145000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (48,5708,288,'Vyala',0,128,109,150000,5000,119,119,0);
-REPLACE INTO `mob_groups` VALUES (37,5616,288,'Wepwawet',0,128,111,155000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (39,5618,288,'Aglaophotis',0,128,7000,100000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (43,5703,288,'Angrboda',0,128,7001,105000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (44,5704,288,'Cunnast',0,128,7002,110000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (46,5706,288,'Ferrodon',0,128,7003,115000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (42,5702,288,'Gestalt',0,128,7004,120000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (47,5707,288,'Gulltop',0,128,7005,125000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (38,5617,288,'Lustful_Lydia',0,128,7006,130000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (45,5705,288,'Revetaur',0,128,7005,135000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (40,5619,288,'Tangata_Manu',0,128,7007,140000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (41,5701,288,'Vidala',0,128,7008,145000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (48,5708,288,'Vyala',0,128,7009,150000,5000,119,119,0);
+REPLACE INTO `mob_groups` VALUES (37,5616,288,'Wepwawet',0,128,7011,155000,5000,119,119,0);
 --t2
-REPLACE INTO `mob_groups` VALUES (58,5717,288,'Brittlis',0,128,112,130000,5000,125,125,0);
-REPLACE INTO `mob_groups` VALUES (55,5714,288,'Ionos',0,128,113,135000,5000,125,125,0);
-REPLACE INTO `mob_groups` VALUES (59,5718,288,'Kamohoalii',0,128,114,140000,5000,125,125,0);
-REPLACE INTO `mob_groups` VALUES (57,5716,288,'Nosoi',0,128,115,145000,5000,125,125,0);
-REPLACE INTO `mob_groups` VALUES (56,5715,288,'Sensual_Sandy',0,128,116,150000,5000,125,125,0);
-REPLACE INTO `mob_groups` VALUES (60,5719,288,'Umdhlebi',0,128,117,155000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (58,5717,288,'Brittlis',0,128,7012,130000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (55,5714,288,'Ionos',0,128,7013,135000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (59,5718,288,'Kamohoalii',0,128,7014,140000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (57,5716,288,'Nosoi',0,128,7015,145000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (56,5715,288,'Sensual_Sandy',0,128,7016,150000,5000,125,125,0);
+REPLACE INTO `mob_groups` VALUES (60,5719,288,'Umdhlebi',0,128,7017,155000,5000,125,125,0);
 --t3
-REPLACE INTO `mob_groups` VALUES (61,5720,288,'Fleetstalker',0,128,118,160000,5000,135,135,0);
-REPLACE INTO `mob_groups` VALUES (62,5721,288,'Shockmaw',0,128,119,165000,5000,135,135,0);
-REPLACE INTO `mob_groups` VALUES (63,5722,288,'Urmahlullu',0,128,120,165000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (61,5720,288,'Fleetstalker',0,128,7018,160000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (62,5721,288,'Shockmaw',0,128,7019,165000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (63,5722,288,'Urmahlullu',0,128,7020,165000,5000,135,135,0);
 -- HELM t1
 REPLACE INTO `mob_groups` VALUES (50,5710,288,'Bucca',0,128,0,150000,5000,135,135,0);
 REPLACE INTO `mob_groups` VALUES (51,6993,288,'Puca',0,128,0,150000,5000,135,135,0);
-REPLACE INTO `mob_groups` VALUES (52,5711,288,'Alpluachra',0,128,121,150000,5000,135,135,0);
-REPLACE INTO `mob_groups` VALUES (49,5709,288,'Blazewing',0,128,122,155000,5000,135,135,0);
-REPLACE INTO `mob_groups` VALUES (53,5712,288,'Pazuzu',0,128,123,160000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (52,5711,288,'Alpluachra',0,128,7021,150000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (49,5709,288,'Blazewing',0,128,7022,155000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (53,5712,288,'Pazuzu',0,128,7023,160000,5000,135,135,0);
 -- HELM t3
-REPLACE INTO `mob_groups` VALUES (54,5713,288,'Wrathare',0,128,124,200000,5000,135,135,0);
+REPLACE INTO `mob_groups` VALUES (54,5713,288,'Wrathare',0,128,7024,200000,5000,135,135,0);
 /*
 INSERT INTO `mob_groups` VALUES (64,5699,288,'Azi_Dahaka',0,128,0,200000,99999,125,125,0);
 INSERT INTO `mob_groups` VALUES (65,5700,288,'Azi_Dahakas_Dragon',0,128,0,0,0,135,135,0);
@@ -112,215 +112,215 @@ INSERT INTO `mob_groups` VALUES (66,0,288,'Mireu',0,128,0,0,0,140,140,0);
 -- Geas Fete Drops -- last 2 entries (itemID, droprate 1000 = 100%)
 ---------------------------------------
 -- Aglaophotis 100
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,27097,100); -- Eschite Gauntlets
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,27512,100); -- Marked Gorget
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,27459,100); -- Naga Kyahan
-REPLACE INTO `mob_droplist` VALUES (100,0,0,1000,26952,100); -- Psycloth Vest
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,27097,100); -- Eschite Gauntlets
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,27512,100); -- Marked Gorget
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,27459,100); -- Naga Kyahan
+REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,26952,100); -- Psycloth Vest
 -- Angrboda 101
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,26948,100); -- Despair Mail 
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,28416,100); -- Lucidity Sash
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,27285,100); -- Rawhide Trousers
-REPLACE INTO `mob_droplist` VALUES (101,0,0,1000,26797,100); -- Vanya Hood
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,26948,100); -- Despair Mail 
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,28416,100); -- Lucidity Sash
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,27285,100); -- Rawhide Trousers
+REPLACE INTO `mob_droplist` VALUES (7001,0,0,1000,26797,100); -- Vanya Hood
 -- Cunnast 102
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,27098,100); -- Despair Fin. Gaunt.
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,27460,100); -- Rawhide Boots
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,21414,100); -- Willpower Grip
-REPLACE INTO `mob_droplist` VALUES (102,0,0,1000,26953,100); -- Vanya Robe
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,27098,100); -- Despair Fin. Gaunt.
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,27460,100); -- Rawhide Boots
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,21414,100); -- Willpower Grip
+REPLACE INTO `mob_droplist` VALUES (7002,0,0,1000,26953,100); -- Vanya Robe
 -- Ferrodon 103
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,27458,100); -- Despair Greaves
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,26951,100); -- Pursuer's Doublet
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,27513,100); -- Subtlety Spec.
-REPLACE INTO `mob_droplist` VALUES (103,0,0,1000,27288,100); -- Vanya Slops
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,27458,100); -- Despair Greaves
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,26951,100); -- Pursuer's Doublet
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,27513,100); -- Subtlety Spec.
+REPLACE INTO `mob_droplist` VALUES (7003,0,0,1000,27288,100); -- Vanya Slops
 -- Gestalt 104
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,27100,100); -- Rawhide Gloves
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,26792,100); -- Despair Helm
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,27462,100); -- Psycloth Boots
-REPLACE INTO `mob_droplist` VALUES (104,0,0,1000,27606,100); -- Disperser's Cape
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,27100,100); -- Rawhide Gloves
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,26792,100); -- Despair Helm
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,27462,100); -- Psycloth Boots
+REPLACE INTO `mob_droplist` VALUES (7004,0,0,1000,27606,100); -- Disperser's Cape
 -- Gulltop 105
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,28475,100); -- Infused Earring
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,26793,100); -- Naga Somen
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,27101,100); -- Pursuer's Cuffs
-REPLACE INTO `mob_droplist` VALUES (105,0,0,1000,27463,100); -- Vanya Clogs
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,28475,100); -- Infused Earring
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,26793,100); -- Naga Somen
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,27101,100); -- Pursuer's Cuffs
+REPLACE INTO `mob_droplist` VALUES (7005,0,0,1000,27463,100); -- Vanya Clogs
 -- Lustful_Lydia 106
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,26947,100); -- Eschite Breastplate
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,27284,100); -- Naga Hakama
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,26796,100); -- Psycloth Tiara
-REPLACE INTO `mob_droplist` VALUES (106,0,0,1000,22250,100); -- Seraphic Ampulla
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,26947,100); -- Eschite Breastplate
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,27284,100); -- Naga Hakama
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,26796,100); -- Psycloth Tiara
+REPLACE INTO `mob_droplist` VALUES (7006,0,0,1000,22250,100); -- Seraphic Ampulla
 -- Revetaur 107
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,26795,100); -- Pursuer's Beret
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,27103,100); -- Vanya Cuffs
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,27283,100); -- Despair Cuisses
-REPLACE INTO `mob_droplist` VALUES (107,0,0,1000,22251,100); -- Grenade Core
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,26795,100); -- Pursuer's Beret
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,27103,100); -- Vanya Cuffs
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,27283,100); -- Despair Cuisses
+REPLACE INTO `mob_droplist` VALUES (7007,0,0,1000,22251,100); -- Grenade Core
 -- Tangata_Manu 108
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,27282,100); -- Eschite Cuisses
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,28474,100); -- Mendi. Earring
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,27102,100); -- Psycloth Manillas
-REPLACE INTO `mob_droplist` VALUES (108,0,0,1000,26794,100); -- Rawhide Mask
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,27282,100); -- Eschite Cuisses
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,28474,100); -- Mendi. Earring
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,27102,100); -- Psycloth Manillas
+REPLACE INTO `mob_droplist` VALUES (7008,0,0,1000,26794,100); -- Rawhide Mask
 -- Vidala 109
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,26950,100); -- Rawhide Vest
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,27287,100); -- Psycloth Lappas
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,27457,100); -- Eschite Greaves
-REPLACE INTO `mob_droplist` VALUES (109,0,0,1000,27552,100); -- Overbearing Ring
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,26950,100); -- Rawhide Vest
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,27287,100); -- Psycloth Lappas
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,27457,100); -- Eschite Greaves
+REPLACE INTO `mob_droplist` VALUES (7009,0,0,1000,27552,100); -- Overbearing Ring
 -- Vyala 110
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,26949,100); -- Naga Samue
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,27553,100); -- Resonance Ring
-REPLACE INTO `mob_droplist` VALUES (110,0,0,1000,27286,100); -- Pursuer's Pants
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,26949,100); -- Naga Samue
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,27553,100); -- Resonance Ring
+REPLACE INTO `mob_droplist` VALUES (7010,0,0,1000,27286,100); -- Pursuer's Pants
 -- Wepwawet 111
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,27099,100); -- Naga Tekko
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,27461,100); -- Pursuer's Gaiters
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,21413,100); -- Clemency Grip
-REPLACE INTO `mob_droplist` VALUES (111,0,0,1000,26791,100); -- Eschite Helm
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,27099,100); -- Naga Tekko
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,27461,100); -- Pursuer's Gaiters
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,21413,100); -- Clemency Grip
+REPLACE INTO `mob_droplist` VALUES (7011,0,0,1000,26791,100); -- Eschite Helm
 -- t2
 -- Brittlis 112
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,21699,100); -- Nibiru Faussar
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,21399,100); -- Nibiru Harp
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,21031,100); -- Sensui
-REPLACE INTO `mob_droplist` VALUES (112,0,0,1000,27554,100); -- Purity Ring
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,21699,100); -- Nibiru Faussar
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,21399,100); -- Nibiru Harp
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,21031,100); -- Sensui
+REPLACE INTO `mob_droplist` VALUES (7012,0,0,1000,27554,100); -- Purity Ring
 -- Ionos 113
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,20524,100); -- Nibiru Sainti
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,21216,100); --Nibiru Bow
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,20895,100); -- Nibiru Sickle
-REPLACE INTO `mob_droplist` VALUES (113,0,0,1000,27607,100); -- Thauma. Cape
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,20524,100); -- Nibiru Sainti
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,21216,100); --Nibiru Bow
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,20895,100); -- Nibiru Sickle
+REPLACE INTO `mob_droplist` VALUES (7013,0,0,1000,27607,100); -- Thauma. Cape
 -- Kamohoalii 114
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,20801,100); -- Nibiru Tabar
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,21092,100); -- Nibiru Cudgel
-REPLACE INTO `mob_droplist` VALUES (114,0,0,1000,21415,100); -- Forefather's Grip
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,20801,100); -- Nibiru Tabar
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,21092,100); -- Nibiru Cudgel
+REPLACE INTO `mob_droplist` VALUES (7014,0,0,1000,21415,100); -- Forefather's Grip
 -- Nosoi 115
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,20710,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,27642,100); -- Nibiru Shield
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,20983,100); -- Mijin
-REPLACE INTO `mob_droplist` VALUES (115,0,0,1000,28476,100); -- Calamitous Earring
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,20710,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,27642,100); -- Nibiru Shield
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,20983,100); -- Mijin
+REPLACE INTO `mob_droplist` VALUES (7015,0,0,1000,28476,100); -- Calamitous Earring
 -- Sensual_Sandy 116
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,20600,100); -- Nibiru Knife
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,20939,100); -- Nibiru Lance
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,21273,100); -- Nibiru Gun
-REPLACE INTO `mob_droplist` VALUES (116,0,0,1000,28417,100); -- Sinew Belt
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,20600,100); -- Nibiru Knife
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,20939,100); -- Nibiru Lance
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,21273,100); -- Nibiru Gun
+REPLACE INTO `mob_droplist` VALUES (7016,0,0,1000,28417,100); -- Sinew Belt
 -- Umdhlebi 117
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,20848,100); -- Nibiru Chopper
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,21156,100); -- Nibiru Staff
-REPLACE INTO `mob_droplist` VALUES (117,0,0,1000,22252,100); --Sapience Orb
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,20848,100); -- Nibiru Chopper
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,21156,100); -- Nibiru Staff
+REPLACE INTO `mob_droplist` VALUES (7017,0,0,1000,22252,100); --Sapience Orb
 -- t3
 -- Fleetstalker 118
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9085,10); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,27605,100); -- Penetrating Cape
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,20847,10); -- Router
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,27104,100); -- Shrieker's Cuffs
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,26958,100); -- Sweller's Harness
-REPLACE INTO `mob_droplist` VALUES (118,0,0,1000,9075,150); -- Vulcanite Ore
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9085,10); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,27605,100); -- Penetrating Cape
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,20847,10); -- Router
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,27104,100); -- Shrieker's Cuffs
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,26958,100); -- Sweller's Harness
+REPLACE INTO `mob_droplist` VALUES (7018,0,0,1000,9075,150); -- Vulcanite Ore
 -- Shockmaw 119
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9085,10); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,27464,100); -- Inspirited Boots
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,27289,100); -- Doyen Pants
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,27511,100); -- Dampener's Torque
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,20938,10); -- Annealed Lance
-REPLACE INTO `mob_droplist` VALUES (119,0,0,1000,9075,150); -- Vulcanite Ore
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9085,10); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,27464,100); -- Inspirited Boots
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,27289,100); -- Doyen Pants
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,27511,100); -- Dampener's Torque
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,20938,10); -- Annealed Lance
+REPLACE INTO `mob_droplist` VALUES (7019,0,0,1000,9075,150); -- Vulcanite Ore
 -- Urmahlullu 120
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9085,10); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,28415,100); -- Eschan Stone
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,26963,100); -- Onca Suit
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,27783,100); -- Skormoth Mask
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,20523,10); -- Chastisers
-REPLACE INTO `mob_droplist` VALUES (120,0,0,1000,9075,150); -- Vulcanite Ore
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9085,10); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,28415,100); -- Eschan Stone
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,26963,100); -- Onca Suit
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,27783,100); -- Skormoth Mask
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,20523,10); -- Chastisers
+REPLACE INTO `mob_droplist` VALUES (7020,0,0,1000,9075,150); -- Vulcanite Ore
 -- HELM t1
 -- The 3 Fae 121
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,28477,50); -- Hermetic Earring
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,28477,1); -- Hermetic Earring
-REPLACE INTO `mob_droplist` VALUES (121,0,0,1000,26960,1); -- Annoint. Kalasiris
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,28477,50); -- Hermetic Earring
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,28477,1); -- Hermetic Earring
+REPLACE INTO `mob_droplist` VALUES (7021,0,0,1000,26960,1); -- Annoint. Kalasiris
 -- Blazewing 122
-REPLACE INTO `mob_droplist` VALUES (122,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (122,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (122,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (122,0,0,1000,22253,100); -- Falcon Eye
-REPLACE INTO `mob_droplist` VALUES (122,0,0,1000,26959,1); -- Kubira Meikogai
+REPLACE INTO `mob_droplist` VALUES (7022,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7022,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7022,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7022,0,0,1000,22253,100); -- Falcon Eye
+REPLACE INTO `mob_droplist` VALUES (7022,0,0,1000,26959,1); -- Kubira Meikogai
 -- Pazuzu 123
-REPLACE INTO `mob_droplist` VALUES (123,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (123,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (123,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (123,0,0,1000,27514,100); -- Empath Necklace 
-REPLACE INTO `mob_droplist` VALUES (123,0,0,1000,26961,1); -- Makora Meikogai
+REPLACE INTO `mob_droplist` VALUES (7023,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7023,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7023,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7023,0,0,1000,27514,100); -- Empath Necklace 
+REPLACE INTO `mob_droplist` VALUES (7023,0,0,1000,26961,1); -- Makora Meikogai
 -- HELM t2
 -- Wrathare 124
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,9084,300); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,9084,200); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,9084,100); -- Eschalixer
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,9085,50); -- Eschalixer +1
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,27555,150); -- Warden's Ring
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,27555,1); -- Warden's Ring
-REPLACE INTO `mob_droplist` VALUES (124,0,0,1000,26962,1); -- Enforcer's Harness
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,9084,300); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,9084,200); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,9084,100); -- Eschalixer
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,9085,50); -- Eschalixer +1
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,27555,150); -- Warden's Ring
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,27555,1); -- Warden's Ring
+REPLACE INTO `mob_droplist` VALUES (7024,0,0,1000,26962,1); -- Enforcer's Harness
 ---------------------------------------
 -- Geas Fete Spell Lists
 ---------------------------------------
