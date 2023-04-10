@@ -538,6 +538,18 @@ local Norry = zone:insertDynamicEntity({
 					end,
 				},
 				{
+					"Isgebind's Heart 1000 login",
+					function(playerArg)
+						if (player:getCurrency("login_points")) >= 1000 then
+							player:addItem(3290)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 3290)
+							player:delCurrency("login_points", 1000)
+						else
+							player:PrintToPlayer("Insufficent Login Points.", 29)
+						end
+					end,
+				},
+				{
 					"<<",
 					function(playerArg)
 						menu.options = page8
