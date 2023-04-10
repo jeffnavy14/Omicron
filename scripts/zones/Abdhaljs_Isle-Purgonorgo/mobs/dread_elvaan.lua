@@ -26,10 +26,12 @@ entity.onMobFight = function(mob, player)
 		local Stage = mob:getLocalVar("EVStage")
 		if HPP < 50 and mob:getLocalVar("EVStage") == 0 then
 			mob:setModelId(785)
+			mob:setMobLevel(119)
 			mob:setSpellList(37)
 			mob:setMobMod(xi.mobMod.SKILL_LIST, 352)
 			mob:addMod(xi.mod.DMGPHYS, -8000)
 			mob:addMod(xi.mod.DMGMAGIC, -5000)
+			mob:setLocalVar("EVStage", 1)
 		end
 	end
 end

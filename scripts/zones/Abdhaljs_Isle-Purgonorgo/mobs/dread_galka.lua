@@ -26,10 +26,12 @@ entity.onMobFight = function(mob, player)
 		local Stage = mob:getLocalVar("GKStage")
 		if HPP < 50 and mob:getLocalVar("GKStage") == 0 then
 			mob:setModelId(788)
+			mob:setMobLevel(119)
 			mob:setSpellList(0)
 			mob:setMobMod(xi.mobMod.SKILL_LIST, 353)
 			mob:addMod(xi.mod.DMGPHYS, -6000)
 			mob:addMod(xi.mod.DMGMAGIC, -3000)
+			mob:setLocalVar("GKStage", 1)
 		end
 	end
 end

@@ -27,10 +27,12 @@ entity.onMobFight = function(mob, player)
 		local Stage = mob:getLocalVar("TTStage")
 		if HPP < 50 and mob:getLocalVar("TTStage") == 0 then
 			mob:setModelId(787)
+			mob:setMobLevel(119)
 			mob:setSpellList(39)
 			mob:setMobMod(xi.mobMod.SKILL_LIST, 356)
 			mob:addMod(xi.mod.DMGPHYS, -6000)
 			mob:addMod(xi.mod.DMGMAGIC, -3000)
+			mob:setLocalVar("TTStage", 1)
 		end
 	end
 end
