@@ -4,7 +4,7 @@
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
 -----------------------------------
-local m = Module:new("FlavourPeople")
+local m = Module:new("MissionPeople")
 m:setEnabled(true)
 
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
@@ -69,7 +69,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 					player:PrintToPlayer("Please take this for your troubles." , 13)
 					player:PrintToPlayer("You recieve 20 Infamy", 29)
 					player:addCurrency('infamy', 20)
-					player:setCharVar("Mission1AState", 4
+					player:setCharVar("Mission1AState", 4)
 				else
 					player:PrintToPlayer("Thats not what we need, we need Selbina milk, total of 12 bottles please in one shipment." ,0, npc:getPacketName())
 				end
@@ -236,9 +236,7 @@ local Norry = zone:insertDynamicEntity({
 					player:PrintToPlayer("At the very least some other medicines may come from this who knows." , 13)
 					player:addCurrency('infamy', 20)
 					player:addItem(13454, 1, 137, 4, 353, 1, 138, 4, 142, 9)
-                    player:injectActionPacket(player:getID(), 6, 701, 0, 0, 0, 10, 1)
 					player:PrintToPlayer("You recieve 20 Infamy, and an augmented copper ring", 29)
-                    player:PrintToPlayer("Congratulations, you completed the first chapter of the Abyssean Decent", 29)
 					player:setCharVar("Mission1CState", 2)
 				else
 					player:PrintToPlayer("Sorry that wasn't what I asked for." ,0, npc:getPacketName())
@@ -249,7 +247,8 @@ local Norry = zone:insertDynamicEntity({
 					player:PrintToPlayer("You... killed... more?." ,0, npc:getPacketName())
 					player:PrintToPlayer("All I have at this time is some more Infamy to give, along with my thanks." , 13)
 					player:addCurrency('infamy', 10)
-					player:PrintToPlayer("You recieve 10 Infamy", 29)
+					player:PrintToPlayer("You recieve 10 Infamy, and completed the first chapter of Abyssean Decent.", 29)
+					player:injectActionPacket(player:getID(), 6, 701, 0, 0, 0, 10, 1)
 				else
 					player:PrintToPlayer("Sorry I'm not in need of anything at this time" ,0, npc:getPacketName())
 				end
