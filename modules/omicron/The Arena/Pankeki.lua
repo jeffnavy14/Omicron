@@ -64,7 +64,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(3443) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif AlexStored >= 30000 and
-							player:getFreeSlotsCount() > 0 and
+							player:getFreeSlotsCount() > 0
 						then
 							player:addItem(3443)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 3443)
@@ -82,7 +82,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(2489) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("nyzul_isle_assault_point")) >= 150000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(2489)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2489)
 							player:delCurrency("nyzul_isle_assault_point", 150000)
@@ -110,7 +111,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(2571) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("jetton")) >= 100000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(2571)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2571)
 							player:delCurrency("jetton", 100000)
@@ -127,7 +129,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(2609) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("jetton")) >= 10000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(2609)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2609)
 							player:delCurrency("jetton", 10000)
@@ -144,7 +147,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(2619) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("jetton")) >= 10000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(2619)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2619)
 							player:delCurrency("jetton", 10000)
@@ -179,7 +183,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(2629) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("jetton")) >= 10000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(2629)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2629)
 							player:delCurrency("jetton", 10000)
@@ -224,7 +229,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						if player:hasItem(20749) then
 							player:PrintToPlayer("You already have one!", 29)
 						elseif (player:getCurrency("jetton")) >= 1000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(20749)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 20749)
 							player:delCurrency("jetton", 1000)
@@ -239,7 +245,8 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					"Rune Weave 3000 Jetton",
 					function(playerArg)
 						if (player:getCurrency("jetton")) >= 3000 and
-							player:getFreeSlotsCount() > 0 then
+							player:getFreeSlotsCount() > 0
+						then
 							player:addItem(4029)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4029)
 							player:delCurrency("jetton", 3000)
@@ -300,10 +307,14 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"100",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 5000 then
+						if (player:getCurrency("jetton")) >= 5000 and
+							player:getFreeSlotsCount() > 1
+						then
 							player:addItem(4060, 100)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4060)
 							player:delCurrency("jetton", 5000)
+						elseif player:getFreeSlotsCount() < 2 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
