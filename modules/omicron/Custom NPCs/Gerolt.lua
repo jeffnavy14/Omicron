@@ -33,7 +33,8 @@ local Geralt = zone:insertDynamicEntity({
 			trade:hasItemQty(2275, 1) and -- Scintillant Ingot
 			trade:hasItemQty(4024, 1) and -- Snowsteel
 			trade:hasItemQty(4405, 1) and -- Rice Ball
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunRelic", 2)
@@ -51,7 +52,8 @@ local Geralt = zone:insertDynamicEntity({
 			trade:hasItemQty(1993, 1) and -- Ether Leather
 			trade:hasItemQty(4029, 1) and -- Runeweave
 			trade:hasItemQty(4396, 1) and -- Sausage Roll
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunRelic", 4)
@@ -69,7 +71,8 @@ local Geralt = zone:insertDynamicEntity({
 			trade:hasItemQty(8708, 1) and -- Raaz Leather
 			trade:hasItemQty(4029, 1) and -- Runeweave
 			trade:hasItemQty(4415, 1) and -- Roasted Corn
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunRelic", 6)
@@ -87,7 +90,8 @@ local Geralt = zone:insertDynamicEntity({
 			trade:hasItemQty(1992, 1) and -- Holy Leather
 			trade:hasItemQty(4029, 1) and -- Runeweave
 			trade:hasItemQty(5943, 1) and -- Smoked Makeral
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunRelic", 8)
@@ -105,7 +109,8 @@ local Geralt = zone:insertDynamicEntity({
 			trade:hasItemQty(1992, 1) and -- Holy Leather
 			trade:hasItemQty(2199, 1) and -- Sparkstrand
 			trade:hasItemQty(4444, 1) and -- Rarrib Tail
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunRelic", 10)
@@ -118,6 +123,8 @@ local Geralt = zone:insertDynamicEntity({
 				player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27370)
 				player:tradeComplete()
 			end)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	

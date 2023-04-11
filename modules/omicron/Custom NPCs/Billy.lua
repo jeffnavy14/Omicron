@@ -32,7 +32,8 @@ local Billy = zone:insertDynamicEntity({
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(1711, 1) and -- molybden ingot
 			trade:hasItemQty(647, 1) and -- Molybdenum Ore
-			player:getCurrency("infamy") > 149
+			player:getCurrency("infamy") > 149 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 150)
 			player:setCharVar("RunEmpy", 2)
@@ -48,7 +49,8 @@ local Billy = zone:insertDynamicEntity({
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(2408, 1) and -- flocon-de-mer
 			trade:hasItemQty(1769, 1) and -- Galateia
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunEmpy", 4)
@@ -64,7 +66,8 @@ local Billy = zone:insertDynamicEntity({
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(2408, 1) and -- flocon-de-mer
 			trade:hasItemQty(2169, 1) and -- Cerberus Hide
-			player:getCurrency("infamy") > 99
+			player:getCurrency("infamy") > 99 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 100)
 			player:setCharVar("RunEmpy", 6)
@@ -80,7 +83,8 @@ local Billy = zone:insertDynamicEntity({
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(1769, 1) and -- Galateia
 			trade:hasItemQty(2169, 1) and -- Cerberus Hide
-			player:getCurrency("infamy") > 249
+			player:getCurrency("infamy") > 249 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 250)
 			player:setCharVar("RunEmpy", 8)
@@ -96,7 +100,8 @@ local Billy = zone:insertDynamicEntity({
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(1711, 1) and -- molybden ingot
 			trade:hasItemQty(2169, 1) and -- Cerberus Hide
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("RunEmpy", 10)
@@ -108,6 +113,8 @@ local Billy = zone:insertDynamicEntity({
 				player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27453)
 				player:tradeComplete()
 			end)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	

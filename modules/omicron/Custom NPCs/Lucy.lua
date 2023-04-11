@@ -32,7 +32,8 @@ local Lucy = zone:insertDynamicEntity({
 			trade:hasItemQty(3288, 1) and -- Dragua Scale
 			trade:hasItemQty(1313, 1) and -- Siren's Hair
 			trade:hasItemQty(685, 1) and -- Khroma Ore
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoEmpy", 2)
@@ -48,7 +49,8 @@ local Lucy = zone:insertDynamicEntity({
 			trade:hasItemQty(3288, 1) and -- Dragua Scale
 			trade:hasItemQty(685, 1) and -- Khroma Ore
 			trade:hasItemQty(1294, 1) and -- Arachne Thread
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoEmpy", 4)
@@ -64,7 +66,8 @@ local Lucy = zone:insertDynamicEntity({
 			trade:hasItemQty(3288, 1) and -- Dragua Scale
 			trade:hasItemQty(1313, 1) and -- Siren's Hair
 			trade:hasItemQty(2189, 1) and -- Fiendish Skin
-			player:getCurrency("infamy") > 149
+			player:getCurrency("infamy") > 149 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 150)
 			player:setCharVar("GeoEmpy", 6)
@@ -80,7 +83,8 @@ local Lucy = zone:insertDynamicEntity({
 			trade:hasItemQty(3288, 1) and -- Dragua Scale
 			trade:hasItemQty(1313, 1) and -- Siren's Hair
 			trade:hasItemQty(1294, 1) and -- Arachne Thread
-			player:getCurrency("infamy") > 99
+			player:getCurrency("infamy") > 99 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 100)
 			player:setCharVar("GeoEmpy", 8)
@@ -96,7 +100,8 @@ local Lucy = zone:insertDynamicEntity({
 			trade:hasItemQty(3288, 1) and -- Dragua Scale
 			trade:hasItemQty(2189, 1) and -- Fiendish Skin
 			trade:hasItemQty(1294, 1) and -- Arachne Thread
-			player:getCurrency("infamy") > 249
+			player:getCurrency("infamy") > 249 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 250)
 			player:setCharVar("GeoEmpy", 10)
@@ -108,6 +113,8 @@ local Lucy = zone:insertDynamicEntity({
 				player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27451)
 				player:tradeComplete()
 			end)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	
