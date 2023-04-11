@@ -284,13 +284,17 @@ local tradeTable =
 	onTrigger = function(player, npc, status)
 
 		if player:getCharVar("[Polly]item") ~= 0 then
-            if os.time() > player:getCharVar("[Polly]time") then	
+            if os.time() > player:getCharVar("[Polly]time") and
+				player:getFreeSlotsCount() > 0
+			then	
                 local reward = player:getCharVar("[Polly]item")				
        		        
 				if npcUtil.giveItem(player, reward) then
        		    	   player:setCharVar("[Polly]item", 0)
        		    	   player:setCharVar("[Polly]time", 0)
        		    end
+			elseif player:getFreeSlotsCount() == 0 then
+				player:PrintToPlayer("You need more inventory space!", 29)
 			else
                 player:PrintToPlayer("Not ready yet...", 0, npc:getPacketName())
             end
