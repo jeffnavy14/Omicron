@@ -29,6 +29,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 			local page1 = {}
 			local page2 = {}
 			local page3 = {}
+			local page4 = {}
 			
 			local delaySendMenu = function(player)
 				player:timer(50, function(playerArg)
@@ -60,12 +61,35 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Catseye  30000 Alexandrite",
 					function(playerArg)
-						if AlexStored >= 30000 then
+						if player:hasItem(3443) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif AlexStored >= 30000 and
+							player:getFreeSlotsCount() > 0 and
+						then
 							player:addItem(3443)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 3443)
 							player:setCharVar("AlexStored", AlexStored - 30000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent Alexandrite stored.", 29)
+						end
+					end,
+				},
+				{
+					"Wyrmseeker Areuhat 150000 Tokens",
+					function(playerArg)
+						if player:hasItem(2489) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("nyzul_isle_assault_point")) >= 150000 and
+							player:getFreeSlotsCount() > 0 then
+							player:addItem(2489)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2489)
+							player:delCurrency("nyzul_isle_assault_point", 150000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
+						else
+							player:PrintToPlayer("Insufficent tokens.", 29)
 						end
 					end,
 				},
@@ -83,10 +107,15 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Balrahn's Eyepatch 100000 jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 100000 then
+						if player:hasItem(2571) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 100000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(2571)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2571)
 							player:delCurrency("jetton", 100000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -95,10 +124,15 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Tinnin's Fang 10000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 10000 then
+						if player:hasItem(2609) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 10000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(2609)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2609)
 							player:delCurrency("jetton", 10000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -107,10 +141,15 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Sarameya's Hide 10000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 10000 then
+						if player:hasItem(2619) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 10000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(2619)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2619)
 							player:delCurrency("jetton", 10000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -137,10 +176,15 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Tyger's Tail 10000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 10000 then
+						if player:hasItem(2629) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 10000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(2629)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 2629)
 							player:delCurrency("jetton", 10000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -149,22 +193,26 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Beitetsu 50 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 50 then
-							player:addItem(4060)
-							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 21066)
-							player:delCurrency("jetton", 50)
+						if player:getFreeSlotsCount() > 0 then
+							menu.options = page4
+							delaySendMenu(playerArg)
 						else
-							player:PrintToPlayer("Insufficent jettons.", 29)
+							player:PrintToPlayer("You need more inventory space!", 29)
 						end
 					end,
 				},
 				{
 					"Trial Wand 1000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 1000 then
+						if player:hasItem(21066) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 1000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(21066)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 21066)
 							player:delCurrency("jetton", 1000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -173,10 +221,15 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Trial Blade 1000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 1000 then
+						if player:hasItem(20749) then
+							player:PrintToPlayer("You already have one!", 29)
+						elseif (player:getCurrency("jetton")) >= 1000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(20749)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 20749)
 							player:delCurrency("jetton", 1000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -185,10 +238,13 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				{
 					"Rune Weave 3000 Jetton",
 					function(playerArg)
-						if (player:getCurrency("jetton")) >= 3000 then
+						if (player:getCurrency("jetton")) >= 3000 and
+							player:getFreeSlotsCount() > 0 then
 							player:addItem(4029)
 							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4029)
 							player:delCurrency("jetton", 3000)
+						elseif player:getFreeSlotsCount() == 0 then
+							player:PrintToPlayer("You need more inventory space!", 29)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
@@ -198,6 +254,65 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					"<<",
 					function(playerArg)
 						menu.options = page2
+						delaySendMenu(playerArg)
+					end,
+				},
+			}
+			
+			page4 =
+			{
+				{
+					"1",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 50 then
+							player:addItem(4060)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4060)
+							player:delCurrency("jetton", 50)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
+					"10",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 500 then
+							player:addItem(4060, 10)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4060)
+							player:delCurrency("jetton", 500)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
+					"50",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 2500 then
+							player:addItem(4060, 50)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4060)
+							player:delCurrency("jetton", 2500)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
+					"100",
+					function(playerArg)
+						if (player:getCurrency("jetton")) >= 5000 then
+							player:addItem(4060, 100)
+							player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 4060)
+							player:delCurrency("jetton", 5000)
+						else
+							player:PrintToPlayer("Insufficent jettons.", 29)
+						end
+					end,
+				},
+				{
+					"<<",
+					function(playerArg)
+						menu.options = page3
 						delaySendMenu(playerArg)
 					end,
 				},
