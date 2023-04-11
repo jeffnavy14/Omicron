@@ -136,11 +136,11 @@ local Rowena = zone:insertDynamicEntity({
 		elseif player:getCharVar("GeoRelic") == 4 then
 			player:PrintToPlayer("Some gloves this time", 0, npc:getPacketName())
 			player:PrintToPlayer("We'll need the usual 200 infamy and a griffon leather.", 13)
-			player:PrintToPlayer("A sheet of bismuth, some akaso thread, and my treat will be a campfire chocolae.",13)
+			player:PrintToPlayer("A sheet of bismuth, some akaso thread, and my treat will be a campfire chocolate.",13)
 			player:setCharVar("GeoRelic", 5)
 		elseif player:getCharVar("GeoRelic") == 5 then
 			player:PrintToPlayer("We'll need the usual 200 infamy and a griffon leather.", 13)
-			player:PrintToPlayer("A sheet of bismuth, some akaso thread, and my treat will be a campfire chocolae.",13)
+			player:PrintToPlayer("A sheet of bismuth, some akaso thread, and my treat will be a campfire chocolate.",13)
 		elseif player:getCharVar("GeoRelic") == 6 then
 			player:PrintToPlayer("Ahh yes, the fourth piece now.", 0, npc:getPacketName())
 			player:PrintToPlayer("Yes another Griffon Leather and 200 infamy as usual.",13)
@@ -158,7 +158,7 @@ local Rowena = zone:insertDynamicEntity({
 			player:PrintToPlayer("The Griffon Leather, and 200 infamy. For this we'll also need ether cotton, sparkstrand, and a trail cookie",13)
 		elseif player:getCharVar("GeoRelic") == 10 then
 			player:PrintToPlayer("ugh... he's still drunk...", 0, npc:getPacketName())
-		elseif player:getCharVar("RunAF") < 10 then
+		elseif player:getCharVar("GeoAF") < 10 then
 			player:PrintToPlayer("Need to get him to stop drinking... wonder if there's any Allagan Tomes here...", 0, npc:getPacketName())
 		else
 			player:PrintToPlayer("Oh a trained Geomancer. I can make you some equipment actually, I'll just need a few things and a treat.", 0, npc:getPacketName())
