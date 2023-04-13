@@ -109,7 +109,8 @@ INSERT INTO `mob_groups` VALUES (65,5700,288,'Azi_Dahakas_Dragon',0,128,0,0,0,13
 INSERT INTO `mob_groups` VALUES (66,0,288,'Mireu',0,128,0,0,0,140,140,0);
 */
 ---------------------------------------
--- Geas Fete Drops -- last 2 entries (itemID, droprate 1000 = 100%)
+-- Geas Fete Drops
+-- dropID, dropType(0 normal), groupID, groupRate (1000 = 100% that group), itemID, droprate (1000 = 100%)
 ---------------------------------------
 -- Aglaophotis 100
 REPLACE INTO `mob_droplist` VALUES (7000,0,0,1000,9084,300); -- Eschalixer
