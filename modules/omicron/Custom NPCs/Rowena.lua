@@ -1,6 +1,6 @@
 -----------------------------------
 -- NPC: Rowena
--- RUN Relic
+-- GEO Relic
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -165,7 +165,7 @@ local Rowena = zone:insertDynamicEntity({
 			player:PrintToPlayer("The Griffon Leather, and 200 infamy. For this we'll also need ether cotton, sparkstrand, and a trail cookie",13)
 		elseif player:getCharVar("GeoRelic") == 10 then
 			player:PrintToPlayer("ugh... he's still drunk...", 0, npc:getPacketName())
-		elseif player:getCharVar("RunAF") < 10 then
+		elseif player:getCharVar("GeoRelic") < 10 then
 			player:PrintToPlayer("Need to get him to stop drinking... wonder if there's any Allagan Tomes here...", 0, npc:getPacketName())
 		else
 			player:PrintToPlayer("Oh a trained Geomancer. I can make you some equipment actually, I'll just need a few things and a treat.", 0, npc:getPacketName())
