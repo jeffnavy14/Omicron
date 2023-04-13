@@ -103,7 +103,7 @@ local Rasalea = zone:insertDynamicEntity({
 			player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27787)
 			player:tradeComplete()
 			player:setCharVar("RunAF", 10)
-		elseif player:getFreeSlotsCount() == 0
+		elseif player:getFreeSlotsCount() == 0 then
 			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
