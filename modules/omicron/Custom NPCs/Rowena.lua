@@ -1,6 +1,6 @@
 -----------------------------------
 -- NPC: Rowena
--- RUN Relic
+-- GEO Relic
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -33,7 +33,8 @@ local Rowena = zone:insertDynamicEntity({
 			trade:hasItemQty(4030, 1) and -- Sekishitsu
 			trade:hasItemQty(8708, 1) and -- Raaz Leather
 			trade:hasItemQty(5944, 1) and -- Frontier Soda
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoRelic", 2)
@@ -51,7 +52,8 @@ local Rowena = zone:insertDynamicEntity({
 			trade:hasItemQty(1993, 1) and -- Ether Leather
 			trade:hasItemQty(4028, 1) and -- Akaso Cloth
 			trade:hasItemQty(5775, 1) and -- Chocolate Crepe
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoRelic", 4)
@@ -69,7 +71,8 @@ local Rowena = zone:insertDynamicEntity({
 			trade:hasItemQty(4095, 1) and -- Bismuth Sheet
 			trade:hasItemQty(4027, 1) and -- Akaso Thread
 			trade:hasItemQty(5941, 1) and -- Campfire Chocolate
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoRelic", 6)
@@ -87,7 +90,8 @@ local Rowena = zone:insertDynamicEntity({
 			trade:hasItemQty(1994, 1) and -- Ether Cotton
 			trade:hasItemQty(4028, 1) and -- Akaso Cloth
 			trade:hasItemQty(5942, 1) and -- Cascade Candy
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoRelic", 8)
@@ -105,7 +109,8 @@ local Rowena = zone:insertDynamicEntity({
 			trade:hasItemQty(1994, 1) and -- Ether Cotton
 			trade:hasItemQty(2199, 1) and -- Sparkstrand
 			trade:hasItemQty(5940, 1) and -- Trail Cookie
-			player:getCurrency("infamy") > 199
+			player:getCurrency("infamy") > 199 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 200)
 			player:setCharVar("GeoRelic", 10)
@@ -118,6 +123,8 @@ local Rowena = zone:insertDynamicEntity({
 				player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27368)
 				player:tradeComplete()
 			end)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	
@@ -158,7 +165,7 @@ local Rowena = zone:insertDynamicEntity({
 			player:PrintToPlayer("The Griffon Leather, and 200 infamy. For this we'll also need ether cotton, sparkstrand, and a trail cookie",13)
 		elseif player:getCharVar("GeoRelic") == 10 then
 			player:PrintToPlayer("ugh... he's still drunk...", 0, npc:getPacketName())
-		elseif player:getCharVar("RunAF") < 10 then
+		elseif player:getCharVar("GeoRelic") < 10 then
 			player:PrintToPlayer("Need to get him to stop drinking... wonder if there's any Allagan Tomes here...", 0, npc:getPacketName())
 		else
 			player:PrintToPlayer("Oh a trained Geomancer. I can make you some equipment actually, I'll just need a few things and a treat.", 0, npc:getPacketName())

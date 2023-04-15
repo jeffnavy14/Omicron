@@ -7,7 +7,7 @@ require('scripts/globals/npc_util')
 require("scripts/globals/alitems")
 -----------------------------------
 
-local m = Module:new("ElTaz")
+local m = Module:new("Yota_Leheho")
 m:setEnabled(true)
 		
 m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zone)
@@ -30,6 +30,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		if (player:getCharVar("Mission3State") == 1) then
 			player:PrintToPlayer("Sadly still no word on the chapters I'm missing... my research is at a standstill for now...", 0, npc:getPacketName())
 			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 25, I would very much like to have them", 13)
+			player:setCharVar("Mission3FirstClear", 0)
 		elseif (player:getCharVar("Mission3State") == 2) and (os.time() > player:getCharVar("YotaTime")) then
 			player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts you provided", 0, npc:getPacketName())
 			player:PrintToPlayer("It seems the leader of the invasions, a man known as Teodor was not truly himself...", 13)
@@ -59,6 +60,11 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Oh! A note came that invited you to re-enter again...signed by Balamor...", 13)
 			player:PrintToPlayer("Please be careful if you do decide to do so.", 13)
 			player:setCharVar("Mission3State", 7)
+			if player:getCharVar("Mission3FirstClear") == 0 then
+				player:PrintToPlayer("Congratulations on completing chapter 3 of Abyssean Decent.", 29)
+				player:injectActionPacket(player:getID(), 6, 703, 0, 0, 0, 10, 1)
+				player:setCharVar("Mission3FirstClear", 1)
+			end
 		elseif (player:getCharVar("Mission3State") == 7) then
 			player:PrintToPlayer("I'll need a bottle of distilled water, a dark crystal, and a piece of rotten meat to make what you need.", 0, npc:getPacketName())
 		elseif (player:getCharVar("Mission3State") == 8) then
@@ -95,10 +101,15 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Hopefully this will lead us to answers, to lead us to saving our realm.", 13)
 			player:setCharVar("Mission3State", 2)
 			player:tradeComplete()
+		elseif player:getCharVar"Mission4State" == 4 and
+		  player:hasItem(9008)
+		then
+			player:PrintToPlayer("You already have this item!", 29)
 		elseif (player:getCharVar("Mission3State") == 4) and
 		  (trade:hasItemQty(4509, 1)) and
 		  (trade:hasItemQty(4103, 1)) and
-		  (trade:hasItemQty(16995, 1))
+		  (trade:hasItemQty(16995, 1)) and
+		  player:getFreeSlotsCount() > 0
 		then
 			player:PrintToPlayer("Excellent, just a moment...", 0, npc:getPacketName())
 			player:addItem(9008)
@@ -107,10 +118,15 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Take it to the center of the island, it should take you to the Vagarous realm of the Xol.", 13)
 			player:setCharVar("Mission3State", 5)
 			player:tradeComplete()
+		elseif player:getCharVar"Mission4State" == 7 and
+		  player:hasItem(9008)
+		then
+			player:PrintToPlayer("You already have this item!", 29)
 		elseif (player:getCharVar("Mission3State") == 7) and
 		  (trade:hasItemQty(4509, 1)) and
 		  (trade:hasItemQty(4103, 1)) and
-		  (trade:hasItemQty(16995, 1))
+		  (trade:hasItemQty(16995, 1)) and
+		  player:getFreeSlotsCount() > 0
 		then
 			player:PrintToPlayer("Excellent, just a moment...", 0, npc:getPacketName())
 			player:addItem(9008)
@@ -118,6 +134,8 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Here you go.", 0, npc:getPacketName())
 			player:PrintToPlayer("Take it to the center of the island, it should take you to the Vagarous realm of the Xol.", 13)
 			player:tradeComplete()
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		else
 			player:PrintToPlayer("Thank you for the offer, but I must pass.", 0, npc:getPacketName())
 		end
@@ -126,7 +144,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 })
 
-	utils.unused(ElTaz)	
+	utils.unused(Yota_Leheho)	
 	
 end)
 

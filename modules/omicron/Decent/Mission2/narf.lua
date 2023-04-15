@@ -35,6 +35,7 @@ local beginInvasion = function(player, npc)
 		player:changeMusic(2, 33)
 		player:changeMusic(3, 33)
 		player:changeMusic(4, 33)
+        local tier = math.random(1, 5)
 		if tier == 3 then
 			player:addItem(4074, 1)
 		elseif tier == 4 then

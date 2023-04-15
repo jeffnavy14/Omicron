@@ -230,7 +230,9 @@ local Norry = zone:insertDynamicEntity({
 		onTrade = function(player, npc, trade)
 			BigFight1 = player:getCharVar("Mission1CState")
 			if BigFight1 == 1 then
-				if (trade:hasItemQty(3980, 1)) then
+				if (trade:hasItemQty(3980, 1)) and
+					player:getFreeSlotsCount() > 0
+				then
 					player:tradeComplete();
 					player:PrintToPlayer("Thank you, with this I may be able to find something that could help us in the fight." ,0, npc:getPacketName())
 					player:PrintToPlayer("At the very least some other medicines may come from this who knows." , 13)
@@ -238,6 +240,8 @@ local Norry = zone:insertDynamicEntity({
 					player:addItem(13454, 1, 137, 4, 353, 1, 138, 4, 142, 9)
 					player:PrintToPlayer("You recieve 20 Infamy, and an augmented copper ring", 29)
 					player:setCharVar("Mission1CState", 2)
+				elseif player:getFreeSlotsCount() == 0 then
+					player:PrintToPlayer("You need more inventory space!", 29)
 				else
 					player:PrintToPlayer("Sorry that wasn't what I asked for." ,0, npc:getPacketName())
 				end

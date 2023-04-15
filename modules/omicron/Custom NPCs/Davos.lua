@@ -1,6 +1,6 @@
 -----------------------------------
--- NPC: Tim Allen
--- for mission 2-1 of Decent
+-- NPC: Davos
+-- GEO AF
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -28,7 +28,8 @@ local Davos = zone:insertDynamicEntity({
 
     onTrade = function(player, npc, trade)
 		if player:getCharVar("GeoAF") == 1 and
-			trade:hasItemQty(4042, 3)
+			trade:hasItemQty(4042, 3) and
+			player:getFreeSlotsCount() > 0
 		then
 			player:PrintToPlayer("Well done, here you are.", 0, npc:getPacketName())
 			player:PrintToPlayer("There we go, one pair of Geomancy Mitaines. Enjoy.", 13)
@@ -37,7 +38,8 @@ local Davos = zone:insertDynamicEntity({
 			player:setCharVar("GeoAF", 2)
 			player:tradeComplete()
 		elseif player:getCharVar("GeoAF") == 3 and
-			trade:hasItemQty(1294, 12)
+			trade:hasItemQty(1294, 12) and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:PrintToPlayer("Well done, here you are.", 0, npc:getPacketName())
 			player:PrintToPlayer("There we go, a pair of Geomancy Pants. Enjoy.", 13)
@@ -50,7 +52,8 @@ local Davos = zone:insertDynamicEntity({
 			trade:hasItemQty(850, 1) and
 			trade:hasItemQty(823, 1) and
 			trade:hasItemQty(4027, 1) and
-			player:getCurrency("infamy") >99
+			player:getCurrency("infamy") >99 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 100)
 			player:PrintToPlayer("Well done, here you are.", 0, npc:getPacketName())
@@ -64,7 +67,8 @@ local Davos = zone:insertDynamicEntity({
 			trade:hasItemQty(3927, 1) and
 			trade:hasItemQty(4027, 1) and
 			trade:hasItemQty(4030, 1) and
-			player:getCurrency("infamy") >124
+			player:getCurrency("infamy") >124 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 125)
 			player:PrintToPlayer("Well done, here you are.", 0, npc:getPacketName())
@@ -78,7 +82,8 @@ local Davos = zone:insertDynamicEntity({
 			trade:hasItemQty(4027, 1) and
 			trade:hasItemQty(4028, 1) and
 			trade:hasItemQty(829, 1) and
-			player:getCurrency("infamy") >149
+			player:getCurrency("infamy") >149 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 150)
 			player:PrintToPlayer("Well done, here you are.", 0, npc:getPacketName())
@@ -87,6 +92,8 @@ local Davos = zone:insertDynamicEntity({
 			player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27926)
 			player:tradeComplete()
 			player:setCharVar("GeoAF", 10)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	
