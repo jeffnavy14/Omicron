@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Blarney (MAR T5 Fight)
+-- Easter Turkey (APR T5 Fight)
 -----------------------------------
 local entity = {}
 
@@ -9,12 +9,12 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Blarney")
-	mob:setLocalVar("T5Phase", 0)
+	mob:renameEntity("Easter Turkey")
+	mob:setLocalVar("T5phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1300)
-	mob:setMod(xi.mod.ATT, 1050)
+	mob:setMod(xi.mod.ATT, 1000)
 	mob:setMod(xi.mod.MATT, 900)
 	mob:setMod(xi.mod.MACC, 1600)
 	mob:setMod(xi.mod.DOUBLE_ATTACK, 60)
@@ -65,24 +65,31 @@ entity.onMobEngaged = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 
-entity.onMobFight = function(mob)
+entity.onMobFight = function(mob, player, target)
 	local HPP = mob:getHPP()
-	local T5Stage = mob:getLocalVar("T5Stage")
-	if HPP < 90 and T5Stage == 0 then
-		mob:castSpell(668)
-		mob:setLocalVar("T5Stage", 1)
-	elseif HPP < 70 and T5Stage == 1 then
-		mob:castSpell(685)
-		mob:setLocalVar("T5Stage", 2)
-	elseif HPP < 50 and T5Stage == 2 then
-		mob:castSpell(780)
-		mob:setLocalVar("T5Stage", 3)
-	elseif HPP < 30 and T5Stage == 3 then
-		mob:castSpell(768)
-		mob:setLocalVar("T5Stage", 4)
-	elseif HPP < 10 and T5Stage == 4 then
-		mob:castSpell(771)
-		mob:setLocalVar("T5Stage", 5)
+	local T5phase = mob:getLocalVar("T5phase")
+	if HPP < 90 and T5phase == 0 then
+		player:PrintToPlayer("Easter Turkey: Gob-Gob Gobble!", 13)
+		SpawnMob(17068043):updateEnmity(target)
+		mob:setLocalVar("T5phase", 1)
+	elseif HPP < 70 and T5phase == 1 then
+		player:PrintToPlayer("Easter Turkey: Gob-Gobble-Gob!", 13)
+		SpawnMob(17068044):updateEnmity(target)
+		SpawnMob(17068045):updateEnmity(target)
+		mob:setLocalVar("T5phase", 2)
+	elseif HPP < 50 and T5phase == 2 then
+		player:PrintToPlayer("Easter Turkey: Gobble Gob-Gob!", 13)
+		SpawnMob(17068046):updateEnmity(target)
+		SpawnMob(17068047):updateEnmity(target)
+		SpawnMob(17068048):updateEnmity(target)
+		mob:setLocalVar("T5phase", 3)
+	elseif HPP < 30 and T5phase == 3 then
+		player:PrintToPlayer("Easter Turkey: They're going to EAT ME!!", 13)
+		SpawnMob(17068049):updateEnmity(target)
+		SpawnMob(17068050):updateEnmity(target)
+		SpawnMob(17068051):updateEnmity(target)
+		SpawnMob(17068052):updateEnmity(target)
+		mob:setLocalVar("T5phase", 4)
 	end
 end
 

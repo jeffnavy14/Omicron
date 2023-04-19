@@ -1,15 +1,11 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Lucky_Rabbit (Mar T1 Fight)
+-- Leafy (MAY T1 Fight)
 -----------------------------------
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 1800)
-end
-
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Lucky Rabbit")
+	mob:renameEntity("Leafy")
 	mob:setLocalVar("T1Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	mob:setMod(xi.mod.ACC, 1100)
@@ -18,14 +14,14 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.MACC, 1400)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 10)
 			
-	mob:setMod(xi.mod.FIRE_SDT, 1100)
-	mob:setMod(xi.mod.ICE_SDT, 900)
-	mob:setMod(xi.mod.WIND_SDT, 900)
-	mob:setMod(xi.mod.EARTH_SDT, 1000)
-	mob:setMod(xi.mod.THUNDER_SDT, 1000)
-	mob:setMod(xi.mod.WATER_SDT, 900)
-	mob:setMod(xi.mod.LIGHT_SDT, 1500)
-	mob:setMod(xi.mod.DARK_SDT, 50)
+	mob:setMod(xi.mod.FIRE_SDT, 1500)
+	mob:setMod(xi.mod.ICE_SDT, 1500)
+	mob:setMod(xi.mod.WIND_SDT, 1500)
+	mob:setMod(xi.mod.EARTH_SDT, 500)
+	mob:setMod(xi.mod.THUNDER_SDT, 1500)
+	mob:setMod(xi.mod.WATER_SDT, 500)
+	mob:setMod(xi.mod.LIGHT_SDT, 500)
+	mob:setMod(xi.mod.DARK_SDT, 1500)
 			
 	mob:setMod(xi.mod.FIRE_ABSORB, 0)
 	mob:setMod(xi.mod.ICE_ABSORB, 0)
@@ -33,10 +29,10 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.EARTH_ABSORB, 0)
 	mob:setMod(xi.mod.LTNG_ABSORB, 0)
 	mob:setMod(xi.mod.WATER_ABSORB, 0)
-	mob:setMod(xi.mod.LIGHT_ABSORB, 0)
+	mob:setMod(xi.mod.LIGHT_ABSORB, 100)
 	mob:setMod(xi.mod.DARK_ABSORB, 0)
 			
-	mob:setMod(xi.mod.STATUSRES, 50) -- NEED TO BE SET STILL
+	mob:setMod(xi.mod.STATUSRES, 50)
 	mob:setMod(xi.mod.SLEEPRES, 20)
 	mob:setMod(xi.mod.POISONRES, 0)
 	mob:setMod(xi.mod.PARALYZERES, 100)
@@ -55,30 +51,48 @@ entity.onMobSpawn = function(mob, player)
 	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
 	mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
 	mob:addStatusEffect(xi.effect.REFRESH, 50, 3, 0)
+	
+	mob:addListener("WEAPONSKILL_USE", "LEAFY_WEAPONSKILL_USE", function(mobArg, target, wsid, tp, action)
+		if GetMobByID(17068058):isSpawned() then -- Bloomer
+			GetMobByID(17068058):setTP(3000)
+		end
+		if GetMobByID(17068059):isSpawned() then -- Sprout
+			GetMobByID(17068059):setTP(3000)
+		end
+	end)
 end
 
-entity.onMobEngaged = function(mob, player)
+entity.onMobEngaged = function(mob, player, target)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
+	GetMobByID(17068058):updateEnmity(target)
+	GetMobByID(17068059):updateEnmity(target)
 end
 
-entity.onMobFight = function(mob)
+entity.onMobFight = function(mob, player, target)
 	local HPP = mob:getHPP()
 	local T1Phase = mob:getLocalVar("T1Phase")
-	if HPP < 80 and T1Phase == 0 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
+	mob:setUnkillable(true)
+	if HPP < 50 and T1Phase == 0 then
+		if not GetMobByID(17068058):isSpawned() then
+			SpawnMob(17068058):updateEnmity(target)
+		end
+		if not GetMobByID(17068059):isSpawned() then
+			SpawnMob(17068059):updateEnmity(target)
+		end
 		mob:setLocalVar("T1Phase", 1)
-	elseif HPP < 50 and T1Phase == 1 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
+	elseif HPP < 10 and T1Phase == 1 then
+		if not GetMobByID(17068058):isSpawned() then
+			SpawnMob(17068058):updateEnmity(target)
+		end
+		if not GetMobByID(17068059):isSpawned() then
+			SpawnMob(17068059):updateEnmity(target)
+		end
 		mob:setLocalVar("T1Phase", 2)
-	elseif HPP < 10 and T1Phase == 2 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:setLocalVar("T1Phase", 3)
+	end
+	if not GetMobByID(17068058):isSpawned() and
+	   not GetMobByID(17068059):isSpawned()
+    then
+		mob:setUnkillable(false)
 	end
 end
 
@@ -99,7 +113,12 @@ entity.onMobDeath = function(mob, player)
 end
 
 entity.onMobDespawn = function(mob)
-	SetServerVariable("[Arena]T1active", 0)
+	if
+		not GetMobByID(17068058):isSpawned() and
+		not GetMobByID(17068059):isSpawned()
+	then
+		SetServerVariable("[Arena]T1active", 0)
+	end
 end
 
 return entity

@@ -95,7 +95,9 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 	onTrigger = function(player, npc, status)
 
-		if player:getCharVar("NibState") == 8 then
+		if player:getCharVar("NibState") == 8 and
+		  player:getFreeSlotsCount() > 0
+		then
 			NibAug(player, itemid, npc)
 			player:setCharVar("NibState", 0)
 		elseif player:getCharVar("NibState") == 7 then
@@ -115,6 +117,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:PrintToPlayer("Now some of the others have spoken to me, and tell me you're looking into who was behind the old invasions, and causing other issues.", 13)
 			player:PrintToPlayer("Bring me a weapon from this island and I'll be able to make it helpful in your task.", 13)
 			player:setCharVar("NibState", 1)
+		elseif player:getFreeSlotsCount() == 0 and
+		  player:getCharVar("NibState") == 8
+		then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		else
 			player:PrintToPlayer("Looking for someone that's proven themselves to offer-aru my services to... thats not you at this time-aru", 0, npc:getPacketName())
        	end

@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Lucky_Tink (Mar T2 Fight)
+-- Furry Thief (APR T2 Fight)
 -----------------------------------
 local entity = {}
 
@@ -9,7 +9,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Lucky Tink")
+	mob:renameEntity("Furry Thief")
 	mob:setLocalVar("T2Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
@@ -67,14 +67,22 @@ end
 entity.onMobFight = function(mob)
 	local HPP = mob:getHPP()
 	local T2Phase = mob:getLocalVar("T2Phase")
-	if HPP < 75 and LT2hr == 0 then
-		mob:useMobAbility(692)
+	if HPP < 75 and T2Phase == 0 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(259)
+		mob:useMobAbility(257)
 		mob:setLocalVar("T2Phase", 1)
-	elseif HPP < 50 and LT2hr == 1 then
-		mob:useMobAbility(692)
+	elseif HPP < 50 and T2Phase == 1 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(323)
+		mob:useMobAbility(323)
 		mob:setLocalVar("T2Phase", 2)
-	elseif HPP < 25 and LT2hr == 2 then
-		mob:useMobAbility(692)
+	elseif HPP < 25 and T2Phase == 2 then
+		mob:castSpell(339, mob)
+		mob:useMobAbility(258)
+		mob:useMobAbility(257)
+		mob:useMobAbility(323)
+		mob:useMobAbility(259)
 		mob:setLocalVar("T2Phase", 3)
 	end
 end

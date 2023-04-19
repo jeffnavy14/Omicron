@@ -90,7 +90,7 @@ local prizes =
         ["price"] = 300,
         ["items"] =
         {
-            -- 10187, -- Cipher: Shantotto II
+            10187, -- Cipher: Shantotto II
             10069, -- ♪Goobbue
             10051, -- ♪Crab
             10058, -- ♪Beetle

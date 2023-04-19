@@ -30,6 +30,7 @@ xi.weaponskill =
     VICTORY_SMITE       = 14,
     SHIJIN_SPIRAL       = 15,
     FINAL_PARADISE      = 228,
+	THUMB_OF_GOD        = 241, -- this is a joke
 
     -----------------------------------
     -- DAGGER
@@ -221,6 +222,7 @@ xi.weaponskill =
     FLASH_NOVA          = 172,
     DAGAN               = 173,
     REALMRAZER          = 174,
+	EXUDATION           = 175,
 
     -----------------------------------
     -- STAFF
@@ -332,4 +334,6 @@ xi.ws_unlock =
     JISHNUS_RADIANCE    = 47,
     WILDFIRE            = 48,
     DIMIDIATION         = 49,
+	EXUDATION           = 50,
+	THUMB_OF_GOD        = 51,
 }

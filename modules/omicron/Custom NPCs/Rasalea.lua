@@ -30,7 +30,8 @@ local Rasalea = zone:insertDynamicEntity({
     onTrade = function(player, npc, trade)
 		if player:getCharVar("RunAF") == 1 and
 			trade:hasItemQty(3520, 3) and
-			trade:hasItemQty(830, 1)
+			trade:hasItemQty(830, 1) and
+			player:getFreeSlotsCount() > 0
 		then
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
 			player:PrintToPlayer("...", 13)
@@ -45,7 +46,8 @@ local Rasalea = zone:insertDynamicEntity({
 			trade:hasItemQty(3522, 1) and
 			trade:hasItemQty(3523, 1) and
 			trade:hasItemQty(3524, 1) and
-			trade:hasItemQty(3525, 1)
+			trade:hasItemQty(3525, 1) and
+			player:getFreeSlotsCount() > 0
 		then 
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
 			player:PrintToPlayer("...", 13)
@@ -59,7 +61,8 @@ local Rasalea = zone:insertDynamicEntity({
 			trade:hasItemQty(4029, 1) and
 			trade:hasItemQty(1618, 1) and
 			trade:hasItemQty(855, 1) and
-			player:getCurrency("infamy") >99
+			player:getCurrency("infamy") >99 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 100)
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
@@ -74,7 +77,8 @@ local Rasalea = zone:insertDynamicEntity({
 			trade:hasItemQty(4029, 1) and
 			trade:hasItemQty(3923, 1) and
 			trade:hasItemQty(823, 1) and
-			player:getCurrency("infamy") >99
+			player:getCurrency("infamy") >99 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 100)
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
@@ -88,7 +92,8 @@ local Rasalea = zone:insertDynamicEntity({
 			trade:hasItemQty(4046, 1) and
 			trade:hasItemQty(3923, 2) and
 			trade:hasItemQty(1813, 1) and
-			player:getCurrency("infamy") >124
+			player:getCurrency("infamy") >124 and
+			player:getFreeSlotsCount() > 0
 		then
 			player:delCurrency("infamy", 125)
 			player:PrintToPlayer("Excellent, and in return... one moment.", 0, npc:getPacketName())
@@ -98,6 +103,8 @@ local Rasalea = zone:insertDynamicEntity({
 			player:messageSpecial(zones[player:getZone():getID()].text.ITEM_OBTAINED, 27787)
 			player:tradeComplete()
 			player:setCharVar("RunAF", 10)
+		elseif player:getFreeSlotsCount() == 0 then
+			player:PrintToPlayer("You need more inventory space!", 29)
 		end
 	end,
 	
@@ -114,10 +121,10 @@ local Rasalea = zone:insertDynamicEntity({
 		elseif 	player:getCharVar("RunAF") == 2 then
 			player:PrintToPlayer("Oh your wanting more of that gear I see, well alright then...", 0, npc:getPacketName())
 			player:PrintToPlayer("Now for some fancy pants to go with that fancy coat.", 13)
-			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone, each with power of a Celestial Avatar.", 13)
+			player:PrintToPlayer("Since we need high elemental mataerials I need an imbued stone with power of each Celestial Avatar.", 13)
 			player:setCharVar("RunAF", 3)
 		elseif 	player:getCharVar("RunAF") == 3 then
-			player:PrintToPlayer("Please bring me an imbued stone each with power of a Celestial Avatar.", 0, npc:getPacketName())
+			player:PrintToPlayer("Please bring me materials imbued with power of each Celestial Avatar.", 0, npc:getPacketName())
 		elseif 	player:getCharVar("RunAF") == 4 then
 			player:PrintToPlayer("For your next piece, we shall need a few things. These will be used for your boots.",0,npc:getPacketName())
 			player:PrintToPlayer("I'll need a spool of redoubtable silk thread, some runeweave, an uragnite shell...",13)

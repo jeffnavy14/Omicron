@@ -1,15 +1,11 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Lucky_Rabbit (Mar T1 Fight)
+-- Annoyed Avian (APR T1 Fight)
 -----------------------------------
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 1800)
-end
-
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Lucky Rabbit")
+	mob:renameEntity("Annoyed Avian")
 	mob:setLocalVar("T1Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	mob:setMod(xi.mod.ACC, 1100)
@@ -61,24 +57,45 @@ entity.onMobEngaged = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 
-entity.onMobFight = function(mob)
+entity.onMobFight = function(mob, player, target)
 	local HPP = mob:getHPP()
 	local T1Phase = mob:getLocalVar("T1Phase")
-	if HPP < 80 and T1Phase == 0 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
+	if HPP < 90 and T1Phase == 0 then
+		player:PrintToPlayer("Annoyed Avian: Squwak?.", 13)
+		mob:addHP(3000)
 		mob:setLocalVar("T1Phase", 1)
-	elseif HPP < 50 and T1Phase == 1 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
+	elseif HPP < 80 and T1Phase == 1 then
+		player:PrintToPlayer("Annoyed Avian: Squwaaak?.", 13)
+		mob:addHP(6000)
 		mob:setLocalVar("T1Phase", 2)
-	elseif HPP < 10 and T1Phase == 2 then
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
-		mob:useMobAbility(323)
+	elseif HPP < 70 and T1Phase == 2 then
+		player:PrintToPlayer("Annoyed Avian: Squwaaaaaaaaaaaaaaaaak!!!.", 13)
+		mob:addHP(9000)
 		mob:setLocalVar("T1Phase", 3)
+	elseif HPP < 60 and T1Phase == 3 then
+		player:PrintToPlayer("Annoyed Avian: Chirp, chirp, squwaak!.", 13)
+		mob:addHP(12000)
+		mob:setLocalVar("T1Phase", 4)
+	elseif HPP < 50 and T1Phase == 4 then
+		player:PrintToPlayer("Annoyed Avian: chirp....", 13)
+		mob:addHP(15000)
+		mob:setLocalVar("T1Phase", 5)
+	elseif HPP < 40 and T1Phase == 5 then
+		player:PrintToPlayer("Annoyed Avian: B'CAW!!!.", 13)
+		mob:addHP(18000)
+		mob:setLocalVar("T1Phase", 6)
+	elseif HPP < 30 and T1Phase == 6 then
+		player:PrintToPlayer("Annoyed Avian: Bra~caw-caw-caw.", 13)
+		mob:addHP(21000)
+		mob:setLocalVar("T1Phase", 7)
+	elseif HPP < 20 and T1Phase == 7 then
+		player:PrintToPlayer("Annoyed Avian: CHIRP!.", 13)
+		mob:addHP(24000)
+		mob:setLocalVar("T1Phase", 8)
+	elseif HPP < 10 and T1Phase == 8 then
+		player:PrintToPlayer("Annoyed Avian: chirp?.", 13)
+		mob:addHP(27000)
+		mob:setLocalVar("T1Phase", 9)
 	end
 end
 

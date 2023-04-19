@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: the_colloseum (zone 71)
--- Leprechan (Mar T3 Fight)
+-- Queen_Bee (MAY T3 Fight) adds have no need for scripting
 -----------------------------------
 local entity = {}
 
@@ -9,8 +9,8 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Leprechan?")
-	mob:setLocalVar("T3Phase", 0)
+	mob:renameEntity("Queen Bee")
+	mob:setLocalVar("T3phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
 	mob:setMod(xi.mod.ACC, 1250)
@@ -19,14 +19,14 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.MACC, 1550)
 	mob:setMod(xi.mod.TRIPLE_ATTACK, 10) -- NEED ADJUSTMENT
 
-	mob:setMod(xi.mod.FIRE_SDT, 1000)
+	mob:setMod(xi.mod.FIRE_SDT, 700)
 	mob:setMod(xi.mod.ICE_SDT, 700)
-	mob:setMod(xi.mod.WIND_SDT, 900)
-	mob:setMod(xi.mod.EARTH_SDT, 1000)
-	mob:setMod(xi.mod.THUNDER_SDT, 1000)
-	mob:setMod(xi.mod.WATER_SDT, 900)
-	mob:setMod(xi.mod.LIGHT_SDT, 50)
-	mob:setMod(xi.mod.DARK_SDT, 1250)
+	mob:setMod(xi.mod.WIND_SDT, 150)
+	mob:setMod(xi.mod.EARTH_SDT, 150)
+	mob:setMod(xi.mod.THUNDER_SDT, 500)
+	mob:setMod(xi.mod.WATER_SDT, 500)
+	mob:setMod(xi.mod.LIGHT_SDT, 300)
+	mob:setMod(xi.mod.DARK_SDT, 500)
 
 	mob:setMod(xi.mod.FIRE_ABSORB, 0) -- MAY NEED ADJUSTMENT
 	mob:setMod(xi.mod.ICE_ABSORB, 0)
@@ -34,7 +34,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.EARTH_ABSORB, 0)
 	mob:setMod(xi.mod.LTNG_ABSORB, 0)
 	mob:setMod(xi.mod.WATER_ABSORB, 0)
-	mob:setMod(xi.mod.LIGHT_ABSORB, 100)
+	mob:setMod(xi.mod.LIGHT_ABSORB, 0)
 	mob:setMod(xi.mod.DARK_ABSORB, 0)
 		
 	mob:setMod(xi.mod.STATUSRES, 50) -- NEED TO BE SET STILL
@@ -64,38 +64,50 @@ entity.onMobEngaged = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 
-entity.onMobFight = function(mob)
+entity.onMobFight = function(mob, player)
 	local HPP = mob:getHPP()
-	local T3Phase = mob:getLocalVar("T3Phase")
-	if HPP < 80 and T3Phase == 0 then
-		player:PrintToPlayer("Leprechan?: They be my charms, not yers lads!...", 13)
-		player:PrintToPlayer("Ye be lads right?", 13)
-		mob:castSpell(626)
+	local T3Phase = mob:getLocalVar("T3phase")
+	local TPP = mob:getTP()
+	if TPP == 3000 then
+		local UseSet = math.random(1, 6)
+		if UseSet == 1 then
+			mob:useMobAbility(3002) -- Mandibular Lashing
+		elseif UseSet == 2 then
+			mob:useMobAbility(3003) -- Vespine Hurricane
+		elseif UseSet == 3 then
+			mob:useMobAbility(3004) -- Stinger Volley
+		elseif UseSet == 4 then
+			mob:useMobAbility(3005) -- Droning Whirlwind
+		elseif UseSet == 5 then
+			mob:useMobAbility(3006) -- Incisive Denouement
+		elseif UseSet == 6 then
+			mob:useMobAbility(3007) -- Incisive Apotheosis
+		end
+	end
+	if HPP < 70 and T3Phase == 0 then
+		if not GetMobByID(17068060):isSpawned() then
+			SpawnMob(17068060):updateEnmity(target)
+		end
+		if not GetMobByID(17068061):isSpawned() then
+			SpawnMob(17068061):updateEnmity(target)
+		end
 		mob:setLocalVar("T3Phase", 1)
-	elseif HPP < 60 and T3Phase == 1 then
-		mob:castSpell(626)
-		mob:castSpell(693)
+	elseif HPP < 40 and T3Phase == 1 then
+		if not GetMobByID(17068060):isSpawned() then
+			SpawnMob(17068060):updateEnmity(target)
+		end
+		if not GetMobByID(17068061):isSpawned() then
+			SpawnMob(17068061):updateEnmity(target)
+		end
 		mob:setLocalVar("T3Phase", 2)
-	elseif HPP < 40 and T3Phase == 2 then
-		player:PrintToPlayer("Leprechan?: Argh ye be a stubborn lot!", 13)
-		mob:castSpell(626)
-		mob:castSpell(693)
-		mob:castSpell(277)
-		mob:setLocalVar("T3Phase", 3)
-	elseif HPP < 20 and T3Phase == 3 then
-		mob:castSpell(626)
-		mob:castSpell(693)
-		mob:castSpell(277)
-		mob:castSpell(310)
-		mob:setLocalVar("T3Phase", 4)
-	elseif HPP < 10 and T3Phase == 4 then
-		player:PrintToPlayer("Leprechan?: Ye kin there be no charms right?", 13)
-		mob:castSpell(626)
-		mob:castSpell(693)
-		mob:castSpell(277)
-		mob:castSpell(310)
-		mob:castSpell(478)
-		mob:setLocalVar("T3Phase", 5)
+	elseif HPP < 10 and T3Phase == 2 then
+		if not GetMobByID(17068060):isSpawned() then
+			SpawnMob(17068060):updateEnmity(target)
+		end
+		if not GetMobByID(17068061):isSpawned() then
+			SpawnMob(17068061):updateEnmity(target)
+		end
+		mob:setLocalVar("T3Phase", 1)
 	end
 end
 

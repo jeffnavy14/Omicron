@@ -296,7 +296,7 @@ m:addOverride("xi.zones.Escha_RuAun.Zone.onZoneTick", function(zone, mob)
 	        
         local mob = zone:insertDynamicEntity({
                 objtype = xi.objType.MOB,
-                name = "Eschan Kirin",
+                name = "Karen",
                 x = -1.582,
                 y = -54.039,
                 z = -597.508,
