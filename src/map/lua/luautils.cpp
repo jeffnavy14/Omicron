@@ -192,6 +192,7 @@ namespace luautils
         lua.set_function("IsMoonNew", &luautils::IsMoonNew);
         lua.set_function("IsMoonFull", &luautils::IsMoonFull);
         lua.set_function("RunElevator", &luautils::StartElevator);
+        lua.set_function("GetElevatorState", &luautils::GetElevatorState);
         lua.set_function("GetServerVariable", &luautils::GetServerVariable);
         lua.set_function("SetServerVariable", &luautils::SetServerVariable);
         lua.set_function("GetVolatileServerVariable", &luautils::GetVolatileServerVariable);
@@ -302,7 +303,7 @@ namespace luautils
 
         moduleutils::LoadLuaModules();
 
-        filewatcher = std::make_unique<Filewatcher>(std::vector<std::string>{ "scripts", "modules" });
+        filewatcher = std::make_unique<Filewatcher>(std::vector<std::string>{ "scripts", "modules", "settings" });
 
         TracyReportLuaMemory(lua.lua_state());
 
@@ -566,6 +567,24 @@ namespace luautils
             }
 
             ShowInfo("[FileWatcher] RE-RUNNING MODULE FILE %s", filename);
+            return;
+        }
+
+        // Handle Lua settings files, then return
+        if (!parts.empty() && parts[0] == "settings")
+        {
+            auto result = lua.safe_script_file(filename);
+            if (!result.valid())
+            {
+                sol::error err = result;
+                ShowError("luautils::CacheLuaObjectFromFile: Load settings error: %s: %s", filename, err.what());
+                return;
+            }
+
+            ShowInfo("[FileWatcher] RELOADING ALL LUA SETTINGS FILES");
+
+            settings::init();
+
             return;
         }
 
@@ -1012,7 +1031,7 @@ namespace luautils
         return std::optional<CLuaBaseEntity>(PMob);
     }
 
-    std::optional<CLuaBaseEntity> GetEntityByID(uint32 entityid, sol::object const& instanceObj)
+    std::optional<CLuaBaseEntity> GetEntityByID(uint32 entityid, sol::object const& instanceObj, sol::object const& arg3)
     {
         TracyZoneScoped;
 
@@ -1021,6 +1040,8 @@ namespace luautils
         {
             PInstance = instanceObj.as<CLuaInstance>().GetInstance();
         }
+
+        bool silenceWarning = arg3.get_type() == sol::type::boolean ? arg3.as<bool>() : false;
 
         CBaseEntity* PEntity{ nullptr };
 
@@ -1035,7 +1056,10 @@ namespace luautils
 
         if (!PEntity)
         {
-            ShowWarning("luautils::GetEntityByID Mob doesn't exist (%d)", entityid);
+            if (!silenceWarning)
+            {
+                ShowWarning("luautils::GetEntityByID Mob doesn't exist (%d)", entityid);
+            }
             return std::nullopt;
         }
 
@@ -2246,9 +2270,9 @@ namespace luautils
             return -1;
         }
 
-        Action->additionalEffect = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
-        Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
-        Action->addEffectParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
+        Action->spikesEffect  = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
+        Action->spikesMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
+        Action->spikesParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
 
         return 0;
     }
@@ -4423,6 +4447,20 @@ namespace luautils
     {
         TracyZoneScoped;
         CTransportHandler::getInstance()->startElevator(ElevatorID);
+    }
+
+    // Returns -1 if elevator is not found. Otherwise, returns the uint8 state.
+    int16 GetElevatorState(uint8 id) // Returns -1 if elevator is not found. Otherwise, returns the uint8 state.
+    {
+        TracyZoneScoped;
+        Elevator_t* elevator = CTransportHandler::getInstance()->getElevator(id);
+
+        if (elevator)
+        {
+            return elevator->state;
+        }
+
+        return -1;
     }
 
     int32 GetServerVariable(std::string const& name)
