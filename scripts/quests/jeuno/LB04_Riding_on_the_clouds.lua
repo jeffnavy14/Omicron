@@ -138,6 +138,7 @@ quest.sections =
                         player:delKeyItem(xi.ki.SPIRITED_STONE)
                         player:setLevelCap(70)
                         player:messageSpecial(ruludeID.text.YOUR_LEVEL_LIMIT_IS_NOW_70)
+						player:addKeyItem(xi.ki.RHAPSODY_IN_CRIMSON)
                     end
                 end,
             },

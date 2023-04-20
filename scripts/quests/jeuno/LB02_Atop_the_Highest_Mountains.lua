@@ -91,8 +91,9 @@ quest.sections =
                         player:delKeyItem(xi.ki.ROUND_FRIGICITE)
                         player:delKeyItem(xi.ki.SQUARE_FRIGICITE)
                         player:delKeyItem(xi.ki.TRIANGULAR_FRIGICITE)
-                        player:setLevelCap(60)
+						player:setLevelCap(60)
                         player:messageSpecial(ruludeID.text.YOUR_LEVEL_LIMIT_IS_NOW_60)
+						player:addKeyItem(xi.ki.RHAPSODY_IN_WHITE)
                     end
                 end,
             },

@@ -39,18 +39,18 @@ local prizes =
         ["price"] = 100,
         ["items"] =
         {
-            8734,  -- Mog Kupon I-S1
-            8966,  -- Eudaemon Blade
-            8967,  -- Eudaemon Cape
-            8968,  -- Eudaemon Ring
-            8969,  -- Eudaemon Sash
-            8970,  -- Eudaemon Shield
-            17006, -- Drill Calamary
-            17007, -- Dwarf Pugil
-            6413,  -- Astral Cube
+            -- 8734,  -- Mog Kupon I-S1
+            -- 8966,  -- Eudaemon Blade
+            -- 8967,  -- Eudaemon Cape
+            -- 8968,  -- Eudaemon Ring
+            -- 8969,  -- Eudaemon Sash
+            -- 8970,  -- Eudaemon Shield
+            -- 17006, -- Drill Calamary
+            -- 17007, -- Dwarf Pugil
+            -- 6413,  -- Astral Cube
             -- 9891,  -- Zinnia Orb
-            -- 10112, -- Cipher: Zeid
-            -- 10113, -- Cipher: Lion
+            10112, -- Cipher: Zeid
+            10113, -- Cipher: Lion
             10118, -- Cipher: Naja
             10120, -- Cipher: Lehko
             -- 10124, -- Cipher: Luzaf
@@ -97,8 +97,8 @@ local prizes =
             -- TODO: The other mounts
             10384, -- Cumulus Masque
             20666, -- Blizzard Brand
-            -- 25658, -- Wyrm. Masque +1
-            -- 25757, -- Wyrmking Suit +1
+            25658, -- Wyrm. Masque +1
+            25757, -- Wyrmking Suit +1
             -- 5854,  -- Frayed Pouch (B)
             -- 5855,  -- Frayed Pouch (A)
             -- 5856,  -- Frayed Pouch (G)
