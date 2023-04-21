@@ -99,7 +99,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			if trade:hasItemQty(9084, 5) then -- Eschalixer (10rp per)
 				player:setCharVar("InvReward", 9085) -- Eschalixer +1 (50rp per)
 				player:setLocalVar("InvTier", 0)
-			elseif trade:hasItemQty(9085, 40) then -- Eschalixer +1 (50dp per)
+			elseif trade:hasItemQty(9085, 3) then -- Eschalixer +1 (50rp per, amount needed reduced to reduce time sink)
 				player:setCharVar("InvReward", 9086) -- Eschalixer +2 (2000rp per)
 				player:setLocalVar("InvTier", 1)
 			end
