@@ -1,5 +1,5 @@
 -----------------------------------
--- Gatekeeper, teleporter and random filler NPCs
+-- 3 NPCs for mission set 1
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -239,6 +239,8 @@ local Norry = zone:insertDynamicEntity({
 					player:addCurrency('infamy', 20)
 					player:addItem(13454, 1, 137, 4, 353, 1, 138, 4, 142, 9)
 					player:PrintToPlayer("You recieve 20 Infamy, and an augmented copper ring", 29)
+					player:PrintToPlayer("Congratulations on completing the first chapter of Abyssean Decent.", 29)
+					player:injectActionPacket(player:getID(), 6, 701, 0, 0, 0, 10, 1)
 					player:setCharVar("Mission1CState", 2)
 				elseif player:getFreeSlotsCount() == 0 then
 					player:PrintToPlayer("You need more inventory space!", 29)
@@ -251,8 +253,7 @@ local Norry = zone:insertDynamicEntity({
 					player:PrintToPlayer("You... killed... more?." ,0, npc:getPacketName())
 					player:PrintToPlayer("All I have at this time is some more Infamy to give, along with my thanks." , 13)
 					player:addCurrency('infamy', 10)
-					player:PrintToPlayer("You recieve 10 Infamy, and completed the first chapter of Abyssean Decent.", 29)
-					player:injectActionPacket(player:getID(), 6, 701, 0, 0, 0, 10, 1)
+					player:PrintToPlayer("You recieve 10 Infamy.", 29)
 				else
 					player:PrintToPlayer("Sorry I'm not in need of anything at this time" ,0, npc:getPacketName())
 				end
