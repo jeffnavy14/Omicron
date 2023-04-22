@@ -35,7 +35,7 @@
 # Will load only custom/cpp/custom_module.cpp and custom/lua/claim_shield.lua.
 #
 # Live example:
-
+/omicron
 custom/commands/
 custom/lua/test_npcs_in_gm_home.lua
 #-----------------------
