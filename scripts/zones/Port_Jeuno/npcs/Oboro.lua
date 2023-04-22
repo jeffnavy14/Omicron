@@ -1225,14 +1225,14 @@ entity.onTrigger = function(player, npc)
     ((job == 14) and (player:getCharVar("DRGAFweapon") == 3)) or
     ((job == 15) and (player:getCharVar("SAMAFweapon") == 3)) then
       player:PrintToPlayer("Oboro : I can't do anything else at the moment but you have two choices...Either talk", 0xD)
-      player:PrintToPlayer("Oboro : to that Goblin over there or go to my friend Chasalvige in Nothern San d'Oria.", 0xD)
+      player:PrintToPlayer("Oboro : to that Goblin over there or go to my friend Sadblyx in Nothern San d'Oria.", 0xD)
 
     elseif ((job == 16) and (player:getCharVar("BLUAFweapon") == 3)) or
       ((job == 17) and (player:getCharVar("CORAFweapon") == 3)) or
       ((job == 18) and (player:getCharVar("PUPAFweapon") == 3)) or
       ((job == 19) and (player:getCharVar("SCHAFweapon") == 3)) or
       ((job == 20) and (player:getCharVar("PUPAFweapon") == 3)) then
-        player:PrintToPlayer("Oboro : You might want to go talk to my friend Chasalvige in Northern San d'Oria.  He might", 0xD)
+        player:PrintToPlayer("Oboro : You might want to go talk to my friend Sadblyx in Northern San d'Oria.  He might", 0xD)
         player:PrintToPlayer("Oboro : be able to do something else with that weapon.", 0xD)
       elseif ((job == 18) and (level >=47)) and (player:hasItem(18353) == false) then
         player:PrintToPlayer("Oboro : You are becoming a strong Puppetmaster.  I've made these new weapons, try them out.", 0xD)
