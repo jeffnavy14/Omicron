@@ -4,7 +4,7 @@
 require("modules/module_utils")
 require("scripts/zones/Northern_San_dOria/Zone")
 -----------------------------------
-local m = Module:new("Northern_San_dOria")
+local m = Module:new("Sadblyx")
 
 m:addOverride("xi.zones.Northern_San_dOria.Zone.onInitialize", function(zone)
 
