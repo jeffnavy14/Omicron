@@ -19,8 +19,8 @@ local Billy = zone:insertDynamicEntity({
 
     objtype = xi.objType.NPC,
     name = "Billy",
-    look = 2713,
-    x = 611,
+    look = 1975,
+    x = 601,
     y = 0,
     z = 53,
 	rotation = 63.75,

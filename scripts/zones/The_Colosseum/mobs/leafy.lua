@@ -73,6 +73,7 @@ entity.onMobFight = function(mob, player, target)
 	local T1Phase = mob:getLocalVar("T1Phase")
 	mob:setUnkillable(true)
 	if HPP < 50 and T1Phase == 0 then
+		mob:setModelId(3632) -- watermelon Mandragora
 		if not GetMobByID(17068058):isSpawned() then
 			SpawnMob(17068058):updateEnmity(target)
 		end
