@@ -308,9 +308,9 @@ int16 CBattleEntity::GetWeaponDelay(bool tp)
     return WeaponDelay;
 }
 
-uint8 CBattleEntity::GetMeleeRange() const
+float CBattleEntity::GetMeleeRange() const
 {
-    return m_ModelRadius + 3;
+    return m_ModelRadius + 3.0f;
 }
 
 int16 CBattleEntity::GetRangedWeaponDelay(bool tp)
@@ -585,6 +585,15 @@ int32 CBattleEntity::takeDamage(int32 amount, CBattleEntity* attacker /* = nullp
 
         // Took dmg from non ws source, so remove ws kill var
         this->SetLocalVar("weaponskillHit", 0);
+    }
+
+    if (getMod(Mod::ABSORB_DMG_TO_MP) > 0)
+    {
+        int16 absorbedMP = (int16)(amount * getMod(Mod::ABSORB_DMG_TO_MP) / 100);
+        if (absorbedMP > 0)
+        {
+            addMP(absorbedMP);
+        }
     }
 
     return addHP(-amount);
@@ -1741,21 +1750,22 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         else if ((xirand::GetRandomNumber(100) < attack.GetHitRate() || attackRound.GetSATAOccured()) &&
                  !PTarget->StatusEffectContainer->HasStatusEffect(EFFECT_ALL_MISS))
         {
-            // attack hit, try to be absorbed by shadow unless it is a SATA attack round
-            if (!(attackRound.GetSATAOccured()) && battleutils::IsAbsorbByShadow(PTarget))
-            {
-                actionTarget.messageID = MSGBASIC_SHADOW_ABSORB;
-                actionTarget.param     = 1;
-                actionTarget.reaction  = REACTION::EVADE;
-                attack.SetEvaded(true);
-            }
-            else if (attack.IsParried())
+            // Check parry.
+            if (attack.IsParried())
             {
                 actionTarget.messageID  = 70;
                 actionTarget.reaction   = REACTION::PARRY | REACTION::HIT;
                 actionTarget.speceffect = SPECEFFECT::NONE;
                 battleutils::HandleTacticalParry(PTarget);
                 battleutils::HandleIssekiganEnmityBonus(PTarget, this);
+            }
+            // Try to be absorbed by shadow unless it is a SATA attack round.
+            else if (!(attackRound.GetSATAOccured()) && battleutils::IsAbsorbByShadow(PTarget))
+            {
+                actionTarget.messageID = MSGBASIC_SHADOW_ABSORB;
+                actionTarget.param     = 1;
+                actionTarget.reaction  = REACTION::EVADE;
+                attack.SetEvaded(true);
             }
             else if (attack.CheckAnticipated() || attack.CheckCounter())
             {

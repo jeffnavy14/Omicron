@@ -93,7 +93,7 @@ std::vector<ahItem*> CDataLoader::GetAHItemsToCategory(uint8 AHCategoryID, int8*
                            "LEFT JOIN auction_house ON item_basic.itemId = auction_house.itemid AND auction_house.buyer_name IS NULL "
                            "LEFT JOIN item_equipment ON item_basic.itemid = item_equipment.itemid "
                            "LEFT JOIN item_weapon ON item_basic.itemid = item_weapon.itemid "
-                           "WHERE aH = %u "
+                           "WHERE aH = %u AND auction_house.itemid IS NOT NULL "
                            "GROUP BY item_basic.itemid "
                            "%s";
 
@@ -109,6 +109,7 @@ std::vector<ahItem*> CDataLoader::GetAHItemsToCategory(uint8 AHCategoryID, int8*
 
             PAHItem->SingleAmount = sql->GetIntData(2);
             PAHItem->StackAmount  = sql->GetIntData(3);
+            PAHItem->Category     = AHCategoryID;
 
             if (sql->GetIntData(1) == 1)
             {
@@ -118,7 +119,86 @@ std::vector<ahItem*> CDataLoader::GetAHItemsToCategory(uint8 AHCategoryID, int8*
             ItemList.push_back(PAHItem);
         }
     }
+
+    if (settings::get<bool>("search.OMIT_NO_HISTORY"))
+    {
+        const char* noQtyQuery = "SELECT item_basic.itemid, item_basic.stackSize "
+                                 "FROM item_basic "
+                                 "LEFT JOIN auction_house ON item_basic.itemId = auction_house.itemid "
+                                 "LEFT JOIN item_equipment ON item_basic.itemid = item_equipment.itemid "
+                                 "LEFT JOIN item_weapon ON item_basic.itemid = item_weapon.itemid "
+                                 "WHERE aH = %u AND auction_house.itemid IS NOT NULL "
+                                 "GROUP BY item_basic.itemid "
+                                 "%s";
+
+        int32 noQtyRet = sql->Query(noQtyQuery, AHCategoryID, OrderByString);
+        if (noQtyRet != SQL_ERROR && sql->NumRows() != 0)
+        {
+            while (sql->NextRow() == SQL_SUCCESS)
+            {
+                uint16 CurrItemID = sql->GetUIntData(0);
+                bool   itemFound  = false;
+                for (ahItem* PAHItem : ItemList)
+                {
+                    if (PAHItem->ItemID == CurrItemID)
+                    {
+                        itemFound = true;
+                        break;
+                    }
+                }
+
+                if (!itemFound)
+                {
+                    ahItem* PAHItem       = new ahItem;
+                    PAHItem->ItemID       = CurrItemID;
+                    PAHItem->SingleAmount = 0;
+                    PAHItem->StackAmount  = 0;
+                    if (sql->GetIntData(1) == 1)
+                    {
+                        PAHItem->StackAmount = -1;
+                    }
+                    ItemList.push_back(PAHItem);
+                }
+            }
+        }
+    }
+
     return ItemList;
+}
+
+// Return single item including category and how many are listed
+ahItem CDataLoader::GetAHItemFromItemID(uint16 ItemID)
+{
+    const char* fmtQuery = "SELECT aH, COUNT(*)-SUM(stack), SUM(stack) "
+                           "FROM item_basic "
+                           "LEFT JOIN auction_house ON item_basic.itemId = auction_house.itemid AND auction_house.buyer_name IS NULL "
+                           "LEFT JOIN item_equipment ON item_basic.itemid = item_equipment.itemid "
+                           "LEFT JOIN item_weapon ON item_basic.itemid = item_weapon.itemid "
+                           "WHERE item_basic.itemid = %u";
+
+    int32 ret = sql->Query(fmtQuery, ItemID);
+
+    ahItem CAHItem       = {};
+    CAHItem.ItemID       = ItemID;
+    CAHItem.Category     = 0;
+    CAHItem.SingleAmount = 0;
+    CAHItem.StackAmount  = 0;
+
+    if (ret != SQL_ERROR && sql->NumRows() != 0)
+    {
+        while (sql->NextRow() == SQL_SUCCESS)
+        {
+            CAHItem.Category     = sql->GetIntData(0);
+            CAHItem.SingleAmount = sql->GetIntData(1);
+            CAHItem.StackAmount  = sql->GetIntData(2);
+
+            if (sql->GetIntData(1) == 1)
+            {
+                CAHItem.StackAmount = 0;
+            }
+        }
+    }
+    return CAHItem;
 }
 
 /************************************************************************

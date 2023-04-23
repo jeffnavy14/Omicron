@@ -2152,9 +2152,10 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
 
 void CLuaBaseEntity::openSendBox()
 {
-    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
-    charutils::OpenSendBox(static_cast<CCharEntity*>(m_PBaseEntity));
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        charutils::OpenSendBox(PChar, 0x0D, 2);
+    }
 }
 
 /************************************************************************
@@ -2474,7 +2475,18 @@ void CLuaBaseEntity::updateToEntireZone(uint8 statusID, uint8 animation, sol::ob
         PNpc->name[8]                  = 8;
     }
 
-    PNpc->loc.zone->UpdateEntityPacket(PNpc, ENTITY_UPDATE, UPDATE_COMBAT);
+    PNpc->loc.zone->UpdateEntityPacket(PNpc, ENTITY_UPDATE, UPDATE_COMBAT, true);
+}
+
+// Sends an arbitrary entity update to a specific player only
+void CLuaBaseEntity::sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, uint8 entityUpdate, uint8 updateMask)
+{
+    if (m_PBaseEntity->objtype == TYPE_PC && entityToUpdate->GetBaseEntity())
+    {
+        CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+        PChar->updateEntityPacket(entityToUpdate->GetBaseEntity(), static_cast<ENTITYUPDATE>(entityUpdate), updateMask);
+    }
 }
 
 /************************************************************************
@@ -2799,6 +2811,9 @@ void CLuaBaseEntity::addTeleport(uint8 teleType, uint32 bitval, sol::object cons
             PChar->teleport.waypoints.access[index] |= (1 << setBit);
         }
         break;
+        case TELEPORT_TYPE::ESCHAN_PORTAL:
+            PChar->teleport.eschanPortal |= bit;
+            break;
         default:
             ShowError("LuaBaseEntity::addTeleport : Parameter 1 out of bounds.");
             return;
@@ -2861,6 +2876,9 @@ uint32 CLuaBaseEntity::getTeleport(uint8 type, sol::object const& abysseaRegionO
 
             return PChar->teleport.abysseaConflux[abysseaRegion];
         }
+        case TELEPORT_TYPE::ESCHAN_PORTAL:
+            return PChar->teleport.eschanPortal;
+            break;
         default:
             ShowError("LuaBaseEntity::getteleport : Parameter 1 out of bounds.");
     }
@@ -3244,8 +3262,8 @@ bool CLuaBaseEntity::gotoPlayer(std::string const& playerName)
         char buf[30];
         memset(&buf[0], 0, sizeof(buf));
 
-        ref<uint16>(&buf, 0) = sql->GetUIntData(0); // target char
-        ref<uint16>(&buf, 4) = m_PBaseEntity->id;   // warping to target char, their server will send us a zoning message with their pos
+        ref<uint32>(&buf, 0) = sql->GetUIntData(0); // target char
+        ref<uint32>(&buf, 4) = m_PBaseEntity->id;   // warping to target char, their server will send us a zoning message with their pos
 
         message::send(MSG_SEND_TO_ZONE, &buf[0], sizeof(buf), nullptr);
         found = true;
@@ -3276,8 +3294,8 @@ bool CLuaBaseEntity::bringPlayer(std::string const& playerName)
         char buf[30];
         memset(&buf[0], 0, sizeof(buf));
 
-        ref<uint16>(&buf, 0)  = sql->GetUIntData(0); // target char
-        ref<uint16>(&buf, 4)  = 0;                   // wanting to bring target char here so wont give our id
+        ref<uint32>(&buf, 0)  = sql->GetUIntData(0); // target char
+        ref<uint32>(&buf, 4)  = 0;                   // wanting to bring target char here so wont give our id
         ref<uint16>(&buf, 8)  = m_PBaseEntity->getZone();
         ref<uint16>(&buf, 10) = static_cast<uint16>(m_PBaseEntity->loc.p.x);
         ref<uint16>(&buf, 14) = static_cast<uint16>(m_PBaseEntity->loc.p.y);
@@ -7359,6 +7377,41 @@ void CLuaBaseEntity::setJobPoints(uint16 amount)
     CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PJobPoints->SetJobPoints(amount);
+    PChar->pushPacket(new CMenuJobPointsPacket(PChar));
+}
+
+/************************************************************************
+ *  Function: masterJob()
+ *  Purpose : Fully masters / unlocks player's current job
+ *  Example : player:masterJob()
+ *  Notes   : Used in GM command
+ ************************************************************************/
+
+void CLuaBaseEntity::masterJob()
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowDebug("Warning: Attempt to master job for non-PC type!");
+        return;
+    }
+
+    CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    auto jpCategory = 0x020 * PChar->GetMJob();
+    for (auto i = jpCategory; i < jpCategory + 0xA; i++)
+    {
+        auto points       = PChar->PJobPoints->GetJobPointType((JOBPOINT_TYPE)i);
+        auto pointsNeeded = 20 - points->value;
+        auto currentJP    = PChar->PJobPoints->GetJobPoints();
+
+        for (auto x = 0; x < pointsNeeded; x++)
+        {
+            auto cost = JobPointCost(points->value);
+            PChar->PJobPoints->SetJobPoints(currentJP + cost);
+            PChar->PJobPoints->RaiseJobPoint((JOBPOINT_TYPE)i);
+        }
+    }
+
     PChar->pushPacket(new CMenuJobPointsPacket(PChar));
 }
 
@@ -13183,13 +13236,13 @@ void CLuaBaseEntity::setMobLevel(uint8 level)
 }
 
 /************************************************************************
- *  Function: getSystem()
+ *  Function: getEcosystem()
  *  Purpose : Returns integer value of system associated with an Entity
- *  Example : if pet:getSystem() ~= xi.ecosystem.AVATAR then -- Not an avatar
+ *  Example : if pet:getEcosystem() ~= xi.ecosystem.AVATAR then -- Not an avatar
  *  Notes   :
  ************************************************************************/
 
-uint8 CLuaBaseEntity::getSystem()
+uint8 CLuaBaseEntity::getEcosystem()
 {
     XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
 
@@ -13579,6 +13632,36 @@ bool CLuaBaseEntity::hasTrait(uint16 traitID)
 bool CLuaBaseEntity::hasImmunity(uint32 immunityID)
 {
     return static_cast<CBattleEntity*>(m_PBaseEntity)->hasImmunity(immunityID);
+}
+
+/************************************************************************
+ *  Function: addImmunity()
+ *  Purpose : Adds any immunity
+ *  Example : mob:addImmunity(xi.immunity.SILENCE)
+ ************************************************************************/
+
+void CLuaBaseEntity::addImmunity(uint32 immunityID)
+{
+    auto PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (PEntity)
+    {
+        PEntity->m_Immunity |= immunityID;
+    }
+}
+
+/************************************************************************
+ *  Function: delImmunity()
+ *  Purpose : Delete any immunity
+ *  Example : mob:delImmunity(xi.immunity.SILENCE)
+ ************************************************************************/
+
+void CLuaBaseEntity::delImmunity(uint32 immunityID)
+{
+    auto PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (PEntity)
+    {
+        PEntity->m_Immunity &= ~immunityID;
+    }
 }
 
 /************************************************************************
@@ -14562,16 +14645,18 @@ bool CLuaBaseEntity::itemStolen()
 
 /************************************************************************
  *  Function: getTHlevel()
- *  Purpose : Return mob's current Treasure Hunter tier if alive, or its last if dead.
+ *  Purpose : Return mob's current Treasure Hunter tier
  *  Example : local TH = target:getTHlevel()
  ************************************************************************/
 
 int16 CLuaBaseEntity::getTHlevel()
 {
-    XI_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
-
-    auto* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
-    return PMob->isDead() ? PMob->m_THLvl : PMob->PEnmityContainer->GetHighestTH();
+    if (m_PBaseEntity->objtype == TYPE_MOB)
+    {
+        CMobEntity* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
+        return PMob->m_THLvl;
+    }
+    return 0;
 }
 
 /************************************************************************
@@ -15353,6 +15438,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("addCapacityPoints", CLuaBaseEntity::addCapacityPoints);
     SOL_REGISTER("setCapacityPoints", CLuaBaseEntity::setCapacityPoints);
     SOL_REGISTER("setJobPoints", CLuaBaseEntity::setJobPoints);
+    SOL_REGISTER("masterJob", CLuaBaseEntity::masterJob);
 
     SOL_REGISTER("getGil", CLuaBaseEntity::getGil);
     SOL_REGISTER("addGil", CLuaBaseEntity::addGil);
@@ -15703,7 +15789,7 @@ void CLuaBaseEntity::Register()
 
     // Mob Entity-Specific
     SOL_REGISTER("setMobLevel", CLuaBaseEntity::setMobLevel);
-    SOL_REGISTER("getSystem", CLuaBaseEntity::getSystem); // TODO: rename to getEcoSystem()
+    SOL_REGISTER("getEcosystem", CLuaBaseEntity::getEcosystem);
     SOL_REGISTER("getSuperFamily", CLuaBaseEntity::getSuperFamily);
     SOL_REGISTER("getFamily", CLuaBaseEntity::getFamily);
     SOL_REGISTER("isMobType", CLuaBaseEntity::isMobType);
@@ -15726,6 +15812,8 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("hasTrait", CLuaBaseEntity::hasTrait);
     SOL_REGISTER("hasImmunity", CLuaBaseEntity::hasImmunity);
+    SOL_REGISTER("addImmunity", CLuaBaseEntity::addImmunity);
+    SOL_REGISTER("delImmunity", CLuaBaseEntity::delImmunity);
 
     SOL_REGISTER("setAggressive", CLuaBaseEntity::setAggressive);
     SOL_REGISTER("setTrueDetection", CLuaBaseEntity::setTrueDetection);
@@ -15786,6 +15874,7 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("getPlayerTriggerAreaInZone", CLuaBaseEntity::getPlayerTriggerAreaInZone);
     SOL_REGISTER("updateToEntireZone", CLuaBaseEntity::updateToEntireZone);
+    SOL_REGISTER("sendEntityUpdateToPlayer", CLuaBaseEntity::sendEntityUpdateToPlayer);
 
     // Abyssea
     SOL_REGISTER("getAvailableTraverserStones", CLuaBaseEntity::getAvailableTraverserStones);

@@ -179,6 +179,8 @@ public:
     uint32 getPlayerTriggerAreaInZone();                                                      // Returns the player's current trigger area in the zone.
     void   updateToEntireZone(uint8 statusID, uint8 animation, sol::object const& matchTime); // Forces an update packet to update the NPC entity zone-wide
 
+    void sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, uint8 entityUpdate, uint8 updateMask); // sends a specific entity's update packet to a specific player only
+
     auto  getPos() -> sol::table;      // Get Entity position (x,y,z)
     void  showPosition();              // Display current position of character
     float getXPos();                   // Get Entity X position
@@ -398,6 +400,7 @@ public:
     uint8  getJobPointLevel(uint16 jpType); // Returns Value of Job Point Type
     void   setJobPoints(uint16 amount);     // Set Job Points for current job
     void   setCapacityPoints(uint16 amount);
+    void   masterJob();
 
     uint32 getGil();
     void   addGil(int32 gil);
@@ -751,7 +754,7 @@ public:
 
     // Mob Entity-Specific
     void   setMobLevel(uint8 level);
-    uint8  getSystem(); // TODO: rename this to getEcosystem()
+    uint8  getEcosystem();
     uint16 getSuperFamily();
     uint16 getFamily();
     bool   isMobType(uint8 mobType); // True if mob is of type passed to function
@@ -775,6 +778,8 @@ public:
 
     bool hasTrait(uint16 traitID);
     bool hasImmunity(uint32 immunityID); // Check if the mob has immunity for a type of spell (list at mobentity.h)
+    void addImmunity(uint32 immunityID); // Adds immunity to an entity
+    void delImmunity(uint32 immunityID); // Deletes immunity from an entity
 
     void setAggressive(bool aggressive);
     void setTrueDetection(bool truedetection);

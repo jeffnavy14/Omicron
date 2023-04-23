@@ -64,7 +64,16 @@ Application::Application(std::string serverName, int argc, char** argv)
     ShowInfo("The %s-server is ready to work...", serverName);
     ShowInfo("=======================================================================");
 
+    // clang-format off
     gConsoleService = std::make_unique<ConsoleService>();
+
+    gConsoleService->RegisterCommand("exit", "Terminate the program.",
+    [&](std::vector<std::string> inputs)
+    {
+        fmt::print("> Goodbye!\n");
+        m_RequestExit = true;
+    });
+    // clang-format on
 }
 
 bool Application::IsRunning()
@@ -79,5 +88,6 @@ void Application::Tick()
     while (!m_RequestExit)
     {
         next = CTaskMgr::getInstance()->DoTimer(server_clock::now());
+        std::this_thread::sleep_for(next);
     }
 }

@@ -3,27 +3,16 @@
 -- Area: Nyzul Isle
 -- Info: Enemy Leader, Thief job, runs around dropping bombs
 -----------------------------------
-<<<<<<< HEAD
-require("scripts/globals/pathfind")
-require("scripts/globals/status")
-require("scripts/globals/nyzul")
-=======
 require('scripts/globals/pathfind')
 require('scripts/globals/status')
 require('scripts/globals/nyzul')
->>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 -----------------------------------
 local entity = {}
 
 local function pickRunPoint(mob)
     mob:setLocalVar("ignore", 1)
-<<<<<<< HEAD
-    local distance   = math.random(10, 25)
-    local angle      = math.random() * math.pi
-=======
     -- local distance   = math.random(10, 25)
     -- local angle      = math.random() * math.pi
->>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
     local fromTarget = mob:getTarget()
 
     if fromTarget == nil then
@@ -65,11 +54,7 @@ local function dropBomb(mob)
     local pos      = mob:getPos()
 
     bombMob:setPos(pos.x, pos.y, pos.z, pos.rot)
-<<<<<<< HEAD
     bombMob:setStatus(xi.status.UPDATE)
-=======
-    bombMob:setStatus(xi.status.MOB)
->>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
 
     if target ~= nil then
         bombMob:updateEnmity(target)
@@ -90,11 +75,7 @@ entity.onMobSpawn = function(mob)
     SpawnMob(mob:getID() - 1, instance)
 end
 
-<<<<<<< HEAD
-entity.onMobEngaged= function(mob, target)
-=======
 entity.onMobEngaged = function(mob, target)
->>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
     mob:setLocalVar("runTime", math.random(10, 25))
 end
 
@@ -120,13 +101,8 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-<<<<<<< HEAD
-entity.onMobDeath = function(mob, player, isKiller, noKiller)
-    if isKiller or noKiller then
-=======
 entity.onMobDeath = function(mob, player, optParams)
     if optParams.isKiller or optParams.noKiller then
->>>>>>> 620d8844e8b494b1fb3f35b153a3f3d9c620d48c
         xi.nyzul.spawnChest(mob, player)
         xi.nyzul.enemyLeaderKill(mob)
     end

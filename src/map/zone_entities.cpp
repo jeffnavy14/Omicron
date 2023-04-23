@@ -570,7 +570,7 @@ void CZoneEntities::SpawnPETs(CCharEntity* PChar)
         SpawnIDList_t::iterator PET         = PChar->SpawnPETList.find(PCurrentPet->id);
 
         // Is this pet "visible" to the player?
-        if ((PCurrentPet->status == STATUS_TYPE::NORMAL || PCurrentPet->status == STATUS_TYPE::MOB) && distance(PChar->loc.p, PCurrentPet->loc.p) <= 50)
+        if ((PCurrentPet->status == STATUS_TYPE::NORMAL || PCurrentPet->status == STATUS_TYPE::UPDATE) && distance(PChar->loc.p, PCurrentPet->loc.p) <= 50)
         {
             // pet not in update list for player, add it in
             if (PET == PChar->SpawnPETList.end())
@@ -598,7 +598,7 @@ void CZoneEntities::SpawnNPCs(CCharEntity* PChar)
             CNpcEntity*             PCurrentNpc = (CNpcEntity*)it->second;
             SpawnIDList_t::iterator NPC         = PChar->SpawnNPCList.find(PCurrentNpc->id);
 
-            if (PCurrentNpc->status == STATUS_TYPE::NORMAL || PCurrentNpc->status == STATUS_TYPE::MOB)
+            if (PCurrentNpc->status == STATUS_TYPE::NORMAL || PCurrentNpc->status == STATUS_TYPE::UPDATE)
             {
                 // Is this npc "visible" to the player?
                 if (distance(PChar->loc.p, PCurrentNpc->loc.p) <= 50)
@@ -616,6 +616,12 @@ void CZoneEntities::SpawnNPCs(CCharEntity* PChar)
                     PChar->SpawnNPCList.erase(NPC);
                     PChar->updateEntityPacket(PCurrentNpc, ENTITY_DESPAWN, UPDATE_NONE);
                 }
+            }
+            // NPC not visible, remove it from spawn list if it's in there
+            else if (NPC != PChar->SpawnNPCList.end())
+            {
+                PChar->SpawnNPCList.erase(NPC);
+                PChar->updateEntityPacket(PCurrentNpc, ENTITY_DESPAWN, UPDATE_NONE);
             }
         }
     }
@@ -1312,7 +1318,7 @@ void CZoneEntities::WideScan(CCharEntity* PChar, uint16 radius)
     PChar->pushPacket(new CWideScanPacket(WIDESCAN_END));
 }
 
-void CZoneEntities::ZoneServer(time_point tick, bool check_trigger_areas)
+void CZoneEntities::ZoneServer(time_point tick)
 {
     TracyZoneScoped;
     TracyZoneString(m_zone->GetName());
@@ -1434,15 +1440,11 @@ void CZoneEntities::ZoneServer(time_point tick, bool check_trigger_areas)
         //     : this way, but we need to do this to keep allies working (for now).
         if (auto* PPet = static_cast<CPetEntity*>(it->second))
         {
-            PPet->PRecastContainer->Check();
-            PPet->StatusEffectContainer->CheckEffectsExpiry(tick);
-            if (tick > m_EffectCheckTime)
-            {
-                PPet->StatusEffectContainer->TickRegen(tick);
-                PPet->StatusEffectContainer->TickEffects(tick);
-            }
-            PPet->PAI->Tick(tick);
-
+            /*
+             * Pets specifically need to be removed prior to evaluating their AI Tick
+             * to prevent a number of issues which can result as a Pet having a
+             * deleted/nullptr'd PMaster
+             */
             if (PPet->status == STATUS_TYPE::DISAPPEAR)
             {
                 for (auto PMobIt : m_mobList)
@@ -1461,6 +1463,15 @@ void CZoneEntities::ZoneServer(time_point tick, bool check_trigger_areas)
                 m_petList.erase(it++);
                 continue;
             }
+
+            PPet->PRecastContainer->Check();
+            PPet->StatusEffectContainer->CheckEffectsExpiry(tick);
+            if (tick > m_EffectCheckTime)
+            {
+                PPet->StatusEffectContainer->TickRegen(tick);
+                PPet->StatusEffectContainer->TickEffects(tick);
+            }
+            PPet->PAI->Tick(tick);
         }
         it++;
     }
@@ -1525,10 +1536,6 @@ void CZoneEntities::ZoneServer(time_point tick, bool check_trigger_areas)
             }
             PChar->PAI->Tick(tick);
             PChar->PTreasurePool->CheckItems(tick);
-            if (check_trigger_areas)
-            {
-                m_zone->CheckTriggerAreas(PChar);
-            }
         }
     }
 

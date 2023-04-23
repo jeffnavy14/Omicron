@@ -847,67 +847,70 @@ namespace battleutils
                 Action->spikesParam = static_cast<uint16>(spikesDamage);
             }
 
-            switch (static_cast<SPIKES>(Action->spikesEffect))
+            if (PDefender->objtype != TYPE_MOB || ((CMobEntity*)PDefender)->getMobMod(MOBMOD_AUTO_SPIKES) == 0)
             {
-                case SPIKE_BLAZE:
-                case SPIKE_ICE:
-                case SPIKE_SHOCK:
-                    PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, GetSpikesDamageType(Action->spikesEffect));
-                    break;
+                switch (static_cast<SPIKES>(Action->spikesEffect))
+                {
+                    case SPIKE_BLAZE:
+                    case SPIKE_ICE:
+                    case SPIKE_SHOCK:
+                        PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, GetSpikesDamageType(Action->spikesEffect));
+                        break;
 
-                case SPIKE_DREAD:
-                    if (PAttacker->m_EcoSystem == ECOSYSTEM::UNDEAD)
-                    {
-                        // is undead no effect
-                        Action->spikesEffect = (SUBEFFECT)0;
-                        return false;
-                    }
-                    else
-                    {
-                        if (PDefender->isAlive())
+                    case SPIKE_DREAD:
+                        if (PAttacker->m_EcoSystem == ECOSYSTEM::UNDEAD)
                         {
-                            auto* PEffect = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_DREAD_SPIKES);
-                            if (PEffect)
-                            {
-                                // see https://www.bg-wiki.com/ffxi/Dread_Spikes
-
-                                // Subpower is the remaining damage that can be drained. When it reaches 0 the effect ends
-                                int remainingDrain = PEffect->GetSubPower();
-                                if (remainingDrain - abs(damage) <= 0) // power absorbed from Dread Spikes takes pre-MDT etc values
-                                {
-                                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_DREAD_SPIKES);
-                                }
-                                else
-                                {
-                                    PEffect->SetSubPower(remainingDrain - abs(damage));
-                                }
-                            }
-                            if (spikesDamage > 0) // do not add HP if spikes damage was absorbed.
-                            {
-                                Action->spikesMessage = MSGBASIC_SPIKES_EFFECT_HP_DRAIN;
-                                PDefender->addHP(spikesDamage);
-                            }
+                            // is undead no effect
+                            Action->spikesEffect = (SUBEFFECT)0;
+                            return false;
                         }
-                        PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, DAMAGE_TYPE::DARK);
-                    }
-                    break;
+                        else
+                        {
+                            if (PDefender->isAlive())
+                            {
+                                auto* PEffect = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_DREAD_SPIKES);
+                                if (PEffect)
+                                {
+                                    // see https://www.bg-wiki.com/ffxi/Dread_Spikes
 
-                case SPIKE_REPRISAL:
-                    if ((Action->reaction & REACTION::BLOCK) == REACTION::BLOCK)
-                    {
-                        PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, DAMAGE_TYPE::LIGHT);
-                    }
+                                    // Subpower is the remaining damage that can be drained. When it reaches 0 the effect ends
+                                    int remainingDrain = PEffect->GetSubPower();
+                                    if (remainingDrain - abs(damage) <= 0) // power absorbed from Dread Spikes takes pre-MDT etc values
+                                    {
+                                        PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_DREAD_SPIKES);
+                                    }
+                                    else
+                                    {
+                                        PEffect->SetSubPower(remainingDrain - abs(damage));
+                                    }
+                                }
+                                if (spikesDamage > 0) // do not add HP if spikes damage was absorbed.
+                                {
+                                    Action->spikesMessage = MSGBASIC_SPIKES_EFFECT_HP_DRAIN;
+                                    PDefender->addHP(spikesDamage);
+                                }
+                            }
+                            PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, DAMAGE_TYPE::DARK);
+                        }
+                        break;
 
-                    else
-                    {
-                        // only works on shield blocks
-                        Action->spikesEffect = (SUBEFFECT)0;
-                        return false;
-                    }
-                    break;
+                    case SPIKE_REPRISAL:
+                        if ((Action->reaction & REACTION::BLOCK) == REACTION::BLOCK)
+                        {
+                            PAttacker->takeDamage(spikesDamage, PDefender, ATTACK_TYPE::MAGICAL, DAMAGE_TYPE::LIGHT);
+                        }
 
-                default:
-                    break;
+                        else
+                        {
+                            // only works on shield blocks
+                            Action->spikesEffect = (SUBEFFECT)0;
+                            return false;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             // Check for status effect proc. Todo: move to scripts soon™ after item additionalEffect refactor Teo is working on
@@ -4435,7 +4438,7 @@ namespace battleutils
 
                 if (PCurrentMob->m_HiPCLvl > 0 && PCurrentMob->PEnmityContainer->HasID(PSource->id))
                 {
-                    PCurrentMob->PEnmityContainer->UpdateEnmity(PSource, CE, VE);
+                    PCurrentMob->PEnmityContainer->UpdateEnmity(PSource, CE, VE, false, false, false);
                 }
             }
         }
@@ -4465,24 +4468,27 @@ namespace battleutils
      ************************************************************************/
     uint16 doSoulEaterEffect(CCharEntity* m_PChar, uint32 damage)
     {
-        // Souleater has no effect <10HP.
-        if (m_PChar->GetMJob() == JOB_DRK && m_PChar->health.hp >= 10 && m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SOULEATER))
+        if (m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SOULEATER))
         {
-            // lost 10% current hp, converted to damage (displayed as just a strong regular hit)
-            float drainPercent = 0.1f;
-
             // at most 2% bonus from gear
-            auto gearBonusPercent = m_PChar->getMod(Mod::SOULEATER_EFFECT);
-            drainPercent          = drainPercent + std::min(0.02f, 0.01f * gearBonusPercent);
+            float souleaterBonus    = std::min(0.2, m_PChar->getMod(Mod::SOULEATER_EFFECT) * 0.01);
+            float souleaterBonusII  = m_PChar->getMod(Mod::SOULEATER_EFFECT_II) * 0.01; // No known cap to this bonus. Used on Agwu's scythe
+            float stalwartSoulBonus = 1 - static_cast<float>(m_PChar->getMod(Mod::STALWART_SOUL)) / 100;
+            float bonusDamage       = m_PChar->health.hp * (0.1f + souleaterBonus + souleaterBonusII);
 
-            damage += (uint32)(m_PChar->health.hp * drainPercent);
-            m_PChar->addHP(-HandleStoneskin(m_PChar, (int32)(m_PChar->health.hp * (drainPercent - m_PChar->getMod(Mod::STALWART_SOUL) * 0.001f))));
-        }
-        else if (m_PChar->GetSJob() == JOB_DRK && m_PChar->health.hp >= 10 && m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SOULEATER))
-        {
-            // lose 10% Current HP, only HALF (5%) converted to damage
-            damage += (uint32)(m_PChar->health.hp * 0.05f);
-            m_PChar->addHP(-HandleStoneskin(m_PChar, (int32)(m_PChar->health.hp * 0.1f)));
+            if (bonusDamage >= 1)
+            {
+                m_PChar->addHP(-HandleStoneskin(m_PChar, (int32)(bonusDamage * stalwartSoulBonus)));
+
+                if (m_PChar->GetMJob() == JOB_DRK)
+                {
+                    damage += bonusDamage;
+                }
+                else
+                {
+                    damage += bonusDamage / 2;
+                }
+            }
         }
         return damage;
     }
@@ -5263,12 +5269,7 @@ namespace battleutils
         }
         else
         {
-            damage           = HandleSevereDamage(PDefender, damage, false);
-            int16 absorbedMP = (int16)(damage * PDefender->getMod(Mod::ABSORB_DMG_TO_MP) / 100);
-            if (absorbedMP > 0)
-            {
-                PDefender->addMP(absorbedMP);
-            }
+            damage = HandleSevereDamage(PDefender, damage, false);
         }
 
         return damage;
@@ -5318,12 +5319,7 @@ namespace battleutils
         }
         else
         {
-            damage           = HandleSevereDamage(PDefender, damage, false);
-            int16 absorbedMP = (int16)(damage * PDefender->getMod(Mod::ABSORB_DMG_TO_MP) / 100);
-            if (absorbedMP > 0)
-            {
-                PDefender->addMP(absorbedMP);
-            }
+            damage = HandleSevereDamage(PDefender, damage, false);
         }
 
         return damage;
@@ -5438,7 +5434,7 @@ namespace battleutils
             // Issekigan is Known to Grant 300 CE per parry, but unknown how it effects VE (per bgwiki). So VE is left alone for now.
             // JP is known to give 10 VE per point
             uint16 jpBonus = static_cast<CCharEntity*>(PDefender)->PJobPoints->GetJobPointValue(JP_ISSEKIGAN_EFFECT) * 10;
-            static_cast<CMobEntity*>(PAttacker)->PEnmityContainer->UpdateEnmity(PDefender, 300, 0 + jpBonus, false);
+            static_cast<CMobEntity*>(PAttacker)->PEnmityContainer->UpdateEnmity(PDefender, 300, 0 + jpBonus, false, false);
         }
     }
 
@@ -5654,24 +5650,24 @@ namespace battleutils
      ************************************************************************/
     void assistTarget(CCharEntity* PChar, uint16 TargID)
     {
-        // get the player we want to assist
-        CBattleEntity* PlayerToAssist = (CBattleEntity*)PChar->GetEntity(TargID, TYPE_MOB | TYPE_PC);
-        if (PlayerToAssist != nullptr)
+        // get the entity we want to assist
+        CBattleEntity* EntityToAssist = (CBattleEntity*)PChar->GetEntity(TargID, TYPE_MOB | TYPE_PC);
+        if (EntityToAssist != nullptr)
         {
-            if (PlayerToAssist->objtype == TYPE_PC && PlayerToAssist->m_TargID != 0)
+            if (EntityToAssist->objtype == TYPE_PC && EntityToAssist->GetBattleTargetID() != 0)
             {
-                // get that players target (mob,player,pet only)
-                CBattleEntity* EntityToLockon = (CBattleEntity*)PChar->GetEntity(PlayerToAssist->m_TargID, TYPE_MOB | TYPE_PC | TYPE_PET);
+                // get that players engaged target
+                CBattleEntity* EntityToLockon = EntityToAssist->GetBattleTarget();
                 if (EntityToLockon != nullptr)
                 {
                     // lock on to the new target!
                     PChar->pushPacket(new CLockOnPacket(PChar, EntityToLockon));
                 }
             }
-            else if (PlayerToAssist->GetBattleTargetID() != 0)
+            else if (EntityToAssist->GetBattleTargetID() != 0)
             {
                 // lock on to the new target!
-                PChar->pushPacket(new CLockOnPacket(PChar, PlayerToAssist->GetBattleTarget()));
+                PChar->pushPacket(new CLockOnPacket(PChar, EntityToAssist->GetBattleTarget()));
             }
         }
     }
@@ -7073,9 +7069,6 @@ namespace battleutils
         {
             dmgToMPMods += PDefender->getMod(Mod::COVER_TO_MP);
         }
-
-        // Get ABSORB_DMG_TO_MP mod
-        dmgToMPMods += PDefender->getMod(Mod::ABSORB_DMG_TO_MP);
 
         // Get ABSORB_PHYSDMG_TO_MP mod
         dmgToMPMods += PDefender->getMod(Mod::ABSORB_PHYSDMG_TO_MP);
