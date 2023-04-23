@@ -80,7 +80,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		elseif player:getCharVar("Mission2State") == 1 then
 			player:PrintToPlayer("I can let you relive the last invsion...", 0, npc:getPacketName())
 			player:PrintToPlayer("I just need 100 infamy and some Eschalixers", 13)
-			player:PrintToPlayer("Of the regular, 5. Of the Higher quality, 40. You will get an improved quality upon completion.", 13)
+			player:PrintToPlayer("Of the regular, 5, which I will draw on an easier version. Of the Higher quality, 3. You will get an improved quality upon completion.", 13)
 		elseif player:getCharVar("TimStuff") == 2 then
 			player:PrintToPlayer("There was a point back when these people first came to this island that there were invasions...",0, npc:getPacketName())
 			player:PrintToPlayer("I can let you relive one of those instances if you like...", 13)
@@ -99,7 +99,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			if trade:hasItemQty(9084, 5) then -- Eschalixer (10rp per)
 				player:setCharVar("InvReward", 9085) -- Eschalixer +1 (50rp per)
 				player:setLocalVar("InvTier", 0)
-			elseif trade:hasItemQty(9085, 40) then -- Eschalixer +1 (50dp per)
+			elseif trade:hasItemQty(9085, 3) then -- Eschalixer +1 (50rp per, amount needed reduced to reduce time sink)
 				player:setCharVar("InvReward", 9086) -- Eschalixer +2 (2000rp per)
 				player:setLocalVar("InvTier", 1)
 			end
