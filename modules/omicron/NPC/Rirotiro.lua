@@ -30,38 +30,38 @@ m:addOverride("xi.zones.Port_Windurst.Zone.onInitialize", function(zone)
         if (trade:hasItemQty(15495,1) and trade:hasItemQty(15496,1) and trade:hasItemQty(15497,1) and trade:hasItemQty(15498,1)
                 and trade:hasItemQty(15499,1) and trade:hasItemQty(15500,1) and trade:hasItemQty(15501,1) and trade:hasItemQty(15502,1)) then
                 player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 27510)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 27510)
                 player:addItem(27510)
         end
         if (trade:hasItemQty(15435,1) and trade:hasItemQty(15436,1) and trade:hasItemQty(15437,1) and trade:hasItemQty(15438,1)
                 and trade:hasItemQty(15439,1) and trade:hasItemQty(15440,1) and trade:hasItemQty(15441,1) and trade:hasItemQty(15442,1)) then
                 player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 28419)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 28419)
                 player:addItem(28419)
         end		
         if (trade:hasItemQty(18617,1) and trade:hasItemQty(2858,2) and trade:hasItemQty(2859,1)) then
         		player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 18603)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 18603)
                 player:addItem(18603)
 		end	
         if (trade:hasItemQty(19162,1) and trade:hasItemQty(2858,3) and trade:hasItemQty(2859,1)) then
         		player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 19159)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 19159)
                 player:addItem(19159)
 		end		
         if (trade:hasItemQty(19307,1) and trade:hasItemQty(2858,2) and trade:hasItemQty(2859,1)) then
         		player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 19304)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 19304)
                 player:addItem(19304)
 		end		
         if (trade:hasItemQty(17767,1) and trade:hasItemQty(2858,2) and trade:hasItemQty(2859,2)) then
         		player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 17765)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 17765)
                 player:addItem(17765)
         end
 		if (trade:hasItemQty(19128,1) and trade:hasItemQty(2858,1) and trade:hasItemQty(2859,2)) then
         		player:tradeComplete()
-                player:messageSpecial(ID.text.ITEM_OBTAINED, 19118)
+                player:messageSpecial(zones[xi.zone.PORT_WINDURST].text.ITEM_OBTAINED, 19118)
                 player:addItem(19118)
         end
         
