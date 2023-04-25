@@ -200,7 +200,7 @@ local level = player:getMainLvl();
         player:PrintToPlayer("Merchant Moogle : Pop items!", 0x1F);
         elseif (page == 9) then -- Beyond infinity
         local plevel = player:getMainLvl();
-            if (plevel > 98) then
+            if (plevel > 74) then
             local stock_9 =
             {
                 3353,  50000,     -- Barbaric Bijou  
