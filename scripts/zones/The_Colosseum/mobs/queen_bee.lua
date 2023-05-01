@@ -64,7 +64,7 @@ entity.onMobEngaged = function(mob, player)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 
-entity.onMobFight = function(mob, player)
+entity.onMobFight = function(mob, player, target)
 	local HPP = mob:getHPP()
 	local T3Phase = mob:getLocalVar("T3phase")
 	local TPP = mob:getTP()
