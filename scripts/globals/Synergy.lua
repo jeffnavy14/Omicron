@@ -1,12 +1,7 @@
 --Synergy Furnace and Synergy Engineer--
 local ID = require("scripts/zones/Port_Jeuno/IDs")
-require("scripts/globals/status")
-require("scripts/globals/keyitems")
 require("scripts/globals/npc_util")
-require("scripts/settings/main")
-require("scripts/globals/quests")
 require("scripts/globals/status")
-require("scripts/globals/titles")
 ----------------------------------------
 xi = xi or {}
 xi.synergy = xi.synergy or {}
