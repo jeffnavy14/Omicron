@@ -150,7 +150,7 @@ local tradeTablePathD =
 	[14] = { trade = { 27284, {9086, 3} }, base = 27284, aug1 =   25, aug1MAX = 19, aug2 =   29, aug2MAX = 24, aug3 =   41, aug3MAX =  3, aug4 =  0, aug4MAX = 0 }, -- Naga Hakama
 	[15] = { trade = { 27459, {9086, 3} }, base = 27459, aug1 = 1477, aug1MAX = 50, aug2 = 1478, aug2MAX = 20, aug3 = 1479, aug3MAX = 20, aug4 =  0, aug4MAX = 0 }, -- Naga Kyahan
 	[16] = { trade = { 26794, {9086, 3} }, base = 26794, aug1 =   25, aug1MAX = 14, aug2 =  100, aug2MAX = 19, aug3 =  101, aug3MAX = 14, aug4 =  0, aug4MAX = 0 }, -- Rawhide Mask
-	[17] = { trade = { 26950, {9086, 3} }, base = 26950, aug1 =   79, aug1MAX = 16, aug2 =  195, aug2MAX =  6, aug3 =  144, aug3MAX =  1, aug4 = 78, aug4MAX = 0 }, -- Rawhide Vest
+	[17] = { trade = { 26950, {9086, 3} }, base = 26950, aug1 =   79, aug1MAX = 15, aug2 =  195, aug2MAX =  6, aug3 =  144, aug3MAX =  1, aug4 = 78, aug4MAX = 0 }, -- Rawhide Vest
 	[18] = { trade = { 27100, {9086, 3} }, base = 27100, aug1 =   35, aug1MAX = 14, aug2 =  516, aug2MAX =  6, aug3 =  517, aug3MAX =  6, aug4 =  0, aug4MAX = 0 }, -- Rawhide Gloves
 	[19] = { trade = { 27285, {9086, 3} }, base = 27285, aug1 =   83, aug1MAX = 14, aug2 =  140, aug2MAX =  4, aug3 =  138, aug3MAX =  1, aug4 = 82, aug4MAX = 0 }, -- Rawhide Trousers
 	[20] = { trade = { 27460, {9086, 3} }, base = 27460, aug1 =  512, aug1MAX =  9, aug2 =   25, aug2MAX = 14, aug3 =  142, aug3MAX =  4, aug4 =  0, aug4MAX = 0 }, -- Rawhide Boots
