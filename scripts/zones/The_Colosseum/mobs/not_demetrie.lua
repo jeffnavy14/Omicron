@@ -170,7 +170,6 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
 		mob:addStatusEffectEx(xi.effect.MAGIC_SHIELD, 0, 1, 0, 0)
-		mob:addStatusEffectEx(xi.effect.MAGIC_SHIELD, 0, 1, 0, 0)
 		for i = 0, 1 do
 			local petId = ID.mob.DEME_SHADOW + i
 			local pet = GetMobByID(petId)
@@ -193,7 +192,6 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 	elseif HPP < 20 and T5Phase == 13 then
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
-		mob:addStatusEffectEx(xi.effect.MAGIC_SHIELD, 0, 1, 0, 0)
 		mob:addStatusEffectEx(xi.effect.MAGIC_SHIELD, 0, 1, 0, 0)
 		for i = 0, 1 do
 			local petId = ID.mob.DEME_SHADOW + i
