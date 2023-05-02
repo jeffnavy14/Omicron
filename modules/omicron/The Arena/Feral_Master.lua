@@ -58,7 +58,9 @@ local T1MobFight = function(player, npc, zone)
 						SpawnMob(17068058)
 						SpawnMob(17068059)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob()
+						SpawnMob(17068071)
+						SpawnMob(17068076)
+						SpawnMob(17068077)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -130,7 +132,9 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
 						SpawnMob(17068054)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob()
+						SpawnMob(17068072)
+						SpawnMob(17068078)
+						SpawnMob(17068079)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -200,7 +204,9 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
 						SpawnMob(17068055)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob()
+						SpawnMob(17068073)
+						SpawnMob(17068080)
+						SpawnMob(17068081)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -269,7 +275,9 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
 						SpawnMob(17068056)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob()
+						SpawnMob(17068074)
+						SpawnMob(17068082)
+						SpawnMob(17068083)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -339,7 +347,7 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
 						SpawnMob(17068057)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob()
+						SpawnMob(17068075)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
