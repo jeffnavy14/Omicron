@@ -214,7 +214,7 @@ local Chirpadee = zone:insertDynamicEntity({
 	end,	
 	
 	onTrigger = function(player, npc, status)
-		player:PrintToPlayer("チューチュー (You should bring me some escha gear and 3 if the Eschalixer +2.)", npc:getPacketName())
+		player:PrintToPlayer("チューチュー (You should bring me some escha gear and 3 if the Eschalixer +2.)", 0, npc:getPacketName())
 		player:PrintToPlayer("チュー (I'll be able to augment the equipment for you at that point.)", 13)
     end,
 	
