@@ -10,7 +10,7 @@ cmdprops =
 
 function onTrigger(player)
 local scyld = player:getCurrency("scyld")
-local Cruor = player:getCurrency("cruor")
+local cruor = player:getCurrency("cruor")
 local spark = player:getCurrency("spark_of_eminence")
 local daily = player:getCurrency("daily_tally")
 local valor = player:getCurrency("valor_point")
