@@ -267,10 +267,10 @@ xi.trust.canCast = function(caster, spell, notAllowedTrustIds)
         return 0
     end
 
-    -- Trusts not allowed in an alliance
-    if caster:checkSoloPartyAlliance() == 2 then
-        return xi.msg.basic.TRUST_NO_CAST_TRUST
-    end
+   -- -- Trusts not allowed in an alliance
+   -- if caster:checkSoloPartyAlliance() == 2 then
+   --     return xi.msg.basic.TRUST_NO_CAST_TRUST
+   -- end
 
     -- Trusts only allowed in certain zones (Remove this for trusts everywhere)
     if not caster:canUseMisc(xi.zoneMisc.TRUST) then
