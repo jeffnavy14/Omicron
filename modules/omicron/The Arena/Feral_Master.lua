@@ -22,7 +22,7 @@ local T1MobFight = function(player, npc, zone)
 		for i, v in pairs(player:getParty()) do
 			if not (v:getCharVar("[Arena]month") == ArenaMonth) and
 				not (v:getCharVar("[Arena]tier") == 1) then
-					player:PrintToPlayer("One or more members do not meet the requirements.", 13)
+					player:PrintToPlayer("One or more members do not meet the requirements, all members must select the same tier.", 29)
 				return
 			end
 		end
