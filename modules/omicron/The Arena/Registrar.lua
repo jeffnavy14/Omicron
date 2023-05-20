@@ -70,9 +70,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						player:PrintToPlayer("Registrar: Well to be puttin' 'er strait as it is, this here be a fightin' arena.", xi.msg.channel.NS_SAY)
 						player:PrintToPlayer("Yeh just gotta pick a tier, we send you to 'er and you bash 'em", xi.msg.channel.NS_SAY)
 						player:PrintToPlayer("Aftah that yeh get a nice reward, have an imperial coffee or 30, and then do 'er again.", xi.msg.channel.NS_SAY)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(63.75)
-						end)
+						
 					end,
 				},
 				{
@@ -81,9 +79,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						player:PrintToPlayer("Registrar: We be givin' out some shiny alexandrites, and jettons. That's the money in here see?.", xi.msg.channel.NS_SAY)
 						player:PrintToPlayer("Get enough of that alexandrite, then you can use it to get a purdy like weapon.", xi.msg.channel.NS_SAY)
 						player:PrintToPlayer("Pankeki and Tiny handle that stuff.", xi.msg.channel.NS_SAY)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(63.75)
-						end)
+						
 					end,
 				},
 				{
@@ -91,9 +87,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					function(playerArg)
 						menu.options = page2
 						delaySendMenu(playerArg)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(63.75)
-						end)
+						
 					end,
 				},
 			}
@@ -109,16 +103,12 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Arena]tier", 1)
 							player:setCharVar("[Arena]month", month)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						elseif player:getCharVar("[Arena]tier") == 1 and
 							player:getCharVar("[Arena]month") == month
 						then
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						else
 							player:PrintToPlayer("Alrighty! Well it be lookin' like ye've alredy got a registered tier, want to change it?", xi.msg.channel.NS_SAY)
 							player:setCharVar("MaybeTier", 1)
@@ -136,16 +126,12 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Arena]tier", 2)
 							player:setCharVar("[Arena]month", month)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						elseif player:getCharVar("[Arena]tier") == 2 and
 							player:getCharVar("[Arena]month") == month
 						then
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						else
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
 							player:PrintToPlayer("Alrighty! Well it be lookin' like ye've alredy got a registered tier, want to change it?", xi.msg.channel.NS_SAY)
@@ -164,16 +150,12 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Arena]tier", 3)
 							player:setCharVar("[Arena]month", month)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						elseif player:getCharVar("[Arena]tier") == 3 and
 							player:getCharVar("[Arena]month") == month
 						then
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						else
 							player:PrintToPlayer("Alrighty! Well it be lookin' like ye've alredy got a registered tier, want to change it?", xi.msg.channel.NS_SAY)
 								player:setCharVar("MaybeTier", 3)
@@ -191,16 +173,12 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Arena]tier", 4)
 							player:setCharVar("[Arena]month", month)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						elseif player:getCharVar("[Arena]tier") == 4 and
 							player:getCharVar("[Arena]month") == month
 						then
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						else
 							player:PrintToPlayer("Alrighty! Well it be lookin' like ye've alredy got a registered tier, want to change it?", xi.msg.channel.NS_SAY)
 							player:setCharVar("MaybeTier", 4)
@@ -218,16 +196,12 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
 							player:setCharVar("[Arena]tier", 5)
 							player:setCharVar("[Arena]month", month)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						elseif player:getCharVar("[Arena]tier") == 5 and
 							player:getCharVar("[Arena]month") == month
 						then
 							player:PrintToPlayer("Oh! Yah be a'ready signed up fer that thar tier. Off to the Feral Master for you", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(63.75)
-							end)
+							
 						else
 							player:PrintToPlayer("Alrighty! Well it be lookin' like ye've alredy got a registered tier, want to change it?", xi.msg.channel.NS_SAY)
 							local MaybeTier = 5
@@ -251,9 +225,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					"On second thought...",
 					function(playerArg)
 						player:PrintToPlayer("Alrighty! Well get on over tah Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(63.75)
-						end)
+						
 					end,
 				},
 				{
@@ -264,9 +236,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						player:setCharVar("MaybeTier", 0)
 						player:setCharVar("[Arena]month", month)
 						player:PrintToPlayer("Alrighty! I'll get that paper done, let that thar Feral Master know when you're ready to begin!.", xi.msg.channel.NS_SAY)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(63.75)
-						end)
+						
 					end,
 				},
 			

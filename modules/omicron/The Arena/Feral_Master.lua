@@ -417,9 +417,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("Feral Master: Well to put as simple as possible, you get to fight for prizes here.", xi.msg.channel.NS_SAY)
 							player:PrintToPlayer("First go see the Registrar to sign up for a tier, then come to me and I'll send you to your fight.", xi.msg.channel.NS_SAY)
 							player:PrintToPlayer("At the end you get your prize depending on the tier you chose.", xi.msg.channel.NS_SAY)
-							npc:timer(1000, function(npc)
-								npc:setRotPos(180.25)
-							end)
+							
 						end,
 					},
 					
@@ -445,20 +443,14 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 									else
 										player:PrintToPlayer("Feral Master: Oh sorry it looks like you'll need to wait a bit before starting, or try another tier.", xi.msg.channel.NS_SAY)
 									end
-									npc:timer(1000, function(npc)
-										npc:setRotPos(180.25)
-									end)
+									
 								else
 									player:PrintToPlayer("Feral Master: Seems you don't have a current registration, see the Registrar and she'll fix you right up.", xi.msg.channel.NS_SAY)
-									npc:timer(1000, function(npc)
-										npc:setRotPos(180.25)
-									end)
+									
 								end
 							else
 								player:PrintToPlayer("Feral Master: Looks like you haven't registered yet, just speak with the Registrar to fix that.", xi.msg.channel.NS_SAY)
-								npc:timer(1000, function(npc)
-									npc:setRotPos(180.25)
-								end)
+								
 							end
 						end,
 					},
@@ -466,9 +458,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					{
 						"Nevermind",
 						function(playerArg)
-						npc:timer(1000, function(npc)
-							npc:setRotPos(180.25)
-						end)
+						
 						end,
 					},
 				
