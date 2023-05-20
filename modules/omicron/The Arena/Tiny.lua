@@ -57,23 +57,23 @@ local tradeTable =
 				player:PrintToPlayer("Greetings friend, I'm here to upgrade Vigil Weapons to a more complete version of themselves.", 0, npc:getPacketName())
 				player:PrintToPlayer("I'll guide you to what items I'll need to do so when you bring me one", xi.msg.channel.NS_SAY)
 				npc:timer(1000, function(npc)
-					npc:setPosRot(63.75)
+					npc:setRotPos(63.75)
 				end)
 			elseif player:getCharVar("[TinyFighter]Stage") == 1 then 
 				player:PrintToPlayer("All right, for me to get started I will need a Balrahn's Eyepatch, Tinnin's Fang, Sarameya's Hide, Tyger's Tail.", xi.msg.channel.NS_SAY)
 				player:PrintToPlayer("Also I will need a Copy of Wyrmseeker Areuhat.", 13)
 				npc:timer(1000, function(npc)
-					npc:setPosRot(63.75)
+					npc:setRotPos(63.75)
 				end)
 			elseif player:getCharVar("[TinyFighter]Stage") == 2 then
 				player:PrintToPlayer("I know. its the painfully tedious part, one Catseye please.", 0, npc:getPacketName())
 				npc:timer(1000, function(npc)
-					npc:setPosRot(63.75)
+					npc:setRotPos(63.75)
 				end)
 			elseif player:getCharVar("[TinyFighter]Stage") == 2 then
 				player:PrintToPlayer("We are on the final component which will need 300 Beitetsu.", 0, npc:getPacketName())
 				npc:timer(1000, function(npc)
-					npc:setPosRot(63.75)
+					npc:setRotPos(63.75)
 				end)
 			elseif player:getCharVar("[TinyFighter]Stage") == 4 and
 				os.time() > player:getCharVar("[TinyFighter]time")
@@ -89,7 +89,7 @@ local tradeTable =
 			then
 				player:PrintToPlayer("We're almost there, please return tomorrow.", 0, npc:getPacketName())
 				npc:timer(1000, function(npc)
-					npc:setPosRot(63.75)
+					npc:setRotPos(63.75)
 				end)
 			end
 		end,
@@ -107,7 +107,7 @@ local tradeTable =
 					player:setCharVar("[TinyFighter]Stage", 2)
 					player:tradeComplete()
 					npc:timer(1000, function(npc)
-						npc:setPosRot(63.75)
+						npc:setRotPos(63.75)
 					end)
 				end
 				
@@ -117,7 +117,7 @@ local tradeTable =
 					player:PrintToPlayer("We are on the final component which will need 300 Beitetsu.", 0, npc:getPacketName())
 					player:tradeComplete()
 					npc:timer(1000, function(npc)
-						npc:setPosRot(63.75)
+						npc:setRotPos(63.75)
 					end)
 				end
 			elseif player:getCharVar("[TinyFighter]Stage") == 3 then
@@ -127,7 +127,7 @@ local tradeTable =
 					player:setCharVar("[TinyFighter]time", getVanaMidnight())
 					player:tradeComplete()
 					npc:timer(1000, function(npc)
-						npc:setPosRot(63.75)
+						npc:setRotPos(63.75)
 					end)
 				end
 			
@@ -156,7 +156,7 @@ local tradeTable =
 					player:PrintToPlayer("Tiny Fighter: All right, for me to get started I will need a Balrahn's Eyepatch, Tinnin's Fang, Sarameya's Hide, Tyger's Tail.", 13)
 					player:PrintToPlayer("Also I will need a Copy of Wyrmseeker Areuhat.", 13)
 					npc:timer(1000, function(npc)
-						npc:setPosRot(63.75)
+						npc:setRotPos(63.75)
 					end)
 				end
 			end

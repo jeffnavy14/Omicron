@@ -70,7 +70,9 @@ local T1MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob()
+						SpawnMob(17068071)
+						SpawnMob(17068076)
+						SpawnMob(17068077)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
@@ -144,7 +146,9 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob()
+						SpawnMob(17068072)
+						SpawnMob(17068078)
+						SpawnMob(17068079)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
@@ -216,7 +220,9 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob()
+						SpawnMob(17068073)
+						SpawnMob(17068080)
+						SpawnMob(17068081)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
@@ -287,7 +293,9 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob()
+						SpawnMob(17068074)
+						SpawnMob(17068082)
+						SpawnMob(17068083)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
@@ -357,7 +365,7 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob()
+						SpawnMob(17068075)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
@@ -410,7 +418,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 							player:PrintToPlayer("First go see the Registrar to sign up for a tier, then come to me and I'll send you to your fight.", xi.msg.channel.NS_SAY)
 							player:PrintToPlayer("At the end you get your prize depending on the tier you chose.", xi.msg.channel.NS_SAY)
 							npc:timer(1000, function(npc)
-								npc:setPosRot(180.25)
+								npc:setRotPos(180.25)
 							end)
 						end,
 					},
@@ -438,18 +446,18 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 										player:PrintToPlayer("Feral Master: Oh sorry it looks like you'll need to wait a bit before starting, or try another tier.", xi.msg.channel.NS_SAY)
 									end
 									npc:timer(1000, function(npc)
-										npc:setPosRot(180.25)
+										npc:setRotPos(180.25)
 									end)
 								else
 									player:PrintToPlayer("Feral Master: Seems you don't have a current registration, see the Registrar and she'll fix you right up.", xi.msg.channel.NS_SAY)
 									npc:timer(1000, function(npc)
-										npc:setPosRot(180.25)
+										npc:setRotPos(180.25)
 									end)
 								end
 							else
 								player:PrintToPlayer("Feral Master: Looks like you haven't registered yet, just speak with the Registrar to fix that.", xi.msg.channel.NS_SAY)
 								npc:timer(1000, function(npc)
-									npc:setPosRot(180.25)
+									npc:setRotPos(180.25)
 								end)
 							end
 						end,
@@ -458,6 +466,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					{
 						"Nevermind",
 						function(playerArg)
+						npc:timer(1000, function(npc)
+							npc:setRotPos(180.25)
+						end)
 						end,
 					},
 				
