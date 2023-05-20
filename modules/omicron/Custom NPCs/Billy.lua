@@ -1,6 +1,6 @@
 -----------------------------------
 -- NPC: Billy
--- RUN Relic
+-- RUN Empy
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -19,8 +19,8 @@ local Billy = zone:insertDynamicEntity({
 
     objtype = xi.objType.NPC,
     name = "Billy",
-    look = 1975,
-    x = 601,
+    look = 2713,
+    x = 600,
     y = 0,
     z = 53,
 	rotation = 63.75,
@@ -28,6 +28,7 @@ local Billy = zone:insertDynamicEntity({
 	widescan = 1,
 
     onTrade = function(player, npc, trade)
+		npc:facePlayer(player)
 		if player:getCharVar("RunEmpy") == 1 and
 			trade:hasItemQty(3290, 1) and -- Isgebind's Heart
 			trade:hasItemQty(1711, 1) and -- molybden ingot
@@ -119,6 +120,7 @@ local Billy = zone:insertDynamicEntity({
 	end,
 	
 	onTrigger = function(player, npc, status)
+		npc:facePlayer(player)
 		if player:getCharVar("RunEmpy") == 1 then
 			player:PrintToPlayer("チーペ(Hello)", 0, npc:getPacketName())
 			player:PrintToPlayer("カア(I'll need Isgebind's heart, molybdenum ingot, molybdenum ore, with 150 infamy", 13)
@@ -157,7 +159,7 @@ local Billy = zone:insertDynamicEntity({
 		else
 			player:PrintToPlayer("チーペ(Hello)", 0, npc:getPacketName())
 			player:setCharVar("RunEmpy", 1)
-		end		
+		end
 	end, 
 	
     })

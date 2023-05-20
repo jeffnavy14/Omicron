@@ -25,7 +25,8 @@ local Borry = zone:insertDynamicEntity({
     rotation = 127.5,
 		
 		onTrigger = function(player, npc)
-				-- Forward declarations (required)
+			npc:facePlayer(player)
+			-- Forward declarations (required)
 			local menu  = {}
 			local page1 = {}
 			local page2 = {}
@@ -700,6 +701,7 @@ local Borry = zone:insertDynamicEntity({
 		end,
 
 		onTrade = function(player, npc, trade)
+			npc:facePlayer(player)
 			player:PrintToPlayer("That's pretty and all, but I don't need that right now. Thanks.", 0, npc:getPacketName())
 		end,
 		

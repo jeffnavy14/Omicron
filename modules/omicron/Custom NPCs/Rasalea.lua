@@ -28,6 +28,7 @@ local Rasalea = zone:insertDynamicEntity({
 	widescan = 1,
 
     onTrade = function(player, npc, trade)
+		npc:facePlayer(player)
 		if player:getCharVar("RunAF") == 1 and
 			trade:hasItemQty(3520, 3) and
 			trade:hasItemQty(830, 1) and
@@ -109,6 +110,7 @@ local Rasalea = zone:insertDynamicEntity({
 	end,
 	
 	onTrigger = function(player, npc, status)
+		npc:facePlayer(player)
 		if player:getMainJob() == 22 and
             player:getMainLvl() >= 90 and
 			player:getCharVar("RunAF") <1
@@ -150,7 +152,6 @@ local Rasalea = zone:insertDynamicEntity({
 		elseif 	player:getCharVar("RunAF") == 10 then
 			player:PrintToPlayer("Thats everything I can make for you, I hope it serves you well", 0, npc:getPacketName())
 		end
-		
 	end,  
 	
     })

@@ -1,6 +1,6 @@
 -----------------------------------
 -- NPC: Rowena
--- GEO Relic
+-- RUN Relic
 -----------------------------------
 require("modules/module_utils")
 require("scripts/zones/Abdhaljs_Isle-Purgonorgo/Zone")
@@ -28,6 +28,7 @@ local Rowena = zone:insertDynamicEntity({
 	widescan = 1,
 
     onTrade = function(player, npc, trade)
+		npc:facePlayer(player)
 		if player:getCharVar("GeoRelic") == 1 and
 			trade:hasItemQty(1459, 1) and -- Griffon Leather
 			trade:hasItemQty(4030, 1) and -- Sekishitsu
@@ -129,6 +130,7 @@ local Rowena = zone:insertDynamicEntity({
 	end,
 	
 	onTrigger = function(player, npc, status)
+		npc:facePlayer(player)
 		if player:getCharVar("GeoRelic") == 1 then
 			player:PrintToPlayer("Ugh... my husband Gerolt is drunk... again...", 0, npc:getPacketName())
 			player:PrintToPlayer("Sorry, with the 200 infamy I'll need the griffon leather, sekishitsu, raaz leather, and then for me a Frontier Soda", 0, npc:getPacketName())
@@ -172,7 +174,7 @@ local Rowena = zone:insertDynamicEntity({
 			player:PrintToPlayer("Food's scarce here sorry.", 13)
 			player:PrintToPlayer("Anyways, with the 200 infamy I'll need the griffon leather, sekishitsu, raaz leather, and then for me a Frontier Soda", 13)
 			player:setCharVar("GeoRelic", 1)
-		end		
+		end
 	end,  
 	
     })

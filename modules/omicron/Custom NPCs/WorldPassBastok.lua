@@ -24,7 +24,8 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
         rotation = 63.75,
 		
 		onTrigger = function(player, npc)
-				-- Forward declarations (required)
+			npc:facePlayer(player)
+			-- Forward declarations (required)
 			local menu  = {}
 			local page1 = {}
 			local page2 = {}
@@ -699,6 +700,7 @@ m:addOverride("xi.zones.Port_Bastok.Zone.onInitialize", function(zone)
 		end,
 
 		onTrade = function(player, npc, trade)
+			npc:facePlayer(player)
 			player:PrintToPlayer("That's pretty and all, but I don't need that right now. Thanks.", 0, npc:getPacketName())
 		end,
 		

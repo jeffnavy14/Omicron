@@ -181,7 +181,7 @@ local Geralt = zone:insertDynamicEntity({
 			player:PrintToPlayer("*hic* I saw d'kids o'er thar maked y'some fancy fance things... I ken I do more for ya.", 0, npc:getPacketName())
 			player:PrintToPlayer("Gimme a wootz ingot, scintillant ingot, snowsteel... an' a rice ball. Oh an' it's gonna cost ya 200 infamy. *hic*", 13)
 			player:setCharVar("RunRelic", 1)
-		end		
+		end
 	end,  
 	
     })

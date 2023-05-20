@@ -27,6 +27,7 @@ local Davos = zone:insertDynamicEntity({
 	widescan = 1,
 
     onTrade = function(player, npc, trade)
+		npc:facePlayer(player)
 		if player:getCharVar("GeoAF") == 1 and
 			trade:hasItemQty(4042, 3) and
 			player:getFreeSlotsCount() > 0
@@ -98,6 +99,7 @@ local Davos = zone:insertDynamicEntity({
 	end,
 	
 	onTrigger = function(player, npc, status)
+		npc:facePlayer(player)
 		if player:getMainJob() == 21 and
             player:getMainLvl() >= 90 and
 			player:getCharVar("GeoAF") <1
@@ -138,7 +140,7 @@ local Davos = zone:insertDynamicEntity({
 			
 		elseif 	player:getCharVar("GeoAF") == 10 then
 			player:PrintToPlayer("Well thats all the geomancer gear I can make for you, treat it well.", 0, npc:getPacketName())
-		end	
+		end
 	end,
 	
     })
