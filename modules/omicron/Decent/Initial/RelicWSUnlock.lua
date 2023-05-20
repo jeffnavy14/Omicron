@@ -23,6 +23,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 32,
 		
 		onTrigger = function(player, npc)
+			npc:facePlayer(player)
 			Virgil = player:getCharVar("[Virgil]Unlock")
 			-- 1 waiting for mats
 			-- 2 has mats, on wait to start getting the ws's
@@ -80,6 +81,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		end,
 		
 		onTrade = function(player, npc, trade)
+			npc:facePlayer(player)
 			Virgil = player:getCharVar("[Virgil]Unlock")
 			if Virgil == 1 and
 			  (trade:hasItemQty(3977, 1)) and 

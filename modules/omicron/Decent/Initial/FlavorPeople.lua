@@ -63,6 +63,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         rotation = 61,
 		
 		onTrigger = function(player, npc)
+			npc:facePlayer(player)
 			player:PrintToPlayer("Is nowhere safe... Abyssea is lost my friend, this land was thought to be a possible safe haven.  We were very wrong" ,0, npc:getPacketName())
 		end
 	})
@@ -102,6 +103,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 
 
 		onTrigger = function(player, npc)
+			npc:facePlayer(player)
 			player:PrintToPlayer("Feararu the Elvaan lady, she tried to eataru me." ,0, npc:getPacketName())
 			player:PrintToPlayer("Thankfully I've been practicing my black magic... now if only I could figure out this wierd spell... Ul..te...pah?" ,0, npc:getPacketName())
 			player:PrintToPlayer("Translating this is not easy-weasy" ,0, npc:getPacketName())
@@ -143,6 +145,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		widescan = 1,
 
     onTrigger = function(player, npc)
+		npc:facePlayer(player)
 		player:PrintToPlayer("I heard about you from Joachim's friends... been adventuring here in Abyssea by the sounds." ,0, npc:getPacketName())
 		player:PrintToPlayer("This little isle was one of the few safe havens we had from those horrid hoards that dropped from the sky." ,0, npc:getPacketName())
 		player:PrintToPlayer("Sadly our safety here didn't last as long as we had been hoping" ,0, npc:getPacketName())
@@ -176,7 +179,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		
 		
 		onTrigger = function(player, playerArg, npc)
-		
+		npc:facePlayer(player)
 		local menu =
     {
         title = "A request of Mid?",
@@ -289,6 +292,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
         z = 60,
         rotation = 128,
 		
+		onInitialize = function(player, npc)
+			npc:hideName(true)
+		end,
+		
 		onTrigger = function(player, npc)
 			player:PrintToPlayer("Polly: You better not be looking at my food smoothskin..." ,13)
 		end
@@ -306,6 +313,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		y = -2,
 		z = 66.5,
         rotation = 128,
+		
+		onInitialize = function(player, npc)
+			npc:hideName(true)
+		end,
 		
 		onTrigger = function(player, npc)
 			player:PrintToPlayer("A warm welcoming fire..." ,13)

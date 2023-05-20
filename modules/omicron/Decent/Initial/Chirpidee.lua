@@ -214,12 +214,13 @@ local Chirpadee = zone:insertDynamicEntity({
 	end,	
 	
 	onTrigger = function(player, npc, status)
-		player:PrintToPlayer("チューチュー (You should bring me some escha gear and 3 if the Eschalixer +2.)", 0, npc:getPacketName())
+		npc:facePlayer(player)
+		player:PrintToPlayer("チューチュー (You should bring me some escha gear and 3 if the Eschalixer +2.)", npc:getPacketName())
 		player:PrintToPlayer("チュー (I'll be able to augment the equipment for you at that point.)", 13)
     end,
 	
 	onTrade = function(player, npc, trade)
-		
+		npc:facePlayer(player)
 		local tradeedItem = 0
 	
 		if player:getCharVar("[GFZitah]item") == 0 then
