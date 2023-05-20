@@ -394,7 +394,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 			
 			
 			onTrigger = function(player, npc)
-			
+			npc:faceplayer(player) -- only player sees the turning
 			local menu =
 			{
 				title = "Hmm? ",
