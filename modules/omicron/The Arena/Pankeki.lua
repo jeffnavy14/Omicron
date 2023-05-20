@@ -23,6 +23,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
         rotation = 180.250,
 		
 		onTrigger = function(player, npc)
+			npc:facePlayer(player)
 			local AlexStored = player:getCharVar("AlexStored")
 			local Jettons = player:getCurrency("jetton")
 			local menu  = {}
@@ -56,6 +57,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 					"Stored Alexandrite",
 					function(playerArg)
 						player:PrintToPlayer(string.format("Pankeki: The total stored Alexandrite sits at: %u", player:getCharVar("AlexStored")), 13)
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -74,6 +78,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent Alexandrite stored.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -92,6 +99,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent tokens.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -121,6 +131,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -139,6 +152,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -157,6 +173,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -193,6 +212,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -204,6 +226,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("You need more inventory space!", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -221,6 +246,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -239,6 +267,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -255,6 +286,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -278,6 +312,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -290,6 +327,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -302,6 +342,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -318,6 +361,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 						else
 							player:PrintToPlayer("Insufficent jettons.", 29)
 						end
+						npc:timer(1000, function(npc)
+							npc:setPosRot(180.25)
+						end)
 					end,
 				},
 				{
@@ -334,6 +380,7 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 		end,
 
 		onTrade = function(player, npc, trade)
+			npc:facePlayer(player)
 			local AlexStored = player:getCharVar("AlexStored")
 			if AlexStored < 1 then
 				AlexStored = 0
@@ -344,6 +391,9 @@ m:addOverride("xi.zones.The_Colosseum.Zone.onInitialize", function(zone)
 				player:PrintToPlayer(string.format("Pankeki: The total stored Alexandrite sits at: %u", player:getCharVar("AlexStored")), 13)
 				player:tradeComplete();
 			end
+			npc:timer(1000, function(npc)
+				npc:setPosRot(180.25)
+			end)
 		end,
 		
     })
