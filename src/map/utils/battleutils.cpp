@@ -446,9 +446,9 @@ namespace battleutils
 
     CWeaponSkill* GetWeaponSkill(uint16 WSkillID)
     {
-        XI_DEBUG_BREAK_IF(WSkillID >= MAX_WEAPONSKILL_ID);
         if (WSkillID >= MAX_WEAPONSKILL_ID)
         {
+            ShowError("WSkillID (%d) exceeds MAX_WEAPONSKILL_ID.", WSkillID);
             return nullptr;
         }
 
@@ -465,7 +465,11 @@ namespace battleutils
 
     const std::list<CWeaponSkill*>& GetWeaponSkills(uint8 skill)
     {
-        XI_DEBUG_BREAK_IF(skill >= MAX_SKILLTYPE);
+        if (skill >= MAX_SKILLTYPE)
+        {
+            ShowWarning("Skill (%d) exceeds MAX_SKILLTYPE", skill);
+            return g_PWeaponSkillsList[SKILL_NONE];
+        }
 
         return g_PWeaponSkillsList[skill];
     }
@@ -2616,7 +2620,7 @@ namespace battleutils
 
             if (shouldApplyLevelCorrection)
             {
-                int16 dLvl = PAttacker->GetMLevel() - PDefender->GetMLevel();
+                int16 dLvl = 0;
                 // Skip penalties for avatars, this should likely be all pets and mobs but I have no proof
                 // of this for ACC, ATT level correction for Pets/Avatars is the same as mobs though.
                 bool isPet    = PAttacker->objtype == TYPE_PET;
@@ -2630,17 +2634,17 @@ namespace battleutils
 
                 if (isAvatar)
                 {
-                    if (dLvl > 0)
-                    {
-                        // Avatars have a known level difference cap of 38
-                        hitrate += static_cast<int16>(std::min(dLvl, (int16)38) * 2);
-                    }
+                    dLvl = PAttacker->GetMLevel() - PDefender->GetMLevel();
+                    // Avatars have a known level difference cap of 38
+                    dLvl = std::clamp(dLvl, static_cast<int16>(0), static_cast<int16>(38));
                 }
-                else
+                // Only players are penalized for dLvl
+                else if (PAttacker->objtype == TYPE_PC && PAttacker->GetMLevel() < PDefender->GetMLevel())
                 {
-                    // Everything else has no known caps, though it's likely 38 like avatars
-                    hitrate += static_cast<int16>(dLvl * 2);
+                    dLvl = PAttacker->GetMLevel() - PDefender->GetMLevel();
                 }
+
+                hitrate += static_cast<int16>(dLvl * 2);
             }
 
             // https://www.bg-wiki.com/bg/Hit_Rate
@@ -3800,7 +3804,12 @@ namespace battleutils
             {
                 if (PSCEffect->GetTier() == 0)
                 {
-                    XI_DEBUG_BREAK_IF(!PSCEffect->GetPower());
+                    if (!PSCEffect->GetPower())
+                    {
+                        ShowWarning("PSCEffect Power was 0.");
+                        return SUBEFFECT_NONE;
+                    }
+
                     // Previous effect is an opening effect, meaning the power is
                     // actually the ID of the opening weaponskill.  We need all 3
                     // of the possible skillchain properties on the initial link.
@@ -3920,7 +3929,7 @@ namespace battleutils
                 break;
 
             default:
-                XI_DEBUG_BREAK_IF(true);
+                ShowWarning("Invalid Skillchain Type received (%d).", element);
                 return 0;
                 break;
         }
@@ -4008,7 +4017,11 @@ namespace battleutils
         ELEMENT            appliedEle = ELEMENT_NONE;
         int16              resistance = GetSkillchainMinimumResistance(skillchain, PDefender, &appliedEle);
 
-        XI_DEBUG_BREAK_IF(chainLevel <= 0 || chainLevel > 4 || chainCount <= 0 || chainCount > 5);
+        if (chainLevel <= 0 || chainLevel > 4 || chainCount <= 0 || chainCount > 5)
+        {
+            ShowWarning("chainLevel (%d) or chainCount (%d) exceeds bounds.", chainLevel, chainCount);
+            return 0;
+        }
 
         // Skill chain damage = (Closing Damage)
         //                      × (Skill chain Level/Number from Table)
@@ -4073,12 +4086,17 @@ namespace battleutils
 
     CItemEquipment* GetEntityArmor(CBattleEntity* PEntity, SLOTTYPE Slot)
     {
-        XI_DEBUG_BREAK_IF(Slot < SLOT_HEAD || Slot > SLOT_LINK2);
+        if (Slot < SLOT_HEAD || Slot > SLOT_LINK2)
+        {
+            ShowWarning("Invalid Slot Type (%d) passed to function.", static_cast<uint8>(Slot));
+            return nullptr;
+        }
 
         if (PEntity->objtype == TYPE_PC)
         {
             return (((CCharEntity*)PEntity)->getEquip(Slot));
         }
+
         return nullptr;
     }
 
@@ -6262,7 +6280,12 @@ namespace battleutils
 
     bool HasClaim(CBattleEntity* PEntity, CBattleEntity* PTarget)
     {
-        XI_DEBUG_BREAK_IF(PTarget == nullptr);
+        if (PTarget == nullptr)
+        {
+            ShowWarning("PTarget is null.");
+            return false;
+        }
+
         CBattleEntity* PMaster = PEntity;
 
         if (PEntity->PMaster != nullptr)

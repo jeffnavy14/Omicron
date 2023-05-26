@@ -101,7 +101,7 @@ quest.sections =
 
         [xi.zone.XARCABARD] =
         {
-            ['qm2'] =
+            ['qm_boreal_tiger'] =
             {
                 onTrigger = function(player, npc)
                     if
@@ -113,7 +113,7 @@ quest.sections =
                 end,
             },
 
-            ['qm3'] =
+            ['qm_boreal_coeurl'] =
             {
                 onTrigger = function(player, npc)
                     if
@@ -125,7 +125,7 @@ quest.sections =
                 end,
             },
 
-            ['qm4'] =
+            ['qm_boreal_hound'] =
             {
                 onTrigger = function(player, npc)
                     if

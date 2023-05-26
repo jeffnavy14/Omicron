@@ -170,7 +170,7 @@ public:
 
     auto   getZone(sol::object const& arg0) -> std::optional<CLuaZone>; // Get Entity zone
     uint16 getZoneID();                                                 // Get Entity zone ID
-    auto   getZoneName() -> const std::string&;                         // Get Entity zone name
+    auto   getZoneName() -> std::string;                                // Get Entity zone name
     bool   hasVisitedZone(uint16 zone);                                 // true if player has previously entered zone
     uint16 getPreviousZone();                                           // Get Entity previous zone
     uint8  getCurrentRegion();                                          // Get Entity conquest region
@@ -471,9 +471,9 @@ public:
     void   setSkillRank(uint8 skillID, uint8 newrank);                // Set new skill craft rank
     uint16 getCharSkillLevel(uint8 skillID);                          // Get char skill level
 
-    void addLearnedWeaponskill(uint8 wsID);
-    bool hasLearnedWeaponskill(uint8 wsID);
-    void delLearnedWeaponskill(uint8 wsID);
+    void addLearnedWeaponskill(uint8 wsUnlockId);
+    bool hasLearnedWeaponskill(uint8 wsUnlockId);
+    void delLearnedWeaponskill(uint8 wsUnlockId);
 
     void trySkillUp(uint8 skill, uint8 level, sol::object const& forceSkillUpObj, sol::object const& useSubSkillObj);
 
