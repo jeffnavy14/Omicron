@@ -94,7 +94,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	
 
 	onTrigger = function(player, npc, status)
-
+		npc:facePlayer(player)
 		if player:getCharVar("NibState") == 8 and
 		  player:getFreeSlotsCount() > 0
 		then
@@ -128,7 +128,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
     end,
 	
 	onTrade = function(player, npc, trade)
-
+		npc:facePlayer(player)
 		if (player:getCharVar("NibState")) == 1 then
 			if (trade:hasItemQty(20524, 1)) then
 				player:setCharVar("NibReward", 1)

@@ -24,6 +24,9 @@ zones[xi.zone.THE_COLOSSEUM] =
     },
     mob =
     {
+	LITTLE_LIZZIE_YI                 = 17068084,
+    LITTLE_LIZZIE_YA                 = 17068085,
+	DEME_SHADOW						 = 17068086,
     },
     npc =
     {

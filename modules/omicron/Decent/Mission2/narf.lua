@@ -35,7 +35,7 @@ local beginInvasion = function(player, npc)
 		player:changeMusic(2, 33)
 		player:changeMusic(3, 33)
 		player:changeMusic(4, 33)
-        local tier = math.random(1, 5)
+		local tier = math.random(1, 5)
 		if tier == 3 then
 			player:addItem(4074, 1)
 		elseif tier == 4 then
@@ -66,7 +66,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	onTrigger = function(player, npc)
 		if player:getCharVar("Mission2State") == 3 then
 			player:PrintToPlayer("You wish to once again contend against the old invaders eh?",0, npc:getPacketName())
-			player:PrintToPlayer("Bring me more of that infamy and I can make it happen",13)
+			player:PrintToPlayer("Bring me more of that infamy, along with either 5 eschalixirs or 3 eschalixer +1's and I can make it happen",13)
 		elseif player:getCharVar("Mission2State") == 2 then
 			player:PrintToPlayer("Well done ol' chap!, I say never have I seen a finer display.",0, npc:getPacketName())
 			player:PrintToPlayer("The leader was Teodor... something odd about that one...",13)
@@ -80,12 +80,12 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		elseif player:getCharVar("Mission2State") == 1 then
 			player:PrintToPlayer("I can let you relive the last invsion...", 0, npc:getPacketName())
 			player:PrintToPlayer("I just need 100 infamy and some Eschalixers", 13)
-			player:PrintToPlayer("Of the regular, 5, which I will draw on an easier version. Of the Higher quality, 3. You will get an improved quality upon completion.", 13)
+			player:PrintToPlayer("Of the regular, 5. Of the Higher quality, 3. You will get an improved quality upon completion.", 13)
 		elseif player:getCharVar("TimStuff") == 2 then
 			player:PrintToPlayer("There was a point back when these people first came to this island that there were invasions...",0, npc:getPacketName())
 			player:PrintToPlayer("I can let you relive one of those instances if you like...", 13)
 			player:PrintToPlayer("I would need 100 of the local currency... Infamy I believe, and some Eschalixers", 13)
-			player:PrintToPlayer("Of the regular, 5. Of the Higher quality, 40. You will get an improved quality upon completion.", 13)
+			player:PrintToPlayer("Of the regular, 5. Of the Higher quality, 3. You will get an improved quality upon completion.", 13)
 			player:setCharVar("Mission2State", 1)
 			player:setCharVar("Mission2FirstClear", 0)
 		else
@@ -99,7 +99,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			if trade:hasItemQty(9084, 5) then -- Eschalixer (10rp per)
 				player:setCharVar("InvReward", 9085) -- Eschalixer +1 (50rp per)
 				player:setLocalVar("InvTier", 0)
-			elseif trade:hasItemQty(9085, 3) then -- Eschalixer +1 (50rp per, amount needed reduced to reduce time sink)
+			elseif trade:hasItemQty(9085, 3) then -- Eschalixer +1 (50dp per)
 				player:setCharVar("InvReward", 9086) -- Eschalixer +2 (2000rp per)
 				player:setLocalVar("InvTier", 1)
 			end

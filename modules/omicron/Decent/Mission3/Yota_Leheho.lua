@@ -26,7 +26,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	
 
 	onTrigger = function(player, npc, status)
-		
+		npc:facePlayer(player)
 		if (player:getCharVar("Mission3State") == 1) then
 			player:PrintToPlayer("Sadly still no word on the chapters I'm missing... my research is at a standstill for now...", 0, npc:getPacketName())
 			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 25, I would very much like to have them", 13)
@@ -84,11 +84,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		else
 			player:PrintToPlayer("So much research, so few books.", 0, npc:getPacketName())
 		end
-		
     end,
 	
 	onTrade = function(player, npc, trade)
-		
+		npc:facePlayer(player)
 		if (player:getCharVar("Mission3State") == 1) and
 		  (trade:hasItemQty(3429, 1)) and 
 		  (trade:hasItemQty(3430, 1)) and
@@ -139,7 +138,6 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		else
 			player:PrintToPlayer("Thank you for the offer, but I must pass.", 0, npc:getPacketName())
 		end
-		
 	end,
 
 })
