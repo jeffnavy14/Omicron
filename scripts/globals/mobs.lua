@@ -94,7 +94,8 @@ end
 xi.mob.skills =
 {
     RECOIL_DIVE = 641,
-    CYTOKINESIS = 2514
+    CYTOKINESIS = 2514,
+    DISSOLVE = 2550,
 }
 
 -----------------------------------

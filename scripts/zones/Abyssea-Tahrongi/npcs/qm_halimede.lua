@@ -1,16 +1,16 @@
 -----------------------------------
 -- Zone: Abyssea-Tahrongi
---  NPC: qm1 (???)
+--  NPC: qm_halimede (???)
 -- Spawns Halimede
 -- !pos -234 15 -603 45
 -----------------------------------
-require('scripts/globals/abyssea')
-require('scripts/globals/items')
+local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
+require("scripts/globals/abyssea")
+require("scripts/globals/items")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local ID = zones[player:getZoneID()]
     xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.HALIMEDE, { xi.items.HIGH_QUALITY_CLIONID_WING })
 end
 

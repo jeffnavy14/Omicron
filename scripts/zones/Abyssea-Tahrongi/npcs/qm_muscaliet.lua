@@ -1,16 +1,16 @@
 -----------------------------------
 -- Zone: Abyssea-Tahrongi
---  NPC: qm11 (???)
+--  NPC: qm_muscaliet (???)
 -- Spawns Muscaliet
 -- !pos 253 46 291 45
 -----------------------------------
-require('scripts/globals/abyssea')
-require('scripts/globals/items')
+local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
+require("scripts/globals/abyssea")
+require("scripts/globals/items")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local ID = zones[player:getZoneID()]
     xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.MUSCALIET, { xi.items.RESILIENT_MANE, xi.items.SMOOTH_WHISKER })
 end
 

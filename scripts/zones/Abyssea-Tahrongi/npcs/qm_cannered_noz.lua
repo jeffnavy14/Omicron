@@ -1,21 +1,21 @@
 -----------------------------------
 -- Zone: Abyssea-Tahrongi
---  NPC: qm2 (???)
--- Spawns Vetehinen
--- !pos 74 .001 -435 45
+--  NPC: qm_cannered_noz (???)
+-- Spawns Cannered Noz
+-- !pos -355 4 251 45
 -----------------------------------
-require('scripts/globals/abyssea')
-require('scripts/globals/items')
+local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
+require("scripts/globals/abyssea")
+require("scripts/globals/items")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.VETEHINEN, { xi.items.HIGH_QUALITY_LIMULE_PINCER })
+    xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.CANNERED_NOZ, { xi.items.BALEFUL_SKULL })
 end
 
 entity.onTrigger = function(player, npc)
-    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.HIGH_QUALITY_LIMULE_PINCER })
+    xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.items.BALEFUL_SKULL })
 end
 
 entity.onEventUpdate = function(player, csid, option)

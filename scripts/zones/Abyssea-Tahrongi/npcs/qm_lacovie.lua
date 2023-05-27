@@ -1,21 +1,22 @@
 -----------------------------------
 -- Zone: Abyssea-Tahrongi
---  NPC: qm21 (???)
+--  NPC: qm_lacovie (???)
 -- Spawns Lacovie
+-- !pos -325 23 432 45
+-- !pos -336 24 442 45
 -- !pos -316 24 442 45
 -----------------------------------
-require('scripts/globals/abyssea')
+local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
+require("scripts/globals/abyssea")
 require('scripts/globals/keyitems')
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local ID = zones[player:getZoneID()]
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.LACOVIE_2, { xi.ki.OVERGROWN_MANDRAGORA_FLOWER, xi.ki.CHIPPED_SANDWORM_TOOTH })
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.LACOVIE_1, { xi.ki.CHIPPED_SANDWORM_TOOTH, xi.ki.OVERGROWN_MANDRAGORA_FLOWER })
 end
 
 entity.onEventUpdate = function(player, csid, option)

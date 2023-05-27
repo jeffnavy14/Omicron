@@ -129,9 +129,6 @@ void ReportErrorToPlayer(CBaseEntity* PEntity, std::string const& message = "") 
 
 namespace luautils
 {
-    bool                                  contentRestrictionEnabled;
-    std::unordered_map<std::string, bool> contentEnabledMap;
-
     std::unique_ptr<Filewatcher> filewatcher;
 
     std::unordered_map<uint32, sol::table> customMenuContext;
@@ -299,8 +296,6 @@ namespace luautils
         }
 
         // Handle settings
-        contentRestrictionEnabled = settings::get<bool>("main.RESTRICT_CONTENT");
-
         moduleutils::LoadLuaModules();
 
         filewatcher = std::make_unique<Filewatcher>(std::vector<std::string>{ "scripts", "modules", "settings" });
@@ -1649,20 +1644,8 @@ namespace luautils
             std::string contentVariable("ENABLE_");
             contentVariable.append(contentTag);
 
-            bool contentEnabled;
-
-            if (auto contentEnabledIter = contentEnabledMap.find(contentVariable); contentEnabledIter != contentEnabledMap.end())
-            {
-                contentEnabled = contentEnabledIter->second;
-            }
-            else
-            {
-                // Cache contentTag lookups in a map so that we don't re-hit the Lua file every time
-                contentEnabled = settings::get<bool>(fmt::format("main.{}", contentVariable));
-
-                contentEnabledMap[contentVariable] = contentEnabled;
-            }
-
+            bool contentEnabled            = settings::get<bool>(fmt::format("main.{}", contentVariable));
+            bool contentRestrictionEnabled = settings::get<bool>("main.RESTRICT_CONTENT");
             if (!contentEnabled && contentRestrictionEnabled)
             {
                 return false;
@@ -1977,7 +1960,8 @@ namespace luautils
                 break;
             default:
                 // Should never hit this
-                XI_DEBUG_BREAK_IF(true);
+                ShowError("Invalid objtype for entity received.");
+                return -1;
         }
         auto filename = fmt::format(pathFormat, zone, name);
 
@@ -4221,7 +4205,11 @@ namespace luautils
 
     void AfterInstanceRegister(CBaseEntity* PChar)
     {
-        XI_DEBUG_BREAK_IF(!PChar->PInstance);
+        if (!PChar->PInstance)
+        {
+            ShowWarning("PInstance is null.");
+            return;
+        }
 
         TracyZoneScoped;
 

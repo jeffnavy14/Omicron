@@ -1,16 +1,16 @@
 -----------------------------------
 -- Zone: Abyssea-Tahrongi
---  NPC: qm6 (???)
+--  NPC: qm_gancanagh (???)
 -- Spawns Gancanagh
 -- !pos 74 11 -51 45
 -----------------------------------
-require('scripts/globals/abyssea')
-require('scripts/globals/items')
+local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
+require("scripts/globals/abyssea")
+require("scripts/globals/items")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local ID = zones[player:getZoneID()]
     xi.abyssea.qmOnTrade(player, npc, trade, ID.mob.GANCANAGH, { xi.items.CLUMP_OF_ALKALINE_HUMUS })
 end
 

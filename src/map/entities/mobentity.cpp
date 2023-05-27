@@ -507,7 +507,7 @@ void CMobEntity::PostTick()
 
 float CMobEntity::GetRoamDistance()
 {
-    return (float)getMobMod(MOBMOD_ROAM_DISTANCE) / 10.0f;
+    return (float)getMobMod(MOBMOD_ROAM_DISTANCE);
 }
 
 float CMobEntity::GetRoamRate()
@@ -1390,7 +1390,6 @@ void CMobEntity::Die()
         PBattlefield->handleDeath(this);
     }
 
-    m_THLvl = PEnmityContainer->GetHighestTH();
     PEnmityContainer->Clear();
     PAI->ClearStateStack();
     if (PPet != nullptr && PPet->isAlive() && GetMJob() == JOB_SMN)
@@ -1416,6 +1415,7 @@ void CMobEntity::Die()
 
             DistributeRewards();
             m_OwnerID.clean();
+            m_THLvl = 0;
         }
     }));
     // clang-format on
@@ -1467,4 +1467,9 @@ bool CMobEntity::OnAttack(CAttackState& state, action_t& action)
     {
         return CBattleEntity::OnAttack(state, action);
     }
+}
+
+bool CMobEntity::isWideScannable()
+{
+    return CBaseEntity::isWideScannable() && !getMobMod(MOBMOD_NO_WIDESCAN);
 }
