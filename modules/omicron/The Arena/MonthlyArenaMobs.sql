@@ -1,22 +1,16 @@
----------------------------------------
---Zone 71 The_Colloseum Custom Arena
--- !pos -600 0 40
----------------------------------------
--- Spawn Points
----------------------------------------
---March Monsters
+  --  March Monsters
 REPLACE INTO `mob_spawn_points` VALUES (17068033,'Lucky_Rabbit','Lucky Rabbit',1,40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068034,'Lucky_Tink','Lucky Tink',2,40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068035,'Leprechan','Leprechan?',3,-40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068036,'Albatross','Albatross',4,-40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068037,'Blarney','Blarney',5,40,0,350,63.75);
---April Monsters
+--  April Monsters
 REPLACE INTO `mob_spawn_points` VALUES (17068038,'Annoyed_Avian','Annoyed Avian',6,40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068039,'Furry_Thief','Furry Thief',7,40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068040,'Sad_Egghunter','Sad Egghunter',8,-40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068041,'Proto_Egg','Proto Egg',9,-40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068042,'Easter_Turkey','Easter Turkey',10,40,0,350,63.75);
---April Adds
+--  April Adds
 REPLACE INTO `mob_spawn_points` VALUES (17068043,'Berated_Birdie','Berated Birdie',11,40,0,355,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068044,'Berated_Birdie','Berated Birdie',11,40,0,355,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068045,'Berated_Birdie','Berated Birdie',11,40,0,340,180.25);
@@ -27,13 +21,13 @@ REPLACE INTO `mob_spawn_points` VALUES (17068049,'Berated_Birdie','Berated Birdi
 REPLACE INTO `mob_spawn_points` VALUES (17068050,'Berated_Birdie','Berated Birdie',11,40,0,340,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068051,'Berated_Birdie','Berated Birdie',11,50,0,350,127.50);
 REPLACE INTO `mob_spawn_points` VALUES (17068052,'Berated_Birdie','Berated Birdie',11,30,0,360,0);
---May Monsters
+--  May Monsters
 REPLACE INTO `mob_spawn_points` VALUES (17068053,'Leafy','Leafy',12,40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068054,'Unhappy_Bloom','Unhappy Bloom',13,40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068055,'Queen_Bee','Queen Bee',14,-40,0,-210,63.75); -- Bztavian w/ 2 adds, resummons @ 60/30
 REPLACE INTO `mob_spawn_points` VALUES (17068056,'Flutterfly','Flutterfly',15,-40,0,210,180.25); -- Twitherym swarm TP spam @ 90/70/50/30/10
 REPLACE INTO `mob_spawn_points` VALUES (17068057,'Blooming_Bark','Blooming Bark',16,40,0,350,63.75); -- Treant will have sapling adds 3 pop @ 90/60/30
---May Adds
+--  May Adds
 REPLACE INTO `mob_spawn_points` VALUES (17068058,'Bloomer','Bloomer',17,35,0,210,0); -- t1 Adds
 REPLACE INTO `mob_spawn_points` VALUES (17068059,'Sprout','Sprout',18,45,0,210,0);
 REPLACE INTO `mob_spawn_points` VALUES (17068060,'Bee_Guard','Bee Guard',19,-40,0,-210,63.75); -- t3 Adds
@@ -68,15 +62,15 @@ REPLACE INTO `mob_spawn_points` VALUES (17068086,'Deme_Shadow','Deme_Shadow',25,
 REPLACE INTO `mob_spawn_points` VALUES (17068087,'Deme_Shadow','Deme_Shadow',25,40,0,350,63.75);
 
 
----------------------------------------
+
 -- Mob Pools
----------------------------------------
+
 -- (poolid,name,packet_name,familyid,modelid,
 -- mjob,sjob,cmbskill,cmbdelay,cmbdmgmulti,
 -- behavior,aggro,true_detection,links,mobtype (2=NM),
 -- immunity,name_prefix,flag,entityflags,
---animationsub,hasspellscript,spelllist,namevis,roamflag,skill_list_id,resist_id)
----------------------------------------
+-- animationsub,hasspellscript,spelllist,namevis,roamflag,skill_list_id,resist_id)
+
 --  March Monsters
 REPLACE INTO `mob_pools` VALUES (8145,'Lucky_Rabbit','Lucky_Rabbit',206,0x00000C0100000000000000000000000000000000,6,2,7,240,100,0,1,1,1,2,0,0,4385,135,0,0,0,0,0,206,206);
 REPLACE INTO `mob_pools` VALUES (8146,'Lucky_Tink','Lucky_Tink',195,0x0000EE0700000000000000000000000000000000,3,3,12,240,100,0,1,0,0,2,7,0,0,0,0,0,635,0,0,195,195);
@@ -120,9 +114,9 @@ REPLACE INTO `mob_pools` VALUES (8177,'Marquis_Emun','Marquis_Emun',358,0x0000E9
 REPLACE INTO `mob_pools` VALUES (8178,'Little_Lizzie_Yi','Little_Lizzie_Yi',87,0x0000A40100000000000000000000000000000000,1,1,12,240,100,0,1,1,1,2,0,32,6,159,16,0,0,0,0,87,87);
 REPLACE INTO `mob_pools` VALUES (8179,'Little_Lizzie_Ya','Little_Lizzie_Ya',87,0x0000A40100000000000000000000000000000000,1,1,12,240,100,0,1,1,1,2,0,32,6,159,16,0,0,0,0,87,87);
 REPLACE INTO `mob_pools` VALUES (8180,'Deme_Shadow','Deme_Shadow',225,0x0000160300000000000000000000000000000000,1,4,7,240,100,0,1,1,1,2,1015,0,6,135,0,0,86,0,0,361,361);
----------------------------------------
+
 -- MOB_GROUPS (groupid, poolid, zoneid, name, respawntime, spawntype, dropid, hp, mp, minlevel, maxlevel, allegiance)
---------------------------------------
+
 -- March Monsters
 REPLACE INTO `mob_groups` VALUES (1,8145,71,'Lucky_Rabbit',0,128,0,120000,5000,119,119,0);
 REPLACE INTO `mob_groups` VALUES (2,8146,71,'Lucky_Tink',0,128,0,140000,5000,122,122,0);
@@ -163,9 +157,9 @@ REPLACE INTO `mob_groups` VALUES (33,8177,71,'Marquis_Emun',0,128,0,140000,5000,
 REPLACE INTO `mob_groups` VALUES (34,8178,71,'Little_Lizzie_Yi',0,128,0,160000,5000,123,123,0);
 REPLACE INTO `mob_groups` VALUES (35,8179,71,'Little_Lizzie_Ya',0,128,0,160000,5000,123,123,0);
 REPLACE INTO `mob_groups` VALUES (25,8180,71,'Deme_Shadow',0,128,0,200000,5000,133,133,0);
----------------------------------------
+
 -- Spawn Mods (poolid, modid, value, is_mob_mod)
----------------------------------------
+
 -- March Monsters
 REPLACE INTO `mob_pool_mods` VALUES (8145,2,0,1); -- GIL_MAX: 0
 REPLACE INTO `mob_pool_mods` VALUES (8146,2,0,1); -- GIL_MAX: 0
