@@ -225,6 +225,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		end
 		mob:setLocalVar("T5Phase", 15)
 	end
+	
 	for i = 0, 3 do
 		local petId = ID.mob.LITTLE_LIZZIE_YI + i
 		local pet = GetMobByID(petId)
@@ -243,7 +244,9 @@ end
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("[Arena]tier", 0)
 	player:addCurrency("jetton", 50)
+	player:addCurrency("nyzul_isle_assault_point", 50) -- REMOVE AFTER NYZUL FIXED
 	player:addItem(2488, 8)
+	player:addItem(3502, 1)
 	if not player:hasItem(26517) then
 		player:addItem(26517)
 	end
