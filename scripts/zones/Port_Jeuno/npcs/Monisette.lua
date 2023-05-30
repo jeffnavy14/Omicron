@@ -546,7 +546,7 @@ local tradeTable =
     [515] = { trade = { 28243, {4073, 8}, 1313, 8728 }, reward = 28273 }, -- Academic's Loafers +1
     [516] = { trade = { 27786, {4069, 8}, 1132, 8720 }, reward = 27705 }, -- Geomancy Galero +1 -- Geo
 	[517] = { trade = { 27926, {4070, 8}, 1132, 8722 }, reward = 27849 }, -- Geomancy Tunic +1
-	[518] = { trade = { 28066, {4071, 8}, 1132, 8724 }, reward = 28985 }, -- Geomancy Mitaines +1
+	[518] = { trade = { 28066, {4071, 8}, 1132, 8724 }, reward = 27985 }, -- Geomancy Mitaines +1
 	[519] = { trade = { 28206, {4072, 8}, 1132, 8726 }, reward = 28132 }, -- Geomancy Pants +1
 	[520] = { trade = { 28346, {4073, 8}, 1132, 8728 }, reward = 28265 }, -- Geomancy Sandals +1
 	[521] = { trade = { 27787, {4069, 8},  658, 8720 }, reward = 27706 }, -- Runeist Bandeau +1 -- Run
@@ -558,7 +558,7 @@ local tradeTable =
 -- Empyerian armor upgrade data
 -- [combinationId] = {trade = {Base AF, Item, Job Ingredient, Slot Ingredient} reward = empyReforged 109},
 -----------------------------------
--- From +1 Pieces >> Reforge NQ
+-- From +1 Pieces >> Reforge Empyerian NQ
 	[526] = { trade = { 11164, {4064, 10}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
 	[527] = { trade = { 11184, {4065, 10}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
 	[528] = { trade = { 11204, {4066, 10}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
@@ -659,7 +659,7 @@ local tradeTable =
 	[623] = { trade = { 11223, {4066, 10}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
 	[624] = { trade = { 11243, {4067, 10}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
 	[625] = { trade = { 11263, {4068, 10}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
--- From +2 Pieces >> Reforge NQ
+-- From +2 Pieces >> Reforge Empyerian NQ
 	[626] = { trade = { 11064, {4064, 5}, {2929, 1},  488 }, reward = 26740 }, -- Boii Mask
 	[627] = { trade = { 11084, {4065, 5}, {2929, 1},  837 }, reward = 26898 }, -- Boii Lorica
 	[628] = { trade = { 11104, {4066, 5}, {2929, 1}, 1110 }, reward = 27052 }, -- Boii Mufflers
@@ -760,7 +760,7 @@ local tradeTable =
 	[724] = { trade = { 11123, {4066, 5}, {2967, 1}, 1110 }, reward = 27090 }, -- Arbatel Bracers
 	[725] = { trade = { 11143, {4067, 5}, {2967, 1},  836 }, reward = 27275 }, -- Arbatel Pants
 	[726] = { trade = { 11163, {4068, 5}, {2967, 1}, 1131 }, reward = 27449 }, -- Arbatel Loafers
-	-- Reforge >> Reforge +1
+	-- Reforge >> Reforge Empyerian +1
 	[727] = { trade = { 26740, {4069, 8}, {9009, 15}, 9006 }, reward = 26741 }, -- Boii Mask +1
 	[728] = { trade = { 26898, {4070, 8}, {9009, 25}, 9062 }, reward = 26899 }, -- Boii Lorica +1
 	[729] = { trade = { 26052, {4071, 8}, {9009, 15}, 9005 }, reward = 27053 }, -- Boii Mufflers +1
