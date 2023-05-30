@@ -23,8 +23,8 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 local SpawnerA = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = " ",
-        look = 721,
+        name = "North Light",
+        look = 2492,
         x = 605.000,
         y = -3.000,
         z = 510.000,
@@ -61,8 +61,8 @@ local SpawnerA = zone:insertDynamicEntity({
 local SpawnerB = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = ".",
-        look = 721,
+        name = "Northeast Light",
+        look = 2492,
         x = 711.000,
         y = -3.100,
         z = 404.000,
@@ -98,8 +98,8 @@ local SpawnerB = zone:insertDynamicEntity({
 local SpawnerC = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = ",",
-        look = 721,
+        name = "Northwest Light",
+        look = 2492,
         x = 397.000,
         y = -3.000,
         z = 322.000,
@@ -136,7 +136,7 @@ local SpawnerC = zone:insertDynamicEntity({
 local SpawnerD = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = "  ",
+        name = "East Light",
         look = 2492,
         x = 770.000,
         y = -3.000,
@@ -174,7 +174,7 @@ local SpawnerD = zone:insertDynamicEntity({
 local SpawnerE = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = ". ",
+        name = "Southeast Light",
         look = 2492,
         x = 717.000,
         y = -3.400,
@@ -212,7 +212,7 @@ local SpawnerE = zone:insertDynamicEntity({
 local SpawnerF = zone:insertDynamicEntity({
 
         objtype = xi.objType.NPC,
-        name = ", ",
+        name = "Southwest Light",
         look = 2492,
         x = 393.000,
         y = -3.200,
