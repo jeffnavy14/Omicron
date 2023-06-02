@@ -7,7 +7,7 @@ mixins = { require("scripts/mixins/job_special") }
 local entity = {}
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Underlord Bekgudik")
+	mob:renameEntity("Underlord Bekgud")
 	mob:setLocalVar("T1Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
@@ -59,7 +59,7 @@ end
 
 entity.onMobEngaged = function(mob, player, target)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
-	GetMobByID(17068076):updateEnmity(target)
+	GetMobByID(17068071):updateEnmity(target)
 	GetMobByID(17068077):updateEnmity(target)
 end
 
