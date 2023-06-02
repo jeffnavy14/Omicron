@@ -1,8 +1,6 @@
 require("scripts/globals/spell_data")
 require("scripts/globals/jobpoints")
 require("scripts/globals/magicburst")
-require("scripts/globals/settings")
-require("scripts/globals/status")
 require("scripts/globals/utils")
 require("scripts/globals/msg")
 -----------------------------------
@@ -635,7 +633,7 @@ xi.magic.getEffectResistance = function(target, effectId)
     local statusResistance = target:getMod(xi.mod.STATUSRES)
 
     if effectToResistanceMod[effectId] then
-        statusResistance = statusResistance + effectToResistanceMod[effectId]
+        statusResistance = statusResistance + target:getMod(effectToResistanceMod[effectId])
     end
 
     return statusResistance
