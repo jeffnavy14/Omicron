@@ -7,7 +7,7 @@ mixins = { require("scripts/mixins/job_special") }
 local entity = {}
 
 entity.onMobSpawn = function(mob, player)
-	mob:renameEntity("Gurfurry the Unshaven")
+	mob:renameEntity("Unshaven Gurfury")
 	mob:setLocalVar("T2Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 	
@@ -58,8 +58,8 @@ end
 
 entity.onMobEngaged = function(mob, player, target)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
-	GetMobByID(17068076):updateEnmity(target)
-	GetMobByID(17068077):updateEnmity(target)
+	GetMobByID(17068078):updateEnmity(target)
+	GetMobByID(17068079):updateEnmity(target)
 end
 
 entity.onMobFight = function(mob, player, target)
@@ -74,7 +74,7 @@ end
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("[Arena]tier", 0)
 	player:addCurrency("jetton", 35)
-	player:addCurrency("nyzul_isle_assault_point", 35 -- REMOVE AFTER NYZUL FIXED)
+	player:addCurrency("nyzul_isle_assault_point", 35) -- REMOVE AFTER NYZUL FIXED)
 	player:addItem(2488, 6)
 	player:PrintToPlayer("You have cleared the Tier 2 Arena fight! For your efforts you have been rewarded 35 Jettons and 6 Alexandrite.", 29)
 	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
