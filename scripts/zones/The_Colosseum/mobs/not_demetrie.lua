@@ -8,6 +8,7 @@ mixins = { require("scripts/mixins/job_special") }
 local entity = {}
 
 entity.onMobSpawn = function(mob, player)
+	mob:setModelId(789)
 	mob:renameEntity("Not Demetrie")
 	mob:setLocalVar("T5Phase", 0)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 1)

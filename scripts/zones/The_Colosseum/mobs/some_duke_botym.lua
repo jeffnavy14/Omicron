@@ -73,7 +73,7 @@ end
 entity.onMobDeath = function(mob, player)
 	player:setCharVar("[Arena]tier", 0)
 	player:addCurrency("jetton", 45)
-	player:addCurrency("nyzul_isle_assault_point", 45 -- REMOVE AFTER NYZUL FIXED)
+	player:addCurrency("nyzul_isle_assault_point", 45) -- REMOVE AFTER NYZUL FIXED)
 	player:addItem(2488, 7)
 	player:PrintToPlayer("You have cleared the Tier 4 Arena fight! For your efforts you have been rewarded 45 Jettons and 7 Alexandrite.", 29)
 	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
