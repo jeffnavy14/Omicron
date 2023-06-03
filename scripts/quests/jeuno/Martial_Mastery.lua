@@ -56,7 +56,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == QUEST_AVAILABLE and
-                player:getMainLvl() >= 96 and
+                player:getMainLvl() >= 74 and
                 hasRequiredCombatSkill(player)
         end,
 
@@ -77,7 +77,7 @@ quest.sections =
         check = function(player, status, vars)
             -- TODO: Confirm that the player must be on a valid job to complete
             return status == QUEST_ACCEPTED and
-                player:getMainLvl() >= 96 and
+                player:getMainLvl() >= 74 and
                 hasRequiredCombatSkill(player) and
                 player:getMeritCount() >= 15
         end,

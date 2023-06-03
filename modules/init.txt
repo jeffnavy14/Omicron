@@ -36,14 +36,4 @@
 #
 # Live example:
 /omicron
-custom/commands/
-#-----------------------
-#        Dynamis
-#-----------------------
-# This loads special due to requirements between globals
 
-#-----------------------
-#        Renamer
-#-----------------------
-renamer
-#-----------------------
