@@ -21,7 +21,7 @@ function onTrigger(player, npc)
         return
     end
     
-    if os.time() - player:getCharVar("[Nyzul]SkippedFloor") < 3600 then
+    if os.time() - player:getCharVar("[Nyzul]SkippedFloor") < 900 then
         player:PrintToPlayer("This command is still on cooldown!")
         return
     end

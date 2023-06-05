@@ -48,24 +48,24 @@ REPLACE INTO `mob_spawn_points` VALUES (17068068,'Sprouted_Seed','Sprouted Seed'
 REPLACE INTO `mob_spawn_points` VALUES (17068069,'Sprouted_Seed','Sprouted Seed',20,30,0,350,127.5);
 REPLACE INTO `mob_spawn_points` VALUES (17068070,'Sprouted_Seed','Sprouted Seed',20,30,0,360,0);
 -- June Monsters
-REPLACE INTO `mob_spawn_points` VALUES (17068071,'Tzii_Xoca_the_Imitator','Tzii_Xoca_the_Imitator',21,40,0,210,180.25);
-REPLACE INTO `mob_spawn_points` VALUES (17068072,'Gurfurry_the_Unshaven','Gurfurry the Unshaven',22,40,0,-210,63.75);
+REPLACE INTO `mob_spawn_points` VALUES (17068071,'Tzii_Xoca','Tzii_Xoca',21,40,0,210,180.25);
+REPLACE INTO `mob_spawn_points` VALUES (17068072,'Unshaven_Gurfury','Unshaven Gurfury',22,40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068073,'Don_Tonby','Don Tonby',23,-40,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068074,'Some_Duke_Botym','Some Duke Botym',24,-40,0,210,180.25);
 REPLACE INTO `mob_spawn_points` VALUES (17068075,'Not_Demetrie','Not Demetrie',25,40,0,350,63.75);
 -- Jumne Adds
-REPLACE INTO `mob_spawn_points` VALUES (17068076,'Underlord_Bekgudik','Underlord_Bekgudik',26,35,0,210,0); -- t1 Adds
-REPLACE INTO `mob_spawn_points` VALUES (17068077,'ZuDoo_Grittyking','Zu\'Doo Grittyking',27,45,0,210,0);
-REPLACE INTO `mob_spawn_points` VALUES (17068078,'Galuul_Na_Na','Galuul_Na_Na',28,35,0,-210,63.75); -- t2 Adds
+REPLACE INTO `mob_spawn_points` VALUES (17068076,'Underlord_Bekgud','Underlord Bekgud',26,35,0,210,0); -- t1 Adds
+REPLACE INTO `mob_spawn_points` VALUES (17068077,'Gritty_ZuDoo','Gritty_Zu\'Doo',27,45,0,210,0);
+REPLACE INTO `mob_spawn_points` VALUES (17068078,'Galuul_Na_Na','Galuul Na Na',28,35,0,-210,63.75); -- t2 Adds
 REPLACE INTO `mob_spawn_points` VALUES (17068079,'Maduse','Maduse',29,45,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068080,'Fishy_Fisher','Fishy Fisher',30,-35,0,-210,63.75); -- t3 Adds
-REPLACE INTO `mob_spawn_points` VALUES (17068081,'Buggy_Bugger','Buggy_Bugger',31,-45,0,-210,63.75);
+REPLACE INTO `mob_spawn_points` VALUES (17068081,'Buggy_Bugger','Buggy Bugger',31,-45,0,-210,63.75);
 REPLACE INTO `mob_spawn_points` VALUES (17068082,'Marquis_Ellucin','Marquis Ellucin',32,-35,0,210,180.25); -- t4 Adds
 REPLACE INTO `mob_spawn_points` VALUES (17068083,'Marquis_Emun','Marquis Emun',33,-45,0,210,180.25);
-REPLACE INTO `mob_spawn_points` VALUES (17068084,'Little_Lizzie_Yi','Little_Lizzie_Yi',34,40,0,350,63.75); -- t5 Adds
-REPLACE INTO `mob_spawn_points` VALUES (17068085,'Little_Lizzie_Ya','Little_Lizzie_Ya',35,40,0,350,63.75);
-REPLACE INTO `mob_spawn_points` VALUES (17068086,'Deme_Shadow','Deme_Shadow',25,40,0,350,63.75);
-REPLACE INTO `mob_spawn_points` VALUES (17068087,'Deme_Shadow','Deme_Shadow',25,40,0,350,63.75);
+REPLACE INTO `mob_spawn_points` VALUES (17068084,'Little_Lizzie_Yi','Little Lizzie Yi',34,40,0,350,63.75); -- t5 Adds
+REPLACE INTO `mob_spawn_points` VALUES (17068085,'Little_Lizzie_Ya','Little Lizzie Ya',35,40,0,350,63.75);
+REPLACE INTO `mob_spawn_points` VALUES (17068086,'Deme_Shadow','Deme Shadow',25,40,0,350,63.75);
+REPLACE INTO `mob_spawn_points` VALUES (17068087,'Deme_Shadow','Deme Shadow',25,40,0,350,63.75);
 
 
 ---------------------------------------
@@ -103,14 +103,14 @@ REPLACE INTO `mob_pools` VALUES (8162,'Sprout','Sprout',178,0x000035080000000000
 REPLACE INTO `mob_pools` VALUES (8163,'Bee_Guard','Bee_Guard',48,0x0000110100000000000000000000000000000000,1,1,2,240,240,0,1,1,1,2,0,0,0,133,0,0,0,0,0,48,48);
 REPLACE INTO `mob_pools` VALUES (8164,'Sprouted_Seed','Sprouted_Seed',216,0x0000880100000000000000000000000000000000,1,1,12,240,100,0,1,1,1,2,0,0,0,135,0,0,0,0,0,216,216);
 -- June Monsters
-REPLACE INTO `mob_pools` VALUES (8165,'Tzii_Xoca_the_Imitator','Tzii_Xoca_the_Imitator',360,0x00000D0300000000000000000000000000000000,5,13,12,265,125,0,1,1,1,2,0,32,290,157,0,0,464,0,0,360,360);
-REPLACE INTO `mob_pools` VALUES (8166,'Gurfurry_the_Unshaven','Gurfurry_the_Unshaven',326,0x00004B0700000000000000000000000000000000,2,2,1,480,125,0,1,1,1,2,0,32,1,157,0,0,0,0,0,326,326);
-REPLACE INTO `mob_pools` VALUES (8167,'Don_Tonby','Don_Tonby',145,0x0000CA0B00000000000000000000000000000000,10,0,3,240,100,2,0,0,0,0,0,32,0,3,0,0,326,0,0,1029,145);
-REPLACE INTO `mob_pools` VALUES (8168,'Some_Duke_Botym','Some_Duke_Botym',358,0x0000F00200000000000000000000000000000000,15,15,11,240,100,0,1,0,1,2,0,32,0,143,0,0,31,0,0,358,358);
+REPLACE INTO `mob_pools` VALUES (8165,'Tzii_Xoca','Tzii_Xoca',360,0x00000D0300000000000000000000000000000000,5,13,12,265,125,0,1,1,1,2,0,32,290,157,0,0,464,0,0,360,360);
+REPLACE INTO `mob_pools` VALUES (8166,'Unshaven_Gurfurry','Unshaven_Gurfurry',326,0x00004B0700000000000000000000000000000000,2,2,1,480,125,0,1,1,1,2,0,0,1,157,0,0,0,0,0,326,326);
+REPLACE INTO `mob_pools` VALUES (8167,'Don_Tonby','Don_Tonby',145,0x0000AC0400000000000000000000000000000000,10,0,3,240,100,0,1,1,1,2,0,32,0,3,0,0,326,0,0,1029,145); -- need different look
+REPLACE INTO `mob_pools` VALUES (8168,'Some_Duke_Botym','Some_Duke_Botym',358,0x0000F00200000000000000000000000000000000,15,15,11,240,100,0,1,1,1,2,0,32,0,143,0,0,31,0,0,358,358);
 REPLACE INTO `mob_pools` VALUES (8169,'Not_Demetrie','Not_Demetrie',225,0x0000160300000000000000000000000000000000,8,4,4,240,100,0,1,1,1,2,0,0,1516,131,0,0,20,0,0,224,225);
 -- June Adds
-REPLACE INTO `mob_pools` VALUES (8170,'Underlord_Bekgudik','Underlord_Bekgudik',334,0x0000F30300000000000000000000000000000000,7,7,3,240,125,0,1,1,1,2,0,32,1709,1181,0,0,4,0,0,334,334);
-REPLACE INTO `mob_pools` VALUES (8171,'ZuDoo_Grittyking','ZuDoo_Grittyking',202,0x00000E0300000000000000000000000000000000,3,1,7,265,125,0,1,1,1,2,0,32,5074,157,0,0,1,0,0,202,202);
+REPLACE INTO `mob_pools` VALUES (8170,'Underlord_Bekgud','Underlord_Bekgud',334,0x0000F30300000000000000000000000000000000,7,7,3,240,125,0,1,1,1,2,0,32,1709,1181,0,0,4,0,0,334,334);
+REPLACE INTO `mob_pools` VALUES (8171,'Gritty_ZuDoo','Gritty_ZuDoo',202,0x00000E0300000000000000000000000000000000,3,1,7,265,125,0,1,1,1,2,0,32,5074,157,0,0,1,0,0,202,202);
 REPLACE INTO `mob_pools` VALUES (8172,'Galuul_Na_Na','Galuul_Na_Na',285,0x0000470700000000000000000000000000000000,13,13,3,280,125,0,1,1,1,2,0,32,70,157,0,0,7,0,0,285,285);
 REPLACE INTO `mob_pools` VALUES (8173,'Maduse','Maduse',171,0x0000490700000000000000000000000000000000,11,11,9,240,125,0,1,1,1,2,259,32,6983,541,8,0,0,0,0,725,171);
 REPLACE INTO `mob_pools` VALUES (8174,'Fishy_Fisher','Fishy_Fisher',213,0x00001E0500000000000000000000000000000000,4,14,8,240,100,0,1,1,1,2,0,32,0,155,0,0,2,0,0,712,213);
@@ -189,4 +189,3 @@ REPLACE INTO `mob_pool_mods` VALUES (8161,2,0,1); -- GIL_MAX: 0
 REPLACE INTO `mob_pool_mods` VALUES (8162,2,0,1); -- GIL_MAX: 0
 REPLACE INTO `mob_pool_mods` VALUES (8163,2,0,1); -- GIL_MAX: 0
 REPLACE INTO `mob_pool_mods` VALUES (8164,2,0,1); -- GIL_MAX: 0
-
