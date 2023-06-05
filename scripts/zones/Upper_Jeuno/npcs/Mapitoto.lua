@@ -9,7 +9,6 @@ require("scripts/globals/chocobo")
 require("scripts/globals/keyitems")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
-require("scripts/globals/status")
 -----------------------------------
 local entity = {}
 
@@ -58,8 +57,6 @@ entity.onTrigger = function(player, npc)
         player:hasKeyItem(xi.ki.MAP_OF_THE_JEUNO_AREA)
     then
         player:startEvent(10223, 0, 0, 4)
-    else
-        player:startEvent(10222)
     end
 end
 

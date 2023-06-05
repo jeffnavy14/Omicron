@@ -5,7 +5,6 @@ local ID = require('scripts/zones/Dangruf_Wadi/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/keyitems')
 require('scripts/globals/treasure')
-require('scripts/globals/status')
 -----------------------------------
 local zoneObject = {}
 
@@ -17,8 +16,8 @@ zoneObject.onInitialize = function(zone)
     xi.treasure.initZone(zone)
 end
 
-zoneObject.onConquestUpdate = function(zone, updatetype)
-    xi.conq.onConquestUpdate(zone, updatetype)
+zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)

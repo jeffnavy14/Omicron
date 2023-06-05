@@ -4,7 +4,6 @@
 local ID = require('scripts/zones/Port_Windurst/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/cutscenes')
-require('scripts/globals/settings')
 require('scripts/globals/zone')
 -----------------------------------
 local zoneObject = {}
@@ -33,8 +32,8 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
-zoneObject.onConquestUpdate = function(zone, updatetype)
-    xi.conq.onConquestUpdate(zone, updatetype)
+zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTransportEvent = function(player, transport)

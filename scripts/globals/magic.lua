@@ -1,8 +1,6 @@
 require("scripts/globals/spell_data")
 require("scripts/globals/jobpoints")
 require("scripts/globals/magicburst")
-require("scripts/globals/settings")
-require("scripts/globals/status")
 require("scripts/globals/utils")
 require("scripts/globals/msg")
 -----------------------------------
@@ -227,10 +225,17 @@ local function calculateMagicBurst(caster, spell, target, params)
     local modburst = 1.0
 
     if
-        spell:getSpellGroup() == 3 and
-        not (caster:hasStatusEffect(xi.effect.BURST_AFFINITY) or caster:hasStatusEffect(xi.effect.AZURE_LORE))
+        spell and
+        spell:getSpellGroup() == xi.magic.spellGroup.BLUE
     then
-        return burst
+        if
+            not (caster:hasStatusEffect(xi.effect.BURST_AFFINITY) or
+            caster:hasStatusEffect(xi.effect.AZURE_LORE))
+        then
+            return burst
+        end
+
+        caster:delStatusEffectSilent(xi.effect.BURST_AFFINITY)
     end
 
     -- Obtain first multiplier from gear, atma and job traits
@@ -635,7 +640,7 @@ xi.magic.getEffectResistance = function(target, effectId)
     local statusResistance = target:getMod(xi.mod.STATUSRES)
 
     if effectToResistanceMod[effectId] then
-        statusResistance = statusResistance + effectToResistanceMod[effectId]
+        statusResistance = statusResistance + target:getMod(effectToResistanceMod[effectId])
     end
 
     return statusResistance

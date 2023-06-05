@@ -8,10 +8,8 @@ require('scripts/globals/chocobo_digging')
 require('scripts/globals/conquest')
 require('scripts/globals/missions')
 require('scripts/globals/npc_util')
-require('scripts/globals/settings')
 require('scripts/globals/chocobo')
 require('scripts/globals/quests')
-require('scripts/globals/status')
 require('scripts/globals/zone')
 -----------------------------------
 local zoneObject = {}
@@ -44,8 +42,8 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
-zoneObject.onConquestUpdate = function(zone, updatetype)
-    xi.conq.onConquestUpdate(zone, updatetype)
+zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)

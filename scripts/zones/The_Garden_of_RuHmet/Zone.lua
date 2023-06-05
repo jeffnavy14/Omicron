@@ -3,8 +3,6 @@
 -----------------------------------
 local ID = require('scripts/zones/The_Garden_of_RuHmet/IDs')
 require('scripts/globals/conquest')
-require('scripts/globals/settings')
-require('scripts/globals/status')
 require('scripts/globals/missions')
 require('scripts/globals/keyitems')
 -----------------------------------
@@ -106,8 +104,8 @@ zoneObject.onGameHour = function(zone)
     end
 end
 
-zoneObject.onConquestUpdate = function(zone, updatetype)
-    xi.conq.onConquestUpdate(zone, updatetype)
+zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)

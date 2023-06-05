@@ -4,7 +4,6 @@
 local huxzoiGlobal = require('scripts/zones/Grand_Palace_of_HuXzoi/globals')
 local ID = require('scripts/zones/Grand_Palace_of_HuXzoi/IDs')
 require('scripts/globals/conquest')
-require('scripts/globals/status')
 -----------------------------------
 local zoneObject = {}
 
@@ -23,8 +22,8 @@ zoneObject.onInitialize = function(zone)
     huxzoiGlobal.pickTemperancePH()
 end
 
-zoneObject.onConquestUpdate = function(zone, updatetype)
-    xi.conq.onConquestUpdate(zone, updatetype)
+zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
