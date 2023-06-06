@@ -46,6 +46,8 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.STUNRES, 0)
 	mob:setMod(xi.mod.AMNESIARES, 0)
 	mob:setMod(xi.mod.LULLABYRES, 0)
+	
+	mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 0)
 
 	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
 	mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
@@ -74,7 +76,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 2)
-	elseif HPP < 75 and T5Phase == 2 then
+	elseif HPP < 75 and T5Phase == 2 then -- Part 2
 		mob:setAnimationSub(0)
 		mob:setMobMod(xi.mobMod.SKILL_LIST, 361)
 		mob:setModelId(790)
@@ -108,7 +110,8 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 5)
-	elseif HPP < 50 and T5Phase == 5 then
+		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 10)
+	elseif HPP < 50 and T5Phase == 5 then -- Part 3
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
 		mob:setAnimationSub(0)
 		mob:setModelId(2171)
@@ -167,6 +170,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 11)
+		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 20)
 	elseif HPP < 40 and T5Phase == 11 then
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
@@ -190,6 +194,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 13)
+		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 30)
 	elseif HPP < 20 and T5Phase == 13 then
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
@@ -224,6 +229,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 				pet:updateEnmity(target)
 			end
 		end
+		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 40)
 		mob:setLocalVar("T5Phase", 15)
 	end
 	
