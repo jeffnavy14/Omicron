@@ -50,17 +50,17 @@ local T1MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
-						SpawnMob(17068033)
+						SpawnMob(17068033, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
-						SpawnMob(17068038)
+						SpawnMob(17068038, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
-						SpawnMob(17068053)
-						SpawnMob(17068058)
-						SpawnMob(17068059)
+						SpawnMob(17068053, 1800)
+						SpawnMob(17068058, 1800)
+						SpawnMob(17068059, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob(17068071)
-						SpawnMob(17068076)
-						SpawnMob(17068077)
+						SpawnMob(17068071, 1800)
+						SpawnMob(17068076, 1800)
+						SpawnMob(17068077, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -70,13 +70,14 @@ local T1MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob(17068071)
-						SpawnMob(17068076)
-						SpawnMob(17068077)
+						SpawnMob(17068071, 1800)
+						SpawnMob(17068076, 1800)
+						SpawnMob(17068077, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
 					--]]
+					
 					SetServerVariable("[Arena]T1active", 1)
 				else
 					player:PrintToPlayer("One of your party members is registered for a different tier, and was not transported.", 13)
@@ -128,15 +129,15 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
-						SpawnMob(17068034)
+						SpawnMob(17068034, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
-						SpawnMob(17068039)
+						SpawnMob(17068039, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
-						SpawnMob(17068054)
+						SpawnMob(17068054, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob(17068072)
-						SpawnMob(17068078)
-						SpawnMob(17068079)
+						SpawnMob(17068072, 1800)
+						SpawnMob(17068078, 1800)
+						SpawnMob(17068079, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -146,13 +147,14 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob(17068072)
-						SpawnMob(17068078)
-						SpawnMob(17068079)
+						SpawnMob(17068072, 1800)
+						SpawnMob(17068078, 1800)
+						SpawnMob(17068079, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
 					--]]
+					
 					SetServerVariable("[Arena]T2active", 1)
 				else
 					player:PrintToPlayer("One of your party members is registered for a different tier, and was not transported.", 13)
@@ -202,15 +204,15 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
-						SpawnMob(17068035)
+						SpawnMob(17068035, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
-						SpawnMob(17068040)
+						SpawnMob(17068040, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
-						SpawnMob(17068055)
+						SpawnMob(17068055, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob(17068073)
-						SpawnMob(17068080)
-						SpawnMob(17068081)
+						SpawnMob(17068073, 1800)
+						SpawnMob(17068080, 1800)
+						SpawnMob(17068081, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -220,13 +222,14 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob(17068073)
-						SpawnMob(17068080)
-						SpawnMob(17068081)
+						SpawnMob(17068073, 1800)
+						SpawnMob(17068080, 1800)
+						SpawnMob(17068081, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
 					--]]
+					
 					SetServerVariable("[Arena]T3active", 1)
 				else
 					player:PrintToPlayer("One of your party members is registered for a different tier, and was not transported.", 13)
@@ -275,15 +278,15 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
-						SpawnMob(17068036)
+						SpawnMob(17068036, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
-						SpawnMob(17068041)
+						SpawnMob(17068041, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
-						SpawnMob(17068056)
+						SpawnMob(17068056, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob(17068074)
-						SpawnMob(17068082)
-						SpawnMob(17068083)
+						SpawnMob(17068074, 1800)
+						SpawnMob(17068082, 1800)
+						SpawnMob(17068083, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -293,13 +296,18 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob(17068074)
-						SpawnMob(17068082)
-						SpawnMob(17068083)
+						SpawnMob(17068074, 1800)
+						SpawnMob(17068082, 1800)
+						SpawnMob(17068083, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
 					--]]
+					partyMember:timer(1800000, function(player)
+						if GetServerVariable("[Arena]T4active") == 1 then
+							SetServerVariable("[Arena]T4active, 0")
+						end
+					end)
 					SetServerVariable("[Arena]T4active", 1)
 				else
 					player:PrintToPlayer("One of your party members is registered for a different tier, and was not transported.", 13)
@@ -349,13 +357,13 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
-						SpawnMob(17068037)
+						SpawnMob(17068037, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
-						SpawnMob(17068042)
+						SpawnMob(17068042, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 5 then
-						SpawnMob(17068057)
+						SpawnMob(17068057, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 6 then
-						SpawnMob(17068075)
+						SpawnMob(17068075, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
@@ -365,7 +373,7 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
-						SpawnMob(17068075)
+						SpawnMob(17068075, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
 						SpawnMob()
 					end
