@@ -47,7 +47,7 @@ entity.onMobSpawn = function(mob, player)
 	mob:setMod(xi.mod.AMNESIARES, 0)
 	mob:setMod(xi.mod.LULLABYRES, 0)
 	
-	mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 0)
+	mob:setMobMod(xi.mobMod.SEVERE_SPELL_CHANCE, 0)
 
 	mob:addStatusEffect(xi.effect.REGAIN, 10, 3, 0)
 	mob:addStatusEffect(xi.effect.REGEN, 30, 3, 0)
@@ -110,7 +110,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 5)
-		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 10)
+		mob:setMobMod(xi.mobMod.SEVERE_SPELL_CHANCE, 10)
 	elseif HPP < 50 and T5Phase == 5 then -- Part 3
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
 		mob:setAnimationSub(0)
@@ -170,7 +170,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 11)
-		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 20)
+		mob:setMobMod(xi.mobMod.SEVERE_SPELL_CHANCE, 20)
 	elseif HPP < 40 and T5Phase == 11 then
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
@@ -194,7 +194,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
 		mob:addStatusEffectEx(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
 		mob:setLocalVar("T5Phase", 13)
-		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 30)
+		mob:setMobMod(xi.mobMod.SEVERE_SPELL_CHANCE, 30)
 	elseif HPP < 20 and T5Phase == 13 then
 		mob:setAnimationSub(1)
 		mob:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
@@ -216,7 +216,7 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 	elseif HPP < 10 and T5Phase == 14 then
 		mob:setAnimationSub(0)
 		mob:delStatusEffect(xi.effect.MAGIC_SHIELD)
-        
+		
 		for i = 0, 1 do
 			local petId = ID.mob.LITTLE_LIZZIE_YI + i
 			local pet = GetMobByID(petId)
@@ -224,25 +224,16 @@ entity.onMobFight = function(mob, player, target) -- 789 >> 790 >> 2171
 			if T5Phase == 14 and not pet:isSpawned() then
 				pet:spawn()
 				pet:updateEnmity(target)
-                mob:setLocalVar("T5Phase", 15)
+				mob:setLocalVar("T5Phase", 15)
 			end
 
 			if pet:getCurrentAction() == xi.act.ROAMING then
 				pet:updateEnmity(target)
 			end
 		end
-		mob:setMod(xi.mod.SEVERE_SPELL_CHANCE, 40)
+		mob:setMobMod(xi.mobMod.SEVERE_SPELL_CHANCE, 40)
+	end
 		
-	end
-	
-	for i = 0, 3 do
-		local petId = ID.mob.LITTLE_LIZZIE_YI + i
-		local pet = GetMobByID(petId)
-
-		if pet:getCurrentAction() == xi.act.ROAMING then
-			pet:updateEnmity(target)
-		end
-	end
 	if not GetMobByID(17068084):isSpawned() and
 	   not GetMobByID(17068085):isSpawned()
 	then
