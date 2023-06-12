@@ -529,16 +529,16 @@ local tradeTable =
     [498] = { trade = { 27960, {4071, 8}, 2200, 8724 }, reward = 27981 }, -- Foire Dastanas +1
     [499] = { trade = { 28107, {4072, 8}, 2200, 8726 }, reward = 28128 }, -- Foire Churidars +1
     [500] = { trade = { 28240, {4073, 8}, 2200, 8728 }, reward = 28270 }, -- Foire Babouches +1
-    [501] = { trade = { 27681, {4069, 8},  754, 8720 }, reward = 27702 }, -- Maxixi Tiara +1 -- DNC M
-    [502] = { trade = { 27825, {4070, 8},  754, 8722 }, reward = 27846 }, -- Maxixi Casaque +1
-    [503] = { trade = { 27961, {4071, 8},  754, 8724 }, reward = 27982 }, -- Maxixi Bangles +1
-    [504] = { trade = { 28108, {4072, 8},  754, 8726 }, reward = 28129 }, -- Maxixi Tights +1
-    [505] = { trade = { 28241, {4073, 8},  754, 8728 }, reward = 28271 }, -- Maxixi Toe Shoes +1
-    [506] = { trade = { 27682, {4069, 8},  754, 8720 }, reward = 27703 }, -- Maxixi Tiara +1 -- DNC F
-    [507] = { trade = { 27826, {4070, 8},  754, 8722 }, reward = 27847 }, -- Maxixi Casaque +1
-    [508] = { trade = { 27962, {4071, 8},  754, 8724 }, reward = 27983 }, -- Maxixi Bangles +1
-    [509] = { trade = { 28109, {4072, 8},  754, 8726 }, reward = 28130 }, -- Maxixi Tights +1
-    [510] = { trade = { 28242, {4073, 8},  754, 8728 }, reward = 28272 }, -- Maxixi Toe Shoes +1
+    [501] = { trade = { 27681, {4069, 8}, 2476, 8720 }, reward = 27702 }, -- Maxixi Tiara +1 -- DNC M
+    [502] = { trade = { 27825, {4070, 8}, 2476, 8722 }, reward = 27846 }, -- Maxixi Casaque +1
+    [503] = { trade = { 27961, {4071, 8}, 2476, 8724 }, reward = 27982 }, -- Maxixi Bangles +1
+    [504] = { trade = { 28108, {4072, 8}, 2476, 8726 }, reward = 28129 }, -- Maxixi Tights +1
+    [505] = { trade = { 28241, {4073, 8}, 2476, 8728 }, reward = 28271 }, -- Maxixi Toe Shoes +1
+    [506] = { trade = { 27682, {4069, 8}, 2476, 8720 }, reward = 27703 }, -- Maxixi Tiara +1 -- DNC F
+    [507] = { trade = { 27826, {4070, 8}, 2476, 8722 }, reward = 27847 }, -- Maxixi Casaque +1
+    [508] = { trade = { 27962, {4071, 8}, 2476, 8724 }, reward = 27983 }, -- Maxixi Bangles +1
+    [509] = { trade = { 28109, {4072, 8}, 2476, 8726 }, reward = 28130 }, -- Maxixi Tights +1
+    [510] = { trade = { 28242, {4073, 8}, 2476, 8728 }, reward = 28272 }, -- Maxixi Toe Shoes +1
     [511] = { trade = { 27683, {4069, 8}, 1313, 8720 }, reward = 27704 }, -- Academic's Mortarboard +1 -- Sch
     [512] = { trade = { 27827, {4070, 8}, 1313, 8722 }, reward = 27848 }, -- Academic's Gown +1
     [513] = { trade = { 27963, {4071, 8}, 1313, 8724 }, reward = 27984 }, -- Academic's Bracers +1
