@@ -58,7 +58,7 @@ local tradeTable =
     [ 38] = { trade = { 15564, {4067,  5}, 2288,  836 }, reward = 28093 }, -- Spaekona's tonban
     [ 39] = { trade = { 14092, {4068, 10}, 2288, 1311 }, reward = 28226 }, -- Spaekona's sabots
     [ 40] = { trade = { 15355, {4068,  5}, 2288, 1311 }, reward = 28226 }, -- Spaekona's sabots
-    [ 41] = { trade = { 12513, {4064, 10}, 2288,  844 }, reward = 27667 }, -- Atrophy chapeau -- Rdm
+    [ 41] = { trade = { 12513, {4064, 10}, 1699,  844 }, reward = 27667 }, -- Atrophy chapeau -- Rdm
     [ 42] = { trade = { 15229, {4064,  5}, 1699,  844 }, reward = 27667 }, -- Atrophy chapeau
     [ 43] = { trade = { 12642, {4065, 10}, 1699,  837 }, reward = 27811 }, -- Atrophy tabard
     [ 44] = { trade = { 14477, {4065,  5}, 1699,  837 }, reward = 27811 }, -- Atrophy tabard 
@@ -543,7 +543,7 @@ local tradeTable =
     [512] = { trade = { 27827, {4070, 8}, 1313, 8722 }, reward = 27848 }, -- Academic's Gown +1
     [513] = { trade = { 27963, {4071, 8}, 1313, 8724 }, reward = 27984 }, -- Academic's Bracers +1
     [514] = { trade = { 28110, {4072, 8}, 1313, 8726 }, reward = 28131 }, -- Academic's Pants +1
-    [515] = { trade = { 28243, {4073, 8}, 1313, 8728 }, reward = 28273 }, -- Academic's Loafers +1
+    [515] = { trade = { 28243, {4073, 8}, 1313, 8728 }, reward = 28264 }, -- Academic's Loafers +1
     [516] = { trade = { 27786, {4069, 8}, 1132, 8720 }, reward = 27705 }, -- Geomancy Galero +1 -- Geo
 	[517] = { trade = { 27926, {4070, 8}, 1132, 8722 }, reward = 27849 }, -- Geomancy Tunic +1
 	[518] = { trade = { 28066, {4071, 8}, 1132, 8724 }, reward = 27985 }, -- Geomancy Mitaines +1
