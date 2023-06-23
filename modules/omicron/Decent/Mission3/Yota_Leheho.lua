@@ -29,7 +29,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		npc:facePlayer(player)
 		if (player:getCharVar("Mission3State") == 1) then
 			player:PrintToPlayer("Sadly still no word on the chapters I'm missing... my research is at a standstill for now...", 0, npc:getPacketName())
-			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 25, I would very much like to have them", 13)
+			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 26, I would very much like to have them", 13)
 			player:setCharVar("Mission3FirstClear", 0)
 		elseif (player:getCharVar("Mission3State") == 2) and (os.time() > player:getCharVar("YotaTime")) then
 			player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts you provided", 0, npc:getPacketName())
@@ -89,11 +89,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 	onTrade = function(player, npc, trade)
 		npc:facePlayer(player)
 		if (player:getCharVar("Mission3State") == 1) and
-		  (trade:hasItemQty(3429, 1)) and 
-		  (trade:hasItemQty(3430, 1)) and
-		  (trade:hasItemQty(3431, 1)) and 
-		  (trade:hasItemQty(3432, 1)) and 
-		  (trade:hasItemQty(3433, 1))
+		  (trade:hasItemQty(3429, 1))
 		then
 			player:setCharVar("YotaTime", getVanaMidnight())
 			player:PrintToPlayer("This will take me some time to go through, come see again much later.", 0, npc:getPacketName())
