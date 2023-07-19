@@ -3,7 +3,6 @@
 -- NPC: ???
 -----------------------------------
 require("modules/module_utils")
-require('scripts/globals/keyitems')
 require("scripts/zones/Escha_ZiTah/Zone")
 require('scripts/globals/npc_util')
 require("scripts/globals/alitems")
