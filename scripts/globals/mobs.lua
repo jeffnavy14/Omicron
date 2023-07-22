@@ -7,7 +7,6 @@ require("scripts/globals/quests")
 require("scripts/globals/magic")
 require("scripts/globals/utils")
 require("scripts/globals/zone")
-require("scripts/globals/msg")
 -----------------------------------
 
 xi = xi or {}
@@ -462,10 +461,6 @@ xi.mob.onAddEffect = function(mob, target, damage, effect, params)
                     local power    = params.power or ae.power or 0
                     local tick     = ae.tick or 0
                     local duration = params.duration or ae.duration
-
-                    if dLevel < 0 then
-                        duration = duration - dLevel
-                    end
 
                     duration = utils.clamp(duration, ae.minDuration, ae.maxDuration) * resist
 

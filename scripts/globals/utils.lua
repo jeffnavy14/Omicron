@@ -97,8 +97,19 @@ function utils.join(input1, input2)
     return result
 end
 
+-- For use alongside os.time()
 function utils.minutes(minutes)
     return minutes * 60
+end
+
+-- For use alongside os.time()
+function utils.hours(hours)
+    return hours * 60 * 60
+end
+
+-- For use alongside os.time()
+function utils.days(days)
+    return days * 60 * 60 * 24
 end
 
 -- Generates a random permutation of integers >= min_val and <= max_val
@@ -617,6 +628,21 @@ function utils.splitStr(s, sep)
     end)
 
     return fields
+end
+
+-- Remove whitespace from the beginning and end of a string
+function utils.trimStr(s)
+    local s1 = string.gsub(s, "^s%+", "")
+    return string.gsub(s1, "%s+$", "")
+end
+
+-- Split a single string argument into multiple arguments
+function utils.splitArg(s)
+    local comma   = string.gsub(s, ",", " ")
+    local spaces  = string.gsub(comma, "%s+", " ")
+    local trimmed = utils.trimStr(spaces)
+
+    return utils.splitStr(trimmed, " ")
 end
 
 function utils.mobTeleport(mob, hideDuration, pos, disAnim, reapAnim)
