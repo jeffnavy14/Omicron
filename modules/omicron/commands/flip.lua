@@ -3,8 +3,6 @@
 -- desc: Temporarily flips the user's main job and subjob to allow equipping items usable only by subjob.
 ---------------------------------------------------------------------------------------------------
 
-require("scripts/globals/status");
-
 cmdprops =
 {
     permission = 0,

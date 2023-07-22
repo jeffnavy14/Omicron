@@ -2,7 +2,6 @@
 -- func: @mogshop <page number>
 -- desc: opens the custom moogle shop menu anywhere in the world
 --------------------------------------------------------------
-require("scripts/globals/keyitems");
 
 cmdprops =
 {
