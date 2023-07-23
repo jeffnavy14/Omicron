@@ -2,7 +2,7 @@
 require("modules/module_utils")
 require("scripts/globals/magic")
 require("scripts/globals/weaponskillids")
-require("scripts/globals/status")
+
 require("scripts/globals/trust")
 require("scripts/globals/utils")
 require("scripts/globals/ability")
