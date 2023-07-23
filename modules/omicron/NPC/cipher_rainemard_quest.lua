@@ -4,10 +4,7 @@
 --  NPC: Jamal
 -- !pos 3.779 2.000 140.932 243
 -----------------------------------
-require('scripts/globals/keyitems')
-require('scripts/globals/items')
 require('scripts/globals/npc_util')
-require('scripts/globals/settings')
 -----------------------------------
 local rainemard = Module:new("cipher_rainemard_quest")
 

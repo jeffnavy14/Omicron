@@ -3,7 +3,6 @@
 --   NM: Elatha
 ------------------------------
 require("scripts/globals/hunts")
-require("scripts/globals/status")
 mixins = {require("scripts/mixins/fomor_hate")}
 ------------------------------
 local entity = {}
