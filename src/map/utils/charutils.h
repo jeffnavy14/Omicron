@@ -24,9 +24,9 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 #include "common/cbasetypes.h"
 
-#include "../entities/charentity.h"
-#include "../items/item_equipment.h"
-#include "../trait.h"
+#include "entities/charentity.h"
+#include "items/item_equipment.h"
+#include "trait.h"
 
 class CPetEntity;
 class CMobEntity;
@@ -108,6 +108,7 @@ namespace charutils
 
     void   CheckWeaponSkill(CCharEntity* PChar, uint8 skill);
     bool   HasItem(CCharEntity* PChar, uint16 ItemID);
+    uint32 getItemCount(CCharEntity* PChar, uint16 ItemID);
     uint8  AddItem(CCharEntity* PChar, uint8 LocationID, CItem* PItem, bool silence = false);
     uint8  AddItem(CCharEntity* PChar, uint8 LocationID, uint16 itemID, uint32 quantity = 1, bool silence = false);
     uint8  MoveItem(CCharEntity* PChar, uint8 LocationID, uint8 SlotID, uint8 NewSlotID);
