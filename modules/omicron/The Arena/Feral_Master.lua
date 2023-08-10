@@ -64,7 +64,7 @@ local T1MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068088, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob()
+						SpawnMob(17068038, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
@@ -141,7 +141,7 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068089, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob()
+						SpawnMob(17068034, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
@@ -216,7 +216,7 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068090, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob()
+						SpawnMob(17068055, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
@@ -290,7 +290,7 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068091, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob()
+						SpawnMob(17068036, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
@@ -367,7 +367,7 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068092, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob()
+						SpawnMob(17068057, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
 						SpawnMob()
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
