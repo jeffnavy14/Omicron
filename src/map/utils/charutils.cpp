@@ -776,7 +776,7 @@ namespace charutils
 
         fmtQuery = "SELECT outpost_sandy, outpost_bastok, outpost_windy, runic_portal, maw, "
                    "campaign_sandy, campaign_bastok, campaign_windy, homepoints, survivals, "
-                   "abyssea_conflux, waypoints, eschan_portals, claimed_deeds "
+                   "abyssea_conflux, waypoints, eschan_portals, claimed_deeds, unique_event "
                    "FROM char_unlocks "
                    "WHERE charid = %u;";
 
@@ -822,6 +822,11 @@ namespace charutils
             buf    = nullptr;
             sql->GetData(13, &buf, &length);
             memcpy(&PChar->m_claimedDeeds, buf, (length > sizeof(PChar->m_claimedDeeds) ? sizeof(PChar->m_claimedDeeds) : length));
+
+            length = 0;
+            buf    = nullptr;
+            sql->GetData(14, &buf, &length);
+            memcpy(&PChar->m_uniqueEvents, buf, (length > sizeof(PChar->m_claimedDeeds) ? sizeof(PChar->m_claimedDeeds) : length));
         }
 
         PChar->PMeritPoints = new CMeritPoints(PChar);
@@ -5489,13 +5494,6 @@ namespace charutils
                 break;
         }
         sql->Query(fmtQuery, PChar->jobs.unlocked, PChar->jobs.job[job], PChar->id);
-
-        if (PChar->isNewPlayer() && PChar->jobs.job[job] >= 5)
-        {
-            PChar->menuConfigFlags.flags &= ~NFLAG_NEWPLAYER;
-            PChar->updatemask |= UPDATE_HP;
-            SaveMenuConfigFlags(PChar);
-        }
     }
 
     void SaveCharExp(CCharEntity* PChar, JOBTYPE job)
@@ -5834,7 +5832,8 @@ namespace charutils
 
         sql->Query("UPDATE chars SET playtime = '%u' WHERE charid = '%u' LIMIT 1;", playtime, PChar->id);
 
-        if (PChar->isNewPlayer() && playtime >= 36000)
+        // Removes new player icon if played for more than 240 hours
+        if (PChar->isNewPlayer() && playtime >= 864000)
         {
             PChar->menuConfigFlags.flags &= ~NFLAG_NEWPLAYER;
             PChar->updatemask |= UPDATE_HP;
