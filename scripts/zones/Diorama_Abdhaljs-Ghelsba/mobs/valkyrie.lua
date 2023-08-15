@@ -18,12 +18,14 @@ entity.onMobSpawn = function(mob)
 	mob:setMod(xi.mod.MACC, 1300)	
 end
 
-entity.onMobEngaged = function(mob, player)
+entity.onMobEngaged = function(mob, player, target)
 	mob:setTP(3000)
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
+	local MobID = mob:getID()
+	SpawnMob(16953485):updateEnmity(target)
 end
 
 entity.onMobRoam = function(mob, player)
@@ -33,7 +35,7 @@ entity.onMobRoam = function(mob, player)
 	end
 end
 
-entity.onMobFight = function(mob, player)
+entity.onMobFight = function(mob, player,target)
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
@@ -41,17 +43,7 @@ entity.onMobFight = function(mob, player)
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	local DeadValk = GetServerVariable("DeadValk")
-	SetServerVariable("DeadValk", DeadValk + 1)
-	if not GetMobByID(16953484):isSpawned() and
-		not GetMobByID(16953485):isSpawned()
-	then
-		local DeadValk = GetServerVariable("DeadValk")
-		local Person = mob:getLocalVar("Person")
-		if DeadValk >= 7 then
-			SpawnMob(16953384):updateEnmity(Person)
-		end
-	end
+	
 end
 
 entity.onMobDespawn = function(mob)

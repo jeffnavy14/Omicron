@@ -82,8 +82,8 @@ end
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	if mob:getID() > 16953459 then
 		player:PrintToPlayer("King has weakened a bit", 13)
-		GetMobByID(16953475):addHP(-15000)
 	end
+	player:addTreasure(9303, mob:getID())
 end
 
 entity.onMobDespawn = function(mob)

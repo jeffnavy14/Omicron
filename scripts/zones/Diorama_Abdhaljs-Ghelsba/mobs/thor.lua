@@ -33,29 +33,23 @@ entity.onMobRoam = function(mob, player)
 	end
 end
 
-entity.onMobFight = function(mob, player)
+entity.onMobFight = function(mob, player, target)
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
-	local HPP = mob:getHPP()
-	if HPP < 5 then
-		mob:setLocalVar("Person", target:getID())
-	end
+	
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	player:PrintToPlayer("Thor: All-Father! Heed my call!", 13)
+	SpawnMob(16953384):updateEnmity(Person)
+	player:PrintToPlayer("Odin: I hath come my son, in the name of the Hooded Lord I shall avenge thee! Then let Ragnorok come forth!", 13)
+	
 end
 
 entity.onMobDespawn = function(mob)
-	if not GetMobByID(16953485):isSpawned() then
-		local DeadValk = GetServerVariable("DeadValk")
-		local Person = mob:getLocalVar("Person")
-		if DeadValk > 7 then
-			SpawnMob(16953384):updateEnmity(Person)
-		end
-	end
+	
 end
 
 return entity

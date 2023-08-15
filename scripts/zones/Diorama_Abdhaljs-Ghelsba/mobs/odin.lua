@@ -22,10 +22,12 @@ end
 
 entity.onMobEngaged = function(mob, player)
 	mob:setTP(3000)
+	--[[
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
+	]]
 	local party = player:getParty()
 	for i, partyMember in pairs(party) do
 		partyMember:changeMusic(0, 186)
@@ -44,10 +46,12 @@ entity.onMobRoam = function(mob, player)
 end
 
 entity.onMobFight = function(mob, player)
+	--[[
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
+	]]
 	local HPP = mob:getHPP()
 	local Stage = mob:getLocalVar("Stage")
 	if HPP < 90 and Stage == 0 then -- Zantetsuken Kai
@@ -77,10 +81,11 @@ entity.onMobFight = function(mob, player)
 	elseif HPP < 10 and Stage == 8 then -- Zantetsuken *nned lua
 		mob:setLocalVar("Stage", 9)
 		mob:useMobAbility(2126)	
-	end
+	end	
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
+	local party = player:getParty()
 	if GetServerVariable("Decent") == 3 then
 		for i, partyMember in pairs(party) do
 			partyMember:changeMusic(0, 30)
@@ -100,7 +105,9 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	end
 	player:PrintToPlayer("Odin: So there are those that do have the strength to live...", 13)
 	player:PrintToPlayer("The looming darkness lifts from the air...", xi.msg.channel.NS_SAY)
-	if GetServerVariable("Decent") == 4 then
+	SetServerVariable("OdinDead", 1)
+	local AlexDead = GetServerVariable("AlexDead")
+	if GetServerVariable("Decent") == 4 and AlexDead == 0 then
 		player:PrintToPlayer("Yet the heavy light remains...", xi.msg.channel.NS_SAY)
 	end
 end

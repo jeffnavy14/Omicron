@@ -56,7 +56,10 @@ entity.onMobSpawn = function(mob)
 	mob:setMod(xi.mod.FASTCAST, 30)
 	local mobID = mob:getID()
 	if mobID < 16953460 then
-		mob:setMobMod(xi.mobMod.DROP_LIST, 0)
+		mob:setDropID(0)
+	end
+	if mobID > 16953459 then
+		mob:setDropID(4075)
 	end
 end
 
@@ -86,7 +89,10 @@ end
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	if mob:getID() > 16953459 then
 		player:PrintToPlayer("King has weakened a bit", 13)
-		GetMobByID(16953475):addHP(-15000)
+	end
+	local Scale = math.random(1, 100)
+	if Scale > 79 then
+		player:addTreasure(9305, mob:getID())
 	end
 end
 
@@ -104,7 +110,7 @@ entity.onMobDespawn = function(mob)
 	then
 		mob:timer(2000, function(mob)
 			DespawnMob(16953466)
-			SpawnMob(16953470)
+			SpawnMob(16953474)
 		end)
 	end
 end

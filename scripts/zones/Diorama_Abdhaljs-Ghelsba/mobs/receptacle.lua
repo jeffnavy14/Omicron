@@ -19,7 +19,7 @@ entity.onMobSpawn = function(mob)
 	mob:setMod(xi.mod.MACC, 1000)
 end
 
-entity.onMobEngaged = function(mob, player)
+entity.onMobEngaged = function(mob, player, target)
 	mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 	if GetServerVariable("Decent") == 1 then
 		SpawnMob(16953380):updateEnmity(target)
@@ -75,6 +75,7 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 			partyMember:changeMusic(3, 36)
 			partyMember:changeMusic(4, 36)
 		end
+		
 	elseif GetServerVariable("Decent") == 2 and MobNumber == 16953418 then -- Spawn Group 3
 		SetServerVariable("Decent", 3)
 		GetNPCByID(16953347):setStatus(xi.status.NORMAL)
@@ -83,12 +84,14 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 			SpawnMob(decentP3id)
 			decentP3id = decentP3id + 1
 		until decentP3id == 16953438
+		
 		local SecretDecent1ID = 16953476 -- Spawn Odin Group
-		repeat
-			SpawnMob(SecretDecent1ID, 900)
-			SecretDecent1ID = SecretDecent1ID + 1
-		until SecretDecent1ID == 16953486
+		SetServerVariable("OdinDead", 0)
 		SetServerVariable("DeadValk", 0)
+		repeat
+			SpawnMob(SecretDecent1ID)
+			SecretDecent1ID = SecretDecent1ID + 1
+		until SecretDecent1ID == 16953484
 		player:PrintToPlayer("A darkness looms in the air...", xi.msg.channel.NS_SAY)
 		SpawnMob(16953455) -- 3rd Receptacle
 		for i, partyMember in pairs(party) do
@@ -98,6 +101,7 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 			partyMember:changeMusic(3, 30)
 			partyMember:changeMusic(4, 30)
 		end
+		
 	elseif GetServerVariable("Decent") == 3 and MobNumber == 16953455 then -- Spawn Final Group
 		SetServerVariable("Decent", 4)
 		local decentP4id = 16953460
@@ -107,11 +111,13 @@ entity.onMobDeath = function(mob, player, isKiller, noKiller)
 		until decentP4id == 16953476
 		GetNPCByID(16953347):setStatus(xi.status.NORMAL)
 		GetNPCByID(16953348):setStatus(xi.status.NORMAL)
+		
 		local SecretDecent2ID = 16953486 -- Spawn Alexander Group
+		SetServerVariable("AlexDead", 0)
 		repeat
 			SpawnMob(SecretDecent2ID, 900)
 			SecretDecent2ID = SecretDecent2ID +1
-		until SecretDecent2ID == 16953498
+		until SecretDecent2ID == 16953494
 		player:PrintToPlayer("A heavy light fills the region...", xi.msg.channel.NS_SAY)
 		for i, partyMember in pairs(party) do
 			partyMember:changeMusic(0, 37)

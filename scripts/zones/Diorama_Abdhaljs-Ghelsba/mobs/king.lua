@@ -102,16 +102,34 @@ end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
 	SetServerVariable("Decent", 0)
-	player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
-	player:setPos(180,-20,183,120)
-	player:setCharVar("DecentGroup", 0)
-	player:changeMusic(0, 33)
-	player:changeMusic(1, 33)
-	player:changeMusic(2, 33)
-	player:changeMusic(3, 33)
-	player:changeMusic(4, 33)
-	player:PrintToPlayer("Oh Divine Lord I hath failed thee!", 13)
-	player:PrintToPlayer("Balamor's enchantment has expired.", 13)
+	local party = player:getParty()
+	for i, partyMember in pairs(party) do
+		partyMember:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
+		partyMember:timer(2000, function(player)
+			partyMember:setPos(180,-20,183,120)
+			partyMember:setCharVar("DecentGroup", 0)
+		end)
+		partyMember:changeMusic(0, 33)
+		partyMember:changeMusic(1, 33)
+		partyMember:changeMusic(2, 33)
+		partyMember:changeMusic(3, 33)
+		partyMember:changeMusic(4, 33)
+		partyMember:PrintToPlayer("Oh Divine Lord I hath failed thee!", 13)
+		partyMember:PrintToPlayer("Balamor's enchantment has expired.", 13)
+	end
+	player:addTreasure(9303, mob:getID())
+	local Scale = math.random(1, 100)
+	if Scale > 84 then
+		player:addTreasure(9307, mob:getID())
+	elseif Scale > 69 then
+		player:addTreasure(9306, mob:getID())
+	elseif Scale > 54 then
+		player:addTreasure(9305, mob:getID())
+	elseif Scale > 39 then
+		player:addTreasure(9304, mob:getID())
+	elseif Scale > 24 then
+		player:addTreasure(9303, mob:getID())
+	end
 end
 
 entity.onMobDespawn = function(mob)

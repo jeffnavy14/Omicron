@@ -1,13 +1,13 @@
 -----------------------------------
 -- Zone: Diorama_Abdhaljs-Ghelsba
--- Fenrir
+-- Alexander
 -----------------------------------
 local ID = require("scripts/zones/Diorama_Abdhaljs-Ghelsba/IDs")
 -----------------------------------
 local entity = {}
 	
 entity.onMobSpawn = function(mob)	
-	mob:renameEntity("Fenrir")
+	mob:renameEntity("Alexander")
 	mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
 	mob:hideHP(true)
 	mob:addStatusEffect(xi.effect.REGAIN, 100, 3, 0)
@@ -24,6 +24,14 @@ entity.onMobEngaged = function(mob, player)
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
+	local party = player:getParty()
+	for i, partyMember in pairs(party) do
+		partyMember:changeMusic(0, 187)
+		partyMember:changeMusic(1, 187)
+		partyMember:changeMusic(2, 187)
+		partyMember:changeMusic(3, 187)
+		partyMember:changeMusic(4, 187)
+	end
 end
 
 entity.onMobRoam = function(mob, player)
@@ -33,20 +41,36 @@ entity.onMobRoam = function(mob, player)
 	end
 end
 
-entity.onMobFight = function(mob, player, target)
+entity.onMobFight = function(mob, player,target)
 	if GetServerVariable("Decent") == 0 then
 		local mobID = mob:getID()
 		DespawnMob(mobID)
 	end
-	
 end
 
 entity.onMobDeath = function(mob, player, isKiller, noKiller)
-	player:PrintToPlayer("Thor: Well nephew I see thou shallt not fulfil thy Dom... come hither mortals! To battle!", 13)
+	local party = player:getParty()
+	if GetServerVariable("Decent") == 4 then
+		for i, partyMember in pairs(party) do
+			partyMember:changeMusic(0, 37)
+			partyMember:changeMusic(1, 37)
+			partyMember:changeMusic(2, 37)
+			partyMember:changeMusic(3, 37)
+			partyMember:changeMusic(4, 37)
+		end
+	end
+	SetServerVariable("AlexDead", 1)
+	local OdinDead = GetServerVariable("OdinDead")
+	
+	player:PrintToPlayer("Alexander: All must be purified...", 13)
+	player:PrintToPlayer("The heavy light dims...", xi.msg.channel.NS_SAY)
+	if OdinDead == 0 then
+		player:PrintToPlayer("Yet the looming darkness remains...", xi.msg.channel.NS_SAY)
+	end
 end
 
 entity.onMobDespawn = function(mob)
-	SpawnMob(16953484)
+	
 end
 
 return entity
