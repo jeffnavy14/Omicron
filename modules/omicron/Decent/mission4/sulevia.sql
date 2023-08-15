@@ -1,0 +1,278 @@
+-- Sulevia Mask
+INSERT INTO `item_mods` VALUES (25659,1,113); -- DEF: 133
+INSERT INTO `item_mods` VALUES (25659,2,40); -- HP: 40
+INSERT INTO `item_mods` VALUES (25659,5,40); -- MP: 40
+INSERT INTO `item_mods` VALUES (25659,8,25); -- STR: 25
+INSERT INTO `item_mods` VALUES (25659,9,11); -- DEX: 11
+INSERT INTO `item_mods` VALUES (25659,10,32); -- VIT: 32
+INSERT INTO `item_mods` VALUES (25659,11,12); -- AGI: 12
+INSERT INTO `item_mods` VALUES (25659,12,11); -- INT: 11
+INSERT INTO `item_mods` VALUES (25659,13,14); -- MND: 14
+INSERT INTO `item_mods` VALUES (25659,14,14); -- CHR: 14
+INSERT INTO `item_mods` VALUES (25659,25,26); -- ACC: 26
+INSERT INTO `item_mods` VALUES (25659,23,30); -- ATT: 30
+INSERT INTO `item_mods` VALUES (25659,68,27); -- EVA: 27
+INSERT INTO `item_mods` VALUES (25659,31,43); -- MEVA: 43
+INSERT INTO `item_mods` VALUES (25659,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25659,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25659,73,5); -- STP: 5
+INSERT INTO `item_mods` VALUES (25659,160,-400); -- DT: -4%
+-- Sulevia Plate
+INSERT INTO `item_mods` VALUES (25745,1,143); -- DEF: 143
+INSERT INTO `item_mods` VALUES (25745,2,70); -- HP: 70
+INSERT INTO `item_mods` VALUES (25745,5,70); -- MP: 70
+INSERT INTO `item_mods` VALUES (25745,8,33); -- STR: 33
+INSERT INTO `item_mods` VALUES (25745,9,16); -- DEX: 16
+INSERT INTO `item_mods` VALUES (25745,10,33); -- VIT: 33
+INSERT INTO `item_mods` VALUES (25745,11,16); -- AGI: 16
+INSERT INTO `item_mods` VALUES (25745,12,16); -- INT: 16
+INSERT INTO `item_mods` VALUES (25745,13,19); -- MND: 19
+INSERT INTO `item_mods` VALUES (25745,14,19); -- CHR: 19
+INSERT INTO `item_mods` VALUES (25745,25,28); -- ACC: 28
+INSERT INTO `item_mods` VALUES (25745,23,32); -- ATT: 32
+INSERT INTO `item_mods` VALUES (25745,68,36); -- EVA: 36
+INSERT INTO `item_mods` VALUES (25745,31,59); -- MEVA: 59
+INSERT INTO `item_mods` VALUES (25745,29,3); -- MDEF: 3
+INSERT INTO `item_mods` VALUES (25745,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25745,174,5); -- Skillchain Bonus: 5
+INSERT INTO `item_mods` VALUES (25745,160,-700); -- DT: -7%
+-- Sulevia Gauntlet
+INSERT INTO `item_mods` VALUES (25800,1,101); -- DEF: 101
+INSERT INTO `item_mods` VALUES (25800,2,30); -- HP: 30
+INSERT INTO `item_mods` VALUES (25800,5,30); -- MP: 30
+INSERT INTO `item_mods` VALUES (25800,8,15); -- STR: 15
+INSERT INTO `item_mods` VALUES (25800,9,26); -- DEX: 26
+INSERT INTO `item_mods` VALUES (25800,10,37); -- VIT: 37
+INSERT INTO `item_mods` VALUES (25800,12,6); -- INT: 6
+INSERT INTO `item_mods` VALUES (25800,13,24); -- MND: 24
+INSERT INTO `item_mods` VALUES (25800,14,19); -- CHR: 19
+INSERT INTO `item_mods` VALUES (25800,25,25); -- ACC: 25
+INSERT INTO `item_mods` VALUES (25800,23,29); -- ATT: 29
+INSERT INTO `item_mods` VALUES (25800,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25800,31,37); -- MEVA: 37
+INSERT INTO `item_mods` VALUES (25800,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25800,288,3); -- Double Attack: 3
+INSERT INTO `item_mods` VALUES (25800,160,-300); -- DT: -3%
+-- Sulevia Cuisses
+INSERT INTO `item_mods` VALUES (25858,1,125); -- DEF: 125
+INSERT INTO `item_mods` VALUES (25858,2,50); -- HP: 50
+INSERT INTO `item_mods` VALUES (25858,5,50); -- MP: 50
+INSERT INTO `item_mods` VALUES (25858,8,39); -- STR: 39
+INSERT INTO `item_mods` VALUES (25858,10,25); -- VIT: 25
+INSERT INTO `item_mods` VALUES (25858,11,14); -- AGI: 14
+INSERT INTO `item_mods` VALUES (25858,12,24); -- INT: 24
+INSERT INTO `item_mods` VALUES (25858,13,12); -- MND: 12
+INSERT INTO `item_mods` VALUES (25858,14,10); -- CHR: 10
+INSERT INTO `item_mods` VALUES (25858,25,27); -- ACC: 27
+INSERT INTO `item_mods` VALUES (25858,23,31); -- ATT: 31
+INSERT INTO `item_mods` VALUES (25858,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25858,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25858,29,2); -- MDEF: 2
+INSERT INTO `item_mods` VALUES (25858,384,200); -- Gear Haste: 2%
+INSERT INTO `item_mods` VALUES (25858,302,2); -- Triple Attack: 2
+INSERT INTO `item_mods` VALUES (25858,160,-500); -- DT: -5%
+-- Sulevia Leggings
+INSERT INTO `item_mods` VALUES (25925,1,83); -- DEF: 83
+INSERT INTO `item_mods` VALUES (25925,2,20); -- HP: 20
+INSERT INTO `item_mods` VALUES (25925,5,20); -- MP: 20
+INSERT INTO `item_mods` VALUES (25925,8,21); -- STR: 21
+INSERT INTO `item_mods` VALUES (25925,9,11); -- DEX: 11
+INSERT INTO `item_mods` VALUES (25925,10,21); -- VIT: 21
+INSERT INTO `item_mods` VALUES (25925,11,26); -- AGI: 26
+INSERT INTO `item_mods` VALUES (25925,13,10); -- MND: 10
+INSERT INTO `item_mods` VALUES (25925,14,24); -- CHR: 24
+INSERT INTO `item_mods` VALUES (25925,25,24); -- ACC: 24
+INSERT INTO `item_mods` VALUES (25925,23,28); -- ATT: 28
+INSERT INTO `item_mods` VALUES (25925,68,44); -- EVA: 44
+INSERT INTO `item_mods` VALUES (25925,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25925,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25925,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25925,840,5); -- WSDMG All: 5
+INSERT INTO `item_mods` VALUES (25925,160,-200); -- DT: -2%
+-- Sulevia Ring
+INSERT INTO `item_mods` VALUES (26204,1,10); -- DEF: 10
+INSERT INTO `item_mods` VALUES (26204,25,6); -- ACC: 6
+INSERT INTO `item_mods` VALUES (26204,23,6); -- ATT: 6
+INSERT INTO `item_mods` VALUES (26204,160,-300); -- DT: -3%
+-- Sulevia Mask +1
+INSERT INTO `item_mods` VALUES (25660,1,118); -- DEF: 118
+INSERT INTO `item_mods` VALUES (25660,2,40); -- HP: 40
+INSERT INTO `item_mods` VALUES (25660,5,40); -- MP: 40
+INSERT INTO `item_mods` VALUES (25660,8,30); -- STR: 30
+INSERT INTO `item_mods` VALUES (25660,9,16); -- DEX: 16
+INSERT INTO `item_mods` VALUES (25660,10,37); -- VIT: 37
+INSERT INTO `item_mods` VALUES (25660,11,12); -- AGI: 12
+INSERT INTO `item_mods` VALUES (25660,12,11); -- INT: 11
+INSERT INTO `item_mods` VALUES (25660,13,19); -- MND: 19
+INSERT INTO `item_mods` VALUES (25660,14,19); -- CHR: 19
+INSERT INTO `item_mods` VALUES (25660,25,38); -- ACC: 38
+INSERT INTO `item_mods` VALUES (25660,23,42); -- ATT: 42
+INSERT INTO `item_mods` VALUES (25660,68,27); -- EVA: 27
+INSERT INTO `item_mods` VALUES (25660,31,43); -- MEVA: 43
+INSERT INTO `item_mods` VALUES (25660,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25660,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25660,73,8); -- STP: 8
+INSERT INTO `item_mods` VALUES (25660,160,-500); -- DT: -5%
+-- Sulevia Plate +1
+INSERT INTO `item_mods` VALUES (25746,1,148); -- DEF: 148
+INSERT INTO `item_mods` VALUES (25746,2,70); -- HP: 70
+INSERT INTO `item_mods` VALUES (25746,5,70); -- MP: 70
+INSERT INTO `item_mods` VALUES (25746,8,38); -- STR: 38
+INSERT INTO `item_mods` VALUES (25746,9,21); -- DEX: 21
+INSERT INTO `item_mods` VALUES (25746,10,38); -- VIT: 38
+INSERT INTO `item_mods` VALUES (25746,11,16); -- AGI: 16
+INSERT INTO `item_mods` VALUES (25746,12,16); -- INT: 16
+INSERT INTO `item_mods` VALUES (25746,13,24); -- MND: 24
+INSERT INTO `item_mods` VALUES (25746,14,24); -- CHR: 24
+INSERT INTO `item_mods` VALUES (25746,25,40); -- ACC: 40
+INSERT INTO `item_mods` VALUES (25746,23,44); -- ATT: 44
+INSERT INTO `item_mods` VALUES (25746,68,36); -- EVA: 36
+INSERT INTO `item_mods` VALUES (25746,31,59); -- MEVA: 59
+INSERT INTO `item_mods` VALUES (25746,29,3); -- MDEF: 3
+INSERT INTO `item_mods` VALUES (25746,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25746,174,6); -- Skillchain Bonus: 6
+INSERT INTO `item_mods` VALUES (25746,160,-800); -- DT: -8%
+-- Sulevia Gauntlets +1
+INSERT INTO `item_mods` VALUES (25801,1,106); -- DEF: 106
+INSERT INTO `item_mods` VALUES (25801,2,30); -- HP: 30
+INSERT INTO `item_mods` VALUES (25801,4,30); -- MP: 30
+INSERT INTO `item_mods` VALUES (25801,8,20); -- STR: 20
+INSERT INTO `item_mods` VALUES (25801,9,31); -- DEX: 31
+INSERT INTO `item_mods` VALUES (25801,10,42); -- VIT: 42
+INSERT INTO `item_mods` VALUES (25801,12,6); -- INT: 6
+INSERT INTO `item_mods` VALUES (25801,13,29); -- MND: 29
+INSERT INTO `item_mods` VALUES (25801,14,24); -- CHR: 24
+INSERT INTO `item_mods` VALUES (25801,25,37); -- ACC: 37
+INSERT INTO `item_mods` VALUES (25801,23,41); -- ATT: 41
+INSERT INTO `item_mods` VALUES (25801,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25801,31,37); -- MEVA: 37
+INSERT INTO `item_mods` VALUES (25801,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25801,288,5); -- Double Attack: 5
+INSERT INTO `item_mods` VALUES (25801,160,-400); -- DT: -4%
+-- Sulevia Cuisses +1
+INSERT INTO `item_mods` VALUES (25859,1,130); -- DEF: 130
+INSERT INTO `item_mods` VALUES (25859,2,50); -- HP: 50
+INSERT INTO `item_mods` VALUES (25859,5,50); -- MP: 50
+INSERT INTO `item_mods` VALUES (25859,8,44); -- STR: 44
+INSERT INTO `item_mods` VALUES (25859,10,30); -- VIT: 30
+INSERT INTO `item_mods` VALUES (25859,11,14); -- AGI: 14
+INSERT INTO `item_mods` VALUES (25859,12,24); -- INT: 24
+INSERT INTO `item_mods` VALUES (25859,13,17); -- MND: 17
+INSERT INTO `item_mods` VALUES (25859,14,15); -- CHR: 15
+INSERT INTO `item_mods` VALUES (25859,25,39); -- ACC: 39
+INSERT INTO `item_mods` VALUES (25859,23,43); -- ATT: 43
+INSERT INTO `item_mods` VALUES (25859,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25859,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25859,29,2); -- MDEF: 2
+INSERT INTO `item_mods` VALUES (25859,384,200); -- Gear Haste: 2%
+INSERT INTO `item_mods` VALUES (25859,302,3); -- Triple Attack: 3
+INSERT INTO `item_mods` VALUES (25859,160,-600); -- DT: -6%
+-- Sulevia Leggins +1
+INSERT INTO `item_mods` VALUES (25926,1,88); -- DEF: 88
+INSERT INTO `item_mods` VALUES (25926,2,20); -- HP: 20
+INSERT INTO `item_mods` VALUES (25926,5,20); -- MP: 20
+INSERT INTO `item_mods` VALUES (25926,8,26); -- STR: 26
+INSERT INTO `item_mods` VALUES (25926,9,16); -- DEX: 16
+INSERT INTO `item_mods` VALUES (25926,10,26); -- VIT: 26
+INSERT INTO `item_mods` VALUES (25926,11,26); -- AGI: 26
+INSERT INTO `item_mods` VALUES (25926,13,15); -- MND: 15
+INSERT INTO `item_mods` VALUES (25926,14,29); -- CHR: 29
+INSERT INTO `item_mods` VALUES (25926,25,36); -- ACC: 36
+INSERT INTO `item_mods` VALUES (25926,23,40); -- ATT: 40
+INSERT INTO `item_mods` VALUES (25926,68,44); -- EVA: 44
+INSERT INTO `item_mods` VALUES (25926,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25926,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25926,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25926,840,6); -- WSDMG All: 6
+INSERT INTO `item_mods` VALUES (25926,160,-300); -- DT: -3%
+-- Sulevia Mask +2
+INSERT INTO `item_mods` VALUES (25574,1,123); -- DEF: 123
+INSERT INTO `item_mods` VALUES (25574,2,40); -- HP: 40
+INSERT INTO `item_mods` VALUES (25574,5,40); -- MP: 40
+INSERT INTO `item_mods` VALUES (25574,8,33); -- STR: 33
+INSERT INTO `item_mods` VALUES (25574,9,19); -- DEX: 19
+INSERT INTO `item_mods` VALUES (25574,10,40); -- VIT: 40
+INSERT INTO `item_mods` VALUES (25574,11,12); -- AGI: 12
+INSERT INTO `item_mods` VALUES (25574,12,11); -- INT: 11
+INSERT INTO `item_mods` VALUES (25574,13,22); -- MND: 22
+INSERT INTO `item_mods` VALUES (25574,14,22); -- CHR: 22
+INSERT INTO `item_mods` VALUES (25574,25,44); -- ACC: 44
+INSERT INTO `item_mods` VALUES (25574,23,48); -- ATT: 48
+INSERT INTO `item_mods` VALUES (25574,68,27); -- EVA: 27
+INSERT INTO `item_mods` VALUES (25574,31,43); -- MEVA: 43
+INSERT INTO `item_mods` VALUES (25574,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25574,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25574,73,10); -- STP: 10
+INSERT INTO `item_mods` VALUES (25574,160,-600); -- DT: -6%
+-- Sulevia Plate +2
+INSERT INTO `item_mods` VALUES (25790,1,153); -- DEF: 153
+INSERT INTO `item_mods` VALUES (25790,2,70); -- HP: 70
+INSERT INTO `item_mods` VALUES (25790,5,70); -- MP: 70
+INSERT INTO `item_mods` VALUES (25790,8,41); -- STR: 41
+INSERT INTO `item_mods` VALUES (25790,9,24); -- DEX: 24
+INSERT INTO `item_mods` VALUES (25790,10,41); -- VIT: 41
+INSERT INTO `item_mods` VALUES (25790,11,16); -- AGI: 16
+INSERT INTO `item_mods` VALUES (25790,12,16); -- INT: 16
+INSERT INTO `item_mods` VALUES (25790,13,27); -- MND: 27
+INSERT INTO `item_mods` VALUES (25790,14,27); -- CHR: 27
+INSERT INTO `item_mods` VALUES (25790,25,46); -- ACC: 46
+INSERT INTO `item_mods` VALUES (25790,23,50); -- ATT: 50
+INSERT INTO `item_mods` VALUES (25790,68,36); -- EVA: 36
+INSERT INTO `item_mods` VALUES (25790,31,59); -- MEVA: 59
+INSERT INTO `item_mods` VALUES (25790,29,3); -- MDEF: 3
+INSERT INTO `item_mods` VALUES (25790,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25790,174,7); -- Skillchain Bonus: 7
+INSERT INTO `item_mods` VALUES (25790,160,-900); -- DT: -9%
+-- Sulevia Gauntlets +2
+INSERT INTO `item_mods` VALUES (25828,1,111); -- DEF: 111
+INSERT INTO `item_mods` VALUES (25828,2,30); -- HP: 30
+INSERT INTO `item_mods` VALUES (25828,5,30); -- MP: 30
+INSERT INTO `item_mods` VALUES (25828,8,23); -- STR: 23
+INSERT INTO `item_mods` VALUES (25828,9,34); -- DEX: 34
+INSERT INTO `item_mods` VALUES (25828,10,45); -- VIT: 45
+INSERT INTO `item_mods` VALUES (25828,12,6); -- INT: 6
+INSERT INTO `item_mods` VALUES (25828,13,32); -- MND: 32
+INSERT INTO `item_mods` VALUES (25828,14,27); -- CHR: 27
+INSERT INTO `item_mods` VALUES (25828,25,43); -- ACC: 43
+INSERT INTO `item_mods` VALUES (25828,23,47); -- ATT: 47
+INSERT INTO `item_mods` VALUES (25828,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25828,31,37); -- MEVA: 37
+INSERT INTO `item_mods` VALUES (25828,384,300); -- Gear Haste: 3%
+INSERT INTO `item_mods` VALUES (25828,288,6); -- Double Attack: 6
+INSERT INTO `item_mods` VALUES (25828,160,-500); -- DT: -5%
+-- Sulevia Cuisses +2
+INSERT INTO `item_mods` VALUES (25879,1,135); -- DEF: 135
+INSERT INTO `item_mods` VALUES (25879,2,50); -- HP: 50
+INSERT INTO `item_mods` VALUES (25879,5,50); -- MP: 50
+INSERT INTO `item_mods` VALUES (25879,8,47); -- STR: 47
+INSERT INTO `item_mods` VALUES (25879,10,33); -- VIT: 33
+INSERT INTO `item_mods` VALUES (25879,11,14); -- AGI: 14
+INSERT INTO `item_mods` VALUES (25879,12,24); -- INT: 24
+INSERT INTO `item_mods` VALUES (25879,13,20); -- MND: 20
+INSERT INTO `item_mods` VALUES (25879,14,18); -- CHR: 18
+INSERT INTO `item_mods` VALUES (25879,25,45); -- ACC: 45
+INSERT INTO `item_mods` VALUES (25879,23,49); -- ATT: 49
+INSERT INTO `item_mods` VALUES (25879,68,16); -- EVA: 16
+INSERT INTO `item_mods` VALUES (25879,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25879,29,2); -- MDEF: 2
+INSERT INTO `item_mods` VALUES (25879,384,200); -- Gear Haste: 2%
+INSERT INTO `item_mods` VALUES (25879,302,4); -- Triple Attack: 4
+INSERT INTO `item_mods` VALUES (25879,160,-700); -- DT: -7%
+-- Sulevia Leggings +2
+INSERT INTO `item_mods` VALUES (25946,1,93); -- DEF: 93
+INSERT INTO `item_mods` VALUES (25946,2,20); -- HP: 20
+INSERT INTO `item_mods` VALUES (25946,5,20); -- MP: 20
+INSERT INTO `item_mods` VALUES (25946,8,29); -- STR: 29
+INSERT INTO `item_mods` VALUES (25946,9,19); -- DEX: 19
+INSERT INTO `item_mods` VALUES (25946,10,29); -- VIT: 29
+INSERT INTO `item_mods` VALUES (25946,11,26); -- AGI: 26
+INSERT INTO `item_mods` VALUES (25946,13,18); -- MND: 18
+INSERT INTO `item_mods` VALUES (25946,14,32); -- CHR: 32
+INSERT INTO `item_mods` VALUES (25946,25,42); -- ACC: 42
+INSERT INTO `item_mods` VALUES (25946,23,46); -- ATT: 46
+INSERT INTO `item_mods` VALUES (25946,68,44); -- EVA: 44
+INSERT INTO `item_mods` VALUES (25946,31,75); -- MEVA: 75
+INSERT INTO `item_mods` VALUES (25946,29,1); -- MDEF: 1
+INSERT INTO `item_mods` VALUES (25946,384,100); -- Gear Haste: 1%
+INSERT INTO `item_mods` VALUES (25946,840,7); -- WSDMG All: 7
+INSERT INTO `item_mods` VALUES (25946,160,-400); -- DT: -4%
