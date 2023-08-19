@@ -4,8 +4,7 @@
 -- Spawns Wherwetrice
 -- !pos 198.045 20.122 108.705 215
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Attohwa/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_ATTOHWA]
 -----------------------------------
 local entity = {}
 

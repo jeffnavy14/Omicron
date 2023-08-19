@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Dynamis-Windurst
 -----------------------------------
-local ID = require('scripts/zones/Dynamis-Windurst/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/dynamis')
 -----------------------------------

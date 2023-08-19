@@ -7,7 +7,6 @@
 -- Old Toolbox : !pos 113.649 -32.8 79.617 143
 -----------------------------------
 require('scripts/globals/quests')
-require('scripts/globals/titles')
 require('scripts/globals/interaction/quest')
 -----------------------------------
 
@@ -111,7 +110,7 @@ quest.sections =
             {
                 [23] = function(player, csid, option, npc)
                     if option == 0 then
-                        npcUtil.giveKeyItem(player, xi.ki.OLD_TOOLBOX)
+                        player:addKeyItem(xi.ki.OLD_TOOLBOX)
                     end
                 end
             },

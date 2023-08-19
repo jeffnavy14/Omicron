@@ -4,8 +4,7 @@
 -- Spawns Burstrox Powderpate
 -- !pos 396 40 -436 254
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Grauberg/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_GRAUBERG]
 -----------------------------------
 local entity = {}
 

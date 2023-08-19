@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: The_Celestial_Nexus (181)
 -----------------------------------
-local ID = require('scripts/zones/The_Celestial_Nexus/IDs')
 require('scripts/globals/conquest')
 -----------------------------------
 local zoneObject = {}

@@ -2,8 +2,7 @@
 -- Area: Abyssea - Grauberg
 --  NPC: Dominion Tactician
 -----------------------------------
-local ID = require("scripts/zones/Abyssea-Grauberg/IDs")
-require("scripts/globals/abyssea")
+local ID = zones[xi.zone.ABYSSEA_GRAUBERG]
 -----------------------------------
 local entity = {}
 

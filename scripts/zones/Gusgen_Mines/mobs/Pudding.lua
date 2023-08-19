@@ -3,9 +3,8 @@
 --   NM: Pudding
 -- Involved in Eco Warrior (Bastok)
 -----------------------------------
-local ID = require("scripts/zones/Gusgen_Mines/IDs")
+local ID = zones[xi.zone.GUSGEN_MINES]
 require("scripts/globals/quests")
-require("scripts/globals/mobs")
 -----------------------------------
 local entity = {}
 

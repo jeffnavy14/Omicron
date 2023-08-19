@@ -2,9 +2,8 @@
 -- Area: Norg
 --  NPC: Magephaud
 -----------------------------------
-local ID = require("scripts/zones/Norg/IDs")
+local ID = zones[xi.zone.NORG]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

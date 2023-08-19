@@ -9,10 +9,9 @@
 -----------------------------------
 require('scripts/globals/npc_util')
 require('scripts/globals/quests')
-require('scripts/globals/titles')
 require('scripts/globals/interaction/quest')
 -----------------------------------
-local ahtUrhganID = require('scripts/zones/Aht_Urhgan_Whitegate/IDs')
+local ahtUrhganID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 -----------------------------------
 
 local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.NO_STRINGS_ATTACHED)

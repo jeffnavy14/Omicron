@@ -4,8 +4,7 @@
 -- Finishes Quest: Path of the Bard
 -- !pos -721 -7 102 103
 -----------------------------------
-local ID = require("scripts/zones/Valkurm_Dunes/IDs")
-require("scripts/globals/titles")
+local ID = zones[xi.zone.VALKURM_DUNES]
 require("scripts/globals/quests")
 -----------------------------------
 local entity = {}

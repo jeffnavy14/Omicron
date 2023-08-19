@@ -4,9 +4,8 @@
 -- !pos 368.980, -0.443, -119.874 103
 -- Teleports Players to Abyssea Misareaux
 -----------------------------------
-local ID = require("scripts/zones/Valkurm_Dunes/IDs")
+local ID = zones[xi.zone.VALKURM_DUNES]
 require("scripts/globals/quests")
-require("scripts/globals/abyssea")
 -----------------------------------
 local entity = {}
 

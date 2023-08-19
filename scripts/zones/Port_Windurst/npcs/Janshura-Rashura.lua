@@ -4,8 +4,6 @@
 -- Starts Windurst Missions
 -- !pos -227 -8 184 240
 -----------------------------------
-local ID = require("scripts/zones/Port_Windurst/IDs")
-require("scripts/globals/titles")
 require("scripts/globals/missions")
 -----------------------------------
 local entity = {}

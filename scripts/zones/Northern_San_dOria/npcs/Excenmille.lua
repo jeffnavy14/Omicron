@@ -4,11 +4,10 @@
 -- Type: Trust NPC, Ballista Pursuivant
 -- !pos -229.344 6.999 22.976 231
 -----------------------------------
-local ID = require("scripts/zones/Northern_San_dOria/IDs")
+local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 require("scripts/globals/missions")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

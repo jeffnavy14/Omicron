@@ -3,7 +3,6 @@
 --  NPC: Nereus
 -- Starts and ends repeteable quest A_POTTER_S_PREFERENCE
 -----------------------------------
-local ID = require("scripts/zones/Mhaura/IDs")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 -----------------------------------

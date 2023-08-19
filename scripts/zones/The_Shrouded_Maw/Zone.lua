@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: The_Shrouded_Maw (10)
 -----------------------------------
-local ID = require('scripts/zones/The_Shrouded_Maw/IDs')
 require('scripts/globals/conquest')
 -----------------------------------
 local zoneObject = {}

@@ -3,8 +3,7 @@
 --   NM: Rampaging Ram
 -----------------------------------
 require("scripts/globals/hunts")
-local ID = require("scripts/zones/Konschtat_Highlands/IDs")
-require("scripts/globals/mobs")
+local ID = zones[xi.zone.KONSCHTAT_HIGHLANDS]
 require("scripts/quests/tutorial")
 -----------------------------------
 local entity = {}

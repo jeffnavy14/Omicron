@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Dynamis-Qufim
 -----------------------------------
-local ID = require('scripts/zones/Dynamis-Qufim/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/dynamis')
 -----------------------------------

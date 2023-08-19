@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Cloister_of_Tremors (209)
 -----------------------------------
-local ID = require('scripts/zones/Cloister_of_Tremors/IDs')
 require('scripts/globals/conquest')
 -----------------------------------
 local zoneObject = {}

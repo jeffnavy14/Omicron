@@ -3,9 +3,8 @@
 --  NPC: Loussaire
 -- !pos -248.677 -8.523 -125.734 87
 -----------------------------------
-local ID = require("scripts/zones/Bastok_Markets_[S]/IDs")
+local ID = zones[xi.zone.BASTOK_MARKETS_S]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

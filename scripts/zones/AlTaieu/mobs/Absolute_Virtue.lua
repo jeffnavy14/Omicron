@@ -2,8 +2,7 @@
 -- Area: Al'Taieu
 --  HNM: Absolute Virtue
 -----------------------------------
-local ID = require("scripts/zones/AlTaieu/IDs")
-require("scripts/globals/titles")
+local ID = zones[xi.zone.ALTAIEU]
 require("scripts/globals/magic")
 -----------------------------------
 local entity = {}

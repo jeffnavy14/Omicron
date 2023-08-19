@@ -1,14 +1,12 @@
 -----------------------------------
 -- Area: Windurst Woods
 --  NPC: Kororo
--- Type: Standard NPC
 -- !pos -11.883 -3.75 5.508 241
 -- Starts quest: A Greeting Cardian
 -- Involved in quests: Lost Chick
 -----------------------------------
-local ID = require("scripts/zones/Windurst_Woods/IDs")
+local ID = zones[xi.zone.WINDURST_WOODS]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

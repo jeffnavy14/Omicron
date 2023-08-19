@@ -4,8 +4,7 @@
 -- !pos 340 -0.5 -680
 -- Teleports Players to Abyssea - Altepa
 -----------------------------------
-local ID = require("scripts/zones/South_Gustaberg/IDs")
-require("scripts/globals/abyssea")
+local ID = zones[xi.zone.SOUTH_GUSTABERG]
 require("scripts/globals/quests")
 -----------------------------------
 local entity = {}

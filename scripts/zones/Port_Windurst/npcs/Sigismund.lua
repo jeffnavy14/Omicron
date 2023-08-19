@@ -4,9 +4,8 @@
 -- Starts and Finishes Quest: To Catch a Falling Star
 -- !pos -110 -10 82 240
 -----------------------------------
-local ID = require("scripts/zones/Port_Windurst/IDs")
+local ID = zones[xi.zone.PORT_WINDURST]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

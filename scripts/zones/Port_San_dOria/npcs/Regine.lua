@@ -4,7 +4,6 @@
 -- Standard Merchant NPC
 -- !pos 68 -9 -74 232
 -----------------------------------
-local ID = require("scripts/zones/Port_San_dOria/IDs")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 require("scripts/globals/utils")

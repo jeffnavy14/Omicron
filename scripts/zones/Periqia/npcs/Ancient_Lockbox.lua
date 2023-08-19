@@ -2,7 +2,6 @@
 -- Area: Periqia
 -- Ancient Lockbox
 -----------------------------------
-local ID = require("scripts/zones/Periqia/IDs")
 require("scripts/globals/appraisal")
 -----------------------------------
 

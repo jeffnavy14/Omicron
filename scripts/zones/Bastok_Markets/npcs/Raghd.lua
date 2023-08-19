@@ -4,7 +4,7 @@
 -- Standard Merchant NPC
 -- !pos -149.200 -4.819 -74.939 235
 -----------------------------------
-local ID = require("scripts/zones/Bastok_Markets/IDs")
+local ID = zones[xi.zone.BASTOK_MARKETS]
 require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
@@ -12,10 +12,10 @@ local entity = {}
 entity.onTrigger = function(player, npc)
     local stock =
     {
-        13456, 1150, 1,    -- Silver Ring
-        13327, 1150, 1,    -- Silver Earring
-        13465,  184, 2,    -- Brass Ring
-        13454,   69, 3,    -- Copper Ring
+        xi.items.COPPER_RING,      79, 3,
+        xi.items.BRASS_RING,      208, 2,
+        xi.items.SILVER_RING,    1300, 1,
+        xi.items.SILVER_EARRING, 1300, 1,
     }
 
     player:showText(npc, ID.text.RAGHD_SHOP_DIALOG)

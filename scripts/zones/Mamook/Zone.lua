@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Mamook (65)
 -----------------------------------
-local ID = require('scripts/zones/Mamook/IDs')
 require('scripts/globals/helm')
 -----------------------------------
 local zoneObject = {}

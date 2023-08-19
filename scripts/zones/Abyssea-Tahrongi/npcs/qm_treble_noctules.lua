@@ -4,8 +4,7 @@
 -- Spawns Treble Noctules
 -- !pos 190 -22 -153 45
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
-require("scripts/globals/abyssea")
+local ID = zones[xi.zone.ABYSSEA_TAHRONGI]
 -----------------------------------
 local entity = {}
 

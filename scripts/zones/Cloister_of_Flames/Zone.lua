@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Cloister_of_Flames (207)
 -----------------------------------
-local ID = require('scripts/zones/Cloister_of_Flames/IDs')
 require('scripts/globals/conquest')
 -----------------------------------
 local zoneObject = {}

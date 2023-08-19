@@ -7,9 +7,8 @@
 -- TODO Allow players to cancel quest
 -- TODO Requre check for other 3 quests An Understanding General, A Generous General,
 -----------------------------------
-local ID = require("scripts/zones/Windurst_Woods/IDs")
+local ID = zones[xi.zone.WINDURST_WOODS]
 require("scripts/globals/crafting")
-require("scripts/globals/roe")
 -----------------------------------
 local entity = {}
 

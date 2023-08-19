@@ -1,10 +1,9 @@
 -----------------------------------
 -- Area: Al'Taieu
 --  NPC: Swirling_Vortex
--- Type: Standard NPC
 -- !pos ? ? ? 33
 -----------------------------------
-local ID = require("scripts/zones/AlTaieu/IDs")
+local ID = zones[xi.zone.ALTAIEU]
 require("scripts/globals/limbus")
 -----------------------------------
 local entity = {}

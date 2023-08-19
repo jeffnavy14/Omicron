@@ -4,9 +4,8 @@
 -- Involved In Quest: Inspector's Gadget
 -- Starts Quest: In a Pickle
 -----------------------------------
-local ID = require("scripts/zones/Windurst_Waters/IDs")
+local ID = zones[xi.zone.WINDURST_WATERS]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

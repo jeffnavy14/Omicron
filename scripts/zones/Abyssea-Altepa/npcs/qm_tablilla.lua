@@ -4,8 +4,7 @@
 -- Spawns Tablilla
 -- !pos -877 -8 -524 218
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Altepa/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_ALTEPA]
 -----------------------------------
 local entity = {}
 

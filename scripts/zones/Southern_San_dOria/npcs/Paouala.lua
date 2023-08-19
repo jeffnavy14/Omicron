@@ -4,10 +4,8 @@
 -- Starts and Finishes Quest: Sleepless Nights
 -- !pos 158 -6 17 230
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/shop")
 require("scripts/globals/quests")
-local ID = require("scripts/zones/Southern_San_dOria/IDs")
 -----------------------------------
 local entity = {}
 

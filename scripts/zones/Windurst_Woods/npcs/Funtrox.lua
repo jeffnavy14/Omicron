@@ -3,7 +3,6 @@
 --  NPC: Funtrox
 -- Gobbie Mystery Box
 -----------------------------------
-local ID = require("scripts/zones/Windurst_Woods/IDs")
 require("scripts/globals/gobbie_mystery_box")
 -----------------------------------
 local entity = {}

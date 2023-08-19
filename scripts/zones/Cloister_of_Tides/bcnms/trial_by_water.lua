@@ -2,10 +2,9 @@
 -- Area: Cloister of Tides
 -- BCNM: Trial by Water
 -----------------------------------
-local ID = require("scripts/zones/Cloister_of_Tides/IDs")
+local ID = zones[xi.zone.CLOISTER_OF_TIDES]
 require("scripts/globals/battlefield")
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local battlefieldObject = {}
 

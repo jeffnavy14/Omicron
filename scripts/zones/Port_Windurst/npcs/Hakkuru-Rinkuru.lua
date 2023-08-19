@@ -5,8 +5,7 @@
 -- Starts and Ends Quest: Wonder Wands
 -- !pos -111 -4 101 240
 -----------------------------------
-local ID = require("scripts/zones/Port_Windurst/IDs")
-require("scripts/globals/titles")
+local ID = zones[xi.zone.PORT_WINDURST]
 require("scripts/globals/missions")
 require("scripts/globals/quests")
 -----------------------------------

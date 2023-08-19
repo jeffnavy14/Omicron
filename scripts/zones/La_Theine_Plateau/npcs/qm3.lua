@@ -3,10 +3,9 @@
 --  NPC:??? (qm3)
 -- Involved in Quest: I Can Hear A Rainbow
 -----------------------------------
-local ID = require("scripts/zones/La_Theine_Plateau/IDs")
+local ID = zones[xi.zone.LA_THEINE_PLATEAU]
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 require("scripts/globals/utils")
 -----------------------------------
 local entity = {}

@@ -3,8 +3,6 @@
 --  NPC: Dulsie
 -- Adventurer's Assistant
 -----------------------------------
-local ID = require("scripts/zones/Port_Bastok/IDs")
------------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)

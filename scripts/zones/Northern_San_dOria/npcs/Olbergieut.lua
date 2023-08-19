@@ -5,9 +5,8 @@
 -- !pos 91 0 121 231
 -- Starts and Finishes Quest: Gates of Paradise
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/quests")
-local ID = require("scripts/zones/Northern_San_dOria/IDs")
+local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 -----------------------------------
 local entity = {}
 

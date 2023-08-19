@@ -4,9 +4,8 @@
 -- Involved In Quest: Enveloped in Darkness
 -- !zone 231
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/quests")
-local ID = require("scripts/zones/Northern_San_dOria/IDs")
+local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 -----------------------------------
 local entity = {}
 

@@ -4,8 +4,7 @@
 -- Spawns Bloodguzzler
 -- !pos -155.000 64.117 590.000 15
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Konschtat/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_KONSCHTAT]
 -----------------------------------
 local entity = {}
 

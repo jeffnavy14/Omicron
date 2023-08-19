@@ -1,12 +1,9 @@
 -----------------------------------
 -- Area: Western Adoulin
 --  NPC: Flapno
--- Type: Standard NPC, Quest NPC, and Shop NPC
--- Starts, Involved with, and Finishes Quest: 'Exotic Delicacies'
--- Involved with Quest: 'All the Way to the Bank'
 -- !pos 70 0 -13 256
 -----------------------------------
-local ID = require("scripts/zones/Western_Adoulin/IDs")
+local ID = zones[xi.zone.WESTERN_ADOULIN]
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 require("scripts/globals/utils")

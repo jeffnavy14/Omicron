@@ -10,11 +10,10 @@
 -- _7mw                : !pos 197 58 -20 274
 -----------------------------------
 require('scripts/globals/missions')
-require('scripts/globals/titles')
 require('scripts/globals/interaction/mission')
 -----------------------------------
-local kamihrID        = require('scripts/zones/Mount_Kamihr/IDs')
-local outerRaKaznarID = require('scripts/zones/Outer_RaKaznar/IDs')
+local kamihrID        = zones[xi.zone.MOUNT_KAMIHR]
+local outerRaKaznarID = zones[xi.zone.OUTER_RAKAZNAR]
 -----------------------------------
 
 local mission = Mission:new(xi.mission.log_id.SOA, xi.mission.id.soa.A_NEW_FORCE_ARISES)

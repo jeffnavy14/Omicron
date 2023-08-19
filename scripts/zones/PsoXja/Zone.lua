@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: PsoXja (9)
 -----------------------------------
-local ID = require('scripts/zones/PsoXja/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/treasure')
 -----------------------------------

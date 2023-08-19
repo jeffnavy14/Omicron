@@ -4,7 +4,6 @@
 -- Starts and Finishes Quest: Cargo (R)
 -- !pos 7 -2 -15 248
 -----------------------------------
-local ID = require("scripts/zones/Selbina/IDs")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 -----------------------------------

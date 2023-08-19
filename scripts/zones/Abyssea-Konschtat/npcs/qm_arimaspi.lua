@@ -4,8 +4,7 @@
 -- Spawns Arimaspi
 -- !pos 438.000 31.922 358.000 15
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Konschtat/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_KONSCHTAT]
 -----------------------------------
 local entity = {}
 

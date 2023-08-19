@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Altar_Room (152)
 -----------------------------------
-local ID = require('scripts/zones/Altar_Room/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/quests')
 require('scripts/globals/npc_util')

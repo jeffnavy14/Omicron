@@ -4,8 +4,7 @@
 -- !pos -78 -0.5 600 106
 -- Teleports Players to Abyssea - Grauberg
 -----------------------------------
-local ID = require("scripts/zones/North_Gustaberg/IDs")
-require("scripts/globals/abyssea")
+local ID = zones[xi.zone.NORTH_GUSTABERG]
 require("scripts/globals/quests")
 -----------------------------------
 local entity = {}

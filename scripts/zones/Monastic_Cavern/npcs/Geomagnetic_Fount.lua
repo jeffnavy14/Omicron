@@ -3,7 +3,6 @@
 --  NPC: Geomagnetic Fount
 -- !pos 0.000 0.000 -312.000
 -----------------------------------
-local ID = require("scripts/zones/Monastic_Cavern/IDs")
 require("scripts/globals/geomagnetic_fount")
 -----------------------------------
 local entity = {}

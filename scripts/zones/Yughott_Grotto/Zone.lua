@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Yughott_Grotto (142)
 -----------------------------------
-local ID = require('scripts/zones/Yughott_Grotto/IDs')
 require('scripts/globals/conquest')
 require('scripts/globals/treasure')
 require('scripts/globals/helm')

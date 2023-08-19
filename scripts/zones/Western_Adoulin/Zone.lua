@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Western Adoulin
 -----------------------------------
-local ID = require('scripts/zones/Western_Adoulin/IDs')
 require('scripts/globals/quests')
 -----------------------------------
 local zoneObject = {}

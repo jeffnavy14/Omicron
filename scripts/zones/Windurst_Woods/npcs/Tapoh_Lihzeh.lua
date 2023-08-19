@@ -4,10 +4,8 @@
 -- Starts & Finishes Repeatable Quest: Paying Lip Service
 -- !pos 51.011 -3.749 54.402 241
 -----------------------------------
-local ID = require("scripts/zones/Windurst_Woods/IDs")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

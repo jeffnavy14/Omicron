@@ -7,9 +7,8 @@
 require('scripts/globals/interaction/quest')
 require('scripts/globals/npc_util')
 require('scripts/globals/quests')
-require('scripts/globals/titles')
 -----------------------------------
-local ruLudeID = require('scripts/zones/RuLude_Gardens/IDs')
+local ruLudeID = zones[xi.zone.RULUDE_GARDENS]
 -----------------------------------
 
 local quest = Quest:new(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.MARTIAL_MASTERY)

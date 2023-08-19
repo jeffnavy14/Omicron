@@ -4,7 +4,7 @@
 -- Linkshell Merchant
 --   !pos -142 -1 -25 236
 -----------------------------------
-local ID = require("scripts/zones/Port_Bastok/IDs")
+local ID = zones[xi.zone.PORT_BASTOK]
 require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
@@ -15,11 +15,11 @@ end
 entity.onTrigger = function(player, npc)
     local stock =
     {
-        512,  6000,    -- Linkshell
-        16285, 375,    -- Pendant Compass
+        xi.items.NEW_LINKSHELL,   6000,
+        xi.items.PENDANT_COMPASS,  375,
     }
 
-    player:showText(npc, ID.text.ILITA_SHOP_DIALOG, 513)
+    player:showText(npc, ID.text.ILITA_SHOP_DIALOG, xi.items.LINKSHELL)
     xi.shop.general(player, stock)
 end
 

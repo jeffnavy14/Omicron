@@ -3,8 +3,6 @@
 --  NPC: Arva
 -- Adventurer's Assistant
 -----------------------------------
-local ID = require("scripts/zones/Bastok_Mines/IDs")
------------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)

@@ -4,10 +4,8 @@
 -- pos: 152, -2, 0, 50
 -----------------------------------
 require("scripts/globals/missions")
-require("scripts/globals/titles")
 require("scripts/globals/besieged")
 require("scripts/globals/npc_util")
-local ID = require("scripts/zones/Aht_Urhgan_Whitegate/IDs")
 -----------------------------------
 local whitegateShared = require("scripts/zones/Aht_Urhgan_Whitegate/Shared")
 -----------------------------------

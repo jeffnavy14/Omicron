@@ -4,7 +4,6 @@
 --  Involved in quest "An Explorer's Footsteps"
 -- !pos -102.355 7.981 253.706 108
 -----------------------------------
-local ID = require("scripts/zones/Konschtat_Highlands/IDs")
 require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}

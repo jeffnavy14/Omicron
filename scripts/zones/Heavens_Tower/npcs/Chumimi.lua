@@ -4,9 +4,8 @@
 -- Starts and Finishes Quest: The Three Magi, Recollections
 -- !pos 0.1 30 21 242
 -----------------------------------
-local ID = require("scripts/zones/Heavens_Tower/IDs")
+local ID = zones[xi.zone.HEAVENS_TOWER]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

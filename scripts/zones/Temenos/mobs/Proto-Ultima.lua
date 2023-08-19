@@ -2,9 +2,8 @@
 -- Area: Temenos
 --  Mob: Proto-Ultima
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/limbus")
-local ID = require("scripts/zones/Temenos/IDs")
+local ID = zones[xi.zone.TEMENOS]
 -----------------------------------
 local entity = {}
 

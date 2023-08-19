@@ -4,8 +4,7 @@
 -- Spawns Fear Gorta
 -- !pos 630.000 33.608 410.000 15
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Konschtat/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_KONSCHTAT]
 -----------------------------------
 local entity = {}
 

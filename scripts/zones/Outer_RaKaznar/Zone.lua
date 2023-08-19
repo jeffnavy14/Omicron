@@ -3,8 +3,6 @@
 -----------------------------------
 require('scripts/globals/npc_util')
 -----------------------------------
-local ID = require('scripts/zones/Outer_RaKaznar/IDs')
------------------------------------
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)

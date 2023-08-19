@@ -1,10 +1,9 @@
 -----------------------------------
 -- Area: Mhaura
 --  NPC: Koh Lenbalalako
--- Type: Standard NPC
 -- !pos -64.412 -17 29.213 249
 -----------------------------------
-local ID = require("scripts/zones/Mhaura/IDs")
+local ID = zones[xi.zone.MHAURA]
 require("scripts/globals/quests")
 -----------------------------------
 local entity = {}

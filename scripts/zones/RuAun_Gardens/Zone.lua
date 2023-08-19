@@ -1,11 +1,10 @@
 -----------------------------------
 -- Zone: RuAun_Gardens (130)
 -----------------------------------
-local ID = require('scripts/zones/RuAun_Gardens/IDs')
+local ID = zones[xi.zone.RUAUN_GARDENS]
 require('scripts/globals/missions')
 require('scripts/globals/conquest')
 require('scripts/globals/treasure')
-require('scripts/globals/titles')
 -----------------------------------
 local zoneObject = {}
 

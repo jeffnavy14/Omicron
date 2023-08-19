@@ -4,8 +4,7 @@
 -- Spawns Nguruvilu
 -- !pos 311 23 -524 132
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-La_Theine/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_LA_THEINE]
 -----------------------------------
 local entity = {}
 

@@ -4,8 +4,7 @@
 -- Spawns Muscaliet
 -- !pos 253 46 291 45
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Tahrongi/IDs')
-require("scripts/globals/abyssea")
+local ID = zones[xi.zone.ABYSSEA_TAHRONGI]
 -----------------------------------
 local entity = {}
 

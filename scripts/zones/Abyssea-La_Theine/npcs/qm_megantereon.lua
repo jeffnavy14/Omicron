@@ -4,8 +4,7 @@
 -- Spawns Megantereon
 -- !pos -764 -8 121 132
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-La_Theine/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_LA_THEINE]
 -----------------------------------
 local entity = {}
 

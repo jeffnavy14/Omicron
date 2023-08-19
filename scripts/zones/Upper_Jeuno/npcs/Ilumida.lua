@@ -4,8 +4,7 @@
 -- Starts and Finishes Quest: A Candlelight Vigil
 -- !pos -75 -1 58 244
 -----------------------------------
-local ID = require("scripts/zones/Upper_Jeuno/IDs")
-require("scripts/globals/titles")
+local ID = zones[xi.zone.UPPER_JEUNO]
 require("scripts/globals/quests")
 -----------------------------------
 local entity = {}

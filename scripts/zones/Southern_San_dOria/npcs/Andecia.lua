@@ -4,9 +4,8 @@
 -- Starts and Finishes Quest: Grave Concerns
 -- !pos 167 0 45 230
 -----------------------------------
-local ID = require("scripts/zones/Southern_San_dOria/IDs")
+local ID = zones[xi.zone.SOUTHERN_SAN_DORIA]
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local entity = {}
 

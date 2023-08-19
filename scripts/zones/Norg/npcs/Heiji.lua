@@ -4,10 +4,9 @@
 -- Starts and Ends Quest: Like a Shining Subligar
 -- !pos -1 -5 25 252
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/shop")
 require("scripts/globals/quests")
-local ID = require("scripts/zones/Norg/IDs")
+local ID = zones[xi.zone.NORG]
 -----------------------------------
 local entity = {}
 

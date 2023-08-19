@@ -1,7 +1,6 @@
 -----------------------------------
 -- Zone: Promyvion-Mea (20)
 -----------------------------------
-local ID = require('scripts/zones/Promyvion-Mea/IDs')
 require('scripts/globals/promyvion')
 -----------------------------------
 local zoneObject = {}

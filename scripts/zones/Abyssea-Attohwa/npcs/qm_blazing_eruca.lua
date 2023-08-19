@@ -4,8 +4,7 @@
 -- Spawns Blazing Eruca
 -- !pos 233.162 19.720 -243.255 215
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Attohwa/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_ATTOHWA]
 -----------------------------------
 local entity = {}
 

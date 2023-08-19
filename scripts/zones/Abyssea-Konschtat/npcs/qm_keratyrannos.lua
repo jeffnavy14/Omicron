@@ -4,8 +4,7 @@
 -- Spawns Keratyrannos
 -- !pos -134.000 47.371 416.000 15
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Konschtat/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_KONSCHTAT]
 -----------------------------------
 local entity = {}
 

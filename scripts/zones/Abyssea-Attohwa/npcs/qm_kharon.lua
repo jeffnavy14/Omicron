@@ -4,8 +4,7 @@
 -- Spawns Kharon
 -- !pos -403.909 -4.234 200.832 215
 -----------------------------------
-local ID = require('scripts/zones/Abyssea-Attohwa/IDs')
-require('scripts/globals/abyssea')
+local ID = zones[xi.zone.ABYSSEA_ATTOHWA]
 -----------------------------------
 local entity = {}
 

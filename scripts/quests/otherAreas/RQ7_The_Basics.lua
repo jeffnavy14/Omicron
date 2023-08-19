@@ -8,10 +8,9 @@
 -----------------------------------
 require('scripts/globals/npc_util')
 require('scripts/globals/quests')
-require('scripts/globals/titles')
 require('scripts/globals/interaction/quest')
 -----------------------------------
-local selbinaID = require('scripts/zones/Selbina/IDs')
+local selbinaID = zones[xi.zone.SELBINA]
 -----------------------------------
 
 local quest = Quest:new(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_BASICS)

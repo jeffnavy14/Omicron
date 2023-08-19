@@ -2,7 +2,6 @@
 -- Area: Lebros Cavern
 -- Ancient Lockbox
 -----------------------------------
-local ID = require("scripts/zones/Lebros_Cavern/IDs")
 require("scripts/globals/appraisal")
 require("scripts/globals/assault")
 -----------------------------------
