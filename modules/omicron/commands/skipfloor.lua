@@ -3,7 +3,7 @@
 -- desc: completes the current nyzul isle objective.
 -----------------------------------
 require("scripts/globals/nyzul")
-require("scripts/globals/zone")
+
 local ID = require("scripts/zones/Nyzul_Isle/IDs")
 
 cmdprops =

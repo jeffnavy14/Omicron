@@ -6,7 +6,7 @@ require("scripts/globals/weaponskillids")
 require("scripts/globals/trust")
 require("scripts/globals/utils")
 require("scripts/globals/ability")
-require("scripts/globals/zone")
+
 require("scripts/globals/gambits")
 -----------------------------------
 local m = Module:new("basic_trust_updates")
