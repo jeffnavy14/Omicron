@@ -96,7 +96,6 @@ local entity = {}
 									if player:getCharVar("DecentGroup") == 1 then
 										player:injectActionPacket(player:getID(), 6, 617, 0, 0, 0, 10, 1)
 										player:setPos(180,-20,183,120)
-										player:setCharVar("DecentGroup", 0)
 										player:changeMusic(0, 33)
 										player:changeMusic(1, 33)
 										player:changeMusic(2, 33)
