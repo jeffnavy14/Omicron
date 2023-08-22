@@ -12,17 +12,16 @@ local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
+	
+	
 end
 
 mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local power = math.random(20, 25)
+    target:PrintToPlayer("The true power of Gungnir cometh not from the blade herself, but from the countless souls it hath sent to the corpse-halls of the Underworld!", 13)
+	local needles = 10000 / skill:getTotalTargets()
+    local dmg     = xi.mobskills.mobFinalAdjustments(needles, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.DARK, xi.mobskills.shadowBehavior.WIPE_SHADOWS)
 
-    local dmgmod = 2
-	local info = xi.mobskills.mobPhysicalMove(mob, target, skill, dmgmod, xi.mobskills.physicalTpBonus.DMG_VARIES, 1, 2, 3)
-    local dmg = (xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.SLASH, xi.mobskills.shadowBehavior.WIPE_SHADOWS)) / skill:getTotalTargets()
-    target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.SLASH)
-
-	target:addStatusEffect(xi.effect.BIND, 25, 0, 60)
+    target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.DARK)
 
     return dmg
 end
