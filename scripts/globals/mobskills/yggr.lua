@@ -18,10 +18,10 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
 	local power = math.random(20, 25)
 	local duration = 90
 	
-    target:addStatusEffect(xi.effect.INTIMIDATE, 100, 0, math.random(25, 32))
-    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.ATTACK_BOOST, power, 0, duration))
+	skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.ATTACK_BOOST, power, 0, duration))
+    local dmg = (xi.mobskills.mobBuffMove(mob, xi.effect.INTIMIDATE, 100, 0, math.random(25, 32)))
 
-	
+	return xi.effect.INTIMIDATE
 
 end
 

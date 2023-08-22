@@ -22,8 +22,8 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.DARK, xi.mobskills.shadowBehavior.WIPE_SHADOWS)
     target:takeDamage(dmg, mob, xi.attackType.MAGICAL, xi.damageType.DARK)
 	
-	xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.DEFENSE_DOWN, 1, 0, 60)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.MAGIC_DEF_DOWN, 25, 0, 60)
+	target:addStatusEffect(xi.effect.DEFENSE_DOWN, 1, 0, 60)
+    target:addStatusEffect(xi.effect.MAGIC_DEF_DOWN, 25, 0, 60)
 	
     return dmg
 end
