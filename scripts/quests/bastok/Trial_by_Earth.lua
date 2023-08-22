@@ -4,11 +4,6 @@
 -- Log ID: 1, Quest ID: 61
 -- Juroro : !pos 32 7 -41 236
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/utils')
-require('scripts/globals/interaction/quest')
------------------------------------
 local portBastokID = zones[xi.zone.PORT_BASTOK]
 -----------------------------------
 
@@ -22,10 +17,10 @@ quest.reward =
 
 local rewardItems =
 {
-    [0] = xi.items.TITANS_CUDGEL,
-    [1] = xi.items.EARTH_BELT,
-    [2] = xi.items.EARTH_RING,
-    [3] = xi.items.DOSE_OF_DESERT_LIGHT,
+    [0] = xi.item.TITANS_CUDGEL,
+    [1] = xi.item.EARTH_BELT,
+    [2] = xi.item.EARTH_RING,
+    [3] = xi.item.DOSE_OF_DESERT_LIGHT,
 }
 
 local function getRewardMask(player)

@@ -4,10 +4,6 @@
 -- !addquest 7 44
 -- Rholont       : !pos -168 -2 56 80
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local vunkerlID = zones[xi.zone.VUNKERL_INLET_S]
 -----------------------------------
 
@@ -15,7 +11,7 @@ local quest = Quest:new(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.THE_
 
 quest.reward =
 {
-    item = xi.items.PEISTE_SKIN,
+    item = xi.item.PEISTE_SKIN,
 }
 
 quest.sections =

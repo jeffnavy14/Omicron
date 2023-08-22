@@ -6,10 +6,6 @@
 -- Mhaura,  Take,    !pos 20.616  -8.000 69.757 249
 -- Selbina, Valgeir, !pos 57.496 -15.273 20.229 248
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local mhauraID  = zones[xi.zone.MHAURA]
 -----------------------------------
 
@@ -19,7 +15,7 @@ local hoursLeft  = 0
 
 quest.reward =
 {
-    item  = xi.items.TABLEWARE_SET,
+    item  = xi.item.TABLEWARE_SET,
     title = xi.title.THREE_STAR_PURVEYOR,
 }
 
@@ -73,7 +69,7 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if quest:getVar(player, 'Prog') == 3 then
-                        return quest:progressEvent(62, xi.items.TABLEWARE_SET) -- Give dish from Valgeir.
+                        return quest:progressEvent(62, xi.item.TABLEWARE_SET) -- Give dish from Valgeir.
                     else
                         return quest:event(63) -- Not goten the dish from Valgeir.
                     end
@@ -98,7 +94,7 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if quest:getVar(player, 'Prog') == 0 then
-                        return quest:progressEvent(102, xi.items.SCREAM_FUNGUS, xi.items.LAND_CRAB_MEAT) -- Ask for ingredients to cook.
+                        return quest:progressEvent(102, xi.item.SCREAM_FUNGUS, xi.item.LAND_CRAB_MEAT) -- Ask for ingredients to cook.
                     elseif quest:getVar(player, 'Prog') == 1 then
                         return quest:event(104) -- Reminder.
                     elseif quest:getVar(player, 'Prog') == 2 then
@@ -116,7 +112,7 @@ quest.sections =
                 end,
 
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, { xi.items.SCREAM_FUNGUS, xi.items.LAND_CRAB_MEAT }) then
+                    if npcUtil.tradeHasExactly(trade, { xi.item.SCREAM_FUNGUS, xi.item.LAND_CRAB_MEAT }) then
                         return quest:progressEvent(103) -- Give ingredients.
                     end
                 end,

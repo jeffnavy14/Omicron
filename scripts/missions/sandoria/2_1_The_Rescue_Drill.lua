@@ -16,10 +16,6 @@
 -- Yaucevouchat : !pos -318 39 183 102
 -- Ruillont     : !pos -70 1 607 193
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local laTheinePlateauID  = zones[xi.zone.LA_THEINE_PLATEAU]
 local ordellesCavesID    = zones[xi.zone.ORDELLES_CAVES]
 local southernSandoriaID = zones[xi.zone.SOUTHERN_SAN_DORIA]
@@ -348,19 +344,19 @@ mission.sections =
                 end,
 
                 [112] = function(player, csid, option, npc)
-                    if npcUtil.giveItem(player, xi.items.BRONZE_SWORD) then
+                    if npcUtil.giveItem(player, xi.item.BRONZE_SWORD) then
                         player:setMissionStatus(mission.areaId, 9)
                     end
                 end,
 
                 [113] = function(player, csid, option, npc)
-                    if npcUtil.giveItem(player, xi.items.BRONZE_SWORD) then
+                    if npcUtil.giveItem(player, xi.item.BRONZE_SWORD) then
                         player:setMissionStatus(mission.areaId, 9)
                     end
                 end,
 
                 [114] = function(player, csid, option, npc)
-                    if npcUtil.giveItem(player, xi.items.BRONZE_SWORD) then
+                    if npcUtil.giveItem(player, xi.item.BRONZE_SWORD) then
                         player:setMissionStatus(mission.areaId, 9)
                     end
                 end,
@@ -379,7 +375,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 9 and
-                        npcUtil.tradeHasExactly(trade, xi.items.BRONZE_SWORD)
+                        npcUtil.tradeHasExactly(trade, xi.item.BRONZE_SWORD)
                     then
                         return mission:progressEvent(2)
                     end

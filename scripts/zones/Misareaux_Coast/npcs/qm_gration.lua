@@ -4,13 +4,12 @@
 -- !pos 113.563 -16.302 38.912 25
 -----------------------------------
 local ID = zones[xi.zone.MISAREAUX_COAST]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        (npcUtil.tradeHas(trade, xi.items.PICAROONS_SHIELD) or npcUtil.tradeHas(trade, xi.items.HICKORY_SHIELD)) and
+        (npcUtil.tradeHas(trade, xi.item.PICAROONS_SHIELD) or npcUtil.tradeHas(trade, xi.item.HICKORY_SHIELD)) and
         npcUtil.popFromQM(player, npc, ID.mob.GRATION)
     then
         player:confirmTrade()

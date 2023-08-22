@@ -2,10 +2,6 @@
 -- Beyond Infinity
 -- Horlais Peak Level Break
 -----------------------------------
-require("scripts/globals/battlefield")
-require("scripts/globals/npc_util")
-require("scripts/globals/quests")
------------------------------------
 local battlefieldObject = {}
 
 battlefieldObject.onBattlefieldTick = function(battlefield, tick)
@@ -36,7 +32,7 @@ end
 battlefieldObject.onEventFinish = function(player, csid, option, npc)
     if csid == 32001 then
         if player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.BEYOND_INFINITY) == QUEST_ACCEPTED then
-            npcUtil.giveItem(player, xi.items.SCROLL_OF_INSTANT_WARP) -- scroll_of_instant_warp
+            npcUtil.giveItem(player, xi.item.SCROLL_OF_INSTANT_WARP) -- scroll_of_instant_warp
             player:setCharVar("Quest[3][137]Prog", 1)
         end
     end

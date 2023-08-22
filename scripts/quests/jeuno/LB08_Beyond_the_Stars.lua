@@ -3,9 +3,6 @@
 -----------------------------------
 -- Log ID: 3, Quest ID: 135
 -- Nomad Moogle : !pos 10.012 1.453 121.883 243
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
 -----------------------------------
 local ruludeID = zones[xi.zone.RULUDE_GARDENS]
 -----------------------------------
@@ -76,7 +73,7 @@ quest.sections =
 
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHasExactly(trade, { { xi.items.KINDREDS_CREST, 10 } }) and
+                        npcUtil.tradeHasExactly(trade, { { xi.item.KINDREDS_CREST, 10 } }) and
                         player:getMeritCount() > 4
                     then
                         return quest:progressEvent(10137)

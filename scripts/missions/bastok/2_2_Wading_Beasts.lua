@@ -9,10 +9,6 @@
 -- Rashid  : !pos -8.444 -2 -123.575 234
 -- Alois   : !pos 96 -20 14 237
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local bastokMarketsID = zones[xi.zone.BASTOK_MARKETS]
 local bastokMinesID   = zones[xi.zone.BASTOK_MINES]
 local metalworksID    = zones[xi.zone.METALWORKS]
@@ -94,7 +90,7 @@ mission.sections =
             ['Alois'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.items.LIZARD_EGG) then
+                    if npcUtil.tradeHasExactly(trade, xi.item.LIZARD_EGG) then
                         if not player:hasCompletedMission(mission.areaId, mission.missionId) then
                             return mission:progressEvent(372)
                         else

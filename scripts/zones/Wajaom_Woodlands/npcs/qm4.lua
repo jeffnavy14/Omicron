@@ -4,13 +4,12 @@
 -- !pos 278 0 -703 51
 -----------------------------------
 local ID = zones[xi.zone.WAJAOM_WOODLANDS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.JUG_OF_MONKEY_WINE) and
+        npcUtil.tradeHas(trade, xi.item.JUG_OF_MONKEY_WINE) and
         npcUtil.popFromQM(player, npc, ID.mob.TINNIN)
     then
         -- Trade Monkey Wine

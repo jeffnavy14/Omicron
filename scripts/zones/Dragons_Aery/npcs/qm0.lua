@@ -5,7 +5,6 @@
 -- !pos -81 32 2 178
 -----------------------------------
 local ID = zones[xi.zone.DRAGONS_AERY]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
@@ -18,12 +17,12 @@ entity.onTrade = function(player, npc, trade)
         not GetMobByID(ID.mob.NIDHOGG):isSpawned()
     then
         if
-            npcUtil.tradeHasExactly(trade, xi.items.HONEY_WINE) and
+            npcUtil.tradeHasExactly(trade, xi.item.HONEY_WINE) and
             npcUtil.popFromQM(player, npc, ID.mob.FAFNIR)
         then
             player:confirmTrade()
         elseif
-            npcUtil.tradeHasExactly(trade, xi.items.SWEET_TEA) and
+            npcUtil.tradeHasExactly(trade, xi.item.SWEET_TEA) and
             npcUtil.popFromQM(player, npc, ID.mob.NIDHOGG)
         then
             player:confirmTrade()

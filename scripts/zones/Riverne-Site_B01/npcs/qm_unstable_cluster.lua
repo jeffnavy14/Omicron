@@ -4,13 +4,12 @@
 -- Note: Spawns Unstable Cluster
 -----------------------------------
 local ID = zones[xi.zone.RIVERNE_SITE_B01]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.POT_OF_CLUSTERED_TAR) and
+        npcUtil.tradeHas(trade, xi.item.POT_OF_CLUSTERED_TAR) and
         npcUtil.popFromQM(player, npc, ID.mob.UNSTABLE_CLUSTER)
     then
         player:confirmTrade()

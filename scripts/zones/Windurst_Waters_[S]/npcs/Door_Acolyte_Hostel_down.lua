@@ -5,8 +5,6 @@
 -- !pos  124.000, -3.000, 222.215 94
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WATERS_S]
-require("scripts/globals/missions")
-require("scripts/globals/quests")
 -----------------------------------
 local entity = {}
 
@@ -41,7 +39,7 @@ end
 
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 129 then
-        player:addItem(xi.items.HI_ELIXIR)
+        player:addItem(xi.item.HI_ELIXIR)
         player:messageSpecial(ID.text.ITEM_OBTAINED, 4144)
         player:delKeyItem(xi.ki.SMALL_STARFRUIT)
         player:completeQuest(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.THE_TIGRESS_STIRS)

@@ -9,9 +9,6 @@
 -- qm1              : !pos -62.239 -7.9619 -137.1251
 -- _1l0 (Rock Slab) : !pos -99 -7 -91 57
 -----------------------------------
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local talaccaCoveID = zones[xi.zone.TALACCA_COVE]
 -----------------------------------
 
@@ -19,7 +16,7 @@ local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.LUCK_O
 
 quest.reward =
 {
-    item    = xi.items.CORSAIR_DIE,
+    item    = xi.item.CORSAIR_DIE,
     keyItem = xi.ki.JOB_GESTURE_CORSAIR,
     title   = xi.title.SEAGULL_PHRATRIE_CREW_MEMBER,
 }

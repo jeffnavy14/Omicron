@@ -4,10 +4,6 @@
 -----------------------------------
 -- !addmission 13 62
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/rhapsodies')
-require('scripts/globals/interaction/mission')
------------------------------------
 local whitegateID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 -----------------------------------
 
@@ -15,7 +11,7 @@ local mission = Mission:new(xi.mission.log_id.ROV, xi.mission.id.rov.APHMAUS_LIG
 
 mission.reward =
 {
-    item = xi.items.CIPHER_OF_NASHMEIRAS_ALT_EGO_II,
+    item = xi.item.CIPHER_OF_NASHMEIRAS_ALT_EGO_II,
     nextMission = { xi.mission.log_id.ROV, xi.mission.id.rov.REUNITED },
 }
 

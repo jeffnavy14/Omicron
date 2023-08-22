@@ -4,10 +4,6 @@
 -- !addquest 9 54
 -- Traiffeaux : !pos 437.451 63 -290.512 267
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local kamihrID = zones[xi.zone.KAMIHR_DRIFTS]
 -----------------------------------
 
@@ -21,8 +17,8 @@ quest.reward =
 
 local requiredTradeItems =
 {
-    { xi.items.RABBIT_HIDE, 3 },
-    { xi.items.RAAZ_TUSK,   1 },
+    { xi.item.RABBIT_HIDE, 3 },
+    { xi.item.RAAZ_TUSK,   1 },
 }
 
 quest.sections =

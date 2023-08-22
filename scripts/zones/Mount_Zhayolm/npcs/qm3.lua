@@ -4,13 +4,12 @@
 -- !pos -368 -13 366 61
 -----------------------------------
 local ID = zones[xi.zone.MOUNT_ZHAYOLM]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.SLAB_OF_RAW_BUFFALO) and
+        npcUtil.tradeHas(trade, xi.item.SLAB_OF_RAW_BUFFALO) and
         npcUtil.popFromQM(player, npc, ID.mob.ANANTABOGA, { hide = 0 })
     then
         player:confirmTrade()

@@ -4,12 +4,11 @@
 --  Notes: Antican Tag
 -----------------------------------
 local ID = zones[xi.zone.QUICKSAND_CAVES]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    if npcUtil.giveItem(player, xi.items.ANTICAN_TAG) then
+    if npcUtil.giveItem(player, xi.item.ANTICAN_TAG) then
         local newPosition = npcUtil.pickNewPosition(npc:getID(), ID.npc.ANTICAN_TAG_POSITIONS, true)
         npc:hideNPC(7200)
         npc:setPos(newPosition.x, newPosition.y, newPosition.z)

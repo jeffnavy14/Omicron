@@ -4,13 +4,12 @@
 -- !pos 88 -22 70 61
 -----------------------------------
 local ID = zones[xi.zone.MOUNT_ZHAYOLM]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.VINEGAR_PIE) and
+        npcUtil.tradeHas(trade, xi.item.VINEGAR_PIE) and
         npcUtil.popFromQM(player, npc, ID.mob.KHROMASOUL_BHURBORLOR, { hide = 0 })
     then
         player:confirmTrade()

@@ -6,10 +6,6 @@
 -- Bki Tbujhja : !pos -22 0 -60 245
 -- Song Runes  : !pos -244 16 -280 118
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local buburimuID   = zones[xi.zone.BUBURIMU_PENINSULA]
 local lowerJeunoID = zones[xi.zone.LOWER_JEUNO]
 -----------------------------------
@@ -18,7 +14,7 @@ local quest = Quest:new(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_OLD_MONUMEN
 
 quest.reward =
 {
-    item  = xi.items.POETIC_PARCHMENT,
+    item  = xi.item.POETIC_PARCHMENT,
     title = xi.title.RESEARCHER_OF_CLASSICS,
 }
 
@@ -95,18 +91,18 @@ quest.sections =
             ['Song_Runes'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.items.SHEET_OF_PARCHMENT) then
+                    if npcUtil.tradeHasExactly(trade, xi.item.SHEET_OF_PARCHMENT) then
                         return quest:progressEvent(2)
                     end
                 end,
 
-                onTrigger = quest:messageSpecial(buburimuID.text.SONG_RUNES_REQUIRE, xi.items.SHEET_OF_PARCHMENT),
+                onTrigger = quest:messageSpecial(buburimuID.text.SONG_RUNES_REQUIRE, xi.item.SHEET_OF_PARCHMENT),
             },
 
             onEventFinish =
             {
                 [2] = function(player, csid, option, npc)
-                    player:messageSpecial(buburimuID.text.SONG_RUNES_WRITING, xi.items.SHEET_OF_PARCHMENT)
+                    player:messageSpecial(buburimuID.text.SONG_RUNES_WRITING, xi.item.SHEET_OF_PARCHMENT)
 
                     if quest:complete(player) then
                         player:confirmTrade()

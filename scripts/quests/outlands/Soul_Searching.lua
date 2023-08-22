@@ -4,10 +4,6 @@
 -- Log ID: 5, Quest ID: 162
 -- Cermet Headstone : !pos 235 0 280 121
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local zitahID = zones[xi.zone.THE_SANCTUARY_OF_ZITAH]
 -----------------------------------
 
@@ -15,7 +11,7 @@ local quest = Quest:new(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.SOUL_SEAR
 
 quest.reward =
 {
-    item  = xi.items.BAT_EARRING,
+    item  = xi.item.BAT_EARRING,
     title = xi.title.GUIDER_OF_SOULS_TO_THE_SANCTUARY,
 }
 

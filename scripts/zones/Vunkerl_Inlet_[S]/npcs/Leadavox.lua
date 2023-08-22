@@ -5,7 +5,6 @@
 -- !pos 206 -32 316
 -----------------------------------
 local ID = zones[xi.zone.VUNKERL_INLET_S]
-require("scripts/globals/quests")
 -----------------------------------
 local entity = {}
 
@@ -15,7 +14,7 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("BetterPartOfValProg") == 3
     then
         if
-            trade:hasItemQty(xi.items.GNOLE_CLAW, 1) and
+            trade:hasItemQty(xi.item.GNOLE_CLAW, 1) and
             trade:getItemCount() == 1 and
             trade:getGil() == 0
         then

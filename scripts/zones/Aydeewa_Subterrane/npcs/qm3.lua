@@ -4,13 +4,12 @@
 -- !pos -217 35 12 68
 -----------------------------------
 local ID = zones[xi.zone.AYDEEWA_SUBTERRANE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.BOTTLE_OF_SPOILT_BLOOD) and
+        npcUtil.tradeHas(trade, xi.item.BOTTLE_OF_SPOILT_BLOOD) and
         npcUtil.popFromQM(player, npc, ID.mob.CHIGRE)
     then
         -- Trade Spoilt Blood

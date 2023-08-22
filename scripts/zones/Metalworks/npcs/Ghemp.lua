@@ -5,7 +5,6 @@
 -- !pos -109 2 27 237
 -----------------------------------
 local ID = zones[xi.zone.METALWORKS]
-require("scripts/globals/crafting")
 -----------------------------------
 local entity = {}
 
@@ -75,10 +74,10 @@ entity.onEventFinish = function(player, csid, option, npc)
         end
     elseif csid == 101 and option == 1 then
         if player:getFreeSlotsCount() == 0 then
-            player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.items.FIRE_CRYSTAL)
+            player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.FIRE_CRYSTAL)
         else
-            player:addItem(xi.items.FIRE_CRYSTAL)
-            player:messageSpecial(ID.text.ITEM_OBTAINED, xi.items.FIRE_CRYSTAL) -- Fire Crystal
+            player:addItem(xi.item.FIRE_CRYSTAL)
+            player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.FIRE_CRYSTAL) -- Fire Crystal
             xi.crafting.signupGuild(player, xi.crafting.guild.SMITHING)
         end
     else

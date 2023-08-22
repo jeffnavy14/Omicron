@@ -4,10 +4,6 @@
 -- Log ID: 1, Quest ID: 48
 -- Paujean : !pos -93.738 4.649 34.373 236
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local portBastokID = zones[xi.zone.PORT_BASTOK]
 -----------------------------------
 
@@ -17,7 +13,7 @@ quest.reward =
 {
     fame     = 125,
     fameArea = xi.quest.fame_area.BASTOK,
-    item     = xi.items.PURPLE_BELT,
+    item     = xi.item.PURPLE_BELT,
     title    = xi.title.PURPLE_BELT,
 }
 
@@ -52,7 +48,7 @@ quest.sections =
             ['Paujean'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, { xi.items.LUMBERING_HORN, xi.items.RAMPAGING_HORN }) then
+                    if npcUtil.tradeHasExactly(trade, { xi.item.LUMBERING_HORN, xi.item.RAMPAGING_HORN }) then
                         return quest:progressEvent(196)
                     end
                 end,

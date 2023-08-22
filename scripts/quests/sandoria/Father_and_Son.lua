@@ -5,10 +5,6 @@
 -- Ailbeche : !pos 4 -1 24 231
 -- Exoroche : !pos 72 -1 60 230
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local northenSandoriaID = zones[xi.zone.NORTHERN_SAN_DORIA]
 local southernSandoriaID = zones[xi.zone.SOUTHERN_SAN_DORIA]
 -----------------------------------
@@ -19,7 +15,7 @@ quest.reward =
 {
     fame = 30,
     fameArea = xi.quest.fame_area.SANDORIA,
-    item = xi.items.WILLOW_FISHING_ROD,
+    item = xi.item.WILLOW_FISHING_ROD,
     title = xi.title.LOST_CHILD_OFFICER,
 }
 
@@ -112,7 +108,7 @@ quest.sections =
                 onTrade = function(player, npc, trade)
                     if
                         quest:getVar(player, 'Prog') == 2 and
-                        npcUtil.tradeHasExactly(trade, xi.items.WILLOW_FISHING_ROD)
+                        npcUtil.tradeHasExactly(trade, xi.item.WILLOW_FISHING_ROD)
                     then
                         return quest:progressEvent(61)
                     end
@@ -122,7 +118,7 @@ quest.sections =
                     if quest:getVar(player, 'Prog') == 0 then
                         return quest:messageSpecial(northenSandoriaID.text.AILBECHE_WHEN_FISHING):replaceDefault()
                     elseif quest:getVar(player, 'Prog') == 2 then
-                        return quest:messageSpecial(northenSandoriaID.text.OH_I_WANT_MY_ITEM, xi.items.WILLOW_FISHING_ROD):progress()
+                        return quest:messageSpecial(northenSandoriaID.text.OH_I_WANT_MY_ITEM, xi.item.WILLOW_FISHING_ROD):progress()
                     end
                 end,
             },

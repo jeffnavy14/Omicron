@@ -7,7 +7,6 @@
 -- !pos 239.998 -2.329 120.000 20
 -----------------------------------
 local ID = zones[xi.zone.PROMYVION_MEA]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
@@ -17,7 +16,7 @@ end
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.INDIGO_MEMOSPHERE) and
+        npcUtil.tradeHas(trade, xi.item.INDIGO_MEMOSPHERE) and
         not player:hasKeyItem(xi.ki.MAP_OF_PROMYVION_MEA)
     then
         player:startEvent(49)

@@ -7,10 +7,6 @@
 -- Helaku  : !pos 49 -2 -12 231
 -- Halver  : !pos 2 0.1 0.1 233
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local chateauID       = zones[xi.zone.CHATEAU_DORAGUILLE]
 local northSandoriaID = zones[xi.zone.NORTHERN_SAN_DORIA]
 -----------------------------------
@@ -34,7 +30,7 @@ mission.sections =
                     local missionStatus = player:getMissionStatus(mission.areaId)
 
                     if missionStatus == 8 then
-                        local needsHalverTrust = (not player:hasSpell(xi.magic.spell.HALVER) and not player:findItem(xi.items.CIPHER_OF_HALVERS_ALTER_EGO)) and 1 or 0
+                        local needsHalverTrust = (not player:hasSpell(xi.magic.spell.HALVER) and not player:findItem(xi.item.CIPHER_OF_HALVERS_ALTER_EGO)) and 1 or 0
 
                         return mission:progressEvent(503, { [7] = needsHalverTrust })
                     elseif missionStatus <= 10 then
@@ -50,9 +46,9 @@ mission.sections =
 
                     if
                         not player:hasSpell(xi.magic.spell.HALVER) and
-                        not player:findItem(xi.items.CIPHER_OF_HALVERS_ALTER_EGO)
+                        not player:findItem(xi.item.CIPHER_OF_HALVERS_ALTER_EGO)
                     then
-                        npcUtil.giveItem(player, xi.items.CIPHER_OF_HALVERS_ALTER_EGO)
+                        npcUtil.giveItem(player, xi.item.CIPHER_OF_HALVERS_ALTER_EGO)
                     end
                 end,
             },

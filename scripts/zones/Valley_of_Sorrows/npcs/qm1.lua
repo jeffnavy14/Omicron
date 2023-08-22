@@ -5,7 +5,6 @@
 -- !pos 0 0 -37 59
 -----------------------------------
 local ID = zones[xi.zone.VALLEY_OF_SORROWS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
@@ -18,12 +17,12 @@ entity.onTrade = function(player, npc, trade)
         not GetMobByID(ID.mob.ASPIDOCHELONE):isSpawned()
     then
         if
-            npcUtil.tradeHasExactly(trade, xi.items.BLUE_PONDWEED) and
+            npcUtil.tradeHasExactly(trade, xi.item.BLUE_PONDWEED) and
             npcUtil.popFromQM(player, npc, ID.mob.ADAMANTOISE)
         then
             player:confirmTrade()
         elseif
-            npcUtil.tradeHasExactly(trade, xi.items.RED_PONDWEED) and
+            npcUtil.tradeHasExactly(trade, xi.item.RED_PONDWEED) and
             npcUtil.popFromQM(player, npc, ID.mob.ASPIDOCHELONE)
         then
             player:confirmTrade()

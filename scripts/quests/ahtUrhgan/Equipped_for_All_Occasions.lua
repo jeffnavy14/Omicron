@@ -7,10 +7,6 @@
 -- _5i0 (Iron Door) : !pos 247.735 18.499 -142.267 198
 -- Ratihb           : !pos 75.225 -6.000 -137.203 50
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local mazeID = zones[xi.zone.MAZE_OF_SHAKHRAMI]
 -----------------------------------
 
@@ -18,7 +14,7 @@ local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.EQUIPP
 
 quest.reward =
 {
-    item  = xi.items.TRUMP_GUN,
+    item  = xi.item.TRUMP_GUN,
 }
 
 quest.sections =

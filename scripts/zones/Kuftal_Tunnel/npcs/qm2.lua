@@ -5,13 +5,12 @@
 -- !pos -25.238 -12.785 -148.393 174
 -----------------------------------
 local ID = zones[xi.zone.KUFTAL_TUNNEL]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.QUUS) and
+        npcUtil.tradeHas(trade, xi.item.QUUS) and
         not GetMobByID(ID.mob.CANCER):isSpawned() and
         not GetMobByID(ID.mob.CANCER + 1):isSpawned()
     then

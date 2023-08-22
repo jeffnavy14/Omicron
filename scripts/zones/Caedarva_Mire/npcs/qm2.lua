@@ -4,13 +4,12 @@
 -- !pos -773 -11 322 79
 -----------------------------------
 local ID = zones[xi.zone.CAEDARVA_MIRE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.CLUMP_OF_MYRRH) and
+        npcUtil.tradeHas(trade, xi.item.CLUMP_OF_MYRRH) and
         npcUtil.popFromQM(player, npc, ID.mob.EXPERIMENTAL_LAMIA)
     then
         player:confirmTrade()

@@ -5,13 +5,12 @@
 -- !pos 0.1 0.1 -286 177
 -----------------------------------
 local ID = zones[xi.zone.VELUGANNON_PALACE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.CURTANA) and
+        npcUtil.tradeHas(trade, xi.item.CURTANA) and
         npcUtil.popFromQM(player, npc, ID.mob.BRIGANDISH_BLADE)
     then
         player:confirmTrade()

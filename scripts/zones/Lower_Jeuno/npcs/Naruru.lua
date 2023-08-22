@@ -5,8 +5,6 @@
 -- !pos -56 0.1 -138 245
 -----------------------------------
 local ID = zones[xi.zone.LOWER_JEUNO]
-require("scripts/globals/quests")
-require("scripts/globals/utils")
 -----------------------------------
 local entity = {}
 
@@ -75,14 +73,14 @@ entity.onEventFinish = function(player, csid, option, npc)
 
     elseif csid == 187 then
         if player:getFreeSlotsCount() == 0 then
-            player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.items.MYTHRIL_RING)
+            player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.MYTHRIL_RING)
         else
             player:addTitle(xi.title.MERCY_ERRAND_RUNNER)
             player:delKeyItem(xi.ki.SUPER_SOUP_POT)
             player:setCharVar("CooksPrideVar", 0)
             npcUtil.giveCurrency(player, 'gil', 3000)
-            player:addItem(xi.items.MYTHRIL_RING)
-            player:messageSpecial(ID.text.ITEM_OBTAINED, xi.items.MYTHRIL_RING)
+            player:addItem(xi.item.MYTHRIL_RING)
+            player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.MYTHRIL_RING)
             player:addFame(xi.quest.fame_area.JEUNO, 30)
             player:completeQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.COOK_S_PRIDE)
         end

@@ -4,15 +4,12 @@
 -- Starts and Finishes Quest: Starting a Flame (R)
 -- !pos 82 0 116 230
 -----------------------------------
-require("scripts/globals/shop")
-require("scripts/globals/quests")
------------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.STARTING_A_FLAME) ~= QUEST_AVAILABLE then
         if
-            trade:hasItemQty(xi.items.FLINT_STONE, 4) and
+            trade:hasItemQty(xi.item.FLINT_STONE, 4) and
             trade:getItemCount() == 4
         then
             player:startEvent(36)

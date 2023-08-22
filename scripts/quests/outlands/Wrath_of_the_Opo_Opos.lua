@@ -4,10 +4,6 @@
 -- Log ID: 5, Quest ID: 160
 -- Cermet Headstone : !pos 491 20 301 123
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local yuhtungaID = zones[xi.zone.YUHTUNGA_JUNGLE]
 -----------------------------------
 
@@ -15,7 +11,7 @@ local quest = Quest:new(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.WRATH_OF_
 
 quest.reward =
 {
-    item  = xi.items.OPO_OPO_NECKLACE,
+    item  = xi.item.OPO_OPO_NECKLACE,
     title = xi.title.FRIEND_OF_THE_OPO_OPOS,
 }
 
@@ -31,8 +27,8 @@ quest.sections =
             ['Cermet_Headstone'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.items.GARNET) then
-                        return quest:progressEvent(202, xi.items.GARNET)
+                    if npcUtil.tradeHasExactly(trade, xi.item.GARNET) then
+                        return quest:progressEvent(202, xi.item.GARNET)
                     end
                 end,
 

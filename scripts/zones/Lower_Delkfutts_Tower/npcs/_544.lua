@@ -4,12 +4,10 @@
 -- Notes: Door opens when you trade Delkfutt Key to it
 -- !pos 345 0.1 20 184
 -----------------------------------
-require("scripts/globals/npc_util")
------------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if npcUtil.tradeHas(trade, xi.items.DELKFUTT_KEY) then
+    if npcUtil.tradeHas(trade, xi.item.DELKFUTT_KEY) then
         player:startOptionalCutscene(16)
     end
 end

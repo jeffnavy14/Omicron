@@ -4,13 +4,12 @@
 -- Trade Moblin Oil
 -----------------------------------
 local ID = zones[xi.zone.HALVUNG]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.MOBLIN_OIL) and
+        npcUtil.tradeHas(trade, xi.item.MOBLIN_OIL) and
         not player:hasKeyItem(xi.ki.BRACELET_OF_VERVE)
     then
         player:confirmTrade()

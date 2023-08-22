@@ -7,10 +7,6 @@
 -- Baunise      : !pos -55 -8 -32 230
 -- Disused Well : !pos -221 2 -293 149
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local davoiID            = zones[xi.zone.DAVOI]
 local southernSandoriaID = zones[xi.zone.SOUTHERN_SAN_DORIA]
 -----------------------------------
@@ -21,7 +17,7 @@ quest.reward =
 {
     fame     = 30,
     fameArea = xi.quest.fame_area.SANDORIA,
-    item     = xi.items.KITE_SHIELD,
+    item     = xi.item.KITE_SHIELD,
     keyItem  = xi.ki.JOB_GESTURE_PALADIN,
     title    = xi.title.TRIED_AND_TESTED_KNIGHT,
 }

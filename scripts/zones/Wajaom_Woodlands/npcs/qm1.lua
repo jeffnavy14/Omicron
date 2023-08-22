@@ -4,13 +4,12 @@
 -- !pos -697 -7 -123 51
 -----------------------------------
 local ID = zones[xi.zone.WAJAOM_WOODLANDS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.HELLCAGE_BUTTERFLY) and
+        npcUtil.tradeHas(trade, xi.item.HELLCAGE_BUTTERFLY) and
         npcUtil.popFromQM(player, npc, ID.mob.VULPANGUE)
     then
         -- Trade Hellcage Butterfly

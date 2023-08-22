@@ -4,13 +4,12 @@
 -- !pos 695 -7 527 79
 -----------------------------------
 local ID = zones[xi.zone.CAEDARVA_MIRE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.BOUND_EXORCISM_TREATISE) and
+        npcUtil.tradeHas(trade, xi.item.BOUND_EXORCISM_TREATISE) and
         npcUtil.popFromQM(player, npc, ID.mob.MAHJLAEF_THE_PAINTORN)
     then
         player:confirmTrade()

@@ -4,8 +4,6 @@
 -- Involved In Quest: Know One's Onions, Onion Rings, The Puppet Master, Class Reunion
 -- !pos -26 -13 260 239
 -----------------------------------
-require("scripts/globals/quests")
------------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -21,11 +19,11 @@ entity.onTrigger = function(player, npc)
     if
         iCanHearARainbow == QUEST_AVAILABLE and
         player:getMainLvl() >= 30 and
-        player:hasItem(xi.items.CARBUNCLES_RUBY)
+        player:hasItem(xi.item.CARBUNCLES_RUBY)
     then
-        player:startEvent(384, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY)
+        player:startEvent(384, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY)
     elseif iCanHearARainbow == QUEST_ACCEPTED then
-        player:startEvent(385, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY, xi.items.CARBUNCLES_RUBY)
+        player:startEvent(385, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY, xi.item.CARBUNCLES_RUBY)
 
     -- CLASS REUNION
     elseif

@@ -4,13 +4,12 @@
 -- !pos 124.544 19.988 -60.670 12
 -----------------------------------
 local ID = zones[xi.zone.NEWTON_MOVALPOLOS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.AIR_TANK) and
+        npcUtil.tradeHas(trade, xi.item.AIR_TANK) and
         npcUtil.popFromQM(player, npc, ID.mob.BUGBEAR_MATMAN)
     then
         player:showText(npc, ID.text.SHOWMAN_ACCEPT)

@@ -4,10 +4,6 @@
 -- Log ID: 1, Quest ID: 20
 -- Detzo : !pos 5.365 6.999 9.891 234
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local bastokMinesID = zones[xi.zone.BASTOK_MINES]
 -----------------------------------
 
@@ -17,7 +13,7 @@ quest.reward =
 {
     fame     = 30,
     fameArea = xi.quest.fame_area.BASTOK,
-    item     = xi.items.WOLF_GORGET,
+    item     = xi.item.WOLF_GORGET,
     title    = xi.title.CONTEST_RIGGER,
 }
 
@@ -52,7 +48,7 @@ quest.sections =
             ['Detzo'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.items.MYTHRIL_SALLET) then
+                    if npcUtil.tradeHasExactly(trade, xi.item.MYTHRIL_SALLET) then
                         return quest:progressEvent(94)
                     end
                 end,

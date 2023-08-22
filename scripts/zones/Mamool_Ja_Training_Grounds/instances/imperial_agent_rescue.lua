@@ -3,8 +3,6 @@
 -- An agent sent to spy on the secret training grounds of the Mamool Ja has been captured. Rescue him before he is interrogated for Imperial secrets.
 -----------------------------------
 local ID = zones[xi.zone.MAMOOL_JA_TRAINING_GROUNDS]
-require("scripts/globals/assault")
-require("scripts/globals/instance")
 -----------------------------------
 local instanceObject = {}
 
@@ -34,7 +32,7 @@ end
 instanceObject.afterInstanceRegister = function(player)
     local instance = player:getInstance()
 
-    xi.assault.afterInstanceRegister(player, xi.items.CAGE_OF_BHAFLAU_FIREFLIES)
+    xi.assault.afterInstanceRegister(player, xi.item.CAGE_OF_BHAFLAU_FIREFLIES)
     GetNPCByID(ID.npc.RUNE_OF_RELEASE, instance):setPos(220.000, 1.465, -504.999, 0)
     GetNPCByID(ID.npc.ANCIENT_LOCKBOX, instance):setPos(220.000, 1.619, -502.999, 0)
     instance:setProgress(math.random(ID.npc.POT_HATCH, ID.npc.POT_HATCH + 2))

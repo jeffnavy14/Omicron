@@ -4,14 +4,11 @@
 -- Norvallen Regional Merchant
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MINES]
-require("scripts/globals/events/harvest_festivals")
-require("scripts/globals/conquest")
-require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    onHalloweenTrade(player, trade, npc)
+    xi.events.harvestFestival.onHalloweenTrade(player, trade, npc)
 end
 
 entity.onTrigger = function(player, npc)
@@ -20,10 +17,10 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            xi.items.ARROWWOOD_LOG,         20,
-            xi.items.POT_OF_CRYING_MUSTARD, 29,
-            xi.items.POD_OF_BLUE_PEAS,      29,
-            xi.items.ASH_LOG,               99,
+            xi.item.ARROWWOOD_LOG,         20,
+            xi.item.POT_OF_CRYING_MUSTARD, 29,
+            xi.item.POD_OF_BLUE_PEAS,      29,
+            xi.item.ASH_LOG,               99,
         }
 
         player:showText(npc, ID.text.MILLE_OPEN_DIALOG)

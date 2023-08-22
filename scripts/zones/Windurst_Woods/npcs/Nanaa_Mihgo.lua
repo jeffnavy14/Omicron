@@ -7,11 +7,6 @@
 -- !pos 62 -4 240 241
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WOODS]
-require("scripts/globals/magic")
-require("scripts/globals/missions")
-require("scripts/globals/npc_util")
-require("scripts/globals/quests")
-require("scripts/globals/utils")
 -----------------------------------
 local entity = {}
 
@@ -38,7 +33,7 @@ local trustMemory = function(player)
     end
 
     -- 32 - hasItem(286) Nanaa Mihgo statue
-    if player:hasItem(xi.items.NANAA_MIHGO_STATUE) then
+    if player:hasItem(xi.item.NANAA_MIHGO_STATUE) then
         memories = memories + 32
     end
 

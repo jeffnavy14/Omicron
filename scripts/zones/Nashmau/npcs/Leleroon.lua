@@ -5,7 +5,6 @@
 -- !pos -14.687 0.000 25.114 53
 -----------------------------------
 local ID = zones[xi.zone.NASHMAU]
-require("scripts/globals/quests")
 -----------------------------------
 local entity = {}
 
@@ -15,7 +14,7 @@ entity.onTrade = function(player, npc, trade)
         player:getCharVar("NavigatingtheUnfriendlySeas") <= 2
     then
         if
-            trade:hasItemQty(xi.items.HYDROGAUGE, 1) and
+            trade:hasItemQty(xi.item.HYDROGAUGE, 1) and
             trade:getItemCount() == 1
         then
             player:startEvent(283)

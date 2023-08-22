@@ -4,14 +4,11 @@
 -- Ronfaure Regional Merchant
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MINES]
-require("scripts/globals/events/harvest_festivals")
-require("scripts/globals/conquest")
-require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    onHalloweenTrade(player, trade, npc)
+    xi.events.harvestFestival.onHalloweenTrade(player, trade, npc)
 end
 
 entity.onTrigger = function(player, npc)
@@ -20,10 +17,10 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            xi.items.SAN_DORIAN_CARROT,           33,
-            xi.items.BUNCH_OF_SAN_DORIAN_GRAPES,  79,
-            xi.items.RONFAURE_CHESTNUT,          124,
-            xi.items.BAG_OF_SAN_DORIAN_FLOUR,     62,
+            xi.item.SAN_DORIAN_CARROT,           33,
+            xi.item.BUNCH_OF_SAN_DORIAN_GRAPES,  79,
+            xi.item.RONFAURE_CHESTNUT,          124,
+            xi.item.BAG_OF_SAN_DORIAN_FLOUR,     62,
         }
 
         player:showText(npc, ID.text.FAUSTIN_OPEN_DIALOG)

@@ -11,10 +11,6 @@
 -- Naji    : !pos 64 -14 -4 237
 -- Ayame   : !pos 133 -19 34 237
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local bastokMarketsID = zones[xi.zone.BASTOK_MARKETS]
 local bastokMinesID   = zones[xi.zone.BASTOK_MINES]
 local metalworksID    = zones[xi.zone.METALWORKS]
@@ -107,7 +103,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 1 and
-                        npcUtil.tradeHasExactly(trade, xi.items.FADED_CRYSTAL)
+                        npcUtil.tradeHasExactly(trade, xi.item.FADED_CRYSTAL)
                     then
                         return mission:progressEvent(506)
                     end
@@ -141,7 +137,7 @@ mission.sections =
             {
                 [505] = function(player, csid, option, npc)
                     if option == 0 then
-                        local crystalItem = math.random(xi.items.FIRE_CRYSTAL, xi.items.DARK_CRYSTAL)
+                        local crystalItem = math.random(xi.item.FIRE_CRYSTAL, xi.item.DARK_CRYSTAL)
 
                         if npcUtil.giveItem(player, crystalItem) then
                             player:setMissionStatus(mission.areaId, 1)

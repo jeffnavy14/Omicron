@@ -4,13 +4,12 @@
 -- !pos 417 -19 -69 79
 -----------------------------------
 local ID = zones[xi.zone.CAEDARVA_MIRE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.MINT_DROP) and
+        npcUtil.tradeHas(trade, xi.item.MINT_DROP) and
         npcUtil.popFromQM(player, npc, ID.mob.VERDELET)
     then
         player:confirmTrade()

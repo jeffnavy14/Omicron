@@ -4,13 +4,12 @@
 -- !pos -22 -4 204 72
 -----------------------------------
 local ID = zones[xi.zone.ALZADAAL_UNDERSEA_RUINS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.OPALUS_GEM) and
+        npcUtil.tradeHas(trade, xi.item.OPALUS_GEM) and
         npcUtil.popFromQM(player, npc, ID.mob.WULGARU)
     then
         -- Trade Opalus Gem

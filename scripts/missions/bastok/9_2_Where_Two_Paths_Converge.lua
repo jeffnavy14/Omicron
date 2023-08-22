@@ -9,10 +9,6 @@
 -- Rashid     : !pos -8.444 -2 -123.575 234
 -- Iron Eater : !pos 92.936 -19.532 1.814 237
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local bastokMarketsID = zones[xi.zone.BASTOK_MARKETS]
 local bastokMinesID   = zones[xi.zone.BASTOK_MINES]
 local metalworksID    = zones[xi.zone.METALWORKS]
@@ -119,7 +115,7 @@ mission.sections =
                 [782] = function(player, csid, option, npc)
                     mission:complete(player)
 
-                    if not npcUtil.giveItem(player, xi.items.BASTOKAN_FLAG) then
+                    if not npcUtil.giveItem(player, xi.item.BASTOKAN_FLAG) then
                         mission:setVar(player, 'Flag', 1)
                     end
                 end,
@@ -162,7 +158,7 @@ mission.sections =
                 -- with one conditional, but playing it safe.
                 onTrigger = function(player, npc)
                     if mission:getVar(player, 'Flag') == 1 then
-                        if npcUtil.giveItem(player, xi.items.BASTOKAN_FLAG) then
+                        if npcUtil.giveItem(player, xi.item.BASTOKAN_FLAG) then
                             mission:setVar(player, 'Flag', 0)
                         end
                     end

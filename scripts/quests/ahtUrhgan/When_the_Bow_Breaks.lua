@@ -6,9 +6,6 @@
 -- Giwahb Watchtower: !pos -339 -37 654 51
 -----------------------------------
 local ID = zones[xi.zone.WAJAOM_WOODLANDS]
-require("scripts/globals/quests")
-require("scripts/globals/npc_util")
-require('scripts/globals/interaction/quest')
 -----------------------------------
 
 local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.WHEN_THE_BOW_BREAKS)
@@ -49,7 +46,7 @@ quest.sections =
             ['Giwahb_Watchtower'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.items.FRAYED_ARROW) then
+                    if npcUtil.tradeHasExactly(trade, xi.item.FRAYED_ARROW) then
                         return quest:progressEvent(512)
                     end
                 end,

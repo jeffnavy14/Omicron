@@ -4,12 +4,11 @@
 -- !pos -294 -143 27 158
 -----------------------------------
 local ID = zones[xi.zone.UPPER_DELKFUTTS_TOWER]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if npcUtil.tradeHas(trade, xi.items.DELKFUTT_KEY) then -- Delkfutt Key
+    if npcUtil.tradeHas(trade, xi.item.DELKFUTT_KEY) then -- Delkfutt Key
         player:startEvent(6)
     end
 end

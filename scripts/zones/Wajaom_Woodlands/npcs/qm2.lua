@@ -4,13 +4,12 @@
 -- !pos 253 -23 116 51
 -----------------------------------
 local ID = zones[xi.zone.WAJAOM_WOODLANDS]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.BUNCH_OF_SENORITA_PAMAMAS) and
+        npcUtil.tradeHas(trade, xi.item.BUNCH_OF_SENORITA_PAMAMAS) and
         npcUtil.popFromQM(player, npc, ID.mob.IRIZ_IMA)
     then
         -- Trade Senorita Pamamas

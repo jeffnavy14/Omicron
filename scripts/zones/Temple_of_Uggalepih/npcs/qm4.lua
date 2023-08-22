@@ -4,13 +4,12 @@
 -- !pos -57 0 4 159
 -----------------------------------
 local ID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.TONBERRY_RATTLE) and
+        npcUtil.tradeHas(trade, xi.item.TONBERRY_RATTLE) and
         npcUtil.popFromQM(player, npc, ID.mob.BERYL_FOOTED_MOLBERRY, { hide = 900 })
     then
         player:confirmTrade()

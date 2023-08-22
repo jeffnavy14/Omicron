@@ -4,13 +4,12 @@
 -- !pos 24 25 -306 160
 -----------------------------------
 local ID = zones[xi.zone.DEN_OF_RANCOR]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.HAKUTAKU_EYE_CLUSTER) and
+        npcUtil.tradeHas(trade, xi.item.HAKUTAKU_EYE_CLUSTER) and
         npcUtil.popFromQM(player, npc, ID.mob.HAKUTAKU)
     then
         player:confirmTrade()

@@ -4,13 +4,12 @@
 -- !pos -199 8 -62 68
 -----------------------------------
 local ID = zones[xi.zone.AYDEEWA_SUBTERRANE]
-require("scripts/globals/npc_util")
 -----------------------------------
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        npcUtil.tradeHas(trade, xi.items.VIAL_OF_PURE_BLOOD) and
+        npcUtil.tradeHas(trade, xi.item.VIAL_OF_PURE_BLOOD) and
         npcUtil.popFromQM(player, npc, ID.mob.NOSFERATU)
     then
         -- Trade Pure Blood

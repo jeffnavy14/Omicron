@@ -11,10 +11,6 @@
 -- qm4        : !pos 171 0 -25 205
 -- Gilgamesh  : !pos 122.452 -9.009 -12.052 252
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
------------------------------------
 local bastokMarketsID  = zones[xi.zone.BASTOK_MARKETS]
 local bastokMinesID    = zones[xi.zone.BASTOK_MINES]
 local ifritsCauldronID = zones[xi.zone.IFRITS_CAULDRON]
@@ -134,7 +130,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 2 and
-                        npcUtil.tradeHasExactly(trade, xi.items.FRAG_ROCK)
+                        npcUtil.tradeHasExactly(trade, xi.item.FRAG_ROCK)
                     then
                         return mission:progressEvent(99)
                     end
@@ -167,7 +163,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 2 and
-                        npcUtil.tradeHasExactly(trade, xi.items.CHUNK_OF_ADAMAN_ORE) and
+                        npcUtil.tradeHasExactly(trade, xi.item.CHUNK_OF_ADAMAN_ORE) and
                         npcUtil.popFromQM(player, npc, { ifritsCauldronID.mob.PIRATES_COVE_NMS, ifritsCauldronID.mob.PIRATES_COVE_NMS + 1 }, { claim = false, hide = 900 })
                     then
                         player:confirmTrade()

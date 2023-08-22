@@ -9,9 +9,6 @@
 -- (_6h4) Great Hall     : !pos 0 -1 13 233
 -- _5a0: Heavy Stone Dr  : !pos -39 4.823 20 190
 -----------------------------------
-require('scripts/globals/missions')
-require('scripts/globals/npc_util')
-require('scripts/globals/interaction/mission')
 local chateauID = zones[xi.zone.CHATEAU_DORAGUILLE]
 -----------------------------------
 
@@ -210,7 +207,7 @@ mission.sections =
                     mission:complete(player)
                     mission:setVar(player, 'Option', 1)
 
-                    if not npcUtil.giveItem(player, xi.items.SAN_DORIAN_FLAG) then
+                    if not npcUtil.giveItem(player, xi.item.SAN_DORIAN_FLAG) then
                         mission:setVar(player, 'Flag', 1)
                     end
                 end,
@@ -344,7 +341,7 @@ mission.sections =
                 -- with one conditional, but playing it safe.
                 onTrigger = function(player, npc)
                     if mission:getVar(player, 'Flag') == 1 then
-                        if npcUtil.giveItem(player, xi.items.SAN_DORIAN_FLAG) then
+                        if npcUtil.giveItem(player, xi.item.SAN_DORIAN_FLAG) then
                             mission:setVar(player, 'Flag', 0)
                         end
                     end

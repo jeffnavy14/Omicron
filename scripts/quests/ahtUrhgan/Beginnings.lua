@@ -9,10 +9,6 @@
 -- Nareema : !pos 518.387 -24.707 -467.297 79
 -- Waudeen : !pos 673.882 -23.995 367.604 61
 -----------------------------------
-require('scripts/globals/interaction/quest')
-require('scripts/globals/quests')
-require('scripts/globals/npc_util')
------------------------------------
 local whitegateID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 -----------------------------------
 
@@ -20,7 +16,7 @@ local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.BEGINN
 
 quest.reward =
 {
-    item = xi.items.IMMORTALS_SCIMITAR,
+    item = xi.item.IMMORTALS_SCIMITAR,
 }
 
 local brandKeyItems =

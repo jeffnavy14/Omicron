@@ -10,10 +10,6 @@
 -- Brazier (F-7) : !pos 99 -33 98 195
 -- Brazier (H-9) : !pos 259 -33 -58 195
 -----------------------------------
-require('scripts/globals/npc_util')
-require('scripts/globals/quests')
-require('scripts/globals/interaction/quest')
------------------------------------
 local eldiemeID = zones[xi.zone.THE_ELDIEME_NECROPOLIS]
 -----------------------------------
 
@@ -22,7 +18,7 @@ local quest = Quest:new(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.SAVE_MY_SISTER)
 quest.reward =
 {
     gil   = 3000,
-    item  = xi.items.HOLY_MACE,
+    item  = xi.item.HOLY_MACE,
     title = xi.title.EXORCIST_IN_TRAINING,
 }
 

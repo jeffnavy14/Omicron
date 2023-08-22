@@ -5,9 +5,6 @@
 -- Starts and Finishes: Inside the Belly
 -- !pos -13 -7 -5 248
 -----------------------------------
-require("scripts/globals/npc_util")
-require("scripts/globals/quests")
------------------------------------
 local entity = {}
 
 -- data from http://wiki.ffxiclopedia.org/wiki/Inside_the_Belly
@@ -572,7 +569,7 @@ entity.onTrade = function(player, npc, trade)
     if
         underTheSea == QUEST_ACCEPTED and
         not player:hasKeyItem(xi.ki.ETCHED_RING) and
-        npcUtil.tradeHas(trade, xi.items.FAT_GREEDIE)
+        npcUtil.tradeHas(trade, xi.item.FAT_GREEDIE)
     then
         if math.random(1, 100) <= 20 then
             player:startEvent(35) -- Ring found !
@@ -583,7 +580,7 @@ entity.onTrade = function(player, npc, trade)
     -- A BOY'S DREAM
     elseif
         player:getCharVar("aBoysDreamCS") == 5 and
-        npcUtil.tradeHasExactly(trade, xi.items.ODONTOTYRANNUS)
+        npcUtil.tradeHasExactly(trade, xi.item.ODONTOTYRANNUS)
     then
         player:startEvent(85)
 

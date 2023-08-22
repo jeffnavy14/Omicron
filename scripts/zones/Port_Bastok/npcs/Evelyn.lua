@@ -4,8 +4,6 @@
 -- Gustaberg Regional Merchant
 -----------------------------------
 local ID = zones[xi.zone.PORT_BASTOK]
-require("scripts/globals/conquest")
-require("scripts/globals/shop")
 -----------------------------------
 local entity = {}
 
@@ -18,10 +16,10 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            xi.items.PINCH_OF_SULFUR,  795,
-            xi.items.POPOTO,            49,
-            xi.items.BAG_OF_RYE_FLOUR,  41,
-            xi.items.EGGPLANT,          45,
+            xi.item.PINCH_OF_SULFUR,  795,
+            xi.item.POPOTO,            49,
+            xi.item.BAG_OF_RYE_FLOUR,  41,
+            xi.item.EGGPLANT,          45,
         }
 
         player:showText(npc, ID.text.EVELYN_OPEN_DIALOG)
