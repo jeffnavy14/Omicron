@@ -4,7 +4,6 @@
 require("scripts/zones/Port_Windurst/Zone")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
-require("scripts/globals/titles")
 -----------------------------------
 local m = Module:new("Rirotiro")
 m:setEnabled(true)
