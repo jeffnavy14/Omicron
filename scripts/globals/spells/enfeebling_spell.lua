@@ -409,7 +409,7 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
         -- Attempt immunobreak. Fetch resistance rank modifier.
         local resistRank = 0
 
-        if spellElement ~= xi.magic.ele.NONE then
+        if spellElement ~= xi.element.NONE then
             resistRank = target:getMod(xi.combat.element.resistRankMod[spellElement])
         end
 
@@ -482,7 +482,7 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
 
         if skillchainCount > 0 then
             spell:setMsg(xi.msg.basic.MAGIC_BURST_ENFEEB_IS - message * 3)
-            caster:triggerRoeEvent(xi.roe.triggers.magicBurst)
+            caster:triggerRoeEvent(xi.roeTrigger.MAGIC_BURST)
         else
             spell:setMsg(xi.msg.basic.MAGIC_ENFEEB_IS + message)
         end

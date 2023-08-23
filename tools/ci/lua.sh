@@ -79,7 +79,6 @@ global_objects=(
     applyResistanceAddEffect
 
     RoeParseTimed
-    getRoeRecords
     RoeParseRecords
 
     cmdprops
@@ -93,7 +92,6 @@ global_objects=(
     applyResistanceEffect
     adjustForTarget
     calculateDuration
-    calculateDurationForLvl
     calculateMagicDamage
     calculatePotency
     canOverwrite
@@ -117,9 +115,6 @@ global_objects=(
     handleNinjutsuDebuff
     handleThrenody
     isValidHealTarget
-    takeAbilityDamage
-
-    AbilityFinalAdjustments
 
     TPMOD_NONE
     TPMOD_CHANCE
@@ -144,7 +139,6 @@ global_objects=(
 )
 
 ignores=(
-    "unused variable ID"
 )
 
 ignore_rules=(
