@@ -30,9 +30,10 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		if (player:getCharVar("Mission3State") == 1) then
 			player:PrintToPlayer("Sadly still no word on the chapters I'm missing... my research is at a standstill for now...", 0, npc:getPacketName())
 			player:PrintToPlayer("If you come across and Fiendish Tome Chapters after chapter 26, I would very much like to have them", 13)
+            player:PrintToPlayer("A Barbaric Bijou would also be of assistance actually.", 13)
 			player:setCharVar("Mission3FirstClear", 0)
 		elseif (player:getCharVar("Mission3State") == 2) and (os.time() > player:getCharVar("YotaTime")) then
-			player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts you provided", 0, npc:getPacketName())
+			player:PrintToPlayer("I have come across a great many things in my preliminary studies of those dark texts.", 0, npc:getPacketName())
 			player:PrintToPlayer("It seems the leader of the invasions, a man known as Teodor was not truly himself...", 13)
 			player:timer(2000, function(player)
 				player:PrintToPlayer("He was under the control of a creature, part of something called the Xol Triumvirate.", 13)
@@ -79,6 +80,7 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 			player:timer(4000, function(player)
 				player:PrintToPlayer("I was conducting research into the Fiendish Tome which gave hints into the seventh Naakual.", 0, npc:getPacketName())
 				player:PrintToPlayer("However I'm missing the contents after chapter 25, so if you happen upon the remaining please may I have them?", 13)
+                player:PrintToPlayer("A Barbaric Bijou would also be of assistance actually.", 13)
 			end)
 			player:setCharVar("Mission3State", 1)
 		else
@@ -93,6 +95,14 @@ m:addOverride("xi.zones.Abdhaljs_Isle-Purgonorgo.Zone.onInitialize", function(zo
 		then
 			player:setCharVar("YotaTime", getVanaMidnight())
 			player:PrintToPlayer("This will take me some time to go through, come see again much later.", 0, npc:getPacketName())
+			player:PrintToPlayer("Hopefully this will lead us to answers, to lead us to saving our realm.", 13)
+			player:setCharVar("Mission3State", 2)
+			player:tradeComplete()
+        elseif (player:getCharVar("Mission3State") == 1) and
+		  (trade:hasItemQty(3353, 1))
+		then
+			player:setCharVar("YotaTime", getVanaMidnight())
+			player:PrintToPlayer("This will take me some time, come see again much later.", 0, npc:getPacketName())
 			player:PrintToPlayer("Hopefully this will lead us to answers, to lead us to saving our realm.", 13)
 			player:setCharVar("Mission3State", 2)
 			player:tradeComplete()
