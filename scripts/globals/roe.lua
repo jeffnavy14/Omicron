@@ -116,10 +116,6 @@ local timedSchedule =
     {  4019,  4008,  4021,  4010,  4016,  4012 }, -- Friday
     {  4020,  4009,  4015,  4011,  4017,  4014 }, -- Saturday
 }
--- Load timetable for timed records
-if xi.settings.main.ENABLE_ROE and xi.settings.main.ENABLE_ROE_TIMED > 0 then
-    RoeParseTimed(timedSchedule)
-end
 
 local defaults =
 {
@@ -140,14 +136,28 @@ local defaults =
     reward = {},                -- Reward parameters give on completion. (See completeRecord directly below.)
 }
 
--- Apply defaults for records
-for _, v in pairs(xi.roe.records) do
-    setmetatable(v, { __index = defaults })
+xi.roe.initialize = function()
+    -- Apply defaults for records.  Since this table may already exist in the global state,
+    -- check for missing entries first.
+    for recordId, _ in pairs(xi.roe.records) do
+        for defaultKey, defaultValue in pairs(defaults) do
+            if not xi.roe.records[recordId][defaultKey] then
+                xi.roe.records[recordId][defaultKey] = defaultValue
+            end
+        end
+    end
+
+    -- Build global map of implemented records.
+    -- This is used to deny taking records which aren't implemented in the above table.
+    RoeParseRecords(xi.roe.records)
+
+    -- Load timetable for timed records
+    if xi.settings.main.ENABLE_ROE and xi.settings.main.ENABLE_ROE_TIMED > 0 then
+        RoeParseTimed(timedSchedule)
+    end
 end
 
--- Build global map of implemented records.
--- This is used to deny taking records which aren't implemented in the above table.
-RoeParseRecords(xi.roe.records)
+xi.roe.initialize()
 
 --[[ --------------------------------------------------------------------------
     Complete a record of eminence. This is for internal roe use only.

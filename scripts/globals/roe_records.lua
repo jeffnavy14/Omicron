@@ -8,6 +8,10 @@ require("scripts/globals/quests")
 xi = xi or {}
 xi.roe = xi.roe or {}
 
+-- NOTE: This file calls the roe global init function at the end to populate default
+-- values that may be missing.  This same behavior happens in the roe global as well
+-- to ensure that whichever is loaded last will always have accurate information.
+
 xi.roe.records =
 {
     -----------------------------------
@@ -9629,3 +9633,7 @@ xi.roe.records =
         flags = set { "hidden" },
     },
 }
+
+if xi.roe.initialize then
+    xi.roe.initialize()
+end
