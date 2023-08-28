@@ -2,7 +2,6 @@
 require("modules/module_utils")
 require("scripts/globals/gambits")
 require("scripts/globals/magic")
-require("scripts/globals/trust")
 -----------------------------------
 local trusts = Module:new("trusts")
 
