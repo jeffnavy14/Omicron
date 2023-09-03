@@ -2,20 +2,19 @@
 -- func: addallmaps
 -- desc: Adds all maps to the given player.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 's'
+    parameters = "s"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!addallmaps (player)')
+    player:PrintToPlayer("!addallmaps (player)")
 end
 
-commandObj.onTrigger = function(player, target)
+function onTrigger(player, target)
     local keyIds =
     {
         383, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402,
@@ -35,7 +34,7 @@ commandObj.onTrigger = function(player, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -45,7 +44,5 @@ commandObj.onTrigger = function(player, target)
         targ:addKeyItem(v)
     end
 
-    player:PrintToPlayer(string.format('%s now has all maps.', targ:getName()))
+    player:PrintToPlayer(string.format("%s now has all maps.", targ:getName()))
 end
-
-return commandObj

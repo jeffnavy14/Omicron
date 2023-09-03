@@ -2,26 +2,25 @@
 -- func: checklocalvar <varName> { 'player'/'mob'/'npc' } { name/ID }
 -- desc: checks player or npc local variable and returns result value.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'sss'
+    parameters = "sss"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!checklocalvar <variable name> { \'player\', \'mob\', or \'npc\' } { name or ID }')
+    player:PrintToPlayer("!checklocalvar <variable name> { 'player', 'mob', or 'npc' } { name or ID }")
 end
 
-commandObj.onTrigger = function(player, arg1, arg2, arg3)
+function onTrigger(player, arg1, arg2, arg3)
     local zone = player:getZone()
     local varName = arg1
     local targ = arg3
 
     if varName == nil then
-        error(player, 'You must provide a variable name.')
+        error(player, "You must provide a variable name.")
         return
     end
 
@@ -42,20 +41,18 @@ commandObj.onTrigger = function(player, arg1, arg2, arg3)
         elseif entityType == 'PLAYER' then
             targ = GetPlayerByName(arg3)
         else
-            error(player, 'Invalid entity type.')
+            error(player, "Invalid entity type.")
             return
         end
     else
-        error(player, 'Need to specify a target.')
+        error(player, "Need to specify a target.")
         return
     end
 
     if targ == nil then
-        error(player, 'Invalid target.')
+        error(player, "Invalid target.")
         return
     end
 
-    player:PrintToPlayer(string.format('%s\'s variable \'%s\' : %i', targ:getName(), varName, targ:getLocalVar(varName)))
+    player:PrintToPlayer(string.format("%s's variable '%s' : %i", targ:getName(), varName, targ:getLocalVar(varName)))
 end
-
-return commandObj

@@ -3,25 +3,24 @@
 -- desc: Used to manipulate a mob's nameflags for testing.
 --       MUST either target a mob first or else specify a Mob ID.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'si'
+    parameters = "si"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!setmobflags <flags> (mob ID)')
+    player:PrintToPlayer("!setmobflags <flags> (mob ID)")
 end
 
-commandObj.onTrigger = function(player, flags, target)
+function onTrigger(player, flags, target)
     -- validate flags
     if flags ~= nil and tonumber(flags) ~= nil then
         flags = tonumber(flags)
     else
-        error(player, 'You must supply a flags value.')
+        error(player, "You must supply a flags value.")
         return
     end
 
@@ -30,21 +29,19 @@ commandObj.onTrigger = function(player, flags, target)
     if target == nil then
         targ = player:getCursorTarget()
         if targ == nil or not targ:isMob() then
-            error(player, 'You must either supply a mob ID or target a mob.')
+            error(player, "You must either supply a mob ID or target a mob.")
             return
         end
     else
         targ = GetMobByID(target)
         if targ == nil then
-            error(player, 'Invalid mob ID.')
+            error(player, "Invalid mob ID.")
             return
         end
     end
 
     -- set flags
     player:setMobFlags(flags, targ:getID())
-    local hex = '0x' .. string.format('%08x', flags)
-    player:PrintToPlayer(string.format('Set %s %i flags to %s (%i).', targ:getName(), targ:getID(), hex, flags))
+    local hex = "0x" .. string.format("%08x", flags)
+    player:PrintToPlayer(string.format("Set %s %i flags to %s (%i).", targ:getName(), targ:getID(), hex, flags))
 end
-
-return commandObj

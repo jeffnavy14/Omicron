@@ -11,11 +11,11 @@ itemObject.onItemCheck = function(target)
 end
 
 itemObject.onItemUse = function(target)
-    local effects = xi.itemUtils.removableEffects
+    local effects = xi.item_utils.removableEffects
     local count = 33
 
     target:forMembersInRange(10, function(member)
-        xi.itemUtils.removeMultipleEffects(member, effects, count)
+        xi.item_utils.removeMultipleEffects(member, effects, count)
     end)
 end
 

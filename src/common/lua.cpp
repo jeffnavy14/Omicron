@@ -49,10 +49,6 @@ void lua_init()
     // Bind print(...) globally
     lua.set_function("print", &lua_print);
 
-    // Copy the original tostring impl into _tostring, so we can use our own
-    // implementation for tostring, but then fall back to the original for usertypes.
-    lua.set_function("_tostring", lua.get<sol::function>("tostring"));
-
     // Bind tostring(...) globally
     lua.set_function("tostring", &lua_to_string);
 
@@ -107,8 +103,7 @@ std::string lua_to_string_depth(sol::object const& obj, std::size_t depth)
         }
         case sol::type::userdata:
         {
-            // Fallback to original implementation of tostring that we stored in _tostring
-            return lua["_tostring"](obj);
+            return lua["tostring"](obj);
         }
         case sol::type::lightuserdata:
         {

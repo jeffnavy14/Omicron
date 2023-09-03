@@ -2,20 +2,19 @@
 -- func: tp <amount> <player>
 -- desc: Sets a players tp. If they have a pet, also sets pet tp.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'is'
+    parameters = "is"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!tp <amount> (player)')
+    player:PrintToPlayer("!tp <amount> (player)")
 end
 
-commandObj.onTrigger = function(player, tp, target)
+function onTrigger(player, tp, target)
     -- validate target
     local targ
     local cursorTarget = player:getCursorTarget()
@@ -23,7 +22,7 @@ commandObj.onTrigger = function(player, tp, target)
     if target then
         targ = GetPlayerByName(target)
         if not targ then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     elseif cursorTarget and not cursorTarget:isNPC() then
@@ -34,10 +33,10 @@ commandObj.onTrigger = function(player, tp, target)
 
     -- validate amount
     if tp == nil or tonumber(tp) == nil then
-        error(player, 'You must provide an amount.')
+        error(player, "You must provide an amount.")
         return
     elseif tp < 0 then
-        error(player, 'Invalid amount.')
+        error(player, "Invalid amount.")
         return
     end
 
@@ -50,11 +49,9 @@ commandObj.onTrigger = function(player, tp, target)
         end
 
         if targ:getID() ~= player:getID() then
-            player:PrintToPlayer(string.format('Set %s\'s TP to %i.', targ:getName(), targ:getTP()))
+            player:PrintToPlayer(string.format("Set %s's TP to %i.", targ:getName(), targ:getTP()))
         end
     else
-        player:PrintToPlayer(string.format('%s is currently dead.', targ:getName()))
+        player:PrintToPlayer(string.format("%s is currently dead.", targ:getName()))
     end
 end
-
-return commandObj

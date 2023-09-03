@@ -103,6 +103,12 @@ enum BEHAVIOUR : uint16
 
 class CMobSkillState;
 
+/************************************************************************
+ *                                                                       *
+ *                                                                       *
+ *                                                                       *
+ ************************************************************************/
+
 class CMobEntity : public CBattleEntity
 {
 public:
@@ -248,9 +254,9 @@ public:
 
     bool m_CallForHelpBlocked;
 
-    CEnmityContainer* PEnmityContainer;
+    CEnmityContainer* PEnmityContainer; // система ненависти монстров
 
-    CMobSpellContainer* SpellContainer;
+    CMobSpellContainer* SpellContainer; // retrieves spells for the mob
 
     bool m_IsClaimable;
 

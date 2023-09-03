@@ -9,12 +9,10 @@
 -- Black chocobo with all look changes: !chocobo black head feet tail
 -- etc.
 -----------------------------------
-local commandObj = {}
-
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'ssss'
+    parameters = "ssss"
 }
 
 local chocobo = {}
@@ -35,7 +33,7 @@ chocobo.look =
     tail = 0x0040, -- extra tail feathers     (endurance)
 }
 
-commandObj.onTrigger = function(player, arg, arg2, arg3, arg4)
+function onTrigger(player, arg, arg2, arg3, arg4)
     local look = tonumber(arg) or chocobo.color[arg] or 0
 
     if chocobo.look[arg2] then
@@ -55,5 +53,3 @@ commandObj.onTrigger = function(player, arg, arg2, arg3, arg4)
     player:delStatusEffectSilent(xi.effect.MOUNTED)
     player:addStatusEffectEx(xi.effect.MOUNTED, xi.effect.MOUNTED, xi.mount.CHOCOBO, 0, 1800, 0, 64, true)
 end
-
-return commandObj

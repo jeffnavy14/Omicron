@@ -10,7 +10,16 @@
 local itemObject = {}
 
 itemObject.onItemCheck = function(target)
-    return xi.itemUtils.foodOnItemCheck(target, xi.foodType.RAW_FISH)
+    local result = 0
+    if target:getRace() ~= xi.race.MITHRA then
+        result = xi.msg.basic.CANNOT_EAT
+    elseif
+        target:hasStatusEffect(xi.effect.FOOD)
+    then
+        result = xi.msg.basic.IS_FULL
+    end
+
+    return result
 end
 
 itemObject.onItemUse = function(target)

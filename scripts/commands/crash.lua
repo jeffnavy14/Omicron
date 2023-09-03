@@ -2,16 +2,13 @@
 -- func: crash
 -- desc: force the server process to crash
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 5,
-    parameters = ''
+    parameters = ""
 }
 
-commandObj.onTrigger = function(player)
+function onTrigger(player)
     ForceCrash()
 end
-
-return commandObj

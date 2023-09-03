@@ -2,15 +2,14 @@
 -- func: jail
 -- desc: Sends the target player to jail. (Mordion Gaol)
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'sis'
+    parameters = "sis"
 }
 
-commandObj.onTrigger = function(player, target, cellId, reason)
+function onTrigger(player, target, cellId, reason)
     local jailCells =
     {
         -- Floor 1 (Bottom)
@@ -29,7 +28,7 @@ commandObj.onTrigger = function(player, target, cellId, reason)
     -- Validate the target..
     local targ = GetPlayerByName(target)
     if targ == nil then
-        player:PrintToPlayer(string.format('Invalid player \'%s\' given.', target))
+        player:PrintToPlayer(string.format("Invalid player '%s' given.", target))
         return
     end
 
@@ -40,7 +39,7 @@ commandObj.onTrigger = function(player, target, cellId, reason)
 
     -- Validate the reason..
     if reason == nil then
-        reason = 'Unspecified.'
+        reason = "Unspecified."
     end
 
     -- Print that we have jailed someone..
@@ -49,8 +48,6 @@ commandObj.onTrigger = function(player, target, cellId, reason)
 
     -- Send the target to jail..
     local dest = jailCells[cellId]
-    targ:setCharVar('inJail', cellId)
+    targ:setCharVar("inJail", cellId)
     targ:setPos(dest[1], dest[2], dest[3], dest[4], 131)
 end
-
-return commandObj

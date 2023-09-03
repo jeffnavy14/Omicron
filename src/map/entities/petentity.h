@@ -49,8 +49,8 @@ enum class WYVERN_TYPE : uint8
 class CPetEntity : public CMobEntity
 {
 public:
-    CPetEntity(PET_TYPE petType);
-    ~CPetEntity();
+    CPetEntity(PET_TYPE petType); // конструктор
+    ~CPetEntity();                // деструктор
 
     PET_TYPE          getPetType();
     uint8             getSpawnLevel();

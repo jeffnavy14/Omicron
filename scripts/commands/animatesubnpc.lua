@@ -2,20 +2,18 @@
 -- func: animatesubnpc
 -- desc: Changes the animationSub of the given npc. (For testing purposes.)
 -----------------------------------
-local commandObj = {}
-
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'ss'
+    parameters = "ss"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!animatesubnpc (npcID) <animationID>')
+    player:PrintToPlayer("!animatesubnpc (npcID) <animationID>")
 end
 
-commandObj.onTrigger = function(player, arg1, arg2)
+function onTrigger(player, arg1, arg2)
     local targ
     local animationId
 
@@ -31,12 +29,12 @@ commandObj.onTrigger = function(player, arg1, arg2)
 
     -- validate target
     if targ == nil then
-        error(player, 'You must either enter a valid npcID or target an NPC.')
+        error(player, "You must either enter a valid npcID or target an NPC.")
         return
     end
 
     if not targ:isNPC() then
-        error(player, 'Targeted entity is not an NPC.')
+        error(player, "Targeted entity is not an NPC.")
         return
     end
 
@@ -46,13 +44,11 @@ commandObj.onTrigger = function(player, arg1, arg2)
     end
 
     if animationId == nil then
-        error(player, 'Invalid animationID.')
+        error(player, "Invalid animationID.")
         return
     end
 
     local oldAnimation = targ:getAnimationSub()
     targ:setAnimationSub(animationId)
-    player:PrintToPlayer(string.format('NPC ID: %i - %s | Old animationSub: %i | New animationSub: %i\n', targ:getID(), targ:getName(), oldAnimation, animationId))
+    player:PrintToPlayer(string.format("NPC ID: %i - %s | Old animationSub: %i | New animationSub: %i\n", targ:getID(), targ:getName(), oldAnimation, animationId))
 end
-
-return commandObj

@@ -1,12 +1,12 @@
 -----------------------------------
 -- Item Utils (Used by Skill Books)
 -----------------------------------
-require('scripts/globals/utils')
+require("scripts/globals/utils")
 -----------------------------------
 xi = xi or {}
-xi.itemUtils = {}
+xi.item_utils = {}
 
-xi.itemUtils.removableEffects =
+xi.item_utils.removableEffects =
 {
     xi.effect.PARALYSIS,
     xi.effect.POISON,
@@ -43,36 +43,7 @@ xi.itemUtils.removableEffects =
     xi.effect.MAGIC_ATK_DOWN
 }
 
-xi.itemUtils.foodOnItemCheck = function(target, foodType)
-    local result     = 0
-    local targetRace = target:getRace()
-    local canEatFish = targetRace == xi.race.MITHRA or target:getMod(xi.mod.EAT_RAW_FISH) == 1
-    local canEatMeat = targetRace == xi.race.GALKA or target:getMod(xi.mod.EAT_RAW_MEAT) == 1
-
-    if
-        (foodType == xi.foodType.RAW_FISH and not canEatFish) or
-        (foodType == xi.foodType.RAW_MEAT and not canEatMeat)
-    then
-        result = xi.msg.basic.CANNOT_EAT
-    end
-
-    if target:hasStatusEffect(xi.effect.FOOD) then
-        result = xi.msg.basic.IS_FULL
-    end
-
-    return result
-end
-
-xi.itemUtils.itemBoxOnItemCheck = function(target)
-    local result = 0
-    if target:getFreeSlotsCount() == 0 then
-        result = xi.msg.basic.ITEM_NO_USE_INVENTORY
-    end
-
-    return result
-end
-
-xi.itemUtils.skillBookCheck = function(target, skillID)
+xi.item_utils.skillBookCheck = function(target, skillID)
     local skill   = skillID
     local mainCap = target:getMaxSkillLevel(target:getMainLvl(), target:getMainJob(), skill) or 0
     local subCap  = target:getMaxSkillLevel(target:getSubLvl(), target:getSubJob(), skill) or 0
@@ -103,11 +74,11 @@ xi.itemUtils.skillBookCheck = function(target, skillID)
     return 0
 end
 
-xi.itemUtils.skillBookUse = function(target, skillID)
+xi.item_utils.skillBookUse = function(target, skillID)
     target:trySkillUp(skillID, target:getMainLvl(), true, true)
 end
 
-xi.itemUtils.pickItemRandom = function(target, itemgroup) -- selects an item from a weighted result table
+xi.item_utils.pickItemRandom = function(target, itemgroup) -- selects an item from a weighted result table
     -- possible results
     local items = itemgroup
 
@@ -133,7 +104,7 @@ xi.itemUtils.pickItemRandom = function(target, itemgroup) -- selects an item fro
     return item
 end
 
-xi.itemUtils.removeShield = function(effect, target)
+xi.item_utils.removeShield = function(effect, target)
     if effect == xi.effect.PHYSICAL_SHIELD then
         target:delStatusEffect(xi.effect.MAGIC_SHIELD)
     else
@@ -141,7 +112,7 @@ xi.itemUtils.removeShield = function(effect, target)
     end
 end
 
-xi.itemUtils.addItemShield = function(target, power, duration, effect, special)
+xi.item_utils.addItemShield = function(target, power, duration, effect, special)
     if target:hasStatusEffect(effect) then
         local shield            = target:getStatusEffect(effect)
         local activeshieldpower = shield:getPower()
@@ -149,18 +120,18 @@ xi.itemUtils.addItemShield = function(target, power, duration, effect, special)
         if activeshieldpower > power then
             target:messageBasic(xi.msg.basic.NO_EFFECT)
         else
-            xi.itemUtils.removeShield(effect, target)
+            xi.item_utils.removeShield(effect, target)
             target:addStatusEffect(effect, power, 0, duration, 0, special)
             target:messageBasic(xi.msg.basic.GAINS_EFFECT_OF_STATUS, effect)
         end
     else
-        xi.itemUtils.removeShield(effect, target)
+        xi.item_utils.removeShield(effect, target)
         target:addStatusEffect(effect, power, 0, duration, 0, special)
         target:messageBasic(xi.msg.basic.GAINS_EFFECT_OF_STATUS, effect)
     end
 end
 
-xi.itemUtils.addItemEffect = function(target, effect, power, duration, subpower)
+xi.item_utils.addItemEffect = function(target, effect, power, duration, subpower)
     if target:hasStatusEffect(effect) then
         local buff        = target:getStatusEffect(effect)
         local effectpower = buff:getPower()
@@ -175,7 +146,7 @@ xi.itemUtils.addItemEffect = function(target, effect, power, duration, subpower)
     end
 end
 
-xi.itemUtils.addTwoItemEffects = function(target, effect1, effect2, power1, power2, duration)
+xi.item_utils.addTwoItemEffects = function(target, effect1, effect2, power1, power2, duration)
     if target:hasStatusEffect(effect1) then
         local buff        = target:getStatusEffect(effect1)
         local effectpower = buff:getPower()
@@ -203,7 +174,7 @@ xi.itemUtils.addTwoItemEffects = function(target, effect1, effect2, power1, powe
     end
 end
 
-xi.itemUtils.addItemExpEffect = function(target, effect, power, duration, subpower)
+xi.item_utils.addItemExpEffect = function(target, effect, power, duration, subpower)
     local deleffect = xi.effect.COMMITMENT
 
     if effect == deleffect then
@@ -226,7 +197,7 @@ xi.itemUtils.addItemExpEffect = function(target, effect, power, duration, subpow
     end
 end
 
-xi.itemUtils.removeStatus = function(target, effects)
+xi.item_utils.removeStatus = function(target, effects)
     for _, effect in ipairs(effects) do
         if target:delStatusEffect(effect) then
             return true
@@ -240,7 +211,7 @@ xi.itemUtils.removeStatus = function(target, effects)
     return false
 end
 
-xi.itemUtils.removeMultipleEffects = function(target, effects, count, random)
+xi.item_utils.removeMultipleEffects = function(target, effects, count, random)
     local effectsToRemove = effects
 
     if random == 1 then -- randomize which effects get removed
@@ -251,7 +222,7 @@ xi.itemUtils.removeMultipleEffects = function(target, effects, count, random)
         local removed = 0
 
         for i = 0, count do
-            if not xi.itemUtils.removeStatus(target, effectsToRemove) then
+            if not xi.item_utils.removeStatus(target, effectsToRemove) then
                 break
             end
 

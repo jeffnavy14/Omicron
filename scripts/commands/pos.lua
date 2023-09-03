@@ -2,20 +2,19 @@
 -- func: pos <x> <y> <z> <optional zone> <optional target>
 -- desc: Sets the players position. If none is given, prints out the position instead.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 's'
+    parameters = "s"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!pos (x) (y) (z) (zone ID) (player)')
+    player:PrintToPlayer("!pos (x) (y) (z) (zone ID) (player)")
 end
 
-commandObj.onTrigger = function(player, arg)
+function onTrigger(player, arg)
     local target
     local zoneId
     local x
@@ -24,7 +23,7 @@ commandObj.onTrigger = function(player, arg)
     local targ
 
     if arg == nil then
-        player:PrintToPlayer(string.format('%s\'s position: X %.4f  Y %.4f  Z %.4f  Rot %i  (Zone: %i)', player:getName(), player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos(), player:getZoneID()), xi.msg.channel.SYSTEM_3)
+        player:PrintToPlayer(string.format("%s's position: X %.4f  Y %.4f  Z %.4f  Rot %i  (Zone: %i)", player:getName(), player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos(), player:getZoneID()), xi.msg.channel.SYSTEM_3)
         return
     end
 
@@ -60,7 +59,7 @@ commandObj.onTrigger = function(player, arg)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -69,14 +68,14 @@ commandObj.onTrigger = function(player, arg)
     if zoneId ~= nil then
         zoneId = tonumber(zoneId)
         if zoneId == nil or zoneId < 0 or zoneId > 298 then
-            error(player, 'Invalid zone ID.')
+            error(player, "Invalid zone ID.")
             return
         end
     end
 
     -- report or move position
     if x == nil or y == nil or z == nil then
-        player:PrintToPlayer(string.format('%s\'s position: X %.4f  Y %.4f  Z %.4f  Rot %i  (Zone: %i)', targ:getName(), targ:getXPos(), targ:getYPos(), targ:getZPos(), targ:getRotPos(), targ:getZoneID()), xi.msg.channel.SYSTEM_3)
+        player:PrintToPlayer(string.format("%s's position: X %.4f  Y %.4f  Z %.4f  Rot %i  (Zone: %i)", targ:getName(), targ:getXPos(), targ:getYPos(), targ:getZPos(), targ:getRotPos(), targ:getZoneID()), xi.msg.channel.SYSTEM_3)
     else
         if zoneId == nil then
             zoneId = targ:getZoneID()
@@ -86,9 +85,7 @@ commandObj.onTrigger = function(player, arg)
         end
 
         if player:getID() ~= targ:getID() then
-            player:PrintToPlayer(string.format('Moved %s to (%.4f, %.4f, %.4f) in zone %i.', targ:getName(), x, y, z, targ:getZoneID()), xi.msg.channel.SYSTEM_3)
+            player:PrintToPlayer(string.format("Moved %s to (%.4f, %.4f, %.4f) in zone %i.", targ:getName(), x, y, z, targ:getZoneID()), xi.msg.channel.SYSTEM_3)
         end
     end
 end
-
-return commandObj

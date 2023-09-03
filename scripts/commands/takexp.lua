@@ -2,23 +2,22 @@
 -- func: takexp <amount> <player>
 -- desc: Removes experience points from the target player.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'is'
+    parameters = "is"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!takexp <amount> (player)')
+    player:PrintToPlayer("!takexp <amount> (player)")
 end
 
-commandObj.onTrigger = function(player, amount, target)
+function onTrigger(player, amount, target)
     -- validate amount
     if amount == nil or amount < 1 then
-        error(player, 'Invalid amount.')
+        error(player, "Invalid amount.")
         return
     end
 
@@ -29,14 +28,12 @@ commandObj.onTrigger = function(player, amount, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
 
     -- take xp
     targ:delExp(amount)
-    player:PrintToPlayer(string.format('Removed %i exp from %s. They are now level %i.', amount, targ:getName(), targ:getMainLvl()))
+    player:PrintToPlayer(string.format("Removed %i exp from %s. They are now level %i.", amount, targ:getName(), targ:getMainLvl()))
 end
-
-return commandObj

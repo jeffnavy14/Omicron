@@ -2,20 +2,17 @@
 -- func: provokeall
 -- desc: Makes all enemies in the current zone target you and sets their TP to 3000.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = ''
+    parameters = ""
 }
 
-commandObj.onTrigger = function(player)
+function onTrigger(player)
     local zone = player:getZone()
     for _, mob in pairs(zone:getMobs()) do
         mob:updateEnmity(player)
         mob:setTP(3000)
     end
 end
-
-return commandObj

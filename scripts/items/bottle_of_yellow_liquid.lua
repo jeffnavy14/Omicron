@@ -5,8 +5,14 @@
 local itemObject = {}
 
 itemObject.onItemCheck = function(target)
+    local result = 0
+
     -- TODO: Can this ONLY be used on Mammet types?
-    return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
+    if target:hasStatusEffect(xi.effect.FOOD) then
+        result = xi.msg.basic.IS_FULL
+    end
+
+    return result
 end
 
 itemObject.onItemUse = function(target)

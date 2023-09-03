@@ -3,20 +3,19 @@
 -- desc: If no name is specified, resets your own JA timers.
 -- If a player name is specified, resets all of that players JA timers.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 's'
+    parameters = "s"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!reset (player)')
+    player:PrintToPlayer("!reset (player)")
 end
 
-commandObj.onTrigger = function(player, target)
+function onTrigger(player, target)
     -- validate target
     local targ
     if not target then
@@ -24,7 +23,7 @@ commandObj.onTrigger = function(player, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -32,7 +31,7 @@ commandObj.onTrigger = function(player, target)
     -- reset target recasts
     targ:resetRecasts()
     if targ:getID() ~= player:getID() then
-        player:PrintToPlayer(string.format('Reset %s\'s recast timers.', targ:getName()))
+        player:PrintToPlayer(string.format("Reset %s's recast timers.", targ:getName()))
     end
 
     -- Clear debilitating effects from player
@@ -61,5 +60,3 @@ commandObj.onTrigger = function(player, target)
         player:delStatusEffect(v)
     end
 end
-
-return commandObj

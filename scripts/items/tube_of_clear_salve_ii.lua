@@ -32,7 +32,7 @@ itemObject.onItemUse = function(target)
 
     local count = 10
 
-    xi.itemUtils.removeMultipleEffects(pet, effects, count)
+    xi.item_utils.removeMultipleEffects(pet, effects, count)
 end
 
 return itemObject

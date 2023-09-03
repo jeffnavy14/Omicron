@@ -10,10 +10,10 @@ itemObject.onItemCheck = function(target)
 end
 
 itemObject.onItemUse = function(target)
-    local effects = xi.itemUtils.removableEffects
+    local effects = xi.item_utils.removableEffects
     local count = 6
 
-    xi.itemUtils.removeMultipleEffects(target, effects, count)
+    xi.item_utils.removeMultipleEffects(target, effects, count)
 end
 
 return itemObject

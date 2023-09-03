@@ -4,12 +4,11 @@
 -- A) The given zone
 -- B) another player
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'b'
+    parameters = "b"
 }
 
 -----------------------------------
@@ -278,9 +277,9 @@ local zoneList =
     { 0x14, 0x09, 288 }, -- Escha - Zi'Tah
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!send <player to send> <destination player or zone>')
+    player:PrintToPlayer("!send <player to send> <destination player or zone>")
 end
 
 local function getBytePos(s, needle)
@@ -297,7 +296,7 @@ end
 -- func: onTrigger
 -- desc: Called when this command is invoked.
 -----------------------------------
-commandObj.onTrigger = function(player, bytes)
+function onTrigger(player, bytes)
     local x = 0
     local y = 0
     local z = 0
@@ -305,7 +304,7 @@ commandObj.onTrigger = function(player, bytes)
     local zone
 
     if bytes == nil then
-        error(player, 'You must provide the name of a player to send and a destination.')
+        error(player, "You must provide the name of a player to send and a destination.")
         return
     end
 
@@ -317,13 +316,13 @@ commandObj.onTrigger = function(player, bytes)
     local target
     local targ
     if sppos == nil then
-        error(player, 'You must provide the name of a player to send and a destination.')
+        error(player, "You must provide the name of a player to send and a destination.")
         return
     else
         target = string.sub(bytes, 1, sppos-1)
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -345,7 +344,7 @@ commandObj.onTrigger = function(player, bytes)
         end
 
         if zone == nil then
-            error(player, 'Auto-translated phrase is not a zone.')
+            error(player, "Auto-translated phrase is not a zone.")
             return
         end
     else
@@ -354,7 +353,7 @@ commandObj.onTrigger = function(player, bytes)
             -- destination is a zone ID.
             zone = tonumber(dest)
             if zone < 0 or zone >= xi.zone.MAX_ZONE then
-                error(player, 'Invalid zone ID.')
+                error(player, "Invalid zone ID.")
                 return
             end
 
@@ -373,7 +372,7 @@ commandObj.onTrigger = function(player, bytes)
             target = dest
             dest = GetPlayerByName(dest)
             if dest == nil then
-                error(player, string.format('Player named "%s" not found!', target))
+                error(player, string.format("Player named '%s' not found!", target))
                 return
             end
 
@@ -388,8 +387,6 @@ commandObj.onTrigger = function(player, bytes)
     -- send target to destination
     targ:setPos(x, y, z, rot, zone)
     if targ:getID() ~= player:getID() then
-        player:PrintToPlayer(string.format('Sent %s to zone %i.', targ:getName(), zone))
+        player:PrintToPlayer(string.format("Sent %s to zone %i.", targ:getName(), zone))
     end
 end
-
-return commandObj

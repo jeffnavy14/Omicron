@@ -2,24 +2,23 @@
 -- func: setmentor <MentorMode> <target>
 -- desc: 0 = Not a mentor, 1 = Unlocked but inactive, 2 = Unlocked & flag on.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'is'
+    parameters = "is"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!setmentor <mode> (player)')
-    player:PrintToPlayer('mode: 0 = Not a mentor, 1 = Unlocked but inactive.')
+    player:PrintToPlayer("!setmentor <mode> (player)")
+    player:PrintToPlayer("mode: 0 = Not a mentor, 1 = Unlocked but inactive.")
 end
 
-commandObj.onTrigger = function(player, mentorMode, target)
+function onTrigger(player, mentorMode, target)
     -- validate mode
     if mentorMode == nil or mentorMode < 0 or mentorMode > 1 then
-        error(player, 'Invalid mode.')
+        error(player, "Invalid mode.")
         return
     end
 
@@ -30,7 +29,7 @@ commandObj.onTrigger = function(player, mentorMode, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -38,5 +37,3 @@ commandObj.onTrigger = function(player, mentorMode, target)
     -- set mentor mode (bool)
     targ:setMentor(mentorMode > 0)
 end
-
-return commandObj

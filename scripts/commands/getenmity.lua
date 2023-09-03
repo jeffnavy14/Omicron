@@ -1,29 +1,25 @@
------------------------------------
+---------------------------------------------------------------------------------------------------
 -- func: getenmity
 -- desc: prints the target mob's current CE and VE towards you
------------------------------------
-local commandObj = {}
-
-commandObj.cmdprops =
+---------------------------------------------------------------------------------------------------
+cmdprops =
 {
     permission = 2,
-    parameters = ''
+    parameters = ""
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!getenmity')
+    player:PrintToPlayer("!getenmity")
 end
 
-commandObj.onTrigger = function(player)
+function onTrigger(player)
     local targ = player:getCursorTarget()
 
     if not targ or not targ:isMob() then
-        error(player, 'You must select a target monster with the cursor first.')
+        error(player, "You must select a target monster with the cursor first.")
         return
     end
 
-    player:PrintToPlayer(string.format('Your enmity against %s is ... CE = %u ... VE = %u', targ:getName(), targ:getCE(player), targ:getVE(player)))
+    player:PrintToPlayer(string.format("Your enmity against %s is ... CE = %u ... VE = %u", targ:getName(), targ:getCE(player), targ:getVE(player)))
 end
-
-return commandObj

@@ -2,23 +2,22 @@
 -- func: setflag <flags> <target>
 -- desc: set arbitrary flags for testing
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'ss'
+    parameters = "ss"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!setflag <flags> (player)')
+    player:PrintToPlayer("!setflag <flags> (player)")
 end
 
-commandObj.onTrigger = function(player, flags, target)
+function onTrigger(player, flags, target)
     -- validate flags
     if flags == nil then
-        error(player, 'You must enter a number for the flags (hex values work).')
+        error(player, "You must enter a number for the flags (hex values work).")
         return
     end
 
@@ -29,7 +28,7 @@ commandObj.onTrigger = function(player, flags, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -37,5 +36,3 @@ commandObj.onTrigger = function(player, flags, target)
     -- set flags
     targ:setFlag(flags)
 end
-
-return commandObj

@@ -2,26 +2,25 @@
 -- func: hasitem
 -- desc: Checks if a player has a specific item
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'is'
+    parameters = "is"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!hasitem <itemID> (player)')
+    player:PrintToPlayer("!hasitem <itemID> (player)")
 end
 
-commandObj.onTrigger = function(player, itemId, target)
+function onTrigger(player, itemId, target)
     -- validate itemId
     if itemId == nil then
-        error(player, 'You must provide an itemID.')
+        error(player, "You must provide an itemID.")
         return
     elseif itemId < 1 then
-        error(player, 'Invalid itemID.')
+        error(player, "Invalid itemID.")
         return
     end
 
@@ -35,17 +34,15 @@ commandObj.onTrigger = function(player, itemId, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
 
     -- report hasItem
     if targ:hasItem(itemId) then
-        player:PrintToPlayer(string.format('%s has item %i.', targ:getName(), itemId))
+        player:PrintToPlayer(string.format("%s has item %i.", targ:getName(), itemId))
     else
-        player:PrintToPlayer(string.format('%s does not have item %i.', targ:getName(), itemId))
+        player:PrintToPlayer(string.format("%s does not have item %i.", targ:getName(), itemId))
     end
 end
-
-return commandObj

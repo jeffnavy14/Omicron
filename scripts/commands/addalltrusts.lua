@@ -2,20 +2,19 @@
 -- func: addalltrusts
 -- desc: Adds all trust spells to the given target. If no target then to the current player.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 's'
+    parameters = "s"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!addalltrusts (player)')
+    player:PrintToPlayer("!addalltrusts (player)")
 end
 
-commandObj.onTrigger = function(player, target)
+function onTrigger(player, target)
     local validSpells =
     {
         896, 897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908, 909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920,
@@ -33,7 +32,7 @@ commandObj.onTrigger = function(player, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -51,7 +50,5 @@ commandObj.onTrigger = function(player, target)
         targ:addSpell(validSpells[i], silent, save, sendUpdate)
     end
 
-    player:PrintToPlayer(string.format('%s now has all trusts.', targ:getName()))
+    player:PrintToPlayer(string.format("%s now has all trusts.", targ:getName()))
 end
-
-return commandObj

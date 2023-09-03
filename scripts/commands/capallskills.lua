@@ -2,17 +2,14 @@
 -- func: capallskills
 -- desc: Caps all the players skills.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = ''
+    parameters = ""
 }
 
-commandObj.onTrigger = function(player)
+function onTrigger(player)
     player:capAllSkills()
     player:PrintToPlayer('All skills capped!')
 end
-
-return commandObj

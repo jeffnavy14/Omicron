@@ -2,20 +2,18 @@
 -- func: getmod <modID>
 -- desc: gets a mod by ID on the player or cursor target
 -----------------------------------
-local commandObj = {}
-
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 3,
-    parameters = 's'
+    parameters = "s"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!getmod <modID>')
+    player:PrintToPlayer("!getmod <modID>")
 end
 
-commandObj.onTrigger = function(player, id)
+function onTrigger(player, id)
     -- invert xi.mod table
     local modNameByNum = {}
     for k, v in pairs(xi.mod) do
@@ -37,7 +35,7 @@ commandObj.onTrigger = function(player, id)
     end
 
     if modName == nil or modId == nil then
-        error(player, 'Invalid modID.')
+        error(player, "Invalid modID.")
         return
     end
 
@@ -46,11 +44,9 @@ commandObj.onTrigger = function(player, id)
     if effectTarget == nil then
         effectTarget = player
     elseif effectTarget:isNPC() then
-        error(player, 'Current target is an NPC, which can not have mods.')
+        error(player, "Current target is an NPC, which can not have mods.")
         return
     end
 
-    player:PrintToPlayer(string.format('%s\'s Mod %i (%s) is %i', effectTarget:getName(), modId, modName, effectTarget:getMod(modId)))
+    player:PrintToPlayer(string.format("%s's Mod %i (%s) is %i", effectTarget:getName(), modId, modName, effectTarget:getMod(modId)))
 end
-
-return commandObj

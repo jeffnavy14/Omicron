@@ -2,23 +2,22 @@
 -- func: givegil <amount> <player>
 -- desc: Gives the specified amount of gil to GM or target player.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'is'
+    parameters = "is"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!givegil <amount> (player)')
+    player:PrintToPlayer("!givegil <amount> (player)")
 end
 
-commandObj.onTrigger = function(player, amount, target)
+function onTrigger(player, amount, target)
     -- validate amount
     if amount == nil or amount < 1 then
-        error(player, 'Invalid amount of gil.')
+        error(player, "Invalid amount of gil.")
         return
     end
 
@@ -29,14 +28,12 @@ commandObj.onTrigger = function(player, amount, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
 
     -- give gil to target
     targ:addGil(amount)
-    player:PrintToPlayer(string.format('Gave %i gil to %s.  They now have %i gil.', amount, targ:getName(), targ:getGil()))
+    player:PrintToPlayer(string.format("Gave %i gil to %s.  They now have %i gil.", amount, targ:getName(), targ:getGil()))
 end
-
-return commandObj

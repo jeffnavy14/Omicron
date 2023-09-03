@@ -67,7 +67,6 @@
 #include "ai/states/ability_state.h"
 #include "ai/states/attack_state.h"
 #include "ai/states/death_state.h"
-#include "ai/states/despawn_state.h"
 #include "ai/states/inactive_state.h"
 #include "ai/states/item_state.h"
 #include "ai/states/magic_state.h"
@@ -1472,7 +1471,7 @@ void CLuaBaseEntity::setStatus(uint8 status)
  *  Purpose : Returns the current state of a non-NPC entity
  *  Example : if target:getCurrentAction() ~= xi.act.MOBABILITY_USING then
  *  Notes   : Function name ambiguous, but getCurrentState() in use already
- *          : See scripts/enum/action.lua for action definitions
+ *          : See globals/status.lua for action definitions
  ************************************************************************/
 
 uint8 CLuaBaseEntity::getCurrentAction()
@@ -1487,7 +1486,7 @@ uint8 CLuaBaseEntity::getCurrentAction()
 
     if (m_PBaseEntity->PAI->IsStateStackEmpty())
     {
-        action = 16; // For mobs, this means roaming
+        action = 16;
     }
     else if (m_PBaseEntity->PAI->IsCurrentState<CRespawnState>())
     {
@@ -1524,10 +1523,6 @@ uint8 CLuaBaseEntity::getCurrentAction()
     else if (m_PBaseEntity->PAI->IsCurrentState<CDeathState>())
     {
         action = 22;
-    }
-    else if (m_PBaseEntity->PAI->IsCurrentState<CDespawnState>())
-    {
-        action = 24;
     }
     else if (m_PBaseEntity->PAI->IsCurrentState<CRaiseState>())
     {
@@ -4506,25 +4501,19 @@ void CLuaBaseEntity::equipItem(uint16 itemID, sol::object const& container)
         return;
     }
 
-    auto*           PChar             = static_cast<CCharEntity*>(m_PBaseEntity);
-    uint8           containerID       = container.is<uint8>() ? container.as<uint8>() : static_cast<uint8>(LOC_INVENTORY);
-    CItemContainer* PStorageContainer = PChar->getStorage(containerID);
+    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
-    if (PStorageContainer == nullptr)
-    {
-        // getStorage logs for invalid, so just bail out here
-        return;
-    }
+    uint8           containerID = (container != sol::lua_nil) ? container.as<uint8>() : (uint8)LOC_INVENTORY;
+    uint8           SLOT        = PChar->getStorage(containerID)->SearchItem(itemID);
+    CItemEquipment* PItem       = nullptr;
 
-    uint8 slotId = PChar->getStorage(containerID)->SearchItem(itemID);
-    if (slotId != ERROR_SLOTID)
+    if (SLOT != ERROR_SLOTID)
     {
-        if (auto* PItem = dynamic_cast<CItemEquipment*>(PChar->getStorage(containerID)->GetItem(slotId)))
-        {
-            charutils::EquipItem(PChar, slotId, PItem->getSlotType(), containerID);
-            charutils::SaveCharEquip(PChar);
-            charutils::SaveCharLook(PChar);
-        }
+        PItem = static_cast<CItemEquipment*>(PChar->getStorage(containerID)->GetItem(SLOT));
+
+        charutils::EquipItem(PChar, SLOT, PItem->getSlotType(), containerID);
+        charutils::SaveCharEquip(PChar);
+        charutils::SaveCharLook(PChar);
     }
 }
 

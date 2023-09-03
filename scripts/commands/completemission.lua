@@ -2,27 +2,27 @@
 -- func: completemission <logID> <missionID> <player>
 -- desc: Completes the given mission for the target player, if that mission is currently active.
 -----------------------------------
+require("scripts/globals/missions")
 local logIdHelpers = require('scripts/globals/log_ids')
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'sss'
+    parameters = "sss"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!completemission <logID> <missionID> (player)')
+    player:PrintToPlayer("!completemission <logID> <missionID> (player)")
 end
 
-commandObj.onTrigger = function(player, logId, missionId, target)
+function onTrigger(player, logId, missionId, target)
     -- validate logId
     local logName
     local logInfo = logIdHelpers.getMissionLogInfo(logId)
     if logInfo == nil then
-        error(player, 'Invalid logID.')
+        error(player, "Invalid logID.")
         return
     end
 
@@ -36,7 +36,7 @@ commandObj.onTrigger = function(player, logId, missionId, target)
     end
 
     if missionId == nil or missionId < 0 then
-        error(player, 'Invalid missionID.')
+        error(player, "Invalid missionID.")
         return
     end
 
@@ -47,15 +47,13 @@ commandObj.onTrigger = function(player, logId, missionId, target)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
 
     -- complete mission
     targ:completeMission(logId, missionId)
-    player:PrintToPlayer(string.format('Completed %s Mission with ID %u for %s', logName, missionId, targ:getName()))
-    player:PrintToPlayer('NOTE! This does NOT clear or update ANY mission variables! ')
+    player:PrintToPlayer(string.format("Completed %s Mission with ID %u for %s", logName, missionId, targ:getName()))
+    player:PrintToPlayer("NOTE! This does NOT clear or update ANY mission variables! ")
 end
-
-return commandObj

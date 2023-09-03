@@ -2,20 +2,19 @@
 -- func: time
 -- desc: Sets the custom time offset of the CVanaTime instance.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 4,
-    parameters = 'i'
+    parameters = "i"
 }
 
-local function error(player)
-    player:PrintToPlayer('!time <offset>')
-    player:PrintToPlayer(string.format('Vana\'diel: %d/%d/%d/%d/%02d', VanadielYear(), VanadielMonth(), VanadielDayOfTheMonth(), VanadielHour(), VanadielMinute()))
+function error(player)
+    player:PrintToPlayer("!time <offset>")
+    player:PrintToPlayer("Vana'diel: "..VanadielYear().."/"..VanadielMonth().."/"..VanadielDayOfTheMonth()..", "..VanadielHour()..":"..string.format("%02d", VanadielMinute()))
 end
 
-commandObj.onTrigger = function(player, offset)
+function onTrigger(player, offset)
     -- validate offset
     if offset == nil then
         error(player)
@@ -28,9 +27,7 @@ commandObj.onTrigger = function(player, offset)
         error(player)
         return
     else
-        player:PrintToPlayer('Time changed!')
-        player:PrintToPlayer(string.format('Vana\'diel: %d/%d/%d/%d/%02d', VanadielYear(), VanadielMonth(), VanadielDayOfTheMonth(), VanadielHour(), VanadielMinute()))
+        player:PrintToPlayer("Time changed!")
+        player:PrintToPlayer("Vana'diel: "..VanadielYear().."/"..VanadielMonth().."/"..VanadielDayOfTheMonth()..", "..VanadielHour()..":"..string.format("%02d", VanadielMinute()))
     end
 end
-
-return commandObj

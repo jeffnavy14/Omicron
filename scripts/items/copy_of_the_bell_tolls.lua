@@ -7,11 +7,11 @@
 local itemObject = {}
 
 itemObject.onItemCheck = function(target)
-    return xi.itemUtils.skillBookCheck(target, xi.skill.HANDBELL)
+    return xi.item_utils.skillBookCheck(target, xi.skill.HANDBELL)
 end
 
 itemObject.onItemUse = function(target)
-    xi.itemUtils.skillBookUse(target, xi.skill.HANDBELL)
+    xi.item_utils.skillBookUse(target, xi.skill.HANDBELL)
 end
 
 return itemObject

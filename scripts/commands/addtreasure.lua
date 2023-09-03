@@ -2,27 +2,26 @@
 -- func: addtreasure <itemId> <target player/party/alliance>
 -- desc: Adds an item directly to the treasure pool.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'isi'
+    parameters = "isi"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!addtreasure <itemID> (player) (npcID)')
+    player:PrintToPlayer("!addtreasure <itemID> (player) (npcID)")
 end
 
-commandObj.onTrigger = function(player, itemId, target, dropper)
+function onTrigger(player, itemId, target, dropper)
     -- validate itemId
     if itemId ~= nil then
         itemId = tonumber(itemId)
     end
 
     if itemId == nil or itemId == 0 then
-        error(player, 'Invalid itemID.')
+        error(player, "Invalid itemID.")
         return
     end
 
@@ -33,7 +32,7 @@ commandObj.onTrigger = function(player, itemId, target, dropper)
     else
         targ = GetPlayerByName(target)
         if targ == nil then
-            error(player, string.format('Player named "%s" not found!', target))
+            error(player, string.format("Player named '%s' not found!", target))
             return
         end
     end
@@ -42,14 +41,12 @@ commandObj.onTrigger = function(player, itemId, target, dropper)
     if dropper ~= nil then
         dropper = GetNPCByID(dropper)
         if dropper == nil then
-            error(player, 'Invalid npcID.')
+            error(player, "Invalid npcID.")
             return
         end
     end
 
     -- add treasure to pool
     targ:addTreasure(itemId, dropper)
-    player:PrintToPlayer(string.format('Item of ID %d was added to the treasure pool of %s or their party/alliance.', itemId, targ:getName()))
+    player:PrintToPlayer(string.format("Item of ID %d was added to the treasure pool of %s or their party/alliance.", itemId, targ:getName()))
 end
-
-return commandObj

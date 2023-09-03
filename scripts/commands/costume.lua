@@ -2,28 +2,25 @@
 -- func: costume
 -- desc: Sets the players current costume.
 -----------------------------------
-local commandObj = {}
 
-commandObj.cmdprops =
+cmdprops =
 {
     permission = 1,
-    parameters = 'i'
+    parameters = "i"
 }
 
-local function error(player, msg)
+function error(player, msg)
     player:PrintToPlayer(msg)
-    player:PrintToPlayer('!costume <costumeID>')
+    player:PrintToPlayer("!costume <costumeID>")
 end
 
-commandObj.onTrigger = function(player, costumeId)
+function onTrigger(player, costumeId)
     -- validate costumeId
     if costumeId == nil or costumeId < 0 then
-        error(player, 'Invalid costumeID.')
+        error(player, "Invalid costumeID.")
         return
     end
 
     -- put on costume
     player:setCostume(costumeId)
 end
-
-return commandObj
