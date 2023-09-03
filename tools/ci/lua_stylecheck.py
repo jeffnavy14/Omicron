@@ -198,8 +198,7 @@ class LuaStyleCheck:
         """
         # [^ =~\<\>][\=\+\*\~\/\>\<]|[\=\+\*\/\>\<][^ =\n] : Require space before and after >, <, >=, <=, ==, +, *, ~=, / operators or comparators
 
-        stripped_line = re.sub("\".*?\"|'.*?'", "", line) # Ignore data in quotes
-        for _ in re.finditer("[^ =~\<\>][\=\+\*\~\/\>\<]|[\=\+\*\/\>\<][^ =\n]", stripped_line):
+        for _ in re.finditer("[^ =~\<\>][\=\+\*\~\/\>\<]|[\=\+\*\/\>\<][^ =\n]", line):
             self.error("Operator or comparator without padding detected at end of line")
 
     def check_parentheses_padding(self, line):
@@ -355,7 +354,15 @@ class LuaStyleCheck:
                 # Remove in-line comments
                 code_line = re.sub("(?=--)(.*?)(?=\r\n|\n)", "", line)
 
-                # Replace quoted strings with a placeholder
+                # Before replacing strings, see if we're only using single quotes and check requires
+                if re.search(r"\"[^\"']*\"(?=(?:[^']*'[^']*')*[^']*$)", code_line):
+                    self.error("Strings should only be contained by single quotes")
+                self.check_deprecated_require(code_line)
+
+                # Replace quoted strings with a placeholder, and ignore escaped quotes
+                code_line = code_line.replace("\\'", '')
+                code_line = code_line.replace('\\"', '')
+
                 code_line = re.sub('\"([^\"]*?)\"', "strVal", code_line)
                 code_line = re.sub("\'([^\"]*?)\'", "strVal", code_line)
 
@@ -373,7 +380,6 @@ class LuaStyleCheck:
                 self.check_no_newline_after_function_decl(code_line)
                 self.check_no_newline_before_end(code_line)
                 self.check_no_function_decl_padding(code_line)
-                self.check_deprecated_require(code_line)
                 self.check_invalid_enum(code_line)
 
                 # Keep track of ID variable assignments and if they are referenced.
@@ -469,7 +475,7 @@ elif target == 'scripts':
         total_errors += LuaStyleCheck(filename).errcount
 elif target == 'test':
     total_errors = LuaStyleCheck('tools/ci/tests/stylecheck.lua', show_errors = False).errcount
-    expected_errors = 52
+    expected_errors = 70
 else:
     total_errors = LuaStyleCheck(target).errcount
 
