@@ -1074,9 +1074,9 @@ end
 -- (PUBLIC) overseer
 -----------------------------------
 xi.conquest.overseerOnTrade = function(player, npc, trade, guardNation, guardType)
-   -- if xi.garrison.onTrade(player, npc, trade, guardNation) then
-   --     return
-   -- end
+    if xi.garrison.onTrade(player, npc, trade, guardNation) then
+        return
+    end
 
     if player:getNation() == guardNation or guardNation == xi.nation.OTHER then
         local item           = trade:getItemId()
@@ -1150,9 +1150,9 @@ end
 xi.conquest.overseerOnTrigger = function(player, npc, guardNation, guardType, guardEvent, guardRegion)
     local pNation = player:getNation()
 
-   -- if xi.garrison.onTrigger(player, npc) then
-   --     return
-   -- end
+    if xi.garrison.onTrigger(player, npc) then
+        return
+    end
 
     -- SUPPLY RUNS
     if
