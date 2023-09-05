@@ -37,3 +37,4 @@
 # Live example:
 
 omicron/
+catseyexi/
