@@ -37,4 +37,8 @@
 # Live example:
 
 omicron/
+<<<<<<< Updated upstream
 catseyexi/
+=======
+catseyexi/
+>>>>>>> Stashed changes
