@@ -242,3 +242,4 @@ xi_search.dSYM
 # Keys and Certs
 **/*.key
 **/*.cert
+documentation/wiki/
