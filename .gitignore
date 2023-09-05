@@ -241,9 +241,3 @@ xi_search.dSYM
 # Keys and Certs
 **/*.key
 **/*.cert
-modules/init.txt
-modules/catseyexi/cpp/campaign.cpp
-modules/catseyexi/lua/additive_overrides/commands/dev/campaign.lua
-modules/catseyexi/lua/additive_overrides/systems/campaign/campaign_core.lua
-modules/catseyexi/lua/additive_overrides/systems/campaign/campaign_data.lua
-modules/catseyexi/sql/mobs/campaign_mobs.sql
