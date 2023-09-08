@@ -1,16 +1,16 @@
 -----------------------------------
--- ID: 6083
--- plate_of_indi-fury
--- Teaches INDI-FURY
+-- ID: 4608
+-- Scroll of Cure (Exclusive)
+-- Teaches the white magic Cure
 -----------------------------------
 local itemObject = {}
 
 itemObject.onItemCheck = function(target)
-    return target:canLearnSpell(xi.magic.spell.INDI_FURY)
+    return target:canLearnSpell(xi.magic.spell.CURE)
 end
 
 itemObject.onItemUse = function(target)
-    target:addSpell(xi.magic.spell.INDI_FURY)
+    target:addSpell(xi.magic.spell.CURE)
 end
 
 return itemObject

@@ -1,16 +1,16 @@
 -----------------------------------
--- ID: 6083
--- plate_of_indi-fury
--- Teaches INDI-FURY
+-- ID: 4606
+-- Scroll of Dia (Exclusive)
+-- Teaches the white magic Dia
 -----------------------------------
 local itemObject = {}
 
 itemObject.onItemCheck = function(target)
-    return target:canLearnSpell(xi.magic.spell.INDI_FURY)
+    return target:canLearnSpell(xi.magic.spell.DIA)
 end
 
 itemObject.onItemUse = function(target)
-    target:addSpell(xi.magic.spell.INDI_FURY)
+    target:addSpell(xi.magic.spell.DIA)
 end
 
 return itemObject
