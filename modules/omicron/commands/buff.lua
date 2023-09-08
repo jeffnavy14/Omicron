@@ -20,7 +20,7 @@ function onTrigger(player)
 		player:addStatusEffect(xi.effect.REFRESH, 5, 0, 14400)
 		player:addStatusEffect(xi.effect.HASTE, 20, 0, 14400)
 		player:setMod(915, 800)
-            player:setMod(382, 150)
+        player:setMod(382, 250)
 
 		-- Add bonus mods..
         player:addMod(xi.mod.RACC, 100)
