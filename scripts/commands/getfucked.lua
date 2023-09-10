@@ -3,13 +3,15 @@
 -- desc: Forces monsters in a zone to attack the given target.
 ---------------------------------------------------------------------------------------------------
 
-cmdprops =
-{
-    permission = 3,
-    parameters = "ss"
-};
+local commandObj = {}
 
-function onTrigger(player, target, count)
+commandObj.cmdprops =
+{
+    permission = 6,
+    parameters = 'i'
+}
+
+commandObj.onTrigger = function(player, target, count)
     -- Obtain the total count of monsters to update.
     local cnt = 50;
     if (count ~= nil) then
@@ -48,3 +50,4 @@ function onTrigger(player, target, count)
     
     player:PrintToPlayer(string.format('%s has been fucked.', t:getName())); 
 end
+return commandObj

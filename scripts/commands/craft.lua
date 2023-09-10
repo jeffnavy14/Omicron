@@ -2,15 +2,16 @@
 -- func: @mogshop <page number>
 -- desc: opens the custom moogle shop menu anywhere in the world
 --------------------------------------------------------------
+local commandObj = {}
 
-
-cmdprops =
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = "i"
-};
+    parameters = 'i'
+}
 
-function onTrigger(player,page)
+
+commandObj.onTrigger = function(player,page)
 local level = player:getMainLvl();
 
 -- printf("%s just triggered Mogshop", player:getName());
@@ -227,3 +228,4 @@ local level = player:getMainLvl();
         -- SpoofSay(Mog,player:getID(),message);
     end
 end;
+return commandObj

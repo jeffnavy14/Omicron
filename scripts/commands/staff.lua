@@ -3,10 +3,8 @@
 -- desc: Test dynamic entity before its placed into a module for testing.
 -- note: Will spawn after you move from your current position
 -----------------------------------
-require('scripts/globals/keyitems')
 require('scripts/globals/npc_util')
 local ID = require("scripts/zones/Port_Jeuno/IDs")
-require("scripts/globals/status")
 -----------------------------------
 
 cmdprops =

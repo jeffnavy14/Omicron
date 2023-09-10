@@ -3,20 +3,21 @@
 -- desc: Temporarily flips the user's main job and subjob to allow equipping items usable only by subjob.
 ---------------------------------------------------------------------------------------------------
 
-require("scripts/globals/status");
+local commandObj = {}
 
-cmdprops =
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = ""
-};
+    parameters = 'i'
+}
 
-function error(player, msg)
+
+local function error(player, msg)
     player:PrintToPlayer(msg);
     player:PrintToPlayer("!flip");
 end;
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
 
 	if player:isCustomizationEnabled(1) == false then
 		player:PrintToPlayer("Job flip is not enabled on this server.")
@@ -29,3 +30,4 @@ function onTrigger(player)
 		error(player, "... an error occurred.");
 	end
 end
+return commandObj

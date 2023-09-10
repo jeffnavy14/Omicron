@@ -3,13 +3,15 @@
 -- desc: Sends you to the next Egg
 ---------------------------------------------------------------------------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 1,
-    parameters = ""
+    parameters = 'i'
 }
 
-function onTrigger(player, target)
+commandObj.onTrigger = function(player, target)
     local MimicHunt = GetServerVariable("[MimicHunt]")
 	
 	if GetServerVariable("[Found]") == 0 then
@@ -19,3 +21,4 @@ function onTrigger(player, target)
 	player:goToEntity(MimicHunt)
 
 end
+return commandObj

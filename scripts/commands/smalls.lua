@@ -10,13 +10,15 @@
 --     : the log.
 -----------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 1,
-    parameters = ""
+    parameters = 'i'
 }
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
    	  local menu =
     {
         title = "Lots of Menu's",
@@ -126,3 +128,4 @@ function onTrigger(player)
     }
     player:customMenu(menu)
 end
+return commandObj

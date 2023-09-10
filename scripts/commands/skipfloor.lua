@@ -3,16 +3,18 @@
 -- desc: completes the current nyzul isle objective.
 -----------------------------------
 require("scripts/globals/nyzul")
-require("scripts/globals/zone")
+
 local ID = require("scripts/zones/Nyzul_Isle/IDs")
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = "s"
+    parameters = 'i'
 }
 
-function onTrigger(player, npc)
+commandObj.onTrigger = function(player, npc)
     local zone   = player:getZoneID()
     local target = player:getCursorTarget()
     
@@ -54,3 +56,5 @@ function onTrigger(player, npc)
         player:customMenu(confirmMenu)
     end
 end
+
+return commandObj

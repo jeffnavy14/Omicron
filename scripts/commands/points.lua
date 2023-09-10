@@ -2,15 +2,17 @@
 -- func: Checks current currencies held
 ---------------------------------------------------------------------------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = "s"
+    parameters = 'i'
 }
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
 local scyld = player:getCurrency("scyld")
-local Cruor = player:getCurrency("cruor")
+local cruor = player:getCurrency("cruor")
 local spark = player:getCurrency("spark_of_eminence")
 local daily = player:getCurrency("daily_tally")
 local valor = player:getCurrency("valor_point")
@@ -29,3 +31,4 @@ player:PrintToPlayer("Current Zeni: "..zeni..".",0xD)
 
 
 end
+return commandObj

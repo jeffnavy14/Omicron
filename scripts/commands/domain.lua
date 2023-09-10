@@ -3,13 +3,15 @@
 -- desc: Sends you to the next Domain Battle
 ---------------------------------------------------------------------------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 1,
-    parameters = ""
+    parameters = 'i'
 }
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
     if GetServerVariable("[Domain]NM") == 0 then
         player:setPos(-0.927, -43.600, -234.829, 195, 289)
 
@@ -26,3 +28,4 @@ function onTrigger(player)
 
     end
 end
+return commandObj

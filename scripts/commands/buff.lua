@@ -2,16 +2,16 @@
 -- func: Regen
 -- desc: Toggles Regen and Refresh on the player, granting them several special abilities.
 ---------------------------------------------------------------------------------------------------
------------------------------------
-require("scripts/globals/status")
------------------------------------
-cmdprops =
+
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = ""
+    parameters = 'i'
 }
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
     if (player:getCharVar("Regen") == 0) then
         -- Toggle Regen on..
         player:setCharVar("Regen", 1)
@@ -20,8 +20,6 @@ function onTrigger(player)
 		player:addStatusEffect(xi.effect.REGEN, 2, 0, 14400)
 		player:addStatusEffect(xi.effect.REFRESH, 2, 0, 14400)
 		player:addStatusEffect(xi.effect.HASTE, 10, 0, 14400)
-		player:setMod(915, 75)
-		player:setMod(382, 75)
 
 		-- Add bonus mods..
         player:addMod(xi.mod.RACC, 20)
@@ -57,3 +55,5 @@ function onTrigger(player)
 
     end
 end
+
+return commandObj

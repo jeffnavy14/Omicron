@@ -35,5 +35,5 @@
 # Will load only custom/cpp/custom_module.cpp and custom/lua/claim_shield.lua.
 #
 # Live example:
-/omicron
+omicron/
 

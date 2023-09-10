@@ -3,15 +3,19 @@
 -- desc: Sends you to the next Egg
 ---------------------------------------------------------------------------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 1,
-    parameters = ""
+    parameters = 'i'
 }
 
-function onTrigger(player, target)
+commandObj.onTrigger = function(player, target)
     local treasurehunt = GetServerVariable("[TreasureHunt]")
 	
 	player:goToEntity(treasurehunt)
 
 end
+
+return commandObj

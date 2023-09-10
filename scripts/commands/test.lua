@@ -3,17 +3,20 @@
 -- desc: A test command module
 -----------------------------------
 
-cmdprops =
+local commandObj = {}
+
+commandObj.cmdprops =
 {
     permission = 1,
-    parameters = ""
+    parameters = 'i'
 }
 
-local function double_print(player, str)
+local function error(player, str)
     print(str)
     player:PrintToPlayer(str, xi.msg.channel.SYSTEM_3, "")
 end
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
     double_print("Test print")
 end
+return commandObj

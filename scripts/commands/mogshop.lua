@@ -2,14 +2,16 @@
 -- func: @mogshop <page number>
 -- desc: opens the custom moogle shop menu anywhere in the world
 --------------------------------------------------------------
+local commandObj = {}
 
-cmdprops =
+commandObj.cmdprops =
 {
     permission = 0,
-    parameters = "i"
-};
+    parameters = 'i'
+}
 
-function onTrigger(player,page)
+
+commandObj.onTrigger = function(player,page)
 local level = player:getMainLvl();
 
 -- printf("%s just triggered Mogshop", player:getName());
@@ -199,7 +201,7 @@ local level = player:getMainLvl();
         player:PrintToPlayer("Merchant Moogle : Pop items!", 0x1F);
         elseif (page == 9) then -- Beyond infinity
         local plevel = player:getMainLvl();
-            if (plevel > 98) then
+            if (plevel > 74) then
             local stock_9 =
             {
                 3353,  50000,     -- Barbaric Bijou  
@@ -223,3 +225,5 @@ local level = player:getMainLvl();
         player:PrintToPlayer( string.format( "The MogShop catalog doesn't have a page %i, Kupo!", page ) );
     end
 end;
+
+return commandObj
