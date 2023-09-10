@@ -244,3 +244,4 @@ xi_search.dSYM
 **/*.key
 **/*.cert
 documentation/wiki/
+modules/contrib/
