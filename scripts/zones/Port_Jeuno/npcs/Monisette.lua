@@ -4,7 +4,6 @@
 -- !pos -5 0.1 -10.872
 -----------------------------------
 local ID = require("scripts/zones/Port_Jeuno/IDs")
-require("scripts/globals/keyitems")
 require("scripts/globals/npc_util")
 require("scripts/globals/quests")
 require("scripts/globals/utils")
@@ -538,7 +537,7 @@ local tradeTable =
     [507] = { trade = { 27826, {4070, 8}, 2476, 8722 }, reward = 27847 }, -- Maxixi Casaque +1
     [508] = { trade = { 27962, {4071, 8}, 2476, 8724 }, reward = 27983 }, -- Maxixi Bangles +1
     [509] = { trade = { 28109, {4072, 8}, 2476, 8726 }, reward = 28130 }, -- Maxixi Tights +1
-    [510] = { trade = { 28242, {4073, 8}, 2476, 8728 }, reward = 28272 }, -- Maxixi Toe Shoes +1
+    [510] = { trade = { 28242, {4073, 8}, 2476, 8728 }, reward = 28263 }, -- Maxixi Toe Shoes +1
     [511] = { trade = { 27683, {4069, 8}, 1313, 8720 }, reward = 27704 }, -- Academic's Mortarboard +1 -- Sch
     [512] = { trade = { 27827, {4070, 8}, 1313, 8722 }, reward = 27848 }, -- Academic's Gown +1
     [513] = { trade = { 27963, {4071, 8}, 1313, 8724 }, reward = 27984 }, -- Academic's Bracers +1
