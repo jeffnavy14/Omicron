@@ -46,9 +46,9 @@ local T1MobFight = function(player, npc, zone)
 					]]
 					--
 					if GetServerVariable("[Arena]FightMonth") == 1 then
-						SpawnMob()
+						SpawnMob(17068038, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
-						SpawnMob()
+						SpawnMob(17068038, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
 						SpawnMob(17068033, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
@@ -64,17 +64,17 @@ local T1MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068088, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob(17068038, 1800)
+						SpawnMob(17068038, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
-						SpawnMob()
+						SpawnMob(17068038, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
-						SpawnMob()
+						SpawnMob(17068038, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
 						SpawnMob(17068071, 1800)
 						SpawnMob(17068076, 1800)
 						SpawnMob(17068077, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
-						SpawnMob()
+						SpawnMob(17068038, 1800) -- temp filler
 					end
 					--]]
 					
@@ -125,9 +125,9 @@ local T2MobFight = function(player, npc, zone)
 					]]
 					--
 					if GetServerVariable("[Arena]FightMonth") == 1 then
-						SpawnMob()
+						SpawnMob(17068034, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
-						SpawnMob()
+						SpawnMob(17068034, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
 						SpawnMob(17068034, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
@@ -141,17 +141,17 @@ local T2MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068089, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob(17068034, 1800)
+						SpawnMob(17068034, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
-						SpawnMob()
+						SpawnMob(17068034, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
-						SpawnMob()
+						SpawnMob(17068034, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
 						SpawnMob(17068072, 1800)
 						SpawnMob(17068078, 1800)
 						SpawnMob(17068079, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
-						SpawnMob()
+						SpawnMob(17068034, 1800) -- temp filler
 					end
 					--]]
 					
@@ -200,9 +200,9 @@ local T3MobFight = function(player, npc, zone)
 					]]
 					--
 					if GetServerVariable("[Arena]FightMonth") == 1 then
-						SpawnMob()
+						SpawnMob(17068055, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
-						SpawnMob()
+						SpawnMob(17068055, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
 						SpawnMob(17068035, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
@@ -216,17 +216,17 @@ local T3MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068090, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob(17068055, 1800)
+						SpawnMob(17068055, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
-						SpawnMob()
+						SpawnMob(17068055, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
-						SpawnMob()
+						SpawnMob(17068055, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
 						SpawnMob(17068073, 1800)
 						SpawnMob(17068080, 1800)
 						SpawnMob(17068081, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
-						SpawnMob()
+						SpawnMob(17068055, 1800) -- temp filler
 					end
 					--]]
 					
@@ -274,9 +274,9 @@ local T4MobFight = function(player, npc, zone)
 					]]
 					--
 					if GetServerVariable("[Arena]FightMonth") == 1 then
-						SpawnMob()
+						SpawnMob(17068036, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
-						SpawnMob()
+						SpawnMob(17068036, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
 						SpawnMob(17068036, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
@@ -290,17 +290,17 @@ local T4MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068091, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob(17068036, 1800)
+						SpawnMob(17068036, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
-						SpawnMob()
+						SpawnMob(17068036, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
-						SpawnMob()
+						SpawnMob(17068036, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
 						SpawnMob(17068074, 1800)
 						SpawnMob(17068082, 1800)
 						SpawnMob(17068083, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
-						SpawnMob()
+						SpawnMob(17068036, 1800) -- temp filler
 					end
 					--]]
 					partyMember:timer(1800000, function(player)
@@ -353,9 +353,9 @@ local T5MobFight = function(player, npc, zone)
 					]]
 					--
 					if GetServerVariable("[Arena]FightMonth") == 1 then
-						SpawnMob()
+						SpawnMob(17068057, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 2 then
-						SpawnMob()
+						SpawnMob(17068057, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 3 then
 						SpawnMob(17068037, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 4 then
@@ -367,15 +367,15 @@ local T5MobFight = function(player, npc, zone)
 					elseif GetServerVariable("[Arena]FightMonth") == 7 then
 						SpawnMob(17068092, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 8 then
-						SpawnMob(17068057, 1800)
+						SpawnMob(17068057, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 9 then
-						SpawnMob()
+						SpawnMob(17068057, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 10 then
-						SpawnMob()
+						SpawnMob(17068057, 1800) -- temp filler
 					elseif GetServerVariable("[Arena]FightMonth") == 11 then
 						SpawnMob(17068075, 1800)
 					elseif GetServerVariable("[Arena]FightMonth") == 12 then
-						SpawnMob()
+						SpawnMob(17068057, 1800) -- temp filler
 					end
 					--]]
 					SetServerVariable("[Arena]T5active", 1)
