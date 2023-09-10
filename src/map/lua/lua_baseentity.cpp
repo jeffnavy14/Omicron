@@ -356,8 +356,19 @@ void CLuaBaseEntity::PrintToArea(std::string const& message, sol::object const& 
     }
     else if (messageRange == MESSAGE_AREA_PARTY)
     {
-        message::send(MSG_CHAT_PARTY, nullptr, 0, new CChatMessagePacket(PChar, messageLook, message, name));
-        PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, new CChatMessagePacket(PChar, messageLook, message, name));
+        int8 packetData[8]{};
+        if (PChar->PParty->m_PAlliance)
+        {
+            ref<uint32>(packetData, 0) = PChar->PParty->m_PAlliance->m_AllianceID;
+            ref<uint32>(packetData, 4) = 0; // No ID so that the PChar sees the message too
+            message::send(MSG_CHAT_ALLIANCE, packetData, sizeof packetData, new CChatMessagePacket(PChar, messageLook, message, name));
+        }
+        else if (PChar->PParty)
+        {
+            ref<uint32>(packetData, 0) = PChar->PParty->GetPartyID();
+            ref<uint32>(packetData, 4) = 0; // No ID so that the PChar sees the message too
+            message::send(MSG_CHAT_PARTY, packetData, sizeof packetData, new CChatMessagePacket(PChar, messageLook, message, name));
+        }
     }
     else if (messageRange == MESSAGE_AREA_YELL)
     {
@@ -573,14 +584,43 @@ int32 CLuaBaseEntity::getCharVar(std::string const& varName)
  *  Function: setCharVar()
  *  Purpose : Updates PC's variable to an explicit value
  *  Example : player:setCharVar("[ZM]Status", 4)
- *  Notes   : Passing a '0' value will delete the variable
+ *  Notes   : Passing a '0' value will delete the variable.
  ************************************************************************/
 
-void CLuaBaseEntity::setCharVar(std::string const& varName, int32 value)
+void CLuaBaseEntity::setCharVar(std::string const& varName, int32 value, sol::object const& expiry)
 {
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        PChar->setCharVar(varName, value);
+        uint32 varTimestamp = expiry.is<uint32>() ? expiry.as<uint32>() : 0;
+
+        if (varTimestamp > 0 && varTimestamp <= CVanaTime::getInstance()->getSysTime())
+        {
+            ShowWarning(fmt::format("Attempting to set variable '{}' with an expired time: {}", varName, varTimestamp));
+            return;
+        }
+
+        PChar->setCharVar(varName, value, varTimestamp);
+    }
+}
+
+/************************************************************************
+ *  Function: setCharVarExpiration()
+ *  Purpose : Updates PC's variable expiration to a specific timestamp
+ *  Example : player:setCharVarExpiration("Timer", VanadielTime() + 3600)
+ *  Notes   : Passing a '0' value will set the variable to not expire.
+ ************************************************************************/
+
+void CLuaBaseEntity::setCharVarExpiration(std::string const& varName, uint32 expiry)
+{
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        if (expiry > 0 && expiry <= CVanaTime::getInstance()->getSysTime())
+        {
+            ShowWarning(fmt::format("Attempting to set variable '{}' with an expired time: {}", varName, expiry));
+            return;
+        }
+
+        PChar->setCharVar(varName, PChar->getCharVar(varName), expiry);
     }
 }
 
@@ -588,7 +628,8 @@ void CLuaBaseEntity::setCharVar(std::string const& varName, int32 value)
  *  Function: incrementCharVar()
  *  Purpose : Increments PC's variable by an explicit amount
  *  Example : player:incrementCharVar("[ZM]Status", 1) -- if 4, becomes 5
- *  Notes   : Can use values greater than 1 to increment more
+ *  Notes   : Can use values greater than 1 to increment more.  This does
+ *            not handle expiration times.
  ************************************************************************/
 
 void CLuaBaseEntity::incrementCharVar(std::string const& varName, int32 value)
@@ -607,11 +648,19 @@ void CLuaBaseEntity::incrementCharVar(std::string const& varName, int32 value)
  *  Notes   : Passing a '0' value will delete the variable
  ************************************************************************/
 
-void CLuaBaseEntity::setVolatileCharVar(std::string const& varName, int32 value)
+void CLuaBaseEntity::setVolatileCharVar(std::string const& varName, int32 value, sol::object const& expiry)
 {
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        PChar->setVolatileCharVar(varName, value);
+        uint32 varTimestamp = expiry.is<uint32>() ? expiry.as<uint32>() : 0;
+
+        if (varTimestamp > 0 && varTimestamp <= CVanaTime::getInstance()->getSysTime())
+        {
+            ShowWarning(fmt::format("Attempting to set variable '{}' with an expired time: {}", varName, varTimestamp));
+            return;
+        }
+
+        PChar->setVolatileCharVar(varName, value, varTimestamp);
     }
 }
 
@@ -9475,7 +9524,7 @@ uint16 CLuaBaseEntity::getCharSkillLevel(uint8 skillID)
 /************************************************************************
  *  Function: addLearnedWeaponskill()
  *  Purpose : Manually add a new weaponskill for the player using WSID
- *  Example : player:addLearnedWeaponskill(xi.ws_unlock.DECIMATION)
+ *  Example : player:addLearnedWeaponskill(xi.wsUnlock.DECIMATION)
  *  Notes   : Do not see implemented in any script
  ************************************************************************/
 
@@ -9498,7 +9547,7 @@ void CLuaBaseEntity::addLearnedWeaponskill(uint8 wsUnlockId)
 /************************************************************************
  *  Function: hasLearnedWeaponskill()
  *  Purpose : Returns true if a player has learned a particular weaponskill
- *  Example : if player:hasLearnedWeaponskill(xi.ws_unlock.DECIMATION) then
+ *  Example : if player:hasLearnedWeaponskill(xi.wsUnlock.DECIMATION) then
  *  Notes   :
  ************************************************************************/
 
@@ -9516,7 +9565,7 @@ bool CLuaBaseEntity::hasLearnedWeaponskill(uint8 wsUnlockId)
 /************************************************************************
  *  Function: delLearnedWeaponskill()
  *  Purpose : Removes a learned weaponskill from the player
- *  Example : player:delLearnedWeaponskill(xi.ws_unlock.ASURAN_FISTS)
+ *  Example : player:delLearnedWeaponskill(xi.wsUnlock.ASURAN_FISTS)
  *  Notes   :
  ************************************************************************/
 
@@ -10382,7 +10431,7 @@ uint8 CLuaBaseEntity::checkSoloPartyAlliance()
  *  Notes   : and the mob is able to give exp to the members
  ************************************************************************/
 
-bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object const& arg1, sol::object const& arg2)
+bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object const& minRange)
 {
     if (m_PBaseEntity->objtype != TYPE_PC || PLuaBaseEntity->GetBaseEntity()->objtype != TYPE_MOB)
     {
@@ -10390,15 +10439,12 @@ bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object
         return false;
     }
 
-    CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    CMobEntity*  PMob  = static_cast<CMobEntity*>(PLuaBaseEntity->GetBaseEntity());
+    CCharEntity* PChar  = static_cast<CCharEntity*>(m_PBaseEntity);
+    CMobEntity*  PMob   = static_cast<CMobEntity*>(PLuaBaseEntity->GetBaseEntity());
+    float        range  = minRange.is<float>() ? minRange.as<float>() : 100;
+    bool         credit = false;
 
-    bool  credit  = false;
-    int   lvlDiff = (int)(PMob->GetMLevel()) - (int)(PChar->GetMLevel());
-    int   maxDiff = (arg1 != sol::lua_nil) ? arg1.as<int>() : 15;
-    float range   = (arg2 != sol::lua_nil) ? arg2.as<float>() : 100;
-
-    if (charutils::CheckMob(PMob->m_HiPCLvl, PMob->GetMLevel()) > EMobDifficulty::TooWeak && distance(PMob->loc.p, PChar->loc.p) < range && lvlDiff < maxDiff)
+    if (charutils::CheckMob(PMob->m_HiPCLvl, PMob->GetMLevel()) > EMobDifficulty::TooWeak && distance(PMob->loc.p, PChar->loc.p) < range && !PMob->GetCallForHelpFlag())
     {
         if (PChar->PParty && PChar->PParty->GetSyncTarget())
         {
@@ -16825,6 +16871,7 @@ void CLuaBaseEntity::Register()
     // Variables
     SOL_REGISTER("getCharVar", CLuaBaseEntity::getCharVar);
     SOL_REGISTER("setCharVar", CLuaBaseEntity::setCharVar);
+    SOL_REGISTER("setCharVarExpiration", CLuaBaseEntity::setCharVarExpiration);
     SOL_REGISTER("getVar", CLuaBaseEntity::getCharVar); // Compatibility binding
     SOL_REGISTER("setVar", CLuaBaseEntity::setCharVar); // Compatibility binding
     SOL_REGISTER("incrementCharVar", CLuaBaseEntity::incrementCharVar);
