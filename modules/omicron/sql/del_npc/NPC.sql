@@ -1,1 +1,0 @@
-DELETE FROM `npc_list` WHERE  `npcid`=17961708;
