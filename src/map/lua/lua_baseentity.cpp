@@ -2204,13 +2204,14 @@ void CLuaBaseEntity::updateNPCHideTime(sol::object const& seconds)
  *  Example : if player:getWeather() == xi.weather.WIND then
  ************************************************************************/
 
-uint8 CLuaBaseEntity::getWeather()
+uint8 CLuaBaseEntity::getWeather(sol::object const& ignoreScholar)
 {
     WEATHER weather = WEATHER_NONE;
 
     if (m_PBaseEntity->objtype & TYPE_PC || m_PBaseEntity->objtype & TYPE_MOB)
     {
-        weather = battleutils::GetWeather(static_cast<CBattleEntity*>(m_PBaseEntity), false);
+        bool ignoreScholarWeather = ignoreScholar.is<bool>() ? ignoreScholar.as<bool>() : false;
+        weather                   = battleutils::GetWeather(static_cast<CBattleEntity*>(m_PBaseEntity), ignoreScholarWeather);
     }
     else
     {
@@ -10433,7 +10434,7 @@ uint8 CLuaBaseEntity::checkSoloPartyAlliance()
 
 bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object const& minRange)
 {
-    if (m_PBaseEntity->objtype != TYPE_PC || PLuaBaseEntity->GetBaseEntity()->objtype != TYPE_MOB)
+    if (m_PBaseEntity->objtype != TYPE_PC || (PLuaBaseEntity && PLuaBaseEntity->GetBaseEntity()->objtype != TYPE_MOB))
     {
         ShowWarning("CLuaBaseEntity::checkKillCredit() - Non-PC type calling function, or PLuaBaseEntity is not a MOB.");
         return false;
@@ -13664,7 +13665,7 @@ int32 CLuaBaseEntity::takeSwipeLungeDamage(CLuaBaseEntity* caster, int32 damage,
 /************************************************************************
  *  Function: spawnPet()
  *  Purpose : Spawns a pet if a few correct conditions are met
- *  Example : caster:spawnPet(xi.pet.id.CARBUNCLE)
+ *  Example : caster:spawnPet(xi.petId.CARBUNCLE)
  *  Notes   :
  ************************************************************************/
 
@@ -14216,7 +14217,7 @@ auto CLuaBaseEntity::getPetName() -> const std::string
 /************************************************************************
  *  Function: setPetName()
  *  Purpose : Passes a string to name a new pet
- *  Example : player:setPetName(xi.pet.type.WYVERN, xi.pet.name.ROVER)
+ *  Example : player:setPetName(xi.petType.WYVERN, xi.petName.ROVER)
  *  Notes   : Updates char_pet.sql
  ************************************************************************/
 

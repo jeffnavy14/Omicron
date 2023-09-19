@@ -2,7 +2,6 @@
 -- Assault 51 : Nyzul Isle Investigation
 -----------------------------------
 local ID = zones[xi.zone.NYZUL_ISLE]
-require('scripts/zones/Nyzul_Isle/globals/points')
 -----------------------------------
 local instanceObject = {}
 
@@ -120,6 +119,9 @@ instanceObject.afterInstanceRegister = function(player)
     player:messageName(ID.text.TIME_TO_COMPLETE, player, instance:getTimeLimit())
 
     player:addTempItem(xi.item.UNDERSEA_RUINS_FIREFLIES)
+    player:setCharVar('assaultEntered', 1)
+    player:delKeyItem(xi.ki.NYZUL_ISLE_ASSAULT_ORDERS)
+    player:messageSpecial(ID.text.KEYITEM_LOST, xi.ki.NYZUL_ISLE_ASSAULT_ORDERS)
 end
 
 -- Instance 'tick'
