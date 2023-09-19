@@ -204,6 +204,7 @@ cmake_install.cmake
 /settings/*.lua
 /modules/omicron/
 /modules/catseyexi/
+/modules/omicronxi
 
 # Tool/misc configs
 /tools/config.yaml
