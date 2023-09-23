@@ -36,5 +36,5 @@
 #
 # Live example:
 
-omicironXI/
+omicronXI/
 contrib/
