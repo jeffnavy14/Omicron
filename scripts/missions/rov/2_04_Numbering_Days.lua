@@ -38,7 +38,7 @@ mission.sections =
                     -- Darkness Named            : 0, 1, 1, 0
                     -- >= Flames in the Darkness : 0, 2, 1, 0
 
-                    local promathiaMission = player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.DARKNESS_NAMED) and 1 or 0
+                    local promathiaMission = player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.CALM_BEFORE_THE_STORM) and 1 or 0
 
                     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.FLAMES_IN_THE_DARKNESS then
                         promathiaMission = promathiaMission + 1

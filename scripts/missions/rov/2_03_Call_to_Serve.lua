@@ -60,7 +60,7 @@ mission.sections =
                         -- Inferring the second parameter to the above scheme, and leaving the other three values as static.
 
                         return 399
-                    elseif mission:getVar(player, 'Status') == 0 then
+                    elseif mission:getVar(player, 'Status') == 1 then
                         return 402
                     end
                 end,
@@ -70,7 +70,7 @@ mission.sections =
             {
                 [399] = function(player, csid, option, npc)
                     if option == 1 then
-                        local hasCompletedDarkness = player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.DARKNESS_NAMED) and 2 or 0
+                        local hasCompletedDarkness = player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.CALM_BEFORE_THE_STORM) and 2 or 0
 
                         player:updateEvent(0, hasCompletedDarkness, 1, 1)
                     end
@@ -90,8 +90,13 @@ mission.sections =
                 end,
 
                 [402] = function(player, csid, option, npc)
-                    -- Unable to proceed message is only displayed once ever.
-                    mission:setVar(player, 'Status', 1)
+                    if player:getFreeSlotsCount() == 0 then
+                        player:messageSpecial(portJeunoID.text.MYSTIC_RETRIEVER, xi.item.CIPHER_OF_PRISHES_ALTER_EGO_II)
+                        mission:setVar(player, 'Retrieve', 1)
+                    else
+                        npcUtil.giveItem(player, xi.item.CIPHER_OF_PRISHES_ALTER_EGO_II)
+                        mission:complete(player)
+                    end
                 end,
             },
         },
