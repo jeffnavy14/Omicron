@@ -242,3 +242,4 @@ xi_search.dSYM
 **/*.key
 **/*.cert
 modules/contrib/
+modules/omicronXI/
