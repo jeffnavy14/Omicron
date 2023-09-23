@@ -45,6 +45,7 @@ quest.sections =
             {
                 [74] = function(player, csid, option, npc)
                     quest:complete(player)
+					npcUtil.giveKeyItem(player, xi.keyItem.RHAPSODY_IN_CRIMSON)
                 end,
             },
         },
