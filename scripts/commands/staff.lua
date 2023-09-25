@@ -6,14 +6,15 @@
 require('scripts/globals/npc_util')
 local ID = require("scripts/zones/Port_Jeuno/IDs")
 -----------------------------------
+local commandObj = {}
 
-cmdprops =
+commandObj.cmdprops =
 {
-    permission = 0,
+    permission = 1,
     parameters = ""
 }
 
-function onTrigger(player)
+commandObj.onTrigger = function(player)
     local zone = player:getZone()
     local npc = zone:insertDynamicEntity({
     objtype = xi.objType.NPC,
@@ -114,3 +115,5 @@ function onTrigger(player)
 	})
     player:PrintToPlayer(string.format("Please move to spawn (%s)", npc:getPacketName()))
 end
+
+return commandObj
