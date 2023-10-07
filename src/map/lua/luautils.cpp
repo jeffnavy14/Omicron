@@ -156,6 +156,7 @@ namespace luautils
         lua.set_function("GarbageCollectStep", &luautils::garbageCollectStep);
         lua.set_function("GarbageCollectFull", &luautils::garbageCollectFull);
         lua.set_function("GetZone", &luautils::GetZone);
+        lua.set_function("GetItemByID", &luautils::GetItemByID);
         lua.set_function("GetNPCByID", &luautils::GetNPCByID);
         lua.set_function("GetMobByID", &luautils::GetMobByID);
         lua.set_function("GetEntityByID", &luautils::GetEntityByID);
@@ -172,6 +173,7 @@ namespace luautils
         lua.set_function("GetSystemTime", &luautils::GetSystemTime);
         lua.set_function("JstMidnight", &luautils::JstMidnight);
         lua.set_function("JstWeekday", &luautils::JstWeekday);
+        lua.set_function("NextConquestTally", &luautils::NextJstWeek);
         lua.set_function("NextGameTime", &luautils::NextGameTime);
         lua.set_function("NextJstDay", &luautils::JstMidnight);
         lua.set_function("NextJstWeek", &luautils::NextJstWeek);
@@ -1049,6 +1051,16 @@ namespace luautils
         }
     }
 
+    std::optional<CLuaItem> GetItemByID(uint32 itemId)
+    {
+        if (auto* PItem = itemutils::GetItemPointer(itemId))
+        {
+            return CLuaItem(PItem);
+        }
+
+        return std::nullopt;
+    }
+
     std::optional<CLuaBaseEntity> GetNPCByID(uint32 npcid, sol::object const& instanceObj)
     {
         TracyZoneScoped;
@@ -1430,6 +1442,8 @@ namespace luautils
         // Start with the "Next" Midnight, and apply N days worth of time to it
         return nextJstMidnight + (7 - jstWeekday) * 60 * 60 * 24;
     }
+
+    // NOTE: NextConquestTally exists for clarity, and is bound to the above function
 
     uint32 VanadielMoonPhase()
     {
