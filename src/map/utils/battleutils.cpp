@@ -125,13 +125,13 @@ namespace battleutils
 
         ret = sql->Query(fmtQuery);
 
-        // NOTE: Skip over Monstrosity, they re-use other jobs ranks
         if (ret != SQL_ERROR && sql->NumRows() != 0)
         {
-            for (uint32 x = 0; x < JOB_MON && sql->NextRow() == SQL_SUCCESS; ++x)
+            for (uint32 x = 0; x < MAX_SKILLTYPE && sql->NextRow() == SQL_SUCCESS; ++x)
             {
-                auto SkillID = std::clamp<uint8>(sql->GetIntData(0), 0, JOB_MON - 1);
+                auto SkillID = std::clamp<uint8>(sql->GetIntData(0), 0, MAX_SKILLTYPE - 1);
 
+                // NOTE: Skip over Monstrosity, they re-use other jobs ranks
                 for (uint32 y = 1; y < JOB_MON; ++y)
                 {
                     g_SkillRanks[SkillID][y] = std::clamp<uint8>(sql->GetIntData(y), 0, 11);
@@ -4620,6 +4620,8 @@ namespace battleutils
         {
             shotCount += 7;
         }
+
+        shotCount += PChar->getMod(Mod::BARRAGE_COUNT);
 
         // make sure we have enough ammo for all these shots
         CItemWeapon* PAmmo = (CItemWeapon*)PChar->getEquip(SLOT_AMMO);
