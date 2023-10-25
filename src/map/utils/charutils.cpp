@@ -115,12 +115,6 @@ static constexpr int32                               ExpTableRowCount = 60;
 std::array<std::array<uint16, 20>, ExpTableRowCount> g_ExpTable;
 std::array<uint16, 100>                              g_ExpPerLevel;
 
-/************************************************************************
- *                                                                       *
- *                                                                       *
- *                                                                       *
- ************************************************************************/
-
 namespace charutils
 {
     /************************************************************************
@@ -151,6 +145,23 @@ namespace charutils
         JOBTYPE    mjob        = PChar->GetMJob();
         JOBTYPE    sjob        = PChar->GetSJob();
         MERIT_TYPE statMerit[] = { MERIT_STR, MERIT_DEX, MERIT_VIT, MERIT_AGI, MERIT_INT, MERIT_MND, MERIT_CHR };
+
+        // We have to make sure we don't leave the job as JOB_MON - we CANNOT generate stats for it.
+        if (mjob == JOB_MON || sjob == JOB_MON)
+        {
+            mjob = JOB_WAR;
+            sjob = JOB_WAR;
+        }
+
+        // NOTE: Monstrosity (MON) is treated as its own job, but each species is it's own
+        //     : combination of main/sub job for stats, traits and abilities.
+        if (PChar->m_PMonstrosity != nullptr)
+        {
+            mjob = PChar->m_PMonstrosity->MainJob;
+            sjob = PChar->m_PMonstrosity->SubJob;
+            mlvl = PChar->m_PMonstrosity->levels[PChar->m_PMonstrosity->MonstrosityId];
+            slvl = mlvl;
+        }
 
         uint8 race = 0; // Hume
 
@@ -190,7 +201,7 @@ namespace charutils
         int32 subLevelOver10 = std::clamp(slvl - 10, 0, 20); // + 1HP for each level after 10 (/ 2)
         int32 subLevelOver30 = (slvl < 30 ? 0 : slvl - 30);  // + 1HP for each level after 30
 
-        // Расчет Racestat Jobstat Bonusstat Sjobstat
+        // Calculate Racestat Jobstat Bonusstat Sjobstat
         // Calculation of race
 
         grade = grade::GetRaceGrades(race, 0);
@@ -862,6 +873,8 @@ namespace charutils
             PChar->m_FieldChocobo = sql->GetUIntData(0);
         }
 
+        monstrosity::TryPopulateMonstrosityData(PChar);
+
         charutils::LoadInventory(PChar);
 
         CalculateStats(PChar);
@@ -998,7 +1011,7 @@ namespace charutils
 
                     if (PItem->isType(ITEM_FURNISHING) && (PItem->getLocationID() == LOC_MOGSAFE || PItem->getLocationID() == LOC_MOGSAFE2))
                     {
-                        if (((CItemFurnishing*)PItem)->isInstalled()) // способ узнать, что предмет действительно установлен
+                        if (((CItemFurnishing*)PItem)->isInstalled()) // Check if furniture (furnishing) item is actually installed
                         {
                             PChar->getStorage(LOC_STORAGE)->AddBuff(((CItemFurnishing*)PItem)->getStorage());
                         }
@@ -1147,7 +1160,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  We send a list of current / completed quests and missions.           *
+     *  Send lists of current / completed quests and missions.               *
      *                                                                       *
      ************************************************************************/
 
@@ -1200,7 +1213,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  We send the character all its inventory                              *
+     *  Send the character all its inventory                                 *
      *                                                                       *
      ************************************************************************/
 
@@ -1611,17 +1624,23 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Check the possibility of trade between the characters                *
+     *  Check the possibility of trade between characters                    *
      *                                                                       *
      ************************************************************************/
 
     bool CanTrade(CCharEntity* PChar, CCharEntity* PTarget)
     {
+        if (PChar->m_PMonstrosity != nullptr || PTarget->m_PMonstrosity != nullptr)
+        {
+            return false;
+        }
+
         if (PTarget->getStorage(LOC_INVENTORY)->GetFreeSlotsCount() < PChar->UContainer->GetItemsCount())
         {
             ShowDebug("Unable to trade, %s doesn't have enough inventory space", PTarget->GetName());
             return false;
         }
+
         for (uint8 slotid = 0; slotid <= 8; ++slotid)
         {
             CItem* PItem = PChar->UContainer->GetItem(slotid);
@@ -1635,6 +1654,7 @@ namespace charutils
                 }
             }
         }
+
         return true;
     }
 
@@ -1676,8 +1696,8 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     * Remove from the character equipped item without updating the external *
-     * species. Used as an auxiliary function in a bundle with others        *
+     *  Remove equipped item from character without updating the external    *
+     *  species (used as an auxiliary function in a bundle with others)      *
      *                                                                       *
      ************************************************************************/
 
@@ -1875,7 +1895,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     * We are trying to equip the subject in compliance with all conditions  *
+     *  Try to equip the subject in compliance with all conditions           *
      *                                                                       *
      ************************************************************************/
 
@@ -2685,7 +2705,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     * Check the feature of the character wearing the items equipped on it   *
+     *  Check the feature of the character wearing the items equipped on it  *
      *                                                                       *
      ************************************************************************/
 
@@ -2926,25 +2946,21 @@ namespace charutils
     /************************************************************************
      *                                                                       *
      *  Collect the work table of the character's abilities.With zero level  *
-     *  There must be 2H abilities.On this condition, sift them for SJOB     *
+     *  There must be 2H abilities .On this condition, sift them for SJOB    *
      *                                                                       *
      ************************************************************************/
 
     void BuildingCharAbilityTable(CCharEntity* PChar)
     {
-        std::vector<CAbility*> AbilitiesList;
-
         if (PChar == nullptr)
         {
             ShowWarning("charutils::BuildingCharAbilityTable() - PChar was null.");
             return;
         }
 
-        memset(&PChar->m_Abilities, 0, sizeof(PChar->m_Abilities));
+        std::memset(&PChar->m_Abilities, 0, sizeof(PChar->m_Abilities));
 
-        AbilitiesList = ability::GetAbilities(PChar->GetMJob());
-
-        for (auto PAbility : AbilitiesList)
+        for (auto PAbility : ability::GetAbilities(PChar->GetMJob()))
         {
             if (PAbility == nullptr)
             {
@@ -2982,9 +2998,7 @@ namespace charutils
             return;
         }
 
-        AbilitiesList = ability::GetAbilities(PChar->GetSJob());
-
-        for (auto PAbility : AbilitiesList)
+        for (auto PAbility : ability::GetAbilities(PChar->GetSJob()))
         {
             if (PChar->GetSLevel() >= PAbility->getLevel())
             {
@@ -3023,7 +3037,7 @@ namespace charutils
     /************************************************************************
      *                                                                       *
      *  Collect the work table of the character skills based on real.        *
-     *  Add restrictions, note the skills of the main profession (rank! = 0) *
+     *  Add restrictions, note the skills of the main job (rank! = 0)        *
      *                                                                       *
      ************************************************************************/
 
@@ -3220,23 +3234,38 @@ namespace charutils
         PChar->TraitList.clear();
         memset(&PChar->m_TraitList, 0, sizeof(PChar->m_TraitList));
 
-        battleutils::AddTraits(PChar, traits::GetTraits(PChar->GetMJob()), PChar->GetMLevel());
-        battleutils::AddTraits(PChar, traits::GetTraits(PChar->GetSJob()), PChar->GetSLevel());
+        auto mjob = PChar->GetMJob();
+        auto sjob = PChar->GetSJob();
+        auto mlvl = PChar->GetMLevel();
+        auto slvl = PChar->GetSLevel();
 
-        if (PChar->GetMJob() == JOB_BLU || PChar->GetSJob() == JOB_BLU)
+        // NOTE: Monstrosity (MON) is treated as its own job, but each species is it's own
+        //     : combination of main/sub job for stats, traits and abilities.
+        if (PChar->m_PMonstrosity != nullptr)
+        {
+            mjob = PChar->m_PMonstrosity->MainJob;
+            sjob = PChar->m_PMonstrosity->SubJob;
+            mlvl = PChar->m_PMonstrosity->levels[PChar->m_PMonstrosity->MonstrosityId];
+            slvl = mlvl;
+        }
+
+        battleutils::AddTraits(PChar, traits::GetTraits(mjob), mlvl);
+        battleutils::AddTraits(PChar, traits::GetTraits(sjob), slvl);
+
+        if (mjob == JOB_BLU || sjob == JOB_BLU)
         {
             blueutils::CalculateTraits(PChar);
         }
 
         PChar->delModifier(Mod::MEVA, PChar->m_magicEvasion);
 
-        PChar->m_magicEvasion = battleutils::GetMaxSkill(12, PChar->GetMLevel()); // Player MEVA is Rank G
+        PChar->m_magicEvasion = battleutils::GetMaxSkill(12, mlvl); // Player MEVA is Rank G
         PChar->addModifier(Mod::MEVA, PChar->m_magicEvasion);
     }
 
     /************************************************************************
      *                                                                       *
-     *  Пытаемся увеличить значение умения                                   *
+     *  Try to increase the value of the skill                               *
      *                                                                       *
      ************************************************************************/
 
@@ -3311,7 +3340,7 @@ namespace charutils
                 uint8  SkillAmount = 1;
                 uint8  tier        = std::min(1 + (Diff / 5), 5);
 
-                for (uint8 i = 0; i < 4; ++i) // 1 + 4 возможных дополнительных (максимум 5)
+                for (uint8 i = 0; i < 4; ++i) // 1 + 4 possible additional ones (maximum 5)
                 {
                     random = xirand::GetRandomNumber(1.);
 
@@ -3512,7 +3541,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Методы для работы с заклинаниями                                     *
+     *  Methods for working with spells                                      *
      *                                                                       *
      ************************************************************************/
 
@@ -3652,7 +3681,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Методы для работы с основными способностями                          *
+     *  Methods for working with basic abilities                             *
      *                                                                       *
      ************************************************************************/
 
@@ -3729,10 +3758,11 @@ namespace charutils
     }
 
     /************************************************************************
-     *
-     *       Pet Command Functions
-     *
-     *************************************************************************/
+     *                                                                       *
+     *  Pet Command Functions                                                *
+     *                                                                       *
+     ************************************************************************/
+
     int32 hasPetAbility(CCharEntity* PChar, uint16 AbilityID)
     {
         return hasBit(AbilityID, PChar->m_PetCommands, sizeof(PChar->m_PetCommands));
@@ -3750,7 +3780,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Инициализируем таблицу опыта                                         *
+     *  Initialize the experience (exp) table                                *
      *                                                                       *
      ************************************************************************/
 
@@ -3794,9 +3824,10 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Returns mob difficulty according to level difference                 *
+     *  Return mob difficulty according to level difference                  *
      *                                                                       *
      ************************************************************************/
+
     EMobDifficulty CheckMob(uint8 charlvl, uint8 moblvl)
     {
         uint32 baseExp = GetBaseExp(charlvl, moblvl);
@@ -3853,7 +3884,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Узнаем количество опыта, необходимое для получения следующего уровня *
+     *  Calculate the amount of experience required to get the next level    *
      *                                                                       *
      ************************************************************************/
 
@@ -4603,6 +4634,7 @@ namespace charutils
      *  1 means no exp loss. A value of 0 means full exp loss.               *
      *                                                                       *
      ************************************************************************/
+
     void DelExperiencePoints(CCharEntity* PChar, float retainPercent, uint16 forcedXpLoss)
     {
         TracyZoneScoped;
@@ -4620,6 +4652,12 @@ namespace charutils
         }
 
         if (PChar->GetMLevel() < settings::get<uint8>("map.EXP_LOSS_LEVEL") && forcedXpLoss == 0)
+        {
+            return;
+        }
+
+        // MONs don't lose exp on death
+        if (PChar->m_PMonstrosity != nullptr)
         {
             return;
         }
@@ -4714,7 +4752,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Добавляем очки опытка указанному персонажу                           *
+     *  Add experience points to the specified character                     *
      *                                                                       *
      ************************************************************************/
 
@@ -4943,7 +4981,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Establish a restriction of character level                          *
+     *  Establish a restriction of character level                           *
      *                                                                       *
      ************************************************************************/
 
@@ -5132,7 +5170,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Cохраняем список колючевых предметов                                 *
+     *  Save list of key items                                               *
      *                                                                       *
      ************************************************************************/
 
@@ -5361,7 +5399,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Saves character nation changes                                       *
+     *  Save character's nation changes                                      *
      *                                                                       *
      ************************************************************************/
 
@@ -5378,7 +5416,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Saves characters current campaign allegiance                         *
+     *  Save character's current campaign allegiance                         *
      *                                                                       *
      ************************************************************************/
 
@@ -5395,7 +5433,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Saves character's current moghancement
+     *  Saves character's current moghancement                               *
      *                                                                       *
      ************************************************************************/
 
@@ -5412,7 +5450,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Сохраняем текущие уровни профессий персонажа                         *
+     *  Save the current levels of the character's jobs                      *
      *                                                                       *
      ************************************************************************/
 
@@ -5423,6 +5461,12 @@ namespace charutils
         if (job == JOB_NON || job >= MAX_JOBTYPE)
         {
             ShowWarning("Attempt to save Invalid Job with JOBTYPE %d.", job);
+            return;
+        }
+
+        // Monstrosity job and level data is handled elsewhere, bail out now
+        if (job == JOB_MON)
+        {
             return;
         }
 
@@ -5510,6 +5554,12 @@ namespace charutils
         if (job == JOB_NON || job >= MAX_JOBTYPE)
         {
             ShowWarning("Attempt to save Char XP with invalid JOBTYPE %d.", job);
+            return;
+        }
+
+        // Monstrosity exp data is handled elsewhere, bail out now
+        if (job == JOB_MON)
+        {
             return;
         }
 
@@ -5614,7 +5664,7 @@ namespace charutils
 
     /************************************************************************
      *                                                                       *
-     *  Save Teleports - Homepoints, outposts, maws, etc                     *
+     *  Save Teleports - (homepoints, outposts, maws, etc)                   *
      *                                                                       *
      ************************************************************************/
 
