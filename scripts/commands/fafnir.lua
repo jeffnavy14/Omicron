@@ -23,7 +23,7 @@ commandObj.onTrigger = function(player)
         --     : So populate it with something unique-ish even if you aren't going to use it.
         --     : You can then hide the name with entity:hideName(true)
         -- NOTE: This name CAN include spaces and underscores.
-        name = 'Fafnir',
+        name = 'Covid-19',
 
         -- Optional: Define a different name that is visible to players.
         -- 'Fafnir' (DE_Fafnir) will still be used internally for lookups.
@@ -38,8 +38,8 @@ commandObj.onTrigger = function(player)
         -- Fafnir's entry in mob_groups:
         -- INSERT INTO `mob_groups` VALUES (5, 1280, 154, 'Fafnir', 0, 128, 805, 70000, 0, 90, 90, 0)
         --                       groupId ---^        ^--- groupZoneId
-        groupId = 5,
-        groupZoneId = 154,
+        groupId = 53,
+        groupZoneId = 111,
 
         -- You can provide an onMobDeath function if you want: if you don't
         -- add one, an empty one will be inserted for you behind the scenes.
@@ -65,9 +65,9 @@ commandObj.onTrigger = function(player)
     -- Use the mob object as you normally would
     mob:setSpawn(player:getXPos(), player:getYPos(), player:getZPos(), player:getRotPos())
 
-    mob:setDropID(0) -- No loot!
+    mob:setDropID(4094) -- No loot!
 
-    mob:setMobMod(xi.mobMod.NO_DROPS, 1)
+  --  mob:setMobMod(xi.mobMod.NO_DROPS, 1)
 
     mob:spawn()
 
