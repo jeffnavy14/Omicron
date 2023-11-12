@@ -779,6 +779,21 @@ INSERT INTO `item_mods_pet` VALUES (23124,2,165,3);   -- Automaton - HP: 165
 INSERT INTO `item_mods_pet` VALUES (23124,5,165,3);   -- Automaton - MP: 165
 INSERT INTO `item_mods_pet` VALUES (23124,384,400,3); -- Automaton - HASTE_GEAR: 400
 
+-- Ankusa jackcoat +2
+INSERT INTO `item_mods_pet` VALUES (23138,288,3,0);   -- Pet: DOUBLE_ATTACK: 3
+INSERT INTO `item_mods_pet` VALUES (23138,384,600,0); -- Pet: HASTE_GEAR: 6%
+
+-- Glyphic Doublet +2
+INSERT INTO `item_mods_pet` VALUES (23144,165,16,1); -- Avatar: CRITHITRATE: 16
+INSERT INTO `item_mods_pet` VALUES (23144,288,10,1); -- Avatar: DOUBLE_ATTACK: 10
+
+-- Pitre Tobe +2
+INSERT INTO `item_mods_pet` VALUES (23147,23,50,3); -- Automaton: ATT: 50
+INSERT INTO `item_mods_pet` VALUES (23147,24,50,3); -- Automaton: RATT: 50
+INSERT INTO `item_mods_pet` VALUES (23147,25,40,3); -- Automaton: ACC: 40
+INSERT INTO `item_mods_pet` VALUES (23147,26,40,3); -- Automaton: RACC: 40
+INSERT INTO `item_mods_pet` VALUES (23147,73,14,3); -- Automaton: STORETP: 14
+
 -- Foire Dastanas +2
 INSERT INTO `item_mods_pet` VALUES (23191,25,32,3);   -- Automaton - ACC: 32
 INSERT INTO `item_mods_pet` VALUES (23191,384,500,3); -- Automaton - HASTE_GEAR: 500

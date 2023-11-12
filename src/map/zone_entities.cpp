@@ -451,7 +451,7 @@ void CZoneEntities::DecreaseZoneCounter(CCharEntity* PChar)
         synthutils::sendSynthDone(PChar);
     }
 
-    // TODO: могут возникать проблемы с переходом между одной и той же зоной (zone == prevzone)
+    // TODO: There may be problems transitioning between the same zone (zone == prevzone)
 
     m_charList.erase(PChar->targid);
     charTargIds.erase(PChar->targid);
@@ -1209,7 +1209,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
         // clang-format off
         switch (message_type)
         {
-            case CHAR_INRANGE_SELF:
+            case CHAR_INRANGE_SELF: // NOTE!!!: This falls through to CHAR_INRANGE so both self and the local area get the packet
             {
                 TracyZoneCString("CHAR_INRANGE_SELF");
                 if (PEntity->objtype == TYPE_PC)

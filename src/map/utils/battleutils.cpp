@@ -748,6 +748,11 @@ namespace battleutils
         ELEMENT spikeElement = (ELEMENT)((uint8)GetSpikesDamageType(Action->spikesEffect) - (uint8)DAMAGE_TYPE::ELEMENTAL);
         int32   damage       = Action->spikesParam;
 
+        if (PDefender->getMod(Mod::SPIKES_DMG_BONUS) > 0)
+        {
+            damage *= 1 + (PDefender->getMod(Mod::SPIKES_DMG_BONUS) / 100.f);
+        }
+
         if (static_cast<SPIKES>(Action->spikesEffect) == SPIKES::SPIKE_DREAD)
         {
             // drain same as damage taken
@@ -1388,30 +1393,30 @@ namespace battleutils
 
                 if (daze == EFFECT_DRAIN_DAZE && power > 0)
                 {
-                    uint16 multiplier = (uint16)(3 + (5.5f * power - 1));
+                    uint16 multiplier = (uint16)(3 + 5.5f * (power - 1));
                     int8   Samba      = xirand::GetRandomNumber(1, (delay * multiplier) / 100 + 1);
 
                     // vary damage based on lvl diff
-                    int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
+                    int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel());
 
-                    if (lvlDiff < -5)
+                    if (lvlDiff > 0)
                     {
-                        lvlDiff = -5;
-                    }
-
-                    Samba -= lvlDiff;
-
-                    if (Samba > (finaldamage / 2))
-                    {
-                        Samba = finaldamage / 2;
+                        if (lvlDiff > 10)
+                        {
+                            lvlDiff = 10;
+                        }
+                        Samba -= ceil(Samba * lvlDiff * .04); // 4% penalty per level
                     }
 
                     if (finaldamage <= 2)
                     {
                         Samba = 0;
                     }
-
-                    if (Samba < 0)
+                    else if (Samba > (finaldamage / 2))
+                    {
+                        Samba = finaldamage / 2;
+                    }
+                    else if (Samba < 0)
                     {
                         Samba = 0;
                     }
@@ -1420,7 +1425,7 @@ namespace battleutils
                     Action->addEffectMessage = 161;
                     Action->addEffectParam   = Samba;
 
-                    PAttacker->addHP(Samba); // does not do any additional drain to targets HP, only a portion of it
+                    PAttacker->addHP(Samba); // does not do any additional damage to targets HP, only heals the attacker
 
                     if (PChar != nullptr)
                     {
@@ -1429,20 +1434,18 @@ namespace battleutils
                 }
                 else if (daze == EFFECT_ASPIR_DAZE && power > 0 && PDefender->GetMaxMP() > 0)
                 {
-                    uint16 multiplier = 1 + (2 * power - 1);
+                    uint16 multiplier = 1 + 2 * (power - 1);
                     int8   Samba      = xirand::GetRandomNumber(1, (delay * multiplier) / 100 + 1);
-
-                    if (Samba >= finaldamage / 4)
-                    {
-                        Samba = finaldamage / 4;
-                    }
 
                     if (finaldamage <= 2)
                     {
                         Samba = 0;
                     }
-
-                    if (Samba < 0)
+                    else if (Samba >= finaldamage / 4)
+                    {
+                        Samba = finaldamage / 4;
+                    }
+                    else if (Samba < 0)
                     {
                         Samba = 0;
                     }
@@ -2102,11 +2105,12 @@ namespace battleutils
             if (isBlocked)
             {
                 uint8 absorb = 100;
-                if (PDefender->m_Weapons[SLOT_SUB]->IsShield())
+                if (const auto PChar = dynamic_cast<CCharEntity*>(PDefender))
                 {
-                    if (PDefender->objtype == TYPE_PC)
+                    CItemEquipment* slotSub = PChar->getEquip(SLOT_SUB);
+                    if (slotSub && slotSub->IsShield())
                     {
-                        absorb = std::clamp(100 - PDefender->m_Weapons[SLOT_SUB]->getShieldAbsorption(), 0, 100);
+                        absorb = std::clamp(100 - slotSub->getShieldAbsorption(), 0, 100);
                         absorb -= PDefender->getMod(Mod::SHIELD_DEF_BONUS); // Include Shield Defense Bonus in absorb amount
 
                         // Shield Mastery
@@ -2722,10 +2726,12 @@ namespace battleutils
                 critHitRate += PCharAttacker->PMeritPoints->GetMeritValue(MERIT_CRIT_HIT_RATE, PCharAttacker);
 
                 // Add Fencer crit hit rate
-                CItemWeapon* PMain = dynamic_cast<CItemWeapon*>(PCharAttacker->m_Weapons[SLOT_MAIN]);
-                CItemWeapon* PSub  = dynamic_cast<CItemWeapon*>(PCharAttacker->m_Weapons[SLOT_SUB]);
+                CItemWeapon*    PMain      = dynamic_cast<CItemWeapon*>(PCharAttacker->m_Weapons[SLOT_MAIN]);
+                CItemEquipment* PSub       = PCharAttacker->getEquip(SLOT_SUB);
+                CItemWeapon*    PSubWeapon = dynamic_cast<CItemWeapon*>(PCharAttacker->m_Weapons[SLOT_SUB]);
+
                 if (PMain && !PMain->isTwoHanded() && !PMain->isHandToHand() &&
-                    (!PSub || PSub->getSkillType() == SKILL_NONE || PCharAttacker->m_Weapons[SLOT_SUB]->IsShield()))
+                    (!PSub || (PSubWeapon && PSubWeapon->getSkillType() == SKILL_NONE) || PSub->IsShield()))
                 {
                     critHitRate += PCharAttacker->getMod(Mod::FENCER_CRITHITRATE);
                 }
@@ -4462,9 +4468,9 @@ namespace battleutils
     {
         if (m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SOULEATER))
         {
-            // at most 2% bonus from gear
-            float souleaterBonus    = std::min(0.2, m_PChar->getMod(Mod::SOULEATER_EFFECT) * 0.01);
-            float souleaterBonusII  = m_PChar->getMod(Mod::SOULEATER_EFFECT_II) * 0.01; // No known cap to this bonus. Used on Agwu's scythe
+            // Souleater's HP consumed is 10% (base) + x% from gear (ONLY HIGHEST) + x% from gear augments.
+            float souleaterBonus    = m_PChar->getMaxGearMod(Mod::SOULEATER_EFFECT) * 0.01;
+            float souleaterBonusII  = m_PChar->getMod(Mod::SOULEATER_EFFECT_II) * 0.01;
             float stalwartSoulBonus = 1 - static_cast<float>(m_PChar->getMod(Mod::STALWART_SOUL)) / 100;
             float bonusDamage       = m_PChar->health.hp * (0.1f + souleaterBonus + souleaterBonusII);
 
@@ -4962,10 +4968,6 @@ namespace battleutils
             if (PEntity->PAI->IsEngaged())
             {
                 PEntity->PAI->Disengage();
-            }
-            if (PEntity->isDead())
-            {
-                PEntity->Die();
             }
             PEntity->updatemask |= UPDATE_ALL_CHAR;
         }
@@ -6398,6 +6400,12 @@ namespace battleutils
         else if (PSpell->getSpellGroup() == SPELLGROUP_SUMMONING)
         {
             cast -= 1000 * PEntity->getMod(Mod::SUMMONING_MAGIC_CAST);
+
+            if (PEntity->objtype == TYPE_PC)
+            {
+                auto* PChar = static_cast<CCharEntity*>(PEntity);
+                cast -= base * 0.01 * PChar->PMeritPoints->GetMeritValue(MERIT_SUMMONING_MAGIC_CAST_TIME, PChar);
+            }
         }
         else if (PSpell->getSpellGroup() == SPELLGROUP_SONG)
         {
@@ -6735,10 +6743,12 @@ namespace battleutils
                 }
 
                 // Add Fencer TP Bonus
-                CItemWeapon* PMain = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOT_MAIN]);
-                CItemWeapon* PSub  = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOT_SUB]);
+                CItemWeapon*    PMain      = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_MAIN]);
+                CItemEquipment* PSub       = PChar->getEquip(SLOT_SUB);
+                CItemWeapon*    PSubWeapon = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_SUB]);
+
                 if (PMain && !PMain->isTwoHanded() && !PMain->isHandToHand() &&
-                    (!PSub || PSub->getSkillType() == SKILL_NONE || PEntity->m_Weapons[SLOT_SUB]->IsShield()))
+                    (!PSub || (PSubWeapon && PSubWeapon->getSkillType() == SKILL_NONE) || PSub->IsShield()))
                 {
                     tp += PEntity->getMod(Mod::FENCER_TP_BONUS);
                 }
