@@ -219,7 +219,7 @@ CCharEntity::CCharEntity()
     PRecastContainer       = std::make_unique<CCharRecastContainer>(this);
     PLatentEffectContainer = new CLatentEffectContainer(this);
 
-    retriggerLatentsAfterPacketParsing = false;
+    retriggerLatents = false;
 
     resetPetZoningInfo();
     petZoningInfo.petID = 0;
@@ -904,8 +904,18 @@ bool CCharEntity::ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags)
     bool targetsAlliance  = targetFlags & TARGET_PLAYER_ALLIANCE;
     bool hasPianissimo    = (targetFlags & TARGET_PLAYER_PARTY_PIANISSIMO) && PInitiator->StatusEffectContainer->HasStatusEffect(EFFECT_PIANISSIMO);
     bool isDifferentChar  = PInitiator != this;
-    if ((targetsParty || targetsAlliance || hasPianissimo) &&
-        (isSameParty || isSameAlliance || isPartyPetMaster || isSoloPetMaster) &&
+
+    // Alliance member valid target.
+    if (targetsAlliance &&
+        isSameAlliance &&
+        isDifferentChar)
+    {
+        return true;
+    }
+
+    // Party member valid targeting.
+    if ((targetsParty || hasPianissimo) &&
+        (isSameParty || isPartyPetMaster || isSoloPetMaster) &&
         isDifferentChar)
     {
         return true;
