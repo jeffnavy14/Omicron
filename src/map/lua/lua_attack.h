@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2023 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,34 +19,34 @@
 ===========================================================================
 */
 
-#ifndef _CKEYITEMSPACKET_H
-#define _CKEYITEMSPACKET_H
+#pragma once
 
 #include "common/cbasetypes.h"
+#include "luautils.h"
 
-#include "basic.h"
+class CAttack;
 
-// There is no relationship between table numbers and key item types
-
-enum KEYS_TABLE
+class CLuaAttack
 {
-    KEYS_TABLE_0,
-    KEYS_TABLE_1,
-    KEYS_TABLE_2,
-    KEYS_TABLE_3,
-    KEYS_TABLE_4,
-    KEYS_TABLE_5,
-    KEYS_TABLE_6
-};
-#define MAX_KEYS_TABLE 7
-DECLARE_FORMAT_AS_UNDERLYING(KEYS_TABLE);
+    CAttack* m_PLuaAttack;
 
-class CCharEntity;
-
-class CKeyItemsPacket : public CBasicPacket
-{
 public:
-    CKeyItemsPacket(CCharEntity* PChar, KEYS_TABLE KeyTable);
-};
+    CLuaAttack(CAttack*);
 
-#endif
+    CAttack* GetAttack() const
+    {
+        return m_PLuaAttack;
+    }
+
+    bool getCritical() const;
+    void setCritical(bool critical);
+
+    friend std::ostream& operator<<(std::ostream& out, const CLuaAttack& action);
+
+    bool operator==(const CLuaAttack& other) const
+    {
+        return this->m_PLuaAttack == other.m_PLuaAttack;
+    }
+
+    static void Register();
+};
