@@ -1,4 +1,24 @@
-﻿#ifndef _TRACY_H
+﻿/*
+===========================================================================
+
+  Copyright (c) 2023 LandSandBoat Dev Teams
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+
+===========================================================================
+*/
+#ifndef _TRACY_H
 #define _TRACY_H
 
 // clang-format off
@@ -7,7 +27,7 @@
 #include "cbasetypes.h"
 
 #define TracyFrameMark          FrameMark
-#define TracyZoneScoped         ZoneScoped;
+#define TracyZoneScoped         ZoneScoped
 #define TracyZoneScopedN(n)     ZoneScopedN(n)
 #define TracyZoneNamed(var)     ZoneNamedN(var, #var, true)
 #define TracyZoneText(n, l)     ZoneText(n, l)
@@ -51,8 +71,8 @@ inline std::string Hex16ToString(uint16 hex)
     TracyReportGraphBytes("Lua Memory Usage", static_cast<double>(lua_gc(L, LUA_GCCOUNT, 0)) * 1024.0); \
 
 #else // Empty stubs for regular builds
-#define TracyFrameMark                     ;
-#define TracyZoneScoped                    ;
+#define TracyFrameMark                     std::ignore = 0;
+#define TracyZoneScoped                    std::ignore = 0;
 #define TracyZoneScopedN(n)                std::ignore = n;
 #define TracyZoneNamed(var)                std::ignore = #var;
 #define TracyZoneText(n, l)                std::ignore = n; std::ignore = l;

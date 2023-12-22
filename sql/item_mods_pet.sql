@@ -836,7 +836,27 @@ INSERT INTO `item_mods_pet` VALUES (23214,289,10,3);  -- Automaton: SUBTLE_BLOW:
 INSERT INTO `item_mods_pet` VALUES (23214,384,600,3); -- Automaton: HASTE_GEAR: 6%
 
 -- Beckoner's Bracers +2
-INSERT INTO `item_mods_pet` VALUES (23233,126,8,1); -- Avatar - BP_DAMAGE: 8
+INSERT INTO `item_mods_pet` VALUES (23227,25,52,0); -- Pet: ACC: 52
+INSERT INTO `item_mods_pet` VALUES (23227,26,52,0); -- Pet: RACC: 52
+INSERT INTO `item_mods_pet` VALUES (23227,30,52,0); -- Pet: MACC: 52
+
+-- Peltast's vambraces +2
+INSERT INTO `item_mods_pet` VALUES (23232,25,52,2); -- Wyvern: ACC: 52
+INSERT INTO `item_mods_pet` VALUES (23232,30,52,2); -- Wyvern: MACC: 52
+
+-- Beckoner's Bracers +2
+INSERT INTO `item_mods_pet` VALUES (23233,25,52,1); -- Avatar: ACC: 52
+INSERT INTO `item_mods_pet` VALUES (23233,26,52,1); -- Avatar: RACC: 52
+INSERT INTO `item_mods_pet` VALUES (23233,30,52,1); -- Avatar: MACC: 52
+INSERT INTO `item_mods_pet` VALUES (23233,126,8,1); -- Avatar: BP_DAMAGE: 8
+
+-- Karagoz Guanti +2
+INSERT INTO `item_mods_pet` VALUES (23236,8,21,3);  -- Automaton: STR: 21
+INSERT INTO `item_mods_pet` VALUES (23236,9,21,3);  -- Automaton: DEX: 21
+INSERT INTO `item_mods_pet` VALUES (23236,10,21,3); -- Automaton: AGI: 21
+INSERT INTO `item_mods_pet` VALUES (23236,25,52,3); -- Automaton: ACC: 52
+INSERT INTO `item_mods_pet` VALUES (23236,26,52,3); -- Automaton: RACC: 52
+INSERT INTO `item_mods_pet` VALUES (23236,30,52,3); -- Automaton: MACC: 52
 
 -- Vishap Brais +2
 INSERT INTO `item_mods_pet` VALUES (23254,3,25,2); -- Wyvern - HPP: 25
@@ -846,6 +866,10 @@ INSERT INTO `item_mods_pet` VALUES (23258,5,75,3);     -- Automaton - MP: 75
 INSERT INTO `item_mods_pet` VALUES (23258,160,-300,3); -- Automaton - DMG: -300
 INSERT INTO `item_mods_pet` VALUES (23258,374,14,3);   -- Automaton - CURE_POTENCY: 14
 INSERT INTO `item_mods_pet` VALUES (23258,384,400,3);  -- Automaton - HASTE_GEAR: 400
+
+-- Ankusa Trousers +2
+INSERT INTO `item_mods_pet` VALUES (23272,73,4,0);    -- Pet: STORETP: 4
+INSERT INTO `item_mods_pet` VALUES (23272,384,500,0); -- Pet: HASTE_GEAR: 5%
 
 -- Foire Babouches +2
 INSERT INTO `item_mods_pet` VALUES (23325,28,20,3);   -- Automaton - MATT: 20
