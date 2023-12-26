@@ -23,6 +23,7 @@
 #define _LOGGING_H
 
 #include "cbasetypes.h"
+#include "tracy.h"
 
 #include <string>
 #include <string_view>
@@ -35,6 +36,7 @@
 // TODO: Remove this
 #define FMT_CONSTEVAL
 
+#include <fmt/args.h>
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 #include <fmt/format.h>
