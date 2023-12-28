@@ -23,14 +23,14 @@ commandObj.onTrigger = function(player, target, count)
 
     -- Ensure the count is valid..
     if (cnt == nil or cnt == 0) then
-        player:PrintToPlayer('Invalid monster count; cannot fuck the target.');
+        player:printToPlayer('Invalid monster count; cannot fuck the target.');
         return;
     end
     
     -- Get the target player..
     local t = GetPlayerByName(target);
     if (t == nil or t:isPC() == false) then
-        player:PrintToPlayer('Invalid target; cannot fuck the target.');
+        player:printToPlayer('Invalid target; cannot fuck the target.');
         return;
     end
     
@@ -48,6 +48,6 @@ commandObj.onTrigger = function(player, target, count)
         end
     end
     
-    player:PrintToPlayer(string.format('%s has been fucked.', t:getName())); 
+    player:printToPlayer(string.format('%s has been fucked.', t:getName())); 
 end
 return commandObj

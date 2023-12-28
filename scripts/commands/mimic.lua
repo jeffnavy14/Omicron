@@ -15,7 +15,7 @@ commandObj.onTrigger = function(player, target)
     local MimicHunt = GetServerVariable("[MimicHunt]")
 	
 	if GetServerVariable("[Found]") == 0 then
-	player:PrintToPlayer('Mimic is not spawned.')
+	player:printToPlayer('Mimic is not spawned.')
 	end
 	
 	player:goToEntity(MimicHunt)

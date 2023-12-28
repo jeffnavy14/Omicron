@@ -24,7 +24,7 @@ commandObj.onTrigger = function(player)
         title = "Lots of Menu's",
         onStart = function(playerArg)
             -- NOTE: This could be used to lock the player in place
-            playerArg:PrintToPlayer("Test Menu Opening", xi.msg.channel.NS_SAY)
+            playerArg:printToPlayer("Test Menu Opening", xi.msg.channel.NS_SAY)
         end,
         options =
         {

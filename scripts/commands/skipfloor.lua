@@ -19,12 +19,12 @@ commandObj.onTrigger = function(player, npc)
     local target = player:getCursorTarget()
     
     if target == nil then 
-        player:PrintToPlayer("You must be targetting the Rune of Transfer to use this command.")
+        player:printToPlayer("You must be targetting the Rune of Transfer to use this command.")
         return
     end
     
     if os.time() - player:getCharVar("[Nyzul]SkippedFloor") < 3600 then
-        player:PrintToPlayer("This command is still on cooldown!")
+        player:printToPlayer("This command is still on cooldown!")
         return
     end
     
@@ -41,7 +41,7 @@ commandObj.onTrigger = function(player, npc)
                     "Yes, I'm sure!",
                     function(playerArg)
                         player:setCharVar("[Nyzul]SkippedFloor", os.time())
-                        player:PrintToPlayer("Skipping floor... This command will be locked out for 60 minutes.")
+                        player:printToPlayer("Skipping floor... This command will be locked out for 60 minutes.")
                         target:setAnimationSub(1)
                     end,
                 },

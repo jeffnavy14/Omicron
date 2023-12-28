@@ -17,8 +17,8 @@ local level = player:getMainLvl();
 -- printf("%s just triggered Mogshop", player:getName());
 
     if (page == 0 or page == nil) then
-        player:PrintToPlayer( "Merchant Moogle : 1: Crystals, 2: Meds, 3: Food, 4: Tools/Ammo, 5: Keys and Misc, 6: Attachments, 7: Mounts, 8: Pop Items", 0x1F);
-		player:PrintToPlayer( "Merchant Moogle : 9: Beyond Infinity", 0x1F);
+        player:printToPlayer( "Merchant Moogle : 1: Crystals, 2: Meds, 3: Food, 4: Tools/Ammo, 5: Keys and Misc, 6: Attachments, 7: Mounts, 8: Pop Items", 0x1F);
+		player:printToPlayer( "Merchant Moogle : 9: Beyond Infinity", 0x1F);
     elseif (page == 1) then -- HQ Crystals
         local stock_1 =
         {
@@ -33,7 +33,7 @@ local level = player:getMainLvl();
         };
 		
         xi.shop.general(player, stock_1, price);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Crystal Depot Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Crystal Depot Kupo!", 0x1F);
     elseif (page == 2) then -- Pharmacy
         local stock_2 =
         {
@@ -54,7 +54,7 @@ local level = player:getMainLvl();
             5880,   25000    -- Poison Screen
         };
         xi.shop.general(player, stock_2);
-        player:PrintToPlayer( "Merchant Moogle : Medicines for you, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Medicines for you, Kupo!", 0x1F);
     elseif (page == 3) then -- MogDonalds
         local stock_3 =
         {
@@ -85,7 +85,7 @@ local level = player:getMainLvl();
 			6344,	5000	--Grape Daifuku
         };
         xi.shop.general(player, stock_3);
-        player:PrintToPlayer( "Merchant Moogle : Fresh food for your adventures, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Fresh food for your adventures, Kupo!", 0x1F);
     elseif (page == 4) then
         local stock_4 =
         {
@@ -104,7 +104,7 @@ local level = player:getMainLvl();
             1022,   5000     -- Thief's Tools
         };
         xi.shop.general(player, stock_4);
-        player:PrintToPlayer( "Merchant Moogle : Tools and ammo just for you, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Tools and ammo just for you, Kupo!", 0x1F);
 		elseif (page == 5) then
 	    local stock_5 =
         {
@@ -120,7 +120,7 @@ local level = player:getMainLvl();
 
         };
         xi.shop.general(player, stock_5);
-        player:PrintToPlayer("Merchant Moogle : Miscellaneous items Kupo!", 0x1F);
+        player:printToPlayer("Merchant Moogle : Miscellaneous items Kupo!", 0x1F);
 
 		elseif (page == 6) then
 	    local stock_6 =
@@ -158,7 +158,7 @@ local level = player:getMainLvl();
 
         };
         xi.shop.general(player, stock_6);
-        player:PrintToPlayer("Merchant Moogle : Attachments Kupo", 0x1F);
+        player:printToPlayer("Merchant Moogle : Attachments Kupo", 0x1F);
 		elseif (page == 7 and player:hasKeyItem(xi.ki.CHOCOBO_LICENSE)) then
 	    local stock_7 =
         {
@@ -169,9 +169,9 @@ local level = player:getMainLvl();
 			10058,     75000,    -- Beetle
         };
         xi.shop.general(player, stock_7);
-        player:PrintToPlayer("Merchant Moogle : Mounts!!", 0x1F);
+        player:printToPlayer("Merchant Moogle : Mounts!!", 0x1F);
 		elseif (page == 7 ) then
-        player:PrintToPlayer("Merchant Moogle : Get KI's and Chocomounts to access this!", 0x1F);
+        player:printToPlayer("Merchant Moogle : Get KI's and Chocomounts to access this!", 0x1F);
 	    elseif (page == 8) then
         local stock_8 =
         {
@@ -198,7 +198,7 @@ local level = player:getMainLvl();
 			1425, 250000,    -- Stone
         };
         xi.shop.general(player, stock_8);
-        player:PrintToPlayer("Merchant Moogle : Pop items!", 0x1F);
+        player:printToPlayer("Merchant Moogle : Pop items!", 0x1F);
         elseif (page == 9) then -- Beyond infinity
         local plevel = player:getMainLvl();
             if (plevel > 74) then
@@ -212,9 +212,9 @@ local level = player:getMainLvl();
 				3358,  50000,     -- Shrouded Bijou  
             };
             xi.shop.general(player, stock_9);
-            player:PrintToPlayer( "Beyond Infinity: Welcome, Kupo!");
+            player:printToPlayer( "Beyond Infinity: Welcome, Kupo!");
             else
-                player:PrintToPlayer("Merchant Moogle : That store is not accessible yet Kupo", 0x1F);
+                player:printToPlayer("Merchant Moogle : That store is not accessible yet Kupo", 0x1F);
             end
 
 
@@ -222,7 +222,7 @@ local level = player:getMainLvl();
         -- local Mog = 16982044;
         -- message = "Test!";
         -- SpoofSay(Mog,player:getID(),message);
-        player:PrintToPlayer( string.format( "The MogShop catalog doesn't have a page %i, Kupo!", page ) );
+        player:printToPlayer( string.format( "The MogShop catalog doesn't have a page %i, Kupo!", page ) );
     end
 end;
 

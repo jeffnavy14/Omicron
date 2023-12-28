@@ -13,14 +13,14 @@ commandObj.cmdprops =
 
 
 local function error(player, msg)
-    player:PrintToPlayer(msg);
-    player:PrintToPlayer("!flip");
+    player:printToPlayer(msg);
+    player:printToPlayer("!flip");
 end;
 
 commandObj.onTrigger = function(player)
 
 	if player:isCustomizationEnabled(1) == false then
-		player:PrintToPlayer("Job flip is not enabled on this server.")
+		player:printToPlayer("Job flip is not enabled on this server.")
 		return
 	end
 	
