@@ -17,7 +17,7 @@ local level = player:getMainLvl();
 -- printf("%s just triggered Mogshop", player:getName());
 
     if (page == 0 or page == nil) then
-        player:PrintToPlayer( "Merchant Moogle : 1: Woodworking, 2: Smithing, 3: Goldsmithing, 4: Clothcraft, 5: Leathercraft, 6: Bonecraft, 7: Alchemy, 8: Cooking", 0x1F);
+        player:printToPlayer( "Merchant Moogle : 1: Woodworking, 2: Smithing, 3: Goldsmithing, 4: Clothcraft, 5: Leathercraft, 6: Bonecraft, 7: Alchemy, 8: Cooking", 0x1F);
 
         elseif (page == 1) then -- Woodworking
         local stock_1 =
@@ -43,7 +43,7 @@ local level = player:getMainLvl();
 	        9488,  30000, -- Wood. kit 94
         };
         xi.shop.general(player, stock_1);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Woodworking, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Woodworking, Kupo!", 0x1F);
         elseif (page == 2) then -- Smithing
         local stock_2 =
         {
@@ -68,7 +68,7 @@ local level = player:getMainLvl();
 	        9493,  30000, -- Smith. kit 94
         };
         xi.shop.general(player, stock_2);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Smithing, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Smithing, Kupo!", 0x1F);
         elseif (page == 3) then -- Goldsmithing
         local stock_3 =
         {
@@ -93,7 +93,7 @@ local level = player:getMainLvl();
 	        9498,  30000, -- Gold. kit 95
         };
         xi.shop.general(player, stock_3);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Goldsmithing, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Goldsmithing, Kupo!", 0x1F);
         elseif (page == 4) then -- Clothcraft
         local stock_4 =
         {
@@ -118,7 +118,7 @@ local level = player:getMainLvl();
 	       9503,  30000, -- Cloth. kit 95
         };
         xi.shop.general(player, stock_4);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Clothcraft, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Clothcraft, Kupo!", 0x1F);
 		elseif (page == 5) then -- Leathercraft
 	    local stock_5 =
         {
@@ -145,7 +145,7 @@ local level = player:getMainLvl();
 
         };
         xi.shop.general(player, stock_5);
-        player:PrintToPlayer("Merchant Moogle : Welcome to Leathercraft, Kupo!", 0x1F);
+        player:printToPlayer("Merchant Moogle : Welcome to Leathercraft, Kupo!", 0x1F);
 		elseif (page == 6) then -- Bonecraft
 	    local stock_6 =
         {
@@ -172,7 +172,7 @@ local level = player:getMainLvl();
 
         };
         xi.shop.general(player, stock_6);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Bonecraft, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Bonecraft, Kupo!", 0x1F);
 		elseif (page == 7) then -- Alchemy
 	    local stock_7 =
         {
@@ -197,7 +197,7 @@ local level = player:getMainLvl();
 	        9518,  30000, -- Alch. kit 95
         };
         xi.shop.general(player, stock_7);
-        player:PrintToPlayer( "Merchant Moogle : Welcome to Alchemy, Kupo!", 0x1F);
+        player:printToPlayer( "Merchant Moogle : Welcome to Alchemy, Kupo!", 0x1F);
 		elseif (page == 8) then -- Cooking
 	    local stock_8 =
         {
@@ -222,7 +222,7 @@ local level = player:getMainLvl();
 	       9523,  30000, -- Cook. kit 95
         };
         xi.shop.general(player, stock_8);
-		player:PrintToPlayer( "Merchant Moogle : Welcome to Cooking, Kupo!", 0x1F);
+		player:printToPlayer( "Merchant Moogle : Welcome to Cooking, Kupo!", 0x1F);
         -- local Mog = 16982044;
         -- message = "Test!";
         -- SpoofSay(Mog,player:getID(),message);

@@ -27,7 +27,7 @@ commandObj.onTrigger = function(player)
 
 	
 	onTrigger = function(player, npc, status)
-	player:PrintToPlayer("Trade me your NQ or HQ Staves Ill convert it into Chatoyant/Iridal for the low price of 50000 gil!")
+	player:printToPlayer("Trade me your NQ or HQ Staves Ill convert it into Chatoyant/Iridal for the low price of 50000 gil!")
     end,   
 	onTrade = function(player, npc, trade)
 	local level = player:getMainLvl()
@@ -52,7 +52,7 @@ commandObj.onTrigger = function(player)
           -- Iridal Staff (18632)
           if (trade:hasItemQty(18632, 1) and trade:hasItemQty( 1126, 30 ) and level >= 51) then
 		    player:tradeComplete()
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are ready for another upgrade.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are ready for another upgrade.", 0xD)
             player:addItem(18632, 1, 45, 4)
             player:setVar("IridalUpgrade", 1)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 18632)
@@ -60,7 +60,7 @@ commandObj.onTrigger = function(player)
           elseif (trade:hasItemQty(18632, 1) and trade:hasItemQty( 1126, 50 ) and level >= 61 and (player:getVar("IridalUpgrade") == 1)) then
             -- Complete the trade..
             player:tradeComplete()
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are ready for the next stage.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are ready for the next stage.", 0xD)
             player:addItem(18632, 1, 45, 9)
             player:setVar("IridalUpgrade", 2)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 18632)
@@ -68,22 +68,22 @@ commandObj.onTrigger = function(player)
           elseif (trade:hasItemQty(18632, 1) and trade:hasItemQty( 1127, 50 ) and level >= 71 and (player:getVar("IridalUpgrade") == 2)) then
             -- Complete the trade..
             player:tradeComplete()
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. This is where we part ways for now.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. This is where we part ways for now.", 0xD)
             player:addItem(18632, 1, 45, 14, 353, 0)
             player:setVar("IridalUpgrade", 3)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 18632)
           elseif (trade:hasItemQty(18632, 1) and player:getVar("IridalUpgrade") < 1) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Idiral Staff if you bring me 30 Beastmen Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Idiral Staff if you bring me 30 Beastmen Seals.", 0xD)
           elseif (trade:hasItemQty(18632, 1) and player:getVar("IridalUpgrade") == 1) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Iridal Staff if you bring me 50 Beastmen Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Iridal Staff if you bring me 50 Beastmen Seals.", 0xD)
           elseif (trade:hasItemQty(18632, 1) and player:getVar("IridalUpgrade") == 2) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Iridal Staff if you bring me 50 Kindred Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Iridal Staff if you bring me 50 Kindred Seals.", 0xD)
           end
           
           
           -- Chatoyant Staff (18633) 
           if (trade:hasItemQty(18633, 1) and trade:hasItemQty( 1126, 30 ) and level >= 51) then
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
 			player:tradeComplete()
             player:addItem(18633, 1, 45, 4)
             player:setVar("ChatoyantUpgrade", 1)
@@ -92,7 +92,7 @@ commandObj.onTrigger = function(player)
           elseif (trade:hasItemQty(18633, 1) and trade:hasItemQty( 1126, 50 ) and level >= 61 and (player:getVar("ChatoyantUpgrade") == 1)) then
             -- Complete the trade..
             player:tradeComplete()
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
             player:addItem(18633, 1, 45, 9)
             player:setVar("ChatoyantUpgrade", 2)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 18633)
@@ -100,20 +100,20 @@ commandObj.onTrigger = function(player)
           elseif (trade:hasItemQty(18633, 1) and trade:hasItemQty( 1127, 50 ) and level >= 71 and (player:getVar("ChatoyantUpgrade") == 2)) then
             -- Complete the trade..
             player:tradeComplete()
-            player:PrintToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
+            player:printToPlayer("Not Sure : Thank you for the requested items. Come see me again when you are stronger.", 0xD)
             player:addItem(18633, 1, 45, 14, 353, 0)
             player:setVar("ChatoyantUpgrade", 3)
             player:messageSpecial(ID.text.ITEM_OBTAINED, 18633)
           elseif (trade:hasItemQty(18633, 1) and player:getVar("ChatoyantUpgrade") < 1) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 30 Beastmen Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 30 Beastmen Seals.", 0xD)
           elseif (trade:hasItemQty(18633, 1) and player:getVar("ChatoyantUpgrade") == 1) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 50 Beastmen Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 50 Beastmen Seals.", 0xD)
           elseif (trade:hasItemQty(18633, 1) and player:getVar("ChatoyantUpgrade") == 2) then
-            player:PrintToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 50 Kindred Seals.", 0xD)
+            player:printToPlayer("Not Sure : I can upgrade your Chatoyant if you bring me 50 Kindred Seals.", 0xD)
           end
     end,
 	})
-    player:PrintToPlayer(string.format("Please move to spawn (%s)", npc:getPacketName()))
+    player:printToPlayer(string.format("Please move to spawn (%s)", npc:getPacketName()))
 end
 
 return commandObj

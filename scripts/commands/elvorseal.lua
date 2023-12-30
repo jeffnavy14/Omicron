@@ -12,7 +12,7 @@ commandObj.cmdprops =
 }
 
 commandObj.onTrigger = function(player)
-    player:PrintToPlayer("Elvorseal has been applied")
+    player:printToPlayer("Elvorseal has been applied")
     player:addStatusEffect(xi.effect.ELVORSEAL, 1, 0, 0)
 end
 return commandObj
