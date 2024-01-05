@@ -3438,7 +3438,10 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_Trion',1020,42);   -- Savage Blade
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Trion',1020,3193); -- Royal Bash
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Trion',1020,3194); -- Royal Saviour
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Zeid',1021,0);
--- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion',1022,0);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion',1022,3198); -- Grapeshot
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion',1022,3199); -- Pirate Pummel
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion',1022,3200); -- Powder Keg
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion',1022,3201); -- Walk the Plank
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Tenzen',1023,1390); -- Amatsu: Torimai
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Tenzen',1023,1391); -- Amatsu: Kazakiri
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Tenzen',1023,1392); -- Amatsu: Yukiarashi
@@ -3605,7 +3608,9 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAGK',1111,3726); -- Tachi: Fudo
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Naja_Salaheem_UC',1123,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion_II',1124,0);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Zied_II',1125,56); -- Ground Strike
--- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Prishe_II',1126,0);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Prishe_II',1126,3234); -- Nullifying Dropkick
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Prishe_II',1126,3235); -- Auroral Uppercut
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Prishe_II',1126,3236); -- Knuckle Sandwich
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Nashmeira_II',1127,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lilisette_II',1128,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Tenzen_II',1129,0);
