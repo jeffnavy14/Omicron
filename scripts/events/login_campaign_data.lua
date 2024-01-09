@@ -99,6 +99,9 @@ local prizes =
             20666, -- Blizzard Brand
             25658, -- Wyrm. Masque +1
             25757, -- Wyrmking Suit +1
+			10293, -- Choco Shirt
+			11811, -- Choco hat
+			27556, -- Echad Ring
             -- 5854,  -- Frayed Pouch (B)
             -- 5855,  -- Frayed Pouch (A)
             -- 5856,  -- Frayed Pouch (G)
@@ -169,9 +172,10 @@ local prizes =
         ['price'] = 1500,
         ['items'] =
         {
-            3340, -- Sweet Tea
-            3342, -- Savory Shank
-            3344, -- Red Pondweed
+            3340,  -- Sweet Tea
+            3342,  -- Savory Shank
+            3344,  -- Red Pondweed
+			27557, -- trizek-ring
             -- 8720, -- Maliya. Coral Orb
             -- 8722, -- Hepatizon Ingot
             -- 8724, -- Beryllium Ingot
