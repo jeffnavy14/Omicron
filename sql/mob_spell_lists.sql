@@ -23,7 +23,7 @@ CREATE TABLE `mob_spell_lists` (
   `min_level` tinyint(3) unsigned NOT NULL,
   `max_level` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`spell_list_id`,`spell_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4256,6 +4256,7 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Lion_II',418,338,12,255); -- utsuse
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Lion_II',418,339,37,255); -- utsusemi_ni (37~255)
 
 -- TRUST_Zied_II (419)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Zied_II',419,243,91,255); -- absorb-attri (91~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Zied_II',419,252,37,255); -- stun (37~255)
 
 -- TRUST_Prishe_II (420)
