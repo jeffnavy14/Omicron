@@ -241,3 +241,6 @@ xi_search.dSYM
 **/*.cert
 modules/contrib/
 modules/omicronXI/
+modules/Omicron/
+modules/init.txt
+modules/init.txt

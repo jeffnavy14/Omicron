@@ -38,6 +38,7 @@
 
 custom/cpp/
 custom/lua/new_player_linkshell.lua
+omicron/
 
 
 
