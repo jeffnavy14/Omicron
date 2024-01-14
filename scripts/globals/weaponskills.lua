@@ -14,6 +14,7 @@ require('scripts/globals/magicburst')
 require('scripts/globals/ability')
 require('scripts/globals/magic')
 require('scripts/globals/utils')
+require('scripts/globals/combat/physical_utilities')
 -----------------------------------
 xi = xi or {}
 xi.weaponskills = xi.weaponskills or {}
@@ -111,33 +112,6 @@ local scarletDeliriumBonus = function(attacker)
         local power = attacker:getStatusEffect(xi.effect.SCARLET_DELIRIUM_1):getPower()
 
         bonus = 1 + power / 100
-    end
-
-    return bonus
-end
-
-local function fencerBonus(attacker)
-    local bonus = 0
-
-    if attacker:getObjType() ~= xi.objType.PC then
-        return 0
-    end
-
-    local mainEquip = attacker:getStorageItem(0, 0, xi.slot.MAIN)
-    if
-        mainEquip and
-        not mainEquip:isTwoHanded() and
-        not mainEquip:isHandToHand()
-    then
-        local subEquip = attacker:getStorageItem(0, 0, xi.slot.SUB)
-
-        if
-            subEquip == nil or
-            subEquip:getSkillType() == xi.skill.NONE or
-            subEquip:isShield()
-        then
-            bonus = attacker:getMod(xi.mod.FENCER_CRITHITRATE) / 100
-        end
     end
 
     return bonus
@@ -477,29 +451,6 @@ local function calculateWsMods(attacker, calcParams, wsParams)
     return wsMods
 end
 
-local function calculateDEXvsAGICritRate(attacker, target)
-    -- See reference at https://www.bg-wiki.com/ffxi/Critical_Hit_Rate
-    local nativecrit = 0
-    local dexVsAgi   = attacker:getStat(xi.mod.DEX) - target:getStat(xi.mod.AGI)
-    if dexVsAgi < 7 then
-        nativecrit = 0
-    elseif dexVsAgi < 14 then
-        nativecrit = 0.01
-    elseif dexVsAgi < 20 then
-        nativecrit = 0.02
-    elseif dexVsAgi < 30 then
-        nativecrit = 0.03
-    elseif dexVsAgi < 40 then
-        nativecrit = 0.04
-    elseif dexVsAgi <= 50 then
-        nativecrit = (dexVsAgi - 35) / 100
-    else
-        nativecrit = 0.15 -- caps only apply to base rate, not merits and mods
-    end
-
-    return nativecrit
-end
-
 -- Calculates the raw damage for a weaponskill, used by both xi.weaponskills.doPhysicalWeaponskill and xi.weaponskills.doRangedWeaponskill.
 -- Behavior of damage calculations can vary based on the passed in calcParams, which are determined by the calling function
 -- depending on the type of weaponskill being done, and any special cases for that weaponskill
@@ -519,6 +470,9 @@ xi.weaponskills.calculateRawWSDmg = function(attacker, target, wsID, tp, action,
     -- Recalculate accuracy if it varies with TP, applied to all hits
     if wsParams.acc100 ~= 0 then
         calcParams.hitRate = accVariesWithTP(calcParams.hitRate, calcParams.accStat, tp, wsParams.acc100, wsParams.acc200, wsParams.acc300)
+    else
+        -- clamp hitRate now if accuracy doesn't vary with TP
+        calcParams.hitRate = utils.clamp(calcParams.hitRate, 0.2, 0.95)
     end
 
     -- Calculate alpha, WSC, and our modifiers for our base per-hit damage
@@ -547,32 +501,14 @@ xi.weaponskills.calculateRawWSDmg = function(attacker, target, wsID, tp, action,
     local ftp = xi.weaponskills.fTP(tp, wsParams.ftp100, wsParams.ftp200, wsParams.ftp300) + calcParams.bonusfTP
 
     -- Calculate critrates
-    local critrate = calculateDEXvsAGICritRate(attacker, target)
+    local criticalRate = 0
 
     -- TODO: calc per-hit with weapon crit+% on each hand (if dual wielding)
     if wsParams.canCrit then -- Work out critical hit ratios
-        local nativecrit = 0
-        critrate         = xi.weaponskills.fTP(tp, wsParams.crit100, wsParams.crit200, wsParams.crit300)
-
-        if calcParams.flourishEffect and calcParams.flourishEffect:getPower() >= 3 then  -- 3 Finishing Moves used.
-            critrate = critrate + (10 + calcParams.flourishEffect:getSubPower()) / 100
-        end
-
-        local fencerBonusVal = calcParams.fencerBonus or 0
-        nativecrit           = nativecrit + attacker:getMod(xi.mod.CRITHITRATE) / 100 + attacker:getMerit(xi.merit.CRIT_HIT_RATE) / 100 + fencerBonusVal - target:getMerit(xi.merit.ENEMY_CRIT_RATE) / 100
-
-        -- Innin critical boost when attacker is behind target
-        if
-            attacker:hasStatusEffect(xi.effect.INNIN) and
-            attacker:isBehind(target, 23)
-        then
-            nativecrit = nativecrit + attacker:getStatusEffect(xi.effect.INNIN):getPower()
-        end
-
-        critrate = critrate + nativecrit
+        criticalRate = xi.combat.physical.calculateSwingCriticalRate(attacker, target, true, wsParams.crit100, wsParams.crit200, wsParams.crit300)
     end
 
-    calcParams.critRate = critrate
+    calcParams.critRate = criticalRate
 
     -- Start the WS
     local hitsDone                = 1
@@ -588,8 +524,23 @@ xi.weaponskills.calculateRawWSDmg = function(attacker, target, wsID, tp, action,
     calcParams.offhandHitsLanded  = 0
 
     -- Calculate the damage from the first hit
+    if
+        not isJump and
+        calcParams.firstHitRate
+    then
+        calcParams.origHitRate = calcParams.hitRate
+        calcParams.hitRate = calcParams.firstHitRate
+    end
+
     local dmg = mainBase * ftp
     hitdmg, calcParams = getSingleHitDamage(attacker, target, dmg, wsParams, calcParams)
+
+    if
+        not isJump and
+        calcParams.origHitRate
+    then
+        calcParams.hitRate = calcParams.origHitRate
+    end
 
     if calcParams.melee then
         hitdmg = modifyMeleeHitDamage(attacker, target, calcParams.attackInfo, wsParams, hitdmg)
@@ -666,6 +617,7 @@ xi.weaponskills.calculateRawWSDmg = function(attacker, target, wsID, tp, action,
         finaldmg = finaldmg + hitdmg
         hitsDone = hitsDone + 1
 
+        calcParams.tpHitsLanded      = calcParams.tpHitsLanded + calcParams.hitsLanded
         calcParams.offhandHitsLanded = calcParams.hitsLanded
 
         numOffhandMultis = getMultiAttacks(attacker, target, wsParams, false, true)
@@ -760,7 +712,7 @@ xi.weaponskills.calculateRawWSDmg = function(attacker, target, wsID, tp, action,
         calcParams.offhandHitsLanded = calcParams.offhandHitsLanded + calcParams.hitsLanded
     end
 
-    calcParams.extraHitsLanded = calcParams.hitsLanded + calcParams.offhandHitsLanded
+    calcParams.extraHitsLanded = calcParams.mainHitsLanded + calcParams.offhandHitsLanded
 
     -- Remove the TP hit landed from the count if it did -- otherwise we would gain extra TP
     if calcParams.tpHitsLanded > 1 then
@@ -834,7 +786,6 @@ xi.weaponskills.doPhysicalWeaponskill = function(attacker, target, wsID, wsParam
     calcParams.extraOffhandHit         = attacker:isDualWielding() or attack.weaponType == xi.skill.HAND_TO_HAND
     calcParams.hybridHit               = wsParams.hybridWS
     calcParams.flourishEffect          = attacker:getStatusEffect(xi.effect.BUILDING_FLOURISH)
-    calcParams.fencerBonus             = fencerBonus(attacker)
     calcParams.bonusTP                 = wsParams.bonusTP or 0
 
     local isJump = wsParams.isJump or false
@@ -848,8 +799,9 @@ xi.weaponskills.doPhysicalWeaponskill = function(attacker, target, wsID, wsParam
         calcParams.bonusWSmods = wsParams.bonusWSmods or 0
     end
 
-    calcParams.hitRate   = xi.weaponskills.getHitRate(attacker, target, false, calcParams.bonusAcc)
-    calcParams.skillType = attack.weaponType
+    calcParams.firstHitRate = xi.weaponskills.getHitRate(attacker, target, true, calcParams.bonusAcc + 100)
+    calcParams.hitRate      = xi.weaponskills.getHitRate(attacker, target, false, calcParams.bonusAcc)
+    calcParams.skillType    = attack.weaponType
 
     -- Send our wsParams off to calculate our raw WS damage, hits landed, and shadows absorbed
     calcParams     = xi.weaponskills.calculateRawWSDmg(attacker, target, wsID, tp, action, wsParams, calcParams)
@@ -907,7 +859,6 @@ xi.weaponskills.doRangedWeaponskill = function(attacker, target, wsID, wsParams,
         forcedFirstCrit         = false,
         extraOffhandHit         = false,
         flourishEffect          = false,
-        fencerBonus             = fencerBonus(attacker),
         bonusTP                 = wsParams.bonusTP or 0,
         bonusfTP                = gorgetBeltFTP or 0,
         bonusAcc                = (gorgetBeltAcc or 0) + attacker:getMod(xi.mod.WSACC),
