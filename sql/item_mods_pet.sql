@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `item_mods_pet` (
  `value` smallint(5) NOT NULL DEFAULT '0',
  `petType` tinyint(3) unsigned NOT NULL DEFAULT '0',
  PRIMARY KEY (`itemId`,`modId`,`petType`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 AVG_ROW_LENGTH=13 PACK_KEYS=1;
+) ENGINE=Aria TRANSACTIONAL=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AVG_ROW_LENGTH=13 PACK_KEYS=1;
 
 -- (Please keep item ID sequential)
 -- Charivari Earring
@@ -805,9 +805,10 @@ INSERT INTO `item_mods_pet` VALUES (23165,30,54,2); -- Wyvern: MACC: 54
 -- TODO: Wyvern: Grants food effect
 
 -- Beckoner's Doublet +2
-INSERT INTO `item_mods_pet` VALUES (23166,25,54,1); -- Avatar: ACC: 54
-INSERT INTO `item_mods_pet` VALUES (23166,26,54,1); -- Avatar: RACC: 54
-INSERT INTO `item_mods_pet` VALUES (23166,30,54,1); -- Avatar: MACC: 54
+INSERT INTO `item_mods_pet` VALUES (23166,25,54,1);  -- Avatar: ACC: 54
+INSERT INTO `item_mods_pet` VALUES (23166,26,54,1);  -- Avatar: RACC: 54
+INSERT INTO `item_mods_pet` VALUES (23166,30,54,1);  -- Avatar: MACC: 54
+INSERT INTO `item_mods_pet` VALUES (23166,126,12,1); -- Avatar: BP_DAMAGE: 12
 
 -- Karagoz Farsetto +2
 INSERT INTO `item_mods_pet` VALUES (23169,25,54,3);   -- Automaton: ACC: 54
@@ -883,10 +884,52 @@ INSERT INTO `item_mods_pet` VALUES (23281,28,44,3); -- Automaton: MATT: 44
 INSERT INTO `item_mods_pet` VALUES (23281,30,38,3); -- Automaton: MACC: 38
 INSERT INTO `item_mods_pet` VALUES (23281,170,9,3); -- Automaton: FASTCAST: 9
 
+-- Nukumi Quijotes +2
+INSERT INTO `item_mods_pet` VALUES (23294,25,53,0); -- Pet: ACC: 53
+INSERT INTO `item_mods_pet` VALUES (23294,26,53,0); -- Pet: RACC: 53
+INSERT INTO `item_mods_pet` VALUES (23294,30,53,0); -- Pet: MACC: 53
+
+-- Peltast's cuissots +2
+INSERT INTO `item_mods_pet` VALUES (23299,25,53,2); -- Wyvern: ACC: 53
+INSERT INTO `item_mods_pet` VALUES (23299,30,53,2); -- Wyvern: MACC: 53
+
+-- Beckoner's spats +2
+INSERT INTO `item_mods_pet` VALUES (23300,25,53,1); -- Avatar: ACC: 53
+INSERT INTO `item_mods_pet` VALUES (23300,26,53,1); -- Avatar: RACC: 53
+INSERT INTO `item_mods_pet` VALUES (23300,30,53,1); -- Avatar: MACC: 53
+
+-- Karagoz pantaloni +2
+INSERT INTO `item_mods_pet` VALUES (23303,25,53,3); -- Automaton: ACC: 53
+INSERT INTO `item_mods_pet` VALUES (23303,26,53,3); -- Automaton: RACC: 53
+INSERT INTO `item_mods_pet` VALUES (23303,30,53,3); -- Automaton: MACC: 53
+
+-- Totemic Gaiters +2
+INSERT INTO `item_mods_pet` VALUES (23316,23,20,0); -- Pet: ATT: 20
+INSERT INTO `item_mods_pet` VALUES (23316,25,20,0); -- Pet: ACC: 20
+
+-- Convokers Pigaches +2
+INSERT INTO `item_mods_pet` VALUES (23322,23,30,1); -- Avatar: ACC: 30 
+INSERT INTO `item_mods_pet` VALUES (23322,30,30,1); -- Avatar: MACC: 30
+INSERT INTO `item_mods_pet` VALUES (23322,68,30,1); -- Avatar: EVA: 30
+INSERT INTO `item_mods_pet` VALUES (23322,126,8,1); -- Avatar: BP_DAMAGE: 8 
+
 -- Foire Babouches +2
 INSERT INTO `item_mods_pet` VALUES (23325,28,20,3);   -- Automaton - MATT: 20
 INSERT INTO `item_mods_pet` VALUES (23325,30,40,3);   -- Automaton - MACC: 40
 INSERT INTO `item_mods_pet` VALUES (23325,384,400,3); -- Automaton - HASTE_GEAR: 400
+
+-- Ankusa Gaiters +2
+INSERT INTO `item_mods_pet` VALUES (23339,68,28,0);    -- Pet: EVA: 28
+INSERT INTO `item_mods_pet` VALUES (23339,161,-400,0); -- Pet: DMGPHYS: -4%
+
+-- Pteroslaver greaves +2
+INSERT INTO `item_mods_pet` VALUES (23344,2,260,2); -- Wyvern: HP: 260
+INSERT INTO `item_mods_pet` VALUES (23344,370,7,2); -- Wyvern: REGEN: 7
+
+-- Glyphic pigaches +2
+INSERT INTO `item_mods_pet` VALUES (23345,23,74,1);  -- Avatar: ATT: 74
+INSERT INTO `item_mods_pet` VALUES (23345,25,26,1);  -- Avatar: ACC: 26
+INSERT INTO `item_mods_pet` VALUES (23345,562,11,1); -- Avatar: MAGIC_CRITHITRATE: 11
 
 -- Bagua Sandals +2
 INSERT INTO `item_mods_pet` VALUES (23351,370,4,8); -- Luopan - REGEN: 4
