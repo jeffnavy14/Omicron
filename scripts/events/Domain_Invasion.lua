@@ -2,7 +2,7 @@
 -- Domain Invasion Events and Rewards
 ------------------------------------
 require("scripts/globals/npc_util")
-local prizes = require('scripts/events//Domain_data')
+local prizes = require('scripts/events/Domain_data')
 ------------------------------------
 
 xi = xi or {}
