@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `item_latents` (
   `latentId` smallint(5) NOT NULL,
   `latentParam` smallint(5) NOT NULL,
   PRIMARY KEY (`itemId`,`modId`,`value`,`latentId`,`latentParam`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 AVG_ROW_LENGTH=13 PACK_KEYS=1;
+) ENGINE=Aria TRANSACTIONAL=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci AVG_ROW_LENGTH=13 PACK_KEYS=1;
 
 -- Item name
 -- INSERT INTO `item_latents` VALUES (itemID,modId,modValue,latentId,latentParam); -- Human readable latent & mod
@@ -2262,7 +2262,7 @@ INSERT INTO `item_latents` VALUES (18771,23,1,16,6);     -- ATT +1~4,party size 
 -- INSERT INTO `item_latents` VALUES (18776,355,10,?,13);     -- Final Heaven available after 13 weapon skills
 
 -- Oneiros Grip
-INSERT INTO `item_latents` VALUES (18811,369,1,4,750);  -- Refresh MP <= 75%
+INSERT INTO `item_latents` VALUES (18811,369,1,4,75);  -- Refresh MP <= 75%
 
 -- Perdu Wand
 INSERT INTO `item_latents` VALUES (18850,23,14,6,1000);  -- Attack+14 while TP <100%
@@ -2683,6 +2683,8 @@ INSERT INTO `item_latents` VALUES (23298,291,16,13,420); -- Hattori Hakama +2: E
 
 -- Hachiya Kyahan +2
 INSERT INTO `item_latents` VALUES (23320,76,25,26,2);   -- Dusk to dawn: MOVE_SPEED_GEAR_BONUS+25%
+
+INSERT INTO `item_latents` VALUES (23338,63,10,13,64);   -- Fallen's sollerets +2: STATUS_EFFECT_ACTIVE: EFFECT_LAST_RESORT: DEFP: 10
 
 INSERT INTO `item_latents` VALUES (23350,399,17,52,1);   -- Pedagogy Loafers+2: Weather: Enhances Celerity and Alacrity Effect +17% (FIRE)
 INSERT INTO `item_latents` VALUES (23350,399,17,52,2);   -- Pedagogy Loafers+2: Weather: Enhances Celerity and Alacrity Effect +17% (EARTH)
