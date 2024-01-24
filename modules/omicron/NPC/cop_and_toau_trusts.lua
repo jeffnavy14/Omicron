@@ -29,10 +29,10 @@ end)
 m:addOverride("xi.zones.Aht_Urhgan_Whitegate.npcs.Cushion.onTrigger", function(player, npc)
     if player:getCurrentMission(TOAU) >= xi.mission.id.toau.PASSING_GLORY then
         player:addSpell(918) -- Gessho
-        player:PrintToPlayer("Unlocked Trust: Gessho")
+        player:printToPlayer("Unlocked Trust: Gessho")
     end
 
-    player:PrintToPlayer("Unlocked Trust: Gessho")
+    player:printToPlayer("Unlocked Trust: Gessho")
 end)
 
 

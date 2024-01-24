@@ -66,33 +66,33 @@ m:addOverride("xi.zones.Port_Windurst.Zone.onInitialize", function(zone)
 	onTrigger = function(player, npc, status)
     	if (player:hasItem(15495) or player:hasItem(15496) or player:hasItem(15497) or player:hasItem(15498) or player:hasItem(15499) or
             player:hasItem(15500) or player:hasItem(15501) or player:hasItem(15502)) then -- Gorget
-    		player:PrintToPlayer("Rirotiro : Hey, I can upgrade those Gorget's for you. Bring me all 8 I will give you a Cool Gorget!", 0xD)
+    		player:printToPlayer("Rirotiro : Hey, I can upgrade those Gorget's for you. Bring me all 8 I will give you a Cool Gorget!", 0xD)
     	
     	elseif (player:hasItem(15435) or player:hasItem(15436) or player:hasItem(15437) or player:hasItem(15438) or player:hasItem(15439) or
             player:hasItem(15440) or player:hasItem(15441) or player:hasItem(15442)) then --No Obi
-    		player:PrintToPlayer("Rirotiro : Hey, I can upgrade those Obi's for you. Bring me all 8 I will give you a Cool Obi!", 0xD)
+    		player:printToPlayer("Rirotiro : Hey, I can upgrade those Obi's for you. Bring me all 8 I will give you a Cool Obi!", 0xD)
     	
     	elseif (player:hasItem(18617)) then -- Majestas
-    		player:PrintToPlayer("Rirotiro : That Cracked Staff looks like junk, bring me a few things and I can make it better!", 0xD)
-    		player:PrintToPlayer("Rirotiro : I need the Cracked Staff, Wolfram Steel x2 and a Cobalt Ore.", 0xD)
+    		player:printToPlayer("Rirotiro : That Cracked Staff looks like junk, bring me a few things and I can make it better!", 0xD)
+    		player:printToPlayer("Rirotiro : I need the Cracked Staff, Wolfram Steel x2 and a Cobalt Ore.", 0xD)
     	elseif (player:hasItem(19162)) then -- Galatyn
-    		player:PrintToPlayer("Rirotiro : That Dull Claymore looks like junk, bring me a few things and I can make it better!", 0xD)
-    		player:PrintToPlayer("Rirotiro : I need the Dull Claymore, Wolfram Steel x3 and a Cobalt Ore.", 0xD)	
+    		player:printToPlayer("Rirotiro : That Dull Claymore looks like junk, bring me a few things and I can make it better!", 0xD)
+    		player:printToPlayer("Rirotiro : I need the Dull Claymore, Wolfram Steel x3 and a Cobalt Ore.", 0xD)	
     	elseif (player:hasItem(19307)) then -- Sarissa
-    		player:PrintToPlayer("Rirotiro : That Blunt Lance looks like junk, bring me a few things and I can make it better!", 0xD)
-    		player:PrintToPlayer("Rirotiro : I need the Blunt Lance, Wolfram Steel x2 and a Cobalt Ore.", 0xD)
+    		player:printToPlayer("Rirotiro : That Blunt Lance looks like junk, bring me a few things and I can make it better!", 0xD)
+    		player:printToPlayer("Rirotiro : I need the Blunt Lance, Wolfram Steel x2 and a Cobalt Ore.", 0xD)
     	elseif (player:hasItem(17767)) then -- Concordia
-    		player:PrintToPlayer("Rirotiro : That Chipped Scimitar looks like junk, bring me a few things and I can make it better!", 0xD)
-    		player:PrintToPlayer("Rirotiro : I need the Chipped Scimitar, Wolfram Steel x2 and Cobalt Ore x2.", 0xD)
+    		player:printToPlayer("Rirotiro : That Chipped Scimitar looks like junk, bring me a few things and I can make it better!", 0xD)
+    		player:printToPlayer("Rirotiro : I need the Chipped Scimitar, Wolfram Steel x2 and Cobalt Ore x2.", 0xD)
     	elseif (player:hasItem(19128)) then -- Machismo
-    		player:PrintToPlayer("Rirotiro : That Edgeless Knife looks like junk, bring me a few things and I can make it better!", 0xD)
-    		player:PrintToPlayer("Rirotiro : I need the Edgeless Knife, Wolfram Steel x1 and Cobalt Ore x2.", 0xD)	
+    		player:printToPlayer("Rirotiro : That Edgeless Knife looks like junk, bring me a few things and I can make it better!", 0xD)
+    		player:printToPlayer("Rirotiro : I need the Edgeless Knife, Wolfram Steel x1 and Cobalt Ore x2.", 0xD)	
     
     
     
         else
-              player:PrintToPlayer("Rirotiro : I'm a jack of all trades and a master of none.", 0xD)
-			  player:PrintToPlayer("Rirotiro : Come back if you have anything of importance.", 0xD)
+              player:printToPlayer("Rirotiro : I'm a jack of all trades and a master of none.", 0xD)
+			  player:printToPlayer("Rirotiro : Come back if you have anything of importance.", 0xD)
     
         end
     end,  

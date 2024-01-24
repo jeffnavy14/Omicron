@@ -40,7 +40,7 @@ m:addOverride("xi.zones.Bastok_Markets.npcs.Nudara.onTrade", function(player, np
             player:setCharVar("KupoShield",1)
             player:messageSpecial(zones[xi.zone.BASTOK_MARKETS].text.ITEM_OBTAINED, 26406)
         else
-            player:PrintToPlayer("Invalid trade")
+            player:printToPlayer("Invalid trade")
         end
     end
 
@@ -64,28 +64,28 @@ m:addOverride("xi.zones.Bastok_Markets.npcs.Nudara.onTrigger", function(player, 
 	
     local function announceOptions(player)
         if (player:hasKeyItem(xi.keyItem.WAY_OF_THE_ALCHEMIST)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Mail] or a [Saida Ring] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_BLACKSMITH)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Hauberk] or a [Gorkhali Kukri] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_BONEWORKER)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Harness] or a [Hajduk Ring] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_CARPENTER)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Togi] or a [Vejovis Wand] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_CULINARIAN)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Soup] or a [Sprightly Soup] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_GOLDSMITH)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Cuirass] or an [Evader Earring] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_WEAVER)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Cursed Dalmatica] or a [Swith Cape] for a special shield.")
         elseif (player:hasKeyItem(xi.keyItem.WAY_OF_THE_TANNER)) then
-            player:PrintToPlayer(
+            player:printToPlayer(
                 "Trade me a [Dusk Jerkin] or [Urja Trousers] for a special shield.")
         end
     end

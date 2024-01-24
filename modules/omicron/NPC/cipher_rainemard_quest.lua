@@ -16,12 +16,12 @@ super(zone)
 
     if StartingTrusts then
 	    npcUtil.giveKeyItem(player, xi.keyItem.BUNDLE_OF_HALF_INSCRIBED_SCROLLS)
-        player:PrintToPlayer("Impressive, adventurer. I never doubted you for a moment. Here, take this as a token of recognition for your effects.", 0, npc:getPacketName())
+        player:printToPlayer("Impressive, adventurer. I never doubted you for a moment. Here, take this as a token of recognition for your effects.", 0, npc:getPacketName())
     --else
-    --    player:PrintToPlayer("Hey, you... Looking for some exotic Trust Magic?", 0, npc:getPacketName())
+    --    player:printToPlayer("Hey, you... Looking for some exotic Trust Magic?", 0, npc:getPacketName())
 	
     --    player:timer(2000, function(playerArg)	
-    --    player:PrintToPlayer("Collect red, blue and yellow institute cards, and I'll reward you with something special.", 0, npc:getPacketName())	
+    --    player:printToPlayer("Collect red, blue and yellow institute cards, and I'll reward you with something special.", 0, npc:getPacketName())	
     --    end)
     --    return
 	end	

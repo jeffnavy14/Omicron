@@ -153,7 +153,7 @@ xi.player.onGameIn = function(player, firstLogin, zoning)
     if not zoning then
         -- Send a system message when players come online.
     	if player:getCharVar("NoOnlineNotification") ~= 1 then
-    	    player:PrintToArea(string.format("%s has come online!", player:getName()), xi.msg.area.SYSTEM_2);
+    	    player:printToArea(string.format("%s has come online!", player:getName()), xi.msg.area.SYSTEM_2);
     	end
         -- things checked ONLY during logon go here
         if firstLogin then
