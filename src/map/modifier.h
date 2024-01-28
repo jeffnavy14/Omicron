@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
   Copyright (c) 2010-2015 Darkstar Dev Teams
   This program is free software: you can redistribute it and/or modify
@@ -555,6 +555,7 @@ enum class Mod
     CAIT_SITH_LVL_BONUS       = 1042, // Cait Sith: Lv.+ (Increases Cait Sith's base level above 99)
     ENHANCES_MANA_CEDE        = 74,   // Bonus % to Mana Cede effect, +1 = 1%
     SUMMONING_MAGIC_CAST      = 1078, // Summoning magic casting time reduction in seconds
+    SPIRIT_CAST_REDUCTION     = 140,  // Spirit Pact casting time reduction in seconds
 
     // Blue Mage
     BLUE_POINTS          = 309,  // Tracks extra blue points
@@ -605,6 +606,7 @@ enum class Mod
     PHANTOM_RECAST         = 1076, // Phantom Roll Recast -.
 
     // Puppetmaster
+    AUTO_MAB_COEFFICIENT        = 157,  // Applies a MAB multiplier to automatons. This value is the bonus %.
     MANEUVER_BONUS              = 504,  // Maneuver Stat Bonus
     OVERLOAD_THRESH             = 505,  // Overload Threshold Bonus
     AUTO_DECISION_DELAY         = 842,  // Reduces the Automaton's global decision delay
@@ -994,8 +996,8 @@ enum class Mod
     // 570 through 825 used by WS DMG mods these are not spares.
     //
     // SPARE IDs:
-    // 138 to 143
-    // 157 to 159
+    // 141 to 143
+    // 158, 159
     // 217 to 223
     // 271 to 280
     //

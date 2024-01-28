@@ -419,6 +419,7 @@ xi.mod =
     CAIT_SITH_LVL_BONUS             = 1042, -- Cait Sith: Lv.+ (Increases Cait Sith's base level above 99)
     ENHANCES_MANA_CEDE              = 74,   -- Bonus % to Mana Cede effect, +1 = 1%
     SUMMONING_MAGIC_CAST            = 1078, -- Summoning magic casting time reduction in seconds
+    SPIRIT_CAST_REDUCTION           = 140,  -- Spirit Pact casting time reduction in seconds
 
     -- Puppetmaster
     AUTOMATON_LVL_BONUS             = 1044, -- Automaton: Lv. (Increases automaton's base level above 99)
@@ -754,6 +755,7 @@ xi.mod =
     QUICK_MAGIC                     = 909, -- Percent chance spells cast instantly (also reduces recast to 0, similar to Chainspell)
 
     -- Automaton mods
+    AUTO_MAB_COEFFICIENT            = 157, -- Applies a MAB multiplier to automatons. This value is the bonus %.
     AUTO_DECISION_DELAY             = 842, -- Reduces the Automaton's global decision delay
     AUTO_SHIELD_BASH_DELAY          = 843, -- Reduces the Automaton's global shield bash delay
     AUTO_MAGIC_DELAY                = 844, -- Reduces the Automaton's global magic delay

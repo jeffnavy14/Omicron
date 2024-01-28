@@ -949,6 +949,23 @@ INSERT INTO `item_mods_pet` VALUES (23361,25,50,0); -- Pet: ACC: 50
 INSERT INTO `item_mods_pet` VALUES (23361,26,50,0); -- Pet: RACC: 50
 INSERT INTO `item_mods_pet` VALUES (23361,30,50,0); -- Pet: MACC: 50
 
+-- Peltast's schynbalds +2
+INSERT INTO `item_mods_pet` VALUES (23366,25,50,2); -- Wyvern: ACC:  50
+INSERT INTO `item_mods_pet` VALUES (23366,30,50,2); -- Wyvern: MACC: 50
+
+-- Beckoner's pigaches +2
+INSERT INTO `item_mods_pet` VALUES (23367,25,50,1); -- Avatar: ACC:  50
+INSERT INTO `item_mods_pet` VALUES (23367,26,50,1); -- Avatar: RACC: 50
+INSERT INTO `item_mods_pet` VALUES (23367,30,50,1); -- Avatar: MACC: 50
+INSERT INTO `item_mods_pet` VALUES (23367,126,8,1); -- Avatar: BP_DAMAGE: 8
+
+-- Karagoz Scarpe +2
+INSERT INTO `item_mods_pet` VALUES (23370,12,25,3); -- Automaton: INT:  25
+INSERT INTO `item_mods_pet` VALUES (23370,13,25,3); -- Automaton: MND:  25
+INSERT INTO `item_mods_pet` VALUES (23370,25,50,3); -- Automaton: ACC:  50
+INSERT INTO `item_mods_pet` VALUES (23370,26,50,3); -- Automaton: RACC: 50
+INSERT INTO `item_mods_pet` VALUES (23370,30,50,3); -- Automaton: MACC: 50
+
 -- Totemic Helm +3
 INSERT INTO `item_mods_pet` VALUES (23383,25,40,0); -- Pet: ACC: 40
 
