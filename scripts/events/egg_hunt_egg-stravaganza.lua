@@ -20,8 +20,8 @@ local event = SeasonalEvent:new('egg_hunt')
 local settings =
 {
     ANNOUNCE = false, -- Announce settings on load
-    START  = { DAY   =  6, MONTH = 4 },
-    FINISH = { DAY   = 17, MONTH = 4 },
+    START  = { DAY   =  6, MONTH = 1 },
+    FINISH = { DAY   = 17, MONTH = 6 },
 
     VAR =
     {
