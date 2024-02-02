@@ -185,6 +185,7 @@ xi.mod =
     DMGMAGIC                        = 163,
     DMGMAGIC_II                     = 831, -- Magic Damage Taken II % (Aegis)
     DMGRANGE                        = 164,
+    DMG_AOE                         = 158, -- Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
     UDMGPHYS                        = 387,
     UDMGBREATH                      = 388,
     UDMGMAGIC                       = 389,
@@ -409,6 +410,10 @@ xi.mod =
     DARK_MAGIC_CAST                 = 1071, -- Reduces Dark Magic Casting Time by percentage (e.g. mod value -10 = -10% cast time)
     DARK_MAGIC_DURATION             = 1072, -- Increases Dark Magic spell durations by percentage (e.g. mod value 10 = +10% duration)
     ENHANCES_DARK_SEAL              = 1073, -- Enhances "Dark Seal" effect (Increases Dark Magic spell durations by 10% per Dark Seal merit while Dark Seal active)
+
+    -- Beastmaster
+    TANDEM_STRIKE_POWER             = 271,  -- Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
+    TANDEM_BLOW_POWER               = 272,  -- Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
 
     -- Dragoon
     WYVERN_LVL_BONUS                = 1043, -- Wyvern: Lv.+ (Increases wyvern's base level above 99)

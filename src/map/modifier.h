@@ -211,6 +211,7 @@ enum class Mod
     DMGMAGIC    = 163, // Magic Damage Taken %
     DMGMAGIC_II = 831, // Magic Damage Taken II % (Aegis)
     DMGRANGE    = 164, // Range Damage Taken %
+    DMG_AOE     = 158, // Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
 
     // Uncapped damage - 10000 base, 375 = 3.75%
     UDMGPHYS   = 387, // Uncapped Damage Multipliers
@@ -457,6 +458,8 @@ enum class Mod
     JUG_LEVEL_RANGE     = 564,  // Decreases the level range of spawned jug pets. Maxes out at 2.
     CALL_BEAST_DELAY    = 572,  // Lowers Call Beast recast
     SIC_READY_RECAST    = 1052, // SIC/Ready recast reduction (seconds)
+    TANDEM_STRIKE_POWER = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
+    TANDEM_BLOW_POWER   = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
 
     // Bard
     MINNE_EFFECT           = 433,  //
@@ -997,9 +1000,9 @@ enum class Mod
     //
     // SPARE IDs:
     // 141 to 143
-    // 158, 159
+    // 159
     // 217 to 223
-    // 271 to 280
+    // 273 to 280
     //
     // SPARE = 1080 and onward
 };
