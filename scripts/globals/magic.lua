@@ -232,17 +232,6 @@ local function calculateMagicHitRate(magicacc, magiceva, percentBonus, casterLvl
     return utils.clamp(p, 5, 95)
 end
 
-local function isHelixSpell(spell)
-    --Dark Arts will further increase Helix duration, but testing is ongoing.
-
-    local id = spell:getID()
-    if id >= 278 and id <= 285 then
-        return true
-    end
-
-    return false
-end
-
 local function calculateMagicBurst(caster, spell, target, params)
     local burst = 1.0
     local skillchainburst = 1.0
@@ -668,31 +657,6 @@ xi.magic.getEffectResistance = function(target, effectId)
     return statusResistance
 end
 
-function handleAfflatusMisery(caster, spell, dmg)
-    if caster:hasStatusEffect(xi.effect.AFFLATUS_MISERY) then
-        local misery = caster:getMod(xi.mod.AFFLATUS_MISERY)
-        -- According to BGWiki Caps at 300 magic damage.
-        local miseryMax = 300
-
-        miseryMax = miseryMax * (1 - caster:getMerit(xi.merit.ANIMUS_MISERY) / 100)
-
-        -- BGwiki puts the boost capping at 200% bonus at 1/4th max HP.
-        if misery > miseryMax then
-            misery = miseryMax
-        end
-
-        -- Damage is 2x at boost cap.
-        local boost = 1 + (misery / miseryMax)
-
-        dmg = math.floor(dmg * boost)
-
-        --Afflatus Mod is Used Up
-        caster:setMod(xi.mod.AFFLATUS_MISERY, 0)
-    end
-
-    return dmg
-end
-
 function finalMagicAdjustments(caster, target, spell, dmg)
     --Handles target's HP adjustment and returns UNSIGNED dmg (absorb message is set in this function)
 
@@ -822,7 +786,7 @@ function addBonuses(caster, spell, target, dmg, params)
     dmg = math.floor(dmg * affinityBonus)
     dmg = math.floor(dmg * magicDefense)
 
-    local dayWeatherBonusCheck = math.random() < 0.33 or caster:getMod(elementalObi[ele]) >= 1 or isHelixSpell(spell)
+    local dayWeatherBonusCheck = math.random() < 0.33 or caster:getMod(elementalObi[ele]) >= 1
 
     if dayWeatherBonusCheck then
         if weather == xi.magic.singleWeatherStrong[ele] then
@@ -1038,12 +1002,6 @@ function handleThrenody(caster, target, spell, basePower, baseDuration, modifier
     target:addStatusEffect(xi.effect.THRENODY, -power, 0, duration, 0, modifier, 0)
 
     return xi.effect.THRENODY
-end
-
-function handleNinjutsuDebuff(caster, target, spell, basePower, baseDuration, modifier)
-    -- Add new
-    target:addStatusEffectEx(xi.effect.NINJUTSU_ELE_DEBUFF, 0, basePower, 0, baseDuration, 0, modifier, 0)
-    return xi.effect.NINJUTSU_ELE_DEBUFF
 end
 
 -- Returns true if you can overwrite the effect
