@@ -1946,6 +1946,7 @@ INSERT INTO `mob_droplist` VALUES (197,0,0,1000,4508,@ALWAYS); -- Serving Of Roy
 INSERT INTO `mob_droplist` VALUES (197,0,0,1000,816,340);      -- Spool Of Silk Thread (34.0%)
 INSERT INTO `mob_droplist` VALUES (197,0,0,1000,4357,120);     -- Crawler Egg (12.0%)
 INSERT INTO `mob_droplist` VALUES (197,2,0,1000,816,0);        -- Spool Of Silk Thread (Steal)
+INSERT INTO `mob_droplist` VALUES (197,0,0,1000,6603,@ALWAYS); -- Rolanberry 854 (Always, 100%)
 
 -- ZoneID:  35 - Awaern Mnk
 INSERT INTO `mob_droplist` VALUES (198,0,0,1000,1786,120);   -- Aern Organ (12.0%)
@@ -2342,8 +2343,6 @@ INSERT INTO `mob_droplist` VALUES (236,0,0,1000,859,200);     -- Ram Skin (20.0%
 INSERT INTO `mob_droplist` VALUES (236,0,0,1000,859,170);     -- Ram Skin (17.0%)
 INSERT INTO `mob_droplist` VALUES (236,2,0,1000,832,0);       -- Clump Of Sheep Wool (Steal)
 
--- ZoneID: 185 - Battlechoir Gitchfotch
--- ZoneID: 185 - Soulsender Fugbrag
 -- ZoneID: 185 - Wyrmgnasher Bjakdek
 INSERT INTO `mob_droplist` VALUES (237,0,0,1000,1452,@COMMON); -- Ordelle Bronzepiece (Common, 15%)
 INSERT INTO `mob_droplist` VALUES (237,0,0,1000,1452,@COMMON); -- Ordelle Bronzepiece (Common, 15%)
@@ -12573,8 +12572,6 @@ INSERT INTO `mob_droplist` VALUES (1559,0,0,1000,18802,@UNCOMMON); -- Vallus Gri
 INSERT INTO `mob_droplist` VALUES (1559,0,0,1000,746,80);          -- Platinum Ingot (8.0%)
 INSERT INTO `mob_droplist` VALUES (1559,0,0,1000,4272,30);         -- Slice Of Dragon Meat (3.0%)
 
--- ZoneID: 187 - Maa Febi The Steadfast
--- ZoneID: 187 - Muu Febi The Steadfast
 -- ZoneID: 187 - Xoo Kaza The Solemn
 INSERT INTO `mob_droplist` VALUES (1560,0,0,1000,3355,@VCOMMON); -- Divine Bijou (Very Common, 24%)
 INSERT INTO `mob_droplist` VALUES (1560,0,0,1000,1449,@COMMON);  -- Tukuku Whiteshell (Common, 15%)
@@ -26646,7 +26643,7 @@ INSERT INTO `mob_droplist` VALUES (3261,0,0,1000,11642,@VCOMMON); -- Hoard ring 
 
 -- ZoneID:  45 - Cannered Noz
 INSERT INTO `mob_droplist` VALUES (3262,0,0,1000,2947,@UNCOMMON); -- Exorcised Skull (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (3262,0,0,1000,11607,@RARE); -- Artemis' Medal (Rare, 5%) 
+INSERT INTO `mob_droplist` VALUES (3262,0,0,1000,11607,@RARE); -- Artemis' Medal (Rare, 5%)
 
 -- ZoneID:  45 - Chloris
 INSERT INTO `mob_droplist` VALUES (3263,0,0,1000,11509,@ALWAYS);  -- Issen hachimaki (Always, 100%)
@@ -26779,6 +26776,30 @@ INSERT INTO `mob_droplist` VALUES (3290,0,0,1000,11289,@COMMON);  -- Dark Ixion:
 INSERT INTO `mob_droplist` VALUES (3290,0,0,1000,16242,@VCOMMON); -- Dark Ixion: Ixion Cape
 INSERT INTO `mob_droplist` VALUES (3290,0,0,1000,2654,@ALWAYS);   -- Dark Ixion: Horn
 INSERT INTO `mob_droplist` VALUES (3290,0,0,1000,2655,@ALWAYS);   -- Dark Ixion: Tail
+
+-- ZoneID: 62 - Copper Borer
+INSERT INTO `mob_droplist` VALUES (3291,0,0,1000,11536,@UNCOMMON); -- Copper Borer: Wayang Kulit Mantle (Uncommon, 10%)
+
+-- ZoneID: 92 - Ferroalloy Quadav
+INSERT INTO `mob_droplist` VALUES (3292,0,0,1000,2504,@COMMON);   -- Heavy Quadav Chestplate (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (3292,0,0,1000,2505,@UNCOMMON); -- Heavy Quadav Backplate (Uncommon, 10%)
+
+-- ZoneID: 121 - Bastet
+INSERT INTO `mob_droplist` VALUES (3293,0,0,1000,2830,@VCOMMON); -- Bastet Fang (Very Common, 24%)
+
+-- ZoneID: 137 - Zirnitra
+INSERT INTO `mob_droplist` VALUES (3294,0,0,1000,2823,@ALWAYS);   -- Iridium ingot (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (3294,0,0,1000,2750,@ALWAYS);   -- Amphiptere hide (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (3294,0,0,1000,2810,@ALWAYS);   -- Vial of ebur pigment (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (3294,0,0,1000,647,@ALWAYS);    -- Chunk of molybdenum ore (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (3294,0,0,1000,19236,@VCOMMON); -- Hightail bullet (Very common, 24%)
+
+-- ZoneID 126 - Atkorkamuy
+INSERT INTO `mob_droplist` VALUES (3295,0,0,1000,2813,@COMMON);   -- Aptant: Durus
+INSERT INTO `mob_droplist` VALUES (3295,0,0,1000,2816,@COMMON);   -- Aptant: Tachus
+
+-- ZoneID 123 - Pyuu the Spatemaker
+INSERT INTO `mob_droplist` VALUES (3296,0,0,1000,2850,@UNCOMMON); -- Ingot of Sahagin gold (Uncommon, 10%)
 
 /*!40000 ALTER TABLE `mob_droplist` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -30,6 +30,8 @@ xi.mod =
     MND                             = 13,
     CHR                             = 14,
 
+    TWOHAND_STR                     = 218, -- Same as STR, but only active when using a two handed weapon (e.g. Hasso)
+
     -- Magic Evasion versus elements
     -- This has been repeatedly mixed up with SDT - be careful!
     FIRE_MEVA                       = 15,
@@ -55,6 +57,7 @@ xi.mod =
     RATT                            = 24,
     ACC                             = 25,
     RACC                            = 26,
+    TWOHAND_ACC                     = 219, -- Same as ACC, but only active when using a two handed weapon (e.g. Hasso)
     ENMITY                          = 27,
     ENMITY_LOSS_REDUCTION           = 427,
     MATT                            = 28,
@@ -78,18 +81,6 @@ xi.mod =
     LIGHTACC                        = 46,
     DARKACC                         = 47,
     WSACC                           = 48,
-    SLASH_SDT                       = 49,
-    PIERCE_SDT                      = 50,
-    IMPACT_SDT                      = 51,
-    HTH_SDT                         = 52,
-    FIRE_SDT                        = 54,
-    ICE_SDT                         = 55,
-    WIND_SDT                        = 56,
-    EARTH_SDT                       = 57,
-    THUNDER_SDT                     = 58,
-    WATER_SDT                       = 59,
-    LIGHT_SDT                       = 60,
-    DARK_SDT                        = 61,
     ATTP                            = 62,
     DEFP                            = 63,
     COMBAT_SKILLUP_RATE             = 64, -- % increase in skillup combat rate
@@ -178,18 +169,61 @@ xi.mod =
     ANTIHQ_BONE                     = 149,
     ANTIHQ_ALCHEMY                  = 150,
     ANTIHQ_COOK                     = 151,
-    DMG                             = 160, -- All damage modifiers are base 10000, so 375 = 3.75% YES WE KNOW retail is using base 256.
-    DMGPHYS                         = 161, -- We're using a % with extra decimal places. We don't need you to do converting in script.
-    DMGPHYS_II                      = 190, -- Physical Damage Taken II % (Burtgang)
-    DMGBREATH                       = 162,
-    DMGMAGIC                        = 163,
-    DMGMAGIC_II                     = 831, -- Magic Damage Taken II % (Aegis)
-    DMGRANGE                        = 164,
-    DMG_AOE                         = 158, -- Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
-    UDMGPHYS                        = 387,
-    UDMGBREATH                      = 388,
-    UDMGMAGIC                       = 389,
-    UDMGRANGE                       = 390,
+
+    -- Damage taken modifiers. All damage modifiers are base 10000, so 375 = 3.75% YES WE KNOW retail is using base 256.
+    DMG                             = 160, -- Modifies all/any damage taken.
+    DMGPHYS                         = 161, -- Modifies physical damage taken. Caps at 50%
+    DMGPHYS_II                      = 190, -- Physical Damage Taken II % (Burtgang). Bypasses previous cap.
+    UDMGPHYS                        = 387, -- Uncaped.
+    DMGBREATH                       = 162, -- Modifies breath damage taken. Caps at 50%
+    UDMGBREATH                      = 388, -- Uncaped.
+    DMGMAGIC                        = 163, -- Modifies magical damage taken. Caps at 50%
+    DMGMAGIC_II                     = 831, -- Magic Damage Taken II % (Aegis). Bypasses previous cap.
+    UDMGMAGIC                       = 389, -- Uncaped.
+    DMGRANGE                        = 164, -- Modifies ranged damage taken. Caps at 50%
+    UDMGRANGE                       = 390, -- Uncaped.
+    DMG_AOE                         = 158, -- Mob only. Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs). Uncaped.
+    SLASH_SDT                       =  49, -- Overrides mob_resistances.sql. NOT base 10000. TODO: Change to work as all the others.
+    PIERCE_SDT                      =  50, -- Overrides mob_resistances.sql. NOT base 10000. TODO: Change to work as all the others.
+    IMPACT_SDT                      =  51, -- Overrides mob_resistances.sql. NOT base 10000. TODO: Change to work as all the others.
+    HTH_SDT                         =  52, -- Overrides mob_resistances.sql. NOT base 10000. TODO: Change to work as all the others.
+    FIRE_SDT                        =  54, -- Overrides mob_resistances.sql.
+    ICE_SDT                         =  55, -- Overrides mob_resistances.sql.
+    WIND_SDT                        =  56, -- Overrides mob_resistances.sql.
+    EARTH_SDT                       =  57, -- Overrides mob_resistances.sql.
+    THUNDER_SDT                     =  58, -- Overrides mob_resistances.sql.
+    WATER_SDT                       =  59, -- Overrides mob_resistances.sql.
+    LIGHT_SDT                       =  60, -- Overrides mob_resistances.sql.
+    DARK_SDT                        =  61, -- Overrides mob_resistances.sql.
+
+    -- Occasionally annuls damage taken. Modifier value = chance in %
+    NULL_DAMAGE                     = 142, -- Occasionally annuls all/any damage.
+    NULL_PHYSICAL_DAMAGE            = 416, -- Occasionally annuls physical damage.
+    NULL_BREATH_DAMAGE              = 143, -- Occasionally annuls breath damage.
+    NULL_MAGICAL_DAMAGE             = 476, -- Occasionally annuls magical damage.
+    NULL_RANGED_DAMAGE              = 239, -- Occasionally annuls ranged damage.
+    FIRE_NULL                       = 467, -- Occasionally annuls fire elemental damage.
+    ICE_NULL                        = 468, -- Occasionally annuls ice elemental damage.
+    WIND_NULL                       = 469, -- Occasionally annuls wind elemental damage.
+    EARTH_NULL                      = 470, -- Occasionally annuls earth elemental damage.
+    LTNG_NULL                       = 471, -- Occasionally annuls thunder elemental damage.
+    WATER_NULL                      = 472, -- Occasionally annuls water elemental damage.
+    LIGHT_NULL                      = 473, -- Occasionally annuls light elemental damage.
+    DARK_NULL                       = 474, -- Occasionally annuls dark elemental damage.
+
+    -- Occasionally absorbs damage taken. Modifier value = chance in %
+    ABSORB_DMG_CHANCE               = 480, -- Occasionally absorbs all/any damage.
+    PHYS_ABSORB                     = 512, -- Occasionally absorbs physical damage. USED FOR RANGED ASWELL.
+    MAGIC_ABSORB                    = 475, -- Occasionally absorbs magical damage.
+    FIRE_ABSORB                     = 459, -- Occasionally absorbs fire elemental damage.
+    ICE_ABSORB                      = 460, -- Occasionally absorbs ice elemental damage.
+    WIND_ABSORB                     = 461, -- Occasionally absorbs wind elemental damage.
+    EARTH_ABSORB                    = 462, -- Occasionally absorbs earth elemental damage.
+    LTNG_ABSORB                     = 463, -- Occasionally absorbs thunder elemental damage.
+    WATER_ABSORB                    = 464, -- Occasionally absorbs water elemental damage.
+    LIGHT_ABSORB                    = 465, -- Occasionally absorbs light elemental damage.
+    DARK_ABSORB                     = 466, -- Occasionally absorbs dark elemental damage.
+
     CRITHITRATE                     = 165,
     CRIT_DMG_INCREASE               = 421,
     RANGED_CRIT_DMG_INCREASE        = 964, -- Increases ranged critical damage by a percent
@@ -457,6 +491,7 @@ xi.mod =
     PARRY_SPIKES                = 1022, -- Battuta parry spikes rate
     PARRY_SPIKES_DMG            = 1023, -- Battuta parry spikes damage
     SPECIAL_ATTACK_EVASION      = 1024, -- Foil "Special Attack" evasion
+    AUGMENTS_SLEIGHT_OF_SWORD   = 277,  -- Enhances bonus "Subtle Blow" per merit.
 
     FIRE_AFFINITY_DMG               = 347,
     ICE_AFFINITY_DMG                = 348,
@@ -526,6 +561,7 @@ xi.mod =
     EXP_BONUS                       = 382,
     HASTE_ABILITY                   = 383,
     HASTE_GEAR                      = 384,
+    TWOHAND_HASTE_ABILITY           = 217, -- Only applies to auto attacks when using two handed weapons, additive to HASTE_ABILITY
     SHIELD_BASH                     = 385,
     KICK_DMG                        = 386,
     CHARM_CHANCE                    = 391,
@@ -560,11 +596,9 @@ xi.mod =
     TA_TRIPLE_DMG_RATE              = 409,  -- Triple attack's triple damage chance %.
     ZANSHIN_DOUBLE_DAMAGE           = 410,  -- Zanshin's double damage chance %.
     RAPID_SHOT_DOUBLE_DAMAGE        = 479,  -- Rapid shot's double damage chance %.
-    ABSORB_DMG_CHANCE               = 480,  -- Chance to absorb damage %
     EXTRA_DUAL_WIELD_ATTACK         = 481,  -- Chance to land an extra attack when dual wielding
     EXTRA_KICK_ATTACK               = 482,  -- Occasionally allows a second Kick Attack during an attack round without the use of Footwork.
     SAMBA_DOUBLE_DAMAGE             = 415,  -- Double damage chance when samba is up.
-    NULL_PHYSICAL_DAMAGE            = 416,  -- Occasionally annuls damage from physical attacks, in percents
     QUICK_DRAW_TRIPLE_DAMAGE        = 417,  -- Chance to do triple damage with quick draw.
     BAR_ELEMENT_NULL_CHANCE         = 418,  -- Bar Elemental spells will occasionally nullify damage of the same element.
     GRIMOIRE_INSTANT_CAST           = 419,  -- Spells that match your current Arts will occasionally cast instantly, without recast.
@@ -621,28 +655,6 @@ xi.mod =
 
     ENSPELL_DMG_BONUS               = 432,
 
-    FIRE_ABSORB                     = 459, -- Occasionally absorbs fire elemental damage, in percents
-    ICE_ABSORB                      = 460, -- Occasionally absorbs ice elemental damage, in percents
-    WIND_ABSORB                     = 461, -- Occasionally absorbs wind elemental damage, in percents
-    EARTH_ABSORB                    = 462, -- Occasionally absorbs earth elemental damage, in percents
-    LTNG_ABSORB                     = 463, -- Occasionally absorbs thunder elemental damage, in percents
-    WATER_ABSORB                    = 464, -- Occasionally absorbs water elemental damage, in percents
-    LIGHT_ABSORB                    = 465, -- Occasionally absorbs light elemental damage, in percents
-    DARK_ABSORB                     = 466, -- Occasionally absorbs dark elemental damage, in percents
-
-    FIRE_NULL                       = 467, --
-    ICE_NULL                        = 468, --
-    WIND_NULL                       = 469, --
-    EARTH_NULL                      = 470, --
-    LTNG_NULL                       = 471, --
-    WATER_NULL                      = 472, --
-    LIGHT_NULL                      = 473, --
-    DARK_NULL                       = 474, --
-
-    MAGIC_ABSORB                    = 475, -- Occasionally absorbs magic damage taken, in percents
-    MAGIC_NULL                      = 476, -- Occasionally annuls magic damage taken, in percents
-    NULL_RANGED_DAMAGE              = 239, -- Occasionally annuls ranged damage taken, in percents
-    PHYS_ABSORB                     = 512, -- Occasionally absorbs physical damage taken, in percents
     ABSORB_DMG_TO_MP                = 516, -- Unlike PLD gear mod, works on all damage types (Ethereal Earring)
 
     WARCRY_DURATION                 = 483, -- Warcy duration bonus from gear
@@ -658,6 +670,9 @@ xi.mod =
     RERAISE_II                      = 457, -- Reraise II.
     RERAISE_III                     = 458, -- Reraise III.
 
+    ITEM_ADDEFFECT_LVADJUST = 278, -- level correction factor to use, if any
+    ITEM_ADDEFFECT_PLACEHLD = 279, -- placeholder, want to keep these together and 99% sure we'll use this
+    ITEM_ADDEFFECT_DSTAT    = 280, -- value = attacker modifier to use as bonus dmg (mnd, int, etc)
     ITEM_ADDEFFECT_TYPE     = 431, -- see procType table in scripts\globals\additional_effects.lua
     ITEM_SUBEFFECT          = 499, -- Animation ID of Spikes and Additional Effects
     ITEM_ADDEFFECT_DMG      = 500, -- Damage of an items Additional Effect or Spikes
@@ -688,8 +703,9 @@ xi.mod =
 
     APPRECIATE_GYSAHL_GREENS        = 156, -- Enhances food effect of Gysahl Greens
 
-    EAT_RAW_FISH                    = 412, -- Without this, only Mithra can eat raw fish.
-    EAT_RAW_MEAT                    = 413, -- Without this, only Galka can eat raw meat.
+    EAT_RAW_FISH                    = 412, -- Without this, only Mithra can eat raw fish (item cannot be used)
+    EAT_RAW_MEAT                    = 413, -- Without this, only Galka can eat raw meat (item cannot be used)
+    DRINK_DISTILLED                 = 159, -- Without this, Distilled Water cannot be consumed (item can still be used)
 
     ENHANCES_CURSNA_RCVD            = 67,   -- Potency of "Cursna" effects received
     ENHANCES_CURSNA                 = 310,  -- Raises success rate of Cursna when removing effect (like Doom) that are not 100% chance to remove
@@ -716,7 +732,8 @@ xi.mod =
     ENH_DRAIN_ASPIR                 = 315, -- % damage boost to Drain and Aspir
     SNEAK_ATK_DEX                   = 830, -- % DEX boost to Sneak Attack (if gear mod, needs to be equipped on hit)
     TRICK_ATK_AGI                   = 520, -- % AGI boost to Trick Attack (if gear mod, needs to be equipped on hit)
-    NIN_NUKE_BONUS                  = 522, -- magic attack bonus for NIN nukes
+    NIN_NUKE_BONUS_INNIN            = 223, -- Ninjutsu damage multiplier from Innin.
+    NIN_NUKE_BONUS_GEAR             = 522, -- Ninjutsu damage multiplier from gear. Ex: Koga Hatsuburi.
     DAKEN                           = 911, -- Chance to throw shuriken on attack
     AMMO_SWING                      = 523, -- Extra swing rate w/ ammo (ie. Jailer weapons). Use gearsets, and does nothing for non-players.
     AMMO_SWING_TYPE                 = 826, -- For the handedness of the weapon - 1h (1) vs. 2h/h2h (2). h2h can safely use the same function as 2h.
@@ -923,6 +940,9 @@ xi.mod =
     BREATH_DMG_DEALT        = 1075, -- Breath damage dealt
 
     STEP_TP_CONSUMED        = 1077, -- Modifies the amount of TP consumed by dancer steps
+
+    DAMAGE_LIMIT  = 1080, -- Damage Limit increase, found on some traits.  It's a flat value added to pDIF (maxpDIF + DL/100) https://www.bg-wiki.com/ffxi/Damage_Limit%2B
+    DAMAGE_LIMITP = 1081, -- Damage Limit +% increase, found on some gear.  It's a multiplier added after flat Damage Limit ((maxpDIF + DL/100)*(100 + DLP/100)/100) https://www.ffxiah.com/forum/topic/56649/physical-damage-limit/
 
     -- IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN src/map/modifier.h ASWELL!
 

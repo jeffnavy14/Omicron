@@ -31,7 +31,7 @@ CPetController::CPetController(CPetEntity* _PPet)
 : CMobController(_PPet)
 , PPet(_PPet)
 {
-    //#TODO: this probably will have to depend on pet type (automaton does WS on its own..)
+    // #TODO: this probably will have to depend on pet type (automaton does WS on its own..)
     SetWeaponSkillEnabled(false);
 }
 
@@ -50,9 +50,15 @@ void CPetController::Tick(time_point tick)
 
 void CPetController::DoRoamTick(time_point tick)
 {
-    if ((PPet->PMaster == nullptr || PPet->PMaster->isDead()) && PPet->isAlive())
+    if ((PPet->PMaster == nullptr || PPet->PMaster->isDead()) && PPet->isAlive() && PPet->objtype != TYPE_MOB)
     {
         PPet->Die();
+        return;
+    }
+
+    // if pet cannot change state (for example because pet is asleep) then just return
+    if (!PPet->PAI->CanChangeState())
+    {
         return;
     }
 
@@ -81,8 +87,16 @@ void CPetController::DoRoamTick(time_point tick)
 
     if (currentDistance > PetRoamDistance)
     {
-        if (currentDistance < 35.0f && PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+        if (currentDistance < 35.0f)
         {
+            if (!PPet->PAI->PathFind->IsFollowingPath() ||
+                distance(PPet->PAI->PathFind->GetDestination(), PPet->PMaster->loc.p) > 2.0f) // recalculate path only if owner moves more than X yalms
+            {
+                if (!PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+                {
+                    PPet->PAI->PathFind->PathInRange(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
+                }
+            }
             PPet->PAI->PathFind->FollowPath(m_Tick);
         }
         else if (PPet->GetSpeed() > 0)

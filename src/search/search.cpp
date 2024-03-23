@@ -28,6 +28,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "common/lua.h"
 #include "common/md52.h"
 #include "common/mmo.h"
+#include "common/mutex_guarded.h"
 #include "common/settings.h"
 #include "common/socket.h"
 #include "common/sql.h"
@@ -63,7 +64,10 @@ typedef u_int SOCKET;
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <sstream>
+#include <unordered_set>
+#include <vector>
 
 #include "data_loader.h"
 #include "search.h"
@@ -75,6 +79,9 @@ typedef u_int SOCKET;
 #include "packets/party_list.h"
 #include "packets/search_comment.h"
 #include "packets/search_list.h"
+
+#include <nonstd/jthread.hpp>
+#include <task_system.hpp>
 
 #define DEFAULT_BUFLEN 1024
 #define CODE_LVL       17
@@ -103,6 +110,91 @@ extern void       HandleAuctionHouseRequest(CTCPRequestPacket& PTCPRequest);
 extern search_req _HandleSearchRequest(CTCPRequestPacket& PTCPRequest);
 
 extern std::unique_ptr<ConsoleService> gConsoleService;
+
+// A single IP should only have one request in flight at a time, so we are going to
+// be tracking the IP addresses of incoming requests and if we haven't cleared the
+// record for it - we drop the request.
+shared_guarded<std::unordered_set<std::string>> gIPAddressesInUse;
+
+// NOTE: We're only using the read-lock for this
+shared_guarded<std::unordered_set<std::string>> gIPAddressWhitelist;
+
+// Implement using getsockname and inet_ntop
+std::string socketToString(SOCKET socket)
+{
+    sockaddr_storage addr;
+    socklen_t        len = sizeof(addr);
+    getsockname(socket, (sockaddr*)&addr, &len);
+
+    char         ipstr[INET6_ADDRSTRLEN];
+    sockaddr_in* s = (sockaddr_in*)&addr;
+    inet_ntop(AF_INET, &s->sin_addr, ipstr, sizeof(ipstr));
+
+    return std::string(ipstr);
+}
+
+bool isSocketInUse(std::string const& ipAddressStr)
+{
+    // clang-format off
+    if (gIPAddressWhitelist.read([ipAddressStr](auto const& ipWhitelist)
+    {
+        return ipWhitelist.find(ipAddressStr) != ipWhitelist.end();
+    }))
+    {
+        return false;
+    }
+    // clang-format on
+
+    // ShowInfo(fmt::format("Checking if IP is in use: {}", ipAddressStr).c_str());
+    // clang-format off
+    return gIPAddressesInUse.read([ipAddressStr](auto const& ipAddrsInUse)
+    {
+        return ipAddrsInUse.find(ipAddressStr) != ipAddrsInUse.end();
+    });
+    // clang-format on
+}
+
+void removeSocketFromSet(std::string const& ipAddressStr)
+{
+    // clang-format off
+    if (gIPAddressWhitelist.read([ipAddressStr](auto const& ipWhitelist)
+    {
+        return ipWhitelist.find(ipAddressStr) != ipWhitelist.end();
+    }))
+    {
+        return;
+    }
+    // clang-format on
+
+    // ShowInfo(fmt::format("Removing IP from set: {}", ipAddressStr).c_str());
+    // clang-format off
+    gIPAddressesInUse.write([ipAddressStr](auto& ipAddrsInUse)
+    {
+        ipAddrsInUse.erase(ipAddressStr);
+    });
+    // clang-format on
+}
+
+void addSocketToSet(std::string const& ipAddressStr)
+{
+    // clang-format off
+    if (gIPAddressWhitelist.read([ipAddressStr](auto const& ipWhitelist)
+    {
+        return ipWhitelist.find(ipAddressStr) != ipWhitelist.end();
+    }))
+    {
+        return;
+    }
+    // clang-format on
+
+    // ShowInfo(fmt::format("Adding IP to set: {}", ipAddressStr).c_str());
+    // clang-format off
+    gIPAddressesInUse.write([ipAddressStr](auto& ipAddrsInUse)
+    {
+        ipAddrsInUse.insert(ipAddressStr);
+    });
+    // clang-format on
+}
 
 /************************************************************************
  *                                                                       *
@@ -281,7 +373,21 @@ int32 main(int32 argc, char** argv)
                                          std::chrono::seconds(settings::get<uint32>("search.EXPIRE_INTERVAL")));
     }
 
-    std::thread taskManagerThread(TaskManagerThread, std::ref(requestExit));
+    sol::table accessWhitelist = lua["xi"]["settings"]["search"]["ACCESS_WHITELIST"].get_or_create<sol::table>();
+    for (auto const& [_, value] : accessWhitelist)
+    {
+        // clang-format off
+        auto str = value.as<std::string>();
+        gIPAddressWhitelist.write([str](auto& ipWhitelist)
+        {
+            ipWhitelist.insert(str);
+        });
+        // clang-format on
+    }
+
+    nonstd::jthread taskManagerThread(TaskManagerThread, std::ref(requestExit));
+
+    auto taskSystem = ts::task_system(4);
 
     // clang-format off
     gConsoleService = std::make_unique<ConsoleService>();
@@ -340,7 +446,21 @@ int32 main(int32 argc, char** argv)
             continue;
         }
 
-        std::thread(TCPComm, ClientSocket).detach();
+        auto ipAddressStr = socketToString(ClientSocket);
+        if (isSocketInUse(ipAddressStr))
+        {
+            ShowError(fmt::format("IP already being served, dropping connection from: {}", ipAddressStr).c_str());
+            continue;
+        }
+
+        // clang-format off
+        taskSystem.schedule([ClientSocket, ipAddressStr]() // Take by value, not by reference
+        {
+            addSocketToSet(ipAddressStr);
+            TCPComm(ClientSocket);
+            removeSocketFromSet(ipAddressStr);
+        });
+        // clang-format on
     }
 
     gConsoleService = nullptr;
@@ -390,7 +510,21 @@ int32 main(int32 argc, char** argv)
                 continue;
             }
 
-            std::thread(TCPComm, ClientSocket).detach();
+            auto ipAddressStr = socketToString(ClientSocket);
+            if (isSocketInUse(ipAddressStr))
+            {
+                ShowError(fmt::format("IP already being served, dropping connection from: {}", ipAddressStr).c_str());
+                continue;
+            }
+
+            // clang-format off
+            taskSystem.schedule([ClientSocket, ipAddressStr]() // Take by value, not by reference
+            {
+                addSocketToSet(ipAddressStr);
+                TCPComm(ClientSocket);
+                removeSocketFromSet(ipAddressStr);
+            });
+            // clang-format on
         }
     }
 #endif
