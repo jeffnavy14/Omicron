@@ -275,11 +275,16 @@ QueryByNameResult_t const& CZone::queryEntitiesByName(std::string const& pattern
 {
     TracyZoneScoped;
 
-    // Use memoization since lookups are typically for the same mob names
-    auto result = m_queryByNameResults.find(pattern);
-    if (result != m_queryByNameResults.end())
+    // Always ignore cache for queries explicitly looking for dynamic entities
+    // TODO: make this memoization work for dynamic entities somehow?
+    if (pattern.rfind("DE_", 0) != 0)
     {
-        return result->second;
+        // Use memoization since lookups are typically for the same mob names
+        auto result = m_queryByNameResults.find(pattern);
+        if (result != m_queryByNameResults.end())
+        {
+            return result->second;
+        }
     }
 
     std::vector<CBaseEntity*> entities;
@@ -1035,22 +1040,23 @@ void CZone::CharZoneIn(CCharEntity* PChar)
 
     PChar->ReloadPartyInc();
 
-    if (PChar->PParty != nullptr)
+    // Zone-wide treasure pool takes precendence over all others
+    if (m_TreasurePool && m_TreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
     {
-        if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-        else
-        {
-            PChar->PParty->ReloadTreasurePool(PChar);
-        }
+        PChar->PTreasurePool = m_TreasurePool;
+        PChar->PTreasurePool->AddMember(PChar);
     }
     else
     {
-        PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-        PChar->PTreasurePool->AddMember(PChar);
+        if (PChar->PParty)
+        {
+            PChar->PParty->ReloadTreasurePool(PChar);
+        }
+        else
+        {
+            PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
+            PChar->PTreasurePool->AddMember(PChar);
+        }
     }
 
     if (!(m_zoneType & ZONE_TYPE::INSTANCED))
