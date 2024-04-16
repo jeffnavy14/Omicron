@@ -5145,12 +5145,13 @@ uint16 CLuaBaseEntity::getModelId()
  *  Function: setModelId()
  *  Purpose : Updates the Model ID of the entity
  *  Example : mob:setModelId(1168)
- *  Notes   :
+ *  Notes   : Humanoid entities can be passed a slot to change the modelid of that equipment
+ *              npc:setModelId(47, 5) -- Vermillion cloak
  ************************************************************************/
 
 void CLuaBaseEntity::setModelId(uint16 modelId, sol::object const& slotObj)
 {
-    if (m_PBaseEntity->objtype == TYPE_PC)
+    if (m_PBaseEntity->objtype == TYPE_PC || slotObj.is<uint8>())
     {
         SLOTTYPE slot = slotObj.is<uint8>() ? slotObj.as<SLOTTYPE>() : SLOT_MAIN;
 
@@ -5184,8 +5185,11 @@ void CLuaBaseEntity::setModelId(uint16 modelId, sol::object const& slotObj)
                 break;
         }
 
-        auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-        PChar->pushPacket(new CCharAppearancePacket(PChar));
+        if (m_PBaseEntity->objtype == TYPE_PC)
+        {
+            auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+            PChar->pushPacket(new CCharAppearancePacket(PChar));
+        }
     }
     else
     {
@@ -9184,6 +9188,28 @@ void CLuaBaseEntity::takeDamage(int32 damage, sol::object const& attacker, sol::
         wakeUp        = flag_map["wakeUp"];
         removePetrify = flag_map["removePetrify"];
         breakBind     = flag_map["breakBind"];
+    }
+
+    // Check to see if the target has a nightmare effect active, reset wakeUp accordingly
+    // see mobskills/nightmare.lua for full explanation
+    if (
+        PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP) &&
+        PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() > 0)
+    {
+        // Don't break nightmare sleep from any dmg that doesn't break bind (DoT damage)
+        if (breakBind == false)
+        {
+            wakeUp = false;
+        }
+
+        // Diabolos NM/mob ability
+        // "Damage will not wake you up from Nightmare, only Cure and Benediction (Benediction will also remove the Bio effect)."
+        if (
+            wakeUp == true &&
+            PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() > 1)
+        {
+            wakeUp = false;
+        }
     }
 
     ATTACK_TYPE attackType = (atkType != sol::lua_nil) ? static_cast<ATTACK_TYPE>(atkType.as<uint8>()) : ATTACK_TYPE::NONE;
