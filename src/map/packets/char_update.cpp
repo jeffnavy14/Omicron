@@ -94,7 +94,7 @@ namespace charUpateFlags
     {
         uint32_t LfgMasterFlag : 1;
         uint32_t TrialFlag : 1;
-        uint32_t unknown_0_2 : 1;
+        uint32_t SilenceFlag : 1;
         uint32_t NewCharacterFlag : 1;
         uint32_t MentorFlag : 1;
         uint32_t unknown_0_5 : 1;
@@ -290,7 +290,7 @@ CCharUpdatePacket::CCharUpdatePacket(CCharEntity* PChar)
     charUpateFlags::flags2_t flags2 = {};
 
     flags2.NamedFlag       = false; // disable "The"
-    flags2.SingleFlag      = true;  // singular entity
+    flags2.SingleFlag      = false; // singular entity
     flags2.AutoPartyFlag   = false; // Not implemented.
     flags2.MotStopFlag     = PChar->StatusEffectContainer->HasStatusEffect(EFFECT_TERROR);
     flags2.CliPriorityFlag = PChar->priorityRender;
@@ -307,7 +307,7 @@ CCharUpdatePacket::CCharUpdatePacket(CCharEntity* PChar)
 
     flags3.LfgMasterFlag    = false; // /inv icon WITH mastery star. Not currently implemented, this is set with the "Request" button in the Party menu.
     flags3.TrialFlag        = false; // Trial account icon flag
-    flags3.unknown_0_2      = 0;     // Unknown.
+    flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK);
     flags3.NewCharacterFlag = PChar->isNewPlayer();
     flags3.MentorFlag       = PChar->isMentor();
     flags3.unknown_0_5      = 0; // unknown
