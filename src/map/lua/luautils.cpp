@@ -1801,7 +1801,6 @@ namespace luautils
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
         auto onZoneTick = GetCacheEntryFromFilename(filename)["onZoneTick"];
-
         if (!onZoneTick.valid())
         {
             return;
