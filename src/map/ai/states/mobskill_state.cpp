@@ -73,6 +73,9 @@ CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsi
         actionTarget.param      = m_PSkill->getID();
         actionTarget.messageID  = 43;
         m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+
+        // face toward target // TODO : add force param to turnTowardsTarget on certain TP moves like Petro Eyes
+        battleutils::turnTowardsTarget(m_PEntity, PTarget);
     }
     m_PEntity->PAI->EventHandler.triggerListener("WEAPONSKILL_STATE_ENTER", CLuaBaseEntity(m_PEntity), m_PSkill->getID());
     SpendCost();
@@ -92,6 +95,13 @@ void CMobSkillState::SpendCost()
             m_spentTP = m_PEntity->addTP(-1000);
             m_PEntity->StatusEffectContainer->DelStatusEffect(EFFECT_SEKKANOKI);
         }
+        else if (m_PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_MEIKYO_SHISUI) &&
+                 m_PEntity->GetLocalVar("[MeikyoShisui]MobSkillCount") > 0)
+        {
+            auto currentCount = m_PEntity->GetLocalVar("[MeikyoShisui]MobSkillCount");
+            m_PEntity->SetLocalVar("[MeikyoShisui]MobSkillCount", currentCount - 1);
+            m_spentTP = m_PEntity->addTP(-1000);
+        }
         else
         {
             m_spentTP            = m_PEntity->health.tp;
@@ -102,6 +112,16 @@ void CMobSkillState::SpendCost()
 
 bool CMobSkillState::Update(time_point tick)
 {
+    // Rotate towards target during ability // TODO : add force param to turnTowardsTarget on certain TP moves like Petro Eyes
+    if (m_castTime > 0s && tick < GetEntryTime() + m_castTime)
+    {
+        CBaseEntity* PTarget = GetTarget();
+        if (PTarget)
+        {
+            battleutils::turnTowardsTarget(m_PEntity, PTarget);
+        }
+    }
+
     if (m_PEntity && m_PEntity->isAlive() && (tick > GetEntryTime() + m_castTime && !IsCompleted()))
     {
         action_t action;

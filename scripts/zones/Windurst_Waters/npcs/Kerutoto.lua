@@ -13,7 +13,7 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local wakingDreams = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.WAKING_DREAMS)
+    local wakingDreams = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.WAKING_DREAMS)
 
     -- WAKING DREAMS
     if player:hasKeyItem(xi.ki.WHISPER_OF_DREAMS) then
@@ -25,14 +25,17 @@ entity.onTrigger = function(player, npc)
             + (player:hasSpell(xi.magic.spell.DIABOLOS) and 32 or 16) -- Pact or gil
         player:startEvent(920, xi.item.DIABOLOSS_POLE, xi.item.DIABOLOSS_EARRING, xi.item.DIABOLOSS_RING, xi.item.DIABOLOSS_TORQUE, 0, 0, 0, availRewards)
     elseif
+        -- TODO: There is no current way to reobtain the KI in case of BCNM failure.  This KI
+        -- is consumed on battlefield entry.
+
         not player:hasKeyItem(xi.ki.VIAL_OF_DREAM_INCENSE) and
         (
             player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.DARKNESS_NAMED) and
-            wakingDreams == QUEST_AVAILABLE
+            wakingDreams == xi.questStatus.QUEST_AVAILABLE
         )
         or
         (
-            wakingDreams == QUEST_COMPLETED and
+            wakingDreams == xi.questStatus.QUEST_COMPLETED and
             os.time() > player:getCharVar('Darkness_Named_date')
         )
     then
@@ -46,7 +49,7 @@ end
 entity.onEventFinish = function(player, csid, option, npc)
     -- WAKING DREAMS
     if csid == 918 then
-        player:addQuest(xi.quest.log_id.WINDURST, xi.quest.id.windurst.WAKING_DREAMS)
+        player:addQuest(xi.questLog.WINDURST, xi.quest.id.windurst.WAKING_DREAMS)
         npcUtil.giveKeyItem(player, xi.ki.VIAL_OF_DREAM_INCENSE)
     elseif csid == 920 then
         local reward = { fame = 0 }
@@ -66,7 +69,7 @@ entity.onEventFinish = function(player, csid, option, npc)
             player:messageSpecial(ID.text.DIABOLOS_UNLOCKED, 0, 0, 0)
         end
 
-        if npcUtil.completeQuest(player, xi.quest.log_id.WINDURST, xi.quest.id.windurst.WAKING_DREAMS, reward) then
+        if npcUtil.completeQuest(player, xi.questLog.WINDURST, xi.quest.id.windurst.WAKING_DREAMS, reward) then
             player:delKeyItem(xi.ki.WHISPER_OF_DREAMS)
             player:setCharVar('Darkness_Named_date', getMidnight())
         end

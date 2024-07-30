@@ -16,8 +16,8 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bazaar_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/bazaar_purchase.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bazaar_purchase.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/blacklist.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/blacklist.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/blacklist_edit_response.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/blacklist_edit_response.h
     ${CMAKE_CURRENT_SOURCE_DIR}/campaign_map.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/campaign_map.h
     ${CMAKE_CURRENT_SOURCE_DIR}/caught_fish.cpp
@@ -34,6 +34,8 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/char_appearance.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_check.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_check.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/char_emote_list.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/char_emote_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion_jump.cpp
@@ -200,6 +202,8 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/roe_sparkupdate.h
     ${CMAKE_CURRENT_SOURCE_DIR}/roe_update.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/roe_update.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/send_blacklist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/send_blacklist.h
     ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.h
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.cpp
@@ -214,8 +218,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/shop_menu.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/stop_downloading.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/stop_downloading.h
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_animation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_animation.h
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_message.cpp
@@ -224,8 +226,8 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_result.h
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/timer_bar_util.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/timer_bar_util.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/objective_utility.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/objective_utility.h
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_action.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_action.h
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_item.cpp

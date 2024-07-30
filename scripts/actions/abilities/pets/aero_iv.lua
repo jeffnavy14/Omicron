@@ -4,18 +4,17 @@
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return 0, 0
+    return xi.job_utils.summoner.canUseBloodPact(player, player:getPet(), target, ability)
 end
 
-abilityObject.onPetAbility = function(target, pet, skill)
-    local dINT = math.floor(pet:getStat(xi.mod.INT) - target:getStat(xi.mod.INT))
-    local tp   = pet:getTP()
+abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
+    xi.job_utils.summoner.onUseBloodPact(target, petskill, summoner, action)
 
-    local damage = math.floor(325 + 0.025 * tp)
-    damage = damage + (dINT * 1.5)
-    damage = xi.mobskills.mobMagicalMove(pet, target, skill, damage, xi.element.WIND, 1, xi.mobskills.magicalTpBonus.NO_EFFECT, 0)
-    damage = xi.mobskills.mobAddBonuses(pet, target, damage.dmg, xi.element.WIND)
-    damage = xi.summon.avatarFinalAdjustments(damage, pet, skill, target, xi.attackType.MAGICAL, xi.damageType.WIND, 1)
+    local damage = math.floor(325 + 0.025 * pet:getTP() + (pet:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)) * 1.5)
+
+    damage = xi.mobskills.mobMagicalMove(pet, target, petskill, damage, xi.element.WIND, 1, xi.mobskills.magicalTpBonus.NO_EFFECT, 0)
+    damage = xi.mobskills.mobAddBonuses(pet, target, damage, xi.element.WIND, petskill)
+    damage = xi.summon.avatarFinalAdjustments(damage, pet, petskill, target, xi.attackType.MAGICAL, xi.damageType.WIND, 1)
 
     target:takeDamage(damage, pet, xi.attackType.MAGICAL, xi.damageType.WIND)
     target:updateEnmityFromDamage(pet, damage)

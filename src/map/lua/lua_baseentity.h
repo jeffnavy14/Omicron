@@ -24,6 +24,7 @@
 
 #include "common/cbasetypes.h"
 #include "luautils.h"
+#include "packets/message_standard.h"
 
 class CBaseEntity;
 class CCharEntity;
@@ -59,7 +60,7 @@ public:
                      sol::object const& p2, sol::object const& p3, sol::object const& chat);
     void messagePublic(uint16 messageID, CLuaBaseEntity const* PEntity, sol::object const& arg2, sol::object const& arg3);
     void messageSpecial(uint16 messageID, sol::variadic_args va);
-    void messageSystem(uint16 messageID, sol::object const& p0, sol::object const& p1);
+    void messageSystem(MsgStd messageID, sol::object const& p0, sol::object const& p1);
     void messageCombat(sol::object const& speaker, int32 p0, int32 p1, int16 message);
     void messageStandard(uint16 messageID);
 
@@ -71,6 +72,7 @@ public:
     void   setCharVarExpiration(std::string const& varName, uint32 expiry); // Sets character variable expiration timestamp
     void   incrementCharVar(std::string const& varname, int32 value);       // Increments/decrements/sets a character variable
     void   setVolatileCharVar(std::string const& varName, int32 value, sol::object const& expiry);
+    auto   getLocalVars() -> sol::table;
     uint32 getLocalVar(std::string const& var);
     void   setLocalVar(std::string const& var, uint32 val);
     void   resetLocalVars();
@@ -82,6 +84,7 @@ public:
     void injectActionPacket(uint32 inTargetID, uint16 inCategory, uint16 inAnimationID, uint16 inSpecEffect, uint16 inReaction, uint16 inMessage, uint16 inActionParam, uint16 inParam);
     void entityVisualPacket(std::string const& command, sol::object const& entity);
     void entityAnimationPacket(const char* command, sol::object const& target);
+    void sendDebugPacket(sol::table const& packetData);
 
     void       StartEventHelper(int32 EventID, sol::variadic_args va, EVENT_TYPE eventType);
     EventInfo* ParseEvent(int32 EventID, sol::variadic_args va, EventPrep* eventPreparation, EVENT_TYPE eventType);
@@ -137,6 +140,8 @@ public:
     void  continuePath();                                                          // resumes previous pathfind if it was paused
     float checkDistance(sol::variadic_args va);                                    // Check Distance and returns distance number
     void  wait(sol::object const& milliseconds);                                   // make the npc wait a number of ms and then back into roam
+    void  follow(CLuaBaseEntity* target, uint8 followType);                        // makes an npc follow or runaway from another target
+    void  unfollow();                                                              // makes an npc stop following
     // int32 WarpTo(lua_Stat* L);           // warp to the given point -- These don't exist, breaking them just in case someone uncomments
     // int32 RoamAround(lua_Stat* L);       // pick a random point to walk to
     // int32 LimitDistance(lua_Stat* L);    // limits the current path distance to given max distance
@@ -155,7 +160,7 @@ public:
     void  setWeather(uint8 weatherType); // Set Weather condition (GM COMMAND)
 
     // PC Instructions
-    void changeMusic(uint8 blockID, uint8 musicTrackID);                    // Sets the specified music Track for specified music block.
+    void changeMusic(uint16 blockID, uint16 musicTrackID);                  // Sets the specified music Track for specified music block.
     void sendMenu(uint32 menu);                                             // Displays a menu (AH,Raise,Tractor,MH etc)
     bool sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 holiday); // Sends guild shop menu
     void openSendBox();                                                     // Opens send box (to deliver items)
@@ -183,6 +188,7 @@ public:
     void   updateToEntireZone(uint8 statusID, uint8 animation, sol::object const& matchTime); // Forces an update packet to update the NPC entity zone-wide
 
     void sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, uint8 entityUpdate, uint8 updateMask);
+    void sendEmptyEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate);
 
     void forceRezone();
     void forceLogout();
@@ -220,6 +226,7 @@ public:
     uint32 getItemCount(uint16 itemID);
     bool   addItem(sol::variadic_args va);
     bool   delItem(uint16 itemID, int32 quantity, sol::object const& containerID);
+    bool   delContainerItems(sol::object const& containerID);
     bool   addUsedItem(uint16 itemID);
     bool   addTempItem(uint16 itemID, sol::object const& arg1);
     uint8  getWornUses(uint16 itemID);                                                      // Check if the item is already worn
@@ -250,8 +257,10 @@ public:
     void setEquipBlock(uint16 equipBlock);
     void lockEquipSlot(uint8 slot);
     void unlockEquipSlot(uint8 slot);
+    bool hasSlotEquipped(uint8 slot);
 
-    int8 getShieldSize();
+    int8  getShieldSize();
+    int16 getShieldDefense();
 
     bool hasGearSetMod(uint8 modNameId);
     void addGearSetMod(uint8 modNameId, Mod modId, uint16 modValue);
@@ -270,7 +279,6 @@ public:
     auto   getPacketName() -> std::string;
     void   renameEntity(std::string const& newName, sol::object const& arg2);
     void   hideName(bool isHidden);
-    bool   checkNameFlags(uint32 flags); // this is check and not get because it tests for a flag, it doesn't return all flags
     uint16 getModelId();
     void   setModelId(uint16 modelId, sol::object const& slotObj);
     uint16 getCostume();
@@ -303,8 +311,12 @@ public:
 
     uint8 getGMLevel();
     void  setGMLevel(uint8 level);
+    void  setVisibleGMLevel(uint8 level);
+    uint8 getVisibleGMLevel();
     bool  getGMHidden();
     void  setGMHidden(bool isHidden);
+    bool  getWallhack();
+    void  setWallhack(bool enable);
 
     bool isJailed();
     void jail();
@@ -510,6 +522,7 @@ public:
 
     void recalculateSkillsTable();
     void recalculateAbilitiesTable();
+    auto getEntitiesInRange(CLuaBaseEntity* PLuaEntityTarget, sol::variadic_args va) -> sol::table;
 
     // Parties and Alliances
     auto   getParty() -> sol::table;
@@ -559,8 +572,6 @@ public:
     bool  isInDynamis();
     void  setEnteredBattlefield(bool entered);
     bool  hasEnteredBattlefield();
-    void  sendTimerPacket(uint32 seconds);
-    void  sendClearTimerPacket();
 
     // Battle Utilities
     bool isAlive();
@@ -570,10 +581,10 @@ public:
     void sendRaise(uint8 raiseLevel);
     void sendReraise(uint8 raiseLevel);
     void sendTractor(float xPos, float yPos, float zPos, uint8 rotation);
+    void allowSendRaisePrompt();
 
-    void countdown(sol::object const& secondsObj,
-                   sol::object const& bar1NameObj, sol::object const& bar1ValObj,
-                   sol::object const& bar2NameObj, sol::object const& bar2ValObj);
+    void countdown(sol::object const& secondsObj);
+    void objectiveUtility(sol::object const& obj);
     void enableEntities(sol::object const& obj);
     void independentAnimation(CLuaBaseEntity* PTarget, uint16 animId, uint8 mode);
 
@@ -620,7 +631,7 @@ public:
     void  updateEnmity(CLuaBaseEntity* PEntity);
     void  transferEnmity(CLuaBaseEntity* entity, uint8 percent, float range);
     void  updateEnmityFromDamage(CLuaBaseEntity* PEntity, int32 damage); // Adds Enmity to player for specified mob for the damage specified
-    void  updateEnmityFromCure(CLuaBaseEntity* PEntity, int32 amount);
+    void  updateEnmityFromCure(CLuaBaseEntity* PEntity, int32 amount, sol::object const& fixedCE, sol::object const& fixedVE);
     void  resetEnmity(CLuaBaseEntity* PEntity);
     void  updateClaim(sol::object const& entity);
     bool  hasEnmity();
@@ -638,7 +649,8 @@ public:
     bool   canGainStatusEffect(uint16 effect, sol::object const& powerObj);
     bool   hasStatusEffect(uint16 StatusID, sol::object const& SubType);
     uint16 hasStatusEffectByFlag(uint16 StatusID);
-    uint8  countEffect(uint16 StatusID); // Gets the number of effects of a specific type on the player
+    uint8  countEffect(uint16 StatusID);     // Gets the number of effects of a specific type on the entity
+    uint8  countEffectWithFlag(uint32 flag); // Gets the number of effects with a flag on the entity
 
     bool   delStatusEffect(uint16 StatusID, sol::object const& SubType);
     void   delStatusEffectsByFlag(uint32 flag, sol::object const& silent);
@@ -657,9 +669,11 @@ public:
 
     void addLatent(uint16 condID, uint16 conditionValue, uint16 mID, int16 modValue);
     bool delLatent(uint16 condID, uint16 conditionValue, uint16 mID, int16 modValue);
+    bool hasAllLatentsActive(uint8 slot);
 
     void   fold();
     void   doWildCard(CLuaBaseEntity* PEntity, uint8 total);
+    bool   doRandomDeal(CLuaBaseEntity* PTarget);
     bool   addCorsairRoll(uint8 casterJob, uint8 bustDuration, uint16 effectID, uint16 power, uint32 tick, uint32 duration,
                           sol::object const& arg6, sol::object const& arg7, sol::object const& arg8);
     bool   hasCorsairEffect();
@@ -677,13 +691,14 @@ public:
     void  setStatDebilitation(uint16 statDebil);
 
     // Damage Calculation
-    uint16 getStat(uint16 statId); // STR,DEX,VIT,AGI,INT,MND,CHR,ATT,DEF
+    uint16 getStat(uint16 statId, sol::variadic_args va); // STR,DEX,VIT,AGI,INT,MND,CHR,ATT,DEF
     uint16 getACC();
     uint16 getEVA();
     int    getRACC();
     uint16 getRATT();
     uint16 getILvlMacc();
     uint16 getILvlSkill();
+    uint16 getILvlParry();
     bool   isSpellAoE(uint16 spellId);
 
     int32 physicalDmgTaken(double damage, sol::variadic_args va);
@@ -693,15 +708,14 @@ public:
     void  handleAfflatusMiseryDamage(double damage);
 
     bool   isWeaponTwoHanded();
-    int    getMeleeHitDamage(CLuaBaseEntity* PLuaBaseEntity, sol::object const& arg1); // gets the damage of a single hit vs the specified mob
-    uint16 getWeaponDmg();                                                             // gets the current equipped weapons' DMG rating
-    uint16 getWeaponDmgRank();                                                         // gets the current equipped weapons' DMG rating for Rank calc
-    uint16 getOffhandDmg();                                                            // gets the current equipped offhand's DMG rating (used in WS calcs)
-    uint16 getOffhandDmgRank();                                                        // gets the current equipped offhand's DMG rating for Rank calc
-    uint16 getRangedDmg();                                                             // Get ranged weapon DMG rating
-    uint16 getRangedDmgRank();                                                         // Get ranged weapond DMG rating used for calculating rank
-    uint16 getAmmoDmg();                                                               // Get ammo DMG rating
-    uint16 getWeaponHitCount(bool offhand);                                            // Get PC weapon hit count (Occasionally Attacks N times weapons)
+    uint16 getWeaponDmg();                  // gets the current equipped weapons' DMG rating
+    uint16 getWeaponDmgRank();              // gets the current equipped weapons' DMG rating for Rank calc
+    uint16 getOffhandDmg();                 // gets the current equipped offhand's DMG rating (used in WS calcs)
+    uint16 getOffhandDmgRank();             // gets the current equipped offhand's DMG rating for Rank calc
+    uint16 getRangedDmg();                  // Get ranged weapon DMG rating
+    uint16 getRangedDmgRank();              // Get ranged weapond DMG rating used for calculating rank
+    uint16 getAmmoDmg();                    // Get ammo DMG rating
+    uint16 getWeaponHitCount(bool offhand); // Get PC weapon hit count (Occasionally Attacks N times weapons)
 
     void removeAmmo();
 
@@ -716,6 +730,7 @@ public:
 
     int32 takeSpellDamage(CLuaBaseEntity* caster, CLuaSpell* spell, int32 damage, uint8 atkType, uint8 dmgType);
     int32 takeSwipeLungeDamage(CLuaBaseEntity* caster, int32 damage, uint8 atkType, uint8 dmgType);
+    int32 checkDamageCap(int32 damage);
 
     // Pets and Automations
     void spawnPet(sol::object const& arg0);
@@ -730,10 +745,10 @@ public:
     void   removeAllSimpleGambits();
     void   setTrustTPSkillSettings(uint16 trigger, uint16 select, sol::object const& value);
 
-    bool isJugPet();
     bool hasValidJugPetItem();
 
     bool   hasPet();
+    bool   hasJugPet();
     auto   getPet() -> std::optional<CLuaBaseEntity>;
     uint32 getPetID();
     bool   isAutomaton();
@@ -791,6 +806,7 @@ public:
     bool   isNM();
 
     uint8  getModelSize();
+    void   setMeleeRange(float range);
     void   setMobFlags(uint32 flags, sol::object const& mobId); // Used to manipulate the mob's flags, such as changing size.
     uint32 getMobFlags();
 
@@ -849,7 +865,9 @@ public:
     void castSpell(sol::object const& spell, sol::object const& entity); // forces a mob to cast a spell (parameter = spell ID, otherwise picks a spell from its list)
     void useJobAbility(uint16 skillID, sol::object const& pet);          // forces a job ability use (players/pets only)
     void useMobAbility(sol::variadic_args va);                           // forces a mob to use a mobability (parameter = skill ID)
+    auto getAbilityDistance(uint16 skillID) -> float;                    // Returns the specified distance for mob skill
     bool hasTPMoves();
+    void drawIn(sol::variadic_args va); // Forces a mob to draw-in the specified target, or its current target with no args
 
     void weaknessTrigger(uint8 level);
     void restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 restoreType);
@@ -879,6 +897,9 @@ public:
     auto getChocoboRaisingInfo() -> sol::table;
     bool setChocoboRaisingInfo(sol::table const& table);
     bool deleteRaisedChocobo();
+
+    void clearActionQueue();
+    void clearTimerQueue();
 
     void  setMannequinPose(uint16 itemID, uint8 race, uint8 pose);
     uint8 getMannequinPose(uint16 itemID);

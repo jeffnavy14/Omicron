@@ -137,8 +137,36 @@ CZone::CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, ui
 CZone::~CZone()
 {
     destroy(m_TreasurePool);
-    destroy(m_CampaignHandler);
     destroy(m_zoneEntities);
+    destroy(m_BattlefieldHandler);
+
+    if (m_CampaignHandler)
+    {
+        destroy(m_CampaignHandler);
+    }
+
+    if (m_navMesh)
+    {
+        destroy(m_navMesh);
+    }
+
+    if (lineOfSight)
+    {
+        destroy(lineOfSight);
+    }
+
+    // Manually delete and clear m_triggerAreaList
+    for (auto triggerArea : m_triggerAreaList)
+    {
+        destroy(triggerArea);
+    }
+    m_triggerAreaList.clear();
+
+    for (auto zoneLine : m_zoneLineList)
+    {
+        destroy(zoneLine);
+    }
+    m_zoneLineList.clear();
 }
 
 ZONEID CZone::GetID()
@@ -196,42 +224,42 @@ const std::string& CZone::getName()
     return m_zoneName;
 }
 
-uint8 CZone::GetSoloBattleMusic() const
+uint16 CZone::GetSoloBattleMusic() const
 {
     return m_zoneMusic.m_bSongS;
 }
 
-uint8 CZone::GetPartyBattleMusic() const
+uint16 CZone::GetPartyBattleMusic() const
 {
     return m_zoneMusic.m_bSongM;
 }
 
-uint8 CZone::GetBackgroundMusicDay() const
+uint16 CZone::GetBackgroundMusicDay() const
 {
     return m_zoneMusic.m_songDay;
 }
 
-uint8 CZone::GetBackgroundMusicNight() const
+uint16 CZone::GetBackgroundMusicNight() const
 {
     return m_zoneMusic.m_songNight;
 }
 
-void CZone::SetSoloBattleMusic(uint8 music)
+void CZone::SetSoloBattleMusic(uint16 music)
 {
     m_zoneMusic.m_bSongS = music;
 }
 
-void CZone::SetPartyBattleMusic(uint8 music)
+void CZone::SetPartyBattleMusic(uint16 music)
 {
     m_zoneMusic.m_bSongM = music;
 }
 
-void CZone::SetBackgroundMusicDay(uint8 music)
+void CZone::SetBackgroundMusicDay(uint16 music)
 {
     m_zoneMusic.m_songDay = music;
 }
 
-void CZone::SetBackgroundMusicNight(uint8 music)
+void CZone::SetBackgroundMusicNight(uint16 music)
 {
     m_zoneMusic.m_songNight = music;
 }
@@ -247,11 +275,16 @@ QueryByNameResult_t const& CZone::queryEntitiesByName(std::string const& pattern
 {
     TracyZoneScoped;
 
-    // Use memoization since lookups are typically for the same mob names
-    auto result = m_queryByNameResults.find(pattern);
-    if (result != m_queryByNameResults.end())
+    // Always ignore cache for queries explicitly looking for dynamic entities
+    // TODO: make this memoization work for dynamic entities somehow?
+    if (pattern.rfind("DE_", 0) != 0)
     {
-        return result->second;
+        // Use memoization since lookups are typically for the same mob names
+        auto result = m_queryByNameResults.find(pattern);
+        if (result != m_queryByNameResults.end())
+        {
+            return result->second;
+        }
     }
 
     std::vector<CBaseEntity*> entities;
@@ -321,20 +354,20 @@ void CZone::LoadZoneLines()
     TracyZoneScoped;
     static const char fmtQuery[] = "SELECT zoneline, tozone, tox, toy, toz, rotation FROM zonelines WHERE fromzone = %u";
 
-    int32 ret = sql->Query(fmtQuery, m_zoneID);
+    int32 ret = _sql->Query(fmtQuery, m_zoneID);
 
-    if (ret != SQL_ERROR && sql->NumRows() != 0)
+    if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
-        while (sql->NextRow() == SQL_SUCCESS)
+        while (_sql->NextRow() == SQL_SUCCESS)
         {
             zoneLine_t* zl = new zoneLine_t;
 
-            zl->m_zoneLineID     = (uint32)sql->GetIntData(0);
-            zl->m_toZone         = (uint16)sql->GetIntData(1);
-            zl->m_toPos.x        = sql->GetFloatData(2);
-            zl->m_toPos.y        = sql->GetFloatData(3);
-            zl->m_toPos.z        = sql->GetFloatData(4);
-            zl->m_toPos.rotation = (uint8)sql->GetIntData(5);
+            zl->m_zoneLineID     = (uint32)_sql->GetIntData(0);
+            zl->m_toZone         = (uint16)_sql->GetIntData(1);
+            zl->m_toPos.x        = _sql->GetFloatData(2);
+            zl->m_toPos.y        = _sql->GetFloatData(3);
+            zl->m_toPos.z        = _sql->GetFloatData(4);
+            zl->m_toPos.rotation = (uint8)_sql->GetIntData(5);
 
             m_zoneLineList.emplace_back(zl);
         }
@@ -358,13 +391,13 @@ void CZone::LoadZoneLines()
 void CZone::LoadZoneWeather()
 {
     TracyZoneScoped;
-    static const char* Query = "SELECT weather FROM zone_weather WHERE zone = %u;";
+    static const char* Query = "SELECT weather FROM zone_weather WHERE zone = %u";
 
-    int32 ret = sql->Query(Query, m_zoneID);
-    if (ret != SQL_ERROR && sql->NumRows() != 0)
+    int32 ret = _sql->Query(Query, m_zoneID);
+    if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
-        sql->NextRow();
-        auto* weatherBlob = reinterpret_cast<uint16*>(sql->GetData(0));
+        _sql->NextRow();
+        auto* weatherBlob = reinterpret_cast<uint16*>(_sql->GetData(0));
         for (uint16 i = 0; i < WEATHER_CYCLE; i++)
         {
             if (weatherBlob[i])
@@ -398,27 +431,27 @@ void CZone::LoadZoneSettings()
                                "zone.zonetype,"
                                "bcnm.name "
                                "FROM zone_settings AS zone "
-                               "LEFT JOIN bcnm_info AS bcnm "
+                               "LEFT JOIN bcnm_records AS bcnm "
                                "USING (zoneid) "
                                "WHERE zoneid = %u "
                                "LIMIT 1";
 
-    if (sql->Query(Query, m_zoneID) != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+    if (_sql->Query(Query, m_zoneID) != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
-        m_zoneName.insert(0, (const char*)sql->GetData(0));
+        m_zoneName.insert(0, (const char*)_sql->GetData(0));
 
-        inet_pton(AF_INET, (const char*)sql->GetData(1), &m_zoneIP);
-        m_zonePort              = (uint16)sql->GetUIntData(2);
-        m_zoneMusic.m_songDay   = (uint8)sql->GetUIntData(3);           // background music (day)
-        m_zoneMusic.m_songNight = (uint8)sql->GetUIntData(4);           // background music (night)
-        m_zoneMusic.m_bSongS    = (uint8)sql->GetUIntData(5);           // solo battle music
-        m_zoneMusic.m_bSongM    = (uint8)sql->GetUIntData(6);           // party battle music
-        m_tax                   = (uint16)(sql->GetFloatData(7) * 100); // tax for bazaar
-        m_miscMask              = (uint16)sql->GetUIntData(8);
+        inet_pton(AF_INET, (const char*)_sql->GetData(1), &m_zoneIP);
+        m_zonePort              = (uint16)_sql->GetUIntData(2);
+        m_zoneMusic.m_songDay   = (uint8)_sql->GetUIntData(3);           // background music (day)
+        m_zoneMusic.m_songNight = (uint8)_sql->GetUIntData(4);           // background music (night)
+        m_zoneMusic.m_bSongS    = (uint8)_sql->GetUIntData(5);           // solo battle music
+        m_zoneMusic.m_bSongM    = (uint8)_sql->GetUIntData(6);           // party battle music
+        m_tax                   = (uint16)(_sql->GetFloatData(7) * 100); // tax for bazaar
+        m_miscMask              = (uint16)_sql->GetUIntData(8);
 
-        m_zoneType = static_cast<ZONE_TYPE>(sql->GetUIntData(9));
+        m_zoneType = static_cast<ZONE_TYPE>(_sql->GetUIntData(9));
 
-        if (sql->GetData(10) != nullptr) // bcnmid cannot be used now, because they start from scratch
+        if (_sql->GetData(10) != nullptr) // bcnmid cannot be used now, because they start from scratch
         {
             m_BattlefieldHandler = new CBattlefieldHandler(this);
         }
@@ -426,9 +459,9 @@ void CZone::LoadZoneSettings()
         {
             m_TreasurePool = new CTreasurePool(TREASUREPOOL_ZONE);
         }
-        if (m_CampaignHandler->m_PZone == nullptr)
+        if (m_CampaignHandler && m_CampaignHandler->m_PZone == nullptr)
         {
-            m_CampaignHandler = nullptr;
+            destroy(m_CampaignHandler);
         }
     }
     else
@@ -999,30 +1032,30 @@ void CZone::CharZoneIn(CCharEntity* PChar)
         PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_MOUNTED);
     }
 
-    if (PChar->m_Costume != 0)
+    if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_COSTUME))
     {
-        PChar->m_Costume = 0;
-        PChar->StatusEffectContainer->DelStatusEffect(EFFECT_COSTUME);
+        PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_COSTUME);
     }
 
     PChar->ReloadPartyInc();
 
-    if (PChar->PParty != nullptr)
+    // Zone-wide treasure pool takes precendence over all others
+    if (m_TreasurePool && m_TreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
     {
-        if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-        else
-        {
-            PChar->PParty->ReloadTreasurePool(PChar);
-        }
+        PChar->PTreasurePool = m_TreasurePool;
+        PChar->PTreasurePool->AddMember(PChar);
     }
     else
     {
-        PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-        PChar->PTreasurePool->AddMember(PChar);
+        if (PChar->PParty)
+        {
+            PChar->PParty->ReloadTreasurePool(PChar);
+        }
+        else
+        {
+            PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
+            PChar->PTreasurePool->AddMember(PChar);
+        }
     }
 
     if (!(m_zoneType & ZONE_TYPE::INSTANCED))
@@ -1139,6 +1172,14 @@ void CZone::CharZoneOut(CCharEntity* PChar)
     if (PChar->PTreasurePool != nullptr) // TODO: Condition for eliminating problems with MobHouse, we need to solve it once and for all!
     {
         PChar->PTreasurePool->DelMember(PChar);
+    }
+
+    // If zone-wide treasure pool but no players in zone then destroy current pool and create new pool
+    // this prevents loot from staying in zone pool after the last player leaves the zone
+    if (m_TreasurePool && m_TreasurePool->GetPoolType() == TREASUREPOOL_ZONE && m_zoneEntities->CharListEmpty())
+    {
+        destroy(m_TreasurePool);
+        m_TreasurePool = new CTreasurePool(TREASUREPOOL_ZONE);
     }
 
     PChar->ClearTrusts(); // trusts don't survive zone lines

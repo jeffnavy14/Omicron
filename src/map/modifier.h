@@ -41,6 +41,8 @@ enum class Mod
     MND = 13, // Mind
     CHR = 14, // Charisma
 
+    TWOHAND_STR = 218, // Same as STR, but only active when using a two handed weapon (e.g. Hasso)
+
     // Magic Evasion versus elements
     // This has been repeatedly mixed up with SDT - be careful!
     FIRE_MEVA    = 15, // Fire Magic Evasion
@@ -67,6 +69,8 @@ enum class Mod
 
     ACC  = 25, // Accuracy
     RACC = 26, // Ranged Accuracy
+
+    TWOHAND_ACC = 219, // Same as ACC, but only active when using a two handed weapon (e.g. Hasso)
 
     ENMITY                = 27,  // Enmity
     ENMITY_LOSS_REDUCTION = 427, // Reduces Enmity lost when taking damage
@@ -96,25 +100,6 @@ enum class Mod
 
     WSACC = 48, // Weaponskill Accuracy
 
-    // Specific Damage Taken vs physical damage type
-    // Value is stored as a percentage of damage reduction (to within 1000)
-    // Example: 1000 = 100%, 875= 87.5%
-    SLASH_SDT  = 49, // Slash Damage Taken
-    PIERCE_SDT = 50, // Piercing Damage Taken
-    IMPACT_SDT = 51, // Impact Damage Taken
-    HTH_SDT    = 52, // Hand-To-Hand Damage Taken
-
-    // Elemental SDT
-    // This has been repeatedly mixed up with RESISTANCE - be careful!
-    FIRE_SDT    = 54, // Fire Damage Taken
-    ICE_SDT     = 55, // Ice Damage Taken
-    WIND_SDT    = 56, // Wind Damage Taken
-    EARTH_SDT   = 57, // Earth Damage Taken
-    THUNDER_SDT = 58, // Thunder Damage Taken
-    WATER_SDT   = 59, // Water Damage Taken
-    LIGHT_SDT   = 60, // Light Damage Taken
-    DARK_SDT    = 61, // Dark Damage Taken
-
     ATTP = 62, // % Attack
     DEFP = 63, // % Defense
 
@@ -123,15 +108,14 @@ enum class Mod
 
     RATTP = 66, // % Ranged Attack
 
-    EVA             = 68,  // Evasion
-    RDEF            = 69,  // Ranged Defense
-    REVA            = 70,  // Ranged Evasion
-    MPHEAL          = 71,  // MP Recovered while healing
-    HPHEAL          = 72,  // HP Recovered while healing
-    STORETP         = 73,  // Increases the rate at which TP is gained
-    TACTICAL_PARRY  = 486, // Tactical Parry Tp Bonus
-    MAG_BURST_BONUS = 487, // Magic Burst Bonus Modifier (percent)
-    INHIBIT_TP      = 488, // Inhibits TP Gain (percent)
+    EVA            = 68,  // Evasion
+    RDEF           = 69,  // Ranged Defense
+    REVA           = 70,  // Ranged Evasion
+    MPHEAL         = 71,  // MP Recovered while healing
+    HPHEAL         = 72,  // HP Recovered while healing
+    STORETP        = 73,  // Increases the rate at which TP is gained
+    TACTICAL_PARRY = 486, // Tactical Parry Tp Bonus
+    INHIBIT_TP     = 488, // Inhibits TP Gain (percent)
 
     // Working Skills (weapon combat skills)
     // These are NOT item Level skill, they are skill in your status menu. iLvl "skill" happens in item_weapon.sql
@@ -204,23 +188,70 @@ enum class Mod
     FISHING_SKILL_GAIN    = 155, // food for fishing skill ups
 
     // Damage - 10000 base, 375 = 3.75%
-    DMG         = 160, // Damage Taken %
-    DMGPHYS     = 161, // Physical Damage Taken %
-    DMGPHYS_II  = 190, // Physical Damage Taken II % (Burtgang)
-    DMGBREATH   = 162, // Breath Damage Taken %
-    DMGMAGIC    = 163, // Magic Damage Taken %
-    DMGMAGIC_II = 831, // Magic Damage Taken II % (Aegis)
-    DMGRANGE    = 164, // Range Damage Taken %
-    DMG_AOE     = 158, // Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
+    DMG                     = 160, // Damage Taken %
+    DMGPHYS                 = 161, // Physical Damage Taken %
+    DMGPHYS_II              = 190, // Physical Damage Taken II % (Burtgang)
+    UDMGPHYS                = 387, // Uncapped Damage Multipliers
+    DMGBREATH               = 162, // Breath Damage Taken %
+    UDMGBREATH              = 388, // Used in sentinel, invincible, physical shield etc
+    DMGMAGIC                = 163, // Magic Damage Taken %
+    DMGMAGIC_II             = 831, // Magic Damage Taken II % (Aegis)
+    UDMGMAGIC               = 389,
+    DMGRANGE                = 164, // Range Damage Taken %
+    UDMGRANGE               = 390,
+    DMG_AOE                 = 158, // Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
+    RECEIVED_DAMAGE_CAP     = 221, // Caps the damage taken recieved by the attacker
+    RECEIVED_DAMAGE_VARIANT = 222, // The variance that you want the damage cap to changed by. Ex: If you want the damage to be from 90-100 instead of a flat 100 you can set this to 10. It will random the value between 90-100 if the damage is above 100.
 
-    // Uncapped damage - 10000 base, 375 = 3.75%
-    UDMGPHYS   = 387, // Uncapped Damage Multipliers
-    UDMGBREATH = 388, // Used in sentinel, invincible, physical shield etc
-    UDMGMAGIC  = 389, //
-    UDMGRANGE  = 390, //
+    // Specific Damage Taken vs physical damage type
+    // Value is stored as a percentage of damage reduction (to within 1000)
+    // Example: 1000 = 100%, 875= 87.5%
+    SLASH_SDT  = 49, // Slash Damage Taken
+    PIERCE_SDT = 50, // Piercing Damage Taken
+    IMPACT_SDT = 51, // Impact Damage Taken
+    HTH_SDT    = 52, // Hand-To-Hand Damage Taken
+
+    // Elemental SDT. BASE 10000. This has been repeatedly mixed up with RESISTANCE - be careful!
+    FIRE_SDT    = 54, // Fire Damage Taken
+    ICE_SDT     = 55, // Ice Damage Taken
+    WIND_SDT    = 56, // Wind Damage Taken
+    EARTH_SDT   = 57, // Earth Damage Taken
+    THUNDER_SDT = 58, // Thunder Damage Taken
+    WATER_SDT   = 59, // Water Damage Taken
+    LIGHT_SDT   = 60, // Light Damage Taken
+    DARK_SDT    = 61, // Dark Damage Taken
+
+    // Occasionally annuls damage taken. Modifier value = chance in %
+    NULL_DAMAGE          = 142, // Occasionally annuls all/any damage.
+    NULL_PHYSICAL_DAMAGE = 416, // Occasionally annuls physical damage.
+    NULL_BREATH_DAMAGE   = 143, // Occasionally annuls breath damage.
+    NULL_MAGICAL_DAMAGE  = 476, // Occasionally annuls magical damage.
+    NULL_RANGED_DAMAGE   = 239, // Occasionally annuls ranged damage.
+    FIRE_NULL            = 467, // Occasionally annuls fire elemental damage.
+    ICE_NULL             = 468, // Occasionally annuls ice elemental damage.
+    WIND_NULL            = 469, // Occasionally annuls wind elemental damage.
+    EARTH_NULL           = 470, // Occasionally annuls earth elemental damage.
+    LTNG_NULL            = 471, // Occasionally annuls thunder elemental damage.
+    WATER_NULL           = 472, // Occasionally annuls water elemental damage.
+    LIGHT_NULL           = 473, // Occasionally annuls light elemental damage.
+    DARK_NULL            = 474, // Occasionally annuls dark elemental damage.
+
+    // Occasionally absorbs damage taken. Modifier value = chance in %
+    ABSORB_DMG_CHANCE = 480, // Occasionally absorbs all/any damage.
+    PHYS_ABSORB       = 512, // Occasionally absorbs physical damage. USED FOR RANGED ASWELL.
+    MAGIC_ABSORB      = 475, // Occasionally absorbs magical damage.
+    FIRE_ABSORB       = 459, // Occasionally absorbs fire elemental damage.
+    ICE_ABSORB        = 460, // Occasionally absorbs ice elemental damage.
+    WIND_ABSORB       = 461, // Occasionally absorbs wind elemental damage.
+    EARTH_ABSORB      = 462, // Occasionally absorbs earth elemental damage.
+    LTNG_ABSORB       = 463, // Occasionally absorbs thunder elemental damage.
+    WATER_ABSORB      = 464, // Occasionally absorbs water elemental damage.
+    LIGHT_ABSORB      = 465, // Occasionally absorbs light elemental damage.
+    DARK_ABSORB       = 466, // Occasionally absorbs dark elemental damage.
 
     // Crit Damage / Delay
     CRITHITRATE              = 165, // Raises chance to crit
+    CRITHITRATE_ONLY_WEP     = 141, // Raises chance to crit (but only for attacks with the specific weapon that has the mod)
     CRIT_DMG_INCREASE        = 421, // Raises the damage of critical hit by percent %
     RANGED_CRIT_DMG_INCREASE = 964, // Increases ranged critical damage by a percent
     ENEMYCRITRATE            = 166, // Raises chance enemy will crit
@@ -235,10 +266,11 @@ enum class Mod
     TACTICAL_GUARD = 899, // Tp increase when guarding
     GUARD_PERCENT  = 976, // Guard Percent
 
-    HASTE_MAGIC    = 167, // Haste (and Slow) from magic - 10000 base, 375 = 3.75%
-    HASTE_ABILITY  = 383, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75%
-    HASTE_GEAR     = 384, // Haste (and Slow) from equipment - 10000 base, 375 = 3.75%
-    SPELLINTERRUPT = 168, // % Spell Interruption Rate
+    HASTE_MAGIC           = 167, // Haste (and Slow) from magic - 10000 base, 375 = 3.75%
+    HASTE_ABILITY         = 383, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75%
+    HASTE_GEAR            = 384, // Haste (and Slow) from equipment - 10000 base, 375 = 3.75%
+    TWOHAND_HASTE_ABILITY = 217, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75% - Only applies to auto attacks when using two handed weapons, additive to HASTE_ABILITY
+    SPELLINTERRUPT        = 168, // % Spell Interruption Rate
 
     // New movement speed modifiers.
     MOVE_SPEED_OVERIDE        = 169, // Modifier used to overide regular speed caps. (GM speed and Feast of Swords)
@@ -435,6 +467,7 @@ enum class Mod
     PALISADE_BLOCK_BONUS   = 1066, // Increases base block rate while under the effects of Palisade (additive, not multiplicative)
     REPRISAL_BLOCK_BONUS   = 1067, // Increases block rate while under the effects of Reprisal (multiplicative, not additive)
     REPRISAL_SPIKES_BONUS  = 1068, // Increases Reprisal spikes damage by percentage (e.g. mod value 50 = +50% spikes damage)
+    SHIELD_BARRIER         = 1082, // Grants a bonus to Protect spells cast by self while a shield is equipped.
 
     // Dark Knight
     ARCANE_CIRCLE_DURATION = 858,  // Arcane Circle extended duration in seconds
@@ -444,10 +477,13 @@ enum class Mod
     DESPERATE_BLOWS        = 906,  // Adds ability haste to Last Resort
     STALWART_SOUL          = 907,  // Reduces damage taken from Souleater
     DREAD_SPIKES_EFFECT    = 998,  // Percent increase to total HP drain for Dread Spikes
-    ENHANCES_BLOOD_WEAPON  = 1070, // Enhances "Blood Weapon" effect (increases Blood Weapon's duration in seconds)
     DARK_MAGIC_CAST        = 1071, // Reduces Dark Magic Casting Time by percentage (e.g. mod value -10 = -10% cast time)
     DARK_MAGIC_DURATION    = 1072, // Increases Dark Magic spell durations by percentage (e.g. mod value 10 = +10% duration)
+    ENHANCES_BLOOD_WEAPON  = 1070, // Enhances "Blood Weapon" effect (increases Blood Weapon's duration in seconds)
     ENHANCES_DARK_SEAL     = 1073, // Enhances "Dark Seal" effect (Increases Dark Magic spell durations by 10% per Dark Seal merit while Dark Seal active)
+    ENHANCES_DIABOLIC_EYE  = 275,  // Diabolic Eye duration + "modifier-value" seconds per Diabolic Eye merit.
+    ENHANCES_NETHER_VOID   = 1083, // Enhances "Nether Void" effect (Increases the potency of the next Absorb or Drain Dark Magic by <value>%
+    ENHANCES_MUTED_SOUL    = 1084, // Enhances "Muted Soul" effect (Adds 3% Zanshin rate per MUTED_SOUL merit level)
 
     // Beastmaster
     TAME                = 304,  // Additional percent chance to charm
@@ -456,7 +492,7 @@ enum class Mod
     CHARM_CHANCE        = 391,  // extra chance to charm (light+apollo staff ect)
     FERAL_HOWL_DURATION = 503,  // +20% duration per merit when wearing augmented Monster Jackcoat +2
     JUG_LEVEL_RANGE     = 564,  // Decreases the level range of spawned jug pets. Maxes out at 2.
-    CALL_BEAST_DELAY    = 572,  // Lowers Call Beast recast
+    CALL_BEAST_DELAY    = 273,  // Lowers Call Beast recast
     SIC_READY_RECAST    = 1052, // SIC/Ready recast reduction (seconds)
     TANDEM_STRIKE_POWER = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
     TANDEM_BLOW_POWER   = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
@@ -514,12 +550,13 @@ enum class Mod
     THIRD_EYE_BONUS           = 1055, // TODO: Bonus Third Eye Evasion (count)
 
     // Ninja
-    UTSUSEMI          = 307, // Everyone's favorite --tracks shadows.
-    UTSUSEMI_BONUS    = 900, // Extra shadows from gear
-    NINJA_TOOL        = 308, // Percent chance to not use a tool.
-    NIN_NUKE_BONUS    = 522, // magic attack bonus for NIN nukes
-    DAKEN             = 911, // chance to throw a shuriken without consuming it
-    NINJUTSU_DURATION = 1000,
+    UTSUSEMI             = 307, // Everyone's favorite --tracks shadows.
+    UTSUSEMI_BONUS       = 900, // Extra shadows from gear
+    NINJA_TOOL           = 308, // Percent chance to not use a tool.
+    NIN_NUKE_BONUS_INNIN = 223, // Ninjutsu damage multiplier from Innin.
+    NIN_NUKE_BONUS_GEAR  = 522, // Ninjutsu damage multiplier from gear.
+    DAKEN                = 911, // chance to throw a shuriken without consuming it
+    NINJUTSU_DURATION    = 1000,
 
     // Dragoon
     ANCIENT_CIRCLE_DURATION    = 859,  // Ancient Circle extended duration in seconds
@@ -552,7 +589,7 @@ enum class Mod
     BP_DELAY_II               = 541,  // Blood Pact Delay Reduction II
     BP_DAMAGE                 = 126,  // Blood Pact: Rage Damage increase percentage
     BLOOD_BOON                = 913,  // Occasionally cuts down MP cost of Blood Pact abilities. Does not affect abilities that require Astral Flow.
-    AVATARS_FAVOR_ENHANCE     = 630,  // Enhances Avatars Favor Effect by 1 tier per point
+    AVATARS_FAVOR_ENHANCE     = 141,  // Enhances Avatars Favor Effect by 1 tier per point
     AVATAR_LVL_BONUS          = 1040, // Avatar: Lv.+ (Increases all avatar's base level above 99)
     CARBUNCLE_LVL_BONUS       = 1041, // Carbuncle: Lv.+ (Increases Carbuncle's base level above 99)
     CAIT_SITH_LVL_BONUS       = 1042, // Cait Sith: Lv.+ (Increases Cait Sith's base level above 99)
@@ -570,6 +607,7 @@ enum class Mod
     EXP_BONUS         = 382,  //
     ROLL_RANGE        = 528,  // Additional range for COR roll abilities.
     JOB_BONUS_CHANCE  = 542,  // Chance to apply job bonus to COR roll without having the job in the party.
+    RANDOM_DEAL_BONUS = 220,  // % chance to reset 2 abilities
     TRIPLE_SHOT_RATE  = 999,  // Percent increase to Triple Shot Rate
     QUICK_DRAW_RECAST = 1060, // Quick Draw Charge Reduction (seconds)
 
@@ -720,6 +758,7 @@ enum class Mod
     PARRY_SPIKES                = 1022, // Battuta parry spikes rate
     PARRY_SPIKES_DMG            = 1023, // Battuta parry spikes damage
     SPECIAL_ATTACK_EVASION      = 1024, // Foil "Special Attack" evasion
+    AUGMENTS_SLEIGHT_OF_SWORD   = 277,  // Enhances bonus "Subtle Blow" per merit.
 
     // Stores the amount of elemental affinity (elemental staves mostly) - damage, acc, and perpetuation is all handled separately
     FIRE_AFFINITY_DMG    = 347, // They're stored separately due to Magian stuff - they can grant different levels of
@@ -789,11 +828,9 @@ enum class Mod
     TA_TRIPLE_DMG_RATE       = 409, // Triple attack's triple damage chance %.
     ZANSHIN_DOUBLE_DAMAGE    = 410, // Zanshin's double damage chance %.
     RAPID_SHOT_DOUBLE_DAMAGE = 479, // Rapid shot's double damage chance %.
-    ABSORB_DMG_CHANCE        = 480, // Chance to absorb damage %
     EXTRA_DUAL_WIELD_ATTACK  = 481, // Chance to land an extra attack when dual wielding
     EXTRA_KICK_ATTACK        = 482, // Occasionally allows a second Kick Attack during an attack round without the use of Footwork.
     SAMBA_DOUBLE_DAMAGE      = 415, // Double damage chance when samba is up.
-    NULL_PHYSICAL_DAMAGE     = 416, // Occasionally annuls damage from physical attacks, in percents
     QUICK_DRAW_TRIPLE_DAMAGE = 417, // Chance to do triple damage with quick draw.
     BAR_ELEMENT_NULL_CHANCE  = 418, // Bar Elemental spells will occasionally NULLify damage of the same element.
     GRIMOIRE_INSTANT_CAST    = 419, // Spells that match your current Arts will occasionally cast instantly, without recast.
@@ -804,39 +841,18 @@ enum class Mod
     RERAISE_II  = 457, // Reraise II.
     RERAISE_III = 458, // Reraise III.
 
-    // Elemental Absorb Chance
-    FIRE_ABSORB  = 459, // Occasionally absorbs fire elemental damage, in percents
-    ICE_ABSORB   = 460, // Occasionally absorbs ice elemental damage, in percents
-    WIND_ABSORB  = 461, // Occasionally absorbs wind elemental damage, in percents
-    EARTH_ABSORB = 462, // Occasionally absorbs earth elemental damage, in percents
-    LTNG_ABSORB  = 463, // Occasionally absorbs thunder elemental damage, in percents
-    WATER_ABSORB = 464, // Occasionally absorbs water elemental damage, in percents
-    LIGHT_ABSORB = 465, // Occasionally absorbs light elemental damage, in percents
-    DARK_ABSORB  = 466, // Occasionally absorbs dark elemental damage, in percents
+    ABSORB_DMG_TO_MP = 516, // Unlike PLD gear mod, works on all damage types (Ethereal Earring)
 
-    // Elemental Null Chance
-    FIRE_NULL  = 467, //
-    ICE_NULL   = 468, //
-    WIND_NULL  = 469, //
-    EARTH_NULL = 470, //
-    LTNG_NULL  = 471, //
-    WATER_NULL = 472, //
-    LIGHT_NULL = 473, //
-    DARK_NULL  = 474, //
-
-    MAGIC_ABSORB       = 475, // Occasionally absorbs magic damage taken, in percents
-    MAGIC_NULL         = 476, // Occasionally annuls magic damage taken, in percents
-    NULL_RANGED_DAMAGE = 239, // Occasionally annuls ranged damage taken, in percents
-    PHYS_ABSORB        = 512, // Occasionally absorbs physical damage taken, in percents
-    ABSORB_DMG_TO_MP   = 516, // Unlike PLD gear mod, works on all damage types (Ethereal Earring)
-
+    ITEM_ADDEFFECT_LVADJUST = 278, // level correction factor to use, if any
+    ITEM_ADDEFFECT_PLACEHLD = 279, // placeholder, want to keep these together and 99% sure we'll use this
+    ITEM_ADDEFFECT_DSTAT    = 280, // value = attacker modifier to use as bonus dmg (mnd, int, etc)
     ITEM_ADDEFFECT_TYPE     = 431, // see procType table in scripts\globals\additional_effects.lua
     ITEM_SUBEFFECT          = 499, // Animation ID of Spikes and Additional Effects
     ITEM_ADDEFFECT_DMG      = 500, // Damage of an items Additional Effect or Spikes
     ITEM_ADDEFFECT_CHANCE   = 501, // Chance of an items Additional Effect or Spikes
     ITEM_ADDEFFECT_ELEMENT  = 950, // Element of the Additional Effect or Spikes, for resist purposes
     ITEM_ADDEFFECT_STATUS   = 951, // Status Effect ID to try to apply via Additional Effect or Spikes
-    ITEM_ADDEFFECT_POWER    = 952, // Base Power for effect in MOD_ITEM_ADDEFFECT_STATUS
+    ITEM_ADDEFFECT_POWER    = 952, // Base Power for effect in MOD_ITEM_ADDEFFECT_STATUS. Must be used for debuffs/buffs.
     ITEM_ADDEFFECT_DURATION = 953, // Base Duration for effect in MOD_ITEM_ADDEFFECT_STATUS
 
     GOV_CLEARS = 496, // 4% bonus per Grounds of Valor Page clear
@@ -857,8 +873,11 @@ enum class Mod
 
     APPRECIATE_GYSAHL_GREENS = 156, // Enhances food effect of Gysahl Greens
 
-    EAT_RAW_FISH = 412, // Without this, only Mithra can eat raw fish.
-    EAT_RAW_MEAT = 413, // Without this, only Galka can eat raw meat.
+    EAT_RAW_FISH    = 412, // Without this, only Mithra can eat raw fish (item cannot be used)
+    EAT_RAW_MEAT    = 413, // Without this, only Galka can eat raw meat (item cannot be used)
+    DRINK_DISTILLED = 159, // Without this, Distilled Water cannot be consumed (item can still be used)
+
+    EQUIPMENT_ONLY_RACE = 276, // An 8-bit flag that denotes that only a certain race(s) can use this equipment (0 means all races can use)
 
     ENHANCES_CURSNA_RCVD     = 67,   // Potency of "Cursna" effects received
     ENHANCES_CURSNA          = 310,  // Used by gear with the "Enhances Cursna" or "Cursna+" attribute
@@ -993,18 +1012,18 @@ enum class Mod
     DIG_BYPASS_FATIGUE = 1074, // Chocobo digging modifier found in "Blue Race Silks". Modifier works as a direct percent.
     BREATH_DMG_DEALT   = 1075, // Breath damage dealt
 
+    DAMAGE_LIMIT  = 1080, // Damage Limit increase, found on some traits. It's a flat value added to max pDIF (maxpDIF + DL/100) https://www.bg-wiki.com/ffxi/Damage_Limit%2B
+    DAMAGE_LIMITP = 1081, // Damage Limit +% increase, found on some gear. It's a multiplier added after flat Damage Limit ((maxpDIF + DL/100)*(100 + DLP/100)/100) https://www.ffxiah.com/forum/topic/56649/physical-damage-limit/
+
+    MAGIC_BURST_BONUS_CAPPED   = 487, // Magic Burst Bonus I from gear, Ancient Magic Merits, Innin merits and Atmas. Cap at 40% bonus (1.4 multiplier)
+    MAGIC_BURST_BONUS_UNCAPPED = 274, // Magic Burst Bonus II from gear, JP Gifts, BLM JPs and Job traits. No known cap.
+
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
 
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs:
-    // 141 to 143
-    // 159
-    // 217 to 223
-    // 273 to 280
-    //
-    // SPARE = 1080 and onward
+    // SPARE IDs: 1085 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

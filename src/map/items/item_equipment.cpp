@@ -29,16 +29,17 @@ CItemEquipment::CItemEquipment(uint16 id)
 {
     setType(ITEM_EQUIPMENT);
 
-    m_jobs          = 0;
-    m_modelID       = 0;
-    m_removeSlotID  = 0;
-    m_shieldSize    = 0;
-    m_scriptType    = 0;
-    m_reqLvl        = 255;
-    m_iLvl          = 0;
-    m_equipSlotID   = 255;
-    m_absorption    = 0;
-    m_superiorLevel = 0;
+    m_jobs             = 0;
+    m_modelID          = 0;
+    m_removeSlotID     = 0;
+    m_removeSlotLookID = 0;
+    m_shieldSize       = 0;
+    m_scriptType       = 0;
+    m_reqLvl           = 255;
+    m_iLvl             = 0;
+    m_equipSlotID      = 255;
+    m_absorption       = 0;
+    m_superiorLevel    = 0;
 }
 
 CItemEquipment::~CItemEquipment()
@@ -60,9 +61,25 @@ uint16 CItemEquipment::getEquipSlotId() const
     return m_equipSlotID;
 }
 
+/// <summary>
+/// Gets the equip slots which should be unequipped when the item is equipped
+/// Used for items which occupy multiple equipslots - eg. Cloaks which occupy body and head
+/// </summary>
+/// <returns>An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</returns>
 uint16 CItemEquipment::getRemoveSlotId() const
 {
     return m_removeSlotID;
+}
+
+/// <summary>
+/// Gets the equip slots which should be set to blank from the characters appearance when the item is equipped or lockstyled
+/// Used for items which occupy multiple appearance slots
+/// eg. Mandragora Suit which has a getRemoveSlotId of body and legs - but appearance wise occupies hands, body, legs, and feet
+/// </summary>
+/// <returns>An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</returns>
+uint16 CItemEquipment::getRemoveSlotLookId() const
+{
+    return m_removeSlotLookID;
 }
 
 uint8 CItemEquipment::getReqLvl() const
@@ -110,9 +127,25 @@ void CItemEquipment::setEquipSlotId(uint16 equipSlot)
     m_equipSlotID = equipSlot;
 }
 
+/// <summary>
+/// Sets the equip slots which should be unequipped when the item is equipped
+/// Used for items which occupy multiple equipslots - eg. Cloaks which occupy body and head
+/// </summary>
+/// <param name="removeSlot">An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</param>
 void CItemEquipment::setRemoveSlotId(uint16 removSlot)
 {
     m_removeSlotID = removSlot;
+}
+
+/// <summary>
+/// Sets the equip slots which should be set to blank from the characters appearance when the item is equipped or lockstyled
+/// Used for items which occupy multiple appearance slots
+/// eg. Mandragora Suit which has a getRemoveSlotId of body and legs - but appearance wise occupies hands, body, legs, and feet
+/// </summary>
+/// <param name="removeSlotLook">An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</param>
+void CItemEquipment::setRemoveSlotLookId(uint16 removeSlotLook)
+{
+    m_removeSlotLookID = removeSlotLook;
 }
 
 uint8 CItemEquipment::getSlotType() const
@@ -130,6 +163,27 @@ uint8 CItemEquipment::getSuperiorLevel()
 void CItemEquipment::setSuperiorLevel(uint8 level)
 {
     m_superiorLevel = level;
+}
+
+bool CItemEquipment::isEquippableByRace(uint8 race) const
+{
+    // first note that a single race actually represents a race and sex combination (for example hume-male)
+    // the EQUIPEMENT_ONLY_RACE mod is a multi-bit flag (where each set bit denotes that a specific race can use that equip)
+    // this is needed because many equips allow a subset of races
+    // for example Steppe Belt allows both taru-male and taru-female
+    // also note the default mod value of 0 denotes all races can wear
+    auto raceMod      = getModifier(Mod::EQUIPMENT_ONLY_RACE);
+    bool isEquippable = true;
+
+    // if a positive mod (so some race restriction(s) exist) then check against the char race
+    // do so by converting the race flag of a character (which is a value between 1 and 8)
+    // to a multi-bit style flag and then compare
+    if (raceMod > 0 && (raceMod & (1 << (race - 1))) == 0)
+    {
+        isEquippable = false;
+    }
+
+    return isEquippable;
 }
 
 // percentage of damage blocked by shield
@@ -322,17 +376,17 @@ void CItemEquipment::SetAugmentMod(uint16 type, uint8 value)
     // obtain augment info by querying the db
     const char* fmtQuery = "SELECT augmentId, multiplier, modId, `value`, `isPet`, `petType` FROM augments WHERE augmentId = %u";
 
-    int32 ret = sql->Query(fmtQuery, type);
+    int32 ret = _sql->Query(fmtQuery, type);
 
-    while (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+    while (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
-        uint8 multiplier = (uint8)sql->GetUIntData(1);
-        Mod   modId      = static_cast<Mod>(sql->GetUIntData(2));
-        int16 modValue   = (int16)sql->GetIntData(3);
+        uint8 multiplier = (uint8)_sql->GetUIntData(1);
+        Mod   modId      = static_cast<Mod>(_sql->GetUIntData(2));
+        int16 modValue   = (int16)_sql->GetIntData(3);
 
         // type is 0 unless mod is for pets
-        uint8      isPet   = (uint8)sql->GetUIntData(4);
-        PetModType petType = static_cast<PetModType>(sql->GetIntData(5));
+        uint8      isPet   = (uint8)_sql->GetUIntData(4);
+        PetModType petType = static_cast<PetModType>(_sql->GetIntData(5));
 
         // apply modifier to item. increase modifier power by 'value' (default magnitude 1 for most augments) if multiplier isn't specified
         // otherwise increase modifier power using the multiplier

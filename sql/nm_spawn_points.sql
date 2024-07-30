@@ -188,7 +188,7 @@ INSERT INTO `nm_spawn_points` VALUES (16797969,45,-243.581,-176.729,152.630);
 INSERT INTO `nm_spawn_points` VALUES (16797969,46,-213.177,-176.729,177.619);
 INSERT INTO `nm_spawn_points` VALUES (16797969,47,-201.789,-176.729,181.279);
 INSERT INTO `nm_spawn_points` VALUES (16797969,48,-196.297,-176.729,167.560);
-INSERT INTO `nm_spawn_points` VALUES (16797969,49,-204.299,176.740,133.447);
+INSERT INTO `nm_spawn_points` VALUES (16797969,49,-204.299,-176.740,133.447);
 INSERT INTO `nm_spawn_points` VALUES (16798056,0,-615.121,-40.062,6.126); -- Bonnacon
 INSERT INTO `nm_spawn_points` VALUES (16805962,0,316.000,20.000,-141.000);
 INSERT INTO `nm_spawn_points` VALUES (16805962,1,307.000,20.000,-186.000);
@@ -252,12 +252,12 @@ INSERT INTO `nm_spawn_points` VALUES (16806227,49,-549.802,-8.944,-24.848);
 INSERT INTO `nm_spawn_points` VALUES (16806249,0,-490.195,-4.503,145.451); -- Ambusher Antlion
 INSERT INTO `nm_spawn_points` VALUES (16822423,0,4.609,11.472,-101.235); -- Bugbear Strongman (west)
 INSERT INTO `nm_spawn_points` VALUES (16822427,0,60.728,15.487,-118.886); -- Bugbear Strongman (east)
-INSERT INTO `nm_spawn_points` VALUES (16851267,0,-44.317,0.000,-242.987); -- Satiator
-INSERT INTO `nm_spawn_points` VALUES (16851267,1,-205.880,-0.500,268.850); -- Satiator on inaccessable island.
-INSERT INTO `nm_spawn_points` VALUES (16843043,0,117.680,-0.307,302.450); -- Cerebrator
-INSERT INTO `nm_spawn_points` VALUES (16843043,1,-236.055,-0.500,124.179); -- Cerebrator on inaccessable island.
-INSERT INTO `nm_spawn_points` VALUES (16859472,0,-169.471,0.000,84.318); -- Coveter
-INSERT INTO `nm_spawn_points` VALUES (16859472,1,-293.877,-0.500,-122.258); -- Coveter on inaccessable island.
+INSERT INTO `nm_spawn_points` VALUES (16851267,0,-44.317,0.000,-242.987);   -- Promyvion-Dem: Satiator
+INSERT INTO `nm_spawn_points` VALUES (16851267,1,-205.880,-0.500,268.850);  -- Promyvion-Dem: Satiator
+INSERT INTO `nm_spawn_points` VALUES (16843043,0,117.680,-0.307,302.450);   -- Promyvion-Holla: Cerebrator
+INSERT INTO `nm_spawn_points` VALUES (16843043,1,-236.055,-0.500,124.179);  -- Promyvion-Holla: Cerebrator
+INSERT INTO `nm_spawn_points` VALUES (16859472,0,-169.471,0.000,84.318);    -- Promyvion-Mea: Coveter
+INSERT INTO `nm_spawn_points` VALUES (16859472,1,-293.877,-0.500,-122.258); -- Promyvion-Mea: Coveter
 INSERT INTO `nm_spawn_points` VALUES (16875552,0,-88.575,-8.221,-272.966);
 INSERT INTO `nm_spawn_points` VALUES (16875552,1,-85.977,-8.096,-277.417);
 INSERT INTO `nm_spawn_points` VALUES (16875552,2,-80.868,-8.000,-281.892);
@@ -910,6 +910,7 @@ INSERT INTO `nm_spawn_points` VALUES (17125452,0,137.606,3.346,-279.050); -- Ash
 INSERT INTO `nm_spawn_points` VALUES (17137005,0,678.599,-10.219,532.811);
 INSERT INTO `nm_spawn_points` VALUES (17137705,0,678.599,-10.219,532.811); -- Ankabut
 INSERT INTO `nm_spawn_points` VALUES (17137821,0,49.650,1.692,630.371); -- Gloomanita
+INSERT INTO `nm_spawn_points` VALUES (17141885,0,276.142,25.332,-453.541); -- Vasiliceratops
 INSERT INTO `nm_spawn_points` VALUES (17141962,0,-23.892,-24.139,327.721); -- Kotan-kor Kamuy
 INSERT INTO `nm_spawn_points` VALUES (17141979,0,-140.354,-92.095,39.459); -- Scitalis
 INSERT INTO `nm_spawn_points` VALUES (17145867,0,-416.496,24.110,-441.589); -- Sugaar
@@ -3044,6 +3045,10 @@ INSERT INTO `nm_spawn_points` VALUES (17281061,1,-299.000,0.000,192.000);
 INSERT INTO `nm_spawn_points` VALUES (17281061,2,-334.000,3.000,182.000);
 INSERT INTO `nm_spawn_points` VALUES (17281061,3,-301.000,0.000,166.000);
 INSERT INTO `nm_spawn_points` VALUES (17281149,0,-279.575,3.317,16.011); -- Mischievous Micholas
+INSERT INTO `nm_spawn_points` VALUES (17281296,0,-20.295,8.400,-113.263);   -- Pyuu the Spatemaker (H-9)
+INSERT INTO `nm_spawn_points` VALUES (17281296,1,-632.089,0.317,35.521);    -- Pyuu the Spatemaker (E-8)
+INSERT INTO `nm_spawn_points` VALUES (17281296,2,-356.919,16.282,-500.287); -- Pyuu the Spatemaker (F-12)
+INSERT INTO `nm_spawn_points` VALUES (17281296,3,154.125,8.027,500.785);    -- Pyuu the Spatemaker (I-5)
 INSERT INTO `nm_spawn_points` VALUES (17285220,0,190.942,0.345,94.828);
 INSERT INTO `nm_spawn_points` VALUES (17285220,1,219.102,0.430,45.071);
 INSERT INTO `nm_spawn_points` VALUES (17285220,2,230.358,0.043,48.605);
@@ -6976,6 +6981,13 @@ INSERT INTO `nm_spawn_points` VALUES (17203216,21,-156.857,0.458,485.462);
 INSERT INTO `nm_spawn_points` VALUES (17469747,0,169.270,8.028,-110.580);
 INSERT INTO `nm_spawn_points` VALUES (17469747,1,155.792,8.334,-124.494);
 INSERT INTO `nm_spawn_points` VALUES (17469747,2,169.525,11.964,-128.288);
+
+-- Atkorkamuy
+INSERT INTO `nm_spawn_points` VALUES (17293485,0,-341.691,-21.0,39.305);
+INSERT INTO `nm_spawn_points` VALUES (17293485,1,-338.898,-21.028,45.62);
+INSERT INTO `nm_spawn_points` VALUES (17293485,2,-286.022,-21.102,75.4);
+INSERT INTO `nm_spawn_points` VALUES (17293485,3,-226.756,-20.846,32.378);
+INSERT INTO `nm_spawn_points` VALUES (17293485,4,-202.11,-20.31,-10.47); -- This is the spot Atkorkamuy always spawns on server reboot even if this isn't in the db 
 
 /*!40000 ALTER TABLE `nm_spawn_points` ENABLE KEYS */;
 UNLOCK TABLES;

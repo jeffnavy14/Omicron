@@ -8,13 +8,11 @@
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
-
-    return 0, 0
+    return xi.job_utils.bard.checkSoulVoice(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)
-    player:addStatusEffect(xi.effect.SOUL_VOICE, 1, 0, 180)
+    xi.job_utils.bard.useSoulVoice(player, target, ability)
 end
 
 return abilityObject

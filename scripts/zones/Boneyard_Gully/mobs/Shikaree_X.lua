@@ -4,8 +4,7 @@
 -----------------------------------
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
-    SpawnMob(mob:getID() + 2)
+entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

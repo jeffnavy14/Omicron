@@ -15,14 +15,14 @@ zones[xi.zone.DYNAMIS_BUBURIMU] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7161, -- Tallying conquest results...
-        DYNAMIS_TIME_BEGIN            = 7326, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
-        DYNAMIS_TIME_EXTEND           = 7327, -- our stay in Dynamis has been extended by <number> minute[/s].
-        DYNAMIS_TIME_UPDATE_1         = 7328, -- ou will be expelled from Dynamis in <number> [second/minute] (Earth time).
-        DYNAMIS_TIME_UPDATE_2         = 7329, -- ou will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
-        DYNAMIS_TIME_EXPIRED          = 7331, -- The sands of the hourglass have emptied...
-        DYNAMIS_SUB_UNLOCKED          = 7336, -- Memories of skills long forgotten come flooding back to you...
-        OMINOUS_PRESENCE              = 7343, -- You feel an ominous presence, as if something might happen if you possessed <item>.
+        CONQUEST_BASE                 = 7164, -- Tallying conquest results...
+        DYNAMIS_TIME_BEGIN            = 7329, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
+        DYNAMIS_TIME_EXTEND           = 7330, -- our stay in Dynamis has been extended by <number> minute[/s].
+        DYNAMIS_TIME_UPDATE_1         = 7331, -- ou will be expelled from Dynamis in <number> [second/minute] (Earth time).
+        DYNAMIS_TIME_UPDATE_2         = 7332, -- ou will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
+        DYNAMIS_TIME_EXPIRED          = 7334, -- The sands of the hourglass have emptied...
+        DYNAMIS_SUB_UNLOCKED          = 7339, -- Memories of skills long forgotten come flooding back to you...
+        OMINOUS_PRESENCE              = 7346, -- You feel an ominous presence, as if something might happen if you possessed <item>.
     },
     mob =
     {
@@ -161,7 +161,7 @@ zones[xi.zone.DYNAMIS_BUBURIMU] =
     {
         QM =
         {
-            -- [16941676] =
+            -- [16941677] =
             -- {
             --     param = { 3457, 3474, 3475, 3476, 3477, 3478 },
             --     trade =
@@ -170,10 +170,10 @@ zones[xi.zone.DYNAMIS_BUBURIMU] =
             --         { item = { 3474, 3475, 3476, 3477, 3478 }, mob = 16941368 }, -- Arch Apocalyptic Beast
             --     }
             -- },
-            -- [16941677] = { trade = { { item = 3463, mob = 16941552 } } }, -- Lost Stihi
-            -- [16941678] = { trade = { { item = 3464, mob = 16941520 } } }, -- Lost Barong
-            -- [16941679] = { trade = { { item = 3465, mob = 16941576 } } }, -- Lost Alklha
-            -- [16941680] = { trade = { { item = 3466, mob = 16941666 } } }, -- Lost Aitvaras
+            -- [16941678] = { trade = { { item = 3463, mob = 16941552 } } }, -- Lost Stihi
+            -- [16941679] = { trade = { { item = 3464, mob = 16941520 } } }, -- Lost Barong
+            -- [16941680] = { trade = { { item = 3465, mob = 16941576 } } }, -- Lost Alklha
+            -- [16941681] = { trade = { { item = 3466, mob = 16941666 } } }, -- Lost Aitvaras
         },
     },
 }

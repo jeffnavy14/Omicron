@@ -1,38 +1,28 @@
 -----------------------------------
--- Thunderspark M=whatever
+-- Thunderspark
 -----------------------------------
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return 0, 0
+    return xi.job_utils.summoner.canUseBloodPact(player, player:getPet(), target, ability)
 end
 
-abilityObject.onPetAbility = function(target, pet, skill)
-    local numhits = 1
-    local accmod = 1
-    local dmgmod = 2
-    local dmgmodsubsequent = 1 -- ??
+abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
+    xi.job_utils.summoner.onUseBloodPact(target, petskill, summoner, action)
 
-    local damage = xi.summon.avatarPhysicalMove(pet, target, skill, numhits, accmod, dmgmod, dmgmodsubsequent, xi.mobskills.magicalTpBonus.NO_EFFECT, 1, 2, 3)
-    --get resist multiplier (1x if no resist)
-    local resist = xi.mobskills.applyPlayerResistance(pet, -1, target, pet:getStat(xi.mod.INT)-target:getStat(xi.mod.INT), xi.skill.ELEMENTAL_MAGIC, xi.element.THUNDER)
-    --get the resisted damage
-    damage.dmg = damage.dmg * resist
-    --add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-    damage.dmg = xi.mobskills.mobAddBonuses(pet, target, damage.dmg, 1)
+    local damage = math.floor(275 + pet:getStat(xi.mod.INT) - target:getStat(xi.mod.INT))
 
-    local tp = pet:getTP()
-    if tp < 1000 then
-        tp = 1000
-    end
+    -- Add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
+    damage = xi.mobskills.mobMagicalMove(pet, target, petskill, damage.dmg, xi.element.THUNDER, 1, xi.mobskills.magicalTpBonus.NO_EFFECT, 0)
+    damage = xi.mobskills.mobAddBonuses(pet, target, damage, xi.element.THUNDER, petskill)
+    damage = xi.summon.avatarFinalAdjustments(damage, pet, petskill, target, xi.attackType.MAGICAL, xi.damageType.THUNDER, 1)
 
-    damage.dmg = damage.dmg * tp / 1000
-    local totaldamage = xi.summon.avatarFinalAdjustments(damage.dmg, pet, skill, target, xi.attackType.MAGICAL, xi.damageType.THUNDER, numhits)
+    target:takeDamage(damage, pet, xi.attackType.MAGICAL, xi.damageType.THUNDER)
+    target:updateEnmityFromDamage(pet, damage)
+
     target:addStatusEffect(xi.effect.PARALYSIS, 15, 0, 60)
-    target:takeDamage(totaldamage, pet, xi.attackType.MAGICAL, xi.damageType.THUNDER)
-    target:updateEnmityFromDamage(pet, totaldamage)
 
-    return totaldamage
+    return damage
 end
 
 return abilityObject

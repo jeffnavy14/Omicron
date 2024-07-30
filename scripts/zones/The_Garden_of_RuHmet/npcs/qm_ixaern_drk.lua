@@ -9,6 +9,7 @@
 -- !pos -280 5.00 240 35
 -----------------------------------
 local ID = zones[xi.zone.THE_GARDEN_OF_RUHMET]
+local gardenGlobal = require('scripts/zones/The_Garden_of_RuHmet/globals')
 -----------------------------------
 local entity = {}
 
@@ -37,11 +38,13 @@ entity.onTrigger = function(player, npc)
         -- this player has animosity
         -- spawn Ix'Aern DRK and its two minions near the QM
         player:messageSpecial(ID.text.MENACING_CREATURES)
-        npcUtil.popFromQM(player, npc, { ID.mob.IXAERN_DRK, ID.mob.IXAERN_DRK + 1, ID.mob.IXAERN_DRK + 2 }, { radius = 3 })
+
+        -- spawn Ix'DRK last so it retains claim
+        npcUtil.popFromQM(player, npc, { ID.mob.IXAERN_DRK + 1, ID.mob.IXAERN_DRK + 2, ID.mob.IXAERN_DRK }, { radius = 3, claim = true })
 
         -- move QM to random location, and reset animosity
         local pos = math.random(1, 4)
-        npcUtil.queueMove(npc, ID.npc.QM_IXAERN_DRK_POS[pos])
+        npcUtil.queueMove(npc, gardenGlobal.qmPosDRKTable[pos])
         npc:setLocalVar('position', pos)
         npc:setLocalVar('hatedPlayer', 0)
         npc:setLocalVar('hateTimer', 0)

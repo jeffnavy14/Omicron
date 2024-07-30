@@ -2384,13 +2384,13 @@ INSERT INTO `item_weapon` VALUES (18762,'custodes',1,0,0,0,0,4,1,528,4,0);
 INSERT INTO `item_weapon` VALUES (18763,'trainee_scissors',1,0,0,0,0,4,1,546,1,0);
 INSERT INTO `item_weapon` VALUES (18764,'oberons_knuckles',1,0,0,0,0,4,1,576,18,0);
 INSERT INTO `item_weapon` VALUES (18765,'oberons_sainti',1,0,0,0,0,4,1,531,15,0);
-INSERT INTO `item_weapon` VALUES (18766,'tyro_katars',1,0,0,0,0,4,1,564,6,0);
+INSERT INTO `item_weapon` VALUES (18766,'tyro_katars',1,0,0,0,0,1,1,564,6,0);
 INSERT INTO `item_weapon` VALUES (18767,'birdbanes',1,0,0,0,0,1,1,564,14,0);
 INSERT INTO `item_weapon` VALUES (18768,'poppet_katars',1,0,0,0,0,4,1,564,17,0);
 INSERT INTO `item_weapon` VALUES (18769,'severus_claws',1,0,0,0,0,4,1,541,15,0);
 INSERT INTO `item_weapon` VALUES (18770,'pygme_sainti',1,0,0,0,0,4,1,531,16,0);
 INSERT INTO `item_weapon` VALUES (18771,'lyft_sainti',1,0,0,0,0,4,1,531,18,0);
-INSERT INTO `item_weapon` VALUES (18772,'tyro_katars_+1',1,0,0,0,0,4,1,555,7,0);
+INSERT INTO `item_weapon` VALUES (18772,'tyro_katars_+1',1,0,0,0,0,1,1,555,7,0);
 INSERT INTO `item_weapon` VALUES (18773,'severus_claws_+1',1,0,0,0,0,4,1,536,16,0);
 INSERT INTO `item_weapon` VALUES (18774,'savate_fists',1,0,0,0,0,4,1,531,19,0);
 INSERT INTO `item_weapon` VALUES (18775,'savate_fists_+1',1,0,0,0,0,4,1,529,20,0);
@@ -4638,6 +4638,8 @@ INSERT INTO `item_weapon` VALUES (21863,'tzee_xicus_blade',8,0,0,0,0,2,1,480,1,0
 INSERT INTO `item_weapon` VALUES (21864,'voluspa_lance',8,0,215,215,215,1,1,492,266,0);
 INSERT INTO `item_weapon` VALUES (21865,'arasy_lance',8,0,242,242,188,1,1,492,252,0);     -- DMG:252 Delay:492
 INSERT INTO `item_weapon` VALUES (21866,'arasy_lance_+1',8,0,242,242,188,1,1,478,253,0);  -- MG:253 Delay:478
+INSERT INTO `item_weapon` VALUES (21867,'sha_wujings_lance',8,0,0,0,0,1,1,396,1,0);       -- DMG:1 Delay:396
+INSERT INTO `item_weapon` VALUES (21868,'sha_wujings_la._+1',8,0,0,0,0,1,1,385,2,0);      -- DMG:2 Delay:385
 INSERT INTO `item_weapon` VALUES (21869,'exalted_spear',8,0,228,228,188,1,1,396,258,0);   -- DMG:258 Delay:396
 INSERT INTO `item_weapon` VALUES (21870,'exalted_spear_+1',8,0,228,228,188,1,1,385,259,0); -- DMG:259 Delay:385
 INSERT INTO `item_weapon` VALUES (21871,'raetic_halberd',8,0,242,242,215,1,1,396,264,0);  -- DMG:264 Delay:396
@@ -4730,8 +4732,10 @@ INSERT INTO `item_weapon` VALUES (22063,'nirvana',12,0,269,269,269,3,1,402,251,0
 INSERT INTO `item_weapon` VALUES (22064,'hvergelmir',12,0,269,269,269,3,1,390,275,0);
 INSERT INTO `item_weapon` VALUES (22065,'aern_staff',12,0,0,0,0,3,1,366,1,0);             -- DMG:1 Delay:366
 INSERT INTO `item_weapon` VALUES (22066,'aern_staff_ii',12,0,0,0,0,3,1,366,1,0);          -- DMG:1 Delay:366
+INSERT INTO `item_weapon` VALUES (22067,'levin',12,0,0,0,0,3,1,366,1,0);                  -- DMG:1 Delay:366
 INSERT INTO `item_weapon` VALUES (22068,'savage._pole',12,0,0,0,0,3,1,366,1,0);           -- DMG:1 Delay:366
 INSERT INTO `item_weapon` VALUES (22069,'hapy_staff',12,0,0,0,0,3,1,366,1,0);             -- DMG:1 Delay:366
+INSERT INTO `item_weapon` VALUES (22070,'ranine_staff',12,0,0,0,0,3,1,366,1,0);           -- DMG:1 Delay:366
 INSERT INTO `item_weapon` VALUES (22072,'lamia_staff',12,0,0,0,0,3,1,366,1,0);            -- DMG:1 Delay:366
 INSERT INTO `item_weapon` VALUES (22074,'arasy_staff',12,0,242,242,228,3,1,366,188,0);
 INSERT INTO `item_weapon` VALUES (22075,'arasy_staff_+1',12,0,242,242,228,3,1,356,189,0);
@@ -4835,7 +4839,7 @@ INSERT INTO `item_weapon` VALUES (22279,'staunch_tathlum_+1',0,0,0,0,0,0,1,0,0,0
 INSERT INTO `item_weapon` VALUES (22280,'yamarang',0,0,0,0,0,0,1,0,0,0);                  -- Accuracy+15 Magic Accuracy+15 Evasion+15 Magic Evasion+15 "Store TP"+3 "Waltz" potency +5%
 INSERT INTO `item_weapon` VALUES (22281,'knobkierrie',0,0,0,0,0,0,1,0,0,0);               -- Attack+23 Weapon skill damage +6%
 INSERT INTO `item_weapon` VALUES (22282,'grudge',27,0,0,0,0,0,1,294,1,0);                 -- DMG:1 Delay:294
-INSERT INTO `item_weapon` VALUES (22283,'marvelous_cheer',42,0,0,0,0,0,1,240,0,0);
+INSERT INTO `item_weapon` VALUES (22283,'marvelous_cheer',0,0,0,0,0,0,1,240,0,0);         -- Says "Wind Instrument" but is actually cosmetic and should not unlock singing skill or a second song for sub BRD
 INSERT INTO `item_weapon` VALUES (22284,'abdhaljs_tome',0,0,0,0,0,0,1,0,0,0);             -- A copy of a book written by the great Abdhaljs. He has the only original copy. Hallmark Bonus: +200% Gallantry Bonus: +200%
 INSERT INTO `item_weapon` VALUES (22285,'beryllium_bolt',26,0,0,0,0,1,1,192,108,0);       -- DMG:108 Delay:192 Ranged Attack+12
 INSERT INTO `item_weapon` VALUES (22286,'c._palug_stone',0,0,0,0,0,0,0,0,0,0);

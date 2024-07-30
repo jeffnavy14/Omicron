@@ -4,17 +4,19 @@
 --  Type: Physical
 --  Utsusemi/Blink absorb: 2-3 shadows
 --  Range: Melee
---  TODO: Verify damage type, number of hits requires retail verification
---  https://www.bg-wiki.com/ffxi/Locus_Wivre
 -----------------------------------
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    return 0
+    if target:isInfront(mob) then
+        return 0
+    end
+
+    return 1
 end
 
 mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local numhits = 1
+    local numhits = 3
     local accmod = 1
     local dmgmod = .8
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, dmgmod, xi.mobskills.magicalTpBonus.NO_EFFECT)

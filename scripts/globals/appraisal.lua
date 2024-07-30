@@ -567,6 +567,18 @@ xi.appraisal.appraisalItems =
             },
         },
 
+        [xi.assault.mission.SHOOTING_DOWN_THE_BARON] =
+        {
+            items =
+            {
+                { 330, xi.item.CROSSBOW_P1    },
+                { 550, xi.item.LONGBOW_P1     },
+                { 100, xi.item.CULVERIN       },
+                {  10, xi.item.CULVERIN_P1    },
+                {  10, xi.item.STORM_ZAMBURAK },
+            },
+        },
+
         [xi.appraisal.origin.NYZUL_GYRE_CARLIN] =
         {
             items =
@@ -696,7 +708,7 @@ xi.appraisal.appraisalItems =
             items =
             {
                 { 95, xi.item.LEATHER_HIGHBOOTS },
-                {  5, xi.item.LEAPING_BOOTS     },
+                {  5, xi.item.BOUNDING_BOOTS    },
             },
         },
 
@@ -1342,6 +1354,24 @@ xi.appraisal.appraisalItems =
             },
         },
 
+        -- Low sample rate. Borrowing similar Periqia tables for now
+        [xi.assault.mission.SHOOTING_DOWN_THE_BARON] =
+        {
+            items =
+            {
+                {  30, xi.item.CHUNK_OF_GOLD_ORE     },
+                { 340, xi.item.QIQIRN_SANDBAG        },
+                { 200, xi.item.SPRIG_OF_APPLE_MINT   },
+                {  30, xi.item.BLOODY_BOLT_QUIVER    },
+                {  30, xi.item.HOLY_BOLT_QUIVER      },
+                {  30, xi.item.MYTHRIL_BOLT_QUIVER   },
+                {  30, xi.item.SLEEP_BOLT_QUIVER     },
+                {  30, xi.item.DARKSTEEL_BOLT_QUIVER },
+                { 250, xi.item.IMP_WING              },
+                {  30, xi.item.QIQIRN_SANDBAG        },
+            },
+        },
+
         [xi.assault.mission.GOLDEN_SALVAGE] =
         {
             items =
@@ -1615,11 +1645,11 @@ xi.appraisal.assaultChestTrigger = function(player, npc, qItemTable, regItemTabl
             end
         end
 
-        npc:entityAnimationPacket('open')
+        npc:entityAnimationPacket(xi.animationString.OPEN_CRATE_GLOW)
         npc:setLocalVar('open', 1)
         npc:setUntargetable(true)
         npc:timer(15000, function(npcArg)
-            npcArg:entityAnimationPacket('kesu')
+            npcArg:entityAnimationPacket(xi.animationString.STATUS_DISAPPEAR)
         end)
 
         npc:timer(16000, function(npcArg)

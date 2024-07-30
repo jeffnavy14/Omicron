@@ -24,6 +24,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "common/async.h"
 #include "common/blowfish.h"
 #include "common/console_service.h"
+#include "common/database.h"
 #include "common/logging.h"
 #include "common/md52.h"
 #include "common/timer.h"
@@ -74,6 +75,8 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
 
+#include <nonstd/jthread.hpp>
+
 #ifdef WIN32
 #include <io.h>
 #endif
@@ -91,9 +94,9 @@ uint16  map_port = 0;
 
 map_session_list_t map_session_list = {};
 
-std::thread messageThread;
+nonstd::jthread messageThread;
 
-std::unique_ptr<SqlConnection> sql;
+std::unique_ptr<SqlConnection> _sql;
 
 extern std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 
@@ -159,11 +162,11 @@ map_session_data_t* mapsession_createsession(uint32 ip, uint16 port)
     map_session_list[ipp] = map_session_data;
 
     auto ipstr    = ip2str(map_session_data->client_addr);
-    auto fmtQuery = fmt::format("SELECT charid FROM accounts_sessions WHERE inet_ntoa(client_addr) = '{}' LIMIT 1;", ipstr);
+    auto fmtQuery = fmt::format("SELECT charid FROM accounts_sessions WHERE inet_ntoa(client_addr) = '{}' LIMIT 1", ipstr);
 
-    int32 ret = sql->Query(fmtQuery.c_str());
+    int32 ret = _sql->Query(fmtQuery.c_str());
 
-    if (ret == SQL_ERROR || sql->NumRows() == 0)
+    if (ret == SQL_ERROR || _sql->NumRows() == 0)
     {
         ShowError(fmt::format("recv_parse: Invalid login attempt from {}", ipstr));
         return nullptr;
@@ -180,6 +183,11 @@ map_session_data_t* mapsession_createsession(uint32 ip, uint16 port)
 int32 do_init(int32 argc, char** argv)
 {
     TracyZoneScoped;
+
+#ifdef TRACY_ENABLE
+    ShowInfo("*** TRACY IS ENABLED ***");
+#endif // TRACY_ENABLE
+
     ShowInfo("do_init: begin server initialization");
     map_ip.s_addr = 0;
 
@@ -207,25 +215,26 @@ int32 do_init(int32 argc, char** argv)
     xirand::seed();
 
     ShowInfo("do_init: connecting to database");
-    sql = std::make_unique<SqlConnection>();
+    _sql = std::make_unique<SqlConnection>();
 
-    ShowInfo(sql->GetClientVersion().c_str());
-    ShowInfo(sql->GetServerVersion().c_str());
-    sql->CheckCharset();
+    ShowInfo(_sql->GetDatabaseName().c_str());
+    ShowInfo(_sql->GetClientVersion().c_str());
+    ShowInfo(_sql->GetServerVersion().c_str());
+    _sql->CheckCharset();
 
     luautils::init(); // Also calls moduleutils::LoadLuaModules();
 
     PacketParserInitialize();
 
-    sql->Query("DELETE FROM accounts_sessions WHERE IF(%u = 0 AND %u = 0, true, server_addr = %u AND server_port = %u);",
-               map_ip.s_addr, map_port, map_ip.s_addr, map_port);
+    _sql->Query("DELETE FROM accounts_sessions WHERE IF(%u = 0 AND %u = 0, true, server_addr = %u AND server_port = %u)",
+                map_ip.s_addr, map_port, map_ip.s_addr, map_port);
 
     ShowInfo("do_init: zlib is reading");
     zlib_init();
 
     ShowInfo("do_init: starting ZMQ thread");
     message::init();
-    messageThread = std::thread(message::listen);
+    messageThread = nonstd::jthread(message::listen);
 
     ShowInfo("do_init: loading items");
     itemutils::Initialize();
@@ -294,8 +303,8 @@ int32 do_init(int32 argc, char** argv)
 
     ShowInfo("do_init: Removing expired database variables");
     uint32 currentTimestamp = CVanaTime::getInstance()->getSysTime();
-    sql->Query("DELETE FROM char_vars WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
-    sql->Query("DELETE FROM server_variables WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
+    _sql->Query("DELETE FROM char_vars WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
+    _sql->Query("DELETE FROM server_variables WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
 
     g_PBuff   = new int8[MAX_BUFFER_SIZE + 20];
     PTempBuff = new int8[MAX_BUFFER_SIZE + 20];
@@ -348,10 +357,9 @@ int32 do_init(int32 argc, char** argv)
         // But we're not executing on the main thread, so we're doing it with
         // our own SQL connection.
         {
-            auto _sql  = std::make_unique<SqlConnection>();
+            auto otherSql  = std::make_unique<SqlConnection>();
             auto query = "UPDATE %s SET %s %u WHERE charid = %u;";
-            _sql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
-            _sql->Query(query, "char_stats", "nameflags =", PChar->nameflags.flags, PChar->id);
+            otherSql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
         }
 
         fmt::print("Promoting {} to GM level {}\n", PChar->name, level);
@@ -396,20 +404,22 @@ void do_final(int code)
     destroy_arr(g_PBuff);
     destroy_arr(PTempBuff);
 
+    ability::CleanupAbilitiesList();
     itemutils::FreeItemList();
     battleutils::FreeWeaponSkillsList();
     battleutils::FreeMobSkillList();
     battleutils::FreePetSkillList();
+    fishingutils::CleanupFishing();
+    guildutils::Cleanup();
+    mobutils::Cleanup();
+    traits::ClearTraitsList();
 
     petutils::FreePetList();
     trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
     message::close();
-    if (messageThread.joinable())
-    {
-        messageThread.join();
-    }
+    messageThread.join();
 
     CTaskMgr::delInstance();
     CVanaTime::delInstance();
@@ -417,6 +427,13 @@ void do_final(int code)
 
     timer_final();
     socket_final();
+
+    for (auto session : map_session_list)
+    {
+        destroy_arr(session.second->server_packet_data);
+        destroy(session.second);
+    }
+
     luautils::cleanup();
     logging::ShutDown();
 
@@ -580,7 +597,7 @@ int32 do_sockets(fd_set* rfd, duration next)
 
     ReportTracyStats();
 
-    sql->TryPing();
+    _sql->TryPing();
 
     return 0;
 }
@@ -660,42 +677,24 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
             std::ignore = LangID;
 
-            const char* fmtQuery = "SELECT charid FROM chars WHERE charid = %u LIMIT 1;";
-
-            int32 ret = sql->Query(fmtQuery, CharID);
-
-            if (ret == SQL_ERROR || sql->NumRows() == 0 || sql->NextRow() != SQL_SUCCESS)
+            auto rset = db::preparedStmt("SELECT charid FROM chars WHERE charid = (?) LIMIT 1", CharID);
+            if (!rset || rset->rowsCount() == 0 || !rset->next())
             {
                 ShowError("recv_parse: Cannot load charid %u", CharID);
                 return -1;
             }
 
-            fmtQuery = "SELECT session_key FROM accounts_sessions WHERE charid = %u LIMIT 1;";
-
-            ret = sql->Query(fmtQuery, CharID);
-
-            if (ret == SQL_ERROR || sql->NumRows() == 0 || sql->NextRow() != SQL_SUCCESS)
+            rset = db::preparedStmt("SELECT session_key FROM accounts_sessions WHERE charid = (?) LIMIT 1", CharID);
+            if (!rset || rset->rowsCount() == 0 || !rset->next())
             {
                 ShowError("recv_parse: Cannot load session_key for charid %u", CharID);
             }
             else
             {
-                char* strSessionKey = nullptr;
-                sql->GetData(0, &strSessionKey, nullptr);
-
-                memcpy(map_session_data->blowfish.key, strSessionKey, 20);
+                db::extractFromBlob(rset, "session_key", map_session_data->blowfish.key);
             }
 
-            // TODO: probably it is better to put the character creation into the charutils::LoadChar()
-            // method and put the inventory loading there too
-            CCharEntity* PChar = new CCharEntity();
-            PChar->id          = CharID;
-
-            charutils::LoadChar(PChar);
-
-            PChar->status = STATUS_TYPE::DISAPPEAR;
-
-            map_session_data->PChar = PChar;
+            map_session_data->PChar = charutils::LoadChar(CharID);
         }
         map_session_data->client_packet_id = 0;
         map_session_data->server_packet_id = 0;
@@ -1041,7 +1040,7 @@ int32 map_close_session(time_point tick, map_session_data_t* map_session_data)
         // clear accounts_sessions if character is logging out (not when zoning)
         if (map_session_data->shuttingDown == 1)
         {
-            sql->Query("DELETE FROM accounts_sessions WHERE charid = %u", map_session_data->PChar->id);
+            _sql->Query("DELETE FROM accounts_sessions WHERE charid = %u", map_session_data->PChar->id);
         }
 
         uint64 port64 = map_session_data->client_port;
@@ -1081,10 +1080,14 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
 
         if ((time(nullptr) - map_session_data->last_update) > 5)
         {
-            if (PChar != nullptr && !(PChar->nameflags.flags & FLAG_DC))
+            if (PChar != nullptr && !PChar->isLinkDead)
             {
-                PChar->nameflags.flags |= FLAG_DC;
+                _sql->Query("UPDATE char_flags SET disconnecting = 1 WHERE charid = %u", PChar->id);
+
+                PChar->isLinkDead = true;
                 PChar->updatemask |= UPDATE_HP;
+
+                // Is this unintentionally sending extra packets when a player is disconnecting?
                 if (PChar->status == STATUS_TYPE::NORMAL)
                 {
                     PChar->loc.zone->SpawnPCs(PChar);
@@ -1108,11 +1111,11 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
                     if (PZone)
                     {
                         const char* fmtQuery = "select server_addr, server_port from accounts_sessions WHERE charid = %u";
-                        sql->Query(fmtQuery, PChar->id);
-                        if (sql->NextRow() == SQL_SUCCESS)
+                        _sql->Query(fmtQuery, PChar->id);
+                        if (_sql->NextRow() == SQL_SUCCESS)
                         {
-                            uint32 server_addr = sql->GetUIntData(0);
-                            uint32 server_port = sql->GetUIntData(1);
+                            uint32 server_addr = _sql->GetUIntData(0);
+                            uint32 server_port = _sql->GetUIntData(1);
 
                             if (server_addr != PZone->GetIP() || server_port != PZone->GetPort())
                             {
@@ -1181,7 +1184,7 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
                         {
                             // Player session is attached to this map process and has stopped responding.
                             map_session_data->PChar->StatusEffectContainer->SaveStatusEffects(true);
-                            sql->Query("DELETE FROM accounts_sessions WHERE charid = %u;", map_session_data->PChar->id);
+                            _sql->Query("DELETE FROM accounts_sessions WHERE charid = %u", map_session_data->PChar->id);
                         }
 
                         ShowDebug(fmt::format("Clearing map server session for player: {} in zone: {} (On other map server = {})", PChar->name, PChar->loc.zone ? PChar->loc.zone->getName() : "None", otherMap ? "Yes" : "No"));
@@ -1204,7 +1207,7 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
                     ShowWarning("map_cleanup: WHITHOUT CHAR timed out, session closed");
 
                     const char* Query = "DELETE FROM accounts_sessions WHERE client_addr = %u AND client_port = %u";
-                    sql->Query(Query, map_session_data->client_addr, map_session_data->client_port);
+                    _sql->Query(Query, map_session_data->client_addr, map_session_data->client_port);
 
                     destroy_arr(map_session_data->server_packet_data);
                     map_session_list.erase(it++);
@@ -1213,9 +1216,11 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
                 }
             }
         }
-        else if (PChar != nullptr && (PChar->nameflags.flags & FLAG_DC))
+        else if (PChar != nullptr && PChar->isLinkDead)
         {
-            PChar->nameflags.flags &= ~FLAG_DC;
+            _sql->Query("UPDATE char_flags SET disconnecting = 0 WHERE charid = %u", PChar->id);
+
+            PChar->isLinkDead = false;
             PChar->updatemask |= UPDATE_HP;
 
             if (PChar->status == STATUS_TYPE::NORMAL)

@@ -24,11 +24,13 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 #include "common/cbasetypes.h"
 #include "common/socket.h"
+#include "common/tracy.h"
 
 #include <stdio.h>
 #include <string.h>
 
-#define PACKET_SIZE 0x104
+// Max packet size
+#define PACKET_SIZE 0x1FF
 
 enum ENTITYUPDATE
 {
@@ -68,6 +70,7 @@ public:
     , code(ref<uint16>(2))
     , owner(true)
     {
+        TracyZoneScoped;
         std::fill(data, data + PACKET_SIZE, 0);
     }
 
@@ -78,6 +81,7 @@ public:
     , code(ref<uint16>(2))
     , owner(false)
     {
+        TracyZoneScoped;
     }
 
     CBasicPacket(const CBasicPacket& other)
@@ -87,7 +91,8 @@ public:
     , code(ref<uint16>(2))
     , owner(true)
     {
-        memcpy(data, other.data, PACKET_SIZE);
+        TracyZoneScoped;
+        std::memcpy(data, other.data, PACKET_SIZE);
     }
 
     CBasicPacket(CBasicPacket&& other)
@@ -102,6 +107,7 @@ public:
 
     virtual ~CBasicPacket()
     {
+        TracyZoneScoped;
         if (owner && data)
         {
             destroy_arr(data);
@@ -129,7 +135,7 @@ public:
 
     std::size_t getSize()
     {
-        return (size_t)2 * (ref<uint8>(1) & ~1);
+        return std::min<std::size_t>(2U * (ref<uint8>(1) & ~1), PACKET_SIZE);
     }
 
     unsigned short getSequence()
@@ -174,6 +180,18 @@ public:
     int8* operator[](const int index)
     {
         return reinterpret_cast<int8*>(data) + index;
+    }
+
+    // used for setting "proper" packet sizes rounded to the nearest four away from zero
+    uint32 roundUpToNearestFour(uint32 input)
+    {
+        int remainder = input % 4;
+        if (remainder == 0)
+        {
+            return input;
+        }
+
+        return input + 4 - remainder;
     }
 };
 

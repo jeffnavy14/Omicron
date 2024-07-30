@@ -15,13 +15,13 @@ zones[xi.zone.DYNAMIS_JEUNO] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7067, -- Tallying conquest results...
-        DYNAMIS_TIME_BEGIN            = 7226, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
-        DYNAMIS_TIME_EXTEND           = 7227, -- our stay in Dynamis has been extended by <number> minute[/s].
-        DYNAMIS_TIME_UPDATE_1         = 7228, -- ou will be expelled from Dynamis in <number> [second/minute] (Earth time).
-        DYNAMIS_TIME_UPDATE_2         = 7229, -- ou will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
-        DYNAMIS_TIME_EXPIRED          = 7231, -- The sands of the hourglass have emptied...
-        OMINOUS_PRESENCE              = 7243, -- You feel an ominous presence, as if something might happen if you possessed <item>.
+        CONQUEST_BASE                 = 7070, -- Tallying conquest results...
+        DYNAMIS_TIME_BEGIN            = 7229, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
+        DYNAMIS_TIME_EXTEND           = 7230, -- our stay in Dynamis has been extended by <number> minute[/s].
+        DYNAMIS_TIME_UPDATE_1         = 7231, -- ou will be expelled from Dynamis in <number> [second/minute] (Earth time).
+        DYNAMIS_TIME_UPDATE_2         = 7232, -- ou will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
+        DYNAMIS_TIME_EXPIRED          = 7234, -- The sands of the hourglass have emptied...
+        OMINOUS_PRESENCE              = 7246, -- You feel an ominous presence, as if something might happen if you possessed <item>.
     },
     mob =
     {
@@ -84,7 +84,7 @@ zones[xi.zone.DYNAMIS_JEUNO] =
     {
         QM =
         {
-            [17547509] =
+            [17547510] =
             {
                 param = { 3356, 3419, 3420, 3421, 3422, 3423 },
                 trade =
@@ -93,10 +93,10 @@ zones[xi.zone.DYNAMIS_JEUNO] =
                     { item = { 3419, 3420, 3421, 3422, 3423 }, mob = 17547499 }, -- Arch Goblin Golem
                 }
             },
-            [17547510] = { trade = { { item = 3392, mob = 17547493 } } }, -- Quicktrix Hexhands
-            [17547511] = { trade = { { item = 3393, mob = 17547494 } } }, -- Feralox Honeylips
-            [17547512] = { trade = { { item = 3394, mob = 17547496 } } }, -- Scourquix Scaleskin
-            [17547513] = { trade = { { item = 3395, mob = 17547498 } } }, -- Wilywox Tenderpalm
+            [17547511] = { trade = { { item = 3392, mob = 17547493 } } }, -- Quicktrix Hexhands
+            [17547512] = { trade = { { item = 3393, mob = 17547494 } } }, -- Feralox Honeylips
+            [17547513] = { trade = { { item = 3394, mob = 17547496 } } }, -- Scourquix Scaleskin
+            [17547514] = { trade = { { item = 3395, mob = 17547498 } } }, -- Wilywox Tenderpalm
         },
     },
 }

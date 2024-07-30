@@ -203,10 +203,12 @@ end
     If not, do not give items, display a message to indicate this, and return false.
 
     Examples of valid items parameter:
-        640                 -- copper ore x1
-        { 640, 641 }        -- copper ore x1, tin ore x1
-        { { 640, 2 } }         -- copper ore x2
-        { { 640, 2 }, 641 }    -- copper ore x2, tin ore x1
+        npcUtil.giveItem(player, xi.item.CHUNK_OF_COPPER_ORE, 1)                                           -- copper ore x1
+        npcUtil.giveItem(player, { xi.item.CHUNK_OF_COPPER_ORE, 1 , xi.item.CHUNK_OF_TIN_ORE, 1 })         -- copper ore x1, tin ore x1
+        npcUtil.giveItem(player, { { xi.item.CHUNK_OF_COPPER_ORE, 2 } })                                   -- copper ore x2
+        npcUtil.giveItem(player, { { xi.item.CHUNK_OF_COPPER_ORE, 12 }, { xi.item.CHUNK_OF_TIN_ORE, 3 } }) -- copper ore x12 tin ore x3
+        npcUtil.giveItem(target, { { xi.item.CHUNK_OF_COPPER_ORE, math.random(3, 15) } })                  -- random 3-15 copper ores
+        enum can be found in scripts/enum/item.lua
 
     params (table) can contain the following parameters:
 
@@ -450,7 +452,7 @@ end
                 fromTrade = true,
             },
             ki = xi.ki.ZERUHN_REPORT,           -- see npcUtil.giveKeyItem for formats
-            fameArea = xi.quest.fame_area.NORG, -- Required for Fame to be applied
+            fameArea = xi.fameArea.NORG, -- Required for Fame to be applied
             fame = 120,                         -- fame defaults to 30 if not set
             bayld = 500,
             gil = 200,
@@ -531,13 +533,13 @@ end
     Otherwise, return true.
 
     Example of usage with params (all params are optional):
-        npcUtil.completeQuest(player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.ROSEL_THE_ARMORER, {
+        npcUtil.completeQuest(player, xi.questLog.SANDORIA, xi.quest.id.sandoria.ROSEL_THE_ARMORER, {
             item = { { 640, 2 }, 641 },   -- see npcUtil.giveItem for formats
             itemParams = {              -- see npcUtil.giveItem for formats
                 fromTrade = true,
             },
             ki = xi.ki.ZERUHN_REPORT,           -- see npcUtil.giveKeyItem for formats
-            fameArea = xi.quest.fame_area.NORG, -- Required for Fame to be applied
+            fameArea = xi.fameArea.NORG, -- Required for Fame to be applied
             fame = 120,                         -- fame defaults to 30 if not set
             bayld = 500,
             gil = 200,
@@ -634,7 +636,7 @@ end
     Otherwise, return true.
 
     Example of usage with params (all params are optional):
-        npcUtil.completeMission(player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.ROSEL_THE_ARMORER, {
+        npcUtil.completeMission(player, xi.questLog.SANDORIA, xi.quest.id.sandoria.ROSEL_THE_ARMORER, {
             item = { { 640, 2 }, 641 },   -- see npcUtil.giveItem for formats
             itemParams = {              -- see npcUtil.giveItem for formats
                 fromTrade = true,
@@ -961,7 +963,7 @@ end
 
 function npcUtil.disappearCrate(crate)
     if crate:isNPC() then
-        crate:entityAnimationPacket('kesu')
+        crate:entityAnimationPacket(xi.animationString.STATUS_DISAPPEAR)
         crate:timer(3000, function(npc)
             npc:setUntargetable(true)
             npc:setStatus(xi.status.DISAPPEAR)
@@ -979,7 +981,7 @@ function npcUtil.openCrate(crate, callback)
     if crate:getLocalVar('opened') == 0 then
         crate:setLocalVar('opened', 1)
         local shouldDisappear = not callback()
-        crate:entityAnimationPacket('openH')
+        crate:entityAnimationPacket(xi.animationString.OPEN_CRATE_GLOW)
 
         if shouldDisappear then
             crate:timer(7000, function(npc)

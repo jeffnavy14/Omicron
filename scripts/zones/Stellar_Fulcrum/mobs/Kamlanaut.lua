@@ -15,7 +15,7 @@ local skillToAbsorb =
     [828] = xi.mod.WATER_ABSORB, -- water_blade
 }
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setLocalVar('nextEnSkill', os.time() + 10)
 end
 
@@ -54,7 +54,6 @@ entity.onMobWeaponSkill = function(target, mob, skill)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:addTitle(xi.title.DESTROYER_OF_ANTIQUITY)
 end
 
 return entity

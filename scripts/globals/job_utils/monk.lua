@@ -18,12 +18,12 @@ local chakraStatusEffects =
 -- Ability Check Functions
 -----------------------------------
 xi.job_utils.monk.checkHundredFists = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
+    ability:setRecast(math.max(0, ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST) * 60))
     return 0, 0
 end
 
 xi.job_utils.monk.checkInnerStrength = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
+    ability:setRecast(math.max(0, ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST) * 60))
     return 0, 0
 end
 
@@ -78,9 +78,8 @@ xi.job_utils.monk.useChiBlast = function(player, target, ability)
 
     local dmg = math.floor(player:getStat(xi.mod.MND) * (0.5 + (math.random() / 2))) * multiplier
 
-    dmg = utils.stoneskin(target, dmg)
-    target:takeDamage(dmg, player, xi.attackType.SPECIAL, xi.damageType.ELEMENTAL)
-    target:updateEnmityFromDamage(player, dmg)
+    dmg = xi.ability.adjustDamage(dmg, target, ability, target, xi.attackType.BREATH, nil, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    target:takeDamage(dmg, player, xi.attackType.BREATH, xi.damageType.ELEMENTAL)
     target:updateClaim(player)
     player:delStatusEffect(xi.effect.BOOST)
 
@@ -132,7 +131,7 @@ end
 xi.job_utils.monk.useMantra = function(player, target, ability)
     local merits = player:getMerit(xi.merit.MANTRA)
 
-    player:delStatusEffect(xi.effect.MAX_HP_BOOST)
+    target:delStatusEffect(xi.effect.MAX_HP_BOOST) -- TODO: confirm which versions of HP boost mantra can overwrite
     target:addStatusEffect(xi.effect.MAX_HP_BOOST, merits, 0, 180)
 
     return xi.effect.MANTRA -- TODO: implement xi.effect.MANTRA

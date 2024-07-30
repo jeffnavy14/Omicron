@@ -296,7 +296,7 @@ enum ABILITY
     ABILITY_BLOOD_RAGE         = 267,
     ABILITY_IMPETUS            = 269,
     ABILITY_DIVINE_CARESS      = 270,
-    ABILITY_SANCROSANCTITY     = 271,
+    ABILITY_SACROSANCTITY      = 271,
     ABILITY_ENMITY_DOUSE       = 272,
     ABILITY_MANAWELL           = 273,
     ABILITY_SABOTEUR           = 274,
@@ -773,6 +773,7 @@ private:
 namespace ability
 {
     void LoadAbilitiesList();
+    void CleanupAbilitiesList();
 
     CAbility* GetAbility(uint16 AbilityID);
 

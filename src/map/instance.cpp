@@ -35,6 +35,7 @@ CInstance::CInstance(CZone* zone, uint16 instanceid)
 , m_instanceid(instanceid)
 , m_zone(zone)
 {
+    TracyZoneScoped;
     LoadInstance();
 
     m_startTime = server_clock::now();
@@ -43,22 +44,7 @@ CInstance::CInstance(CZone* zone, uint16 instanceid)
 
 CInstance::~CInstance()
 {
-    for (auto entity : m_mobList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_npcList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_petList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_trustList)
-    {
-        destroy(entity.second);
-    }
+    TracyZoneScoped;
 }
 
 uint16 CInstance::GetID() const
@@ -101,20 +87,20 @@ void CInstance::LoadInstance()
                                "WHERE instanceid = %u "
                                "LIMIT 1";
 
-    if (sql->Query(Query, m_instanceid) != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+    if (_sql->Query(Query, m_instanceid) != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
-        m_instanceName.insert(0, (const char*)sql->GetData(0));
+        m_instanceName.insert(0, (const char*)_sql->GetData(0));
 
-        m_timeLimit                       = std::chrono::minutes(sql->GetUIntData(1));
-        m_entrance                        = sql->GetUIntData(2);
-        m_entryloc.x                      = sql->GetFloatData(3);
-        m_entryloc.y                      = sql->GetFloatData(4);
-        m_entryloc.z                      = sql->GetFloatData(5);
-        m_entryloc.rotation               = sql->GetUIntData(6);
-        m_zone_music_override.m_songDay   = sql->GetUIntData(7);
-        m_zone_music_override.m_songNight = sql->GetUIntData(8);
-        m_zone_music_override.m_bSongS    = sql->GetUIntData(9);
-        m_zone_music_override.m_bSongM    = sql->GetUIntData(10);
+        m_timeLimit                       = std::chrono::minutes(_sql->GetUIntData(1));
+        m_entrance                        = _sql->GetUIntData(2);
+        m_entryloc.x                      = _sql->GetFloatData(3);
+        m_entryloc.y                      = _sql->GetFloatData(4);
+        m_entryloc.z                      = _sql->GetFloatData(5);
+        m_entryloc.rotation               = _sql->GetUIntData(6);
+        m_zone_music_override.m_songDay   = _sql->GetUIntData(7);
+        m_zone_music_override.m_songNight = _sql->GetUIntData(8);
+        m_zone_music_override.m_bSongS    = _sql->GetUIntData(9);
+        m_zone_music_override.m_bSongM    = _sql->GetUIntData(10);
 
         // Add to Lua cache
         // TODO: This will happen more often than needed, but not so often that it's a performance concern
@@ -311,22 +297,22 @@ bool CInstance::CheckFirstEntry(uint32 id)
     return m_enteredChars.insert(id).second;
 }
 
-uint8 CInstance::GetSoloBattleMusic()
+uint16 CInstance::GetSoloBattleMusic()
 {
-    return m_zone_music_override.m_bSongS != (uint8)-1 ? m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
+    return m_zone_music_override.m_bSongS != (uint16)-1 ? m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
 }
 
-uint8 CInstance::GetPartyBattleMusic()
+uint16 CInstance::GetPartyBattleMusic()
 {
-    return m_zone_music_override.m_bSongM != (uint8)-1 ? m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
+    return m_zone_music_override.m_bSongM != (uint16)-1 ? m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
 }
 
-uint8 CInstance::GetBackgroundMusicDay()
+uint16 CInstance::GetBackgroundMusicDay()
 {
-    return m_zone_music_override.m_songDay != (uint8)-1 ? m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
+    return m_zone_music_override.m_songDay != (uint16)-1 ? m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
 }
 
-uint8 CInstance::GetBackgroundMusicNight()
+uint16 CInstance::GetBackgroundMusicNight()
 {
-    return m_zone_music_override.m_songNight != (uint8)-1 ? m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
+    return m_zone_music_override.m_songNight != (uint16)-1 ? m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
 }

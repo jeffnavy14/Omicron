@@ -16,30 +16,11 @@ local function getJumpWSParams(player, atkMultiplier, tpMultiplier, forceCrit)
     local params =
     {
         numHits = 1,
-        ftp100  = 1,
-        ftp200  = 1,
-        ftp300  = 1,
+        ftpMod  = { 1.0, 1.0, 1.0 },
 
-        str_wsc = 0.0,
-        dex_wsc = 0.0,
-        vit_wsc = 0.0,
-        agi_wsc = 0.0,
-        int_wsc = 0.0,
-        mnd_wsc = 0.0,
-        chr_wsc = 0.0,
-
-        crit100 = 0.0,
-        crit200 = 0.0,
-        crit300 = 0.0,
-        canCrit = true,
-
-        acc100 = 0.0,
-        acc200 = 0.0,
-        acc300 = 0.0,
-
-        atk100 = atkMultiplier,
-        atk200 = atkMultiplier,
-        atk300 = atkMultiplier,
+        -- NOTE: critVaries exists without values since while no modifier, it can crit.
+        critVaries = { 0.0, 0.0, 0.0 },
+        atkVaries  = { atkMultiplier, atkMultiplier, atkMultiplier },
 
         bonusTP        = 0,
         targetTPMult   = 0,
@@ -49,9 +30,7 @@ local function getJumpWSParams(player, atkMultiplier, tpMultiplier, forceCrit)
     }
 
     if player:getMod(xi.mod.FORCE_JUMP_CRIT) > 0 or forceCrit then
-        params.crit100 = 1.0
-        params.crit200 = 1.0
-        params.crit300 = 1.0
+        params.critVaries = { 1.0, 1.0, 1.0 }
     end
 
     return params
@@ -154,7 +133,7 @@ xi.job_utils.dragoon.abilityCheckRequiresPet = function(player, target, ability,
         end
 
         if ability:getID() == xi.jobAbility.SPIRIT_SURGE then
-            ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
+            ability:setRecast(math.max(0, ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST) * 60))
         end
 
         return 0, 0
@@ -260,9 +239,7 @@ xi.job_utils.dragoon.useJump = function(player, target, ability, action)
 
     -- Only 'Jump' and not others get the fTP VIT bonus
     local ftp = 1 + (player:getStat(xi.mod.VIT) / 256)
-    params.ftp100 = ftp
-    params.ftp200 = ftp
-    params.ftp300 = ftp
+    params.ftpMod = { ftp, ftp, ftp }
 
     local damage, totalHits = performWSJump(player, target, action, params, ability:getID())
 
@@ -706,14 +683,19 @@ xi.job_utils.dragoon.useDamageBreath = function(wyvern, target, skill, action, d
         wyvern:addTP(strafeMeritPower * 5) -- add 50 TP per merit with augmented AF2 legs
     end
 
-    local bonusMacc = strafeMeritPower + master:getMod(xi.mod.WYVERN_BREATH_MACC)
-    local element   = damageType - xi.damageType.ELEMENTAL
+    local bonusMacc          = strafeMeritPower + master:getMod(xi.mod.WYVERN_BREATH_MACC)
+    local element            = damageType - xi.damageType.ELEMENTAL
+    local _, skillchainCount = xi.magicburst.formMagicBurst(element, target)
 
     -- 'Breath accuracy is directly affected by a wyvern's current HP', but no data exists.
     local resist              = xi.spells.damage.calculateResist(wyvern, target, 0, 0, element, 0, bonusMacc)
     local sdt                 = xi.spells.damage.calculateSDT(target, element)
-    local magicBurst          = xi.spells.damage.calculateIfMagicBurst(target, element)
     local nukeAbsorbOrNullify = xi.spells.damage.calculateNukeAbsorbOrNullify(target, element)
+    local magicBurst          = 1
+
+    if skillchainCount > 0 then
+        magicBurst = xi.spells.damage.calculateIfMagicBurst(target, element, skillchainCount)
+    end
 
     -- It appears that MB breaths don't do more damage based on testing.
     damage = damage * resist * sdt * nukeAbsorbOrNullify

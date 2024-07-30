@@ -447,6 +447,7 @@ INSERT INTO `item_usable` VALUES (4505,'handful_of_sunflower_seeds',1,1,24,0,0,0
 INSERT INTO `item_usable` VALUES (4506,'mutton_tortilla',1,1,24,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4507,'rarab_meatball',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4508,'serving_of_royal_jelly',1,1,24,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4509,'flask_of_distilled_water',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4510,'acorn_cookie',1,1,29,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4511,'bowl_of_ambrosia',1,1,10,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4512,'bottle_of_vampire_juice',1,1,26,0,0,0,0,0);
@@ -941,6 +942,8 @@ INSERT INTO `item_usable` VALUES (5072,'scroll_of_goddesss_hymnus',1,1,15,5,0,0,
 INSERT INTO `item_usable` VALUES (5073,'scroll_of_chocobo_mazurka',1,1,15,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5074,'scroll_of_maidens_virelai',1,1,15,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5075,'scroll_of_raptor_mazurka',1,1,15,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5076,'scroll_of_foe_sirvente',1,1,15,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5077,'scroll_of_adventurers_dirge',1,1,15,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5078,'scroll_of_sentinels_scherzo',1,1,15,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5079,'scroll_of_foe_lullaby_ii',1,1,15,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5082,'scroll_of_cura_ii',1,1,11,5,0,0,0,0);
@@ -1977,6 +1980,7 @@ INSERT INTO `item_usable` VALUES (10293,'chocobo_shirt',1,8,0,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (10383,'dream_mittens_+1',1,6,24,0,1,30,7200,0);
 INSERT INTO `item_usable` VALUES (10796,'decennial_ring',1,3,76,0,10,15,3600,0);
 INSERT INTO `item_usable` VALUES (10812,'chocobo_shield_+1',1,8,0,0,1,30,86400,0);
+INSERT INTO `item_usable` VALUES (10848,'quadav_belt',1,1,0,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (10875,'snowman_cap',1,1,0,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (11002,'dragon_tank',1,1,55,0,5,30,60,0);
 INSERT INTO `item_usable` VALUES (11273,'custom_gilet_+1',1,8,0,0,1,30,72000,0);
@@ -1995,7 +1999,7 @@ INSERT INTO `item_usable` VALUES (11491,'snow_bunny_hat_+1',1,1,0,0,1,30,3600,0)
 INSERT INTO `item_usable` VALUES (11500,'chocobo_beret',1,1,0,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (11538,'nexus_cape',1,8,79,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (11666,'novennial_ring',1,3,76,0,10,15,3600,0);
-INSERT INTO `item_usable` VALUES (11788,'jesters_hat',1,3,0,0,1,10,600000,0);
+INSERT INTO `item_usable` VALUES (11788,'jesters_hat',1,3,0,0,1,30,600,0);
 INSERT INTO `item_usable` VALUES (11811,'destrier_beret',1,4,0,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (11861,'hikogami_yukata',1,2,0,0,1,30,86400,0);
 INSERT INTO `item_usable` VALUES (11862,'himegami_yukata',1,2,0,0,1,30,86400,0);
@@ -2341,6 +2345,7 @@ INSERT INTO `item_usable` VALUES (21266,'gastraphetes',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21267,'annihilator',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21268,'death_penalty',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21269,'armageddon',1,1,55,0,1,10,3600,0);
+INSERT INTO `item_usable` VALUES (21868,'sha_wujings_la._+1',1,55,0,0,1,30,72000,0); -- Dispenses: Distilled Water x 12
 -- INSERT INTO `item_usable` VALUES (22018,'seika_uchiwa_+1',1,1,55,0,1,30,300,0);  -- Enchantment: Cool Breeze
 -- INSERT INTO `item_usable` VALUES (22020,'jingly_rod_+1',1,1,55,0,1,30,3600,0);   -- Costume: lamb or Chacharoon
 INSERT INTO `item_usable` VALUES (22115,'yoichinoyumi',1,1,55,0,1,10,3600,0);

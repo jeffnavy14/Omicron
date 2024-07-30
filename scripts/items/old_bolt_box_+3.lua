@@ -5,12 +5,12 @@
 -----------------------------------
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.DOGBOLT_P3, math.random(10, 20))
+    npcUtil.giveItem(target, { { xi.item.DOGBOLT_P3, math.random(10, 20) } })
 end
 
 return itemObject

@@ -4,12 +4,12 @@
 -----------------------------------
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.LUGWORM, 12)
+    npcUtil.giveItem(target, { { xi.item.LUGWORM, 12 } })
 end
 
 return itemObject

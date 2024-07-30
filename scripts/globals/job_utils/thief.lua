@@ -108,13 +108,13 @@ xi.job_utils.thief.checkDespoil = function(player, target, ability)
 end
 
 xi.job_utils.thief.checkLarceny = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
+    ability:setRecast(math.max(0, ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST) * 60))
 
     return 0, 0
 end
 
 xi.job_utils.thief.checkPerfectDodge = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
+    ability:setRecast(math.max(0, ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST) * 60))
 
     return 0, 0
 end
@@ -218,7 +218,7 @@ xi.job_utils.thief.useDespoil = function(player, target, ability, action)
     if
         target:isMob() and
         math.random(1, 100) <= despoilChance and
-        stolen
+        stolen ~= 0
     then
         if player:getObjType() == xi.objType.TRUST then
             player:getMaster():addItem(stolen)
@@ -301,8 +301,12 @@ xi.job_utils.thief.useLarceny = function(player, target, ability, action)
         local newPower    = effectStolen:getPower()
         local newTick     = effectStolen:getTick()
         local newDuration = effectStolen:getDuration() + jpValue
+        local newSubType  = effectStolen:getSubType()
+        local newSubPower = effectStolen:getSubPower()
+        local newTier     = effectStolen:getTier()
+        local newFlags    = effectStolen:getEffectFlags()
 
-        player:addStatusEffectEx(newID, newIcon, newPower, newTick, newDuration)
+        player:addStatusEffectEx(newID, newIcon, newPower, newTick, newDuration, newSubType, newSubPower, newTier, newFlags)
         target:delStatusEffect(newID)
 
         effectID = newID
@@ -411,16 +415,24 @@ xi.job_utils.thief.useSteal = function(player, target, ability, action)
 
     -- Attempt Aura steal
     -- local effect = xi.effect.NONE
-    if stolen == 0 and player:hasTrait(75) then
+    if player:hasTrait(xi.trait.AURA_STEAL) then
         local resist = applyResistanceAbility(player, target, xi.element.NONE, 0, 0)
         -- local effectStealSuccess = false
         if resist > 0.0625 then
             local auraStealChance = math.min(player:getMerit(xi.merit.AURA_STEAL), 95)
             if math.random(100) < auraStealChance then
+                local targetShadows = target:getMod(xi.mod.UTSUSEMI)
+
                 stolen = player:stealStatusEffect(target)
                 if stolen ~= 0 then
                     ability:setMsg(xi.msg.basic.STEAL_EFFECT)
                     action:setAnimation(target:getID(), 181)
+
+                    if stolen == xi.effect.COPY_IMAGE then
+                        if targetShadows > 0 then
+                            player:setMod(xi.mod.UTSUSEMI, targetShadows)
+                        end
+                    end
                 end
             -- else
             --     effect = target:dispelStatusEffect()

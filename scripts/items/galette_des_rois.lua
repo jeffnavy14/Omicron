@@ -10,7 +10,7 @@
 -----------------------------------
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if target:hasStatusEffect(xi.effect.FOOD) then
         result = xi.msg.basic.IS_FULL
@@ -26,7 +26,7 @@ end
 itemObject.onItemUse = function(target)
     target:addStatusEffect(xi.effect.FOOD, 0, 0, 10800, 5875)
     local rand = math.random(784, 815)
-    target:addItem(rand) -- Random Jewel
+    npcUtil.giveItem(target, { { rand, 1 } })
 end
 
 itemObject.onEffectGain = function(target, effect)

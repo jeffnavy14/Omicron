@@ -11,18 +11,17 @@ entity.onMobInitialize = function(mob)
     mob:getStatusEffect(xi.effect.SHOCK_SPIKES):setEffectFlags(xi.effectFlag.DEATH)
 end
 
+entity.onMobSpawn = function(mob)
+    mob:setMod(xi.mod.DOUBLE_ATTACK, 40)
+end
+
 entity.onAdditionalEffect = function(mob, target, damage)
     return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.STUN, { chance = 65, duration = math.random(5, 15) })
 end
 
 entity.onSpikesDamage = function(mob, target, damage)
     local intDiff = mob:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
-
-    if intDiff > 20 then
-        intDiff = 20 + (intDiff - 20) * 0.5 -- INT above 20 is half as effective.
-    end
-
-    local dmg = (damage + intDiff) * 0.5 -- INT adjustment and base damage averaged together.
+    local dmg = damage + intDiff
     local params = {}
     params.bonusmab = 0
     params.includemab = false

@@ -19,15 +19,15 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
-        CELL_OFFSET                   = 7221, -- Main Weapon/Sub-Weapon restriction removed.
-        SALVAGE_START                 = 7244, -- You feel an incredible pressure bearing down on you. This area appears to be blanketed in some sort of intense psionic field...
-        TIME_TO_COMPLETE              = 7451, -- You have <number> [minute/minutes] (Earth time) to complete this mission.
-        MISSION_FAILED                = 7452, -- The mission has failed. Leaving area.
-        TIME_REMAINING_MINUTES        = 7456, -- ime remaining: <number> [minute/minutes] (Earth time).
-        TIME_REMAINING_SECONDS        = 7457, -- ime remaining: <number> [second/seconds] (Earth time).
-        PARTY_FALLEN                  = 7459, -- ll party members have fallen in battle. Mission failure in <number> [minute/minutes].
-        DOOR_IS_SEALED                = 7470, -- The door is sealed...
-        DOOR_IS_SEALED_MYSTERIOUS     = 7473, -- The door is sealed by some mysterious force...
+        CELL_OFFSET                   = 7224, -- Main Weapon/Sub-Weapon restriction removed.
+        SALVAGE_START                 = 7247, -- You feel an incredible pressure bearing down on you. This area appears to be blanketed in some sort of intense psionic field...
+        TIME_TO_COMPLETE              = 7454, -- You have <number> [minute/minutes] (Earth time) to complete this mission.
+        MISSION_FAILED                = 7455, -- The mission has failed. Leaving area.
+        TIME_REMAINING_MINUTES        = 7459, -- ime remaining: <number> [minute/minutes] (Earth time).
+        TIME_REMAINING_SECONDS        = 7460, -- ime remaining: <number> [second/seconds] (Earth time).
+        PARTY_FALLEN                  = 7462, -- ll party members have fallen in battle. Mission failure in <number> [minute/minutes].
+        DOOR_IS_SEALED                = 7473, -- The door is sealed...
+        DOOR_IS_SEALED_MYSTERIOUS     = 7476, -- The door is sealed by some mysterious force...
     },
     mob =
     {
@@ -204,7 +204,7 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         {
             [1] =
             {
-                DOOR1 = 17080974,
+                DOOR1 = 17080975,
             },
 
             [2] =
@@ -214,10 +214,10 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
 
             [3] =
             {
-                DOOR1 = 17080975,
-                DOOR2 = 17080976,
-                DOOR3 = 17080977,
-                DOOR4 = 17080978,
+                DOOR1 = 17080976,
+                DOOR2 = 17080977,
+                DOOR3 = 17080978,
+                DOOR4 = 17080979,
             },
         },
 
@@ -225,10 +225,10 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         {
             [1] =
             {
-                DOOR1 = 17080979,
-                DOOR2 = 17080980,
-                DOOR3 = 17080981,
-                DOOR4 = 17080982,
+                DOOR1 = 17080980,
+                DOOR2 = 17080981,
+                DOOR3 = 17080982,
+                DOOR4 = 17080983,
             },
 
             [2] =
@@ -242,8 +242,8 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         {
             [1] =
             {
-                DOOR1 = 17080983,
-                DOOR2 = 17080984,
+                DOOR1 = 17080984,
+                DOOR2 = 17080985,
             },
         },
 
@@ -251,8 +251,8 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         {
             [1] =
             {
-                DOOR1 = 17080985,
-                DOOR2 = 17080986,
+                DOOR1 = 17080986,
+                DOOR2 = 17080987,
             },
         },
 
@@ -260,14 +260,14 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         {
             [1] =
             {
-                DOOR1 = 17080987,
-                DOOR2 = 17080988,
+                DOOR1 = 17080988,
+                DOOR2 = 17080989,
             },
         },
 
         [6] =
         {
-            DOOR = 17080989,
+            DOOR = 17080990,
         },
     },
 

@@ -5,7 +5,7 @@
 -----------------------------------
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
@@ -14,9 +14,9 @@ itemObject.onItemUse = function(target)
 
     if
         not target:hasStatusEffect(xi.effect.TERROR) and
-        (target:getID() == ID.mob.ATORI_TUTORI_QM[1] or
-        target:getID() == ID.mob.ATORI_TUTORI_QM[2] or
-        target:getID() == ID.mob.ATORI_TUTORI_QM[3])
+        (target:getID() == ID.mob.ATORI_TUTORI or
+        target:getID() == ID.mob.ATORI_TUTORI + 1 or
+        target:getID() == ID.mob.ATORI_TUTORI + 2)
     then
         target:addStatusEffect(xi.effect.TERROR, 1, 3, 90)
     else

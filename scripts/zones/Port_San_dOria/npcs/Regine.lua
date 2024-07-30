@@ -7,12 +7,12 @@
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local flyersForRegine = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
-    local theBrugaireConsortium = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.THE_BRUGAIRE_CONSORTIUM)
+    local flyersForRegine = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
+    local theBrugaireConsortium = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.THE_BRUGAIRE_CONSORTIUM)
 
     -- FLYERS FOR REGINE
     if
-        flyersForRegine == QUEST_ACCEPTED and
+        flyersForRegine == xi.questStatus.QUEST_ACCEPTED and
         npcUtil.tradeHas(trade, { { 'gil', 10 } })
     then
         if npcUtil.giveItem(player, xi.item.MAGICMART_FLYER) then
@@ -21,7 +21,7 @@ entity.onTrade = function(player, npc, trade)
 
     -- THE BRUGAIRE CONSORTIUM
     elseif
-        theBrugaireConsortium == QUEST_ACCEPTED and
+        theBrugaireConsortium == xi.questStatus.QUEST_ACCEPTED and
         npcUtil.tradeHas(trade, xi.item.PARCEL_FOR_THE_MAGIC_SHOP)
     then
         player:startEvent(535)
@@ -29,18 +29,21 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local ffr = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
+    local ffr = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
 
     -- FLYERS FOR REGINE
-    if ffr == QUEST_AVAILABLE then -- ready to accept quest
+    if ffr == xi.questStatus.QUEST_AVAILABLE then -- ready to accept quest
         player:startEvent(510, 2)
     elseif
-        ffr == QUEST_ACCEPTED and
+        ffr == xi.questStatus.QUEST_ACCEPTED and
         utils.mask.isFull(player:getCharVar('[ffr]deliveryMask'), 15)
     then
         -- all 15 flyers delivered
         player:startEvent(603)
-    elseif ffr == QUEST_ACCEPTED and not player:hasItem(xi.item.MAGICMART_FLYER) then -- on quest but out of flyers
+    elseif
+        ffr == xi.questStatus.QUEST_ACCEPTED and
+        not player:hasItem(xi.item.MAGICMART_FLYER)
+    then -- on quest but out of flyers
         player:startEvent(510, 3)
 
     -- DEFAULT MENU
@@ -56,11 +59,11 @@ entity.onEventFinish = function(player, csid, option, npc)
     -- FLYERS FOR REGINE
     if csid == 510 and option == 2 then
         if npcUtil.giveItem(player, { { xi.item.MAGICMART_FLYER, 12 }, { xi.item.MAGICMART_FLYER, 3 } }) then
-            player:addQuest(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
+            player:addQuest(xi.questLog.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE)
         end
     elseif csid == 603 then
         npcUtil.completeQuest(
-            player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE,
+            player, xi.questLog.SANDORIA, xi.quest.id.sandoria.FLYERS_FOR_REGINE,
             {
                 gil = 440,
                 title = xi.title.ADVERTISING_EXECUTIVE,
@@ -77,24 +80,22 @@ entity.onEventFinish = function(player, csid, option, npc)
     elseif csid == 510 and option == 0 then
         local stockA =
         {
-            4641, 1165, 1, -- Scroll of Diaga
-            4664, 837, 1,  -- Scroll of Slow
-            4662, 7025, 1, -- Scroll of Stoneskin
-
-            4636, 140, 2,  -- Scroll of Banish
-            4646, 1165, 2, -- Scroll of Banishga
-            4661, 2097, 2, -- Scroll of Blink
-            4610, 585, 2,  -- Scroll of Cure II
-
-            4663, 360, 3,  -- Scroll of Aquaveil
-            4624, 990, 3,  -- Scroll of Blindna
-            4615, 1363, 3, -- Scroll of Curaga
-            4609, 61, 3,   -- Scroll of Cure
-            4631, 82, 3,   -- Scroll of Dia
-            4623, 324, 3,  -- Scroll of Paralyna
-            4622, 180, 3,  -- Scroll of Poisona
-            4651, 219, 3,  -- Scroll of Protect
-            4656, 1584, 3  -- Scroll of Shell
+            xi.item.SCROLL_OF_CURE,        70, 3,
+            xi.item.SCROLL_OF_CURE_II,    676, 2,
+            xi.item.SCROLL_OF_CURAGA,    1575, 3,
+            xi.item.SCROLL_OF_POISONA,    208, 3,
+            xi.item.SCROLL_OF_PARALYNA,   374, 3,
+            xi.item.SCROLL_OF_BLINDNA,   1144, 3,
+            xi.item.SCROLL_OF_DIA,         95, 3,
+            xi.item.SCROLL_OF_BANISH,     162, 2,
+            xi.item.SCROLL_OF_DIAGA,     1346, 1,
+            xi.item.SCROLL_OF_BANISHGA,  1346, 2,
+            xi.item.SCROLL_OF_PROTECT,    253, 3,
+            xi.item.SCROLL_OF_SHELL,     1830, 3,
+            xi.item.SCROLL_OF_BLINK,     2423, 2,
+            xi.item.SCROLL_OF_STONESKIN, 8118, 1,
+            xi.item.SCROLL_OF_AQUAVEIL,   416, 3,
+            xi.item.SCROLL_OF_SLOW,       967, 1,
         }
         xi.shop.nation(player, stockA, xi.nation.SANDORIA)
 
@@ -102,23 +103,22 @@ entity.onEventFinish = function(player, csid, option, npc)
     elseif csid == 510 and option == 1 then
         local stockB =
         {
-            4862, 111, 1,  -- Scroll of Blind
-            4838, 360, 2,  -- Scroll of Bio
-            4828, 82, 2,   -- Scroll of Poison
-            4861, 2250, 2, -- Scroll of Sleep
-
-            4762, 324, 3,  -- Scroll of Aero
-            4757, 1584, 3, -- Scroll of Blizzard
-            4843, 4644, 3, -- Scroll of Burn
-            4845, 2250, 3, -- Scroll of Choke
-            4848, 6366, 3, -- Scroll of Drown
-            4752, 837, 3,  -- Scroll of Fire
-            4844, 3688, 3, -- Scroll of Frost
-            4846, 1827, 3, -- Scroll of Rasp
-            4847, 1363, 3, -- Scroll of Shock
-            4767, 61, 3,   -- Scroll of Stone
-            4772, 3261, 3, -- Scroll of Thunder
-            4777, 140, 3   -- Scroll of Water
+            xi.item.SCROLL_OF_STONE,      70, 3,
+            xi.item.SCROLL_OF_WATER,     162, 3,
+            xi.item.SCROLL_OF_AERO,      374, 3,
+            xi.item.SCROLL_OF_FIRE,      967, 3,
+            xi.item.SCROLL_OF_BLIZZARD, 1830, 3,
+            xi.item.SCROLL_OF_THUNDER,  3768, 3,
+            xi.item.SCROLL_OF_POISON,     95, 2,
+            xi.item.SCROLL_OF_BIO,       416, 2,
+            xi.item.SCROLL_OF_BLIND,     128, 1,
+            xi.item.SCROLL_OF_SLEEP,    2600, 2,
+            xi.item.SCROLL_OF_BURN,     5366, 3,
+            xi.item.SCROLL_OF_FROST,    4261, 3,
+            xi.item.SCROLL_OF_CHOCKE,   2600, 3,
+            xi.item.SCROLL_OF_RASP,     2111, 3,
+            xi.item.SCROLL_OF_SHOCK,    1575, 3,
+            xi.item.SCROLL_OF_DROWN,    7356, 3,
         }
         xi.shop.nation(player, stockB, xi.nation.SANDORIA)
     end

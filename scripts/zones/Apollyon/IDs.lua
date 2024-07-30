@@ -15,21 +15,21 @@ zones[xi.zone.APOLLYON] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
-        TIME_IN_THE_BATTLEFIELD_IS_UP = 7066, -- You have exceeded the time limit. Exiting Limbus now.
-        PARTY_MEMBERS_ARE_ENGAGED     = 7067, -- You have clearance to enter Limbus, but cannot enter while you or a party member is engaged in battle.
-        HUM                           = 7079, -- You hear a faint hum.
-        NO_BATTLEFIELD_ENTRY          = 7084, -- There are several six-sided indentations and a thin slot in the center of the circular dais here.
-        MEMBERS_OF_YOUR_PARTY         = 7333, -- Currently, <number> party members in this area have clearance to enter Limbus.
-        TIME_LIMIT_FOR_THIS_BATTLE_IS = 7336, -- ou may stay in Limbus for <number> [minute/minutes].
-        PARTY_MEMBERS_HAVE_FALLEN     = 7359, -- All party members in Limbus have fallen in battle. Exiting now.
-        THE_PARTY_WILL_BE_REMOVED     = 7367, -- All party members in Limbus have fallen in battle. Exiting in <number> [minute/minutes].
-        YOU_INSERT_THE_CARD_POLISHED  = 7372, -- You insert the <keyitem> polished with <keyitem> into the slot!
-        CHIP_TRADE                    = 7373, -- The light in the <item> has grown dim.
-        TIME_EXTENDED                 = 7375, -- our time in Limbus has been extended <number> [minute/minutes].
-        TIME_LEFT                     = 7376, -- ou have <number> [minute/minutes] left in Limbus.
-        CONQUEST_BASE                 = 7378, -- Tallying conquest results...
-        ENTERING_THE_BATTLEFIELD_FOR  = 7549, -- You have entered [SW Apollyon/NW Apollyon/SE Apollyon/NE Apollyon/Central Apollyon/CS Apollyon/CS Apollyon/Central Apollyon].
-        GATE_OPEN                     = 7557, -- vortex materializes...
+        TIME_IN_THE_BATTLEFIELD_IS_UP = 7069, -- You have exceeded the time limit. Exiting Limbus now.
+        PARTY_MEMBERS_ARE_ENGAGED     = 7070, -- You have clearance to enter Limbus, but cannot enter while you or a party member is engaged in battle.
+        HUM                           = 7082, -- You hear a faint hum.
+        NO_BATTLEFIELD_ENTRY          = 7087, -- There are several six-sided indentations and a thin slot in the center of the circular dais here.
+        MEMBERS_OF_YOUR_PARTY         = 7336, -- Currently, <number> party members in this area have clearance to enter Limbus.
+        TIME_LIMIT_FOR_THIS_BATTLE_IS = 7339, -- ou may stay in Limbus for <number> [minute/minutes].
+        PARTY_MEMBERS_HAVE_FALLEN     = 7362, -- All party members in Limbus have fallen in battle. Exiting now.
+        THE_PARTY_WILL_BE_REMOVED     = 7370, -- All party members in Limbus have fallen in battle. Exiting in <number> [minute/minutes].
+        YOU_INSERT_THE_CARD_POLISHED  = 7375, -- You insert the <keyitem> polished with <keyitem> into the slot!
+        CHIP_TRADE                    = 7376, -- The light in the <item> has grown dim.
+        TIME_EXTENDED                 = 7378, -- our time in Limbus has been extended <number> [minute/minutes].
+        TIME_LEFT                     = 7379, -- ou have <number> [minute/minutes] left in Limbus.
+        CONQUEST_BASE                 = 7381, -- Tallying conquest results...
+        ENTERING_THE_BATTLEFIELD_FOR  = 7552, -- You have entered [SW Apollyon/NW Apollyon/SE Apollyon/NE Apollyon/Central Apollyon/CS Apollyon/CS Apollyon/Central Apollyon].
+        GATE_OPEN                     = 7560, -- vortex materializes...
     },
     mob =
     {
@@ -106,9 +106,9 @@ zones[xi.zone.APOLLYON] =
         {
             PORTAL =
             {
-                16933230,
                 16933231,
                 16933232,
+                16933233,
             },
             ITEM_CRATES =
             {
@@ -177,9 +177,9 @@ zones[xi.zone.APOLLYON] =
         {
             PORTAL =
             {
+                16933240,
                 16933239,
-                16933238,
-                16933241,
+                16933242,
             },
             ITEM_CRATES =
             {
@@ -260,10 +260,10 @@ zones[xi.zone.APOLLYON] =
         {
             PORTAL =
             {
-                16933226,
                 16933227,
                 16933228,
-                16933224,
+                16933229,
+                16933225,
             },
             ITEM_CRATES =
             {
@@ -330,10 +330,10 @@ zones[xi.zone.APOLLYON] =
         {
             PORTAL =
             {
+                16933236,
                 16933235,
                 16933234,
-                16933233,
-                16933237,
+                16933238,
             },
             ITEM_CRATES =
             {

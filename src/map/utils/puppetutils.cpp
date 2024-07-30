@@ -23,6 +23,7 @@
 #include "battleutils.h"
 #include "charutils.h"
 #include "entities/automatonentity.h"
+#include "instance.h"
 #include "itemutils.h"
 #include "job_points.h"
 #include "lua/luautils.h"
@@ -36,31 +37,48 @@ namespace puppetutils
 {
     void LoadAutomaton(CCharEntity* PChar)
     {
+        TracyZoneScoped;
+
         const char* Query = "SELECT unlocked_attachments, name, equipped_attachments FROM "
                             "char_pet LEFT JOIN pet_name ON automatonid = id "
-                            "WHERE charid = %u;";
+                            "WHERE charid = (?)";
 
-        int32 ret = sql->Query(Query, PChar->id);
-
-        if (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+        auto rset = db::preparedStmt(Query, PChar->id);
+        if (rset && rset->rowsCount() && rset->next())
         {
-            size_t length      = 0;
-            char*  attachments = nullptr;
-            sql->GetData(0, &attachments, &length);
-            memcpy(&PChar->m_unlockedAttachments, attachments, (length > sizeof(PChar->m_unlockedAttachments) ? sizeof(PChar->m_unlockedAttachments) : length));
+            db::extractFromBlob(rset, "unlocked_attachments", PChar->m_unlockedAttachments);
 
             if (PChar->PAutomaton != nullptr)
             {
                 // Make sure we don't delete a pet that is active
                 auto* PZone = zoneutils::GetZone(PChar->PAutomaton->getZone());
-                if (PZone == nullptr || PZone->GetEntity(PChar->PAutomaton->targid, TYPE_PET) == nullptr)
+                if (PZone == nullptr)
                 {
                     destroy(PChar->PAutomaton);
                 }
                 else
                 {
-                    PChar->PAutomaton->PMaster = nullptr;
+                    if (PChar->PAutomaton->PInstance)
+                    {
+                        if (PChar->PAutomaton->PInstance->GetEntity(PChar->PAutomaton->targid, TYPE_PET) == nullptr)
+                        {
+                            destroy(PChar->PAutomaton);
+                        }
+                        else
+                        {
+                            PChar->PAutomaton->PMaster = nullptr;
+                        }
+                    }
+                    else if (PZone->GetEntity(PChar->PAutomaton->targid, TYPE_PET) == nullptr)
+                    {
+                        destroy(PChar->PAutomaton);
+                    }
+                    else
+                    {
+                        PChar->PAutomaton->PMaster = nullptr;
+                    }
                 }
+
                 PChar->PPet       = nullptr;
                 PChar->PAutomaton = nullptr;
             }
@@ -70,15 +88,15 @@ namespace puppetutils
                 PChar->PAutomaton = new CAutomatonEntity();
                 PChar->PAutomaton->saveModifiers();
 
-                PChar->PAutomaton->name.insert(0, (const char*)sql->GetData(1));
+                PChar->PAutomaton->name = rset->getString("name");
                 automaton_equip_t tempEquip;
-                attachments = nullptr;
-                sql->GetData(2, &attachments, &length);
-                memcpy(&tempEquip, attachments, (length > sizeof(tempEquip) ? sizeof(tempEquip) : length));
+                db::extractFromBlob(rset, "equipped_attachments", tempEquip);
 
                 // If any of this happens then the Automaton failed to load properly and should just reset (Should only occur with older characters or if DB is
                 // missing)
-                if (tempEquip.Head < HEAD_HARLEQUIN || tempEquip.Head > HEAD_SPIRITREAVER || tempEquip.Frame < FRAME_HARLEQUIN ||
+                if (tempEquip.Head < HEAD_HARLEQUIN ||
+                    tempEquip.Head > HEAD_SPIRITREAVER ||
+                    tempEquip.Frame < FRAME_HARLEQUIN ||
                     tempEquip.Frame > FRAME_STORMWAKER)
                 {
                     PChar->PAutomaton->setHead(HEAD_HARLEQUIN);
@@ -86,6 +104,7 @@ namespace puppetutils
                     PChar->PAutomaton->setFrame(FRAME_HARLEQUIN);
                     tempEquip.Frame = FRAME_HARLEQUIN;
                     for (int i = 0; i < 12; i++)
+
                     {
                         tempEquip.Attachments[i] = 0;
                     }
@@ -94,6 +113,7 @@ namespace puppetutils
                     {
                         PChar->PAutomaton->setElementMax(i, 5);
                     }
+
                     PChar->PAutomaton->setElementMax(6, 3);
                     PChar->PAutomaton->setElementMax(7, 3);
 
@@ -147,32 +167,32 @@ namespace puppetutils
             const char* Query = "UPDATE char_pet SET "
                                 "unlocked_attachments = '%s', "
                                 "equipped_attachments = '%s' "
-                                "WHERE charid = %u;";
+                                "WHERE charid = %u";
 
             char unlockedAttachmentsEscaped[sizeof(PChar->m_unlockedAttachments) * 2 + 1];
             char unlockedAttachments[sizeof(PChar->m_unlockedAttachments)];
             memcpy(unlockedAttachments, &PChar->m_unlockedAttachments, sizeof(unlockedAttachments));
-            sql->EscapeStringLen(unlockedAttachmentsEscaped, unlockedAttachments, sizeof(unlockedAttachments));
+            _sql->EscapeStringLen(unlockedAttachmentsEscaped, unlockedAttachments, sizeof(unlockedAttachments));
 
             char equippedAttachmentsEscaped[sizeof(PChar->PAutomaton->m_Equip) * 2 + 1];
             char equippedAttachments[sizeof(PChar->PAutomaton->m_Equip)];
             memcpy(equippedAttachments, &PChar->PAutomaton->m_Equip, sizeof(equippedAttachments));
-            sql->EscapeStringLen(equippedAttachmentsEscaped, equippedAttachments, sizeof(equippedAttachments));
+            _sql->EscapeStringLen(equippedAttachmentsEscaped, equippedAttachments, sizeof(equippedAttachments));
 
-            sql->Query(Query, unlockedAttachmentsEscaped, equippedAttachmentsEscaped, PChar->id);
+            _sql->Query(Query, unlockedAttachmentsEscaped, equippedAttachmentsEscaped, PChar->id);
         }
         else
         {
             const char* Query = "UPDATE char_pet SET "
                                 "unlocked_attachments = '%s' "
-                                "WHERE charid = %u;";
+                                "WHERE charid = %u";
 
             char unlockedAttachmentsEscaped[sizeof(PChar->m_unlockedAttachments) * 2 + 1];
             char unlockedAttachments[sizeof(PChar->m_unlockedAttachments)];
             memcpy(unlockedAttachments, &PChar->m_unlockedAttachments, sizeof(unlockedAttachments));
-            sql->EscapeStringLen(unlockedAttachmentsEscaped, unlockedAttachments, sizeof(unlockedAttachments));
+            _sql->EscapeStringLen(unlockedAttachmentsEscaped, unlockedAttachments, sizeof(unlockedAttachments));
 
-            sql->Query(Query, unlockedAttachmentsEscaped, PChar->id);
+            _sql->Query(Query, unlockedAttachmentsEscaped, PChar->id);
         }
         // TODO: PUP only: save equipped automaton items
     }
@@ -566,6 +586,8 @@ namespace puppetutils
 
     void LoadAutomatonStats(CCharEntity* PChar)
     {
+        // Save this since LoadPet() below changes it, but we don't want this changed
+        auto origPetID = PChar->petZoningInfo.petID;
         switch (PChar->PAutomaton->getFrame())
         {
             default: // case FRAME_HARLEQUIN:
@@ -584,7 +606,8 @@ namespace puppetutils
                 petutils::LoadPet(PChar, PETID_STORMWAKERFRAME, false);
                 break;
         }
-        PChar->PPet = nullptr; // already saved as PAutomaton, don't need it twice unless it's summoned
+        PChar->PPet                = nullptr; // already saved as PAutomaton, don't need it twice unless it's summoned
+        PChar->petZoningInfo.petID = origPetID;
     }
 
     void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)

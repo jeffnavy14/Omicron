@@ -1,29 +1,28 @@
 -----------------------------------
--- Burning Strike M = 6?
+-- Burning Strike
+-- Hybrid
 -----------------------------------
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return 0, 0
+    return xi.job_utils.summoner.canUseBloodPact(player, player:getPet(), target, ability)
 end
 
-abilityObject.onPetAbility = function(target, pet, skill)
-    local numhits = 1
-    local accmod = 1
-    local dmgmod = 6
+abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
+    xi.job_utils.summoner.onUseBloodPact(target, petskill, summoner, action)
 
-    local damage = xi.summon.avatarPhysicalMove(pet, target, skill, numhits, accmod, dmgmod, 0, xi.mobskills.magicalTpBonus.NO_EFFECT, 1, 2, 3)
-    --get resist multiplier (1x if no resist)
-    local resist = xi.mobskills.applyPlayerResistance(pet, -1, target, pet:getStat(xi.mod.INT)-target:getStat(xi.mod.INT), xi.skill.ELEMENTAL_MAGIC, xi.element.FIRE)
-    --get the resisted damage
-    damage.dmg = damage.dmg * resist
-    --add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-    damage.dmg = xi.mobskills.mobAddBonuses(pet, target, damage.dmg, 1)
-    local totaldamage = xi.summon.avatarFinalAdjustments(damage.dmg, pet, skill, target, xi.attackType.PHYSICAL, xi.damageType.BLUNT, numhits)
-    target:takeDamage(totaldamage, pet, xi.attackType.PHYSICAL, xi.damageType.BLUNT)
-    target:updateEnmityFromDamage(pet, totaldamage)
+    local baseDamage = xi.summon.avatarPhysicalMove(pet, target, petskill, 1, 1, 6, 0, xi.mobskills.magicalTpBonus.NO_EFFECT, 1, 2, 3)
+    local damage     = math.floor(baseDamage.dmg + pet:getStat(xi.mod.INT) - target:getStat(xi.mod.INT))
 
-    return totaldamage
+    -- Add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
+    damage = xi.mobskills.mobMagicalMove(pet, target, petskill, damage, xi.element.FIRE, 1, xi.mobskills.magicalTpBonus.NO_EFFECT, 0)
+    damage = xi.mobskills.mobAddBonuses(pet, target, damage, xi.element.FIRE, petskill)
+    damage = xi.summon.avatarFinalAdjustments(damage, pet, petskill, target, xi.attackType.PHYSICAL, xi.damageType.BLUNT, 1)
+
+    target:takeDamage(damage, pet, xi.attackType.PHYSICAL, xi.damageType.BLUNT)
+    target:updateEnmityFromDamage(pet, damage)
+
+    return damage
 end
 
 return abilityObject

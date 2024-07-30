@@ -4,31 +4,29 @@
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return 0, 0
+    return xi.job_utils.summoner.canUseBloodPact(player, player:getPet(), target, ability)
 end
 
-abilityObject.onPetAbility = function(target, pet, skill)
-    local dmg = 10 + pet:getMainLvl() * 2
-    local resist = xi.mobskills.applyPlayerResistance(pet, -1, target, 0, xi.skill.ELEMENTAL_MAGIC, xi.element.DARK)
-    local duration = 120
+abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
+    xi.job_utils.summoner.onUseBloodPact(target, petskill, summoner, action)
 
-    dmg = dmg * resist
-    dmg = xi.mobskills.mobAddBonuses(pet, target, dmg, xi.element.DARK)
+    -- Damage
+    local damage = 10 + pet:getMainLvl() * 2
 
-    -- TODO: spell is nil here
-    --dmg = finalMagicAdjustments(pet, target, spell, dmg)
+    damage = xi.mobskills.mobMagicalMove(pet, target, petskill, damage.dmg, xi.element.FIRE, 1, xi.mobskills.magicalTpBonus.NO_EFFECT, 0)
+    damage = xi.mobskills.mobAddBonuses(pet, target, damage, xi.element.DARK, petskill)
+    damage = xi.summon.avatarFinalAdjustments(damage, pet, petskill, target, xi.attackType.MAGICAL, xi.damageType.DARK, 1)
 
-    if resist < 0.15 then  --the gravity effect from this ability is more likely to land than Tail Whip
-        resist = 0
+    -- Effect
+    if not target:hasStatusEffect(xi.effect.WEIGHT) then
+        local resist = xi.mobskills.applyPlayerResistance(pet, -1, target, 0, xi.skill.ELEMENTAL_MAGIC, xi.element.DARK)
+
+        if resist >= 0.15 then
+            target:addStatusEffect(xi.effect.WEIGHT, 50, 0, 120 * resist)
+        end
     end
 
-    duration = duration * resist
-
-    if duration > 0 and not target:hasStatusEffect(xi.effect.WEIGHT) then
-        target:addStatusEffect(xi.effect.WEIGHT, 50, 0, duration)
-    end
-
-    return dmg
+    return damage
 end
 
 return abilityObject

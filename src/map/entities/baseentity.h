@@ -281,8 +281,9 @@ public:
     void         SendZoneUpdate();
 
     void   ResetLocalVars();
-    uint32 GetLocalVar(const char* var);
-    void   SetLocalVar(const char* var, uint32 val);
+    uint32 GetLocalVar(std::string var);
+    void   SetLocalVar(std::string var, uint32 val);
+    auto   GetLocalVars() -> std::map<std::string, uint32>&;
 
     // pre-tick update
     virtual void Tick(time_point) = 0;
@@ -311,8 +312,9 @@ public:
     uint8           speed;        // speed of movement
     uint8           speedsub;     // Additional movement speed parameter
     uint8           namevis;
-    ALLEGIANCE_TYPE allegiance; // what types of targets the entity can fight
-    uint8           updatemask; // what to update next server tick to players nearby
+    ALLEGIANCE_TYPE allegiance;     // what types of targets the entity can fight
+    uint8           updatemask;     // what to update next server tick to players nearby
+    bool            priorityRender; // CliPriorityFlag, will force this entity to render on clients if set. See https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037 (also applies to 0x00E)
 
     bool isRenamed; // tracks if the entity's name has been overidden. Defaults to false.
 

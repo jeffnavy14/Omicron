@@ -6,8 +6,10 @@ local entity = {}
 
 local offsets = { 1, 3, 5, 2, 4, 6 }
 
-entity.onMobEngaged = function(mob, target)
-    mob:resetLocalVars()
+entity.onMobEngage = function(mob, target)
+    -- Reset the onMobFight variables
+    mob:setLocalVar('spawnTime', 0)
+    mob:setLocalVar('twohourTime', 0)
 end
 
 entity.onMobFight = function(mob, target)

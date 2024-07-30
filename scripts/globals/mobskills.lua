@@ -4,8 +4,10 @@
 -- What is known is that they roughly follow player Weaponskill calculations (pDIF, dMOD, ratio, etc) so this is what
 -- this set of functions emulates.
 -----------------------------------
+require('scripts/globals/combat/magic_hit_rate')
 require('scripts/globals/magicburst')
 require('scripts/globals/magic')
+require('scripts/globals/spells/damage_spell')
 require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
@@ -230,6 +232,11 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, dmg
         finaldmg   = 0
         hitslanded = 0
         skill:setMsg(xi.msg.basic.SKILL_MISS)
+    -- calculate tp return of mob skill and add if hit primary target
+    elseif skill:getPrimaryTargetID() == target:getID() then
+        local tpReturn = xi.combat.tp.getSingleMeleeHitTPReturn(mob, target)
+        tpReturn = tpReturn + 10 * (hitslanded - 1) -- extra hits give 10 TP each
+        mob:addTP(tpReturn)
     end
 
     returninfo.dmg        = finaldmg
@@ -259,131 +266,101 @@ end
 -- xi.mobskills.magicalTpBonus.DMG_BONUS and TP = 100, tpvalue = 2, assume V=150  --> damage is now 150*(TP*2) / 100 = 300
 -- xi.mobskills.magicalTpBonus.DMG_BONUS and TP = 200, tpvalue = 2, assume V=150  --> damage is now 150*(TP*2) / 100 = 600
 
-xi.mobskills.mobMagicalMove = function(mob, target, skill, damage, element, dmgmod, tpeffect, tpvalue)
-    local returninfo = {}
+xi.mobskills.mobMagicalMove = function(actor, target, action, baseDamage, actionElement, damageModifier, tpEffect, tpMultiplier)
+    local finalDamage = baseDamage
 
-    local mdefBarBonus = 0
-    if
-        element >= xi.element.FIRE and
-        element <= xi.element.WATER and
-        target:hasStatusEffect(xi.magic.barSpell[element])
-    then -- bar- spell magic defense bonus
-        mdefBarBonus = target:getStatusEffect(xi.magic.barSpell[element]):getSubPower()
+    -- Base damage
+    if tpEffect == xi.mobskills.magicalTpBonus.DMG_BONUS then
+        finalDamage = math.floor(finalDamage * action:getTP() * tpMultiplier / 1000)
     end
 
-    -- plus 100 forces it to be a number
-    local mab = (100 + mob:getMod(xi.mod.MATT)) / (100 + target:getMod(xi.mod.MDEF) + mdefBarBonus)
-    mab = utils.clamp(mab, 0.7, 1.3)
+    -- Get bonus macc.
+    local petAccBonus = 0
+    if actor:isPet() and actor:getMaster() ~= nil then
+        local master = actor:getMaster()
+        if actor:isAvatar() then
+            petAccBonus = utils.clamp(master:getSkillLevel(xi.skill.SUMMONING_MAGIC) - master:getMaxSkillLevel(actor:getMainLvl(), xi.job.SMN, xi.skill.SUMMONING_MAGIC), 0, 200)
+        end
 
-    if tpeffect == xi.mobskills.magicalTpBonus.DMG_BONUS then
-        damage = damage * (((skill:getTP() / 10) * tpvalue) / 100)
-    end
-
-    -- resistance is added last
-    local finaldmg = damage * mab * dmgmod
-
-    -- get resistance
-    local avatarAccBonus = 0
-    if mob:isPet() and mob:getMaster() ~= nil then
-        local master = mob:getMaster()
-        if mob:isAvatar() then
-            avatarAccBonus = utils.clamp(master:getSkillLevel(xi.skill.SUMMONING_MAGIC) - master:getMaxSkillLevel(mob:getMainLvl(), xi.job.SMN, xi.skill.SUMMONING_MAGIC), 0, 200)
+        local skillchainTier, _ = xi.magicburst.formMagicBurst(actionElement, target)
+        if
+            actor:getPetID() > 0 and
+            skillchainTier > 0
+        then
+            petAccBonus = petAccBonus + 25
         end
     end
 
-    local resist       = xi.mobskills.applyPlayerResistance(mob, nil, target, mob:getStat(xi.mod.INT)-target:getStat(xi.mod.INT), avatarAccBonus, element)
-    local magicDefense = getElementalDamageReduction(target, element)
+    -- Multipliers.
+    local sdt                         = xi.spells.damage.calculateSDT(target, actionElement)
+    local resist                      = xi.mobskills.applyPlayerResistance(actor, nil, target, actor:getStat(xi.mod.INT) - target:getStat(xi.mod.INT), petAccBonus, actionElement)
+    local dayAndWeather               = xi.spells.damage.calculateDayAndWeather(actor, 0, actionElement)
+    local magicBonusDiff              = xi.spells.damage.calculateMagicBonusDiff(actor, target, 0, 0, actionElement)
+    local targetMagicDamageAdjustment = xi.spells.damage.calculateTMDA(target, actionElement)
 
-    finaldmg       = finaldmg * resist * magicDefense
-    returninfo.dmg = finaldmg
+    -- Calculate final damage.
+    finalDamage = math.floor(finalDamage * sdt)
+    finalDamage = math.floor(finalDamage * resist)
+    finalDamage = math.floor(finalDamage * dayAndWeather)
+    finalDamage = math.floor(finalDamage * magicBonusDiff)
+    finalDamage = math.floor(finalDamage * targetMagicDamageAdjustment)
+    finalDamage = math.floor(finalDamage * damageModifier)
 
-    return returninfo
+    -- magical mob skills are single hit so provide single Melee hit TP return if primary target
+    -- TODO: This should probably be moved to AFTER all damage is calculated, since this is not the final step.
+    if finalDamage > 0 and action:getPrimaryTargetID() == target:getID() then
+        local tpReturn = xi.combat.tp.getSingleMeleeHitTPReturn(actor, target)
+        actor:addTP(tpReturn)
+    end
+
+    return finalDamage
 end
 
 -- effect = xi.effect.WHATEVER if enfeeble
 -- statmod = the stat to account for resist (INT, MND, etc) e.g. xi.mod.INT
 -- This determines how much the monsters ability resists on the player.
-xi.mobskills.applyPlayerResistance = function(mob, effect, target, diff, bonus, element)
-    local percentBonus  = 0
-    local magicaccbonus = 0
+xi.mobskills.applyPlayerResistance = function(actor, effect, target, diff, bonusMacc, element)
+    local isEnfeeble = false
+
+    if
+        effect and
+        effect > 0
+    then
+        isEnfeeble = true
+    end
+
+    if not bonusMacc then
+        bonusMacc = 0
+    end
 
     if diff > 10 then
-        magicaccbonus = magicaccbonus + 10 + (diff - 10) / 2
+        bonusMacc = bonusMacc + 10 + (diff - 10) / 2
     else
-        magicaccbonus = magicaccbonus + diff
+        bonusMacc = bonusMacc + diff
     end
 
-    if bonus then
-        magicaccbonus = magicaccbonus + bonus
-    end
+    local magicAcc     = xi.combat.magicHitRate.calculateNonSpellMagicAccuracy(actor, target, 0, xi.skill.NONE, element, bonusMacc)
+    local magicEva     = xi.combat.magicHitRate.calculateTargetMagicEvasion(actor, target, element, isEnfeeble, 0, 0) -- false = not an enfeeble.
+    local magicHitRate = xi.combat.magicHitRate.calculateMagicHitRate(magicAcc, magicEva)
+    local resistRate   = xi.combat.magicHitRate.calculateResistRate(actor, target, xi.skill.NONE, element, magicHitRate, 0)
 
-    if effect then
-        percentBonus = percentBonus - xi.magic.getEffectResistance(target, effect)
-    end
-
-    local p = getMagicHitRate(mob, target, 0, element, percentBonus, magicaccbonus)
-
-    return getMagicResist(p)
+    return resistRate
 end
 
-xi.mobskills.mobAddBonuses = function(caster, target, dmg, ele) -- used for SMN magical bloodpacts, despite the name.
-    local magicDefense = getElementalDamageReduction(target, ele)
-    dmg = math.floor(dmg * magicDefense)
+xi.mobskills.mobAddBonuses = function(actor, target, damage, element, skill) -- used for SMN magical bloodpacts, despite the name.
+    local burst = calculateMobMagicBurst(actor, element, target)
 
-    local dayWeatherBonus = 1.00
-
-    if caster:getWeather() == xi.magic.singleWeatherStrong[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus + 0.10
-        end
-    elseif caster:getWeather() == xi.magic.singleWeatherWeak[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus - 0.10
-        end
-    elseif caster:getWeather() == xi.magic.doubleWeatherStrong[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus + 0.25
-        end
-    elseif caster:getWeather() == xi.magic.doubleWeatherWeak[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus - 0.25
-        end
-    end
-
-    if VanadielDayElement() == xi.magic.dayStrong[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus + 0.10
-        end
-    elseif VanadielDayElement() == xi.magic.dayWeak[ele] then
-        if math.random() < 0.33 then
-            dayWeatherBonus = dayWeatherBonus - 0.10
-        end
-    end
-
-    dayWeatherBonus = math.min(1.35, dayWeatherBonus)
-    dmg             = math.floor(dmg * dayWeatherBonus)
-
-    local burst = calculateMobMagicBurst(caster, ele, target)
-    dmg         = math.floor(dmg * burst)
-
-    local mdefBarBonus = 0
     if
-        ele >= xi.element.FIRE and
-        ele <= xi.element.WATER and
-        target:hasStatusEffect(xi.magic.barSpell[ele])
-    then -- bar- spell magic defense bonus
-        mdefBarBonus = target:getStatusEffect(xi.magic.barSpell[ele]):getSubPower()
+        skill and
+        burst > 1 and
+        actor:getPetID() > 0 -- all pets except charmed pets can get magic burst message, but only with petskill action
+    then
+        skill:setMsg(xi.msg.basic.JA_MAGIC_BURST)
     end
 
-    local mab = (100 + caster:getMod(xi.mod.MATT)) / (100 + target:getMod(xi.mod.MDEF) + mdefBarBonus)
+    damage = math.floor(damage * burst)
 
-    dmg = math.floor(dmg * mab)
-
-    local magicDmgMod = (10000 + target:getMod(xi.mod.DMGMAGIC)) / 10000
-
-    dmg = math.floor(dmg * magicDmgMod)
-
-    return dmg
+    return damage
 end
 
 -- Calculates breath damage
@@ -392,7 +369,7 @@ end
 -- base is calculated from main level to create a minimum
 -- Equation: (HP * percent) + (LVL / base)
 -- cap is optional, defines a maximum damage
-xi.mobskills.mobBreathMove = function(mob, target, percent, base, element, cap)
+xi.mobskills.mobBreathMove = function(mob, target, skill, percent, base, element, cap)
     local damage = (mob:getHP() * percent) + (mob:getMainLvl() / base)
 
     if not cap then
@@ -441,6 +418,12 @@ xi.mobskills.mobBreathMove = function(mob, target, percent, base, element, cap)
         damage = utils.clamp(utils.stoneskin(target, damage), -99999, 99999)
     end
 
+    -- breath mob skills are single hit so provide single Melee hit TP return if primary target
+    if damage > 0 and skill:getPrimaryTargetID() == target:getID() then
+        local tpReturn = xi.combat.tp.getSingleMeleeHitTPReturn(mob, target)
+        mob:addTP(tpReturn)
+    end
+
     return damage
 end
 
@@ -468,7 +451,13 @@ xi.mobskills.mobFinalAdjustments = function(dmg, mob, skill, target, attackType,
 
     -- set message to damage
     -- this is for AoE because its only set once
-    skill:setMsg(xi.msg.basic.DAMAGE)
+    if mob:getCurrentAction() == xi.action.PET_MOBABILITY_FINISH then
+        if skill:getMsg() ~= xi.msg.basic.JA_MAGIC_BURST then
+            skill:setMsg(xi.msg.basic.USES_JA_TAKE_DAMAGE)
+        end
+    else
+        skill:setMsg(xi.msg.basic.DAMAGE)
+    end
 
     --Handle shadows depending on shadow behaviour / attackType
     if
@@ -664,7 +653,7 @@ xi.mobskills.mobDrainStatusEffectMove = function(mob, target)
 end
 
 -- Adds a status effect to a target
-xi.mobskills.mobStatusEffectMove = function(mob, target, typeEffect, power, tick, duration)
+xi.mobskills.mobStatusEffectMove = function(mob, target, typeEffect, power, tick, duration, subType, subPower, tier)
     if target:canGainStatusEffect(typeEffect, power) then
         local statmod = xi.mod.INT
         local element = mob:getStatusEffectElement(typeEffect)
@@ -672,7 +661,7 @@ xi.mobskills.mobStatusEffectMove = function(mob, target, typeEffect, power, tick
 
         if resist >= 0.25 then
             local totalDuration = utils.clamp(duration * resist, 1)
-            target:addStatusEffect(typeEffect, power, tick, totalDuration)
+            target:addStatusEffect(typeEffect, power, tick, totalDuration, subType, subPower, tier)
 
             return xi.msg.basic.SKILL_ENFEEB_IS
         end
@@ -719,4 +708,12 @@ xi.mobskills.mobHealMove = function(target, healAmount)
     target:addHP(healAmount)
 
     return healAmount
+end
+
+xi.mobskills.calculateDuration = function(tp, minimum, maximum)
+    if tp <= 1000 then
+        return minimum
+    end
+
+    return minimum + (maximum - minimum) * ((tp - 1000) / 1000)
 end

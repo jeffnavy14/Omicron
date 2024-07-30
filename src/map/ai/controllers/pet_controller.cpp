@@ -27,11 +27,11 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "status_effect_container.h"
 #include "utils/petutils.h"
 
-CPetController::CPetController(CPetEntity* _PPet)
+CPetController::CPetController(CMobEntity* _PPet)
 : CMobController(_PPet)
 , PPet(_PPet)
 {
-    //#TODO: this probably will have to depend on pet type (automaton does WS on its own..)
+    // TODO: this probably will have to depend on pet type (automaton does WS on its own..)
     SetWeaponSkillEnabled(false);
 }
 
@@ -40,7 +40,7 @@ void CPetController::Tick(time_point tick)
     TracyZoneScoped;
     TracyZoneString(PPet->getName());
 
-    if (PPet->shouldDespawn(tick))
+    if (PPet->objtype == TYPE_PET && static_cast<CPetEntity*>(PPet)->shouldDespawn(tick))
     {
         petutils::DespawnPet(PPet->PMaster);
         return;
@@ -50,30 +50,40 @@ void CPetController::Tick(time_point tick)
 
 void CPetController::DoRoamTick(time_point tick)
 {
-    if ((PPet->PMaster == nullptr || PPet->PMaster->isDead()) && PPet->isAlive())
+    if ((PPet->PMaster == nullptr || PPet->PMaster->isDead()) && PPet->isAlive() && PPet->objtype != TYPE_MOB)
     {
         PPet->Die();
         return;
     }
 
-    // automaton, wyvern
-    if (PPet->getPetType() == PET_TYPE::WYVERN || PPet->getPetType() == PET_TYPE::AUTOMATON)
-    {
-        if (PetIsHealing())
-        {
-            return;
-        }
-    }
-    else if (PPet->isBstPet() && PPet->StatusEffectContainer->GetStatusEffect(EFFECT_HEALING))
+    // if pet cannot change state (for example because pet is asleep) then just return
+    if (!PPet->PAI->CanChangeState())
     {
         return;
     }
-    else if (PPet->m_PetID <= PETID_DARKSPIRIT)
+
+    if (PPet->objtype == TYPE_PET)
     {
-        // this will respect the pet's mob casting cooldown properties via MOBMOD_MAGIC_COOL
-        if (CMobController::IsSpellReady(0) && CMobController::TryCastSpell())
+        CPetEntity* PetEntity = static_cast<CPetEntity*>(PPet);
+        // automaton, wyvern
+        if (PetEntity->getPetType() == PET_TYPE::WYVERN || PetEntity->getPetType() == PET_TYPE::AUTOMATON)
+        {
+            if (PetIsHealing())
+            {
+                return;
+            }
+        }
+        else if (PetEntity->isBstPet() && PPet->StatusEffectContainer->GetStatusEffect(EFFECT_HEALING))
         {
             return;
+        }
+        else if (PetEntity->m_PetID <= PETID_DARKSPIRIT)
+        {
+            // this will respect the pet's mob casting cooldown properties via MOBMOD_MAGIC_COOL
+            if (CMobController::IsSpellReady(0) && CMobController::TryCastSpell())
+            {
+                return;
+            }
         }
     }
 
@@ -81,8 +91,16 @@ void CPetController::DoRoamTick(time_point tick)
 
     if (currentDistance > PetRoamDistance)
     {
-        if (currentDistance < 35.0f && PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+        if (currentDistance < 35.0f)
         {
+            if (!PPet->PAI->PathFind->IsFollowingPath() ||
+                distance(PPet->PAI->PathFind->GetDestination(), PPet->PMaster->loc.p) > 2.0f) // recalculate path only if owner moves more than X yalms
+            {
+                if (!PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+                {
+                    PPet->PAI->PathFind->PathInRange(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
+                }
+            }
             PPet->PAI->PathFind->FollowPath(m_Tick);
         }
         else if (PPet->GetSpeed() > 0)

@@ -73,14 +73,50 @@ namespace
 typedef std::pair<float, CCharEntity*> CharScorePair;
 
 CZoneEntities::CZoneEntities(CZone* zone)
-: m_zone(zone)
-, m_Transport(nullptr)
+: nextDynamicTargID(0x700) // Start of dynamic entity range // TODO: Make this into a constexpr somewhere.
+, m_zone(zone)
 , lastCharComputeTargId(0)
 , lastCharPersistTargId(0)
 {
 }
 
-CZoneEntities::~CZoneEntities() = default;
+CZoneEntities::~CZoneEntities()
+{
+    for (auto ally : m_allyList)
+    {
+        destroy(ally.second);
+    }
+
+    for (auto mob : m_mobList)
+    {
+        destroy(mob.second);
+    }
+
+    for (auto pet : m_petList)
+    {
+        destroy(pet.second);
+    }
+
+    for (auto trust : m_trustList)
+    {
+        destroy(trust.second);
+    }
+
+    for (auto npc : m_npcList)
+    {
+        destroy(npc.second);
+    }
+
+    for (auto character : m_charList)
+    {
+        destroy(character.second);
+    }
+
+    for (auto transport : m_TransportList)
+    {
+        destroy(transport.second);
+    }
+}
 
 void CZoneEntities::HealAllMobs()
 {
@@ -134,8 +170,12 @@ void CZoneEntities::InsertNPC(CBaseEntity* PNpc)
 
         if (PNpc->look.size == MODEL_SHIP)
         {
-            m_Transport = PNpc;
+            m_TransportList[PNpc->targid] = PNpc;
             return;
+        }
+        if (m_npcList.contains(PNpc->targid))
+        {
+            ShowError("Error: Inserting NPC with duplicate ID!");
         }
         m_npcList[PNpc->targid] = PNpc;
     }
@@ -344,7 +384,7 @@ void CZoneEntities::WeatherChange(WEATHER weather)
     }
 }
 
-void CZoneEntities::MusicChange(uint8 BlockID, uint8 MusicTrackID)
+void CZoneEntities::MusicChange(uint16 BlockID, uint16 MusicTrackID)
 {
     for (EntityList_t::const_iterator it = m_charList.begin(); it != m_charList.end(); ++it)
     {
@@ -456,6 +496,12 @@ void CZoneEntities::DecreaseZoneCounter(CCharEntity* PChar)
     m_charList.erase(PChar->targid);
     charTargIds.erase(PChar->targid);
 
+    // Need to interupt fishing on zone out otherwise fished up mobs get stuck in hooked state
+    if (PChar->hookedFish && PChar->hookedFish->hooked == true)
+    {
+        fishingutils::InterruptFishing(PChar);
+    }
+
     ShowDebug("CZone:: %s DecreaseZoneCounter <%u> %s", m_zone->getName(), m_charList.size(), PChar->getName());
 }
 
@@ -482,23 +528,40 @@ uint16 CZoneEntities::GetNewCharTargID()
 void CZoneEntities::AssignDynamicTargIDandLongID(CBaseEntity* PEntity)
 {
     // NOTE: 0x0E (entity_update) entity updates are valid for 0 to 1023 and 1792 to 2303
-    uint16 targid = 0x700;
-    for (auto it : dynamicTargIds)
+    // Step targid up linearly from 0x700 one by one to 0x8FF unless that ID is already occupied.
+    uint16 targid = nextDynamicTargID;
+
+    // Wrap around 0x8FF to 0x700
+    if (targid > 0x8FF)
     {
-        if (targid != it)
+        targid = 0x700;
+    }
+
+    uint16 counter = 0;
+
+    // Find next available targid, starting with the computed one above.
+    while (std::find(dynamicTargIds.begin(), dynamicTargIds.end(), targid) != dynamicTargIds.end())
+    {
+        targid++;
+        // Wrap around 0x8FF to 0x700
+        if (targid > 0x8FF)
         {
+            targid = 0x700;
+        }
+
+        if (counter > 0x1FF)
+        {
+            ShowError(fmt::format("dynamicTargIds list full in zone {}!", m_zone->getName()));
+            targid = 0x900;
             break;
         }
-        targid++;
+        counter++;
     }
 
-    auto id = 0x1000000 + (m_zone->GetID() << 12) + targid;
+    // We found our targid, the next dynamic entity will want to start searching at +1 of this.
+    nextDynamicTargID = targid + 1;
 
-    // Add 0x100 if targid is >= 0x800 -- observed on retail.
-    if (targid >= 0x800)
-    {
-        id += 0x100;
-    }
+    auto id = 0x01000000 | (m_zone->GetID() << 0x0C) | (targid + 0x0100);
 
     dynamicTargIds.insert(targid);
 
@@ -554,7 +617,7 @@ void CZoneEntities::SpawnMOBs(CCharEntity* PChar)
             }
 
             // Check to skip aggro routine
-            if (PChar->isDead() || PChar->nameflags.flags & FLAG_GM || PCurrentMob->PMaster)
+            if (PChar->isDead() || PChar->visibleGmLevel >= 3 || PCurrentMob->PMaster)
             {
                 continue;
             }
@@ -564,11 +627,20 @@ void CZoneEntities::SpawnMOBs(CCharEntity* PChar)
 
             CMobController* PController = static_cast<CMobController*>(PCurrentMob->PAI->GetController());
 
-            bool validAggro = mobCheck > EMobDifficulty::TooWeak || PChar->isSitting() || PCurrentMob->getMobMod(MOBMOD_ALWAYS_AGGRO);
+            // Check if this mob follows targets and if so then it should not aggro
+            if (PCurrentMob->m_roamFlags & ROAMFLAG_FOLLOW)
+            {
+                if (PController->CanFollowTarget(PChar))
+                {
+                    PController->SetFollowTarget(PChar, FollowType::Roam);
+                }
+                continue;
+            }
 
+            bool validAggro = mobCheck > EMobDifficulty::TooWeak || PChar->isSitting() || PCurrentMob->getMobMod(MOBMOD_ALWAYS_AGGRO);
             if (validAggro && PController->CanAggroTarget(PChar))
             {
-                PCurrentMob->PEnmityContainer->AddBaseEnmity(PChar);
+                PCurrentMob->PAI->Engage(PChar->targid);
             }
         }
         else if (MOB != PChar->SpawnMOBList.end())
@@ -927,10 +999,9 @@ void CZoneEntities::SpawnMoogle(CCharEntity* PChar)
 void CZoneEntities::SpawnTransport(CCharEntity* PChar)
 {
     TracyZoneScoped;
-    if (m_Transport != nullptr)
+    for (auto transport : m_TransportList)
     {
-        PChar->updateEntityPacket(m_Transport, ENTITY_SPAWN, UPDATE_ALL_MOB);
-        return;
+        PChar->updateEntityPacket(transport.second, ENTITY_SPAWN, UPDATE_ALL_MOB);
     }
 }
 
@@ -957,9 +1028,10 @@ CBaseEntity* CZoneEntities::GetEntity(uint16 targid, uint8 filter)
         }
         if (filter & TYPE_SHIP)
         {
-            if (m_Transport != nullptr && m_Transport->targid == targid)
+            EntityList_t::const_iterator it = m_TransportList.find(targid);
+            if (it != m_TransportList.end())
             {
-                return m_Transport;
+                return it->second;
             }
         }
     }
@@ -1275,6 +1347,13 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                                     }
                                 }
 
+                                // If everything else failed
+                                if (!entity)
+                                {
+                                    // No target entity in spawnlists found, so we're just going to skip this packet
+                                    break;
+                                }
+
                                 auto pushPacketIfInSpawnList = [&](CCharEntity* PChar, SpawnIDList_t const& spawnlist)
                                 {
                                     SpawnIDList_t::const_iterator iter = spawnlist.lower_bound(id);
@@ -1391,7 +1470,7 @@ void CZoneEntities::ZoneServer(time_point tick)
         CMobEntity* PMob = dynamic_cast<CMobEntity*>(it->second);
         if (!PMob)
         {
-            it++;
+            ++it;
             continue;
         }
 
@@ -1399,7 +1478,7 @@ void CZoneEntities::ZoneServer(time_point tick)
 
         if (PMob->PBattlefield && PMob->PBattlefield->CanCleanup())
         {
-            it++;
+            ++it;
             continue;
         }
 
@@ -1468,7 +1547,7 @@ void CZoneEntities::ZoneServer(time_point tick)
             aggroableMobs.emplace_back(PMob);
         }
 
-        it++;
+        ++it;
     }
 
     // Check to see if any aggroable mobs should be aggroed by other mobs
@@ -1482,7 +1561,7 @@ void CZoneEntities::ZoneServer(time_point tick)
                 CMobController* PController = static_cast<CMobController*>(PCurrentMob->PAI->GetController());
                 if (PController != nullptr && PController->CanAggroTarget(PMob))
                 {
-                    PCurrentMob->PEnmityContainer->AddBaseEnmity(PMob);
+                    PCurrentMob->PAI->Engage(PMob->targid);
                 }
             }
         }
@@ -1515,7 +1594,7 @@ void CZoneEntities::ZoneServer(time_point tick)
             m_npcList.erase(it++);
             continue;
         }
-        it++;
+        ++it;
     }
 
     it = m_petList.begin();
@@ -1560,7 +1639,7 @@ void CZoneEntities::ZoneServer(time_point tick)
             }
             PPet->PAI->Tick(tick);
         }
-        it++;
+        ++it;
     }
 
     it = m_trustList.begin();
@@ -1607,7 +1686,7 @@ void CZoneEntities::ZoneServer(time_point tick)
                 continue;
             }
         }
-        it++;
+        ++it;
     }
 
     for (EntityList_t::const_iterator it = m_charList.begin(); it != m_charList.end(); ++it)

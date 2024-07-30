@@ -242,11 +242,8 @@ INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,1,5,16);     -- cure (5~1
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,2,17,29);    -- cure_ii (17~29)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,3,30,54);    -- cure_iii (30~54)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,4,55,255);   -- cure_iv (55~255)
-INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,21,55,98);   -- holy (55~98)
-INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,22,99,255);  -- holy_ii (99~255)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,28,7,33);    -- banish (7~33)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,29,34,65);   -- banish_ii (34~65)
-INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,30,66,255);  -- banish_iii (66~255)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,43,10,29);   -- protect (10~29)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,44,30,49);   -- protect_ii (30~49)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_PLD',4,45,50,69);   -- protect_iii (50~69)
@@ -5000,7 +4997,15 @@ INSERT INTO `mob_spell_lists` VALUES ('Silverhook',492,252,1,255); -- stun (1~25
 INSERT INTO `mob_spell_lists` VALUES ('Silverhook',492,253,1,255); -- sleep (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Silverhook',492,274,1,255); -- sleepga ii (1~255)
 
--- IDs 493-496 free for use
+-- Bastet (493)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,165,1,255); -- Thunder II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,195,1,255); -- Thundaga II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,212,1,255); -- Burst (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,239,1,255); -- Shock (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,251,1,255); -- Shock Spikes (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Bastet',493,252,1,255); -- Stun (1~255)
+
+-- IDs 494-496 free for use
 
 -- Cemetery Cherry
 INSERT INTO `mob_spell_lists` VALUES ('Cemetery_Cherry',497,274,1,255); -- Sleepga II
@@ -5020,7 +5025,42 @@ INSERT INTO `mob_spell_lists` VALUES ('Slendlix_Spindlethumb',499,33,1,255); -- 
 -- Toxic Tamlyn (500)
 INSERT INTO `mob_spell_lists` VALUES ('Toxic_Tamlyn',500,231,1,255);  -- bio_ii (1~255)
 
--- Next Available: 501
+-- Zirnitra (501)
+INSERT INTO `mob_spell_lists` VALUES ('Zirnitra',501,359,75,255);  -- silencega (75~255)
+
+-- Pyuu the Spatemaker (502)
+INSERT INTO `mob_spell_lists` VALUES ('Pyuu_the_Spatemaker',502,171,1,255); -- water_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Pyuu_the_Spatemaker',502,201,1,255); -- waterga_iii (1~255)
+
+-- Erle (503)
+INSERT INTO `mob_spell_lists` VALUES ('Erle',503,156,1,255); -- aero_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Erle',503,185,1,255); -- aeroga_ii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Erle',503,208,1,255); -- tornado (1~255)
+
+-- Mountain Worm NM (504)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,54,28,255);  -- stoneskin (28~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,162,68,76);  -- stone_iv (68~76)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,191,63,255); -- stonega_iii (63~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,210,54,255); -- quake (54~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,238,18,50);  -- rasp (18~50)
+INSERT INTO `mob_spell_lists` VALUES ('Mountain_Worm_NM',504,258,7,255);  -- bind (7~255)
+
+-- Sarcopsylla (505)
+INSERT INTO `mob_spell_lists` VALUES ('Sarcopsylla',505,146,1,255); -- fire_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Sarcopsylla',505,176,1,255); -- firaga_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Sarcopsylla',505,204,1,255); -- flare (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Sarcopsylla',505,235,1,255); -- burn (1~255)
+
+-- Poroggo with Providence (506)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,57,1,255); -- Haste (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,365,1,255); -- Breakga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,362,1,255); -- Bindga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,361,1,255); -- Blindga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,366,1,255); -- Graviga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,357,1,255); -- Slowga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Providence',506,367,1,255); -- Death (1~255)
+
+-- Next Available: 507
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;

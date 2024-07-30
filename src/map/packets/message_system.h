@@ -25,11 +25,12 @@
 #include "common/cbasetypes.h"
 
 #include "basic.h"
+#include "message_standard.h"
 
 class CMessageSystemPacket : public CBasicPacket
 {
 public:
-    CMessageSystemPacket(uint32 param0, uint32 param1, uint16 messageID);
+    CMessageSystemPacket(uint32 param0, uint32 param1, MsgStd messageID);
 };
 
 #endif

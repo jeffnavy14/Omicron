@@ -51,6 +51,12 @@ xi.settings.map =
     -- If this is the case, consider using the ah_pagination module
     AH_LIST_LIMIT = 7,
 
+    -- The total enmity cap for a given entity on the enmity table.
+    -- 30,000 is believed to be approximately current retail cap.
+    -- This directly affects a tank's ability to hold enmity over time.
+    -- The lower the value, the faster damage dealers will reach the cap and the mob will bounce.
+    ENMITY_CAP = 30000,
+
     -- Misc EXP related settings
     EXP_RATE                = 1.0,
     EXP_LOSS_RATE           = 1.0,
@@ -106,7 +112,7 @@ xi.settings.map =
     -- Note retail treats the mounted speed as double what it actually is.
     MOUNT_SPEED_MOD = 0,
 
-    -- Modifier to apply to agro'd monster speed. 0 is the retail accurate default. Negative numbers will reduce it.
+    -- This is an integer percentage. Modifier to apply to agro'd monster speed (i.e. while engaged in combat). 0 is the retail accurate default. Negative numbers will reduce ALL mobs's speed.
     MOB_SPEED_MOD = 0,
 
     -- Allows you to manipulate the constant multiplier in the skill-up rate formulas, having a potent effect on skill-up rates.
@@ -131,6 +137,9 @@ xi.settings.map =
 
     -- Amount of points allowed in crafts over the level defined above. Points are shared across all crafting skills. (Retail = 400; All skills can go to max = 3200)
     CRAFT_SPECIALIZATION_POINTS = 400,
+
+    -- Multiplier applied to high quality chance
+    CRAFT_HQ_CHANCE_MULTIPLIER = 1.0,
 
     -- Enables fishing. 0 = Disabled. 1 = Enable. ENABLE AT YOUR OWN RISK.
     FISHING_ENABLE = false,
@@ -218,6 +227,9 @@ xi.settings.map =
 
     -- Enable/disable level cap of mission battlefields stored in database.
     LV_CAP_MISSION_BCNM = false,
+
+    -- Allow players to enter BCNMs which are flagged as experimental
+    BCNM_ENABLE_EXPERIMENTAL = true,
 
     -- Max allowed merits points players can hold
     -- 10 classic

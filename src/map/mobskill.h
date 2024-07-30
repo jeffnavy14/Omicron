@@ -37,6 +37,14 @@ enum SKILLFLAG
     SKILLFLAG_BLOODPACT_WARD = 0x080,
 };
 
+enum AOE_TYPE
+{
+    NONE      = 0,
+    ROUND     = 1, // Normal AoE type
+    CONE      = 4, // Forward conal AoE
+    REAR_CONE = 8, // conal AoE behind the source
+};
+
 #define MAX_MOBSKILL_ID 4262
 
 class CMobSkill
@@ -55,7 +63,6 @@ public:
 
     uint16 getID() const;
     uint16 getAnimationID() const;
-    uint16 getPetAnimationID() const;
     uint8  getAoe() const;
     float  getDistance() const;
     uint8  getFlag() const;
@@ -67,6 +74,7 @@ public:
     int16  getTP() const;
     uint8  getHPP() const;
     uint16 getTotalTargets() const;
+    uint32 getPrimaryTargetID() const;
     uint16 getMsgForAction() const;
     float  getRadius() const;
     int16  getParam() const;
@@ -89,6 +97,7 @@ public:
     void setTP(int16 tp);
     void setHPP(uint8 hpp);
     void setTotalTargets(uint16 targets);
+    void setPrimaryTargetID(uint32 targid);
     void setParam(int16 value);
     void setKnockback(uint8 knockback);
     void setPrimarySkillchain(uint8 skillchain);
@@ -101,6 +110,7 @@ public:
 private:
     uint16 m_ID;
     uint16 m_TotalTargets;
+    uint32 m_primaryTargetID; // primary target ID
     int16  m_Param;
     uint16 m_AnimID;
     uint8  m_Aoe;
