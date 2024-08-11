@@ -1110,37 +1110,26 @@ void SmallPacket0x01A(map_session_data_t* const PSession, CCharEntity* const PCh
         break;
         case 0x11: // chocobo digging
         {
+            // Mounted Check.
             if (!PChar->isMounted())
             {
                 return;
             }
 
-            // bunch of gysahl greens
+            // Gysahl Green Check.
             uint8 slotID = PChar->getStorage(LOC_INVENTORY)->SearchItem(4545);
-
-            if (slotID != ERROR_SLOTID)
+            if (slotID == ERROR_SLOTID)
             {
-                // attempt to dig
-                if (luautils::OnChocoboDig(PChar, true))
-                {
-                    charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -1);
-
-                    PChar->pushPacket(new CInventoryFinishPacket());
-                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, new CChocoboDiggingPacket(PChar));
-
-                    // dig is possible
-                    luautils::OnChocoboDig(PChar, false);
-                }
-                else
-                {
-                    // unable to dig yet
-                    PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, MSGBASIC_WAIT_LONGER));
-                }
-            }
-            else
-            {
-                // You don't have any gysahl greens
                 PChar->pushPacket(new CMessageSystemPacket(4545, 0, MsgStd::YouDontHaveAny));
+                return;
+            }
+
+            // Consume Gysahl Green and push animation on dig attempt.
+            if (luautils::OnChocoboDig(PChar))
+            {
+                charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -1);
+                PChar->pushPacket(new CInventoryFinishPacket());
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, new CChocoboDiggingPacket(PChar));
             }
         }
         break;
@@ -4257,7 +4246,7 @@ void SmallPacket0x064(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x066(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    if (settings::get<bool>("map.FISHING_ENABLE"))
+    if (settings::get<bool>("map.FISHING_ENABLE") && PChar->GetMLevel() >= settings::get<uint8>("map.FISHING_MIN_LEVEL"))
     {
         fishingutils::HandleFishingAction(PChar, data);
     }
@@ -8176,7 +8165,7 @@ void SmallPacket0x10F(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x110(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    if (settings::get<bool>("map.FISHING_ENABLE"))
+    if (settings::get<bool>("map.FISHING_ENABLE") && PChar->GetMLevel() >= settings::get<uint8>("map.FISHING_MIN_LEVEL"))
     {
         fishingutils::HandleFishingAction(PChar, data);
     }
