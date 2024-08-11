@@ -1836,6 +1836,8 @@ namespace luautils
         auto name     = PZone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
+        ShowTraceFmt("luautils::OnZoneInitialise: {}", name);
+
         CacheLuaObjectFromFile(filename);
 
         auto onInitialize = lua["xi"]["zones"][name]["Zone"]["onInitialize"];
@@ -1862,6 +1864,8 @@ namespace luautils
         auto name     = PZone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
+        ShowTraceFmt("luautils::OnZoneTick: {}", name);
+
         auto onZoneTick = GetCacheEntryFromFilename(filename)["onZoneTick"];
 
         if (!onZoneTick.valid())
@@ -1880,6 +1884,8 @@ namespace luautils
     int32 OnGameIn(CCharEntity* PChar, bool zoning)
     {
         TracyZoneScoped;
+
+        ShowTraceFmt("luautils::OnGameIn: {}", PChar->getName());
 
         auto onGameIn = lua["xi"]["player"]["onGameIn"];
         if (!onGameIn.valid())
@@ -1911,8 +1917,17 @@ namespace luautils
             return;
         }
 
+        CZone*      prevZone    = zoneutils::GetZone(PChar->loc.prevzone);
+        std::string prevZoneStr = "Unknown";
+        if (prevZone)
+        {
+            prevZoneStr = prevZone->getName();
+        }
+
         auto name     = PChar->m_moghouseID ? "Residential_Area" : destinationZone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
+
+        ShowTraceFmt("luautils::OnZoneIn: {}: {} -> {}", PChar->getName(), prevZoneStr, name);
 
         auto onZoneInFramework = lua["InteractionGlobal"]["onZoneIn"];
         auto onZoneIn          = GetCacheEntryFromFilename(filename)["onZoneIn"];
@@ -1947,6 +1962,8 @@ namespace luautils
         auto name     = PChar->loc.zone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
+        ShowTraceFmt("luautils::AfterZoneIn: {} ({})", PChar->getName(), name);
+
         auto afterZoneInFramework = lua["InteractionGlobal"]["afterZoneIn"];
         auto afterZoneIn          = GetCacheEntryFromFilename(filename)["afterZoneIn"];
 
@@ -1965,6 +1982,8 @@ namespace luautils
 
         auto name     = PChar->loc.zone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
+
+        ShowTraceFmt("luautils::OnZoneOut: {} ({})", PChar->getName(), name);
 
         auto onZoneOutFramework = lua["InteractionGlobal"]["onZoneOut"];
         auto onZoneOut          = GetCacheEntryFromFilename(filename)["onZoneOut"];
@@ -2115,6 +2134,8 @@ namespace luautils
         }
         auto filename = fmt::format(fmt::runtime(pathFormat), zone, name);
 
+        ShowTraceFmt("luautils::OnTrigger: {} ({}) -> {}", name, zone, PNpc->getName());
+
         PChar->eventPreparation->targetEntity = PNpc;
         PChar->eventPreparation->scriptFile   = filename;
 
@@ -2136,6 +2157,9 @@ namespace luautils
     int32 OnEventUpdate(CCharEntity* PChar, uint16 eventID, uint32 result)
     {
         TracyZoneScoped;
+
+        ShowTraceFmt("luautils::OnEventUpdate: {} ({}), id: {}, result: {}",
+                     PChar->getName(), PChar->loc.zone->getName(), eventID, result);
 
         EventPrep* previousPrep = PChar->eventPreparation;
         PChar->eventPreparation = PChar->currentEvent;
@@ -2168,6 +2192,9 @@ namespace luautils
     {
         TracyZoneScoped;
 
+        ShowTrace("luautils::OnEventUpdate: {} ({}), string: {}",
+                  PChar->getName(), PChar->loc.zone->getName(), updateString);
+
         EventPrep* previousPrep = PChar->eventPreparation;
         PChar->eventPreparation = PChar->currentEvent;
 
@@ -2198,6 +2225,9 @@ namespace luautils
     int32 OnEventFinish(CCharEntity* PChar, uint16 eventID, uint32 result)
     {
         TracyZoneScoped;
+
+        ShowTraceFmt("luautils::OnEventFinish: {} ({}), id: {}, result: {}",
+                     PChar->getName(), PChar->loc.zone->getName(), eventID, result);
 
         EventPrep* previousPrep = PChar->eventPreparation;
         PChar->eventPreparation = PChar->currentEvent;
@@ -2246,6 +2276,8 @@ namespace luautils
         auto zone     = PChar->loc.zone->getName();
         auto name     = PNpc->getName();
         auto filename = fmt::format("./scripts/zones/{}/npcs/{}.lua", zone, name);
+
+        ShowTrace("luautils::OnTrade: {} ({}) -> {}", PChar->getName(), zone, name);
 
         PChar->eventPreparation->targetEntity = PNpc;
         PChar->eventPreparation->scriptFile   = filename;
