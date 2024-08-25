@@ -2348,8 +2348,14 @@ namespace battleutils
 
             if (giveTPtoVictim)
             {
+                uint32 sBlowMerit = 0;
+                if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(PAttacker))
+                {
+                    sBlowMerit = PChar->PMeritPoints->GetMeritValue(MERIT_TYPE::MERIT_SUBTLE_BLOW_EFFECT, PChar);
+                }
+
                 // account for attacker's subtle blow which reduces the baseTP gain for the defender
-                float sBlow1    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW), -50.0f, 50.0f);
+                float sBlow1    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW) + sBlowMerit), -50.0f, 50.0f);
                 float sBlow2    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW_II), -50.0f, 50.0f);
                 float sBlowMult = ((100.0f - std::clamp(sBlow1 + sBlow2, -75.0f, 75.0f)) / 100.0f);
 
@@ -2503,8 +2509,14 @@ namespace battleutils
                                                (1.0f + 0.01f * (float)((PAttacker->getMod(Mod::STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
             }
 
+            uint32 sBlowMerit = 0;
+            if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(PAttacker))
+            {
+                sBlowMerit = PChar->PMeritPoints->GetMeritValue(MERIT_TYPE::MERIT_SUBTLE_BLOW_EFFECT, PChar);
+            }
+
             // account for attacker's subtle blow which reduces the baseTP gain for the defender
-            float sBlow1    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW), -50.0f, 50.0f);
+            float sBlow1    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW) + sBlowMerit), -50.0f, 50.0f);
             float sBlow2    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW_II), -50.0f, 50.0f);
             float sBlowMult = (100.0f - std::clamp(sBlow1 + sBlow2, -75.0f, 75.0f)) / 100.0f;
 
@@ -2559,7 +2571,7 @@ namespace battleutils
         PDefender->takeDamage(damage, PAttacker, attackType, damageType);
 
         // Remove effects from damage
-        if (PSpell->canTargetEnemy() && damage > 0 && PSpell->dealsDamage())
+        if (PSpell->canTargetEnemy() && damage > 0)
         {
             PDefender->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DAMAGE);
 
@@ -2570,9 +2582,12 @@ namespace battleutils
             int16 tp = battleutils::CalculateSpellTP(PAttacker, PSpell);
             PAttacker->addTP(tp);
 
-            // Targets of damaging spells gain 50 tp + store tp bonus
-            float storeTPMultiplier = 1.0f + 0.01f * static_cast<float>(PDefender->getMod(Mod::STORETP) + getStoreTPbonusFromMerit(PDefender));
-            PDefender->addTP(static_cast<int16>(50 * storeTPMultiplier));
+            // Targets of damaging spells gain TP
+            auto tpGainFunc = lua["xi"]["combat"]["tp"]["calculateTPGainOnMagicalDamage"];
+            if (tpGainFunc.valid())
+            {
+                PDefender->addTP(tpGainFunc(damage, CLuaBaseEntity(PAttacker), CLuaBaseEntity(PDefender)));
+            }
         }
 
         return damage;
