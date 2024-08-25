@@ -40,6 +40,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include <thread>
 
 #include "ability.h"
+#include "common/debug.h"
 #include "common/vana_time.h"
 #include "job_points.h"
 #include "linkshell.h"
@@ -186,6 +187,13 @@ int32 do_init(int32 argc, char** argv)
 
 #ifdef TRACY_ENABLE
     ShowInfo("*** TRACY IS ENABLED ***");
+
+    if (!debug::isUserRoot())
+    {
+        ShowWarning("You are NOT running as the root superuser or admin.");
+        ShowWarning("This is required for Tracy to work properly.");
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+    }
 #endif // TRACY_ENABLE
 
     ShowInfo("do_init: begin server initialization");
@@ -1048,6 +1056,11 @@ int32 map_close_session(time_point tick, map_session_data_t* map_session_data)
         if (map_session_data->shuttingDown == 1)
         {
             _sql->Query("DELETE FROM accounts_sessions WHERE charid = %u", map_session_data->charID);
+        }
+        else
+        {
+            // Set client port to zero, indicating the client tried to zone out and no longer has a port until the next 0x00A
+            _sql->Query("UPDATE accounts_sessions SET client_port = 0, last_zoneout_time = NOW() WHERE charid = %u", map_session_data->charID);
         }
 
         uint64 port64 = map_session_data->client_port;
