@@ -3,6 +3,7 @@
 -- Area: Nyzul Isle
 -- Info: Enemy Leader, Thief job, runs around dropping bombs
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local function pickRunPoint(mob)
@@ -45,6 +46,10 @@ local function dropBomb(mob)
     local bombMob  = GetMobByID(mob:getID() - 1, instance)
     local target   = mob:getTarget()
     local pos      = mob:getPos()
+
+    if not bombMob then
+        return
+    end
 
     bombMob:setPos(pos.x, pos.y, pos.z, pos.rot)
     bombMob:setStatus(xi.status.UPDATE)

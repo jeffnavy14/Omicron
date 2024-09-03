@@ -1,6 +1,6 @@
 xi = xi or {}
 
----@enum mobSkill
+---@enum xi.mobSkill
 xi.mobSkill =
 {
     FOOT_KICK_1       =  257,
@@ -65,6 +65,7 @@ xi.mobSkill =
     RANGED_ATTACK_15  = 1949,
 
     ECLOSION          = 1970,
+    BOREAS_MANTLE     = 1980,
 
     ROAR_3            = 2406,
 
