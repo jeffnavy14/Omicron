@@ -16,6 +16,7 @@
 local ruludeID = zones[xi.zone.RULUDE_GARDENS]
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.BASTOK, xi.mission.id.bastok.MAGICITE)
 
 local function magiciteCounter(player)
@@ -277,14 +278,11 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Option') == 2 then -- Fickbix CS
-                        return 10000
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Option') == 2 then -- Fickbix CS
+                    return 10000
+                end
+            end,
 
             onEventFinish =
             {

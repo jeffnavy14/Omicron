@@ -13,6 +13,7 @@ local promyvionVahzlID = zones[xi.zone.PROMYVION_VAHZL]
 local psoXjaID         = zones[xi.zone.PSOXJA]
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.THE_ENDURING_TUMULT_OF_WAR)
 
 mission.reward =
@@ -102,14 +103,11 @@ mission.sections =
 
         [xi.zone.PORT_BASTOK] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 0 then
-                        return 306
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 0 then
+                    return 306
+                end
+            end,
 
             onEventFinish =
             {
@@ -184,18 +182,15 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        player:getXPos() == -300 and
-                        prevZone == xi.zone.BEAUCEDINE_GLACIER and
-                        mission:getVar(player, 'Status') == 2
-                    then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    player:getXPos() == -300 and
+                    prevZone == xi.zone.BEAUCEDINE_GLACIER and
+                    mission:getVar(player, 'Status') == 2
+                then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
@@ -213,14 +208,11 @@ mission.sections =
 
         [xi.zone.PROMYVION_VAHZL] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 4 then
-                        return 50
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 4 then
+                    return 50
+                end
+            end,
 
             onEventFinish =
             {

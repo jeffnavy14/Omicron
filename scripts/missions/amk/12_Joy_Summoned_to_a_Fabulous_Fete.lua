@@ -4,6 +4,7 @@
 -- !addmission 10 11
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.AMK, xi.mission.id.amk.JOY_SUMMONED_TO_A_FABULOUS_FETE)
 
 mission.reward =
@@ -20,12 +21,9 @@ mission.sections =
 
         [xi.zone.CASTLE_ZVAHL_BAILEYS] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 88
-                end
-            },
+            onZoneIn = function(player, prevZone)
+                return 88
+            end,
 
             onEventFinish =
             {

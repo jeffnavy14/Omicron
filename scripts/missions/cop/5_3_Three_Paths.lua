@@ -31,6 +31,7 @@
 local lowerDelkfuttsID = zones[xi.zone.LOWER_DELKFUTTS_TOWER]
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.THREE_PATHS)
 
 mission.reward =
@@ -198,14 +199,11 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 6 then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 6 then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
@@ -331,17 +329,14 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        player:getXPos() == 220 and
-                        player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 9
-                    then
-                        return 4
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    player:getXPos() == 220 and
+                    player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 9
+                then
+                    return 4
+                end
+            end,
 
             onEventFinish =
             {
@@ -536,14 +531,11 @@ mission.sections =
 
         [xi.zone.PORT_SAN_DORIA] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 2 then
-                        return 4
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 2 then
+                    return 4
+                end
+            end,
 
             onEventFinish =
             {

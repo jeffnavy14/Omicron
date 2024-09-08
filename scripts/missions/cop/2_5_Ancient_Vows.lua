@@ -6,6 +6,7 @@
 -- Dilapidated Gate : !pos -259 -30 276 25
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.ANCIENT_VOWS)
 
 mission.reward =
@@ -46,14 +47,11 @@ mission.sections =
 
         [xi.zone.RIVERNE_SITE_A01] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 1 then
-                        return 100
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 1 then
+                    return 100
+                end
+            end,
 
             onEventFinish =
             {

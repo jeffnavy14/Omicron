@@ -7,6 +7,7 @@
 -- Door: Neptune's Spire : !pos 35 0 -15 245
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.TENDING_AGED_WOUNDS)
 
 mission.reward =
@@ -37,14 +38,11 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 0 then
-                        return 70
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 0 then
+                    return 70
+                end
+            end,
 
             onEventFinish =
             {

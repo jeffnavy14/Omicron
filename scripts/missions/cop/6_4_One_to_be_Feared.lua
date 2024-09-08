@@ -7,6 +7,7 @@
 -- Iron Gate : !pos 612 132 774 32
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.ONE_TO_BE_FEARED)
 
 mission.reward =
@@ -67,18 +68,15 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    local missionStatus = mission:getVar(player, 'Status')
+            onZoneIn = function(player, prevZone)
+                local missionStatus = mission:getVar(player, 'Status')
 
-                    if missionStatus == 1 then
-                        return 15
-                    elseif missionStatus == 4 then
-                        return 33
-                    end
-                end,
-            },
+                if missionStatus == 1 then
+                    return 15
+                elseif missionStatus == 4 then
+                    return 33
+                end
+            end,
 
             onEventUpdate =
             {

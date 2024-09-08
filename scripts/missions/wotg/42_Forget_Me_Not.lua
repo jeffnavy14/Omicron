@@ -14,6 +14,7 @@
 require('scripts/missions/wotg/helpers')
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.WOTG, xi.mission.id.wotg.FORGET_ME_NOT)
 
 mission.reward =
@@ -21,14 +22,11 @@ mission.reward =
     nextMission = { xi.mission.log_id.WOTG, xi.mission.id.wotg.PILLAR_OF_HOPE },
 }
 
-local completeMissionOnZoneIn =
-{
-    function(player, prevZone)
-        if mission:complete(player) then
-            xi.wotg.helpers.removeMemoryFragments(player)
-        end
-    end,
-}
+local completeMissionOnZoneIn = function(player, prevZone)
+    if mission:complete(player) then
+        xi.wotg.helpers.removeMemoryFragments(player)
+    end
+end
 
 local mawOnEventFinish = function(player, csid, option, npc)
     mission:setVar(player, 'Status', 1)
@@ -118,14 +116,11 @@ mission.sections =
 
         [xi.zone.GRAUBERG_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 1 then
-                        return 33
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 1 then
+                    return 33
+                end
+            end,
 
             onEventUpdate =
             {
