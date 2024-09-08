@@ -9,6 +9,7 @@
 local upperJeunoID = zones[xi.zone.UPPER_JEUNO]
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.DARKNESS_NAMED)
 
 mission.reward =
@@ -131,14 +132,11 @@ mission.sections =
 
         [xi.zone.THE_SHROUDED_MAW] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 3 then
-                        return 2
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 3 then
+                    return 2
+                end
+            end,
 
             onEventFinish =
             {

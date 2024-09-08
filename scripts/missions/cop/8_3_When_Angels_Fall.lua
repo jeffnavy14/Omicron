@@ -14,6 +14,7 @@ local altaieuID = zones[xi.zone.ALTAIEU]
 local ruhmetID  = zones[xi.zone.THE_GARDEN_OF_RUHMET]
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.COP, xi.mission.id.cop.WHEN_ANGELS_FALL)
 
 mission.reward =
@@ -66,14 +67,11 @@ mission.sections =
 
         [xi.zone.THE_GARDEN_OF_RUHMET] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 0 then
-                        return 201
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 0 then
+                    return 201
+                end
+            end,
 
             ['_iz2']              = ebonPanelOnTrigger,
             ['Ebon_Panel_Elvaan'] = ebonPanelOnTrigger,
@@ -173,14 +171,11 @@ mission.sections =
 
         [xi.zone.ALTAIEU] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 6 then
-                        return 165
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 6 then
+                    return 165
+                end
+            end,
 
             onEventFinish =
             {

@@ -5,6 +5,7 @@
 -- !addmission 9 0
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.ACP, xi.mission.id.acp.A_CRYSTALLINE_PROPHECY)
 
 mission.reward =
@@ -23,12 +24,9 @@ mission.sections =
 
         [xi.zone.LOWER_JEUNO] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 10094
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                return 10094
+            end,
 
             onEventUpdate =
             {

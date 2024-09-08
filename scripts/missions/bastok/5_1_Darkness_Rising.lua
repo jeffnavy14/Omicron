@@ -10,6 +10,7 @@
 -- Naji    : !pos 64 -14 -4 237
 -----------------------------------
 
+---@type TMission
 local mission = Mission:new(xi.mission.log_id.BASTOK, xi.mission.id.bastok.DARKNESS_RISING)
 
 mission.reward =
@@ -175,14 +176,11 @@ mission.sections =
 
         [xi.zone.FEIYIN] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId) == 10 then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId) == 10 then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
