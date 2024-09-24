@@ -8,7 +8,6 @@
 local pastBeaucedineID = zones[xi.zone.BEAUCEDINE_GLACIER_S]
 -----------------------------------
 
----@type TMission
 local mission = Mission:new(xi.mission.log_id.WOTG, xi.mission.id.wotg.BETRAYAL_AT_BEAUCEDINE)
 
 mission.reward =
@@ -33,8 +32,7 @@ mission.sections =
                     if missionStatus == 0 then
                         return mission:progressEvent(15, 136, 300, 200, 100, 0, 9306122, 0, 0)
                     elseif missionStatus == 1 then
-                        local zoneObj    = player:getZone()
-
+                        local zoneObj = player:getZone()
                         if not zoneObj then
                             return
                         end

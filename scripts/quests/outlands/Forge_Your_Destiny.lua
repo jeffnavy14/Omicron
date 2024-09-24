@@ -13,7 +13,6 @@ local norgID      = zones[xi.zone.NORG]
 local zitahID     = zones[xi.zone.THE_SANCTUARY_OF_ZITAH]
 -----------------------------------
 
----@type TQuest
 local quest = Quest:new(xi.questLog.OUTLANDS, xi.quest.id.outlands.FORGE_YOUR_DESTINY)
 
 quest.reward =
@@ -66,7 +65,6 @@ quest.sections =
                             return quest:messageSpecial(konschtatID.text.BLACKENED_NOTHING_HAPPENS, xi.item.LUMP_OF_ORIENTAL_STEEL)
                         else
                             local forgerMob = SpawnMob(konschtatID.mob.FORGER)
-
                             if not forgerMob then
                                 return quest:noAction()
                             end
@@ -247,7 +245,6 @@ quest.sections =
                             return quest:messageSpecial(zitahID.text.STRANGE_FORCE_PREVENTS)
                         else
                             local treantMob = SpawnMob(zitahID.mob.GUARDIAN_TREANT)
-
                             if not treantMob then
                                 return quest:noAction()
                             end
