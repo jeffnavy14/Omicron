@@ -8,7 +8,7 @@ xi.msg = xi.msg or {}
 -- Message Channels
 -----------------------------------
 
----@enum channel
+---@enum xi.channel
 xi.msg.channel =
 {
     SAY            = 0,
@@ -47,7 +47,7 @@ xi.msg.channel =
 }
 
 -- used by player:printToArea
----@enum area
+---@enum xi.area
 xi.msg.area =
 {
     SYSTEM      = 0, -- Server wide like the purple stuff :)
@@ -62,7 +62,7 @@ xi.msg.area =
 -- Basic Messages
 -----------------------------------
 
----@enum basic
+---@enum xi.basic
 xi.msg.basic =
 {
     NONE    = 0, -- Display nothing
@@ -406,7 +406,7 @@ xi.msg.basic =
 }
 
 -- Used to modify certain basic messages.
----@enum actionModifier
+---@enum xi.actionModifier
 xi.msg.actionModifier =
 {
     NONE        = 0x00,
@@ -420,7 +420,7 @@ xi.msg.actionModifier =
 -- System Messages
 -----------------------------------
 
----@enum system
+---@enum xi.system
 xi.msg.system =
 {
     GLOBAL_TRUST_OFFSET          = 0,
@@ -430,4 +430,15 @@ xi.msg.system =
     TRUST_ALREADY_CALLED         = 299, -- That alter ego has already been called forth.
     TRUST_NO_ENMITY              = 300, -- You cannot use Trust magic while having gained enmity.
     TRUST_SOLO_OR_LEADER         = 301, -- You cannot use Trust magic unless you are solo or the party leader.
+}
+
+-----------------------------------
+-- Combat/Action Messages (used with CMessageCombatPacket/:messageCombat())
+-----------------------------------
+
+---@enum xi.combat
+xi.msg.combat =
+{
+    USE_OBTAIN_ESCHA_SILT = 765, -- <name> uses <item>. <name> obtains <n> escha silt.
+    USE_OBTAIN_ESCHA_BEAD = 766, -- <name> uses <item>. <name> obtains <n> escha beads.
 }

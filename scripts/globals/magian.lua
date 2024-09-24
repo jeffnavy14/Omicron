@@ -535,7 +535,11 @@ xi.magian.magianEventUpdate = function(player, csid, option, npc)
             local requiredItem = GetReadOnlyItem(trialData.requiredItem.itemId)
             local rewardItem   = GetReadOnlyItem(trialData.rewardItem.itemId)
 
-            if requiredItem:getReqLvl() < rewardItem:getReqLvl() then
+            if
+                requiredItem and
+                rewardItem and
+                requiredItem:getReqLvl() < rewardItem:getReqLvl()
+            then
                 player:updateEvent(1)
             else
                 player:updateEvent(0)
@@ -914,7 +918,6 @@ xi.magian.onItemEquip = function(player, itemObj)
     end
 
     local trialData = xi.magian.trials[itemTrialId]
-
     if not trialData then
         return
     end

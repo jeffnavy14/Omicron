@@ -34,7 +34,6 @@ commandObj.onTrigger = function(player, arg1, arg2, arg3)
             arg3 = tonumber(arg3)
             if zone and zone:getTypeMask() == xi.zoneType.INSTANCED then
                 local instance = player:getInstance()
-
                 if not instance then
                     return
                 end
@@ -43,8 +42,10 @@ commandObj.onTrigger = function(player, arg1, arg2, arg3)
                 ---@diagnostic disable-next-line: param-type-mismatch
                 targ = instance:getEntity(bit.band(arg3, 0xFFF), xi.objType[entityType])
             elseif entityType == 'NPC' then
+                ---@diagnostic disable-next-line param-type-mismatch
                 targ = GetNPCByID(arg3)
             else
+                ---@diagnostic disable-next-line param-type-mismatch
                 targ = GetMobByID(arg3)
             end
         elseif entityType == 'PLAYER' then

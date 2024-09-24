@@ -5,6 +5,7 @@ local ID = zones[xi.zone.BUBURIMU_PENINSULA]
 require('scripts/quests/i_can_hear_a_rainbow')
 require('scripts/missions/amk/helpers')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -53,15 +54,17 @@ zoneObject.onGameHour = function(zone)
     local hour = VanadielHour()
     local nmBackoo = GetMobByID(ID.mob.BACKOO)
 
-    if hour == 6 then -- backoo time-of-day pop condition open
-        DisallowRespawn(ID.mob.BACKOO, false)
-        if nmBackoo:getRespawnTime() == 0 then
-            nmBackoo:setRespawnTime(1)
-        end
-    elseif hour == 16 then -- backoo despawns
-        DisallowRespawn(ID.mob.BACKOO, true)
-        if nmBackoo:isSpawned() then
-            nmBackoo:spawn(1)
+    if nmBackoo then
+        if hour == 6 then -- backoo time-of-day pop condition open
+            DisallowRespawn(ID.mob.BACKOO, false)
+            if nmBackoo:getRespawnTime() == 0 then
+                nmBackoo:setRespawnTime(1)
+            end
+        elseif hour == 16 then -- backoo despawns
+            DisallowRespawn(ID.mob.BACKOO, true)
+            if nmBackoo:isSpawned() then
+                nmBackoo:spawn(1)
+            end
         end
     end
 end
