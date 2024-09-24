@@ -107,11 +107,23 @@ local prizes =
             -- 5858,  -- Frayed Pouch (R)
             -- 5946,  -- Frayed Sack (D)
             -- 5947,  -- Frayed Sack (L)
+<<<<<<< Updated upstream
             -- 4064,  -- Rem's Tale Ch.1
             -- 4065,  -- Rem's Tale Ch.2
             -- 4066,  -- Rem's Tale Ch.3
             -- 4067,  -- Rem's Tale Ch.4
             -- 4068,  -- Rem's Tale Ch.5
+=======
+            4064,  -- Rem's Tale Ch.1
+            4065,  -- Rem's Tale Ch.2
+            4066,  -- Rem's Tale Ch.3
+            4067,  -- Rem's Tale Ch.4
+            4068,  -- Rem's Tale Ch.5
+			-- Add Omi Custom Items below here
+			10293, -- Chocobo Shirt
+			11811, -- Destrier Beret
+			27556, -- Echad Ring			
+>>>>>>> Stashed changes
         },
     },
 
@@ -178,6 +190,9 @@ local prizes =
             -- 8724, -- Beryllium Ingot
             -- 8726, -- Exalted Lumber
             -- 8728, -- Sif's Macrame
+			-- Add Omi Custom Items below here
+			27557, -- Trizek Ring	
+            10187, -- Shantotto II			
         },
     },
 }
