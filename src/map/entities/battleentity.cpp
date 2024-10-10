@@ -361,10 +361,6 @@ bool CBattleEntity::Rest(float rate)
 int16 CBattleEntity::GetWeaponDelay(bool tp)
 {
     TracyZoneScoped;
-    if (StatusEffectContainer->HasStatusEffect(EFFECT_HUNDRED_FISTS) && !tp)
-    {
-        return 1700;
-    }
     uint16 WeaponDelay = 9999;
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]))
     {
@@ -419,6 +415,13 @@ int16 CBattleEntity::GetWeaponDelay(bool tp)
         // This should be enforced on -delay equipment, martial arts, dual wield, and haste, hence MinimumDelay * 0.2.
         // TODO: Could be converted to value/1024 if the exact cap is ever determined.
         MinimumDelay -= (uint16)(MinimumDelay * 0.8);
+
+        // if hundred fists then use the min delay (as hundred fists also reduces base delay by 80%
+        if (StatusEffectContainer->HasStatusEffect(EFFECT_HUNDRED_FISTS) && !tp)
+        {
+            WeaponDelay = MinimumDelay;
+        }
+
         WeaponDelay = (WeaponDelay < MinimumDelay) ? MinimumDelay : WeaponDelay;
     }
     return WeaponDelay;
@@ -838,7 +841,7 @@ uint16 CBattleEntity::RATT(uint8 skill, uint16 bonusSkill)
 
     // make sure to not use fishing skill
     uint16 baseSkill = skill == SKILL_FISHING ? 0 : GetSkill(skill);
-    int32  RATT      = 8 + baseSkill + bonusSkill + m_modStat[Mod::RATT] + battleutils::GetRangedAttackBonuses(this) + (STR() * 3) / 4;
+    int32  RATT      = 8 + baseSkill + bonusSkill + m_modStat[Mod::RATT] + battleutils::GetRangedAttackBonuses(this) + STR();
     // use max to prevent any underflow
     return std::max(0, RATT + (RATT * m_modStat[Mod::RATTP] / 100) + std::min<int16>((RATT * m_modStat[Mod::FOOD_RATTP] / 100), m_modStat[Mod::FOOD_RATT_CAP]));
 }
