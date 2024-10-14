@@ -1,15 +1,19 @@
 -----------------------------------
--- Area: Castle Zvahl Keep (162)
---  Mob: Count Bifrons
+-- Area: Davoi
+--  Mob: One-eyed Gwajboj
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
 
+entity.onMobSpawn = function(mob)
+    mob:addMod(xi.mod.SLEEP_MEVA, 90)
+    mob:addMod(xi.mod.LULLABY_MEVA, 90)
+    mob:addMod(xi.mod.SILENCE_MEVA, 90)
+end
+
 entity.onMobDeath = function(mob, player, optParams)
-    xi.hunts.checkHunt(mob, player, 355)
-    player:addTitle(xi.title.HELLSBANE)
 end
 
 return entity
