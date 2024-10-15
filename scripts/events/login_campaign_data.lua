@@ -90,7 +90,7 @@ local prizes =
         ['price'] = 300,
         ['items'] =
         {
-            -- 10187, -- Cipher: Shantotto II
+            10187, -- Cipher: Shantotto II
             10069, -- ♪Goobbue
             10051, -- ♪Crab
             10058, -- ♪Beetle
@@ -111,6 +111,8 @@ local prizes =
             4066,  -- Rem's Tale Ch.3
             4067,  -- Rem's Tale Ch.4
             4068,  -- Rem's Tale Ch.5
+			11811, -- Destrier Beret
+			10293, -- Chocobo Shirt
         },
     },
 
@@ -177,6 +179,7 @@ local prizes =
             -- 8724, -- Beryllium Ingot
             -- 8726, -- Exalted Lumber
             -- 8728, -- Sif's Macrame
+			27557, -- Trizek Ring
         },
     },
 }
