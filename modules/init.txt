@@ -37,6 +37,7 @@
 # Live example:
 custom/lua/new_player_linkshell.lua
 custom/cpp/
+omicronxi/
 
 
 
