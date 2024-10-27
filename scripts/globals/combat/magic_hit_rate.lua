@@ -281,12 +281,15 @@ end
 
 -- Magic Accuracy from Food.
 local function magicAccuracyFromFoodMultiplier(actor)
-    local magicAcc = actor:getMod(xi.mod.FOOD_MACCP) / 100
-    local foodCap  = actor:getMod(xi.mod.FOOD_MACC_CAP) / 100
+    local magicAcc          = 1
+    local foodMagicAccBonus = actor:getMod(xi.mod.FOOD_MACCP) / 100
+    local foodMagicAccCap   = actor:getMod(xi.mod.FOOD_MACC_CAP) / 100
 
-    if foodCap > 0 then
-        magicAcc = 1 + utils.clamp(magicAcc, 0, foodCap)
+    if foodMagicAccCap > 0 then
+        foodMagicAccBonus = utils.clamp(foodMagicAccBonus, 0, foodMagicAccCap)
     end
+
+    magicAcc = magicAcc + foodMagicAccBonus
 
     return magicAcc
 end
@@ -417,22 +420,20 @@ xi.combat.magicHitRate.calculateResistanceFactor = function(actor, target, skill
     end
 
     ----------------------------------------
-    -- Force 1/8 if target has max resistance rank.
+    -- Handle target resistance rank.
     ----------------------------------------
     local targetResistRank = target:getMod(xi.combat.element.resistRankMod[actionElement]) or 0
 
-    if targetResistRank >= 11 then
-        return 0.0625
-    end
-
-    ----------------------------------------
-    -- Handle target resistance rank.
-    ----------------------------------------
     if targetResistRank > 4 then
         targetResistRank = utils.clamp(targetResistRank - rankModifier, 4, 11)
     end
 
-    -- TODO: Rayke logic might be needed here, depending on how it's implemented.
+    ----------------------------------------
+    -- Force 1/8 if target has max resistance rank.
+    ----------------------------------------
+    if targetResistRank >= 11 then
+        return 0.0625
+    end
 
     ----------------------------------------
     -- Handle magic hit rate.
