@@ -120,10 +120,25 @@ local function handleSinglePhysicalHit(mob, target, hitdamage, hitslanded, final
     then
         local pdif = math.random((minRatio * 1000), (maxRatio * 1000)) --generate random PDIF
         pdif = pdif / 1000 --multiplier set.
-        finaldmg = finaldmg + hitdamage * pdif
+        hitdamage = hitdamage * pdif
+
         -- also handle blocking
-        finaldmg = xi.combat.physical.handleBlock(target, mob, finaldmg)
+        local isBlockedWithShieldMastery = false
+        if xi.combat.physical.isBlocked(target, mob) then
+            hitdamage = hitdamage - xi.combat.physical.getDamageReductionForBlock(target, mob, hitdamage)
+
+            if target:hasTrait(xi.trait.SHIELD_MASTERY) then
+                isBlockedWithShieldMastery = true
+            end
+        end
+
+        if hitdamage > 0 and not isBlockedWithShieldMastery then
+            target:tryHitInterrupt(mob)
+        end
+
+        -- update the hitslanded and finaldmg
         hitslanded = hitslanded + 1
+        finaldmg = finaldmg + hitdamage
     end
 
     return hitslanded, finaldmg

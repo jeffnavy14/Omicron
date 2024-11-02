@@ -3799,6 +3799,11 @@ end
 function CBaseEntity:untargetableAndUnactionable(milliseconds)
 end
 
+---@param attacker CBaseEntity
+---@return nil
+function CBaseEntity:tryHitInterrupt(attacker)
+end
+
 ---@nodiscard
 ---@return integer
 function CBaseEntity:getPool()

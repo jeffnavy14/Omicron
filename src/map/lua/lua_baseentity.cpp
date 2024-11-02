@@ -17232,6 +17232,20 @@ void CLuaBaseEntity::untargetableAndUnactionable(uint32 milliseconds)
     m_PBaseEntity->PAI->Untargetable(std::chrono::milliseconds(milliseconds), false);
 }
 
+void CLuaBaseEntity::tryHitInterrupt(CLuaBaseEntity* attacker)
+{
+    if (attacker)
+    {
+        auto* defenderBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+        auto* attackerBattle = dynamic_cast<CBattleEntity*>(attacker->GetBaseEntity());
+
+        if (defenderBattle && attackerBattle)
+        {
+            defenderBattle->TryHitInterrupt(attackerBattle);
+        }
+    }
+}
+
 /************************************************************************
  *  Function: getPool()
  *  Purpose : Returns a Mob's Pool ID integer
@@ -18818,6 +18832,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasPreventActionEffect", CLuaBaseEntity::hasPreventActionEffect);
     SOL_REGISTER("stun", CLuaBaseEntity::stun);
     SOL_REGISTER("untargetableAndUnactionable", CLuaBaseEntity::untargetableAndUnactionable);
+    SOL_REGISTER("tryHitInterrupt", CLuaBaseEntity::tryHitInterrupt);
 
     SOL_REGISTER("getPool", CLuaBaseEntity::getPool);
     SOL_REGISTER("getDropID", CLuaBaseEntity::getDropID);
