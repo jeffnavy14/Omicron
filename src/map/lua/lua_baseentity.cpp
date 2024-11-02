@@ -8813,18 +8813,24 @@ bool CLuaBaseEntity::delGil(int32 gil)
         return false;
     }
 
+    if (gil < 0)
+    {
+        ShowError("lua::delGil : Negative Gil (%i) passed to function", gil);
+        return false;
+    }
+
     bool result = false;
 
     CItem* PItem = static_cast<CCharEntity*>(m_PBaseEntity)->getStorage(LOC_INVENTORY)->GetItem(0);
 
-    if (PItem != nullptr && PItem->isType(ITEM_CURRENCY))
+    if (PItem != nullptr && PItem->isType(ITEM_CURRENCY) && (int32)PItem->getQuantity() >= gil)
     {
         auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
         result      = charutils::UpdateItem(PChar, LOC_INVENTORY, 0, -gil) == 0xFFFF;
     }
     else
     {
-        ShowCritical("lua::delGil : No Gil in currency slot");
+        ShowCritical("lua::delGil : Not enough Gil in currency slot");
     }
 
     return result;
