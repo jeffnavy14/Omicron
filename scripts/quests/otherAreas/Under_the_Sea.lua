@@ -13,8 +13,9 @@ local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.UNDER_TH
 
 quest.reward =
 {
-    item  = xi.item.AMBER_EARRING,
-    title = xi.title.LIL_CUPID,
+    item     = xi.item.AMBER_EARRING,
+    title    = xi.title.LIL_CUPID,
+    fameArea = xi.fameArea.SELBINA_RABAO,
 }
 
 quest.sections =
