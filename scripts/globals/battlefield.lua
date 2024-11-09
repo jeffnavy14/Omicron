@@ -1201,6 +1201,7 @@ function Battlefield:addEssentialMobs(mobNames)
     table.insert(self.groups, {
         mobs      = mobNames,
         superlink = true,
+        isParty   = true,
         allDeath  = utils.bind(self.handleAllMonstersDefeated, self),
     })
 end

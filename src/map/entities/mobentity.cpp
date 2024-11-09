@@ -1006,6 +1006,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
                 case REGION_TYPE::MAMOOL_JA_SAVAGE:
                 case REGION_TYPE::HALVUNG:
                 case REGION_TYPE::ARRAPAGO:
+                case REGION_TYPE::ALZADAAL:
                     effect = 2;
                     break;
 

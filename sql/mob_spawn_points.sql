@@ -50768,9 +50768,9 @@ INSERT INTO `mob_spawn_points` VALUES (17350927,'Cheiroptera','Cheiroptera',19,1
 INSERT INTO `mob_spawn_points` VALUES (17350928,'Cyranuce_M_Cutauleon','Cyranuce M Cutauleon',26,-189.000,-10.000,45.000,95);
 
 -- Wings of Fury
-INSERT INTO `mob_spawn_points` VALUES (17350929,'Colo-colo','Colo-colo',27,-188.000,-10.000,45.000,127);
-INSERT INTO `mob_spawn_points` VALUES (17350930,'Furies','Furies',28,-185.000,-10.000,48.000,127);
-INSERT INTO `mob_spawn_points` VALUES (17350931,'Furies','Furies',28,-191.000,-10.000,51.000,127);
+INSERT INTO `mob_spawn_points` VALUES (17350929,'Colo-colo','Colo-colo',27,-188.97,-10.58,46.15,112);
+INSERT INTO `mob_spawn_points` VALUES (17350930,'Furies','Furies',28,-181.60,-10.48,46.38,102);
+INSERT INTO `mob_spawn_points` VALUES (17350931,'Furies','Furies',28,-186.19,-10.94,52.07,92);
 
 -- Petrifying Pair
 INSERT INTO `mob_spawn_points` VALUES (17350933,'Kalamainu','Kalamainu',29,-184.401,-10.514,45.113,103);
