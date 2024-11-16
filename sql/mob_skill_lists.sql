@@ -3940,7 +3940,9 @@ INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,393); -- sonic_boom
 INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,1157); -- slipstream
 INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,1158); -- turbulence
 
--- Next available ID: 2016
+INSERT INTO `mob_skill_lists` VALUES ('Mind_Hoarder',2016,524); -- mind_drain
+
+-- Next available ID: 2017
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section
