@@ -95,7 +95,22 @@ void CAttack::SetCritical(bool value)
 
     if (m_attackType == PHYSICAL_ATTACK_TYPE::DAKEN)
     {
-        m_damageRatio = battleutils::GetRangedDamageRatio(m_attacker, m_victim, m_isCritical);
+        uint16 bonusRatt = 0;
+
+        if (m_attacker->StatusEffectContainer)
+        {
+            const CStatusEffect* sangeEffect = m_attacker->StatusEffectContainer->GetStatusEffect(EFFECT_SANGE);
+            CCharEntity*         PChar       = dynamic_cast<CCharEntity*>(m_attacker);
+
+            if (sangeEffect && PChar && PChar->PMeritPoints)
+            {
+                int32 meritValue = PChar->PMeritPoints->GetMeritValue(MERIT_SANGE, PChar);
+
+                // Add N ranged attack * merit level during Sange effect
+                bonusRatt += PChar->getMod(Mod::ENHANCES_SANGE) * meritValue;
+            }
+        }
+        m_damageRatio = battleutils::GetRangedDamageRatio(m_attacker, m_victim, m_isCritical, bonusRatt);
     }
     else
     {
@@ -318,7 +333,21 @@ uint8 CAttack::GetHitRate()
     }
     else if (m_attackType == PHYSICAL_ATTACK_TYPE::DAKEN)
     {
-        m_hitRate = battleutils::GetRangedHitRate(m_attacker, m_victim, false, 100);
+        int16 accBonus = 100;
+
+        if (m_attacker->StatusEffectContainer)
+        {
+            const CStatusEffect* sangeEffect = m_attacker->StatusEffectContainer->GetStatusEffect(EFFECT_SANGE);
+            CCharEntity*         PChar       = dynamic_cast<CCharEntity*>(m_attacker);
+            if (sangeEffect && PChar && PChar->PMeritPoints)
+            {
+                int32 meritValue = PChar->PMeritPoints->GetMeritValue(MERIT_SANGE, PChar);
+
+                accBonus += (meritValue - 1) * 25; // add 25 acc per merit past the first (you have to merit Sange to even have the status effect, so this will never be negative acc bonus)
+            }
+        }
+
+        m_hitRate = battleutils::GetRangedHitRate(m_attacker, m_victim, false, accBonus);
     }
     else if (m_attackDirection == RIGHTATTACK)
     {

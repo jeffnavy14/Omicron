@@ -7184,7 +7184,8 @@ namespace charutils
 
         PChar->TradePending.clean();
         PChar->InvitePending.clean();
-        PChar->PWideScanTarget = nullptr;
+
+        PChar->WideScanTarget = std::nullopt;
 
         if (PChar->animation == ANIMATION_ATTACK)
         {

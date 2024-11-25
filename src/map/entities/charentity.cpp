@@ -209,15 +209,16 @@ CCharEntity::CCharEntity()
 
     BazaarID.clean();
 
+    WideScanTarget = std::nullopt;
+
     lastTradeInvite = {};
     TradePending.clean();
     InvitePending.clean();
 
-    PLinkshell1     = nullptr;
-    PLinkshell2     = nullptr;
-    PUnityChat      = nullptr;
-    PTreasurePool   = nullptr;
-    PWideScanTarget = nullptr;
+    PLinkshell1   = nullptr;
+    PLinkshell2   = nullptr;
+    PUnityChat    = nullptr;
+    PTreasurePool = nullptr;
 
     PAutomaton             = nullptr;
     PClaimedMob            = nullptr;
@@ -1983,21 +1984,15 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
 
     uint8 shadowsTaken = 0;
     uint8 hitCount     = 1; // 1 hit by default
-    uint8 realHits     = 0; // to store the real number of hit for tp multipler
+    uint8 realHits     = 0; // to store the real number of hit for tp multiplier
     auto  ammoConsumed = 0;
     bool  hitOccured   = false; // track if player hit mob at all
-    bool  isSange      = false;
     bool  isBarrage    = StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE, 0);
 
     // if barrage is detected, getBarrageShotCount also checks for ammo count
     if (!ammoThrowing && !rangedThrowing && isBarrage)
     {
         hitCount += battleutils::getBarrageShotCount(this);
-    }
-    else if (ammoThrowing && this->StatusEffectContainer->HasStatusEffect(EFFECT_SANGE))
-    {
-        isSange = true;
-        hitCount += getMod(Mod::UTSUSEMI);
     }
     else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_DOUBLE_SHOT) && xirand::GetRandomNumber(100) < (40 + this->getMod(Mod::DOUBLE_SHOT_RATE)))
     {
@@ -2011,7 +2006,8 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     // loop for barrage hits, if a miss occurs, the loop will end
     for (uint8 i = 1; i <= hitCount; ++i)
     {
-        if (xirand::GetRandomNumber(100) < battleutils::GetRangedHitRate(this, PTarget, isBarrage)) // hit!
+        // TODO: add Barrage mod racc bonus
+        if (xirand::GetRandomNumber(100) < battleutils::GetRangedHitRate(this, PTarget, isBarrage, 0)) // hit!
         {
             // absorbed by shadow
             if (battleutils::IsAbsorbByShadow(PTarget, this))
@@ -2020,8 +2016,9 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
             }
             else
             {
+                // TODO: add Barrage ratt bonus from job points
                 bool  isCritical = xirand::GetRandomNumber(100) < battleutils::GetRangedCritHitRate(this, PTarget);
-                float pdif       = battleutils::GetRangedDamageRatio(this, PTarget, isCritical);
+                float pdif       = battleutils::GetRangedDamageRatio(this, PTarget, isCritical, 0);
 
                 if (isCritical)
                 {
@@ -2032,12 +2029,6 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
                 // at least 1 hit occured
                 hitOccured = true;
                 realHits++;
-
-                if (isSange)
-                {
-                    // change message to sange
-                    actionTarget.messageID = 77;
-                }
 
                 damage = (int32)((this->GetRangedWeaponDmg() + battleutils::GetFSTR(this, PTarget, slot)) * pdif);
 
@@ -2099,7 +2090,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     if (hitOccured)
     {
         // any misses with barrage cause remaining shots to miss, meaning we must check Action.reaction
-        if ((actionTarget.reaction & REACTION::MISS) != REACTION::NONE && (this->StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE) || isSange))
+        if ((actionTarget.reaction & REACTION::MISS) != REACTION::NONE && StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE))
         {
             actionTarget.messageID  = 352;
             actionTarget.reaction   = REACTION::HIT;
@@ -2151,18 +2142,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     {
         StatusEffectContainer->DelStatusEffect(EFFECT_BARRAGE, 0);
     }
-    else if (isSange)
-    {
-        uint16 power = StatusEffectContainer->GetStatusEffect(EFFECT_SANGE)->GetPower();
 
-        // remove shadows
-        while (realHits-- && xirand::GetRandomNumber(100) <= power && battleutils::IsAbsorbByShadow(this, this))
-        {
-            ;
-        }
-
-        StatusEffectContainer->DelStatusEffect(EFFECT_SANGE);
-    }
     battleutils::ClaimMob(PTarget, this);
     battleutils::RemoveAmmo(this, ammoConsumed);
 

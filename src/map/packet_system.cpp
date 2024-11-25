@@ -592,15 +592,24 @@ void SmallPacket0x015(map_session_data_t* const PSession, CCharEntity* const PCh
         PChar->loc.zone->SpawnTRUSTs(PChar);
         PChar->requestedInfoSync = true; // Ask to update PCs during CZoneEntities::ZoneServer
 
-        if (PChar->PWideScanTarget != nullptr)
+        // clang-format off
+        PChar->WideScanTarget.apply([&](const auto& wideScanTarget)
         {
-            PChar->pushPacket(new CWideScanTrackPacket(PChar->PWideScanTarget));
-
-            if (PChar->PWideScanTarget->status == STATUS_TYPE::DISAPPEAR)
+            if (const auto* PWideScanEntity = PChar->GetEntity(wideScanTarget.targid, TYPE_MOB | TYPE_NPC))
             {
-                PChar->PWideScanTarget = nullptr;
+                PChar->pushPacket(new CWideScanTrackPacket(PWideScanEntity));
+
+                if (PWideScanEntity->status == STATUS_TYPE::DISAPPEAR)
+                {
+                    PChar->WideScanTarget = std::nullopt;
+                }
             }
-        }
+            else
+            {
+                PChar->WideScanTarget = std::nullopt;
+            }
+        });
+        // clang-format on
     }
 }
 
@@ -6910,7 +6919,7 @@ void SmallPacket0x0F5(map_session_data_t* const PSession, CCharEntity* const PCh
     if (target == nullptr)
     {
         // Target not found
-        PChar->PWideScanTarget = nullptr;
+        PChar->WideScanTarget = std::nullopt;
         return;
     }
 
@@ -6920,7 +6929,10 @@ void SmallPacket0x0F5(map_session_data_t* const PSession, CCharEntity* const PCh
     // Only allow players to track targets that are actually scannable, and within their wide scan range
     if (target->isWideScannable() && dist <= widescanRange)
     {
-        PChar->PWideScanTarget = target;
+        PChar->WideScanTarget = EntityID_t{
+            .id     = target->id,
+            .targid = target->targid
+        };
     }
 }
 
@@ -6933,7 +6945,7 @@ void SmallPacket0x0F5(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x0F6(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    PChar->PWideScanTarget = nullptr;
+    PChar->WideScanTarget = std::nullopt;
 }
 
 /************************************************************************

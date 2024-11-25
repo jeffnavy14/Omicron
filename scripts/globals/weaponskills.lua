@@ -1069,6 +1069,29 @@ xi.weaponskills.takeWeaponskillDamage = function(defender, attacker, wsParams, p
         defender:updateEnmityFromDamage(enmityEntity, finaldmg * enmityMult)
     end
 
+    -- TODO: does this effect not apply if you do 0 damage (or absorb)?
+    -- Skillchains will still "proc" if you do 0 damage, so assume it does for now
+    if
+        (wsResults.tpHitsLanded +
+        wsResults.extraHitsLanded > 0) and
+        attacker:hasStatusEffect(xi.effect.SENGIKORI)
+    then
+        local sengikoriBonus = attacker:getMod(xi.mod.SENGIKORI_BONUS) -- Additive % bonus: https://www.ffxiah.com/forum/topic/23457/july-11-sam-update/4/#1421344
+        local power = 25 + sengikoriBonus                              -- base 25% bonus for SC or MB
+
+        -- If no SC effect, apply SC damage debuff
+        -- If there is one, apply MB damage debuff
+        -- This "effect" lasts until the it's used or the SC goes away
+        -- see https://wiki.ffo.jp/html/20051.html
+        if defender:hasStatusEffect(xi.effect.SKILLCHAIN) then
+            defender:setMod(xi.mod.SENGIKORI_MB_DMG_DEBUFF, power)
+        else
+            defender:setMod(xi.mod.SENGIKORI_SC_DMG_DEBUFF, power)
+        end
+
+        attacker:delStatusEffect(xi.effect.SENGIKORI)
+    end
+
     if finaldmg > 0 then
         -- Pack the weaponskill ID in the top 8 bits of this variable which is utilized
         -- in OnMobDeath in luautils.  Max WSID is 255.

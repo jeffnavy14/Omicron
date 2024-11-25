@@ -29,6 +29,7 @@
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
+#include "common/xi.h"
 
 #include <bitset>
 #include <deque>
@@ -444,7 +445,11 @@ public:
     CUContainer*     UContainer;     // Container used for universal actions -- used for trading at least despite the dedicated trading container above
     CTradeContainer* CraftContainer; // Container used for crafting actions.
 
-    CBaseEntity* PWideScanTarget;
+    // TODO: All member instances of EntityID_t should be std::optional<EntityID_t> to allow for them not to be set,
+    //     : instead of checking for entityId.id != 0, etc.
+    // TODO: We don't want to replace this with just an ID, because in the future EntityID_t will be able to
+    //     : disambiguate between entities who have been rebuilt (players, dynamic entities) and have the same ID.
+    xi::optional<EntityID_t> WideScanTarget;
 
     SpawnIDList_t SpawnPCList;    // list of visible characters
     SpawnIDList_t SpawnMOBList;   // list of visible monsters

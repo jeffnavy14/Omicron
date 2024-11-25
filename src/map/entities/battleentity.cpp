@@ -2509,6 +2509,22 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
             }
         }
 
+        // Remove shuriken if Daken proc and Sange is up
+        if (attack.GetAttackType() == PHYSICAL_ATTACK_TYPE::DAKEN)
+        {
+            if (StatusEffectContainer && StatusEffectContainer->HasStatusEffect(EFFECT_SANGE))
+            {
+                CCharEntity* PChar = dynamic_cast<CCharEntity*>(this);
+                CItemWeapon* PAmmo = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO));
+
+                if (PChar && PAmmo && PAmmo->isShuriken()) // Not sure how they wouldn't have a shuriken by this point, but just in case...
+                {
+                    // Removing ammo here is safe because you can only create one Daken attack per attack round
+                    battleutils::RemoveAmmo(PChar, 1);
+                }
+            }
+        }
+
         attackRound.DeleteAttackSwing();
 
         if (list.actionTargets.size() == 8)

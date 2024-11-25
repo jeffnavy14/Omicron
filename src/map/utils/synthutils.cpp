@@ -422,6 +422,7 @@ namespace synthutils
                 synthResult = RESULT_HQ;
                 break;
         }
+
         return synthResult;
     }
 
@@ -430,7 +431,7 @@ namespace synthutils
      * Do Skill Up                                                       *
      *                                                                   *
      ********************************************************************/
-    int32 doSynthSkillUp(CCharEntity* PChar)
+    void doSynthSkillUp(CCharEntity* PChar)
     {
         for (uint8 skillID = SKILL_WOODWORKING; skillID <= SKILL_COOKING; ++skillID) // Check for all skills involved in a recipe, to check for skill up
         {
@@ -662,8 +663,6 @@ namespace synthutils
                 }
             }
         }
-
-        return 0;
     }
 
     /**************************************************************************
@@ -674,33 +673,33 @@ namespace synthutils
      *                                                                         *
      **************************************************************************/
 
-    int32 handleMaterialLoss(CCharEntity* PChar)
+    void handleMaterialLoss(CCharEntity* PChar)
     {
-        uint8 currentCraft     = PChar->CraftContainer->getInvSlotID(0);
-        int16 synthDifficulty  = getSynthDifficulty(PChar, currentCraft);
-        int16 modSynthFailRate = PChar->getMod(Mod::SYNTH_FAIL_RATE);
+        uint8 currentCraft = PChar->CraftContainer->getInvSlotID(0);
 
-        // We are able to get the correct elemental mod here by adding the element to it since they are in the same order
-        double reduction = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_FIRE + PChar->CraftContainer->getType()));
-
-        // Similarly we get the correct craft mod here by adding the current craft to it since they are in the same order
-        reduction += PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_WOOD + (currentCraft - SKILL_WOODWORKING)));
-        reduction /= 100.0;
-
-        uint8 invSlotID  = 0;
+        // Loop variables
+        uint8 invSlotID  = PChar->CraftContainer->getInvSlotID(1);
         uint8 nextSlotID = 0;
         uint8 lostCount  = 0;
         uint8 totalCount = 0;
+        uint8 random     = 0;
 
-        double random   = 0;
-        double lostItem = std::clamp(0.15 - reduction + (synthDifficulty > 0 ? synthDifficulty / 20 : 0), 0.0, 1.0);
+        // Synth material loss modifiers. TODO: Audit usage of this modifiers.
+        int16 breakGlobalReduction    = PChar->getMod(Mod::SYNTH_FAIL_RATE);
+        int16 breakElementalReduction = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_FIRE + PChar->CraftContainer->getType()));
+        int16 breakTypeReduction      = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_WOOD + currentCraft - SKILL_WOODWORKING));
+        int16 synthDifficulty         = getSynthDifficulty(PChar, currentCraft);
 
-        // Translation of JP wiki for the "Synthesis failure rate" modifier is "Synthetic material loss rate"
-        // see: http://wiki.ffo.jp/html/18416.html
-        lostItem += (double)modSynthFailRate * 0.01;
+        if (synthDifficulty < 0)
+        {
+            synthDifficulty = 0;
+        }
 
-        invSlotID = PChar->CraftContainer->getInvSlotID(1);
+        // Break Chance.
+        // Clamp note: https://wiki-ffo-jp.translate.goog/html/36626.html?_x_tr_sl=ja&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
+        int16 breakChance = std::clamp(50 - breakGlobalReduction - breakElementalReduction - breakTypeReduction + 5 * synthDifficulty, 20, 100);
 
+        // Loop through craft container items.
         for (uint8 slotID = 1; slotID <= 8; ++slotID)
         {
             if (slotID != 8)
@@ -708,9 +707,9 @@ namespace synthutils
                 nextSlotID = PChar->CraftContainer->getInvSlotID(slotID + 1);
             }
 
-            random = xirand::GetRandomNumber(1.);
+            random = xirand::GetRandomNumber(1, 100);
 
-            if (random < lostItem)
+            if (random <= breakChance)
             {
                 PChar->CraftContainer->setQuantity(slotID, 0);
                 lostCount++;
@@ -739,14 +738,14 @@ namespace synthutils
                 }
                 invSlotID = nextSlotID;
             }
+
             nextSlotID = 0;
+
             if (invSlotID == 0xFF)
             {
                 break;
             }
         }
-
-        return 0;
     }
 
     /**************************************************************************
@@ -756,7 +755,7 @@ namespace synthutils
      *                                                                         *
      **************************************************************************/
 
-    int32 doSynthFail(CCharEntity* PChar)
+    void doSynthFail(CCharEntity* PChar)
     {
         // Break material calculations.
         if (PChar->CraftContainer->getCraftType() != CRAFT_SYNTHESIS_NO_LOSS) // If it's a synth where no materials can be lost, skip break calculations.
@@ -776,8 +775,6 @@ namespace synthutils
         }
 
         PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_FAIL, 29695));
-
-        return 0;
     }
 
     /*********************************************************************
@@ -790,56 +787,6 @@ namespace synthutils
     int32 startSynth(CCharEntity* PChar)
     {
         PChar->m_LastSynthTime = server_clock::now();
-        uint16 effect          = 0;
-        uint8  element         = 0;
-
-        uint16 crystalType = PChar->CraftContainer->getItemID(0);
-
-        switch (crystalType)
-        {
-            case 0x1000:
-            case 0x108E:
-                effect  = EFFECT_FIRESYNTH;
-                element = ELEMENT_FIRE;
-                break;
-            case 0x1001:
-            case 0x108F:
-                effect  = EFFECT_ICESYNTH;
-                element = ELEMENT_ICE;
-                break;
-            case 0x1002:
-            case 0x1090:
-                effect  = EFFECT_WINDSYNTH;
-                element = ELEMENT_WIND;
-                break;
-            case 0x1003:
-            case 0x1091:
-                effect  = EFFECT_EARTHSYNTH;
-                element = ELEMENT_EARTH;
-                break;
-            case 0x1004:
-            case 0x1092:
-                effect  = EFFECT_LIGHTNINGSYNTH;
-                element = ELEMENT_LIGHTNING;
-                break;
-            case 0x1005:
-            case 0x1093:
-                effect  = EFFECT_WATERSYNTH;
-                element = ELEMENT_WATER;
-                break;
-            case 0x1006:
-            case 0x1094:
-                effect  = EFFECT_LIGHTSYNTH;
-                element = ELEMENT_LIGHT;
-                break;
-            case 0x1007:
-            case 0x1095:
-                effect  = EFFECT_DARKSYNTH;
-                element = ELEMENT_DARK;
-                break;
-        }
-
-        PChar->CraftContainer->setType(element);
 
         if (!isRightRecipe(PChar))
         {
@@ -847,6 +794,64 @@ namespace synthutils
 
             return 0;
         }
+
+        // Set animation and element based on crystal element.
+        uint16 effect        = 0;
+        uint8  element       = 0;
+        uint16 crystalItemId = PChar->CraftContainer->getItemID(0);
+
+        switch (crystalItemId)
+        {
+            case 4096: // Fire Crystal
+            case 4238: // Inferno Crystal
+                effect  = EFFECT_FIRESYNTH;
+                element = ELEMENT_FIRE;
+                break;
+
+            case 4097: // Ice Crystal
+            case 4239: // Glacier Crystal
+                effect  = EFFECT_ICESYNTH;
+                element = ELEMENT_ICE;
+                break;
+
+            case 4098: // Wind Crystal
+            case 4240: // Cyclone Crystal
+                effect  = EFFECT_WINDSYNTH;
+                element = ELEMENT_WIND;
+                break;
+
+            case 4099: // Earth Crystal
+            case 4041: // Terra Crystal
+                effect  = EFFECT_EARTHSYNTH;
+                element = ELEMENT_EARTH;
+                break;
+
+            case 4100: // Lightning Crystal
+            case 4242: // Plasma Crystal
+                effect  = EFFECT_LIGHTNINGSYNTH;
+                element = ELEMENT_LIGHTNING;
+                break;
+
+            case 4101: // Water Crystal
+            case 4243: // Torrent Crystal
+                effect  = EFFECT_WATERSYNTH;
+                element = ELEMENT_WATER;
+                break;
+
+            case 4102: // Light Crystal
+            case 4244: // Aurora Crystal
+                effect  = EFFECT_LIGHTSYNTH;
+                element = ELEMENT_LIGHT;
+                break;
+
+            case 4103: // Dark Crystal
+            case 4245: // Twilight Crystal
+                effect  = EFFECT_DARKSYNTH;
+                element = ELEMENT_DARK;
+                break;
+        }
+
+        PChar->CraftContainer->setType(element);
 
         // Reserve the items after we know we have the right recipe
         for (uint8 container_slotID = 0; container_slotID <= 8; ++container_slotID)

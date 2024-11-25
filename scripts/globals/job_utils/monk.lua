@@ -42,6 +42,7 @@ xi.job_utils.monk.useBoost = function(player, target, ability)
     end
 end
 
+-- TODO: add Melee Gloves +2 aug
 xi.job_utils.monk.useChakra = function(player, target, ability)
     local chakraRemoval = player:getMod(xi.mod.CHAKRA_REMOVAL)
 
@@ -51,9 +52,13 @@ xi.job_utils.monk.useChakra = function(player, target, ability)
         end
     end
 
+    -- see https://www.bg-wiki.com/ffxi/Chakra
+    local monkLevel         = utils.getActiveJobLevel(player, xi.job.MNK)
     local jpModifier        = target:getJobPointLevel(xi.jp.CHAKRA_EFFECT) -- NOTE: Level is the modified value, so 10 per point spent
-    local maxRecoveryAmount = (player:getStat(xi.mod.VIT) * (2 + player:getMod(xi.mod.CHAKRA_MULT) / 10)) + jpModifier
-    local recoveryAmount    = math.min(player:getMaxHP() - player:getHP(), maxRecoveryAmount) -- TODO: Figure out "function of level" addition (August 2017 update)
+    local hpModifier        = ((monkLevel + 1) * 0.2 / 100) * player:getMaxHP()
+    local chakraMultiplier  = 1 + player:getMod(xi.mod.CHAKRA_MULT) / 100
+    local maxRecoveryAmount = (player:getStat(xi.mod.VIT) * 2 + hpModifier) * chakraMultiplier + jpModifier
+    local recoveryAmount    = math.min(player:getMaxHP() - player:getHP(), maxRecoveryAmount)
 
     player:setHP(player:getHP() + recoveryAmount)
 
@@ -94,15 +99,11 @@ xi.job_utils.monk.useCounterstance = function(player, target, ability)
 end
 
 xi.job_utils.monk.useDodge = function(player, target, ability)
-    local power = 20 + player:getMod(xi.mod.DODGE_EFFECT)
-
-    player:addStatusEffect(xi.effect.DODGE, power, 0, 120)
+    player:addStatusEffect(xi.effect.DODGE, 0, 0, 30)
 end
 
 xi.job_utils.monk.useFocus = function(player, target, ability)
-    local power = 20 + player:getMod(xi.mod.FOCUS_EFFECT)
-
-    player:addStatusEffect(xi.effect.FOCUS, power, 0, 120)
+    player:addStatusEffect(xi.effect.FOCUS, 0, 0, 30)
 end
 
 xi.job_utils.monk.useFootwork = function(player, target, ability)

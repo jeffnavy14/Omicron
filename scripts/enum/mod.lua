@@ -434,6 +434,9 @@ xi.mod =
     ENHANCES_RESTRAINT              = 1045, -- Enhances "Restraint" effect/"Restraint" + (Increases the damage bonus of Restraint by XXX%)
     ENHANCES_BLOOD_RAGE             = 1046, -- Enhances "Blood Rage" effect/"Blood Rage" duration +
 
+    -- Monk
+    ADDITIVE_GUARD                  = 1092, -- Additive % bonus to final Guard rate (adds after clamp)
+
     -- Paladin
     ENHANCES_CHIVALRY               = 1061, -- Enhances "Chivalry" effect (increases the base TP modifier by the provided value / 100, e.g. mod value 5 = +0.05)
     ENHANCES_DIVINE_EMBLEM          = 1062, -- Enhances "Divine Emblem" effect/"Divine Emblem" + (increases the ability's special enmity bonus by the provided value)
@@ -464,6 +467,14 @@ xi.mod =
     -- Beastmaster
     TANDEM_STRIKE_POWER             = 271,  -- Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
     TANDEM_BLOW_POWER               = 272,  -- Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
+
+    -- Samurai
+    SENGIKORI_SC_DMG_DEBUFF         = 1088, -- % Increase to closing skillchain damage. Applied to defender.
+    SENGIKORI_MB_DMG_DEBUFF         = 1089, -- % Increase to magic burst damage. Applied to defender.
+    SENGIKORI_BONUS                 = 1090, -- additive % increase to Sengikori
+
+    -- Ninja
+    ENHANCES_SANGE                  = 1091, -- 1 = +1 attack for Daken during Sange per Sange merit (i.e. 20 with 5 merits = +100 attack during Sange)
 
     -- Dragoon
     WYVERN_LVL_BONUS                = 1043, -- Wyvern: Lv.+ (Increases wyvern's base level above 99)
@@ -831,7 +842,7 @@ xi.mod =
     -- Crafting food effects
     SYNTH_SUCCESS                   = 851, -- Rate of synthesis success
     SYNTH_SKILL_GAIN                = 852, -- Synthesis skill gain rate
-    SYNTH_FAIL_RATE                 = 861, -- Synthesis failure rate (percent)
+    SYNTH_FAIL_RATE                 = 861, -- Synthesis material loss rate (percent)
     SYNTH_HQ_RATE                   = 862, -- High-quality success rate (not a percent)
     DESYNTH_SUCCESS                 = 916, -- Rate of desynthesis success
     SYNTH_FAIL_RATE_FIRE            = 917, -- Amount synthesis failure rate is reduced when using a fire crystal

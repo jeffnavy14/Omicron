@@ -61,12 +61,11 @@ namespace
 
 void auth_session::start()
 {
-    auto self(shared_from_this());
     if (socket_.lowest_layer().is_open())
     {
         // clang-format off
         socket_.async_handshake(asio::ssl::stream_base::server,
-        [this, self](std::error_code ec)
+        [this, self = shared_from_this()](std::error_code ec)
         {
             if (!ec)
             {
@@ -91,10 +90,9 @@ void auth_session::start()
 
 void auth_session::do_read()
 {
-    auto self(shared_from_this());
     // clang-format off
     socket_.async_read_some(asio::buffer(data_, max_length),
-    [this, self](std::error_code ec, std::size_t length)
+    [this, self = shared_from_this()](std::error_code ec, std::size_t length)
     {
         if (!ec)
         {
@@ -530,10 +528,9 @@ void auth_session::read_func()
 
 void auth_session::do_write(std::size_t length)
 {
-    auto self(shared_from_this());
     // clang-format off
     asio::async_write(socket_, asio::buffer(data_, length),
-    [this, self](std::error_code ec, std::size_t /*length*/)
+    [this, self = shared_from_this()](std::error_code ec, std::size_t /*length*/)
     {
         if (!ec)
         {

@@ -413,6 +413,7 @@ enum class Mod
     COUNTERSTANCE_EFFECT = 543,  // Counterstance effect in percents
     DODGE_EFFECT         = 552,  // Dodge effect in percents
     FOCUS_EFFECT         = 561,  // Focus effect in percents
+    ADDITIVE_GUARD       = 1092, // Additive % bonus to final Guard rate (adds after clamp)
 
     // White Mage
     AFFLATUS_SOLACE  = 293, // Pool of HP accumulated during Afflatus Solace
@@ -551,6 +552,9 @@ enum class Mod
     THIRD_EYE_COUNTER_RATE    = 508,  // Adds counter to 3rd eye anticipates & if using Seigan counter rate is increased by 15%
     THIRD_EYE_ANTICIPATE_RATE = 839,  // Adds anticipate rate in percents
     THIRD_EYE_BONUS           = 1055, // TODO: Bonus Third Eye Evasion (count)
+    SENGIKORI_SC_DMG_DEBUFF   = 1088, // % Increase to closing skillchain damage. Applied to defender.
+    SENGIKORI_MB_DMG_DEBUFF   = 1089, // % Increase to magic burst damage. Applied to defender.
+    SENGIKORI_BONUS           = 1090, // additive % increase to Sengikori
 
     // Ninja
     UTSUSEMI             = 307, // Everyone's favorite --tracks shadows.
@@ -560,6 +564,7 @@ enum class Mod
     NIN_NUKE_BONUS_GEAR  = 522, // Ninjutsu damage multiplier from gear.
     DAKEN                = 911, // chance to throw a shuriken without consuming it
     NINJUTSU_DURATION    = 1000,
+    ENHANCES_SANGE       = 1091, // 1 = +1 attack for Daken during Sange per Sange merit (i.e. 20 with 5 merits = +100 attack during Sange)
 
     // Dragoon
     ANCIENT_CIRCLE_DURATION    = 859,  // Ancient Circle extended duration in seconds
@@ -946,7 +951,7 @@ enum class Mod
     // Crafting food effects
     SYNTH_SUCCESS             = 851, // Rate of synthesis success
     SYNTH_SKILL_GAIN          = 852, // Synthesis skill gain rate
-    SYNTH_FAIL_RATE           = 861, // Synthesis failure rate (percent)
+    SYNTH_FAIL_RATE           = 861, // Synthesis material loss rate (percent)
     SYNTH_HQ_RATE             = 862, // High-quality success rate (not a percent)
     DESYNTH_SUCCESS           = 916, // Rate of desynthesis success
     SYNTH_FAIL_RATE_FIRE      = 917, // Amount synthesis failure rate is reduced when using a fire crystal
@@ -1026,7 +1031,7 @@ enum class Mod
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1088 and onward
+    // SPARE IDs: 1093 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it
