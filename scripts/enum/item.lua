@@ -5443,6 +5443,7 @@ xi.item =
     NINURTAS_SASH                       = 15458,
     CORSE_CAPE                          = 15464,
     BELLICOSE_MANTLE                    = 15469,
+    GRAMARY_CAPE                        = 15470,
     MERCIFUL_CAPE                       = 15471,
     ALTRUISTIC_CAPE                     = 15472,
     ASTUTE_CAPE                         = 15473,

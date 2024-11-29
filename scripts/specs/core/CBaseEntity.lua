@@ -522,6 +522,10 @@ end
 function CBaseEntity:follow(target, followType)
 end
 
+---@return boolean
+function CBaseEntity:hasFollowTarget()
+end
+
 ---@return nil
 function CBaseEntity:unfollow()
 end

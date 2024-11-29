@@ -4802,12 +4802,13 @@ INSERT INTO `item_mods` VALUES (11084,85,7);    -- GAXE: 7
 INSERT INTO `item_mods` VALUES (11084,1046,30); -- ENHANCES_BLOOD_RAGE: 30
 
 -- Tantra Cyclas +2
-INSERT INTO `item_mods` VALUES (11085,1,64);  -- DEF: 64
-INSERT INTO `item_mods` VALUES (11085,8,12);  -- STR: 12
-INSERT INTO `item_mods` VALUES (11085,10,12); -- VIT: 12
-INSERT INTO `item_mods` VALUES (11085,23,15); -- ATT: 15
-INSERT INTO `item_mods` VALUES (11085,25,15); -- ACC: 15
-INSERT INTO `item_mods` VALUES (11085,173,5); -- MARTIAL_ARTS: 5
+INSERT INTO `item_mods` VALUES (11085,1,64);   -- DEF: 64
+INSERT INTO `item_mods` VALUES (11085,8,12);   -- STR: 12
+INSERT INTO `item_mods` VALUES (11085,10,12);  -- VIT: 12
+INSERT INTO `item_mods` VALUES (11085,23,15);  -- ATT: 15
+INSERT INTO `item_mods` VALUES (11085,25,15);  -- ACC: 15
+INSERT INTO `item_mods` VALUES (11085,173,5);  -- MARTIAL_ARTS: 5
+INSERT INTO `item_mods` VALUES (11085,1097,2); -- AUGMENTS_IMPETUS: 2
 
 -- Orison Bliaud +2
 INSERT INTO `item_mods` VALUES (11086,1,49);   -- DEF: 49
@@ -5503,11 +5504,12 @@ INSERT INTO `item_mods` VALUES (11184,85,5);    -- GAXE: 5
 INSERT INTO `item_mods` VALUES (11184,1046,15); -- ENHANCES_BLOOD_RAGE: 15
 
 -- Tantra Cyclas +1
-INSERT INTO `item_mods` VALUES (11185,1,61);  -- DEF: 61
-INSERT INTO `item_mods` VALUES (11185,8,8);   -- STR: 8
-INSERT INTO `item_mods` VALUES (11185,10,8);  -- VIT: 8
-INSERT INTO `item_mods` VALUES (11185,23,12); -- ATT: 12
-INSERT INTO `item_mods` VALUES (11185,25,12); -- ACC: 12
+INSERT INTO `item_mods` VALUES (11185,1,61);   -- DEF: 61
+INSERT INTO `item_mods` VALUES (11185,8,8);    -- STR: 8
+INSERT INTO `item_mods` VALUES (11185,10,8);   -- VIT: 8
+INSERT INTO `item_mods` VALUES (11185,23,12);  -- ATT: 12
+INSERT INTO `item_mods` VALUES (11185,25,12);  -- ACC: 12
+INSERT INTO `item_mods` VALUES (11185,1097,1); -- AUGMENTS_IMPETUS: 1 -- Note, this still acts like Tantra Cyclas +2 (or higher) for now
 
 -- Orison Bliaud +1
 INSERT INTO `item_mods` VALUES (11186,1,46);   -- DEF: 46
@@ -49169,7 +49171,7 @@ INSERT INTO `item_mods` VALUES (23153,68,95);   -- EVA: 95
 INSERT INTO `item_mods` VALUES (23153,173,7);   -- MARTIAL_ARTS: 7
 INSERT INTO `item_mods` VALUES (23153,384,400); -- HASTE_GEAR: 4%
 INSERT INTO `item_mods` VALUES (23153,841,8);   -- ALL_WSDMG_FIRST_HIT: 8
--- TODO: Augments Impetus: Increases Critical Hit Damage by 1% and ACC by 2 for each consecutive successful attack while worn
+INSERT INTO `item_mods` VALUES (23153,1097,2);  -- AUGMENTS_IMPETUS: 2
 
 -- Ebers Bliaut +2
 INSERT INTO `item_mods` VALUES (23154,1,145);   -- DEF: 145
@@ -65530,6 +65532,7 @@ INSERT INTO `item_mods` VALUES (26900,31,40);   -- MEVA: 40
 INSERT INTO `item_mods` VALUES (26900,68,25);   -- EVA: 25
 INSERT INTO `item_mods` VALUES (26900,173,5);   -- MARTIAL_ARTS: 5
 INSERT INTO `item_mods` VALUES (26900,384,400); -- HASTE_GEAR: 400
+INSERT INTO `item_mods` VALUES (26900,1097,2);  -- AUGMENTS_IMPETUS: 2
 
 -- Bhikku Cyclas +1
 INSERT INTO `item_mods` VALUES (26901,1,125);   -- DEF: 125
@@ -65548,6 +65551,7 @@ INSERT INTO `item_mods` VALUES (26901,31,59);   -- MEVA: 59
 INSERT INTO `item_mods` VALUES (26901,68,55);   -- EVA: 55
 INSERT INTO `item_mods` VALUES (26901,173,6);   -- MARTIAL_ARTS: 6
 INSERT INTO `item_mods` VALUES (26901,384,400); -- HASTE_GEAR: 400
+INSERT INTO `item_mods` VALUES (26901,1097,2);  -- AUGMENTS_IMPETUS: 2
 
 -- Ebers Bliaud
 INSERT INTO `item_mods` VALUES (26902,1,87);    -- DEF: 87

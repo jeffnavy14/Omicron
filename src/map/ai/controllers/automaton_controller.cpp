@@ -402,8 +402,8 @@ bool CAutomatonController::TrySpellcast(const CurrentManeuvers& maneuvers)
                 m_LastEnhanceTime = m_Tick;
                 return true;
             }
-            else if ((maneuvers.dark || PAutomaton->GetHPP() <= 75 || PAutomaton->GetMPP() <= 75) &&
-                     TryEnfeeble(maneuvers)) // Dark or self HPP/MPP <= 75 -> Enfeeble
+            else if ((maneuvers.dark || PAutomaton->GetHPP() < 75 || PAutomaton->GetMPP() < 75) &&
+                     TryEnfeeble(maneuvers)) // Dark or self HPP/MPP < 75 -> Enfeeble
             {
                 m_LastEnfeebleTime = m_Tick;
                 return true;
@@ -844,13 +844,13 @@ bool CAutomatonController::TryEnfeeble(const CurrentManeuvers& maneuvers)
         }
         case HEAD_SPIRITREAVER:
         {
-            if (PAutomaton->GetMPP() <= 75 && PTarget->health.mp > 0) // MPP <= 75 -> Aspir
+            if (PAutomaton->GetMPP() < 75 && PTarget->health.mp > 0) // MPP < 75 -> Aspir
             {
                 castPriority.emplace_back(SpellID::Aspir_II);
                 castPriority.emplace_back(SpellID::Aspir);
             }
 
-            if (PAutomaton->GetHPP() <= 75 && PTarget->m_EcoSystem != ECOSYSTEM::UNDEAD)
+            if (PAutomaton->GetHPP() < 75 && PTarget->m_EcoSystem != ECOSYSTEM::UNDEAD)
             { // HPP <= 75 -> Drain
                 castPriority.emplace_back(SpellID::Drain);
             }

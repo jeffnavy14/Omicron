@@ -22,16 +22,19 @@
 enum class Mod
 {
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
-
-    NONE = 0,       // Essential, but does nothing :)
-                    //  NAME                  = ID, // Comment
-    DEF        = 1, // Target's Defense
-    HP         = 2, // Target's HP
-    HPP        = 3, // HP Percentage
-    CONVMPTOHP = 4, // MP -> HP (Cassie Earring)
-    MP         = 5, // MP +/-
-    MPP        = 6, // MP Percentage
-    CONVHPTOMP = 7, // HP -> MP
+    NONE = 0,            // Essential, but does nothing :)
+                         //  NAME                  = ID, // Comment
+    DEF          = 1,    // Target's Defense
+    HP           = 2,    // Target's HP
+    HPP          = 3,    // HP Percentage
+    CONVMPTOHP   = 4,    // MP -> HP (Cassie Earring)
+    MP           = 5,    // MP +/-
+    MPP          = 6,    // MP Percentage
+    CONVHPTOMP   = 7,    // HP -> MP
+    WEAKNESS_PCT = 1093, // Weakness HP/MP reduction term, -1 = - 1% HP/MP
+    CURSE_PCT    = 1094, // Curse HP/MP reduction term, -1 = - 1% HP/MP
+    BASE_HP      = 1095, // Base HP bonus (like merits)
+    BASE_MP      = 1096, // Base MP bonus (like merits)
 
     STR = 8,  // Strength
     DEX = 9,  // Dexterity
@@ -414,6 +417,7 @@ enum class Mod
     DODGE_EFFECT         = 552,  // Dodge effect in percents
     FOCUS_EFFECT         = 561,  // Focus effect in percents
     ADDITIVE_GUARD       = 1092, // Additive % bonus to final Guard rate (adds after clamp)
+    AUGMENTS_IMPETUS     = 1097, // see https://www.bg-wiki.com/ffxi/Impetus, adds Crit Hit Damage & Accuracy for Impetus
 
     // White Mage
     AFFLATUS_SOLACE  = 293, // Pool of HP accumulated during Afflatus Solace
@@ -1031,7 +1035,7 @@ enum class Mod
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1093 and onward
+    // SPARE IDs: 1098 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

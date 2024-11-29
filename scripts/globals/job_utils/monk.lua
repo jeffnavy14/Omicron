@@ -121,8 +121,58 @@ xi.job_utils.monk.useHundredFists = function(player, target, ability)
     player:addStatusEffect(xi.effect.HUNDRED_FISTS, 1, 0, 45)
 end
 
+-- TODO: Support Tantra Cyclas + 1 (does not give critical hit damage)
+-- Probably will be exceptionally jank, very low priority
+xi.job_utils.monk.impetusMissListener = function(attacker, victim, attack)
+    local effect = attacker:getStatusEffect(xi.effect.IMPETUS)
+
+    if effect then
+        local mainPower = effect:getPower()    -- Stores Attack & Critical Hit Rate bonuses
+        local subPower  = effect:getSubPower() -- Stores Critical Hit Damage & Accuracy bonuses
+
+        if mainPower > 0 then
+            attacker:delMod(xi.mod.ATT, mainPower * 2)
+            attacker:delMod(xi.mod.CRITHITRATE, mainPower)
+
+            effect:setPower(0)
+        end
+
+        if subPower > 0 then
+            attacker:delMod(xi.mod.ACC, subPower * 2)
+            attacker:delMod(xi.mod.CRIT_DMG_INCREASE, subPower)
+
+            effect:setSubPower(0)
+        end
+    end
+end
+
+-- TODO: Support Tantra Cyclas + 1 (does not give critical hit damage)
+-- Probably will be exceptionally jank, very low priority
+xi.job_utils.monk.impetusHitListener = function(attacker, victim, attack)
+    local effect = attacker:getStatusEffect(xi.effect.IMPETUS)
+
+    if effect then
+        local mainPower = effect:getPower()    -- Stores Attack & Critical Hit Rate bonuses
+        local subPower  = effect:getSubPower() -- Stores Critical Hit Damage & Accuracy bonuses
+
+        if mainPower < 50 then
+            attacker:addMod(xi.mod.ATT, 2)
+            attacker:addMod(xi.mod.CRITHITRATE, 1)
+
+            effect:setPower(mainPower + 1)
+        end
+
+        if attacker:getMod(xi.mod.AUGMENTS_IMPETUS) > 0 and subPower < 50 then
+            attacker:addMod(xi.mod.ACC, 2)
+            attacker:addMod(xi.mod.CRIT_DMG_INCREASE, 1)
+
+            effect:setSubPower(subPower + 1)
+        end
+    end
+end
+
 xi.job_utils.monk.useImpetus = function(player, target, ability)
-    player:addStatusEffect(xi.effect.IMPETUS, 2, 0, 180)
+    player:addStatusEffect(xi.effect.IMPETUS, 0, 0, 180)
 end
 
 xi.job_utils.monk.useInnerStrength = function(player, target, ability)

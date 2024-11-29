@@ -25,6 +25,7 @@ zones[xi.zone.TAVNAZIAN_SAFEHOLD] =
         OBTAIN_SCYLDS                  = 6749,  -- You obtain <number> [scyld/scylds]! Current balance: <number> [scyld/scylds].
         HUNT_CANCELED                  = 6753,  -- Hunt canceled.
         FISHING_MESSAGE_OFFSET         = 10272, -- You can't fish here.
+        NOTHING_OUT_OF_THE_ORDINARY    = 10840, -- There is nothing out of the ordinary here.
         NOMAD_MOOGLE_DIALOG            = 10904, -- I'm a traveling moogle, kupo. I help adventurers in the Outlands access items they have stored in a Mog House elsewhere, kupo.
         NILEROUCHE_SHOP_DIALOG         = 10912, -- Hello, traveler! Please have a look at these fine Tavnazian-built products!
         MAZUROOOZURO_SHOP_DIALOG       = 10913, -- Hidely-howdy-ho! I'll sell you what I've got if you fork over enough dough!
@@ -36,6 +37,8 @@ zones[xi.zone.TAVNAZIAN_SAFEHOLD] =
         ITEM_DELIVERY_DIALOG           = 10930, -- I can send your items to anywhere in Vana'diel!
         HOMEPOINT_SET                  = 10933, -- Home point set!
         DOOR_IS_LOCKED_TIGHT           = 11030, -- The door is locked tight.
+        CRUSE_ON_THE_GROUND            = 11759, -- There is a Shaded Cruse lying on the ground here!
+        TRAIL_OF_WATER                 = 11760, -- There is a trail of water here. It is still fresh
         YOU_CANNOT_ENTER_DYNAMIS       = 11843, -- You cannot enter Dynamis - [Dummy/San d'Oria/Bastok/Windurst/Jeuno/Beaucedine/Xarcabard/Valkurm/Buburimu/Qufim/Tavnazia] for <number> [day/days] (Vana'diel time).
         PLAYERS_HAVE_NOT_REACHED_LEVEL = 11845, -- Players who have not reached level <number> are prohibited from entering Dynamis.
         DYNA_NPC_DEFAULT_MESSAGE       = 11967, -- There is a strange symbol drawn here. A haunting chill sweeps through you as you gaze upon it...
@@ -47,7 +50,11 @@ zones[xi.zone.TAVNAZIAN_SAFEHOLD] =
     },
     npc =
     {
-        QM_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm_in_search_of_truth'),
+        QM1_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm1_in_search_of_truth'),
+        QM2_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm2_in_search_of_truth'),
+        QM3_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm3_in_search_of_truth'),
+        QM4_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm4_in_search_of_truth'),
+        QM5_IN_SEARCH_OF_TRUTH_BASE = GetFirstID('qm5_in_search_of_truth'),
     },
 }
 

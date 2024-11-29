@@ -509,13 +509,22 @@ bool CAttack::CheckCounter()
     {
         if ((xirand::GetRandomNumber(100) < std::clamp<uint16>(m_victim->getMod(Mod::COUNTER) + meritCounter, 0, 80) ||
              xirand::GetRandomNumber(100) < seiganChance) &&
-            facing(m_victim->loc.p, m_attacker->loc.p, 64) && xirand::GetRandomNumber(100) < battleutils::GetHitRate(m_victim, m_attacker))
+            facing(m_victim->loc.p, m_attacker->loc.p, 64))
         {
-            m_isCountered = true;
-            m_isCritical  = (xirand::GetRandomNumber(100) < battleutils::GetCritHitRate(m_victim, m_attacker, false));
+            if (xirand::GetRandomNumber(100) < battleutils::GetHitRate(m_victim, m_attacker))
+            {
+                m_isCountered = true;
+                m_isCritical  = (xirand::GetRandomNumber(100) < battleutils::GetCritHitRate(m_victim, m_attacker, false));
+            }
+            else
+            {
+                m_attacker->PAI->EventHandler.triggerListener("MELEE_SWING_MISS", CLuaBaseEntity(m_attacker), CLuaBaseEntity(m_victim), CLuaAttack(this));
+            }
         }
         else if (m_victim->StatusEffectContainer->HasStatusEffect(EFFECT_PERFECT_COUNTER))
-        { // Perfect Counter only counters hits that normal counter misses, always critical, can counter 1-3 times before wearing
+        {
+            // Perfect Counter only counters hits that normal counter misses, always critical, can counter 1-3 times before wearing
+            // TODO: Perfect Counter can negate an attack even if it misses (No accuracy check yet)
             m_isCountered = true;
             m_isCritical  = true;
 

@@ -195,18 +195,44 @@ bool CBattleEntity::isSitting()
 void CBattleEntity::UpdateHealth()
 {
     TracyZoneScoped;
-    int32 dif = (getMod(Mod::CONVMPTOHP) - getMod(Mod::CONVHPTOMP));
 
-    health.modmp = std::max(0, ((health.maxmp) * (100 + getMod(Mod::MPP)) / 100) +
-                                   std::min<int16>((health.maxmp * m_modStat[Mod::FOOD_MPP] / 100), m_modStat[Mod::FOOD_MP_CAP]) + getMod(Mod::MP));
-    health.modhp = std::max(1, ((health.maxhp) * (100 + getMod(Mod::HPP)) / 100) +
-                                   std::min<int16>((health.maxhp * m_modStat[Mod::FOOD_HPP] / 100), m_modStat[Mod::FOOD_HP_CAP]) + getMod(Mod::HP));
+    float weaknessPower = (100.f + getMod(Mod::WEAKNESS_PCT)) / 100.f;
+    float cursePower    = (100.f + getMod(Mod::CURSE_PCT)) / 100.f;
+    float HPPPower      = (100.f + getMod(Mod::HPP)) / 100.f;
+    float MPPPower      = (100.f + getMod(Mod::MPP)) / 100.f;
 
-    dif = (health.modmp - 0) < dif ? (health.modmp - 0) : dif;
-    dif = (health.modhp - 1) < -dif ? -(health.modhp - 1) : dif;
+    // Calculate "base" hp/mp with weakness, curse, HP mod
+    int32 baseHPBonus = std::floor((std::floor((health.maxhp + getMod(Mod::BASE_HP)) * weaknessPower) + getMod(Mod::HP)) * cursePower);
+    int32 baseMPBonus = std::floor((std::floor((health.maxmp + getMod(Mod::BASE_MP)) * weaknessPower) + getMod(Mod::MP)) * cursePower);
 
-    health.modhp += dif;
-    health.modmp -= dif;
+    // Resove HP/MP conversion
+    int32 HPMPConvertDiff = getMod(Mod::CONVMPTOHP) - getMod(Mod::CONVHPTOMP);
+    int32 convertHP       = 0;
+    int32 convertMP       = 0;
+
+    // positive = convert HP to MP wins out
+    if (HPMPConvertDiff > 0)
+    {
+        convertHP = std::min(baseMPBonus, HPMPConvertDiff);
+        convertMP = -convertHP;
+    }
+    else if (HPMPConvertDiff < 0) // negative = convert MP to HP wins out
+    {
+        // -1 so we don't end up with zero HP...
+        convertMP = std::min(baseHPBonus - 1, -HPMPConvertDiff);
+        convertHP = -convertMP;
+    }
+
+    // add in convert HP/MP..
+    baseHPBonus = std::floor((baseHPBonus + convertHP) * HPPPower);
+    baseMPBonus = std::floor((baseMPBonus + convertMP) * MPPPower);
+
+    // Food is additive at the end
+    float foodHPBonus = std::min<int16>(baseHPBonus * m_modStat[Mod::FOOD_HPP] / 100, m_modStat[Mod::FOOD_HP_CAP]);
+    float foodMPBonus = std::min<int16>(baseMPBonus * m_modStat[Mod::FOOD_MPP] / 100, m_modStat[Mod::FOOD_MP_CAP]);
+
+    health.modhp = baseHPBonus + foodHPBonus;
+    health.modmp = baseMPBonus + foodMPBonus;
 
     if (objtype == TYPE_PC)
     {
@@ -228,7 +254,12 @@ void CBattleEntity::UpdateHealth()
 
 uint8 CBattleEntity::GetHPP() const
 {
-    return (uint8)ceil(((float)health.hp / (float)GetMaxHP()) * 100);
+    if (health.hp == 0)
+    {
+        return 0;
+    }
+
+    return static_cast<uint8>(std::max<uint8>(1, std::floor((static_cast<float>(health.hp) / static_cast<float>(GetMaxHP())) * 100.f)));
 }
 
 int32 CBattleEntity::GetMaxHP() const
@@ -244,7 +275,12 @@ int32 CBattleEntity::GetMaxHP() const
 
 uint8 CBattleEntity::GetMPP() const
 {
-    return (uint8)ceil(((float)health.mp / (float)GetMaxMP()) * 100);
+    if (health.mp == 0)
+    {
+        return 0;
+    }
+
+    return static_cast<uint8>(std::max<uint8>(1, std::floor((static_cast<float>(health.mp) / static_cast<float>(GetMaxMP())) * 100.f)));
 }
 
 int32 CBattleEntity::GetMaxMP() const
@@ -2352,6 +2388,8 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                         }
                     }
                 }
+
+                this->PAI->EventHandler.triggerListener("MELEE_SWING_MISS", CLuaBaseEntity(this), CLuaBaseEntity(PTarget), CLuaAttack(&attack));
             }
             else
             {
@@ -2466,6 +2504,8 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
             {
                 charutils::TrySkillUP(PChar, SKILL_EVASION, GetMLevel());
             }
+
+            this->PAI->EventHandler.triggerListener("MELEE_SWING_MISS", CLuaBaseEntity(this), CLuaBaseEntity(PTarget), CLuaAttack(&attack));
         }
 
         // If we didn't hit at all, set param to 0 if we didn't blink any shadows.

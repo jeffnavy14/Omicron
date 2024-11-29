@@ -2078,8 +2078,10 @@ namespace battleutils
         if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_FORMLESS_STRIKES) && !isCounter)
         {
             attackType        = ATTACK_TYPE::SPECIAL;
-            uint8 formlessMod = 70;
+            uint8 formlessMod = 55; // Start at 55
 
+            // https://www.bg-wiki.com/ffxi/Formless_Strikes
+            // Merit value of 1 is +5%, so 60% normal power
             if (PAttacker->objtype == TYPE_PC)
             {
                 formlessMod += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_FORMLESS_STRIKES, (CCharEntity*)PAttacker);
@@ -2088,8 +2090,8 @@ namespace battleutils
             damage = damage * formlessMod / 100;
 
             // TODO: chance to 'resist'
-
-            damage = MagicDmgTaken(PDefender, damage, ELEMENT_NONE);
+            // breath damage, not magic damage
+            damage = BreathDmgTaken(PDefender, damage);
         }
         else
         {

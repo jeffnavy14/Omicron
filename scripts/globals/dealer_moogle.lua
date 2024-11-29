@@ -3486,6 +3486,7 @@ xi.dealerMoogle.onEventFinish = function(player, csid, option, npc)
                 debugInfo(player, item, list, option, altIDs, idx)
             else
                 if keyItems == 0 then
+                    ---@diagnostic disable-next-line param-type-mismatch
                     if npcUtil.giveItem(player, item) then
                         player:delKeyItem(listToKeyItem(list))
                     else

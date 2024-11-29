@@ -2019,6 +2019,18 @@ void CLuaBaseEntity::follow(CLuaBaseEntity* target, uint8 followType)
     controller->SetFollowTarget(target->m_PBaseEntity, static_cast<FollowType>(followType));
 }
 
+bool CLuaBaseEntity::hasFollowTarget()
+{
+    if (m_PBaseEntity->objtype != TYPE_MOB)
+    {
+        ShowWarning("Invalid entity (%s) calling function.", m_PBaseEntity->getName());
+        return false;
+    }
+
+    auto* controller = static_cast<CMobController*>(m_PBaseEntity->PAI->GetController());
+    return controller->HasFollowTarget();
+}
+
 /************************************************************************
  *  Function: unfollow()
  *  Purpose : Makes a Mob stop following
@@ -18134,6 +18146,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("checkDistance", CLuaBaseEntity::checkDistance);
     SOL_REGISTER("wait", CLuaBaseEntity::wait);
     SOL_REGISTER("follow", CLuaBaseEntity::follow);
+    SOL_REGISTER("hasFollowTarget", CLuaBaseEntity::hasFollowTarget);
     SOL_REGISTER("unfollow", CLuaBaseEntity::unfollow);
     SOL_REGISTER("setCarefulPathing", CLuaBaseEntity::setCarefulPathing);
 

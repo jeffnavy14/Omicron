@@ -30,6 +30,10 @@ xi.mod =
     INT                             = 12,
     MND                             = 13,
     CHR                             = 14,
+    WEAKNESS_PCT                    = 1093, -- Weakness HP/MP reduction term, -1 = - 1% HP/MP
+    CURSE_PCT                       = 1094, -- Curse HP/MP reduction term, -1 = - 1% HP/MP
+    BASE_HP                         = 1095, -- Base HP bonus (like merits)
+    BASE_MP                         = 1096, -- Base MP bonus (like merits)
 
     TWOHAND_STR                     = 218, -- Same as STR, but only active when using a two handed weapon (e.g. Hasso)
 
@@ -436,6 +440,7 @@ xi.mod =
 
     -- Monk
     ADDITIVE_GUARD                  = 1092, -- Additive % bonus to final Guard rate (adds after clamp)
+    AUGMENTS_IMPETUS                = 1097, -- see https://www.bg-wiki.com/ffxi/Impetus, adds Crit Hit Damage & Accuracy for Impetus
 
     -- Paladin
     ENHANCES_CHIVALRY               = 1061, -- Enhances "Chivalry" effect (increases the base TP modifier by the provided value / 100, e.g. mod value 5 = +0.05)

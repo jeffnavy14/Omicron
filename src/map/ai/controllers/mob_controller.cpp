@@ -1323,6 +1323,16 @@ void CMobController::SetFollowTarget(CBaseEntity* PTarget, FollowType followType
     m_followType  = followType;
 }
 
+bool CMobController::HasFollowTarget()
+{
+    if (PFollowTarget && m_followType != FollowType::None)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void CMobController::ClearFollowTarget()
 {
     PFollowTarget = nullptr;

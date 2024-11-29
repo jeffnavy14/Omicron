@@ -72,11 +72,11 @@ xi.combat.physical.pDifWeaponCapTable =
 
 local shieldSizeToBlockRateTable =
 {
-    [1] = 55, -- Buckler
-    [2] = 40, -- Round
-    [3] = 45, -- Kite
-    [4] = 30, -- Tower
-    [5] = 50, -- Aegis and Srivatsa
+    [1] =  55, -- Buckler
+    [2] =  40, -- Round
+    [3] =  45, -- Kite
+    [4] =  30, -- Tower
+    [5] =  50, -- Aegis and Srivatsa
     [6] = 100, -- Ochain  https://www.bg-wiki.com/ffxi/Category:Shields
 }
 
@@ -111,57 +111,57 @@ local elementalBelt = -- Ordered by element.
 xi.combat.physical.calculateMeleeStatFactor = function(actor, target)
     local fSTR = 0 -- The variable we want to calculate.
 
-    -- Calculate statDiff.
-    local statDiff     = actor:getStat(xi.mod.STR) - target:getStat(xi.mod.VIT)
-
-    -- Pets and mobs have own calculation
-    if actor:isMob() or actor:isPet() then
-        local fSTRupperCap = 24
-        local fSTRlowerCap = -20
-        fSTR = math.floor((statDiff + 4) / 4)
-        fSTR = utils.clamp(fSTR, fSTRlowerCap, fSTRupperCap)
-        -- level 1 mobs always have fSTR of 1
-        if actor:isMob() and actor:getMainLvl() <= 1 then
-            fSTR = 1
-        end
-    -- players and trusts have different calculation
-    else
-        -- Calculate statDiff.
-        local weaponRank   = actor:getWeaponDmgRank()
-        local statLowerCap = (7 + weaponRank * 2) * -2
-        local statUpperCap = (14 + weaponRank * 2) * 2
-
-        statDiff = utils.clamp(statDiff, statLowerCap, statUpperCap)
-
-        -- Calculate fSTR based on stat difference.
-        if statDiff >= 12 then
-            fSTR = statDiff + 4
-        elseif statDiff >= 6 then
-            fSTR = statDiff + 6
-        elseif statDiff >= 1 then
-            fSTR = statDiff + 7
-        elseif statDiff >= -2 then
-            fSTR = statDiff + 8
-        elseif statDiff >= -7 then
-            fSTR = statDiff + 9
-        elseif statDiff >= -15 then
-            fSTR = statDiff + 10
-        elseif statDiff >= -21 then
-            fSTR = statDiff + 12
-        else
-            fSTR = statDiff + 13
-        end
-
-        -- Clamp fSTR.
-        local fSTRupperCap = weaponRank + 8
-        local fSTRlowerCap = weaponRank * -1
-
-        if weaponRank == 0 then
-            fSTRlowerCap = -1
-        end
-
-        fSTR = utils.clamp(fSTR / 4, fSTRlowerCap, fSTRupperCap)
+    -- Early return: Mobs at or under lvl 1.
+    if actor:isMob() and actor:getMainLvl() <= 1 then
+        return 1
     end
+
+    -- Calculate statDiff.
+    local statDiff = actor:getStat(xi.mod.STR) - target:getStat(xi.mod.VIT)
+
+    -- Pets and Mobs.
+    if actor:isMob() or actor:isPet() then
+        fSTR = math.floor((statDiff + 4) / 4)
+        fSTR = utils.clamp(fSTR, -20, 24)
+
+        return fSTR
+    end
+
+    -- Players and Trusts
+    local weaponRank   = actor:getWeaponDmgRank()
+    local statLowerCap = (7 + weaponRank * 2) * -2
+    local statUpperCap = (14 + weaponRank * 2) * 2
+
+    statDiff = utils.clamp(statDiff, statLowerCap, statUpperCap)
+
+    -- Calculate fSTR based on stat difference.
+    if statDiff >= 12 then
+        fSTR = statDiff + 4
+    elseif statDiff >= 6 then
+        fSTR = statDiff + 6
+    elseif statDiff >= 1 then
+        fSTR = statDiff + 7
+    elseif statDiff >= -2 then
+        fSTR = statDiff + 8
+    elseif statDiff >= -7 then
+        fSTR = statDiff + 9
+    elseif statDiff >= -15 then
+        fSTR = statDiff + 10
+    elseif statDiff >= -21 then
+        fSTR = statDiff + 12
+    else
+        fSTR = statDiff + 13
+    end
+
+    -- Clamp fSTR.
+    local fSTRupperCap = weaponRank + 8
+    local fSTRlowerCap = weaponRank * -1
+
+    if weaponRank == 0 then
+        fSTRlowerCap = -1
+    end
+
+    fSTR = utils.clamp(fSTR / 4, fSTRlowerCap, fSTRupperCap)
 
     return fSTR
 end
@@ -172,59 +172,59 @@ end
 xi.combat.physical.calculateRangedStatFactor = function(actor, target)
     local fSTR = 0 -- The variable we want to calculate.
 
-    -- Calculate statDiff.
-    local statDiff     = actor:getStat(xi.mod.STR) - target:getStat(xi.mod.VIT)
-
-    -- Pets and mobs have own calculation
-    if actor:isMob() or actor:isPet() then
-        local fSTRupperCap = 24
-        local fSTRlowerCap = -20
-        fSTR = math.floor((statDiff + 4) / 2)
-        fSTR = utils.clamp(fSTR, fSTRlowerCap, fSTRupperCap)
-        -- level 1 mobs always have fSTR of 1
-        if actor:isMob() and actor:getMainLvl() <= 1 then
-            fSTR = 1
-        end
-    -- players and trusts have different calculation
-    else
-        -- Calculate statDiff.
-        local weaponRank   = actor:getWeaponDmgRank()
-        local statLowerCap = (7 + weaponRank * 2) * -2
-        local statUpperCap = (14 + weaponRank * 2) * 2
-
-        statDiff = utils.clamp(statDiff, statLowerCap, statUpperCap)
-
-        -- Calculate fSTR based on stat difference.
-        if statDiff >= 12 then
-            fSTR = statDiff + 4
-        elseif statDiff >= 6 then
-            fSTR = statDiff + 6
-        elseif statDiff >= 1 then
-            fSTR = statDiff + 7
-        elseif statDiff >= -2 then
-            fSTR = statDiff + 8
-        elseif statDiff >= -7 then
-            fSTR = statDiff + 9
-        elseif statDiff >= -15 then
-            fSTR = statDiff + 10
-        elseif statDiff >= -21 then
-            fSTR = statDiff + 12
-        else
-            fSTR = statDiff + 13
-        end
-
-        -- Clamp fSTR.
-        local fSTRupperCap = (weaponRank + 8) * 2
-        local fSTRlowerCap = weaponRank * -2
-
-        if weaponRank == 0 then
-            fSTRlowerCap = -2
-        elseif weaponRank == 1 then
-            fSTRlowerCap = -3
-        end
-
-        fSTR = utils.clamp(fSTR / 2, fSTRlowerCap, fSTRupperCap)
+    -- Early return: Mobs at or under lvl 1.
+    if actor:isMob() and actor:getMainLvl() <= 1 then
+        return 1
     end
+
+    -- Calculate statDiff.
+    local statDiff = actor:getStat(xi.mod.STR) - target:getStat(xi.mod.VIT)
+
+    -- Pets and Mobs.
+    if actor:isMob() or actor:isPet() then
+        fSTR = math.floor((statDiff + 4) / 2)
+        fSTR = utils.clamp(fSTR, -20, 24)
+
+        return fSTR
+    end
+
+    -- Players and Trusts
+    local weaponRank   = actor:getWeaponDmgRank()
+    local statLowerCap = (7 + weaponRank * 2) * -2
+    local statUpperCap = (14 + weaponRank * 2) * 2
+
+    statDiff = utils.clamp(statDiff, statLowerCap, statUpperCap)
+
+    -- Calculate fSTR based on stat difference.
+    if statDiff >= 12 then
+        fSTR = statDiff + 4
+    elseif statDiff >= 6 then
+        fSTR = statDiff + 6
+    elseif statDiff >= 1 then
+        fSTR = statDiff + 7
+    elseif statDiff >= -2 then
+        fSTR = statDiff + 8
+    elseif statDiff >= -7 then
+        fSTR = statDiff + 9
+    elseif statDiff >= -15 then
+        fSTR = statDiff + 10
+    elseif statDiff >= -21 then
+        fSTR = statDiff + 12
+    else
+        fSTR = statDiff + 13
+    end
+
+    -- Clamp fSTR.
+    local fSTRupperCap = (weaponRank + 8) * 2
+    local fSTRlowerCap = weaponRank * -2
+
+    if weaponRank == 0 then
+        fSTRlowerCap = -2
+    elseif weaponRank == 1 then
+        fSTRlowerCap = -3
+    end
+
+    fSTR = utils.clamp(fSTR / 2, fSTRlowerCap, fSTRupperCap)
 
     return fSTR
 end
@@ -272,7 +272,7 @@ xi.combat.physical.calculateFTP = function(actor, tpFactor)
     ------------------------------
     -- TODO: Use item mods and latents for the conditional fTP bonuses they provide.
     local scProp1, scProp2, scProp3 = actor:getWSSkillchainProp()
-    local dayElement                = VanadielDayElement() + 1
+    local dayElement                = VanadielDayElement() + 1 -- "+ 1" because index 1 in table is for non-elemental, not fire.
 
     local neckFtpBonus   = 0
     local waistFtpBonus  = 0
@@ -520,7 +520,7 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     local ignoreDefenseFactor = 1
 
     if tpIgnoresDefense then
-        ignoreDefenseFactor = 1.0 - tpFactor
+        ignoreDefenseFactor = 1 - tpFactor
     end
 
     targetDefense = math.floor(targetDefense * ignoreDefenseFactor)
@@ -574,9 +574,9 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     ----------------------------------------
     -- Step 4: Apply weapon type caps.
     ----------------------------------------
-    local damageLimitPlus = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
-    local damageLimitPercent = (100 + actor:getMod(xi.mod.DAMAGE_LIMITP)) / 100
-    local pDifFinalCap = (xi.combat.physical.pDifWeaponCapTable[weaponType][1] + damageLimitPlus) * damageLimitPercent -- Added damage limit bonuses
+    local damageLimitPlus    = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
+    local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
+    local pDifFinalCap       = (xi.combat.physical.pDifWeaponCapTable[weaponType][1] + damageLimitPlus) * damageLimitPercent -- Added damage limit bonuses
 
     pDif = utils.clamp(pDif, 0, pDifFinalCap)
 
