@@ -635,7 +635,19 @@ void SmallPacket0x016(map_session_data_t* const PSession, CCharEntity* const PCh
 
         if (PEntity && PEntity->objtype == TYPE_PC)
         {
-            PChar->updateCharPacket((CCharEntity*)PEntity, ENTITY_SPAWN, UPDATE_ALL_CHAR);
+            // Char we want an update for
+            CCharEntity* PCharEntity = dynamic_cast<CCharEntity*>(PEntity);
+            if (PCharEntity)
+            {
+                if (!PCharEntity->m_isGMHidden)
+                {
+                    PChar->updateCharPacket(PCharEntity, ENTITY_SPAWN, UPDATE_ALL_CHAR);
+                }
+                else
+                {
+                    ShowError(fmt::format("Player {} requested information about a hidden GM ({}) using targid {}", PChar->getName(), PCharEntity->getName(), targid));
+                }
+            }
         }
         else
         {
