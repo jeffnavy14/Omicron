@@ -1018,7 +1018,7 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint8 offsetAccuracy)
 
 uint16 CBattleEntity::DEF()
 {
-    int32 DEF = 8 + m_modStat[Mod::DEF] + VIT() / 2;
+    int32 DEF = 8 + m_modStat[Mod::DEF] + std::floor(VIT() * 1.5f); // https://wiki.ffo.jp/html/313.html
     if (this->StatusEffectContainer->HasStatusEffect(EFFECT_COUNTERSTANCE, 0))
     {
         return DEF / 2;

@@ -7157,7 +7157,7 @@ namespace charutils
         // interrupted in some way, such as by being attacked or moving to another area (e.g. ship docking).
 
         ShowWarning("%s: %s attempting to zone in the middle of a synth, failing their synth!", sourceFunction, PChar->getName());
-        PChar->setModifier(Mod::SYNTH_FAIL_RATE, 10000); // Force crit fail
+        PChar->setModifier(Mod::SYNTH_MATERIAL_LOSS, -1000); // Force crit fail
         synthutils::doSynthFail(PChar);
 
         PChar->CraftContainer->Clean(); // Clean to reset m_ItemCount to 0

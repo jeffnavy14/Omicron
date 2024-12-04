@@ -183,28 +183,28 @@ namespace synthutils
         switch (skillID)
         {
             case SKILL_WOODWORKING:
-                ModID = Mod::ANTIHQ_WOOD;
+                ModID = Mod::SYNTH_ANTI_HQ_WOODWORKING;
                 break;
             case SKILL_SMITHING:
-                ModID = Mod::ANTIHQ_SMITH;
+                ModID = Mod::SYNTH_ANTI_HQ_SMITHING;
                 break;
             case SKILL_GOLDSMITHING:
-                ModID = Mod::ANTIHQ_GOLDSMITH;
+                ModID = Mod::SYNTH_ANTI_HQ_GOLDSMITHING;
                 break;
             case SKILL_CLOTHCRAFT:
-                ModID = Mod::ANTIHQ_CLOTH;
+                ModID = Mod::SYNTH_ANTI_HQ_CLOTHCRAFT;
                 break;
             case SKILL_LEATHERCRAFT:
-                ModID = Mod::ANTIHQ_LEATHER;
+                ModID = Mod::SYNTH_ANTI_HQ_LEATHERCRAFT;
                 break;
             case SKILL_BONECRAFT:
-                ModID = Mod::ANTIHQ_BONE;
+                ModID = Mod::SYNTH_ANTI_HQ_BONECRAFT;
                 break;
             case SKILL_ALCHEMY:
-                ModID = Mod::ANTIHQ_ALCHEMY;
+                ModID = Mod::SYNTH_ANTI_HQ_ALCHEMY;
                 break;
             case SKILL_COOKING:
-                ModID = Mod::ANTIHQ_COOK;
+                ModID = Mod::SYNTH_ANTI_HQ_COOKING;
                 break;
         }
 
@@ -306,11 +306,11 @@ namespace synthutils
             // Apply synthesis success rate modifier, based on synth type.
             if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS)
             {
-                successRate = successRate + PChar->getMod(Mod::DESYNTH_SUCCESS);
+                successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS_RATE_DESYNTHESIS);
             }
             else
             {
-                successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS);
+                successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS_RATE);
             }
 
             // Crafting ring handling.
@@ -471,8 +471,7 @@ namespace synthutils
             //------------------------------
             // Section 2: Skill up equations and penalties
             //------------------------------
-            double skillUpChance = 0;
-
+            double skillUpChance         = 0;
             double craftChanceMultiplier = settings::get<double>("map.CRAFT_CHANCE_MULTIPLIER");
 
             if (settings::get<bool>("map.CRAFT_MODERN_SYSTEM"))
@@ -685,9 +684,9 @@ namespace synthutils
         uint8 random     = 0;
 
         // Synth material loss modifiers. TODO: Audit usage of this modifiers.
-        int16 breakGlobalReduction    = PChar->getMod(Mod::SYNTH_FAIL_RATE);
-        int16 breakElementalReduction = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_FIRE + PChar->CraftContainer->getType()));
-        int16 breakTypeReduction      = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_WOOD + currentCraft - SKILL_WOODWORKING));
+        int16 breakGlobalReduction    = PChar->getMod(Mod::SYNTH_MATERIAL_LOSS);
+        int16 breakElementalReduction = PChar->getMod((Mod)((int32)Mod::SYNTH_MATERIAL_LOSS_FIRE + PChar->CraftContainer->getType()));
+        int16 breakTypeReduction      = PChar->getMod((Mod)((int32)Mod::SYNTH_MATERIAL_LOSS_WOODWORKING + currentCraft - SKILL_WOODWORKING));
         int16 synthDifficulty         = getSynthDifficulty(PChar, currentCraft);
 
         if (synthDifficulty < 0)

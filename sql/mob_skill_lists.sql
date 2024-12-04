@@ -3942,7 +3942,12 @@ INSERT INTO `mob_skill_lists` VALUES ('Furies',2015,1158); -- turbulence
 
 INSERT INTO `mob_skill_lists` VALUES ('Mind_Hoarder',2016,524); -- mind_drain
 
--- Next available ID: 2017
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym',2017,2950); -- tempestuous_upheaval
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym',2017,2952); -- blackout
+
+INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym_low_50',2018,2953); -- smouldering_swarm
+
+-- Next available ID: 2019
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section
