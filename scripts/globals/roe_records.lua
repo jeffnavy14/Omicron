@@ -1,12 +1,24 @@
 -----------------------------------
 -- Records of Eminence
 -----------------------------------
-require('scripts/globals/expansion_areas')
 require('scripts/globals/missions')
 require('scripts/globals/quests')
 -----------------------------------
 xi = xi or {}
 xi.roe = xi.roe or {}
+
+local abysseaZones = set{
+    xi.zone.ABYSSEA_KONSCHTAT,
+    xi.zone.ABYSSEA_TAHRONGI,
+    xi.zone.ABYSSEA_LA_THEINE,
+    xi.zone.ABYSSEA_ATTOHWA,
+    xi.zone.ABYSSEA_MISAREAUX,
+    xi.zone.ABYSSEA_VUNKERL,
+    xi.zone.ABYSSEA_ALTEPA,
+    xi.zone.ABYSSEA_ULEGUERAND,
+    xi.zone.ABYSSEA_GRAUBERG,
+    xi.zone.ABYSSEA_EMPYREAL_PARADOX,
+}
 
 -- NOTE: This file calls the roe global init function at the end to populate default
 -- values that may be missing.  This same behavior happens in the roe global as well
@@ -9496,7 +9508,7 @@ xi.roe.records =
     { -- Vanquish Aquans
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.AQUAN } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.AQUAN } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9505,7 +9517,7 @@ xi.roe.records =
     { -- Vanquish Beasts
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.BEAST } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.BEAST } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9514,7 +9526,7 @@ xi.roe.records =
     { -- Vanquish Plantoids
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.PLANTOID } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.PLANTOID } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9523,7 +9535,7 @@ xi.roe.records =
     { -- Vanquish Lizards
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.LIZARD } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.LIZARD } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9532,7 +9544,7 @@ xi.roe.records =
     { -- Vanquish Vermin
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.VERMIN } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.VERMIN } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9567,7 +9579,7 @@ xi.roe.records =
     { -- Vanquish Birds
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.BIRD } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.BIRD } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9576,7 +9588,7 @@ xi.roe.records =
     { -- Vanquish Amorphs
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.AMORPH } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.AMORPH } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9585,7 +9597,7 @@ xi.roe.records =
     { -- Vanquish Undead
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.UNDEAD } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.UNDEAD } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
@@ -9594,7 +9606,7 @@ xi.roe.records =
     { -- Vanquish Arcana
         trigger = xi.roeTrigger.DEFEAT_MOB,
         goal = 20,
-        reqs = { mobXP = true, zoneNot = xi.expansionAreas.abyssea, mobSystem = set { xi.eco.ARCANA } },
+        reqs = { mobXP = true, zoneNot = abysseaZones, mobSystem = set { xi.eco.ARCANA } },
         flags = set { 'timed', 'repeat' },
         reward = { sparks = 300, exp = 1500, accolades = 300, item = { xi.item.COPPER_AMAN_VOUCHER } },
     },
