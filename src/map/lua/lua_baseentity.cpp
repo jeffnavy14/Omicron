@@ -55,6 +55,7 @@
 #include "recast_container.h"
 #include "roe.h"
 #include "spell.h"
+#include "status_effect.h"
 #include "status_effect_container.h"
 #include "timetriggers.h"
 #include "trade_container.h"
@@ -362,13 +363,13 @@ void CLuaBaseEntity::printToArea(std::string const& message, sol::object const& 
         {
             ref<uint32>(packetData, 0) = PChar->PParty->m_PAlliance->m_AllianceID;
             ref<uint32>(packetData, 4) = 0; // No ID so that the PChar sees the message too
-            message::send(MSG_CHAT_ALLIANCE, packetData, sizeof packetData, new CChatMessagePacket(PChar, messageLook, message, name));
+            message::send(MSG_CHAT_ALLIANCE, packetData, sizeof(packetData), new CChatMessagePacket(PChar, messageLook, message, name));
         }
         else if (PChar->PParty)
         {
             ref<uint32>(packetData, 0) = PChar->PParty->GetPartyID();
             ref<uint32>(packetData, 4) = 0; // No ID so that the PChar sees the message too
-            message::send(MSG_CHAT_PARTY, packetData, sizeof packetData, new CChatMessagePacket(PChar, messageLook, message, name));
+            message::send(MSG_CHAT_PARTY, packetData, sizeof(packetData), new CChatMessagePacket(PChar, messageLook, message, name));
         }
     }
     else if (messageRange == MESSAGE_AREA_YELL)
@@ -2017,6 +2018,18 @@ void CLuaBaseEntity::follow(CLuaBaseEntity* target, uint8 followType)
 
     auto* controller = static_cast<CMobController*>(m_PBaseEntity->PAI->GetController());
     controller->SetFollowTarget(target->m_PBaseEntity, static_cast<FollowType>(followType));
+}
+
+bool CLuaBaseEntity::hasFollowTarget()
+{
+    if (m_PBaseEntity->objtype != TYPE_MOB)
+    {
+        ShowWarning("Invalid entity (%s) calling function.", m_PBaseEntity->getName());
+        return false;
+    }
+
+    auto* controller = static_cast<CMobController*>(m_PBaseEntity->PAI->GetController());
+    return controller->HasFollowTarget();
 }
 
 /************************************************************************
@@ -3743,6 +3756,28 @@ std::optional<CLuaItem> CLuaBaseEntity::getEquippedItem(uint8 slot)
 }
 
 /************************************************************************
+ *  Function: hasEquipped(equipmentID)
+ *  Purpose : Returns true if the player has the item equipped in any slot
+ *  Example : player:hasEquipped(xi.item.BREATH_MANTLE)
+ *  Notes   :
+ ************************************************************************/
+
+bool CLuaBaseEntity::hasEquipped(uint16 equipmentID)
+{
+    if (m_PBaseEntity->objtype == TYPE_PC)
+    {
+        for (uint8 equipmentSlot = 0; equipmentSlot <= 15; equipmentSlot++)
+        {
+            if (getEquipID(static_cast<SLOTTYPE>(equipmentSlot)) == equipmentID)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/************************************************************************
  *  Function: hasItem()
  *  Purpose : Returns true if a player possesses an item
  *  Example : if player:hasItem(500) then -- Second var optional
@@ -3774,7 +3809,7 @@ bool CLuaBaseEntity::hasItem(uint16 itemID, sol::object const& location)
 /************************************************************************
  *  Function: getItemCount()
  *  Purpose : Returns the total count of a specific item across all inventories
- *  Example : if player:getItemCount(xi.items.BONANZA_PEARL) then
+ *  Example : if player:getItemCount(xi.item.BONANZA_PEARL) then
  ************************************************************************/
 
 uint32 CLuaBaseEntity::getItemCount(uint16 itemID)
@@ -10851,6 +10886,12 @@ sol::table CLuaBaseEntity::getAlliance()
 
 uint8 CLuaBaseEntity::getAllianceSize()
 {
+    if (m_PBaseEntity->objtype == TYPE_NPC)
+    {
+        ShowWarning("CLuaBaseEntity::getAllianceSize() - NPC passed to function.");
+        return 1;
+    }
+
     auto* PBattle      = static_cast<CBattleEntity*>(m_PBaseEntity);
     uint8 alliancesize = 1;
 
@@ -10858,7 +10899,16 @@ uint8 CLuaBaseEntity::getAllianceSize()
     {
         if (PBattle->PParty->m_PAlliance != nullptr)
         {
-            alliancesize = static_cast<uint8>(PBattle->PParty->m_PAlliance->partyList.size());
+            // Reset to use as counter..
+            alliancesize = 0;
+            for (const CParty* PParty : PBattle->PParty->m_PAlliance->partyList)
+            {
+                alliancesize += static_cast<uint8>(PParty->members.size());
+            }
+        }
+        else
+        {
+            return static_cast<uint8>(PBattle->PParty->members.size());
         }
     }
 
@@ -11987,7 +12037,7 @@ void CLuaBaseEntity::addListener(std::string const& eventName, std::string const
  *  Function: removeListener()
  *  Purpose : Instructs the Event Handler to stop monitoring for an Event
  *  Example : pet:removeListener("AUTO_PATTERN_READER_TICK")
- *  Notes   : Used heavily in Pup Ability scripts
+ *  Notes   : Used heavily in PUP Ability scripts
  ************************************************************************/
 
 void CLuaBaseEntity::removeListener(std::string const& identifier)
@@ -12006,6 +12056,20 @@ void CLuaBaseEntity::removeListener(std::string const& identifier)
 void CLuaBaseEntity::triggerListener(std::string const& eventName, sol::variadic_args args)
 {
     m_PBaseEntity->PAI->EventHandler.triggerListener(eventName, sol::as_args(args));
+}
+
+/************************************************************************
+ *  Function: hasListener()
+ *  Purpose : true/false of whether or not the Event Handler is monitoring
+ *          : for a particular Event
+ *  Example : if mob:hasListener("COMBAT_TICK") then ...
+ *  Notes   : This uses the event name, not the unique identifier!
+ *          : This is just for the presence of an event in general, not a specific one
+ ************************************************************************/
+
+bool CLuaBaseEntity::hasListener(std::string const& eventName)
+{
+    return m_PBaseEntity->PAI->EventHandler.hasListener(eventName);
 }
 
 /************************************************************************
@@ -12817,9 +12881,11 @@ bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
         auto duration   = static_cast<uint32>(va[3].as<double>());
 
         // Optional
-        auto subType  = va[4].is<uint32>() ? va[4].as<uint32>() : 0;
-        auto subPower = va[5].is<uint16>() ? va[5].as<uint16>() : 0;
-        auto tier     = va[6].is<uint16>() ? va[6].as<uint16>() : 0;
+        auto subType         = va[4].is<uint32>() ? va[4].as<uint32>() : 0;
+        auto subPower        = va[5].is<uint16>() ? va[5].as<uint16>() : 0;
+        auto tier            = va[6].is<uint16>() ? va[6].as<uint16>() : 0;
+        auto sourceType      = va[7].is<EffectSourceType>() ? va[7].as<EffectSourceType>() : EffectSourceType::SOURCE_NONE;
+        auto sourceTypeParam = va[8].is<uint16>() ? va[8].as<uint16>() : 0;
 
         CStatusEffect* PEffect = new CStatusEffect(effectID,
                                                    effectIcon,
@@ -12829,6 +12895,11 @@ bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
                                                    subType,
                                                    subPower,
                                                    tier);
+
+        if (sourceType != EffectSourceType::SOURCE_NONE && sourceTypeParam > 0)
+        {
+            PEffect->SetSource(sourceType, sourceTypeParam);
+        }
 
         if (PEffect->GetStatusID() == EFFECT_FOOD)
         {
@@ -12900,14 +12971,19 @@ bool CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va)
  *  Function: getStatusEffect()
  *  Purpose : Returns the Object of a specified Status ID
  *  Example : local debilitation = target:getStatusEffect(xi.effect.DEBILITATION)
- *  Notes   :
+ *  Notes   : Can specify Power of the Effect as an option or the Source (will use power if both specified)
  ************************************************************************/
 
-std::optional<CLuaStatusEffect> CLuaBaseEntity::getStatusEffect(uint16 StatusID, sol::object const& SubType)
+std::optional<CLuaStatusEffect> CLuaBaseEntity::getStatusEffect(uint16 StatusID, sol::object const& SubType, sol::object const& SourceType, sol::object const& SourceTypeParam)
 {
     if (m_PBaseEntity->objtype == TYPE_NPC)
     {
         ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return std::nullopt;
+    }
+    if (SubType != sol::lua_nil && SourceType != sol::lua_nil)
+    {
+        ShowWarning("Cannot specify both SubType and SourceType.");
         return std::nullopt;
     }
 
@@ -12924,6 +13000,12 @@ std::optional<CLuaStatusEffect> CLuaBaseEntity::getStatusEffect(uint16 StatusID,
     {
         auto uint16_SubType = SubType.as<uint16>();
         PStatusEffect       = PBattleEntity->StatusEffectContainer->GetStatusEffect(effect_StatusID, uint16_SubType);
+    }
+    else if (SourceType != sol::lua_nil && SourceTypeParam != sol::lua_nil)
+    {
+        auto EffectSourceType_SourceType = SourceType.as<EffectSourceType>();
+        auto uint16_SourceTypeParam      = SourceTypeParam.as<uint16>();
+        PStatusEffect                    = PBattleEntity->StatusEffectContainer->GetStatusEffectBySource(effect_StatusID, EffectSourceType_SourceType, uint16_SourceTypeParam);
     }
     else
     {
@@ -13133,14 +13215,19 @@ uint8 CLuaBaseEntity::countEffectWithFlag(uint32 flag)
  *  Function: delStatusEffect()
  *  Purpose : Deletes a specified Effect from the Entity's Status Effect Container
  *  Example : target:delStatusEffect(xi.effect.RERAISE)
- *  Notes   : Can specify Power of the Effect as an option
+ *  Notes   : Can specify Power of the Effect as an option or the Source (will use power if both specified)
  ************************************************************************/
 
-bool CLuaBaseEntity::delStatusEffect(uint16 StatusID, sol::object const& SubType)
+bool CLuaBaseEntity::delStatusEffect(uint16 StatusID, sol::object const& SubType, sol::object const& SourceType, sol::object const& SourceTypeParam)
 {
     if (m_PBaseEntity->objtype == TYPE_NPC)
     {
         ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return false;
+    }
+    if (SubType != sol::lua_nil && SourceType != sol::lua_nil)
+    {
+        ShowWarning("Cannot specify both SubType and SourceType.");
         return false;
     }
 
@@ -13158,6 +13245,12 @@ bool CLuaBaseEntity::delStatusEffect(uint16 StatusID, sol::object const& SubType
     {
         auto uint16_SubType = SubType.as<uint16>();
         result              = PBattleEntity->StatusEffectContainer->DelStatusEffect(effect_StatusID, uint16_SubType);
+    }
+    else if (SourceType != sol::lua_nil && SourceTypeParam != sol::lua_nil)
+    {
+        auto EffectSourcetype_SourceType = SourceType.as<EffectSourceType>();
+        auto uint16_SourceTypeParam      = SourceTypeParam.as<uint16>();
+        result                           = PBattleEntity->StatusEffectContainer->DelStatusEffectBySource(effect_StatusID, EffectSourcetype_SourceType, uint16_SourceTypeParam);
     }
     else
     {
@@ -14704,7 +14797,7 @@ void CLuaBaseEntity::trustPartyMessage(uint32 message_id)
  *  Function: addSimpleGambit()
  *  Purpose :
  *  Example : trust:addSimpleGambit(target, condition, condition_arg, reaction, selector, selector_arg)
- *  Notes   : Adds a behaviour to the gambit system
+ *  Notes   : Adds a behavior to the gambit system
  ************************************************************************/
 
 std::string CLuaBaseEntity::addSimpleGambit(uint16 targ, uint16 cond, uint32 condition_arg, uint16 react, uint16 select, uint32 selector_arg, sol::object const& retry)
@@ -14742,7 +14835,7 @@ std::string CLuaBaseEntity::addSimpleGambit(uint16 targ, uint16 cond, uint32 con
  *  Function: removeSimpleGambit()
  *  Purpose :
  *  Example : trust:removeSimpleGambit(id)
- *  Notes   : Removes a behaviour from the gambit system, using the id returned
+ *  Notes   : Removes a behavior from the gambit system, using the id returned
  *          : from addSimpleGambit
  ************************************************************************/
 
@@ -16608,39 +16701,39 @@ uint32 CLuaBaseEntity::getBattleTime()
 }
 
 /************************************************************************
- *  Function: getBehaviour()
+ *  Function: getBehavior()
  *  Purpose : Returns the current Mob behavior
- *  Example : mob:getBehaviour()
+ *  Example : mob:getBehavior()
  *  Notes   : Currently used in bitwise calculations for high-tier NM's
  ************************************************************************/
 
-uint16 CLuaBaseEntity::getBehaviour()
+uint16 CLuaBaseEntity::getBehavior()
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
-        ShowWarning("Attempting to get behaviour for invalid entity type (%s).", m_PBaseEntity->getName());
+        ShowWarning("Attempting to get behavior for invalid entity type (%s).", m_PBaseEntity->getName());
         return 0;
     }
 
-    return static_cast<CMobEntity*>(m_PBaseEntity)->m_Behaviour;
+    return static_cast<CMobEntity*>(m_PBaseEntity)->m_Behavior;
 }
 
 /************************************************************************
- *  Function: setBehaviour()
+ *  Function: setBehavior()
  *  Purpose : Sets a particular behavior for a Mob
- *  Example : mob:setBehaviour(bit.bor(mob:getBehaviour(), xi.behavior.NO_TURN))
+ *  Example : mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.NO_TURN))
  *  Notes   : Currently used in bitwise calculations for high-tier NM's
  ************************************************************************/
 
-void CLuaBaseEntity::setBehaviour(uint16 behavior)
+void CLuaBaseEntity::setBehavior(uint16 behavior)
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
-        ShowWarning("Attempting to set behaviour for invalid entity type (%s).", m_PBaseEntity->getName());
+        ShowWarning("Attempting to set behavior for invalid entity type (%s).", m_PBaseEntity->getName());
         return;
     }
 
-    static_cast<CMobEntity*>(m_PBaseEntity)->m_Behaviour = behavior;
+    static_cast<CMobEntity*>(m_PBaseEntity)->m_Behavior = behavior;
 }
 
 /************************************************************************
@@ -17232,6 +17325,20 @@ void CLuaBaseEntity::untargetableAndUnactionable(uint32 milliseconds)
     m_PBaseEntity->PAI->Untargetable(std::chrono::milliseconds(milliseconds), false);
 }
 
+void CLuaBaseEntity::tryHitInterrupt(CLuaBaseEntity* attacker)
+{
+    if (attacker)
+    {
+        auto* defenderBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+        auto* attackerBattle = dynamic_cast<CBattleEntity*>(attacker->GetBaseEntity());
+
+        if (defenderBattle && attackerBattle)
+        {
+            defenderBattle->TryHitInterrupt(attackerBattle);
+        }
+    }
+}
+
 /************************************************************************
  *  Function: getPool()
  *  Purpose : Returns a Mob's Pool ID integer
@@ -17639,7 +17746,7 @@ auto CLuaBaseEntity::getChocoboRaisingInfo() -> sol::table
             last_update_age, \
             stage, \
             location, \
-            colour, \
+            color, \
             dominant_gene, \
             recessive_gene, \
             strength, \
@@ -17685,7 +17792,7 @@ auto CLuaBaseEntity::getChocoboRaisingInfo() -> sol::table
             table["last_update_age"] = _sql->GetUIntData(5);
             table["stage"]           = _sql->GetUIntData(6);
             table["location"]        = _sql->GetUIntData(7);
-            table["colour"]          = _sql->GetUIntData(8);
+            table["color"]           = _sql->GetUIntData(8);
 
             table["dominant_gene"]  = _sql->GetUIntData(9);
             table["recessive_gene"] = _sql->GetUIntData(10);
@@ -17734,7 +17841,7 @@ bool CLuaBaseEntity::setChocoboRaisingInfo(sol::table const& table)
                                 last_update_age = %u, \
                                 stage = %u, \
                                 location = %u, \
-                                colour = %u, \
+                                color = %u, \
                                 dominant_gene = %u, \
                                 recessive_gene = %u, \
                                 strength = %u, \
@@ -17762,7 +17869,7 @@ bool CLuaBaseEntity::setChocoboRaisingInfo(sol::table const& table)
                             table.get_or<uint32>("last_update_age", 0),
                             table.get_or<uint32>("stage", 1),
                             table.get_or<uint32>("location", 0),
-                            table.get_or<uint32>("colour", 0),
+                            table.get_or<uint32>("color", 0),
                             table.get_or<uint32>("dominant_gene", 0),
                             table.get_or<uint32>("recessive_gene", 0),
                             table.get_or<uint32>("strength", 0),
@@ -17953,8 +18060,8 @@ auto CLuaBaseEntity::getContestRewardStatus() -> sol::table
         auto ret = db::preparedStmt(Query, PChar->id);
         if (ret && ret->rowsCount() > 0 && ret->next())
         {
-            reward["rank"]  = ret->getInt("contestrank");
-            reward["share"] = ret->getInt("share");
+            reward["rank"]  = ret->get<uint8>("contestrank");
+            reward["share"] = ret->get<uint8>("share");
         }
     }
 
@@ -18106,6 +18213,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("checkDistance", CLuaBaseEntity::checkDistance);
     SOL_REGISTER("wait", CLuaBaseEntity::wait);
     SOL_REGISTER("follow", CLuaBaseEntity::follow);
+    SOL_REGISTER("hasFollowTarget", CLuaBaseEntity::hasFollowTarget);
     SOL_REGISTER("unfollow", CLuaBaseEntity::unfollow);
     SOL_REGISTER("setCarefulPathing", CLuaBaseEntity::setCarefulPathing);
 
@@ -18173,6 +18281,7 @@ void CLuaBaseEntity::Register()
     // Items
     SOL_REGISTER("getEquipID", CLuaBaseEntity::getEquipID);
     SOL_REGISTER("getEquippedItem", CLuaBaseEntity::getEquippedItem);
+    SOL_REGISTER("hasEquipped", CLuaBaseEntity::hasEquipped);
     SOL_REGISTER("hasItem", CLuaBaseEntity::hasItem);
     SOL_REGISTER("getItemCount", CLuaBaseEntity::getItemCount);
     SOL_REGISTER("addItem", CLuaBaseEntity::addItem);
@@ -18546,6 +18655,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("addListener", CLuaBaseEntity::addListener);
     SOL_REGISTER("removeListener", CLuaBaseEntity::removeListener);
     SOL_REGISTER("triggerListener", CLuaBaseEntity::triggerListener);
+    SOL_REGISTER("hasListener", CLuaBaseEntity::hasListener);
 
     SOL_REGISTER("getEntity", CLuaBaseEntity::getEntity);
     SOL_REGISTER("canChangeState", CLuaBaseEntity::canChangeState);
@@ -18792,8 +18902,8 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("getBattleTime", CLuaBaseEntity::getBattleTime);
 
-    SOL_REGISTER("getBehaviour", CLuaBaseEntity::getBehaviour);
-    SOL_REGISTER("setBehaviour", CLuaBaseEntity::setBehaviour);
+    SOL_REGISTER("getBehavior", CLuaBaseEntity::getBehavior);
+    SOL_REGISTER("setBehavior", CLuaBaseEntity::setBehavior);
     SOL_REGISTER("getLink", CLuaBaseEntity::getLink);
     SOL_REGISTER("setLink", CLuaBaseEntity::setLink);
     SOL_REGISTER("getRoamFlags", CLuaBaseEntity::getRoamFlags);
@@ -18818,6 +18928,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasPreventActionEffect", CLuaBaseEntity::hasPreventActionEffect);
     SOL_REGISTER("stun", CLuaBaseEntity::stun);
     SOL_REGISTER("untargetableAndUnactionable", CLuaBaseEntity::untargetableAndUnactionable);
+    SOL_REGISTER("tryHitInterrupt", CLuaBaseEntity::tryHitInterrupt);
 
     SOL_REGISTER("getPool", CLuaBaseEntity::getPool);
     SOL_REGISTER("getDropID", CLuaBaseEntity::getDropID);

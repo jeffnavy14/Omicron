@@ -1514,7 +1514,7 @@ namespace battleutils
         // TODO: remove function
     }
 
-    uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isBarrage, int8 accBonus)
+    uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isBarrage, int16 accBonus)
     {
         int acc     = 0;
         int hitrate = 75;
@@ -1581,7 +1581,7 @@ namespace battleutils
     }
 
     // todo: need to penalise attacker's RangedAttack depending on distance from mob. (% decrease)
-    float GetRangedDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isCritical)
+    float GetRangedDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isCritical, int16 bonusRangedAttack)
     {
         // get ranged attack value
         uint16 rAttack = 1;
@@ -1618,6 +1618,8 @@ namespace battleutils
             // assume mobs capped
             rAttack = battleutils::GetMaxSkill(SKILL_ARCHERY, JOB_RNG, PAttacker->GetMLevel());
         }
+
+        rAttack += bonusRangedAttack;
 
         // get ratio (not capped for RAs)
         float ratio = (float)rAttack / (float)PDefender->DEF();
@@ -2048,7 +2050,8 @@ namespace battleutils
             float dex = PAttacker->DEX();
             float agi = PDefender->AGI();
 
-            return std::clamp<uint8>((uint8)((skill * 0.1f + (agi - dex) * 0.125f + 10.0f) * diff), 5, 25);
+            // Dodge's guard bonus goes over the cap
+            return std::clamp<uint8>((uint8)((skill * 0.1f + (agi - dex) * 0.125f + 10.0f) * diff), 5, 25) + PDefender->getMod(Mod::ADDITIVE_GUARD);
         }
 
         return 0;
@@ -2074,8 +2077,10 @@ namespace battleutils
         if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_FORMLESS_STRIKES) && !isCounter)
         {
             attackType        = ATTACK_TYPE::SPECIAL;
-            uint8 formlessMod = 70;
+            uint8 formlessMod = 55; // Start at 55
 
+            // https://www.bg-wiki.com/ffxi/Formless_Strikes
+            // Merit value of 1 is +5%, so 60% normal power
             if (PAttacker->objtype == TYPE_PC)
             {
                 formlessMod += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_FORMLESS_STRIKES, (CCharEntity*)PAttacker);
@@ -2084,8 +2089,8 @@ namespace battleutils
             damage = damage * formlessMod / 100;
 
             // TODO: chance to 'resist'
-
-            damage = MagicDmgTaken(PDefender, damage, ELEMENT_NONE);
+            // breath damage, not magic damage
+            damage = BreathDmgTaken(PDefender, damage);
         }
         else
         {
@@ -3993,6 +3998,13 @@ namespace battleutils
         {
             damage = (int32)(damage * (1.f + PChar->PMeritPoints->GetMeritValue(MERIT_INNIN_EFFECT, PChar) / 100.f));
         }
+
+        if (PDefender->getMod(Mod::SENGIKORI_SC_DMG_DEBUFF) > 0)
+        {
+            damage = static_cast<int32>(damage * (1.f + PDefender->getMod(Mod::SENGIKORI_SC_DMG_DEBUFF) / 100.f));
+            PDefender->setModifier(Mod::SENGIKORI_SC_DMG_DEBUFF, 0); // Consume the effect
+        }
+
         damage = damage * (10000 - resistance) / 10000;
         damage = MagicDmgTaken(PDefender, damage, appliedEle);
         if (damage > 0)
@@ -5888,7 +5900,7 @@ namespace battleutils
 
         // Big mobs typically should ignore this -- Such as dragons/wyrms or other big things.
         // Some TP moves like Petro Eyes from normal dragons _also_ ignore their standard behavior, so we must allow it sometimes.
-        if (PMob && (PMob->m_Behaviour & BEHAVIOUR_NO_TURN) && !force)
+        if (PMob && (PMob->m_Behavior & BEHAVIOR_NO_TURN) && !force)
         {
             return;
         }

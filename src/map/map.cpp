@@ -25,6 +25,7 @@
 #include "common/blowfish.h"
 #include "common/console_service.h"
 #include "common/database.h"
+#include "common/debug.h"
 #include "common/logging.h"
 #include "common/md52.h"
 #include "common/timer.h"
@@ -33,16 +34,10 @@
 #include "common/version.h"
 #include "common/zlib.h"
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <thread>
-
 #include "ability.h"
-#include "common/debug.h"
-#include "common/vana_time.h"
+#include "daily_system.h"
 #include "job_points.h"
+#include "latent_effect_container.h"
 #include "linkshell.h"
 #include "message.h"
 #include "mob_spell_list.h"
@@ -58,11 +53,13 @@
 #include "zone_entities.h"
 
 #include "ai/controllers/automaton_controller.h"
-#include "daily_system.h"
-#include "latent_effect_container.h"
+
+#include "items/item_equipment.h"
+
 #include "packets/basic.h"
 #include "packets/chat_message.h"
 #include "packets/server_ip.h"
+
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
 #include "utils/fishingutils.h"
@@ -77,6 +74,12 @@
 #include "utils/synergyutils.h"
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
+
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <thread>
 
 #include <nonstd/jthread.hpp>
 
@@ -291,6 +294,7 @@ int32 do_init(int32 argc, char** argv)
     daily::LoadDailyItems();
     roeutils::UpdateUnityRankings();
     synergyutils::LoadSynergyRecipes();
+    CItemEquipment::LoadAugmentData(); // TODO: Move to itemutils
 
     if (!std::filesystem::exists("./navmeshes/") || std::filesystem::is_empty("./navmeshes/"))
     {
@@ -382,7 +386,7 @@ int32 do_init(int32 argc, char** argv)
         // our own SQL connection.
         {
             auto otherSql  = std::make_unique<SqlConnection>();
-            auto query = "UPDATE %s SET %s %u WHERE charid = %u;";
+            auto query = "UPDATE %s SET %s %u WHERE charid = %u";
             otherSql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
         }
 
@@ -797,7 +801,7 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
                 uint8 data[4]{};
                 ref<uint32>(data, 0) = CharID;
 
-                message::send(MSG_KILL_SESSION, data, sizeof data, nullptr);
+                message::send(MSG_KILL_SESSION, data, sizeof(data), nullptr);
             }
         }
 

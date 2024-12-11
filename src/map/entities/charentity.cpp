@@ -209,15 +209,16 @@ CCharEntity::CCharEntity()
 
     BazaarID.clean();
 
+    WideScanTarget = std::nullopt;
+
     lastTradeInvite = {};
     TradePending.clean();
     InvitePending.clean();
 
-    PLinkshell1     = nullptr;
-    PLinkshell2     = nullptr;
-    PUnityChat      = nullptr;
-    PTreasurePool   = nullptr;
-    PWideScanTarget = nullptr;
+    PLinkshell1   = nullptr;
+    PLinkshell2   = nullptr;
+    PUnityChat    = nullptr;
+    PTreasurePool = nullptr;
 
     PAutomaton             = nullptr;
     PClaimedMob            = nullptr;
@@ -338,12 +339,12 @@ CCharEntity::~CCharEntity()
         if (PParty->m_PAlliance)
         {
             ref<uint32>(data, 0) = PParty->m_PAlliance->m_AllianceID;
-            message::send(MSG_ALLIANCE_RELOAD, data, sizeof data, nullptr);
+            message::send(MSG_ALLIANCE_RELOAD, data, sizeof(data), nullptr);
         }
         else
         {
             ref<uint32>(data, 0) = PParty->GetPartyID();
-            message::send(MSG_PT_RELOAD, data, sizeof data, nullptr);
+            message::send(MSG_PT_RELOAD, data, sizeof(data), nullptr);
         }
     }
 
@@ -1983,21 +1984,15 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
 
     uint8 shadowsTaken = 0;
     uint8 hitCount     = 1; // 1 hit by default
-    uint8 realHits     = 0; // to store the real number of hit for tp multipler
+    uint8 realHits     = 0; // to store the real number of hit for tp multiplier
     auto  ammoConsumed = 0;
     bool  hitOccured   = false; // track if player hit mob at all
-    bool  isSange      = false;
     bool  isBarrage    = StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE, 0);
 
     // if barrage is detected, getBarrageShotCount also checks for ammo count
     if (!ammoThrowing && !rangedThrowing && isBarrage)
     {
         hitCount += battleutils::getBarrageShotCount(this);
-    }
-    else if (ammoThrowing && this->StatusEffectContainer->HasStatusEffect(EFFECT_SANGE))
-    {
-        isSange = true;
-        hitCount += getMod(Mod::UTSUSEMI);
     }
     else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_DOUBLE_SHOT) && xirand::GetRandomNumber(100) < (40 + this->getMod(Mod::DOUBLE_SHOT_RATE)))
     {
@@ -2011,7 +2006,8 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     // loop for barrage hits, if a miss occurs, the loop will end
     for (uint8 i = 1; i <= hitCount; ++i)
     {
-        if (xirand::GetRandomNumber(100) < battleutils::GetRangedHitRate(this, PTarget, isBarrage)) // hit!
+        // TODO: add Barrage mod racc bonus
+        if (xirand::GetRandomNumber(100) < battleutils::GetRangedHitRate(this, PTarget, isBarrage, 0)) // hit!
         {
             // absorbed by shadow
             if (battleutils::IsAbsorbByShadow(PTarget, this))
@@ -2020,8 +2016,9 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
             }
             else
             {
+                // TODO: add Barrage ratt bonus from job points
                 bool  isCritical = xirand::GetRandomNumber(100) < battleutils::GetRangedCritHitRate(this, PTarget);
-                float pdif       = battleutils::GetRangedDamageRatio(this, PTarget, isCritical);
+                float pdif       = battleutils::GetRangedDamageRatio(this, PTarget, isCritical, 0);
 
                 if (isCritical)
                 {
@@ -2032,12 +2029,6 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
                 // at least 1 hit occured
                 hitOccured = true;
                 realHits++;
-
-                if (isSange)
-                {
-                    // change message to sange
-                    actionTarget.messageID = 77;
-                }
 
                 damage = (int32)((this->GetRangedWeaponDmg() + battleutils::GetFSTR(this, PTarget, slot)) * pdif);
 
@@ -2099,7 +2090,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     if (hitOccured)
     {
         // any misses with barrage cause remaining shots to miss, meaning we must check Action.reaction
-        if ((actionTarget.reaction & REACTION::MISS) != REACTION::NONE && (this->StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE) || isSange))
+        if ((actionTarget.reaction & REACTION::MISS) != REACTION::NONE && StatusEffectContainer->HasStatusEffect(EFFECT_BARRAGE))
         {
             actionTarget.messageID  = 352;
             actionTarget.reaction   = REACTION::HIT;
@@ -2151,18 +2142,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
     {
         StatusEffectContainer->DelStatusEffect(EFFECT_BARRAGE, 0);
     }
-    else if (isSange)
-    {
-        uint16 power = StatusEffectContainer->GetStatusEffect(EFFECT_SANGE)->GetPower();
 
-        // remove shadows
-        while (realHits-- && xirand::GetRandomNumber(100) <= power && battleutils::IsAbsorbByShadow(this, this))
-        {
-            ;
-        }
-
-        StatusEffectContainer->DelStatusEffect(EFFECT_SANGE);
-    }
     battleutils::ClaimMob(PTarget, this);
     battleutils::RemoveAmmo(this, ammoConsumed);
 
@@ -2793,28 +2773,28 @@ void CCharEntity::changeMoghancement(uint16 moghancementID, bool isAdding)
     switch (moghancementID)
     {
         case MOGHANCEMENT_FIRE:
-            addModifier(Mod::SYNTH_FAIL_RATE_FIRE, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_FIRE, 5 * multiplier);
             break;
         case MOGHANCEMENT_ICE:
-            addModifier(Mod::SYNTH_FAIL_RATE_ICE, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_ICE, 5 * multiplier);
             break;
         case MOGHANCEMENT_WIND:
-            addModifier(Mod::SYNTH_FAIL_RATE_WIND, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_WIND, 5 * multiplier);
             break;
         case MOGHANCEMENT_EARTH:
-            addModifier(Mod::SYNTH_FAIL_RATE_EARTH, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_EARTH, 5 * multiplier);
             break;
         case MOGHANCEMENT_LIGHTNING:
-            addModifier(Mod::SYNTH_FAIL_RATE_LIGHTNING, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_THUNDER, 5 * multiplier);
             break;
         case MOGHANCEMENT_WATER:
-            addModifier(Mod::SYNTH_FAIL_RATE_WATER, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_WATER, 5 * multiplier);
             break;
         case MOGHANCEMENT_LIGHT:
-            addModifier(Mod::SYNTH_FAIL_RATE_LIGHT, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_LIGHT, 5 * multiplier);
             break;
         case MOGHANCEMENT_DARK:
-            addModifier(Mod::SYNTH_FAIL_RATE_DARK, 5 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_DARK, 5 * multiplier);
             break;
 
         case MOGHANCEMENT_FISHING:
@@ -2851,63 +2831,64 @@ void CCharEntity::changeMoghancement(uint16 moghancementID, bool isAdding)
             break;
         case MOGLIFICATION_WOODWORKING:
             addModifier(Mod::WOOD, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_WOODWORKING, 5 * multiplier);
             break;
         case MOGLIFICATION_SMITHING:
             addModifier(Mod::SMITH, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_SMITHING, 5 * multiplier);
             break;
         case MOGLIFICATION_GOLDSMITHING:
             addModifier(Mod::GOLDSMITH, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_GOLDSMITHING, 5 * multiplier);
             break;
         case MOGLIFICATION_CLOTHCRAFT:
             addModifier(Mod::CLOTH, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_CLOTHCRAFT, 5 * multiplier);
             break;
         case MOGLIFICATION_LEATHERCRAFT:
             addModifier(Mod::LEATHER, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_LEATHERCRAFT, 5 * multiplier);
             break;
         case MOGLIFICATION_BONECRAFT:
             addModifier(Mod::BONE, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_BONECRAFT, 5 * multiplier);
             break;
         case MOGLIFICATION_ALCHEMY:
             addModifier(Mod::ALCHEMY, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_ALCHEMY, 5 * multiplier);
             break;
         case MOGLIFICATION_COOKING:
             addModifier(Mod::COOK, 1 * multiplier);
+            addModifier(Mod::SYNTH_MATERIAL_LOSS_COOKING, 5 * multiplier);
             break;
 
+        // Mega Moglifications do not state anything about lowering material loss.
         case MEGA_MOGLIFICATION_FISHING:
             addModifier(Mod::FISH, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_WOODWORKING:
             addModifier(Mod::WOOD, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_WOOD, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_SMITHING:
             addModifier(Mod::SMITH, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_SMITH, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_GOLDSMITHING:
             addModifier(Mod::GOLDSMITH, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_GOLDSMITH, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_CLOTHCRAFT:
             addModifier(Mod::CLOTH, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_CLOTH, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_LEATHERCRAFT:
             addModifier(Mod::LEATHER, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_LEATHER, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_BONECRAFT:
             addModifier(Mod::BONE, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_BONE, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_ALCHEMY:
             addModifier(Mod::ALCHEMY, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_ALCHEMY, 5 * multiplier);
             break;
         case MEGA_MOGLIFICATION_COOKING:
             addModifier(Mod::COOK, 5 * multiplier);
-            addModifier(Mod::SYNTH_FAIL_RATE_COOK, 5 * multiplier);
             break;
 
         case MOGHANCEMENT_EXPERIENCE:
@@ -2917,7 +2898,7 @@ void CCharEntity::changeMoghancement(uint16 moghancementID, bool isAdding)
             addModifier(Mod::GARDENING_WILT_BONUS, 36 * multiplier);
             break;
         case MOGHANCEMENT_DESYNTHESIS:
-            addModifier(Mod::DESYNTH_SUCCESS, 2 * multiplier);
+            addModifier(Mod::SYNTH_SUCCESS_RATE_DESYNTHESIS, 2 * multiplier);
             break;
         case MOGHANCEMENT_CONQUEST:
             addModifier(Mod::CONQUEST_BONUS, 6 * multiplier);
