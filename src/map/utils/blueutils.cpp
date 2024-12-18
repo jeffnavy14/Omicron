@@ -322,10 +322,11 @@ namespace blueutils
     {
         if (PChar->GetMJob() == JOB_BLU || PChar->GetSJob() == JOB_BLU)
         {
-            auto set_blue_spells = db::encodeToBlob(PChar->m_SetBlueSpells);
-            auto query           = fmt::format("UPDATE chars SET set_blue_spells = '{}' WHERE charid = {} LIMIT 1",
-                                               set_blue_spells, PChar->id);
-            db::query(query);
+            if (!db::preparedStmt("UPDATE chars SET set_blue_spells = ? WHERE charid = ? LIMIT 1",
+                                  PChar->m_SetBlueSpells, PChar->id))
+            {
+                ShowError("Failed to save set blue spells for %s", PChar->getName());
+            }
         }
     }
 
@@ -338,7 +339,7 @@ namespace blueutils
             auto rset = db::preparedStmt("SELECT set_blue_spells FROM chars WHERE charid = ? LIMIT 1", PChar->id);
             if (rset && rset->rowsCount() && rset->next())
             {
-                db::extractFromBlob(rset, "set_blue_spells", PChar->m_SetBlueSpells);
+                PChar->m_SetBlueSpells = rset->get<std::array<uint8, 20>>("set_blue_spells");
             }
 
             for (unsigned char& m_SetBlueSpell : PChar->m_SetBlueSpells)

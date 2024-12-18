@@ -356,7 +356,8 @@ public:
     void resetPetZoningInfo();            // Reset pet zoning info (when changing job ect)
     bool shouldPetPersistThroughZoning(); // If true, zoning should not cause a currently active pet to despawn
 
-    uint8  m_SetBlueSpells[20]{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
+    std::array<uint8, 20> m_SetBlueSpells{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
+
     uint32 m_FieldChocobo{};
     uint32 m_claimedDeeds[5]{};
     uint32 m_uniqueEvents[5]{};

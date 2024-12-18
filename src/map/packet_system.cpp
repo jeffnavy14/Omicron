@@ -7309,6 +7309,8 @@ void SmallPacket0x0FC(map_session_data_t* const PSession, CCharEntity* const PCh
         return;
     }
 
+    bool updatedPot = false;
+
     if (CItemFlowerpot::getPlantFromSeed(itemID) != FLOWERPOT_PLANT_NONE)
     {
         // Planting a seed in the flowerpot
@@ -7318,6 +7320,7 @@ void SmallPacket0x0FC(map_session_data_t* const PSession, CCharEntity* const PCh
         PPotItem->setPlantTimestamp(CVanaTime::getInstance()->getVanaTime());
         PPotItem->setStrength(xirand::GetRandomNumber(33));
         gardenutils::GrowToNextStage(PPotItem);
+        updatedPot = true;
     }
     else if (itemID >= 4096 && itemID <= 4111)
     {
@@ -7326,26 +7329,34 @@ void SmallPacket0x0FC(map_session_data_t* const PSession, CCharEntity* const PCh
         if (PPotItem->getStage() == FLOWERPOT_STAGE_FIRST_SPROUTS_CRYSTAL)
         {
             PPotItem->setFirstCrystalFeed(CItemFlowerpot::getElementFromItem(itemID));
+            updatedPot = true;
         }
         else if (PPotItem->getStage() == FLOWERPOT_STAGE_SECOND_SPROUTS_CRYSTAL)
         {
             PPotItem->setSecondCrystalFeed(CItemFlowerpot::getElementFromItem(itemID));
+            updatedPot = true;
         }
-        gardenutils::GrowToNextStage(PPotItem, true);
-        PPotItem->markExamined();
+        if (updatedPot)
+        {
+            gardenutils::GrowToNextStage(PPotItem, true);
+            PPotItem->markExamined();
+        }
     }
 
-    char extra[sizeof(PPotItem->m_extra) * 2 + 1];
-    _sql->EscapeStringLen(extra, (const char*)PPotItem->m_extra, sizeof(PPotItem->m_extra));
-    const char* Query = "UPDATE char_inventory SET extra = '%s' WHERE charid = %u AND location = %u AND slot = %u";
-    _sql->Query(Query, extra, PChar->id, PPotItem->getLocationID(), PPotItem->getSlotID());
+    if (updatedPot)
+    {
+        char extra[sizeof(PPotItem->m_extra) * 2 + 1];
+        _sql->EscapeStringLen(extra, (const char*)PPotItem->m_extra, sizeof(PPotItem->m_extra));
+        const char* Query = "UPDATE char_inventory SET extra = '%s' WHERE charid = %u AND location = %u AND slot = %u";
+        _sql->Query(Query, extra, PChar->id, PPotItem->getLocationID(), PPotItem->getSlotID());
 
-    PChar->pushPacket(new CFurnitureInteractPacket(PPotItem, potContainerID, potSlotID));
+        PChar->pushPacket(new CFurnitureInteractPacket(PPotItem, potContainerID, potSlotID));
 
-    PChar->pushPacket(new CInventoryItemPacket(PPotItem, potContainerID, potSlotID));
+        PChar->pushPacket(new CInventoryItemPacket(PPotItem, potContainerID, potSlotID));
 
-    charutils::UpdateItem(PChar, containerID, slotID, -1);
-    PChar->pushPacket(new CInventoryFinishPacket());
+        charutils::UpdateItem(PChar, containerID, slotID, -1);
+        PChar->pushPacket(new CInventoryFinishPacket());
+    }
 }
 
 /************************************************************************

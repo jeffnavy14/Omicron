@@ -820,7 +820,7 @@ namespace synthutils
                 break;
 
             case 4099: // Earth Crystal
-            case 4041: // Terra Crystal
+            case 4241: // Terra Crystal
                 effect  = EFFECT_EARTHSYNTH;
                 element = ELEMENT_EARTH;
                 break;
