@@ -299,7 +299,7 @@ public:
     void   SetModelId(uint16 modelId); // Set new modelid
     uint16 GetModelId() const;         // Get the modelid
 
-    virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&){};
+    virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&) {};
 
     bool IsDynamicEntity() const;
 

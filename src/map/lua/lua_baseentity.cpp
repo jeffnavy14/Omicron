@@ -206,7 +206,7 @@ void CLuaBaseEntity::showText(CLuaBaseEntity* mob, uint16 messageID, sol::object
 
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
-        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CMessageSpecialPacket(PBaseEntity, messageID, param0, param1, param2, param3));
+        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageSpecialPacket>(PBaseEntity, messageID, param0, param1, param2, param3);
     }
     else
     {
@@ -286,7 +286,7 @@ void CLuaBaseEntity::messageText(CLuaBaseEntity* PLuaBaseEntity, uint16 messageI
     if (auto player = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
         player->gotMessage = true;
-        player->pushPacket(new CMessageTextPacket(PTarget, messageID, showName, mode));
+        player->pushPacket<CMessageTextPacket>(PTarget, messageID, showName, mode);
     }
     else
     { // broadcast in range
@@ -316,7 +316,7 @@ void CLuaBaseEntity::printToPlayer(std::string const& message, sol::object const
 
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        PChar->pushPacket(new CChatMessagePacket(PChar, messageType, message, name));
+        PChar->pushPacket<CChatMessagePacket>(PChar, messageType, message, name);
     }
 }
 
@@ -407,7 +407,7 @@ void CLuaBaseEntity::messageBasic(uint16 messageID, sol::object const& p0, sol::
 
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
-        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CMessageBasicPacket(m_PBaseEntity, PTarget, param0, param1, messageID));
+        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageBasicPacket>(m_PBaseEntity, PTarget, param0, param1, messageID);
     }
     else
     {
@@ -438,7 +438,7 @@ void CLuaBaseEntity::messageName(uint16 messageID, sol::object const& entity, so
 
     if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        PChar->pushPacket(new CMessageNamePacket(PChar, messageID, PNameEntity, param0, param1, param2, param3, chatType));
+        PChar->pushPacket<CMessageNamePacket>(PChar, messageID, PNameEntity, param0, param1, param2, param3, chatType);
     }
     else
     {
@@ -487,7 +487,7 @@ void CLuaBaseEntity::messageSpecial(uint16 messageID, sol::variadic_args va)
     uint32 param3   = va.get_type(3) == sol::type::number ? va.get<uint32>(3) : 0;
     bool   showName = va.get_type(4) == sol::type::boolean ? va.get<bool>(4) : false;
 
-    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CMessageSpecialPacket(m_PBaseEntity, messageID, param0, param1, param2, param3, showName));
+    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageSpecialPacket>(m_PBaseEntity, messageID, param0, param1, param2, param3, showName);
 }
 
 /************************************************************************
@@ -508,7 +508,7 @@ void CLuaBaseEntity::messageSystem(MsgStd messageID, sol::object const& p0, sol:
     uint32 param0 = (p0 != sol::lua_nil) ? p0.as<uint32>() : 0;
     uint32 param1 = (p1 != sol::lua_nil) ? p1.as<uint32>() : 0;
 
-    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CMessageSystemPacket(param0, param1, messageID));
+    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageSystemPacket>(param0, param1, messageID);
 }
 
 /************************************************************************
@@ -538,7 +538,7 @@ void CLuaBaseEntity::messageCombat(sol::object const& speaker, int32 p0, int32 p
         PSpeaker = m_PBaseEntity;
     }
 
-    PChar->pushPacket(new CMessageCombatPacket(PSpeaker, PChar, p0, p1, message));
+    PChar->pushPacket<CMessageCombatPacket>(PSpeaker, PChar, p0, p1, message);
 }
 
 /************************************************************************
@@ -552,7 +552,7 @@ void CLuaBaseEntity::messageStandard(uint16 messageID)
 {
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        PChar->pushPacket(new CMessageStandardPacket(messageID));
+        PChar->pushPacket<CMessageStandardPacket>(messageID);
     }
 }
 
@@ -562,7 +562,7 @@ void CLuaBaseEntity::customMenu(sol::object const& obj)
         PChar && obj.get_type() == sol::type::table)
     {
         auto menuString = luautils::SetCustomMenuContext(PChar, obj.as<sol::table>());
-        PChar->pushPacket(new CChatMessagePacket(PChar, MESSAGE_GMPROMPT, menuString.c_str(), "_CUSTOM_MENU"));
+        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_GMPROMPT, menuString.c_str(), "_CUSTOM_MENU");
     }
 }
 
@@ -867,7 +867,7 @@ void CLuaBaseEntity::entityVisualPacket(std::string const& command, sol::object 
         PNpc                           = PLuaBaseEntity->m_PBaseEntity;
     }
 
-    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CEntityVisualPacket(PNpc, command.c_str()));
+    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CEntityVisualPacket>(PNpc, command.c_str());
 }
 
 /************************************************************************
@@ -894,7 +894,7 @@ void CLuaBaseEntity::entityAnimationPacket(const char* command, sol::object cons
 
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
-        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CEntityAnimationPacket(m_PBaseEntity, PTarget, command));
+        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CEntityAnimationPacket>(m_PBaseEntity, PTarget, command);
     }
     else
     {
@@ -1146,7 +1146,7 @@ void CLuaBaseEntity::updateEvent(sol::variadic_args va)
         }
     }
 
-    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CEventUpdatePacket(params));
+    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CEventUpdatePacket>(params);
 }
 
 /************************************************************************
@@ -1180,7 +1180,7 @@ void CLuaBaseEntity::updateEventString(sol::variadic_args va)
     uint32 param8 = va.get_type(12) == sol::type::number ? va.get<uint32>(12) : 0;
 
     ((CCharEntity*)m_PBaseEntity)
-        ->pushPacket(new CEventUpdateStringPacket(string0, string1, string2, string3, param0, param1, param2, param3, param4, param5, param6, param7, param8));
+        ->pushPacket<CEventUpdateStringPacket>(string0, string1, string2, string3, param0, param1, param2, param3, param4, param5, param6, param7, param8);
 }
 
 /************************************************************************
@@ -1248,12 +1248,12 @@ void CLuaBaseEntity::release()
     {
         // Message: Event skipped
         releaseType = RELEASE_TYPE::SKIPPING;
-        PChar->pushPacket(new CMessageSystemPacket(0, 0, MsgStd::EventSkipped));
+        PChar->pushPacket<CMessageSystemPacket>(0, 0, MsgStd::EventSkipped);
     }
 
     PChar->inSequence = false;
-    PChar->pushPacket(new CReleasePacket(PChar, releaseType));
-    PChar->pushPacket(new CReleasePacket(PChar, RELEASE_TYPE::EVENT));
+    PChar->pushPacket<CReleasePacket>(PChar, releaseType);
+    PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::EVENT);
     PChar->endCurrentEvent();
 }
 
@@ -2355,7 +2355,7 @@ void CLuaBaseEntity::changeMusic(uint16 blockID, uint16 musicTrackID)
     }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    PChar->pushPacket(new CChangeMusicPacket(blockID, musicTrackID));
+    PChar->pushPacket<CChangeMusicPacket>(blockID, musicTrackID);
 }
 
 /************************************************************************
@@ -2377,14 +2377,14 @@ void CLuaBaseEntity::sendMenu(uint32 menu)
     switch (menu)
     {
         case 1:
-            PChar->pushPacket(new CMenuMogPacket());
+            PChar->pushPacket<CMenuMogPacket>();
             break;
         case 2:
-            PChar->pushPacket(new CShopMenuPacket(PChar));
-            PChar->pushPacket(new CShopItemsPacket(PChar));
+            PChar->pushPacket<CShopMenuPacket>(PChar);
+            PChar->pushPacket<CShopItemsPacket>(PChar);
             break;
         case 3:
-            PChar->pushPacket(new CAuctionHousePacket(2));
+            PChar->pushPacket<CAuctionHousePacket>(2);
             break;
         default:
             ShowDebug("Menu %i not implemented, yet.", menu);
@@ -2434,11 +2434,11 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
     auto*           PChar      = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PGuildShop = PGuildShop;
-    PChar->pushPacket(new CGuildMenuPacket(status, open, close, holiday));
+    PChar->pushPacket<CGuildMenuPacket>(status, open, close, holiday);
 
     if (status == GUILD_OPEN)
     {
-        PChar->pushPacket(new CGuildMenuBuyPacket(PChar, PGuildShop));
+        PChar->pushPacket<CGuildMenuBuyPacket>(PChar, PGuildShop);
     }
 
     return status == GUILD_OPEN;
@@ -2883,10 +2883,9 @@ void CLuaBaseEntity::showPosition()
         return;
     }
 
-    // TODO: Fix c-style cast
-    static_cast<CCharEntity*>(m_PBaseEntity)
-        ->pushPacket(new CMessageStandardPacket((int32)m_PBaseEntity->loc.p.x, (int32)m_PBaseEntity->loc.p.y, (int32)m_PBaseEntity->loc.p.z,
-                                                m_PBaseEntity->loc.p.rotation, MsgStd::Compass));
+    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    PChar->pushPacket<CMessageStandardPacket>((int32)PChar->loc.p.x, (int32)PChar->loc.p.y, (int32)PChar->loc.p.z, PChar->loc.p.rotation, MsgStd::Compass);
 }
 
 /************************************************************************
@@ -3032,7 +3031,7 @@ void CLuaBaseEntity::setPos(sol::variadic_args va)
             if (ipp == 0)
             {
                 ShowWarning(fmt::format("Char {} requested zone ({}) returned IPP of 0", PChar->name, zoneid));
-                PChar->pushPacket(new CMessageSystemPacket(0, 0, MsgStd::CouldNotEnter)); // You could not enter the next area.
+                PChar->pushPacket<CMessageSystemPacket>(0, 0, MsgStd::CouldNotEnter); // You could not enter the next area.
                 return;
             }
 
@@ -3044,7 +3043,7 @@ void CLuaBaseEntity::setPos(sol::variadic_args va)
         }
         else if (PChar->status != STATUS_TYPE::DISAPPEAR)
         {
-            PChar->pushPacket(new CPositionPacket(PChar));
+            PChar->pushPacket<CPositionPacket>(PChar);
         }
     }
     m_PBaseEntity->updatemask |= UPDATE_POS;
@@ -4066,7 +4065,7 @@ bool CLuaBaseEntity::delItem(uint16 itemID, int32 quantity, sol::object const& c
     if (SlotID != ERROR_SLOTID)
     {
         charutils::UpdateItem(PChar, location, SlotID, -quantity);
-        PChar->pushPacket(new CInventoryFinishPacket());
+        PChar->pushPacket<CInventoryFinishPacket>();
 
         return true;
     }
@@ -4113,7 +4112,7 @@ bool CLuaBaseEntity::delContainerItems(sol::object const& containerID)
         }
     }
 
-    PChar->pushPacket(new CInventoryFinishPacket());
+    PChar->pushPacket<CInventoryFinishPacket>();
     return true;
 }
 
@@ -4481,11 +4480,11 @@ bool CLuaBaseEntity::addLinkpearl(std::string const& lsname, bool equip)
                     PItemLinkPearl->setSubType(ITEM_LOCKED);
                     PChar->equip[SLOT_LINK2]    = PItemLinkPearl->getSlotID();
                     PChar->equipLoc[SLOT_LINK2] = LOC_INVENTORY;
-                    PChar->pushPacket(new CInventoryAssignPacket(PItemLinkPearl, INV_LINKSHELL));
+                    PChar->pushPacket<CInventoryAssignPacket>(PItemLinkPearl, INV_LINKSHELL);
                     charutils::SaveCharEquip(PChar);
-                    PChar->pushPacket(new CLinkshellEquipPacket(PChar, PItemLinkPearl->GetLSID()));
-                    PChar->pushPacket(new CInventoryItemPacket(PItemLinkPearl, LOC_INVENTORY, PItemLinkPearl->getSlotID()));
-                    PChar->pushPacket(new CInventoryFinishPacket());
+                    PChar->pushPacket<CLinkshellEquipPacket>(PChar, PItemLinkPearl->GetLSID());
+                    PChar->pushPacket<CInventoryItemPacket>(PItemLinkPearl, LOC_INVENTORY, PItemLinkPearl->getSlotID());
+                    PChar->pushPacket<CInventoryFinishPacket>();
                     charutils::LoadInventory(PChar);
                 }
                 return true;
@@ -4508,7 +4507,7 @@ auto CLuaBaseEntity::addSoulPlate(std::string const& name, uint16 mobFamily, uin
         // Deduct Blank Plate
         battleutils::RemoveAmmo(PChar);
 
-        PChar->pushPacket(new CInventoryFinishPacket());
+        PChar->pushPacket<CInventoryFinishPacket>();
 
         // Used Soul Plate
         CItem* PItem = itemutils::GetItem(2477);
@@ -4570,7 +4569,7 @@ void CLuaBaseEntity::changeContainerSize(uint8 locationID, int8 newSize)
         auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
         PChar->getStorage(locationID)->AddBuff(newSize);
-        PChar->pushPacket(new CInventorySizePacket(PChar));
+        PChar->pushPacket<CInventorySizePacket>(PChar);
         charutils::SaveCharInventoryCapacity(PChar);
     }
     else
@@ -4635,7 +4634,7 @@ void CLuaBaseEntity::confirmTrade()
         }
     }
     PChar->TradeContainer->Clean();
-    PChar->pushPacket(new CInventoryFinishPacket());
+    PChar->pushPacket<CInventoryFinishPacket>();
 }
 
 /************************************************************************
@@ -4669,7 +4668,7 @@ void CLuaBaseEntity::tradeComplete()
         }
     }
     PChar->TradeContainer->Clean();
-    PChar->pushPacket(new CInventoryFinishPacket());
+    PChar->pushPacket<CInventoryFinishPacket>();
 }
 
 std::optional<CLuaTradeContainer> CLuaBaseEntity::getTrade()
@@ -4801,7 +4800,7 @@ void CLuaBaseEntity::setEquipBlock(uint16 equipBlock)
     {
         auto* PChar         = static_cast<CCharEntity*>(m_PBaseEntity);
         PChar->m_EquipBlock = equipBlock;
-        PChar->pushPacket(new CCharJobsPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
     }
 }
 
@@ -4831,9 +4830,9 @@ void CLuaBaseEntity::lockEquipSlot(uint8 slot)
     charutils::EquipItem(PChar, 0, slot, LOC_INVENTORY);
 
     PChar->m_EquipBlock |= 1 << slot;
-    PChar->pushPacket(new CCharAppearancePacket(PChar));
-    PChar->pushPacket(new CEquipPacket(0, slot, LOC_INVENTORY));
-    PChar->pushPacket(new CCharJobsPacket(PChar));
+    PChar->pushPacket<CCharAppearancePacket>(PChar);
+    PChar->pushPacket<CEquipPacket>(0, slot, LOC_INVENTORY);
+    PChar->pushPacket<CCharJobsPacket>(PChar);
     PChar->updatemask |= UPDATE_LOOK;
 }
 
@@ -4861,7 +4860,7 @@ void CLuaBaseEntity::unlockEquipSlot(uint8 slot)
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->m_EquipBlock &= ~(1 << slot);
-    PChar->pushPacket(new CCharJobsPacket(PChar));
+    PChar->pushPacket<CCharJobsPacket>(PChar);
 }
 
 /************************************************************************
@@ -5353,7 +5352,7 @@ void CLuaBaseEntity::setModelId(uint16 modelId, sol::object const& slotObj)
         if (m_PBaseEntity->objtype == TYPE_PC)
         {
             auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-            PChar->pushPacket(new CCharAppearancePacket(PChar));
+            PChar->pushPacket<CCharAppearancePacket>(PChar);
         }
     }
     else
@@ -5402,7 +5401,7 @@ void CLuaBaseEntity::setCostume(uint16 costume)
     {
         PChar->m_Costume = costume;
         PChar->updatemask |= UPDATE_LOOK;
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
     }
 }
 
@@ -5445,7 +5444,7 @@ void CLuaBaseEntity::setCostume2(uint16 costume)
     {
         PChar->m_Costume2 = costume;
         PChar->updatemask |= UPDATE_LOOK;
-        PChar->pushPacket(new CCharAppearancePacket(PChar));
+        PChar->pushPacket<CCharAppearancePacket>(PChar);
     }
 }
 /************************************************************************
@@ -5503,7 +5502,7 @@ void CLuaBaseEntity::setAnimationSub(uint8 animationsub)
         if (m_PBaseEntity->objtype == TYPE_PC)
         {
             auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-            PChar->pushPacket(new CCharUpdatePacket(PChar));
+            PChar->pushPacket<CCharUpdatePacket>(PChar);
         }
         else
         {
@@ -6032,7 +6031,7 @@ void CLuaBaseEntity::setSpeed(uint8 speedVal)
         if (m_PBaseEntity->objtype == TYPE_PC)
         {
             auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-            PChar->pushPacket(new CCharUpdatePacket(PChar));
+            PChar->pushPacket<CCharUpdatePacket>(PChar);
         }
         else
         {
@@ -6175,16 +6174,16 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
         charutils::SaveCharExp(PChar, PChar->GetMJob());
         PChar->updatemask |= UPDATE_HP;
 
-        PChar->pushPacket(new CCharJobsPacket(PChar));
-        PChar->pushPacket(new CCharStatsPacket(PChar));
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
-        PChar->pushPacket(new CCharRecastPacket(PChar));
-        PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
-        PChar->pushPacket(new CMenuMeritPacket(PChar));
-        PChar->pushPacket(new CMonipulatorPacket1(PChar));
-        PChar->pushPacket(new CMonipulatorPacket2(PChar));
-        PChar->pushPacket(new CCharSyncPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
+        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<CCharRecastPacket>(PChar);
+        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
+        PChar->pushPacket<CMenuMeritPacket>(PChar);
+        PChar->pushPacket<CMonipulatorPacket1>(PChar);
+        PChar->pushPacket<CMonipulatorPacket2>(PChar);
+        PChar->pushPacket<CCharSyncPacket>(PChar);
     }
     else if (auto* PMob = dynamic_cast<CMobEntity*>(m_PBaseEntity))
     {
@@ -6329,7 +6328,7 @@ void CLuaBaseEntity::unlockJob(uint8 JobID)
         }
 
         charutils::SaveCharJob(PChar, static_cast<JOBTYPE>(JobID));
-        PChar->pushPacket(new CCharJobsPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
     }
 }
 
@@ -6454,16 +6453,16 @@ void CLuaBaseEntity::setLevel(uint8 level)
         charutils::SaveCharExp(PChar, PChar->GetMJob());
         PChar->updatemask |= UPDATE_HP;
 
-        PChar->pushPacket(new CCharJobsPacket(PChar));
-        PChar->pushPacket(new CCharStatsPacket(PChar));
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
-        PChar->pushPacket(new CCharRecastPacket(PChar));
-        PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
-        PChar->pushPacket(new CMenuMeritPacket(PChar));
-        PChar->pushPacket(new CMonipulatorPacket1(PChar));
-        PChar->pushPacket(new CMonipulatorPacket2(PChar));
-        PChar->pushPacket(new CCharSyncPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
+        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<CCharRecastPacket>(PChar);
+        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
+        PChar->pushPacket<CMenuMeritPacket>(PChar);
+        PChar->pushPacket<CMonipulatorPacket1>(PChar);
+        PChar->pushPacket<CMonipulatorPacket2>(PChar);
+        PChar->pushPacket<CCharSyncPacket>(PChar);
     }
 }
 
@@ -6511,16 +6510,16 @@ void CLuaBaseEntity::setsLevel(uint8 slevel)
     charutils::SaveCharJob(PChar, PChar->GetSJob());
     charutils::SaveCharExp(PChar, PChar->GetMJob());
 
-    PChar->pushPacket(new CCharJobsPacket(PChar));
-    PChar->pushPacket(new CCharStatsPacket(PChar));
-    PChar->pushPacket(new CCharSkillsPacket(PChar));
-    PChar->pushPacket(new CCharRecastPacket(PChar));
-    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-    PChar->pushPacket(new CCharUpdatePacket(PChar));
-    PChar->pushPacket(new CMenuMeritPacket(PChar));
-    PChar->pushPacket(new CMonipulatorPacket1(PChar));
-    PChar->pushPacket(new CMonipulatorPacket2(PChar));
-    PChar->pushPacket(new CCharSyncPacket(PChar));
+    PChar->pushPacket<CCharJobsPacket>(PChar);
+    PChar->pushPacket<CCharStatsPacket>(PChar);
+    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    PChar->pushPacket<CCharRecastPacket>(PChar);
+    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<CCharUpdatePacket>(PChar);
+    PChar->pushPacket<CMenuMeritPacket>(PChar);
+    PChar->pushPacket<CMonipulatorPacket1>(PChar);
+    PChar->pushPacket<CMonipulatorPacket2>(PChar);
+    PChar->pushPacket<CCharSyncPacket>(PChar);
 }
 
 /************************************************************************
@@ -6619,14 +6618,14 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
                     PChar->PAutomaton->setElementalCapacityBonus(PChar->getMod(Mod::AUTO_ELEM_CAPACITY));
                 }
 
-                PChar->pushPacket(new CCharJobsPacket(PChar));
-                PChar->pushPacket(new CCharStatsPacket(PChar));
-                PChar->pushPacket(new CCharSkillsPacket(PChar));
-                PChar->pushPacket(new CCharRecastPacket(PChar));
-                PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-                PChar->pushPacket(new CCharSpellsPacket(PChar));
-                PChar->pushPacket(new CCharUpdatePacket(PChar));
-                PChar->pushPacket(new CCharSyncPacket(PChar));
+                PChar->pushPacket<CCharJobsPacket>(PChar);
+                PChar->pushPacket<CCharStatsPacket>(PChar);
+                PChar->pushPacket<CCharSkillsPacket>(PChar);
+                PChar->pushPacket<CCharRecastPacket>(PChar);
+                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                PChar->pushPacket<CCharSpellsPacket>(PChar);
+                PChar->pushPacket<CCharUpdatePacket>(PChar);
+                PChar->pushPacket<CCharSyncPacket>(PChar);
                 PChar->updatemask |= UPDATE_HP;
             }
 
@@ -6674,7 +6673,7 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
                                 resetRecast(RECAST_ABILITY, 205);
                             }
 
-                            PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, MSGBASIC_AUTO_EXCEEDS_CAPACITY));
+                            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_AUTO_EXCEEDS_CAPACITY);
                             petutils::DespawnPet(PChar);
                             return PChar->m_LevelRestriction;
                         }
@@ -6903,7 +6902,7 @@ void CLuaBaseEntity::addTitle(uint16 titleID)
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->profile.title = titleID;
-    PChar->pushPacket(new CCharStatsPacket(PChar));
+    PChar->pushPacket<CCharStatsPacket>(PChar);
 
     charutils::addTitle(PChar, titleID);
     charutils::SaveTitles(PChar);
@@ -6950,7 +6949,7 @@ void CLuaBaseEntity::delTitle(uint16 titleID)
             PChar->profile.title = 0;
         }
 
-        PChar->pushPacket(new CCharStatsPacket(PChar));
+        PChar->pushPacket<CCharStatsPacket>(PChar);
         charutils::SaveTitles(PChar);
     }
 }
@@ -7337,7 +7336,7 @@ void CLuaBaseEntity::addQuest(uint8 questLogID, uint16 questID)
         if (current == 0)
         {
             PChar->m_questLog[questLogID].current[questID / 8] |= (1 << (questID % 8));
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_CURRENT));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_CURRENT);
 
             charutils::SaveQuestsList(PChar);
         }
@@ -7372,8 +7371,8 @@ void CLuaBaseEntity::delCurrentQuest(uint8 questLogID, uint16 questID)
         {
             PChar->m_questLog[questLogID].current[questID / 8] &= ~(1 << (questID % 8));
 
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_CURRENT));
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_COMPLETE));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_CURRENT);
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_COMPLETE);
 
             charutils::SaveQuestsList(PChar);
         }
@@ -7411,8 +7410,8 @@ void CLuaBaseEntity::delQuest(uint8 questLogID, uint16 questID)
             PChar->m_questLog[questLogID].current[questID / 8] &= ~(1 << (questID % 8));
             PChar->m_questLog[questLogID].complete[questID / 8] &= ~(1 << (questID % 8));
 
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_CURRENT));
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_COMPLETE));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_CURRENT);
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_COMPLETE);
 
             charutils::SaveQuestsList(PChar);
         }
@@ -7503,8 +7502,8 @@ void CLuaBaseEntity::completeQuest(uint8 questLogID, uint16 questID)
             PChar->m_questLog[questLogID].current[questID / 8] &= ~(1 << (questID % 8));
             PChar->m_questLog[questLogID].complete[questID / 8] |= (1 << (questID % 8));
 
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_CURRENT));
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, questLogID, LOG_QUEST_COMPLETE));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_CURRENT);
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, questLogID, LOG_QUEST_COMPLETE);
             charutils::SaveQuestsList(PChar);
             roeutils::event(ROE_QUEST_COMPLETE, PChar, RoeDatagramList{});
         }
@@ -7539,7 +7538,7 @@ void CLuaBaseEntity::addMission(uint8 missionLogID, uint16 missionID)
         }
 
         PChar->m_missionLog[missionLogID].current = missionID;
-        PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_CURRENT));
+        PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_CURRENT);
 
         charutils::SaveMissionsList(PChar);
     }
@@ -7575,12 +7574,12 @@ void CLuaBaseEntity::delMission(uint8 missionLogID, uint16 missionID)
         if (current == missionID)
         {
             PChar->m_missionLog[missionLogID].current = missionLogID > 2 ? 0 : -1;
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_CURRENT));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_CURRENT);
         }
         if (complete)
         {
             PChar->m_missionLog[missionLogID].complete[missionID] = false;
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_COMPLETE));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_COMPLETE);
         }
         charutils::SaveMissionsList(PChar);
     }
@@ -7695,9 +7694,9 @@ void CLuaBaseEntity::completeMission(uint8 missionLogID, uint16 missionID)
             if ((missionLogID != MISSION_COP) && (missionID < 64))
             {
                 PChar->m_missionLog[missionLogID].complete[missionID] = true;
-                PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_COMPLETE));
+                PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_COMPLETE);
             }
-            PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_CURRENT));
+            PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_CURRENT);
 
             charutils::SaveMissionsList(PChar);
             roeutils::event(ROE_MISSION_COMPLETE, PChar, RoeDatagramList{});
@@ -7754,7 +7753,7 @@ void CLuaBaseEntity::setMissionStatus(uint8 missionLogID, sol::object const& arg
         missionStatus |= missionStatusValue << (4 * missionStatusPos);
         PChar->m_missionLog[missionLogID].statusLower = missionStatus;
         PChar->m_missionLog[missionLogID].statusUpper = missionStatus >> 16;
-        PChar->pushPacket(new CQuestMissionLogPacket(PChar, missionLogID, LOG_MISSION_CURRENT));
+        PChar->pushPacket<CQuestMissionLogPacket>(PChar, missionLogID, LOG_MISSION_CURRENT);
     }
     else
     {
@@ -7902,8 +7901,8 @@ bool CLuaBaseEntity::setEminenceProgress(uint16 recordID, uint32 progress, sol::
 
     if (total && progressNotify)
     {
-        PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, recordID, 0, MSGBASIC_ROE_RECORD));
-        PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, progress, total, MSGBASIC_ROE_PROGRESS));
+        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, recordID, 0, MSGBASIC_ROE_RECORD);
+        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, progress, total, MSGBASIC_ROE_PROGRESS);
     }
 
     return result;
@@ -8269,7 +8268,7 @@ void CLuaBaseEntity::addAssault(uint8 missionID)
     }
 
     PChar->m_assaultLog.current = missionID;
-    PChar->pushPacket(new CQuestMissionLogPacket(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT));
+    PChar->pushPacket<CQuestMissionLogPacket>(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT);
 
     charutils::SaveMissionsList(PChar);
 }
@@ -8294,7 +8293,7 @@ void CLuaBaseEntity::delAssault(uint8 missionID)
     if (current == missionID)
     {
         PChar->m_assaultLog.current = 0;
-        PChar->pushPacket(new CQuestMissionLogPacket(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT));
+        PChar->pushPacket<CQuestMissionLogPacket>(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT);
     }
 
     charutils::SaveMissionsList(PChar);
@@ -8361,8 +8360,8 @@ void CLuaBaseEntity::completeAssault(uint8 missionID)
 
     PChar->m_assaultLog.current             = 0;
     PChar->m_assaultLog.complete[missionID] = true;
-    PChar->pushPacket(new CQuestMissionLogPacket(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT));
-    PChar->pushPacket(new CQuestMissionLogPacket(PChar, MISSION_ASSAULT, LOG_MISSION_COMPLETE));
+    PChar->pushPacket<CQuestMissionLogPacket>(PChar, MISSION_ASSAULT, LOG_MISSION_CURRENT);
+    PChar->pushPacket<CQuestMissionLogPacket>(PChar, MISSION_ASSAULT, LOG_MISSION_COMPLETE);
 
     charutils::SaveMissionsList(PChar);
 }
@@ -8393,11 +8392,11 @@ void CLuaBaseEntity::addKeyItem(uint16 keyItemID)
     }
 
     charutils::addKeyItem(PChar, keyItemID);
-    PChar->pushPacket(new CKeyItemsPacket(PChar, static_cast<KEYS_TABLE>(table)));
+    PChar->pushPacket<CKeyItemsPacket>(PChar, static_cast<KEYS_TABLE>(table));
 
     if (table == 6)
     {
-        PChar->pushPacket(new CCharMountsPacket(PChar));
+        PChar->pushPacket<CCharMountsPacket>(PChar);
     }
 
     charutils::SaveKeyItems(PChar);
@@ -8447,7 +8446,7 @@ void CLuaBaseEntity::delKeyItem(uint16 keyItemID)
     }
 
     charutils::delKeyItem(PChar, keyItemID);
-    PChar->pushPacket(new CKeyItemsPacket(PChar, static_cast<KEYS_TABLE>(table)));
+    PChar->pushPacket<CKeyItemsPacket>(PChar, static_cast<KEYS_TABLE>(table));
 
     charutils::SaveKeyItems(PChar);
 }
@@ -8496,7 +8495,7 @@ void CLuaBaseEntity::unseenKeyItem(uint16 keyItemID)
     }
 
     charutils::unseenKeyItem(PChar, keyItemID);
-    PChar->pushPacket(new CKeyItemsPacket(PChar, static_cast<KEYS_TABLE>(table)));
+    PChar->pushPacket<CKeyItemsPacket>(PChar, static_cast<KEYS_TABLE>(table));
 
     charutils::SaveKeyItems(PChar);
 }
@@ -8616,9 +8615,9 @@ void CLuaBaseEntity::setMerits(uint8 numPoints)
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PMeritPoints->SetMeritPoints(numPoints);
-    PChar->pushPacket(new CMenuMeritPacket(PChar));
-    PChar->pushPacket(new CMonipulatorPacket1(PChar));
-    PChar->pushPacket(new CMonipulatorPacket2(PChar));
+    PChar->pushPacket<CMenuMeritPacket>(PChar);
+    PChar->pushPacket<CMonipulatorPacket1>(PChar);
+    PChar->pushPacket<CMonipulatorPacket2>(PChar);
 
     charutils::SaveCharExp(PChar, PChar->GetMJob());
 }
@@ -8680,7 +8679,7 @@ void CLuaBaseEntity::setCapacityPoints(uint16 amount)
     CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PJobPoints->SetCapacityPoints(amount);
-    PChar->pushPacket(new CMenuJobPointsPacket(PChar));
+    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
 }
 
 /************************************************************************
@@ -8701,7 +8700,7 @@ void CLuaBaseEntity::setJobPoints(uint16 amount)
     CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PJobPoints->SetJobPoints(amount);
-    PChar->pushPacket(new CMenuJobPointsPacket(PChar));
+    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
 }
 
 /************************************************************************
@@ -8736,7 +8735,7 @@ void CLuaBaseEntity::masterJob()
         }
     }
 
-    PChar->pushPacket(new CMenuJobPointsPacket(PChar));
+    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
 }
 
 /************************************************************************
@@ -8986,7 +8985,7 @@ void CLuaBaseEntity::addCP(int32 cp)
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     charutils::AddPoints(PChar, charutils::GetConquestPointsName(PChar).c_str(), cp);
-    PChar->pushPacket(new CConquestPacket(PChar));
+    PChar->pushPacket<CConquestPacket>(PChar);
 }
 
 /************************************************************************
@@ -9007,7 +9006,7 @@ void CLuaBaseEntity::delCP(int32 cp)
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
     charutils::AddPoints(PChar, charutils::GetConquestPointsName(PChar).c_str(), -cp);
-    PChar->pushPacket(new CConquestPacket(PChar));
+    PChar->pushPacket<CConquestPacket>(PChar);
 }
 
 /************************************************************************
@@ -9896,7 +9895,7 @@ void CLuaBaseEntity::capSkill(uint8 skill)
         PChar->RealSkills.skill[skill]    = maxSkill; // set to capped
         PChar->WorkingSkills.skill[skill] = maxSkill / 10;
         PChar->WorkingSkills.skill[skill] |= 0x8000; // set blue capped flag
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
         charutils::CheckWeaponSkill(PChar, skill);
         /* and ignore this part
         //reapply modifiers if valid
@@ -9944,7 +9943,7 @@ void CLuaBaseEntity::capAllSkills()
         PChar->WorkingSkills.skill[i] |= 0x8000; // set blue capped flag
     }
     charutils::CheckWeaponSkill(PChar, SKILL_NONE);
-    PChar->pushPacket(new CCharSkillsPacket(PChar));
+    PChar->pushPacket<CCharSkillsPacket>(PChar);
 }
 
 /************************************************************************
@@ -9996,7 +9995,7 @@ void CLuaBaseEntity::setSkillLevel(uint8 SkillID, uint16 SkillAmount)
     charutils::CheckWeaponSkill(PChar, SkillID);
     charutils::SaveCharSkills(PChar, SkillID);
 
-    PChar->pushPacket(new CCharSkillsPacket(PChar));
+    PChar->pushPacket<CCharSkillsPacket>(PChar);
 }
 
 /************************************************************************
@@ -10049,7 +10048,7 @@ void CLuaBaseEntity::setSkillRank(uint8 skillID, uint8 newrank)
         jobpointutils::RefreshGiftMods(PChar);
         charutils::BuildingCharSkillsTable(PChar);
         charutils::SaveCharSkills(PChar, skillID);
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
     }
 }
 
@@ -10092,7 +10091,7 @@ void CLuaBaseEntity::addLearnedWeaponskill(uint8 wsUnlockId)
     charutils::addLearnedWeaponskill(PChar, wsUnlockId);
     charutils::BuildingCharWeaponSkills(PChar);
     charutils::SaveLearnedAbilities(PChar);
-    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
 }
 
 /************************************************************************
@@ -10133,7 +10132,7 @@ void CLuaBaseEntity::delLearnedWeaponskill(uint8 wsUnlockId)
     charutils::delLearnedWeaponskill(PChar, wsUnlockId);
     charutils::BuildingCharWeaponSkills(PChar);
     charutils::SaveLearnedAbilities(PChar);
-    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
 }
 
 /************************************************************************
@@ -10200,8 +10199,8 @@ void CLuaBaseEntity::addLearnedAbility(uint16 abilityID)
     {
         charutils::addAbility(PChar, abilityID);
         charutils::SaveLearnedAbilities(PChar);
-        PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-        PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, 442));
+        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 442);
     }
 }
 
@@ -10273,7 +10272,7 @@ void CLuaBaseEntity::delLearnedAbility(uint16 abilityID)
     if (charutils::delLearnedAbility(PChar, abilityID))
     {
         charutils::SaveLearnedAbilities(PChar);
-        PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
     }
 }
 
@@ -10302,12 +10301,12 @@ void CLuaBaseEntity::addSpell(uint16 spellID, sol::variadic_args va)
     {
         if (sendUpdate)
         {
-            PChar->pushPacket(new CCharSpellsPacket(PChar));
+            PChar->pushPacket<CCharSpellsPacket>(PChar);
         }
 
         if (!silentLog)
         {
-            PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, 23));
+            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 23);
         }
 
         if (save)
@@ -10384,7 +10383,7 @@ void CLuaBaseEntity::delSpell(uint16 spellID)
     if (charutils::delSpell(PChar, spellID))
     {
         charutils::DeleteSpell(PChar, spellID);
-        PChar->pushPacket(new CCharSpellsPacket(PChar));
+        PChar->pushPacket<CCharSpellsPacket>(PChar);
     }
 }
 
@@ -10408,9 +10407,9 @@ void CLuaBaseEntity::recalculateSkillsTable()
     charutils::BuildingCharSkillsTable(PChar);
     charutils::BuildingCharWeaponSkills(PChar);
 
-    PChar->pushPacket(new CCharSkillsPacket(PChar));
-    PChar->pushPacket(new CCharRecastPacket(PChar));
-    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    PChar->pushPacket<CCharRecastPacket>(PChar);
+    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
 }
 
 /************************************************************************
@@ -10441,7 +10440,7 @@ void CLuaBaseEntity::recalculateAbilitiesTable()
         charutils::BuildingCharPetAbilityTable(PChar, PPetEntity, PPetEntity->m_PetID);
     }
 
-    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
 }
 
 /************************************************************************
@@ -11225,7 +11224,7 @@ void CLuaBaseEntity::instanceEntry(CLuaBaseEntity* PLuaBaseEntity, uint32 respon
 
     CBaseEntity* PTarget = PLuaBaseEntity->m_PBaseEntity;
 
-    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket(new CInstanceEntryPacket(PTarget, response));
+    static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CInstanceEntryPacket>(PTarget, response);
 }
 
 /************************************************************************
@@ -11576,7 +11575,7 @@ void CLuaBaseEntity::sendRaise(uint8 raiseLevel)
         {
             PChar->m_hasArise = true;
         }
-        PChar->pushPacket(new CRaiseTractorMenuPacket(PChar, TYPE_RAISE));
+        PChar->pushPacket<CRaiseTractorMenuPacket>(PChar, TYPE_RAISE);
     }
 }
 
@@ -11633,7 +11632,7 @@ void CLuaBaseEntity::sendTractor(float xPos, float yPos, float zPos, uint8 rotat
         PChar->m_StartActionPos.z        = zPos;
         PChar->m_StartActionPos.rotation = rotation;
 
-        PChar->pushPacket(new CRaiseTractorMenuPacket(PChar, TYPE_TRACTOR));
+        PChar->pushPacket<CRaiseTractorMenuPacket>(PChar, TYPE_TRACTOR);
     }
 }
 
@@ -11835,7 +11834,7 @@ void CLuaBaseEntity::enableEntities(sol::object const& obj)
     {
         if (obj.is<std::vector<uint32>>())
         {
-            PChar->pushPacket(new CEntityEnableList(obj.as<std::vector<uint32>>()));
+            PChar->pushPacket<CEntityEnableList>(obj.as<std::vector<uint32>>());
         }
     }
     else
@@ -11943,8 +11942,8 @@ void CLuaBaseEntity::addRecast(uint8 recastCont, uint16 recastID, uint32 duratio
         if (PBattleEntity->objtype == TYPE_PC)
         {
             CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
-            PChar->pushPacket(new CCharSkillsPacket(PChar));
-            PChar->pushPacket(new CCharRecastPacket(PChar));
+            PChar->pushPacket<CCharSkillsPacket>(PChar);
+            PChar->pushPacket<CCharRecastPacket>(PChar);
         }
     }
 }
@@ -11994,8 +11993,8 @@ void CLuaBaseEntity::resetRecast(uint8 rType, uint16 recastID)
             PChar->PRecastContainer->Add(recastContainer, recastID, 0);
         }
 
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
-        PChar->pushPacket(new CCharRecastPacket(PChar));
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<CCharRecastPacket>(PChar);
     }
 }
 
@@ -12015,8 +12014,8 @@ void CLuaBaseEntity::resetRecasts()
 
         PChar->PRecastContainer->Del(RECAST_MAGIC);
         PChar->PRecastContainer->Del(RECAST_ABILITY);
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
-        PChar->pushPacket(new CCharRecastPacket(PChar));
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<CCharRecastPacket>(PChar);
     }
 }
 
@@ -12184,16 +12183,16 @@ void CLuaBaseEntity::recalculateStats()
 
         PChar->UpdateHealth();
 
-        PChar->pushPacket(new CCharJobsPacket(PChar));
-        PChar->pushPacket(new CCharStatsPacket(PChar));
-        PChar->pushPacket(new CCharSkillsPacket(PChar));
-        PChar->pushPacket(new CCharRecastPacket(PChar));
-        PChar->pushPacket(new CCharAbilitiesPacket(PChar));
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
-        PChar->pushPacket(new CMenuMeritPacket(PChar));
-        PChar->pushPacket(new CMonipulatorPacket1(PChar));
-        PChar->pushPacket(new CMonipulatorPacket2(PChar));
-        PChar->pushPacket(new CCharSyncPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
+        PChar->pushPacket<CCharStatsPacket>(PChar);
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<CCharRecastPacket>(PChar);
+        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
+        PChar->pushPacket<CMenuMeritPacket>(PChar);
+        PChar->pushPacket<CMonipulatorPacket1>(PChar);
+        PChar->pushPacket<CMonipulatorPacket2>(PChar);
+        PChar->pushPacket<CCharSyncPacket>(PChar);
     }
 }
 
@@ -13886,7 +13885,7 @@ void CLuaBaseEntity::setStatDebilitation(uint16 statDebil)
     {
         auto* PChar{ static_cast<CCharEntity*>(m_PBaseEntity) };
         PChar->m_StatsDebilitation = statDebil;
-        PChar->pushPacket(new CCharJobsPacket(PChar));
+        PChar->pushPacket<CCharJobsPacket>(PChar);
     }
 }
 
@@ -14787,7 +14786,7 @@ void CLuaBaseEntity::trustPartyMessage(uint32 message_id)
         PMaster->ForParty([&](CBattleEntity* PMember)
         {
             auto* PCharMember = static_cast<CCharEntity*>(PMember);
-            PCharMember->pushPacket(new CMessageCombatPacket(PTrust, PMember, message_id, 0, 711));
+            PCharMember->pushPacket<CMessageCombatPacket>(PTrust, PMember, message_id, 0, 711);
         });
         // clang-format on
     }

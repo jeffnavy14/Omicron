@@ -37196,7 +37196,7 @@ INSERT INTO `item_mods` VALUES (18359,950,3);   -- ITEM_ADDEFFECT_ELEMENT: 3
 
 -- Faith Baghnakhs
 INSERT INTO `item_mods` VALUES (18360,13,7);  -- MND: 7
-INSERT INTO `item_mods` VALUES (18360,826,2); -- AMMO_SWING_TYPE: 2
+INSERT INTO `item_mods` VALUES (18360,826,2); -- AMMO_SWING_TYPE: 1.  - HtH are treated like 1H and can proc on both hands.
 
 -- Ponderous Manoples
 INSERT INTO `item_mods` VALUES (18361,10,2); -- VIT: 2
