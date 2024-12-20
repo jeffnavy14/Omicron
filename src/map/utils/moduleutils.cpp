@@ -232,15 +232,24 @@ namespace moduleutils
                         // we need to sanity check them here by checking the name and port against the database.
                         if (parts.size() >= 3 && parts[0] == "xi" && parts[1] == "zones")
                         {
-                            auto zoneName    = parts[2];
-                            auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
+                            const auto zoneName    = parts[2];
+                            const auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
 
-                            auto ret = _sql->Query(fmt::format("SELECT `name`, zoneport FROM zone_settings WHERE `name` = '{}' AND zoneport = {}",
-                                                               zoneName, currentPort)
-                                                       .c_str());
-                            if (ret != SQL_ERROR && _sql->NumRows() == 0)
+                            /*
+                            TODO: Why doesn't preparedStmt work here?
+
+                            auto rset = db::preparedStmt("SELECT name, zoneport FROM zone_settings WHERE name = ? AND zoneport = ?", zoneName, currentPort);
+
+                            [debug] preparedStmt: SELECT name, zoneport FROM zone_settings WHERE name = ? AND zoneport = ? (db::preparedStmt::<lambda_1>::()::<lambda_1>::operator ():517)
+                            [debug] binding 1: GM_Home (db::detail::bindValue:368)
+                            [debug] binding 2: 54230 (db::detail::bindValue:368)
+
+                            But then no rows in the rset?
+                            */
+                            const auto rset = db::query(fmt::format("SELECT name, zoneport FROM zone_settings WHERE name = '{}' AND zoneport = {}", zoneName, currentPort).c_str());
+                            if (rset && rset->rowsCount() == 0)
                             {
-                                DebugModules(fmt::format("{} does not appear to exist on this process.", zoneName));
+                                DebugModules(fmt::format("{} does not appear to exist on this process (port: {})", zoneName, currentPort));
                                 skipOverrideCheck = true;
                                 continue;
                             }

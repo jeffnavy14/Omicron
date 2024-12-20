@@ -23,6 +23,7 @@
 #define _CHARENTITY_H
 
 #include "event_info.h"
+#include "item_container.h"
 #include "monstrosity.h"
 #include "packets/char.h"
 #include "packets/entity_update.h"
@@ -356,7 +357,8 @@ public:
     void resetPetZoningInfo();            // Reset pet zoning info (when changing job ect)
     bool shouldPetPersistThroughZoning(); // If true, zoning should not cause a currently active pet to despawn
 
-    uint8  m_SetBlueSpells[20]{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
+    std::array<uint8, 20> m_SetBlueSpells{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
+
     uint32 m_FieldChocobo{};
     uint32 m_claimedDeeds[5]{};
     uint32 m_uniqueEvents[5]{};
@@ -414,7 +416,15 @@ public:
 
     uint8 GetGender();
 
-    void          clearPacketList();
+    void clearPacketList();
+
+    template <typename T, typename... Args>
+    void pushPacket(Args&&... args)
+    {
+        // TODO: This could hook into pooling of packet objects, etc.
+        pushPacket(std::make_unique<T>(std::forward<Args>(args)...));
+    }
+
     void          pushPacket(CBasicPacket*);                                                     // Adding a copy of a package to the PacketList
     void          pushPacket(std::unique_ptr<CBasicPacket>);                                     // Push packet to packet list
     void          updateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask);     // Push or update a char packet
@@ -509,6 +519,9 @@ public:
     void setStyleLocked(bool isStyleLocked);
     bool getBlockingAid() const;
     void setBlockingAid(bool isBlockingAid);
+
+    // Send updates about dirty containers in post tick
+    std::map<CONTAINER_ID, bool> dirtyInventoryContainers;
 
     bool       m_EquipSwap; // true if equipment was recently changed
     bool       m_EffectsChanged;
