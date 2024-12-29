@@ -132,7 +132,7 @@ void CTreasurePool::DelMember(CCharEntity* PChar)
 
 /************************************************************************
  *                                                                       *
- *  Adding an item to treasure pool                                      *
+ *  Adding an item to treasure pool. Returns item count in pool.         *
  *                                                                       *
  ************************************************************************/
 
@@ -141,6 +141,34 @@ uint8 CTreasurePool::AddItem(uint16 ItemID, CBaseEntity* PEntity)
     uint8      SlotID     = 0;
     uint8      FreeSlotID = -1;
     time_point oldest     = time_point::max();
+    CItem*     PNewItem   = itemutils::GetItemPointer(ItemID);
+
+    if (!PNewItem)
+    {
+        return m_count; // no change
+    }
+
+    // Check if everyone in the treasure pool already has this tiem
+    if (PNewItem->getFlag() & ITEM_FLAG_RARE)
+    {
+        bool doesNotHaveRareItem = false;
+
+        for (const auto& member : members)
+        {
+            // Someone doesn't have the rare item
+            if (!charutils::HasItem(member, PNewItem->getID()))
+            {
+                doesNotHaveRareItem = true;
+                break;
+            }
+        }
+
+        // If everyone has this rare item, don't add it to the pool
+        if (!doesNotHaveRareItem)
+        {
+            return m_count; // no change
+        }
+    }
 
     switch (ItemID)
     {
@@ -163,6 +191,7 @@ uint8 CTreasurePool::AddItem(uint16 ItemID, CBaseEntity* PEntity)
             break;
         }
     }
+
     if (FreeSlotID > TREASUREPOOL_SIZE)
     {
         // find the oldest non-rare and non-ex item
@@ -223,10 +252,12 @@ uint8 CTreasurePool::AddItem(uint16 ItemID, CBaseEntity* PEntity)
     {
         member->pushPacket<CTreasureFindItemPacket>(&m_PoolItems[FreeSlotID], PEntity, false);
     }
+
     if (m_TreasurePoolType == TREASUREPOOL_SOLO)
     {
         CheckTreasureItem(server_clock::now(), FreeSlotID);
     }
+
     return m_count;
 }
 

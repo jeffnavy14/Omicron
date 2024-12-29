@@ -26,11 +26,11 @@
 #include <cstring>
 #include <time.h>
 
-#include "charutils.h"
 #include "common/vana_time.h"
-#include "itemutils.h"
 #include "lua/luautils.h"
-#include "zoneutils.h"
+#include "utils/charutils.h"
+#include "utils/itemutils.h"
+#include "utils/zoneutils.h"
 
 namespace
 {

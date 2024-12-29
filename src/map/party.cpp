@@ -589,13 +589,13 @@ void CParty::AddMember(CBattleEntity* PEntity)
 
     if (m_PartyType == PARTY_PCS)
     {
-        if (PEntity->objtype != TYPE_PC)
+        CCharEntity* PChar = dynamic_cast<CCharEntity*>(PEntity);
+
+        if (!PEntity)
         {
             ShowWarning("Non-Player passed into function (%s).", PEntity->getName());
             return;
         }
-
-        CCharEntity* PChar = (CCharEntity*)PEntity;
 
         uint32 allianceid = 0;
         if (m_PAlliance)

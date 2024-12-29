@@ -1300,9 +1300,9 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
             case CHAR_INRANGE_SELF: // NOTE!!!: This falls through to CHAR_INRANGE so both self and the local area get the packet
             {
                 TracyZoneCString("CHAR_INRANGE_SELF");
-                if (PEntity->objtype == TYPE_PC)
+                if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
                 {
-                    ((CCharEntity*)PEntity)->pushPacket<CBasicPacket>(*packet);
+                    PChar->pushPacket<CBasicPacket>(*packet);
                 }
             }
             [[fallthrough]];

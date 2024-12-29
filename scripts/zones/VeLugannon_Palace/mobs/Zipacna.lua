@@ -9,10 +9,10 @@ local ID = zones[xi.zone.VELUGANNON_PALACE]
 -- Spawn points from nm_spawn_points.sql
 local spawnPoints =
 {
-    blueShort   = {x = -196, y = 0,  z = 389},
-    blueLong    = {x = -121, y = 16, z = 420},
-    yellowShort = {x =  191, y = 0,  z = 399},
-    yellowLong  = {x =  141, y = 16, z = 440},
+    blueShort   = { x = -196, y = 0,  z = 389 },
+    blueLong    = { x = -121, y = 16, z = 420 },
+    yellowShort = { x =  191, y = 0,  z = 399 },
+    yellowLong  = { x =  141, y = 16, z = 440 },
 }
 
 local pathingDirection =

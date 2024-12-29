@@ -1718,6 +1718,32 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
         action.actiontype = PAbility->getActionType();
         action.actionid   = PAbility->getID();
 
+        // Normal AoE check,
+        // Special cases go here
+        auto isAbilityAoE = [&]() -> bool
+        {
+            if (this->PParty != nullptr)
+            {
+                if (PAbility->isAoE())
+                {
+                    return true;
+                }
+                else if (PAbility->getID() == ABILITY_LIEMENT && getMod(Mod::LIEMENT_EXTENDS_TO_AREA) > 0)
+                {
+                    return true;
+                }
+                else if (PAbility->getID() == ABILITY_HEALING_WALTZ && StatusEffectContainer->HasStatusEffect(EFFECT_CONTRADANCE))
+                {
+                    // 10.1 = 10' in game. Unsure why 10' means 9.9' works but 10' doesn't... Epsilon check gone wrong?
+                    PAbility->setRange(10.1); // This is playing double duty as both target range and AoE range --
+                                              // by the time this lambda is called the target range has already been checked and can be used normally
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         // TODO: get rid of this to script, too
         if (PAbility->isPetAbility())
         {
@@ -1814,7 +1840,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             }
         }
         // TODO: make this generic enough to not require an if
-        else if ((PAbility->isAoE() || (PAbility->getID() == ABILITY_LIEMENT && getMod(Mod::LIEMENT_EXTENDS_TO_AREA) > 0)) && this->PParty != nullptr)
+        else if (isAbilityAoE())
         {
             PAI->TargetFind->reset();
 
@@ -1910,6 +1936,9 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
                 }
             }
         }
+
+        // Cleanup "consumed" abilities after action like Contradance
+        StatusEffectContainer->DelStatusEffect(PAbility->getPostActionEffectCleanup());
 
         if (charge)
         {

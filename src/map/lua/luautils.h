@@ -165,6 +165,7 @@ namespace luautils
     bool   PlayerHasValidSession(uint32 playerId);
     uint32 GetPlayerIDByName(std::string const& name);
     void   SendToJailOffline(uint32 playerId, int8 cellId, float posX, float posY, float posZ, uint8 rot);
+    void   DrawIn(CLuaBaseEntity* PLuaBaseEntity, sol::table const& table, float offset, float degrees);
 
     uint32 GetSystemTime();
     uint32 JstMidnight();
@@ -268,7 +269,6 @@ namespace luautils
     void OnMobDisengage(CBaseEntity* PMob);
     void OnMobFollow(CBaseEntity* PMob, CBaseEntity* PTarget);
     void OnMobUnfollow(CBaseEntity* PMob, CBaseEntity* PTarget);
-    void OnMobDrawIn(CBaseEntity* PMob, CBaseEntity* PTarget);
     void OnMobFight(CBaseEntity* PMob, CBaseEntity* PTarget);
     void OnCriticalHit(CBattleEntity* PMob, CBattleEntity* PAttacker);
     void OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller);

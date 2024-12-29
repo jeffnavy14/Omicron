@@ -3990,7 +3990,7 @@ namespace battleutils
         //            TODO:     × (1 + Day/Weather bonuses)
         //            TODO:     × (1 + Staff Affinity)
 
-        auto damage = (int32)floor((double)(abs(lastSkillDamage))*g_SkillChainDamageModifiers[chainLevel][chainCount] / 1000 *
+        auto damage = (int32)floor((double)(abs(lastSkillDamage)) * g_SkillChainDamageModifiers[chainLevel][chainCount] / 1000 *
                                    (100 + PAttacker->getMod(Mod::SKILLCHAINBONUS)) / 100 * (10000 + PAttacker->getMod(Mod::SKILLCHAINDMG)) / 10000);
 
         auto* PChar = dynamic_cast<CCharEntity*>(PAttacker);
@@ -5595,18 +5595,18 @@ namespace battleutils
         }
     }
 
-    bool DrawIn(CBattleEntity* PTarget, CMobEntity* PMob, float offset)
+    void DrawIn(CBattleEntity* PTarget, position_t pos, float offset, float degrees)
     {
-        position_t& pos        = PMob->loc.p;
-        position_t  nearEntity = nearPosition(pos, offset, (float)0);
+        float      radian     = degrees * (M_PI / 180.0f);
+        position_t nearEntity = nearPosition(pos, offset, radian);
 
         // Make sure we can raycast to that position
-        // from the mob's "eyeline" to the ground where we want to draw players in to
-        if (PMob->loc.zone->lineOfSight)
+        // from the position's "eyeline" to the ground where we want to draw players in to
+        if (PTarget->loc.zone->lineOfSight)
         {
             auto entityHeight = 2.0f;
-            auto mobEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
-            if (auto optHit = PMob->loc.zone->lineOfSight->Raycast(mobEyeline, nearEntity))
+            auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
+            if (auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
             {
                 auto hit   = *optHit;
                 nearEntity = { hit.x, hit.y, hit.z, 0, 0 };
@@ -5614,75 +5614,44 @@ namespace battleutils
         }
 
         // Snap nearEntity to a guaranteed valid position
-        if (PMob->loc.zone->m_navMesh)
+        if (PTarget->loc.zone->m_navMesh)
         {
-            PMob->loc.zone->m_navMesh->snapToValidPosition(nearEntity);
+            PTarget->loc.zone->m_navMesh->snapToValidPosition(nearEntity);
         }
 
         // Move the target a little higher, just in case
         nearEntity.y -= 1.0f;
 
-        bool  success        = false;
-        float drawInDistance = (float)(PMob->getMobMod(MOBMOD_DRAW_IN) > 1 ? PMob->getMobMod(MOBMOD_DRAW_IN) : PMob->GetMeleeRange() * 2);
-
-        if (std::chrono::time_point_cast<std::chrono::seconds>(server_clock::now()).time_since_epoch().count() - PMob->GetLocalVar("DrawInTime") < 2)
+        if (PTarget->status != STATUS_TYPE::CUTSCENE_ONLY)
         {
-            return false;
-        }
-
-        std::function<void(CBattleEntity*)> drawInFunc = [PMob, drawInDistance, &nearEntity, &success](CBattleEntity* PMember)
-        {
-            float pDistance = distance(PMob->loc.p, PMember->loc.p);
-
-            if (PMob->loc.zone == PMember->loc.zone && pDistance > drawInDistance && PMember->status != STATUS_TYPE::CUTSCENE_ONLY)
+            // don't draw in dead players for now!
+            // see tractor
+            if (PTarget->isDead() || PTarget->isMounted())
             {
-                // don't draw in dead players for now!
-                // see tractor
-                if (PMember->isDead() || PMember->isMounted())
+                // don't do anything
+            }
+            else
+            {
+                // draw in!
+                PTarget->loc.p.x = nearEntity.x;
+                PTarget->loc.p.y = nearEntity.y;
+                PTarget->loc.p.z = nearEntity.z;
+
+                if (PTarget->objtype == TYPE_PC)
                 {
-                    // don't do anything
+                    CCharEntity* PChar = static_cast<CCharEntity*>(PTarget);
+                    PChar->pushPacket<CPositionPacket>(PChar);
                 }
                 else
                 {
-                    // draw in!
-                    PMember->loc.p.x = nearEntity.x;
-                    PMember->loc.p.y = nearEntity.y;
-                    PMember->loc.p.z = nearEntity.z;
-
-                    if (PMember->objtype == TYPE_PC)
-                    {
-                        CCharEntity* PChar = static_cast<CCharEntity*>(PMember);
-                        PChar->pushPacket<CPositionPacket>(PChar);
-                    }
-                    else
-                    {
-                        PMember->loc.zone->UpdateEntityPacket(PMember, ENTITY_UPDATE, UPDATE_POS);
-                    }
-
-                    luautils::OnMobDrawIn(PMob, PMember);
-                    PMob->loc.zone->PushPacket(PMob, CHAR_INRANGE, new CMessageBasicPacket(PMember, PMember, 0, 0, 232));
-                    success = true;
+                    PTarget->loc.zone->UpdateEntityPacket(PTarget, ENTITY_UPDATE, UPDATE_POS);
                 }
+
+                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE, new CMessageBasicPacket(PTarget, PTarget, 0, 0, 232));
             }
-        };
-
-        // check if i should draw-in party/alliance
-        if (PMob->getMobMod(MOBMOD_DRAW_IN) > 1)
-        {
-            PTarget->ForAlliance(drawInFunc);
-        }
-        // no party present or draw-in is set to target only
-        else
-        {
-            drawInFunc(PTarget);
         }
 
-        if (success)
-        {
-            PMob->SetLocalVar("DrawInTime", (uint32)std::chrono::time_point_cast<std::chrono::seconds>(server_clock::now()).time_since_epoch().count());
-        }
-
-        return success;
+        return;
     }
 
     /************************************************************************

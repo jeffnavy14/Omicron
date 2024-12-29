@@ -20780,7 +20780,8 @@ INSERT INTO `mob_spawn_points` VALUES (17101193,'Heraldic_Imp','Heraldic Imp',19
 INSERT INTO `mob_spawn_points` VALUES (17101194,'Heraldic_Imp','Heraldic Imp',19,623.470,-11.110,499.574,4);
 INSERT INTO `mob_spawn_points` VALUES (17101195,'Heraldic_Imp','Heraldic Imp',19,575.710,-18.850,451.476,75);
 INSERT INTO `mob_spawn_points` VALUES (17101196,'Heraldic_Imp','Heraldic Imp',19,578.602,-18.818,450.053,77);
-INSERT INTO `mob_spawn_points` VALUES (17101197,'Khimaira','Khimaira',59,842.000,-1.000,365.000,127);
+-- INSERT INTO `mob_spawn_points` VALUES (17101197,'Khimaira','Khimaira',59,842.000,-1.000,365.000,127); -- old spawn pos
+INSERT INTO `mob_spawn_points` VALUES (17101197,'Khimaira','Khimaira',59,603.887,-16.140,414.765,255);
 INSERT INTO `mob_spawn_points` VALUES (17101198,'Verdelet','Verdelet',60,417.020,-19.295,-69.990,63);
 INSERT INTO `mob_spawn_points` VALUES (17101199,'Tyger','Tyger',61,-766.000,-12.000,632.000,239);
 INSERT INTO `mob_spawn_points` VALUES (17101200,'Mahjlaef_the_Paintorn','Mahjlaef the Paintorn',62,695.369,-7.147,527.646,42);

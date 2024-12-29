@@ -34,16 +34,11 @@
 #include <cstring>
 #include <utility>
 
-#include "ai/ai_container.h"
-#include "ai/states/death_state.h"
 #include "alliance.h"
 #include "campaign_system.h"
 #include "conquest_system.h"
 #include "enmity_container.h"
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
-#include "entities/npcentity.h"
-#include "entities/trustentity.h"
+#include "fishingcontest.h"
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
@@ -62,19 +57,15 @@
 #include "treasure_pool.h"
 #include "unitychat.h"
 #include "universal_container.h"
-#include "utils/battleutils.h"
-#include "utils/blacklistutils.h"
-#include "utils/blueutils.h"
-#include "utils/charutils.h"
-#include "utils/fishingutils.h"
-#include "utils/gardenutils.h"
-#include "utils/itemutils.h"
-#include "utils/jailutils.h"
-#include "utils/petutils.h"
-#include "utils/puppetutils.h"
-#include "utils/synthutils.h"
-#include "utils/zoneutils.h"
 #include "zone.h"
+
+#include "ai/ai_container.h"
+#include "ai/states/death_state.h"
+
+#include "entities/charentity.h"
+#include "entities/mobentity.h"
+#include "entities/npcentity.h"
+#include "entities/trustentity.h"
 
 #include "items/item_flowerpot.h"
 #include "items/item_shop.h"
@@ -175,6 +166,19 @@
 #include "packets/world_pass.h"
 #include "packets/zone_in.h"
 #include "packets/zone_visited.h"
+
+#include "utils/battleutils.h"
+#include "utils/blacklistutils.h"
+#include "utils/blueutils.h"
+#include "utils/charutils.h"
+#include "utils/fishingutils.h"
+#include "utils/gardenutils.h"
+#include "utils/itemutils.h"
+#include "utils/jailutils.h"
+#include "utils/petutils.h"
+#include "utils/puppetutils.h"
+#include "utils/synthutils.h"
+#include "utils/zoneutils.h"
 
 uint8 PacketSize[512];
 
@@ -3262,20 +3266,17 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
                 PChar->pushPacket<CAuctionHousePacket>(action);
 
                 // A single SQL query for the player's AH history which is stored in a Char Entity struct + vector.
-                const char* Query = "SELECT itemid, price, stack FROM auction_house WHERE seller = %u AND sale=0 ORDER BY id ASC LIMIT 7";
-
-                int32 ret = _sql->Query(Query, PChar->id);
-
-                if (ret != SQL_ERROR && _sql->NumRows() != 0)
+                auto rset = db::preparedStmt("SELECT itemid, price, stack FROM auction_house WHERE seller = ? AND sale=0 ORDER BY id ASC LIMIT 7", PChar->id);
+                if (rset && rset->rowsCount())
                 {
-                    while (_sql->NextRow() == SQL_SUCCESS)
+                    while (rset->next())
                     {
-                        AuctionHistory_t ah{};
-                        ah.itemid = (uint16)_sql->GetIntData(0);
-                        ah.price  = _sql->GetUIntData(1);
-                        ah.stack  = (uint8)_sql->GetIntData(2);
-                        ah.status = 0;
-                        PChar->m_ah_history.emplace_back(ah);
+                        PChar->m_ah_history.emplace_back(AuctionHistory_t{
+                            .itemid = rset->get<uint16>("itemid"),
+                            .stack  = rset->get<uint8>("stack"),
+                            .price  = rset->get<uint32>("price"),
+                            .status = 0,
+                        });
                     }
                 }
                 ShowDebug("%s has %i items up on the AH. ", PChar->getName(), PChar->m_ah_history.size());
@@ -3335,36 +3336,37 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
                 }
 
                 // Get the current number of items the player has for sale
-                const char* Query = "SELECT COUNT(*) FROM auction_house WHERE seller = %u AND sale=0";
-
-                int32  ret         = _sql->Query(Query, PChar->id);
-                uint32 ah_listings = 0;
-
-                if (ret != SQL_ERROR && _sql->NumRows() != 0)
+                const auto ahListings = [&]() -> uint32
                 {
-                    _sql->NextRow();
-                    ah_listings = (uint32)_sql->GetIntData(0);
-                }
+                    const auto rset = db::preparedStmt("SELECT COUNT(*) FROM auction_house WHERE seller = ? AND sale = 0", PChar->id);
+                    if (rset && rset->rowsCount() && rset->next())
+                    {
+                        return rset->get<uint32>(0);
+                    }
+                    return 0;
+                }();
 
-                if (settings::get<uint8>("map.AH_LIST_LIMIT") && ah_listings >= settings::get<uint8>("map.AH_LIST_LIMIT"))
+                const auto ahListLimit = settings::get<uint8>("map.AH_LIST_LIMIT");
+                if (ahListLimit && ahListings >= ahListLimit)
                 {
+                    ShowDebug("Player %s has reached the AH listing limit of %u", PChar->getName(), ahListLimit);
                     PChar->pushPacket<CAuctionHousePacket>(action, 197, 0, 0, 0, 0); // Failed to place up
                     return;
                 }
 
-                const char* fmtQuery = "INSERT INTO auction_house(itemid, stack, seller, seller_name, date, price) VALUES(%u,%u,%u,'%s',%u,%u)";
-
-                if (_sql->Query(fmtQuery, PItem->getID(), quantity == 0, PChar->id, PChar->getName(), (uint32)time(nullptr), price) == SQL_ERROR)
+                if (!db::preparedStmt("INSERT INTO auction_house(itemid, stack, seller, seller_name, date, price) VALUES(?, ?, ?, ?, ?, ?)",
+                                      PItem->getID(), quantity == 0, PChar->id, PChar->getName(), (uint32)time(nullptr), price))
                 {
                     ShowError("SmallPacket0x04E::AuctionHouse: Cannot insert item %s to database", PItem->getName());
                     PChar->pushPacket<CAuctionHousePacket>(action, 197, 0, 0, 0, 0); // failed to place up
                     return;
                 }
+
                 charutils::UpdateItem(PChar, LOC_INVENTORY, slot, -(int32)(quantity != 0 ? 1 : PItem->getStackSize()));
                 charutils::UpdateItem(PChar, LOC_INVENTORY, 0, -(int32)auctionFee); // Deduct AH fee
 
-                PChar->pushPacket<CAuctionHousePacket>(action, 1, 0, 0, 0, 0);           // Merchandise put up on auction msg
-                PChar->pushPacket<CAuctionHousePacket>(0x0C, (uint8)ah_listings, PChar); // Inform history of slot
+                PChar->pushPacket<CAuctionHousePacket>(action, 1, 0, 0, 0, 0);          // Merchandise put up on auction msg
+                PChar->pushPacket<CAuctionHousePacket>(0x0C, (uint8)ahListings, PChar); // Inform history of slot
             }
         }
         break;
@@ -3397,11 +3399,10 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
 
                     if (gil != nullptr && gil->isType(ITEM_CURRENCY) && gil->getQuantity() >= price && gil->getReserve() == 0)
                     {
-                        const char* fmtQuery = "UPDATE auction_house SET buyer_name = '%s', sale = %u, sell_date = %u WHERE itemid = %u AND buyer_name IS NULL "
-                                               "AND stack = %u AND price <= %u ORDER BY price LIMIT 1";
-
-                        if (_sql->Query(fmtQuery, PChar->getName(), price, (uint32)time(nullptr), itemid, quantity == 0, price) != SQL_ERROR &&
-                            _sql->AffectedRows() != 0)
+                        const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("UPDATE auction_house SET buyer_name = ?, sale = ?, sell_date = ? WHERE itemid = ? AND buyer_name IS NULL "
+                                                                                           "AND stack = ? AND price <= ? ORDER BY price LIMIT 1",
+                                                                                           PChar->getName(), price, (uint32)time(nullptr), itemid, quantity == 0, price);
+                        if (rset && affectedRows)
                         {
                             uint8 SlotID = charutils::AddItem(PChar, LOC_INVENTORY, itemid, (quantity == 0 ? PItem->getStackSize() : 1));
 
@@ -3416,6 +3417,7 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
                         }
                     }
                 }
+
                 // You were unable to buy the {qty} {item}
                 if (PItem)
                 {
@@ -3432,27 +3434,26 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
         {
             if (slotid < PChar->m_ah_history.size())
             {
-                bool             isAutoCommitOn = _sql->GetAutoCommit();
-                AuctionHistory_t canceledItem   = PChar->m_ah_history[slotid];
+                bool isAutoCommitOn = db::getAutoCommit();
 
-                if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+                AuctionHistory_t canceledItem = PChar->m_ah_history[slotid];
+
+                if (db::setAutoCommit(false) && db::transactionStart())
                 {
-                    const char* fmtQuery = "DELETE FROM auction_house WHERE seller = %u AND itemid = %u AND stack = %u AND price = %u AND sale = 0 LIMIT 1";
-                    int32       ret      = _sql->Query(fmtQuery, PChar->id, canceledItem.itemid, canceledItem.stack, canceledItem.price);
-                    if (ret != SQL_ERROR && _sql->AffectedRows())
+                    const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM auction_house WHERE seller = ? AND itemid = ? AND stack = ? AND price = ? AND sale = 0 LIMIT 1",
+                                                                                       PChar->id, canceledItem.itemid, canceledItem.stack, canceledItem.price);
+                    if (rset && affectedRows)
                     {
                         CItem* PDelItem = itemutils::GetItemPointer(canceledItem.itemid);
                         if (PDelItem)
                         {
-                            uint8 SlotID =
-                                charutils::AddItem(PChar, LOC_INVENTORY, canceledItem.itemid, (canceledItem.stack != 0 ? PDelItem->getStackSize() : 1), true);
-
+                            uint8 SlotID = charutils::AddItem(PChar, LOC_INVENTORY, canceledItem.itemid, (canceledItem.stack != 0 ? PDelItem->getStackSize() : 1), true);
                             if (SlotID != ERROR_SLOTID)
                             {
-                                _sql->TransactionCommit();
+                                db::transactionCommit();
                                 PChar->pushPacket<CAuctionHousePacket>(action, 0, PChar, slotid, false);
                                 PChar->pushPacket<CInventoryFinishPacket>();
-                                _sql->SetAutoCommit(isAutoCommitOn);
+                                db::setAutoCommit(isAutoCommitOn);
                                 return;
                             }
                         }
@@ -3462,8 +3463,8 @@ void SmallPacket0x04E(map_session_data_t* const PSession, CCharEntity* const PCh
                         ShowError("Failed to return item id %u stack %u to char. ", canceledItem.itemid, canceledItem.stack);
                     }
 
-                    _sql->TransactionRollback();
-                    _sql->SetAutoCommit(isAutoCommitOn);
+                    db::transactionRollback();
+                    db::setAutoCommit(isAutoCommitOn);
                 }
             }
             // Let client know something went wrong

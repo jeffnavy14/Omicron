@@ -58,6 +58,8 @@ namespace db
 
     auto escapeString(std::string const& str) -> std::string;
 
+    auto getConnection() -> std::unique_ptr<sql::Connection>;
+
     // A wrapper to ensure the underlying data, the blobstream, and the istream are all alive
     // and valid as long as they need to be.
     struct BlobWrapper
@@ -189,6 +191,12 @@ namespace db
 
         struct State final
         {
+            void reset()
+            {
+                connection = getConnection();
+                lazyPreparedStatements.clear();
+            }
+
             std::unique_ptr<sql::Connection>                                         connection;
             std::unordered_map<std::string, std::unique_ptr<sql::PreparedStatement>> lazyPreparedStatements;
         };
@@ -450,6 +458,8 @@ namespace db
         }
 
         auto timer(std::string const& query) -> xi::final_action<std::function<void()>>;
+
+        auto isConnectionIssue(const std::exception& e) -> bool;
     } // namespace detail
 
     // @brief Execute a query with the given query string.
@@ -496,29 +506,16 @@ namespace db
         // clang-format off
         return detail::getState().write([&](detail::State& state) -> std::unique_ptr<db::detail::ResultSetWrapper>
         {
-            auto& lazyPreparedStatements = state.lazyPreparedStatements;
-
-            // TODO: combine the two versions of this function into one, with the string-handling version
-            // just being a wrapped which does the lookup below and then calls the enum version.
-
-            // If we don't have it, lazily make it
-            if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
+            const auto operation = [&]() -> std::unique_ptr<db::detail::ResultSetWrapper>
             {
-                try
+                auto& lazyPreparedStatements = state.lazyPreparedStatements;
+
+                // If we don't have it, lazily make it
+                if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
                 {
                     lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
                 }
-                catch (const std::exception& e)
-                {
-                    ShowError("Failed to lazy prepare query: %s", str(rawQuery.c_str()));
-                    ShowError(e.what());
-                    return nullptr;
-                }
-            }
 
-            auto& stmt = lazyPreparedStatements[rawQuery];
-            try
-            {
                 DebugSQL(fmt::format("preparedStmt: {}", rawQuery));
 
                 // NOTE: Everything is 1-indexed, but we're going to increment right away insider binder!
@@ -527,17 +524,39 @@ namespace db
                 // All blobs are stored here so they can be kept alive until the query is executed.
                 std::vector<std::shared_ptr<BlobWrapper>> blobs;
 
+                auto& stmt = lazyPreparedStatements[rawQuery];
                 db::detail::binder(stmt, counter, blobs, std::forward<Args>(args)...);
                 auto queryTimer = detail::timer(rawQuery);
                 auto rset       = std::unique_ptr<sql::ResultSet>(stmt->executeQuery());
                 return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
-            }
-            catch (const std::exception& e)
+            };
+
+            const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
+            for (auto i = 0U; i < queryRetryCount; ++i)
             {
-                ShowError("Query Failed: %s", str(rawQuery.c_str()));
-                ShowError(e.what());
-                return nullptr;
+                try
+                {
+                    if (i > 0)
+                    {
+                        ShowInfo("Connection lost, re-establishing connection and retrying query (attempt %d)", i);
+                        state.reset();
+                    }
+                    return operation();
+                }
+                catch (const std::exception& e)
+                {
+                    if (!detail::isConnectionIssue(e))
+                    {
+                        ShowError("Query Failed: %s", rawQuery.c_str());
+                        ShowError(e.what());
+                        return nullptr;
+                    }
+                }
             }
+
+            ShowCritical("Query Failed after %d retries: %s", queryRetryCount, rawQuery.c_str());
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::terminate();
         });
         // clang-format on
     }
@@ -559,45 +578,34 @@ namespace db
         // clang-format off
         return detail::getState().write([&](detail::State& state) -> std::pair<std::unique_ptr<db::detail::ResultSetWrapper>, std::size_t>
         {
-            auto& lazyPreparedStatements = state.lazyPreparedStatements;
-
-            // TODO: combine the two versions of this function into one, with the string-handling version
-            // just being a wrapped which does the lookup below and then calls the enum version.
-
-            // If we don't have it, lazily make it
-            if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
+            const auto operation = [&]() -> std::pair<std::unique_ptr<db::detail::ResultSetWrapper>, std::size_t>
             {
-                try
-                {
-                    lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
-                }
-                catch (const std::exception& e)
-                {
-                    ShowError("Failed to lazy prepare query: %s", str(rawQuery.c_str()));
-                    ShowError(e.what());
-                    return { nullptr, 0 };
-                }
-            }
+                auto& lazyPreparedStatements = state.lazyPreparedStatements;
 
-            auto rowCountQuery = "SELECT ROW_COUNT() AS count";
-            if (lazyPreparedStatements.find(rowCountQuery) == lazyPreparedStatements.end())
-            {
-                try
+                // If we don't have it, lazily make it
+                if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
+                {
+                    try
+                    {
+                        lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
+                    }
+                    catch (const std::exception& e)
+                    {
+                        ShowError("Failed to lazy prepare query: %s", str(rawQuery.c_str()));
+                        ShowError(e.what());
+                        return { nullptr, 0 };
+                    }
+                }
+
+                auto rowCountQuery = "SELECT ROW_COUNT() AS count";
+                if (lazyPreparedStatements.find(rowCountQuery) == lazyPreparedStatements.end())
                 {
                     lazyPreparedStatements[rowCountQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rowCountQuery));
                 }
-                catch (const std::exception& e)
-                {
-                    ShowError("Failed to lazy prepare query: %s", str(rowCountQuery));
-                    ShowError(e.what());
-                    return { nullptr, 0 };
-                }
-            }
 
-            auto& stmt      = lazyPreparedStatements[rawQuery];
-            auto& countStmt = lazyPreparedStatements[rowCountQuery];
-            try
-            {
+                auto& stmt      = lazyPreparedStatements[rawQuery];
+                auto& countStmt = lazyPreparedStatements[rowCountQuery];
+
                 // NOTE: Everything is 1-indexed, but we're going to increment right away insider binder!
                 auto counter = 0;
 
@@ -615,14 +623,34 @@ namespace db
                 }
                 auto rowCount = rset2->getUInt("count");
                 return { std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery), rowCount };
-            }
-            catch (const std::exception& e)
+            };
+
+            const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
+            for (auto i = 0U; i < queryRetryCount; ++i)
             {
-                ShowError("Query Failed: %s", str(rawQuery.c_str()));
-                ShowError(e.what());
-                return { nullptr, 0 };
+                try
+                {
+                    if (i > 0)
+                    {
+                        ShowInfo("Connection lost, re-establishing connection and retrying query (attempt %d)", i);
+                        state.reset();
+                    }
+                    return operation();
+                }
+                catch (const std::exception& e)
+                {
+                    if (!detail::isConnectionIssue(e))
+                    {
+                        ShowError("Query Failed: %s", rawQuery.c_str());
+                        ShowError(e.what());
+                        return { nullptr, 0 };
+                    }
+                }
             }
 
+            ShowCritical("Query Failed after %d retries: %s", queryRetryCount, rawQuery.c_str());
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::terminate();
         });
         // clang-format on
     }
