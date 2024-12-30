@@ -35016,7 +35016,7 @@ INSERT INTO `item_mods` VALUES (17594,72,4); -- HPHEAL: 4
 
 -- Hope Staff
 INSERT INTO `item_mods` VALUES (17595,11,7);  -- AGI: 7
-INSERT INTO `item_mods` VALUES (17595,826,2); -- AMMO_SWING_TYPE: 2
+INSERT INTO `item_mods` VALUES (17595,523,50); -- AMMO_SWING
 
 -- Steel-Splitter
 INSERT INTO `item_mods` VALUES (17596,9,2);  -- DEX: 2
@@ -35373,7 +35373,7 @@ INSERT INTO `item_mods` VALUES (17709,25,4);  -- ACC: 4
 
 -- Justice Sword
 INSERT INTO `item_mods` VALUES (17710,8,7);   -- STR: 7
-INSERT INTO `item_mods` VALUES (17710,826,1); -- AMMO_SWING_TYPE: 1
+INSERT INTO `item_mods` VALUES (17710,523,50); -- AMMO_SWING
 
 -- Shivas Shotel
 INSERT INTO `item_mods` VALUES (17711,12,4);   -- INT: 4
@@ -35897,7 +35897,7 @@ INSERT INTO `item_mods` VALUES (17945,345,1000); -- TP_BONUS: 1000
 
 -- Temperance Axe
 INSERT INTO `item_mods` VALUES (17948,14,7);  -- CHR: 7
-INSERT INTO `item_mods` VALUES (17948,826,1); -- AMMO_SWING_TYPE: 1
+INSERT INTO `item_mods` VALUES (17948,523,50); -- AMMO_SWING
 
 -- Furnace Tabarzin
 INSERT INTO `item_mods` VALUES (17949,2,10); -- HP: 10
@@ -36297,7 +36297,7 @@ INSERT INTO `item_mods` VALUES (18098,345,1000); -- TP_BONUS: 1000
 
 -- Love Halberd
 INSERT INTO `item_mods` VALUES (18100,9,7);   -- DEX: 7
-INSERT INTO `item_mods` VALUES (18100,826,2); -- AMMO_SWING_TYPE: 2
+INSERT INTO `item_mods` VALUES (18100,523,50); -- AMMO_SWING
 
 -- Fuscina
 INSERT INTO `item_mods` VALUES (18104,431,1);  -- ITEM_ADDEFFECT_TYPE: DAMAGE
@@ -36736,7 +36736,7 @@ INSERT INTO `item_mods` VALUES (18221,345,1000); -- TP_BONUS: 1000
 
 -- Fortitude Axe
 INSERT INTO `item_mods` VALUES (18222,10,7);  -- VIT: 7
-INSERT INTO `item_mods` VALUES (18222,826,2); -- AMMO_SWING_TYPE: 2
+INSERT INTO `item_mods` VALUES (18222,523,50); -- AMMO_SWING
 
 -- Toporok
 INSERT INTO `item_mods` VALUES (18223,2,10); -- HP: 10
@@ -37196,7 +37196,7 @@ INSERT INTO `item_mods` VALUES (18359,950,3);   -- ITEM_ADDEFFECT_ELEMENT: 3
 
 -- Faith Baghnakhs
 INSERT INTO `item_mods` VALUES (18360,13,7);  -- MND: 7
-INSERT INTO `item_mods` VALUES (18360,826,2); -- AMMO_SWING_TYPE: 1.  - HtH are treated like 1H and can proc on both hands.
+INSERT INTO `item_mods` VALUES (18360,523,50); -- AMMO_SWING
 
 -- Ponderous Manoples
 INSERT INTO `item_mods` VALUES (18361,10,2); -- VIT: 2
@@ -37294,7 +37294,7 @@ INSERT INTO `item_mods` VALUES (18396,25,-5); -- ACC: -5
 
 -- Prudence Rod
 INSERT INTO `item_mods` VALUES (18397,12,7);  -- INT: 7
-INSERT INTO `item_mods` VALUES (18397,826,1); -- AMMO_SWING_TYPE: 1
+INSERT INTO `item_mods` VALUES (18397,523,50); -- AMMO_SWING
 
 -- Mana Wand
 INSERT INTO `item_mods` VALUES (18402,12,2); -- INT: 2

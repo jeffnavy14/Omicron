@@ -31,7 +31,8 @@ using namespace std::chrono_literals;
 namespace
 {
     // TODO: Manual checkout and pooling of state
-    mutex_guarded<db::detail::State> state;
+    // Each thread gets its own connection, so we don't need to worry about thread safety.
+    thread_local mutex_guarded<db::detail::State> state;
 
     // Replacement map similar to str_replace in PHP
     const std::unordered_map<char, std::string> replacements = {
@@ -43,7 +44,52 @@ namespace
         { '\"', "\\\"" },
         { '\x1a', "\\Z" }
     };
+
+    const std::vector<std::string> connectionIssues = {
+        "Lost connection",
+        "Server has gone away",
+        "Connection refused",
+        "Can't connect to server",
+    };
 } // namespace
+
+auto db::getConnection() -> std::unique_ptr<sql::Connection>
+{
+    try
+    {
+        auto login  = settings::get<std::string>("network.SQL_LOGIN");
+        auto passwd = settings::get<std::string>("network.SQL_PASSWORD");
+        auto host   = settings::get<std::string>("network.SQL_HOST");
+        auto port   = settings::get<uint16>("network.SQL_PORT");
+        auto schema = settings::get<std::string>("network.SQL_DATABASE");
+        auto url    = fmt::format("tcp://{}:{}/{}", host, port, schema);
+
+        return std::unique_ptr<sql::Connection>(sql::mariadb::get_driver_instance()->connect(url.c_str(), login.c_str(), passwd.c_str()));
+    }
+    catch (const std::exception& e)
+    {
+        // If we can't establish a connection to the database we can't do anything.
+        // Time to die!
+        ShowCritical("!!! Failed to connect to database, terminating server !!!");
+        ShowCritical(e.what());
+        std::this_thread::sleep_for(1s);
+        std::terminate();
+    }
+}
+
+auto db::detail::isConnectionIssue(const std::exception& e) -> bool
+{
+    const auto str = fmt::format("{}", e.what());
+    for (const auto& issue : connectionIssues)
+    {
+        if (str.find(issue) != std::string::npos)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 mutex_guarded<db::detail::State>& db::detail::getState()
 {
@@ -53,11 +99,9 @@ mutex_guarded<db::detail::State>& db::detail::getState()
     //     : is const. So we're going to have to wrap calls to it as though they aren't.
 
     // clang-format off
-    if (state.write([&](auto& state)
+    if (state.read([&](auto& state)
     {
-        // If we have a valid and connected connection: return it.
-        // isValid() calls mysql_ping.
-        return state.connection != nullptr && state.connection->isValid();
+        return state.connection != nullptr;
     }))
     {
         return state;
@@ -68,30 +112,7 @@ mutex_guarded<db::detail::State>& db::detail::getState()
 
     state.write([&](auto& state)
     {
-        // NOTE: Driver is static, so it will only be initialized once.
-        sql::Driver* driver = sql::mariadb::get_driver_instance();
-
-        try
-        {
-            auto login  = settings::get<std::string>("network.SQL_LOGIN");
-            auto passwd = settings::get<std::string>("network.SQL_PASSWORD");
-            auto host   = settings::get<std::string>("network.SQL_HOST");
-            auto port   = settings::get<uint16>("network.SQL_PORT");
-            auto schema = settings::get<std::string>("network.SQL_DATABASE");
-            auto url    = fmt::format("tcp://{}:{}/{}", host, port, schema);
-
-            if (state.connection)
-            {
-                ShowInfo("Previous sql::Connection was invalid, replacing with a new one");
-            }
-
-            state.connection = std::unique_ptr<sql::Connection>(driver->connect(url.c_str(), login.c_str(), passwd.c_str()));
-        }
-        catch (const std::exception& e)
-        {
-            ShowError(e.what());
-            state.connection = nullptr; // Wipe the connection so that it can't be used if it's broken
-        }
+        state.reset();
     });
     // clang-format on
 
@@ -129,20 +150,42 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
     // clang-format off
     return detail::getState().write([&](detail::State& state) -> std::unique_ptr<db::detail::ResultSetWrapper>
     {
-        auto stmt = state.connection->createStatement();
-        try
+        const auto operation = [&]() -> std::unique_ptr<db::detail::ResultSetWrapper>
         {
+            auto stmt = state.connection->createStatement();
+
             DebugSQL(fmt::format("query: {}", rawQuery));
             auto queryTimer = detail::timer(rawQuery);
             auto rset       = std::unique_ptr<sql::ResultSet>(stmt->executeQuery(rawQuery.data()));
             return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
-        }
-        catch (const std::exception& e)
+        };
+
+        const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
+        for (auto i = 0U; i < queryRetryCount; ++i)
         {
-            ShowError("Query Failed: %s", rawQuery.data());
-            ShowError(e.what());
-            return nullptr;
+            try
+            {
+                if (i > 0)
+                {
+                    ShowInfo("Connection lost, re-establishing connection and retrying query (attempt %d)", i);
+                    state.reset();
+                }
+                return operation();
+            }
+            catch (const std::exception& e)
+            {
+                if (!detail::isConnectionIssue(e))
+                {
+                    ShowError("Query Failed: %s", rawQuery.c_str());
+                    ShowError(e.what());
+                    return nullptr;
+                }
+            }
         }
+
+        ShowCritical("Query Failed after %d retries: %s", queryRetryCount, rawQuery.c_str());
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::terminate();
     });
     // clang-format on
 }

@@ -34,16 +34,11 @@
 #include <cstring>
 #include <utility>
 
-#include "ai/ai_container.h"
-#include "ai/states/death_state.h"
 #include "alliance.h"
 #include "campaign_system.h"
 #include "conquest_system.h"
 #include "enmity_container.h"
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
-#include "entities/npcentity.h"
-#include "entities/trustentity.h"
+#include "fishingcontest.h"
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
@@ -62,19 +57,15 @@
 #include "treasure_pool.h"
 #include "unitychat.h"
 #include "universal_container.h"
-#include "utils/battleutils.h"
-#include "utils/blacklistutils.h"
-#include "utils/blueutils.h"
-#include "utils/charutils.h"
-#include "utils/fishingutils.h"
-#include "utils/gardenutils.h"
-#include "utils/itemutils.h"
-#include "utils/jailutils.h"
-#include "utils/petutils.h"
-#include "utils/puppetutils.h"
-#include "utils/synthutils.h"
-#include "utils/zoneutils.h"
 #include "zone.h"
+
+#include "ai/ai_container.h"
+#include "ai/states/death_state.h"
+
+#include "entities/charentity.h"
+#include "entities/mobentity.h"
+#include "entities/npcentity.h"
+#include "entities/trustentity.h"
 
 #include "items/item_flowerpot.h"
 #include "items/item_shop.h"
@@ -175,6 +166,19 @@
 #include "packets/world_pass.h"
 #include "packets/zone_in.h"
 #include "packets/zone_visited.h"
+
+#include "utils/battleutils.h"
+#include "utils/blacklistutils.h"
+#include "utils/blueutils.h"
+#include "utils/charutils.h"
+#include "utils/fishingutils.h"
+#include "utils/gardenutils.h"
+#include "utils/itemutils.h"
+#include "utils/jailutils.h"
+#include "utils/petutils.h"
+#include "utils/puppetutils.h"
+#include "utils/synthutils.h"
+#include "utils/zoneutils.h"
 
 uint8 PacketSize[512];
 
@@ -2389,7 +2393,7 @@ void SmallPacket0x04B(map_session_data_t* const PSession, CCharEntity* const PCh
                 }
                 else
                 {
-                    entries.push_back(FishingContestEntry()); // Safety if there is no pointer but we need to fill the vector
+                    entries.emplace_back(FishingContestEntry{}); // Safety if there is no pointer but we need to fill the vector
                 }
             }
         }

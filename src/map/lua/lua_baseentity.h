@@ -111,13 +111,15 @@ public:
     uint16 getTargID();
     auto   getCursorTarget() -> std::optional<CLuaBaseEntity>;
 
-    uint8 getObjType();
-    bool  isPC();
-    bool  isNPC();
-    bool  isMob();
-    bool  isPet();
-    bool  isTrust();
-    bool  isAlly();
+    uint8 getObjType() const;
+
+    bool isPC() const;
+    bool isNPC() const;
+    bool isMob() const;
+    bool isPet() const;
+    bool isTrust() const;
+    bool isFellow() const;
+    bool isAlly() const;
 
     // AI and Control
     void  initNpcAi();
@@ -805,6 +807,7 @@ public:
     bool   isNM();
 
     uint8  getModelSize();
+    float  getMeleeRange();
     void   setMeleeRange(float range);
     void   setMobFlags(uint32 flags, sol::object const& mobId); // Used to manipulate the mob's flags, such as changing size.
     uint32 getMobFlags();
@@ -813,7 +816,7 @@ public:
 
     void   spawn(sol::object const& despawnSec, sol::object const& respawnSec);
     bool   isSpawned();
-    auto   getSpawnPos() -> std::map<std::string, float>;
+    auto   getSpawnPos() -> sol::table;
     void   setSpawn(float x, float y, float z, sol::object const& rot);
     uint32 getRespawnTime();
     void   setRespawnTime(uint32 seconds);

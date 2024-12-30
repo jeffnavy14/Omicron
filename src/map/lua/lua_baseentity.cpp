@@ -41,6 +41,7 @@
 #include "battlefield.h"
 #include "daily_system.h"
 #include "enmity_container.h"
+#include "fishingcontest.h"
 #include "guild.h"
 #include "instance.h"
 #include "item_container.h"
@@ -86,6 +87,7 @@
 
 #include "entities/automatonentity.h"
 #include "entities/charentity.h"
+#include "entities/fellowentity.h"
 #include "entities/mobentity.h"
 #include "entities/npcentity.h"
 #include "entities/petentity.h"
@@ -156,7 +158,6 @@
 #include "utils/battleutils.h"
 #include "utils/blueutils.h"
 #include "utils/charutils.h"
-#include "utils/fishingcontest.h"
 #include "utils/guildutils.h"
 #include "utils/instanceutils.h"
 #include "utils/itemutils.h"
@@ -1425,7 +1426,7 @@ std::optional<CLuaBaseEntity> CLuaBaseEntity::getCursorTarget()
  *  Notes   :
  ************************************************************************/
 
-uint8 CLuaBaseEntity::getObjType()
+uint8 CLuaBaseEntity::getObjType() const
 {
     return m_PBaseEntity->objtype;
 }
@@ -1437,7 +1438,7 @@ uint8 CLuaBaseEntity::getObjType()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isPC()
+bool CLuaBaseEntity::isPC() const
 {
     return m_PBaseEntity->objtype == TYPE_PC;
 }
@@ -1449,7 +1450,7 @@ bool CLuaBaseEntity::isPC()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isNPC()
+bool CLuaBaseEntity::isNPC() const
 {
     return m_PBaseEntity->objtype == TYPE_NPC;
 }
@@ -1461,7 +1462,7 @@ bool CLuaBaseEntity::isNPC()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isMob()
+bool CLuaBaseEntity::isMob() const
 {
     return m_PBaseEntity->objtype == TYPE_MOB;
 }
@@ -1473,7 +1474,7 @@ bool CLuaBaseEntity::isMob()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isPet()
+bool CLuaBaseEntity::isPet() const
 {
     return m_PBaseEntity->objtype == TYPE_PET;
 }
@@ -1485,9 +1486,21 @@ bool CLuaBaseEntity::isPet()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isTrust()
+bool CLuaBaseEntity::isTrust() const
 {
     return m_PBaseEntity->objtype == TYPE_TRUST;
+}
+
+/************************************************************************
+ *  Function: isFellow()
+ *  Purpose : Returns true if entity is of the Fellow object type
+ *  Example : if caster:isFellow() then
+ *  Notes   :
+ ************************************************************************/
+
+bool CLuaBaseEntity::isFellow() const
+{
+    return m_PBaseEntity->objtype == TYPE_FELLOW;
 }
 
 /************************************************************************
@@ -1497,9 +1510,11 @@ bool CLuaBaseEntity::isTrust()
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isAlly()
+bool CLuaBaseEntity::isAlly() const
 {
-    return m_PBaseEntity->objtype == TYPE_MOB && m_PBaseEntity->allegiance == ALLEGIANCE_TYPE::PLAYER;
+    const auto isMob          = m_PBaseEntity->objtype == TYPE_MOB;
+    const auto playerAlliance = m_PBaseEntity->allegiance == ALLEGIANCE_TYPE::PLAYER;
+    return isMob && playerAlliance;
 }
 
 /************************************************************************
@@ -6600,24 +6615,26 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
             charutils::RemoveAllEquipMods(PChar);
             PChar->SetMLevel(NewMLevel);
             PChar->SetSLevel(PChar->jobs.job[PChar->GetSJob()]);
+
             charutils::ApplyAllEquipMods(PChar);
+            blueutils::ValidateBlueSpells(PChar);
+            jobpointutils::RefreshGiftMods(PChar);
+            charutils::BuildingCharSkillsTable(PChar);
+            charutils::CalculateStats(PChar);
+            charutils::BuildingCharTraitsTable(PChar);
+            charutils::BuildingCharAbilityTable(PChar);
+            charutils::CheckValidEquipment(PChar);
+
+            PChar->updatemask |= UPDATE_HP;
+
+            // Update the character's Automaton capacity bonus regardless if the pet is out or not
+            if (PChar->PAutomaton)
+            {
+                PChar->PAutomaton->setElementalCapacityBonus(PChar->getMod(Mod::AUTO_ELEM_CAPACITY));
+            }
 
             if (PChar->status != STATUS_TYPE::DISAPPEAR)
             {
-                blueutils::ValidateBlueSpells(PChar);
-                jobpointutils::RefreshGiftMods(PChar);
-                charutils::BuildingCharSkillsTable(PChar);
-                charutils::CalculateStats(PChar);
-                charutils::BuildingCharTraitsTable(PChar);
-                charutils::BuildingCharAbilityTable(PChar);
-                charutils::CheckValidEquipment(PChar);
-
-                // Update the character's Automaton capacity bonus regardless if the pet is out or not
-                if (PChar->PAutomaton)
-                {
-                    PChar->PAutomaton->setElementalCapacityBonus(PChar->getMod(Mod::AUTO_ELEM_CAPACITY));
-                }
-
                 PChar->pushPacket<CCharJobsPacket>(PChar);
                 PChar->pushPacket<CCharStatsPacket>(PChar);
                 PChar->pushPacket<CCharSkillsPacket>(PChar);
@@ -6626,7 +6643,6 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
                 PChar->pushPacket<CCharSpellsPacket>(PChar);
                 PChar->pushPacket<CCharUpdatePacket>(PChar);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
-                PChar->updatemask |= UPDATE_HP;
             }
 
             if (PChar->PPet)
@@ -6759,7 +6775,7 @@ void CLuaBaseEntity::setMonstrosityData(sol::table table)
     // NOTE: This will populate m_PMonstrosity if it doesn't exist
     monstrosity::ReadMonstrosityData(PChar);
 
-    luautils::SetMonstrosityLuaTable(PChar, table);
+    luautils::SetMonstrosityLuaTable(PChar, std::move(table));
 
     monstrosity::WriteMonstrosityData(PChar);
 
@@ -7977,11 +7993,11 @@ void CLuaBaseEntity::triggerRoeEvent(uint8 eventNum, sol::object const& reqTable
             {
                 if (kv.second.get_type() == sol::type::number)
                 {
-                    roeEventData.emplace_back(RoeDatagram(kv.first.as<std::string>(), kv.second.as<uint32>()));
+                    roeEventData.emplace_back(kv.first.as<std::string>(), kv.second.as<uint32>());
                 }
                 else if (kv.second.get_type() == sol::type::string)
                 {
-                    roeEventData.emplace_back(RoeDatagram(kv.first.as<std::string>(), kv.second.as<std::string>()));
+                    roeEventData.emplace_back(kv.first.as<std::string>(), kv.second.as<std::string>());
                 }
             }
         }
@@ -11763,11 +11779,11 @@ void CLuaBaseEntity::objectiveUtility(sol::object const& obj)
                 {
                     std::string barTitle = barObj.as<sol::table>().get<std::string>("title");
                     uint32      barValue = barObj.as<sol::table>().get<uint32>("value");
-                    bars.push_back(std::make_pair(barTitle, barValue));
+                    bars.emplace_back(barTitle, barValue);
                 }
                 else
                 {
-                    bars.push_back(std::make_pair("", 0));
+                    bars.emplace_back("", 0);
                 }
             }
             packet->addBars(std::move(bars));
@@ -14819,8 +14835,8 @@ std::string CLuaBaseEntity::addSimpleGambit(uint16 targ, uint16 cond, uint32 con
     uint16 retry_delay = (retry != sol::lua_nil) ? retry.as<uint16>() : 0;
 
     Gambit_t g;
-    g.predicates.emplace_back(Predicate_t{ target, condition, condition_arg });
-    g.actions.emplace_back(Action_t{ reaction, selector, selector_arg });
+    g.predicates.emplace_back(target, condition, condition_arg);
+    g.actions.emplace_back(reaction, selector, selector_arg);
     g.retry_delay = retry_delay;
     g.identifier  = fmt::format("{}_{}_{}_{}_{}_{}_{}", targ, cond, condition_arg, react, select, selector_arg, retry_delay);
 
@@ -15937,6 +15953,20 @@ uint8 CLuaBaseEntity::getModelSize()
 }
 
 /************************************************************************
+ *  Function: getMeleeRange()
+ *  Purpose : Returns the melee range of the entity
+ *  Example : distance(player, mob) > mob:getMeleeRange()
+ *  Notes   :
+ ************************************************************************/
+
+float CLuaBaseEntity::getMeleeRange()
+{
+    auto* PEntity = static_cast<CBattleEntity*>(m_PBaseEntity);
+
+    return PEntity->GetMeleeRange();
+}
+
+/************************************************************************
  *  Function: setMeleeRange()
  *  Purpose : Sets the maximum melee range for a mob
  *  Example : mob:setMeleeRange(12.0)
@@ -16140,7 +16170,7 @@ bool CLuaBaseEntity::isSpawned()
  *  Notes   : x = spawn.x; y = spawn.y, etc
  ************************************************************************/
 
-auto CLuaBaseEntity::getSpawnPos() -> std::map<std::string, float>
+auto CLuaBaseEntity::getSpawnPos() -> sol::table
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
@@ -16148,8 +16178,8 @@ auto CLuaBaseEntity::getSpawnPos() -> std::map<std::string, float>
         return {};
     }
 
-    auto*                        PMob = static_cast<CMobEntity*>(m_PBaseEntity);
-    std::map<std::string, float> pos;
+    auto* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
+    auto  pos  = lua.create_table();
 
     pos["x"]   = PMob->m_SpawnPoint.x;
     pos["y"]   = PMob->m_SpawnPoint.y;
@@ -17181,11 +17211,13 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
         {
             return;
         }
-        battleutils::DrawIn(defaultTarget, mobObj, mobObj->GetMeleeRange() - 0.2f);
+        battleutils::DrawIn(defaultTarget, mobObj->loc.p, 0, 0);
         return;
     }
 
     CLuaBaseEntity* PLuaBaseEntity = va.get<CLuaBaseEntity*>(0);
+    float           offset         = va.get<float>(1);
+    float           degrees        = va.get<float>(2);
 
     if (!PLuaBaseEntity)
     {
@@ -17203,7 +17235,7 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
 
     if (PTarget)
     {
-        battleutils::DrawIn(PTarget, mobObj, mobObj->GetMeleeRange() - 0.2f);
+        battleutils::DrawIn(PTarget, mobObj->loc.p, offset, degrees);
     }
 
     return;
@@ -18189,6 +18221,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("isMob", CLuaBaseEntity::isMob);
     SOL_REGISTER("isPet", CLuaBaseEntity::isPet);
     SOL_REGISTER("isTrust", CLuaBaseEntity::isTrust);
+    SOL_REGISTER("isFellow", CLuaBaseEntity::isFellow);
     SOL_REGISTER("isAlly", CLuaBaseEntity::isAlly);
 
     // AI and Control
@@ -18858,6 +18891,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("isNM", CLuaBaseEntity::isNM);
 
     SOL_REGISTER("getModelSize", CLuaBaseEntity::getModelSize);
+    SOL_REGISTER("getMeleeRange", CLuaBaseEntity::getMeleeRange);
     SOL_REGISTER("setMeleeRange", CLuaBaseEntity::setMeleeRange);
     SOL_REGISTER("setMobFlags", CLuaBaseEntity::setMobFlags);
     SOL_REGISTER("getMobFlags", CLuaBaseEntity::getMobFlags);

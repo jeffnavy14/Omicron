@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -633,6 +633,7 @@ void CMobController::FaceTarget(uint16 targid)
     {
         PMob->PAI->PathFind->LookAt(targ->loc.p);
     }
+    PMob->UpdateSpeed();
 }
 
 void CMobController::Move()
@@ -707,16 +708,6 @@ void CMobController::Move()
 
         if (((currentDistance > closeDistance) || move) && PMob->PAI->CanFollowPath())
         {
-            // TODO: can this be moved to scripts entirely?
-            if (PMob->getMobMod(MOBMOD_DRAW_IN) > 0)
-            {
-                if (currentDistance >= PMob->GetMeleeRange() * 2 && battleutils::DrawIn(PTarget, PMob, PMob->GetMeleeRange() - 0.2f))
-                {
-                    FaceTarget();
-                    return;
-                }
-            }
-
             if (PMob->speed != 0 && PMob->getMobMod(MOBMOD_NO_MOVE) == 0 && m_Tick >= m_LastSpecialTime)
             {
                 // attempt to teleport to target (if in range)

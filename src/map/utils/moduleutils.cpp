@@ -170,6 +170,14 @@ namespace moduleutils
             }
         }
 
+        // Load zone_settings information
+        std::unordered_map<std::string, uint16> zoneSettingsPorts;
+        auto rset = db::preparedStmt("SELECT name, zoneport FROM zone_settings");
+        while (rset && rset->next())
+        {
+            zoneSettingsPorts[rset->get<std::string>("name")] = rset->get<uint16>("zoneport");
+        }
+
         // Load each module file that isn't the helpers.lua file or a directory
         for (auto const& entry : expandedList)
         {
@@ -235,21 +243,9 @@ namespace moduleutils
                             const auto zoneName    = parts[2];
                             const auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
 
-                            /*
-                            TODO: Why doesn't preparedStmt work here?
-
-                            auto rset = db::preparedStmt("SELECT name, zoneport FROM zone_settings WHERE name = ? AND zoneport = ?", zoneName, currentPort);
-
-                            [debug] preparedStmt: SELECT name, zoneport FROM zone_settings WHERE name = ? AND zoneport = ? (db::preparedStmt::<lambda_1>::()::<lambda_1>::operator ():517)
-                            [debug] binding 1: GM_Home (db::detail::bindValue:368)
-                            [debug] binding 2: 54230 (db::detail::bindValue:368)
-
-                            But then no rows in the rset?
-                            */
-                            const auto rset = db::query(fmt::format("SELECT name, zoneport FROM zone_settings WHERE name = '{}' AND zoneport = {}", zoneName, currentPort).c_str());
-                            if (rset && rset->rowsCount() == 0)
+                            if (zoneSettingsPorts.find(zoneName) != zoneSettingsPorts.end() && zoneSettingsPorts[zoneName] != currentPort)
                             {
-                                DebugModules(fmt::format("{} does not appear to exist on this process (port: {})", zoneName, currentPort));
+                                DebugModules(fmt::format("{} exists on a different port ({}), skipping", zoneName, zoneSettingsPorts[zoneName]));
                                 skipOverrideCheck = true;
                                 continue;
                             }
