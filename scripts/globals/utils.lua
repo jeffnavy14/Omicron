@@ -1324,6 +1324,7 @@ function utils.drawIn(target, table)
                             position.z   = table.position.z and table.position.z or table.position[3]
                             position.rot = table.position.rot and table.position.rot or table.position[4]
                         end
+
                         local offset  = table.offset and table.offset or 0
                         local degrees = table.degrees and table.degrees or 0
 
@@ -1331,6 +1332,7 @@ function utils.drawIn(target, table)
                         target:setLocalVar('[Draw-In]WaitTime', 0)
                         return true
                     end
+
                     return false
                 else
                     local wait = table.wait and table.wait or 1
@@ -1340,6 +1342,7 @@ function utils.drawIn(target, table)
             end
         end
     end
+
     target:setLocalVar('[Draw-In]WaitTime', 0)
     return false
 end

@@ -449,8 +449,10 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
     -- STEP 5: Exceptions.
     ------------------------------
     -- Bind: Dependant on target speed.
+    -- Bind: Duration floor of 5 seconds.
     if spellEffect == xi.effect.BIND then
         potency = target:getSpeed()
+        duration = utils.clamp(duration, 5, 60)
 
     -- TODO: This is unnecesary, but, for now, we will comply with core.
     elseif spellEffect == xi.effect.SLEEP_I then
@@ -459,6 +461,12 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
     -- Addle: Has sub-effect.
     elseif spellEffect == xi.effect.ADDLE then
         subpotency = 20 + utils.clamp(math.floor((caster:getStat(statUsed) - target:getStat(statUsed)) / 5), 0, 20)
+
+    -- Break: Player petrification sucks.
+    elseif spellEffect == xi.effect.PETRIFICATION then
+        if caster:isPC() then
+            subpotency = 1
+        end
 
     -- Dispel: It's special in that it has no real effect.
     elseif spellEffect == xi.effect.NONE then

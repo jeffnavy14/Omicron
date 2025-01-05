@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -90,8 +90,8 @@ void CCharPacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 update
         packet.y   = PChar->loc.p.z; // Intentionally Swapped, apparently internal x/y/z is not FFXI x/y/z
         packet.z   = PChar->loc.p.y; // Intentionally Swapped
 
-        packet.Speed     = PChar->GetSpeed();
-        packet.SpeedBase = PChar->speedsub;
+        packet.Speed     = PChar->UpdateSpeed();
+        packet.SpeedBase = PChar->animationSpeed;
 
         packet.Flags0.MovTime     = PChar->loc.p.moving;
         packet.Flags0.RunMode     = 0;                      // Unknown

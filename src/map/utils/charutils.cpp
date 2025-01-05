@@ -679,7 +679,7 @@ namespace charutils
             PChar->profile.mhflag = rset->get<uint16>("mhflag");
             PChar->profile.title  = rset->get<uint16>("title");
 
-            std::array<uint8, 512> bazaarMessageArray;
+            std::array<uint8, 512> bazaarMessageArray{};
             db::extractFromBlob(rset, "bazaar_message", bazaarMessageArray);
             const char* bazaarMessageStr = reinterpret_cast<const char*>(bazaarMessageArray.data());
             if (bazaarMessageStr != nullptr)
@@ -6860,7 +6860,7 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "UPDATE char_unlocks SET traverser_start = unix_timestamp() WHERE charid = %u";
+        auto fmtQuery = "UPDATE char_unlocks SET traverser_start = CURRENT_TIMESTAMP() WHERE charid = %u";
 
         _sql->Query(fmtQuery, PChar->id);
     }
@@ -7164,7 +7164,7 @@ namespace charutils
         return 0;
     }
 
-    void forceSynthCritFail(std::string sourceFunction, CCharEntity* PChar)
+    void forceSynthCritFail(const std::string& sourceFunction, CCharEntity* PChar)
     {
         // NOTE:
         // Supposed non-losable items are reportedly lost if this condition is met:

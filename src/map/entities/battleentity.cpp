@@ -297,19 +297,18 @@ int32 CBattleEntity::GetMaxMP() const
  *                                                                       *
  ************************************************************************/
 
-uint8 CBattleEntity::GetSpeed()
+uint8 CBattleEntity::UpdateSpeed(bool run)
 {
-    uint8 baseSpeed   = speed;
     int16 outputSpeed = 0;
 
     // Mount speed. Independent from regular speed and unaffected by most things.
-    // Note: retail treats mounted speed as double what it actually is! 40 is in fact retail accurate!
     if (isMounted())
     {
-        baseSpeed   = 40 + settings::get<int8>("map.MOUNT_SPEED_MOD");
-        outputSpeed = baseSpeed * (100 + getMod(Mod::MOUNT_MOVE)) / 100;
+        outputSpeed = settings::get<uint8>("map.MOUNT_SPEED") / 2;
+        outputSpeed *= (100 + getMod(Mod::MOUNT_MOVE)) / 100;
+        speed = std::clamp<uint8>(outputSpeed, std::numeric_limits<uint8>::min(), std::numeric_limits<uint8>::max());
 
-        return std::clamp<uint8>(outputSpeed, std::numeric_limits<uint8>::min(), std::numeric_limits<uint8>::max());
+        return speed;
     }
 
     // Gear penalties.
@@ -354,7 +353,7 @@ uint8 CBattleEntity::GetSpeed()
     // Set cap if a PC (Default 80).
     if (objtype == TYPE_PC)
     {
-        outputSpeed = std::clamp<int16>(outputSpeed, 0, 80 + settings::get<int8>("map.SPEED_MOD"));
+        outputSpeed = std::clamp<int16>(outputSpeed, 0, settings::get<uint8>("map.SPEED_LIMIT"));
     }
 
     // Speed cap can be bypassed. Ex. Feast of swords. GM speed.
@@ -366,7 +365,36 @@ uint8 CBattleEntity::GetSpeed()
         outputSpeed = getMod(Mod::MOVE_SPEED_OVERRIDE);
     }
 
-    return static_cast<uint8>(std::clamp<int16>(outputSpeed, std::numeric_limits<uint8>::min(), std::numeric_limits<uint8>::max()));
+    if (run && outputSpeed > 0 && getMod(Mod::MOVE_SPEED_OVERRIDE) == 0)
+    {
+        float multiplier = settings::get<float>("map.MOB_RUN_SPEED_MULTIPLIER");
+        if (multiplier > 1.0f)
+        {
+            if (auto* mobEntity = dynamic_cast<CMobEntity*>(this))
+            {
+                // mob has a custom multiplier
+                if (mobEntity->getMobMod(MOBMOD_RUN_SPEED_MULT) > 0)
+                {
+                    multiplier = mobEntity->getMobMod(MOBMOD_RUN_SPEED_MULT) / 100.0f;
+                }
+
+                // if some weight penalty (like gravity) then cut the multiplier
+                // (for mobs with default boost of 2.5 then boost becomes 1.20)
+                if (mobEntity->getMod(Mod::MOVE_SPEED_WEIGHT_PENALTY) > 0)
+                {
+                    multiplier *= 0.48f;
+                }
+
+                // Ensure the multiplier is at least 1.0 so that multiplier never decreases speed
+                multiplier = std::max<float>(multiplier, 1.0f);
+
+                outputSpeed *= multiplier;
+            }
+        }
+    }
+
+    speed = static_cast<uint8>(std::clamp<int16>(outputSpeed, std::numeric_limits<uint8>::min(), std::numeric_limits<uint8>::max()));
+    return speed;
 }
 
 bool CBattleEntity::CanRest()
@@ -910,7 +938,7 @@ uint16 CBattleEntity::RACC(uint8 skill, uint16 bonusSkill)
     return std::max(0, RACC + std::min<int16>(((100 + getMod(Mod::FOOD_RACCP) * RACC) / 100), getMod(Mod::FOOD_RACC_CAP)));
 }
 
-uint16 CBattleEntity::ACC(uint8 attackNumber, uint8 offsetAccuracy)
+uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
 {
     TracyZoneScoped;
 
@@ -961,7 +989,7 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint8 offsetAccuracy)
             }
             skill = SKILL_HAND_TO_HAND;
         }
-        int16 ACC = GetSkill(skill) + iLvlSkill;
+        int32 ACC = GetSkill(skill) + iLvlSkill;
         ACC       = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
         if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]); weapon && weapon->isTwoHanded())
         {
@@ -990,7 +1018,7 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint8 offsetAccuracy)
     }
     else if (this->objtype == TYPE_PET && ((CPetEntity*)this)->getPetType() == PET_TYPE::AUTOMATON)
     {
-        int16 ACC = this->GetSkill(SKILL_AUTOMATON_MELEE);
+        int32 ACC = this->GetSkill(SKILL_AUTOMATON_MELEE);
         ACC       = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
         ACC += (int16)(DEX() * 0.5);
         ACC += m_modStat[Mod::ACC] + offsetAccuracy;
@@ -1005,7 +1033,7 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint8 offsetAccuracy)
     }
     else
     {
-        int16 ACC = m_modStat[Mod::ACC];
+        int32 ACC = m_modStat[Mod::ACC] + offsetAccuracy;
 
         if (this->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
         {

@@ -446,12 +446,14 @@ end
 -- https://www.ffxiah.com/forum/topic/33470/the-sealed-dagger-a-ninja-guide/151/#3420836
 -- https://www.ffxiah.com/forum/topic/49614/blade-chi-damage-formula/2/#3171538
 local function calculateHybridMagicDamage(tp, physicaldmg, attacker, target, wsParams, calcParams, wsID)
-    local ftp = xi.weaponskills.fTP(tp, wsParams.ftpMod)
+    local ftp      = xi.weaponskills.fTP(tp, wsParams.ftpMod)
     local magicdmg = physicaldmg * ftp + attacker:getMod(xi.mod.MAGIC_DAMAGE)
-    local wsd = attacker:getMod(xi.mod.ALL_WSDMG_ALL_HITS)
+    local wsd      = attacker:getMod(xi.mod.ALL_WSDMG_ALL_HITS)
+
     if attacker:getMod(xi.mod.WEAPONSKILL_DAMAGE_BASE + wsID) > 0 then
         wsd = wsd + attacker:getMod(xi.mod.WEAPONSKILL_DAMAGE_BASE + wsID)
     end
+
     magicdmg = magicdmg * (100 + wsd) / 100
     magicdmg = addBonusesAbility(attacker, wsParams.ele, target, magicdmg, wsParams)
     magicdmg = magicdmg + calcParams.bonusfTP * physicaldmg
