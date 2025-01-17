@@ -67,7 +67,7 @@ namespace synthutils
         const char* fmtQuery =
 
             "SELECT ID, KeyItem, Wood, Smith, Gold, Cloth, Leather, Bone, Alchemy, Cook, \
-            Result, ResultHQ1, ResultHQ2, ResultHQ3, ResultQty, ResultHQ1Qty, ResultHQ2Qty, ResultHQ3Qty, Desynth \
+            Result, ResultHQ1, ResultHQ2, ResultHQ3, ResultQty, ResultHQ1Qty, ResultHQ2Qty, ResultHQ3Qty, Desynth, content_tag \
         FROM synth_recipes \
         WHERE (Crystal = %u OR HQCrystal = %u) \
             AND Ingredient1 = %u \
@@ -87,6 +87,13 @@ namespace synthutils
 
         if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
         {
+            // Check content tag first
+            char* contentTag = (char*)_sql->GetData(19);
+            if (!luautils::IsContentEnabled(contentTag))
+            {
+                return false;
+            }
+
             uint16 KeyItemID = (uint16)_sql->GetUIntData(1); // Check if recipe needs KI
 
             if ((KeyItemID == 0) || (charutils::hasKeyItem(PChar, KeyItemID))) // If recipe doesn't need KI OR Player has the required KI
@@ -770,7 +777,7 @@ namespace synthutils
             currentZone != ZONE_49 &&
             currentZone < MAX_ZONEID)
         {
-            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CSynthResultMessagePacket(PChar, SYNTH_FAIL));
+            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CSynthResultMessagePacket>(PChar, SYNTH_FAIL));
         }
 
         PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_FAIL, 29695);
@@ -903,7 +910,7 @@ namespace synthutils
 
         if (PChar->loc.zone->GetID() != 255 && PChar->loc.zone->GetID() != 0)
         {
-            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, new CSynthAnimationPacket(PChar, effect, result));
+            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CSynthAnimationPacket>(PChar, effect, result));
         }
         else
         {
@@ -1002,7 +1009,7 @@ namespace synthutils
                 {
                     char encodedSignature[SignatureStringLength];
 
-                    memset(&encodedSignature, 0, sizeof(encodedSignature));
+                    std::memset(&encodedSignature, 0, sizeof(encodedSignature));
                     PItem->setSignature(EncodeStringSignature(PChar->name.c_str(), encodedSignature));
 
                     char signature_esc[31]; // max charname: 15 chars * 2 + 1
@@ -1018,7 +1025,7 @@ namespace synthutils
             PChar->pushPacket<CInventoryFinishPacket>();
             if (PChar->loc.zone->GetID() != 255 && PChar->loc.zone->GetID() != 0)
             {
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CSynthResultMessagePacket(PChar, SYNTH_SUCCESS, itemID, quantity));
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CSynthResultMessagePacket>(PChar, SYNTH_SUCCESS, itemID, quantity));
                 PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_SUCCESS, itemID, quantity);
             }
             else

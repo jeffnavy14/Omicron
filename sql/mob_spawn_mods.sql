@@ -320,6 +320,7 @@ INSERT INTO `mob_spawn_mods` VALUES (17215494,55,288,1); -- IDLE_DESPAWN: 288
 -- Simurgh
 INSERT INTO `mob_spawn_mods` VALUES (17228242,1,21000,1); -- GIL_MIN: 21000
 INSERT INTO `mob_spawn_mods` VALUES (17228242,2,31300,1); -- GIL_MAX: 31300
+INSERT INTO `mob_spawn_mods` VALUES (17228242,15,2550,1); -- MUG_GIL: 2550 (https://ffxiclopedia.fandom.com/wiki/Simurgh)
 
 -- Chuglix Berrypaws
 INSERT INTO `mob_spawn_mods` VALUES (17228249,55,180,1); -- IDLE_DESPAWN: 180

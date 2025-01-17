@@ -13,8 +13,8 @@ local changeState = function(mob, idle)
         mob:setLocalVar('idle', idle)
 
         -- Calculate door id based off of mob id and door offset
-        local doorID = ID.npc.QNZDEI_DOOR_OFFSET + (mob:getID() - ID.mob.QNZDEI_OFFSET) / 4
-        local door = GetNPCByID(doorID)
+        local doorID = math.floor(ID.npc.QNZDEI_DOOR_OFFSET + (mob:getID() - ID.mob.QNZDEI_OFFSET) / 4)
+        local door   = GetNPCByID(doorID)
 
         if door then
             local doorIdle = door:getLocalVar('idle')

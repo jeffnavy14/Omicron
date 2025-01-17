@@ -33307,7 +33307,7 @@ INSERT INTO `mob_spawn_points` VALUES (17187451,'Spriggan_Graverobber','Spriggan
 INSERT INTO `mob_spawn_points` VALUES (17187452,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17187453,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17187454,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17187465,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17187455,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 
 -- ------------------------------------------------------------
 -- East Ronfaure (Zone 101)

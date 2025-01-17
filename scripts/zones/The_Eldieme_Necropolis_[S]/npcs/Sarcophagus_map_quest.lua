@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: The Eldieme Necropolis (S)
 --  NPC: Sarcophagus
--- Type: Quest NPC
 -- !pos  336.594, -33.500, -56.728 175
 -----------------------------------
 ---@type TNpcEntity

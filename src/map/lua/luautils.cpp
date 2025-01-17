@@ -1091,7 +1091,7 @@ namespace luautils
         TracyZoneScoped;
         if (CBaseEntity* PNpc = zoneutils::GetEntity(npcid, TYPE_NPC))
         {
-            PNpc->loc.zone->PushPacket(PNpc, CHAR_INRANGE, new CEntityVisualPacket(PNpc, command));
+            PNpc->loc.zone->PushPacket(PNpc, CHAR_INRANGE, std::make_unique<CEntityVisualPacket>(PNpc, command));
         }
     }
 

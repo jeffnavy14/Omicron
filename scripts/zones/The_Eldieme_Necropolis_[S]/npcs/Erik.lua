@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: The Eldieme Necropolis (S)
 --  NPC: Erik
--- Type: Quest NPC
 -- !pos  258.643, -33.249, 99.901 175
 -----------------------------------
 ---@type TNpcEntity

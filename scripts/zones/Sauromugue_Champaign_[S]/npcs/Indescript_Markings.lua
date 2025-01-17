@@ -2,7 +2,6 @@
 -- Area: Sauromugue Champaign [S]
 --  NPC: Indescript Markings
 -- !pos 322 24 113 98
--- Quest NPC
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}

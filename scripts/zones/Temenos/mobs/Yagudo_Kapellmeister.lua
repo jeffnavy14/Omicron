@@ -1,11 +1,16 @@
 -----------------------------------
--- Area: Mamook
---  Mob: Mamool Ja Philosopher
+-- Area: Temenos
+--  Mob: Yagudo Kapellmeister
 -----------------------------------
-mixins = { require('scripts/mixins/families/mamool_ja'), require('scripts/mixins/weapon_break') }
+mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
+
+entity.onMobSpawn = function(mob)
+    mob:addImmunity(xi.immunity.GRAVITY)
+    mob:addImmunity(xi.immunity.BIND)
+end
 
 entity.onMobDeath = function(mob, player, optParams)
 end

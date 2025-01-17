@@ -1727,7 +1727,7 @@ INSERT INTO `mob_droplist` VALUES (176,0,0,1000,11295,@VRARE);   -- Commodore Fr
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (176,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -2555,7 +2555,7 @@ INSERT INTO `mob_droplist` VALUES (261,0,0,1000,11295,@VRARE);   -- Commodore Fr
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (261,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -2615,7 +2615,7 @@ INSERT INTO `mob_droplist` VALUES (265,0,0,1000,11295,@VRARE);   -- Commodore Fr
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (265,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -2806,11 +2806,10 @@ INSERT INTO `mob_droplist` VALUES (284,0,0,1000,4382,60);         -- Frost Turni
 INSERT INTO `mob_droplist` VALUES (285,0,0,1000,2891,@UNCOMMON); -- Dried Chigoe (Uncommon, 10%)
 
 -- ZoneID: 110 - Black Triple Stars
-INSERT INTO `mob_droplist` VALUES (286,0,0,1000,922,160);    -- Bat Wing (16.0%)
-INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,70);     -- Bat Fang (7.0%)
-INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,40);     -- Bat Fang (4.0%)
-INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,20);     -- Bat Fang (2.0%)
-INSERT INTO `mob_droplist` VALUES (286,0,0,1000,930,@VRARE); -- Vial Of Beastman Blood (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,@VCOMMON);  -- Bat Fang (Very common, 24%)
+INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,@VCOMMON);  -- Bat Fang (Very common, 24%)
+INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,@VCOMMON);  -- Bat Fang (Very common, 24%)
+INSERT INTO `mob_droplist` VALUES (286,0,0,1000,891,@VCOMMON);  -- Bat Fang (Very common, 24%)
 
 -- ZoneID:  88 - Black Wolf
 -- ZoneID:  89 - Black Wolf
@@ -3321,7 +3320,7 @@ INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1441,200);     -- Libation Abjur
 INSERT INTO `mob_droplist` VALUES (357,2,0,1000,17622,0);      -- Buccaneers Knife (Steal)
 
 -- ZoneID: 124 - Bright-Handed Kunberry
-INSERT INTO `mob_droplist` VALUES (358,0,0,1000,15468,440); -- Resentment Cape (44.0%)
+INSERT INTO `mob_droplist` VALUES (358,0,0,1000,15468,@VCOMMON); -- Resentment Cape (Very Common, 24%)
 
 -- ZoneID:   5 - Brontotaur
 -- ZoneID:   5 - Tyrannotaur
@@ -4410,7 +4409,7 @@ INSERT INTO `mob_droplist` VALUES (493,0,0,1000,11295,@VRARE);   -- Commodore Fr
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (493,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -5928,11 +5927,11 @@ INSERT INTO `mob_droplist` VALUES (711,0,0,1000,4357,@UNCOMMON); -- Crawler Egg 
 INSERT INTO `mob_droplist` VALUES (711,2,0,1000,816,0);          -- Spool Of Silk Thread (Steal)
 
 -- ZoneID: 110 - Drooling Daisy
-INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,450);     -- Malboro Vine (45.0%)
-INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,230);     -- Malboro Vine (23.0%)
-INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,@COMMON); -- Malboro Vine (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (712,0,0,1000,13838,130);   -- Dodge Headband (13.0%)
-INSERT INTO `mob_droplist` VALUES (712,2,0,1000,920,0);       -- Malboro Vine (Steal)
+INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,@COMMON);   -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,@COMMON);   -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (712,0,0,1000,920,@COMMON);   -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (712,0,0,1000,13838,@COMMON); -- Dodge Headband (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (712,2,0,1000,920,0);         -- Malboro Vine (Steal)
 
 -- ZoneID: 136 - Dryptotaur
 INSERT INTO `mob_droplist` VALUES (713,0,0,1000,1621,80); -- Taurus Wing (8.0%)
@@ -6187,7 +6186,7 @@ INSERT INTO `mob_droplist` VALUES (743,0,0,1000,642,70);       -- Chunk Of Zinc 
 INSERT INTO `mob_droplist` VALUES (743,0,0,1000,736,30);       -- Chunk Of Silver Ore (3.0%)
 
 -- ZoneID: 124 - Edacious Opo-Opo
-INSERT INTO `mob_droplist` VALUES (744,0,0,1000,4468,110);        -- Bunch Of Pamamas (11.0%)
+INSERT INTO `mob_droplist` VALUES (744,0,0,1000,4468,@UNCOMMON);  -- Bunch Of Pamamas (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (744,0,0,1000,14465,@UNCOMMON); -- Nanban Kariginu (Uncommon, 10%)
 
 -- ZoneID:  39 - Adamantking Effigy
@@ -10873,7 +10872,7 @@ INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,11295,@VRARE); -- Commodore Fra
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,11298,@VRARE); -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,11307,@VRARE); -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15088,@VRARE); -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15089,@VRARE); -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15089,@VRARE); -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15090,@VRARE); -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15091,@VRARE); -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1342,0,0,1000,15094,@VRARE); -- Abyss Cuirass (Very Rare, 1%)
@@ -10901,7 +10900,7 @@ INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1343,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -10929,7 +10928,7 @@ INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1344,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -10959,7 +10958,7 @@ INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1345,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -11009,7 +11008,8 @@ INSERT INTO `mob_droplist` VALUES (1347,0,0,1000,4105,@COMMON); -- Ice Cluster (
 INSERT INTO `mob_droplist` VALUES (1348,0,0,1000,16511,@ALWAYS); -- Burnite Shell Stone (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (1348,0,0,1000,637,@UNCOMMON); -- Vial Of Slime Oil (Uncommon, 10%)
 
--- 1349: Free to use
+-- ZoneID: 123 - Bayawak
+INSERT INTO `mob_droplist` VALUES (1349,0,0,1000,19237,@VCOMMON); -- Slick Dart (Very Common, 24%)
 
 -- ZoneID:  16 - Idle Wanderer
 -- ZoneID:  20 - Idle Wanderer
@@ -13233,12 +13233,12 @@ INSERT INTO `mob_droplist` VALUES (1664,0,0,1000,17947,@VCOMMON); -- Garde Pick 
 INSERT INTO `mob_droplist` VALUES (1664,2,0,1000,656,0);          -- Beastcoin (Steal)
 
 -- ZoneID:  92 - Meteor Quadav
+-- ZoneID: 155 - Meteor Quadav
 INSERT INTO `mob_droplist` VALUES (1665,0,0,1000,2531,@UNCOMMON); -- Shard Of Obsidian (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1665,0,0,1000,2564,0);         -- Jar Of Peiste Pellets (0.0%)
 
 -- ZoneID: 123 - Meww The Turtlerider
--- ZoneID: 155 - Meteor Quadav
-INSERT INTO `mob_droplist` VALUES (1666,0,0,1000,17843,400); -- Oliphant (40.0%)
+INSERT INTO `mob_droplist` VALUES (1666,0,0,1000,17843,@VCOMMON); -- Oliphant (Very Common, 24%)
 
 -- ZoneID: 110 - Midnight Wings
 INSERT INTO `mob_droplist` VALUES (1667,0,0,1000,922,390); -- Bat Wing (39.0%)
@@ -13416,16 +13416,16 @@ INSERT INTO `mob_droplist` VALUES (1699,0,0,1000,1025,60);   -- Palborough Chest
 INSERT INTO `mob_droplist` VALUES (1699,0,0,1000,896,20);    -- Scorpion Shell (2.0%)
 
 -- ZoneID: 123 - Mischievous Micholas
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,110);        -- Bunch Of Pamamas (11.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,17296,@UNCOMMON); -- Pebble (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,17618,@UNCOMMON); -- Kidney Dagger (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4432,80);         -- Kazham Pineapple (8.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,60);         -- Bunch Of Pamamas (6.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4432,40);         -- Kazham Pineapple (4.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,40);         -- Bunch Of Pamamas (4.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4596,30);         -- Bunch Of Wild Pamamas (3.0%)
-INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4412,20);         -- Thundermelon (2.0%)
-INSERT INTO `mob_droplist` VALUES (1700,2,0,1000,4468,0);          -- Bunch Of Pamamas (Steal)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,@ALWAYS);  -- Bunch Of Pamamas (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4412,@VCOMMON); -- Thundermelon (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,@VCOMMON); -- Bunch Of Pamamas (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4468,@VCOMMON); -- Bunch Of Pamamas (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4432,@VCOMMON); -- Kazham Pineapple (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4432,@VCOMMON); -- Kazham Pineapple (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,4596,@COMMON);  -- Bunch Of Wild Pamamas (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,17296,@COMMON); -- Pebble (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (1700,0,0,1000,17618,@RARE);   -- Kidney Dagger (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1700,2,0,1000,4468,0);        -- Bunch Of Pamamas (Steal)
 
 -- ZoneID: 204 - Miser Murphy
 INSERT INTO `mob_droplist` VALUES (1701,0,0,1000,1093,@ALWAYS); -- Antique Coin (Always, 100%)
@@ -14009,7 +14009,7 @@ INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,3485,20);     -- Fiendish Tome 
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,3486,20);     -- Fiendish Tome Ii Chapter 17 (2.0%)
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2034,@VRARE); -- Warriors Lorica -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2039,@VRARE); -- Melee Cyclas -1 (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2044,@VRARE); -- Clerics Briault -1 (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2044,@VRARE); -- Clerics Bliaut -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2049,@VRARE); -- Sorcerers Coat -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2054,@VRARE); -- Duelists Tabard -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1786,0,0,1000,2059,@VRARE); -- Assassins Vest -1 (Very Rare, 1%)
@@ -14314,7 +14314,7 @@ INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,3485,20);     -- Fiendish Tome 
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,3486,20);     -- Fiendish Tome Ii Chapter 17 (2.0%)
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2034,@VRARE); -- Warriors Lorica -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2039,@VRARE); -- Melee Cyclas -1 (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2044,@VRARE); -- Clerics Briault -1 (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2044,@VRARE); -- Clerics Bliaut -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2049,@VRARE); -- Sorcerers Coat -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2054,@VRARE); -- Duelists Tabard -1 (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1796,0,0,1000,2059,@VRARE); -- Assassins Vest -1 (Very Rare, 1%)
@@ -16912,10 +16912,11 @@ INSERT INTO `mob_droplist` VALUES (2122,0,0,1000,2640,80); -- Murex Spicule (8.0
 INSERT INTO `mob_droplist` VALUES (2122,0,0,1000,2888,30); -- Sanguinet (3.0%)
 
 -- ZoneID: 123 - Rose Garden
-INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,920,560);   -- Malboro Vine (56.0%)
-INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,15547,120); -- Vilmas Ring (12.0%)
-INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,4598,60);   -- Wild Pineapple (6.0%)
-INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,1446,40);   -- Lacquer Tree Log (4.0%)
+INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,920,@COMMON);     -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,920,@COMMON);     -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,15547,@UNCOMMON); -- Vilmas Ring (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,4598,@RARE);      -- Wild Pineapple (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (2123,0,0,1000,1446,@RARE);      -- Lacquer Tree Log (Rare, 5%)
 
 -- ZoneID: 169 - Rotten Sod
 INSERT INTO `mob_droplist` VALUES (2124,0,0,1000,940,350); -- Revival Tree Root (35.0%)
@@ -17807,7 +17808,7 @@ INSERT INTO `mob_droplist` VALUES (2247,0,0,1000,3259,160); -- High-Quality Blac
 
 -- ZoneID: 110 - Silk Caterpillar
 INSERT INTO `mob_droplist` VALUES (2248,0,0,1000,4526,@ALWAYS); -- Silkworm Egg (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (2248,0,0,1000,816,70);       -- Spool Of Silk Thread (7.0%)
+INSERT INTO `mob_droplist` VALUES (2248,0,0,1000,816,@COMMON);  -- Spool Of Silk Thread (Common, 15%)
 
 -- ZoneID: 228 - Silverhook
 INSERT INTO `mob_droplist` VALUES (2249,0,0,1000,18395,320); -- Seawolf Cudgel (32.0%)
@@ -20135,7 +20136,7 @@ INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,11295,@VRARE); -- Commodore Fra
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,11298,@VRARE); -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,11307,@VRARE); -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15088,@VRARE); -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15089,@VRARE); -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15089,@VRARE); -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15090,@VRARE); -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15091,@VRARE); -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2542,0,0,1000,15094,@VRARE); -- Abyss Cuirass (Very Rare, 1%)
@@ -20387,7 +20388,7 @@ INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,11295,@VRARE); -- Commodore Fra
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,11298,@VRARE); -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,11307,@VRARE); -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15088,@VRARE); -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15089,@VRARE); -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15089,@VRARE); -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15090,@VRARE); -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15091,@VRARE); -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2547,0,0,1000,15094,@VRARE); -- Abyss Cuirass (Very Rare, 1%)
@@ -20614,7 +20615,7 @@ INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,11295,@VRARE); -- Commodore Fra
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,11298,@VRARE); -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,11307,@VRARE); -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15088,@VRARE); -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15089,@VRARE); -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15089,@VRARE); -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15090,@VRARE); -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15091,@VRARE); -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2552,0,0,1000,15094,@VRARE); -- Abyss Cuirass (Very Rare, 1%)
@@ -20870,7 +20871,7 @@ INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,11295,@VRARE); -- Commodore Fra
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,11298,@VRARE); -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,11307,@VRARE); -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15088,@VRARE); -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15089,@VRARE); -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15089,@VRARE); -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15090,@VRARE); -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15091,@VRARE); -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (2557,0,0,1000,15094,@VRARE); -- Abyss Cuirass (Very Rare, 1%)
@@ -21252,10 +21253,11 @@ INSERT INTO `mob_droplist` VALUES (2588,0,0,1000,4484,80);         -- Shall Shel
 INSERT INTO `mob_droplist` VALUES (2588,2,0,1000,748,0);           -- Gold Beastcoin (Steal)
 
 -- ZoneID: 123 - Voluptuous Vilma
-INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,920,650);   -- Malboro Vine (65.0%)
-INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,15547,450); -- Vilmas Ring (45.0%)
-INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,4598,80);   -- Wild Pineapple (8.0%)
-INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,1446,30);   -- Lacquer Tree Log (3.0%)
+INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,15547,@VCOMMON); -- Vilmas Ring (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,920,@COMMON);    -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,920,@COMMON);    -- Malboro Vine (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,4598,@RARE);     -- Wild Pineapple (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (2589,0,0,1000,1446,@RARE);     -- Lacquer Tree Log (Rare, 5%)
 
 -- ZoneID:  96 - Vorpal Bunny
 INSERT INTO `mob_droplist` VALUES (2590,0,0,1000,4358,@VCOMMON); -- Slice Of Hare Meat (Very Common, 24%)
@@ -21857,14 +21859,15 @@ INSERT INTO `mob_droplist` VALUES (2665,0,0,1000,2427,@COMMON); -- Wivre Maul (C
 INSERT INTO `mob_droplist` VALUES (2665,0,0,1000,2426,@RARE);   -- Wivre Horn (Rare, 5%)
 
 -- ZoneID: 124 - Woodland Sage
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,701,530);  -- Rosewood Log (53.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,280);  -- Mahogany Log (28.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,701,270);  -- Rosewood Log (27.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,702,260);  -- Ebony Log (26.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,703,170);  -- Petrified Log (17.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,140);  -- Mahogany Log (14.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,90);   -- Mahogany Log (9.0%)
-INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,17529,30); -- Sunlight Pole (3.0%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,701,@COMMON);     -- Rosewood Log (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,701,@COMMON);     -- Rosewood Log (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,702,@UNCOMMON);   -- Ebony Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,702,@UNCOMMON);   -- Ebony Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,703,@UNCOMMON);   -- Petrified Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,@UNCOMMON);   -- Mahogany Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,@UNCOMMON);   -- Mahogany Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,700,@UNCOMMON);   -- Mahogany Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2666,0,0,1000,17529,@UNCOMMON); -- Sunlight Pole (Uncommon, 10%)
 
 -- ZoneID:  40 - Woodnix Shrillwhistle
 INSERT INTO `mob_droplist` VALUES (2667,0,0,1000,1449,200);      -- Tukuku Whiteshell (20.0%)
@@ -24272,7 +24275,7 @@ INSERT INTO `mob_droplist` VALUES (2991,0,0,1000,15851,@RARE); -- Kushas Ring (R
 INSERT INTO `mob_droplist` VALUES (2992,0,0,1000,15941,384); -- Headlong Belt (38.4%)
 
 -- ZoneID: 110 - Eldritch Edge
-INSERT INTO `mob_droplist` VALUES (2993,0,0,1000,16037,59); -- Helenuss Earring (5.9%)
+INSERT INTO `mob_droplist` VALUES (2993,0,0,1000,16037,@RARE); -- Helenuss Earring (Rare, 5%)
 
 -- ZoneID: 120 - Blighting Brand
 INSERT INTO `mob_droplist` VALUES (2994,0,0,1000,16038,70); -- Cassandras Earring (7.0%)
@@ -24291,7 +24294,7 @@ INSERT INTO `mob_droplist` VALUES (2997,0,0,1000,2851,@VCOMMON); -- Bukktooth (V
 INSERT INTO `mob_droplist` VALUES (2998,0,0,1000,11339,340); -- Channeling Robe (34.0%)
 
 -- ZoneID: 123 - Koropokkur
-INSERT INTO `mob_droplist` VALUES (2999,0,0,1000,11338,111); -- Aegas Doublet (11.1%)
+INSERT INTO `mob_droplist` VALUES (2999,0,0,1000,11338,@UNCOMMON); -- Aegas Doublet (Uncommon, 10%)
 
 -- ZoneID: 115 - Numbing Norman
 INSERT INTO `mob_droplist` VALUES (3000,0,0,1000,19305,@VCOMMON); -- Pike (Very Common, 24%)
@@ -24536,13 +24539,13 @@ INSERT INTO `mob_droplist` VALUES (3066,0,0,1000,11342,156); -- Restorer Cloak (
 INSERT INTO `mob_droplist` VALUES (3067,0,0,1000,16025,250); -- Rathe Earring (25.0%)
 
 -- ZoneID: 124 - Powderer Penny
-INSERT INTO `mob_droplist` VALUES (3068,0,0,1000,16016,200); -- Chary Earring (20.0%)
+INSERT INTO `mob_droplist` VALUES (3068,0,0,1000,16016,@COMMON); -- Chary Earring (Common, 15%)
 
 -- ZoneID: 124 - Hoar-Knuckled Rimberry
-INSERT INTO `mob_droplist` VALUES (3069,0,0,1000,16034,81); -- Sarabande Earring (8.1%)
+INSERT INTO `mob_droplist` VALUES (3069,0,0,1000,16034,@RARE); -- Sarabande Earring (Rare, 5%)
 
 -- ZoneID: 124 - Acolnahuacatl
-INSERT INTO `mob_droplist` VALUES (3070,0,0,1000,11534,81); -- Echo Cape (8.1%)
+INSERT INTO `mob_droplist` VALUES (3070,0,0,1000,11534,@RARE); -- Echo Cape (Rare, 5%)
 
 -- ZoneID: 169 - Canal Moocher
 INSERT INTO `mob_droplist` VALUES (3071,0,0,1000,2817,@VCOMMON);  -- Aptant Of Pera (Very Common, 24%)
@@ -24634,7 +24637,7 @@ INSERT INTO `mob_droplist` VALUES (3095,0,0,1000,16022,238); -- Fidelity Earring
 INSERT INTO `mob_droplist` VALUES (3096,0,0,1000,16033,209); -- Sylph Earring (20.9%)
 
 -- ZoneID: 110 - Ravenous Crawler
-INSERT INTO `mob_droplist` VALUES (3097,0,0,1000,16020,265); -- Survivor Earring (26.5%)
+INSERT INTO `mob_droplist` VALUES (3097,0,0,1000,16020,@VCOMMON); -- Survivor Earring (Very common, 24%)
 
 -- ZoneID: 112 - Barbaric Weapon
 INSERT INTO `mob_droplist` VALUES (3098,0,0,1000,15056,212); -- Rovers Gloves (21.2%)
@@ -25276,7 +25279,7 @@ INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3145,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -25304,7 +25307,7 @@ INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3146,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26043,7 +26046,7 @@ INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3210,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26076,7 +26079,7 @@ INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3211,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26113,7 +26116,7 @@ INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3213,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26141,7 +26144,7 @@ INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3214,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26169,7 +26172,7 @@ INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3215,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26197,7 +26200,7 @@ INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3216,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26225,7 +26228,7 @@ INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3217,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26255,7 +26258,7 @@ INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3218,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26283,7 +26286,7 @@ INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3219,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26311,7 +26314,7 @@ INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3220,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26344,7 +26347,7 @@ INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3221,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)
@@ -26377,7 +26380,7 @@ INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,11295,@VRARE);   -- Commodore F
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,11298,@VRARE);   -- Pantin Tobe (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,11307,@VRARE);   -- Argute Gown (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15088,@VRARE);   -- Melee Cyclas (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15089,@VRARE);   -- Clerics Briault (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15089,@VRARE);   -- Clerics Bliaut (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15090,@VRARE);   -- Sorcerers Coat (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15091,@VRARE);   -- Duelists Tabard (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (3222,0,0,1000,15094,@VRARE);   -- Abyss Cuirass (Very Rare, 1%)

@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: Tavnazian Safehold
 --  NPC: Chemioue
--- Type: NPC Quest
 -- !pos 82.041 -34.964 67.636 26
 -----------------------------------
 ---@type TNpcEntity

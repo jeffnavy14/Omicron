@@ -1271,7 +1271,7 @@ void CZoneEntities::UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, 
     }
 }
 
-void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message_type, CBasicPacket* packet)
+void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message_type, const std::unique_ptr<CBasicPacket>& packet)
 {
     TracyZoneScoped;
     TracyZoneHex16(packet->getType());
@@ -1287,7 +1287,6 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
         // Ensure this packet is not despawning us..
         if (packet->ref<uint8>(0x0A) != 0x20)
         {
-            destroy(packet);
             return;
         }
     }
@@ -1302,7 +1301,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                 TracyZoneCString("CHAR_INRANGE_SELF");
                 if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
                 {
-                    PChar->pushPacket<CBasicPacket>(*packet);
+                    PChar->pushPacket(packet->copy());
                 }
             }
             [[fallthrough]];
@@ -1363,7 +1362,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                                     SpawnIDList_t::const_iterator iter = spawnlist.lower_bound(id);
                                     if (!(iter == spawnlist.end() || spawnlist.key_comp()(id, iter->first)))
                                     {
-                                        PCurrentChar->pushPacket<CBasicPacket>(*packet);
+                                        PCurrentChar->pushPacket(packet->copy());
                                     }
                                 };
 
@@ -1390,7 +1389,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                             }
                             else
                             {
-                                PCurrentChar->pushPacket<CBasicPacket>(*packet);
+                                PCurrentChar->pushPacket(packet->copy());
                             }
                         }
                     }
@@ -1408,7 +1407,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                         if (distance(PEntity->loc.p, PCurrentChar->loc.p) < 180 &&
                             ((PEntity->objtype != TYPE_PC) || (((CCharEntity*)PEntity)->m_moghouseID == PCurrentChar->m_moghouseID)))
                         {
-                            PCurrentChar->pushPacket<CBasicPacket>(*packet);
+                            PCurrentChar->pushPacket(packet->copy());
                         }
                     }
                 }
@@ -1425,7 +1424,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                     {
                         if (PEntity != PCurrentChar)
                         {
-                            PCurrentChar->pushPacket<CBasicPacket>(*packet);
+                            PCurrentChar->pushPacket(packet->copy());
                         }
                     }
                 }
@@ -1434,7 +1433,6 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
         }
         // clang-format on
     }
-    destroy(packet);
 }
 
 void CZoneEntities::WideScan(CCharEntity* PChar, uint16 radius)

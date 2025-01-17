@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: The Eldieme Necropolis (S)
 --  NPC: Gravestone
--- Type: Quest NPC
 -- !pos  254.428, -32.999, 20.001 175
 -----------------------------------
 ---@type TNpcEntity

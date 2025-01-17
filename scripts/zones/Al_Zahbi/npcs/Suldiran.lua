@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: Al Zahbi
 --  NPC: Suldiran
--- Type: NPC Quest
 -- !pos 42 -7 -43 48
 -----------------------------------
 ---@type TNpcEntity
