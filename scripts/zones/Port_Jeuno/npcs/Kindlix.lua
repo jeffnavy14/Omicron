@@ -28,9 +28,6 @@ local stock =
     5936,  300,    -- Mog Missile
 }
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     if  player:getCharVar('spokeKindlix') == 1 then
         player:startEvent(348)
@@ -38,9 +35,6 @@ entity.onTrigger = function(player, npc)
         player:showText(npc, ID.text.KINDLIX_SHOP_DIALOG)
         xi.shop.general(player, stock)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

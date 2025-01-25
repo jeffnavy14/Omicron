@@ -2201,25 +2201,33 @@ local function  handleDiggingLayer(player, zoneId, currentLayer)
         local isElementalOreZone = elementalOreZoneTable[player:getZoneID()] or false
 
         -- Crystals and Clusters.
-        if diggingWeatherTable[weather] then
+        randomRoll = math.random(1, 1000) * rollMultiplier
+        if
+            diggingWeatherTable[weather] and
+            randomRoll <= 100
+        then
             table.insert(dTableItemIds, #dTableItemIds + 1, diggingWeatherTable[weather][1]) -- Insert item ID to table.
         end
 
         -- Geodes / Colored Rocks.
+        randomRoll = math.random(1, 1000) * rollMultiplier
         if
             diggingDayTable[currentDay] and
-            playerRank >= xi.craftRank.NOVICE
+            playerRank >= xi.craftRank.NOVICE and
+            randomRoll <= 100
         then
             table.insert(dTableItemIds, #dTableItemIds + 1, diggingDayTable[currentDay][1]) -- Insert item ID to table.
         end
 
         -- Elemenal Ores.
+        randomRoll = math.random(1, 1000) * rollMultiplier
         if
             diggingDayTable[currentDay] and
             playerRank >= xi.craftRank.CRAFTSMAN and
             isElementalOreZone and
             weather ~= xi.weather.NONE and
-            moon >= 7 and moon <= 21
+            moon >= 7 and moon <= 21 and
+            randomRoll <= 100
         then
             table.insert(dTableItemIds, #dTableItemIds + 1, diggingDayTable[currentDay][2]) -- Insert item ID to table.
         end

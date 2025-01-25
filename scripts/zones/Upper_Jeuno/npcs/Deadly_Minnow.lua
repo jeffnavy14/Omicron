@@ -9,9 +9,6 @@ local ID = zones[xi.zone.UPPER_JEUNO]
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     if player:getCharVar('BorghertzHandsFirstTime') == 1 then
         player:startEvent(24)
@@ -33,9 +30,6 @@ entity.onTrigger = function(player, npc)
         player:showText(npc, ID.text.DURABLE_SHIELDS_SHOP_DIALOG)
         xi.shop.general(player, stock)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

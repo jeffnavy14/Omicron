@@ -3,10 +3,7 @@
 -----------------------------------
 require('scripts/globals/utils')
 -----------------------------------
--- See documentation/songdata.txt for extracted table of data.
--- NOTE: You can force the Symphonic Curator menu by swapping the moogle global calls for
---     : Moogle in a MH zone with the symphonic_curator global calls and interacting
---     : with the MH moogle.
+-- See documentation/songdata.txt or documentation/MusicIDs.txt for song data.
 -----------------------------------
 
 xi = xi or {}
@@ -57,12 +54,12 @@ xi.symphonic_curator.onTrigger = function(player, npc)
 
     -- 0000 = all instruments shown
     -- 1111 = all instruments hidden
-    local instrumentsAvailable = 0xFF
+    local instrumentsAvailable = 0x0F
 
-    local orchestrion  = player:findItem(426)
-    local spinet       = player:findItem(3677)
-    local nanaaStatue1 = player:findItem(286)
-    local nanaaStatue2 = player:findItem(287)
+    local orchestrion  = player:findItem(xi.item.ORCHESTRION)
+    local spinet       = player:findItem(xi.item.SPINET)
+    local nanaaStatue1 = player:findItem(xi.item.NANAA_MIHGO_STATUE)
+    local nanaaStatue2 = player:findItem(xi.item.NANAA_MIHGO_STATUE_II)
 
     local hasOrchestrion  = orchestrion and orchestrion:isInstalled()
     local hasSpinet       = spinet and spinet:isInstalled()

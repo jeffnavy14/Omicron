@@ -353,8 +353,8 @@ namespace petutils
         }
 
         PMob->baseSpeed      = petStats->speed;
-        PMob->speed          = petStats->speed;
         PMob->animationSpeed = petStats->speed;
+        PMob->UpdateSpeed();
 
         PMob->UpdateHealth();
         PMob->health.tp = 0;
@@ -763,7 +763,9 @@ namespace petutils
         }
         else if (PMaster->GetSJob() == JOB_SMN)
         {
-            PPet->SetMLevel(PMaster->GetSLevel());
+            mLvl = PMaster->GetSLevel();
+
+            PPet->SetMLevel(mLvl);
         }
         else
         { // should never happen
@@ -1035,7 +1037,8 @@ namespace petutils
         // TODO: make pets use entity flags
         PPet->m_flags = 0x0000008B;
         // Just sit, do nothing
-        PPet->speed = 0;
+        PPet->baseSpeed = 0;
+        PPet->UpdateSpeed();
 
         FinalizePetStatistics(PMaster, PPet);
     }

@@ -519,7 +519,9 @@ struct zoneLine_t
 class CBasicPacket;
 class CBaseEntity;
 class CCharEntity;
+class CMobEntity;
 class CNpcEntity;
+class CPetEntity;
 class CBattleEntity;
 class CTrustEntity;
 class CTreasurePool;
@@ -586,8 +588,8 @@ public:
     virtual void SpawnPETs(CCharEntity* PChar);
     virtual void SpawnNPCs(CCharEntity* PChar);
     virtual void SpawnTRUSTs(CCharEntity* PChar);
-    virtual void SpawnMoogle(CCharEntity* PChar);    // Spawn Moogle in Moghouse in zone (if applicable)
-    virtual void SpawnTransport(CCharEntity* PChar); // Spawn ships/boats in the zone
+    virtual void SpawnConditionalNPCs(CCharEntity* PChar); // Spawn Moogle in Moghouse in zone (if applicable)
+    virtual void SpawnTransport(CCharEntity* PChar);       // Spawn ships/boats in the zone
     void         SavePlayTime();
 
     virtual void WideScan(CCharEntity* PChar, uint16 radius);
@@ -599,9 +601,6 @@ public:
     virtual void InsertMOB(CBaseEntity* PMob);
     virtual void InsertPET(CBaseEntity* PPet);
     virtual void InsertTRUST(CBaseEntity* PTrust);
-
-    virtual void DeletePET(CBaseEntity* PPet);
-    virtual void DeleteTRUST(CBaseEntity* PTrust);
 
     virtual void FindPartyForMob(CBaseEntity* PEntity);
     virtual void TransportDepart(uint16 boundary, uint16 zone);  // Collect passengers if ship/boat is departing
@@ -627,9 +626,14 @@ public:
     virtual void ForEachCharInstance(CBaseEntity* PEntity, std::function<void(CCharEntity*)> const& func);
     virtual void ForEachMob(std::function<void(CMobEntity*)> const& func);
     virtual void ForEachMobInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
+    virtual void ForEachNpc(std::function<void(CNpcEntity*)> const& func);
+    virtual void ForEachNpcInstance(CBaseEntity* PEntity, std::function<void(CNpcEntity*)> const& func);
     virtual void ForEachTrust(std::function<void(CTrustEntity*)> const& func);
     virtual void ForEachTrustInstance(CBaseEntity* PEntity, std::function<void(CTrustEntity*)> const& func);
-    virtual void ForEachNpc(std::function<void(CNpcEntity*)> const& func);
+    virtual void ForEachPet(std::function<void(CPetEntity*)> const& func);
+    virtual void ForEachPetInstance(CBaseEntity* PEntity, std::function<void(CPetEntity*)> const& func);
+    virtual void ForEachAlly(std::function<void(CMobEntity*)> const& func);
+    virtual void ForEachAllyInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
 
     CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
     virtual ~CZone();

@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -71,6 +71,7 @@
 #include "utils/petutils.h"
 #include "utils/serverutils.h"
 #include "utils/synergyutils.h"
+#include "utils/synthutils.h"
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
 
@@ -292,6 +293,7 @@ int32 do_init(int32 argc, char** argv)
     jobpointutils::LoadGifts();
     daily::LoadDailyItems();
     roeutils::UpdateUnityRankings();
+    synthutils::LoadSynthRecipes();
     synergyutils::LoadSynergyRecipes();
     CItemEquipment::LoadAugmentData(); // TODO: Move to itemutils
 
@@ -322,10 +324,10 @@ int32 do_init(int32 argc, char** argv)
 
     CTransportHandler::getInstance()->InitializeTransport();
 
-    CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, time_server, 2400ms);
-    CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_cleanup, 5s);
-    CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_garbage_collect, 15min);
-    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, serverutils::PersistVolatileServerVars, 1min);
+    CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 2400ms, time_server);
+    CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 5s, map_cleanup);
+    CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 15min, map_garbage_collect);
+    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
 
     ShowInfo("do_init: Removing expired database variables");
     uint32 currentTimestamp = CVanaTime::getInstance()->getSysTime();
@@ -399,6 +401,13 @@ int32 do_init(int32 argc, char** argv)
     {
         fmt::print("Reloading settings files\n");
         settings::init();
+    });
+
+    gConsoleService->RegisterCommand("reload_recipes", "Reload crafting recipes.",
+    [&](std::vector<std::string>& inputs)
+    {
+        fmt::print("Reloading crafting recipes\n");
+        synthutils::LoadSynthRecipes();
     });
 
     gConsoleService->RegisterCommand("exit", "Terminate the program.",
@@ -1040,14 +1049,13 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     {
         do
         {
-            *buffsize       = FFXI_HEADER_SIZE;
-            auto packetList = PChar->getPacketListCopy();
-            packets         = 0;
+            *buffsize        = FFXI_HEADER_SIZE;
+            auto& packetList = PChar->getPacketList();
+            packets          = 0;
 
-            while (!packetList.empty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
+            while (!PChar->isPacketListEmpty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
             {
-                PSmallPacket = std::move(packetList.front());
-                packetList.pop_front();
+                PSmallPacket = PChar->popPacket();
 
                 PSmallPacket->setSequence(map_session_data->server_packet_id);
                 auto type = PSmallPacket->getType();
@@ -1122,7 +1130,6 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
             }
         }
     } while (PacketSize == static_cast<uint32>(-1));
-    PChar->erasePackets(packets);
     TotalPacketsSentPerTick += packets;
     TracyZoneString(fmt::format("Sending {} packets", packets));
 
@@ -1179,7 +1186,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
     *buffsize = PacketSize + FFXI_HEADER_SIZE;
 
-    auto remainingPackets = PChar->getPacketListCopy().size();
+    auto remainingPackets = PChar->getPacketCount();
     TotalPacketsDelayedPerTick += static_cast<uint32>(remainingPackets);
 
     if (settings::get<bool>("logging.DEBUG_PACKET_BACKLOG"))
@@ -1367,24 +1374,10 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
     // clang-format off
     zoneutils::ForEachZone([](CZone* PZone)
     {
-        auto& staledynamicTargIds = PZone->GetZoneEntities()->dynamicTargIdsToDelete;
-
-        auto it = staledynamicTargIds.begin();
-        while(it != staledynamicTargIds.end())
-        {
-            // Erase dynamic targid if it's stale enough
-            if ((server_clock::now() - it->second) > 60s)
-            {
-                PZone->GetZoneEntities()->dynamicTargIds.erase(it->first);
-                it = staledynamicTargIds.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
+        PZone->GetZoneEntities()->EraseStaleDynamicTargIDs();
     });
     // clang-format on
+
     return 0;
 }
 

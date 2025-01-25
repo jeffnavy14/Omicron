@@ -47,7 +47,7 @@ CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsi
 
     auto* PTarget = m_PEntity->IsValidTarget(m_targid, skill->getValidTargets(), m_errorMsg);
 
-    if (!PTarget | this->HasErrorMsg())
+    if (!PTarget || this->HasErrorMsg())
     {
         if (this->HasErrorMsg())
         {

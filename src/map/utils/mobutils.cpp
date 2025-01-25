@@ -1207,9 +1207,6 @@ namespace mobutils
     void InitializeMob(CMobEntity* PMob)
     {
         // add special mob mods
-
-        PMob->m_Immunity |= PMob->getMobMod(MOBMOD_IMMUNITY);
-
         PMob->defaultMobMod(MOBMOD_SKILL_LIST, PMob->m_MobSkillList);
         PMob->defaultMobMod(MOBMOD_LINK_RADIUS, 10);
         PMob->defaultMobMod(MOBMOD_TP_USE_CHANCE,
@@ -1335,32 +1332,6 @@ namespace mobutils
                 else
                 {
                     poolMods->mods.emplace_back(mod);
-                }
-            }
-        }
-
-        // load spawn mods
-        const char QuerySpawnMods[] = "SELECT mobid, modid, value, is_mob_mod FROM mob_spawn_mods";
-
-        ret = _sql->Query(QuerySpawnMods);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
-        {
-            while (_sql->NextRow() == SQL_SUCCESS)
-            {
-                ModsList_t* spawnMods = GetMobSpawnMods(_sql->GetUIntData(0), true);
-
-                CModifier* mod = new CModifier(static_cast<Mod>(_sql->GetUIntData(1)));
-                mod->setModAmount(_sql->GetUIntData(2));
-
-                int8 isMobMod = _sql->GetIntData(3);
-                if (isMobMod == 1)
-                {
-                    spawnMods->mobMods.emplace_back(mod);
-                }
-                else
-                {
-                    spawnMods->mods.emplace_back(mod);
                 }
             }
         }
@@ -1568,7 +1539,7 @@ namespace mobutils
         {
             if (_sql->NextRow() == SQL_SUCCESS)
             {
-                PMob            = new CMobEntity;
+                PMob            = new CMobEntity();
                 PMob->PInstance = instance;
 
                 PMob->name.insert(0, (const char*)_sql->GetData(1));
@@ -1605,8 +1576,8 @@ namespace mobutils
                 PMob->m_ModelRadius = (float)_sql->GetIntData(21);
 
                 PMob->baseSpeed      = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined baseSpeed
-                PMob->speed          = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined speed
                 PMob->animationSpeed = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined animationSpeed
+                PMob->UpdateSpeed();
 
                 PMob->strRank = (uint8)_sql->GetIntData(23);
                 PMob->dexRank = (uint8)_sql->GetIntData(24);
@@ -1674,14 +1645,10 @@ namespace mobutils
                 PMob->m_TrueDetection = _sql->GetUIntData(69);
                 PMob->setMobMod(MOBMOD_DETECTION, _sql->GetUIntData(70));
 
-                CZone* newZone = zoneutils::GetZone(zoneID);
-                if (newZone)
+                if (CZone* PZone = zoneutils::GetZone(zoneID))
                 {
-                    // Get dynamic targid
-                    newZone->GetZoneEntities()->AssignDynamicTargIDandLongID(PMob);
-
-                    // Insert ally into zone's mob list. TODO: Do we need to assign party for allies?
-                    newZone->GetZoneEntities()->m_mobList[PMob->targid] = PMob;
+                    PZone->GetZoneEntities()->AssignDynamicTargIDandLongID(PMob);
+                    PZone->GetZoneEntities()->InsertMOB(PMob);
                 }
                 else
                 {
@@ -1767,8 +1734,8 @@ namespace mobutils
                 PMob->m_ModelRadius = (float)_sql->GetIntData(21);
 
                 PMob->baseSpeed      = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined baseSpeed
-                PMob->speed          = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined speed
                 PMob->animationSpeed = (uint8)_sql->GetIntData(22); // Overwrites baseentity.cpp's defined animationSpeed
+                PMob->UpdateSpeed();
 
                 PMob->strRank = (uint8)_sql->GetIntData(23);
                 PMob->dexRank = (uint8)_sql->GetIntData(24);

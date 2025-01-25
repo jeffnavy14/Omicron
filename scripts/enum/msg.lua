@@ -161,6 +161,7 @@ xi.msg.basic =
     STATUS_BOOST_2         = 365, -- All of <target>'s status parameters are boosted.
     JA_MAGIC_BURST         = 379, -- <user> uses <ability>. Magic Burst! the <target> takes <amount> damage.
     JA_ENMITY_DECREASE     = 743, -- <user> uses <ability>. <target>'s enmity decreases.
+    JA_TH_EFFECTIVENESS    = 608, -- <user> uses <ability>. Treasure Hunter effectiveness against <target> increases to <amount>.
 
     -- "Fortified against" messages
     FORTIFIED_DEMONS       = 149, -- <target> is fortified against demons.

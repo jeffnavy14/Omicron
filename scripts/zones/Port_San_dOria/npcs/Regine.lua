@@ -44,9 +44,6 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     -- FLYERS FOR REGINE
     if csid == 510 and option == 2 then
