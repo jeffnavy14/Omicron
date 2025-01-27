@@ -24,4 +24,10 @@ entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.SHEN_QM)
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
+end
+
 return entity

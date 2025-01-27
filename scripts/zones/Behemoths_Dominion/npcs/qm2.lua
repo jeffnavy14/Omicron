@@ -9,6 +9,9 @@ local ID = zones[xi.zone.BEHEMOTHS_DOMINION]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onSpawn = function(npc)
+end
+
 entity.onTrade = function(player, npc, trade)
     if
         not GetMobByID(ID.mob.BEHEMOTH):isSpawned() and
@@ -30,6 +33,12 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.IRREPRESSIBLE_MIGHT)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

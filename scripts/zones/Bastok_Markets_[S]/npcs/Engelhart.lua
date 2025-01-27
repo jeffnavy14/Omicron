@@ -8,6 +8,9 @@ local ID = zones[xi.zone.BASTOK_MARKETS_S]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.BETTER_PART_OF_VALOR) == xi.questStatus.QUEST_ACCEPTED then
         if player:getCharVar('BetterPartOfValProg') == 0 then
@@ -41,6 +44,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(104)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
