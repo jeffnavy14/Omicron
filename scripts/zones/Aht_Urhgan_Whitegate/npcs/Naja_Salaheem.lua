@@ -8,6 +8,9 @@ local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.TOAU) == xi.mission.id.toau.IMPERIAL_CORONATION then
         player:startEvent(3150, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -18,6 +21,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(3003, 1, 0, 0, 0, 0, 0, 0, 1, 0) -- go back to work
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

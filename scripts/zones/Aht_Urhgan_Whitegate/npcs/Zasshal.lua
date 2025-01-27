@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- local currentday = tonumber(os.date('%j'))
     -- local lastPermit = player:getCharVar('LAST_PERMIT')

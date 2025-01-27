@@ -33,6 +33,9 @@ local ImperialPieces =
     }
 }
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local points = player:getCurrency('imperial_standing')
     local rank   = xi.besieged.getMercenaryRank(player)
@@ -42,6 +45,9 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(150, rank, badge, points, 0, 0, 0, 0, 0, 0)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

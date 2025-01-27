@@ -34,9 +34,9 @@ def connect():
             line = f.readline()
             if not line:
                 break
-            match = re.findall(r"(SQL_\w+)\s*=\s*(?:\"(.*?)\"|([^\"\s,]+)),", line)
+            match = re.match(r"(SQL_\w+)\s+=\s+(\S+)", line)
             if match:
-                credentials[match[0][0]] = match[0][2] if match[0][2] else match[0][1]
+                credentials[match.group(1)] = match.group(2)
 
     database = credentials["SQL_DATABASE"]
     host = credentials["SQL_HOST"]
@@ -99,7 +99,6 @@ def all_characters(cur):
                             "INSERT IGNORE INTO char_vars (charid, varname, value) VALUES (%s, %s, %s)",
                             (charid, prizes[prize], 1),
                         )
-                        db.commit()
                     print("Prizes distributed!")
                     return
             else:
@@ -134,7 +133,6 @@ def single_character(cur):
                         "INSERT IGNORE INTO char_vars (charid, varname, value) VALUES (%s, %s, %s)",
                         (row[0], prizes[prize], 1),
                     )
-                    db.commit()
                     print("Prize distributed!")
                     return
                 else:
