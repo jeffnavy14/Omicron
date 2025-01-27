@@ -22,6 +22,9 @@ local items =
     [2308] = { cost = 2000, id = xi.item.CIPHER_OF_MORIMARS_ALTER_EGO },
 }
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local active = xi.extravaganza.campaignActive()
     local bayld = player:getCurrency('bayld')
@@ -39,6 +42,9 @@ entity.onTrigger = function(player, npc)
     else
         -- Stare blankly For now
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

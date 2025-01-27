@@ -9,6 +9,9 @@ local ID = zones[xi.zone.HALL_OF_THE_GODS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getZPos() < 200 then
         if player:getCurrentMission(xi.mission.log_id.ZILART) >= xi.mission.id.zilart.THE_GATE_OF_THE_GODS then
@@ -19,6 +22,12 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(11)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

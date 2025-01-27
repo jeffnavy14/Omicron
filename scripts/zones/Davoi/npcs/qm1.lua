@@ -9,6 +9,9 @@ local ID = zones[xi.zone.DAVOI]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local toCureaCough = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.TO_CURE_A_COUGH)
 
@@ -19,6 +22,12 @@ entity.onTrigger = function(player, npc)
         player:addKeyItem(xi.ki.THYME_MOSS)
         player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.THYME_MOSS)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

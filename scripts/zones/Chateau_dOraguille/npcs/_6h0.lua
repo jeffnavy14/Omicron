@@ -39,6 +39,9 @@ local function TrustMemory(player)
     return memories
 end
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local mLvl = player:getMainLvl()
     local aBoysDream = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_BOY_S_DREAM)
@@ -72,6 +75,9 @@ entity.onTrigger = function(player, npc)
     then
         player:startEvent(62)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

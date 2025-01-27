@@ -7,6 +7,9 @@ local ID = zones[xi.zone.ILRUSI_ATOLL]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.CHEST)
 
@@ -27,6 +30,12 @@ entity.onTrigger = function(player, npc)
     else
         SpawnMob(npcID, instance):updateClaim(player)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity
