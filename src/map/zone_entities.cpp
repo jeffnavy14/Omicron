@@ -163,7 +163,7 @@ void CZoneEntities::TryAddToNearbySpawnLists(CBaseEntity* PEntity)
                 case TYPE_PC:
                 {
                     PCurrentChar->SpawnPCList[PEntity->id] = PEntity;
-                    PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_CHAR);
+                    PCurrentChar->updateCharPacket(static_cast<CCharEntity*>(PEntity), ENTITY_SPAWN, UPDATE_ALL_CHAR);
                     break;
                 }
                 case TYPE_NPC:
