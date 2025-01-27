@@ -9,6 +9,9 @@ local ID = zones[xi.zone.GARLAIGE_CITADEL]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if
         player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.RUBBISH_DAY) == xi.questStatus.QUEST_ACCEPTED and
@@ -23,6 +26,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(11, 3) -- Standard dialog and menu
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

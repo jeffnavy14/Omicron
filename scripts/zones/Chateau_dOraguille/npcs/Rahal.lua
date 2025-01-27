@@ -9,6 +9,9 @@ local ID = zones[xi.zone.CHATEAU_DORAGUILLE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local crestProgress = player:getCharVar('TheHolyCrest_Event')
     local hasDragonCurseRemedy = player:hasKeyItem(xi.ki.DRAGON_CURSE_REMEDY)
@@ -55,6 +58,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(529)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

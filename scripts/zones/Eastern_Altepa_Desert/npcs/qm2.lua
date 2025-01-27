@@ -9,6 +9,9 @@ local ID = zones[xi.zone.EASTERN_ALTEPA_DESERT]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local twentyInPirateYearsCS = player:getCharVar('twentyInPirateYearsCS')
     local tsuchigumoKilled = player:getCharVar('TsuchigumoKilled')
@@ -28,6 +31,12 @@ entity.onTrigger = function(player, npc)
         player:setCharVar('twentyInPirateYearsCS', 4)
         player:setCharVar('TsuchigumoKilled', 0)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

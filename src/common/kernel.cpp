@@ -238,9 +238,6 @@ int main(int argc, char** argv)
 
     lua_init();
     settings::init();
-    ShowInfo(fmt::format("Last Branch: {}", version::GetGitBranch()));
-    ShowInfo(fmt::format("SHA: {} ({})", version::GetGitSha(), version::GetGitDate()));
-
     usercheck();
 
     socket_init();

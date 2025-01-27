@@ -29,6 +29,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 168 then
         player:messageSpecial(ID.text.NO_RESPONSE_OFFSET + 4, xi.item.CLEAR_CHIP) -- You fit..

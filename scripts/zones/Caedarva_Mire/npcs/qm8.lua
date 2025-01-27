@@ -8,6 +8,9 @@ local ID = zones[xi.zone.CAEDARVA_MIRE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCharVar('[TIMER]Lamian_Fang_Key') ~= VanadielDayOfTheYear() then
         if npcUtil.giveItem(player, xi.item.LAMIAN_FANG_KEY) then
@@ -16,6 +19,12 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity
