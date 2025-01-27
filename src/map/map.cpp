@@ -1049,13 +1049,14 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     {
         do
         {
-            *buffsize        = FFXI_HEADER_SIZE;
-            auto& packetList = PChar->getPacketList();
-            packets          = 0;
+            *buffsize       = FFXI_HEADER_SIZE;
+            auto packetList = PChar->getPacketListCopy();
+            packets         = 0;
 
-            while (!PChar->isPacketListEmpty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
+            while (!packetList.empty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
             {
-                PSmallPacket = PChar->popPacket();
+                PSmallPacket = std::move(packetList.front());
+                packetList.pop_front();
 
                 PSmallPacket->setSequence(map_session_data->server_packet_id);
                 auto type = PSmallPacket->getType();
@@ -1130,6 +1131,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
             }
         }
     } while (PacketSize == static_cast<uint32>(-1));
+    PChar->erasePackets(packets);
     TotalPacketsSentPerTick += packets;
     TracyZoneString(fmt::format("Sending {} packets", packets));
 
