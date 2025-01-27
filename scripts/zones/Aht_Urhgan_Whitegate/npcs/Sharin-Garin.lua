@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local mercRank = xi.besieged.getMercenaryRank(player)
     local hasPermit = player:hasKeyItem(xi.ki.RUNIC_PORTAL_USE_PERMIT) and 1 or 0
@@ -16,6 +19,9 @@ entity.onTrigger = function(player, npc)
     local captain = mercRank == 11 and 1 or 0
 
     player:startEvent(140, 0, mercRank, hasPermit, points, hasAstral, cost, captain)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

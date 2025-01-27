@@ -10,6 +10,9 @@ local ID = zones[xi.zone.ALZADAAL_UNDERSEA_RUINS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local npcid = npc:getID()
     local event = nil
@@ -30,6 +33,9 @@ entity.onTrigger = function(player, npc)
     if event then
         player:startEvent(event)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

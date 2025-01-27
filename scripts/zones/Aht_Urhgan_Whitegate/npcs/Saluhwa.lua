@@ -9,6 +9,9 @@ local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local stock =
     {
@@ -21,6 +24,12 @@ entity.onTrigger = function(player, npc)
 
     player:showText(npc, ID.text.SALUHWA_SHOP_DIALOG)
     xi.shop.general(player, stock)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

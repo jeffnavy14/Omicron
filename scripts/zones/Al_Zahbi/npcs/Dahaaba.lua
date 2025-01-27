@@ -18,6 +18,9 @@ entity.onTrigger = function(player, npc)
     xi.chocobo.renterOnTrigger(player, npc, eventSucceed, eventFail)
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     xi.chocobo.renterOnEventFinish(player, csid, option, eventSucceed)
 end

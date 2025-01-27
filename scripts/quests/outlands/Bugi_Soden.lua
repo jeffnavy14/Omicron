@@ -132,9 +132,7 @@ quest.sections =
             ['Megapod_Megalops'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    if player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) then
-                        player:setLocalVar('killed_wsnm', 1)
-                    end
+                    player:setLocalVar('killed_wsnm', 1)
                 end,
             },
         },

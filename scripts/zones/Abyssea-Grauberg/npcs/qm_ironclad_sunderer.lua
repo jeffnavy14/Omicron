@@ -17,4 +17,10 @@ entity.onTrigger = function(player, npc)
     xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.item.TEEKESSELCHEN_FRAGMENT, xi.item.DARKFLAME_ARM })
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
+end
+
 return entity
