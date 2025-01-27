@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     npc:openDoor(2) -- Lever animation
 
@@ -21,6 +24,12 @@ entity.onTrigger = function(player, npc)
             GetNPCByID(lever - 4):setAnimation(9) --close door A (_5g2)
         end
     end)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -25,6 +25,9 @@ local cotrStates =
     REWARD_PENDING = 3
 }
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- CHILDREN OF THE RUNE
     local cotrQuestStatus = player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.CHILDREN_OF_THE_RUNE)
