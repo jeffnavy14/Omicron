@@ -2931,6 +2931,10 @@ end
 function CBaseEntity:delMod(modID, value)
 end
 
+---@return nil
+function CBaseEntity:printAllMods(modID, value)
+end
+
 ---@nodiscard
 ---@param modId integer
 ---@return integer

@@ -168,6 +168,8 @@
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
 
+#include <magic_enum/magic_enum.hpp>
+
 extern std::unordered_map<uint32, std::unordered_map<uint16, std::vector<std::pair<uint16, uint8>>>> PacketMods;
 
 //======================================================//
@@ -13724,6 +13726,45 @@ void CLuaBaseEntity::delMod(uint16 modID, int16 value)
 }
 
 /************************************************************************
+ *  Function: printAllMods()
+ *  Purpose : Prints all mods that have a non-zero value
+ *  Example : target:printAllMods()
+ *  Notes   :
+ ************************************************************************/
+
+void CLuaBaseEntity::printAllMods()
+{
+    if (m_PBaseEntity->objtype == TYPE_NPC)
+    {
+        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return;
+    }
+
+    const auto longestEnumLength = [&]()
+    {
+        std::size_t longest = 0U;
+        for (auto modId : magic_enum::enum_values<Mod>())
+        {
+            if (auto length = magic_enum::enum_name(modId).size(); length > longest)
+            {
+                longest = length;
+            }
+        }
+        return longest;
+    }();
+
+    auto* PEntity = static_cast<CBattleEntity*>(m_PBaseEntity);
+    ShowInfo(fmt::format("{}'s ({}) mods:", PEntity->getName(), PEntity->id).c_str());
+    for (const auto& modId : magic_enum::enum_values<Mod>())
+    {
+        if (const auto& value = PEntity->getMod(modId); value != 0)
+        {
+            ShowInfo(fmt::format("| {:<{}} | {:<8} |", magic_enum::enum_name(modId), longestEnumLength, value).c_str());
+        }
+    };
+}
+
+/************************************************************************
  *  Function: addLatent()
  *  Purpose : Adds the specified latent to the player
  *  Example : player:addLatent(xi.latent.LATENT_HP_UNDER_PERCENT, 95, xi.mod.REGEN, 1)
@@ -19239,6 +19280,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getMod", CLuaBaseEntity::getMod);
     SOL_REGISTER("setMod", CLuaBaseEntity::setMod);
     SOL_REGISTER("delMod", CLuaBaseEntity::delMod);
+    SOL_REGISTER("printAllMods", CLuaBaseEntity::printAllMods);
     SOL_REGISTER("getMaxGearMod", CLuaBaseEntity::getMaxGearMod);
 
     SOL_REGISTER("addLatent", CLuaBaseEntity::addLatent);
