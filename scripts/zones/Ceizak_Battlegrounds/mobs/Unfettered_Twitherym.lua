@@ -77,7 +77,6 @@ entity.onMobFight = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    originalDamage = mob:getMod(xi.mod.UDMGPHYS)
     local lastPhase = nil
 
     mob:addListener('WEAPONSKILL_USE', 'ANY_MOBSKILL_CHECK', function(mobArg, _, weaponSkill)

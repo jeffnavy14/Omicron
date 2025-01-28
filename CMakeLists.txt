@@ -96,16 +96,25 @@ set_project_warnings(project_warnings)
 # Globally define SOL_ALL_SAFETIES_ON so sol can be included anywhere
 # If SOL_NO_CHECK_NUMBER_PRECISION is defined, turns off number precision and integer
 # precision fitting when pushing numbers into sol
+# RC_FAST_MATH informs recastnavigation to not try to use infinity because we use -ffast-math
 # add_compile_definitions() comes with CMake 3.12
 add_definitions(
     -DSOL_ALL_SAFETIES_ON=1
     -DSOL_NO_CHECK_NUMBER_PRECISION=1
     -DSOL_DEFAULT_PASS_ON_ERROR=1
     -DSOL_PRINT_ERRORS=0
+    -DRC_FAST_MATH=1
 )
 
 # For external libs
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
+
+# Tracy flags
+option(TRACY_ENABLE "Enable Tracy profiling." OFF)
+if(ENABLE_TRACY OR TRACY_ENABLED OR TRACY) # Also handle close flags
+    set(TRACY_ENABLE ON)
+endif()
+message(STATUS "TRACY_ENABLE: ${TRACY_ENABLE}")
 
 add_subdirectory(ext)
 

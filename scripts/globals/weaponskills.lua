@@ -1429,3 +1429,15 @@ xi.weaponskills.handleWSGorgetBelt = function(attacker)
 
     return ftpBonus, accBonus
 end
+
+xi.weaponskills.handleWeaponskillEffect = function(actor, target, effectId, actionElement, damage, power, duration)
+    if
+        damage > 0 and
+        not target:hasStatusEffect(effectId) and
+        not xi.combat.statusEffect.isTargetImmune(target, effectId, actionElement) and
+        not xi.combat.statusEffect.isTargetResistant(actor, target, effectId) and
+        not xi.combat.statusEffect.isEffectNullified(target, effectId)
+    then
+        target:addStatusEffect(effectId, power, 0, duration)
+    end
+end

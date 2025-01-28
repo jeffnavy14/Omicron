@@ -91,6 +91,9 @@ local ids =
     SAFEHOLD_EARRING      = 79,
     NORG_EARRING          = 80,
     NASHMAU_EARRING       = 81,
+    EAST_SANDY_GLYPH      = 82,
+    BASTOK_MINES_GLYPH    = 83,
+    WINDY_WOODS_GLYPH     = 84,
 }
 xi.teleport.id = ids
 
@@ -173,6 +176,9 @@ xi.teleport.destination =
     [ids.SAFEHOLD_EARRING]      = {   -7.737,  -28.012,  111.883, 128,  26 }, -- Tavnazian Safehold
     [ids.NORG_EARRING]          = {  -24.375,    0.389,  -48.209, 207, 252 }, -- Norg
     [ids.NASHMAU_EARRING]       = {   -7.710,    0.000,  -43.301, 193,  53 }, -- Nashmau
+    [ids.EAST_SANDY_GLYPH]      = {  101.292,    1.000,  -48.889,  31, 230 }, -- Southern San d'Oria East Gate
+    [ids.BASTOK_MINES_GLYPH]    = {   -2.658,   -1.001, -120.508,  70, 234 }, -- Bastok Mines Gate
+    [ids.WINDY_WOODS_GLYPH]     = {  108.726,   -5.000,  -43.588,   0, 241 }, -- Windurst Woods Gate
 }
 
 xi.teleport.type =

@@ -1,6 +1,6 @@
 -----------------------------------
 -- ID: 16039
--- Kingdom Earring  
+-- Kingdom Earring
 -- Enchantment: "Teleport" (Southern San d'Oria)
 -----------------------------------
 ---@type TItem

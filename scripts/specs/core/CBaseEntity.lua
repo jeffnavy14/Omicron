@@ -605,7 +605,7 @@ end
 function CBaseEntity:changeMusic(blockID, musicTrackID)
 end
 
----@param menu integer
+---@param menu xi.menuType
 ---@return nil
 function CBaseEntity:sendMenu(menu)
 end
@@ -1202,8 +1202,9 @@ function CBaseEntity:getAnimationSub()
 end
 
 ---@param animationsub integer
+---@param sendUpdate boolean?
 ---@return nil
-function CBaseEntity:setAnimationSub(animationsub)
+function CBaseEntity:setAnimationSub(animationsub, sendUpdate)
 end
 
 ---@nodiscard
@@ -1341,9 +1342,19 @@ end
 function CBaseEntity:getSpeed()
 end
 
+---@nodiscard
+---@return integer
+function CBaseEntity:getBaseSpeed()
+end
+
 ---@param speedVal integer
 ---@return nil
-function CBaseEntity:setSpeed(speedVal)
+function CBaseEntity:setBaseSpeed(speedVal)
+end
+
+---@param speedVal integer
+---@return nil
+function CBaseEntity:setAnimationSpeed(speedVal)
 end
 
 ---@nodiscard
@@ -1818,6 +1829,23 @@ end
 function CBaseEntity:getJobPointLevel(jpType)
 end
 
+---@param jobID integer
+---@param amount integer
+---@return nil
+function CBaseEntity:addJobPoints(jobID, amount)
+end
+
+---@param jobID integer
+---@param amount integer
+---@return nil
+function CBaseEntity:delJobPoints(jobID, amount)
+end
+
+---@param jobID integer
+---@return integer
+function CBaseEntity:getJobPoints(jobID)
+end
+
 ---@param amount integer
 ---@return nil
 function CBaseEntity:setJobPoints(amount)
@@ -2036,6 +2064,11 @@ end
 ---@param value integer
 ---@return nil
 function CBaseEntity:setMP(value)
+end
+
+---@param value integer
+---@return nil
+function CBaseEntity:setMaxMP(value)
 end
 
 ---@param amount integer
@@ -2898,6 +2931,10 @@ end
 function CBaseEntity:delMod(modID, value)
 end
 
+---@return nil
+function CBaseEntity:printAllMods(modID, value)
+end
+
 ---@nodiscard
 ---@param modId integer
 ---@return integer
@@ -3406,8 +3443,20 @@ function CBaseEntity:getAutomatonFrame()
 end
 
 ---@nodiscard
+---@param itemId integer
+---@return nil
+function CBaseEntity:setAutomatonFrame(itemId)
+end
+
+---@nodiscard
 ---@return integer
 function CBaseEntity:getAutomatonHead()
+end
+
+---@nodiscard
+---@param itemId integer
+---@return nil
+function CBaseEntity:setAutomatonHead(itemId)
 end
 
 ---@param itemID integer
@@ -3432,6 +3481,13 @@ end
 ---@param slotId integer
 ---@return CItem?
 function CBaseEntity:getAttachment(slotId)
+end
+
+---@nodiscard
+---@param itemId integer
+---@param slotId integer
+---@return nil
+function CBaseEntity:setAttachment(itemId, slotId)
 end
 
 ---@nodiscard
@@ -3797,8 +3853,10 @@ function CBaseEntity:hasTPMoves()
 end
 
 ---@param PLuaBaseEntity CBaseEntity
+---@param offset integer
+---@param degrees integer
 ---@return nil
-function CBaseEntity:drawIn(PLuaBaseEntity)
+function CBaseEntity:drawIn(PLuaBaseEntity, offset, degrees)
 end
 
 ---@return nil
@@ -3882,6 +3940,12 @@ end
 ---@nodiscard
 ---@return integer
 function CBaseEntity:getTHlevel()
+end
+
+---@nodiscard
+---@param newLevel integer
+---@return nil
+function CBaseEntity:setTHlevel(newLevel)
 end
 
 ---@nodiscard
