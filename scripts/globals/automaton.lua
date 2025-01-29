@@ -29,6 +29,7 @@ xi.automaton.abilities =
     STRING_SHREDDER = 2743,
     ARMOR_SHATTERER = 2744,
     HEAT_CAPACITOR  = 2745,
+    BARRAGE_TURBINE = 2746,
     DISRUPTOR       = 2747,
 }
 

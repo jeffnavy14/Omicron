@@ -415,7 +415,7 @@ void SmallPacket0x00A(map_session_data_t* const PSession, CCharEntity* const PCh
     }
 }
 
-// https://github.com/atom0s/XiPackets/tree/main/world/client/0x001A
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x000C
 /************************************************************************
  *                                                                       *
  *  GP_CLI_COMMAND_GAMEOK                                                *
