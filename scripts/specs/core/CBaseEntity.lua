@@ -3280,20 +3280,23 @@ function CBaseEntity:trustPartyMessage(messageId)
 end
 
 ---@param targ integer
----@param conditions table
----@param reactions table
+---@param cond integer
+---@param condition_arg integer
+---@param react integer
+---@param select integer
+---@param selectorArg integer
 ---@param retry integer?
 ---@return string
-function CBaseEntity:addGambit(targ, conditions, reactions, retry)
+function CBaseEntity:addSimpleGambit(targ, cond, condition_arg, react, select, selectorArg, retry)
 end
 
 ---@param id string
 ---@return nil
-function CBaseEntity:removeGambit(id)
+function CBaseEntity:removeSimpleGambit(id)
 end
 
 ---@return nil
-function CBaseEntity:removeAllGambits()
+function CBaseEntity:removeAllSimpleGambits()
 end
 
 ---@param trigger integer

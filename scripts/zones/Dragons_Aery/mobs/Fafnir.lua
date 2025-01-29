@@ -10,9 +10,7 @@ local entity = {}
 
 entity.onMobSpawn = function(mob)
     mob:setLocalVar('[rage]timer', 3600) -- 60 minutes
-    mob:setMobMod(xi.mobMod.NO_MOVE, 0)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 48) -- 140 total weapon damage
-    mob:setMod(xi.mod.ATT, 435)
+    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 50) -- Level 90 + 50 = 140 Base Weapon Damage
 
     -- Despawn the ???
     GetNPCByID(ID.npc.FAFNIR_QM):setStatus(xi.status.DISAPPEAR)
@@ -30,15 +28,7 @@ entity.onMobFight = function(mob, target)
         wait = 3,
     }
 
-    for _, condition in ipairs(drawInTable.conditions) do
-        if condition then
-            mob:setMobMod(xi.mobMod.NO_MOVE, 1)
-            utils.drawIn(target, drawInTable)
-            break
-        else
-            mob:setMobMod(xi.mobMod.NO_MOVE, 0)
-        end
-    end
+    utils.drawIn(target, drawInTable)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
