@@ -21,6 +21,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     local brassDoor = GetNPCByID(ID.npc.SECOND_PASSWORD_STATUE - 2)
     local torch1 = GetNPCByID(ID.npc.SECOND_PASSWORD_STATUE + 1)

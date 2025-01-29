@@ -71,6 +71,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 31 then
         player:completeMission(xi.mission.log_id.ACP, xi.mission.id.acp.THE_ECHO_AWAKENS)

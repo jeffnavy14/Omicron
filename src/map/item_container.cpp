@@ -34,7 +34,7 @@ CItemContainer::CItemContainer(uint16 LocationID)
 , m_size(0)
 , m_count(0)
 {
-    std::memset(m_ItemList, 0, sizeof(m_ItemList));
+    memset(m_ItemList, 0, sizeof(m_ItemList));
 }
 
 CItemContainer::~CItemContainer()

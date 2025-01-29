@@ -9,6 +9,9 @@ local ID = zones[xi.zone.YUHTUNGA_JUNGLE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local evenmoreTravelsStatus = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.EVEN_MORE_GULLIBLES_TRAVELS)
     local questprogress = player:getCharVar('EVEN_MORE_GULLIBLES_PROGRESS')
@@ -71,6 +74,9 @@ entity.onTrigger = function(player, npc)
             player:messageSpecial(ID.text.FLOWER_BLOOMING)
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -22,6 +22,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     -- CHASING QUOTAS
     if csid == 137 then

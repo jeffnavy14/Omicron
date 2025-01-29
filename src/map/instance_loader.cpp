@@ -45,7 +45,6 @@
 CInstanceLoader::CInstanceLoader(uint16 instanceid, CCharEntity* PRequester)
 {
     TracyZoneScoped;
-
     auto   instanceData = instanceutils::GetInstanceData(instanceid);
     CZone* PZone        = zoneutils::GetZone(instanceData.instance_zone);
 
@@ -55,9 +54,9 @@ CInstanceLoader::CInstanceLoader(uint16 instanceid, CCharEntity* PRequester)
         return;
     }
 
-    m_PRequester = PRequester;
-    m_PZone      = PZone;
-    m_PInstance  = ((CZoneInstance*)PZone)->CreateInstance(instanceid);
+    requester = PRequester;
+    zone      = PZone;
+    instance  = ((CZoneInstance*)PZone)->CreateInstance(instanceid);
 }
 
 CInstanceLoader::~CInstanceLoader()
@@ -87,13 +86,13 @@ CInstance* CInstanceLoader::LoadInstance()
             INNER JOIN mob_family_system ON mob_pools.familyid = mob_family_system.familyID \
             WHERE instanceid = %u AND NOT (pos_x = 0 AND pos_y = 0 AND pos_z = 0)";
 
-    int32 ret = _sql->Query(Query, m_PInstance->GetID());
+    int32 ret = _sql->Query(Query, instance->GetID());
 
-    if (!m_PInstance->Failed() && ret != SQL_ERROR /*&& sql->NumRows() != 0*/)
+    if (!instance->Failed() && ret != SQL_ERROR /*&& sql->NumRows() != 0*/)
     {
         while (_sql->NextRow() == SQL_SUCCESS)
         {
-            CMobEntity* PMob = new CMobEntity();
+            CMobEntity* PMob = new CMobEntity;
 
             PMob->name.insert(0, (const char*)_sql->GetData(0));
             PMob->id     = _sql->GetUIntData(1);
@@ -116,7 +115,7 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->m_maxLevel = (uint8)_sql->GetIntData(12);
 
             uint16 sqlModelID[10];
-            std::memcpy(&sqlModelID, _sql->GetData(13), 20);
+            memcpy(&sqlModelID, _sql->GetData(13), 20);
             PMob->look = look_t(sqlModelID);
 
             PMob->SetMJob(_sql->GetIntData(14));
@@ -136,8 +135,8 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->m_ModelRadius = (float)_sql->GetIntData(24);
 
             PMob->baseSpeed      = (uint8)_sql->GetIntData(25);
+            PMob->speed          = (uint8)_sql->GetIntData(25);
             PMob->animationSpeed = (uint8)_sql->GetIntData(25);
-            PMob->UpdateSpeed();
 
             PMob->strRank = (uint8)_sql->GetIntData(26);
             PMob->dexRank = (uint8)_sql->GetIntData(27);
@@ -217,7 +216,7 @@ CInstance* CInstanceLoader::LoadInstance()
             PMob->setMobMod(MOBMOD_CHARMABLE, _sql->GetUIntData(74));
 
             // Overwrite base family charmables depending on mob type. Disallowed mobs which should be charmable
-            // can be set in in their onInitialize
+            // can be set in mob_spawn_mods or in their onInitialize
             if (PMob->m_Type & MOBTYPE_EVENT || PMob->m_Type & MOBTYPE_FISHED || PMob->m_Type & MOBTYPE_BATTLEFIELD || PMob->m_Type & MOBTYPE_NOTORIOUS)
             {
                 PMob->setMobMod(MOBMOD_CHARMABLE, 0);
@@ -225,9 +224,9 @@ CInstance* CInstanceLoader::LoadInstance()
 
             // must be here first to define mobmods
             mobutils::InitializeMob(PMob);
-            PMob->PInstance = m_PInstance;
+            PMob->PInstance = instance;
 
-            m_PInstance->InsertMOB(PMob);
+            instance->InsertMOB(PMob);
         }
 
         Query = "SELECT npcid, name, pos_rot, pos_x, pos_y, pos_z,\
@@ -237,10 +236,10 @@ CInstance* CInstanceLoader::LoadInstance()
             (instance_entities.id = npc_list.npcid) \
             WHERE instanceid = %u AND npcid >= %u AND npcid < %u";
 
-        uint32 zoneMin = (m_PZone->GetID() << 12) + 0x1000000;
+        uint32 zoneMin = (zone->GetID() << 12) + 0x1000000;
         uint32 zoneMax = zoneMin + 1024;
 
-        ret = _sql->Query(Query, m_PInstance->GetID(), zoneMin, zoneMax);
+        ret = _sql->Query(Query, instance->GetID(), zoneMin, zoneMax);
 
         if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
@@ -260,67 +259,62 @@ CInstance* CInstanceLoader::LoadInstance()
 
                 PNpc->m_TargID = _sql->GetUIntData(6) >> 16; // "quite likely"
 
-                PNpc->baseSpeed      = (uint8)_sql->GetIntData(7);
+                PNpc->baseSpeed      = (uint8)_sql->GetIntData(8);
+                PNpc->speed          = (uint8)_sql->GetIntData(7);
                 PNpc->animationSpeed = (uint8)_sql->GetIntData(8);
-                PNpc->UpdateSpeed();
-                PNpc->animation    = (uint8)_sql->GetIntData(9);
-                PNpc->animationsub = (uint8)_sql->GetIntData(10);
+                PNpc->animation      = (uint8)_sql->GetIntData(9);
+                PNpc->animationsub   = (uint8)_sql->GetIntData(10);
 
                 PNpc->namevis = (uint8)_sql->GetIntData(11);
                 PNpc->status  = static_cast<STATUS_TYPE>(_sql->GetIntData(12));
                 PNpc->m_flags = _sql->GetUIntData(13);
 
                 uint16 sqlModelID[10];
-                std::memcpy(&sqlModelID, _sql->GetData(14), 20);
+                memcpy(&sqlModelID, _sql->GetData(14), 20);
                 PNpc->look = look_t(sqlModelID);
 
                 PNpc->name_prefix = (uint8)_sql->GetIntData(15);
                 PNpc->widescan    = (uint8)_sql->GetIntData(16);
 
-                PNpc->PInstance = m_PInstance;
+                PNpc->PInstance = instance;
 
-                m_PInstance->InsertNPC(PNpc);
+                instance->InsertNPC(PNpc);
             }
         }
 
-        // clang-format off
         // Finish setting up Mobs
-        m_PInstance->ForEachMob([&](CMobEntity* PMob)
+        for (auto PMob : instance->m_mobList)
         {
-            luautils::OnMobInitialize(PMob);
-            luautils::ApplyMixins(PMob);
-            ((CMobEntity*)PMob)->saveModifiers();
-            ((CMobEntity*)PMob)->saveMobModifiers();
+            luautils::OnMobInitialize(PMob.second);
+            luautils::ApplyMixins(PMob.second);
+            ((CMobEntity*)PMob.second)->saveModifiers();
+            ((CMobEntity*)PMob.second)->saveMobModifiers();
 
             // Add to cache
             luautils::CacheLuaObjectFromFile(
                 fmt::format("./scripts/zones/{}/mobs/{}.lua",
-                            PMob->loc.zone->getName(),
-                            PMob->getName()));
-        });
-        // clang-format on
+                            PMob.second->loc.zone->getName(),
+                            PMob.second->getName()));
+        }
 
-        // clang-format off
         // Finish setting up NPCs
-        m_PInstance->ForEachNpc([&](CNpcEntity* PNpc)
+        for (auto PNpc : instance->m_npcList)
         {
-            luautils::OnNpcSpawn(PNpc);
+            luautils::OnNpcSpawn(PNpc.second);
 
             // Add to cache
             luautils::CacheLuaObjectFromFile(
                 fmt::format("./scripts/zones/{}/npcs/{}.lua",
-                            PNpc->loc.zone->getName(),
-                            PNpc->getName()));
-        });
-        // clang-format on
+                            PNpc.second->loc.zone->getName(),
+                            PNpc.second->getName()));
+        }
 
         // Cache Instance script (TODO: This will be done multiple times, don't do that)
-        luautils::CacheLuaObjectFromFile(instanceutils::GetInstanceData(m_PInstance->GetID()).filename);
+        luautils::CacheLuaObjectFromFile(instanceutils::GetInstanceData(instance->GetID()).filename);
 
         // Finish setup
-        luautils::OnInstanceCreatedCallback(m_PRequester, m_PInstance);
-        luautils::OnInstanceCreated(m_PInstance);
+        luautils::OnInstanceCreatedCallback(requester, instance);
+        luautils::OnInstanceCreated(instance);
     }
-
-    return m_PInstance;
+    return instance;
 }

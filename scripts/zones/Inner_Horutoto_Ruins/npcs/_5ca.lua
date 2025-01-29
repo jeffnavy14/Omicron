@@ -10,6 +10,9 @@ local ID = zones[xi.zone.INNER_HORUTOTO_RUINS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local makingHeadlines = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.MAKING_HEADLINES)
 
@@ -24,6 +27,12 @@ entity.onTrigger = function(player, npc)
         player:messageSpecial(ID.text.CAT_BURGLARS_HIDEOUT, 1, xi.ki.WINDURST_WOODS_SCOOP) -- Confirm Story
         player:setCharVar('QuestMakingHeadlines_var', utils.mask.setBit(prog, 4, true))
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -5,6 +5,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local firstStepForwardCompleted = player:getEminenceCompleted(1)
     local assistChannelCompleted = player:getEminenceCompleted(1448)

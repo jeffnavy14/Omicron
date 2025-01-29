@@ -8,6 +8,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local sandyFame = player:getFameLevel(xi.fameArea.SANDORIA)
 

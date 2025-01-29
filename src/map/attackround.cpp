@@ -441,7 +441,7 @@ void CAttackRound::ProcFollowUpAttacks()
                                 }
 
                                 charutils::UpdateItem(PChar, loc, slot, -1);
-                                PChar->pushPacket<CInventoryFinishPacket>();
+                                PChar->pushPacket(new CInventoryFinishPacket());
                             }
                         }
                     }

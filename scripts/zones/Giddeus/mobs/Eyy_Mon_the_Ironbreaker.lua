@@ -5,11 +5,6 @@
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.GIL_MIN, 20)
-    mob:setMobMod(xi.mobMod.GIL_MAX, 40)
-end
-
 entity.onMobDeath = function(mob, player, optParams)
 end
 

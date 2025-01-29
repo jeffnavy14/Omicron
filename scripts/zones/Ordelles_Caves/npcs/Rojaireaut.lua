@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCharVar('EcoStatus') == 1 then
         if not player:hasStatusEffect(xi.effect.LEVEL_RESTRICTION) then
@@ -18,6 +21,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(50) -- Default dialogue
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

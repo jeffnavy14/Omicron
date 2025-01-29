@@ -5,6 +5,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local state  = GetElevatorState(xi.elevator.PALBOROUGH_MINES_LIFT)
     local isBusy = npc:getLocalVar('isBusy')
@@ -16,6 +19,9 @@ entity.onTrigger = function(player, npc)
     then
         player:startEvent(10)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

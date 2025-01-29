@@ -94,6 +94,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     -- "Sharpening the Sword"
     if (csid == 45 or csid == 43) and option == 1 then

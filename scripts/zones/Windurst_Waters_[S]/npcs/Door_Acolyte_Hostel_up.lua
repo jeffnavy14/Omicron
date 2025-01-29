@@ -1,10 +1,14 @@
 -----------------------------------
 -- Area: Windurst Waters (S)
 --  NPC: Door Acolyte hostel
+-- Type: Quest NPC
 -- !pos 146.619, -8.525, 242.874 94
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
+
+entity.onTrade = function(player, npc, trade)
+end
 
 entity.onTrigger = function(player, npc)
     if
@@ -13,6 +17,9 @@ entity.onTrigger = function(player, npc)
     then
         player:startEvent(171)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

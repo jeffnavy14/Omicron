@@ -25,22 +25,16 @@
 #include "server_ip.h"
 #include "utils/zoneutils.h"
 
-CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 zone_type, uint64 zone_ipp)
+CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 type, uint64 ipp)
 {
     this->setType(0x0B);
     this->setSize(0x1C);
 
-    ref<uint8>(0x04)  = zone_type;
-    ref<uint32>(0x08) = (uint32)zone_ipp;
-    ref<uint16>(0x0C) = (uint16)(zone_ipp >> 32);
-}
+    // Store inputs to reconstruct later in map.cpp in case we detect the player needs the packet again
+    this->type = type;
+    this->ipp  = ipp;
 
-uint8 CServerIPPacket::zoneType()
-{
-    return ref<uint8>(0x04);
-}
-
-uint64 CServerIPPacket::zoneIPP()
-{
-    return ref<uint32>(0x08) | (uint64)ref<uint16>(0x0C) << 32;
+    ref<uint8>(0x04)  = type;
+    ref<uint32>(0x08) = (uint32)ipp;
+    ref<uint16>(0x0C) = (uint16)(ipp >> 32);
 }

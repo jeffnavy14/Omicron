@@ -9,6 +9,9 @@ local ID = zones[xi.zone.TORAIMARAI_CANAL]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCharVar('rootProblem') == 2 then
         if
@@ -21,6 +24,9 @@ entity.onTrigger = function(player, npc)
     elseif player:getCharVar('rootProblem') == 3 then
         player:startEvent(55)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

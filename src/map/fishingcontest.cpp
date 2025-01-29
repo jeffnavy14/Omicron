@@ -201,11 +201,10 @@ namespace fishingcontest
                 // Set the rank value
                 if (rankGroup > 0)
                 {
-                    const auto query = fmt::format("INSERT INTO char_fishing_contest_history (charid, contest_rank_{}) \
-                                        VALUES ({}, 1) ON DUPLICATE KEY UPDATE contest_rank_{} = contest_rank_{} + 1",
-                                                   rankGroup, charID, rankGroup, rankGroup);
+                    std::string Query = "INSERT INTO char_fishing_contest_history (charid, contest_rank_{}) "
+                                        "VALUES ({}, 1) ON DUPLICATE KEY UPDATE contest_rank_{} = contest_rank_{} + 1";
+                    auto        rset  = db::query(fmt::format(Query, rankGroup, charID, rankGroup, rankGroup));
 
-                    auto rset = db::query(query);
                     if (!rset)
                     {
                         ShowWarning("Unable to update player [%s] fishing reward history.", entry.name);
@@ -419,24 +418,25 @@ namespace fishingcontest
         }
 
         // Update the DB with the current contest entries
-        const auto query = fmt::format("REPLACE INTO `fishing_contest_entries` \
-                            (charid, mjob, sjob, mlevel, slevel, race, allegiance, fishRank, score, submitTime, contestRank, share) \
-                            SELECT charid, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} \
-                            FROM chars WHERE charname = '{}'",
-                                       entry->mjob,
-                                       entry->sjob,
-                                       entry->mlvl,
-                                       entry->slvl,
-                                       entry->race,
-                                       entry->allegiance,
-                                       entry->fishRank,
-                                       entry->score,
-                                       entry->submitTime,
-                                       entry->contestRank,
-                                       entry->share,
-                                       entry->name);
+        std::string Query = "REPLACE INTO `fishing_contest_entries` "
+                            "(charid, mjob, sjob, mlevel, slevel, race, allegiance, fishRank, score, submitTime, contestRank, share) "
+                            "SELECT charid, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} "
+                            "FROM chars WHERE charname = '{}'";
 
-        const auto rset = db::query(query);
+        auto rset = db::query(fmt::format(Query,
+                                          entry->mjob,
+                                          entry->sjob,
+                                          entry->mlvl,
+                                          entry->slvl,
+                                          entry->race,
+                                          entry->allegiance,
+                                          entry->fishRank,
+                                          entry->score,
+                                          entry->submitTime,
+                                          entry->contestRank,
+                                          entry->share,
+                                          entry->name));
+
         if (!rset)
         {
             ShowDebug("Error writing fishing contest data to database.");
@@ -493,7 +493,10 @@ namespace fishingcontest
         if (PEntry != nullptr)
         {
             // Remove from the database
-            const auto rset = db::preparedStmt("DELETE FROM fishing_contest_entries WHERE charid = ?", PChar->id);
+            const char* Query = "DELETE FROM `fishing_contest_entries` \
+                                 WHERE `charid` = {}";
+            auto        rset  = db::query(fmt::format(Query, PChar->id));
+
             if (!rset)
             {
                 ShowError("Failed to remove entry from fishing entry database.");

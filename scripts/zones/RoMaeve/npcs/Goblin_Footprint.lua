@@ -1,6 +1,7 @@
 -----------------------------------
 -- Area: RoMaeve
 --  NPC: Goblin Footprint
+-- Type: NPC
 -- !pos  8.793 -8.000 -144.479 122
 -----------------------------------
 ---@type TNpcEntity
@@ -12,6 +13,9 @@ end
 
 entity.onTrigger = function(player, npc)
     xi.goblinfootprint.rewatch(player, true)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

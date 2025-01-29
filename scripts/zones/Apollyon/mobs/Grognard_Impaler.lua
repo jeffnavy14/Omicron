@@ -14,9 +14,6 @@ entity.onMobSpawn = function(mob)
             { id = xi.jsa.CALL_WYVERN, hpp = 100 },
         },
     })
-
-    mob:addImmunity(xi.immunity.GRAVITY)
-    mob:addImmunity(xi.immunity.BIND)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

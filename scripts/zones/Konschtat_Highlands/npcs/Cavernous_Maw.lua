@@ -9,6 +9,9 @@ local ID = zones[xi.zone.KONSCHTAT_HIGHLANDS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if xi.settings.main.ENABLE_ABYSSEA == 1 and player:getMainLvl() >= 30 then
         if
@@ -23,6 +26,9 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.NOTHING_HAPPENS)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -9,6 +9,9 @@ local ID = zones[xi.zone.TAVNAZIAN_SAFEHOLD]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local unforgiven = player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.UNFORGIVEN)
 
@@ -25,6 +28,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(371) -- Default Dialogue TODO: Dialogue default is 192 before Unforgiven, so this might change
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

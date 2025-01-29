@@ -8,6 +8,9 @@ local ID = zones[xi.zone.PORT_WINDURST]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.THE_SAVAGE then
         if GetRegionOwner(xi.region.TAVNAZIANARCH) ~= xi.nation.WINDURST then
@@ -28,6 +31,12 @@ entity.onTrigger = function(player, npc)
     else
         player:showText(npc, ID.text.ALIZABE_COP_NOT_COMPLETED)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

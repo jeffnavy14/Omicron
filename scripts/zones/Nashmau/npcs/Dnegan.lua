@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local theWaywardAutomaton = player:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.THE_WAYWARD_AUTOMATON)
     local theWaywardAutomatonProgress = player:getCharVar('TheWaywardAutomatonProgress')
@@ -30,6 +33,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(288)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

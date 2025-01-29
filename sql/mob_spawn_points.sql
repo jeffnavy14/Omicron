@@ -33307,7 +33307,7 @@ INSERT INTO `mob_spawn_points` VALUES (17187451,'Spriggan_Graverobber','Spriggan
 INSERT INTO `mob_spawn_points` VALUES (17187452,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17187453,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17187454,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17187455,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17187465,'Spriggan_Graverobber','Spriggan Graverobber',57,0.000,0.000,0.000,0);
 
 -- ------------------------------------------------------------
 -- East Ronfaure (Zone 101)
@@ -39204,7 +39204,7 @@ INSERT INTO `mob_spawn_points` VALUES (17236176,'Evil_Eye','Evil Eye',4,-233.593
 INSERT INTO `mob_spawn_points` VALUES (17236177,'Evil_Eye','Evil Eye',4,-255.674,-14.83,-17.943,184);
 INSERT INTO `mob_spawn_points` VALUES (17236178,'Evil_Eye','Evil Eye',4,-236.923,-12.164,-33.878,93);
 INSERT INTO `mob_spawn_points` VALUES (17236179,'Evil_Eye','Evil Eye',4,-242.547,-11.594,16.76,126);
-INSERT INTO `mob_spawn_points` VALUES (17236180,'Shadow_Eye','Shadow Eye',24,-236.734,-11.177,-23.543,127);
+INSERT INTO `mob_spawn_points` VALUES (17236180,'Shadow_Eye','Shadow Eye',24,-238.000,-12.000,83.000,127);
 INSERT INTO `mob_spawn_points` VALUES (17236181,'Demon_Pawn','Demon Pawn',10,-228.561,-10.890,-127.956,63);
 INSERT INTO `mob_spawn_points` VALUES (17236182,'Demon_Pawn','Demon Pawn',10,-283.275,-20.379,-81.644,108);
 INSERT INTO `mob_spawn_points` VALUES (17236183,'Demon_Wizard','Demon Wizard',19,-277.136,-20.172,-122.657,127);

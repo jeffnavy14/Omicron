@@ -223,8 +223,9 @@ void CAutomatonController::DoCombatTick(time_point tick)
 
 void CAutomatonController::Move()
 {
-    if ((shouldStandBack() && !isWithinDistance(PAutomaton->loc.p, PTarget->loc.p, 15.0f)) ||
-        (PAutomaton->health.mp < 8 && PAutomaton->health.maxmp > 8))
+    float currentDistance = distanceSquared(PAutomaton->loc.p, PTarget->loc.p);
+
+    if ((shouldStandBack() && (currentDistance > 225)) || (PAutomaton->health.mp < 8 && PAutomaton->health.maxmp > 8))
     {
         PAutomaton->m_Behavior &= ~BEHAVIOR_STANDBACK;
     }

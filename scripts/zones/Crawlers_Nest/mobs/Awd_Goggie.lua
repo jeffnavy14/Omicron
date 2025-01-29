@@ -6,10 +6,6 @@
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 120)
-end
-
 entity.onMobDeath = function(mob, player, optParams)
     player:addTitle(xi.title.BOGEYDOWNER)
 end

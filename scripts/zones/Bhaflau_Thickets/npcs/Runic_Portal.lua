@@ -9,6 +9,9 @@ local ID = zones[xi.zone.BHAFLAU_THICKETS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if
         player:getCurrentMission(xi.mission.log_id.TOAU) >= xi.mission.id.toau.IMMORTAL_SENTRIES and
@@ -22,6 +25,9 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.RESPONSE)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

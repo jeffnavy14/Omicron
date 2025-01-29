@@ -9,6 +9,9 @@ local ID = zones[xi.zone.THE_BOYAHDA_TREE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- Notes: does ??? depop when Agas is spawned?
     -- current implementation: when Agas is active, triggering ??? will result in detarget
@@ -38,6 +41,9 @@ entity.onTrigger = function(player, npc)
             player:messageSpecial(ID.text.CAN_SEE_SKY)
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.MAGICKED_ASTROLABE) then
         local cost = 10000

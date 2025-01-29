@@ -46,14 +46,14 @@ local setMagicCastCooldown = function(pet)
     local actorWeather = pet:getWeather()
     -- Strong weathers.
     if
-        actorWeather == xi.combat.element.getAssociatedSingleWeather(petElement) or
-        actorWeather == xi.combat.element.getAssociatedDoubleWeather(petElement)
+        actorWeather == xi.combat.element.strongSingleWeather[petElement] or
+        actorWeather == xi.combat.element.strongDoubleWeather[petElement]
     then
         castingCooldown = castingCooldown - 2
     -- Weak weathers.
     elseif
-        actorWeather == xi.combat.element.getOppositeSingleWeather(petElement) or
-        actorWeather == xi.combat.element.getOppositeDoubleWeather(petElement)
+        actorWeather == xi.combat.element.weakSingleWeather[petElement] or
+        actorWeather == xi.combat.element.weakDoubleWeather[petElement]
     then
         castingCooldown = castingCooldown + 2
     end
@@ -63,7 +63,7 @@ local setMagicCastCooldown = function(pet)
     if dayElement == petElement then
         castingCooldown = castingCooldown - 3
     -- Weak day.
-    elseif dayElement == xi.combat.element.getOppositeElement(petElement) then
+    elseif dayElement == xi.combat.element.weakDay[petElement] then
         castingCooldown = castingCooldown + 3
     end
 

@@ -13,6 +13,9 @@ entity.onTrade = function(player, npc, trade)
     xi.caskets.onTrade(player, npc, trade)
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     xi.caskets.onEventFinish(player, csid, option, npc)
 end

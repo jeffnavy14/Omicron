@@ -9,6 +9,9 @@ local ID = zones[xi.zone.WINDURST_WATERS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if
         player:hasKeyItem(xi.ki.NEW_MODEL_HAT) and
@@ -20,6 +23,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(650)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

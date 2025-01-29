@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local zPos = player:getZPos()
 
@@ -14,6 +17,9 @@ entity.onTrigger = function(player, npc)
     elseif player:getGil() >= 200 then
         player:startEvent(116, 0, 200)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

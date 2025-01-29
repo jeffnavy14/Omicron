@@ -39,11 +39,11 @@ CShopItemsPacket::CShopItemsPacket(CCharEntity* PChar)
     {
         if (i == 20)
         {
-            PChar->pushPacket(this->copy());
+            PChar->pushPacket<CBasicPacket>(*this);
 
             i = 0;
             this->setSize(0x08);
-            std::memset(buffer_.data() + 4, 0, PACKET_SIZE - 8);
+            memset(data + 4, 0, PACKET_SIZE - 8);
         }
         this->setSize(this->getSize() + 0x0C); // TODO: Verify
 

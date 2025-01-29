@@ -34,6 +34,9 @@ local function hasRSE(player)
     return mask
 end
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local questStatus = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR)
     local rseGear     = hasRSE(player)
@@ -61,6 +64,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(10020)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

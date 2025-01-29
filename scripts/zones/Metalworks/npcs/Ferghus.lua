@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local tooManyChefs = player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.TOO_MANY_CHEFS)
     local pFame = player:getFameLevel(xi.fameArea.BASTOK)
@@ -17,6 +20,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(420) -- Standard
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

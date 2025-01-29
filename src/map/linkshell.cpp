@@ -97,7 +97,7 @@ void CLinkshell::setMessage(const std::string& message, const std::string& poste
     if (message.size() != 0)
     {
         message::send(MSG_CHAT_LINKSHELL, packetData, sizeof(packetData),
-                      std::make_unique<CLinkshellMessagePacket>(poster, message, m_name, std::numeric_limits<uint32>::min(), true));
+                      new CLinkshellMessagePacket(poster, message, m_name, std::numeric_limits<uint32>::min(), true));
     }
 }
 
@@ -186,7 +186,7 @@ void CLinkshell::ChangeMemberRank(const std::string& MemberName, uint8 toSack)
                         return;
                     }
                     newShellItem->setQuantity(1);
-                    std::memcpy(newShellItem->m_extra, PItemLinkshell->m_extra, 24);
+                    memcpy(newShellItem->m_extra, PItemLinkshell->m_extra, 24);
                     newShellItem->SetLSType(newId == 514 ? LSTYPE_PEARLSACK : LSTYPE_LINKPEARL);
                     newShellItem->setSubType(ITEM_LOCKED);
                     uint8 LocationID = PItemLinkshell->getLocationID();
@@ -323,13 +323,13 @@ void CLinkshell::BreakLinkshell()
 }
 
 // send linkshell message to all online members
-void CLinkshell::PushPacket(uint32 senderID, const std::unique_ptr<CBasicPacket>& packet)
+void CLinkshell::PushPacket(uint32 senderID, CBasicPacket* packet)
 {
     for (auto& member : members)
     {
         if (member->id != senderID && member->status != STATUS_TYPE::DISAPPEAR && !jailutils::InPrison(member))
         {
-            auto newPacket = packet->copy();
+            CBasicPacket* newPacket = new CBasicPacket(*packet);
             if (member->PLinkshell2 == this)
             {
                 if (newPacket->getType() == CChatMessagePacket::id)
@@ -341,9 +341,10 @@ void CLinkshell::PushPacket(uint32 senderID, const std::unique_ptr<CBasicPacket>
                     newPacket->ref<uint8>(0x05) |= 0x40;
                 }
             }
-            member->pushPacket(std::move(newPacket));
+            member->pushPacket(newPacket);
         }
     }
+    destroy(packet);
 }
 
 void CLinkshell::PushLinkshellMessage(CCharEntity* PChar, bool ls1)
@@ -376,7 +377,7 @@ namespace linkshell
             PLinkshell->setColor(_sql->GetIntData(1));
             char EncodedName[LinkshellStringLength];
 
-            std::memset(&EncodedName, 0, sizeof(EncodedName));
+            memset(&EncodedName, 0, sizeof(EncodedName));
 
             EncodeStringLinkshell(_sql->GetStringData(2).c_str(), EncodedName);
             PLinkshell->setName(EncodedName);

@@ -34,5 +34,5 @@ CBazaarPurchasePacket::CBazaarPurchasePacket(CCharEntity* PChar, bool result)
 
     ref<uint8>(0x04) = !result;
 
-    std::memcpy(buffer_.data() + 0x08, PChar->getName().c_str(), PChar->getName().size());
+    memcpy(data + (0x08), PChar->getName().c_str(), PChar->getName().size());
 }

@@ -6,6 +6,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- Note: Below the Arks uses a different scheme, but the mission script blocks actions
     -- if the player is not currently with this memory.
@@ -13,6 +16,9 @@ entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.BELOW_THE_ARKS then
         player:startEvent(150)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -71,7 +71,6 @@
 #include "utils/petutils.h"
 #include "utils/serverutils.h"
 #include "utils/synergyutils.h"
-#include "utils/synthutils.h"
 #include "utils/trustutils.h"
 #include "utils/zoneutils.h"
 
@@ -293,7 +292,6 @@ int32 do_init(int32 argc, char** argv)
     jobpointutils::LoadGifts();
     daily::LoadDailyItems();
     roeutils::UpdateUnityRankings();
-    synthutils::LoadSynthRecipes();
     synergyutils::LoadSynergyRecipes();
     CItemEquipment::LoadAugmentData(); // TODO: Move to itemutils
 
@@ -324,10 +322,10 @@ int32 do_init(int32 argc, char** argv)
 
     CTransportHandler::getInstance()->InitializeTransport();
 
-    CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 2400ms, time_server);
-    CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 5s, map_cleanup);
-    CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 15min, map_garbage_collect);
-    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
+    CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, time_server, 2400ms);
+    CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_cleanup, 5s);
+    CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, map_garbage_collect, 15min);
+    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, serverutils::PersistVolatileServerVars, 1min);
 
     ShowInfo("do_init: Removing expired database variables");
     uint32 currentTimestamp = CVanaTime::getInstance()->getSysTime();
@@ -401,13 +399,6 @@ int32 do_init(int32 argc, char** argv)
     {
         fmt::print("Reloading settings files\n");
         settings::init();
-    });
-
-    gConsoleService->RegisterCommand("reload_recipes", "Reload crafting recipes.",
-    [&](std::vector<std::string>& inputs)
-    {
-        fmt::print("Reloading crafting recipes\n");
-        synthutils::LoadSynthRecipes();
     });
 
     gConsoleService->RegisterCommand("exit", "Terminate the program.",
@@ -551,11 +542,9 @@ int32 do_sockets(fd_set* rfd, duration next)
 {
     message::handle_incoming();
 
-    struct timeval timeout
-    {
-    };
-    int32 ret = 0;
-    std::memcpy(rfd, &readfds, sizeof(*rfd));
+    struct timeval timeout{};
+    int32          ret = 0;
+    memcpy(rfd, &readfds, sizeof(*rfd));
 
     timeout.tv_sec  = std::chrono::duration_cast<std::chrono::seconds>(next).count();
     timeout.tv_usec = std::chrono::duration_cast<std::chrono::microseconds>(next - std::chrono::duration_cast<std::chrono::seconds>(next)).count();
@@ -575,10 +564,8 @@ int32 do_sockets(fd_set* rfd, duration next)
 
     if (sFD_ISSET(map_fd, rfd))
     {
-        struct sockaddr_in from
-        {
-        };
-        socklen_t fromlen = sizeof(from);
+        struct sockaddr_in from{};
+        socklen_t          fromlen = sizeof(from);
 
         ret = recvudp(map_fd, g_PBuff, MAX_BUFFER_SIZE, 0, (struct sockaddr*)&from, &fromlen);
         if (ret != -1)
@@ -858,8 +845,8 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
         if (static_cast<int32>(PacketDataSize) != -1)
         {
             // it's making result buff
-            // don't need std::memcpy header
-            std::memcpy(buff + FFXI_HEADER_SIZE, PacketDataBuff.get(), PacketDataSize);
+            // don't need memcpy header
+            memcpy(buff + FFXI_HEADER_SIZE, PacketDataBuff.get(), PacketDataSize);
             *buffsize = FFXI_HEADER_SIZE + PacketDataSize;
 
             return decryptCount;
@@ -947,11 +934,12 @@ int32 parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_data_t*
             }
             else
             {
-                // TODO: We should be passing a non-modifyable span of the packet data into the parser
-                //     : instead of creating a new packet here.
-                auto basicPacket = CBasicPacket::createFromBuffer(reinterpret_cast<uint8*>(SmallPD_ptr));
-                ShowTrace(fmt::format("map::parse: Char: {} ({}): 0x{:03X}", PChar->getName(), PChar->id, basicPacket->getType()).c_str());
-                PacketParser[SmallPD_Type](map_session_data, PChar, *basicPacket);
+                // NOTE:
+                // CBasicPacket is incredibly light when constructed from a pointer like we're doing here.
+                // It is just a bag of offsets to the data in SmallPD_ptr so its safe to construct.
+                auto basicPacket = CBasicPacket(reinterpret_cast<uint8*>(SmallPD_ptr));
+                ShowTrace(fmt::format("map::parse: Char: {} ({}): 0x{:03X}", PChar->getName(), PChar->id, basicPacket.getType()).c_str());
+                PacketParser[SmallPD_Type](map_session_data, PChar, basicPacket);
             }
         }
         else
@@ -1032,7 +1020,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     CCharEntity* PChar = map_session_data->PChar;
     TracyZoneString(PChar->name);
 
-    std::unique_ptr<CBasicPacket> PSmallPacket = nullptr;
+    CBasicPacket* PSmallPacket = nullptr;
 
     uint32 PacketSize               = UINT32_MAX;
     size_t PacketCount              = std::clamp<size_t>(PChar->getPacketCount(), 0, MAX_PACKETS_PER_COMPRESSION);
@@ -1049,13 +1037,13 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     {
         do
         {
-            *buffsize       = FFXI_HEADER_SIZE;
-            auto packetList = PChar->getPacketListCopy();
-            packets         = 0;
+            *buffsize               = FFXI_HEADER_SIZE;
+            PacketList_t packetList = PChar->getPacketList();
+            packets                 = 0;
 
             while (!packetList.empty() && *buffsize + packetList.front()->getSize() < MAX_BUFFER_SIZE && static_cast<size_t>(packets) < PacketCount)
             {
-                PSmallPacket = std::move(packetList.front());
+                PSmallPacket = packetList.front();
                 packetList.pop_front();
 
                 PSmallPacket->setSequence(map_session_data->server_packet_id);
@@ -1080,18 +1068,20 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
                 // Store zoneout packet in case we need to re-send this
                 if (type == 0x00B && map_session_data->blowfish.status == BLOWFISH_PENDING_ZONE && map_session_data->zone_ipp == 0)
                 {
-                    auto IPPacket = static_cast<CServerIPPacket*>(PSmallPacket.get());
-
-                    map_session_data->zone_ipp  = IPPacket->zoneIPP();
-                    map_session_data->zone_type = IPPacket->zoneType();
+                    auto IPPacket = dynamic_cast<CServerIPPacket*>(PSmallPacket);
+                    if (IPPacket)
+                    {
+                        map_session_data->zone_ipp  = IPPacket->ipp;
+                        map_session_data->zone_type = IPPacket->type;
+                    }
 
                     incrementKeyAfterEncrypt = true;
 
                     // Set client port to zero, indicating the client tried to zone out and no longer has a port until the next 0x00A
-                    db::preparedStmt("UPDATE accounts_sessions SET client_port = 0, last_zoneout_time = NOW() WHERE charid = ?", map_session_data->charID);
+                    _sql->Query("UPDATE accounts_sessions SET client_port = 0, last_zoneout_time = NOW() WHERE charid = %u", map_session_data->charID);
                 }
 
-                std::memcpy(buff + *buffsize, *PSmallPacket, PSmallPacket->getSize());
+                memcpy(buff + *buffsize, *PSmallPacket, PSmallPacket->getSize());
 
                 *buffsize += PSmallPacket->getSize();
 
@@ -1138,7 +1128,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     // Record data size excluding header
     uint8 hash[16];
     md5((uint8*)PTempBuff, hash, PacketSize);
-    std::memcpy(PTempBuff + PacketSize, hash, 16);
+    memcpy(PTempBuff + PacketSize, hash, 16);
     PacketSize += 16;
 
     if (PacketSize > MAX_BUFFER_SIZE + 20)
@@ -1147,7 +1137,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
     }
 
     // Making total packet
-    std::memcpy(buff + FFXI_HEADER_SIZE, PTempBuff, PacketSize);
+    memcpy(buff + FFXI_HEADER_SIZE, PTempBuff, PacketSize);
 
     uint32 CypherSize = (PacketSize / 4) & -2;
 
@@ -1188,7 +1178,7 @@ int32 send_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
     *buffsize = PacketSize + FFXI_HEADER_SIZE;
 
-    auto remainingPackets = PChar->getPacketCount();
+    auto remainingPackets = PChar->getPacketList().size();
     TotalPacketsDelayedPerTick += static_cast<uint32>(remainingPackets);
 
     if (settings::get<bool>("logging.DEBUG_PACKET_BACKLOG"))
@@ -1376,10 +1366,24 @@ int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
     // clang-format off
     zoneutils::ForEachZone([](CZone* PZone)
     {
-        PZone->GetZoneEntities()->EraseStaleDynamicTargIDs();
+        auto& staledynamicTargIds = PZone->GetZoneEntities()->dynamicTargIdsToDelete;
+
+        auto it = staledynamicTargIds.begin();
+        while(it != staledynamicTargIds.end())
+        {
+            // Erase dynamic targid if it's stale enough
+            if ((server_clock::now() - it->second) > 60s)
+            {
+                PZone->GetZoneEntities()->dynamicTargIds.erase(it->first);
+                it = staledynamicTargIds.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
     });
     // clang-format on
-
     return 0;
 }
 

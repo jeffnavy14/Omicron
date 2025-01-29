@@ -1,10 +1,14 @@
 -----------------------------------
 -- Area: Bastok Markets [S]
 --  NPC: GentleTiger
+-- Type: Quest
 -- !pos -203  -10  1
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
+
+entity.onTrade = function(player, npc, trade)
+end
 
 entity.onTrigger = function(player, npc)
     if player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.FIRES_OF_DISCONTENT) == xi.questStatus.QUEST_ACCEPTED then
@@ -16,6 +20,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(109)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option)

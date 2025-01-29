@@ -1,40 +1,12 @@
 -----------------------------------
 -- Area: The Garden of Ru'Hmet
---  Mob: Qn'Zdei
+--  MOB: Aw'Zdei
 -----------------------------------
 local ID = zones[xi.zone.THE_GARDEN_OF_RUHMET]
 mixins = { require('scripts/mixins/families/zdei') }
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
-
-local subLinkTable =
-{
-    [ID.mob.QNZDEI_OFFSET]      = 1000,
-    [ID.mob.QNZDEI_OFFSET + 1]  = 1000,
-    [ID.mob.QNZDEI_OFFSET + 2]  = 1000,
-    [ID.mob.QNZDEI_OFFSET + 3]  = 1000,
-    [ID.mob.QNZDEI_OFFSET + 4]  = 1001,
-    [ID.mob.QNZDEI_OFFSET + 5]  = 1001,
-    [ID.mob.QNZDEI_OFFSET + 6]  = 1001,
-    [ID.mob.QNZDEI_OFFSET + 7]  = 1001,
-    [ID.mob.QNZDEI_OFFSET + 8]  = 1002,
-    [ID.mob.QNZDEI_OFFSET + 9]  = 1002,
-    [ID.mob.QNZDEI_OFFSET + 10] = 1002,
-    [ID.mob.QNZDEI_OFFSET + 11] = 1002,
-    [ID.mob.QNZDEI_OFFSET + 12] = 1003,
-    [ID.mob.QNZDEI_OFFSET + 13] = 1003,
-    [ID.mob.QNZDEI_OFFSET + 14] = 1003,
-    [ID.mob.QNZDEI_OFFSET + 15] = 1003,
-}
-
-entity.onMobInitialize = function(mob)
-    local subLinkValue = subLinkTable[mob:getID()]
-
-    if subLinkValue then
-        mob:setMobMod(xi.mobMod.SUBLINK, subLinkValue)
-    end
-end
 
 local changeState = function(mob, idle)
     if mob:getLocalVar('idle') ~= idle then
@@ -63,6 +35,9 @@ local changeState = function(mob, idle)
             door:setLocalVar('idle', doorIdle)
         end
     end
+end
+
+entity.onMobInitialize = function(mob)
 end
 
 local spinSpeeds = { 4, 8, 16, 64 }

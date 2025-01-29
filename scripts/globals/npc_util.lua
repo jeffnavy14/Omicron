@@ -242,9 +242,6 @@ end
         "Try trading again after sorting your inventory"
         instead of
         "Come back again after sorting your inventory"
-    multiple (boolean default false)
-        if set, force message type as multiples version
-        eg. You obtain 1 chunk of rock salt!
 --]]
 
 ---@class itemQuantityEntry : { [xi.item]: xi.item, [integer]: integer }
@@ -254,7 +251,7 @@ end
 
 ---@param player CBaseEntity
 ---@param items xi.item|itemQuantityEntry|multipleItemList
----@param params { silent: boolean?, fromTrade: boolean?, multiple: boolean? }?
+---@param params { silent: boolean?, fromTrade: boolean? }?
 ---@return boolean
 function npcUtil.giveItem(player, items, params)
     params = params or {}
@@ -297,10 +294,7 @@ function npcUtil.giveItem(player, items, params)
     for _, v in pairs(givenItems) do
         if player:addItem(v[1], v[2], true) then
             if not params.silent and not messagedItems[v[1]] then
-                if
-                    v[2] > 1 or
-                    params.multiple
-                then
+                if v[2] > 1 then
                     player:messageSpecial(ID.text.ITEM_OBTAINED + 9, v[1], v[2])
                 else
                     player:messageSpecial(ID.text.ITEM_OBTAINED, v[1])
@@ -508,7 +502,7 @@ end
 
 ---@class rewardParam
 ---@field item xi.item|itemQuantityEntry|multipleItemList?
----@field itemParams { silent: boolean?, fromTrade: boolean?, multiple: boolean? }?
+---@field itemParams { silent: boolean?, fromTrade: boolean? }?
 ---@field keyItem xi.keyItem|{ [integer]: xi.keyItem }?
 ---@field ki xi.keyItem|{ [integer]: xi.keyItem }?
 ---@field fame integer?

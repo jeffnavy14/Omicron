@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local newNation = xi.nation.SANDORIA
     local oldNation = player:getNation()
@@ -37,6 +40,9 @@ entity.onTrigger = function(player, npc)
 
         player:startEvent(606, 0, 1, player:getRank(newNation), newNation, hasGil, cost)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

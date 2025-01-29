@@ -113,7 +113,7 @@ namespace petutils
                 Pet->name.insert(0, (const char*)_sql->GetData(1));
 
                 uint16 sqlModelID[10];
-                std::memcpy(&sqlModelID, _sql->GetData(2), 20);
+                memcpy(&sqlModelID, _sql->GetData(2), 20);
                 Pet->look = look_t(sqlModelID);
 
                 Pet->minLevel  = (uint8)_sql->GetIntData(3);
@@ -353,8 +353,8 @@ namespace petutils
         }
 
         PMob->baseSpeed      = petStats->speed;
+        PMob->speed          = petStats->speed;
         PMob->animationSpeed = petStats->speed;
-        PMob->UpdateSpeed();
 
         PMob->UpdateHealth();
         PMob->health.tp = 0;
@@ -763,9 +763,7 @@ namespace petutils
         }
         else if (PMaster->GetSJob() == JOB_SMN)
         {
-            mLvl = PMaster->GetSLevel();
-
-            PPet->SetMLevel(mLvl);
+            PPet->SetMLevel(PMaster->GetSLevel());
         }
         else
         { // should never happen
@@ -1037,8 +1035,7 @@ namespace petutils
         // TODO: make pets use entity flags
         PPet->m_flags = 0x0000008B;
         // Just sit, do nothing
-        PPet->baseSpeed = 0;
-        PPet->UpdateSpeed();
+        PPet->speed = 0;
 
         FinalizePetStatistics(PMaster, PPet);
     }

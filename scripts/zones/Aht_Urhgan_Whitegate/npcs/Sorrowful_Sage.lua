@@ -9,6 +9,9 @@ local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- local rank = xi.besieged.getMercenaryRank(player)
     -- local haveimperialIDtag

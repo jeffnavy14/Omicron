@@ -8,6 +8,9 @@ local ID = zones[xi.zone.PORT_WINDURST]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if GetRegionOwner(xi.region.VALDEAUNIA) ~= xi.nation.WINDURST then
         player:showText(npc, ID.text.ZOREEN_CLOSED_DIALOG)
@@ -21,6 +24,12 @@ entity.onTrigger = function(player, npc)
         player:showText(npc, ID.text.ZOREEN_OPEN_DIALOG)
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

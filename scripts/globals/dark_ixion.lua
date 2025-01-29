@@ -386,7 +386,6 @@ xi.darkixion.onMobDespawn = function(mob)
 end
 
 xi.darkixion.onMobSpawn = function(mob)
-    mob:setBaseSpeed(70)
     xi.darkixion.roamingMods(mob)
     SetServerVariable('DarkIxion_PopTime', os.time())
     mob:setLocalVar('wasKilled', 0)
@@ -404,6 +403,11 @@ xi.darkixion.onMobRoam = function(mob)
     then
         -- 60s of running away, time to repop somewhere else
         xi.darkixion.repop(mob)
+    elseif mob:getLocalVar('RunAway') ~= 0 then
+        -- run fast before repopping
+        mob:setSpeed(180) -- movement +350% = 40 * 4.5
+    else
+        mob:setSpeed(70) -- movement +75% = 40 * 1.75
     end
 
     if not mob:isFollowingPath() then
@@ -432,6 +436,7 @@ xi.darkixion.onMobEngage = function(mob, target)
 
     mob:setLocalVar('run', 0)
     mob:setLocalVar('PhaseChange', os.time() + math.random(60, 240))
+    mob:setSpeed(70) -- movement +75% = 40 * 1.75
 end
 
 xi.darkixion.onMobDisengage = function(mob)

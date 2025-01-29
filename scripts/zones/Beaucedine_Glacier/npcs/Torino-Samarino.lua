@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local tuningOutProgress = player:getCharVar('TuningOut_Progress')
 
@@ -16,6 +19,9 @@ entity.onTrigger = function(player, npc)
     elseif tuningOutProgress == 8 then
         player:startEvent(208) -- Talks about Ildy being passionate about his work
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

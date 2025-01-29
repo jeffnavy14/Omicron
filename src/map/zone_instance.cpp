@@ -105,6 +105,15 @@ void CZoneInstance::InsertNPC(CBaseEntity* PNpc)
     }
 }
 
+void CZoneInstance::DeletePET(CBaseEntity* PPet)
+{
+    TracyZoneScoped;
+    if (PPet->PInstance)
+    {
+        PPet->PInstance->DeletePET(PPet);
+    }
+}
+
 void CZoneInstance::InsertPET(CBaseEntity* PPet)
 {
     TracyZoneScoped;
@@ -120,6 +129,15 @@ void CZoneInstance::InsertTRUST(CBaseEntity* PTrust)
     if (PTrust->PInstance)
     {
         PTrust->PInstance->InsertTRUST(PTrust);
+    }
+}
+
+void CZoneInstance::DeleteTRUST(CBaseEntity* PTrust)
+{
+    TracyZoneScoped;
+    if (PTrust->PInstance)
+    {
+        PTrust->PInstance->DeleteTRUST(PTrust);
     }
 }
 
@@ -305,12 +323,12 @@ void CZoneInstance::SpawnPCs(CCharEntity* PChar)
     }
 }
 
-void CZoneInstance::SpawnConditionalNPCs(CCharEntity* PChar)
+void CZoneInstance::SpawnMoogle(CCharEntity* PChar)
 {
     TracyZoneScoped;
     if (PChar->PInstance)
     {
-        PChar->PInstance->SpawnConditionalNPCs(PChar);
+        PChar->PInstance->SpawnMoogle(PChar);
     }
 }
 
@@ -332,10 +350,9 @@ void CZoneInstance::TOTDChange(TIMETYPE TOTD)
     }
 }
 
-void CZoneInstance::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message_type, const std::unique_ptr<CBasicPacket>& packet)
+void CZoneInstance::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message_type, CBasicPacket* packet)
 {
     TracyZoneScoped;
-
     if (PEntity)
     {
         if (PEntity->PInstance)
@@ -355,7 +372,6 @@ void CZoneInstance::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
 void CZoneInstance::UpdateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask)
 {
     TracyZoneScoped;
-
     if (PChar)
     {
         if (PChar->PInstance)
@@ -375,7 +391,6 @@ void CZoneInstance::UpdateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint
 void CZoneInstance::UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, uint8 updatemask, bool alwaysInclude)
 {
     TracyZoneScoped;
-
     if (PEntity)
     {
         if (PEntity->PInstance)
@@ -395,7 +410,6 @@ void CZoneInstance::UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, 
 void CZoneInstance::WideScan(CCharEntity* PChar, uint16 radius)
 {
     TracyZoneScoped;
-
     if (PChar->PInstance)
     {
         PChar->PInstance->WideScan(PChar, radius);
@@ -405,7 +419,6 @@ void CZoneInstance::WideScan(CCharEntity* PChar, uint16 radius)
 void CZoneInstance::ZoneServer(time_point tick)
 {
     TracyZoneScoped;
-
     std::vector<CInstance*> instancesToRemove;
     for (const auto& PInstance : m_InstanceList)
     {
@@ -434,25 +447,29 @@ void CZoneInstance::ZoneServer(time_point tick)
 void CZoneInstance::CheckTriggerAreas()
 {
     TracyZoneScoped;
-
     for (const auto& PInstance : m_InstanceList)
     {
-        // clang-format off
-        PInstance->ForEachChar([&](CCharEntity* PChar)
+        for (const auto& [targid, PEntity] : PInstance->m_charList)
         {
+            auto* PChar = dynamic_cast<CCharEntity*>(PEntity);
+            if (!PChar)
+            {
+                continue;
+            }
+
             // TODO: When we start to use octrees or spatial hashing to split up zones,
             //     : use them here to make the search domain smaller.
 
             uint32 triggerAreaID = 0;
-            for (const auto& triggerArea : m_triggerAreaList)
+            for (triggerAreaList_t::const_iterator triggerAreaItr = m_triggerAreaList.begin(); triggerAreaItr != m_triggerAreaList.end(); ++triggerAreaItr)
             {
-                if (triggerArea->isPointInside(PChar->loc.p))
+                if ((*triggerAreaItr)->isPointInside(PChar->loc.p))
                 {
-                    triggerAreaID = triggerArea->GetTriggerAreaID();
+                    triggerAreaID = (*triggerAreaItr)->GetTriggerAreaID();
 
-                    if (triggerArea->GetTriggerAreaID() != PChar->m_InsideTriggerAreaID)
+                    if ((*triggerAreaItr)->GetTriggerAreaID() != PChar->m_InsideTriggerAreaID)
                     {
-                        luautils::OnTriggerAreaEnter(PChar, triggerArea);
+                        luautils::OnTriggerAreaEnter(PChar, *triggerAreaItr);
                     }
 
                     if (PChar->m_InsideTriggerAreaID == 0)
@@ -460,134 +477,52 @@ void CZoneInstance::CheckTriggerAreas()
                         break;
                     }
                 }
-                else if (triggerArea->GetTriggerAreaID() == PChar->m_InsideTriggerAreaID)
+                else if ((*triggerAreaItr)->GetTriggerAreaID() == PChar->m_InsideTriggerAreaID)
                 {
-                    luautils::OnTriggerAreaLeave(PChar, triggerArea);
+                    luautils::OnTriggerAreaLeave(PChar, *triggerAreaItr);
                 }
             }
             PChar->m_InsideTriggerAreaID = triggerAreaID;
-        });
-        // clang-format on
+        }
     }
 }
 
 void CZoneInstance::ForEachChar(const std::function<void(CCharEntity*)>& func)
 {
     TracyZoneScoped;
-
     for (const auto& PInstance : m_InstanceList)
     {
-        PInstance->ForEachChar(func);
+        for (const auto& [targid, PEntity] : PInstance->GetCharList())
+        {
+            if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
+            {
+                func(PChar);
+            }
+        }
     }
 }
 
 void CZoneInstance::ForEachCharInstance(CBaseEntity* PEntity, const std::function<void(CCharEntity*)>& func)
 {
     TracyZoneScoped;
-
-    if (PEntity->PInstance)
+    for (const auto& [_, PEntity] : PEntity->PInstance->GetCharList())
     {
-        PEntity->PInstance->ForEachChar(func);
-    }
-}
-
-void CZoneInstance::ForEachMob(const std::function<void(CMobEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    for (const auto& PInstance : m_InstanceList)
-    {
-        PInstance->ForEachMob(func);
+        if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
+        {
+            func(PChar);
+        }
     }
 }
 
 void CZoneInstance::ForEachMobInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func)
 {
     TracyZoneScoped;
-
-    if (PEntity->PInstance)
+    for (const auto& [_, PEntity] : PEntity->PInstance->m_mobList)
     {
-        PEntity->PInstance->ForEachMob(func);
-    }
-}
-
-void CZoneInstance::ForEachNpc(const std::function<void(CNpcEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    for (const auto& PInstance : m_InstanceList)
-    {
-        PInstance->ForEachNpc(func);
-    }
-}
-
-void CZoneInstance::ForEachNpcInstance(CBaseEntity* PEntity, const std::function<void(CNpcEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    if (PEntity->PInstance)
-    {
-        PEntity->PInstance->ForEachNpc(func);
-    }
-}
-
-void CZoneInstance::ForEachTrust(const std::function<void(CTrustEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    for (const auto& PInstance : m_InstanceList)
-    {
-        PInstance->ForEachTrust(func);
-    }
-}
-
-void CZoneInstance::ForEachTrustInstance(CBaseEntity* PEntity, const std::function<void(CTrustEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    if (PEntity->PInstance)
-    {
-        PEntity->PInstance->ForEachTrust(func);
-    }
-}
-
-void CZoneInstance::ForEachPet(const std::function<void(CPetEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    for (const auto& PInstance : m_InstanceList)
-    {
-        PInstance->ForEachPet(func);
-    }
-}
-
-void CZoneInstance::ForEachPetInstance(CBaseEntity* PEntity, const std::function<void(CPetEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    if (PEntity->PInstance)
-    {
-        PEntity->PInstance->ForEachPet(func);
-    }
-}
-
-void CZoneInstance::ForEachAlly(const std::function<void(CMobEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    for (const auto& PInstance : m_InstanceList)
-    {
-        PInstance->ForEachAlly(func);
-    }
-}
-
-void CZoneInstance::ForEachAllyInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func)
-{
-    TracyZoneScoped;
-
-    if (PEntity->PInstance)
-    {
-        PEntity->PInstance->ForEachAlly(func);
+        if (auto* PMob = dynamic_cast<CMobEntity*>(PEntity))
+        {
+            func(PMob);
+        }
     }
 }
 

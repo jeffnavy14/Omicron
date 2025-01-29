@@ -17,4 +17,14 @@ entity.onTrade = function(player, npc, trade)
     end
 end
 
+entity.onTrigger = function(player, npc)
+    player:messageSpecial(ID.text.GROUND_GIVING_HEAT)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
+end
+
 return entity

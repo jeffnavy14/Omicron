@@ -23,11 +23,6 @@ end
 
 effectObject.onEffectLose = function(target, effect)
     target:setAnimation(xi.anim.NONE)
-
-    -- Remove CharVars from player participating in chocobo riding game
-    if target:isPC() then
-        xi.chocoboGame.dismountChoco(target)
-    end
 end
 
 return effectObject

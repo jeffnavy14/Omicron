@@ -77,7 +77,7 @@ namespace anticheat
         {
             if (warningmsg != nullptr)
             {
-                std::memset(warningmsg, 0, warningsize);
+                memset(warningmsg, 0, warningsize);
                 char* warnptr = (char*)_sql->GetData(1);
                 if (warnptr != nullptr)
                 {

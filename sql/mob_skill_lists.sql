@@ -1225,8 +1225,11 @@ INSERT INTO `mob_skill_lists` VALUES ('Serket',273,721);
 INSERT INTO `mob_skill_lists` VALUES ('Serket',273,722);
 INSERT INTO `mob_skill_lists` VALUES ('Serket',273,723);
 INSERT INTO `mob_skill_lists` VALUES ('Serket',273,724);
+INSERT INTO `mob_skill_lists` VALUES ('KingV',274,353);
 INSERT INTO `mob_skill_lists` VALUES ('KingV',274,354);
 INSERT INTO `mob_skill_lists` VALUES ('KingV',274,355);
+INSERT INTO `mob_skill_lists` VALUES ('KingV',274,719);
+INSERT INTO `mob_skill_lists` VALUES ('KingV',274,720);
 INSERT INTO `mob_skill_lists` VALUES ('KingV',274,722);
 INSERT INTO `mob_skill_lists` VALUES ('KingV',274,723);
 -- 275: Matamata
@@ -1377,7 +1380,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Nosferatu',309,2111);
 -- INSERT INTO `mob_skill_lists` VALUES ('Nosferatu',309,2112);
 INSERT INTO `mob_skill_lists` VALUES ('ExperimentalLa',310,1753);
 INSERT INTO `mob_skill_lists` VALUES ('ExperimentalLa',310,1758);
-INSERT INTO `mob_skill_lists` VALUES ('Powderer_Penny',311,335); -- pollen
+-- 311: free
 -- INSERT INTO `mob_skill_lists` VALUES ('Nuhn',312,1977);
 -- INSERT INTO `mob_skill_lists` VALUES ('Nuhn',312,1978);
 -- INSERT INTO `mob_skill_lists` VALUES ('Nuhn',312,1693);
@@ -1945,10 +1948,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Two-faced_Flan',416,1822);
 INSERT INTO `mob_skill_lists` VALUES ('Two-faced_Flan',416,1823);
 INSERT INTO `mob_skill_lists` VALUES ('Two-faced_Flan',416,1824);
 INSERT INTO `mob_skill_lists` VALUES ('Two-faced_Flan',416,1825);
-INSERT INTO `mob_skill_lists` VALUES ('Barbaric_Weapon',417,514); -- Whirl of Rage
-INSERT INTO `mob_skill_lists` VALUES ('Picolaton',418,403); -- Stormwind
-INSERT INTO `mob_skill_lists` VALUES ('Dahu',419,802); -- Great Sandstorm
--- 420 to 435: free
+-- 417 to 435: free
 INSERT INTO `mob_skill_lists` VALUES ('Bloodlapper',436,2162);
 INSERT INTO `mob_skill_lists` VALUES ('Ghillie_Dhu',437,685);
 INSERT INTO `mob_skill_lists` VALUES ('Highlander_Lizard',438,371);
@@ -2306,13 +2306,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Gerjis',497,271); -- razor_fang
 INSERT INTO `mob_skill_lists` VALUES ('Gerjis',497,273); -- claw_cyclone
 INSERT INTO `mob_skill_lists` VALUES ('Gerjis',497,1322); -- gerjis_grip
 -- INSERT INTO `mob_skill_lists` VALUES ('Gerjis',497,1681); -- crossthrash
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,813); -- Dispelling Wind
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,814); -- Deadly Drive
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,815); -- Wind Wall
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,816); -- Fang Rush
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,817); -- Dread Shriek
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,818); -- Tail Crush
-INSERT INTO `mob_skill_lists` VALUES ('Cyranuce_M_Cutauleon',498,822); -- Chaos Breath
+-- 498: Cyranuce_M_Cutauleon
 -- 499 to 699: free
 INSERT INTO `mob_skill_lists` VALUES ('Mammet',503,347);
 INSERT INTO `mob_skill_lists` VALUES ('Mammet',503,419);
@@ -3608,9 +3602,7 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_Mildaurion',1086,3473); -- Stellar 
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Selh_teus',1094,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Yoran-Oran_UC',1095,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Sylvie_UC',1096,0);
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_Abquhbah',1097,1); -- Combo
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_Abquhbah',1097,4); -- Backhand Blow
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_Abquhbah',1097,3541); -- Salaheem Spirit
+-- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Abquhbah',1097,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Balamor',1098,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_August',1099,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rosulatia',1100,0);
@@ -3648,7 +3640,7 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_AAGK',1111,3726); -- Tachi: Fudo
 -- Reserved for future Trust 6003 (ID: 1118) (Formerly Cornelia)
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Excenmille_S',1119,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Ayame_UC',1120,0);
-INSERT INTO `mob_skill_lists` VALUES ('TRUST_Maat_UC',1121,3496);
+-- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Maat_UC',1121,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Aldo_UC',1122,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Naja_Salaheem_UC',1123,0);
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Lion_II',1124,3491); -- Grapeshot

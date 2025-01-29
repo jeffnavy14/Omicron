@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local allegiance =  player:getCampaignAllegiance()
     local alliedNotes = player:getCurrency('allied_notes')
@@ -14,6 +17,9 @@ entity.onTrigger = function(player, npc)
     if allegiance ~= 0 then
         player:startEvent(454, allegiance, 0, alliedNotes, 0, 0, 0, 0)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

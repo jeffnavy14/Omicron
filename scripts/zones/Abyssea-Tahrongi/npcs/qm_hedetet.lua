@@ -17,4 +17,10 @@ entity.onTrigger = function(player, npc)
     xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.item.VENOMOUS_SCORPION_STINGER, xi.item.CLUMP_OF_ACIDIC_HUMUS })
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
+end
+
 return entity

@@ -1,6 +1,7 @@
 -----------------------------------
 -- Area: Batok Markets
 --  NPC: Mjoll
+-- Standard Merchant NPC
 -- !pos -318.902 -10.319 -178.087 235
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS]

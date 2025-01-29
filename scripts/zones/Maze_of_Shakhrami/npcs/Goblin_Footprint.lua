@@ -1,6 +1,7 @@
 -----------------------------------
 -- Area: Maze of Shakhrami
 --  NPC: Goblin Footprint
+-- Type: NPC
 -- !pos  -337.589 -12.248 -178.081 198
 -----------------------------------
 ---@type TNpcEntity
@@ -12,6 +13,9 @@ end
 
 entity.onTrigger = function(player, npc)
     xi.goblinfootprint.rewatch(player, true)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

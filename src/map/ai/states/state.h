@@ -51,8 +51,8 @@ public:
     void         SetTarget(uint16 targid);
 
     bool HasErrorMsg() const;
-
-    auto GetErrorMsg() -> std::unique_ptr<CBasicPacket>;
+    /* Releases ownership to the caller */
+    CBasicPacket* GetErrorMsg();
 
     bool DoUpdate(time_point tick);
     // try interrupt (on hit)

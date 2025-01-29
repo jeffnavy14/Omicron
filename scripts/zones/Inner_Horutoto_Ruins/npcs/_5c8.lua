@@ -11,6 +11,9 @@ local ID = zones[xi.zone.INNER_HORUTOTO_RUINS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if npc:getLocalVar('doorCoolDown') > os.time() then
         return
@@ -38,6 +41,12 @@ entity.onTrigger = function(player, npc)
             player:messageSpecial(ID.text.PORTAL_SEALED_BY_3_MAGIC)
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

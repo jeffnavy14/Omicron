@@ -8,6 +8,9 @@ local ID = zones[xi.zone.KAZHAM]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCharVar('BathedInScent') == 1 then
         if player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.PERSONAL_HYGIENE) == xi.questStatus.QUEST_AVAILABLE then
@@ -25,6 +28,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(196)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

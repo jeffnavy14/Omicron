@@ -1,6 +1,7 @@
 -----------------------------------
 -- Area: Northern San d'Oria
 --  NPC: Olbergieut
+-- Type: Quest NPC
 -- !pos 91 0 121 231
 -- Starts and Finishes Quest: Gates of Paradise
 -----------------------------------
@@ -8,6 +9,9 @@ local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
+
+entity.onTrade = function(player, npc, trade)
+end
 
 entity.onTrigger = function(player, npc)
     local gates = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.GATES_TO_PARADISE)
@@ -24,6 +28,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(612)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

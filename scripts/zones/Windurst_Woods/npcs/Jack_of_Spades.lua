@@ -16,6 +16,9 @@ entity.onTrigger = function(player, npc)
     player:startEvent(10009, 0, 4)
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 10010 then
         player:confirmTrade()

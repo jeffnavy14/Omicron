@@ -44,6 +44,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 137 and option == 1 then
         player:addQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)

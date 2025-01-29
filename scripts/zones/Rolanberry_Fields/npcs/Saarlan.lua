@@ -51,6 +51,9 @@ local wares =
     [0x00210002] = { item = xi.item.MEDIATORS_RING,    lp = 6000,  title = xi.title.LEGENDARY_LEGIONNAIRE     },
 }
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if player:getCharVar('LegionStatus') == 0 then
         player:startEvent(8004)
@@ -68,6 +71,9 @@ entity.onTrigger = function(player, npc)
 
         player:startEvent(8005, 0, title, maximus, player:getCurrency('legion_point'), minimus)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

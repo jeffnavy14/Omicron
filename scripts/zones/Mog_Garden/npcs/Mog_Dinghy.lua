@@ -5,9 +5,15 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     -- TODO: Cap and figure this out
     player:startEvent(1015, 1, 1, 1, 1, 1, 1, 1, 1)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

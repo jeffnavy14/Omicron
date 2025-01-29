@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+Copyright © 2010-2015 Darkstar Dev Teams
 
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see http://www.gnu.org/licenses/
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -30,7 +30,7 @@
 #include <string.h>
 
 // Max packet size
-constexpr size_t PACKET_SIZE = 0x1FF;
+#define PACKET_SIZE 0x1FF
 
 enum ENTITYUPDATE
 {
@@ -41,53 +41,92 @@ enum ENTITYUPDATE
     ENTITY_DESPAWN,
 };
 
-//
-// Base class for all packets
-//
-// Contains a 0x1FF byte sized buffer
-// Access the raw data with ref<T>(index)
-//
+/** Base class for all packets
+ *
+ * Contains a 0x104 byte sized buffer
+ * Access the raw data with ref<T>(index)
+ *
+ */
 class CBasicPacket
 {
 protected:
-    std::array<uint8, PACKET_SIZE> buffer_;
+    uint8* data;
+
+    // Mark these members as private, so that they can't be set without using their
+    // specialised setters.
+private:
+    uint8& type;
+    uint8& size;
+
+protected:
+    uint16& code;
+    bool    owner;
 
 public:
     CBasicPacket()
+    : data(new uint8[PACKET_SIZE])
+    , type(ref<uint8>(0))
+    , size(ref<uint8>(1))
+    , code(ref<uint16>(2))
+    , owner(true)
     {
         TracyZoneScoped;
-        std::fill(buffer_.data(), buffer_.data() + PACKET_SIZE, 0);
+        std::fill(data, data + PACKET_SIZE, 0);
     }
 
-    explicit CBasicPacket(const CBasicPacket& other)
+    CBasicPacket(uint8* _data)
+    : data(_data)
+    , type(ref<uint8>(0))
+    , size(ref<uint8>(1))
+    , code(ref<uint16>(2))
+    , owner(false)
     {
         TracyZoneScoped;
-        std::memcpy(buffer_.data(), other.buffer_.data(), PACKET_SIZE);
     }
 
-    explicit CBasicPacket(const std::unique_ptr<CBasicPacket>& other)
+    CBasicPacket(const CBasicPacket& other)
+    : data(new uint8[PACKET_SIZE])
+    , type(ref<uint8>(0))
+    , size(ref<uint8>(1))
+    , code(ref<uint16>(2))
+    , owner(true)
     {
         TracyZoneScoped;
-        std::memcpy(buffer_.data(), other->buffer_.data(), PACKET_SIZE);
+        std::memcpy(data, other.data, PACKET_SIZE);
     }
 
-    static auto createFromBuffer(const uint8* buffer) -> std::unique_ptr<CBasicPacket>
+    CBasicPacket(CBasicPacket&& other)
+    : data(other.data)
+    , type(ref<uint8>(0))
+    , size(ref<uint8>(1))
+    , code(ref<uint16>(2))
+    , owner(other.owner)
     {
-        auto packet = std::make_unique<CBasicPacket>();
-        std::memcpy(packet->buffer_.data(), buffer, PACKET_SIZE);
-        return packet;
+        other.data = nullptr;
     }
 
-    virtual ~CBasicPacket() = default;
-
-    // Copy and move operators
-    CBasicPacket& operator=(const CBasicPacket& other)     = delete;
-    CBasicPacket& operator=(CBasicPacket&& other) noexcept = delete;
-
-    auto copy() -> std::unique_ptr<std::remove_pointer_t<decltype(this)>>
+    virtual ~CBasicPacket()
     {
-        return std::make_unique<std::remove_pointer_t<decltype(this)>>(*this);
+        TracyZoneScoped;
+        if (owner && data)
+        {
+            destroy_arr(data);
+        }
     }
+
+    CBasicPacket& operator=(const CBasicPacket& other) = delete;
+    CBasicPacket& operator=(CBasicPacket&& other)      = delete;
+
+    /// <summary>
+    /// Copies the given packet data.
+    /// </summary>
+    /// <param name="other"></param>
+    void copy(CBasicPacket* other)
+    {
+        memcpy(data, other->data, PACKET_SIZE);
+    }
+
+    /* Getters for the header */
 
     uint16 getType()
     {
@@ -103,6 +142,8 @@ public:
     {
         return ref<uint16>(2);
     }
+
+    /* Setters for the header */
 
     // Set the first 9 bits to the ID. The highest bit overflows into the second byte.
     void setType(unsigned int new_id)
@@ -124,40 +165,24 @@ public:
         ref<uint16>(2) = new_sequence;
     }
 
-    // Indexer for the buffer's data
+    /* Indexer for the data buffer */
     template <typename T>
     T& ref(std::size_t index)
     {
-        return ::ref<T>(buffer_.data(), index);
-    }
-
-    // Reinterpret and use the underlying buffer as a different type
-    template <typename T>
-    auto as() -> std::remove_pointer_t<T>*
-    {
-        static_assert(std::is_standard_layout_v<T>, "Type must be standard layout (No virtual functions, inheritance, etc.)");
-        return reinterpret_cast<std::remove_pointer_t<T>*>(buffer_.data());
-    }
-
-    // Reinterpret the underlying buffer as a different type and apply a function to it
-    template <typename T>
-    void as(const auto& fn)
-    {
-        static_assert(std::is_standard_layout_v<T>, "Type must be standard layout (No virtual functions, inheritance, etc.)");
-        fn(reinterpret_cast<std::remove_pointer_t<T>*>(buffer_.data()));
+        return ::ref<T>(data, index);
     }
 
     operator uint8*()
     {
-        return buffer_.data();
+        return data;
     }
 
-    uint8* operator[](const std::size_t index)
+    int8* operator[](const int index)
     {
-        return reinterpret_cast<uint8*>(buffer_.data()) + index;
+        return reinterpret_cast<int8*>(data) + index;
     }
 
-    // Used for setting "proper" packet sizes rounded to the nearest four away from zero
+    // used for setting "proper" packet sizes rounded to the nearest four away from zero
     uint32 roundUpToNearestFour(uint32 input)
     {
         int remainder = input % 4;
@@ -170,4 +195,4 @@ public:
     }
 };
 
-#endif // _BASICPACKET_H
+#endif

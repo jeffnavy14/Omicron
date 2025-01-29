@@ -11,6 +11,13 @@ local entity = {}
 local timewornPHTable =
 {
     [ID.mob.TIMEWORN_WARRIOR - 4] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR - 3] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR - 2] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR - 1] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR + 1] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR + 2] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR + 3] = ID.mob.TIMEWORN_WARRIOR,
+    [ID.mob.TIMEWORN_WARRIOR + 4] = ID.mob.TIMEWORN_WARRIOR,
 }
 
 entity.onMobDeath = function(mob, player, optParams)

@@ -1,10 +1,14 @@
 -----------------------------------
 -- Area: Windurst Waters
 --  NPC: Lumomo
+-- Type: Quest NPC - Involved in Eco-Warrior (Windurst)
 -- !pos -55.770 -5.499 18.914 238
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
+
+entity.onTrade = function(player, npc, trade)
+end
 
 entity.onTrigger = function(player, npc)
     local ecoStatus = player:getCharVar('EcoStatus')
@@ -24,6 +28,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(821) -- Default dialogue
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

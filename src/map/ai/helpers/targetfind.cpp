@@ -235,8 +235,9 @@ void CTargetFind::addAllInMobList(CBattleEntity* PTarget, bool withPet)
     CCharEntity* PChar = dynamic_cast<CCharEntity*>(findMaster(m_PBattleEntity));
     if (PChar)
     {
-        FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PBattleTarget, PChar->SpawnMOBList)
+        for (SpawnIDList_t::const_iterator it = PChar->SpawnMOBList.begin(); it != PChar->SpawnMOBList.end(); ++it)
         {
+            CBattleEntity* PBattleTarget = dynamic_cast<CBattleEntity*>(it->second);
             if (PBattleTarget && isMobOwner(PBattleTarget))
             {
                 addEntity(PBattleTarget, withPet);
@@ -310,10 +311,12 @@ void CTargetFind::addAllInEnmityList()
 {
     if (m_PBattleEntity->objtype == TYPE_MOB)
     {
-        CMobEntity* PMob = static_cast<CMobEntity*>(m_PBattleEntity);
+        CMobEntity*   mob        = (CMobEntity*)m_PBattleEntity;
+        EnmityList_t* enmityList = mob->PEnmityContainer->GetEnmityList();
 
-        for (const auto& [_, PEnmityObject] : *PMob->PEnmityContainer->GetEnmityList())
+        for (auto& it : *enmityList)
         {
+            EnmityObject_t& PEnmityObject = it.second;
             if (PEnmityObject.PEnmityOwner)
             {
                 addEntity(PEnmityObject.PEnmityOwner, false);
@@ -332,10 +335,11 @@ void CTargetFind::addAllInRange(CBattleEntity* PTarget, float radius, ALLEGIANCE
         if (PTarget->objtype == TYPE_PC)
         {
             CCharEntity* PChar = static_cast<CCharEntity*>(PTarget);
-            for (auto& spawnList : { PChar->SpawnPCList, PChar->SpawnPETList })
+            for (const auto& list : { PChar->SpawnPCList, PChar->SpawnPETList })
             {
-                FOR_EACH_PAIR_CAST_SECOND(CBattleEntity*, PBattleEntity, spawnList)
+                for (const auto& pair : list)
                 {
+                    CBattleEntity* PBattleEntity = static_cast<CBattleEntity*>(pair.second);
                     if (PBattleEntity && isWithinArea(&(PBattleEntity->loc.p)) && !PBattleEntity->isDead() &&
                         PBattleEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
                     {

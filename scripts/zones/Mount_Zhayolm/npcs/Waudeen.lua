@@ -9,6 +9,9 @@ local ID = zones[xi.zone.MOUNT_ZHAYOLM]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local toauMission = player:getCurrentMission(xi.mission.log_id.TOAU)
 
@@ -29,6 +32,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(3)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -9,6 +9,9 @@ local ID = zones[xi.zone.SOUTHERN_SAN_DORIA]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     if
         player:getFameLevel(xi.fameArea.SANDORIA) >= 2 and
@@ -24,6 +27,9 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(593)  -- Standard Dialog
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -218,6 +218,9 @@ local function performJobResetting(player, jobId)
     end
 end
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local currentGil    = player:getGil()
     local optionBitmask = 8388606 -- 23 bits. 1st = false. 2nd to 23th = true.
@@ -230,6 +233,9 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(10034, optionBitmask, currentGil)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

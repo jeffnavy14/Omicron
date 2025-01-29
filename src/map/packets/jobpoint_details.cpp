@@ -53,11 +53,11 @@ CJobPointDetailsPacket::CJobPointDetailsPacket(CCharEntity* PChar)
         // Send a packet every 2 jobs...
         if (i % 2 == 1)
         {
-            PChar->pushPacket(this->copy());
+            PChar->pushPacket<CBasicPacket>(*this);
 
             // Reset Data
             uint8 jpPacketSize = JP_DETAIL_DATA_SIZE * 20;
-            std::memset(buffer_.data() + 4, 0, sizeof(jpPacketSize));
+            std::memset(data + 4, 0, sizeof(jpPacketSize));
         }
     }
 }

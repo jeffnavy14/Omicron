@@ -14,6 +14,9 @@ local gardenGlobal = require('scripts/zones/The_Garden_of_RuHmet/globals')
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local hatedPlayer = npc:getLocalVar('hatedPlayer')
     local isInTime = npc:getLocalVar('hateTimer') > os.time()
@@ -47,6 +50,12 @@ entity.onTrigger = function(player, npc)
         npc:setLocalVar('hatedPlayer', 0)
         npc:setLocalVar('hateTimer', 0)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

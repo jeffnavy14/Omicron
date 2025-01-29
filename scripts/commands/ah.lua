@@ -12,7 +12,7 @@ commandObj.cmdprops =
 }
 
 commandObj.onTrigger = function(player)
-    player:sendMenu(xi.menuType.AUCTION)
+    player:sendMenu(3)
 end
 
 return commandObj

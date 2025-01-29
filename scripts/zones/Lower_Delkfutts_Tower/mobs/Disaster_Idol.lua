@@ -5,10 +5,6 @@
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
-end
-
 entity.onMobEngage = function(mob, target)
     local DayOfTheWeek = VanadielDayOfTheWeek()
 

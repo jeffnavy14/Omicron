@@ -25,4 +25,7 @@ entity.onTrade = function(player, npc, trade)
     end
 end
 
+entity.onTrigger = function(player, npc)
+end
+
 return entity

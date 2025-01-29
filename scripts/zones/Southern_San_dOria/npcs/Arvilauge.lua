@@ -7,9 +7,17 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
-    -- TODO: Use enum, verify this message is relevant
-    player:showText(npc, 11076)
+    player:showText(npc, 11076)--temp dialog
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

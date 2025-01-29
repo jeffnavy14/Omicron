@@ -163,7 +163,7 @@ namespace settings
     //
     // TODO: Gracefully convert like-types into types for the variant
     // TODO: Publish back up into Lua
-    void set(const auto& name, const auto& value)
+    void set(std::string name, auto value)
     {
         const auto key   = to_upper(name);
         settingsMap[key] = SettingsVariant_t(value);

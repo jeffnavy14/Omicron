@@ -42,7 +42,7 @@ xi.shop =
             player:addShopItem(stock[i], stock[i + 1] * priceMultiplier)
         end
 
-        player:sendMenu(xi.menuType.SHOP)
+        player:sendMenu(2)
     end,
 
     -- send general guild shop dialog to player (Added on June 2014 QoL)
@@ -57,7 +57,7 @@ xi.shop =
             player:addShopItem(stock[i], stock[i + 1], guildSkillId, stock[i + 2])
         end
 
-        player:sendMenu(xi.menuType.SHOP)
+        player:sendMenu(2)
     end,
 
     -- send curio vendor moogle shop shop dialog to player
@@ -74,7 +74,7 @@ xi.shop =
             end
         end
 
-        player:sendMenu(xi.menuType.SHOP)
+        player:sendMenu(2)
     end,
 
     -- send nation shop dialog to player

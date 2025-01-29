@@ -34,6 +34,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 249 then
         player:addQuest(xi.questLog.WINDURST, xi.quest.id.windurst.MANDRAGORA_MAD)

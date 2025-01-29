@@ -84,7 +84,7 @@ struct map_session_data_t
         {
             if (blowfish.hash[i] == 0)
             {
-                std::memset(blowfish.hash + i, 0, 16 - i);
+                memset(blowfish.hash + i, 0, 16 - i);
                 break;
             }
         }

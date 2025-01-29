@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local aNewDawn      = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.A_NEW_DAWN)
     local aNewDawnEvent = player:getCharVar('ANewDawn_Event')
@@ -43,6 +46,9 @@ entity.onTrigger = function(player, npc)
     then
         player:startEvent(0)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

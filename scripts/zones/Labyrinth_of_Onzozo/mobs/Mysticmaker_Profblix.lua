@@ -8,7 +8,6 @@ mixins = { require('scripts/mixins/job_special') }
 local entity = {}
 
 entity.onMobInitialize = function(mob)
-    mob:addImmunity(xi.immunity.STUN)
     mob:addMod(xi.mod.SILENCE_MEVA, 80)
 end
 

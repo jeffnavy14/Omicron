@@ -8,6 +8,9 @@ local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local currentAssault = player:getCurrentAssault()
 
@@ -92,6 +95,9 @@ entity.onTrigger = function(player, npc)
             end
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

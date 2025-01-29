@@ -96,8 +96,6 @@ global_objects=(
     BuildString
 
     GetFirstID
-
-    ReloadSynthRecipes
 )
 
 ignores=(

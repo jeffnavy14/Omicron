@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local orderUp = player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.ORDER_UP)
     local orderMarjoirelle = utils.mask.getBit(player:getCharVar('Order_Up_NPCs'), 8)
@@ -15,6 +18,9 @@ entity.onTrigger = function(player, npc)
         -- Progresses Quest: 'Order Up'
         player:startEvent(68)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -7,6 +7,9 @@ local ID = zones[xi.zone.VELUGANNON_PALACE]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.Y_LITH_OFFSET
     if offset >= 0 and offset <= 20 then
@@ -29,6 +32,12 @@ entity.onTrigger = function(player, npc)
             GetNPCByID(i):setAnimation(b)
         end  -- blue monoliths
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

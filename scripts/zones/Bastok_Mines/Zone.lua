@@ -11,7 +11,6 @@ zoneObject.onInitialize = function(zone)
 
     xi.events.harvestFestival.applyHalloweenNpcCostumes(zone:getID())
     xi.chocobo.initZone(zone)
-    xi.chocoboGame.clearRecord(zone)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -27,7 +26,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)

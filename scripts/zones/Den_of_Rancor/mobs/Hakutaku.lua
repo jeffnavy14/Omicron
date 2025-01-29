@@ -7,7 +7,6 @@ local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.GIL_MIN, 18000)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 120)
 end
 
 entity.onMobSpawn = function(mob)

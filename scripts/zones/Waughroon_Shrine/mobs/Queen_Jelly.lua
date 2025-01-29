@@ -15,7 +15,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setBaseSpeed(60)
+    mob:setSpeed(60)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

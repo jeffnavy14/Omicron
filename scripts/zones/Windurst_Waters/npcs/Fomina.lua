@@ -9,6 +9,9 @@ local ID = zones[xi.zone.WINDURST_WATERS]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local regionOwner = GetRegionOwner(xi.region.ELSHIMOLOWLANDS)
 
@@ -29,6 +32,12 @@ entity.onTrigger = function(player, npc)
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

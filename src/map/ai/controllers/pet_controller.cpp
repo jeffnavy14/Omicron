@@ -97,17 +97,13 @@ void CPetController::DoRoamTick(time_point tick)
         {
             return;
         }
-        else if (PetEntity->m_PetID == PETID_LIGHTSPIRIT) // Only Light Spirit will cast on roam tick
+        else if (PetEntity->m_PetID <= PETID_DARKSPIRIT)
         {
             // this will respect the pet's mob casting cooldown properties via MOBMOD_MAGIC_COOL
             if (CMobController::IsSpellReady(0) && CMobController::TryCastSpell())
             {
                 return;
             }
-        }
-        else if (PetEntity->m_PetID == PETID_LUOPAN) // Luopans do nothing
-        {
-            return;
         }
     }
 
@@ -127,7 +123,7 @@ void CPetController::DoRoamTick(time_point tick)
             }
             PPet->PAI->PathFind->FollowPath(m_Tick);
         }
-        else if (PPet->GetSpeed() > 0)
+        else if (PPet->speed > 0)
         {
             PPet->PAI->PathFind->WarpTo(PPet->PMaster->loc.p, PetRoamDistance);
         }

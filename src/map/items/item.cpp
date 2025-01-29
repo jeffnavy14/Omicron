@@ -303,15 +303,15 @@ void CItem::setReceiver(std::string const& receiver)
 const std::string CItem::getSignature()
 {
     char signature[SignatureStringLength] = {};
-    std::memcpy(&signature, m_extra + 0x0C, sizeof(signature));
+    memcpy(&signature, m_extra + 0x0C, sizeof(signature));
 
     return signature; // return string copy
 }
 
 void CItem::setSignature(std::string const& signature)
 {
-    std::memset(m_extra + 0x0C, 0, sizeof(m_extra) - 0x0C);
-    std::memcpy(m_extra + 0x0C, signature.c_str(), signature.size());
+    memset(m_extra + 0x0C, 0, sizeof(m_extra) - 0x0C);
+    memcpy(m_extra + 0x0C, signature.c_str(), signature.size());
 }
 
 /************************************************************************

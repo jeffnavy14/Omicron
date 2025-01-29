@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local xPos = player:getXPos()
     local door = GetNPCByID(npc:getID() - 1)
@@ -18,6 +21,12 @@ entity.onTrigger = function(player, npc)
     then
         door:openDoor(15) -- _0rk
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

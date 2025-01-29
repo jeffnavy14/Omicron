@@ -1710,3 +1710,5 @@ xi.conquest.onCityConquestUpdate = function(zone, updatetype, ranking, isconques
         end
     end
 end
+
+xi.conq = xi.conquest

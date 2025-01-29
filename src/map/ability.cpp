@@ -345,7 +345,7 @@ namespace ability
     {
         // TODO: Add message field to table
 
-        std::memset(PAbilityList, 0, sizeof(PAbilityList));
+        memset(PAbilityList, 0, sizeof(PAbilityList));
 
         const char* Query = "SELECT "
                             "abilityId,"

@@ -10,6 +10,8 @@ local mhauraID  = zones[xi.zone.MHAURA]
 -----------------------------------
 
 local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.EXPERTISE)
+local daysPassed = 0
+local hoursLeft  = 0
 
 quest.reward =
 {
@@ -91,24 +93,20 @@ quest.sections =
             ['Valgeir'] =
             {
                 onTrigger = function(player, npc)
-                    local questProgress = quest:getVar(player, 'Prog')
-
-                    if questProgress == 0 then
+                    if quest:getVar(player, 'Prog') == 0 then
                         return quest:progressEvent(102, xi.item.SCREAM_FUNGUS, xi.item.SLICE_OF_LAND_CRAB_MEAT) -- Ask for ingredients to cook.
-
-                    elseif questProgress == 1 then
+                    elseif quest:getVar(player, 'Prog') == 1 then
                         return quest:event(104) -- Reminder.
+                    elseif quest:getVar(player, 'Prog') == 2 then
+                        daysPassed = VanadielDayOfTheYear() - quest:getVar(player, 'DayStarted')
+                        hoursLeft  = 24 - VanadielHour() - (daysPassed * 24) + quest:getVar(player, 'HourStarted')
 
-                    elseif questProgress == 2 then
-                        local readyTime = quest:getVar(player, 'readyTime')
-
-                        if readyTime <= os.time() then -- Done waiting
+                        if hoursLeft < 0 then -- Done waiting
                             return quest:progressEvent(105) -- Get food.
                         else
                             return quest:event(141)
                         end
-
-                    elseif questProgress == 3 then
+                    elseif quest:getVar(player, 'Prog') == 3 then
                         return quest:event(142)
                     end
                 end,
@@ -128,7 +126,8 @@ quest.sections =
 
                 [103] = function(player, csid, option, npc)
                     quest:setVar(player, 'Prog', 2)
-                    quest:setVar(player, 'readyTime', os.time() + 24 * 144) -- Current time + 24 hours * 144 real seconds (Thats the ammount of seconds a Vana'Diel hour takes)
+                    quest:setVar(player, 'HourStarted', VanadielHour())
+                    quest:setVar(player, 'DayStarted', VanadielDayOfTheYear())
                     player:confirmTrade()
                 end,
 

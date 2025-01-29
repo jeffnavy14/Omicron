@@ -9,6 +9,9 @@ local ID = zones[xi.zone.UPPER_JEUNO]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local searchingForWords = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.SEARCHING_FOR_THE_RIGHT_WORDS)
 
@@ -35,6 +38,9 @@ entity.onTrigger = function(player, npc)
     elseif searchingForWords == xi.questStatus.QUEST_COMPLETED then -- replaceDefault()
         player:startEvent(200)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

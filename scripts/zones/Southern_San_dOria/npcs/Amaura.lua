@@ -9,6 +9,9 @@ local ID = zones[xi.zone.SOUTHERN_SAN_DORIA]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local toCureaCough = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.TO_CURE_A_COUGH)
 
@@ -25,6 +28,9 @@ entity.onTrigger = function(player, npc)
             player:startEvent(646) -- receive cough med for Nenne
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

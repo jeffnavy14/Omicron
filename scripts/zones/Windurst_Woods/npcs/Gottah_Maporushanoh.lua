@@ -5,6 +5,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local amazinScorpio = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.THE_AMAZIN_SCORPIO)
 
@@ -15,6 +18,12 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(420)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

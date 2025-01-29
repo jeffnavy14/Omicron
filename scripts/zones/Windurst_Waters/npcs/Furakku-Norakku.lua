@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local classReunion = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.CLASS_REUNION)
     local classReunionProgress = player:getCharVar('ClassReunionProgress')
@@ -16,6 +19,9 @@ entity.onTrigger = function(player, npc)
     if classReunion == 1 and classReunionProgress >= 3 and talk2 ~= 1 then
         player:startEvent(816) -- he tells you about Uran-Mafran
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

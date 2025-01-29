@@ -146,7 +146,7 @@ CMeritPoints::CMeritPoints(CCharEntity* PChar)
         return;
     }
 
-    std::memcpy(merits, meritNameSpace::GMeritsTemplate, sizeof(merits));
+    memcpy(merits, meritNameSpace::GMeritsTemplate, sizeof(merits));
 
     m_PChar = PChar;
     LoadMeritPoints(PChar->id);

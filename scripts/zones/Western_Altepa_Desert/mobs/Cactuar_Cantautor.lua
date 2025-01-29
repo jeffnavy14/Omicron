@@ -10,8 +10,4 @@ entity.onMobDeath = function(mob, player, optParams)
     xi.magian.onMobDeath(mob, player, optParams, set{ 781 })
 end
 
-entity.onMobDespawn = function(mob)
-    UpdateNMSpawnPoint(mob:getID())
-end
-
 return entity

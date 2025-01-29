@@ -1071,8 +1071,8 @@ void socket_init_tcp()
         server_clock::now() + 1s,
         nullptr,
         CTaskMgr::TASK_INTERVAL,
-        5min,
-        connect_check_clear);
+        connect_check_clear,
+        5min);
 }
 
 void socket_final_tcp()

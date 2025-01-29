@@ -13,18 +13,6 @@ xi.spells.enhancing = xi.spells.enhancing or {}
 -- 1 Basic Function to calculate final duration. Called by the main function.
 -- 1 Main function, called by spell scripts.
 
-local column =
-{
-    EFFECT_TIER           = 1,
-    EFFECT_ID             = 2,
-    EFFECT_LEVEL          = 3,
-    EFFECT_POWER          = 4,
-    EFFECT_DURATION       = 5,
-    EFFECT_COMPOSURE      = 6,
-    EFFECT_WILL_OVERWRITE = 7,
-    EFFECT_TICK_RATE      = 8,
-}
-
 -- Table variables.
 local pTable =
 {
@@ -193,7 +181,7 @@ local pTable =
 
 -- Enhancing Spell Base Potency function.
 xi.spells.enhancing.calculateEnhancingBasePower = function(caster, target, spell, spellId, spellEffect)
-    local basePower  = pTable[spellId][column.EFFECT_POWER]
+    local basePower  = pTable[spellId][4]
     local skillLevel = caster:getSkillLevel(spell:getSkillType())
     ------------------------------------------------------------
     -- Spell specific equations for potency. (Skill and stat)
@@ -279,7 +267,6 @@ xi.spells.enhancing.calculateEnhancingBasePower = function(caster, target, spell
             basePower = 3 * threshold - 190
         end
 
-        ---@cast basePower integer
         basePower = utils.clamp(math.floor(basePower), 1, xi.settings.main.STONESKIN_CAP)
 
     -- Temper
@@ -382,9 +369,9 @@ end
 
 -- Enhancing Spell Duration function.
 xi.spells.enhancing.calculateEnhancingDuration = function(caster, target, spell, spellId, spellGroup, spellEffect)
-    local spellLevel   = pTable[spellId][column.EFFECT_LEVEL]
-    local duration     = pTable[spellId][column.EFFECT_DURATION]
-    local useComposure = pTable[spellId][column.EFFECT_COMPOSURE]
+    local spellLevel   = pTable[spellId][3]
+    local duration     = pTable[spellId][5]
+    local useComposure = pTable[spellId][6]
     local targetLevel  = target:getMainLvl()
 
     -- Deodorize, Invisible and Sneak have a random factor to base duration.
@@ -474,10 +461,10 @@ xi.spells.enhancing.useEnhancingSpell = function(caster, target, spell)
     local magicDefenseBonus = 0
 
     -- Get Variables from Parameters Table.
-    local tier            = pTable[spellId][column.EFFECT_TIER]
-    local spellEffect     = pTable[spellId][column.EFFECT_ID]
-    local alwaysOverwrite = pTable[spellId][column.EFFECT_WILL_OVERWRITE]
-    local tickTime        = pTable[spellId][column.EFFECT_TICK_RATE]
+    local tier            = pTable[spellId][1]
+    local spellEffect     = pTable[spellId][2]
+    local alwaysOverwrite = pTable[spellId][7]
+    local tickTime        = pTable[spellId][8]
 
     ------------------------------------------------------------
     -- Handle exceptions and weird behavior here, before calculating anything.

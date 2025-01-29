@@ -316,16 +316,15 @@ xi.job_utils.geomancer.eclipticAttrition = function(player, target, ability)
     end
 end
 
-xi.job_utils.geomancer.collimatedFervor = function(player, target, ability)
-    target:addStatusEffect(xi.effect.COLLIMATED_FERVOR, 0, 0, 60)
+xi.job_utils.geomancer.collimatedFervor = function(player, target, ability) -- TODO: cardinal direction stuff
 end
 
 xi.job_utils.geomancer.lifeCycle = function(player, target, ability)
-    local hpAmount   = math.floor(0.25 * player:getHP())
+    local hpAmount    = math.floor(0.25 * player:getHP())
     local hpTransfer = hpAmount
 
     if player:getMod(xi.mod.LIFE_CYCLE_EFFECT) > 0 then
-        hpTransfer = hpAmount * player:getMod(xi.mod.LIFE_CYCLE_EFFECT) / 10
+        hpTransfer = hpAmount * (player:getMod(xi.mod.LIFE_CYCLE_EFFECT) / 10)
     end
 
     target:restoreHP(hpTransfer)
@@ -342,7 +341,7 @@ xi.job_utils.geomancer.dematerialize = function(player, target, ability)
     return xi.effect.DEMATERIALIZE
 end
 
-xi.job_utils.geomancer.theurgicFocus = function(player, target, ability)
+xi.job_utils.geomancer.theugicFocus = function(player, target, ability) -- TODO: cardinal direction stuff
 end
 
 xi.job_utils.geomancer.widenedCompass = function(player, target, ability)

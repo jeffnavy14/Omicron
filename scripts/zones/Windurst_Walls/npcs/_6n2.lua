@@ -7,6 +7,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local thePuppetMaster = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.THE_PUPPET_MASTER)
     local classReunion = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.CLASS_REUNION)
@@ -44,6 +47,9 @@ entity.onTrigger = function(player, npc)
     then
         player:startEvent(415)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -59,12 +59,12 @@ CGuildMenuSellPacket::CGuildMenuSellPacket(CCharEntity* PChar, CItemContainer* P
             ref<uint8>(0xF4) = ItemCount;
             ref<uint8>(0xF5) = (PacketCount == 0 ? 0x40 : PacketCount);
 
-            PChar->pushPacket(this->copy());
+            PChar->pushPacket<CBasicPacket>(*this);
 
             ItemCount = 0;
             PacketCount++;
 
-            std::memset(buffer_.data() + 4, 0, PACKET_SIZE - 8);
+            memset(data + 4, 0, PACKET_SIZE - 8);
         }
         ref<uint16>(0x08 * ItemCount + 0x04) = PItem->getID();
         ref<uint8>(0x08 * ItemCount + 0x06)  = PItem->getQuantity();

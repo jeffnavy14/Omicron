@@ -2,6 +2,8 @@
 -- Area: Windurst Walls
 --  NPC: Ambrosius
 -----------------------------------
+-- Quest NPC for "The Postman Always KOs Twice"
+-----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
@@ -68,6 +70,9 @@ entity.onTrade = function(player, npc, trade)
             end
         end
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

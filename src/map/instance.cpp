@@ -245,35 +245,17 @@ bool CInstance::CharRegistered(CCharEntity* PChar)
 
 void CInstance::ClearEntities()
 {
-    auto clearStates = [](CBattleEntity* entity)
+    auto clearStates = [](auto& entity)
     {
-        if (static_cast<CBattleEntity*>(entity)->isAlive())
+        if (static_cast<CBattleEntity*>(entity.second)->isAlive())
         {
-            entity->PAI->ClearStateStack();
+            entity.second->PAI->ClearStateStack();
         }
     };
-
-    // clang-format off
-    ForEachChar([&](CCharEntity* PChar)
-    {
-        clearStates(PChar);
-    });
-
-    ForEachMob([&](CMobEntity* PMob)
-    {
-        clearStates(PMob);
-    });
-
-    ForEachPet([&](CPetEntity* PPet)
-    {
-        clearStates(PPet);
-    });
-
-    ForEachTrust([&](CTrustEntity* PTrust)
-    {
-        clearStates(PTrust);
-    });
-    // clang-format on
+    std::for_each(m_charList.cbegin(), m_charList.cend(), clearStates);
+    std::for_each(m_mobList.cbegin(), m_mobList.cend(), clearStates);
+    std::for_each(m_petList.cbegin(), m_petList.cend(), clearStates);
+    std::for_each(m_trustList.cbegin(), m_trustList.cend(), clearStates);
 }
 
 void CInstance::Fail()

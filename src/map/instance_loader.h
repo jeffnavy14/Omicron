@@ -38,9 +38,9 @@ public:
     CInstance* LoadInstance();
 
 private:
-    CInstance*   m_PInstance;
-    CZone*       m_PZone;
-    CCharEntity* m_PRequester;
+    CInstance*   instance;
+    CZone*       zone;
+    CCharEntity* requester;
 };
 
 #endif

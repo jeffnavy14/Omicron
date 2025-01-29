@@ -33,21 +33,31 @@ xi.mobskills.shadowBehavior =
 
 xi.mobskills.physicalTpBonus =
 {
-    NO_EFFECT   = 0,
-    ACC_VARIES  = 1, -- Not implemented
-    ATK_VARIES  = 2, -- Not implemented
-    DMG_VARIES  = 3, -- Damage formula incorrect
-    CRIT_VARIES = 4, -- Not implemented
-    RANGED      = 5, -- Needs varification
+    ACC_VARIES  = 0,
+    ATK_VARIES  = 1,
+    DMG_VARIES  = 2,
+    CRIT_VARIES = 3,
 }
 
 xi.mobskills.magicalTpBonus =
 {
     NO_EFFECT   = 0,
-    MACC_BONUS  = 1, -- Not implemented
-    MAB_BONUS   = 2, -- Not implemented
-    DMG_BONUS   = 3, -- Damage formula incorrect
+    MACC_BONUS  = 1,
+    MAB_BONUS   = 2,
+    DMG_BONUS   = 3,
+    RANGED      = 4,
 }
+
+local function MobTPMod(tp)
+    -- increase damage based on tp
+    if tp >= 3000 then
+        return 2
+    elseif tp >= 2000 then
+        return 1.5
+    end
+
+    return 1
+end
 
 local burstMultipliersByTier =
 {
@@ -97,14 +107,14 @@ end
 
 xi.mobskills.mobRangedMove = function(mob, target, skill, numberofhits, accmod, dmgmod, tpeffect)
     -- TODO: Replace this with ranged attack code
-    return xi.mobskills.mobPhysicalMove(mob, target, skill, numberofhits, accmod, dmgmod, xi.mobskills.physicalTpBonus.RANGED)
+    return xi.mobskills.mobPhysicalMove(mob, target, skill, numberofhits, accmod, dmgmod, xi.mobskills.magicalTpBonus.RANGED)
 end
 
 -- helper function to handle a single hit and check for parrying, guarding, and blocking
 local function handleSinglePhysicalHit(mob, target, hitdamage, hitslanded, finaldmg, tpEffect, minRatio, maxRatio)
     -- if a non-ranged physical mobskill then can parry or guard
     if
-        tpEffect == xi.mobskills.physicalTpBonus.RANGED or
+        tpEffect == xi.mobskills.magicalTpBonus.RANGED or
         (not xi.combat.physical.isParried(target, mob) and
         not xi.combat.physical.isGuarded(target, mob))
     then
@@ -145,7 +155,7 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, dmg
 
     -- mobs use fSTR (but with special calculation in the called function)
     local fSTR = xi.combat.physical.calculateMeleeStatFactor(mob, target)
-    if tpEffect == xi.mobskills.physicalTpBonus.RANGED then
+    if tpEffect == xi.mobskills.magicalTpBonus.RANGED then
         fSTR = xi.combat.physical.calculateRangedStatFactor(mob, target)
     end
 
@@ -180,6 +190,10 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, dmg
     --work out the base damage for a single hit
     local hitdamage = math.max(1, base + lvldiff) * dmgMod
 
+    if tpEffect == xi.mobskills.physicalTpBonus.DMG_VARIES then
+        hitdamage = hitdamage * MobTPMod(skill:getTP() / 10)
+    end
+
     --work out min and max cRatio
     local maxRatio = ratio
     local minRatio = ratio - 0.375
@@ -209,7 +223,7 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, dmg
     end
 
     --apply ftp (assumes 1~3 scalar linear mod)
-    if tpEffect == xi.mobskills.physicalTpBonus.DMG_VARIES then
+    if tpEffect == xi.mobskills.magicalTpBonus.DMG_BONUS then
         hitdamage = hitdamage * fTP(skill:getTP(), mtp000, mtp150, mtp300)
     end
 
@@ -221,7 +235,7 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, dmg
     -- first hit has a higher chance to land
     local firstHitChance = hitrate * 1.5
 
-    if tpEffect == xi.mobskills.physicalTpBonus.RANGED then
+    if tpEffect == xi.mobskills.magicalTpBonus.RANGED then
         firstHitChance = hitrate * 1.2
     end
 
@@ -348,7 +362,7 @@ xi.mobskills.applyPlayerResistance = function(actor, effectId, target, diff, bon
         bonusMacc = bonusMacc + diff
     end
 
-    return xi.combat.magicHitRate.calculateResistRate(actor, target, 0, xi.skill.NONE, 0, element, 0, effectId, bonusMacc)
+    return xi.combat.magicHitRate.calculateResistRate(actor, target, 0, xi.skill.NONE, element, 0, effectId, bonusMacc)
 end
 
 xi.mobskills.mobAddBonuses = function(actor, target, damage, element, skill) -- used for SMN magical bloodpacts, despite the name.

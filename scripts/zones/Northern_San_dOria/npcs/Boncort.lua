@@ -1,6 +1,7 @@
 -----------------------------------
 -- Area: Northern San d'Oria
 --  NPC: Boncort
+-- Standard Merchant NPC
 -----------------------------------
 local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 require('scripts/quests/flyers_for_regine')
@@ -27,6 +28,12 @@ entity.onTrigger = function(player, npc)
 
     player:showText(npc, ID.text.BONCORT_SHOP_DIALOG)
     xi.shop.nation(player, stock, xi.nation.SANDORIA)
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

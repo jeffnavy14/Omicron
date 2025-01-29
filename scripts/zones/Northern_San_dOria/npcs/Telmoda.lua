@@ -5,6 +5,9 @@
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local telmodaMadaline = player:getCharVar('Telmoda_Madaline_Event')
 
@@ -14,6 +17,12 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(616)
     end
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

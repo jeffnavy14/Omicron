@@ -7,6 +7,9 @@ local ID = zones[xi.zone.BASTOK_JEUNO_AIRSHIP]
 ---@type TNpcEntity
 local entity = {}
 
+entity.onTrade = function(player, npc, trade)
+end
+
 entity.onTrigger = function(player, npc)
     local vHour = VanadielHour()
     local vMin  = VanadielMinute()
@@ -53,6 +56,12 @@ entity.onTrigger = function(player, npc)
     end
 
     player:messageSpecial(message, math.floor((2.4 * vMinutes) / 60), math.floor(vMinutes / 60 + 0.5))
+end
+
+entity.onEventUpdate = function(player, csid, option, npc)
+end
+
+entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity
