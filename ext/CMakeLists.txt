@@ -237,6 +237,12 @@ CPMAddPackage(
     GIT_TAG 83a592f0c3807500f1aaf3b07fd48105a01e2780
 ) # defines: alpaca
 
+CPMAddPackage(
+    NAME magic_enum
+    GITHUB_REPOSITORY Neargye/magic_enum
+    GIT_TAG 1a1824df7ac798177a521eed952720681b0bf482
+) # defines: magic_enum
+
 set(EXTERNAL_LIBS
     fmt::fmt
     spdlog
@@ -258,6 +264,7 @@ set(EXTERNAL_LIBS
     asio
     bcrypt
     alpaca
+    magic_enum
 )
 
 if(WIN32)

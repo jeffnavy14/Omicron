@@ -308,6 +308,8 @@ xi.msg.basic =
     TIME_DYNAMIS_EXTENDED  = 448, -- Time allowed in Dynamis has been extended by <param> minutes
     TIME_DYNAMIS_REMAINING = 449, -- ----== WARNING ==----Time remaining in Dynamis: <param> minutes.
     -- Charm
+    CHARM_SUCCESS          = 136, -- <actor> uses charm. <target> is now under the <actor>'s control.
+    CHARM_FAIL             = 137, -- <actor> uses charm. <actor> fails to charm <target>.
     CANNOT_CHARM           = 210, -- <actor> cannot charm <target>!
     VERY_DIFFICULT_CHARM   = 211, -- It would be very difficult for <actor> to charm <target>.
     DIFFICULT_TO_CHARM     = 212, -- It would be difficult for <actor> to charm <target>.
