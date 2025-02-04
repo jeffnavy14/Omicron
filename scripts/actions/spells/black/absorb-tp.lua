@@ -2,6 +2,7 @@
 -- Spell: Absorb-TP
 -- Steals an enemy's TP.
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -16,7 +17,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     local params = {}
     params.attribute = xi.mod.INT
     params.skillType = xi.skill.DARK_MAGIC
-    local resist = applyResistance(caster, target, spell, params)
+    local resist = applyResistanceEffect(caster, target, spell, params)
 
     --get the resisted damage
     dmg = dmg * resist
@@ -25,7 +26,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     dmg = addBonuses(caster, spell, target, dmg)
 
     --add in target adjustment
-    dmg = adjustForTarget(target, dmg, spell:getElement())
+    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, spell:getElement())
 
     --add in final adjustments
     if resist <= 0.125 then

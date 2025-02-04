@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.RIVERNE_SITE_A01]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -11,7 +12,7 @@ entity.onMobSpawn = function(mob)
     mob:setMagicCastingEnabled(false) -- does not cast spells while idle
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setMagicCastingEnabled(true)
 end
 

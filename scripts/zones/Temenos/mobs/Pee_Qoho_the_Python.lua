@@ -5,9 +5,10 @@
 mixins = { require('scripts/mixins/job_special') }
 local ID = zones[xi.zone.TEMENOS]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     if
         GetMobByID(ID.mob.TEMENOS_C_MOB[3] + 18):isDead() and GetMobByID(ID.mob.TEMENOS_C_MOB[3] + 19):isDead() and
         GetMobByID(ID.mob.TEMENOS_C_MOB[3] + 20):isDead() and GetMobByID(ID.mob.TEMENOS_C_MOB[3] + 21):isDead() and

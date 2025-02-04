@@ -2,6 +2,7 @@
 -- Crescent Fang
 -- Fenrir inflicts Paralysis along with a single attack to target.
 -----------------------------------
+---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
@@ -13,7 +14,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     local accmod = 2
     local dmgmod = 5
 
-    local damage = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, dmgmod, 0, xi.mobskills.magicalTpBonus.NO_EFFECT, 1, 2, 3)
+    local damage = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, dmgmod, 0, xi.mobskills.physicalTpBonus.NO_EFFECT, 1, 2, 3)
     local totaldamage = xi.mobskills.mobFinalAdjustments(damage.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, numhits)
 
     if damage.hitslanded > 0 then

@@ -3,6 +3,7 @@
 --  NPC: Tebhi
 -- !pos -136 24 -21 151
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -14,15 +15,6 @@ entity.onTrade = function(player, npc, trade)
         -- TODO: Tebhi disappears for 15min
         player:setCharVar('scatIntoShadowCS', 2)
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

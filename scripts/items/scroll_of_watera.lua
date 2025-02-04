@@ -3,9 +3,10 @@
 -- Scroll of Watera
 -- Teaches the black magic Watera
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.WATERA)
 end
 

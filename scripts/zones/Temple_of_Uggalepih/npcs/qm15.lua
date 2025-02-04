@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local pet = player:getPet()
@@ -29,13 +27,10 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if
         csid == 67 and
-        npcUtil.completeQuest(player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER, { item = 12519, fame = 60, title = xi.title.PARAGON_OF_DRAGOON_EXCELLENCE, var = { 'KnightStalker_Kill', 'KnightStalker_Progress' } })
+        npcUtil.completeQuest(player, xi.questLog.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER, { item = 12519, fame = 60, title = xi.title.PARAGON_OF_DRAGOON_EXCELLENCE, var = { 'KnightStalker_Kill', 'KnightStalker_Progress' } })
     then
         player:delKeyItem(xi.ki.CHALLENGE_TO_THE_ROYAL_KNIGHTS)
         player:setCharVar('KnightStalker_Option1', 1) -- Optional post-quest cutscenes.

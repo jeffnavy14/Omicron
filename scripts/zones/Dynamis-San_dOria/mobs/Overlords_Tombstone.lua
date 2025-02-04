@@ -3,9 +3,10 @@
 --  Mob: Overlord's Tombstone
 -- Note: Mega Boss
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local mobId = mob:getID()
     for i = mobId + 1, mobId + 2 do
         if not GetMobByID(i):isSpawned() then

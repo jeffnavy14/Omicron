@@ -11,21 +11,26 @@
 -- 100%TP    200%TP    300%TP
 -- 4.50      6.00      7.50
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-    local params = {}
-    params.ftp100 = 4.5 params.ftp200 = 6 params.ftp300 = 7.5
-    params.str_wsc = 0.32 params.dex_wsc = 0.0 params.vit_wsc = 0.0 params.agi_wsc = 0.0 params.int_wsc = 0.0 params.mnd_wsc = 0.32 params.chr_wsc = 0.0
-    params.ele = xi.element.LIGHT
-    params.skill = xi.skill.SWORD
+    local params      = {}
+    params.ftpMod     = { 4.5, 6, 7.5 }
+    params.str_wsc    = 0.32
+    params.mnd_wsc    = 0.32
+    params.ele        = xi.element.LIGHT
+    params.skill      = xi.skill.SWORD
     params.includemab = true
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doMagicWeaponskill(player, target, wsID, params, tp, action, primary)
 
-    if damage > 0 and not target:hasStatusEffect(xi.effect.FLASH) then
-    target:addStatusEffect(xi.effect.FLASH, 200, 0, 15)
-    end
+    -- Handle status effect
+    local effectId      = xi.effect.FLASH
+    local actionElement = xi.element.LIGHT
+    local power         = 200
+    local duration      = math.floor(15 * applyResistanceAddEffect(player, target, actionElement, 0))
+    xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
 end

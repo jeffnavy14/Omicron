@@ -2,28 +2,24 @@
 -- Area: Crawlers' Nest
 --   NM: Aqrabuamelu
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.AUTO_SPIKES, 1)
-    mob:addStatusEffect(xi.effect.ICE_SPIKES, 45, 0, 0)
+    mob:addStatusEffect(xi.effect.ICE_SPIKES, 50, 0, 0)
     mob:getStatusEffect(xi.effect.ICE_SPIKES):setEffectFlags(xi.effectFlag.DEATH)
 end
 
 entity.onSpikesDamage = function(mob, target, damage)
     local intDiff = mob:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
-
-    if intDiff > 20 then
-        intDiff = 20 + (intDiff - 20) * 0.5 -- INT above 20 is half as effective.
-    end
-
-    local dmg = (damage + intDiff) * 0.5 -- INT adjustment and base damage averaged together.
+    local dmg = damage + intDiff
     local params = {}
     params.bonusmab = 0
     params.includemab = false
     dmg = addBonusesAbility(mob, xi.element.ICE, target, dmg, params)
     dmg = dmg * applyResistanceAddEffect(mob, target, xi.element.ICE, 0)
-    dmg = adjustForTarget(target, dmg, xi.element.ICE)
+    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, xi.element.ICE)
     dmg = finalMagicNonSpellAdjustments(mob, target, xi.element.ICE, dmg)
 
     if dmg < 0 then

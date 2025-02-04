@@ -3,9 +3,10 @@
 -- Item: Antacid
 -- Item Effect: This medicine helps remove meal effects.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

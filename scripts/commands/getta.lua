@@ -2,6 +2,7 @@
 -- func: getta
 -- desc: returns the name of the entity that would be chosen for trick attack given the current (mob) target
 -----------------------------------
+---@type TCommand
 local commandObj = {}
 
 commandObj.cmdprops =
@@ -14,8 +15,12 @@ commandObj.cmdprops =
 commandObj.onTrigger = function(player)
     local targ = player:getCursorTarget()
     if targ ~= nil then
-        local tatarget = player:getTrickAttackChar(targ)
-        if tatarget ~= nil then
+        local tatarget    = player:getTrickAttackChar(targ)
+        local trickAttack = player:getStatusEffect(xi.effect.TRICK_ATTACK)
+
+        if not trickAttack then
+            player:printToPlayer('You do not have Trick Attack active, !getta will fail.')
+        elseif tatarget ~= nil then
             player:printToPlayer(string.format('Trick attack would select: %s', tatarget:getName()))
         else
             player:printToPlayer('No valid TA target found.')

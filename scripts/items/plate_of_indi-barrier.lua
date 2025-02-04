@@ -3,9 +3,10 @@
 -- plate_of_indi-barrier
 -- Teaches INDI-BARRIER
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.INDI_BARRIER)
 end
 

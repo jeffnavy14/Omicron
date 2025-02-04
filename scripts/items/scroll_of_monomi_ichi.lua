@@ -3,9 +3,10 @@
 -- Scroll of Monomi: Ichi
 -- Teaches the ninjutsu Monomi: Ichi
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.MONOMI_ICHI)
 end
 

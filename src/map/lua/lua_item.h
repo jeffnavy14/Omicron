@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTItem or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTItem or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -75,14 +75,18 @@ public:
     uint8  getSkillType();         // get skill type
     uint16 getWeaponskillPoints(); // get current ws points
 
-    bool isTwoHanded();  // is a two handed weapon
-    bool isHandToHand(); // is a hand to hand weapon (or unarmed H2H)
-    bool isShield();     // is a Shield
+    bool  isTwoHanded();             // is a two handed weapon
+    bool  isHandToHand();            // is a hand to hand weapon (or unarmed H2H)
+    bool  isShield();                // is a Shield
+    uint8 getShieldSize();           // get the shield size (used for block rate calculation)
+    uint8 getShieldAbsorptionRate(); // get the shield absorbtion rate (used for block rate calculation)
 
     auto getSignature() -> std::string;
 
     uint8 getAppraisalID();         // get an appraisal ID
     void  setAppraisalID(uint8 id); // set an appraisal ID
+
+    uint8 getCurrentCharges(); // Get remaining charges
 
     bool isInstalled();
 

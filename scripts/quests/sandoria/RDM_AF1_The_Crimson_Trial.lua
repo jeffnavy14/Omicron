@@ -9,13 +9,13 @@
 local davoiID = zones[xi.zone.DAVOI]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.THE_CRIMSON_TRIAL)
+local quest = Quest:new(xi.questLog.SANDORIA, xi.quest.id.sandoria.THE_CRIMSON_TRIAL)
 
 quest.reward =
 {
     item     = xi.item.FENCING_DEGEN,
     fame     = 30,
-    fameArea = xi.quest.fame_area.SANDORIA,
+    fameArea = xi.fameArea.SANDORIA,
 }
 
 quest.sections =
@@ -23,9 +23,9 @@ quest.sections =
     -- Section: Quest available.
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:getMainJob() == xi.job.RDM and
-                player:getMainLvl() >= 40
+                player:getMainLvl() >= xi.settings.main.AF1_QUEST_LEVEL
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA] =
@@ -81,7 +81,7 @@ quest.sections =
     -- Section: Quest accepted
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.DAVOI] =
@@ -103,17 +103,14 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        not player:hasKeyItem(xi.ki.ORCISH_DRIED_FOOD) and
-                        not GetMobByID(davoiID.mob.PURPLEFLASH_BRUKDOK):isSpawned()
-                    then
-                        SpawnMob(davoiID.mob.PURPLEFLASH_BRUKDOK) -- Spawned by Quest: The Crimson Trial upon entering the zone
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    not player:hasKeyItem(xi.ki.ORCISH_DRIED_FOOD) and
+                    not GetMobByID(davoiID.mob.PURPLEFLASH_BRUKDOK):isSpawned()
+                then
+                    SpawnMob(davoiID.mob.PURPLEFLASH_BRUKDOK) -- Spawned by Quest: The Crimson Trial upon entering the zone
+                end
+            end,
         },
 
         [xi.zone.SOUTHERN_SAN_DORIA] =

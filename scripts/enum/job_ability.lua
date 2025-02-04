@@ -1,5 +1,6 @@
 xi = xi or {}
 
+---@enum xi.jobAbility
 xi.jobAbility =
 {
     MIGHTY_STRIKES     = 16,
@@ -257,7 +258,7 @@ xi.jobAbility =
     -- NONE            = 268,
     IMPETUS            = 269,
     DIVINE_CARESS      = 270,
-    SANCROSANCTITY     = 271,
+    SACROSANCTITY      = 271,
     ENMITY_DOUSE       = 272,
     MANAWELL           = 273,
     SABOTEUR           = 274,

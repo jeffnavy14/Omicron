@@ -11,9 +11,10 @@
 --  2/164 Beastly Shank
 --  0/164 Savory Shank
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 

@@ -3,9 +3,10 @@
 -- Item: Orange Juice
 -- Item Effect: Restores 30 MP over 1 minute and 30 seconds.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

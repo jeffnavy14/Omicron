@@ -13,7 +13,7 @@ local mission = Mission:new(xi.mission.log_id.ASA, xi.mission.id.asa.THAT_WHICH_
 
 mission.reward =
 {
-    ki          =
+    keyItem          =
     {
         xi.ki.DOMINAS_SCARLET_SEAL,
         xi.ki.DOMINAS_CERULEAN_SEAL,
@@ -52,10 +52,10 @@ mission.sections =
                 onTrigger = function(player, npc)
                     local potionInfo =
                     {
-                        { xi.item.ENFEEBLEMENT_KIT_OF_POISON, xi.item.FLASK_OF_POISON_POTION },
-                        { xi.item.ENFEEBLEMENT_KIT_OF_BLINDNES, xi.item.FLASK_OF_BLINDNESS_POTION },
-                        { xi.item.ENFEEBLEMENT_KIT_OF_SLEEP, xi.item.FLASK_OF_SLEEPING_POTION },
-                        { xi.item.ENFEEBLEMENT_KIT_OF_SILENCE, xi.item.FLASK_OF_SILENCING_POTION }
+                        { xi.item.ENFEEBLEMENT_KIT_OF_POISON,    xi.item.FLASK_OF_POISON_POTION    },
+                        { xi.item.ENFEEBLEMENT_KIT_OF_BLINDNESS, xi.item.FLASK_OF_BLINDNESS_POTION },
+                        { xi.item.ENFEEBLEMENT_KIT_OF_SLEEP,     xi.item.FLASK_OF_SLEEPING_POTION  },
+                        { xi.item.ENFEEBLEMENT_KIT_OF_SILENCE,   xi.item.FLASK_OF_SILENCING_POTION }
                     }
 
                     local kit = mission:getVar(player, 'Option')

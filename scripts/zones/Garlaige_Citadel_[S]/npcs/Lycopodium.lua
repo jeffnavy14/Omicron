@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.GARLAIGE_CITADEL_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.LYCOPODIUM_ENTRANCED)
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     if not utils.mask.getBit(player:getCharVar('LycopodiumTeleport_Mask'), 0) then
         player:startEvent(30)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

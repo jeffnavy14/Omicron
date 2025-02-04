@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -64,7 +64,7 @@ CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(CCharEntity* PChar, uint8 Mem
         ref<uint8>(0x1D)  = PChar->GetHPP();
         ref<uint8>(0x1E)  = PChar->GetMPP();
 
-        if (!(PChar->nameflags.flags & FLAG_ANON))
+        if (!PChar->isAnon())
         {
             ref<uint8>(0x22) = PChar->GetMJob();
             ref<uint8>(0x23) = PChar->GetMLevel();
@@ -73,7 +73,7 @@ CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(CCharEntity* PChar, uint8 Mem
         }
     }
 
-    memcpy(data + (0x28), PChar->getName().c_str(), PChar->getName().size());
+    std::memcpy(buffer_.data() + 0x28, PChar->getName().c_str(), PChar->getName().size());
 }
 
 CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(CTrustEntity* PTrust, uint8 MemberNumber)
@@ -103,7 +103,7 @@ CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(CTrustEntity* PTrust, uint8 M
     ref<uint8>(0x24) = PTrust->GetSJob();
     ref<uint8>(0x25) = PTrust->GetSLevel();
 
-    memcpy(data + (0x28), PTrust->packetName.c_str(), PTrust->packetName.size());
+    std::memcpy(buffer_.data() + 0x28, PTrust->packetName.c_str(), PTrust->packetName.size());
 }
 
 CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(uint32 id, const std::string& name, uint16 memberFlags, uint8 MemberNumber, uint16 ZoneID)
@@ -116,5 +116,5 @@ CPartyMemberUpdatePacket::CPartyMemberUpdatePacket(uint32 id, const std::string&
     ref<uint16>(0x14) = memberFlags;
     ref<uint16>(0x20) = ZoneID;
 
-    memcpy(data + (0x28), name.c_str(), name.size());
+    std::memcpy(buffer_.data() + 0x28, name.c_str(), name.size());
 }

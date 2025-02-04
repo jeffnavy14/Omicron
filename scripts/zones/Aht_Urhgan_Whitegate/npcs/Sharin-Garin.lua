@@ -4,10 +4,8 @@
 -- Type: Adventurer's Assistant
 -- !pos 122.658 -1.315 33.001 50
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local mercRank = xi.besieged.getMercenaryRank(player)
@@ -18,9 +16,6 @@ entity.onTrigger = function(player, npc)
     local captain = mercRank == 11 and 1 or 0
 
     player:startEvent(140, 0, mercRank, hasPermit, points, hasAstral, cost, captain)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

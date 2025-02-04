@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 -- TODO: Reduce complexity
 -- Disable cyclomatic complexity check for this function:
@@ -16,7 +14,7 @@ end
 entity.onTrigger = function(player, npc)
     local mLvl          = player:getMainLvl()
     local mJob          = player:getMainJob()
-    local downwardHelix = player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.DOWNWARD_HELIX)
+    local downwardHelix = player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.DOWNWARD_HELIX)
 
     -- Controls the progress of each step. Everything will start at 1 and end at 4 (complete).
     local loafersQuestProgress = player:getCharVar('AF_SCH_BOOTS')
@@ -38,17 +36,17 @@ entity.onTrigger = function(player, npc)
                 gownQuestProgress == 2
             )
         then
-            local itemid   = 14580 -- Scholar's Gown
+            local itemid   = xi.item.SCHOLARS_GOWN
             local firstKI  = xi.ki.PEISTE_DUNG
             local secondKI = xi.ki.SAMPLE_OF_GRAUBERG_CHERT
 
             if loafersQuestProgress == 1 or loafersQuestProgress == 2 then
-                itemid   = 15748 -- Scholar's Loafers
+                itemid   = xi.item.SCHOLARS_LOAFERS
                 firstKI  = xi.ki.RAFFLESIA_DREAMSPIT
                 secondKI = xi.ki.DROGAROGAN_BONEMEAL
 
             elseif pantsQuestProgress == 1 or pantsQuestProgress == 2 then
-                itemid   = 16311 -- Scholar's Pants
+                itemid   = xi.item.SCHOLARS_PANTS
                 firstKI  = xi.ki.SLUG_MUCUS
                 secondKI = xi.ki.DJINN_EMBER
             end
@@ -57,7 +55,7 @@ entity.onTrigger = function(player, npc)
 
         -- Nothing in progress and meet the starting requirements.
         elseif
-            downwardHelix == QUEST_COMPLETED and
+            downwardHelix == xi.questStatus.QUEST_COMPLETED and
             mJob == xi.job.SCH and
             mLvl >= xi.settings.main.AF2_QUEST_LEVEL
         then

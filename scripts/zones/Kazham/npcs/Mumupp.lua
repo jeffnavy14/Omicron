@@ -2,6 +2,7 @@
 -- Area: Kazham
 --  NPC: Mumupp
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local pathNodes =
@@ -45,7 +46,7 @@ entity.onTrade = function(player, npc, trade)
     -- 905       Wyvern Skull
     -- 1147      Ancient Salt
     -- 4600      Lucky Egg
-    local opoOpoAndIStatus = player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.THE_OPO_OPO_AND_I)
+    local opoOpoAndIStatus = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.THE_OPO_OPO_AND_I)
     local progress = player:getCharVar('OPO_OPO_PROGRESS')
     local failed = player:getCharVar('OPO_OPO_FAILED')
     local goodtrade = trade:hasItemQty(xi.item.TEN_OF_COINS_CARD, 1)
@@ -59,7 +60,7 @@ entity.onTrade = function(player, npc, trade)
         trade:hasItemQty(xi.item.ROCK_OF_ANCIENT_SALT, 1) or
         trade:hasItemQty(xi.item.LUCKY_EGG, 1)
 
-    if opoOpoAndIStatus == QUEST_ACCEPTED then
+    if opoOpoAndIStatus == xi.questStatus.QUEST_ACCEPTED then
         if progress == 2 or failed == 3 then
             if goodtrade then
                 player:startEvent(221)
@@ -71,12 +72,12 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local opoOpoAndIStatus = player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.THE_OPO_OPO_AND_I)
+    local opoOpoAndIStatus = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.THE_OPO_OPO_AND_I)
     local progress = player:getCharVar('OPO_OPO_PROGRESS')
     local failed = player:getCharVar('OPO_OPO_FAILED')
     local retry = player:getCharVar('OPO_OPO_RETRY')
 
-    if opoOpoAndIStatus == QUEST_ACCEPTED then
+    if opoOpoAndIStatus == xi.questStatus.QUEST_ACCEPTED then
         if retry >= 1 then -- has failed on future npc so disregard previous successful trade
             player:startEvent(199)
         elseif progress == 2 or failed == 3 then
@@ -87,9 +88,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(199)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

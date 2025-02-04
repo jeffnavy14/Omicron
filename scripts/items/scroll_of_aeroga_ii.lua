@@ -3,9 +3,10 @@
 -- Scroll of Aeroga II
 -- Teaches the black magic Aeroga II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.AEROGA_II)
 end
 

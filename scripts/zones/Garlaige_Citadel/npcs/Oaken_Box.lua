@@ -6,11 +6,12 @@
 -----------------------------------
 local ID = zones[xi.zone.GARLAIGE_CITADEL]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.PEACE_FOR_THE_SPIRIT) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.PEACE_FOR_THE_SPIRIT) == xi.questStatus.QUEST_ACCEPTED and
         npcUtil.tradeHas(trade, xi.item.NAIL_PULLER)
     then
         player:startEvent(14)
@@ -28,9 +29,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.YOU_FIND_NOTHING)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

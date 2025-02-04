@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.NEWTON_MOVALPOLOS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -27,9 +28,6 @@ entity.onTrigger = function(player, npc)
     elseif yPos >= 19.5 then
         player:startEvent(26)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

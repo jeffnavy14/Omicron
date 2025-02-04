@@ -10,12 +10,13 @@
 -- 100%TP    200%TP    300%TP
 -- 1.00      2.31      3.63
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
     local params = {}
-    params.ftp100 = 1 params.ftp200 = 2.3125 params.ftp300 = 3.625
-    params.str_wsc = 0.3 params.dex_wsc = 0.0 params.vit_wsc = 0.0 params.agi_wsc = 0.0 params.int_wsc = 0.3 params.mnd_wsc = 0.0 params.chr_wsc = 0.0
+    params.ftpMod = { 1.0, 2.3125, 3.625 }
+    params.str_wsc = 0.3 params.int_wsc = 0.3
     params.ele = xi.element.EARTH
     params.skill = xi.skill.STAFF
     params.includemab = true

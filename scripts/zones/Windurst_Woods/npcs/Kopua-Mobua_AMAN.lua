@@ -4,10 +4,8 @@
 -- Type: Mentor Recruiter
 -- !pos -23.134 1.749 -67.284 241
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local var = 0
@@ -20,9 +18,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(10026, var)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

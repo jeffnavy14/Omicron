@@ -3,9 +3,10 @@
 -- Hailstorm Schema
 -- Teaches the white magic Hailstorm
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.HAILSTORM)
 end
 

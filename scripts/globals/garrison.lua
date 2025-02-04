@@ -117,7 +117,7 @@ xi.garrison.getAllyInfo = function(zoneID, zoneData, nationID)
         pos == nil
     then
         local zone = GetZone(zoneID)
-        debugLogf('Garrison NPC data missing for %s level %u (%s).', nationName[nationID], zoneData.levelCap, zone:getName())
+        debugLogf('Garrison NPC data missing for %s level %u (%s).', nationName[nationID], zoneData.levelCap, zone and zone:getName() or 'UNKNOWN')
         return nil
     end
 
@@ -189,7 +189,7 @@ xi.garrison.spawnNPC = function(zone, zoneData, pos, name, groupId, look)
     mob:spawn()
 
     DisallowRespawn(mob:getID(), true)
-    mob:setSpeed(25)
+    mob:setBaseSpeed(25)
     mob:setAllegiance(1)
 
     -- NPCs don't cast spells or use TP skills

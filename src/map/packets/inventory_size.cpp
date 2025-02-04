@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -58,22 +58,22 @@ CInventorySizePacket::CInventorySizePacket(CCharEntity* PChar)
     ref<uint8>(0x15) = 1 + PChar->getStorage(LOC_RECYCLEBIN)->GetSize();
 
     // These set the usable amount of the container. 0x00 disables the container.
-    ref<uint8>(0x24) = 1 + PChar->getStorage(LOC_INVENTORY)->GetBuff();
-    ref<uint8>(0x26) = 1 + PChar->getStorage(LOC_MOGSAFE)->GetBuff();
-    ref<uint8>(0x28) = 1 + PChar->getStorage(LOC_STORAGE)->GetBuff();
-    ref<uint8>(0x2A) = 1 + PChar->getStorage(LOC_TEMPITEMS)->GetBuff();
-    ref<uint8>(0x2C) = charutils::hasMogLockerAccess(PChar) ? 1 + PChar->getStorage(LOC_MOGLOCKER)->GetBuff() : 0x00;
-    ref<uint8>(0x2E) = 1 + PChar->getStorage(LOC_MOGSATCHEL)->GetBuff();
-    ref<uint8>(0x30) = 1 + PChar->getStorage(LOC_MOGSACK)->GetBuff();
-    ref<uint8>(0x32) = 1 + PChar->getStorage(LOC_MOGCASE)->GetBuff();
-    ref<uint8>(0x34) = 1 + PChar->getStorage(LOC_WARDROBE)->GetBuff();
-    ref<uint8>(0x36) = 1 + PChar->getStorage(LOC_MOGSAFE2)->GetBuff();
-    ref<uint8>(0x38) = 1 + PChar->getStorage(LOC_WARDROBE2)->GetBuff();
-    ref<uint8>(0x3A) = 1 + PChar->getStorage(LOC_WARDROBE3)->GetBuff();
-    ref<uint8>(0x3C) = 1 + PChar->getStorage(LOC_WARDROBE4)->GetBuff();
-    ref<uint8>(0x3E) = 1 + PChar->getStorage(LOC_WARDROBE5)->GetBuff();
-    ref<uint8>(0x40) = 1 + PChar->getStorage(LOC_WARDROBE6)->GetBuff();
-    ref<uint8>(0x42) = 1 + PChar->getStorage(LOC_WARDROBE7)->GetBuff();
-    ref<uint8>(0x44) = 1 + PChar->getStorage(LOC_WARDROBE8)->GetBuff();
-    ref<uint8>(0x46) = 1 + PChar->getStorage(LOC_RECYCLEBIN)->GetBuff();
+    ref<uint16>(0x24) = 1 + PChar->getStorage(LOC_INVENTORY)->GetBuff();
+    ref<uint16>(0x26) = 1 + PChar->getStorage(LOC_MOGSAFE)->GetBuff();
+    ref<uint16>(0x28) = 1 + PChar->getStorage(LOC_STORAGE)->GetBuff();
+    ref<uint16>(0x2A) = 1 + PChar->getStorage(LOC_TEMPITEMS)->GetBuff();
+    ref<uint16>(0x2C) = charutils::hasMogLockerAccess(PChar) ? 1 + PChar->getStorage(LOC_MOGLOCKER)->GetBuff() : 0x00;
+    ref<uint16>(0x2E) = 1 + PChar->getStorage(LOC_MOGSATCHEL)->GetBuff();
+    ref<uint16>(0x30) = 1 + PChar->getStorage(LOC_MOGSACK)->GetBuff();
+    ref<uint16>(0x32) = 1 + PChar->getStorage(LOC_MOGCASE)->GetBuff();
+    ref<uint16>(0x34) = 1 + PChar->getStorage(LOC_WARDROBE)->GetBuff();
+    ref<uint16>(0x36) = 1 + PChar->getStorage(LOC_MOGSAFE2)->GetBuff();
+    ref<uint16>(0x38) = 1 + PChar->getStorage(LOC_WARDROBE2)->GetBuff();
+    ref<uint16>(0x3A) = 1 + PChar->getStorage(LOC_WARDROBE3)->GetBuff();
+    ref<uint16>(0x3C) = 1 + PChar->getStorage(LOC_WARDROBE4)->GetBuff();
+    ref<uint16>(0x3E) = 1 + PChar->getStorage(LOC_WARDROBE5)->GetBuff();
+    ref<uint16>(0x40) = 1 + PChar->getStorage(LOC_WARDROBE6)->GetBuff();
+    ref<uint16>(0x42) = 1 + PChar->getStorage(LOC_WARDROBE7)->GetBuff();
+    ref<uint16>(0x44) = 1 + PChar->getStorage(LOC_WARDROBE8)->GetBuff();
+    ref<uint16>(0x46) = 1 + PChar->getStorage(LOC_RECYCLEBIN)->GetBuff();
 }

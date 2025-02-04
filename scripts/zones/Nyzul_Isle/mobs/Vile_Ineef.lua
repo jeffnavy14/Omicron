@@ -3,10 +3,12 @@
 -- Area: Nyzul Isle
 -- Info: Enemy Leader
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
-    -- mob:addImmunity(xi.immunity.DARKSLEEP)
+    -- Set Immunities.
+    -- mob:addImmunity(xi.immunity.DARK_SLEEP)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

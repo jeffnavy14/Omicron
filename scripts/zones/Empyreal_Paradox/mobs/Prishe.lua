@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.EMPYREAL_PARADOX]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -12,7 +13,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobRoam = function(mob)
-    local promathia = ID.mob.PROMATHIA_OFFSET + (mob:getBattlefield():getArea() - 1) * 2
+    local promathia = ID.mob.PROMATHIA + (mob:getBattlefield():getArea() - 1) * 2
     local wait = mob:getLocalVar('wait')
     local ready = mob:getLocalVar('ready')
 
@@ -29,13 +30,17 @@ entity.onMobRoam = function(mob)
         mob:setLocalVar('ready', promathia)
         mob:setLocalVar('wait', 0)
     elseif ready > 0 then
-        mob:addEnmity(GetMobByID(ready), 0, 1)
+        local readyMob = GetMobByID(ready)
+        if readyMob then
+            mob:addEnmity(readyMob, 0, 1)
+            mob:updateEnmity(readyMob)
+        end
     else
         mob:setLocalVar('wait', wait + 3)
     end
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:useMobAbility(1487)
     mob:addStatusEffectEx(xi.effect.SILENCE, 0, 0, 0, 5)
 end

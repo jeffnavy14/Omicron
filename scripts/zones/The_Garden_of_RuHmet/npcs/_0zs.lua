@@ -2,21 +2,16 @@
 -- Area: The_Garden_of_RuHmet
 --  NPC: _0zs
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-    return 1
-end
-
 entity.onTrigger = function(player, npc)
-    if player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.WHEN_ANGELS_FALL) then
+    if
+        player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.WHEN_ANGELS_FALL) or
+        xi.mission.getVar(player, xi.mission.log_id.COP, xi.mission.id.cop.WHEN_ANGELS_FALL, 'Status') == 6
+    then
         player:startEvent(112)
     end
-
-    return 1
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

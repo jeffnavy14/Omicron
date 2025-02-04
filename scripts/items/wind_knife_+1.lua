@@ -3,9 +3,10 @@
 -- wind_knife_+1
 -- Enchantment: Casts Aero
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

@@ -3,9 +3,10 @@
 -- Item: Bottle of Strange Juice
 -- Item Effect: Restores 200 MP over 300 seconds.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

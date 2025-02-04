@@ -21,6 +21,7 @@
 
 #include "synthutils.h"
 
+#include "common/database.h"
 #include "common/logging.h"
 #include "common/socket.h"
 #include "common/utils.h"
@@ -28,6 +29,8 @@
 
 #include <cmath>
 #include <cstring>
+
+#include "entities/battleentity.h"
 
 #include "packets/char_skills.h"
 #include "packets/char_update.h"
@@ -52,6 +55,228 @@
 
 namespace synthutils
 {
+    struct SynthRecipe
+    {
+        uint32 ID;
+        uint8  Desynth;
+        uint16 KeyItem;
+        uint8  Wood;
+        uint8  Smith;
+        uint8  Gold;
+        uint8  Cloth;
+        uint8  Leather;
+        uint8  Bone;
+        uint8  Alchemy;
+        uint8  Cook;
+        uint16 Crystal;
+        uint16 HQCrystal;
+        uint16 Ingredient1;
+        uint16 Ingredient2;
+        uint16 Ingredient3;
+        uint16 Ingredient4;
+        uint16 Ingredient5;
+        uint16 Ingredient6;
+        uint16 Ingredient7;
+        uint16 Ingredient8;
+        uint16 Result;
+        uint16 ResultHQ1;
+        uint16 ResultHQ2;
+        uint16 ResultHQ3;
+        uint8  ResultQty;
+        uint8  ResultHQ1Qty;
+        uint8  ResultHQ2Qty;
+        uint8  ResultHQ3Qty;
+
+        std::string ResultName;
+        std::string ContentTag;
+
+        uint16 getSkillValue(SKILLTYPE type) const
+        {
+            switch (type)
+            {
+                case SKILL_WOODWORKING:
+                    return Wood;
+                case SKILL_SMITHING:
+                    return Smith;
+                case SKILL_GOLDSMITHING:
+                    return Gold;
+                case SKILL_CLOTHCRAFT:
+                    return Cloth;
+                case SKILL_LEATHERCRAFT:
+                    return Leather;
+                case SKILL_BONECRAFT:
+                    return Bone;
+                case SKILL_ALCHEMY:
+                    return Alchemy;
+                case SKILL_COOKING:
+                    return Cook;
+                default:
+                    return 0;
+            }
+        }
+
+        static auto crystalString(uint16 crystalID) -> std::string
+        {
+            std::string out = "None";
+
+            switch (crystalID)
+            {
+                case 4096: // Fire Crystal
+                case 4238: // Inferno Crystal
+                    out = "Fire";
+                    break;
+
+                case 4097: // Ice Crystal
+                case 4239: // Glacier Crystal
+                    out = "Ice";
+                    break;
+
+                case 4098: // Wind Crystal
+                case 4240: // Cyclone Crystal
+                    out = "Wind";
+                    break;
+
+                case 4099: // Earth Crystal
+                case 4241: // Terra Crystal
+                    out = "Earth";
+                    break;
+
+                case 4100: // Lightning Crystal
+                case 4242: // Plasma Crystal
+                    out = "Lightning";
+                    break;
+
+                case 4101: // Water Crystal
+                case 4243: // Torrent Crystal
+                    out = "Water";
+                    break;
+
+                case 4102: // Light Crystal
+                case 4244: // Aurora Crystal
+                    out = "Light";
+                    break;
+
+                case 4103: // Dark Crystal
+                case 4245: // Twilight Crystal
+                    out = "Dark";
+                    break;
+            }
+
+            return out;
+        }
+
+        static auto ingredientKey(uint16 crystal, uint16 ingredient1, uint16 ingredient2, uint16 ingredient3, uint16 ingredient4, uint16 ingredient5, uint16 ingredient6, uint16 ingredient7, uint16 ingredient8)
+        {
+            return fmt::format("{}-{}-{}-{}-{}-{}-{}-{}-{}",
+                               crystalString(crystal),
+                               ingredient1,
+                               ingredient2,
+                               ingredient3,
+                               ingredient4,
+                               ingredient5,
+                               ingredient6,
+                               ingredient7,
+                               ingredient8);
+        }
+
+        auto key() const
+        {
+            return ingredientKey(Crystal, Ingredient1, Ingredient2, Ingredient3, Ingredient4, Ingredient5, Ingredient6, Ingredient7, Ingredient8);
+        }
+    };
+
+    std::unordered_map<std::string, SynthRecipe> synthRecipes;
+
+    void LoadSynthRecipes()
+    {
+        TracyZoneScoped;
+
+        ShowInfo("Loading synth recipes");
+
+        synthRecipes.clear();
+
+        // TODO: If we limit by ID ranges, we could use multiple threads to load the recipes
+
+        const auto rset = db::preparedStmt("SELECT \
+            ID, \
+            Desynth, \
+            KeyItem, \
+            Wood, \
+            Smith, \
+            Gold, \
+            Cloth, \
+            Leather, \
+            Bone, \
+            Alchemy, \
+            Cook, \
+            Crystal, \
+            HQCrystal, \
+            Ingredient1, \
+            Ingredient2, \
+            Ingredient3, \
+            Ingredient4, \
+            Ingredient5, \
+            Ingredient6, \
+            Ingredient7, \
+            Ingredient8, \
+            Result, \
+            ResultHQ1, \
+            ResultHQ2, \
+            ResultHQ3, \
+            ResultQty, \
+            ResultHQ1Qty, \
+            ResultHQ2Qty, \
+            ResultHQ3Qty, \
+            ResultName, \
+            content_tag \
+            FROM synth_recipes");
+
+        if (!rset || !rset->rowsCount())
+        {
+            ShowError("Failed to load synth recipes");
+            return;
+        }
+
+        while (rset->next())
+        {
+            const auto recipe = SynthRecipe{
+                .ID           = rset->get<uint32>("ID"),
+                .Desynth      = rset->get<uint8>("Desynth"),
+                .KeyItem      = rset->get<uint16>("KeyItem"),
+                .Wood         = rset->get<uint8>("Wood"),
+                .Smith        = rset->get<uint8>("Smith"),
+                .Gold         = rset->get<uint8>("Gold"),
+                .Cloth        = rset->get<uint8>("Cloth"),
+                .Leather      = rset->get<uint8>("Leather"),
+                .Bone         = rset->get<uint8>("Bone"),
+                .Alchemy      = rset->get<uint8>("Alchemy"),
+                .Cook         = rset->get<uint8>("Cook"),
+                .Crystal      = rset->get<uint16>("Crystal"),
+                .HQCrystal    = rset->get<uint16>("HQCrystal"),
+                .Ingredient1  = rset->get<uint16>("Ingredient1"),
+                .Ingredient2  = rset->get<uint16>("Ingredient2"),
+                .Ingredient3  = rset->get<uint16>("Ingredient3"),
+                .Ingredient4  = rset->get<uint16>("Ingredient4"),
+                .Ingredient5  = rset->get<uint16>("Ingredient5"),
+                .Ingredient6  = rset->get<uint16>("Ingredient6"),
+                .Ingredient7  = rset->get<uint16>("Ingredient7"),
+                .Ingredient8  = rset->get<uint16>("Ingredient8"),
+                .Result       = rset->get<uint16>("Result"),
+                .ResultHQ1    = rset->get<uint16>("ResultHQ1"),
+                .ResultHQ2    = rset->get<uint16>("ResultHQ2"),
+                .ResultHQ3    = rset->get<uint16>("ResultHQ3"),
+                .ResultQty    = rset->get<uint8>("ResultQty"),
+                .ResultHQ1Qty = rset->get<uint8>("ResultHQ1Qty"),
+                .ResultHQ2Qty = rset->get<uint8>("ResultHQ2Qty"),
+                .ResultHQ3Qty = rset->get<uint8>("ResultHQ3Qty"),
+                .ResultName   = rset->get<std::string>("ResultName"),
+                .ContentTag   = rset->getOrDefault<std::string>("content_tag", ""),
+            };
+
+            synthRecipes[recipe.key()] = recipe;
+        }
+    }
+
     /********************************************************************************************************************************
      * We check the availability of the recipe and the possibility of its synthesis.                                                 *
      * If its difficulty is 15 levels higher than character skill then recipe is considered too difficult and the synth is canceled. *
@@ -64,55 +289,51 @@ namespace synthutils
 
     bool isRightRecipe(CCharEntity* PChar)
     {
-        const char* fmtQuery =
+        TracyZoneScoped;
 
-            "SELECT ID, KeyItem, Wood, Smith, Gold, Cloth, Leather, Bone, Alchemy, Cook, \
-            Result, ResultHQ1, ResultHQ2, ResultHQ3, ResultQty, ResultHQ1Qty, ResultHQ2Qty, ResultHQ3Qty, Desynth \
-        FROM synth_recipes \
-        WHERE (Crystal = %u OR HQCrystal = %u) \
-            AND Ingredient1 = %u \
-            AND Ingredient2 = %u \
-            AND Ingredient3 = %u \
-            AND Ingredient4 = %u \
-            AND Ingredient5 = %u \
-            AND Ingredient6 = %u \
-            AND Ingredient7 = %u \
-            AND Ingredient8 = %u \
-        LIMIT 1";
+        const auto crystal     = PChar->CraftContainer->getItemID(0);
+        const auto ingredient1 = PChar->CraftContainer->getItemID(1);
+        const auto ingredient2 = PChar->CraftContainer->getItemID(2);
+        const auto ingredient3 = PChar->CraftContainer->getItemID(3);
+        const auto ingredient4 = PChar->CraftContainer->getItemID(4);
+        const auto ingredient5 = PChar->CraftContainer->getItemID(5);
+        const auto ingredient6 = PChar->CraftContainer->getItemID(6);
+        const auto ingredient7 = PChar->CraftContainer->getItemID(7);
+        const auto ingredient8 = PChar->CraftContainer->getItemID(8);
 
-        int32 ret = sql->Query(fmtQuery, PChar->CraftContainer->getItemID(0), PChar->CraftContainer->getItemID(0),
-                               PChar->CraftContainer->getItemID(1), PChar->CraftContainer->getItemID(2), PChar->CraftContainer->getItemID(3),
-                               PChar->CraftContainer->getItemID(4), PChar->CraftContainer->getItemID(5), PChar->CraftContainer->getItemID(6),
-                               PChar->CraftContainer->getItemID(7), PChar->CraftContainer->getItemID(8));
+        const auto possibleRecipeKey = SynthRecipe::ingredientKey(crystal, ingredient1, ingredient2, ingredient3, ingredient4, ingredient5, ingredient6, ingredient7, ingredient8);
 
-        if (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+        if (synthRecipes.find(possibleRecipeKey) != synthRecipes.end())
         {
-            uint16 KeyItemID = (uint16)sql->GetUIntData(1); // Check if recipe needs KI
+            const auto& recipe = synthRecipes[possibleRecipeKey];
 
-            if ((KeyItemID == 0) || (charutils::hasKeyItem(PChar, KeyItemID))) // If recipe doesn't need KI OR Player has the required KI
+            if (!luautils::IsContentEnabled(recipe.ContentTag.c_str()))
+            {
+                PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_BADRECIPE);
+                return false;
+            }
+
+            if (recipe.KeyItem == 0 || charutils::hasKeyItem(PChar, recipe.KeyItem))
             {
                 // in the ninth cell write the id of the recipe
-                PChar->CraftContainer->setItem(9, sql->GetUIntData(0), 0xFF, 0);
-                PChar->CraftContainer->setItem(10 + 1, (uint16)sql->GetUIntData(10), (uint8)sql->GetUIntData(14), 0); // RESULT_SUCCESS
-                PChar->CraftContainer->setItem(10 + 2, (uint16)sql->GetUIntData(11), (uint8)sql->GetUIntData(15), 0); // RESULT_HQ
-                PChar->CraftContainer->setItem(10 + 3, (uint16)sql->GetUIntData(12), (uint8)sql->GetUIntData(16), 0); // RESULT_HQ2
-                PChar->CraftContainer->setItem(10 + 4, (uint16)sql->GetUIntData(13), (uint8)sql->GetUIntData(17), 0); // RESULT_HQ3
-                PChar->CraftContainer->setCraftType((uint8)sql->GetUIntData(18));                                     // Store synth type (regular, desynth or "no material loss")
-
-                uint16 skillValue   = 0;
-                uint16 currentSkill = 0;
+                PChar->CraftContainer->setItem(9, recipe.ID, 0xFF, 0);
+                PChar->CraftContainer->setItem(10 + 1, recipe.Result, recipe.ResultQty, 0);       // RESULT_SUCCESS
+                PChar->CraftContainer->setItem(10 + 2, recipe.ResultHQ1, recipe.ResultHQ1Qty, 0); // RESULT_HQ
+                PChar->CraftContainer->setItem(10 + 3, recipe.ResultHQ2, recipe.ResultHQ2Qty, 0); // RESULT_HQ2
+                PChar->CraftContainer->setItem(10 + 4, recipe.ResultHQ3, recipe.ResultHQ3Qty, 0); // RESULT_HQ3
+                PChar->CraftContainer->setCraftType(recipe.Desynth);                              // Store synth type (regular, desynth or "no material loss")
 
                 for (uint8 skillID = SKILL_WOODWORKING; skillID <= SKILL_COOKING; ++skillID) // range for all 8 synth skills
                 {
-                    skillValue   = (uint16)sql->GetUIntData((skillID - 49 + 2));
-                    currentSkill = PChar->RealSkills.skill[skillID];
+                    uint16 skillValue   = recipe.getSkillValue(static_cast<SKILLTYPE>(skillID));
+                    uint16 currentSkill = PChar->RealSkills.skill[skillID];
 
                     // skill write in the quantity field of cells 9-16
                     PChar->CraftContainer->setQuantity(skillID - 40, skillValue);
 
                     if (currentSkill < (skillValue * 10 - 150)) // Check player skill against recipe level. Range must be 14 or less.
                     {
-                        PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_NOSKILL));
+                        PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_NOSKILL);
                         return false;
                     }
                 }
@@ -120,7 +341,8 @@ namespace synthutils
             }
         }
 
-        PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_BADRECIPE));
+        // Otherwise, fall through to failure
+        PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_BADRECIPE);
         return false;
     }
 
@@ -183,28 +405,28 @@ namespace synthutils
         switch (skillID)
         {
             case SKILL_WOODWORKING:
-                ModID = Mod::ANTIHQ_WOOD;
+                ModID = Mod::SYNTH_ANTI_HQ_WOODWORKING;
                 break;
             case SKILL_SMITHING:
-                ModID = Mod::ANTIHQ_SMITH;
+                ModID = Mod::SYNTH_ANTI_HQ_SMITHING;
                 break;
             case SKILL_GOLDSMITHING:
-                ModID = Mod::ANTIHQ_GOLDSMITH;
+                ModID = Mod::SYNTH_ANTI_HQ_GOLDSMITHING;
                 break;
             case SKILL_CLOTHCRAFT:
-                ModID = Mod::ANTIHQ_CLOTH;
+                ModID = Mod::SYNTH_ANTI_HQ_CLOTHCRAFT;
                 break;
             case SKILL_LEATHERCRAFT:
-                ModID = Mod::ANTIHQ_LEATHER;
+                ModID = Mod::SYNTH_ANTI_HQ_LEATHERCRAFT;
                 break;
             case SKILL_BONECRAFT:
-                ModID = Mod::ANTIHQ_BONE;
+                ModID = Mod::SYNTH_ANTI_HQ_BONECRAFT;
                 break;
             case SKILL_ALCHEMY:
-                ModID = Mod::ANTIHQ_ALCHEMY;
+                ModID = Mod::SYNTH_ANTI_HQ_ALCHEMY;
                 break;
             case SKILL_COOKING:
-                ModID = Mod::ANTIHQ_COOK;
+                ModID = Mod::SYNTH_ANTI_HQ_COOKING;
                 break;
         }
 
@@ -226,7 +448,7 @@ namespace synthutils
         // Section 1: Variable definitions.
         //------------------------------
         uint8 synthResult = SYNTHESIS_SUCCESS; // We assume that we succeed.
-        uint8 successRate = 95;                // We assume that success rate is maxed (95%).
+        uint8 successRate = 0;                 // Define success rate.
         uint8 finalHQTier = 4;                 // We assume that max HQ tier is available.
         bool  canHQ       = true;              // We assume that we can HQ.
 
@@ -238,9 +460,8 @@ namespace synthutils
         uint8 maxChanceHQ     = 50;
         uint8 randomRoll      = 0; // 1 to 100.
 
-        if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS) // If it's a desynth, lower base success rate.
+        if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS)
         {
-            successRate = 45;
             maxChanceHQ = 80;
         }
 
@@ -251,84 +472,92 @@ namespace synthutils
         {
             recipeSkill = PChar->CraftContainer->getQuantity(skillID - 40);
 
-            // Only do stuff if the recipe actually uses that skill.
-            if (recipeSkill != 0)
+            // Skip current iteration if skill isn't involved.
+            if (recipeSkill == 0)
             {
-                randomRoll      = xirand::GetRandomNumber(1, 100);    // Random call must be called for each involved skill.
-                currentHQTier   = 0;                                  // This is reset at the start of every loop. "finalHQTier" is not.
-                synthDifficulty = getSynthDifficulty(PChar, skillID); // Get synth difficulty again, for each skill involved.
+                continue;
+            }
 
-                if (synthDifficulty <= 0)
+            // Skill is involved.
+            successRate     = 95;                                 // Assume sucess rate is maxed.
+            randomRoll      = xirand::GetRandomNumber(1, 100);    // Random call must be called for each involved skill.
+            currentHQTier   = 0;                                  // This is reset at the start of every loop. "finalHQTier" is not.
+            synthDifficulty = getSynthDifficulty(PChar, skillID); // Get synth difficulty for current skill.
+
+            // Skill is at or over synth recipe level.
+            if (synthDifficulty <= 0)
+            {
+                // Check what the current HQ tier is.
+                if (synthDifficulty >= -10) // 0-10 levels over recipe.
                 {
-                    // Check what the current HQ tier is.
-                    if (synthDifficulty >= -10) // 0-10 levels over recipe.
-                    {
-                        currentHQTier = 1;
-                    }
-                    else if (synthDifficulty >= -30) // 11-30 levels over recipe.
-                    {
-                        currentHQTier = 2;
-                    }
-                    else if (synthDifficulty >= -50) // 31-50 levels over recipe.
-                    {
-                        currentHQTier = 3;
-                    }
-                    else // 51 or more levels over recipe.
-                    {
-                        currentHQTier = 4;
-                    }
-
-                    // Set final HQ Tier available if needed.
-                    if (currentHQTier < finalHQTier)
-                    {
-                        finalHQTier = currentHQTier;
-                    }
+                    currentHQTier = 1;
                 }
-                else
+                else if (synthDifficulty >= -30) // 11-30 levels over recipe.
                 {
-                    canHQ       = false; // Player skill level is lower than recipe skill level. Cannot HQ.
-                    successRate = successRate - synthDifficulty * 10;
-
-                    if (successRate < 5)
-                    {
-                        successRate = 5;
-                    }
+                    currentHQTier = 2;
+                }
+                else if (synthDifficulty >= -50) // 31-50 levels over recipe.
+                {
+                    currentHQTier = 3;
+                }
+                else // 51 or more levels over recipe.
+                {
+                    currentHQTier = 4;
                 }
 
-                // Apply synthesis success rate modifier, based on synth type.
-                if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS)
+                // Set final HQ Tier available if needed.
+                if (currentHQTier < finalHQTier)
                 {
-                    successRate = successRate + PChar->getMod(Mod::DESYNTH_SUCCESS);
+                    finalHQTier = currentHQTier;
                 }
-                else
-                {
-                    successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS);
-                }
+            }
 
-                // Crafting ring handling.
-                if (!canSynthesizeHQ(PChar, skillID))
-                {
-                    canHQ       = false;           // Assuming here that if a crafting ring is used matching a recipe's subsynth, overall HQ will still be blocked
-                    successRate = successRate + 1; // The crafting rings that block HQ synthesis all also increase their respective craft's success rate by 1%
-                }
+            // Skill is under synth recipe level.
+            else
+            {
+                canHQ           = false; // Player skill level is lower than recipe skill level. Cannot HQ.
+                synthDifficulty = std::clamp<int16>(synthDifficulty, 1, 9);
+                successRate     = successRate - synthDifficulty * 10;
+            }
 
-                // Clamp success rate to 99%
-                // https://www.bluegartr.com/threads/120352-CraftyMath
-                // http://www.ffxiah.com/item/5781/kitron-macaron
-                if (successRate > 99)
-                {
-                    successRate = 99;
-                }
+            if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS) // If it's a desynth, halve base success rate.
+            {
+                successRate = successRate / 2;
+            }
 
-                if (randomRoll > successRate) // Synthesis broke. This is not a mistake, the break check HAS to be done per craft skill involved.
-                {
-                    // Keep the skill because of which the synthesis failed.
-                    // Use the slotID of the crystal cell, because it was removed at the beginning of the synthesis.
-                    PChar->CraftContainer->setInvSlotID(0, skillID);
-                    synthResult = SYNTHESIS_FAIL;
+            // Apply synthesis success rate modifier, based on synth type.
+            if (PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS)
+            {
+                successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS_RATE_DESYNTHESIS);
+            }
+            else
+            {
+                successRate = successRate + PChar->getMod(Mod::SYNTH_SUCCESS_RATE);
+            }
 
-                    break;
-                }
+            // Crafting ring handling.
+            if (!canSynthesizeHQ(PChar, skillID))
+            {
+                canHQ       = false;           // Assuming here that if a crafting ring is used matching a recipe's subsynth, overall HQ will still be blocked
+                successRate = successRate + 1; // The crafting rings that block HQ synthesis all also increase their respective craft's success rate by 1%
+            }
+
+            // Clamp success rate to 99%
+            // https://www.bluegartr.com/threads/120352-CraftyMath
+            // http://www.ffxiah.com/item/5781/kitron-macaron
+            if (successRate > 99)
+            {
+                successRate = 99;
+            }
+
+            if (randomRoll > successRate) // Synthesis broke. This is not a mistake, the break check HAS to be done per craft skill involved.
+            {
+                // Keep the skill because of which the synthesis failed.
+                // Use the slotID of the crystal cell, because it was removed at the beginning of the synthesis.
+                PChar->CraftContainer->setInvSlotID(0, skillID);
+                synthResult = SYNTHESIS_FAIL;
+
+                break;
             }
         }
 
@@ -340,19 +569,19 @@ namespace synthutils
             switch (finalHQTier)
             {
                 case 4: // 1 in 2
-                    chanceHQ = 50.0;
+                    chanceHQ = 50.0f;
                     break;
                 case 3: // 1 in 4
-                    chanceHQ = 25.0;
+                    chanceHQ = 25.0f;
                     break;
                 case 2: // 1 in 20
-                    chanceHQ = 5.0;
+                    chanceHQ = 5.0f;
                     break;
                 case 1: // 1 in 100
-                    chanceHQ = 1.0;
+                    chanceHQ = 1.0f;
                     break;
                 default: // No chance
-                    chanceHQ = 0.0;
+                    chanceHQ = 0.0f;
                     break;
             }
 
@@ -364,12 +593,15 @@ namespace synthutils
             // HQ success rate modifier.
             // See: https://www.bluegartr.com/threads/130586-CraftyMath-v2-Post-September-2017-Update page 3.
             chanceHQ = chanceHQ + 100.0f * PChar->getMod(Mod::SYNTH_HQ_RATE) / 512.0f;
+            chanceHQ = chanceHQ * settings::get<float>("map.CRAFT_HQ_CHANCE_MULTIPLIER"); // server configured additional HQ multiplier (default 1.0)
 
             // limit max hq chance
             if (chanceHQ > maxChanceHQ)
             {
                 chanceHQ = maxChanceHQ;
             }
+
+            randomRoll = xirand::GetRandomNumber(1, 100);
 
             if (randomRoll <= chanceHQ) // We HQ. Proceed to selct HQ Tier
             {
@@ -412,6 +644,7 @@ namespace synthutils
                 synthResult = RESULT_HQ;
                 break;
         }
+
         return synthResult;
     }
 
@@ -420,7 +653,7 @@ namespace synthutils
      * Do Skill Up                                                       *
      *                                                                   *
      ********************************************************************/
-    int32 doSynthSkillUp(CCharEntity* PChar)
+    void doSynthSkillUp(CCharEntity* PChar)
     {
         for (uint8 skillID = SKILL_WOODWORKING; skillID <= SKILL_COOKING; ++skillID) // Check for all skills involved in a recipe, to check for skill up
         {
@@ -460,8 +693,7 @@ namespace synthutils
             //------------------------------
             // Section 2: Skill up equations and penalties
             //------------------------------
-            double skillUpChance = 0;
-
+            double skillUpChance         = 0;
             double craftChanceMultiplier = settings::get<double>("map.CRAFT_CHANCE_MULTIPLIER");
 
             if (settings::get<bool>("map.CRAFT_MODERN_SYSTEM"))
@@ -618,13 +850,19 @@ namespace synthutils
 
                 // Skill Up addition:
                 PChar->RealSkills.skill[skillID] += skillUpAmount;
-                PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, skillID, skillUpAmount, 38));
+                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, skillID, skillUpAmount, 38);
 
                 if ((charSkill / 10) < (charSkill + skillUpAmount) / 10)
                 {
                     PChar->WorkingSkills.skill[skillID] += 0x20;
-                    PChar->pushPacket(new CCharSkillsPacket(PChar));
-                    PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, skillID, (charSkill + skillUpAmount) / 10, 53));
+
+                    if (PChar->RealSkills.skill[skillID] >= maxSkill)
+                    {
+                        PChar->WorkingSkills.skill[skillID] |= 0x8000; // blue capped text
+                    }
+
+                    PChar->pushPacket<CCharSkillsPacket>(PChar);
+                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, skillID, (charSkill + skillUpAmount) / 10, 53);
                 }
 
                 charutils::SaveCharSkills(PChar, skillID);
@@ -633,21 +871,19 @@ namespace synthutils
                 if (skillCumulation > settings::get<uint16>("map.CRAFT_SPECIALIZATION_POINTS"))
                 {
                     PChar->RealSkills.skill[skillHighest] -= skillUpAmount;
-                    PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, skillHighest, skillUpAmount, 310));
+                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, skillHighest, skillUpAmount, 310);
 
                     if ((PChar->RealSkills.skill[skillHighest] + skillUpAmount) / 10 > (PChar->RealSkills.skill[skillHighest]) / 10)
                     {
                         PChar->WorkingSkills.skill[skillHighest] -= 0x20;
-                        PChar->pushPacket(new CCharSkillsPacket(PChar));
-                        PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, skillHighest, (PChar->RealSkills.skill[skillHighest] - skillUpAmount) / 10, 53));
+                        PChar->pushPacket<CCharSkillsPacket>(PChar);
+                        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, skillHighest, (PChar->RealSkills.skill[skillHighest] - skillUpAmount) / 10, 53);
                     }
 
                     charutils::SaveCharSkills(PChar, skillHighest);
                 }
             }
         }
-
-        return 0;
     }
 
     /**************************************************************************
@@ -658,33 +894,33 @@ namespace synthutils
      *                                                                         *
      **************************************************************************/
 
-    int32 handleMaterialLoss(CCharEntity* PChar)
+    void handleMaterialLoss(CCharEntity* PChar)
     {
-        uint8 currentCraft     = PChar->CraftContainer->getInvSlotID(0);
-        int16 synthDifficulty  = getSynthDifficulty(PChar, currentCraft);
-        int16 modSynthFailRate = PChar->getMod(Mod::SYNTH_FAIL_RATE);
+        uint8 currentCraft = PChar->CraftContainer->getInvSlotID(0);
 
-        // We are able to get the correct elemental mod here by adding the element to it since they are in the same order
-        double reduction = PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_FIRE + PChar->CraftContainer->getType()));
-
-        // Similarly we get the correct craft mod here by adding the current craft to it since they are in the same order
-        reduction += PChar->getMod((Mod)((int32)Mod::SYNTH_FAIL_RATE_WOOD + (currentCraft - SKILL_WOODWORKING)));
-        reduction /= 100.0;
-
-        uint8 invSlotID  = 0;
+        // Loop variables
+        uint8 invSlotID  = PChar->CraftContainer->getInvSlotID(1);
         uint8 nextSlotID = 0;
         uint8 lostCount  = 0;
         uint8 totalCount = 0;
+        uint8 random     = 0;
 
-        double random   = 0;
-        double lostItem = std::clamp(0.15 - reduction + (synthDifficulty > 0 ? synthDifficulty / 20 : 0), 0.0, 1.0);
+        // Synth material loss modifiers. TODO: Audit usage of this modifiers.
+        int16 breakGlobalReduction    = PChar->getMod(Mod::SYNTH_MATERIAL_LOSS);
+        int16 breakElementalReduction = PChar->getMod((Mod)((int32)Mod::SYNTH_MATERIAL_LOSS_FIRE + PChar->CraftContainer->getType()));
+        int16 breakTypeReduction      = PChar->getMod((Mod)((int32)Mod::SYNTH_MATERIAL_LOSS_WOODWORKING + currentCraft - SKILL_WOODWORKING));
+        int16 synthDifficulty         = getSynthDifficulty(PChar, currentCraft);
 
-        // Translation of JP wiki for the "Synthesis failure rate" modifier is "Synthetic material loss rate"
-        // see: http://wiki.ffo.jp/html/18416.html
-        lostItem += (double)modSynthFailRate * 0.01;
+        if (synthDifficulty < 0)
+        {
+            synthDifficulty = 0;
+        }
 
-        invSlotID = PChar->CraftContainer->getInvSlotID(1);
+        // Break Chance.
+        // Clamp note: https://wiki-ffo-jp.translate.goog/html/36626.html?_x_tr_sl=ja&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
+        int16 breakChance = std::clamp(50 - breakGlobalReduction - breakElementalReduction - breakTypeReduction + 5 * synthDifficulty, 20, 100);
 
+        // Loop through craft container items.
         for (uint8 slotID = 1; slotID <= 8; ++slotID)
         {
             if (slotID != 8)
@@ -692,9 +928,9 @@ namespace synthutils
                 nextSlotID = PChar->CraftContainer->getInvSlotID(slotID + 1);
             }
 
-            random = xirand::GetRandomNumber(1.);
+            random = xirand::GetRandomNumber(1, 100);
 
-            if (random < lostItem)
+            if (random <= breakChance)
             {
                 PChar->CraftContainer->setQuantity(slotID, 0);
                 lostCount++;
@@ -718,19 +954,19 @@ namespace synthutils
                     }
                     else
                     {
-                        PChar->pushPacket(new CInventoryAssignPacket(PItem, INV_NORMAL));
+                        PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NORMAL);
                     }
                 }
                 invSlotID = nextSlotID;
             }
+
             nextSlotID = 0;
+
             if (invSlotID == 0xFF)
             {
                 break;
             }
         }
-
-        return 0;
     }
 
     /**************************************************************************
@@ -740,7 +976,7 @@ namespace synthutils
      *                                                                         *
      **************************************************************************/
 
-    int32 doSynthFail(CCharEntity* PChar)
+    void doSynthFail(CCharEntity* PChar, bool isCriticalFail)
     {
         // Break material calculations.
         if (PChar->CraftContainer->getCraftType() != CRAFT_SYNTHESIS_NO_LOSS) // If it's a synth where no materials can be lost, skip break calculations.
@@ -751,17 +987,17 @@ namespace synthutils
         // Push "Synthesis failed" messages.
         uint16 currentZone = PChar->loc.zone->GetID();
 
+        const auto message = isCriticalFail ? SYNTH_FAIL_CRITICAL : SYNTH_FAIL;
+
         if (currentZone &&
             currentZone != ZONE_MONORAIL_PRE_RELEASE &&
             currentZone != ZONE_49 &&
             currentZone < MAX_ZONEID)
         {
-            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CSynthResultMessagePacket(PChar, SYNTH_FAIL));
+            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CSynthResultMessagePacket>(PChar, message));
         }
 
-        PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_FAIL, 29695));
-
-        return 0;
+        PChar->pushPacket<CSynthMessagePacket>(PChar, message, 29695);
     }
 
     /*********************************************************************
@@ -774,61 +1010,71 @@ namespace synthutils
     int32 startSynth(CCharEntity* PChar)
     {
         PChar->m_LastSynthTime = server_clock::now();
-        uint16 effect          = 0;
-        uint8  element         = 0;
 
-        uint16 crystalType = PChar->CraftContainer->getItemID(0);
-
-        switch (crystalType)
+        if (!isRightRecipe(PChar))
         {
-            case 0x1000:
-            case 0x108E:
+            PChar->CraftContainer->Clean();
+
+            return 0;
+        }
+
+        // Set animation and element based on crystal element.
+        uint16 effect        = 0;
+        uint8  element       = 0;
+        uint16 crystalItemId = PChar->CraftContainer->getItemID(0);
+
+        switch (crystalItemId)
+        {
+            case 4096: // Fire Crystal
+            case 4238: // Inferno Crystal
                 effect  = EFFECT_FIRESYNTH;
                 element = ELEMENT_FIRE;
                 break;
-            case 0x1001:
-            case 0x108F:
+
+            case 4097: // Ice Crystal
+            case 4239: // Glacier Crystal
                 effect  = EFFECT_ICESYNTH;
                 element = ELEMENT_ICE;
                 break;
-            case 0x1002:
-            case 0x1090:
+
+            case 4098: // Wind Crystal
+            case 4240: // Cyclone Crystal
                 effect  = EFFECT_WINDSYNTH;
                 element = ELEMENT_WIND;
                 break;
-            case 0x1003:
-            case 0x1091:
+
+            case 4099: // Earth Crystal
+            case 4241: // Terra Crystal
                 effect  = EFFECT_EARTHSYNTH;
                 element = ELEMENT_EARTH;
                 break;
-            case 0x1004:
-            case 0x1092:
+
+            case 4100: // Lightning Crystal
+            case 4242: // Plasma Crystal
                 effect  = EFFECT_LIGHTNINGSYNTH;
                 element = ELEMENT_LIGHTNING;
                 break;
-            case 0x1005:
-            case 0x1093:
+
+            case 4101: // Water Crystal
+            case 4243: // Torrent Crystal
                 effect  = EFFECT_WATERSYNTH;
                 element = ELEMENT_WATER;
                 break;
-            case 0x1006:
-            case 0x1094:
+
+            case 4102: // Light Crystal
+            case 4244: // Aurora Crystal
                 effect  = EFFECT_LIGHTSYNTH;
                 element = ELEMENT_LIGHT;
                 break;
-            case 0x1007:
-            case 0x1095:
+
+            case 4103: // Dark Crystal
+            case 4245: // Twilight Crystal
                 effect  = EFFECT_DARKSYNTH;
                 element = ELEMENT_DARK;
                 break;
         }
 
         PChar->CraftContainer->setType(element);
-
-        if (!isRightRecipe(PChar))
-        {
-            return 0;
-        }
 
         // Reserve the items after we know we have the right recipe
         for (uint8 container_slotID = 0; container_slotID <= 8; ++container_slotID)
@@ -870,22 +1116,22 @@ namespace synthutils
                 if (PCraftItem != nullptr)
                 {
                     PCraftItem->setSubType(ITEM_LOCKED);
-                    PChar->pushPacket(new CInventoryAssignPacket(PCraftItem, INV_NOSELECT));
+                    PChar->pushPacket<CInventoryAssignPacket>(PCraftItem, INV_NOSELECT);
                 }
             }
         }
 
         PChar->animation = ANIMATION_SYNTH;
         PChar->updatemask |= UPDATE_HP;
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
 
         if (PChar->loc.zone->GetID() != 255 && PChar->loc.zone->GetID() != 0)
         {
-            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, new CSynthAnimationPacket(PChar, effect, result));
+            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CSynthAnimationPacket>(PChar, effect, result));
         }
         else
         {
-            PChar->pushPacket(new CSynthAnimationPacket(PChar, effect, result));
+            PChar->pushPacket<CSynthAnimationPacket>(PChar, effect, result);
         }
 
         return 0;
@@ -916,7 +1162,7 @@ namespace synthutils
                     // Block the cheat by forcing the synth to fail
                     PChar->CraftContainer->setQuantity(0, synthutils::SYNTHESIS_FAIL);
                     m_synthResult = SYNTHESIS_FAIL;
-                    doSynthFail(PChar);
+                    doSynthFail(PChar, false);
                 }
                 // And report the incident (will possibly jail the player)
                 anticheat::ReportCheatIncident(PChar, anticheat::CheatID::CHEAT_ID_FASTSYNTH,
@@ -932,7 +1178,7 @@ namespace synthutils
 
         if (m_synthResult == SYNTHESIS_FAIL)
         {
-            doSynthFail(PChar);
+            doSynthFail(PChar, false);
         }
         else
         {
@@ -980,28 +1226,32 @@ namespace synthutils
                 {
                     char encodedSignature[SignatureStringLength];
 
-                    memset(&encodedSignature, 0, sizeof(encodedSignature));
+                    std::memset(&encodedSignature, 0, sizeof(encodedSignature));
                     PItem->setSignature(EncodeStringSignature(PChar->name.c_str(), encodedSignature));
 
                     char signature_esc[31]; // max charname: 15 chars * 2 + 1
-                    sql->EscapeStringLen(signature_esc, PChar->name.c_str(), strlen(PChar->name.c_str()));
+                    _sql->EscapeStringLen(signature_esc, PChar->name.c_str(), strlen(PChar->name.c_str()));
 
                     char fmtQuery[] = "UPDATE char_inventory SET signature = '%s' WHERE charid = %u AND location = 0 AND slot = %u;\0";
 
-                    sql->Query(fmtQuery, signature_esc, PChar->id, invSlotID);
+                    _sql->Query(fmtQuery, signature_esc, PChar->id, invSlotID);
                 }
-                PChar->pushPacket(new CInventoryItemPacket(PItem, LOC_INVENTORY, invSlotID));
+                PChar->pushPacket<CInventoryItemPacket>(PItem, LOC_INVENTORY, invSlotID);
             }
 
-            PChar->pushPacket(new CInventoryFinishPacket());
+            PChar->pushPacket<CInventoryFinishPacket>();
+
+            // Use appropiate message (Regular or desynthesis)
+            const auto message = PChar->CraftContainer->getCraftType() == CRAFT_DESYNTHESIS ? SYNTH_SUCCESS_DESYNTH : SYNTH_SUCCESS;
+
             if (PChar->loc.zone->GetID() != 255 && PChar->loc.zone->GetID() != 0)
             {
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, new CSynthResultMessagePacket(PChar, SYNTH_SUCCESS, itemID, quantity));
-                PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_SUCCESS, itemID, quantity));
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CSynthResultMessagePacket>(PChar, message, itemID, quantity));
+                PChar->pushPacket<CSynthMessagePacket>(PChar, message, itemID, quantity);
             }
             else
             {
-                PChar->pushPacket(new CSynthMessagePacket(PChar, SYNTH_SUCCESS, itemID, quantity));
+                PChar->pushPacket<CSynthMessagePacket>(PChar, message, itemID, quantity);
             }
 
             // Calculate what craft this recipe "belongs" to based on highest skill required
@@ -1039,9 +1289,10 @@ namespace synthutils
     {
         doSynthResult(PChar);
 
+        PChar->CraftContainer->Clean();
         PChar->animation = ANIMATION_NONE;
         PChar->updatemask |= UPDATE_HP;
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
+        PChar->pushPacket<CCharUpdatePacket>(PChar);
         return 0;
     }
 

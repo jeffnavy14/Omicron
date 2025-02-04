@@ -190,6 +190,8 @@ player_data = [
     "char_equip.sql",
     "char_equip_saved.sql",
     "char_exp.sql",
+    "char_fishing_contest_history.sql",
+    "char_flags.sql",
     "char_history.sql",
     "char_inventory.sql",
     "char_jobs.sql",
@@ -210,6 +212,8 @@ player_data = [
     "chars.sql",
     "conquest_system.sql",
     "delivery_box.sql",
+    "fishing_contest.sql",
+    "fishing_contest_entries.sql",
     "ip_exceptions.sql",
     "linkshells.sql",
     "server_variables.sql",
@@ -248,11 +252,20 @@ colorama.init(autoreset=True)
 
 
 # Redirect errors through this to hide annoying password warning
-def fetch_errors(result):
+def fetch_errors(query, result):
     for line in result.stderr.splitlines():
         # Safe to ignore this warning
-        if "Using a password on the command line interface can be insecure" not in line:
+        if "Using a password on the command line interface can be insecure" in line:
+            continue
+
+        # If the output line begins with ERROR, print it in red and exit
+        if line.startswith("ERROR"):
+            print_red("Encountered error while executing SQL query:")
+            print_red(query)
+            print_red("Error:")
             print_red(line)
+            print_red("Exiting...")
+            exit(-1)
 
 
 def db_query(query):
@@ -269,7 +282,7 @@ def db_query(query):
         capture_output=True,
         text=True,
     )
-    fetch_errors(result)
+    fetch_errors(query, result)
     return result
 
 
@@ -279,7 +292,7 @@ def fetch_credentials():
         os.getenv("XI_NETWORK_SQL_DATABASE") or settings["network"]["SQL_DATABASE"]
     )
     host = os.getenv("XI_NETWORK_SQL_HOST") or settings["network"]["SQL_HOST"]
-    port = os.getenv("XI_NETWORK_SQL_PORT") or int(settings["network"]["SQL_PORT"])
+    port = int(os.getenv("XI_NETWORK_SQL_PORT") or int(settings["network"]["SQL_PORT"]))
     login = os.getenv("XI_NETWORK_SQL_LOGIN") or settings["network"]["SQL_LOGIN"]
     password = (
         os.getenv("XI_NETWORK_SQL_PASSWORD") or settings["network"]["SQL_PASSWORD"]
@@ -493,6 +506,8 @@ def connect():
                 ).lower()
                 == "y"
             ):
+                query = f"CREATE DATABASE {database} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+
                 result = subprocess.run(
                     [
                         f"{mysql_bin}mysql{exe}",
@@ -500,12 +515,12 @@ def connect():
                         f"-P{str(port)}",
                         f"-u{login}",
                         f"-p{password}",
-                        f"-e CREATE DATABASE {database} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
+                        f"-e {query}",
                     ],
                     capture_output=True,
                     text=True,
                 )
-                fetch_errors(result)
+                fetch_errors(query, result)
                 setup_db()
                 connect()
             else:
@@ -569,7 +584,7 @@ def backup_db(silent=False, lite=False):
                 stderr=subprocess.PIPE,
                 text=True,
             )
-            fetch_errors(result)
+            fetch_errors("Dumping database", result)
             print_green("Database saved!")
             time.sleep(0.5)
 
@@ -1257,6 +1272,8 @@ def main():
                 return
             elif "setup" == arg1:
                 if len(sys.argv) > 2 and str(sys.argv[2]) == database:
+                    query = f"CREATE DATABASE {database} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+
                     result = subprocess.run(
                         [
                             f"{mysql_bin}mysql{exe}",
@@ -1264,12 +1281,14 @@ def main():
                             f"-P{str(port)}",
                             f"-u{login}",
                             f"-p{password}",
-                            f"-e CREATE DATABASE {database} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci",
+                            f"-e {query}",
                         ],
                         capture_output=True,
                         text=True,
                     )
-                    fetch_errors(result)
+                    fetch_errors(query, result)
+                    setup_db()
+                else:
                     setup_db()
                 return
             elif "dump" == arg1:

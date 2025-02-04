@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ALTAIEU]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -20,15 +21,6 @@ entity.onTrade = function(player, npc, trade)
         player:tradeComplete()
         SpawnMob(ID.mob.JAILER_OF_HOPE):updateClaim(player)
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

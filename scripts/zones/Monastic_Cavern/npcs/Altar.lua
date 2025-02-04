@@ -6,16 +6,14 @@
 -----------------------------------
 local ID = zones[xi.zone.MONASTIC_CAVERN]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local circleOfTime = player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_CIRCLE_OF_TIME)
+    local circleOfTime = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_CIRCLE_OF_TIME)
 
     if
-        circleOfTime == QUEST_ACCEPTED and
+        circleOfTime == xi.questStatus.QUEST_ACCEPTED and
         player:hasKeyItem(xi.ki.STAR_RING1) and
         player:hasKeyItem(xi.ki.MOON_RING)
     then
@@ -32,9 +30,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.ALTAR)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

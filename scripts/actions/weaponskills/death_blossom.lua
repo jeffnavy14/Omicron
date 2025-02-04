@@ -12,38 +12,30 @@
 --  4              4           4        new
 -- 1.125      1.125      1.125        old
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-    local params = {}
+    local params   = {}
     params.numHits = 3
-    -- ftp damage mods (for Damage Varies with TP lines are calculated in the function
-    params.ftp100 = 1.125 params.ftp200 = 1.125 params.ftp300 = 1.125
-    -- wscs are in % so 0.2=20%
-    params.str_wsc = 0.3 params.dex_wsc = 0.0 params.vit_wsc = 0.0 params.agi_wsc = 0.0 params.int_wsc = 0.0
-    params.mnd_wsc = 0.5 params.chr_wsc = 0.0
-    -- critical mods, again in % (ONLY USE FOR critICAL HIT VARIES WITH TP)
-    params.crit100 = 0.0 params.crit200 = 0.0 params.crit300 = 0.0
-    params.canCrit = false
-    -- accuracy mods (ONLY USE FOR accURACY VARIES WITH TP) , should be the acc at those %s NOT the penalty values. Leave 0 if acc doesnt vary with tp.
-    params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    -- attack multiplier (only some WSes use this, this varies the actual ratio value, see Tachi: Kasha) 1 is default.
-    params.atk100 = 1 params.atk200 = 1 params.atk300 = 1
+    params.ftpMod  = { 1.125, 1.125, 1.125 }
+    params.str_wsc = 0.3
+    params.mnd_wsc = 0.5
 
     if xi.settings.main.USE_ADOULIN_WEAPON_SKILL_CHANGES then
-        params.ftp100 = 4.0 params.ftp200 = 4.0 params.ftp300 = 4.0
+        params.ftpMod = { 4, 4, 4 }
     end
 
     -- Apply aftermath
     xi.aftermath.addStatusEffect(player, tp, xi.slot.MAIN, xi.aftermath.type.MYTHIC)
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
-    if damage > 0 then
-        local duration = tp / 1000 * 20 - 5
-        if not target:hasStatusEffect(xi.effect.MAGIC_EVASION_DOWN) then
-            target:addStatusEffect(xi.effect.MAGIC_EVASION_DOWN, 10, 0, duration)
-        end
-    end
+
+    -- Handle status effect
+    local effectId = xi.effect.MAGIC_EVASION_DOWN
+    local power    = 10
+    local duration = math.floor(tp / 50 - 5)
+    xi.weaponskills.handleWeaponskillEffect(player, target, effectId, 0, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
 end

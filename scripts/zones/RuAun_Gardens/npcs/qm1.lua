@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.RUAUN_GARDENS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -20,12 +21,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.SKY_GOD_OFFSET)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -12,22 +12,22 @@
 -----------------------------------
 local ID = zones[xi.zone.QUICKSAND_CAVES]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    local theMissingPiece = player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.THE_MISSING_PIECE)
+    local theMissingPiece = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.THE_MISSING_PIECE)
     local hasAncientFragment = player:hasKeyItem(xi.ki.ANCIENT_TABLET_FRAGMENT)
     local hasAncientTablet = player:hasKeyItem(xi.ki.TABLET_OF_ANCIENT_MAGIC)
 
     -- Need to make sure the quest is flagged the player is no further along in the quest
     if
-        theMissingPiece == QUEST_ACCEPTED and
+        theMissingPiece == xi.questStatus.QUEST_ACCEPTED and
         not hasAncientTablet and
         not hasAncientFragment and
         player:getTitle() ~= xi.title.ACQUIRER_OF_ANCIENT_ARCANUM
     then
-        player:addKeyItem(xi.ki.ANCIENT_TABLET_FRAGMENT)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.ANCIENT_TABLET_FRAGMENT)
+        npcUtil.giveKeyItem(player, xi.ki.ANCIENT_TABLET_FRAGMENT)
 
         -- move the ??? to a random location
         local i = math.random(0, 100)
@@ -47,12 +47,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

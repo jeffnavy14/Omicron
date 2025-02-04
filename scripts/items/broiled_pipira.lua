@@ -8,9 +8,10 @@
 -- Attack % 14 (cap 80)
 -- Ranged ATT % 14 (cap 80)
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

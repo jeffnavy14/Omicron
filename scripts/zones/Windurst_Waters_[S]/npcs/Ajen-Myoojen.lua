@@ -3,16 +3,11 @@
 --  NPC: Ajen-Myoojen
 -- !pos -44.542 -5.999 238.996 94
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(200)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

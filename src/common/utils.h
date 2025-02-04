@@ -19,12 +19,13 @@
 ===========================================================================
 */
 
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#pragma once
+
 #define _USE_MATH_DEFINES
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
+#include "common/mutex_guarded.h"
 #include "common/stdext.h"
 
 #include <filesystem>
@@ -42,12 +43,27 @@ int32 checksum(uint8* buf, uint32 buflen, char checkhash[16]);
 int   config_switch(const char* str);
 bool  bin2hex(char* output, unsigned char* input, size_t count);
 
-float           distance(const position_t& A, const position_t& B, bool ignoreVertical = false);                     // distance between positions. Use only horizontal plane (x and z) if ignoreVertical is set.
-float           distanceSquared(const position_t& A, const position_t& B, bool ignoreVertical = false);              // squared distance between positions (use squared unless otherwise needed)
-bool            distanceWithin(const position_t& A, const position_t& B, float within, bool ignoreVertical = false); // returns true if the distance between the points is <= within.
-constexpr float square(float distance)                                                                               // constexpr square (used with distanceSquared)
+constexpr float square(auto distance) // constexpr square (used with distanceSquared)
 {
     return distance * distance;
+}
+
+inline float distanceSquared(const position_t& A, const position_t& B, bool ignoreVertical = false)
+{
+    float dX = A.x - B.x;
+    float dY = ignoreVertical ? 0 : A.y - B.y;
+    float dZ = A.z - B.z;
+    return dX * dX + dY * dY + dZ * dZ;
+}
+
+inline float distance(const position_t& A, const position_t& B, bool ignoreVertical = false)
+{
+    return std::sqrt(distanceSquared(A, B, ignoreVertical));
+}
+
+inline bool isWithinDistance(const position_t& A, const position_t& B, float within, bool ignoreVertical = false)
+{
+    return distanceSquared(A, B, ignoreVertical) <= square(within);
 }
 
 int32      intpow32(int32 base, int32 exponent); // Exponential power of integers
@@ -94,7 +110,7 @@ auto to_lower(std::string const& s) -> std::string;
 auto to_upper(std::string const& s) -> std::string;
 auto trim(const std::string& str, const std::string& whitespace = " \t") -> std::string;
 void rtrim(std::string& s);
-bool matches(std::string const& target, std::string const& pattern, std::string const& wildcard = "%");
+bool matches(std::string const& target, std::string const& pattern);
 bool starts_with(std::string const& target, std::string const& pattern);
 auto replace(std::string const& target, std::string const& search, std::string const& replace) -> std::string;
 
@@ -126,4 +142,22 @@ namespace utils
     auto toASCII(std::string const& target, unsigned char replacement = '\0') -> std::string;
 } // namespace utils
 
-#endif
+// clang-format off
+static mutex_guarded<std::unordered_map<std::string, time_point>> lastExecutionTimes;
+#define RATE_LIMIT(duration, code)                                                    \
+{                                                                                     \
+    auto        currentTime = server_clock::now();                                    \
+    std::string key         = std::string(__FILE__) + ":" + std::to_string(__LINE__); \
+    lastExecutionTimes.write([&](auto& lastExecutionTimes)                            \
+    {                                                                                 \
+        if (lastExecutionTimes.find(key) == lastExecutionTimes.end() ||               \
+            currentTime - lastExecutionTimes[key] > std::chrono::seconds(duration))   \
+        {                                                                             \
+            lastExecutionTimes[key] = currentTime;                                    \
+            {                                                                         \
+                code;                                                                  \
+            }                                                                         \
+        }                                                                             \
+    });                                                                               \
+}
+// clang-format on

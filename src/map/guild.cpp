@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -57,14 +57,13 @@ void CGuild::updateGuildPointsPattern(uint8 pattern)
 
         std::string query = "SELECT itemid, points, max_points FROM guild_item_points WHERE "
                             "guildid = %u AND pattern = %u AND rank = %u";
-        int         ret   = sql->Query(query.c_str(), m_id, pattern, m_GPItemsRank[i]);
+        int         ret   = _sql->Query(query.c_str(), m_id, pattern, m_GPItemsRank[i]);
 
-        if (ret != SQL_ERROR && sql->NumRows() > 0)
+        if (ret != SQL_ERROR && _sql->NumRows() > 0)
         {
-            while (sql->NextRow() == SQL_SUCCESS)
+            while (_sql->NextRow() == SQL_SUCCESS)
             {
-                m_GPItems[i].emplace_back(
-                    GPItem_t(itemutils::GetItemPointer(sql->GetUIntData(0)), sql->GetUIntData(2), sql->GetUIntData(1)));
+                m_GPItems[i].emplace_back(itemutils::GetItemPointer(_sql->GetUIntData(0)), _sql->GetUIntData(2), _sql->GetUIntData(1));
             }
         }
     }

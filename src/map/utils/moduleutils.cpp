@@ -98,7 +98,7 @@ namespace moduleutils
         }
     }
 
-    void OnPushPacket(CCharEntity* PChar, CBasicPacket* packet)
+    void OnPushPacket(CCharEntity* PChar, const std::unique_ptr<CBasicPacket>& packet)
     {
         TracyZoneScoped;
         for (auto* module : cppModules())
@@ -170,6 +170,15 @@ namespace moduleutils
             }
         }
 
+        // Load zone_settings information
+        std::unordered_map<std::string, uint16> zoneSettingsPorts;
+
+        auto rset = db::preparedStmt("SELECT name, zoneport FROM zone_settings");
+        while (rset && rset->next())
+        {
+            zoneSettingsPorts[rset->get<std::string>("name")] = rset->get<uint16>("zoneport");
+        }
+
         // Load each module file that isn't the helpers.lua file or a directory
         for (auto const& entry : expandedList)
         {
@@ -192,10 +201,16 @@ namespace moduleutils
                     continue;
                 }
 
-                // Check the file is a valid module
+                if (!res.valid() || res.get_type() != sol::type::table)
+                {
+                    ShowError("Failed to load module: Invalid object returned from: %s", filename);
+                    continue;
+                }
+
+                // We've confirmed this is a table, treat it as such from now on
                 sol::table table = res;
 
-                // Check the file is a valid command
+                // Check the table is a valid command
                 if (table["cmdprops"].valid() && table["onTrigger"].valid())
                 {
                     auto commandName = path.filename().replace_extension("").generic_string();
@@ -204,10 +219,14 @@ namespace moduleutils
                     continue;
                 }
 
+                // Check table was created with Module:new() (or manually with the right fields)
                 if (table["overrides"].valid())
                 {
-                    auto moduleName = table.get_or("name", std::string());
+                    bool skipOverrideCheck = false;
+                    auto moduleName        = table.get_or("name", std::string());
+
                     ShowInfo(fmt::format("=== Module: {} ===", moduleName));
+
                     for (auto& override : table.get_or("overrides", std::vector<sol::table>()))
                     {
                         std::string name = override["name"];
@@ -222,22 +241,36 @@ namespace moduleutils
                         // we need to sanity check them here by checking the name and port against the database.
                         if (parts.size() >= 3 && parts[0] == "xi" && parts[1] == "zones")
                         {
-                            auto zoneName    = parts[2];
-                            auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
+                            const auto zoneName    = parts[2];
+                            const auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
 
-                            auto ret = sql->Query(fmt::format("SELECT `name`, zoneport FROM zone_settings WHERE `name` = '{}' AND zoneport = {};",
-                                                              zoneName, currentPort)
-                                                      .c_str());
-                            if (ret != SQL_ERROR && sql->NumRows() == 0)
+                            if (zoneSettingsPorts.find(zoneName) != zoneSettingsPorts.end() && zoneSettingsPorts[zoneName] != currentPort)
                             {
-                                DebugModules(fmt::format("{} does not appear to exist on this process.", zoneName));
+                                DebugModules(fmt::format("{} exists on a different port ({}), skipping", zoneName, zoneSettingsPorts[zoneName]));
+                                skipOverrideCheck = true;
                                 continue;
                             }
                         }
 
                         overrides.emplace_back(Override{ filename, name, parts, func, false });
                     }
+
+                    if (!skipOverrideCheck && overrides.empty())
+                    {
+                        ShowError("No overrides found in module: %s", filename);
+                    }
+
+                    // NOTE: This continue is for the expandedList loop
+                    // TODO: Flatten all of this surrounding logic so it's less fragile
+                    continue;
                 }
+
+                // TODO: Come up with a way to differentiate if the user has sent in an invalid table, malformed module (command or overrides),
+                //     : or whether they've just got a data-only table file in their modules directory.
+
+                // If we get here, we haven't managaed to look up (cmdprops + onTrigger) or (overrides) on the table we
+                // got back from the module, so something is wrong with the module.
+                // ShowError("Failed to find valid table fields in module: %s", filename);
             }
         }
     }

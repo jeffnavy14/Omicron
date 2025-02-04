@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.BEADEAUX]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -39,7 +40,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
@@ -107,10 +108,13 @@ end
 
 zoneObject.onZoneWeatherChange = function(weather)
     local qm1 = GetNPCByID(ID.npc.QM1) -- Quest: Beaudeaux Smog
-    if weather == xi.weather.RAIN or weather == xi.weather.SQUALL then
-        qm1:setStatus(xi.status.NORMAL)
-    else
-        qm1:setStatus(xi.status.DISAPPEAR)
+
+    if qm1 then
+        if weather == xi.weather.RAIN or weather == xi.weather.SQUALL then
+            qm1:setStatus(xi.status.NORMAL)
+        else
+            qm1:setStatus(xi.status.DISAPPEAR)
+        end
     end
 end
 

@@ -60,12 +60,9 @@ mission.sections =
 
         [xi.zone.LOWER_DELKFUTTS_TOWER] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 15
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                return 15
+            end,
 
             onEventFinish =
             {
@@ -84,12 +81,9 @@ mission.sections =
 
         [xi.zone.STELLAR_FULCRUM] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 0
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                return 0
+            end,
 
             onEventUpdate =
             {
@@ -117,14 +111,11 @@ mission.sections =
 
         [xi.zone.STELLAR_FULCRUM] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId) == 3 then
-                        return 17
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId) == 3 then
+                    return 17
+                end
+            end,
 
             onEventFinish =
             {
@@ -133,7 +124,7 @@ mission.sections =
                 end,
 
                 [32001] = function(player, csid, option, npc)
-                    if player:getLocalVar('battlefieldWin') == 256 then
+                    if player:getLocalVar('battlefieldWin') == xi.battlefield.id.RETURN_TO_DELKFUTTS_TOWER then
                         player:setMissionStatus(mission.areaId, 3)
                         player:setPos(-519.99, 1.076, -19.943, 64, xi.zone.STELLAR_FULCRUM)
                     end

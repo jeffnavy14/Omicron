@@ -2,8 +2,13 @@
 -- Area: The Boyahda Tree
 --   NM: Ancient Goobbue
 -----------------------------------
-mixins = { require('scripts/mixins/job_special') }
+mixins =
+{
+    require('scripts/mixins/job_special'),
+    require('scripts/mixins/draw_in'),
+}
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -17,7 +22,6 @@ entity.onMobSpawn = function(mob)
             { id = xi.jsa.HUNDRED_FISTS, cooldown = 60, hpp = math.random(85, 95) },
         },
     })
-    mob:setMobMod(xi.mobMod.DRAW_IN, 1)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

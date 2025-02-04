@@ -5,9 +5,10 @@
 -- Proceeds from this tome have gone to fund her various purchases dealing with alchemical research.
 -- Adventurers note that reading it increases one's dark magic skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.DARK_MAGIC)
 end
 

@@ -11,30 +11,28 @@
 -- 100%TP    200%TP    300%TP
 -- 1.00      1.00      1.00
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-    local params = {}
+    local params   = {}
     params.numHits = 1
-    params.ftp100 = 1 params.ftp200 = 1 params.ftp300 = 1
-    params.str_wsc = 0.0 params.dex_wsc = 0.0 params.vit_wsc = 0.0 params.agi_wsc = 0.0 params.int_wsc = 0.0 params.mnd_wsc = 0.0 params.chr_wsc = 0.3
-    params.crit100 = 0.0 params.crit200 = 0.0 params.crit300 = 0.0
-    params.canCrit = false
-    params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    params.atk100 = 1 params.atk200 = 1 params.atk300 = 1
+    params.ftpMod  = { 1, 1, 1 }
+    params.chr_wsc = 0.3
 
     if xi.settings.main.USE_ADOULIN_WEAPON_SKILL_CHANGES then
-        params.chr_wsc = 1.0
+        params.chr_wsc = 1
     end
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
 
-    if damage > 0 then
-        local chance = (tp - 1000) * applyResistanceAddEffect(player, target, xi.element.ICE, 0) > math.random() * 150
-        if not target:hasStatusEffect(xi.effect.BIND) and chance then
-            local duration = (5 + (tp / 1000 * 5)) * applyResistanceAddEffect(player, target, xi.element.ICE, 0)
-            target:addStatusEffect(xi.effect.BIND, 1, 0, duration)
-        end
+    -- Handle status effect
+    if math.random(1, 100) <= tp / 30 * applyResistanceAddEffect(player, target, xi.element.ICE, 0) then
+        local effectId      = xi.effect.BIND
+        local actionElement = xi.element.ICE
+        local power         = 1
+        local duration      = math.floor((5 + tp / 200) * applyResistanceAddEffect(player, target, actionElement, 0))
+        xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
     end
 
     return tpHits, extraHits, criticalHit, damage

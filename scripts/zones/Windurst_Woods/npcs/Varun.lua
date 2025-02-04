@@ -3,6 +3,7 @@
 --  NPC: Varun
 -- !pos 7.800 -3.5 -10.064 241
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -16,20 +17,17 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local rockRacketeer = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER)
+    local rockRacketeer = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER)
     local rockRacketeerCS = player:getCharVar('rockracketeer_sold')
 
-    if rockRacketeer == QUEST_ACCEPTED and rockRacketeerCS == 3 then
+    if rockRacketeer == xi.questStatus.QUEST_ACCEPTED and rockRacketeerCS == 3 then
         player:startEvent(100) -- talk about lost stone
-    elseif rockRacketeer == QUEST_ACCEPTED and rockRacketeerCS == 4 then
+    elseif rockRacketeer == xi.questStatus.QUEST_ACCEPTED and rockRacketeerCS == 4 then
         player:startEvent(101, 0, xi.item.SHARP_STONE) -- send player to Palborough Mines
 
     else
         player:startEvent(432)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -39,7 +37,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:setCharVar('rockracketeer_sold', 5)
     elseif
         csid == 102 and
-        npcUtil.completeQuest(player, xi.quest.log_id.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER, { gil = 2100, var = 'rockracketeer_sold' })
+        npcUtil.completeQuest(player, xi.questLog.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER, { gil = 2100, var = 'rockracketeer_sold' })
     then
         player:confirmTrade()
     end

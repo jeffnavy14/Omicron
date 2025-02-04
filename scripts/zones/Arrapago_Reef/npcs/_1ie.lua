@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ARRAPAGO_REEF]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -64,12 +65,6 @@ entity.onTrigger = function(player, npc)
         player:messageSpecial(ID.text.YOU_UNLOCK_DOOR) -- message from 'inside' of door
         npc:openDoor()
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -3,9 +3,10 @@
 -- plate_of_indi-paralysis
 -- Teaches INDI-PARALYSIS
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.INDI_PARALYSIS)
 end
 

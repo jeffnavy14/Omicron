@@ -3,9 +3,10 @@
 -- Scholar Die
 -- Teaches the job ability Scholars Roll
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnAbility(xi.jobAbility.SCHOLARS_ROLL)
 end
 

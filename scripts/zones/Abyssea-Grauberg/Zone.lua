@@ -1,11 +1,12 @@
 -----------------------------------
 -- Zone: Abyssea - Grauberg
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
     zone:registerTriggerArea(1, -570, 20, -810, -487.3, 35, -740)
-    xi.helm.initZone(zone, xi.helm.type.HARVESTING)
+    xi.helm.initZone(zone, xi.helmType.HARVESTING)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)

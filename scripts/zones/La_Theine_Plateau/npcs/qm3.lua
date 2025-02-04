@@ -5,11 +5,12 @@
 -----------------------------------
 local ID = zones[xi.zone.LA_THEINE_PLATEAU]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     if
-        player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.I_CAN_HEAR_A_RAINBOW) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.I_CAN_HEAR_A_RAINBOW) == xi.questStatus.QUEST_ACCEPTED and
         npcUtil.tradeHas(trade, xi.item.CARBUNCLES_RUBY) and
         utils.mask.isFull(player:getCharVar('I_CAN_HEAR_A_RAINBOW'), 7)
     then
@@ -17,15 +18,9 @@ entity.onTrade = function(player, npc, trade)
     end
 end
 
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 124 then
-        player:completeQuest(xi.quest.log_id.WINDURST, xi.quest.id.windurst.I_CAN_HEAR_A_RAINBOW)
+        player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.I_CAN_HEAR_A_RAINBOW)
         player:addTitle(xi.title.RAINBOW_WEAVER)
         player:unlockJob(xi.job.SMN)
         player:addSpell(xi.magic.spell.CARBUNCLE)
@@ -35,7 +30,9 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:confirmTrade()
 
         local rainbow = GetNPCByID(ID.npc.RAINBOW)
-        rainbow:setLocalVar('setRainbow', 1)
+        if rainbow then
+            rainbow:setLocalVar('setRainbow', 1)
+        end
     end
 end
 

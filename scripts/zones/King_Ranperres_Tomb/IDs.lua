@@ -18,40 +18,39 @@ zones[xi.zone.KING_RANPERRES_TOMB] =
         LOGIN_NUMBER                  = 7162,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         GEOMAGNETRON_ATTUNED          = 7171,  -- Your <keyitem> has been attuned to a geomagnetic fount in the corresponding locale.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7182,  -- Your party is unable to participate because certain members' levels are restricted.
-        CHEST_UNLOCKED                = 7291,  -- You unlock the chest!
-        SENSE_SOMETHING_EVIL          = 7318,  -- You sense something evil.
-        HEAVY_DOOR                    = 7319,  -- It is a solid stone door.
-        PLAYER_OBTAINS_ITEM           = 8257,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 8258,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 8259,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 8260,  -- You already possess that temporary item.
-        NO_COMBINATION                = 8265,  -- You were unable to enter a combination.
-        REGIME_REGISTERED             = 10343, -- New training regime registered!
-        COMMON_SENSE_SURVIVAL         = 11430, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        HERE_LIES_KING_RANPERRE       = 7262,  -- Here lies King Ranperre. May he rest in peace.
+        NOTHING_HAPPENS               = 7264,  -- Nothing happens.
+        CHANGE_WATER                  = 7265,  -- You change the water.
+        WATER_ALREADY_CHANGED         = 7266,  -- The water has already been changed.
+        ALREADY_WATER_HERE            = 7267,  -- There is already water here.
+        WATERSKIN_LYING_HERE          = 7268,  -- A waterskin is lying here.
+        CHEST_UNLOCKED                = 7295,  -- You unlock the chest!
+        SENSE_SOMETHING_EVIL          = 7322,  -- You sense something evil.
+        HEAVY_DOOR                    = 7323,  -- It is a solid stone door.
+        FINAL_RESTING_PLACE           = 7327,  -- It appears to be the true resting place of King Ranperre.
+        PLAYER_OBTAINS_ITEM           = 8261,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 8262,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 8263,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 8264,  -- You already possess that temporary item.
+        NO_COMBINATION                = 8269,  -- You were unable to enter a combination.
+        REGIME_REGISTERED             = 10347, -- New training regime registered!
+        COMMON_SENSE_SURVIVAL         = 11434, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
-        GWYLLGI_PH            =
-        {
-            [17555661] = 17555664,
-        },
-        CRYPT_GHOST_PH        =
-        {
-            [17555665] = 17555668,
-            [17555666] = 17555668,
-            [17555667] = 17555668,
-        },
-        BARBASTELLE           = 17555721,
-        CHERRY_SAPLING_OFFSET = 17555748,
-        VRTRA                 = 17555763,
-        CORRUPTED_YORGOS      = 17555770,
-        CORRUPTED_SOFFEIL     = 17555771,
-        CORRUPTED_ULBRIG      = 17555772,
-        ANKOU                 = 17555709,
+        GWYLLGI               = GetFirstID('Gwyllgi'),
+        CRYPT_GHOST           = GetFirstID('Crypt_Ghost'),
+        BARBASTELLE           = GetFirstID('Barbastelle'),
+        CHERRY_SAPLING_OFFSET = GetFirstID('Cherry_Sapling'),
+        VRTRA                 = GetFirstID('Vrtra'),
+        CORRUPTED_YORGOS      = GetFirstID('Corrupted_Yorgos'),
+        CORRUPTED_SOFFEIL     = GetFirstID('Corrupted_Soffeil'),
+        CORRUPTED_ULBRIG      = GetFirstID('Corrupted_Ulbrig'),
+        ANKOU                 = GetFirstID('Ankou'),
     },
     npc =
     {
-        TREASURE_CHEST = 17555966,
+        TREASURE_CHEST = GetFirstID('Treasure_Chest'),
     },
 }
 

@@ -6,23 +6,21 @@
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WALLS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local toBee = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.TO_BEE_OR_NOT_TO_BEE)
+    local toBee = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.TO_BEE_OR_NOT_TO_BEE)
     local toBeeOrNotStatus = player:getCharVar('ToBeeOrNot_var')
 
-    if toBeeOrNotStatus == 10 and toBee == QUEST_AVAILABLE then
+    if toBeeOrNotStatus == 10 and toBee == xi.questStatus.QUEST_AVAILABLE then
         player:startEvent(67) -- Quest Started - He gives you honey
-    elseif toBee == QUEST_ACCEPTED then
+    elseif toBee == xi.questStatus.QUEST_ACCEPTED then
         player:startEvent(68) -- After honey is given to player...... but before 5th hondy is given to Zayhi
-    elseif toBee == QUEST_COMPLETED and toBeeOrNotStatus == 5 then
+    elseif toBee == xi.questStatus.QUEST_COMPLETED and toBeeOrNotStatus == 5 then
         player:startEvent(80) -- Quest Finish - Gives Mulsum
     elseif
-        toBee == QUEST_COMPLETED and
+        toBee == xi.questStatus.QUEST_COMPLETED and
         toBeeOrNotStatus == 0 and
         player:needToZone()
     then
@@ -39,15 +37,12 @@ end
 --  player:startEvent(80) -- Quest Finish - Gives Mulsum
 --  player:startEvent(79) -- After Quest but before zoning: "it's certainly gotten quiet around here..."
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 67 then
         if player:getFreeSlotsCount() == 0 then
             player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.POT_OF_HONEY) -- Cannot give Honey because player Inventory is full
         else
-            player:addQuest(xi.quest.log_id.WINDURST, xi.quest.id.windurst.TO_BEE_OR_NOT_TO_BEE)
+            player:addQuest(xi.questLog.WINDURST, xi.quest.id.windurst.TO_BEE_OR_NOT_TO_BEE)
             player:addItem(xi.item.POT_OF_HONEY)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.POT_OF_HONEY) -- Gives player Honey x1
         end

@@ -2,6 +2,7 @@
 -- Area: Al'Taieu
 --  Mob: Ul'yovra
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -11,7 +12,7 @@ entity.onMobSpawn = function(mob)
     mob:wait(2000)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:hideName(false)
     mob:setUntargetable(false)
     mob:setAnimationSub(6)

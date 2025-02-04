@@ -3,14 +3,15 @@
 -- Item: Chocobo Shield +1
 -- Dispense: Sakura Biscuit
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.SAKURA_BISCUIT, 1)
+    npcUtil.giveItem(target, { { xi.item.SAKURA_BISCUIT, 1 } })
 end
 
 return itemObject

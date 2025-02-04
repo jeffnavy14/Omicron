@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.THE_ASHU_TALIF]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local captainEngageSequence = function(mob)
@@ -15,10 +16,10 @@ local captainEngageSequence = function(mob)
         mob:setLocalVar('jump', 1)
         mob:showText(mob, ID.text.OVERPOWERED_CREW)
         mob:hideName(true)
-        mob:entityAnimationPacket('jmp0')
+        mob:entityAnimationPacket(xi.animationString.JUMP_0)
         mob:timer(2000, function(m)
             m:setPos(0, -22, 13, 192)
-            m:entityAnimationPacket('jmp1')
+            m:entityAnimationPacket(xi.animationString.JUMP_1)
             m:showText(mob, ID.text.TEST_YOUR_BLADES)
             m:timer(2000, function(mAnimation)
                 mAnimation:hideName(false)
@@ -32,7 +33,7 @@ entity.onMobSpawn = function(mob)
     mob:setUnkillable(true)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     captainEngageSequence(mob)
 end
 
@@ -44,7 +45,11 @@ end
 entity.onMobFight = function(mob, target)
     -- The captain gives up at <= 20% HP. Everyone disengages
     local instance = mob:getInstance()
-    if mob:getHPP() <= 20 and not instance:completed() then
+    if
+        mob:getHPP() <= 20 and
+        instance and
+        not instance:completed()
+    then
         instance:complete()
     end
 
@@ -62,7 +67,7 @@ entity.onMobFight = function(mob, target)
     end)
 end
 
-entity.onMobDisengage = function(mob, target)
+entity.onMobDisengage = function(mob)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

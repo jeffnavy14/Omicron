@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ULEGUERAND_RANGE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -19,9 +20,6 @@ entity.onTrade = function(player, npc, trade)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.HANDFUL_OF_CHAMNAET_ICE) -- Chamnaet Ice
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
 end
 
 return entity

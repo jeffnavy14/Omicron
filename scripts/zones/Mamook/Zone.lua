@@ -1,10 +1,11 @@
 -----------------------------------
 -- Zone: Mamook (65)
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
-    xi.helm.initZone(zone, xi.helm.type.LOGGING)
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)

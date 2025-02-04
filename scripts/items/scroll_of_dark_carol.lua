@@ -3,9 +3,10 @@
 -- Scroll of Dark Carol
 -- Teaches the song Dark Carol
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DARK_CAROL)
 end
 

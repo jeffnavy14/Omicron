@@ -3,9 +3,10 @@
 -- ID 5373
 -- Unlocks support job
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:hasStatusEffect(xi.effect.OBLIVISCENCE) then
         return 0
     end

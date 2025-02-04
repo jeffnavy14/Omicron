@@ -4,6 +4,7 @@
 -- Starts Windurst Missions
 -- !pos 0 -16 124 239
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
@@ -22,12 +23,6 @@ entity.onTrigger = function(player, npc)
             player:startEvent(93, flagMission, 0, param3, 0, xi.ki.STAR_CRESTED_SUMMONS_1, repeatMission) -- Mission List
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

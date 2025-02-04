@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.TORAIMARAI_CANAL]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.TOME_OF_MAGIC_OFFSET
@@ -17,12 +15,6 @@ entity.onTrigger = function(player, npc)
     if offset >= 0 and offset <= 3 then
         player:startEvent(65 + offset)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

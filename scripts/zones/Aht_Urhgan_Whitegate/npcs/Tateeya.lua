@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -42,9 +43,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEventString(650, automatonName, automatonName, automatonName, automatonName, 1)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ABYSSEA_TAHRONGI]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -14,12 +15,6 @@ end
 
 entity.onTrigger = function(player, npc)
     xi.abyssea.qmOnTrigger(player, npc, 0, 0, { xi.item.SHOCKING_WHISKER })
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

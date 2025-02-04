@@ -17,63 +17,38 @@ zones[xi.zone.DEN_OF_RANCOR] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023,  -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7061,  -- Tallying conquest results...
-        LANTERN_OFFSET                = 7220,  -- The grating will not budge.
-        FISHING_MESSAGE_OFFSET        = 7248,  -- You can't fish here.
-        CHEST_UNLOCKED                = 7356,  -- You unlock the chest!
-        SENSE_OMINOUS_PRESENCE        = 7366,  -- You sense an ominous presence...
-        PLAYER_OBTAINS_ITEM           = 7413,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 7414,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 7415,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 7416,  -- You already possess that temporary item.
-        NO_COMBINATION                = 7421,  -- You were unable to enter a combination.
-        REGIME_REGISTERED             = 9499,  -- New training regime registered!
-        HOMEPOINT_SET                 = 10549, -- Home point set!
-        UNITY_WANTED_BATTLE_INTERACT  = 10607, -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
+        CONQUEST_BASE                 = 7065,  -- Tallying conquest results...
+        LANTERN_OFFSET                = 7224,  -- The grating will not budge.
+        FISHING_MESSAGE_OFFSET        = 7252,  -- You can't fish here.
+        CHEST_UNLOCKED                = 7360,  -- You unlock the chest!
+        SENSE_OMINOUS_PRESENCE        = 7370,  -- You sense an ominous presence...
+        PLAYER_OBTAINS_ITEM           = 7417,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 7418,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 7419,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 7420,  -- You already possess that temporary item.
+        NO_COMBINATION                = 7425,  -- You were unable to enter a combination.
+        REGIME_REGISTERED             = 9503,  -- New training regime registered!
+        HOMEPOINT_SET                 = 10553, -- Home point set!
+        UNITY_WANTED_BATTLE_INTERACT  = 10611, -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
     },
     mob =
     {
-        CELESTE_EYED_TOZBERRY_PH =
-        {
-            [17432622] = 17432624,
-        },
-        FRIAR_RUSH_PH =
-        {
-            [17432638] = 17432640,
-        },
-        CARMINE_TAILED_JANBERRY_PH =
-        {
-            [17432661] = 17432659,
-            [17432662] = 17432659,
-        },
-        TAWNY_FINGERED_MUGBERRY_PH =
-        {
-            [17432784] = 17432798,
-            [17432785] = 17432798,
-            [17432787] = 17432798,
-            [17432788] = 17432798,
-            [17432793] = 17432798,
-            [17432794] = 17432798,
-        },
-        BISTRE_HEARTED_MALBERRY_PH =
-        {
-            [17432822] = 17432845,
-        },
-        OGAMA_PH =
-        {
-            [17432972] = 17432974,
-            [17432978] = 17432974,
-            [17432979] = 17432974,
-        },
-        MIMIC       = 17432583,
-        HAKUTAKU    = 17433005,
-        MOKUMOKUREN = 17433006,
+        AZRAEL                  = GetFirstID('Azrael'),
+        BISTRE_HEARTED_MALBERRY = GetFirstID('Bistre-hearted_Malberry'),
+        CARMINE_TAILED_JANBERRY = GetFirstID('Carmine-tailed_Janberry'),
+        TAWNY_FINGERED_MUGBERRY = GetFirstID('Tawny-fingered_Mugberry'),
+        CELESTE_EYED_TOZBERRY   = GetFirstID('Celeste-eyed_Tozberry'),
+        FRIAR_RUSH              = GetFirstID('Friar_Rush'),
+        HAKUTAKU                = GetFirstID('Hakutaku'),
+        MIMIC                   = GetFirstID('Mimic'),
+        MOKUMOKUREN             = GetFirstID('Mokumokuren'),
+        OGAMA                   = GetFirstID('Ogama'),
     },
     npc =
     {
-        LANTERN_OFFSET  = 17433047,
-        DROP_GATE       = 17433051,
-        TREASURE_COFFER = 17433077,
+        LANTERN_OFFSET  = GetFirstID('_4g3'),
+        DROP_GATE       = GetFirstID('_4g0'),
+        TREASURE_COFFER = GetFirstID('Treasure_Coffer'),
     },
 }
 

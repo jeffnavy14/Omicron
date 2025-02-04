@@ -6,13 +6,11 @@
 -----------------------------------
 local ID = zones[xi.zone.ABYSSEA_ALTEPA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    xi.abyssea.qmOnTrigger(player, npc, ID.mob.DRAGUA_3, { xi.ki.BLOODIED_DRAGON_EAR })
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.DRAGUA_OFFSET + 8, { xi.ki.BLOODIED_DRAGON_EAR })
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)

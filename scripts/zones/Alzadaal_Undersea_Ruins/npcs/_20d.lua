@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ALZADAAL_UNDERSEA_RUINS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
@@ -23,12 +24,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.STAGING_GATE_CLOSER)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

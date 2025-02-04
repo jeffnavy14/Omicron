@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.LEBROS_CAVERN]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -13,10 +14,10 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.EXP_BONUS, -100)
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
     mob:setAutoAttackEnabled(false)
-    mob:setMod(xi.mod.UDMGPHYS, -75)
-    mob:setMod(xi.mod.UDMGBREATH, -95)
-    mob:setMod(xi.mod.UDMGRANGE, -95)
-    mob:setMod(xi.mod.UDMGMAGIC, -90)
+    mob:setMod(xi.mod.UDMGPHYS, -9000)
+    mob:setMod(xi.mod.UDMGBREATH, -9000)
+    mob:setMod(xi.mod.UDMGRANGE, -9000)
+    mob:setMod(xi.mod.UDMGMAGIC, -9000)
     mob:setMod(xi.mod.CURSE_MEVA, 9999)
     mob:setMod(xi.mod.EVA, 0)
     mob:setMobMod(xi.mobMod.NO_DROPS, 1)
@@ -30,8 +31,11 @@ end
 entity.onMobDeath = function(mob, player, optParams)
     if mob:getLocalVar('dead') == 0 then
         mob:setLocalVar('dead', 1)
-        local mobID = mob:getID()
+        local mobID    = mob:getID()
         local instance = mob:getInstance()
+        if not instance then
+            return
+        end
 
         if mobID == ID.mob[xi.assault.mission.EXCAVATION_DUTY].MOBS_START.BRITTLE_ROCK1 then
             GetNPCByID(ID.npc._1rx, instance):setAnimation(xi.animation.OPEN_DOOR)

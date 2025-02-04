@@ -19,54 +19,42 @@ zones[xi.zone.PASHHOW_MARSHLANDS] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7024,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7025,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7045,  -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7083,  -- Tallying conquest results...
-        BEASTMEN_BANNER               = 7164,  -- There is a beastmen's banner.
-        FISHING_MESSAGE_OFFSET        = 7242,  -- You can't fish here.
-        DIG_THROW_AWAY                = 7255,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
-        FIND_NOTHING                  = 7257,  -- You dig and you dig, but find nothing.
-        AMK_DIGGING_OFFSET            = 7323,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
-        CONQUEST                      = 7931,  -- You've earned conquest points!
-        GARRISON_BASE                 = 8299,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-        GATE_IS_LOCKED                = 8381,  -- The gate is locked.
-        PLAYER_OBTAINS_ITEM           = 8469,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 8470,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 8471,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 8472,  -- You already possess that temporary item.
-        NO_COMBINATION                = 8477,  -- You were unable to enter a combination.
-        VOIDWALKER_DESPAWN            = 8508,  -- The monster fades before your eyes, a look of disappointment on its face.
-        UNITY_WANTED_BATTLE_INTERACT  = 8539,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
-        REGIME_REGISTERED             = 10718, -- New training regime registered!
-        VOIDWALKER_NO_MOB             = 11837, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
-        VOIDWALKER_MOB_TOO_FAR        = 11838, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
-        VOIDWALKER_MOB_HINT           = 11839, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
-        VOIDWALKER_SPAWN_MOB          = 11840, -- A monster materializes out of nowhere!
-        VOIDWALKER_UPGRADE_KI_1       = 11842, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
-        VOIDWALKER_UPGRADE_KI_2       = 11843, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
-        VOIDWALKER_BREAK_KI           = 11844, -- The <keyitem> shatters into tiny fragments.
-        VOIDWALKER_OBTAIN_KI          = 11845, -- Obtained key item: <keyitem>!
-        COMMON_SENSE_SURVIVAL         = 12829, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        CONQUEST_BASE                 = 7087,  -- Tallying conquest results...
+        BEASTMEN_BANNER               = 7168,  -- There is a beastmen's banner.
+        FISHING_MESSAGE_OFFSET        = 7246,  -- You can't fish here.
+        DIG_THROW_AWAY                = 7259,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
+        FIND_NOTHING                  = 7261,  -- You dig and you dig, but find nothing.
+        AMK_DIGGING_OFFSET            = 7327,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
+        CONQUEST                      = 7935,  -- You've earned conquest points!
+        GARRISON_BASE                 = 8303,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+        GATE_IS_LOCKED                = 8385,  -- The gate is locked.
+        PLAYER_OBTAINS_ITEM           = 8473,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 8474,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 8475,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 8476,  -- You already possess that temporary item.
+        NO_COMBINATION                = 8481,  -- You were unable to enter a combination.
+        VOIDWALKER_DESPAWN            = 8512,  -- The monster fades before your eyes, a look of disappointment on its face.
+        UNITY_WANTED_BATTLE_INTERACT  = 8543,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
+        TIME_ELAPSED                  = 8621,  -- Time Elapsed: / [hour/hours] (Vanadiel Time) / [minute/minutes] and [second/seconds] (Earth time)
+        REGIME_REGISTERED             = 10722, -- New training regime registered!
+        VOIDWALKER_NO_MOB             = 11841, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
+        VOIDWALKER_MOB_TOO_FAR        = 11842, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
+        VOIDWALKER_MOB_HINT           = 11843, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
+        VOIDWALKER_SPAWN_MOB          = 11844, -- A monster materializes out of nowhere!
+        VOIDWALKER_UPGRADE_KI_1       = 11846, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
+        VOIDWALKER_UPGRADE_KI_2       = 11847, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
+        VOIDWALKER_BREAK_KI           = 11848, -- The <keyitem> shatters into tiny fragments.
+        VOIDWALKER_OBTAIN_KI          = 11849, -- Obtained key item: <keyitem>!
+        COMMON_SENSE_SURVIVAL         = 12833, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
 
     mob =
     {
-        NI_ZHO_BLADEBENDER_PH =
-        {
-            [17223740] = 17223797, -- -429.953 24.5 -305.450
-            [17223789] = 17223797, -- 11.309 23.904 -337.923
-        },
-
-        JOLLY_GREEN_PH =
-        {
-            [17223888] = 17223889, -- 184.993 24.499 -41.790
-        },
-
-        BLOODPOOL_VORAX_PH =
-        {
-            [17224014] = 17224019, -- -351.884 24.014 513.531
-        },
-
-        BOWHO_WARMONGER = 17224104,
-        TOXIC_TAMLYN = GetFirstID('Toxic_Tamlyn'),
+        NI_ZHO_BLADEBENDER = GetFirstID('NiZho_Bladebender'),
+        JOLLY_GREEN        = GetFirstID('Jolly_Green'),
+        BLOODPOOL_VORAX    = GetFirstID('Bloodpool_Vorax'),
+        BOWHO_WARMONGER    = GetFirstID('BoWho_Warmonger'),
+        TOXIC_TAMLYN       = GetFirstID('Toxic_Tamlyn'),
 
         VOIDWALKER  =
         {

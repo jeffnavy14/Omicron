@@ -5,11 +5,8 @@ local ID = zones[xi.zone.JUGNER_FOREST]
 require('scripts/quests/i_can_hear_a_rainbow')
 require('scripts/missions/amk/helpers')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
-
-zoneObject.onChocoboDig = function(player, precheck)
-    return xi.chocoboDig.start(player, precheck)
-end
 
 zoneObject.onInitialize = function(zone)
     zone:registerTriggerArea(1, -484, 10, 292, 0, 0, 0) -- Sets Mark for "Under Oath" Quest cutscene.
@@ -17,9 +14,12 @@ zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.FRAELISSA)
     GetMobByID(ID.mob.FRAELISSA):setRespawnTime(math.random(900, 10800))
 
-    xi.conq.setRegionalConquestOverseers(zone:getRegionID())
+    UpdateNMSpawnPoint(ID.mob.METEORMAULER)
+    GetMobByID(ID.mob.METEORMAULER):setRespawnTime(math.random(900, 10800))
 
-    xi.helm.initZone(zone, xi.helm.type.LOGGING)
+    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
+
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
 
     local respawnTime = 900 + math.random(0, 6) * 1800 -- 0:15 to 3:15 spawn timer in 30 minute intervals
     for offset = 1, 10 do
@@ -52,8 +52,12 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
+zoneObject.afterZoneIn = function(player)
+    xi.chocoboGame.handleMessage(player)
+end
+
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)

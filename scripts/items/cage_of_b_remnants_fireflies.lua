@@ -3,9 +3,10 @@
 -- B. Rem. Fireflies
 -- Transports the user out of Bhaflau Remnants
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.BHAFLAU_REMNANTS then
         return 0
     end

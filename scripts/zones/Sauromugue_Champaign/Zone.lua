@@ -4,13 +4,13 @@
 local ID = zones[xi.zone.SAUROMUGUE_CHAMPAIGN]
 require('scripts/quests/i_can_hear_a_rainbow')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
-zoneObject.onChocoboDig = function(player, precheck)
-    return xi.chocoboDig.start(player, precheck)
-end
-
 zoneObject.onInitialize = function(zone)
+    -- A Chocobo Riding Game finish line
+    zone:registerTriggerArea(1, -489.11, 20, 349.14, 0, 0, 0)
+
     UpdateNMSpawnPoint(ID.mob.ROC)
     GetMobByID(ID.mob.ROC):setRespawnTime(math.random(900, 10800))
     GetNPCByID(ID.npc.QM2 + math.random(0, 5)):setLocalVar('Quest[2][70]Option', 1) -- Determine which QM is active today for THF AF2
@@ -35,14 +35,23 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
+zoneObject.afterZoneIn = function(player)
+    xi.chocoboGame.handleMessage(player)
+end
+
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
+    local triggerAreaID = triggerArea:GetTriggerAreaID()
+
+    if triggerAreaID == 1 and player:hasStatusEffect(xi.effect.MOUNTED) then
+        xi.chocoboGame.onTriggerAreaEnter(player)
+    end
 end
 
-zoneObject.onGameDay = function(zone)
+zoneObject.onGameDay = function()
     for i = ID.npc.QM2, ID.npc.QM2 + 5 do
         GetNPCByID(i):resetLocalVars()
     end
@@ -57,6 +66,7 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
+    xi.chocoboGame.onEventFinish(player, csid)
 end
 
 return zoneObject

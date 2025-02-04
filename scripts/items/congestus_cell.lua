@@ -3,9 +3,10 @@
 -- ID 5378
 -- Removes VIT Down effect
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.salvage.onCellItemCheck(target, xi.effect.DEBILITATION, 0x004)
 end
 

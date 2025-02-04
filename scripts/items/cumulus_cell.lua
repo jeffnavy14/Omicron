@@ -3,9 +3,10 @@
 -- ID 5367
 -- Unlocks body equipment
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.salvage.onCellItemCheck(target, xi.effect.ENCUMBRANCE_I, 0x0020)
 end
 

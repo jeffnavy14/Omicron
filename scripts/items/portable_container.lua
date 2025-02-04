@@ -3,11 +3,12 @@
 -- Item: Portable Container
 -- Item Effect: Grant Portable container key item
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
 local keyItemId = xi.ki.PORTABLE_CONTAINER
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:hasKeyItem(keyItemId) then
         return xi.msg.basic.ALREADY_HAVE_KEY_ITEM, 0, keyItemId
     end

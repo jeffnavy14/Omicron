@@ -3,9 +3,10 @@
 -- Scroll of Protectra
 -- Teaches the white magic Protectra
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.PROTECTRA)
 end
 

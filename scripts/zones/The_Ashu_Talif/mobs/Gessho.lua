@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.THE_ASHU_TALIF]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -33,7 +34,7 @@ entity.onMobSpawn = function(mob)
     end)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local dialog = mob:getLocalVar('dialog')
 
     if dialog == 0 then

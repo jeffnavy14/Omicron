@@ -1,12 +1,12 @@
 -----------------------------------
 -- Area: Western Adoulin
 --  NPC: Defliaa
--- Type: Quest NPC and Shop NPC
 -- Involved with Quest: 'All the Way to the Bank'
 -- !pos 43 2 -113 256
 -----------------------------------
 local ID = zones[xi.zone.WESTERN_ADOULIN]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -33,9 +33,6 @@ entity.onTrigger = function(player, npc)
         5686, 800,    -- Cheese Sandwich
     }
     xi.shop.general(player, stock)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

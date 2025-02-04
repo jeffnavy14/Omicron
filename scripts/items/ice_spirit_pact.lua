@@ -3,9 +3,10 @@
 -- Ice Spirit Pact
 -- Teaches the summoning magic ice Spirit
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ICE_SPIRIT)
 end
 

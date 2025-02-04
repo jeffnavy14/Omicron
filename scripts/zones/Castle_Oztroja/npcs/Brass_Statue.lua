@@ -9,6 +9,7 @@
 -----------------------------------
 local ID = zones[xi.zone.CASTLE_OZTROJA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local passwordTable =
@@ -23,9 +24,6 @@ local passwordTable =
     [7] = { [1] = { 20, 'Duzu'  }, [2] = { 15, 'Deggi' }, [3] = { 19, 'Ouzi' } },
     [8] = { [1] = { 17, 'Mjuu'  }, [2] = { 19, 'Ouzi'  }, [3] = { 23, 'Buxu' } },
 }
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local statue = npc:getID()

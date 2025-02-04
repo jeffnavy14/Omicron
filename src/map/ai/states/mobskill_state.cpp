@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -47,9 +47,16 @@ CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsi
 
     auto* PTarget = m_PEntity->IsValidTarget(m_targid, skill->getValidTargets(), m_errorMsg);
 
-    if (!PTarget || m_errorMsg)
+    if (!PTarget || this->HasErrorMsg())
     {
-        throw CStateInitException(std::move(m_errorMsg));
+        if (this->HasErrorMsg())
+        {
+            throw CStateInitException(m_errorMsg->copy());
+        }
+        else
+        {
+            throw CStateInitException(std::make_unique<CBasicPacket>());
+        }
     }
 
     m_PSkill = std::make_unique<CMobSkill>(*skill);
@@ -72,7 +79,10 @@ CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsi
         actionTarget.animation  = 0;
         actionTarget.param      = m_PSkill->getID();
         actionTarget.messageID  = 43;
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
+
+        // face toward target // TODO : add force param to turnTowardsTarget on certain TP moves like Petro Eyes
+        battleutils::turnTowardsTarget(m_PEntity, PTarget);
     }
     m_PEntity->PAI->EventHandler.triggerListener("WEAPONSKILL_STATE_ENTER", CLuaBaseEntity(m_PEntity), m_PSkill->getID());
     SpendCost();
@@ -92,6 +102,13 @@ void CMobSkillState::SpendCost()
             m_spentTP = m_PEntity->addTP(-1000);
             m_PEntity->StatusEffectContainer->DelStatusEffect(EFFECT_SEKKANOKI);
         }
+        else if (m_PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_MEIKYO_SHISUI) &&
+                 m_PEntity->GetLocalVar("[MeikyoShisui]MobSkillCount") > 0)
+        {
+            auto currentCount = m_PEntity->GetLocalVar("[MeikyoShisui]MobSkillCount");
+            m_PEntity->SetLocalVar("[MeikyoShisui]MobSkillCount", currentCount - 1);
+            m_spentTP = m_PEntity->addTP(-1000);
+        }
         else
         {
             m_spentTP            = m_PEntity->health.tp;
@@ -102,11 +119,21 @@ void CMobSkillState::SpendCost()
 
 bool CMobSkillState::Update(time_point tick)
 {
+    // Rotate towards target during ability // TODO : add force param to turnTowardsTarget on certain TP moves like Petro Eyes
+    if (m_castTime > 0s && tick < GetEntryTime() + m_castTime)
+    {
+        CBaseEntity* PTarget = GetTarget();
+        if (PTarget)
+        {
+            battleutils::turnTowardsTarget(m_PEntity, PTarget);
+        }
+    }
+
     if (m_PEntity && m_PEntity->isAlive() && (tick > GetEntryTime() + m_castTime && !IsCompleted()))
     {
         action_t action;
         m_PEntity->OnMobSkillFinished(*this, action);
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
         auto delay   = std::chrono::milliseconds(m_PSkill->getAnimationTime());
         m_finishTime = tick + delay;
         Complete();
@@ -153,7 +180,7 @@ void CMobSkillState::Cleanup(time_point tick)
         actionTarget.animation       = 0x1FC; // Not perfectly accurate, this animation ID can change from time to time for unknown reasons.
         actionTarget.reaction        = REACTION::HIT;
 
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
 
         // On retail testing, mobs lose 33% of their TP at 2900 or higher TP
         // But lose 25% at < 2900 TP.

@@ -3,10 +3,8 @@
 --  NPC: Andrival
 -- !pos 26 0 127 256
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local soaMission = player:getCurrentMission(xi.mission.log_id.SOA)
@@ -15,12 +13,6 @@ entity.onTrigger = function(player, npc)
         -- Reminds player to accompany Ingrid to Castle Adoulin
         player:startEvent(139)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

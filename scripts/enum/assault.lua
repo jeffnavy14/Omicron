@@ -1,6 +1,7 @@
 xi = xi or {}
 xi.assault = xi.assault or {}
 
+---@enum xi.assaultArea
 xi.assault.assaultArea =
 {
     LEUJAOAM_SANCTUM           = 0,
@@ -11,6 +12,7 @@ xi.assault.assaultArea =
     NYZUL_ISLE                 = 5,
 }
 
+---@enum xi.mission
 xi.assault.mission =
 {
     LEUJAOAM_CLEANSING                = 1,
@@ -62,11 +64,12 @@ xi.assault.mission =
     LOST_AND_FOUND                    = 47,
     DESERTER                          = 48,
     DESPERATELY_SEEKING_CEPHALOPODS   = 49,
-    BELLEROPHON_S_BLISS               = 50,
+    BELLEROPHONS_BLISS                = 50,
     NYZUL_ISLE_INVESTIGATION          = 51,
     NYZUL_ISLE_UNCHARTED_AREA_SURVEY  = 52,
 }
 
+---@enum xi.missionInfo
 xi.assault.missionInfo =
 {
     [xi.assault.mission.LEUJAOAM_CLEANSING]               = { suggestedLevel = 50, minimumPoints = 1000 },
@@ -118,7 +121,7 @@ xi.assault.missionInfo =
     [xi.assault.mission.LOST_AND_FOUND]                   = { suggestedLevel = 60, minimumPoints = 1000 },
     [xi.assault.mission.DESERTER]                         = { suggestedLevel = 70, minimumPoints = 1000 },
     [xi.assault.mission.DESPERATELY_SEEKING_CEPHALOPODS]  = { suggestedLevel = 70, minimumPoints = 1000 },
-    [xi.assault.mission.BELLEROPHON_S_BLISS]              = { suggestedLevel = 70, minimumPoints = 1500 },
+    [xi.assault.mission.BELLEROPHONS_BLISS]               = { suggestedLevel = 70, minimumPoints = 1500 },
     [xi.assault.mission.NYZUL_ISLE_INVESTIGATION]         = { suggestedLevel = 75, minimumPoints = nil  },
     [xi.assault.mission.NYZUL_ISLE_UNCHARTED_AREA_SURVEY] = { suggestedLevel = 99, minimumPoints = nil  },
 }

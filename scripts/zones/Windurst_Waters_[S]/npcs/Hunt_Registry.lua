@@ -2,10 +2,8 @@
 -- Area: Windurst Waters [S]
 --  NPC: Hunt Registry
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.hunts.onTrigger(player, npc)

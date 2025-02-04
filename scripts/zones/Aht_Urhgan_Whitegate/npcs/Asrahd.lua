@@ -4,10 +4,8 @@
 -- Type: Imperial Gate Guard
 -- !pos 0.011 -1 10.587 50
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.besieged.onTrigger(player, npc, 630)

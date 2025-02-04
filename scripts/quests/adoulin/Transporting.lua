@@ -9,21 +9,21 @@
 local ralaID = zones[xi.zone.RALA_WATERWAYS]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.ADOULIN, xi.quest.id.adoulin.TRANSPORTING)
+local quest = Quest:new(xi.questLog.ADOULIN, xi.quest.id.adoulin.TRANSPORTING)
 
 quest.reward =
 {
-    fameArea = xi.quest.fame_area.ADOULIN,
-    xp       = 1000,
+    fameArea = xi.fameArea.ADOULIN,
     bayld    = 300,
+    exp      = 1000,
 }
 
 quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
-                player:getFameLevel(xi.quest.fame_area.ADOULIN) >= 2
+            return status == xi.questStatus.QUEST_AVAILABLE and
+                player:getFameLevel(xi.fameArea.ADOULIN) >= 2
         end,
 
         [xi.zone.WESTERN_ADOULIN] =
@@ -42,7 +42,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.WESTERN_ADOULIN] =

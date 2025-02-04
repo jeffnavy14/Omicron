@@ -40,7 +40,7 @@ enum MOBMODIFIER : int
     MOBMOD_HP_HEAL_CHANCE         = 9,  // can cast cures below this HP %
     MOBMOD_SUBLINK                = 10, // sub link group
     MOBMOD_LINK_RADIUS            = 11, // link radius
-    MOBMOD_DRAW_IN                = 12, // 1 - player draw in, 2 - alliance draw in -- only add as a spawn mod!
+    MOBMOD_SEES_THROUGH_ILLUSION  = 12, // Mob can see through the Illusion effect that grants effects similar to Sneak & Invisible without this mod and allows aggro (see Viscious Liquid in mamook)
     MOBMOD_SEVERE_SPELL_CHANCE    = 13, // % chance to use a severe spell like death or impact
     MOBMOD_SKILL_LIST             = 14, // uses given mob skill list
     MOBMOD_MUG_GIL                = 15, // amount gil carried for mugging
@@ -54,7 +54,7 @@ enum MOBMODIFIER : int
     MOBMOD_IMMUNITY               = 23, // immune to set status effects. This only works from the db, not scripts
     MOBMOD_GRADUAL_RAGE           = 24, // (!) TODO: NOT YET IMPLEMENTED -- gradually rages
     MOBMOD_BUILD_RESIST           = 25, // (!) TODO: NOT YET IMPLEMENTED -- builds resistance to given effects
-    MOBMOD_SUPERLINK              = 26, // super link group. Only use this in mob_spawn_mods / scripts!
+    MOBMOD_SUPERLINK              = 26, // super link group. Only use this in scripts!
     MOBMOD_SPELL_LIST             = 27, // set spell list
     MOBMOD_EXP_BONUS              = 28, // bonus exp (bonus / 100) negative values reduce exp.
     MOBMOD_ASSIST                 = 29, // mobs will assist me
@@ -99,13 +99,18 @@ enum MOBMODIFIER : int
     MOBMOD_ALLI_HATE              = 68, // Range around target to add alliance member to enmity list.
     MOBMOD_NO_LINK                = 69, // If set, mob cannot link until unset.
     MOBMOD_NO_REST                = 70, // Mob cannot regain hp (e.g. re-burrowing antlions during ENM).
-    MOBMOD_LEADER                 = 71, // Used for mobs that follow a defined "leader", such as Ul'xzomit mobs.
+    MOBMOD_LEADER                 = 71, // Used for mob following. Positive number is how many followers a leader has. A negative number is the distance from this mob ID to the leader ID.
     MOBMOD_MAGIC_RANGE            = 72, // magic aggro range
     MOBMOD_TARGET_DISTANCE_OFFSET = 73, // Adjusts how close a mob will move to it's target. 12 = 1.2 yalm. Positive values to go closer, negative farther.
     MOBMOD_ONE_WAY_LINKING        = 74, // Will link with other mobs in its party (typically the same mob family) while roaming, but will not let others link with it once engaged
     MOBMOD_CAN_PARRY              = 75, // Check if a mob is allowed to have parry rank (Rank Value 1-5)
     MOBMOD_NO_WIDESCAN            = 76, // Disables widescan for a specific mob
     MOBMOD_TRUST_DISTANCE         = 77, // TRUSTS ONLY: Set movement type/distance. See trust.lua for details.
+    MOBMOD_STANDBACK_RANGE        = 78, // Applies a specific standback range for the mob
+    MOBMOD_CANNOT_GUARD           = 79, // Check if the mob does not guard(despite being a MNK or PUP mob)
+    MOBMOD_SKIP_ALLEGIANCE_CHECK  = 80, // Skip the allegiance check for valid target (allows for example a mob to cast a TARGET_ENEMY spell on itself)
+    MOBMOD_ABILITY_RESPONSE       = 81, // Mob can respond to player ability use with onPlayerAbilityUse()
+    MOBMOD_RUN_SPEED_MULT         = 82, // Multiplier for the speed of a mob while running (generally when the target is out of range) 100 = 1.00x
 };
 
 #endif

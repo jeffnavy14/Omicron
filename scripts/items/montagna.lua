@@ -6,9 +6,10 @@
 -- HP +8% (cap 140)
 -- Increases rate of combat skill gains by 60%
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

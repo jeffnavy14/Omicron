@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.WESTERN_ALTEPA_DESERT]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -18,9 +19,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

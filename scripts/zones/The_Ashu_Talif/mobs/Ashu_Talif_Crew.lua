@@ -2,9 +2,10 @@
 -- Area: The Ashu Talif (The Black Coffin)
 --  Mob: Ashu Talif Crew
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local allies = mob:getInstance():getAllies()
     for i, v in pairs(allies) do
         if v:isAlive() then
@@ -25,7 +26,9 @@ end
 
 entity.onMobDespawn = function(mob)
     local instance = mob:getInstance()
-    instance:setProgress(instance:getProgress() + 1)
+    if instance then
+        instance:setProgress(instance:getProgress() + 1)
+    end
 end
 
 return entity

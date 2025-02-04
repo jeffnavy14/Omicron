@@ -10,9 +10,10 @@
 -- "Resist Amnesia" +10
 -- https://www.bg-wiki.com/ffxi/Rol._Turkey
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

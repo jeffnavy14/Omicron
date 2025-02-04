@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.DANGRUF_WADI]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -14,7 +15,7 @@ zoneObject.onInitialize = function(zone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -62,6 +63,10 @@ end
 
 zoneObject.onGameHour = function(zone)
     local nm = GetMobByID(ID.mob.GEYSER_LIZARD)
+    if not nm then
+        return
+    end
+
     local pop = nm:getLocalVar('pop')
 
     if

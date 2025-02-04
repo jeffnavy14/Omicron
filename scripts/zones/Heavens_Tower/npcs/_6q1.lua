@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.HEAVENS_TOWER]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getNation() == 2 then
@@ -24,14 +22,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.STAIRWAY_ONLY_CITIZENS)
     end
-
-    return 1
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

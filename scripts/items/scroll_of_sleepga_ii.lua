@@ -3,9 +3,10 @@
 -- Scroll of Sleepga II
 -- Teaches the black magic Sleepga II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SLEEPGA_II)
 end
 

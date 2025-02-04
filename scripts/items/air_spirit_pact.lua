@@ -3,9 +3,10 @@
 -- Air Spirit Pact
 -- Teaches the summoning magic Air Spirit
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.AIR_SPIRIT)
 end
 

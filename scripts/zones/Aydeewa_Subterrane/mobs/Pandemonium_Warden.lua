@@ -4,12 +4,33 @@
 -----------------------------------
 local ID = zones[xi.zone.AYDEEWA_SUBTERRANE]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 -- Pet Arrays, we'll alternate between phases
 local petIDs = {}
-petIDs[0] = { ID.mob.PANDEMONIUM_WARDEN + 1, ID.mob.PANDEMONIUM_WARDEN + 2, ID.mob.PANDEMONIUM_WARDEN + 3, ID.mob.PANDEMONIUM_WARDEN + 4, ID.mob.PANDEMONIUM_WARDEN + 5, ID.mob.PANDEMONIUM_WARDEN + 6, ID.mob.PANDEMONIUM_WARDEN + 7, ID.mob.PANDEMONIUM_WARDEN + 8 }
-petIDs[1] = { ID.mob.PANDEMONIUM_WARDEN + 9, ID.mob.PANDEMONIUM_WARDEN + 10, ID.mob.PANDEMONIUM_WARDEN + 11, ID.mob.PANDEMONIUM_WARDEN + 12, ID.mob.PANDEMONIUM_WARDEN + 13, ID.mob.PANDEMONIUM_WARDEN + 14, ID.mob.PANDEMONIUM_WARDEN + 15, ID.mob.PANDEMONIUM_WARDEN + 16 }
+petIDs[0] =
+{
+    ID.mob.PANDEMONIUM_WARDEN + 2,
+    ID.mob.PANDEMONIUM_WARDEN + 3,
+    ID.mob.PANDEMONIUM_WARDEN + 4,
+    ID.mob.PANDEMONIUM_WARDEN + 5,
+    ID.mob.PANDEMONIUM_WARDEN + 6,
+    ID.mob.PANDEMONIUM_WARDEN + 7,
+    ID.mob.PANDEMONIUM_WARDEN + 8,
+    ID.mob.PANDEMONIUM_WARDEN + 9
+}
+petIDs[1] =
+{
+    ID.mob.PANDEMONIUM_WARDEN + 10,
+    ID.mob.PANDEMONIUM_WARDEN + 11,
+    ID.mob.PANDEMONIUM_WARDEN + 12,
+    ID.mob.PANDEMONIUM_WARDEN + 13,
+    ID.mob.PANDEMONIUM_WARDEN + 14,
+    ID.mob.PANDEMONIUM_WARDEN + 15,
+    ID.mob.PANDEMONIUM_WARDEN + 16,
+    ID.mob.PANDEMONIUM_WARDEN + 17
+}
 
 -- Phase Arrays      Dverg,  Char1, Dverg,  Char2, Dverg,  Char3, Dverg,  Char4,  Dverg,   Mamo,  Dverg,  Lamia,  Dverg,  Troll,  Dverg,   Cerb,  Dverg,  Hydra,  Dverg,   Khim,  Dverg
 --                       1       2      3       4      5       6      7       8       9      10      11      12      13      14      15      16      17      18      19      20
@@ -22,6 +43,10 @@ local skillID =    {  1000,    316,  1001,    316,  1002,    316,  1003,    316,
 -- Avatar Arrays         Shiva, Ramuh, Titan, Ifrit, Levia, Garud, Fenri, Carby
 local avatarAbilities = {  917,   918,   914,   913,   915,   916,   839,   919 }
 local avatarSkins =     {   22,    23,    19,    18,    20,    21,    17,    16 }
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 900)
+end
 
 entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.DEF, 450)
@@ -62,13 +87,16 @@ entity.onMobDisengage = function(mob)
     end
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     -- pop pets
     for i = 1, 8 do
         local pet = GetMobByID(petIDs[1][i])
-        pet:setModelId(1841)
-        pet:spawn()
-        pet:updateEnmity(target)
+
+        if pet then
+            pet:setModelId(1841)
+            pet:spawn()
+            pet:updateEnmity(target)
+        end
     end
 end
 
@@ -85,11 +113,12 @@ end
 
 entity.onMobFight = function(mob, target)
     -- Init Vars
-    local mobHPP = mob:getHPP()
+    local mobHPP    = mob:getHPP()
     local depopTime = mob:getLocalVar('PWDespawnTime')
-    local phase = mob:getLocalVar('phase')
-    local astral = mob:getLocalVar('astralFlow')
-    local pets = {}
+    local phase     = mob:getLocalVar('phase')
+    local astral    = mob:getLocalVar('astralFlow')
+    local pets      = {}
+
     for i = 0, 1 do
         pets[i] = {}
         for j = 1, 8 do
@@ -98,7 +127,10 @@ entity.onMobFight = function(mob, target)
     end
 
     -- Check for phase change
-    if phase < 21 and mobHPP <= triggerHPP[phase] then
+    if
+        phase < 21 and
+        mobHPP <= triggerHPP[phase]
+    then
         if phase == 20 then -- Prepare for death
             mob:hideHP(false)
             mob:setUnkillable(false)
@@ -123,10 +155,15 @@ entity.onMobFight = function(mob, target)
         mob:setLocalVar('phase', phase + 1)
 
     -- Or, check for Astral Flow
-    elseif phase == 21 and astral < 9 and mobHPP <= (100 - 25 * astral) then
+    elseif
+        phase == 21 and
+        astral < 9 and
+        mobHPP <= (100 - 25 * astral)
+    then
         for i = 1, 8 do
             local oldPet = pets[astral % 2][i]
             local newPet = pets[(astral - 1) % 2][i]
+
             if i == 1 then
                 newPet:updateEnmity(target)
                 local astralRand = math.random(1, 8)
@@ -155,7 +192,10 @@ entity.onMobFight = function(mob, target)
     end
 
     -- Check for time limit, too
-    if os.time() > depopTime and mob:actionQueueEmpty() then
+    if
+        os.time() > depopTime and
+        mob:actionQueueEmpty()
+    then
         for i = 0, 1 do
             for j = 1, 8 do
                 if pets[i][j]:isSpawned() then
@@ -164,7 +204,7 @@ entity.onMobFight = function(mob, target)
             end
         end
 
-        DespawnMob(ID.mob.PANDEMONIUM_WARDEN)
+        DespawnMob(ID.mob.PANDEMONIUM_WARDEN + 1)
     end
 end
 

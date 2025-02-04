@@ -4,10 +4,14 @@
 -----------------------------------
 local ID = zones[xi.zone.YUHTUNGA_JUNGLE]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+local roseGardenPH = ID.mob.ROSE_GARDEN - 1
 
 entity.onMobSpawn = function(mob)
     mob:setLocalVar('timeToGrow', os.time() + math.random(36000, 37800)) -- 10:00:00 to 10:30:00
+    mob:setMod(xi.mod.REGEN, 25)
 end
 
 entity.onMobDisengage = function(mob)
@@ -31,8 +35,8 @@ end
 entity.onMobDespawn = function(mob)
     if os.time() < mob:getLocalVar('timeToGrow') then
         DisallowRespawn(ID.mob.ROSE_GARDEN, true)
-        DisallowRespawn(ID.mob.ROSE_GARDEN_PH, false)
-        GetMobByID(ID.mob.ROSE_GARDEN_PH):setRespawnTime(GetMobRespawnTime(ID.mob.ROSE_GARDEN_PH))
+        DisallowRespawn(roseGardenPH, false)
+        GetMobByID(roseGardenPH):setRespawnTime(GetMobRespawnTime(roseGardenPH))
     end
 end
 

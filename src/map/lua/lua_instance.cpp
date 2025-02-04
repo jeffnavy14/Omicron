@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -60,57 +60,62 @@ uint32 CLuaInstance::getEntranceZoneID()
 
 sol::table CLuaInstance::getAllies()
 {
+    // clang-format off
     auto table = lua.create_table();
-    for (auto& member : m_PLuaInstance->m_allyList)
+    m_PLuaInstance->ForEachAlly([&](CMobEntity* PAlly)
     {
-        table.add(CLuaBaseEntity(member.second));
-    }
-
+        table.add(CLuaBaseEntity(PAlly));
+    });
     return table;
+    // clang-format on
 }
 
 sol::table CLuaInstance::getChars()
 {
+    // clang-format off
     auto table = lua.create_table();
-    for (auto& member : m_PLuaInstance->m_charList)
+    m_PLuaInstance->ForEachChar([&](CCharEntity* PChar)
     {
-        table.add(CLuaBaseEntity(member.second));
-    }
-
+        table.add(CLuaBaseEntity(PChar));
+    });
     return table;
+    // clang-format on
 }
 
 sol::table CLuaInstance::getMobs()
 {
+    // clang-format off
     auto table = lua.create_table();
-    for (auto& member : m_PLuaInstance->m_mobList)
+    m_PLuaInstance->ForEachMob([&](CMobEntity* PMob)
     {
-        table.add(CLuaBaseEntity(member.second));
-    }
-
+        table.add(CLuaBaseEntity(PMob));
+    });
     return table;
+    // clang-format on
 }
 
 sol::table CLuaInstance::getNpcs()
 {
+    // clang-format off
     auto table = lua.create_table();
-    for (auto& member : m_PLuaInstance->m_npcList)
+    m_PLuaInstance->ForEachNpc([&](CNpcEntity* PNpc)
     {
-        table.add(CLuaBaseEntity(member.second));
-    }
-
+        table.add(CLuaBaseEntity(PNpc));
+    });
     return table;
+    // clang-format on
 }
 
 sol::table CLuaInstance::getPets()
 {
+    // clang-format off
     auto table = lua.create_table();
-    for (auto& member : m_PLuaInstance->m_petList)
+    m_PLuaInstance->ForEachPet([&](CPetEntity* PPet)
     {
-        table.add(CLuaBaseEntity(member.second));
-    }
-
+        table.add(CLuaBaseEntity(PPet));
+    });
     return table;
+    // clang-format on
 }
 
 uint32 CLuaInstance::getTimeLimit()

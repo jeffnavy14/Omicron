@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.OLDTON_MOVALPOLOS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local scrawledWritingPositions =
@@ -23,15 +24,6 @@ entity.onTrade = function(player, npc, trade)
         local newPosition = npcUtil.pickNewPosition(npc:getID(), scrawledWritingPositions, true)
         npcUtil.queueMove(npc, newPosition)
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

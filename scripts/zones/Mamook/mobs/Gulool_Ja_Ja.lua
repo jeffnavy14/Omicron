@@ -3,16 +3,20 @@
 --  Mob: Gulool Ja Ja
 -----------------------------------
 local ID = zones[xi.zone.MAMOOK]
-mixins = { require('scripts/mixins/job_special') }
+mixins =
+{
+    require('scripts/mixins/job_special'),
+    require('scripts/mixins/draw_in'),
+}
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
-    mob:setMobMod(xi.mobMod.DRAW_IN, 2)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
         SpawnMob(i):updateEnmity(target)
     end
@@ -37,7 +41,7 @@ entity.onMobFight = function(mob, target)
 
     for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
         local pet = GetMobByID(i)
-        if pet:getCurrentAction() == xi.act.ROAMING then
+        if pet and pet:getCurrentAction() == xi.act.ROAMING then
             pet:updateEnmity(target)
         end
     end

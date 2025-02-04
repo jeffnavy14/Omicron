@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.OUTER_RAKAZNAR]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:hasKeyItem(xi.ki.SILVERY_PLATE) then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.THIS_BAFFLING_GADGET, 0) -- Verify Param for Lower floor
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

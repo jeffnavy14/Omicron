@@ -3,18 +3,21 @@
 -----------------------------------
 -- !addquest 2 64
 -- Gantineux : !pos -83 -9 3 238
--- qm1       : !pos -17 0 59 195 (I-10)
 -- Eperdur   : !pos 129 -6 96 231
+-- QM1       : !pos -460.85, -1.5, 425.14 (D-5)
+--           : !pos -24.10, -9.303, 258.993 (I-7)
+--           : !pos -19.624,-1.631,60.368 (I-10)
+--           : !pos 256.757, -20.489, 335.920 (M-6)
 -----------------------------------
 local eldiemeID = zones[xi.zone.THE_ELDIEME_NECROPOLIS]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.WINDURST, xi.quest.id.windurst.ACTING_IN_GOOD_FAITH)
+local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.ACTING_IN_GOOD_FAITH)
 
 quest.reward =
 {
     fame     = 30,
-    fameArea = xi.quest.fame_area.WINDURST,
+    fameArea = xi.fameArea.WINDURST,
     item     = xi.item.SCROLL_OF_TELEPORT_MEA,
     title    = xi.title.PILGRIM_TO_MEA,
 }
@@ -23,8 +26,8 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
-                player:getFameLevel(xi.quest.fame_area.WINDURST) >= 4 and
+            return status == xi.questStatus.QUEST_AVAILABLE and
+                player:getFameLevel(xi.fameArea.WINDURST) >= 4 and
                 player:getMainLvl() >= 10
         end,
 
@@ -46,7 +49,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.WINDURST_WATERS] =
@@ -88,6 +91,8 @@ quest.sections =
                 [50] = function(player, csid, option, npc)
                     player:messageSpecial(eldiemeID.text.SPIRIT_INCENSE_EMITS_PUTRID_ODOR, xi.ki.SPIRIT_INCENSE)
                     player:delKeyItem(xi.ki.SPIRIT_INCENSE)
+
+                    npc:setPos(unpack(eldiemeID.npc.QM1_POS[math.random(1, 4)])) -- move QM1 randomly on quest completion
                 end,
             },
         },
@@ -116,7 +121,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.WINDURST_WATERS] =

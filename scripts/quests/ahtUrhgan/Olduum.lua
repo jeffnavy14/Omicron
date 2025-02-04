@@ -5,7 +5,7 @@
 -- Leypoint !pos -200 -8.5 80 51
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.OLDUUM)
+local quest = Quest:new(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.OLDUUM)
 
 quest.reward =
 {
@@ -19,8 +19,8 @@ local keyItems =
     xi.ki.ELECTROLOCOMOTIVE,
 }
 
-quest.hasKeyItem = function(player)
-    for i, v in pairs(keyItems) do
+local hasQuestKeyItem = function(player)
+    for _, v in pairs(keyItems) do
         if player:hasKeyItem(v) then
             return true
         end
@@ -34,7 +34,7 @@ quest.sections =
     -- Section: Begin quest
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE
+            return status == xi.questStatus.QUEST_AVAILABLE
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -59,7 +59,7 @@ quest.sections =
     -- Section: Quest accepted
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -67,7 +67,7 @@ quest.sections =
             ['Dkhaaya'] =
             {
                 onTrigger = function(player, npc)
-                    if quest.hasKeyItem(player) then
+                    if hasQuestKeyItem(player) then
                         return quest:progressEvent(6)
                     else
                         return quest:event(5)
@@ -93,7 +93,7 @@ quest.sections =
                 onTrade = function(player, npc, trade)
                     if
                         not player:hasItem(xi.item.OLDUUM_RING) and
-                        not quest.hasKeyItem(player) and
+                        not hasQuestKeyItem(player) and
                         npcUtil.tradeHasExactly(trade, xi.item.PICKAXE)
                     then
                         if math.random(1, 10) > 5 then
@@ -126,7 +126,7 @@ quest.sections =
     -- Section: Quest completed
     {
         check = function(player, status, vars)
-            return status == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -134,7 +134,7 @@ quest.sections =
             ['Dkhaaya'] =
             {
                 onTrigger = function(player, npc)
-                    if quest.hasKeyItem(player) then
+                    if hasQuestKeyItem(player) then
                         return quest:progressEvent(8)
                     elseif
                         player:hasItem(xi.item.OLDUUM_RING) or
@@ -201,7 +201,7 @@ quest.sections =
                 onTrade = function(player, npc, trade)
                     if
                         not player:hasItem(xi.item.OLDUUM_RING) and
-                        not quest.hasKeyItem(player) and
+                        not hasQuestKeyItem(player) and
                         npcUtil.tradeHasExactly(trade, xi.item.PICKAXE)
                     then
                         if math.random(1, 10) > 5 then
@@ -234,7 +234,7 @@ quest.sections =
     -- Section: Quest accepted or completed
     {
         check = function(player, status, vars)
-            return status >= QUEST_AVAILABLE
+            return status >= xi.questStatus.QUEST_AVAILABLE
         end,
 
         [xi.zone.AYDEEWA_SUBTERRANE] =

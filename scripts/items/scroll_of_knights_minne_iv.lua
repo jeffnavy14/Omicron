@@ -3,9 +3,10 @@
 -- Scroll of Knights Minne IV
 -- Teaches the song Mages Ballad IV
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.KNIGHTS_MINNE_IV)
 end
 

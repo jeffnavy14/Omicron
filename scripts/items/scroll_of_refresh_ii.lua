@@ -3,9 +3,10 @@
 -- Scroll of Refresh II
 -- Teaches the white magic Refresh II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.REFRESH_II)
 end
 

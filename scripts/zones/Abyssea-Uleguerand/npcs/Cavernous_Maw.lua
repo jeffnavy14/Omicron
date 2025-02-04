@@ -4,16 +4,11 @@
 -- !pos -246.000, -40.600, -520.000 253
 -- Notes: Teleports Players to Xarcabard
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(200)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

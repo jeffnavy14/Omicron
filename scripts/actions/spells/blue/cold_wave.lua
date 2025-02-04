@@ -12,6 +12,7 @@
 -- Magic Bursts on: Induration, Distortion, and Darkness
 -- Combos: Auto Refresh
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -27,7 +28,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     local tick = 3
     local duration = 60
     local resistThreshold = 0.5
-    local resist = applyResistance(caster, target, spell, params)
+    local resist = applyResistanceEffect(caster, target, spell, params)
 
     -- Cannot apply if target has Burn
     if target:getStatusEffect(xi.effect.BURN) ~= nil then

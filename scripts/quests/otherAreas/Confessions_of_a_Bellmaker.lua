@@ -5,7 +5,7 @@
 -- Mevreauche !pos -193 11 148 231
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.CONFESSIONS_OF_A_BELLMAKER)
+local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.CONFESSIONS_OF_A_BELLMAKER)
 
 quest.reward =
 {
@@ -16,7 +16,7 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE
+            return status == xi.questStatus.QUEST_AVAILABLE
         end,
 
         [xi.zone.RIVERNE_SITE_A01] =
@@ -40,7 +40,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.RIVERNE_SITE_A01] =
@@ -51,7 +51,15 @@ quest.sections =
                     if quest:getVar(player, 'Prog') == 2 then
                         return quest:progressCutscene(102)
                     elseif quest:getVar(player, 'Prog') == 3 then
-                        return npcUtil.popFromQM(player, GetNPCByID(zones[player:getZoneID()].npc.STONE_MONUMENT), zones[player:getZoneID()].mob.ARCANE_PHANTASM, { hide = 0 })
+                        local monumentObj = GetNPCByID(zones[player:getZoneID()].npc.STONE_MONUMENT)
+
+                        if monumentObj then
+                            -- TODO: Determine if message is displayed on NM pop, return message if this is successful, else
+                            -- noAction()
+                            npcUtil.popFromQM(player, monumentObj, zones[player:getZoneID()].mob.ARCANE_PHANTASM, { hide = 0 })
+                        end
+
+                        return quest:noAction()
                     elseif quest:getVar(player, 'Prog') == 4 then
                         return quest:progressCutscene(103)
                     end

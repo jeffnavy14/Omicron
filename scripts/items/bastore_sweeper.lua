@@ -7,9 +7,10 @@
 -- Vitality +3
 -- Defense +15% Cap 50
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.RAW_FISH)
 end
 

@@ -6,13 +6,14 @@
 local ID = zones[xi.zone.CASTLE_OZTROJA]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:showText(mob, ID.text.YAGUDO_KING_ENGAGE)
 end
 

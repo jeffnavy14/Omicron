@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -46,6 +46,7 @@ CTargetFind::CTargetFind(CBattleEntity* PBattleEntity)
 , m_zone(0)
 , m_findType{}
 , m_findFlags(0)
+, m_targetFlags(0)
 , m_conal(false)
 , m_scalar(0.0f)
 , m_APoint(nullptr)
@@ -70,9 +71,9 @@ void CTargetFind::reset()
     m_PMasterTarget = nullptr;
 }
 
-void CTargetFind::findSingleTarget(CBattleEntity* PTarget, uint8 flags)
+void CTargetFind::findSingleTarget(CBattleEntity* PTarget, uint8 findFlags, uint16 targetFlags)
 {
-    m_findFlags     = flags;
+    m_findFlags     = findFlags;
     m_zone          = m_PBattleEntity->getZone();
     m_PTarget       = nullptr;
     m_PRadiusAround = &PTarget->loc.p;
@@ -80,12 +81,13 @@ void CTargetFind::findSingleTarget(CBattleEntity* PTarget, uint8 flags)
     addEntity(PTarget, false);
 }
 
-void CTargetFind::findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, float radius, uint8 flags)
+void CTargetFind::findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, float radius, uint8 findFlags, uint16 targetFlags)
 {
     TracyZoneScoped;
-    m_findFlags = flags;
-    m_radius    = radius;
-    m_zone      = m_PBattleEntity->getZone();
+    m_findFlags   = findFlags;
+    m_targetFlags = targetFlags;
+    m_radius      = radius;
+    m_zone        = m_PBattleEntity->getZone();
 
     if (radiusType == AOE_RADIUS::ATTACKER)
     {
@@ -186,10 +188,11 @@ void CTargetFind::findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, 
     }
 }
 
-void CTargetFind::findWithinCone(CBattleEntity* PTarget, float distance, float angle, uint8 flags)
+void CTargetFind::findWithinCone(CBattleEntity* PTarget, float distance, float angle, uint8 findFlags, uint16 targetFlags, uint8 aoeType)
 {
-    m_findFlags = flags;
-    m_conal     = true;
+    m_findFlags   = findFlags;
+    m_targetFlags = targetFlags;
+    m_conal       = true;
 
     m_APoint = &m_PBattleEntity->loc.p;
 
@@ -197,7 +200,7 @@ void CTargetFind::findWithinCone(CBattleEntity* PTarget, float distance, float a
 
     // Confirmation on the center of cones is still needed for mob skills; player skills seem to be facing angle
     // uint8 angleToTarget = worldAngle(m_PBattleEntity->loc.p, PTarget->loc.p);
-    uint8 angleToTarget = m_APoint->rotation;
+    uint8 angleToTarget = relativeAngle(m_APoint->rotation, 128 * (aoeType == 8)); // adds 180 degree rotation if rear type
 
     // "Left" and "Right" are like the entity's face - "left" means "turning to the left" NOT "left when looking overhead"
     // Remember that rotation increases when turning to the right, and decreases when turning to the left
@@ -224,7 +227,7 @@ void CTargetFind::findWithinCone(CBattleEntity* PTarget, float distance, float a
     // calculate scalar
     m_scalar = (m_BPoint.x * m_CPoint.z) - (m_BPoint.z * m_CPoint.x);
 
-    findWithinArea(PTarget, AOE_RADIUS::ATTACKER, distance);
+    findWithinArea(PTarget, AOE_RADIUS::ATTACKER, distance, findFlags, targetFlags);
 }
 
 void CTargetFind::addAllInMobList(CBattleEntity* PTarget, bool withPet)
@@ -232,9 +235,8 @@ void CTargetFind::addAllInMobList(CBattleEntity* PTarget, bool withPet)
     CCharEntity* PChar = dynamic_cast<CCharEntity*>(findMaster(m_PBattleEntity));
     if (PChar)
     {
-        for (SpawnIDList_t::const_iterator it = PChar->SpawnMOBList.begin(); it != PChar->SpawnMOBList.end(); ++it)
+        FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PBattleTarget, PChar->SpawnMOBList)
         {
-            CBattleEntity* PBattleTarget = dynamic_cast<CBattleEntity*>(it->second);
             if (PBattleTarget && isMobOwner(PBattleTarget))
             {
                 addEntity(PBattleTarget, withPet);
@@ -288,7 +290,10 @@ void CTargetFind::addAllInParty(CBattleEntity* PTarget, bool withPet)
     {
         static_cast<CCharEntity*>(PTarget)->ForPartyWithTrusts([this, withPet](CBattleEntity* PMember)
         {
-            addEntity(PMember, withPet);
+            if (!PMember->isInMogHouse())
+            {
+                addEntity(PMember, withPet);
+            }
         });
     }
     else
@@ -305,12 +310,10 @@ void CTargetFind::addAllInEnmityList()
 {
     if (m_PBattleEntity->objtype == TYPE_MOB)
     {
-        CMobEntity*   mob        = (CMobEntity*)m_PBattleEntity;
-        EnmityList_t* enmityList = mob->PEnmityContainer->GetEnmityList();
+        CMobEntity* PMob = static_cast<CMobEntity*>(m_PBattleEntity);
 
-        for (auto& it : *enmityList)
+        for (const auto& [_, PEnmityObject] : *PMob->PEnmityContainer->GetEnmityList())
         {
-            EnmityObject_t& PEnmityObject = it.second;
             if (PEnmityObject.PEnmityOwner)
             {
                 addEntity(PEnmityObject.PEnmityOwner, false);
@@ -329,11 +332,10 @@ void CTargetFind::addAllInRange(CBattleEntity* PTarget, float radius, ALLEGIANCE
         if (PTarget->objtype == TYPE_PC)
         {
             CCharEntity* PChar = static_cast<CCharEntity*>(PTarget);
-            for (const auto& list : { PChar->SpawnPCList, PChar->SpawnPETList })
+            for (auto& spawnList : { PChar->SpawnPCList, PChar->SpawnPETList })
             {
-                for (const auto& pair : list)
+                FOR_EACH_PAIR_CAST_SECOND(CBattleEntity*, PBattleEntity, spawnList)
                 {
-                    CBattleEntity* PBattleEntity = static_cast<CBattleEntity*>(pair.second);
                     if (PBattleEntity && isWithinArea(&(PBattleEntity->loc.p)) && !PBattleEntity->isDead() &&
                         PBattleEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
                     {
@@ -451,6 +453,14 @@ bool CTargetFind::validEntity(CBattleEntity* PTarget)
     }
 
     if (m_PTarget->allegiance != PTarget->allegiance)
+    {
+        return false;
+    }
+
+    // If offensive, don't target other entities with same allegiance
+    // Cures can be AoE with Accession and Majesty, ideally we would use SPELLGROUP or some other mechanism, but TargetFind wasn't designed with that in mind
+    if ((m_targetFlags & TARGET_ENEMY) && !(m_targetFlags & TARGET_PLAYER_PARTY) &&
+        m_PBattleEntity->allegiance == PTarget->allegiance)
     {
         return false;
     }

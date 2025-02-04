@@ -198,14 +198,11 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 6 then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 6 then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
@@ -240,7 +237,7 @@ mission.sections =
 
                 [32001] = function(player, csid, option, npc)
                     if
-                        player:getLocalVar('battlefieldWin') == 736 and
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.CENTURY_OF_HARDSHIP and
                         player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 8
                     then
                         player:setMissionStatus(mission.areaId, 9, xi.mission.status.COP.LOUVERANCE)
@@ -331,17 +328,14 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        player:getXPos() == 220 and
-                        player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 9
-                    then
-                        return 4
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    player:getXPos() == 220 and
+                    player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 9
+                then
+                    return 4
+                end
+            end,
 
             onEventFinish =
             {
@@ -536,14 +530,11 @@ mission.sections =
 
         [xi.zone.PORT_SAN_DORIA] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 2 then
-                        return 4
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 2 then
+                    return 4
+                end
+            end,
 
             onEventFinish =
             {
@@ -628,7 +619,7 @@ mission.sections =
             {
                 [32001] = function(player, csid, option, npc)
                     if
-                        player:getLocalVar('battlefieldWin') == 672 and
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.HEAD_WIND and
                         player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 7
                     then
                         player:setMissionStatus(mission.areaId, 8, xi.mission.status.COP.ULMIA)
@@ -643,7 +634,7 @@ mission.sections =
             {
                 [32001] = function(player, csid, option, npc)
                     if
-                        player:getLocalVar('battlefieldWin') == 640 and
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.FLAMES_FOR_THE_DEAD and
                         player:getMissionStatus(mission.areaId, xi.mission.status.COP.ULMIA) == 8
                     then
                         player:setMissionStatus(mission.areaId, 9, xi.mission.status.COP.ULMIA)

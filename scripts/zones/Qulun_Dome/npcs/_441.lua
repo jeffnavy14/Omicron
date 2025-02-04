@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.QULUN_DOME]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if npc:getAnimation() == 9 then
@@ -28,14 +26,6 @@ entity.onTrigger = function(player, npc)
             player:messageSpecial(ID.text.CANNOT_BE_OPENED_FROM_THIS_SIDE)
         end
     end
-
-    return 1
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

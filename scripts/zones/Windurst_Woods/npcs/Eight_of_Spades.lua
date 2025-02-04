@@ -2,6 +2,7 @@
 -- Area: Windurst Woods
 --  NPC: Eight of Spades
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local pathNodes =
@@ -23,19 +24,6 @@ entity.onSpawn = function(npc)
     npc:initNpcAi()
     npc:setPos(xi.path.first(pathNodes))
     npc:pathThrough(pathNodes, xi.path.flag.PATROL)
-end
-
-entity.onTrade = function(player, npc, trade)
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(268)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

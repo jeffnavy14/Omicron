@@ -5,9 +5,10 @@
 -- Its notes symbolize the gently glowing beams of light that filter through the leaves of a deciduous tree in the late afternoon.
 -- Adventurers note that reading it increases one's wind instrument skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.WIND_INSTRUMENT)
 end
 

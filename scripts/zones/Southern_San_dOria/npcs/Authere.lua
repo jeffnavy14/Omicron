@@ -4,16 +4,14 @@
 -- Involved in Quest: Lure of the Wildcat (San d'Oria)
 -- !pos 33 1 -31 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local wildcatSandy = player:getCharVar('WildcatSandy')
 
     if
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == xi.questStatus.QUEST_ACCEPTED and
         not utils.mask.getBit(wildcatSandy, 1)
     then
         player:startEvent(809)
@@ -22,9 +20,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(605)  -- when i grow up im gonna fight like trion
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

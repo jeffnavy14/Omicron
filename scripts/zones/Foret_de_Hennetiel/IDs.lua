@@ -17,25 +17,27 @@ zones[xi.zone.FORET_DE_HENNETIEL] =
         BAYLD_OBTAINED                = 7007, -- You have obtained <number> bayld!
         YOU_HAVE_LEARNED              = 7015, -- You have learned <keyitem>!
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
-        STARTED_TO_LEARN_BOAT         = 7522, -- You have started to learn a bit about how to operate your boat.
-        FIGURED_OUT_BOAT              = 7523, -- You have figured out how to properly use the boat! Report your progress to Choubollet.
-        WAYPOINT_ATTUNED              = 7681, -- Your <keyitem> has been attuned to a geomagnetic fount[/ at the frontier station/ at Frontier Bivouac #1/ at Frontier Bivouac #2/ at Frontier Bivouac #3/ at Frontier Bivouac #4]!
-        EXPENDED_KINETIC_UNITS        = 7692, -- You have expended <number> kinetic unit[/s] and will be transported to another locale.
-        INSUFFICIENT_UNITS            = 7693, -- Your stock of kinetic units is insufficient.
-        REACHED_KINETIC_UNIT_LIMIT    = 7694, -- You have reached your limit of kinetic units and cannot charge your artifact any further.
-        CANNOT_RECEIVE_KINETIC        = 7695, -- There is no response. You apparently cannot receive kinetic units from this item.
-        ARTIFACT_HAS_BEEN_CHARGED     = 7696, -- Your artifact has been charged with <number> kinetic unit[/s]. Your current stock of kinetic units totals <number>.
-        ARTIFACT_TERMINAL_VOLUME      = 7697, -- Your artifact has been charged to its terminal volume of kinetic units.
-        SURPLUS_LOST_TO_AETHER        = 7698, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
-        LEARNS_SPELL                  = 7935, -- <name> learns <spell>!
-        UNCANNY_SENSATION             = 7937, -- You are assaulted by an uncanny sensation.
-        HOMEPOINT_SET                 = 8009, -- Home point set!
+        STARTED_TO_LEARN_BOAT         = 7526, -- You have started to learn a bit about how to operate your boat.
+        FIGURED_OUT_BOAT              = 7527, -- You have figured out how to properly use the boat! Report your progress to Choubollet.
+        WAYPOINT_ATTUNED              = 7685, -- Your <keyitem> has been attuned to a geomagnetic fount[/ at the frontier station/ at Frontier Bivouac #1/ at Frontier Bivouac #2/ at Frontier Bivouac #3/ at Frontier Bivouac #4]!
+        EXPENDED_KINETIC_UNITS        = 7696, -- You have expended <number> kinetic unit[/s] and will be transported to another locale.
+        INSUFFICIENT_UNITS            = 7697, -- Your stock of kinetic units is insufficient.
+        REACHED_KINETIC_UNIT_LIMIT    = 7698, -- You have reached your limit of kinetic units and cannot charge your artifact any further.
+        CANNOT_RECEIVE_KINETIC        = 7699, -- There is no response. You apparently cannot receive kinetic units from this item.
+        ARTIFACT_HAS_BEEN_CHARGED     = 7700, -- Your artifact has been charged with <number> kinetic unit[/s]. Your current stock of kinetic units totals <number>.
+        ARTIFACT_TERMINAL_VOLUME      = 7701, -- Your artifact has been charged to its terminal volume of kinetic units.
+        SURPLUS_LOST_TO_AETHER        = 7702, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
+        LEARNS_SPELL                  = 7939, -- <name> learns <spell>!
+        UNCANNY_SENSATION             = 7941, -- You are assaulted by an uncanny sensation.
+        HOMEPOINT_SET                 = 8013, -- Home point set!
     },
     mob =
     {
+        REIVE_MOB_OFFSET = GetFirstID('Broadleaf_Palm'),
     },
     npc =
     {
+        REIVE_COLLISION_OFFSET = GetFirstID('_7a0'),
     },
 }
 

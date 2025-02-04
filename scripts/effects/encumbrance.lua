@@ -1,6 +1,7 @@
 -----------------------------------
--- xi.effect.ENCUMBERANCE
+-- xi.effect.ENCUMBRANCE
 -----------------------------------
+---@type TEffect
 local effectObject = {}
 
 effectObject.onEffectGain = function(target, effect)

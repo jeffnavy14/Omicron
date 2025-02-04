@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PORT_BASTOK]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if GetRegionOwner(xi.region.MOVALPOLOS) ~= xi.nation.BASTOK then
@@ -24,14 +22,8 @@ entity.onTrigger = function(player, npc)
         }
 
         player:showText(npc, ID.text.BAGNOBROK_OPEN_DIALOG)
-        xi.shop.general(player, stock, xi.quest.fame_area.BASTOK)
+        xi.shop.general(player, stock, xi.fameArea.BASTOK)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

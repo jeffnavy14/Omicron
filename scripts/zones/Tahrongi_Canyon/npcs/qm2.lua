@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.TAHRONGI_CANYON]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -42,12 +43,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.SPROUT_LOOKING_BETTER)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

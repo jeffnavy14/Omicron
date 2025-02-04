@@ -6,9 +6,10 @@
 -- Increases rate of synthesis success +3%
 -- Increases synthesis skill gain rate +3%
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -17,12 +18,12 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.SYNTH_SUCCESS, 3)
+    target:addMod(xi.mod.SYNTH_SUCCESS_RATE, 3)
     target:addMod(xi.mod.SYNTH_SKILL_GAIN, 3)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.SYNTH_SUCCESS, 3)
+    target:delMod(xi.mod.SYNTH_SUCCESS_RATE, 3)
     target:delMod(xi.mod.SYNTH_SKILL_GAIN, 3)
 end
 

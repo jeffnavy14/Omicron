@@ -3,6 +3,7 @@
 -- Restores target's HP.
 -- Shamelessly stolen from http://members.shaw.ca/pizza_steve/cure/Cure_Calculator.html
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -102,7 +103,10 @@ spellObject.onSpellCast = function(caster, target, spell)
         target:addHP(final)
 
         target:wakeUp()
-        caster:updateEnmityFromCure(target, 65535)
+
+        -- pass in fixed enmity values of 300 CE and 600 VE
+        caster:updateEnmityFromCure(target, final, 300, 600)
+
     else
         if target:isUndead() then -- e.g. PCs healing skeles for damage (?)
             spell:setMsg(xi.msg.basic.MAGIC_DMG)

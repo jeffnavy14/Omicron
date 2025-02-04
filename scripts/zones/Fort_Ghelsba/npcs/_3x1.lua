@@ -3,10 +3,8 @@
 --  NPC: Elevator Lever (lower)
 -- !pos  -0.652 -28.996 100.445 141
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- local vars to reduce repeat calls..
@@ -18,27 +16,25 @@ entity.onTrigger = function(player, npc)
     npc:openDoor(1)
 
     -- Animate lever's Gear - do not use openDoor() / closeDoor() here!
-    if gear:getAnimation() == xi.animation.OPEN_DOOR then
-        gear:setAnimation(xi.animation.CLOSE_DOOR)
-    else
-        gear:setAnimation(xi.animation.OPEN_DOOR)
+    if gear then
+        if gear:getAnimation() == xi.animation.OPEN_DOOR then
+            gear:setAnimation(xi.animation.CLOSE_DOOR)
+        else
+            gear:setAnimation(xi.animation.OPEN_DOOR)
+        end
     end
 
     -- Animate bigWinch - do not use openDoor() / closeDoor() here!
-    if bigWinch:getAnimation() == xi.animation.OPEN_DOOR then
-        bigWinch:setAnimation(xi.animation.CLOSE_DOOR)
-    else
-        bigWinch:setAnimation(xi.animation.OPEN_DOOR)
+    if bigWinch then
+        if bigWinch:getAnimation() == xi.animation.OPEN_DOOR then
+            bigWinch:setAnimation(xi.animation.CLOSE_DOOR)
+        else
+            bigWinch:setAnimation(xi.animation.OPEN_DOOR)
+        end
     end
 
     -- Move platform
     RunElevator(xi.elevator.FORT_GHELSBA_LIFT)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

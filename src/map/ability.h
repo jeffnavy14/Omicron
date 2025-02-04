@@ -27,6 +27,7 @@
 #include "packets/action.h"
 
 #include "entities/battleentity.h"
+#include "status_effect.h"
 
 enum ADDTYPE
 {
@@ -296,7 +297,7 @@ enum ABILITY
     ABILITY_BLOOD_RAGE         = 267,
     ABILITY_IMPETUS            = 269,
     ABILITY_DIVINE_CARESS      = 270,
-    ABILITY_SANCROSANCTITY     = 271,
+    ABILITY_SACROSANCTITY      = 271,
     ABILITY_ENMITY_DOUSE       = 272,
     ABILITY_MANAWELL           = 273,
     ABILITY_SABOTEUR           = 274,
@@ -719,6 +720,7 @@ public:
     uint16     getVE() const;
     uint16     getMeritModID() const;
     ACTIONTYPE getActionType();
+    EFFECT     getPostActionEffectCleanup();
 
     void setID(uint16 id);
     void setMobSkillID(uint16 id);
@@ -738,6 +740,7 @@ public:
     void setVE(uint16 VE);
     void setMeritModID(uint16 value);
     void setActionType(ACTIONTYPE type);
+    void setPostActionEffectCleanup(EFFECT effectToCleanup);
 
     const std::string& getName();
     void               setName(const std::string& name);
@@ -762,6 +765,7 @@ private:
     std::string m_name;
     uint16      m_mobskillId;
     ACTIONTYPE  m_actionType{};
+    EFFECT      m_cleanupEffect{};
 };
 
 /************************************************************************
@@ -773,6 +777,7 @@ private:
 namespace ability
 {
     void LoadAbilitiesList();
+    void CleanupAbilitiesList();
 
     CAbility* GetAbility(uint16 AbilityID);
 

@@ -3,9 +3,10 @@
 -- Scroll of Gain-DEX
 -- Teaches the white magic Gain-DEX
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.GAIN_DEX)
 end
 

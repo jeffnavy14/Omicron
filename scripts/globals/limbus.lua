@@ -23,10 +23,12 @@ end
 function xi.limbus.showRecoverCrate(crateID)
     local crate = GetMobByID(crateID)
 
-    crate:setAnimationSub(8)
-    crate:setStatus(xi.status.NORMAL)
-    crate:setUntargetable(false)
-    crate:resetLocalVars()
+    if crate then
+        crate:setAnimationSub(8)
+        crate:setStatus(xi.status.NORMAL)
+        crate:setUntargetable(false)
+        crate:resetLocalVars()
+    end
 end
 
 function xi.limbus.hideCrate(crate)
@@ -37,7 +39,8 @@ end
 
 function xi.limbus.spawnFrom(mob, crateID)
     local crate = GetEntityByID(crateID)
-    if crate:getLocalVar('opened') == 0 then
+
+    if crate and crate:getLocalVar('opened') == 0 then
         crate:setPos(mob:getXPos(), mob:getYPos(), mob:getZPos(), mob:getRotPos())
         crate:setStatus(xi.status.NORMAL)
         crate:setUntargetable(false)
@@ -47,12 +50,17 @@ end
 
 function xi.limbus.spawnRecoverFrom(mob, crateID)
     local crate = GetMobByID(crateID)
-    crate:setPos(mob:getXPos(), mob:getYPos(), mob:getZPos(), mob:getRotPos())
-    xi.limbus.showRecoverCrate(crateID)
+
+    if crate then
+        crate:setPos(mob:getXPos(), mob:getYPos(), mob:getZPos(), mob:getRotPos())
+        xi.limbus.showRecoverCrate(crateID)
+    end
 end
 
 Limbus         = setmetatable({ }, { __index = Battlefield })
 Limbus.__index = Limbus
+
+---@diagnostic disable-next-line: duplicate-set-field
 Limbus.__eq    = function(m1, m2)
     return m1.name == m2.name
 end
@@ -65,6 +73,7 @@ Limbus.serverVar = ''
 --  - name: The name of the Limbus area.
 --  - exitLocation: Where to boot the player out. This is specifically used for Apollyon areas.
 --  - timeExtension: How much time to grant when openning a time Armoury Crate.
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:new(data)
     data.createsWornItem = false
     data.showTimer       = false
@@ -80,15 +89,19 @@ function Limbus:new(data)
     return obj
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:register()
     Battlefield.register(self)
 
     -- Add recover crates that are technically "mobs"
-    table.insert(self.groups, { mobIds = self.ID.npc.RECOVER_CRATES })
+    if self.ID and self.ID.npc then
+        table.insert(self.groups, { mobIds = self.ID.npc.RECOVER_CRATES })
+    end
 
     return self
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onEventFinishEnter(player, csid, option, npc)
     Battlefield.onEventFinishEnter(self, player, csid, option)
 
@@ -107,8 +120,9 @@ function Limbus:onEventFinishEnter(player, csid, option, npc)
     end
 end
 
-function Limbus:onBattlefieldInitialise(battlefield)
-    Battlefield.onBattlefieldInitialise(self, battlefield)
+---@diagnostic disable-next-line: duplicate-set-field
+function Limbus:onBattlefieldInitialize(battlefield)
+    Battlefield.onBattlefieldInitialize(self, battlefield)
     SetServerVariable(self.serverVar, battlefield:getTimeLimit() / 60)
     self:closeDoors()
 
@@ -119,8 +133,10 @@ function Limbus:onBattlefieldInitialise(battlefield)
         for i, crateID in ipairs(ID.npc.ITEM_CRATES) do
             local crate = GetEntityByID(crateID)
 
-            xi.limbus.hideCrate(crate)
-            crate:addListener('ON_TRIGGER', 'TRIGGER_ITEM_CRATE', utils.bind(self.handleOpenItemCrate, self))
+            if crate then
+                xi.limbus.hideCrate(crate)
+                crate:addListener('ON_TRIGGER', 'TRIGGER_ITEM_CRATE', utils.bind(self.handleOpenItemCrate, self))
+            end
         end
     end
 
@@ -129,8 +145,10 @@ function Limbus:onBattlefieldInitialise(battlefield)
         for i, crateID in ipairs(ID.npc.TIME_CRATES) do
             local crate = GetEntityByID(crateID)
 
-            xi.limbus.hideCrate(crate)
-            crate:addListener('ON_TRIGGER', 'TRIGGER_TIME_CRATE', utils.bind(self.handleOpenTimeCrate, self))
+            if crate then
+                xi.limbus.hideCrate(crate)
+                crate:addListener('ON_TRIGGER', 'TRIGGER_TIME_CRATE', utils.bind(self.handleOpenTimeCrate, self))
+            end
         end
     end
 
@@ -140,18 +158,22 @@ function Limbus:onBattlefieldInitialise(battlefield)
         for i, crateID in ipairs(ID.npc.RECOVER_CRATES) do
             local crate = GetEntityByID(crateID)
 
-            xi.limbus.hideCrate(crate)
-            crate:setBattleID(1) -- Different battle ID prevents the crate from being hit by AOEs
-            crate:addListener('ON_TRIGGER', 'TRIGGER_RECOVER_CRATE', utils.bind(self.handleOpenRecoverCrate, self))
+            if crate then
+                xi.limbus.hideCrate(crate)
+                crate:setBattleID(1) -- Different battle ID prevents the crate from being hit by AOEs
+                crate:addListener('ON_TRIGGER', 'TRIGGER_RECOVER_CRATE', utils.bind(self.handleOpenRecoverCrate, self))
+            end
         end
     end
 
     -- Setup Winning Loot Crate
-    if ID.npc.LOOT_CRATE then
-        local crate = GetEntityByID(ID.npc.LOOT_CRATE)
+    if self.lootCrateId then
+        local crate = GetEntityByID(self.lootCrateId)
 
-        xi.limbus.hideCrate(crate)
-        crate:addListener('ON_TRIGGER', 'TRIGGER_LOOT_CRATE', utils.bind(self.handleOpenLootCrate, self))
+        if crate then
+            xi.limbus.hideCrate(crate)
+            crate:addListener('ON_TRIGGER', 'TRIGGER_LOOT_CRATE', utils.bind(self.handleOpenLootCrate, self))
+        end
     end
 
     -- Setup Linked Crates (can only open one)
@@ -159,11 +181,14 @@ function Limbus:onBattlefieldInitialise(battlefield)
         for crateID, _ in pairs(ID.LINKED_CRATES) do
             local mainCrate = GetEntityByID(crateID)
 
-            mainCrate:addListener('ON_TRIGGER', 'TRIGGER_LINKED_CRATE', utils.bind(self.handleLinkedCrate, self))
+            if mainCrate then
+                mainCrate:addListener('ON_TRIGGER', 'TRIGGER_LINKED_CRATE', utils.bind(self.handleLinkedCrate, self))
+            end
         end
     end
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldTick(battlefield, tick)
     Battlefield.onBattlefieldTick(self, battlefield, tick)
 
@@ -172,22 +197,27 @@ function Limbus:onBattlefieldTick(battlefield, tick)
     end
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldRegister(player, battlefield)
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldEnter(player, battlefield)
     Battlefield.onBattlefieldEnter(self, player, battlefield)
     player:setCharVar('Cosmo_Cleanse_TIME', os.time())
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldDestroy(battlefield)
     SetServerVariable(self.serverVar, 0)
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldWin(player, battlefield)
     player:startEvent(32001, { [0] = self.exitLocation, [4] = self.zoneId, [5] = battlefield:getArea() - 1 })
 end
 
+---@diagnostic disable-next-line: duplicate-set-field
 function Limbus:onBattlefieldLeave(player, battlefield, leavecode)
     Battlefield.onBattlefieldLeave(self, player, battlefield, leavecode)
 
@@ -232,7 +262,7 @@ function Limbus:handleOpenLootCrate(player, crate)
     npcUtil.openCrate(crate, function()
         local battlefield = player:getBattlefield()
 
-        self:handleLootRolls(battlefield, self.loot[self.ID.npc.LOOT_CRATE], crate)
+        self:handleLootRolls(battlefield, self.loot[self.lootCrateId], crate)
         battlefield:setLocalVar('cutsceneTimer', self.delayToExit)
         battlefield:setStatus(xi.battlefield.status.WON)
     end)
@@ -242,15 +272,17 @@ function Limbus:handleLinkedCrate(player, npc)
     for _, crateID in ipairs(self.ID.LINKED_CRATES[npc:getID()]) do
         local crate = GetEntityByID(crateID)
 
-        crate:setLocalVar('opened', 1)
-        npcUtil.disappearCrate(crate)
+        if crate then
+            crate:setLocalVar('opened', 1)
+            npcUtil.disappearCrate(crate)
+        end
     end
 end
 
 function Limbus:openDoor(battlefield, floor)
     local door = GetNPCByID(self.ID.npc.PORTAL[floor])
 
-    if door:getAnimation() == xi.animation.OPEN_DOOR then
+    if not door or door:getAnimation() == xi.animation.OPEN_DOOR then
         return
     end
 

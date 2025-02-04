@@ -51,7 +51,9 @@ public:
     bool   hasMissMsg();
     void   setMsg(uint16 message);
     uint16 getMsg();
+    auto   getTargets() -> sol::table;
     uint16 getTotalTargets();
+    uint32 getPrimaryTargetID();
 
     bool operator==(const CLuaMobSkill& other) const
     {

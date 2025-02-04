@@ -4,10 +4,8 @@
 -----------------------------------
 local ID = zones[xi.zone.RIVERNE_SITE_B01]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.DISPLACEMENT_OFFSET
@@ -15,14 +13,9 @@ entity.onTrigger = function(player, npc)
         player:startOptionalCutscene(offset + 2)
     elseif offset == 34 then
         player:startOptionalCutscene(22)
-    elseif offset == 35 then
-        player:startOptionalCutscene(32003)
     elseif offset > 35 and offset <= 41 then
         player:startOptionalCutscene(offset)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -32,8 +25,6 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:setPos(-538.526, -29.5, 359.219, 255, 25) -- back to Misareaux Coast (Retail confirmed)
     elseif csid == 17 and option == 0 then
         -- TODO: Go! Go! Gobmuffin quest. Player just ported to J-6 island
-    elseif csid == 32003 then
-        xi.bcnm.onEventFinish(player, csid, option, npc)
     end
 end
 

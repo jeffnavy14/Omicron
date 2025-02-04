@@ -3,9 +3,10 @@
 -- plate_of_indi-dex
 -- Teaches INDI-DEX
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.INDI_DEX)
 end
 

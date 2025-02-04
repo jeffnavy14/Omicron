@@ -4,19 +4,17 @@
 -- Involved in quest: Wayward Automaton
 -- !pos 29.89 -6 55.83 53
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local theWaywardAutomaton = player:getQuestStatus(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.THE_WAYWARD_AUTOMATON)
+    local theWaywardAutomaton = player:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.THE_WAYWARD_AUTOMATON)
     local theWaywardAutomatonProgress = player:getCharVar('TheWaywardAutomatonProgress')
     local operationTeatimeProgress = player:getCharVar('OperationTeatimeProgress')
 
     -- Quest: The WayWard Automaton
     if
-        theWaywardAutomaton == QUEST_ACCEPTED and
+        theWaywardAutomaton == xi.questStatus.QUEST_ACCEPTED and
         theWaywardAutomatonProgress == 1
     then
         player:startEvent(289) -- he tells u to go Caedarva Mire
@@ -32,9 +30,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(288)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

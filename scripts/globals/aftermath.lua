@@ -46,7 +46,7 @@ xi.aftermath.effects =
     -----------------------------------
     -- Tier 2 Relic
     -----------------------------------
-    [15] = { mods = { xi.mod.SUBTLE_BLOW, 10, xi.mod.KICK_ATTACK, 15 }, duration = getTier2RelicDuration }, -- Spharai
+    [15] = { mods = { xi.mod.SUBTLE_BLOW, 10, xi.mod.KICK_ATTACK_RATE, 15 }, duration = getTier2RelicDuration }, -- Spharai
     [16] = { mods = { xi.mod.CRITHITRATE, 5, xi.mod.CRIT_DMG_INCREASE, 5 }, duration = getTier2RelicDuration }, -- Mandau
     [17] = { mods = { xi.mod.REGEN, 30, xi.mod.REFRESH, 3 }, duration = getTier2RelicDuration }, -- Excalibur
     [18] = { mods = { xi.mod.CRITHITRATE, 10, xi.mod.ACC, 15 }, duration = getTier2RelicDuration }, -- Ragnarok
@@ -58,7 +58,7 @@ xi.aftermath.effects =
     [24] = { mods = { xi.mod.STORETP, 10, xi.mod.ZANSHIN, 10 }, duration = getTier2RelicDuration }, -- Amanomurakumo
     [25] = { mods = { xi.mod.ACC, 20, xi.mod.MACC, 20, xi.mod.REFRESH, 5 }, duration = getTier2RelicDuration }, -- Mjollnir
     [26] = { mods = { xi.mod.REFRESH, 15, xi.mod.DMG, -2000 }, duration = getTier2RelicDuration }, -- Claustrum
-    [27] = { mods = { xi.mod.RACC, 30, xi.mod.SNAP_SHOT, 5 }, duration = getTier2RelicDuration }, -- Yoichinoyumi
+    [27] = { mods = { xi.mod.RACC, 30, xi.mod.SNAPSHOT, 5 }, duration = getTier2RelicDuration }, -- Yoichinoyumi
     [28] = { mods = { xi.mod.ENMITY, -25, xi.mod.RATTP, 10 }, duration = getTier2RelicDuration }, -- Annihilator
 
     -----------------------------------
@@ -552,6 +552,11 @@ xi.aftermath.effects =
 }
 
 xi.aftermath.addStatusEffect = function(player, tp, weaponSlot, aftermathType)
+    -- Players only!
+    if player:getObjType() ~= xi.objType.PC then
+        return
+    end
+
     local weapon = player:getStorageItem(0, 0, weaponSlot)
     if not weapon then
         return

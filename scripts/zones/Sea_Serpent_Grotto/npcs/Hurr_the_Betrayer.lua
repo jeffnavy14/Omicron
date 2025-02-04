@@ -4,6 +4,7 @@
 -- Type: Involved in the 'Sahagin Key Quest'
 -- !pos 305.882 26.768 234.279 176
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -31,7 +32,7 @@ entity.onTrigger = function(player, npc)
         player:getCharVar('SahaginKeyItems') == 0 and
         not player:hasItem(xi.item.SAHAGIN_KEY)
     then
-        if math.random(1, 2) == 1 then
+        if math.random(1, 100) <= 50 then
             player:startEvent(105) -- Requires 3 Mythril Beastcoins and a Norg Shell
             player:setCharVar('SahaginKeyItems', 1)
         else
@@ -56,9 +57,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(104) -- Doesn't offer the key if the player hasn't spoken to the first 2 NPCs
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

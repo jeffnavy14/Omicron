@@ -3,9 +3,10 @@
 -- Item: Jug of Selbina Milk
 -- Item Effect: regen: 1 HP/tick x 120sec, x 150sec w/ dream robe +1
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

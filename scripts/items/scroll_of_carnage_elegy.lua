@@ -3,9 +3,10 @@
 -- Scroll of Carnage Elegy
 -- Teaches the song Carnage Elegy
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.CARNAGE_ELEGY)
 end
 

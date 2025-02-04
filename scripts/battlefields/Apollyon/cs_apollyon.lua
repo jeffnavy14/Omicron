@@ -16,16 +16,13 @@ local content = Limbus:new({
     timeLimit        = utils.minutes(20),
     index            = 5,
     area             = 6,
-    entryNpc         = '_12i',
+    entryNpcs        = { '_12i', '_127' },
     requiredKeyItems = { xi.ki.COSMO_CLEANSE, { xi.ki.RED_CARD, xi.ki.BLACK_CARD }, message = ID.text.YOU_INSERT_THE_CARD_POLISHED },
     requiredItems    = { xi.item.METAL_CHIP },
     name             = 'CS_APOLLYON',
+    lootCrateId      = ID.npc.CS_LOOT_CRATE,
     timeExtension    = 5,
 })
-
-function content:isValidEntry(player, npc)
-    return self.entryNpc == '_12i' or self.entryNpc == '_127'
-end
 
 function content:onEntryEventUpdate(player, csid, option, npc)
     if Battlefield.onEntryEventUpdate(self, player, csid, option, npc) then
@@ -58,7 +55,7 @@ function content:onBattlefieldTick(battlefield, tick)
     -- Get which player is going to be aggrod
     local player = GetPlayerByID(battlefield:getLocalVar('AutoAggroTarget'))
 
-    if player:isDead() then
+    if player and player:isDead() then
         -- Need to find a new target
         local players = battlefield:getPlayers()
 
@@ -74,22 +71,23 @@ function content:onBattlefieldTick(battlefield, tick)
     local previousBoss = battlefield:getLocalVar('AutoAggro')
     local nextBoss     = 0
 
-    if previousBoss == ID.CS_APOLLYON.mob.CARNAGECHIEF_JACKBODOKK then
-        nextBoss = ID.CS_APOLLYON.mob.DEE_WAPA_THE_DESOLATOR
-    elseif previousBoss == ID.CS_APOLLYON.mob.DEE_WAPA_THE_DESOLATOR then
-        nextBoss = ID.CS_APOLLYON.mob.NAQBA_CHIRURGEON
+    if previousBoss == ID.mob.CS_CARNAGECHIEF_JACKBODOKK then
+        nextBoss = ID.mob.CS_DEE_WAPA_THE_DESOLATOR
+    elseif previousBoss == ID.mob.CS_DEE_WAPA_THE_DESOLATOR then
+        nextBoss = ID.mob.CS_NAQBA_CHIRURGEON
     else
-        nextBoss = ID.CS_APOLLYON.mob.CARNAGECHIEF_JACKBODOKK
+        nextBoss = ID.mob.CS_CARNAGECHIEF_JACKBODOKK
     end
 
     local boss = GetMobByID(nextBoss)
+    if player and boss then
+        battlefield:setLocalVar('AutoAggro', boss:getID())
+        battlefield:setLocalVar('AutoAggroTime', os.time() + utils.minutes(7))
+        battlefield:setLocalVar('AutoAggroTarget', player:getID())
 
-    battlefield:setLocalVar('AutoAggro', boss:getID())
-    battlefield:setLocalVar('AutoAggroTime', os.time() + utils.minutes(7))
-    battlefield:setLocalVar('AutoAggroTarget', player:getID())
-
-    if boss:isAlive() then
-        boss:updateEnmity(player)
+        if boss:isAlive() then
+            boss:updateEnmity(player)
+        end
     end
 end
 
@@ -121,8 +119,10 @@ function content.handleBossCombatTick(boss, supportOffsets, otherSupportOffsets)
 
     for _, offset in ipairs(offsets) do
         local support = GetMobByID(bossID + offset)
-        support:setSpawn(bossX + math.random(-2, 2), bossY, bossZ + math.random(-2, 2))
-        support:spawn()
+        if support then
+            support:setSpawn(bossX + math.random(-2, 2), bossY, bossZ + math.random(-2, 2))
+            support:spawn()
+        end
     end
 
     -- Alternate which support group to spawn
@@ -182,7 +182,7 @@ content.groups =
         isParty    = true,
         superlink  = true,
         spawned    = false,
-        initialize = utils.bind(setupSharedHate, ID.CS_APOLLYON.mob.CARNAGECHIEF_JACKBODOKK),
+        initialize = utils.bind(setupSharedHate, ID.mob.CS_CARNAGECHIEF_JACKBODOKK),
     },
 
     {
@@ -201,19 +201,19 @@ content.groups =
             'Lightsteel_Quadav',
         },
 
-        mods =
+        mods = -- Supposedly weak to piercing and magic. Strong against Slash, Impact and H2h
         {
             [xi.mod.PIERCE_SDT] = 2000,
             [xi.mod.UDMGMAGIC ] = 2000,
-            [xi.mod.IMPACT_SDT] = 100,
-            [xi.mod.HTH_SDT   ] = 100,
-            [xi.mod.SLASH_SDT ] = 100,
+            [xi.mod.IMPACT_SDT] = -2000,
+            [xi.mod.HTH_SDT   ] = -2000,
+            [xi.mod.SLASH_SDT ] = -2000,
         },
 
         isParty    = true,
         superlink  = true,
         spawned    = false,
-        initialize = utils.bind(setupSharedHate, ID.CS_APOLLYON.mob.NAQBA_CHIRURGEON),
+        initialize = utils.bind(setupSharedHate, ID.mob.CS_NAQBA_CHIRURGEON),
     },
 
     {
@@ -238,13 +238,13 @@ content.groups =
         {
             [xi.mod.IMPACT_SDT] = 2000,
             [xi.mod.HTH_SDT   ] = 2000,
-            [xi.mod.UDMGMAGIC ] = 100,
+            [xi.mod.UDMGMAGIC ] = -2000,
         },
 
         isParty    = true,
         superlink  = true,
         spawned    = false,
-        initialize = utils.bind(setupSharedHate, ID.CS_APOLLYON.mob.DEE_WAPA_THE_DESOLATOR),
+        initialize = utils.bind(setupSharedHate, ID.mob.CS_DEE_WAPA_THE_DESOLATOR),
     },
 
     {
@@ -267,7 +267,7 @@ content.groups =
             elseif count == 2 then
                 xi.limbus.spawnFrom(mob, ID.CS_APOLLYON.npc.TIME_CRATES[2])
             elseif count == 3 then
-                npcUtil.showCrate(GetNPCByID(ID.CS_APOLLYON.npc.LOOT_CRATE))
+                npcUtil.showCrate(GetNPCByID(ID.npc.CS_LOOT_CRATE))
             end
         end
     }
@@ -275,7 +275,7 @@ content.groups =
 
 content.loot =
 {
-    [ID.CS_APOLLYON.npc.LOOT_CRATE] =
+    [ID.npc.CS_LOOT_CRATE] =
     {
         {
             quantity = 5,

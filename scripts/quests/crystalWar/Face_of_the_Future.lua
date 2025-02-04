@@ -5,7 +5,7 @@
 -- Metallic Hodgepodge : !pos -285.493 -7.819 -163.707 104
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.FACE_OF_THE_FUTURE)
+local quest = Quest:new(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.FACE_OF_THE_FUTURE)
 
 quest.reward =
 {
@@ -17,7 +17,7 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.JUGNER_FOREST] =
@@ -31,17 +31,14 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.BATALLIA_DOWNS and
-                        quest:getVar(player, 'Prog') == 0
-                    then
-                        return 44
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.BATALLIA_DOWNS and
+                    quest:getVar(player, 'Prog') == 0
+                then
+                    return 44
+                end
+            end,
 
             onEventFinish =
             {
@@ -66,14 +63,11 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if quest:getVar(player, 'Prog') == 2 then
-                        return 57
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if quest:getVar(player, 'Prog') == 2 then
+                    return 57
+                end
+            end,
 
             onEventFinish =
             {
@@ -97,14 +91,11 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if quest:getVar(player, 'Prog') == 5 then
-                        return quest:progressEvent(2)
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if quest:getVar(player, 'Prog') == 5 then
+                    return 2
+                end
+            end,
 
             onEventFinish =
             {
@@ -144,20 +135,17 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    local questProgress = quest:getVar(player, 'Prog')
+            onZoneIn = function(player, prevZone)
+                local questProgress = quest:getVar(player, 'Prog')
 
-                    if questProgress == 7 then
-                        return 505
-                    elseif questProgress == 9 then
-                        return 508
-                    elseif questProgress == 10 then
-                        return 507
-                    end
-                end,
-            },
+                if questProgress == 7 then
+                    return 505
+                elseif questProgress == 9 then
+                    return 508
+                elseif questProgress == 10 then
+                    return 507
+                end
+            end,
 
             onEventFinish =
             {
@@ -192,14 +180,11 @@ quest.sections =
 
         [xi.zone.XARCABARD_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if quest:getVar(player, 'Prog') == 8 then
-                        return 40
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if quest:getVar(player, 'Prog') == 8 then
+                    return 40
+                end
+            end,
 
             onEventFinish =
             {

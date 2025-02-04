@@ -6,6 +6,7 @@
 local ID = zones[xi.zone.MONASTIC_CAVERN]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -15,7 +16,7 @@ entity.onMobInitialize = function(mob)
     mob:setMod(xi.mod.SILENCE_MEVA, 75)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:showText(mob, ID.text.ORC_KING_ENGAGE)
 end
 

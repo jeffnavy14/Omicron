@@ -3,9 +3,10 @@
 -- Scroll of Sinewy Etude
 -- Teaches the song Sinewy Etude
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SINEWY_ETUDE)
 end
 

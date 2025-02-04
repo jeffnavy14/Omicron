@@ -3,6 +3,7 @@
 --  Mob: Eald'narche (Phase 2)
 -- Zilart Mission 16 BCNM Fight
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -15,12 +16,6 @@ end
 
 entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.GA_CHANCE, 25)
-    if
-        GetMobByID(mob:getID() - 1):isDead() and
-        GetMobByID(mob:getID() - 2):isDead()
-    then
-        mob:getBattlefield():setLocalVar('phaseChange', 0)
-    end
 end
 
 entity.onMobDeath = function(mob, player, optParams)

@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.CEIZAK_BATTLEGROUNDS]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -31,7 +32,7 @@ end
 -- Cutscene for Dances with Luopans.
 local function triggerUncannySensationMessage(player)
     if
-        player:getQuestStatus(xi.quest.log_id.ADOULIN, xi.quest.id.adoulin.DANCES_WITH_LUOPANS) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.DANCES_WITH_LUOPANS) == xi.questStatus.QUEST_ACCEPTED and
         player:hasKeyItem(xi.ki.LUOPAN) and
         player:getCharVar('GEO_DWL_Luopan') == 0
     then

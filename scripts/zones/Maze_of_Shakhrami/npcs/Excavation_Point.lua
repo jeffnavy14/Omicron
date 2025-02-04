@@ -4,6 +4,7 @@
 -- Used in Quest: The Holy Crest
 -- !pos 234 0.1 -110 198
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -16,18 +17,12 @@ entity.onTrade = function(player, npc, trade)
             player:confirmTrade()
         end
     else
-        xi.helm.onTrade(player, npc, trade, xi.helm.type.EXCAVATION, 60)
+        xi.helm.onTrade(player, npc, trade, xi.helmType.EXCAVATION, 60)
     end
 end
 
 entity.onTrigger = function(player, npc)
-    xi.helm.onTrigger(player, xi.helm.type.EXCAVATION)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
+    xi.helm.onTrigger(player, xi.helmType.EXCAVATION)
 end
 
 return entity

@@ -4,10 +4,8 @@
 -- Opens Door at F-9 from inside.
 -- !pos -63 -26 37
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local DoorOffset = npc:getID() - 1
@@ -18,12 +16,6 @@ entity.onTrigger = function(player, npc)
             GetNPCByID(DoorOffset):openDoor(7) -- _0rg
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

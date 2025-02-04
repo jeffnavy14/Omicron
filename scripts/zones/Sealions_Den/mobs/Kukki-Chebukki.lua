@@ -4,6 +4,7 @@
 -----------------------------------
 mixins = { require('scripts/mixins/warriors_path_taru') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -11,16 +12,16 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 60)
     mob:setMobMod(xi.mobMod.NO_AGGRO, 1)
     mob:setMobMod(xi.mobMod.NO_LINK, 1)
-    mob:addMod(xi.mod.UDMGPHYS, -100)
-    mob:addMod(xi.mod.UDMGMAGIC, -100)
-    mob:addMod(xi.mod.UDMGRANGE, -100)
-    mob:addMod(xi.mod.UDMGBREATH, -100)
+    mob:addMod(xi.mod.UDMGPHYS, -10000)
+    mob:addMod(xi.mod.UDMGMAGIC, -10000)
+    mob:addMod(xi.mod.UDMGRANGE, -10000)
+    mob:addMod(xi.mod.UDMGBREATH, -10000)
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
     mob:setMagicCastingEnabled(false)
     mob:setLocalVar('kukki', 1)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:entityAnimationPacket('ouen') -- each taru will use this animation at the start of the fight
     mob:setMobMod(xi.mobMod.NO_LINK, 0)
     mob:setMobMod(xi.mobMod.NO_AGGRO, 0)
@@ -30,8 +31,13 @@ end
 
 entity.onMobFight = function(mob, target)
     local battlefield = mob:getBattlefield()
+    if not battlefield then
+        return
+    end
+
     local battletime = mob:getBattleTime()
     local changetime = mob:getLocalVar('changetime')
+
     if battlefield:getLocalVar('fireworks') == 1 then
         if battletime - changetime >= 3 then
             mob:setMagicCastingEnabled(false)
@@ -42,7 +48,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDisengage = function(mob, target)
+entity.onMobDisengage = function(mob)
     mob:setAnimationSub(2) -- laughing pose
 end
 

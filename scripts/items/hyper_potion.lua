@@ -3,9 +3,10 @@
 -- Item: Hyper-Potion
 -- Item Effect: Restores 250 HP
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getHP() == target:getMaxHP() then
         return xi.msg.basic.ITEM_UNABLE_TO_USE
     elseif target:hasStatusEffect(xi.effect.MEDICINE) then

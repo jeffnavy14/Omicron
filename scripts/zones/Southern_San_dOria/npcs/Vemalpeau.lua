@@ -3,14 +3,12 @@
 --  NPC: Vemalpeau
 -- Involved in Quests: Under Oath
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.UNDER_OATH) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.UNDER_OATH) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('UnderOathCS') == 0
     then   -- Quest: Under Oath - PLD AF3
         player:startEvent(7) --Under Oath - mentions the boy missing
@@ -32,9 +30,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(1)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

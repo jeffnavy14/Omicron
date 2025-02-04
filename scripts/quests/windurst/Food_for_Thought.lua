@@ -7,12 +7,12 @@
 -- Ohbiru-Dohbiru : !pos 23 -5 -193 238
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.WINDURST, xi.quest.id.windurst.FOOD_FOR_THOUGHT)
+local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.FOOD_FOR_THOUGHT)
 
 quest.reward =
 {
     fame  = 100,
-    fameArea = xi.quest.fame_area.WINDURST,
+    fameArea = xi.fameArea.WINDURST,
     title = xi.title.FAST_FOOD_DELIVERER,
 }
 
@@ -52,7 +52,7 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE
+            return status == xi.questStatus.QUEST_AVAILABLE
         end,
 
         [xi.zone.WINDURST_WATERS] =
@@ -125,7 +125,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.WINDURST_WATERS] =
@@ -138,7 +138,7 @@ quest.sections =
                     if npcUtil.tradeHasExactly(trade, xi.item.HARD_BOILED_EGG) then
                         -- Traded item without receiving order
                         if kenapaProg < 3 then
-                            if math.random(1, 2) == 1 then
+                            if math.random(1, 100) <= 50 then
                                 return quest:progressEvent(331)
                             else
                                 return quest:progressEvent(330, 120)
@@ -213,7 +213,7 @@ quest.sections =
 
                         -- Traded all 3 items & Didn't ask for order
                         if ohbiruProgress < 2 then
-                            if math.random(1, 2) == 1 then
+                            if math.random(1, 100) <= 50 then
                                 return quest:progressEvent(325, 440)
                             else
                                 return quest:progressEvent(326)
@@ -286,7 +286,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_COMPLETED and quest:getMustZone(player)
+            return status == xi.questStatus.QUEST_COMPLETED and quest:getMustZone(player)
         end,
 
         [xi.zone.WINDURST_WATERS] =

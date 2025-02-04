@@ -5,9 +5,10 @@
 -- Its notes symbolize the damp and musty air that stagnates within an underground cave.
 -- Adventurers note that reading it increases one's string instrument skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.STRING_INSTRUMENT)
 end
 

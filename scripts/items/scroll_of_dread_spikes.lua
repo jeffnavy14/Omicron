@@ -3,9 +3,10 @@
 -- Scroll of Dread Spikes
 -- Teaches the black magic Dread Spikes
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DREAD_SPIKES)
 end
 

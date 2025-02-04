@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.SACRARIUM]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
@@ -24,9 +25,6 @@ entity.onTrade = function(player, npc, trade)
             player:messageSpecial(ID.text.CANNOT_TRADE_NOW)
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -2,10 +2,15 @@
 -- Area: Xarcabard
 --   NM: Ereshkigal
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+end
+
+entity.onMobSpawn = function(mob)
+    mob:addImmunity(xi.immunity.PARALYZE)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)

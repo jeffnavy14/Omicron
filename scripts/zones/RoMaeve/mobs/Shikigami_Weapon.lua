@@ -2,6 +2,7 @@
 -- Area: RoMaeve
 --   NM: Shikigami Weapon
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local pathNodes =
@@ -40,6 +41,7 @@ local pathNodes =
 }
 
 entity.onMobInitialize = function(mob)
+    mob:addImmunity(xi.immunity.SILENCE)
     mob:setMod(xi.mod.REGEN, 5) -- "Has a minor Auto Regen effect"
 end
 
@@ -48,7 +50,7 @@ entity.onMobSpawn = function(mob)
     mob:pathThrough(pathNodes, bit.bor(xi.path.flag.PATROL, xi.path.flag.RUN))
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setStatus(xi.status.UPDATE)
 end
 

@@ -4,27 +4,21 @@
 -- Item Effect: Enmity +10
 -- Duration: 3 Minutes
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
-    local effect = target:getStatusEffect(xi.effect.ENCHANTMENT)
-    if effect ~= nil and effect:getSubType() == 14789 then
-        target:delStatusEffect(xi.effect.ENCHANTMENT)
+itemObject.onItemCheck = function(target, item, param, caster)
+    if target:getStatusEffectBySource(xi.effect.ENMITY_BOOST, xi.effectSourceType.EQUIPPED_ITEM, xi.item.NARUKO_EARRING) ~= nil then
+        target:delStatusEffect(xi.effect.ENMITY_BOOST, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.NARUKO_EARRING)
     end
 
     return 0
 end
 
 itemObject.onItemUse = function(target)
-    target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 180, 14789)
-end
-
-itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.ENMITY, 10)
-end
-
-itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.ENMITY, 10)
+    if target:hasEquipped(xi.item.NARUKO_EARRING) then
+        target:addStatusEffect(xi.effect.ENMITY_BOOST, 10, 0, 180, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.NARUKO_EARRING)
+    end
 end
 
 return itemObject

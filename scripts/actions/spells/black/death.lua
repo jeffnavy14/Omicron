@@ -4,6 +4,7 @@
 -- (Player only) Consumes all MP no matter what.
 -- (Player only) If Death fails to knock out the target, it will instead deal darkness damage.
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -24,10 +25,7 @@ spellObject.onSpellCast = function(caster, target, spell)
             not target:isNM() and
             not target:hasStatusEffect(xi.effect.MAGIC_SHIELD)
         then
-            local magicAcc     = xi.combat.magicHitRate.calculateActorMagicAccuracy(caster, target, xi.magic.spellGroup.BLACK, xi.skill.DARK_MAGIC, xi.element.DARK, 0, 0)
-            local magicEva     = xi.combat.magicHitRate.calculateTargetMagicEvasion(caster, target, xi.element.DARK, true, 0, 0)
-            local magicHitRate = utils.clamp(xi.combat.magicHitRate.calculateMagicHitRate(magicAcc, magicEva), 5, 30) -- Sources suggest a 30% max rate for players.
-            local resistRate   = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.skill.DARK_MAGIC, xi.element.DARK, magicHitRate, 0)
+            local resistRate = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.magic.spellGroup.BLACK, xi.skill.DARK_MAGIC, 0, xi.element.DARK, 0, 0, 0)
 
             if resistRate == 1 then
                 instaDeath = true
@@ -35,7 +33,6 @@ spellObject.onSpellCast = function(caster, target, spell)
         end
 
         if instaDeath then
-            spell:setMsg(xi.msg.basic.FALL_TO_GROUND)
             target:setHP(0)
         else
             spell:setMsg(xi.msg.basic.MAGIC_DMG)
@@ -49,8 +46,7 @@ spellObject.onSpellCast = function(caster, target, spell)
 
     -- Not-player spell.
     else
-        if math.random(1, 100) <= target:getMod(xi.mod.DEATHRES) then
-            spell:setMsg(xi.msg.basic.FALL_TO_GROUND)
+        if math.random(1, 100) > target:getMod(xi.mod.DEATHRES) then
             target:setHP(0)
         else
             spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)

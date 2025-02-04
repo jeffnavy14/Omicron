@@ -178,7 +178,11 @@ xi.job_utils.dancer.checkFlourishAbility = function(player, target, ability, com
     end
 
     -- Finishing Move check.
-    local numFinishingMoves = player:getStatusEffect(xi.effect.FINISHING_MOVE_1):getPower()
+    local numFinishingMoves = 0
+    local flourishEffect = player:getStatusEffect(xi.effect.FINISHING_MOVE_1)
+    if flourishEffect then
+        numFinishingMoves = flourishEffect:getPower()
+    end
 
     if numFinishingMoves >= minimumCost then
         return 0, 0
@@ -197,6 +201,9 @@ xi.job_utils.dancer.checkWaltzAbility = function(player, target, ability)
         return xi.msg.basic.UNABLE_TO_USE_JA2, 0
     elseif player:hasStatusEffect(xi.effect.TRANCE) then
         ability:setRecast(math.min(ability:getRecast(), 6))
+
+        -- Inform core we want to cleanup Contradance if it's active after the ability is done
+        ability:setPostActionCleanupEffect(xi.effect.CONTRADANCE)
 
         return 0, 0
     elseif player:getTP() < waltzCost then
@@ -224,6 +231,9 @@ xi.job_utils.dancer.checkWaltzAbility = function(player, target, ability)
 
         ability:setRecast(utils.clamp(newRecast, 0, newRecast))
 
+        -- Inform core we want to cleanup Contradance if it's active after the ability is done
+        ability:setPostActionCleanupEffect(xi.effect.CONTRADANCE)
+
         return 0, 0
     end
 end
@@ -242,9 +252,11 @@ xi.job_utils.dancer.useStepAbility = function(player, target, ability, action, s
         player:delTP(100 + player:getMod(xi.mod.STEP_TP_CONSUMED))
     end
 
-    if math.random() <= xi.weaponskills.getHitRate(player, target, true, player:getMod(xi.mod.STEP_ACCURACY)) then
-        local debuffEffect = target:getStatusEffect(stepEffect)
-        hitType            = hitId
+    if math.random() <= xi.weaponskills.getHitRate(player, target, 10 + player:getMod(xi.mod.STEP_ACCURACY)) then
+        local maxSteps         = player:getMainJob() == xi.job.DNC and 10 or 5
+        local debuffEffect     = target:getStatusEffect(stepEffect)
+        local origDebuffStacks = 0
+        hitType                = hitId
 
         -- Apply Finishing Moves
         local fmEffect   = player:getStatusEffect(xi.effect.FINISHING_MOVE_1)
@@ -263,16 +275,23 @@ xi.job_utils.dancer.useStepAbility = function(player, target, ability, action, s
 
         -- Handle Target Debuffs
         if debuffEffect then
-            debuffStacks   = debuffStacks + debuffEffect:getPower()
-            debuffDuration = debuffEffect:getDuration()
+            origDebuffStacks = debuffEffect:getPower()
+            debuffStacks     = debuffStacks + origDebuffStacks
+            debuffDuration   = debuffEffect:getDuration()
 
-            debuffStacks   = math.min(debuffStacks, 10)
+            debuffStacks   = math.min(debuffStacks, maxSteps)
             debuffDuration = math.min(debuffEffect:getDuration() + 30 + stepDurationGift, 120 + stepDurationGift)
 
-            target:delStatusEffectSilent(stepEffect)
+            if maxSteps >= origDebuffStacks then
+                target:delStatusEffectSilent(stepEffect)
+            end
         end
 
-        target:addStatusEffect(stepEffect, debuffStacks, 0, debuffDuration)
+        if maxSteps >= origDebuffStacks then
+            target:addStatusEffect(stepEffect, debuffStacks, 0, debuffDuration)
+        else
+            ability:setMsg(xi.msg.basic.JA_NO_EFFECT)
+        end
     else
         ability:setMsg(xi.msg.basic.JA_MISS)
     end
@@ -347,7 +366,7 @@ xi.job_utils.dancer.useDesperateFlourishAbility = function(player, target, abili
     setFinishingMoves(player, numMoves - 1)
 
     if
-        math.random() <= xi.weaponskills.getHitRate(player, target, true, player:getJobPointLevel(xi.jp.FLOURISH_I_EFFECT)) or
+        math.random() <= xi.weaponskills.getHitRate(player, target, player:getJobPointLevel(xi.jp.FLOURISH_I_EFFECT)) or
         (player:hasStatusEffect(xi.effect.SNEAK_ATTACK) and player:isBehind(target))
     then
         local spell  = GetSpell(xi.magic.spell.GRAVITY)
@@ -358,7 +377,7 @@ xi.job_utils.dancer.useDesperateFlourishAbility = function(player, target, abili
             bonus     = 50 - target:getMod(xi.mod.GRAVITYRES),
         }
 
-        local resistRate = applyResistance(player, target, spell, params)
+        local resistRate = applyResistanceEffect(player, target, spell, params)
         if resistRate > 0.25 then
             target:delStatusEffectSilent(xi.effect.WEIGHT)
             target:addStatusEffect(xi.effect.WEIGHT, 50, 0, 60 * resistRate)
@@ -384,16 +403,13 @@ xi.job_utils.dancer.useViolentFlourishAbility = function(player, target, ability
     setFinishingMoves(player, numMoves - 1)
 
     if
-        math.random() <= xi.weaponskills.getHitRate(player, target, true, 100) or
+        math.random() <= xi.weaponskills.getHitRate(player, target, 100) or
         (player:hasStatusEffect(xi.effect.SNEAK_ATTACK) and player:isBehind(target))
     then
         local hitType = 3
         local spell   = GetSpell(xi.magic.spell.STUN)
         local params  =
         {
-            atk100    = 1,
-            atk200    = 1,
-            atk300    = 1,
             diff      = 0,
             skillType = player:getWeaponSkillType(xi.slot.MAIN),
             bonus     = 50 - target:getMod(xi.mod.STUNRES) + player:getMod(xi.mod.VFLOURISH_MACC) + player:getJobPointLevel(xi.jp.FLOURISH_I_EFFECT),
@@ -411,7 +427,7 @@ xi.job_utils.dancer.useViolentFlourishAbility = function(player, target, ability
         local cRatio, _ = xi.weaponskills.cMeleeRatio(player, target, params, 0, 1000)
         local dmg       = baseDmg * xi.weaponskills.generatePdif(cRatio[1], cRatio[2], true)
 
-        if applyResistance(player, target, spell, params) > 0.25 then
+        if applyResistanceEffect(player, target, spell, params) > 0.25 then
             target:addStatusEffect(xi.effect.STUN, 1, 0, 2)
         else
             ability:setMsg(xi.msg.basic.JA_DAMAGE)
@@ -460,9 +476,8 @@ xi.job_utils.dancer.useWildFlourishAbility = function(player, target, ability, a
     return 0
 end
 
--- TODO: Implement Contradance status effect.
 xi.job_utils.dancer.useContradanceAbility = function(player, target, ability)
-    -- player:addStatusEffect(xi.effect.CONTRADANCE, 19, 1, 60)
+    player:addStatusEffect(xi.effect.CONTRADANCE, 0, 0, 60)
 end
 
 xi.job_utils.dancer.useWaltzAbility = function(player, target, ability, action)
@@ -493,6 +508,11 @@ xi.job_utils.dancer.useWaltzAbility = function(player, target, ability, action)
     amtCured = (target:getStat(xi.mod.VIT) + player:getStat(xi.mod.CHR)) * statMultiplier + waltzInfo[3]
     amtCured = math.floor(amtCured * (1.0 + (math.min(50, player:getMod(xi.mod.WALTZ_POTENCY)) / 100)))
     -- TODO: Account for Waltz Potency Received
+
+    -- Contradance is a 2x multiplier after all other terms
+    if player:hasStatusEffect(xi.effect.CONTRADANCE) then
+        amtCured = amtCured * 2
+    end
 
     amtCured = amtCured * xi.settings.main.CURE_POWER
     amtCured = math.min(amtCured, target:getMaxHP() - target:getHP())

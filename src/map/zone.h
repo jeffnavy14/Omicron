@@ -482,10 +482,10 @@ DECLARE_FORMAT_AS_UNDERLYING(ZONEMISC);
 
 struct zoneMusic_t
 {
-    uint8 m_songDay;   // music (daytime)
-    uint8 m_songNight; // music (nighttime)
-    uint8 m_bSongS;    // battle music (solo)
-    uint8 m_bSongM;    // battle music (party)
+    uint16 m_songDay;   // music (daytime)
+    uint16 m_songNight; // music (nighttime)
+    uint16 m_bSongS;    // battle music (solo)
+    uint16 m_bSongM;    // battle music (party)
 };
 
 struct zoneWeather_t
@@ -519,7 +519,9 @@ struct zoneLine_t
 class CBasicPacket;
 class CBaseEntity;
 class CCharEntity;
+class CMobEntity;
 class CNpcEntity;
+class CPetEntity;
 class CBattleEntity;
 class CTrustEntity;
 class CTreasurePool;
@@ -554,15 +556,15 @@ public:
     const std::string& getName();
     zoneLine_t*        GetZoneLine(uint32 zoneLineID);
 
-    uint8 GetSoloBattleMusic() const;
-    uint8 GetPartyBattleMusic() const;
-    uint8 GetBackgroundMusicDay() const;
-    uint8 GetBackgroundMusicNight() const;
+    uint16 GetSoloBattleMusic() const;
+    uint16 GetPartyBattleMusic() const;
+    uint16 GetBackgroundMusicDay() const;
+    uint16 GetBackgroundMusicNight() const;
 
-    void SetSoloBattleMusic(uint8 music);
-    void SetPartyBattleMusic(uint8 music);
-    void SetBackgroundMusicDay(uint8 music);
-    void SetBackgroundMusicNight(uint8 music);
+    void SetSoloBattleMusic(uint16 music);
+    void SetPartyBattleMusic(uint16 music);
+    void SetBackgroundMusicDay(uint16 music);
+    void SetBackgroundMusicNight(uint16 music);
 
     auto queryEntitiesByName(std::string const& pattern) -> QueryByNameResult_t const&;
 
@@ -586,8 +588,8 @@ public:
     virtual void SpawnPETs(CCharEntity* PChar);
     virtual void SpawnNPCs(CCharEntity* PChar);
     virtual void SpawnTRUSTs(CCharEntity* PChar);
-    virtual void SpawnMoogle(CCharEntity* PChar);    // Spawn Moogle in Moghouse in zone (if applicable)
-    virtual void SpawnTransport(CCharEntity* PChar); // Spawn ships/boats in the zone
+    virtual void SpawnConditionalNPCs(CCharEntity* PChar); // Spawn Moogle in Moghouse in zone (if applicable)
+    virtual void SpawnTransport(CCharEntity* PChar);       // Spawn ships/boats in the zone
     void         SavePlayTime();
 
     virtual void WideScan(CCharEntity* PChar, uint16 radius);
@@ -600,9 +602,6 @@ public:
     virtual void InsertPET(CBaseEntity* PPet);
     virtual void InsertTRUST(CBaseEntity* PTrust);
 
-    virtual void DeletePET(CBaseEntity* PPet);
-    virtual void DeleteTRUST(CBaseEntity* PTrust);
-
     virtual void FindPartyForMob(CBaseEntity* PEntity);
     virtual void TransportDepart(uint16 boundary, uint16 zone);  // Collect passengers if ship/boat is departing
     virtual void updateCharLevelRestriction(CCharEntity* PChar); // Removes the character's level restriction. If the zone has a level restriction, it is applied after it is removed.
@@ -610,7 +609,7 @@ public:
     void InsertTriggerArea(CTriggerArea* triggerArea);
 
     virtual void TOTDChange(TIMETYPE TOTD);
-    virtual void PushPacket(CBaseEntity*, GLOBAL_MESSAGE_TYPE, CBasicPacket*);
+    virtual void PushPacket(CBaseEntity*, GLOBAL_MESSAGE_TYPE, const std::unique_ptr<CBasicPacket>&);
 
     virtual void UpdateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask);
     virtual void UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, uint8 updatemask, bool alwaysInclude = false);
@@ -627,9 +626,14 @@ public:
     virtual void ForEachCharInstance(CBaseEntity* PEntity, std::function<void(CCharEntity*)> const& func);
     virtual void ForEachMob(std::function<void(CMobEntity*)> const& func);
     virtual void ForEachMobInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
+    virtual void ForEachNpc(std::function<void(CNpcEntity*)> const& func);
+    virtual void ForEachNpcInstance(CBaseEntity* PEntity, std::function<void(CNpcEntity*)> const& func);
     virtual void ForEachTrust(std::function<void(CTrustEntity*)> const& func);
     virtual void ForEachTrustInstance(CBaseEntity* PEntity, std::function<void(CTrustEntity*)> const& func);
-    virtual void ForEachNpc(std::function<void(CNpcEntity*)> const& func);
+    virtual void ForEachPet(std::function<void(CPetEntity*)> const& func);
+    virtual void ForEachPetInstance(CBaseEntity* PEntity, std::function<void(CPetEntity*)> const& func);
+    virtual void ForEachAlly(std::function<void(CMobEntity*)> const& func);
+    virtual void ForEachAllyInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
 
     CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
     virtual ~CZone();

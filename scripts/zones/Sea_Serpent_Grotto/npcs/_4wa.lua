@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.SEA_SERPENT_GROTTO]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -24,12 +25,6 @@ entity.onTrigger = function(player, npc)
     elseif xPos < 104 and xPos >= 94 and zPos <= 40 then
         player:messageSpecial(ID.text.SAHAGIN_DOOR_INSIDE) -- Give a message if standing on the "inside" of the door
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -4,18 +4,16 @@
 -- !pos -198 -6 -69 235
 -- Involved in quests: Chasing Quotas, Rock Racketeer
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local rockRacketeer = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER)
+    local rockRacketeer = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.ROCK_RACKETEER)
     local chasingQuotasStatus = player:getCharVar('ChasingQuotas_Progress')
 
     -- Rock Racketeer
     if
-        rockRacketeer == QUEST_ACCEPTED and
+        rockRacketeer == xi.questStatus.QUEST_ACCEPTED and
         player:hasKeyItem(xi.ki.SHARP_GRAY_STONE)
     then
         player:startEvent(261)
@@ -25,9 +23,6 @@ entity.onTrigger = function(player, npc)
     elseif chasingQuotasStatus == 4 then
         player:startEvent(265) -- They'll be happy if you return it.
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

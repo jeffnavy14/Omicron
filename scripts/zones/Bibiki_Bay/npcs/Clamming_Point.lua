@@ -4,8 +4,10 @@
 -----------------------------------
 local ID = zones[xi.zone.BIBIKI_BAY]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
+-- TODO: Use xi.item enum for data, subtables for each row
 -- clammingItems = item id, weight, drop rate, improved drop rate
 local clammingItems =
 {
@@ -41,13 +43,11 @@ local clammingItems =
     5122,  3, 1.000, 1.000  -- Bibiki Slug
 }
 
-entity.firstClammingPointID = -1
-
 entity.onSpawn = function(npc)
     local firstClammingPoint = npc:getZone():queryEntitiesByName('Clamming_Point')[1]
 
     if firstClammingPoint then
-        entity.firstClammingPointID = firstClammingPoint:getID()
+        npc:setLocalVar('firstClammingPoint', firstClammingPoint:getID())
     else
         print('ERROR: Clamming_Point not found in queryEntitiesByName!')
     end
@@ -63,18 +63,15 @@ end
 
 local function giveReducedIncidents(player)
     if player:getMod(xi.mod.CLAMMING_REDUCED_INCIDENTS) > 0 then
-        return 0.05
+        return 5
     end
 
-    return 0.1
-end
-
-entity.onTrade = function(player, npc, trade)
+    return 10
 end
 
 entity.onTrigger = function(player, npc)
-    -- be noisy to try to get server admins to notice...
-    if entity.firstClammingPointID == -1 then
+    -- be noisy to try to get server admins to notice
+    if npc:getLocalVar('firstClammingPoint') == 0 then
         print('ERROR: Clamming_Point not found!')
         return
     end
@@ -85,7 +82,7 @@ entity.onTrigger = function(player, npc)
         if delay > 0 and delay > os.time() then
             player:messageSpecial(ID.text.IT_LOOKS_LIKE_SOMEONE)
         else
-            local eventID = npc:getID() - entity.firstClammingPointID + 20
+            local eventID = npc:getID() - npc:getLocalVar('firstClammingPoint') + 20
 
             player:startEvent(eventID, 0, 0, 0, 0, 0, 0, 0, 0)
         end
@@ -99,7 +96,7 @@ end
 -- Param 2: Max weight of bucket in ponze
 -- Param 3: 0 = no Alraune, 1 = Alraune (used for the Something jumped in the bucket message with bucket size 200)
 entity.onEventUpdate = function(player, csid, option, npc)
-    local eventID = npc:getID() - entity.firstClammingPointID + 20
+    local eventID = npc:getID() - npc:getLocalVar('firstClammingPoint') + 20
 
     if csid == eventID then
         if player:getCharVar('ClammingKitBroken') > 0 then -- Broken bucket
@@ -110,7 +107,7 @@ entity.onEventUpdate = function(player, csid, option, npc)
 
         if
             player:getCharVar('ClammingKitSize') == 200 and
-            math.random() <= giveReducedIncidents(player)
+            math.random(1, 100) <= giveReducedIncidents(player)
         then
             player:setLocalVar('SomethingJumpedInBucket', 1)
             -- SE seems to add 10000 to the previous weight if Alraune had stolen your stuff.
@@ -121,7 +118,7 @@ entity.onEventUpdate = function(player, csid, option, npc)
 
             player:incrementCharVar('ClammingKitWeight', 10000)
         else
-            local dropRate = math.random()
+            local dropRate = math.random() -- TODO: Adjust all values to use 0..100 scale as opposed to 0..1
             local improvedResults = giveImprovedResults(player)
 
             player:updateEvent(player:getCharVar('ClammingKitWeight'), player:getCharVar('ClammingKitSize'))
@@ -144,7 +141,7 @@ entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    local eventID = npc:getID() - entity.firstClammingPointID + 20
+    local eventID = npc:getID() - npc:getLocalVar('firstClammingPoint') + 20
 
     if csid == eventID then
         if player:getLocalVar('SomethingJumpedInBucket') > 0 then

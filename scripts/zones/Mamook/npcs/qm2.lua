@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.MAMOOK]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -15,16 +16,6 @@ entity.onTrade = function(player, npc, trade)
         player:confirmTrade()
         player:messageSpecial(ID.text.DRAWS_NEAR)
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:messageSpecial(ID.text.NUMEROUS_STRANDS)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

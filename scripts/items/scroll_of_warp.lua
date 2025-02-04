@@ -3,9 +3,10 @@
 -- Scroll of Warp
 -- Teaches the black magic Warp
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.WARP)
 end
 

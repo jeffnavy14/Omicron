@@ -3,9 +3,10 @@
 -- Wedding Bell
 -- These bells are used in most Vana'diel weddings.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

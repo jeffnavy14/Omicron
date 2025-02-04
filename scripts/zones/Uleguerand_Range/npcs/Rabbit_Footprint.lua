@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ULEGUERAND_RANGE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local points =
@@ -49,15 +50,6 @@ entity.onTrade = function(player, npc, trade)
             player:confirmTrade()
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 local function moveFootprint(npc)

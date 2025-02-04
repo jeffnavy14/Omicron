@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.SILVER_SEA_ROUTE_TO_AL_ZAHBI]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local messages =
@@ -23,17 +24,8 @@ entity.onTimeTrigger = function(npc, triggerID)
     xi.transport.captainMessage(npc, triggerID, messages)
 end
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    player:messageSpecial(ID.text.ON_WAY_TO_AL_ZAHBI, 0, 0) -- Earth Time, Vana Hours. Needs a get-time function for boat?
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
+    xi.transport.onBoatTimekeeperTrigger(player, xi.transport.routes.SILVER_SEA, ID.text.ON_WAY_TO_AL_ZAHBI, ID.text.ARRIVING_SOON_AL_ZAHBI)
 end
 
 return entity

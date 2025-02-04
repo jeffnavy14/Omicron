@@ -34,7 +34,7 @@ CItemContainer::CItemContainer(uint16 LocationID)
 , m_size(0)
 , m_count(0)
 {
-    memset(m_ItemList, 0, sizeof(m_ItemList));
+    std::memset(m_ItemList, 0, sizeof(m_ItemList));
 }
 
 CItemContainer::~CItemContainer()
@@ -74,7 +74,7 @@ uint16 CItemContainer::GetBuff() const
 uint8 CItemContainer::AddBuff(int8 buff)
 {
     m_buff += buff;
-    return SetSize(std::clamp<uint8>((uint8)m_buff, 0, 80)); // Limit in 0-80 cells for character
+    return SetSize(std::clamp<int>(m_buff, 0, 80)); // Limit in 0-80 cells for character
 }
 
 /************************************************************************

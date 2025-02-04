@@ -3,10 +3,14 @@
 --   NM: Habetrot
 -- !pos -60 -8 58 220
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 900)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 2000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 5625)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)

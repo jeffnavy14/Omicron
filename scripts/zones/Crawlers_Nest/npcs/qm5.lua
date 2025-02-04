@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.CRAWLERS_NEST]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -17,9 +18,6 @@ entity.onTrade = function(player, npc, trade)
             player:messageSpecial(ID.text.NOTHING_SEEMS_TO_HAPPEN)
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
 end
 
 return entity

@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.NORG]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:hasKeyItem(xi.ki.TENSHODO_MEMBERS_CARD) then
@@ -19,12 +17,6 @@ entity.onTrigger = function(player, npc)
     else
         -- player:startEvent(150)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

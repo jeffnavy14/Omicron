@@ -7,10 +7,11 @@
 -----------------------------------
 local ID = zones[xi.zone.LOWER_JEUNO]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    if player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN) == QUEST_ACCEPTED then
+    if player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN) == xi.questStatus.QUEST_ACCEPTED then
         if
             trade:hasItemQty(xi.item.WYRM_BEARD, 1) and
             trade:getItemCount() == 1 and
@@ -54,12 +55,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 155 then
-        player:addQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN)
+        player:addQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN)
         player:setCharVar('BeatAroundTheBushin', 2)
     elseif csid == 156 then
         player:setCharVar('BeatAroundTheBushin', 3)
@@ -78,9 +76,9 @@ entity.onEventFinish = function(player, csid, option, npc)
             player:addItem(xi.item.BLACK_BELT)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.BLACK_BELT)
             player:setCharVar('BeatAroundTheBushin', 0)
-            player:addFame(xi.quest.fame_area.NORG, 125)
+            player:addFame(xi.fameArea.NORG, 125)
             player:tradeComplete()
-            player:completeQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN)
+            player:completeQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.BEAT_AROUND_THE_BUSHIN)
         end
     end
 end

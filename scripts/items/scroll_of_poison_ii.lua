@@ -3,9 +3,10 @@
 -- Scroll of Poison II
 -- Teaches the black magic Poison II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.POISON_II)
 end
 

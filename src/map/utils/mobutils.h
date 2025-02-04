@@ -64,6 +64,8 @@ namespace mobutils
     void SetupNMMob(CMobEntity* PMob);
     void SetupPetSkills(CMobEntity* PMob);
 
+    uint8 JobSkillRankToBaseEvaRank(JOBTYPE job);
+
     uint16 GetWeaponDamage(CMobEntity* PMob, uint16 slot);
     uint16 GetMagicEvasion(CMobEntity* PMob);
     uint16 GetBaseDefEva(CMobEntity* PMob, uint8 rank);
@@ -73,6 +75,7 @@ namespace mobutils
     void   GetAvailableSpells(CMobEntity* PMob);
     void   InitializeMob(CMobEntity* PMob);
     void   LoadSqlModifiers();
+    void   Cleanup();
 
     // get modifiers for pool / family / spawn
     ModsList_t* GetMobFamilyMods(uint16 familyId, bool create = false);

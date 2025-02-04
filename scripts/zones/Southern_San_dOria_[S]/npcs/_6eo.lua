@@ -6,21 +6,16 @@
 -----------------------------------
 local ID = zones[xi.zone.SOUTHERN_SAN_DORIA_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if
-        player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('KnotQuiteThere') == 3
     then
         player:startEvent(63)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -28,7 +23,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         if player:getFreeSlotsCount() == 0 then
             player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.PLATINUM_BEASTCOIN)
         else
-            player:completeQuest(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE)
+            player:completeQuest(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE)
             player:addItem(xi.item.PLATINUM_BEASTCOIN)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.PLATINUM_BEASTCOIN)
             player:setCharVar('KnotQuiteThere', 0)

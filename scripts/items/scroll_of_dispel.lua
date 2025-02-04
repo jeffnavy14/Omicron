@@ -3,9 +3,10 @@
 -- Scroll of Dispel
 -- Teaches the black magic Dispel
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DISPEL)
 end
 

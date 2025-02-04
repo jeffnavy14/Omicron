@@ -42,10 +42,10 @@ end
 instanceObject.afterInstanceRegister = function(player)
     player:delKeyItem(xi.ki.MINE_SHAFT_KEY)
 
-    local questStatus = player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.LIGHT_IN_THE_DARKNESS)
+    local questStatus = player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.LIGHT_IN_THE_DARKNESS)
     local questProgVar = player:getCharVar('Quest[7][19]Prog')
     if
-        questStatus == QUEST_ACCEPTED and
+        questStatus == xi.questStatus.QUEST_ACCEPTED and
         (questProgVar == 4 or questProgVar == 7)
     then
         -- TODO: Player is not locked during this CS and will aggro the mobs
@@ -57,7 +57,8 @@ instanceObject.onInstanceTimeUpdate = function(instance, elapsed)
     local deadCount = 0
     for i = 0, 9 do
         local mob = GetMobByID(ID.mob.SAPPHIRINE_QUADAV_OFFSET + i, instance)
-        if mob:isDead() then
+
+        if mob and mob:isDead() then
             deadCount = deadCount + 1
         end
     end

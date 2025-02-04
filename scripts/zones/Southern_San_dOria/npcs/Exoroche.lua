@@ -4,10 +4,8 @@
 -- Involved in Quests: Father and Son, A Boy's Dream
 -- !pos 72 -1 60 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
 --    player:startEvent(79)  -- how the paper works -- under oath
@@ -35,9 +33,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(76)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

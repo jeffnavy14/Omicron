@@ -3,13 +3,12 @@
 -----------------------------------
 require('scripts/quests/i_can_hear_a_rainbow')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
-zoneObject.onChocoboDig = function(player, precheck)
-    return xi.chocoboDig.start(player, precheck)
-end
-
 zoneObject.onInitialize = function(zone)
+    -- A Chocobo Riding Game finish line
+    zone:registerTriggerArea(1, 580.074, 5, -307.355, 0, 0, 0)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -30,11 +29,20 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
+zoneObject.afterZoneIn = function(player)
+    xi.chocoboGame.handleMessage(player)
+end
+
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
+    local triggerAreaID = triggerArea:GetTriggerAreaID()
+
+    if triggerAreaID == 1 and player:hasStatusEffect(xi.effect.MOUNTED) then
+        xi.chocoboGame.onTriggerAreaEnter(player)
+    end
 end
 
 zoneObject.onEventUpdate = function(player, csid, option, npc)
@@ -44,6 +52,7 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
+    xi.chocoboGame.onEventFinish(player, csid)
 end
 
 return zoneObject

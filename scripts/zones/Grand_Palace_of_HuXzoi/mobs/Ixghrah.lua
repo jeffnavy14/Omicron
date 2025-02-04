@@ -2,6 +2,7 @@
 -- Area: Grand Palace of HuXzoi
 --  Mob: Ix'ghrah
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local spellTable =
@@ -15,6 +16,10 @@ local spellTable =
     [1167] = { 470, 478 },
     [1168] = { 469, 477 },
 }
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
+end
 
 entity.onMobSpawn = function(mob)
     mob:setLocalVar('twoHourPer', 50)
@@ -130,12 +135,6 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onMobDeath  = function(mob, player, optParams)
-    if
-        player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.A_FATE_DECIDED and
-        player:getCharVar('PromathiaStatus') == 1
-    then
-        player:setCharVar('PromathiaStatus', 2)
-    end
 end
 
 return entity

@@ -3,9 +3,10 @@
 -- Scroll of Tornado
 -- Teaches the black magic Tornado
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.TORNADO)
 end
 

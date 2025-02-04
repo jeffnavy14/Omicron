@@ -3,9 +3,10 @@
 -- Item: Viper Potion
 -- Item Effect: Removes 300 HP over 3 mins
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

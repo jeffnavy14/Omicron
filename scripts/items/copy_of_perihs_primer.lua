@@ -5,9 +5,10 @@
 -- It discusses everything from the various ways of holding a bow to methods of judging distance.
 -- Adventurers note that reading it increases one's archery skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.ARCHERY)
 end
 

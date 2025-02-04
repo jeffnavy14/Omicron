@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -80,9 +80,16 @@ CItemState::CItemState(CCharEntity* PEntity, uint16 targid, uint8 loc, uint8 slo
     UpdateTarget(PEntity->IsValidTarget(targid, m_PItem->getValidTarget(), m_errorMsg));
     auto* PTarget = GetTarget();
 
-    if (!PTarget || m_errorMsg)
+    if (!PTarget || this->HasErrorMsg())
     {
-        throw CStateInitException(std::move(m_errorMsg));
+        if (this->HasErrorMsg())
+        {
+            throw CStateInitException(m_errorMsg->copy());
+        }
+        else
+        {
+            throw CStateInitException(std::make_unique<CBasicPacket>());
+        }
     }
 
     auto [error, param, value] = luautils::OnItemCheck(PTarget, m_PItem, ITEMCHECK::NONE, m_PEntity);
@@ -126,12 +133,12 @@ CItemState::CItemState(CCharEntity* PEntity, uint16 targid, uint8 loc, uint8 slo
     actionTarget.knockback  = 0;
 
     m_PEntity->PAI->EventHandler.triggerListener("ITEM_START", CLuaBaseEntity(PTarget), CLuaItem(m_PItem), CLuaAction(&action));
-    m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+    m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
 
     m_PItem->setSubType(ITEM_LOCKED);
 
-    m_PEntity->pushPacket(new CInventoryAssignPacket(m_PItem, INV_NOSELECT));
-    m_PEntity->pushPacket(new CInventoryFinishPacket());
+    m_PEntity->pushPacket<CInventoryAssignPacket>(m_PItem, INV_NOSELECT);
+    m_PEntity->pushPacket<CInventoryFinishPacket>();
 }
 
 void CItemState::UpdateTarget(CBaseEntity* target)
@@ -182,7 +189,7 @@ bool CItemState::Update(time_point tick)
             FinishItem(action);
         }
         m_PEntity->PAI->EventHandler.triggerListener("ITEM_USE", CLuaBaseEntity(m_PEntity), CLuaItem(m_PItem), CLuaAction(&action));
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, new CActionPacket(action));
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
         Complete();
     }
     else if (IsCompleted() && tick > GetEntryTime() + m_castTime + m_animationTime)
@@ -211,15 +218,15 @@ void CItemState::Cleanup(time_point tick)
 
     if (PItem && PItem == m_PItem)
     {
-        m_PEntity->pushPacket(new CInventoryAssignPacket(m_PItem, INV_NORMAL));
+        m_PEntity->pushPacket<CInventoryAssignPacket>(m_PItem, INV_NORMAL);
     }
     else
     {
         m_PItem = nullptr;
     }
 
-    m_PEntity->pushPacket(new CInventoryItemPacket(m_PItem, m_location, m_slot));
-    m_PEntity->pushPacket(new CInventoryFinishPacket());
+    m_PEntity->pushPacket<CInventoryItemPacket>(m_PItem, m_location, m_slot);
+    m_PEntity->pushPacket<CInventoryFinishPacket>();
 }
 
 bool CItemState::CanChangeState()
@@ -283,7 +290,7 @@ void CItemState::InterruptItem(action_t& action)
         action.actiontype = ACTION_ITEM_INTERRUPT;
 
         actionList_t& actionList  = action.getNewActionList();
-        actionList.ActionTargetID = (m_PEntity->IsValidTarget(m_targid, m_PItem->getValidTarget(), m_errorMsg) ? GetTarget()->id : 0);
+        actionList.ActionTargetID = (m_PEntity->IsValidTarget(m_targid, m_PItem->getValidTarget(), m_errorMsg) ? GetTarget() && GetTarget()->id : 0);
 
         actionTarget_t& actionTarget = actionList.getNewActionTarget();
 
@@ -294,7 +301,14 @@ void CItemState::InterruptItem(action_t& action)
         actionTarget.messageID  = 0;
         actionTarget.knockback  = 0;
 
-        m_PEntity->pushPacket(m_errorMsg.release());
+        if (this->HasErrorMsg())
+        {
+            m_PEntity->pushPacket(m_errorMsg->copy());
+        }
+        else
+        {
+            throw CStateInitException(std::make_unique<CBasicPacket>());
+        }
     }
 }
 

@@ -3,9 +3,10 @@
 --  Mob: Time Bomb
 -- BCNM: 3, 2, 1...
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setLocalVar('selfDestruct', os.time() + 60)
     mob:setAutoAttackEnabled(false)
     mob:setMobAbilityEnabled(false)

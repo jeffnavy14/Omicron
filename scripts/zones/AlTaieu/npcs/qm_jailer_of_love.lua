@@ -5,6 +5,7 @@
 -- Allows players to spawn Absolute Virtue by killing Jailer of Love.
 -- !pos , 431 -0 -603
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -22,15 +23,6 @@ entity.onTrade = function(player, npc, trade)
         SpawnMob(ID.mob.JAILER_OF_LOVE):updateClaim(player)
     end
     --]]
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.NASHMAU]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -37,16 +38,6 @@ entity.onTrade = function(player, npc, trade)
             player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, reward)
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(240)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

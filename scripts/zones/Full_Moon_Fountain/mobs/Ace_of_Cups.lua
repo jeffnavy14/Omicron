@@ -3,16 +3,10 @@
 --  Mob: Ace of Cups
 -- Windurst Mission 9-2
 -----------------------------------
-local global = require('scripts/zones/Full_Moon_Fountain/Globals')
------------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobDeath = function(mob, player, optParams)
-    global.tryPhaseChange(player)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-    global.phaseEventFinish(player, csid)
 end
 
 return entity

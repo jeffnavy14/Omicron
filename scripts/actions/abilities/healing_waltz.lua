@@ -5,6 +5,7 @@
 -- TP Required: 20%
 -- Recast Time: 00:15
 -----------------------------------
+---@type TAbility
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
@@ -34,6 +35,9 @@ abilityObject.onAbilityCheck = function(player, target, ability)
                 ability:setRecast(ability:getRecast() * ((fanDanceMerits - 5) / 100))
             end
         end
+
+        -- Inform core we want to cleanup Contradance if it's active after the ability is done
+        ability:setPostActionCleanupEffect(xi.effect.CONTRADANCE)
 
         return 0, 0
     end

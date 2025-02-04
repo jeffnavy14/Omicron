@@ -4,20 +4,25 @@
 -----------------------------------
 local ID = zones[xi.zone.ARRAPAGO_REMNANTS]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobRoamAction = function(mob)
     local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
     local stage = instance:getStage()
     local prog = instance:getProgress()
 
     if not mob:isFollowingPath() then
-        mob:setSpeed(40)
+        mob:setBaseSpeed(40)
         mob:pathThrough(ID.points[stage][prog].route, 9)
     end
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     if target:isPC() or target:isPet() then
         mob:setLocalVar('runTime', os.time())
     end
@@ -42,7 +47,10 @@ entity.onMobFight = function(mob, target)
         mob:setLocalVar('runTime', os.time())
         entity.onMobRoamAction(mob)
     elseif mob:isFollowingPath() then
-        if os.time() - popTime > 7 then
+        if
+            mobPet and
+            os.time() - popTime > 7
+        then
             mobPet:updateEnmity(target)
             mobPet:setPos(mobPos.x, mobPos.y, mobPos.z, mobPos.rot)
             mob:setLocalVar('popTime', os.time())

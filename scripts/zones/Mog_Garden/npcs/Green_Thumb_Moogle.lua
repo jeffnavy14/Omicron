@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.MOG_GARDEN]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -12,9 +13,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(1016)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -30,7 +28,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         end
 
         -- Show the mog house menu
-        player:sendMenu(1)
+        player:sendMenu(xi.menuType.MOOGLE)
 
     elseif csid == 1016 and option == 0xFFE00FF then -- Buy/Sell Things
         local stock =

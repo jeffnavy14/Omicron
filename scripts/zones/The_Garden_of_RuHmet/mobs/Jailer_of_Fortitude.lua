@@ -3,9 +3,15 @@
 --   NM: Jailer of Fortitude
 -----------------------------------
 local ID = zones[xi.zone.THE_GARDEN_OF_RUHMET]
+local gardenGlobal = require('scripts/zones/The_Garden_of_RuHmet/globals')
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
+end
 
 entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
@@ -18,6 +24,8 @@ entity.onMobSpawn = function(mob)
     -- Change animation to humanoid w/ prismatic core
     mob:setAnimationSub(1)
     mob:setModelId(1169)
+    mob:setMod(xi.mod.UDMGPHYS, -9500)
+    mob:setMod(xi.mod.UDMGRANGE, -9500)
 end
 
 entity.onMobFight = function(mob, target)
@@ -59,8 +67,6 @@ entity.onMagicHit = function(caster, target, spell)
         target:setLocalVar('reflectTime', target:getBattleTime())
         target:setAnimationSub(1)
     end
-
-    return 1
 end
 
 entity.onMobDeath = function(mob, player, optParams)
@@ -71,7 +77,7 @@ end
 
 entity.onMobDespawn = function(mob)
     -- Move QM to random location
-    GetNPCByID(ID.npc.QM_JAILER_OF_FORTITUDE):setPos(unpack(ID.npc.QM_JAILER_OF_FORTITUDE_POS[math.random(1, 5)]))
+    GetNPCByID(ID.npc.QM_JAILER_OF_FORTITUDE):setPos(unpack(gardenGlobal.qmPosFortTable[math.random(1, 5)]))
 end
 
 return entity

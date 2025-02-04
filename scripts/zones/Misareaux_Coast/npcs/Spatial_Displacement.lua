@@ -4,10 +4,8 @@
 -- Entrance to Riverne Site #A01 and #B01
 -- !pos -540 -30 360 25
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.SHELTERING_DOUBT) then
@@ -15,9 +13,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(550) -- Access to Site A Only
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

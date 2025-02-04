@@ -3,9 +3,10 @@
 -- Scroll of Barwater
 -- Teaches the white magic Barwater
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BARWATER)
 end
 

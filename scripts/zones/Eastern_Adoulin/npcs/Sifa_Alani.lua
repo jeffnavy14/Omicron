@@ -6,6 +6,7 @@
 -----------------------------------
 local eastAdoulinID = zones[xi.zone.EASTERN_ADOULIN]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 -- NOTE: This table is 1-Indexed and needs to be subtracted by
@@ -28,9 +29,6 @@ local mapList =
     { xi.ki.MAP_OF_KAMIHR_DRIFTS,         2000 },
     { xi.ki.MAP_OF_RAKAZNAR,              2000 },
 }
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- Event Parameter options:
@@ -56,9 +54,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(7530, 0, mapMask, frontierMask, playerBayld)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

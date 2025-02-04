@@ -20,10 +20,12 @@
 */
 
 #include "automatonentity.h"
+
 #include "ai/ai_container.h"
 #include "ai/controllers/automaton_controller.h"
 #include "ai/states/magic_state.h"
 #include "ai/states/mobskill_state.h"
+#include "common/tracy.h"
 #include "common/utils.h"
 #include "mob_modifier.h"
 #include "packets/action.h"
@@ -38,10 +40,14 @@
 CAutomatonEntity::CAutomatonEntity()
 : CPetEntity(PET_TYPE::AUTOMATON)
 {
+    TracyZoneScoped;
     PAI->SetController(nullptr);
 }
 
-CAutomatonEntity::~CAutomatonEntity() = default;
+CAutomatonEntity::~CAutomatonEntity()
+{
+    TracyZoneScoped;
+}
 
 void CAutomatonEntity::setFrame(AUTOFRAMETYPE frame)
 {
@@ -194,7 +200,7 @@ void CAutomatonEntity::PostTick()
     {
         if (PMaster && PMaster->objtype == TYPE_PC)
         {
-            ((CCharEntity*)PMaster)->pushPacket(new CCharJobExtraPacket((CCharEntity*)PMaster, PMaster->GetMJob() == JOB_PUP));
+            ((CCharEntity*)PMaster)->pushPacket<CCharJobExtraPacket>((CCharEntity*)PMaster, PMaster->GetMJob() == JOB_PUP);
         }
     }
 }

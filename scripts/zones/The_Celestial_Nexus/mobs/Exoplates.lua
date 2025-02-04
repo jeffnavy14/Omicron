@@ -3,6 +3,7 @@
 --  Mob: Exoplates
 -- Zilart Mission 16 BCNM Fight
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -48,25 +49,11 @@ end
 
 entity.onMobDeath = function(mob, player, optParams)
     local ealdnarche = GetMobByID(mob:getID() - 1)
-    ealdnarche:delStatusEffect(xi.effect.PHYSICAL_SHIELD, 0, 1, 0, 0)
-    ealdnarche:delStatusEffect(xi.effect.ARROW_SHIELD, 0, 1, 0, 0)
-    ealdnarche:delStatusEffect(xi.effect.MAGIC_SHIELD, 0, 1, 0, 0)
-end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-    if csid == 32004 then
-        DespawnMob(npc:getID())
-        DespawnMob(npc:getID() - 1)
-        DespawnMob(npc:getID() + 2)
-        DespawnMob(npc:getID() + 3)
-        local mob = SpawnMob(npc:getID() + 1)
-        mob:updateEnmity(player)
-        -- the "30 seconds of rest" you get before he attacks you, and making sure he teleports first in range
-        mob:addStatusEffectEx(xi.effect.BIND, 0, 1, 0, 30)
-        mob:addStatusEffectEx(xi.effect.SILENCE, 0, 1, 0, 40)
+    if ealdnarche then
+        ealdnarche:delStatusEffect(xi.effect.PHYSICAL_SHIELD)
+        ealdnarche:delStatusEffect(xi.effect.ARROW_SHIELD)
+        ealdnarche:delStatusEffect(xi.effect.MAGIC_SHIELD)
     end
 end
 

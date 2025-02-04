@@ -3,9 +3,10 @@
 -- Scroll of Aquaveil
 -- Teaches the white magic Aquaveil
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.AQUAVEIL)
 end
 

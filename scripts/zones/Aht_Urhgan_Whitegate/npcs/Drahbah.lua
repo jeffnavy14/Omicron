@@ -4,6 +4,7 @@
 -- Type: Appraiser
 -- !pos -86 0 83 50
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -12,9 +13,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(678, 500)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

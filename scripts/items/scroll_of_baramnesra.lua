@@ -3,9 +3,10 @@
 -- Scroll of Baramnesra
 -- Teaches the white magic Baramnesra
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BARAMNESRA)
 end
 

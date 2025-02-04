@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -29,7 +29,6 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include <string.h>
 #include <vector>
 
-struct Sql_t;
 struct search_req;
 
 struct ahItem
@@ -70,6 +69,8 @@ struct SearchEntity
     bool        mentor         = false;
     uint8       seacom_type    = 0;
     uint8       languages      = 0;
+    bool        gmHidden       = false;
+    bool        disconnecting  = false;
 };
 
 /************************************************************************
@@ -77,8 +78,6 @@ struct SearchEntity
  *                                                                       *
  *                                                                       *
  ************************************************************************/
-
-class SqlConnection;
 
 class CDataLoader
 {
@@ -93,12 +92,9 @@ public:
     std::list<SearchEntity*> GetLinkshellList(uint32 LinkshellID);
     std::list<SearchEntity*> GetPlayersList(search_req sr, int* count);
     std::string              GetSearchComment(uint32 playerId);
-    std::vector<ahItem*>     GetAHItemsToCategory(uint8 AHCategoryID, const char* OrderByString);
+    std::vector<ahItem*>     GetAHItemsToCategory(uint8 ahCategoryID, const std::string& orderByString);
     ahItem                   GetAHItemFromItemID(uint16 ItemID);
     void                     ExpireAHItems(uint16 expireAgeInDays);
-
-private:
-    std::unique_ptr<SqlConnection> sql;
 };
 
 #endif

@@ -1,9 +1,12 @@
 -----------------------------------
 -- Zone: Outer Ra’Kanzar (274)
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
+    xi.reives.setupZone(zone)
+
     zone:registerTriggerArea(1, -942, -191.6, -22, -937, -191.4, -18)
 end
 

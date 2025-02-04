@@ -2,14 +2,15 @@
 -- ID: 15296
 -- tathlum_belt
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.TATHLUM, 8) -- tathlum
+    npcUtil.giveItem(target, { { xi.item.TATHLUM, 8 } })
 end
 
 return itemObject

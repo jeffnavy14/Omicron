@@ -4,10 +4,14 @@
 -----------------------------------
 local ID = zones[xi.zone.NYZUL_ISLE]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
     local instance = mob:getInstance()
+    if not instance then
+        return
+    end
 
     -- Stage 2 Adjustments
     if instance:getProgress() >= 10 then
@@ -36,7 +40,7 @@ entity.onMobSpawn = function(mob)
     end)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local instance = mob:getInstance()
 
     -- Relax movement lock
@@ -50,25 +54,36 @@ entity.onMobEngaged = function(mob, target)
     -- 4 gears spawn on Stage 1 of the Fight
     if form1Gears == 0 then
         mob:showText(mob, ID.text.FORMATION_GELINCIK)
-        SpawnMob(ID.mob[58].IMPERIAL_GEAR1, instance):updateEnmity(target)
-        SpawnMob(ID.mob[58].IMPERIAL_GEAR2, instance):updateEnmity(target)
-        SpawnMob(ID.mob[58].IMPERIAL_GEAR3, instance):updateEnmity(target)
-        SpawnMob(ID.mob[58].IMPERIAL_GEAR4, instance):updateEnmity(target)
+        SpawnMob(ID.mob.IMPERIAL_GEAR_OFFSET, instance):updateEnmity(target)
+        SpawnMob(ID.mob.IMPERIAL_GEAR_OFFSET + 1, instance):updateEnmity(target)
+        SpawnMob(ID.mob.IMPERIAL_GEAR_OFFSET + 2, instance):updateEnmity(target)
+        SpawnMob(ID.mob.IMPERIAL_GEAR_OFFSET + 3, instance):updateEnmity(target)
         mob:setLocalVar('Form1Gears', 1)
     end
 
     -- 4 more gears spawn on Stage 2 of the Fight
-    if form == 1 and form2Gears == 0 then
+    if
+        form == 1 and
+        form2Gears == 0
+    then
         mob:showText(mob, ID.text.SURRENDER)
-        local gear = SpawnMob(ID.mob[58].IMPERIAL_GEAR1, instance)
-        gear:updateEnmity(target)
-        gear = SpawnMob(ID.mob[58].IMPERIAL_GEAR2, instance)
-        gear:updateEnmity(target)
-        gear = SpawnMob(ID.mob[58].IMPERIAL_GEAR3, instance)
-        gear:updateEnmity(target)
-        gear = SpawnMob(ID.mob[58].IMPERIAL_GEAR4, instance)
-        gear:updateEnmity(target)
-        gear:setLocalVar('Form2Gears', 1)
+
+        local gearList =
+        {
+            ID.mob.IMPERIAL_GEAR_OFFSET,
+            ID.mob.IMPERIAL_GEAR_OFFSET + 1,
+            ID.mob.IMPERIAL_GEAR_OFFSET + 2,
+            ID.mob.IMPERIAL_GEAR_OFFSET + 3,
+        }
+
+        for _, gearId in ipairs(gearList) do
+            local gear = SpawnMob(gearId, instance)
+
+            if gear then
+                gear:updateEnmity(target)
+                gear:setLocalVar('Form2Gears', 1)
+            end
+        end
     end
 end
 
@@ -94,6 +109,10 @@ entity.onMobFight = function(mob, target)
         if mob:getLocalVar('DespawnSignal') == 0 then
             mob:setLocalVar('DespawnSignal', 1)
             local instance = mob:getInstance()
+            if not instance then
+                return
+            end
+
             instance:setProgress(instance:getProgress() + 10)
         end
     end
@@ -114,6 +133,10 @@ end
 
 entity.onMobDespawn = function(mob)
     local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
     instance:setProgress(instance:getProgress() + 10)
 end
 

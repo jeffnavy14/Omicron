@@ -7,12 +7,12 @@ local metalworksID = zones[xi.zone.METALWORKS]
 local ziTahID      = zones[xi.zone.THE_SANCTUARY_OF_ZITAH]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.BASTOK, xi.quest.id.bastok.THE_WEIGHT_OF_YOUR_LIMITS)
+local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.THE_WEIGHT_OF_YOUR_LIMITS)
 
 quest.reward =
 {
     fame = 30,
-    fameArea = xi.quest.fame_area.BASTOK,
+    fameArea = xi.fameArea.BASTOK,
 }
 
 quest.sections =
@@ -20,7 +20,7 @@ quest.sections =
     -- Section: Quest available
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:canEquipItem(xi.item.AXE_OF_TRIALS, true) and
                 player:getCharSkillLevel(xi.skill.GREAT_AXE) / 10 >= 240 and
                 not player:hasKeyItem(xi.keyItem.WEAPON_TRAINING_GUIDE)
@@ -53,7 +53,7 @@ quest.sections =
     -- Section: Quest accepted
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.METALWORKS] =
@@ -88,7 +88,7 @@ quest.sections =
                     if option == 1 and not player:hasItem(xi.item.AXE_OF_TRIALS) then
                         npcUtil.giveItem(player, xi.item.AXE_OF_TRIALS)
                     elseif option == 2 then
-                        player:delQuest(xi.quest.log_id.BASTOK, xi.quest.id.bastok.THE_WEIGHT_OF_YOUR_LIMITS)
+                        player:delQuest(xi.questLog.BASTOK, xi.quest.id.bastok.THE_WEIGHT_OF_YOUR_LIMITS)
                         player:delKeyItem(xi.ki.WEAPON_TRAINING_GUIDE)
                         player:delKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH)
                     end
@@ -118,8 +118,7 @@ quest.sections =
                 onTrigger = function(player, npc)
                     if player:getLocalVar('killed_wsnm') == 1 then
                         player:setLocalVar('killed_wsnm', 0)
-                        player:addKeyItem(xi.ki.ANNALS_OF_TRUTH)
-                        return quest:messageSpecial(ziTahID.text.KEYITEM_OBTAINED, xi.ki.ANNALS_OF_TRUTH)
+                        return quest:keyItem(xi.ki.ANNALS_OF_TRUTH)
                     elseif
                         player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) and
                         not player:hasKeyItem(xi.keyItem.ANNALS_OF_TRUTH) and
@@ -133,7 +132,9 @@ quest.sections =
             ['Greenman'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    player:setLocalVar('killed_wsnm', 1)
+                    if player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) then
+                        player:setLocalVar('killed_wsnm', 1)
+                    end
                 end,
             },
         },

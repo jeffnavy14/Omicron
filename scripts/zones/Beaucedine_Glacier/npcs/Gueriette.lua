@@ -4,13 +4,11 @@
 -- Type: Outpost Vendor
 -- !pos -24 -59 -120 111
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local vendorRegion  = xi.region.FAUREGANDI
 local vendorEvent   = 32756
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.conquest.vendorOnTrigger(player, vendorRegion, vendorEvent)

@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.NORTHERN_SAN_DORIA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if GetRegionOwner(xi.region.QUFIMISLAND) ~= xi.nation.SANDORIA then
@@ -20,14 +18,8 @@ entity.onTrigger = function(player, npc)
         }
 
         player:showText(npc, ID.text.EUGBALLION_OPEN_DIALOG)
-        xi.shop.general(player, stock, xi.quest.fame_area.SANDORIA)
+        xi.shop.general(player, stock, xi.fameArea.SANDORIA)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

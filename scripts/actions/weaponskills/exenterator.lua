@@ -13,30 +13,29 @@
 -- 100%TP    200%TP    300%TP
 -- 1.0        1.0       1.0
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-    local params = {}
+    local params   = {}
     params.numHits = 4
-    params.ftp100 = 1.0 params.ftp200 = 1.0 params.ftp300 = 1.0
-    params.str_wsc = 0.0 params.dex_wsc = 0.0 params.vit_wsc = 0.0 params.agi_wsc = 0.0 + (player:getMerit(xi.merit.EXENTERATOR) * 0.17) params.int_wsc = 0.0 params.mnd_wsc = 0.0 params.chr_wsc = 0.0
-    params.crit100 = 0.0 params.crit200 = 0.0 params.crit300 = 0.0
-    params.canCrit = false
-    params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    params.atk100 = 1.0 params.atk200 = 1.0 params.atk300 = 1.0
+    params.ftpMod  = { 1, 1, 1 }
+    params.agi_wsc = player:getMerit(xi.merit.EXENTERATOR) * 0.17
 
     if xi.settings.main.USE_ADOULIN_WEAPON_SKILL_CHANGES then
         params.multiHitfTP = true
-        params.agi_wsc = 0.7 + (player:getMerit(xi.merit.EXENTERATOR) * 0.03)
-        params.ftp100 = 1.1875 params.ftp200 = 1.1875 params.ftp300 = 1.1875
+        params.agi_wsc     = 0.7 + player:getMerit(xi.merit.EXENTERATOR) * 0.03
+        params.ftpMod      = { 1.1875, 1.1875, 1.1875 }
     end
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
 
-    if damage > 0 and not target:hasStatusEffect(xi.effect.ACCURACY_DOWN) then
-        local duration = (45 + (tp / 1000 * 45)) * applyResistanceAddEffect(player, target, xi.element.EARTH, 0)
-        target:addStatusEffect(xi.effect.ACCURACY_DOWN, 20, 0, duration)
-    end
+    -- Handle status effect
+    local effectId      = xi.effect.ACCURACY_DOWN
+    local actionElement = xi.element.EARTH
+    local power         = 20
+    local duration      = math.floor((45 + 45 * tp / 1000) * applyResistanceAddEffect(player, target, actionElement, 0))
+    xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
 end

@@ -3,9 +3,10 @@
 -- Dvucca Fireflies
 -- Transports the user to Dvucca Isle Staging Point
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.PERIQIA then
         return 0
     end

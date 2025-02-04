@@ -6,29 +6,27 @@
 -----------------------------------
 local ID = zones[xi.zone.KAZHAM]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local trialByFire = player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
+    local trialByFire = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
     local hasWhisperOfFlames = player:hasKeyItem(xi.ki.WHISPER_OF_FLAMES)
 
     if
-        (trialByFire == QUEST_AVAILABLE and player:getFameLevel(xi.quest.fame_area.WINDURST) >= 6) or
-        (trialByFire == QUEST_COMPLETED and os.time() > player:getCharVar('TrialByFire_date'))
+        (trialByFire == xi.questStatus.QUEST_AVAILABLE and player:getFameLevel(xi.fameArea.WINDURST) >= 6) or
+        (trialByFire == xi.questStatus.QUEST_COMPLETED and os.time() > player:getCharVar('TrialByFire_date'))
     then
         player:startEvent(270, 0, xi.ki.TUNING_FORK_OF_FIRE) -- Start and restart quest "Trial by Fire"
     elseif
-        trialByFire == QUEST_ACCEPTED and
+        trialByFire == xi.questStatus.QUEST_ACCEPTED and
         not player:hasKeyItem(xi.ki.TUNING_FORK_OF_FIRE) and
         not hasWhisperOfFlames
     then
         player:startEvent(285, 0, xi.ki.TUNING_FORK_OF_FIRE) -- Defeat against Ifrit : Need new Fork
-    elseif trialByFire == QUEST_ACCEPTED and not hasWhisperOfFlames then
+    elseif trialByFire == xi.questStatus.QUEST_ACCEPTED and not hasWhisperOfFlames then
         player:startEvent(271, 0, xi.ki.TUNING_FORK_OF_FIRE, 0)
-    elseif trialByFire == QUEST_ACCEPTED and hasWhisperOfFlames then
+    elseif trialByFire == xi.questStatus.QUEST_ACCEPTED and hasWhisperOfFlames then
         local numitem = 0
 
         if player:hasItem(xi.item.IFRITS_BLADE) then
@@ -57,22 +55,17 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 270 and option == 1 then
-        if player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE) == QUEST_COMPLETED then
-            player:delQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
+        if player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE) == xi.questStatus.QUEST_COMPLETED then
+            player:delQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
         end
 
-        player:addQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
+        player:addQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
         player:setCharVar('TrialByFire_date', 0)
-        player:addKeyItem(xi.ki.TUNING_FORK_OF_FIRE)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TUNING_FORK_OF_FIRE)
+        npcUtil.giveKeyItem(player, xi.ki.TUNING_FORK_OF_FIRE)
     elseif csid == 285 then
-        player:addKeyItem(xi.ki.TUNING_FORK_OF_FIRE)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.TUNING_FORK_OF_FIRE)
+        npcUtil.giveKeyItem(player, xi.ki.TUNING_FORK_OF_FIRE)
     elseif csid == 273 then
         local item = 0
         if option == 1 then
@@ -101,8 +94,8 @@ entity.onEventFinish = function(player, csid, option, npc)
             player:addTitle(xi.title.HEIR_OF_THE_GREAT_FIRE)
             player:delKeyItem(xi.ki.WHISPER_OF_FLAMES)
             player:setCharVar('TrialByFire_date', getMidnight())
-            player:addFame(xi.quest.fame_area.WINDURST, 30)
-            player:completeQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
+            player:addFame(xi.fameArea.WINDURST, 30)
+            player:completeQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRIAL_BY_FIRE)
         end
     end
 end

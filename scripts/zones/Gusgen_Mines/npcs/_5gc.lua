@@ -3,10 +3,8 @@
 --  NPC: _5gc (Lever A)
 -- !pos -4 -40.561 -54.199 196
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     npc:openDoor(2) -- Lever animation
@@ -23,12 +21,6 @@ entity.onTrigger = function(player, npc)
             GetNPCByID(lever - 6):setAnimation(8) -- open door A
         end
     end)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

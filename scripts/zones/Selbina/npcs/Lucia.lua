@@ -3,10 +3,8 @@
 --  NPC: Lucia
 -- !pos 30.552 -2.558 -30.023 248
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getZPos() > -28.750 then
@@ -14,9 +12,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(235)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

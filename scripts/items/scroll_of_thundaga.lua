@@ -3,9 +3,10 @@
 -- Scroll of Thundaga
 -- Teaches the black magic Thundaga
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.THUNDAGA)
 end
 

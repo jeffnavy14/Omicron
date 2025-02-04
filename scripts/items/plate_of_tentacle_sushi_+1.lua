@@ -10,9 +10,10 @@
 -- Ranged Accuracy % 20 (cap 20)
 -- Double Attack 1
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -21,7 +22,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 20)
+    target:addMod(xi.mod.FOOD_HP, 20)
     target:addMod(xi.mod.DEX, 3)
     target:addMod(xi.mod.AGI, 3)
     target:addMod(xi.mod.FOOD_ACCP, 20)
@@ -32,7 +33,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 20)
+    target:delMod(xi.mod.FOOD_HP, 20)
     target:delMod(xi.mod.DEX, 3)
     target:delMod(xi.mod.AGI, 3)
     target:delMod(xi.mod.FOOD_ACCP, 20)

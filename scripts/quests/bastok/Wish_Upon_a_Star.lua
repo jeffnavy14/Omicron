@@ -7,12 +7,12 @@
 -- Enu    : !pos -253.673 -13 -92.326 235
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.BASTOK, xi.quest.id.bastok.WISH_UPON_A_STAR)
+local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.WISH_UPON_A_STAR)
 
 quest.reward =
 {
     fame     = 50,
-    fameArea = xi.quest.fame_area.BASTOK,
+    fameArea = xi.fameArea.BASTOK,
     item     = { { xi.item.BAG_OF_CACTUS_STEMS, 4 } },
 }
 
@@ -20,8 +20,8 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
-                player:getFameLevel(xi.quest.fame_area.BASTOK) >= 5
+            return status == xi.questStatus.QUEST_AVAILABLE and
+                player:getFameLevel(xi.fameArea.BASTOK) >= 5
         end,
 
         [xi.zone.BASTOK_MARKETS] =
@@ -72,8 +72,44 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
+
+        [xi.zone.YUHTUNGA_JUNGLE] =
+        {
+            ['Logging_Point'] =
+            {
+                onTrade = function(player, npc, trade)
+                    if
+                        not player:hasItem(xi.item.FALLEN_STAR) and
+                        npcUtil.tradeHas(trade, xi.item.HATCHET)
+                    then
+                        if npcUtil.giveItem(player, xi.item.FALLEN_STAR, { silent = true, fromTrade = true }) then
+                            player:confirmTrade()
+                            return quest:progressEvent(205, xi.item.FALLEN_STAR)
+                        end
+                    end
+                end
+            },
+        },
+
+        [xi.zone.YHOATOR_JUNGLE] =
+        {
+            ['Logging_Point'] =
+            {
+                onTrade = function(player, npc, trade)
+                    if
+                        not player:hasItem(xi.item.FALLEN_STAR) and
+                        npcUtil.tradeHas(trade, xi.item.HATCHET)
+                    then
+                        if npcUtil.giveItem(player, xi.item.FALLEN_STAR, { silent = true, fromTrade = true }) then
+                            player:confirmTrade()
+                            return quest:progressEvent(10, xi.item.FALLEN_STAR)
+                        end
+                    end
+                end
+            },
+        },
 
         [xi.zone.BASTOK_MARKETS] =
         {
@@ -110,7 +146,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.BASTOK_MARKETS] =

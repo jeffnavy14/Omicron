@@ -3,9 +3,10 @@
 -- Ionohelix Schema
 -- Teaches the black magic Ionohelix
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.IONOHELIX)
 end
 

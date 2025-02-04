@@ -3,6 +3,7 @@
 --  NPC: Clainomille
 -- !pos -72.771 0.999 -6.112 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local pathNodes =
@@ -19,19 +20,6 @@ entity.onSpawn = function(npc)
     npc:initNpcAi()
     npc:setPos(xi.path.first(pathNodes))
     npc:pathThrough(pathNodes, xi.path.flag.PATROL)
-end
-
-entity.onTrade = function(player, npc, trade)
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(613)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

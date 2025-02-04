@@ -4,10 +4,8 @@
 -----------------------------------
 local ID = zones[xi.zone.ALTAIEU]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.AURORAL_UPDRAFT_OFFSET
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     elseif offset >= 1 and offset <= 5 then
         player:startEvent(155)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

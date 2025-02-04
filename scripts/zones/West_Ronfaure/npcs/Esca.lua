@@ -4,6 +4,7 @@
 -- Involved in Quest "The Pickpocket"
 -- !pos -624.231 -51.499 278.369 100
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
@@ -19,9 +20,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(119)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -5,7 +5,15 @@
 -----------------------------------
 local ID = zones[xi.zone.QUICKSAND_CAVES]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+local magisterPHTable =
+{
+    -- Antican Magister is a lottery of various Antica at (C-6).
+    -- https://www.bg-wiki.com/ffxi/Antican_Magister
+    [ID.mob.ANTICAN_MAGISTER - 3] = ID.mob.ANTICAN_MAGISTER,
+}
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.regime.checkRegime(player, mob, 812, 2, xi.regime.type.GROUNDS)
@@ -19,7 +27,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.ANTICAN_MAGISTER_PH, 10, 3600) -- 1 hour
+    xi.mob.phOnDespawn(mob, magisterPHTable, 10, 3600) -- 1 hour
 end
 
 return entity

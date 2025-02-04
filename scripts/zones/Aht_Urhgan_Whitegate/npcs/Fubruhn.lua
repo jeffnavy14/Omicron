@@ -22,6 +22,7 @@
 -- 602 = Expansion increased
 -- 4th arg = new size of locker
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local function getNumberOfCoinsToUpgradeSize(size)
@@ -81,10 +82,6 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    -- TODO: Check if they are >= Mission 2
-    -- if < mission 2 then
-    --      player:startEvent(600)
-    -- else
     if player:getCurrentMission(xi.mission.log_id.TOAU) >= xi.mission.id.toau.PRESIDENT_SALAHEEM then
         local accessType = xi.moghouse.getMogLockerAccessType(player)
         local mogLockerExpiryTimestamp = xi.moghouse.getMogLockerExpiryTimestamp(player)
@@ -100,9 +97,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(600)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

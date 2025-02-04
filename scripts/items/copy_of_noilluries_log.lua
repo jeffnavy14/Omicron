@@ -5,9 +5,10 @@
 -- The one that stands out the most is the battle with the colossal beast she undertook to prove herself to her order.
 -- Adventurers note that reading it increases one's great katana skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.GREAT_KATANA)
 end
 

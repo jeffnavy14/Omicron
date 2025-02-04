@@ -3,9 +3,10 @@
 -- S. Rem. Fireflies
 -- Transports the user out of Silver Sea Remnants
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.SILVER_SEA_REMNANTS then
         return 0
     end

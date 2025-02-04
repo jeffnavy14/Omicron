@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -41,7 +41,8 @@ along with this program.  If not, see http://www.gnu.org/licenses/
  ************************************************************************/
 
 CEnmityContainer::CEnmityContainer(CMobEntity* holder)
-: m_EnmityHolder(holder)
+: EnmityCap{ settings::get<int32>("map.ENMITY_CAP") }
+, m_EnmityHolder(holder)
 {
 }
 
@@ -166,9 +167,20 @@ void CEnmityContainer::UpdateEnmity(CBattleEntity* PEntity, int32 CE, int32 VE, 
     }
 
     // Apply TH only if this was a direct action
-    if (directAction && PEntity->getMod(Mod::TREASURE_HUNTER) > m_EnmityHolder->m_THLvl)
+    if (directAction)
     {
-        m_EnmityHolder->m_THLvl = PEntity->getMod(Mod::TREASURE_HUNTER);
+        int16 THlevel = std::min<int16>(8, PEntity->getMod(Mod::TREASURE_HUNTER));
+
+        // Enforce TH8 as max for THF main and TH4 as non-THF main
+        if (PEntity->GetMJob() != JOB_THF)
+        {
+            THlevel = std::min<int16>(4, PEntity->getMod(Mod::TREASURE_HUNTER));
+        }
+
+        if (m_EnmityHolder->m_THLvl < THlevel)
+        {
+            m_EnmityHolder->m_THLvl = THlevel;
+        }
     }
 
     auto enmity_obj = m_EnmityList.find(PEntity->id);
@@ -204,6 +216,7 @@ void CEnmityContainer::UpdateEnmity(CBattleEntity* PEntity, int32 CE, int32 VE, 
         if (initial)
         {
             CE += 200;
+            VE += 900;
         }
 
         float bonus = CalculateEnmityBonus(PEntity);
@@ -248,7 +261,7 @@ bool CEnmityContainer::HasID(uint32 TargetID)
  *                                                                       *
  ************************************************************************/
 
-void CEnmityContainer::UpdateEnmityFromCure(CBattleEntity* PEntity, uint8 level, int32 CureAmount, bool isCureV)
+void CEnmityContainer::UpdateEnmityFromCure(CBattleEntity* PEntity, uint8 level, int32 CureAmount, int32 fixedCE, int32 fixedVE)
 {
     TracyZoneScoped;
     if (!IsWithinEnmityRange(PEntity))
@@ -261,10 +274,10 @@ void CEnmityContainer::UpdateEnmityFromCure(CBattleEntity* PEntity, uint8 level,
     float bonus                  = CalculateEnmityBonus(PEntity);
     float tranquilHeartReduction = 1.f - battleutils::HandleTranquilHeart(PEntity);
 
-    if (isCureV)
+    if (fixedCE > 0 || fixedVE > 0)
     {
-        CE = (int32)(300.f * bonus * tranquilHeartReduction);
-        VE = (int32)(600.f * bonus * tranquilHeartReduction);
+        CE = (int32)(fixedCE * bonus * tranquilHeartReduction);
+        VE = (int32)(fixedVE * bonus * tranquilHeartReduction);
     }
     else
     {
@@ -438,6 +451,14 @@ CBattleEntity* CEnmityContainer::GetHighestEnmity()
             auto* POwner = PEnmityObject.PEnmityOwner;
             if (!POwner || (POwner->allegiance != m_EnmityHolder->allegiance))
             {
+                // Deal with ties by preferring current battle target
+                // Check if there is a tie, the current highest entity is valid, the mob has a battle target,
+                if (Enmity == HighestEnmity && highest != m_EnmityList.end() && m_EnmityHolder->GetBattleTargetID() != 0 &&
+                    // the current highest entity is the current battle target
+                    highest->second.PEnmityOwner && highest->second.PEnmityOwner->targid == m_EnmityHolder->GetBattleTargetID())
+                {
+                    continue;
+                }
                 active        = PEnmityObject.active;
                 HighestEnmity = Enmity;
                 highest       = it;
@@ -479,8 +500,8 @@ bool CEnmityContainer::IsWithinEnmityRange(CBattleEntity* PEntity) const
     {
         return false;
     }
-    float maxRange = square(m_EnmityHolder->m_Type == MOBTYPE_NOTORIOUS ? 28.f : 25.f);
-    return distanceSquared(m_EnmityHolder->loc.p, PEntity->loc.p) <= maxRange;
+    float maxRange = m_EnmityHolder->m_Type == MOBTYPE_NOTORIOUS ? 28.0f : 25.0f;
+    return isWithinDistance(m_EnmityHolder->loc.p, PEntity->loc.p, maxRange);
 }
 
 EnmityList_t* CEnmityContainer::GetEnmityList()

@@ -10,9 +10,10 @@
 -- Health Regen While Healing 2
 -- Defense % 12 (cap 60)
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -21,8 +22,8 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 15)
-    target:addMod(xi.mod.MP, 15)
+    target:addMod(xi.mod.FOOD_HP, 15)
+    target:addMod(xi.mod.FOOD_MP, 15)
     target:addMod(xi.mod.AGI, 4)
     target:addMod(xi.mod.CHR, -7)
     target:addMod(xi.mod.HPHEAL, 2)
@@ -31,8 +32,8 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 15)
-    target:delMod(xi.mod.MP, 15)
+    target:delMod(xi.mod.FOOD_HP, 15)
+    target:delMod(xi.mod.FOOD_MP, 15)
     target:delMod(xi.mod.AGI, 4)
     target:delMod(xi.mod.CHR, -7)
     target:delMod(xi.mod.HPHEAL, 2)

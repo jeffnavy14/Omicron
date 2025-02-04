@@ -3,9 +3,10 @@
 -- Item: Soy Milk
 -- Item Effect: Restores 40 HP over 120 seconds
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

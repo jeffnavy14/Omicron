@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.DEN_OF_RANCOR]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -14,9 +15,6 @@ entity.onTrade = function(player, npc, trade)
     then
         player:confirmTrade()
     end
-end
-
-entity.onTrigger = function(player, npc)
 end
 
 return entity

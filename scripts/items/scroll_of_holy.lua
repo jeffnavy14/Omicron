@@ -3,9 +3,10 @@
 -- Scroll of Holy
 -- Teaches the white magic Holy
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.HOLY)
 end
 

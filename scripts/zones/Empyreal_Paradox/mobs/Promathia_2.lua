@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.EMPYREAL_PARADOX]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -15,12 +16,16 @@ end
 
 entity.onMobSpawn = function(mob)
     local battlefield = mob:getBattlefield()
-    if GetMobByID(ID.mob.PROMATHIA_OFFSET + (battlefield:getArea() - 1) * 2):isDead() then
+    if not battlefield then
+        return
+    end
+
+    if GetMobByID(ID.mob.PROMATHIA + (battlefield:getArea() - 1) * 2):isDead() then
         battlefield:setLocalVar('phaseChange', 0)
     end
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local bcnmAllies = mob:getBattlefield():getAllies()
     for i, v in pairs(bcnmAllies) do
         if v:getName() == 'Prishe' then
@@ -31,6 +36,7 @@ entity.onMobEngaged = function(mob, target)
             end
         else
             v:addEnmity(mob, 0, 1)
+            v:updateEnmity(mob)
         end
     end
 end
@@ -55,6 +61,7 @@ entity.onMobFight = function(mob, target)
     for i, v in pairs(bcnmAllies) do
         if not v:getTarget() then
             v:addEnmity(mob, 0, 1)
+            v:updateEnmity(mob)
         end
     end
 end
@@ -72,7 +79,7 @@ entity.onSpellPrecast = function(mob, spell)
 end
 
 entity.onMagicCastingCheck = function(mob, target, spell)
-    if math.random() > 0.75 then
+    if math.random(1, 100) <= 25 then
         return 219
     else
         return 218

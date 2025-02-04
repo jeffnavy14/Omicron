@@ -5,7 +5,7 @@
 -- Moogle : (Mog House, Home Nation)
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_MOOGLE_PICNIC)
+local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.THE_MOOGLE_PICNIC)
 
 quest.reward =
 {
@@ -15,20 +15,23 @@ quest.reward =
 -- Since there are so many zones with interactions:
 quest.sections = {}
 
-quest.sections[1] = {}
-quest.sections[1].check = function(player, status, vars)
-    local bedPlacedTime = quest:getVar(player, 'bedPlacedTime')
+quest.sections[1] =
+{
+    check = function(player, status, vars)
+        local bedPlacedTime = quest:getVar(player, 'bedPlacedTime')
 
-    return status == QUEST_AVAILABLE and
-        player:hasCompletedQuest(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.GIVE_A_MOOGLE_A_BREAK) and
-        xi.moghouse.isInMogHouseInHomeNation(player) and
-        player:getFameLevel(player:getNation()) >= 5 and
-        not quest:getMustZone(player) and
-        quest:getLocalVar(player, 'questSeen') == 0 and
-        bedPlacedTime ~= 0 and
-        os.time() > bedPlacedTime + 60
-end
+        return status == xi.questStatus.QUEST_AVAILABLE and
+            player:hasCompletedQuest(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.GIVE_A_MOOGLE_A_BREAK) and
+            xi.moghouse.isInMogHouseInHomeNation(player) and
+            player:getFameLevel(player:getNation()) >= 5 and
+            not quest:getMustZone(player) and
+            quest:getLocalVar(player, 'questSeen') == 0 and
+            bedPlacedTime ~= 0 and
+            os.time() > bedPlacedTime + 60
+    end
+}
 
+---@type ZoneSection
 local questAvailable =
 {
     ['Moogle'] =
@@ -50,11 +53,14 @@ local questAvailable =
     },
 }
 
-quest.sections[2] = {}
-quest.sections[2].check = function(player, status, vars)
-    return status == QUEST_ACCEPTED
-end
+quest.sections[2] =
+{
+    check = function(player, status, vars)
+        return status == xi.questStatus.QUEST_ACCEPTED
+    end
+}
 
+---@type ZoneSection
 local questAccepted =
 {
     ['Moogle'] =

@@ -11,29 +11,45 @@ xi.spells.enhancing = xi.spells.enhancing or {}
 -- File structure:
 -- 2 Basic Functions called by the main function.
 
+local column =
+{
+    EFFECT_TIER       =  1,
+    EFFECT_MAIN       =  2,
+    EFFECT_SUB        =  3,
+    MODIFIER          =  4,
+    MERIT_ID          =  5,
+    JOB_POINT_ID      =  6,
+    POWER_BASE        =  7,
+    SKILL_REQUIREMENT =  8,
+    POWER_CAP         =  9,
+    MULTIPLIER        = 10,
+    DIVISOR           = 11,
+    SOUL_VOICE        = 12,
+}
+
 -- Table variables.
 local pTable =
 {
---                                          1     2                  3                       4                       5                         6                     7     8    9    10   11  12
--- Structure:                 [spellId] = { Tier, Main Effect,       subEffect,              Main Modifier,          Merit Effect,             Job-Point Effect,     power Scap Pcap Mult Div SVP },
+--                                          1     2                 3                         4                       5                         6                     7     8    9    10   11  12
+-- Structure:                 [spellId] = { Tier, Main Effect,      subEffect,                Main Modifier,          Merit Effect,             Job-Point Effect,     power Sreq Pcap Mult Div SVP },
     -- Ballad
     [xi.magic.spell.MAGES_BALLAD      ] = { 1, xi.effect.BALLAD,    xi.mod.AUGMENT_SONG_STAT, xi.mod.BALLAD_EFFECT,   0,                        0,                    1,   0,   1,   1,  0, true  },
     [xi.magic.spell.MAGES_BALLAD_II   ] = { 2, xi.effect.BALLAD,    xi.mod.AUGMENT_SONG_STAT, xi.mod.BALLAD_EFFECT,   0,                        0,                    2,   0,   2,   1,  0, true  },
     [xi.magic.spell.MAGES_BALLAD_III  ] = { 3, xi.effect.BALLAD,    xi.mod.AUGMENT_SONG_STAT, xi.mod.BALLAD_EFFECT,   0,                        0,                    3,   0,   3,   1,  0, true  },
     -- Carol - NOTE: CAROL II Gives a fixed elemental evasion. However, it also gives a Elemental Nullification effect, that follows regular song rules concerning power.
-    [xi.magic.spell.FIRE_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.FIRE,        xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.ICE_CAROL         ] = { 1, xi.effect.CAROL,     xi.element.ICE,         xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.WIND_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.WIND,        xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.EARTH_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.EARTH,       xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.LIGHTNING_CAROL   ] = { 1, xi.effect.CAROL,     xi.element.THUNDER,   xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.WATER_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.WATER,       xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.LIGHT_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.LIGHT,       xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
-    [xi.magic.spell.DARK_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.DARK,        xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.FIRE_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.FIRE,          xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.ICE_CAROL         ] = { 1, xi.effect.CAROL,     xi.element.ICE,           xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.WIND_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.WIND,          xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.EARTH_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.EARTH,         xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.LIGHTNING_CAROL   ] = { 1, xi.effect.CAROL,     xi.element.THUNDER,       xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.WATER_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.WATER,         xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.LIGHT_CAROL       ] = { 1, xi.effect.CAROL,     xi.element.LIGHT,         xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
+    [xi.magic.spell.DARK_CAROL        ] = { 1, xi.effect.CAROL,     xi.element.DARK,          xi.mod.CAROL_EFFECT,    0,                        0,                   20, 200,  80,   8, 10, true  },
     -- [xi.magic.spell.FIRE_CAROL_II     ] = { 2, xi.effect.CAROL_II,  xi.element.FIRE,        xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.ICE_CAROL_II      ] = { 2, xi.effect.CAROL_II,  xi.element.ICE,         xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.WIND_CAROL_II     ] = { 2, xi.effect.CAROL_II,  xi.element.WIND,        xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.EARTH_CAROL_II    ] = { 2, xi.effect.CAROL_II,  xi.element.EARTH,       xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
-    -- [xi.magic.spell.LIGHTNING_CAROL_II] = { 2, xi.effect.CAROL_II,  xi.element.THUNDER,   xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
+    -- [xi.magic.spell.LIGHTNING_CAROL_II] = { 2, xi.effect.CAROL_II,  xi.element.THUNDER,     xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.WATER_CAROL_II    ] = { 2, xi.effect.CAROL_II,  xi.element.WATER,       xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.LIGHT_CAROL_II    ] = { 2, xi.effect.CAROL_II,  xi.element.LIGHT,       xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
     -- [xi.magic.spell.DARK_CAROL_II     ] = { 2, xi.effect.CAROL_II,  xi.element.DARK,        xi.mod.ETUDE_EFFECT,    0,                        0,                   10, 400,  15, 1.5, 10, true  },
@@ -69,11 +85,11 @@ local pTable =
     [xi.magic.spell.KNIGHTS_MINNE_IV  ] = { 4, xi.effect.MINNE,     xi.mod.AUGMENT_SONG_STAT, xi.mod.MINNE_EFFECT,    xi.merit.MINNE_EFFECT,    xi.jp.MINNE_EFFECT,  30,   0, 164,  16, 10, true  },
     [xi.magic.spell.KNIGHTS_MINNE_V   ] = { 5, xi.effect.MINNE,     xi.mod.AUGMENT_SONG_STAT, xi.mod.MINNE_EFFECT,    xi.merit.MINNE_EFFECT,    xi.jp.MINNE_EFFECT,  50,   0, 204,  20, 10, true  },
     -- Minuet
-    [xi.magic.spell.VALOR_MINUET      ] = { 1, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT,  5,  50,  32,   3,  8, true  },
-    [xi.magic.spell.VALOR_MINUET_II   ] = { 2, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 10, 100,  64,   6,  6, true  },
-    [xi.magic.spell.VALOR_MINUET_III  ] = { 3, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 24, 200,  96,   9,  6, true  },
-    [xi.magic.spell.VALOR_MINUET_IV   ] = { 4, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 31, 300, 112,  11,  6, true  },
-    [xi.magic.spell.VALOR_MINUET_V    ] = { 5, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 32, 500, 124,  12,  6, true  },
+    [xi.magic.spell.VALOR_MINUET      ] = { 1, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT,  5,  50,  32,  3, 4.3, true  }, -- skill cap 163: (163 - 50)/4.3 + 5 ~31
+    [xi.magic.spell.VALOR_MINUET_II   ] = { 2, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 10, 100,  64,  6, 3.9, true  }, -- skill cap 310: (310 - 100)/3.9 + 10 ~64
+    [xi.magic.spell.VALOR_MINUET_III  ] = { 3, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 24, 200,  96,  9, 3.5, true  }, -- skill cap 455: (455 - 200)/3.5 + 24 ~96
+    [xi.magic.spell.VALOR_MINUET_IV   ] = { 4, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 31, 300, 112, 11, 3.3, true  }, -- skill cap 570: (570 - 300)/3.3 + 31 ~112
+    [xi.magic.spell.VALOR_MINUET_V    ] = { 5, xi.effect.MINUET,    xi.mod.AUGMENT_SONG_STAT, xi.mod.MINUET_EFFECT,   xi.merit.MINUET_EFFECT,   xi.jp.MINUET_EFFECT, 32, 500, 124, 12,   4, true  }, -- skill cap 874: (874 - 500)/4 + 32 ~124
     -- Paeon
     [xi.magic.spell.ARMYS_PAEON       ] = { 1, xi.effect.PAEON,     xi.mod.AUGMENT_SONG_STAT, xi.mod.PAEON_EFFECT,    0,                        0,                    1, 100,   2,   1,  0, true  },
     [xi.magic.spell.ARMYS_PAEON_II    ] = { 2, xi.effect.PAEON,     xi.mod.AUGMENT_SONG_STAT, xi.mod.PAEON_EFFECT,    0,                        0,                    2, 150,   3,   1,  0, true  },
@@ -96,8 +112,8 @@ local pTable =
     -- Misc.
     [xi.magic.spell.GODDESSS_HYMNUS   ] = { 1, xi.effect.HYMNUS,    xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                    1,   0,   1,   0,  0, false },
     [xi.magic.spell.SENTINELS_SCHERZO ] = { 1, xi.effect.SCHERZO,   xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                    1, 350,  45,   1, 10, false },
-    [xi.magic.spell.RAPTOR_MAZURKA    ] = { 1, xi.effect.MAZURKA,   xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                   12,   0,  12,   0,  0, false },
-    [xi.magic.spell.CHOCOBO_MAZURKA   ] = { 1, xi.effect.MAZURKA,   xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                   24,   0,  24,   0,  0, false },
+    [xi.magic.spell.RAPTOR_MAZURKA    ] = { 1, xi.effect.MAZURKA,   xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                    5,   0,  12,   0,  0, false },
+    [xi.magic.spell.CHOCOBO_MAZURKA   ] = { 1, xi.effect.MAZURKA,   xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                   10,   0,  24,   0,  0, false },
 
     -- Emnity Songs
     [xi.magic.spell.FOE_SIRVENTE      ] = { 1, xi.effect.SIRVENTE,  xi.mod.AUGMENT_SONG_STAT, 0,                      0,                        0,                   35,   0,  35,   1,  0, true  },
@@ -106,15 +122,28 @@ local pTable =
 
 -- Enhancing Song Potency function. (1/2)
 xi.spells.enhancing.calculateSongPower = function(caster, target, spell, spellId, tier, songEffect, instrumentBoost, soulVoicePower)
-    local power       = pTable[spellId][7] -- The variable we want to calculate.
-    local meritEffect = pTable[spellId][5]
-    local jpEffect    = pTable[spellId][6]
-    local skillCap    = pTable[spellId][8]
-    local potencyCap  = pTable[spellId][9]
-    local multiplier  = pTable[spellId][10]
-    local divisor     = pTable[spellId][11]
+    local power       = pTable[spellId][column.POWER_BASE] -- The variable we want to calculate.
+    local meritEffect = pTable[spellId][column.MERIT_ID]
+    local jpEffect    = pTable[spellId][column.JOB_POINT_ID]
+    local skillNeeded = pTable[spellId][column.SKILL_REQUIREMENT]
+    local potencyCap  = pTable[spellId][column.POWER_CAP]
+    local multiplier  = pTable[spellId][column.MULTIPLIER]
+    local divisor     = pTable[spellId][column.DIVISOR]
+    local singingLvl  = caster:getSkillLevel(xi.skill.SINGING)
 
-    local singingLvl  = caster:getSkillLevel(xi.skill.SINGING) + caster:getWeaponSkillLevel(xi.slot.RANGED)
+    if caster:isPC() then
+        -- Add ranged skill level ONLY if it's an instrument.
+        local rangeType = caster:getWeaponSkillType(xi.slot.RANGED)
+
+        -- String instruments have half the skill effectiveness and amplify the AoE in exchange.
+        if rangeType == xi.skill.WIND_INSTRUMENT then
+            singingLvl = singingLvl + caster:getSkillLevel(rangeType)
+        elseif rangeType == xi.skill.STRING_INSTRUMENT then
+            singingLvl = singingLvl + math.floor(caster:getSkillLevel(rangeType) / 2)
+        end
+    else
+        singingLvl = singingLvl * 2
+    end
 
     -- Get Potency bonuses from Singing Skill and Instrument Skill. TODO: Investigate JP-Wiki. Most of this makes no sense.
     -- NOTE: Tier 1 Etudes.
@@ -143,15 +172,15 @@ xi.spells.enhancing.calculateSongPower = function(caster, target, spell, spellId
         end
     -- Other songs.
     else
-        if singingLvl > skillCap then
+        if singingLvl > skillNeeded then
             -- NOTE: Paeon
             if divisor == 0 then
-                if skillCap > 0 then
+                if skillNeeded > 0 then
                     power = power + 1
                 end
             -- NOTE: Aubade, Capriccio, Gavotte, Madrigal, March, Minne, Minuet, Operetta, Pastoral, Prelude, Round.
             else
-                power = math.floor(power + (singingLvl - skillCap) / divisor)
+                power = math.floor(power + (singingLvl - skillNeeded) / divisor)
             end
         end
 
@@ -234,15 +263,15 @@ end
 
 -- Main function for Enhancing Songs.
 xi.spells.enhancing.useEnhancingSong = function(caster, target, spell)
-    local spellId         = spell:getID()
-    local paramFour       = 0
+    local spellId   = spell:getID()
+    local paramFour = 0
 
     -- Get Variables from Parameters Table.
-    local tier            = pTable[spellId][1]
-    local songEffect      = pTable[spellId][2]
+    local tier            = pTable[spellId][column.EFFECT_TIER]
+    local songEffect      = pTable[spellId][column.EFFECT_MAIN]
     local subEffect       = 0
-    local instrumentBoost = caster:getMod(pTable[spellId][4]) + caster:getMod(xi.mod.ALL_SONGS_EFFECT)
-    local soulVoicePower  = pTable[spellId][12]
+    local instrumentBoost = caster:getMod(pTable[spellId][column.MODIFIER]) + caster:getMod(xi.mod.ALL_SONGS_EFFECT)
+    local soulVoicePower  = pTable[spellId][column.SOUL_VOICE]
 
     -- Calculate Song Pottency, Duration and SubEffect.
     local power    = xi.spells.enhancing.calculateSongPower(caster, target, spell, spellId, tier, songEffect, instrumentBoost, soulVoicePower)
@@ -250,11 +279,11 @@ xi.spells.enhancing.useEnhancingSong = function(caster, target, spell)
 
     -- Handle subEffect
     if songEffect == xi.effect.CAROL then
-        subEffect = pTable[spellId][3] + (caster:getMod(xi.mod.AUGMENT_SONG_STAT) * 100)
+        subEffect = pTable[spellId][column.EFFECT_SUB] + (caster:getMod(xi.mod.AUGMENT_SONG_STAT) * 100)
     elseif songEffect == xi.effect.ETUDE then
-        subEffect = pTable[spellId][3]
+        subEffect = pTable[spellId][column.EFFECT_SUB]
     else
-        subEffect = caster:getMod(pTable[spellId][3])
+        subEffect = caster:getMod(pTable[spellId][column.EFFECT_SUB])
     end
 
     -- EXCEPTION: Tier 2 Ettudes Fourth Parameter.

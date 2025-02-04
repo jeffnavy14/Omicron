@@ -3,23 +3,21 @@
 --  NPC: Hiwon-Biwon
 -- Involved In Quest: Making Headlines, Curses, Foiled...Again!?
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local makingHeadlines = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.MAKING_HEADLINES)
-    local cursesFoiledAgain1 = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.CURSES_FOILED_AGAIN_1)
+    local makingHeadlines = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.MAKING_HEADLINES)
+    local cursesFoiledAgain1 = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.CURSES_FOILED_AGAIN_1)
 
     -- Making Headlines
-    if makingHeadlines == QUEST_ACCEPTED then
+    if makingHeadlines == xi.questStatus.QUEST_ACCEPTED then
         -- bitmask of progress: 0 = Kyume-Romeh, 1 = Yuyuju, 2 = Hiwom-Gomoi, 3 = Umumu, 4 = Mahogany Door
         local prog = player:getCharVar('QuestMakingHeadlines_var')
 
         if not utils.mask.getBit(prog, 2) then
-            if cursesFoiledAgain1 == QUEST_ACCEPTED then
-                if math.random(1, 2) == 1 then
+            if cursesFoiledAgain1 == xi.questStatus.QUEST_ACCEPTED then
+                if math.random(1, 100) <= 50 then
                     player:startEvent(283) -- Give scoop while sick
                 else
                     player:startEvent(284) -- Give scoop while sick
@@ -47,9 +45,6 @@ entity.onTrigger = function(player, npc)
             player:startEvent(169)
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

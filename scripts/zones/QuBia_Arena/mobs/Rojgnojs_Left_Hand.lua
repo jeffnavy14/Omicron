@@ -1,10 +1,11 @@
 -----------------------------------
 -- Area: QuBia_Arena
 --  Mob: Rojgnoj's Left Hand
--- Mission 9-2 SANDO
+-- Mission 9-2 San d'Oria
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -12,10 +13,6 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    local battlefield = mob:getBattlefield()
-    if battlefield then
-        battlefield:setLocalVar('phaseChange', 0)
-    end
 end
 
 entity.onMobDeath = function(mob, player, optParams)

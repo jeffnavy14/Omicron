@@ -5,14 +5,15 @@
 -- Recast Time: 10 seconds
 -- Duration: Instant
 -----------------------------------
+---@type TAbility
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return 0, 0
+    return xi.job_utils.puppetmaster.onAbilityCheckRetrieve(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)
-    player:petRetreat()
+    return xi.job_utils.puppetmaster.onAbilityUseRetrieve(player, target, ability)
 end
 
 return abilityObject

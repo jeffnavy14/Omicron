@@ -70,9 +70,26 @@ bool CLuaMobSkill::isConal()
     return m_PLuaMobSkill->isConal();
 }
 
+auto CLuaMobSkill::getTargets() -> sol::table
+{
+    auto entities = lua.create_table();
+
+    for (auto target : m_PLuaMobSkill->getTargets())
+    {
+        entities.add(CLuaBaseEntity(target));
+    }
+
+    return entities;
+}
+
 uint16 CLuaMobSkill::getTotalTargets()
 {
     return m_PLuaMobSkill->getTotalTargets();
+}
+
+uint32 CLuaMobSkill::getPrimaryTargetID()
+{
+    return m_PLuaMobSkill->getPrimaryTargetID();
 }
 
 uint16 CLuaMobSkill::getMsg()
@@ -120,7 +137,9 @@ void CLuaMobSkill::Register()
     SOL_REGISTER("isSingle", CLuaMobSkill::isSingle);
     SOL_REGISTER("getParam", CLuaMobSkill::getParam);
     SOL_REGISTER("getID", CLuaMobSkill::getID);
+    SOL_REGISTER("getTargets", CLuaMobSkill::getTargets);
     SOL_REGISTER("getTotalTargets", CLuaMobSkill::getTotalTargets);
+    SOL_REGISTER("getPrimaryTargetID", CLuaMobSkill::getPrimaryTargetID);
     SOL_REGISTER("getTP", CLuaMobSkill::getTP);
     SOL_REGISTER("getMobHPP", CLuaMobSkill::getMobHPP);
 }

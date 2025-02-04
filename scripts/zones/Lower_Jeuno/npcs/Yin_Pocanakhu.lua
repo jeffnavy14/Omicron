@@ -4,10 +4,8 @@
 -- Involved in Quest: Borghertz's Hands (1st quest only)
 -- !pos 35 4 -43 245
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getCharVar('BorghertzHandsFirstTime') == 2 then

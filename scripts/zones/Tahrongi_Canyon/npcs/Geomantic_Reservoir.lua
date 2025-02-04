@@ -4,16 +4,11 @@
 -- Unlocks: Geo-Voidance
 -- !pos 78.056 15.998 117.224 117
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.geomanticReservoir.onTrigger(player, npc, xi.magic.spell.GEO_VOIDANCE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

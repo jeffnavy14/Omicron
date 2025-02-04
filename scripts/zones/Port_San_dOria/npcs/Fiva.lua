@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PORT_SAN_DORIA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if GetRegionOwner(xi.region.KOLSHUSHU) ~= xi.nation.SANDORIA then
@@ -16,22 +14,16 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            4503,  184,    -- Buburimu Grape
-            1120, 1620,    -- Casablanca
-            4359,  220,    -- Dhalmel Meat
-            614,    72,    -- Mhaura Garlic
-            4445,   40,    -- Yagudo Cherry
+            xi.item.BULB_OF_MHAURA_GARLIC,      83,
+            xi.item.YAGUDO_CHERRY,              45,
+            xi.item.SLICE_OF_DHALMEL_MEAT,     249,
+            xi.item.BUNCH_OF_BUBURIMU_GRAPES,  208,
+            xi.item.CASABLANCA,               1872,
         }
 
         player:showText(npc, ID.text.FIVA_OPEN_DIALOG)
-        xi.shop.general(player, stock, xi.quest.fame_area.SANDORIA)
+        xi.shop.general(player, stock, xi.fameArea.SANDORIA)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

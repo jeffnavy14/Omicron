@@ -3,6 +3,7 @@
 --  Mob: Faust
 -- TODO: Faust should WS ~3 times in a row each time.
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local east = 0
@@ -36,6 +37,11 @@ local handleFaustFacingDirectionMechanics = function(faust)
 
         setFaustNextTurnTime(faust)
     end
+end
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 17986)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 27482)
 end
 
 entity.onMobSpawn = function(mob)

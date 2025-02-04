@@ -3,6 +3,7 @@
 --  NPC: Wilhelm
 -- !pos -22.746 -5 17.157 249
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local limbusArmor =
@@ -35,9 +36,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(325)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

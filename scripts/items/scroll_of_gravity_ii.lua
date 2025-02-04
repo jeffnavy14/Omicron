@@ -3,9 +3,10 @@
 -- Scroll of Gravity II
 -- Teaches the black magic Gravity II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.GRAVITY_II)
 end
 

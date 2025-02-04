@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PASHHOW_MARSHLANDS_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.PASHHOW_GATE_CRYSTAL) then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.ALREADY_OBTAINED_TELE)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

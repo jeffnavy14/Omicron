@@ -4,27 +4,21 @@
 -- Item Effect: VIT +3
 -- Duration: 60 seconds
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
-    local effect = target:getStatusEffect(xi.effect.ENCHANTMENT)
-    if effect ~= nil and effect:getSubType() == 15864 then
-        target:delStatusEffect(xi.effect.ENCHANTMENT)
+itemObject.onItemCheck = function(target, item, param, caster)
+    if target:getStatusEffectBySource(xi.effect.VIT_BOOST, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TOUGH_BELT) ~= nil then
+        target:delStatusEffect(xi.effect.VIT_BOOST, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TOUGH_BELT)
     end
 
     return 0
 end
 
 itemObject.onItemUse = function(target)
-    target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 600, 15864)
-end
-
-itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.VIT, 3)
-end
-
-itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.VIT, 3)
+    if target:hasEquipped(xi.item.TOUGH_BELT) then
+        target:addStatusEffect(xi.effect.VIT_BOOST, 3, 0, 60, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TOUGH_BELT)
+    end
 end
 
 return itemObject

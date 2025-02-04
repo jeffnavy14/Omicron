@@ -4,16 +4,11 @@
 -- Unlocks: Geo-Paralysis
 -- !pos 4.239 -0.009 255.206 204
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.geomanticReservoir.onTrigger(player, npc, xi.magic.spell.GEO_PARALYSIS)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

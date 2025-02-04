@@ -2,6 +2,7 @@
 -- func: wallhack <optional target>
 -- desc: Allows the player to walk through walls.
 -----------------------------------
+---@type TCommand
 local commandObj = {}
 
 commandObj.cmdprops =
@@ -29,11 +30,11 @@ commandObj.onTrigger = function(player, target)
     end
 
     -- toggle wallhack for target
-    if targ:checkNameFlags(0x00000200) then
-        targ:setFlag(0x00000200)
+    if targ:getWallhack() then
+        targ:setWallhack(false)
         player:printToPlayer(string.format('Toggled %s\'s wallhack flag OFF.', targ:getName()))
     else
-        targ:setFlag(0x00000200)
+        targ:setWallhack(true)
         player:printToPlayer(string.format('Toggled %s\'s wallhack flag ON.', targ:getName()))
     end
 end

@@ -3,12 +3,10 @@
 -----------------------------------
 local ID = zones[xi.zone.ULEGUERAND_RANGE]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
-    UpdateNMSpawnPoint(ID.mob.JORMUNGAND)
-    GetMobByID(ID.mob.JORMUNGAND):setRespawnTime(math.random(86400, 259200))
-
     -- ffxiclopedia's pages for Black Coney and White Coney say 7 and 5 Earth seconds respectively, in game it is very fast
     -- https://ffxiclopedia.fandom.com/wiki/Black_Coney
     -- https://ffxiclopedia.fandom.com/wiki/White_Coney
@@ -17,7 +15,7 @@ zoneObject.onInitialize = function(zone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -31,13 +29,6 @@ zoneObject.onZoneIn = function(player, prevZone)
         player:setPos(363.025, 16, -60, 12)
     end
 
-    if
-        player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.DAWN and
-        player:getCharVar('COP_louverance_story') == 1
-    then
-        cs = 17
-    end
-
     return cs
 end
 
@@ -48,21 +39,20 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
-    if csid == 17 then
-        player:setCharVar('COP_louverance_story', 2)
-    end
 end
 
 zoneObject.onZoneWeatherChange = function(weather)
     local waterfall = GetNPCByID(ID.npc.WATERFALL)
 
-    if weather == xi.weather.SNOW or weather == xi.weather.BLIZZARDS then
-        if waterfall:getAnimation() ~= xi.anim.CLOSE_DOOR then
-            waterfall:setAnimation(xi.anim.CLOSE_DOOR)
-        end
-    else
-        if waterfall:getAnimation() ~= xi.anim.OPEN_DOOR then
-            waterfall:setAnimation(xi.anim.OPEN_DOOR)
+    if waterfall then
+        if weather == xi.weather.SNOW or weather == xi.weather.BLIZZARDS then
+            if waterfall:getAnimation() ~= xi.anim.CLOSE_DOOR then
+                waterfall:setAnimation(xi.anim.CLOSE_DOOR)
+            end
+        else
+            if waterfall:getAnimation() ~= xi.anim.OPEN_DOOR then
+                waterfall:setAnimation(xi.anim.OPEN_DOOR)
+            end
         end
     end
 end

@@ -4,6 +4,7 @@
 local ID = zones[xi.zone.ALTAR_ROOM]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -11,7 +12,7 @@ end
 
 entity.onMobDeath = function(mob, player, optParams)
     if
-        player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('moral') == 5
     then
         player:setCharVar('moral', 6)

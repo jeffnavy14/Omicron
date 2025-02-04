@@ -3,6 +3,7 @@
 --  NPC: Matildie
 -- Adventurer's Assistant
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -12,13 +13,6 @@ entity.onTrade = function(player, npc, trade)
     then
         player:startEvent(631)
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(587)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

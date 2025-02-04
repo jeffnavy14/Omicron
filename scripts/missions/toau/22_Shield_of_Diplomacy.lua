@@ -32,14 +32,11 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId) == 0 then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId) == 0 then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
@@ -52,7 +49,7 @@ mission.sections =
                 end,
 
                 [32001] = function(player, csid, option, npc)
-                    if player:getLocalVar('battlefieldWin') == 1124 then
+                    if player:getLocalVar('battlefieldWin') == xi.battlefield.id.SHIELD_OF_DIPLOMACY then
                         mission:complete(player)
                     end
                 end,

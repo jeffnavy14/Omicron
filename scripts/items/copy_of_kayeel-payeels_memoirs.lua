@@ -5,9 +5,10 @@
 -- They describe in particular detail the time he received Claustrum from the Warlock Warlord Robel-Akbel.
 -- Adventurers note that reading them increases one's staff skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.STAFF)
 end
 

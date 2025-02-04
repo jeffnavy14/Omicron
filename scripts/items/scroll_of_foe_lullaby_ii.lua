@@ -3,9 +3,10 @@
 -- Scroll of Foe Lullaby II
 -- Teaches the song Foe Lullaby II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FOE_LULLABY_II)
 end
 

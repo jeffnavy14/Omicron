@@ -2,10 +2,8 @@
 -- Area: Zeruhn Mines
 --  NPC: Grounds Tome
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.regime.bookOnTrigger(player, xi.regime.type.GROUNDS)

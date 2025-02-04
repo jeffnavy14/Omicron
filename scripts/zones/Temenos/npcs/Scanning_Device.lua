@@ -3,6 +3,7 @@
 --  NPC: Scanning_Device
 -- !pos 586 0 66 37
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -37,9 +38,6 @@ local timeVarNames =
 
 entity.onEventUpdate = function(player, csid, option, npc)
     player:updateEvent(0, GetServerVariable(timeVarNames[option]), 0, 0, 0, 0, 0, 0)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

@@ -3,9 +3,10 @@
 -- Item: tube_of_clear_salve_ii
 -- Item Effect: Instantly removes all negative status effects from pet
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if not target:hasPet() then
         return xi.msg.basic.REQUIRES_A_PET
     end

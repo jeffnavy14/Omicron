@@ -3,14 +3,12 @@
 --  NPC: Zvahl Portcullis
 -- !pos 223 -13 -254 137
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
     -- TODO: Verify if there is a minimum mission required to enter this zone.
     player:startEvent(29)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -3,9 +3,10 @@
 -- Scroll of Light Threnody
 -- Teaches the song Light Threnody
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.LIGHT_THRENODY)
 end
 

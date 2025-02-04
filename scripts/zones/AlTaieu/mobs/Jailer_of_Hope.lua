@@ -4,10 +4,14 @@
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
+    mob:setMobMod(xi.mobMod.GA_CHANCE, 60)
+    mob:setMod(xi.mod.UFASTCAST, 150)
 end
 
 entity.onMobSpawn = function(mob)

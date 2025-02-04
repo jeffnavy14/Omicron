@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.HALVUNG]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -31,12 +32,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.WIDE_TRENCH)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

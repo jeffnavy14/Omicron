@@ -4,10 +4,8 @@
 -- Involved in Quests: RNG AF3 - Unbridled Passion
 -- !pos -254.883 -17.003 -150.818 112
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local unbridledPassionCS = player:getCharVar('unbridledPassion')
@@ -17,9 +15,6 @@ entity.onTrigger = function(player, npc)
     elseif unbridledPassionCS == 6 then
         player:startEvent(7)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

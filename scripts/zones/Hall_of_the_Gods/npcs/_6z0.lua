@@ -4,10 +4,8 @@
 -- Gives qualified players access to Ru'Aun Gardens.
 -- !pos 0 -12 48 251
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.CERULEAN_CRYSTAL) then
@@ -15,12 +13,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(2)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

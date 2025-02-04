@@ -5,10 +5,8 @@
 -- Involved in Quest: Riding on the Clouds
 -- !pos -78 -24 28 249
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasCompletedUniqueEvent(xi.uniqueEvent.EKOKOKO_INTRODUCTION) then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(52)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -3,9 +3,10 @@
 -- Reraise Hairpin
 --  This Hairpin functions in the same way as the spell Reraise II.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

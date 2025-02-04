@@ -5,7 +5,7 @@
 require('scripts/globals/quests')
 -----------------------------------
 xi = xi or {}
-xi.beastmentreasure = xi.beastmentreasure or {}
+xi.beastmenTreasure = xi.beastmenTreasure or {}
 
 local zoneData =
 {
@@ -193,54 +193,56 @@ local function startMapMarkerEvent(eventid, player, digsiteids)
     player:startEvent(eventid, player:getZoneID(), 0, pos.x * 1000, pos.z * 1000)
 end
 
-xi.beastmentreasure.handleNpcOnTrigger = function(player, digsiteids)
+xi.beastmenTreasure.handleNpcOnTrigger = function(player, digsiteids)
     local zd = zoneData[player:getZoneID()]
     local status = player:getCharVar(zd.statusvar)
 
     if not player:hasKeyItem(zd.mapid) then
         player:startEvent(102) -- Peddlestox lectures you for not having a map
-    elseif status == QUEST_AVAILABLE then
+    elseif status == xi.questStatus.QUEST_AVAILABLE then
         player:startEvent(100) -- Peddlestox says go fetch
-    elseif status == QUEST_ACCEPTED then
+    elseif status == xi.questStatus.QUEST_ACCEPTED then
         player:startEvent(104) -- 'What do I look like, a charity?'
-    elseif status == QUEST_COMPLETED then
+    elseif status == xi.questStatus.QUEST_COMPLETED then
         -- Note: Quest will be 'completed' after trading the correct items,
         -- but will be set to available again after excavating the reward.
-        startMapMarkerEvent(103, player, digsiteids) -- Peddlestox reminds you where your digsite is
+        startMapMarkerEvent(103, player, xi.beastmenTreasure.getTableOfIDs(digsiteids)) -- Peddlestox reminds you where your digsite is
     end
 end
 
-xi.beastmentreasure.handleNpcOnTrade = function(player, trade, digsiteids)
+xi.beastmenTreasure.handleNpcOnTrade = function(player, trade, digsiteids)
     local zd = zoneData[player:getZoneID()]
 
     if
-        player:getCharVar(zd.statusvar) == QUEST_ACCEPTED and
+        player:getCharVar(zd.statusvar) == xi.questStatus.QUEST_ACCEPTED and
         npcUtil.tradeHasExactly(trade, zd.fetchitems)
     then
         -- Assign a random dig site to the player
         player:setCharVar(zd.dsvar, math.random(1, 8))
-
-        startMapMarkerEvent(101, player, digsiteids) -- Peddlestox shows you where to dig
+        startMapMarkerEvent(101, player, xi.beastmenTreasure.getTableOfIDs(digsiteids)) -- Peddlestox shows you where to dig
     end
 end
 
-xi.beastmentreasure.handleNpcOnEventFinish = function(player, csid)
+xi.beastmenTreasure.handleNpcOnEventFinish = function(player, csid)
     local zd = zoneData[player:getZoneID()]
 
     if csid == 100 then
-        player:incrementCharVar(zd.statusvar, QUEST_ACCEPTED)
+        player:incrementCharVar(zd.statusvar, xi.questStatus.QUEST_ACCEPTED)
     elseif csid == 101 then
         player:confirmTrade()
-        player:setCharVar(zd.statusvar, QUEST_COMPLETED)
+        player:setCharVar(zd.statusvar, xi.questStatus.QUEST_COMPLETED)
     end
 end
 
-xi.beastmentreasure.updatePeddlestox = function(zone, peddlestoxID)
+xi.beastmenTreasure.updatePeddlestox = function(zone, peddlestoxID)
     --[[ Allows Peddlestox to appear on the appropriate day and disappear when the day is over.
     This function is called by each of the three zones where Peddlestox can appear: once on init,
     and once at the start of each new game day. Since Peddlestox is disabled in the db by default, we
     only need to enable her on the appropriate day and disable her on the following day. ]]--
     local peddlestox = GetNPCByID(peddlestoxID)
+    if not peddlestox then
+        return
+    end
 
     if zoneData[zone].day == VanadielDayOfTheWeek() then
         peddlestox:setStatus(xi.status.NORMAL)
@@ -261,8 +263,8 @@ xi.beastmentreasure.updatePeddlestox = function(zone, peddlestoxID)
     end
 end
 
-xi.beastmentreasure.handleQmOnTrigger = function(player, npc, buriedtext, nothingtext, digsiteids)
-    local digsiteid = digsiteids[getAssignedDigSite(player)]
+xi.beastmenTreasure.handleQmOnTrigger = function(player, npc, buriedtext, nothingtext, digsiteids)
+    local digsiteid = xi.beastmenTreasure.getTableOfIDs(digsiteids)[getAssignedDigSite(player)]
     local qmid = npc:getID()
 
     if digsiteid == nil or digsiteid ~= qmid then
@@ -273,14 +275,14 @@ xi.beastmentreasure.handleQmOnTrigger = function(player, npc, buriedtext, nothin
     end
 end
 
-xi.beastmentreasure.handleQmOnTrade = function(player, npc, trade, digsiteids)
+xi.beastmenTreasure.handleQmOnTrade = function(player, npc, trade, digsiteids)
     local zoneid = player:getZoneID()
     local digsite = getAssignedDigSite(player)
 
     if
         npcUtil.tradeHasExactly(trade, xi.item.PICKAXE) and
-        player:getCharVar(zoneData[zoneid].statusvar) == QUEST_COMPLETED and
-        npc:getID() == digsiteids[digsite]
+        player:getCharVar(zoneData[zoneid].statusvar) == xi.questStatus.QUEST_COMPLETED and
+        npc:getID() == xi.beastmenTreasure.getTableOfIDs(digsiteids)[digsite]
     then
         --[[ Event 105 needs args to spawn and animate a treasure chest
              Example args from retail capture: 105 123 450762 1745 201805 7 723 490292 4095
@@ -294,7 +296,7 @@ xi.beastmentreasure.handleQmOnTrade = function(player, npc, trade, digsiteids)
     end
 end
 
-xi.beastmentreasure.handleQmOnEventFinish = function(player, csid)
+xi.beastmenTreasure.handleQmOnEventFinish = function(player, csid)
     local zoneid = player:getZoneID()
 
     if csid == 105 then
@@ -315,9 +317,23 @@ xi.beastmentreasure.handleQmOnEventFinish = function(player, csid)
         player:addTreasure(item3)
         player:addTreasure(item4)
         -- Reset player vars
-        player:setCharVar(zoneData[zoneid].statusvar, QUEST_AVAILABLE)
+        player:setCharVar(zoneData[zoneid].statusvar, xi.questStatus.QUEST_AVAILABLE)
         player:setCharVar(zoneData[zoneid].dsvar, 0)
     end
 end
 
-xi.bmt = xi.beastmentreasure
+xi.beastmenTreasure.getTableOfIDs = function(digsiteids)
+    -- Creates the table of IDs from the BEASTMEN_TREASURE_OFFSET in each three zone IDs.lua
+    local IDs = {
+        digsiteids,
+        digsiteids + 1,
+        digsiteids + 2,
+        digsiteids + 3,
+        digsiteids + 4,
+        digsiteids + 5,
+        digsiteids + 6,
+        digsiteids + 7
+    }
+
+    return IDs
+end

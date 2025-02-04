@@ -3,9 +3,10 @@
 -- Item: bottle_of_fanatics_drink
 -- Item Effect: When applied, grants UDMGPHYS -10000 for 60s
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

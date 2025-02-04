@@ -8,9 +8,10 @@
 -- Accuracy 9% (caps @ 11)
 -- Attack 10% (caps @ 16)
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -19,7 +20,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 35)
+    target:addMod(xi.mod.FOOD_HP, 35)
     target:addMod(xi.mod.STR, 2)
     target:addMod(xi.mod.FOOD_ACCP, 9)
     target:addMod(xi.mod.FOOD_ACC_CAP, 11)
@@ -28,7 +29,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 35)
+    target:delMod(xi.mod.FOOD_HP, 35)
     target:delMod(xi.mod.STR, 2)
     target:delMod(xi.mod.FOOD_ACCP, 9)
     target:delMod(xi.mod.FOOD_ACC_CAP, 11)

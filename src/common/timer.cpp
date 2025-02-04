@@ -1,4 +1,23 @@
-﻿// Copyright (c) 2010-2015 Darkstar Dev Teams
+﻿/*
+===========================================================================
+
+  Copyright (c) 2010-2015 Darkstar Dev Teams
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+
+===========================================================================
+*/
 
 #include "common/timer.h"
 #include "common/logging.h"
@@ -77,15 +96,11 @@ static uint32 tick()
     //
 #elif (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0 && defined(_POSIX_MONOTONIC_CLOCK) /* posix compliant */) || \
     (defined(__FreeBSD_cc_version) && __FreeBSD_cc_version >= 500005 /* FreeBSD >= 5.1.0 */)
-    struct timespec tval
-    {
-    };
+    timespec tval{};
     clock_gettime(CLOCK_MONOTONIC, &tval);
     return tval.tv_sec * 1000 + tval.tv_nsec / 1000000;
 #else
-    struct timeval tval
-    {
-    };
+    timeval tval{};
     gettimeofday(&tval, nullptr);
     return tval.tv_sec * 1000 + tval.tv_usec / 1000;
 #endif

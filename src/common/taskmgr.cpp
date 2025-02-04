@@ -27,15 +27,21 @@
 #include "common/tracy.h"
 #include "common/utils.h"
 
-CTaskMgr::CTask* CTaskMgr::AddTask(std::string const& InitName, time_point InitTick, std::any InitData, TASKTYPE InitType, TaskFunc_t InitFunc, duration InitInterval)
+CTaskMgr::~CTaskMgr()
 {
-    TracyZoneScoped;
-    return AddTask(new CTask(InitName, InitTick, std::move(InitData), InitType, InitFunc, InitInterval));
+    while (!m_TaskList.empty())
+    {
+        CTask* PTask = m_TaskList.top();
+        m_TaskList.pop();
+
+        destroy(PTask);
+    }
 }
 
 CTaskMgr::CTask* CTaskMgr::AddTask(CTask* PTask)
 {
     TracyZoneScoped;
+
     m_TaskList.push(PTask);
     return PTask;
 }
@@ -43,6 +49,7 @@ CTaskMgr::CTask* CTaskMgr::AddTask(CTask* PTask)
 void CTaskMgr::RemoveTask(std::string const& TaskName)
 {
     TracyZoneScoped;
+
     // m_TaskList is a priority_queue, so we can't directly pull members out of it.
     //
     // Tasks are compared using their m_tick values, so we can safely remove all the tasks
@@ -56,6 +63,7 @@ void CTaskMgr::RemoveTask(std::string const& TaskName)
         m_TaskList.pop();
 
         // Don't add tasks we're trying to remove to the new pq
+        // FIXME: duplicate task names AREN'T checked on insert!
         if (PTask->m_name != TaskName)
         {
             newPq.push(PTask);
@@ -63,6 +71,7 @@ void CTaskMgr::RemoveTask(std::string const& TaskName)
         else
         {
             ++tasksRemoved;
+            destroy(PTask);
         }
     }
 
@@ -78,6 +87,7 @@ void CTaskMgr::RemoveTask(std::string const& TaskName)
 duration CTaskMgr::DoTimer(time_point tick)
 {
     TracyZoneScoped;
+
     duration diff = 1s;
 
     while (!m_TaskList.empty())

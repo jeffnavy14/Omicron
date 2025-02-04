@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.THE_ELDIEME_NECROPOLIS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -32,7 +33,7 @@ entity.onTrigger = function(player, npc)
 
     -- A NEW DAWN (Beastmaster AF3)
     if
-        player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.A_NEW_DAWN) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.A_NEW_DAWN) == xi.questStatus.QUEST_ACCEPTED and
         npc:getID() == ID.npc.SARCOPHAGUS_OFFSET
     then
         local aNewDawnEvent = player:getCharVar('ANewDawn_Event')
@@ -62,9 +63,6 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     -- THE REQUIEM
     if csid == 46 then
@@ -77,7 +75,7 @@ entity.onEventFinish = function(player, csid, option, npc)
     -- A NEW DAWN
     elseif
         csid == 45 and
-        npcUtil.completeQuest(player, xi.quest.log_id.JEUNO, xi.quest.id.jeuno.A_NEW_DAWN, { item = 14222, title = xi.title.PARAGON_OF_BEASTMASTER_EXCELLENCE })
+        npcUtil.completeQuest(player, xi.questLog.JEUNO, xi.quest.id.jeuno.A_NEW_DAWN, { item = 14222, title = xi.title.PARAGON_OF_BEASTMASTER_EXCELLENCE })
     then
         player:setCharVar('ANewDawn_Event', 6)
         player:delKeyItem(xi.ki.TAMERS_WHISTLE)

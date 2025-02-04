@@ -3,10 +3,8 @@
 --  NPC: Rojaireaut
 -- !pos -91.781 -0.545 587.944 193
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getCharVar('EcoStatus') == 1 then
@@ -20,9 +18,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(50) -- Default dialogue
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

@@ -2,6 +2,7 @@
 -- Area: Spire of Vahzl
 --  Mob: Agonizer
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -11,7 +12,7 @@ end
 entity.onMobSpawn = function(mob)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobWeaponSkill = function(target, mob, skill)
@@ -20,7 +21,7 @@ end
 entity.onMobFight = function(mob, target)
     if mob:getHPP() < 20 then
         local nextMob = GetMobByID(mob:getID() + 6) --Cumulator aggros at <20%
-        if not nextMob:isEngaged() then
+        if nextMob and not nextMob:isEngaged() then
             nextMob:updateEnmity(target)
         end
     end

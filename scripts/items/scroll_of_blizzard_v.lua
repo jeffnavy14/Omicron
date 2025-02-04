@@ -3,9 +3,10 @@
 -- Scroll of Blizzard V
 -- Teaches the black magic Blizzard V
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BLIZZARD_V)
 end
 

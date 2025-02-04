@@ -87,6 +87,7 @@ SqlConnection::SqlConnection(const char* user, const char* passwd, const char* h
     // these members will be set up in SetupKeepalive(), they need to be init'd here to appease clang-tidy
     m_PingInterval = 0;
     m_LastPing     = 0;
+
     SetupKeepalive();
 }
 
@@ -99,6 +100,11 @@ SqlConnection::~SqlConnection()
         FreeResult();
         destroy(self);
     }
+}
+
+std::string SqlConnection::GetDatabaseName()
+{
+    return fmt::format("database name: {}", settings::get<std::string>("network.SQL_DATABASE").c_str());
 }
 
 std::string SqlConnection::GetClientVersion()
@@ -202,7 +208,7 @@ void SqlConnection::SetupKeepalive()
 void SqlConnection::CheckCharset()
 {
     // Check that the SQL charset is what we require
-    auto ret = QueryStr("SELECT @@character_set_database, @@collation_database;");
+    auto ret = QueryStr("SELECT @@character_set_database, @@collation_database");
     if (ret != SQL_ERROR && NumRows())
     {
         bool foundError = false;
@@ -236,7 +242,7 @@ int32 SqlConnection::TryPing()
 
     if (m_LastPing + m_PingInterval <= nowSeconds)
     {
-        ShowInfo("Pinging SQL server to keep connection alive");
+        ShowInfo("(C) Pinging SQL server to keep connection alive");
 
         m_LastPing = nowSeconds;
 
@@ -269,26 +275,48 @@ int32 SqlConnection::TryPing()
 size_t SqlConnection::EscapeStringLen(char* out_to, const char* from, size_t from_len)
 {
     TracyZoneScoped;
+
     if (self)
     {
-        return mysql_real_escape_string(&self->handle, out_to, from, (uint32)from_len);
+        return mysql_real_escape_string(&self->handle, out_to, from, static_cast<uint32>(from_len));
     }
-    return mysql_escape_string(out_to, from, (uint32)from_len);
+
+    return mysql_escape_string(out_to, from, static_cast<uint32>(from_len));
+}
+
+size_t SqlConnection::EscapeStringLen(char* out_to, std::string_view from)
+{
+    TracyZoneScoped;
+
+    return EscapeStringLen(out_to, from.data(), from.size());
 }
 
 size_t SqlConnection::EscapeString(char* out_to, const char* from)
 {
     TracyZoneScoped;
+
     return EscapeStringLen(out_to, from, strlen(from));
 }
 
-std::string SqlConnection::EscapeString(std::string const& input)
+std::string SqlConnection::EscapeString(std::string_view from)
 {
     TracyZoneScoped;
-    std::string escaped_full_string;
-    escaped_full_string.reserve(input.size() * 2 + 1);
-    EscapeString(escaped_full_string.data(), input.data());
-    return escaped_full_string;
+
+    if (from.empty())
+    {
+        return {};
+    }
+
+    auto buffer = std::vector<char>(from.size() * 2 + 1);
+    auto len    = EscapeStringLen(buffer.data(), from);
+    return std::string(buffer.data(), len);
+}
+
+std::string SqlConnection::EscapeString(const std::string& from)
+{
+    TracyZoneScoped;
+
+    return EscapeString(std::string_view(from));
 }
 
 int32 SqlConnection::QueryStr(const char* query)
@@ -559,7 +587,7 @@ bool SqlConnection::GetAutoCommit()
     TracyZoneScoped;
     if (self)
     {
-        int32 ret = Query("SELECT @@autocommit;");
+        int32 ret = Query("SELECT @@autocommit");
 
         if (ret != SQL_ERROR && NumRows() > 0 && NextRow() == SQL_SUCCESS)
         {
@@ -575,7 +603,7 @@ bool SqlConnection::GetAutoCommit()
 bool SqlConnection::TransactionStart()
 {
     TracyZoneScoped;
-    if (self && Query("START TRANSACTION;") != SQL_ERROR)
+    if (self && Query("START TRANSACTION") != SQL_ERROR)
     {
         return true;
     }
@@ -601,7 +629,7 @@ bool SqlConnection::TransactionCommit()
 bool SqlConnection::TransactionRollback()
 {
     TracyZoneScoped;
-    if (self && Query("ROLLBACK;") != SQL_ERROR)
+    if (self && Query("ROLLBACK") != SQL_ERROR)
     {
         return true;
     }
@@ -617,7 +645,7 @@ bool SqlConnection::TransactionRollback()
 void SqlConnection::StartProfiling()
 {
     TracyZoneScoped;
-    if (self && QueryStr("SET profiling = 1;") != SQL_ERROR)
+    if (self && QueryStr("SET profiling = 1") != SQL_ERROR)
     {
         return;
     }
@@ -639,7 +667,7 @@ void SqlConnection::FinishProfiling()
     }
 
     auto lastQuery = self->buf;
-    if (QueryStr("SHOW PROFILE;") != SQL_ERROR && NumRows() > 0)
+    if (QueryStr("SHOW PROFILE") != SQL_ERROR && NumRows() > 0)
     {
         std::string outStr = "SQL SHOW PROFILE:\n";
         outStr += fmt::format("Query: {}\n", lastQuery);
@@ -652,7 +680,7 @@ void SqlConnection::FinishProfiling()
             auto measurement = GetStringData(1);
             outStr += fmt::format("| {:<31}| {:<8} |\n", category, measurement);
         }
-        QueryStr("SET profiling = 0;");
+        QueryStr("SET profiling = 0");
         ShowInfo(outStr);
         return;
     }

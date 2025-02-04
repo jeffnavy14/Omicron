@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PORT_WINDURST]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.THE_SAVAGE then
@@ -25,17 +23,11 @@ entity.onTrigger = function(player, npc)
             }
 
             player:showText(npc, ID.text.ALIZABE_OPEN_DIALOG)
-            xi.shop.general(player, stock, xi.quest.fame_area.WINDURST)
+            xi.shop.general(player, stock, xi.fameArea.WINDURST)
         end
     else
         player:showText(npc, ID.text.ALIZABE_COP_NOT_COMPLETED)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

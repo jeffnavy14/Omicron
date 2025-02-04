@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ABYSSEA_GRAUBERG]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local itemType =
@@ -92,9 +93,6 @@ local function giveAugmentedItem(player, itemID, augmentList, maxAugments)
     else
         player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, itemID)
     end
-end
-
-entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)

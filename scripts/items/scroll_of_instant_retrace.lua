@@ -3,9 +3,10 @@
 -- Scroll of Instant Retrace
 -- Transports the user to their Allied Nation.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getCampaignAllegiance() == 0 then
         return 56
     else

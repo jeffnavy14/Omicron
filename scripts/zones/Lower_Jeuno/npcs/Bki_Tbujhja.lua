@@ -7,12 +7,13 @@
 -----------------------------------
 local ID = zones[xi.zone.LOWER_JEUNO]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     -- THE REQUIEM (holy water)
     if
-        player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_REQUIEM) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_REQUIEM) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('TheRequiemCS') == 2 and
         trade:hasItemQty(xi.item.FLASK_OF_HOLY_WATER, 1) and
         trade:getItemCount() == 1
@@ -22,19 +23,19 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local theRequiem = player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
+    local theRequiem = player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
 
     -- PATH OF THE BARD (Bard Flag)
     if
-        player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.A_MINSTREL_IN_DESPAIR) == QUEST_COMPLETED and
+        player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.A_MINSTREL_IN_DESPAIR) == xi.questStatus.QUEST_COMPLETED and
         player:getCharVar('PathOfTheBard_Event') == 0
     then
         player:startEvent(182) -- mentions song runes in Valkurm
 
     -- THE REQUIEM (Bard AF2)
     elseif
-        player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.PAINFUL_MEMORY) == QUEST_COMPLETED and
-        theRequiem == QUEST_AVAILABLE and
+        player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.PAINFUL_MEMORY) == xi.questStatus.QUEST_COMPLETED and
+        theRequiem == xi.questStatus.QUEST_AVAILABLE and
         player:getMainJob() == xi.job.BRD and
         player:getMainLvl() >= xi.settings.main.AF2_QUEST_LEVEL
     then
@@ -45,38 +46,35 @@ entity.onTrigger = function(player, npc)
         end
 
     elseif
-        theRequiem == QUEST_ACCEPTED and
+        theRequiem == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('TheRequiemCS') == 2
     then
         player:startEvent(146) -- During Quest "The Requiem" (before trading Holy Water)
 
     elseif
-        theRequiem == QUEST_ACCEPTED and
+        theRequiem == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('TheRequiemCS') == 3 and
         not player:hasKeyItem(xi.ki.STAR_RING1)
     then
-        if math.random(1, 2) == 1 then
+        if math.random(1, 100) <= 50 then
             player:startEvent(147) -- oh, did you take the holy water and play the requiem? you must do both!
         else
             player:startEvent(149) -- his stone sarcophagus is deep inside the eldieme necropolis.
         end
 
     elseif
-        theRequiem == QUEST_ACCEPTED and
+        theRequiem == xi.questStatus.QUEST_ACCEPTED and
         player:hasKeyItem(xi.ki.STAR_RING1)
     then
         player:startEvent(150) -- Finish Quest "The Requiem"
 
-    elseif theRequiem == QUEST_COMPLETED then
+    elseif theRequiem == xi.questStatus.QUEST_COMPLETED then
         player:startEvent(134) -- Standard dialog after "The Requiem"
 
     -- DEFAULT DIALOG
     else
         player:startEvent(180)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -91,7 +89,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         (csid == 145 or csid == 148) and
         option == 1
     then
-        player:addQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
+        player:addQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
         player:setCharVar('TheRequiemCS', 2)
 
     elseif csid == 151 then
@@ -105,8 +103,8 @@ entity.onEventFinish = function(player, csid, option, npc)
         else
             player:addItem(xi.item.CHORAL_SLIPPERS)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.CHORAL_SLIPPERS)
-            player:addFame(xi.quest.fame_area.JEUNO, 30)
-            player:completeQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
+            player:addFame(xi.fameArea.JEUNO, 30)
+            player:completeQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_REQUIEM)
         end
     end
 end

@@ -1,11 +1,11 @@
 -----------------------------------
 -- Area: Bastok Markets
 --  NPC: Olwyn
--- Standard Merchant NPC
 -- !pos -322.123 -10.319 -169.418 235
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)

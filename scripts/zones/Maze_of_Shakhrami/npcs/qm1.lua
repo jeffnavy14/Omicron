@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.MAZE_OF_SHAKHRAMI]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local playerRace = player:getRace()
@@ -27,7 +25,7 @@ entity.onTrigger = function(player, npc)
 
         local item = 18246 + playerRace - raceOffset
         GetMobByID(ID.mob.AROMA_CRAWLER):addListener('ITEM_DROPS', 'ITEM_DROPS_RSE', function(mob, loot)
-            loot:addItemFixed(item, xi.drop_rate.UNCOMMON)
+            loot:addItem(item, xi.drop_rate.UNCOMMON)
         end)
 
         local newSpawn = math.random(1, 3) -- determine new spawn point for ???
@@ -41,12 +39,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

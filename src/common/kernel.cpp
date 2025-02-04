@@ -111,7 +111,8 @@ std::unique_ptr<ConsoleService> gConsoleService;
 #else
 sigfunc* compat_signal(int signo, sigfunc* func)
 {
-    struct sigaction sact, oact;
+    sigaction sact;
+    sigaction oact;
 
     sact.sa_handler = func;
     sigemptyset(&sact.sa_mask);
@@ -199,14 +200,16 @@ void signals_init()
 
 void usercheck()
 {
-#ifndef _WIN32
-    if ((getuid() == 0) && (getgid() == 0))
+    // We _need_ root/admin for Tracy to be able to collect the full suite
+    // of information, so we disable this warning if Tracy is enabled.
+#ifndef TRACY_ENABLE
+    if (debug::isUserRoot())
     {
-        ShowWarning("You are running as the root superuser.");
+        ShowWarning("You are running as the root superuser or admin.");
         ShowWarning("It is unnecessary and unsafe to run with root privileges.");
-        sleep(3);
+        std::this_thread::sleep_for(std::chrono::seconds(5));
     }
-#endif
+#endif // TRACY_ENABLE
 }
 
 /************************************************************************
@@ -231,12 +234,15 @@ int main(int argc, char** argv)
 
     log_init(argc, argv);
     set_socket_type();
-    usercheck();
     signals_init();
     timer_init();
 
     lua_init();
     settings::init();
+    ShowInfo(fmt::format("Last Branch: {}", version::GetGitBranch()));
+    ShowInfo(fmt::format("SHA: {} ({})", version::GetGitSha(), version::GetGitDate()));
+
+    usercheck();
 
     socket_init();
 

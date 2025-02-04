@@ -3,6 +3,7 @@
 --  Mob: Kam'lanaut
 -- Apocalypse Nigh Final Fight
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local skillToAbsorb =
@@ -15,7 +16,7 @@ local skillToAbsorb =
     [828] = xi.mod.WATER_ABSORB, -- water_blade
 }
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setLocalVar('nextEnSkill', os.time() + 10)
 end
 

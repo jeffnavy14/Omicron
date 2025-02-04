@@ -2,9 +2,10 @@
 -- ID: 18336, 18337, 18649, 18663, 18677, 19758, 19851, 21260, 21261, 21267
 -- Item: Annihilator
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getFreeSlotsCount() == 0 then
         return xi.msg.basic.ITEM_UNABLE_TO_USE
     end

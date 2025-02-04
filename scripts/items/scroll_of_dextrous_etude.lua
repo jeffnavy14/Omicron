@@ -3,9 +3,10 @@
 -- Scroll of Dextrous Etude
 -- Teaches the song Dextrous Etude
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DEXTROUS_ETUDE)
 end
 

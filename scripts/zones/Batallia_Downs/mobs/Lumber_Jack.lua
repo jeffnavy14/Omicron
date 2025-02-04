@@ -4,13 +4,17 @@
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMod(xi.mod.UFASTCAST, 85)
+    mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 600)
-    mob:setMod(xi.mod.DOUBLE_ATTACK, 20)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 15000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 20000)
+    mob:setMobMod(xi.mobMod.MUG_GIL, 7500)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)

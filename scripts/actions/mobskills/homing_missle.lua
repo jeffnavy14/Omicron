@@ -1,6 +1,7 @@
 -----------------------------------
 -- Homing Missle
 -----------------------------------
+---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
@@ -19,7 +20,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
         dmg = targetcurrentHP - hpset
     end
 
-    target:takeDamage(dmg, mob, xi.attackType.MAGICAL, xi.damageType.ELEMENTAL)
+    target:takeDamage(dmg, mob, xi.attackType.MAGICAL, xi.damageType.ELEMENTAL, { breakBind = false })
     return dmg
 end
 

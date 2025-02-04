@@ -1,24 +1,18 @@
 -----------------------------------
 -- Area: Windurst Waters (S)
 --  NPC: Door Acolyte hostel
--- Type: Quest NPC
 -- !pos 146.619, -8.525, 242.874 94
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if
-        player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.SAY_IT_WITH_A_HANDBAG) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.SAY_IT_WITH_A_HANDBAG) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('sayItWithAHandbagCS') == 0
     then
         player:startEvent(171)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

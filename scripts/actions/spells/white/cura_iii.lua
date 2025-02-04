@@ -6,6 +6,7 @@
 -- Modeled after our cure_iii.lua, which was modeled after the below reference
 -- Shamelessly stolen from http://members.shaw.ca/pizza_steve/cure/Cure_Calculator.html
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -110,7 +111,8 @@ spellObject.onSpellCast = function(caster, target, spell)
 
     target:wakeUp()
 
-    --Enmity for Cura III is fixed, so its CE/VE is set in the SQL and not calculated with updateEnmityFromCure
+    -- pass in fixed enmity values of 100 CE and 100 VE
+    caster:updateEnmityFromCure(target, final, 100, 100)
 
     if target:getID() == spell:getPrimaryTargetID() then
         spell:setMsg(xi.msg.basic.MAGIC_RECOVERS_HP)

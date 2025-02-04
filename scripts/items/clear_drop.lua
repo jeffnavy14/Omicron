@@ -3,9 +3,10 @@
 --  Item: Clear Drop
 --  Intelligence 5
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:hasStatusEffect(xi.effect.MEDICINE) then
         return xi.msg.basic.ITEM_NO_USE_MEDICATED
     end

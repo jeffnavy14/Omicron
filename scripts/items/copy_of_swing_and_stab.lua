@@ -6,9 +6,10 @@
 -- so others could follow in her footsteps.
 -- Adventurers note that reading it increases one's sword skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.SWORD)
 end
 

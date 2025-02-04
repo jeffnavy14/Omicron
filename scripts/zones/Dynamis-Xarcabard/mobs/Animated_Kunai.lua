@@ -4,9 +4,10 @@
 -----------------------------------
 local ID = zones[xi.zone.DYNAMIS_XARCABARD]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     target:showText(mob, ID.text.ANIMATED_KUNAI_DIALOG)
 end
 

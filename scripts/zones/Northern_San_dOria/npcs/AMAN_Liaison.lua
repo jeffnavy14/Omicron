@@ -2,10 +2,8 @@
 -- Area: Northern San d'Oria
 --  NPC: A.M.A.N Liaison
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local firstStepForwardCompleted = player:getEminenceCompleted(1)

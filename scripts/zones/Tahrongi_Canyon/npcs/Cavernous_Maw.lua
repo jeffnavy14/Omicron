@@ -6,16 +6,14 @@
 -----------------------------------
 local ID = zones[xi.zone.TAHRONGI_CANYON]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if xi.settings.main.ENABLE_ABYSSEA == 1 and player:getMainLvl() >= 30 then
         if
-            player:getQuestStatus(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.DAWN_OF_DEATH) == QUEST_ACCEPTED and
-            player:getQuestStatus(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.MEGADRILE_MENACE) == QUEST_AVAILABLE and
+            player:getQuestStatus(xi.questLog.ABYSSEA, xi.quest.id.abyssea.DAWN_OF_DEATH) == xi.questStatus.QUEST_ACCEPTED and
+            player:getQuestStatus(xi.questLog.ABYSSEA, xi.quest.id.abyssea.MEGADRILE_MENACE) == xi.questStatus.QUEST_AVAILABLE and
             xi.abyssea.getHeldTraverserStones(player) >= 1
         then
             player:startEvent(38)
@@ -27,12 +25,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 38 then
-        player:addQuest(xi.quest.log_id.ABYSSEA, xi.quest.id.abyssea.MEGADRILE_MENACE)
+        player:addQuest(xi.questLog.ABYSSEA, xi.quest.id.abyssea.MEGADRILE_MENACE)
     elseif csid == 39 then
         -- Killed Glavoid
     elseif csid == 100 and option == 1 then

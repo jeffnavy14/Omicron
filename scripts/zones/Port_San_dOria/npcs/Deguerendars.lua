@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PORT_SAN_DORIA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.THE_SAVAGE then
@@ -25,17 +23,11 @@ entity.onTrigger = function(player, npc)
             }
 
             player:showText(npc, ID.text.DEGUERENDARS_OPEN_DIALOG)
-            xi.shop.general(player, stock, xi.quest.fame_area.SANDORIA)
+            xi.shop.general(player, stock, xi.fameArea.SANDORIA)
         end
     else
         player:showText(npc, ID.text.DEGUERENDARS_COP_NOT_COMPLETED)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

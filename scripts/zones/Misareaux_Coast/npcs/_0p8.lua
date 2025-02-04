@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.MISAREAUX_COAST]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.THE_SECRETS_OF_WORSHIP) then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.DOOR_CLOSED)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

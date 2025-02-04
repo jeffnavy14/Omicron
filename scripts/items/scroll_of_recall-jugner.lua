@@ -3,9 +3,10 @@
 -- Scroll of Recall-Jugner
 -- Teaches the white magic Recall-Jugner
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.RECALL_JUGNER)
 end
 

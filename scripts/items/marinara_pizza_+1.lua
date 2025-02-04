@@ -8,9 +8,10 @@
 -- Accuracy +11% (cap 58)
 -- Undead Killer
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -19,7 +20,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 25)
+    target:addMod(xi.mod.FOOD_HP, 25)
     target:addMod(xi.mod.FOOD_ATTP, 21)
     target:addMod(xi.mod.FOOD_ATT_CAP, 55)
     target:addMod(xi.mod.FOOD_ACCP, 11)
@@ -28,7 +29,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 25)
+    target:delMod(xi.mod.FOOD_HP, 25)
     target:delMod(xi.mod.FOOD_ATTP, 21)
     target:delMod(xi.mod.FOOD_ATT_CAP, 55)
     target:delMod(xi.mod.FOOD_ACCP, 11)

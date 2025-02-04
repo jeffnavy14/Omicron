@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PSOXJA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if npc:getAnimation() == 9 then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.DEVICE_IN_OPERATION)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

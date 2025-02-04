@@ -3,9 +3,10 @@
 -- Scroll of Utsusemi: Ichi
 -- Teaches the ninjutsu Utsusemi: Ichi
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.UTSUSEMI_ICHI)
 end
 

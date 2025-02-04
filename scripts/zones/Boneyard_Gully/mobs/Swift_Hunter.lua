@@ -4,6 +4,7 @@
 -----------------------------------
 mixins = { require('scripts/mixins/families/antlion_ambush') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
@@ -12,7 +13,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setMobMod(xi.mobMod.NO_MOVE, 0)
 end
 

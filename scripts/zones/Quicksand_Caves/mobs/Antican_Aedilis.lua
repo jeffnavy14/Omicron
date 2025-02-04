@@ -5,7 +5,13 @@
 -----------------------------------
 local ID = zones[xi.zone.QUICKSAND_CAVES]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+local tribunusPHTable =
+{
+    [ID.mob.ANTICAN_TRIBUNUS + 18] = ID.mob.ANTICAN_TRIBUNUS, -- -575.455 -0.401 -433.802  TODO: Audit PH
+}
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.regime.checkRegime(player, mob, 812, 2, xi.regime.type.GROUNDS)
@@ -19,7 +25,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.ANTICAN_TRIBUNUS_PH, 10, 3600) -- 1 hour
+    xi.mob.phOnDespawn(mob, tribunusPHTable, 10, 3600) -- 1 hour
 end
 
 return entity

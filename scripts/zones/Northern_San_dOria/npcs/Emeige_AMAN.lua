@@ -3,10 +3,8 @@
 --  NPC: Emeige A.M.A.N.
 -- Type: Mentor Recruiter
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local var = 0
@@ -19,9 +17,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(739, var)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

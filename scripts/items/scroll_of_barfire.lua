@@ -3,9 +3,10 @@
 -- Scroll of Barfire
 -- Teaches the white magic Barfire
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BARFIRE)
 end
 

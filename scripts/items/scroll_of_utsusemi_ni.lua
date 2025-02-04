@@ -3,9 +3,10 @@
 -- Scroll of Utsusemi: Ni
 -- Teaches the ninjutsu Utsusemi: Ni
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.UTSUSEMI_NI)
 end
 

@@ -3,14 +3,15 @@
 -- Stone Quiver
 -- When used, you will obtain one stack of Stone Arrows
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.STONE_ARROW, 99)
+    npcUtil.giveItem(target, { { xi.item.STONE_ARROW, 99 } })
 end
 
 return itemObject

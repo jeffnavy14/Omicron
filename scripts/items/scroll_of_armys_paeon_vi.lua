@@ -3,9 +3,10 @@
 -- Scroll of Armys Paeton VI
 -- Teaches the song Armys Paeton VI
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ARMYS_PAEON_VI)
 end
 

@@ -6,13 +6,14 @@
 local ID = zones[xi.zone.QULUN_DOME]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:showText(mob, ID.text.QUADAV_KING_ENGAGE)
 end
 

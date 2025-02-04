@@ -9,9 +9,10 @@
 -- DEF +20% (cap 145)
 -- Subtle Blow +8
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -20,7 +21,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 30)
+    target:addMod(xi.mod.FOOD_HP, 30)
     target:addMod(xi.mod.VIT, 2)
     target:addMod(xi.mod.FIRE_MEVA, 20)
     target:addMod(xi.mod.FOOD_DEFP, 20)
@@ -29,7 +30,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 30)
+    target:delMod(xi.mod.FOOD_HP, 30)
     target:delMod(xi.mod.VIT, 2)
     target:delMod(xi.mod.FIRE_MEVA, 20)
     target:delMod(xi.mod.FOOD_DEFP, 20)

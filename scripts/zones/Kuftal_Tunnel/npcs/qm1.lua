@@ -7,6 +7,7 @@
 local ID = zones[xi.zone.KUFTAL_TUNNEL]
 local kuftalGlobal = require('scripts/zones/Kuftal_Tunnel/globals')
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onSpawn = function(npc)
@@ -22,9 +23,6 @@ entity.onTrade = function(player, npc, trade)
     then
         player:confirmTrade()
     end
-end
-
-entity.onTrigger = function(player, npc)
 end
 
 return entity

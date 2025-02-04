@@ -3,9 +3,10 @@
 -- Scroll of Earth Carol
 -- Teaches the song Earth Carol
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.EARTH_CAROL)
 end
 

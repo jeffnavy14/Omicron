@@ -2,6 +2,7 @@
 -- Spell: Absorb-DEX
 -- Steals an enemy's dexterity.
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -22,7 +23,7 @@ spellObject.onSpellCast = function(caster, target, spell)
         params.skillType = xi.skill.DARK_MAGIC
         params.bonus = 0
         params.effect = nil
-        local resist = applyResistance(caster, target, spell, params)
+        local resist = applyResistanceEffect(caster, target, spell, params)
         if resist <= 0.125 then
             spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         else

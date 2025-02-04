@@ -3,10 +3,8 @@
 --  NPC: Shanene
 -- !pos 161.183 0.468 91.111 84
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local hasScrollsBundle = player:hasKeyItem(xi.ki.BUNDLE_OF_HALF_INSCRIBED_SCROLLS)
@@ -17,9 +15,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(37)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

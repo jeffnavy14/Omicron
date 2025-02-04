@@ -3,9 +3,10 @@
 -- Allies' Die
 -- Teaches the job ability Allies Roll
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnAbility(xi.jobAbility.ALLIES_ROLL)
 end
 

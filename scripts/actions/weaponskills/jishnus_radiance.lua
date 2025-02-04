@@ -11,19 +11,15 @@
 -- 100%TP    200%TP    300%TP
 -- 1.75      1.75      1.75
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
     local params = {}
     params.numHits = 3
-    params.ftp100 = 1.75 params.ftp200 = 1.75 params.ftp300 = 1.75
-    params.str_wsc = 0.0 params.dex_wsc = 0.60 params.vit_wsc = 0.0
-    params.agi_wsc = 0.00 params.int_wsc = 0.0 params.mnd_wsc = 0.0
-    params.chr_wsc = 0.0
-    params.crit100 = 0.15 params.crit200 = 0.2 params.crit300 = 0.25
-    params.canCrit = true
-    params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    params.atk100 = 1 params.atk200 = 1 params.atk300 = 1
+    params.ftpMod = { 1.75, 1.75, 1.75 }
+    params.dex_wsc = 0.60
+    params.critVaries = { 0.15, 0.2, 0.25 }
     params.multiHitfTP = true
 
     if xi.settings.main.USE_ADOULIN_WEAPON_SKILL_CHANGES then
@@ -35,10 +31,14 @@ weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary,
 
     local damage, criticalHit, tpHits, extraHits, shadowsAbsorbed = xi.weaponskills.doRangedWeaponskill(player, target, wsID, params, tp, action, primary)
 
+    -- TODO: Second parameter of speceffect is attempting to bor nil with number.  Find
+    -- out what is expected here.
     if shadowsAbsorbed + tpHits + extraHits == 3 then
-        action:speceffect(target:getID(), bit.bor(action:speceffect(target:getID()), 8))
+        -- action:speceffect(target:getID(), bit.bor(action:speceffect(target:getID()), 8))
+        utils.unused()
     elseif shadowsAbsorbed + tpHits + extraHits == 2 then
-        action:speceffect(target:getID(), bit.bor(action:speceffect(target:getID()), 4))
+        -- action:speceffect(target:getID(), bit.bor(action:speceffect(target:getID()), 4))
+        utils.unused()
     end
 
     return tpHits, extraHits, criticalHit, damage

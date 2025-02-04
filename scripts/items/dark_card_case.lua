@@ -3,14 +3,15 @@
 -- Dark Card Case
 -- When used, you will obtain one stack of Dark Cards
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.DARK_CARD, 99)
+    npcUtil.giveItem(target, { { xi.item.DARK_CARD, 99 } })
 end
 
 return itemObject

@@ -1,11 +1,30 @@
-﻿// Copyright (c) Athena Dev Teams - Licensed under GNU GPL
-// For more information, see LICENCE in the main folder
+﻿/*
+===========================================================================
+
+  Copyright (c) Athena Dev Teams
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+
+===========================================================================
+*/
 
 #ifndef _COMMON_SQL_H
 #define _COMMON_SQL_H
 
 #include "cbasetypes.h"
 
+#include <string>
 #include <thread>
 #include <unordered_map>
 
@@ -16,6 +35,9 @@
 #endif
 
 #include "logging.h"
+
+// NOTE: This is just a shim to allow easy adoption of database.h
+#include "database.h"
 
 // Return codes
 #define SQL_ERROR   -1
@@ -82,6 +104,7 @@ public:
     SqlConnection(const char* user, const char* passwd, const char* host, uint16 port, const char* db);
     ~SqlConnection();
 
+    std::string GetDatabaseName();
     std::string GetClientVersion();
     std::string GetServerVersion();
 
@@ -110,16 +133,11 @@ public:
     int32 TryPing();
 
     /// Escapes a string.
-    /// The output buffer must be at least strlen(from)*2+1 in size.
-    ///
-    /// @return The size of the escaped string
-    size_t EscapeString(char* out_to, const char* from);
-    size_t EscapeStringLen(char* out_to, const char* from, size_t from_len);
-
-    /// Escapes a string.
-    ///
-    /// @return The escaped string
-    std::string EscapeString(std::string const& input);
+    auto EscapeStringLen(char* out_to, const char* from, size_t from_len) -> size_t;
+    auto EscapeStringLen(char* out_to, std::string_view from) -> size_t;
+    auto EscapeString(char* out_to, const char* from) -> size_t;
+    auto EscapeString(std::string_view from) -> std::string;
+    auto EscapeString(const std::string& from) -> std::string;
 
     /// Executes a query.
     /// Any previous result is freed.
@@ -229,7 +247,8 @@ public:
     void FinishProfiling();
 
 private:
-    Sql_t*      self;
+    Sql_t* self;
+
     const char* m_User;
     const char* m_Passwd;
     const char* m_Host;
@@ -238,8 +257,12 @@ private:
 
     uint32 m_PingInterval;
     uint32 m_LastPing;
-    bool   m_LatencyWarning;
 
     std::thread::id m_ThreadId;
 };
+
+//
+// Outside of SQL class/namespace
+//
+
 #endif // _COMMON_SQL_H

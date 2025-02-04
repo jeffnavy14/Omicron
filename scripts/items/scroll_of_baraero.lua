@@ -3,9 +3,10 @@
 -- Scroll of Baraero
 -- Teaches the white magic Baraero
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BARAERO)
 end
 

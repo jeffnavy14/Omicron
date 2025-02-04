@@ -4,10 +4,8 @@
 -- Type: Past Event Watcher
 -- !pos 15 0 -18 231
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- Add-on Scenarios

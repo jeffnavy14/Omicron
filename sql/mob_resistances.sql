@@ -65,7 +65,7 @@ INSERT INTO `mob_resistances` VALUES (34,'Avatar-Carbuncle_Prime',1.0,1.0,1.0,1.
 INSERT INTO `mob_resistances` VALUES (35,'Avatar-Diabolos_CoP',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,4);
 INSERT INTO `mob_resistances` VALUES (36,'Avatar-Fenrir_Prime',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,-2,11);
 INSERT INTO `mob_resistances` VALUES (37,'Avatar-Garuda_Prime',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,11,-3,11,11,11,11,11,11);
-INSERT INTO `mob_resistances` VALUES (38,'Avatar-Ifrit_Prime',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,11,11,11,11,11,-3,11,11);
+INSERT INTO `mob_resistances` VALUES (38,'Avatar-Ifrit_Prime_WTB',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,-3,11,4,4,4,-3,4,4);
 INSERT INTO `mob_resistances` VALUES (39,'Monoceros',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,2,2,2,-2,6,2,0,4); -- Ixion, not Alicorn.
 INSERT INTO `mob_resistances` VALUES (40,'Avatar-Leviathan_Prime',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,11,11,11,11,-3,11,11,11);
 INSERT INTO `mob_resistances` VALUES (41,'Avatar-Odin_Image',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-3,11);
@@ -419,7 +419,7 @@ INSERT INTO `mob_resistances` VALUES (395,'Doll-Calcabrina',1.0,1.0,1.0,1.0,0,0,
 INSERT INTO `mob_resistances` VALUES (396,'Worm-Bedrock_Barry',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,-2,-2,-3,2,-2,-2,-3,0);
 INSERT INTO `mob_resistances` VALUES (397,'Quadav-Qu_Vho_Deathhurler',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,0,-2,-2,-2,-3,0,-2,-2);
 INSERT INTO `mob_resistances` VALUES (398,'Sheep-Slumbering_Samwell',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,-2,0,-2,-2,-3,-3,-2,-2);
-INSERT INTO `mob_resistances` VALUES (399,'Demon - Duke_Focalor',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,3,11,3,3,3,3,11,3);
+-- 399 Free
 INSERT INTO `mob_resistances` VALUES (400,'Crab-Tegmine',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,-2,-3,-2,-2,-3,2,-2,-2);
 INSERT INTO `mob_resistances` VALUES (401,'Doll-Martinet',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,2,2,2,2,-3,2,2,2);
 INSERT INTO `mob_resistances` VALUES (402,'Scorpion -Aqrabuamelu',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,0,-3,0,0,-2,-2,-3,0);
@@ -505,3 +505,7 @@ INSERT INTO `mob_resistances` VALUES (511,'Shockmaw',1.0,1.0,1.0,1.0,0,0,0,0,0,0
 INSERT INTO `mob_resistances` VALUES (512,'Cetus',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,2,4,2,4,2,4,1,6);
 INSERT INTO `mob_resistances` VALUES (513,'Pakecet',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,2,4,2,4,2,4,1,6);
 INSERT INTO `mob_resistances` VALUES (514,'Metus',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,11);
+INSERT INTO `mob_resistances` VALUES (515,'Wyvern - Ajattara',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,3,0,2,0,-1,-1,-1,-2);
+INSERT INTO `mob_resistances` VALUES (516,'Gigas - Alkyoneus',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (517,'Gigas - Blizzard',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,-2,4,0,0,0,0,0,0);
+INSERT INTO `mob_resistances` VALUES (518,'Proto - Omega',1.0,1.0,1.0,1.0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,0,0,11);

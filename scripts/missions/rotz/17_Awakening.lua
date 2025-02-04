@@ -15,6 +15,16 @@ mission.reward =
     nextMission = { xi.mission.log_id.ZILART, xi.mission.id.zilart.THE_LAST_VERSE },
 }
 
+local missionOnEventFinish = function(player, csid, option, npc)
+    if
+        option >= 1 and
+        option <= 4 and
+        player:getMissionStatus(mission.areaId) == 3
+    then
+        mission:complete(player)
+    end
+end
+
 mission.sections =
 {
     {
@@ -29,19 +39,17 @@ mission.sections =
     },
 
     -- Optional cutscenes that should be displayed only once onZone.  In this
-    -- case, missionStatus is handled as a bitfield, and missionStatus < 3 isn't
-    -- really required.
-    -- TODO: Remove this and refactor.
+    -- case, missionStatus is handled as a bitfield.
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == mission.missionId and missionStatus < 3
+            return currentMission == mission.missionId
         end,
 
         [xi.zone.LOWER_JEUNO] =
         {
             ['_6tc'] =
             {
-                onTrigger = function(player, csid, option, npc)
+                onTrigger = function(player, npc)
                     if not utils.mask.getBit(player:getMissionStatus(mission.areaId), 1) then
                         return mission:event(20)
                     end
@@ -59,14 +67,11 @@ mission.sections =
 
         [xi.zone.NORG] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if not utils.mask.getBit(player:getMissionStatus(mission.areaId), 0) then
-                        return 176
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if not utils.mask.getBit(player:getMissionStatus(mission.areaId), 0) then
+                    return 176
+                end
+            end,
 
             onEventFinish =
             {
@@ -74,6 +79,9 @@ mission.sections =
                     -- Set bit 0 of missionStatus
                     player:setMissionStatus(mission.areaId, player:getMissionStatus(mission.areaId) + 1)
                 end,
+
+                [232] = missionOnEventFinish,
+                [234] = missionOnEventFinish,
             },
         }
     },

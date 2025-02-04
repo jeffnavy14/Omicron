@@ -3,16 +3,11 @@
 --  NPC: Radiant Aureole
 -- !pos 0.044 -119.249 -360.028 19
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(14)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

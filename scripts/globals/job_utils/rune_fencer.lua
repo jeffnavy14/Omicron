@@ -2,6 +2,7 @@
 -- Rune Fencer Job Utilities
 -----------------------------------
 require('scripts/globals/ability')
+require('scripts/globals/combat/magic_hit_rate')
 require('scripts/globals/weaponskills')
 require('scripts/globals/jobpoints')
 require('scripts/globals/spells/damage_spell')
@@ -22,7 +23,7 @@ end
 
 local function applyRuneEnhancement(effectType, player)
     local runLevel      = getRUNLevel(player)
-    local meritBonus    =  player:getMerit(xi.merit.MERIT_RUNE_ENHANCE) -- 2 more elemental resistance per merit for a maximum total of (2*5) = 10 (power of merit is 2 per level)
+    local meritBonus    = player:getMerit(xi.merit.MERIT_RUNE_ENHANCE) -- 2 more elemental resistance per merit for a maximum total of (2*5) = 10 (power of merit is 2 per level)
     local jobPointBonus = player:getJobPointLevel(xi.jp.RUNE_ENCHANTMENT_EFFECT) -- 1 more elemental resistance per level for a maximum total of 20
 
     -- see https://www.bg-wiki.com/ffxi/Category:Rune
@@ -133,7 +134,7 @@ local function getVallationValianceSDTType(type)
         [xi.effect.SULPOR]   = xi.mod.WATER_SDT,
         [xi.effect.UNDA]     = xi.mod.FIRE_SDT,
         [xi.effect.LUX]      = xi.mod.DARK_SDT,
-        [xi.effect.TENEBRAE] = xi.mod.LIGHT_SDT
+        [xi.effect.TENEBRAE] = xi.mod.LIGHT_SDT,
     }
 
     return runeSDTMap[type]
@@ -149,7 +150,7 @@ local function getLiementAbsorbType(type)
         [xi.effect.SULPOR]   = xi.damageType.WATER,
         [xi.effect.UNDA]     = xi.damageType.FIRE,
         [xi.effect.LUX]      = xi.damageType.DARK,
-        [xi.effect.TENEBRAE] = xi.damageType.LIGHT
+        [xi.effect.TENEBRAE] = xi.damageType.LIGHT,
     }
 
     return runeAbsorbMap[type]
@@ -165,7 +166,7 @@ local function getGambitSDTType(type)
         [xi.effect.SULPOR]   = xi.mod.THUNDER_SDT,
         [xi.effect.UNDA]     = xi.mod.WATER_SDT,
         [xi.effect.LUX]      = xi.mod.LIGHT_SDT,
-        [xi.effect.TENEBRAE] = xi.mod.DARK_SDT
+        [xi.effect.TENEBRAE] = xi.mod.DARK_SDT,
     }
 
     return runeSDTMap[type]
@@ -180,11 +181,44 @@ local function getBattutaSpikesType(type)
         [xi.effect.TELLUS]   = xi.subEffect.CLOD_SPIKES,
         [xi.effect.SULPOR]   = xi.subEffect.SHOCK_SPIKES,
         [xi.effect.UNDA]     = xi.subEffect.DELUGE_SPIKES,
-        [xi.effect.LUX]      = xi.subEffect.REPSIRAL,
+        [xi.effect.LUX]      = xi.subEffect.REPRISAL,
         [xi.effect.TENEBRAE] = xi.subEffect.DEATH_SPIKES,
     }
 
     return runeSpikesMap[type]
+end
+
+local function getRaykeResistanceRankMod(type)
+    local runeModMap =
+    {
+        [xi.effect.IGNIS]    = xi.mod.FIRE_RES_RANK,
+        [xi.effect.GELUS]    = xi.mod.ICE_RES_RANK,
+        [xi.effect.FLABRA]   = xi.mod.WIND_RES_RANK,
+        [xi.effect.TELLUS]   = xi.mod.EARTH_RES_RANK,
+        [xi.effect.SULPOR]   = xi.mod.THUNDER_RES_RANK,
+        [xi.effect.UNDA]     = xi.mod.WATER_RES_RANK,
+        [xi.effect.LUX]      = xi.mod.LIGHT_RES_RANK,
+        [xi.effect.TENEBRAE] = xi.mod.DARK_RES_RANK,
+    }
+
+    return runeModMap[type]
+end
+
+-- used for packing damage types into Rayke
+local function getRaykeElement(type)
+    local runeAbsorbMap =
+    {
+        [xi.effect.IGNIS]    = xi.element.FIRE,
+        [xi.effect.GELUS]    = xi.element.ICE,
+        [xi.effect.FLABRA]   = xi.element.WIND,
+        [xi.effect.TELLUS]   = xi.element.EARTH,
+        [xi.effect.SULPOR]   = xi.element.THUNDER,
+        [xi.effect.UNDA]     = xi.element.WATER,
+        [xi.effect.LUX]      = xi.element.LIGHT,
+        [xi.effect.TENEBRAE] = xi.element.DARK,
+    }
+
+    return runeAbsorbMap[type]
 end
 
 local function getSpecEffectElementWard(type) -- verified via !injectaction 15 1 1-8, retail action packet dumps
@@ -288,25 +322,15 @@ xi.job_utils.rune_fencer.useRuneEnchantment = function(player, target, ability, 
 end
 
 xi.job_utils.rune_fencer.useSwordplay = function(player, target, ability)
-    local power = 0 --Swordplay starts at +0 bonus without swaps
+    -- Calculate power. (Accuracy and Evasion) https://www.bg-wiki.com/ffxi/Swordplay
+    local power = 3                                               -- Naked swordplay starts at 3. Retail confirmed.
+    power       = power + power * player:getMod(xi.mod.SWORDPLAY) -- "Swordplay + X" Where X is TICKS.
 
-    -- see https://www.bg-wiki.com/ffxi/Sleight_of_Sword for levels
-    local meritBonus = player:getMerit(xi.merit.MERIT_SLEIGHT_OF_SWORD)
-    local augBonus   = 0 -- augBonus = 2 per level of merit
+    -- Calculate subPower. (Subtle blow) https://www.bg-wiki.com/ffxi/Sleight_of_Sword
+    local subPower = player:getMerit(xi.merit.MERIT_SLEIGHT_OF_SWORD)                            -- Each merit adds 5 "Subtle Blow".
+    subPower       = subPower + (subPower / 5) * player:getMod(xi.mod.AUGMENTS_SLEIGHT_OF_SWORD) -- Add augment effect IF player has augment.
 
-    -- gear bonuses from https://www.bg-wiki.com/ffxi/Swordplay
-    if player:getMainJob() == xi.job.RUN and target:getMainLvl() == 99 then -- don't bother with gear boost checks until 99 and main RUN
-        local tickPower = 3 -- Tick power appears to be 3/tick, not 6/tick if RUN main and 3/tick if RUN sub; source : https://www.ffxiah.com/forum/topic/37086/endeavoring-to-awaken-a-guide-to-rune-fencer/180/#3615377
-
-        -- add starting tick bonuses if appropriate gear is equipped
-        power = tickPower + player:getMod(xi.mod.SWORDPLAY)
-    end
-
-    if power > 0 then -- add aug bonus if appropriate gear is equipped. Note: ilvl 109+ "relic" or "AF2" gear always has the augment, so no need to check exdata. RUN does not have AF/AF2/AF3 gear below i109.
-        augBonus = (meritBonus / 5) * 2
-    end
-
-    player:addStatusEffect(xi.effect.SWORDPLAY, power, 3, 120, 0, meritBonus + augBonus, 0)
+    player:addStatusEffect(xi.effect.SWORDPLAY, power, 3, 120, 0, subPower, 0)
 end
 
 xi.job_utils.rune_fencer.onSwordplayEffectGain = function(target, effect)
@@ -337,7 +361,7 @@ xi.job_utils.rune_fencer.onSwordplayEffectTick = function(target, effect)
 
         if tickPower > 0 then
             target:addMod(xi.mod.ACC, tickPower)
-            target:addMod(xi.mod.EVASION, tickPower)
+            target:addMod(xi.mod.EVA, tickPower)
         end
 
         power = math.min(power + tickPower, maxPower)
@@ -350,7 +374,7 @@ xi.job_utils.rune_fencer.onSwordplayEffectLose = function(target, effect)
     local subPower = effect:getSubPower()
 
     target:delMod(xi.mod.ACC, power)
-    target:delMod(xi.mod.EVASION, power)
+    target:delMod(xi.mod.EVA, power)
 
     if subPower > 0 then
         target:delMod(xi.mod.SUBTLE_BLOW, subPower)
@@ -358,7 +382,7 @@ xi.job_utils.rune_fencer.onSwordplayEffectLose = function(target, effect)
 end
 
 xi.job_utils.rune_fencer.useVivaciousPulse = function(player, target, ability, effect)
-    return calculateVivaciousPulseHealing(player, target)
+    return calculateVivaciousPulseHealing(player)
 end
 
 xi.job_utils.rune_fencer.checkHaveRunes = function(player)
@@ -490,16 +514,23 @@ end
 local function getSwipeLungeDamageMultipliers(player, target, element, bonusMacc) -- get these multipliers once and store them
     local multipliers = {}
 
-    multipliers.eleStaffBonus       = xi.spells.damage.calculateEleStaffBonus(player, element)
+    multipliers.eleStaffBonus       = xi.spells.damage.calculateElementalStaffBonus(player, element)
     multipliers.magianAffinity      = xi.spells.damage.calculateMagianAffinity() -- Presumed but untested.
     multipliers.SDT                 = xi.spells.damage.calculateSDT(target, element)
-    multipliers.resist              = xi.spells.damage.calculateResist(player, target, 0, 0, element, 0, bonusMacc)
-    multipliers.magicBurst          = xi.spells.damage.calculateIfMagicBurst(target, element)
-    multipliers.magicBurstBonus     = xi.spells.damage.calculateIfMagicBurstBonus(player, target, 0, 0, element)
+    multipliers.resist              = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, 0, element, 0, 0, bonusMacc)
     multipliers.dayAndWeather       = xi.spells.damage.calculateDayAndWeather(player, 0, element)
     multipliers.magicBonusDiff      = xi.spells.damage.calculateMagicBonusDiff(player, target, 0, 0, element)
     multipliers.TMDA                = xi.spells.damage.calculateTMDA(target, element)
     multipliers.nukeAbsorbOrNullify = xi.spells.damage.calculateNukeAbsorbOrNullify(target, element)
+    multipliers.magicBurst          = 1
+    multipliers.magicBurstBonus     = 1
+
+    local _, skillchainCount = xi.magicburst.formMagicBurst(element, target)
+
+    if skillchainCount > 0 then
+        multipliers.magicBurst          = xi.spells.damage.calculateIfMagicBurst(target, element, skillchainCount)
+        multipliers.magicBurstBonus     = xi.spells.damage.calculateIfMagicBurstBonus(player, target, 0, element)
+    end
 
     return multipliers
 end
@@ -665,7 +696,7 @@ local function addPflugResistType(type, effect, power)
         [xi.effect.FLABRA]   = { xi.mod.PETRIFYRES, xi.mod.SLOWRES },
         [xi.effect.TELLUS]   = { xi.mod.STUNRES },
         [xi.effect.SULPOR]   = { xi.mod.POISONRES },
-        [xi.effect.UNDA]     = { xi.mod.AMNESIARES, xi.mod.PLAGUERES },
+        [xi.effect.UNDA]     = { xi.mod.AMNESIARES, xi.mod.VIRUSRES },
         [xi.effect.LUX]      = { xi.mod.SLEEPRES, xi.mod.BLINDRES, xi.mod.CURSERES },
         [xi.effect.TENEBRAE] = { xi.mod.CHARMRES },
     }
@@ -731,17 +762,50 @@ xi.job_utils.rune_fencer.useGambit = function(player, target, ability, action)
     applyGambitSDTMods(target, sdtTypes, sdtPower, xi.effect.GAMBIT, duration)
 
     player:removeAllRunes()
+
+    -- Gambit doesn't seem to inform you if it had no effect? -- TODO: double check
 end
 
 -- see https://www.bg-wiki.com/ffxi/Rayke
 xi.job_utils.rune_fencer.useRayke = function(player, target, ability, action)
     local highestRune     = player:getHighestRuneEffect()
     local weaponSkillType = player:getWeaponSkillType(xi.slot.MAIN)
+    local meritValue      = player:getMerit(xi.merit.MERIT_RAYKE)
+    local duration        = 27 + player:getMerit(xi.merit.MERIT_RAYKE)              -- 1 merit = 30 seconds (27 + 3)
+    local modDuration     = (meritValue / 3) * player:getMod(xi.mod.RAYKE_DURATION) -- Futhark boots aug
 
     action:speceffect(target:getID(), getSpecEffectElementEffusion(highestRune)) -- set element color for animation.
     action:setAnimation(target:getID(), getAnimationEffusion(weaponSkillType, 20)) -- set animation for currently equipped weapon
 
-    -- TODO: implement
+    local effectAdded = target:addStatusEffect(xi.effect.RAYKE, 0, 0, duration + modDuration)
+
+    if effectAdded then
+        local effect        = target:getStatusEffect(xi.effect.RAYKE)
+        local raykeElements = 0
+        local i             = 0
+        local runeEffects   = player:getAllRuneEffects()
+
+        for _, rune in ipairs(runeEffects) do
+            local resRankMod = getRaykeResistanceRankMod(rune)
+            local element    = getRaykeElement(rune)
+
+            raykeElements = raykeElements + bit.lshift(element, 4 * i) -- pack 4 bit damage type into 16 bit int
+            target:addMod(resRankMod, -1)
+            effect:addMod(resRankMod, -1) -- Status effect handles removing the mods
+
+            i = i + 1
+        end
+
+        effect:setSubPower(raykeElements)
+
+        if i * 4 > 16 then -- This will trip if a custom module overrides current retail behavior and give RUN 5 runes or more.
+            print('ERROR: useRayke trying to pack more than 16 bits into 16 bit datatype! Does Rune Fencer have 5 or more runes enabled?')
+        end
+    end
+
+    player:removeAllRunes()
+
+    return xi.effect.RAYKE -- Rayke doesn't seem to inform you if it had no effect? -- TODO: double check
 end
 
 -- see https://www.bg-wiki.com/ffxi/One_for_All
@@ -792,7 +856,7 @@ xi.job_utils.rune_fencer.useLiement = function(player, target, ability, action)
     end
 
     local runeEffects = target:getAllRuneEffects()
-    local absorbPower = 25
+    local absorbPower = 15 -- in core -> 85 + 15 * (1, 2, or 3) = 100, 115, 130
     local duration    = 10 + player:getMod(xi.mod.LIEMENT_DURATION)
     local absorbTypes = {} -- one absorb type per rune which can be additive
     local i           = 0

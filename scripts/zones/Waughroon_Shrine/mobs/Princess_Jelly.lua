@@ -3,6 +3,11 @@
 -- Mob: Princess Jelly
 -- BCNM: Royal Jelly
 -----------------------------------
+local waughroonID = zones[xi.zone.WAUGHROON_SHRINE]
+-----------------------------------
+---@type TMobEntity
+local entity = {}
+
 local elementalSpells =
 {
     { xi.magic.spell.BURN,  xi.magic.spell.FIRE },
@@ -14,12 +19,14 @@ local elementalSpells =
     { xi.magic.spell.DIA,   xi.magic.spell.BANISH },
     { xi.magic.spell.BIO,   xi.magic.spell.DRAIN },
 }
+
 local centers =
 {
-    { -177.5, 60, -142 },
-    {   22.5,  0,  18 },
-    {  222.5, -60, 138 },
+    { -177.5,  60, -142 },
+    {   22.5,   0,   18 },
+    {  222.5, -60,  138 },
 }
+
 local mevaList =
 {
     { xi.mod.WATER_MEVA,   xi.mod.FIRE_ABSORB },
@@ -32,18 +39,20 @@ local mevaList =
     { xi.mod.LIGHT_MEVA,   xi.mod.DARK_ABSORB },
 }
 
-local entity = {}
-
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 40)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setSpeed((50 + xi.settings.map.SPEED_MOD) * 0.05) -- ~5% of normal movementspeed
+    mob:setBaseSpeed(xi.settings.map.BASE_SPEED * 0.05) -- ~5% of normal movementspeed
     mob:setMod(xi.mod.REGEN, 3)
     mob:setLocalVar('mobElement', math.random(1, 8))
     mob:addMod(mevaList[mob:getLocalVar('mobElement')][1], -250)
     mob:addMod(mevaList[mob:getLocalVar('mobElement')][2], 1000)
+end
+
+local function getQueenJellyID(bfNum)
+    return waughroonID.mob.QUEEN_JELLY + (bfNum - 1) * 10
 end
 
 local function getDistanceFromCenter(bfNum, mob)
@@ -60,12 +69,12 @@ local function allJellysInCenter(bfNum, zone)
     local totalMobsAlive = 0
     local totalInCenter = 0
     for i = 1, 8 do
-        local princess = GetMobByID(zone:queryEntitiesByName('Queen_Jelly')[bfNum]:getID() + i)
+        local princess = GetMobByID(getQueenJellyID(bfNum) + i)
         if getDistanceFromCenter(bfNum, princess) <= 0.5 then
             totalInCenter = totalInCenter + 1
         end
 
-        if princess:isAlive() then
+        if princess and princess:isAlive() then
             totalMobsAlive = totalMobsAlive + 1
         end
     end
@@ -82,8 +91,8 @@ local function princessesTotalHP(bfNum, zone)
     local totalHP = 0
 
     for i = 1, 8 do
-        local princess = GetMobByID(zone:queryEntitiesByName('Queen_Jelly')[bfNum]:getID() + i)
-        if princess:isAlive() then
+        local princess = GetMobByID(getQueenJellyID(bfNum) + i)
+        if princess and princess:isAlive() then
             totalHP = totalHP + princess:getHP()
         end
     end
@@ -92,10 +101,10 @@ local function princessesTotalHP(bfNum, zone)
 end
 
 local function spawnQueenJelly(bfNum, target, zone)
-    local queen = zone:queryEntitiesByName('Queen_Jelly')[bfNum]
+    local queen = GetMobByID(getQueenJellyID(bfNum))
 
-    if not queen:isSpawned() then
-        SpawnMob(zone:queryEntitiesByName('Queen_Jelly')[bfNum]:getID())
+    if queen and not queen:isSpawned() then
+        SpawnMob(queen:getID())
         queen:setHP(princessesTotalHP(bfNum, zone))
         queen:setPos(centers[bfNum][1], centers[bfNum][2], centers[bfNum][3], 0)
         queen:setLocalVar('target', target:getID())
@@ -113,13 +122,13 @@ local function spawnQueenJelly(bfNum, target, zone)
     end
 end
 
-entity.onMobMagicPrepare = function(mob)
+entity.onMobMagicPrepare = function(mob, target, spellId)
     local element = mob:getLocalVar('mobElement')
-    local spell = math.random()
+    local spell   = math.random(1, 100)
 
-    if spell > 0.6 then
+    if spell > 60 then
         return elementalSpells[element][1] -- element's DoT
-    elseif spell > 0.2 then
+    elseif spell > 20 then
         return elementalSpells[element][2] -- element's nuke
     else
         return 258
@@ -128,13 +137,17 @@ end
 
 entity.onMobFight = function(mob, target)
     local bfNum = mob:getBattlefield():getArea()
-    local queen = mob:getZone():queryEntitiesByName('Queen_Jelly')[bfNum]
+    local queen = GetMobByID(getQueenJellyID(bfNum))
     local center = centers[bfNum]
 
     mob:pathThrough(center, xi.path.flag.SCRIPT)
 
     if getDistanceFromCenter(bfNum, mob) <= 0.5 then
-        if not queen:isSpawned() and allJellysInCenter(bfNum, mob:getZone()) then
+        if
+            queen and
+            not queen:isSpawned() and
+            allJellysInCenter(bfNum, mob:getZone())
+        then
             spawnQueenJelly(bfNum, target, mob:getZone())
         end
     end
@@ -146,22 +159,19 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobEngaged = function(mob, target)
-    local bfNum = mob:getBattlefield():getArea()
-
-    for i = 1, 8 do
-        local princess = GetMobByID(mob:getZone():queryEntitiesByName('Queen_Jelly')[bfNum]:getID() + i)
-        if not princess:isDead() then
-            princess:updateEnmity(target)
-        end
-    end
+entity.onMobEngage = function(mob, target)
+    -- battlefield has superlink
 end
 
 entity.onMobDeath = function(mob, player, optParams)
     local bfNum = mob:getBattlefield():getArea()
-    local queen = mob:getZone():queryEntitiesByName('Queen_Jelly')[bfNum]
+    local queen = GetMobByID(getQueenJellyID(bfNum))
 
-    if not queen:isSpawned() and allJellysInCenter(bfNum, mob:getZone()) then
+    if
+        queen and
+        not queen:isSpawned() and
+        allJellysInCenter(bfNum, mob:getZone())
+    then
         spawnQueenJelly(bfNum, player, mob:getZone())
     end
 end

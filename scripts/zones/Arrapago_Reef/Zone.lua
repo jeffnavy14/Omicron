@@ -1,6 +1,7 @@
 -----------------------------------
 -- Zone: Arrapago_Reef (54)
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -37,11 +38,15 @@ end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
     if
-        player:getQuestStatus(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('AgainstAllOdds') == 1
     then
         player:startEvent(237)
     end
+end
+
+zoneObject.onGameDay = function()
+    xi.apkallu.updateHate(xi.zone.ARRAPAGO_REEF, -3)
 end
 
 zoneObject.onEventUpdate = function(player, csid, option, npc)
@@ -55,7 +60,7 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
     elseif csid == 237 then
         player:startEvent(240)
     elseif csid == 238 then
-        npcUtil.completeQuest(player, xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS, { item = 15266, var = 'AgainstAllOdds' })
+        npcUtil.completeQuest(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS, { item = 15266, var = 'AgainstAllOdds' })
     elseif csid == 240 then
         player:setCharVar('AgainstAllOdds', 2)
     end

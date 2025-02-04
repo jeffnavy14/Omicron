@@ -2,10 +2,11 @@
 -- Area: Promyvion-Holla
 --   NM: Stray
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
-    xi.promyvion.strayOnSpawn(mob)
+    xi.promyvion.strayOnMobSpawn(mob)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

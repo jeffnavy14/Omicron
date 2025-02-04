@@ -9,6 +9,9 @@ local ID = zones[xi.zone.THRONE_ROOM]
 local content = BattlefieldMission:new({
     zoneId        = xi.zone.THRONE_ROOM,
     battlefieldId = xi.battlefield.id.SHADOW_LORD_BATTLE,
+    canLoseExp    = false,
+    isMission     = true,
+    allowTrusts   = true,
     maxPlayers    = 6,
     levelCap      = 75,
     timeLimit     = utils.minutes(30),
@@ -27,7 +30,7 @@ function content:onEventFinishBattlefield(player, csid, option, npc)
     local phaseTwoId  = ID.mob.SHADOW_LORD_PHASE_2_OFFSET + (area - 1)
     local phaseTwo    = GetMobByID(phaseTwoId)
 
-    if phaseTwo:isSpawned() then
+    if phaseTwo and phaseTwo:isSpawned() then
         return
     end
 
@@ -36,10 +39,12 @@ function content:onEventFinishBattlefield(player, csid, option, npc)
     -- first phase dies, spawn second phase ID, make him engage, and disable
     -- magic, auto attack, and abilities (all he does is case Implode by script)
     local mob = SpawnMob(phaseTwoId)
-    mob:updateEnmity(player)
-    mob:setMagicCastingEnabled(false)
-    mob:setAutoAttackEnabled(false)
-    mob:setMobAbilityEnabled(false)
+    if mob then
+        mob:updateEnmity(player)
+        mob:setMagicCastingEnabled(false)
+        mob:setAutoAttackEnabled(false)
+        mob:setMobAbilityEnabled(false)
+    end
 end
 
 content.groups =

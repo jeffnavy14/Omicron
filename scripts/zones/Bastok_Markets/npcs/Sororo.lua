@@ -1,11 +1,11 @@
 -----------------------------------
 -- Area: Bastok Markets
 --  NPC: Sororo
--- Standard Merchant NPC
 -- !pos -220.217 -2.824 51.542 235
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)

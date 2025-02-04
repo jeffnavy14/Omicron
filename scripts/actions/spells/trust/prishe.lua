@@ -1,6 +1,7 @@
 -----------------------------------
 -- Trust: Prishe
 -----------------------------------
+---@type TSpellTrust
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -20,7 +21,7 @@ spellObject.onMobSpawn = function(mob)
         [xi.magic.spell.MILDAURION] = xi.trust.messageOffset.TEAMWORK_5,
     })
 
-    mob:addSimpleGambit(ai.t.PARTY, ai.c.HPP_LT, 25, ai.r.MA, ai.s.HIGHEST, xi.magic.spellFamily.CURE)
+    mob:addGambit(ai.t.PARTY, { ai.c.HPP_LT, 25 }, { ai.r.MA, ai.s.HIGHEST, xi.magic.spellFamily.CURE })
 end
 
 spellObject.onMobDespawn = function(mob)

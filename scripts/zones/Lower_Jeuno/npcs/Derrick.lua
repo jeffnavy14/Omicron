@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.LOWER_JEUNO]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.AIRSHIP_PASS) then

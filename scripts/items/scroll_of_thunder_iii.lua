@@ -3,9 +3,10 @@
 -- Scroll of Thunder III
 -- Teaches the black magic Thunder III
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.THUNDER_III)
 end
 

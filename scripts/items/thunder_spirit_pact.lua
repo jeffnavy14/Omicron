@@ -3,9 +3,10 @@
 -- Thunder Spirit Pact
 -- Teaches the summoning magic Thunder Spirit
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.THUNDER_SPIRIT)
 end
 

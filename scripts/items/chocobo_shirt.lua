@@ -3,9 +3,10 @@
 -- Chocobo Shirt
 -- Dispense: Crystals
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
@@ -20,7 +21,7 @@ itemObject.onItemUse = function(target)
     -- 4102 Light
     -- 4103 Dark
     local itemID = 4095 + VanadielDayElement()
-    target:addItem(itemID, math.random(2, 12))
+    npcUtil.giveItem(target, { { itemID, math.random(2, 12) } })
 end
 
 return itemObject

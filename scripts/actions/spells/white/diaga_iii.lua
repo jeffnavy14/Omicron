@@ -2,6 +2,7 @@
 -- Spell: Diaga III
 -- Lowers an enemy's defense and gradually deals light elemental damage.
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -23,13 +24,13 @@ spellObject.onSpellCast = function(caster, target, spell)
     -- Softcaps at 60, should always do at least 1
     dmg = utils.clamp(dmg, 1, 60)
     -- Get resist multiplier (1x if no resist)
-    local resist = applyResistance(caster, target, spell, params)
+    local resist = applyResistanceEffect(caster, target, spell, params)
     -- Get the resisted damage
     dmg = dmg * resist
     -- Add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
     dmg = addBonuses(caster, spell, target, dmg)
     -- Add in target adjustment
-    dmg = adjustForTarget(target, dmg, spell:getElement())
+    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, spell:getElement())
     -- Add in final adjustments including the actual damage dealt
     local final = finalMagicAdjustments(caster, target, spell, dmg)
 

@@ -5,6 +5,7 @@
 -- !pos -102.754 -0.65 16.161 257
 -- !gotoid 17830177
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local items =
@@ -20,9 +21,6 @@ local items =
     [2052] = { cost = 2000, id = xi.item.CIPHER_OF_AMCHUCHUS_ALTER_EGO },
     [2308] = { cost = 2000, id = xi.item.CIPHER_OF_MORIMARS_ALTER_EGO },
 }
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local active = xi.extravaganza.campaignActive()
@@ -41,9 +39,6 @@ entity.onTrigger = function(player, npc)
     else
         -- Stare blankly For now
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

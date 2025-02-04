@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.NYZUL_ISLE]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 -- Path to Stage 2 Position
@@ -35,7 +36,7 @@ entity.onMobSpawn = function(mob)
     end)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     -- localVar because we don't want it to repeat she engages a new target.
     if mob:getLocalVar('started') == 0 then
         mob:showText(mob, ID.text.ALRRRIGHTY)
@@ -52,7 +53,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobDisengage = function(mob, target)
+entity.onMobDisengage = function(mob)
     local ready = mob:getLocalVar('ready')
 
     if ready == 1 then
@@ -94,6 +95,10 @@ entity.onMobDeath = function(mob, player, optParams)
     -- Loss if Naja dies. Since player will be nil here, it'll only show once.
     mob:showText(mob, ID.text.ABQUHBAH)
     local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
     instance:fail()
 end
 

@@ -1,6 +1,7 @@
 -----------------------------------
 -- Zone: Altar_Room (152)
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -16,7 +17,7 @@ zoneObject.onZoneIn = function(player, prevZone)
     then
         cs = 10000
     elseif
-        player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST) == QUEST_AVAILABLE and
+        player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST) == xi.questStatus.QUEST_AVAILABLE and
         player:getMainLvl() >= 60 and
         player:getCharVar('moraldecline') == 0
     then
@@ -39,7 +40,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
@@ -53,7 +54,7 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
         player:setCharVar('FickblixCS', 0)
     elseif csid == 46 and option == 0 then
         player:setCharVar('moral', 1)
-        player:addQuest(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST)
+        player:addQuest(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST)
     elseif csid == 46 and option == 1 then
         player:setCharVar('moraldecline', 1, NextConquestTally())
     elseif csid == 47 then
@@ -61,7 +62,7 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
         player:setCharVar('moral', 5)
     elseif csid == 51 then
         player:setCharVar('moralrebuy', 1)
-        npcUtil.completeQuest(player, xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST, {
+        npcUtil.completeQuest(player, xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.A_MORAL_MANIFEST, {
             item = 748,
             var = 'moral'
         })

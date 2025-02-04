@@ -3,9 +3,10 @@
 -- Scroll of Dragonfoe Mambo
 -- Teaches the song Dragonfoe Mambo
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DRAGONFOE_MAMBO)
 end
 

@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.ALZADAAL_UNDERSEA_RUINS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not xi.instance.onTrigger(player, npc, xi.zone.NYZUL_ISLE) then
@@ -21,10 +19,11 @@ entity.onEventUpdate = function(player, csid, option, npc)
     -- Force the Nyzul Isle loop to bail out
     if xi.instance.onEventUpdate(player, csid, option, npc) then
         player:setLocalVar('NYZUL_INSTANCE', 1)
-    -- This was causing entry to fail out, and 116 to not be hit.  Handled inside
-    -- Path of Darkness instance script.
-    -- else
-    --     v:updateEvent(405, 3, 3, 3, 3, 3, 3, 3)
+    else
+        -- stops the loop of checking all party member requirements
+        -- and cleanly bails in onEventFinish
+        player:setLocalVar('NYZUL_INSTANCE', 0)
+        player:updateEvent(405, 3, 3, 3, 3, 3, 3, 3)
     end
 end
 

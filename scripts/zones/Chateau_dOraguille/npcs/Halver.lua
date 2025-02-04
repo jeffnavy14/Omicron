@@ -7,10 +7,8 @@
 -----------------------------------
 local ID = zones[xi.zone.CHATEAU_DORAGUILLE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local pNation = player:getNation()
@@ -18,13 +16,13 @@ entity.onTrigger = function(player, npc)
 
     -- Lure of the Wildcat San d'Oria
     if
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == xi.questStatus.QUEST_ACCEPTED and
         not utils.mask.getBit(wildcatSandy, 16)
     then
         player:startEvent(558)
     -- Blackmail quest
     elseif
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.BLACKMAIL) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.BLACKMAIL) == xi.questStatus.QUEST_ACCEPTED and
         player:hasKeyItem(xi.ki.SUSPICIOUS_ENVELOPE)
     then
         player:startEvent(549)
@@ -41,9 +39,6 @@ entity.onTrigger = function(player, npc)
     elseif pNation == xi.nation.BASTOK then
         player:showText(npc, ID.text.HALVER_OFFSET + 1092)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

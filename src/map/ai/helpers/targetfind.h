@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -99,9 +99,9 @@ public:
     void reset(); // remove all found targets
 
     // Main methods for finding targets
-    void findSingleTarget(CBattleEntity* PTarget, uint8 flags = FINDFLAGS_NONE);
-    void findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, float radius, uint8 flags = FINDFLAGS_NONE);
-    void findWithinCone(CBattleEntity* PTarget, float distance, float angle, uint8 flags = FINDFLAGS_NONE);
+    void findSingleTarget(CBattleEntity* PTarget, uint8 findFlags, uint16 targetflags);
+    void findWithinArea(CBattleEntity* PTarget, AOE_RADIUS radiusType, float radius, uint8 findFlags, uint16 targetFlags);
+    void findWithinCone(CBattleEntity* PTarget, float distance, float angle, uint8 findFlags, uint16 targetFlags, uint8 aoeType = 4);
 
     // add all targets in contexts
     void addAllInZone(CBattleEntity* PTarget, bool withPet);
@@ -138,7 +138,8 @@ protected:
 
     uint16    m_zone;
     FIND_TYPE m_findType;
-    uint8     m_findFlags;
+    uint8     m_findFlags;   // what to search for
+    uint16    m_targetFlags; // targetflags to reject potentially bad targets
 
     // conal vars
     bool        m_conal;

@@ -2,6 +2,7 @@
 -- func: ah
 -- desc: opens the Auction House menu anywhere in the world
 -----------------------------------
+---@type TCommand
 local commandObj = {}
 
 commandObj.cmdprops =
@@ -11,7 +12,7 @@ commandObj.cmdprops =
 }
 
 commandObj.onTrigger = function(player)
-    player:sendMenu(3)
+    player:sendMenu(xi.menuType.AUCTION)
 end
 
 return commandObj

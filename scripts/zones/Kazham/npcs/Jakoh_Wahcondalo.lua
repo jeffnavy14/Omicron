@@ -6,10 +6,8 @@
 -- Inovlved in Missions: ZM3 Kazham's Chieftainess, WM7-2 Awakening of the Gods
 -- Involved in Quests: Tuning Out
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local tuningOutProgress = player:getCharVar('TuningOut_Progress')

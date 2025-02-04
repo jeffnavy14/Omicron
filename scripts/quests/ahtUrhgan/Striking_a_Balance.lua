@@ -6,7 +6,7 @@
 -- Saliyahf: !pos -60 0 65 50
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.STRIKING_A_BALANCE)
+local quest = Quest:new(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.STRIKING_A_BALANCE)
 
 local positionTable =
 {
@@ -29,7 +29,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE
+            return status == xi.questStatus.QUEST_AVAILABLE
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -63,7 +63,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 0
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 0
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -83,7 +83,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 1
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 1
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -110,7 +110,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 2
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 2
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -143,7 +143,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 3
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 3
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -185,17 +185,14 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 4
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 4
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 695
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                return 695
+            end,
 
             onEventFinish =
             {
@@ -208,7 +205,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED and vars.Prog == 5
+            return status == xi.questStatus.QUEST_ACCEPTED and vars.Prog == 5
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =

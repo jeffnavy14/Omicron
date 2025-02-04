@@ -2,6 +2,7 @@
 -- func: !checkinteraction (handlerName)
 -- desc:
 -----------------------------------
+---@type TCommand
 local commandObj = {}
 
 commandObj.cmdprops =
@@ -78,7 +79,7 @@ commandObj.onTrigger = function(player, handlerName)
     end
 
     local varCache = interactionUtil.makeTableCache(function(varname)
-        return player:getVar(varname)
+        return player:getCharVar(varname)
     end)
 
     local containerVarCache = interactionUtil.makeContainerVarCache(player)
@@ -94,6 +95,7 @@ commandObj.onTrigger = function(player, handlerName)
         return handlers
     end
 
+    local onSteals = gatherHandlers('onSteal')
     local onTriggers = gatherHandlers('onTrigger')
     local onTrades = gatherHandlers('onTrade')
 
@@ -112,6 +114,7 @@ commandObj.onTrigger = function(player, handlerName)
     end
 
     cmdPrint('Handlers for "%s":', handlerName)
+    printHandlers('Steal', onSteals)
     printHandlers('Trigger', onTriggers)
     printHandlers('Trade', onTrades)
 end

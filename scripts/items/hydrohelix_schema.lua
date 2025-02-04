@@ -3,9 +3,10 @@
 -- Hydrohelix Schema
 -- Teaches the black magic Hydrohelix
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.HYDROHELIX)
 end
 

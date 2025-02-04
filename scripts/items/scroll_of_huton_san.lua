@@ -3,9 +3,10 @@
 -- Scroll of Huton: San
 -- Teaches the ninjutsu Huton: San
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.HUTON_SAN)
 end
 

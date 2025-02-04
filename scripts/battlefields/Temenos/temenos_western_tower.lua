@@ -18,39 +18,46 @@ local content = Limbus:new({
     entryNpc         = 'Matter_Diffusion_Module',
     requiredKeyItems = { xi.ki.COSMO_CLEANSE, xi.ki.WHITE_CARD, message = ID.text.YOU_INSERT_THE_CARD_POLISHED },
     name             = 'TEMENOS_WESTERN_TOWER',
+    lootCrateId      = ID.npc.W_LOOT_CRATE,
     timeExtension    = 15,
 })
 
 local setupItemCrate = function(crateID, floor)
     local crate = GetEntityByID(crateID)
 
-    xi.limbus.hideCrate(crate)
-    crate:setModelId(961)
-    crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', function(player, npc)
-        npcUtil.openCrate(npc, function()
-            content:handleLootRolls(player:getBattlefield(), content.loot[floor], npc)
+    if crate then
+        xi.limbus.hideCrate(crate)
+        crate:setModelId(961)
+        crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', function(player, npc)
+            npcUtil.openCrate(npc, function()
+                content:handleLootRolls(player:getBattlefield(), content.loot[floor], npc)
+            end)
         end)
-    end)
+    end
 end
 
 local setupTimeCrate = function(crateID, floor)
     local crate = GetEntityByID(crateID)
 
-    xi.limbus.hideCrate(crate)
-    crate:setModelId(962)
-    crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', utils.bind(content.handleOpenTimeCrate, content))
+    if crate then
+        xi.limbus.hideCrate(crate)
+        crate:setModelId(962)
+        crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', utils.bind(content.handleOpenTimeCrate, content))
+    end
 end
 
 local setupRecoverCrate = function(crateID, floor)
     local crate = GetEntityByID(crateID)
 
-    xi.limbus.hideCrate(crate)
-    crate:setModelId(960)
-    crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', utils.bind(content.handleOpenRecoverCrate, content))
+    if crate then
+        xi.limbus.hideCrate(crate)
+        crate:setModelId(960)
+        crate:addListener('ON_TRIGGER', 'TRIGGER_CRATE', utils.bind(content.handleOpenRecoverCrate, content))
+    end
 end
 
-function content:onBattlefieldInitialise(battlefield)
-    Limbus.onBattlefieldInitialise(self, battlefield)
+function content:onBattlefieldInitialize(battlefield)
+    Limbus.onBattlefieldInitialize(self, battlefield)
 
     local crateSetupFuncs =
     {
@@ -75,7 +82,7 @@ content.handleMobDeath = function(floor, battlefield, mob, count)
 
     local crateCount = battlefield:getLocalVar('CrateCount'..floor)
 
-    if crateCount < 3 and math.random(4) == 1 then
+    if crateCount < 3 and math.random(1, 100) <= 25 then
         -- Crate type randomization happens in onBattlefieldRegister
         local crateID = ID.TEMENOS_WESTERN_TOWER.npc.CRATE_OFFSETS[floor] + crateCount
 
@@ -300,7 +307,7 @@ content.groups =
     {
         mobs     = { 'Enhanced_Vulture' },
         allDeath = function(battlefield, mob)
-            npcUtil.showCrate(GetEntityByID(ID.TEMENOS_WESTERN_TOWER.npc.LOOT_CRATE))
+            npcUtil.showCrate(GetEntityByID(ID.npc.W_LOOT_CRATE))
         end,
     },
 }
@@ -451,7 +458,7 @@ content.loot =
         },
     },
 
-    [ID.TEMENOS_WESTERN_TOWER.npc.LOOT_CRATE] =
+    [ID.npc.W_LOOT_CRATE] =
     {
         {
             quantity = 5,

@@ -3,10 +3,8 @@
 -- NPC : Yonolala
 -- Unity NPC
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.unity.onTrigger(player, npc)

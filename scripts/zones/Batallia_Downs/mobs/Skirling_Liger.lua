@@ -2,9 +2,10 @@
 -- Area: Batallia Downs (105)
 --  Mob: Skirling Liger
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setMod(xi.mod.REGAIN, 50)
 end
 

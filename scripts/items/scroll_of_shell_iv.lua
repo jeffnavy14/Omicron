@@ -3,9 +3,10 @@
 -- Scroll of Shell IV
 -- Teaches the white magic Shell IV
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SHELL_IV)
 end
 

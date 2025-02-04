@@ -5,6 +5,7 @@
 -- Only recieving Adv.Coupon and simple talk event are scrited
 -- This NPC participates in Quests and Missions
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -14,13 +15,6 @@ entity.onTrade = function(player, npc, trade)
     then
         player:startEvent(612)
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(573)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

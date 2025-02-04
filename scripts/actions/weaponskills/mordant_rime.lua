@@ -12,21 +12,18 @@
 -- 100%TP    200%TP    300%TP
 -- 5.0        5.0        5.0
 -----------------------------------
+---@type TWeaponSkill
 local weaponskillObject = {}
 
 weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary, action, taChar)
-    local params = {}
+    local params   = {}
     params.numHits = 2
-    params.ftp100 = 3 params.ftp200 = 3 params.ftp300 = 3
-    params.str_wsc = 0.0 params.dex_wsc = 0.3 params.vit_wsc = 0.0 params.agi_wsc = 0.0 params.int_wsc = 0.0
-    params.mnd_wsc = 0.0 params.chr_wsc = 0.5
-    params.crit100 = 0.0 params.crit200 = 0.0 params.crit300 = 0.0
-    params.canCrit = false
-    params.acc100 = 0.0 params.acc200 = 0.0 params.acc300 = 0.0
-    params.atk100 = 1 params.atk200 = 1 params.atk300 = 1
+    params.ftpMod  = { 3, 3, 3 }
+    params.dex_wsc = 0.3
+    params.chr_wsc = 0.5
 
     if xi.settings.main.USE_ADOULIN_WEAPON_SKILL_CHANGES then
-        params.ftp100 = 5 params.ftp200 = 5 params.ftp300 = 5
+        params.ftpMod  = { 5, 5, 5 }
         params.chr_wsc = 0.7
     end
 
@@ -35,12 +32,13 @@ weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary,
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
 
-    if damage > 0 and not target:hasStatusEffect(xi.effect.WEIGHT) then
-        if not target:hasStatusEffect(xi.effect.WEIGHT) then
-            if tp - 1000 > math.random() * 150 then
-                target:addStatusEffect(xi.effect.WEIGHT, 50, 0, 60)
-            end
-        end
+    -- Handle status effect
+    if math.random(1, 100) <= tp / 30 * applyResistanceAddEffect(player, target, xi.element.THUNDER, 0) then
+        local effectId      = xi.effect.WEIGHT
+        local actionElement = xi.element.WIND
+        local power         = 25
+        local duration      = math.floor(60 * applyResistanceAddEffect(player, target, actionElement, 0))
+        xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
     end
 
     return tpHits, extraHits, criticalHit, damage

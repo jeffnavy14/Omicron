@@ -3,6 +3,7 @@
 --   NM: Manipulator
 -- Note: Paths around the 2 staircases
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local pathNodes =
@@ -71,7 +72,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    mob:setRespawnTime(7200) -- 2 hours
+    mob:setRespawnTime(900) -- 15 minutes
 end
 
 return entity

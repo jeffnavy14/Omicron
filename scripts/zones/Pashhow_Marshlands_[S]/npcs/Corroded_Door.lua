@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PASHHOW_MARSHLANDS_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not xi.instance.onTrigger(player, npc, xi.zone.RUHOTZ_SILVERMINES) then

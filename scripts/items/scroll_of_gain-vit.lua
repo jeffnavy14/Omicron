@@ -3,9 +3,10 @@
 -- Scroll of Gain-VIT
 -- Teaches the white magic Gain-VIT
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.GAIN_VIT)
 end
 

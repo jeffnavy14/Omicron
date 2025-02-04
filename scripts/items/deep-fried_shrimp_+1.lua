@@ -9,9 +9,10 @@
 -- Ranged Accuracy +21% (cap 75)
 -- Subtle Blow +9
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

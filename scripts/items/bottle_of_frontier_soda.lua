@@ -3,9 +3,10 @@
 -- Item: Bottle of Frontier Soda
 -- Item Effect: Restores 20 TP over 60 seconds.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

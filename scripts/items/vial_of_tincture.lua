@@ -3,9 +3,10 @@
 -- Item: Tincture
 -- Item Effect: This potion remedies disease and plague
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

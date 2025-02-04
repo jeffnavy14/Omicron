@@ -6,6 +6,7 @@
 -----------------------------------
 mixins = { require('scripts/mixins/rage') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -26,17 +27,6 @@ entity.onMobSpawn = function(mob)
     end)
 
     mob:setLocalVar('[rage]timer', 3600) -- 60 minutes
-end
-
--- TODO: Mob's movement speed is increased while chasing target.
--- It's tricky to emulate this exact mechanic, because on retail 'chase'
--- is triggered not only while the mob engaged, but also when target is out of range.
-entity.onMobEngaged = function(mob)
-    mob:setSpeed(100)
-end
-
-entity.onMobDisengage = function(mob, target)
-    mob:setSpeed(40)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

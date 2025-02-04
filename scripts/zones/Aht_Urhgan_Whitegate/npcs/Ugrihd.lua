@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local ImperialPieces =
@@ -32,9 +33,6 @@ local ImperialPieces =
     }
 }
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     local points = player:getCurrency('imperial_standing')
     local rank   = xi.besieged.getMercenaryRank(player)
@@ -44,9 +42,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(150, rank, badge, points, 0, 0, 0, 0, 0, 0)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
@@ -83,7 +78,7 @@ entity.onEventFinish = function(player, csid, option, npc)
 
         player:delCurrency('imperial_standing', quantity * price)
         npc:showText(npc, ID.text.UGRIHD_PURCHASE_DIALOGUE)
-        player:messageSpecial(ID.text.ITEM_OBTAINED, item)
+        player:messageSpecial(ID.text.ITEM_OBTAINED + 9, item, quantity)
     end
 end
 

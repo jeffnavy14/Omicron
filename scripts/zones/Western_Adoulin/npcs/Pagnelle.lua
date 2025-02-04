@@ -5,16 +5,14 @@
 -----------------------------------
 local ID = zones[xi.zone.WESTERN_ADOULIN]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local raptorRapture = player:getQuestStatus(xi.quest.log_id.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
+    local raptorRapture = player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
     local raptorRaptureStatus = player:getCharVar('Raptor_Rapture_Status')
 
-    if raptorRapture == QUEST_AVAILABLE then
+    if raptorRapture == xi.questStatus.QUEST_AVAILABLE then
         if raptorRaptureStatus < 3 then
             -- Starts chain of events for the introduction CS for Quest: 'Raptor Rapture'.
             -- If player somehow doesn't finish the chain of events, they can just talk to Pagnelle again to retry.
@@ -25,7 +23,7 @@ entity.onTrigger = function(player, npc)
             -- Offers Quest: 'Raptor Rapture' if player has yet to accept it.
             player:startEvent(5061)
         end
-    elseif raptorRapture == QUEST_ACCEPTED then
+    elseif raptorRapture == xi.questStatus.QUEST_ACCEPTED then
         if raptorRaptureStatus == 4 then
             -- Reminder during Quest: 'Raptor Rapture', speak to Ilney.
             player:startEvent(5033)
@@ -59,16 +57,13 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 5032 then
         -- Warps player to Rala Waterways to continue intrductory CS for Quest: 'Raptor Rapture'
         player:setPos(0, 0, 0, 0, 258)
     elseif csid == 5061 and option == 1 then
         -- Starts Quest: 'Raptor Rapture'
-        player:addQuest(xi.quest.log_id.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
+        player:addQuest(xi.questLog.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
         player:setCharVar('Raptor_Rapture_Status', 4)
     elseif csid == 5035 then
         -- Progresses Quest: 'Raptor Rapture', spoke to Ilney, now need rockberries.
@@ -82,10 +77,12 @@ entity.onEventFinish = function(player, csid, option, npc)
     elseif csid == 5039 then
         -- Finishing Quest: 'Raptor Rapture'
         player:setCharVar('Raptor_Rapture_Status', 0)
-        player:completeQuest(xi.quest.log_id.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
+        player:completeQuest(xi.questLog.ADOULIN, xi.quest.id.adoulin.RAPTOR_RAPTURE)
         player:addCurrency('bayld', 1000 * xi.settings.main.BAYLD_RATE)
         player:messageSpecial(ID.text.BAYLD_OBTAINED, 1000 * xi.settings.main.BAYLD_RATE)
-        player:addFame(xi.quest.fame_area.ADOULIN)
+
+        -- TODO: Verify fame value added
+        player:addFame(xi.fameArea.ADOULIN, 30)
         player:needToZone(true)
     end
 end

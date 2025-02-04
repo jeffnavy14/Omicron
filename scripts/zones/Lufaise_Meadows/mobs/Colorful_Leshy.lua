@@ -2,6 +2,7 @@
 -- Area: Lufaise Meadows
 --  Mob: Colorful Leshy
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -16,7 +17,7 @@ entity.onMobSpawn = function(mob)
     disturbMob(mob)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     disturbMob(mob)
 end
 
@@ -27,7 +28,11 @@ end
 entity.onMobRoam = function(mob)
     local ph = mob:getID()
     local nm = GetMobByID(ph + 1)
-    if not nm:isSpawned() and os.time() > nm:getLocalVar('timeToGrow') then
+    if
+        nm and
+        not nm:isSpawned() and
+        os.time() > nm:getLocalVar('timeToGrow')
+    then
         local phIndex = mob:getLocalVar('phIndex')
         local p = mob:getPos()
         DisallowRespawn(ph, true)

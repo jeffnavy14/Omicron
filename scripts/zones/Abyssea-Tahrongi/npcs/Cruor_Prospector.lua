@@ -4,6 +4,7 @@
 -- Type: Cruor NPC
 -- !pos 132.000 -75.856 -822.000 15
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local itemType = xi.abyssea.itemType
@@ -27,14 +28,8 @@ local localProspectorItems =
     [itemType.ENHANCEMENT] = xi.abyssea.visionsCruorProspectorBuffs,
 }
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     xi.abyssea.visionsCruorProspectorOnTrigger(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

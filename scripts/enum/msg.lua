@@ -8,6 +8,7 @@ xi.msg = xi.msg or {}
 -- Message Channels
 -----------------------------------
 
+---@enum xi.channel
 xi.msg.channel =
 {
     SAY            = 0,
@@ -46,6 +47,7 @@ xi.msg.channel =
 }
 
 -- used by player:printToArea
+---@enum xi.area
 xi.msg.area =
 {
     SYSTEM      = 0, -- Server wide like the purple stuff :)
@@ -60,6 +62,7 @@ xi.msg.area =
 -- Basic Messages
 -----------------------------------
 
+---@enum xi.basic
 xi.msg.basic =
 {
     NONE    = 0, -- Display nothing
@@ -102,6 +105,7 @@ xi.msg.basic =
     MAGIC_REMOVE_EFFECT_2  = 571, -- <number> of <target>'s status ailments disappear!
     MAGIC_ABSORB_AILMENT   = 572, -- <caster> casts <spell>. <caster> absorbs <number> of <target>'s status ailments.
     MAGIC_MUST_ASTRAL_FLOW = 581, -- Unable to cast <spell>. Astral Flow must be in effect to cast this spell.
+    MAGIC_COMPLETE_RESIST  = 655, -- <caster> casts <spell>. <target> completely resists the spell.
 
     -- Weaponskill / Mobskill (0-255 WS, 256+ monster skill)
     SKILL_RECOVERS_HP      = 103, -- The <player> uses .. <target> recovers .. HP.
@@ -131,6 +135,9 @@ xi.msg.basic =
     USES_JA                = 100, -- The <player> uses ..
     USES                   = 101, -- The <entity> uses ..
     JA_RECOVERS_HP         = 102, -- The <player> uses .. <target> recovers .. HP.
+    ACC_EVA_DOWN           = 144, -- <user> uses <ability>. <target> receives the effect of Accuracy Down and Evasion Down.
+    ACC_EVA_BOOST          = 146, -- <user> uses <ability>. <target> receives the effect of Accuracy Boost and Evasion Boost.
+    ACC_EVA_BOOST_2        = 147, -- <target> receives the effect of Accuracy Boost and Evasion Boost.
     JA_RECOVERS_HP_2       = 318, -- <user> uses ability. <target> recovers <amount> HP. -- Observed on healing breath.
     JA_DAMAGE              = 110, -- <user> uses <ability>. <target> takes <amount> damage.
     JA_REMOVE_EFFECT       = 123, -- <user> uses <ability>. <user> successfully removes <target>'s <status>.
@@ -142,13 +149,25 @@ xi.msg.basic =
     JA_RECEIVES_EFFECT     = 267, -- <target> receives the effect of <status>.
     JA_GAIN_EFFECT_2       = 316, -- <user> uses <ability>. <target> gains the effect of <effect>.
     JA_RECEIVES_EFFECT_2   = 320, -- <user> uses <ability>. <target> receives the effect of <status>.
+    JA_RECEIVES_MAB_MDB    = 415, -- <user> uses <ability>. <target> receives the effect of Magic Attack Boost and Magic Defense Boost.
+    JA_RECEIVES_MAB_MDB_2  = 414, -- <target> receives the effect of Magic Attack Boost and Magic Defense Boost.
     JA_REMOVE_EFFECT_2     = 321, -- <user> uses <ability>. <target>'s <status> wears off.
     JA_NO_EFFECT_2         = 323, -- <user> uses <ability>. No effect on <target>. (2 line msg)
     JA_MISS_2              = 324, -- <user> uses <ability>, but misses <target>. (includes target name)
+    JA_RECEIVES_EFFECT_3   = 441, -- <user> receives the effect of <ability>.
     JA_RECOVERS_MP         = 451, -- <user> uses <ability>. <target> regains <amount> MP.
     JA_ATK_ENHANCED        = 285, -- <target>'s attacks are enhanced.
+    STATUS_BOOST           = 364, -- <user> uses <ability>. All of <target>'s status parameters are boosted.
+    STATUS_BOOST_2         = 365, -- All of <target>'s status parameters are boosted.
     JA_MAGIC_BURST         = 379, -- <user> uses <ability>. Magic Burst! the <target> takes <amount> damage.
     JA_ENMITY_DECREASE     = 743, -- <user> uses <ability>. <target>'s enmity decreases.
+    JA_TH_EFFECTIVENESS    = 608, -- <user> uses <ability>. Treasure Hunter effectiveness against <target> increases to <amount>.
+
+    -- "Fortified against" messages
+    FORTIFIED_DEMONS       = 149, -- <target> is fortified against demons.
+    FORTIFIED_DRAGONS      = 151, -- <target> is fortified against dragons.
+    FORTIFIED_UNDEAD       = 286, -- <target> is fortified against undead.
+    FORTIFIED_ARCANA       = 287, -- <target> is fortified against arcana.
 
     -- Misc Other
     DEFEATS_TARG           = 6,   -- The <player> defeats <target>.
@@ -289,6 +308,8 @@ xi.msg.basic =
     TIME_DYNAMIS_EXTENDED  = 448, -- Time allowed in Dynamis has been extended by <param> minutes
     TIME_DYNAMIS_REMAINING = 449, -- ----== WARNING ==----Time remaining in Dynamis: <param> minutes.
     -- Charm
+    CHARM_SUCCESS          = 136, -- <actor> uses charm. <target> is now under the <actor>'s control.
+    CHARM_FAIL             = 137, -- <actor> uses charm. <actor> fails to charm <target>.
     CANNOT_CHARM           = 210, -- <actor> cannot charm <target>!
     VERY_DIFFICULT_CHARM   = 211, -- It would be very difficult for <actor> to charm <target>.
     DIFFICULT_TO_CHARM     = 212, -- It would be difficult for <actor> to charm <target>.
@@ -388,6 +409,7 @@ xi.msg.basic =
 }
 
 -- Used to modify certain basic messages.
+---@enum xi.actionModifier
 xi.msg.actionModifier =
 {
     NONE        = 0x00,
@@ -401,6 +423,7 @@ xi.msg.actionModifier =
 -- System Messages
 -----------------------------------
 
+---@enum xi.system
 xi.msg.system =
 {
     GLOBAL_TRUST_OFFSET          = 0,
@@ -410,4 +433,15 @@ xi.msg.system =
     TRUST_ALREADY_CALLED         = 299, -- That alter ego has already been called forth.
     TRUST_NO_ENMITY              = 300, -- You cannot use Trust magic while having gained enmity.
     TRUST_SOLO_OR_LEADER         = 301, -- You cannot use Trust magic unless you are solo or the party leader.
+}
+
+-----------------------------------
+-- Combat/Action Messages (used with CMessageCombatPacket/:messageCombat())
+-----------------------------------
+
+---@enum xi.combat
+xi.msg.combat =
+{
+    USE_OBTAIN_ESCHA_SILT = 765, -- <name> uses <item>. <name> obtains <n> escha silt.
+    USE_OBTAIN_ESCHA_BEAD = 766, -- <name> uses <item>. <name> obtains <n> escha beads.
 }

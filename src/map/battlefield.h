@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -34,11 +34,8 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 enum BCRULES : uint8
 {
-    RULES_ALLOW_SUBJOBS         = 0x01,
-    RULES_LOSE_EXP              = 0x02,
-    RULES_REMOVE_3MIN           = 0x04,
-    RULES_SPAWN_TREASURE_ON_WIN = 0x08,
-    RULES_MAAT                  = 0x10
+    RULES_ALLOW_SUBJOBS = 0x01,
+    RULES_LOSE_EXP      = 0x02,
 };
 
 enum BATTLEFIELDMOBCONDITION : uint8
@@ -126,14 +123,13 @@ struct BattlefieldGroup
     sol::function       randomDeathCallback;
     sol::function       allDeathCallback;
     sol::function       setupCallback;
-    uint8               deathCount  = 0;
     uint32              randomMobId = 0;
 };
 
 class CBattlefield : public std::enable_shared_from_this<CBattlefield>
 {
 public:
-    CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator, bool isInteraction);
+    CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator);
     ~CBattlefield();
 
     uint16                        GetID() const;
@@ -161,7 +157,6 @@ public:
 
     bool CheckInProgress();
     bool IsOccupied() const;
-    bool isInteraction() const;
     bool isEntered(CCharEntity* PChar) const;
 
     void ForEachPlayer(const std::function<void(CCharEntity*)>& func);
@@ -171,15 +166,12 @@ public:
     void ForEachNpc(const std::function<void(CNpcEntity*)>& func);
     void ForEachAlly(const std::function<void(CMobEntity*)>& func);
 
-    void SetID(uint16 id);
     void SetName(std::string const& name);
     void SetInitiator(std::string const& name);
     void SetArea(uint8 area);
     void SetRecord(std::string const& name, duration time, size_t partySize);
     void SetStatus(uint8 status);
     void SetRuleMask(uint16 rulemask);
-    void SetStartTime(time_point time);
-    void SetFightTime(time_point time);
     void SetTimeLimit(duration time);
     void SetWipeTime(time_point time);
     void SetMaxParticipants(uint8 max);
@@ -196,8 +188,6 @@ public:
     void         onTick(time_point time);
     bool         CanCleanup(bool cleanup = false);
     bool         Cleanup(time_point time, bool force);
-    bool         LoadMobs();
-    bool         SpawnLoot(CBaseEntity* PEntity = nullptr);
 
     // Groups
     void addGroup(BattlefieldGroup group);
@@ -237,8 +227,7 @@ private:
     size_t                 m_MaxParticipants;
     uint8                  m_LevelCap;
     // Entity id of the Armoury Crate that appears upon victory
-    uint32     m_armouryCrate = 0;
-    bool const m_isInteraction;
+    uint32 m_armouryCrate = 0;
 
     time_point m_cleanupTime{};
     bool       m_cleanedPlayers = false;

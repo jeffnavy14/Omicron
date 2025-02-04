@@ -6,12 +6,13 @@
 -----------------------------------
 local ID = zones[xi.zone.GRAND_PALACE_OF_HUXZOI]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     local nm = GetMobByID(ID.mob.IXAERN_MNK)
 
-    if not nm:isSpawned() then
+    if nm and not nm:isSpawned() then
         local chance = 0 -- percent chance that an item will drop.
 
         if npcUtil.tradeHas(trade, { { xi.item.HIGH_QUALITY_AERN_ORGAN, 3 } }) then
@@ -29,6 +30,10 @@ entity.onTrade = function(player, npc, trade)
             -- spawn Ix'Aern (MNK) and minions
             nm:setSpawn(npc:getXPos(), npc:getYPos(), npc:getZPos())
             local mob = SpawnMob(ID.mob.IXAERN_MNK)
+            if not mob then
+                return
+            end
+
             mob:updateClaim(player)
             mob:setLocalVar('[SEA]IxAern_DropRate', chance * 10)
 
@@ -43,15 +48,6 @@ entity.onTrade = function(player, npc, trade)
             end
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

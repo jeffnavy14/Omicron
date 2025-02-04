@@ -3,9 +3,10 @@
 -- Scroll of Foe Requiem IV
 -- Teaches the song Foe Requiem IV
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FOE_REQUIEM_IV)
 end
 

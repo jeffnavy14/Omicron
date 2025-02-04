@@ -12,9 +12,10 @@
 -- Ranged ATT % 20 (cap 150)
 -- Dragon Killer 5
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -23,7 +24,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 22)
+    target:addMod(xi.mod.FOOD_HP, 22)
     target:addMod(xi.mod.STR, 7)
     target:addMod(xi.mod.INT, -3)
     target:addMod(xi.mod.HPHEAL, 2)
@@ -36,7 +37,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 22)
+    target:delMod(xi.mod.FOOD_HP, 22)
     target:delMod(xi.mod.STR, 7)
     target:delMod(xi.mod.INT, -3)
     target:delMod(xi.mod.HPHEAL, 2)

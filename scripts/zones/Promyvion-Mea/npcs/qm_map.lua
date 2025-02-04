@@ -8,11 +8,8 @@
 -----------------------------------
 local ID = zones[xi.zone.PROMYVION_MEA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrigger = function(player, npc)
-    player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
-end
 
 entity.onTrade = function(player, npc, trade)
     if
@@ -25,7 +22,12 @@ entity.onTrade = function(player, npc, trade)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
+entity.onTrigger = function(player, npc)
+    if not player:hasKeyItem(xi.ki.MAP_OF_PROMYVION_MEA) then
+        player:messageSpecial(ID.text.EERIE_GREEN_GLOW)
+    else
+        player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
+    end
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

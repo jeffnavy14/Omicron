@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.BHAFLAU_THICKETS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -18,12 +19,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.BLOOD_STAINS)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

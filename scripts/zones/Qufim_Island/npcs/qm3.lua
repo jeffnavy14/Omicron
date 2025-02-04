@@ -4,6 +4,7 @@
 -- Mission: ACP - The Echo Awakens
 -- !pos -120.342 -19.471 306.661 126
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -68,9 +69,6 @@ entity.onTrigger = function(player, npc)
     else
         -- Todo: find retail message (if any) and text its ID
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

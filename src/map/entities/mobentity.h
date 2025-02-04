@@ -62,7 +62,8 @@ enum ROAMFLAG : uint16
     ROAMFLAG_AMBUSH   = 0x80,  // stays hidden until someone comes close (antlion)
     ROAMFLAG_SCRIPTED = 0x100, // calls lua method for roaming logic
     ROAMFLAG_IGNORE   = 0x200, // ignore all hate, except linking hate
-    ROAMFLAG_STEALTH  = 0x400  // stays name hidden and untargetable until someone comes close (chigoe)
+    ROAMFLAG_STEALTH  = 0x400, // stays name hidden and untargetable until someone comes close (chigoe)
+    ROAMFLAG_FOLLOW   = 0x800, // follows a player when sighted for a little while
 };
 
 enum MOBTYPE
@@ -90,15 +91,15 @@ enum DETECT : uint16
     DETECT_SCENT       = 0x100
 };
 
-enum BEHAVIOUR : uint16
+enum BEHAVIOR : uint16
 {
-    BEHAVIOUR_NONE         = 0x000,
-    BEHAVIOUR_NO_DESPAWN   = 0x001, // mob does not despawn on death
-    BEHAVIOUR_STANDBACK    = 0x002, // mob will standback forever
-    BEHAVIOUR_RAISABLE     = 0x004, // mob can be raised via Raise spells
-    BEHAVIOUR_NOHELP       = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
-    BEHAVIOUR_AGGRO_AMBUSH = 0x200, // mob aggroes by ambush
-    BEHAVIOUR_NO_TURN      = 0x400  // mob does not turn to face target
+    BEHAVIOR_NONE         = 0x000,
+    BEHAVIOR_NO_DESPAWN   = 0x001, // mob does not despawn on death
+    BEHAVIOR_STANDBACK    = 0x002, // mob will standback forever
+    BEHAVIOR_RAISABLE     = 0x004, // mob can be raised via Raise spells
+    BEHAVIOR_NOHELP       = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
+    BEHAVIOR_AGGRO_AMBUSH = 0x200, // mob aggroes by ambush
+    BEHAVIOR_NO_TURN      = 0x400  // mob does not turn to face target
 };
 
 class CMobSkillState;
@@ -164,6 +165,7 @@ public:
     virtual bool OnAttack(CAttackState&, action_t&) override;
     virtual bool CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg) override;
     virtual void OnCastFinished(CMagicState&, action_t&) override;
+    virtual void OnCastInterrupted(CMagicState&, action_t&, MSGBASIC_ID msg, bool blockedCast) override;
 
     virtual void OnDisengage(CAttackState&) override;
     virtual void OnDeathTimer() override;
@@ -188,7 +190,7 @@ public:
     float HPscale; // HP boost percentage
     float MPscale; // MP boost percentage
 
-    uint16 m_roamFlags;    // defines its roaming behaviour
+    uint16 m_roamFlags;    // defines its roaming behavior
     uint8  m_specialFlags; // flags for special skill
 
     bool m_StatPoppedMobs; // true if dyna statue has popped mobs
@@ -216,7 +218,7 @@ public:
     bool      m_TrueDetection; // Has true sight or sound
     uint8     m_Link;          // link with mobs of it's family
     bool      m_isAggroable;   // Can be aggroed by other monsters when in the player allegiance
-    uint16    m_Behaviour;     // mob behaviour
+    uint16    m_Behavior;      // mob behavior
     SPAWNTYPE m_SpawnType;     // condition for mob to spawn
 
     int8   m_battlefieldID; // battlefield belonging to

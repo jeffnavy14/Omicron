@@ -24,6 +24,7 @@
 -----------------------------------
 local ID = zones[xi.zone.HORLAIS_PEAK]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local extremelyBadBreathID = 1332
@@ -78,7 +79,7 @@ end
 entity.onMobSpawn = function(mob)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     -- Start breaths rotation after 10-20 seconds
     mob:timer(math.random(10000, 20000), evilOscarFillsHisLungs)
 end

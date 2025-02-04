@@ -6,6 +6,7 @@
 -- This NPC participates in Quests and Missions
 -- !pos -8 1 1 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -20,9 +21,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:startEvent(615) -- i know a thing or 2 about these streets
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

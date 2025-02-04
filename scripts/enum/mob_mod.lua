@@ -5,6 +5,7 @@
 -----------------------------------
 xi = xi or {}
 
+---@enum xi.mobMod
 xi.mobMod =
 {
     NONE                   = 0,
@@ -19,7 +20,7 @@ xi.mobMod =
     HP_HEAL_CHANCE         = 9,  -- can cast cures below this HP %
     SUBLINK                = 10, -- sub link group
     LINK_RADIUS            = 11, -- link radius
-    DRAW_IN                = 12, -- 1 - player draw in, 2 - alliance draw in -- only add as a spawn mod!
+    SEES_THROUGH_ILLUSION  = 12, -- Mob can see through the Illusion effect that grants effects similar to Sneak & Invisible without this mod and allows aggro (see Viscious Liquid in mamook)
     SEVERE_SPELL_CHANCE    = 13, -- % chance to use a severe spell like death or impact
     SKILL_LIST             = 14, -- uses given mob skill list
     MUG_GIL                = 15, -- amount gil carried for mugging
@@ -33,7 +34,7 @@ xi.mobMod =
     IMMUNITY               = 23, -- immune to set status effects. This only works from the db, not scripts
     GRADUAL_RAGE           = 24, -- (!) TODO: NOT YET IMPLEMENTED -- gradually rages
     BUILD_RESIST           = 25, -- (!) TODO: NOT YET IMPLEMENTED -- builds resistance to given effects
-    SUPERLINK              = 26, -- super link group. Only use this in mob_spawn_mods / scripts!
+    SUPERLINK              = 26, -- super link group. Only use this in scripts!
     SPELL_LIST             = 27, -- set spell list
     EXP_BONUS              = 28, -- bonus exp (bonus / 100) negative values reduce exp.
     ASSIST                 = 29, -- mobs will assist me
@@ -78,11 +79,16 @@ xi.mobMod =
     ALLI_HATE              = 68, -- Range around target to add alliance member to enmity list.
     NO_LINK                = 69, -- If set, mob cannot link until unset.
     NO_REST                = 70, -- Mob cannot regain hp (e.g. re-burrowing antlions during ENM).
-    LEADER                 = 71, -- Used for mobs that follow a defined "leader", such as Ul'xzomit mobs.
+    LEADER                 = 71, -- Used for mob following. Positive number is how many followers a leader has. A negative number is the distance from this mob ID to the leader ID.
     MAGIC_RANGE            = 72, -- magic aggro range
     TARGET_DISTANCE_OFFSET = 73, -- Adjusts how close a mob will move to it's target. 12 = 1.2 yalm. Positive values to go closer, negative farther.
     ONE_WAY_LINKING        = 74, -- Will link with other mobs in its party (typically the same mob family) while roaming, but will not let others link with it once engaged
     CAN_PARRY              = 75, -- Check if a mob is allowed to have parry rank (Rank Value 1-5)
     NO_WIDESCAN            = 76, -- Disables widescan for a specific mob
     TRUST_DISTANCE         = 77, -- TRUSTS ONLY: Set movement type/distance. See trust.lua for details.
+    STANDBACK_RANGE        = 78, -- Applies a specific standback range for the mob
+    CANNOT_GUARD           = 79, -- Check if the mob does not guard (despite being a MNK or PUP mob)
+    SKIP_ALLEGIANCE_CHECK  = 80, -- Skip the allegiance check for valid target (allows for example a mob to cast a TARGET_ENEMY spell on itself)
+    ABILITY_RESPONSE       = 81, -- Mob can respond to player ability use with onPlayerAbilityUse()
+    RUN_SPEED_MULT         = 82, -- Multiplier for the speed of a mob while running (generally when the target is out of range) 100 = 1.00x
 }

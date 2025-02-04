@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.SOUTHERN_SAN_DORIA_S]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -15,7 +16,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 
     if prevZone == xi.zone.EAST_RONFAURE_S then
         if
-            player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE) == QUEST_ACCEPTED and
+            player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.KNOT_QUITE_THERE) == xi.questStatus.QUEST_ACCEPTED and
             player:getCharVar('KnotQuiteThere') == 2
         then
             cs = 62

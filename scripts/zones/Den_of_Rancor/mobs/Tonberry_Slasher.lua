@@ -6,7 +6,18 @@
 mixins = { require('scripts/mixins/families/tonberry') }
 local ID = zones[xi.zone.DEN_OF_RANCOR]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+local tawnyPHTable =
+{
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 14] = ID.mob.TAWNY_FINGERED_MUGBERRY,
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 13] = ID.mob.TAWNY_FINGERED_MUGBERRY,
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 11] = ID.mob.TAWNY_FINGERED_MUGBERRY,
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 10] = ID.mob.TAWNY_FINGERED_MUGBERRY,
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 5]  = ID.mob.TAWNY_FINGERED_MUGBERRY,
+    [ID.mob.TAWNY_FINGERED_MUGBERRY - 4]  = ID.mob.TAWNY_FINGERED_MUGBERRY,
+}
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.regime.checkRegime(player, mob, 798, 1, xi.regime.type.GROUNDS)
@@ -15,7 +26,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.TAWNY_FINGERED_MUGBERRY_PH, 5, 3600) -- 1 hour
+    xi.mob.phOnDespawn(mob, tawnyPHTable, 5, 3600) -- 1 hour
 end
 
 return entity

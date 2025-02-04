@@ -3,14 +3,15 @@
 -- Moogle Suit
 -- Dispense: Mog Missile
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.MOG_MISSILE, 1)
+    npcUtil.giveItem(target, { { xi.item.MOG_MISSILE, 1 } })
 end
 
 return itemObject

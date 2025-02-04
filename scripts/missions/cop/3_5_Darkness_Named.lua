@@ -131,14 +131,11 @@ mission.sections =
 
         [xi.zone.THE_SHROUDED_MAW] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 3 then
-                        return 2
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 3 then
+                    return 2
+                end
+            end,
 
             onEventFinish =
             {
@@ -148,7 +145,7 @@ mission.sections =
 
                 [32001] = function(player, csid, option, npc)
                     if
-                        player:getLocalVar('battlefieldWin') == 704 and
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.DARKNESS_NAMED and
                         mission:getVar(player, 'Status') == 4
                     then
                         player:addTitle(xi.title.TRANSIENT_DREAMER)

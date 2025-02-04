@@ -3,9 +3,10 @@
 -- Scroll of Aspir
 -- Teaches the black magic Aspir
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ASPIR)
 end
 

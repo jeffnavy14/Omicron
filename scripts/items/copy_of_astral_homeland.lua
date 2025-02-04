@@ -5,9 +5,10 @@
 -- It discusses the world avatars inhabit, but seems too absurd to be true.
 -- Adventurers note that reading it increases one's summoning magic skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.SUMMONING_MAGIC)
 end
 

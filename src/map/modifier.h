@@ -22,16 +22,21 @@
 enum class Mod
 {
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
-
-    NONE = 0,       // Essential, but does nothing :)
-                    //  NAME                  = ID, // Comment
-    DEF        = 1, // Target's Defense
-    HP         = 2, // Target's HP
-    HPP        = 3, // HP Percentage
-    CONVMPTOHP = 4, // MP -> HP (Cassie Earring)
-    MP         = 5, // MP +/-
-    MPP        = 6, // MP Percentage
-    CONVHPTOMP = 7, // HP -> MP
+    NONE = 0,            // Essential, but does nothing :)
+                         //  NAME                  = ID, // Comment
+    DEF          = 1,    // Target's Defense
+    HP           = 2,    // Target's HP
+    HPP          = 3,    // HP Percentage
+    CONVMPTOHP   = 4,    // MP -> HP (Cassie Earring)
+    MP           = 5,    // MP +/-
+    MPP          = 6,    // MP Percentage
+    CONVHPTOMP   = 7,    // HP -> MP
+    WEAKNESS_PCT = 1093, // Weakness HP/MP reduction term, -1 = - 1% HP/MP
+    CURSE_PCT    = 1094, // Curse HP/MP reduction term, -1 = - 1% HP/MP
+    BASE_HP      = 1095, // Base HP bonus (like merits)
+    BASE_MP      = 1096, // Base MP bonus (like merits)
+    FOOD_HP      = 1130, // Food HP (this is added after curse)
+    FOOD_MP      = 1131, // Food MP (this is added after curse)
 
     STR = 8,  // Strength
     DEX = 9,  // Dexterity
@@ -40,6 +45,8 @@ enum class Mod
     INT = 12, // Intelligence
     MND = 13, // Mind
     CHR = 14, // Charisma
+
+    TWOHAND_STR = 218, // Same as STR, but only active when using a two handed weapon (e.g. Hasso)
 
     // Magic Evasion versus elements
     // This has been repeatedly mixed up with SDT - be careful!
@@ -67,6 +74,8 @@ enum class Mod
 
     ACC  = 25, // Accuracy
     RACC = 26, // Ranged Accuracy
+
+    TWOHAND_ACC = 219, // Same as ACC, but only active when using a two handed weapon (e.g. Hasso)
 
     ENMITY                = 27,  // Enmity
     ENMITY_LOSS_REDUCTION = 427, // Reduces Enmity lost when taking damage
@@ -96,25 +105,6 @@ enum class Mod
 
     WSACC = 48, // Weaponskill Accuracy
 
-    // Specific Damage Taken vs physical damage type
-    // Value is stored as a percentage of damage reduction (to within 1000)
-    // Example: 1000 = 100%, 875= 87.5%
-    SLASH_SDT  = 49, // Slash Damage Taken
-    PIERCE_SDT = 50, // Piercing Damage Taken
-    IMPACT_SDT = 51, // Impact Damage Taken
-    HTH_SDT    = 52, // Hand-To-Hand Damage Taken
-
-    // Elemental SDT
-    // This has been repeatedly mixed up with RESISTANCE - be careful!
-    FIRE_SDT    = 54, // Fire Damage Taken
-    ICE_SDT     = 55, // Ice Damage Taken
-    WIND_SDT    = 56, // Wind Damage Taken
-    EARTH_SDT   = 57, // Earth Damage Taken
-    THUNDER_SDT = 58, // Thunder Damage Taken
-    WATER_SDT   = 59, // Water Damage Taken
-    LIGHT_SDT   = 60, // Light Damage Taken
-    DARK_SDT    = 61, // Dark Damage Taken
-
     ATTP = 62, // % Attack
     DEFP = 63, // % Defense
 
@@ -123,15 +113,14 @@ enum class Mod
 
     RATTP = 66, // % Ranged Attack
 
-    EVA             = 68,  // Evasion
-    RDEF            = 69,  // Ranged Defense
-    REVA            = 70,  // Ranged Evasion
-    MPHEAL          = 71,  // MP Recovered while healing
-    HPHEAL          = 72,  // HP Recovered while healing
-    STORETP         = 73,  // Increases the rate at which TP is gained
-    TACTICAL_PARRY  = 486, // Tactical Parry Tp Bonus
-    MAG_BURST_BONUS = 487, // Magic Burst Bonus Modifier (percent)
-    INHIBIT_TP      = 488, // Inhibits TP Gain (percent)
+    EVA            = 68,  // Evasion
+    RDEF           = 69,  // Ranged Defense
+    REVA           = 70,  // Ranged Evasion
+    MPHEAL         = 71,  // MP Recovered while healing
+    HPHEAL         = 72,  // HP Recovered while healing
+    STORETP        = 73,  // Increases the rate at which TP is gained
+    TACTICAL_PARRY = 486, // Tactical Parry Tp Bonus
+    INHIBIT_TP     = 488, // Inhibits TP Gain (percent)
 
     // Working Skills (weapon combat skills)
     // These are NOT item Level skill, they are skill in your status menu. iLvl "skill" happens in item_weapon.sql
@@ -187,16 +176,6 @@ enum class Mod
     SYNERGY   = 136, // Synergy Skill
     RIDING    = 137, // Riding Skill
 
-    // Chance you will not make an hq synth (Impossibility of HQ synth)
-    ANTIHQ_WOOD      = 144, // Woodworking Success Rate %
-    ANTIHQ_SMITH     = 145, // Smithing Success Rate %
-    ANTIHQ_GOLDSMITH = 146, // Goldsmithing Success Rate %
-    ANTIHQ_CLOTH     = 147, // Clothcraft Success Rate %
-    ANTIHQ_LEATHER   = 148, // Leathercraft Success Rate %
-    ANTIHQ_BONE      = 149, // Bonecraft Success Rate %
-    ANTIHQ_ALCHEMY   = 150, // Alchemy Success Rate %
-    ANTIHQ_COOK      = 151, // Cooking Success Rate %
-
     // Fishing gear modifiers
     PENGUIN_RING_EFFECT   = 152, // +2 on fishing arrow delay / fish movement for mini - game
     ALBATROSS_RING_EFFECT = 153, // adds 30 seconds to mini - game time
@@ -204,26 +183,73 @@ enum class Mod
     FISHING_SKILL_GAIN    = 155, // food for fishing skill ups
 
     // Damage - 10000 base, 375 = 3.75%
-    DMG         = 160, // Damage Taken %
-    DMGPHYS     = 161, // Physical Damage Taken %
-    DMGPHYS_II  = 190, // Physical Damage Taken II % (Burtgang)
-    DMGBREATH   = 162, // Breath Damage Taken %
-    DMGMAGIC    = 163, // Magic Damage Taken %
-    DMGMAGIC_II = 831, // Magic Damage Taken II % (Aegis)
-    DMGRANGE    = 164, // Range Damage Taken %
-    DMG_AOE     = 158, // Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
+    DMG                     = 160, // Damage Taken %
+    DMGPHYS                 = 161, // Physical Damage Taken %
+    DMGPHYS_II              = 190, // Physical Damage Taken II % (Burtgang)
+    UDMGPHYS                = 387, // Uncapped Damage Multipliers
+    DMGBREATH               = 162, // Breath Damage Taken %
+    UDMGBREATH              = 388, // Used in sentinel, invincible, physical shield etc
+    DMGMAGIC                = 163, // Magic Damage Taken %
+    DMGMAGIC_II             = 831, // Magic Damage Taken II % (Aegis)
+    UDMGMAGIC               = 389,
+    DMGRANGE                = 164, // Range Damage Taken %
+    UDMGRANGE               = 390,
+    DMG_AOE                 = 158, // Damage Taken % when not main target of an AoE action. (Ex: Locus Mobs)
+    RECEIVED_DAMAGE_CAP     = 221, // Caps the damage taken recieved by the attacker
+    RECEIVED_DAMAGE_VARIANT = 222, // The variance that you want the damage cap to changed by. Ex: If you want the damage to be from 90-100 instead of a flat 100 you can set this to 10. It will random the value between 90-100 if the damage is above 100.
 
-    // Uncapped damage - 10000 base, 375 = 3.75%
-    UDMGPHYS   = 387, // Uncapped Damage Multipliers
-    UDMGBREATH = 388, // Used in sentinel, invincible, physical shield etc
-    UDMGMAGIC  = 389, //
-    UDMGRANGE  = 390, //
+    // Specific Damage Taken vs physical damage type
+    // Value is stored as a percentage of damage reduction (to within 1000)
+    // Example: 1000 = 100%, 875= 87.5%
+    SLASH_SDT  = 49, // Slash Damage Taken
+    PIERCE_SDT = 50, // Piercing Damage Taken
+    IMPACT_SDT = 51, // Impact Damage Taken
+    HTH_SDT    = 52, // Hand-To-Hand Damage Taken
+
+    // Elemental SDT. BASE 10000. This has been repeatedly mixed up with RESISTANCE - be careful!
+    FIRE_SDT    = 54, // Fire Damage Taken
+    ICE_SDT     = 55, // Ice Damage Taken
+    WIND_SDT    = 56, // Wind Damage Taken
+    EARTH_SDT   = 57, // Earth Damage Taken
+    THUNDER_SDT = 58, // Thunder Damage Taken
+    WATER_SDT   = 59, // Water Damage Taken
+    LIGHT_SDT   = 60, // Light Damage Taken
+    DARK_SDT    = 61, // Dark Damage Taken
+
+    // Occasionally annuls damage taken. Modifier value = chance in %
+    NULL_DAMAGE          = 142, // Occasionally annuls all/any damage.
+    NULL_PHYSICAL_DAMAGE = 416, // Occasionally annuls physical damage.
+    NULL_BREATH_DAMAGE   = 143, // Occasionally annuls breath damage.
+    NULL_MAGICAL_DAMAGE  = 476, // Occasionally annuls magical damage.
+    NULL_RANGED_DAMAGE   = 239, // Occasionally annuls ranged damage.
+    FIRE_NULL            = 467, // Occasionally annuls fire elemental damage.
+    ICE_NULL             = 468, // Occasionally annuls ice elemental damage.
+    WIND_NULL            = 469, // Occasionally annuls wind elemental damage.
+    EARTH_NULL           = 470, // Occasionally annuls earth elemental damage.
+    LTNG_NULL            = 471, // Occasionally annuls thunder elemental damage.
+    WATER_NULL           = 472, // Occasionally annuls water elemental damage.
+    LIGHT_NULL           = 473, // Occasionally annuls light elemental damage.
+    DARK_NULL            = 474, // Occasionally annuls dark elemental damage.
+
+    // Occasionally absorbs damage taken. Modifier value = chance in %
+    ABSORB_DMG_CHANCE = 480, // Occasionally absorbs all/any damage.
+    PHYS_ABSORB       = 512, // Occasionally absorbs physical damage. USED FOR RANGED ASWELL.
+    MAGIC_ABSORB      = 475, // Occasionally absorbs magical damage.
+    FIRE_ABSORB       = 459, // Occasionally absorbs fire elemental damage.
+    ICE_ABSORB        = 460, // Occasionally absorbs ice elemental damage.
+    WIND_ABSORB       = 461, // Occasionally absorbs wind elemental damage.
+    EARTH_ABSORB      = 462, // Occasionally absorbs earth elemental damage.
+    LTNG_ABSORB       = 463, // Occasionally absorbs thunder elemental damage.
+    WATER_ABSORB      = 464, // Occasionally absorbs water elemental damage.
+    LIGHT_ABSORB      = 465, // Occasionally absorbs light elemental damage.
+    DARK_ABSORB       = 466, // Occasionally absorbs dark elemental damage.
 
     // Crit Damage / Delay
     CRITHITRATE              = 165, // Raises chance to crit
+    CRITHITRATE_ONLY_WEP     = 141, // Raises chance to crit (but only for attacks with the specific weapon that has the mod)
     CRIT_DMG_INCREASE        = 421, // Raises the damage of critical hit by percent %
     RANGED_CRIT_DMG_INCREASE = 964, // Increases ranged critical damage by a percent
-    ENEMYCRITRATE            = 166, // Raises chance enemy will crit
+    CRITICAL_HIT_EVASION     = 166, // Modifies chance enemy will crit
     CRIT_DEF_BONUS           = 908, // Reduces crit hit damage
     MAGIC_CRITHITRATE        = 562, // Raises chance to magic crit
     MAGIC_CRIT_DMG_INCREASE  = 563, // Raises damage done when criting with magic
@@ -235,20 +261,24 @@ enum class Mod
     TACTICAL_GUARD = 899, // Tp increase when guarding
     GUARD_PERCENT  = 976, // Guard Percent
 
-    HASTE_MAGIC    = 167, // Haste (and Slow) from magic - 10000 base, 375 = 3.75%
-    HASTE_ABILITY  = 383, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75%
-    HASTE_GEAR     = 384, // Haste (and Slow) from equipment - 10000 base, 375 = 3.75%
-    SPELLINTERRUPT = 168, // % Spell Interruption Rate
+    HASTE_MAGIC           = 167, // Haste (and Slow) from magic - 10000 base, 375 = 3.75%
+    HASTE_ABILITY         = 383, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75%
+    HASTE_GEAR            = 384, // Haste (and Slow) from equipment - 10000 base, 375 = 3.75%
+    TWOHAND_HASTE_ABILITY = 217, // Haste (and Slow) from abilities - 10000 base, 375 = 3.75% - Only applies to auto attacks when using two handed weapons, additive to HASTE_ABILITY
+    SPELLINTERRUPT        = 168, // % Spell Interruption Rate
 
-    // New movement speed modifiers.
-    MOVE_SPEED_OVERIDE        = 169, // Modifier used to overide regular speed caps. (GM speed and Feast of Swords)
-    MOVE_SPEED_STACKABLE      = 75,  // Gear movement speed penalties, flee bonus, etc.
-    MOVE_SPEED_GEAR_BONUS     = 76,  // Gear movement speed bonuses. DOES NOT STACK with each other, only highest applies.
-    MOVE_SPEED_WEIGHT_PENALTY = 77,  // For Gravity and curse.
-    MOVE_SPEED_QUICKENING     = 78,  // Jig, spreinter shoes, etc. Only highest of Mazurka OR quickening will take effect.
-    MOVE_SPEED_MAZURKA        = 79,  // Song movement speed. Only highest of Mazurka OR quickening will take effect.
+    // Movement speed modifiers in use order.
+    MOUNT_MOVE                = 972,  // % Mount Movement Speed
+    MOVE_SPEED_STACKABLE      = 75,   // Additive modifier. Applied before multipliers. Gear movement speed penalties.
+    MOVE_SPEED_WEIGHT_PENALTY = 77,   // Multiplicative modifier. For Gravity and curse.
+    MOVE_SPEED_FLEE           = 1085, // Multiplicative modifier.
+    MOVE_SPEED_CHEER          = 1087, // Multiplicative modifier from "cheer" type KI's.
+    MOVE_SPEED_GEAR_BONUS     = 76,   // Multiplicative modifier. Gear movement speed bonuses. DOES NOT STACK with each other, only highest applies.
+    MOVE_SPEED_QUICKENING     = 78,   // Additive modifier. Applied after multipliers. Jig, spreinter shoes, etc. Shares cap with Mazurka.
+    MOVE_SPEED_MAZURKA        = 79,   // Additive modifier. Applied after multipliers. Song movement speed. Shares cap with Quickening,
+    MOVE_SPEED_BOLTERS_ROLL   = 1086, // Additive modifier. Applied after multipliers.
+    MOVE_SPEED_OVERRIDE       = 169,  // Modifier used to overide regular speed caps. (GM speed and Feast of Swords)
 
-    MOUNT_MOVE              = 972, // % Mount Movement Speed
     FASTCAST                = 170, // Increases Spell Cast Time (TRAIT)
     UFASTCAST               = 407, // uncapped fast cast
     CURE_CAST_TIME          = 519, // cure cast time reduction
@@ -378,6 +408,8 @@ enum class Mod
     COUNTERSTANCE_EFFECT = 543,  // Counterstance effect in percents
     DODGE_EFFECT         = 552,  // Dodge effect in percents
     FOCUS_EFFECT         = 561,  // Focus effect in percents
+    ADDITIVE_GUARD       = 1092, // Additive % bonus to final Guard rate (adds after clamp)
+    AUGMENTS_IMPETUS     = 1097, // see https://www.bg-wiki.com/ffxi/Impetus, adds Crit Hit Damage & Accuracy for Impetus
 
     // White Mage
     AFFLATUS_SOLACE  = 293, // Pool of HP accumulated during Afflatus Solace
@@ -408,8 +440,8 @@ enum class Mod
     TRIPLE_ATTACK        = 302,  // Percent chance
     TRIPLE_ATTACK_DMG    = 1039, // Increases "Triple Attack" damage/"Triple Attack" damage + (in percents, e.g. +20 = +20% damage)
     TREASURE_HUNTER      = 303,  // Percent chance
-    TREASURE_HUNTER_PROC = 1048, // TODO: Increases Treasure Hunter proc rate (percent)
-    TREASURE_HUNTER_CAP  = 1049, // TODO: Increases the Treasure Hunter Cap (e.g. THF JP Gift)
+    TREASURE_HUNTER_PROC = 1048, // Increases Treasure Hunter proc rate (percent)
+    TREASURE_HUNTER_CAP  = 1049, // Increases the Treasure Hunter Cap (e.g. THF JP Gift)
     SNEAK_ATK_DEX        = 830,  // % DEX boost to Sneak Attack (if gear mod, needs to be equipped on hit)
     TRICK_ATK_AGI        = 520,  // % AGI boost to Trick Attack (if gear mod, needs to be equipped on hit)
     MUG_EFFECT           = 835,  // Mug effect as multiplier
@@ -435,6 +467,7 @@ enum class Mod
     PALISADE_BLOCK_BONUS   = 1066, // Increases base block rate while under the effects of Palisade (additive, not multiplicative)
     REPRISAL_BLOCK_BONUS   = 1067, // Increases block rate while under the effects of Reprisal (multiplicative, not additive)
     REPRISAL_SPIKES_BONUS  = 1068, // Increases Reprisal spikes damage by percentage (e.g. mod value 50 = +50% spikes damage)
+    SHIELD_BARRIER         = 1082, // Grants a bonus to Protect spells cast by self while a shield is equipped.
 
     // Dark Knight
     ARCANE_CIRCLE_DURATION = 858,  // Arcane Circle extended duration in seconds
@@ -444,10 +477,13 @@ enum class Mod
     DESPERATE_BLOWS        = 906,  // Adds ability haste to Last Resort
     STALWART_SOUL          = 907,  // Reduces damage taken from Souleater
     DREAD_SPIKES_EFFECT    = 998,  // Percent increase to total HP drain for Dread Spikes
-    ENHANCES_BLOOD_WEAPON  = 1070, // Enhances "Blood Weapon" effect (increases Blood Weapon's duration in seconds)
     DARK_MAGIC_CAST        = 1071, // Reduces Dark Magic Casting Time by percentage (e.g. mod value -10 = -10% cast time)
     DARK_MAGIC_DURATION    = 1072, // Increases Dark Magic spell durations by percentage (e.g. mod value 10 = +10% duration)
+    ENHANCES_BLOOD_WEAPON  = 1070, // Enhances "Blood Weapon" effect (increases Blood Weapon's duration in seconds)
     ENHANCES_DARK_SEAL     = 1073, // Enhances "Dark Seal" effect (Increases Dark Magic spell durations by 10% per Dark Seal merit while Dark Seal active)
+    ENHANCES_DIABOLIC_EYE  = 275,  // Diabolic Eye duration + "modifier-value" seconds per Diabolic Eye merit.
+    ENHANCES_NETHER_VOID   = 1083, // Enhances "Nether Void" effect (Increases the potency of the next Absorb or Drain Dark Magic by <value>%
+    ENHANCES_MUTED_SOUL    = 1084, // Enhances "Muted Soul" effect (Adds 3% Zanshin rate per MUTED_SOUL merit level)
 
     // Beastmaster
     TAME                = 304,  // Additional percent chance to charm
@@ -456,7 +492,7 @@ enum class Mod
     CHARM_CHANCE        = 391,  // extra chance to charm (light+apollo staff ect)
     FERAL_HOWL_DURATION = 503,  // +20% duration per merit when wearing augmented Monster Jackcoat +2
     JUG_LEVEL_RANGE     = 564,  // Decreases the level range of spawned jug pets. Maxes out at 2.
-    CALL_BEAST_DELAY    = 572,  // Lowers Call Beast recast
+    CALL_BEAST_DELAY    = 273,  // Lowers Call Beast recast
     SIC_READY_RECAST    = 1052, // SIC/Ready recast reduction (seconds)
     TANDEM_STRIKE_POWER = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
     TANDEM_BLOW_POWER   = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
@@ -491,7 +527,7 @@ enum class Mod
     // Ranger
     CAMOUFLAGE_DURATION     = 98,   // Camouflage duration in percents
     RECYCLE                 = 305,  // Percent chance to recycle
-    SNAP_SHOT               = 365,  // Percent reduction to range attack delay
+    SNAPSHOT                = 365,  // Percent reduction to range attack delay
     RAPID_SHOT              = 359,  // Percent chance to proc rapid shot
     WIDESCAN                = 340,  //
     BARRAGE_ACC             = 420,  // Barrage accuracy
@@ -504,6 +540,7 @@ enum class Mod
     SHARPSHOT               = 314,  //
     TRUE_SHOT_EFFECT        = 1053, // TODO: True Shot Ranged Damage increase (percent)
     DEAD_AIM_EFFECT         = 1054, // TODO: Dead Aim Critical Damage increase (percent)
+    BOUNTY_SHOT_TH_BONUS    = 826,  // Boosts base TH level of bounty shot
 
     // Samurai
     WARDING_CIRCLE_DURATION   = 95,   // Warding Circle extended duration in seconds
@@ -512,14 +549,19 @@ enum class Mod
     THIRD_EYE_COUNTER_RATE    = 508,  // Adds counter to 3rd eye anticipates & if using Seigan counter rate is increased by 15%
     THIRD_EYE_ANTICIPATE_RATE = 839,  // Adds anticipate rate in percents
     THIRD_EYE_BONUS           = 1055, // TODO: Bonus Third Eye Evasion (count)
+    SENGIKORI_SC_DMG_DEBUFF   = 1088, // % Increase to closing skillchain damage. Applied to defender.
+    SENGIKORI_MB_DMG_DEBUFF   = 1089, // % Increase to magic burst damage. Applied to defender.
+    SENGIKORI_BONUS           = 1090, // additive % increase to Sengikori
 
     // Ninja
-    UTSUSEMI          = 307, // Everyone's favorite --tracks shadows.
-    UTSUSEMI_BONUS    = 900, // Extra shadows from gear
-    NINJA_TOOL        = 308, // Percent chance to not use a tool.
-    NIN_NUKE_BONUS    = 522, // magic attack bonus for NIN nukes
-    DAKEN             = 911, // chance to throw a shuriken without consuming it
-    NINJUTSU_DURATION = 1000,
+    UTSUSEMI             = 307, // Everyone's favorite --tracks shadows.
+    UTSUSEMI_BONUS       = 900, // Extra shadows from gear
+    NINJA_TOOL           = 308, // Percent chance to not use a tool.
+    NIN_NUKE_BONUS_INNIN = 223, // Ninjutsu damage multiplier from Innin.
+    NIN_NUKE_BONUS_GEAR  = 522, // Ninjutsu damage multiplier from gear.
+    DAKEN                = 911, // chance to throw a shuriken without consuming it
+    NINJUTSU_DURATION    = 1000,
+    ENHANCES_SANGE       = 1091, // 1 = +1 attack for Daken during Sange per Sange merit (i.e. 20 with 5 merits = +100 attack during Sange)
 
     // Dragoon
     ANCIENT_CIRCLE_DURATION    = 859,  // Ancient Circle extended duration in seconds
@@ -552,7 +594,7 @@ enum class Mod
     BP_DELAY_II               = 541,  // Blood Pact Delay Reduction II
     BP_DAMAGE                 = 126,  // Blood Pact: Rage Damage increase percentage
     BLOOD_BOON                = 913,  // Occasionally cuts down MP cost of Blood Pact abilities. Does not affect abilities that require Astral Flow.
-    AVATARS_FAVOR_ENHANCE     = 630,  // Enhances Avatars Favor Effect by 1 tier per point
+    AVATARS_FAVOR_ENHANCE     = 141,  // Enhances Avatars Favor Effect by 1 tier per point
     AVATAR_LVL_BONUS          = 1040, // Avatar: Lv.+ (Increases all avatar's base level above 99)
     CARBUNCLE_LVL_BONUS       = 1041, // Carbuncle: Lv.+ (Increases Carbuncle's base level above 99)
     CAIT_SITH_LVL_BONUS       = 1042, // Cait Sith: Lv.+ (Increases Cait Sith's base level above 99)
@@ -570,6 +612,7 @@ enum class Mod
     EXP_BONUS         = 382,  //
     ROLL_RANGE        = 528,  // Additional range for COR roll abilities.
     JOB_BONUS_CHANCE  = 542,  // Chance to apply job bonus to COR roll without having the job in the party.
+    RANDOM_DEAL_BONUS = 220,  // % chance to reset 2 abilities
     TRIPLE_SHOT_RATE  = 999,  // Percent increase to Triple Shot Rate
     QUICK_DRAW_RECAST = 1060, // Quick Draw Charge Reduction (seconds)
 
@@ -673,6 +716,7 @@ enum class Mod
 
     // Geo
     CARDINAL_CHANT       = 959,
+    CARDINAL_CHANT_BONUS = 1132, // Geomancy galero
     INDI_DURATION        = 960,
     GEOMANCY_BONUS       = 961, // Used to increase potency of "Geomancy +" items (only the highest value is counted)
     WIDENED_COMPASS      = 962,
@@ -720,6 +764,7 @@ enum class Mod
     PARRY_SPIKES                = 1022, // Battuta parry spikes rate
     PARRY_SPIKES_DMG            = 1023, // Battuta parry spikes damage
     SPECIAL_ATTACK_EVASION      = 1024, // Foil "Special Attack" evasion
+    AUGMENTS_SLEIGHT_OF_SWORD   = 277,  // Enhances bonus "Subtle Blow" per merit.
 
     // Stores the amount of elemental affinity (elemental staves mostly) - damage, acc, and perpetuation is all handled separately
     FIRE_AFFINITY_DMG    = 347, // They're stored separately due to Magian stuff - they can grant different levels of
@@ -789,11 +834,9 @@ enum class Mod
     TA_TRIPLE_DMG_RATE       = 409, // Triple attack's triple damage chance %.
     ZANSHIN_DOUBLE_DAMAGE    = 410, // Zanshin's double damage chance %.
     RAPID_SHOT_DOUBLE_DAMAGE = 479, // Rapid shot's double damage chance %.
-    ABSORB_DMG_CHANCE        = 480, // Chance to absorb damage %
     EXTRA_DUAL_WIELD_ATTACK  = 481, // Chance to land an extra attack when dual wielding
     EXTRA_KICK_ATTACK        = 482, // Occasionally allows a second Kick Attack during an attack round without the use of Footwork.
     SAMBA_DOUBLE_DAMAGE      = 415, // Double damage chance when samba is up.
-    NULL_PHYSICAL_DAMAGE     = 416, // Occasionally annuls damage from physical attacks, in percents
     QUICK_DRAW_TRIPLE_DAMAGE = 417, // Chance to do triple damage with quick draw.
     BAR_ELEMENT_NULL_CHANCE  = 418, // Bar Elemental spells will occasionally NULLify damage of the same element.
     GRIMOIRE_INSTANT_CAST    = 419, // Spells that match your current Arts will occasionally cast instantly, without recast.
@@ -804,39 +847,18 @@ enum class Mod
     RERAISE_II  = 457, // Reraise II.
     RERAISE_III = 458, // Reraise III.
 
-    // Elemental Absorb Chance
-    FIRE_ABSORB  = 459, // Occasionally absorbs fire elemental damage, in percents
-    ICE_ABSORB   = 460, // Occasionally absorbs ice elemental damage, in percents
-    WIND_ABSORB  = 461, // Occasionally absorbs wind elemental damage, in percents
-    EARTH_ABSORB = 462, // Occasionally absorbs earth elemental damage, in percents
-    LTNG_ABSORB  = 463, // Occasionally absorbs thunder elemental damage, in percents
-    WATER_ABSORB = 464, // Occasionally absorbs water elemental damage, in percents
-    LIGHT_ABSORB = 465, // Occasionally absorbs light elemental damage, in percents
-    DARK_ABSORB  = 466, // Occasionally absorbs dark elemental damage, in percents
+    ABSORB_DMG_TO_MP = 516, // Unlike PLD gear mod, works on all damage types (Ethereal Earring)
 
-    // Elemental Null Chance
-    FIRE_NULL  = 467, //
-    ICE_NULL   = 468, //
-    WIND_NULL  = 469, //
-    EARTH_NULL = 470, //
-    LTNG_NULL  = 471, //
-    WATER_NULL = 472, //
-    LIGHT_NULL = 473, //
-    DARK_NULL  = 474, //
-
-    MAGIC_ABSORB       = 475, // Occasionally absorbs magic damage taken, in percents
-    MAGIC_NULL         = 476, // Occasionally annuls magic damage taken, in percents
-    NULL_RANGED_DAMAGE = 239, // Occasionally annuls ranged damage taken, in percents
-    PHYS_ABSORB        = 512, // Occasionally absorbs physical damage taken, in percents
-    ABSORB_DMG_TO_MP   = 516, // Unlike PLD gear mod, works on all damage types (Ethereal Earring)
-
+    ITEM_ADDEFFECT_LVADJUST = 278, // level correction factor to use, if any
+    ITEM_ADDEFFECT_PLACEHLD = 279, // placeholder, want to keep these together and 99% sure we'll use this
+    ITEM_ADDEFFECT_DSTAT    = 280, // value = attacker modifier to use as bonus dmg (mnd, int, etc)
     ITEM_ADDEFFECT_TYPE     = 431, // see procType table in scripts\globals\additional_effects.lua
     ITEM_SUBEFFECT          = 499, // Animation ID of Spikes and Additional Effects
     ITEM_ADDEFFECT_DMG      = 500, // Damage of an items Additional Effect or Spikes
     ITEM_ADDEFFECT_CHANCE   = 501, // Chance of an items Additional Effect or Spikes
     ITEM_ADDEFFECT_ELEMENT  = 950, // Element of the Additional Effect or Spikes, for resist purposes
     ITEM_ADDEFFECT_STATUS   = 951, // Status Effect ID to try to apply via Additional Effect or Spikes
-    ITEM_ADDEFFECT_POWER    = 952, // Base Power for effect in MOD_ITEM_ADDEFFECT_STATUS
+    ITEM_ADDEFFECT_POWER    = 952, // Base Power for effect in MOD_ITEM_ADDEFFECT_STATUS. Must be used for debuffs/buffs.
     ITEM_ADDEFFECT_DURATION = 953, // Base Duration for effect in MOD_ITEM_ADDEFFECT_STATUS
 
     GOV_CLEARS = 496, // 4% bonus per Grounds of Valor Page clear
@@ -857,8 +879,11 @@ enum class Mod
 
     APPRECIATE_GYSAHL_GREENS = 156, // Enhances food effect of Gysahl Greens
 
-    EAT_RAW_FISH = 412, // Without this, only Mithra can eat raw fish.
-    EAT_RAW_MEAT = 413, // Without this, only Galka can eat raw meat.
+    EAT_RAW_FISH    = 412, // Without this, only Mithra can eat raw fish (item cannot be used)
+    EAT_RAW_MEAT    = 413, // Without this, only Galka can eat raw meat (item cannot be used)
+    DRINK_DISTILLED = 159, // Without this, Distilled Water cannot be consumed (item can still be used)
+
+    EQUIPMENT_ONLY_RACE = 276, // An 8-bit flag that denotes that only a certain race(s) can use this equipment (0 means all races can use)
 
     ENHANCES_CURSNA_RCVD     = 67,   // Potency of "Cursna" effects received
     ENHANCES_CURSNA          = 310,  // Used by gear with the "Enhances Cursna" or "Cursna+" attribute
@@ -883,8 +908,7 @@ enum class Mod
     DIA_DOT                   = 313, // Increases the DoT damage of Dia
     ENH_DRAIN_ASPIR           = 315, // % damage boost to Drain and Aspir
     AUGMENTS_ABSORB           = 521, // Direct Absorb spell increase while Liberator is equipped (percentage based)
-    AMMO_SWING                = 523, // Extra swing rate w/ ammo (ie. Jailer weapons). Use gearsets, and does nothing for non-players.
-    AMMO_SWING_TYPE           = 826, // For the handedness of the weapon - 1h (1) vs. 2h/h2h (2). h2h can safely use the same function as 2h.
+    AMMO_SWING                = 523, // Follow-up swing rate w/ virtue stone ammo (Jailer weapons). Does nothing for non-players.
     AUGMENTS_CONVERT          = 525, // Convert HP to MP Ratio Multiplier. Value = MP multiplier rate.
     AUGMENTS_SA               = 526, // Adds Critical Attack Bonus to Sneak Attack, percentage based.
     AUGMENTS_TA               = 527, // Adds Critical Attack Bonus to Trick Attack, percentage based.
@@ -922,27 +946,73 @@ enum class Mod
     QUICK_MAGIC = 909, // Percent chance spells cast instantly (also reduces recast to 0, similar to Chainspell)
 
     // Crafting food effects
-    SYNTH_SUCCESS             = 851, // Rate of synthesis success
-    SYNTH_SKILL_GAIN          = 852, // Synthesis skill gain rate
-    SYNTH_FAIL_RATE           = 861, // Synthesis failure rate (percent)
-    SYNTH_HQ_RATE             = 862, // High-quality success rate (not a percent)
-    DESYNTH_SUCCESS           = 916, // Rate of desynthesis success
-    SYNTH_FAIL_RATE_FIRE      = 917, // Amount synthesis failure rate is reduced when using a fire crystal
-    SYNTH_FAIL_RATE_ICE       = 918, // Amount synthesis failure rate is reduced when using a ice crystal
-    SYNTH_FAIL_RATE_WIND      = 919, // Amount synthesis failure rate is reduced when using a wind crystal
-    SYNTH_FAIL_RATE_EARTH     = 920, // Amount synthesis failure rate is reduced when using a earth crystal
-    SYNTH_FAIL_RATE_LIGHTNING = 921, // Amount synthesis failure rate is reduced when using a lightning crystal
-    SYNTH_FAIL_RATE_WATER     = 922, // Amount synthesis failure rate is reduced when using a water crystal
-    SYNTH_FAIL_RATE_LIGHT     = 923, // Amount synthesis failure rate is reduced when using a light crystal
-    SYNTH_FAIL_RATE_DARK      = 924, // Amount synthesis failure rate is reduced when using a dark crystal
-    SYNTH_FAIL_RATE_WOOD      = 925, // Amount synthesis failure rate is reduced when doing woodworking
-    SYNTH_FAIL_RATE_SMITH     = 926, // Amount synthesis failure rate is reduced when doing smithing
-    SYNTH_FAIL_RATE_GOLDSMITH = 927, // Amount synthesis failure rate is reduced when doing goldsmithing
-    SYNTH_FAIL_RATE_CLOTH     = 928, // Amount synthesis failure rate is reduced when doing clothcraft
-    SYNTH_FAIL_RATE_LEATHER   = 929, // Amount synthesis failure rate is reduced when doing leathercraft
-    SYNTH_FAIL_RATE_BONE      = 930, // Amount synthesis failure rate is reduced when doing bonecraft
-    SYNTH_FAIL_RATE_ALCHEMY   = 931, // Amount synthesis failure rate is reduced when doing alchemy
-    SYNTH_FAIL_RATE_COOK      = 932, // Amount synthesis failure rate is reduced when doing cooking
+    SYNTH_SUCCESS_RATE              = 851,  // Success rate bonus (percent) for all synths except desynths.
+    SYNTH_SUCCESS_RATE_DESYNTHESIS  = 916,  // Success rate bonus (percent) for desynths, specifically.
+    SYNTH_SUCCESS_RATE_WOODWORKING  = 1098, // Success rate bonus (percent) for Woodworking, specifically.
+    SYNTH_SUCCESS_RATE_SMITHING     = 1099, // Success rate bonus (percent) for Smithing, specifically.
+    SYNTH_SUCCESS_RATE_GOLDSMITHING = 1100, // Success rate bonus (percent) for Goldsmithing, specifically.
+    SYNTH_SUCCESS_RATE_CLOTHCRAFT   = 1101, // Success rate bonus (percent) for Clothcraft, specifically.
+    SYNTH_SUCCESS_RATE_LEATHERCRAFT = 1102, // Success rate bonus (percent) for Leahercraft, specifically.
+    SYNTH_SUCCESS_RATE_BONECRAFT    = 1103, // Success rate bonus (percent) for Bonecraft, specifically.
+    SYNTH_SUCCESS_RATE_ALCHEMY      = 1104, // Success rate bonus (percent) for Alchemy, specifically.
+    SYNTH_SUCCESS_RATE_COOKING      = 1105, // Success rate bonus (percent) for Cooking, specifically.
+
+    SYNTH_SKILL_GAIN = 852, // Synthesis skill gain rate
+
+    SYNTH_SPEED_WOODWORKING  = 1106, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_SMITHING     = 1107, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_GOLDSMITHING = 1108, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_CLOTHCRAFT   = 1109, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_LEATHERCRAFT = 1110, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_BONECRAFT    = 1111, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_ALCHEMY      = 1112, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+    SYNTH_SPEED_COOKING      = 1113, // Escutcheon (Phase 3 & 4). Bonus to synth speed (Makes process faster. Assuming miliseconds)
+
+    SYNTH_ANTI_NQ_WOODWORKING  = 1114, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_SMITHING     = 1115, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_GOLDSMITHING = 1116, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_CLOTHCRAFT   = 1117, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_LEATHERCRAFT = 1118, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_BONECRAFT    = 1119, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_ALCHEMY      = 1120, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+    SYNTH_ANTI_NQ_COOKING      = 1121, // Escutcheon (Phase 4) "Artisanal Knowledge" Enchantment. Prevents NQ results, making them fails.
+
+    SYNTH_ANTI_HQ_WOODWORKING  = 144, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_SMITHING     = 145, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_GOLDSMITHING = 146, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_CLOTHCRAFT   = 147, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_LEATHERCRAFT = 148, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_BONECRAFT    = 149, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_ALCHEMY      = 150, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+    SYNTH_ANTI_HQ_COOKING      = 151, // Craft Rings. They ONLY prevent their associated skill type HQs, even if item description doesn't state it.
+
+    SYNTH_HQ_RATE              = 862,  // High-quality success rate (not a percent)
+    SYNTH_HQ_RATE_WOODWORKING  = 1122, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_SMITHING     = 1123, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_GOLDSMITHING = 1124, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_CLOTHCRAFT   = 1125, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_LEATHERCRAFT = 1126, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_BONECRAFT    = 1127, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_ALCHEMY      = 1128, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+    SYNTH_HQ_RATE_COOKING      = 1129, // High-quality success rate (not a percent) for specific skill. Used by Escutcheon's enchantment.
+
+    SYNTH_MATERIAL_LOSS              = 861, // Material loss rate (percent) for all synths.
+    SYNTH_MATERIAL_LOSS_WOODWORKING  = 925, // Material loss rate (percent) when doing woodworking
+    SYNTH_MATERIAL_LOSS_SMITHING     = 926, // Material loss rate (percent) when doing smithing
+    SYNTH_MATERIAL_LOSS_GOLDSMITHING = 927, // Material loss rate (percent) when doing goldsmithing
+    SYNTH_MATERIAL_LOSS_CLOTHCRAFT   = 928, // Material loss rate (percent) when doing clothcraft
+    SYNTH_MATERIAL_LOSS_LEATHERCRAFT = 929, // Material loss rate (percent) when doing leathercraft
+    SYNTH_MATERIAL_LOSS_BONECRAFT    = 930, // Material loss rate (percent) when doing bonecraft
+    SYNTH_MATERIAL_LOSS_ALCHEMY      = 931, // Material loss rate (percent) when doing alchemy
+    SYNTH_MATERIAL_LOSS_COOKING      = 932, // Material loss rate (percent) when doing cooking
+    SYNTH_MATERIAL_LOSS_FIRE         = 917, // Material loss rate (percent) when using a fire crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_ICE          = 918, // Material loss rate (percent) when using a ice crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_WIND         = 919, // Material loss rate (percent) when using a wind crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_EARTH        = 920, // Material loss rate (percent) when using a earth crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_THUNDER      = 921, // Material loss rate (percent) when using a lightning crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_WATER        = 922, // Material loss rate (percent) when using a water crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_LIGHT        = 923, // Material loss rate (percent) when using a light crystal (or HQ version)
+    SYNTH_MATERIAL_LOSS_DARK         = 924, // Material loss rate (percent) when using a dark crystal (or HQ version)
 
     // Weaponskill %damage modifiers
     // The following modifier should not ever be set, but %damage modifiers to weaponskills use the next 255 IDs (this modifier + the WSID)
@@ -993,18 +1063,18 @@ enum class Mod
     DIG_BYPASS_FATIGUE = 1074, // Chocobo digging modifier found in "Blue Race Silks". Modifier works as a direct percent.
     BREATH_DMG_DEALT   = 1075, // Breath damage dealt
 
+    DAMAGE_LIMIT  = 1080, // Damage Limit increase, found on some traits. It's a flat value added to max pDIF (maxpDIF + DL/100) https://www.bg-wiki.com/ffxi/Damage_Limit%2B
+    DAMAGE_LIMITP = 1081, // Damage Limit +% increase, found on some gear. It's a multiplier added after flat Damage Limit ((maxpDIF + DL/100)*(100 + DLP/100)/100) https://www.ffxiah.com/forum/topic/56649/physical-damage-limit/
+
+    MAGIC_BURST_BONUS_CAPPED   = 487, // Magic Burst Bonus I from gear, Ancient Magic Merits, Innin merits and Atmas. Cap at 40% bonus (1.4 multiplier)
+    MAGIC_BURST_BONUS_UNCAPPED = 274, // Magic Burst Bonus II from gear, JP Gifts, BLM JPs and Job traits. No known cap.
+
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
 
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs:
-    // 141 to 143
-    // 159
-    // 217 to 223
-    // 273 to 280
-    //
-    // SPARE = 1080 and onward
+    // SPARE IDs: 1133 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

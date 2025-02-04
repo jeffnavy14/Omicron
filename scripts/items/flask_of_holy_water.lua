@@ -3,9 +3,10 @@
 -- Item: Flask of Holy Water
 -- Item Effect: Removes curse
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

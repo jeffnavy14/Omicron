@@ -5,11 +5,8 @@ local ID = zones[xi.zone.EASTERN_ALTEPA_DESERT]
 require('scripts/quests/i_can_hear_a_rainbow')
 require('scripts/missions/amk/helpers')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
-
-zoneObject.onChocoboDig = function(player, precheck)
-    return xi.chocoboDig.start(player, precheck)
-end
 
 zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.NANDI)
@@ -21,12 +18,12 @@ zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.CENTURIO_XII_I)
     GetMobByID(ID.mob.CENTURIO_XII_I):setRespawnTime(math.random(900, 10800))
 
-    xi.conq.setRegionalConquestOverseers(zone:getRegionID())
+    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
     xi.chocobo.initZone(zone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)

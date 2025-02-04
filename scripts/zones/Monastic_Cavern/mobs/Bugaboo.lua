@@ -2,11 +2,13 @@
 -- Area: Monastic Cavern
 --   NM: Bugaboo
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1) -- "Has additional effect: Drain"
     mob:setMod(xi.mod.UFASTCAST, 50) -- "His spells have very fast cast, my guess would be close to 50% less casting time."
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)

@@ -16,23 +16,36 @@ zones[xi.zone.TEMENOS] =
         LOGIN_NUMBER                  = 7003, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023, -- Your party is unable to participate because certain members' levels are restricted.
         CHIP_TRADE_T                  = 7030, -- What do you wish to do? Show me the cutscene again. Skip the cutscene and continue.
-        TIME_IN_THE_BATTLEFIELD_IS_UP = 7066, -- You have exceeded the time limit. Exiting Limbus now.
-        PARTY_MEMBERS_ARE_ENGAGED     = 7067, -- You have clearance to enter Limbus, but cannot enter while you or a party member is engaged in battle.
-        HUM                           = 7083, -- You hear a faint hum.
-        NO_BATTLEFIELD_ENTRY          = 7088, -- There is a disc here inscribed with strange letters. There are several six-sided indentations and a thin slot in the center.
-        MEMBERS_OF_YOUR_PARTY         = 7340, -- Currently, <number> party members in this area have clearance to enter Limbus.
-        TIME_LIMIT_FOR_THIS_BATTLE_IS = 7343, -- ou may stay in Limbus for <number> [minute/minutes].
-        PARTY_MEMBERS_HAVE_FALLEN     = 7366, -- All party members in Limbus have fallen in battle. Exiting now.
-        THE_PARTY_WILL_BE_REMOVED     = 7376, -- All party members in Limbus have fallen in battle. Exiting in <number> [minute/minutes].
-        YOU_INSERT_THE_CARD_POLISHED  = 7381, -- You insert the <keyitem> polished with <keyitem> into the slot!
-        CHIP_TRADE                    = 7382, -- The light in the <item> has grown dim.
-        TIME_EXTENDED                 = 7384, -- our time in Limbus has been extended <number> [minute/minutes].
-        TIME_LEFT                     = 7385, -- ou have <number> [minute/minutes] left in Limbus.
-        CONQUEST_BASE                 = 7387, -- Tallying conquest results...
-        ENTERING_THE_BATTLEFIELD_FOR  = 7550, -- You have entered [Temenos - Northern Tower/Temenos - Eastern Tower/Temenos - Western Tower/Central Temenos - 4th Floor/Central Temenos - 3rd Floor/Central Temenos - 2nd Floor/Central Temenos - 1st Floor/Central Temenos - 1st Basement/Central Temenos - 1st Basement/Central Temenos - 4th Floor].
-        CITADEL_BASE                  = 7560, -- 30...
-        CANNOT_OPEN_CHEST             = 7568, -- You cannot open the treasure chest now.
-        GATE_OPEN                     = 7569, -- he gate opens...
+        TIME_IN_THE_BATTLEFIELD_IS_UP = 7070, -- You have exceeded the time limit. Exiting Limbus now.
+        PARTY_MEMBERS_ARE_ENGAGED     = 7071, -- You have clearance to enter Limbus, but cannot enter while you or a party member is engaged in battle.
+        HUM                           = 7087, -- You hear a faint hum.
+        NO_BATTLEFIELD_ENTRY          = 7092, -- There is a disc here inscribed with strange letters. There are several six-sided indentations and a thin slot in the center.
+        MEMBERS_OF_YOUR_PARTY         = 7344, -- Currently, <number> party members in this area have clearance to enter Limbus.
+        TIME_LIMIT_FOR_THIS_BATTLE_IS = 7347, -- ou may stay in Limbus for <number> [minute/minutes].
+        PARTY_MEMBERS_HAVE_FALLEN     = 7370, -- All party members in Limbus have fallen in battle. Exiting now.
+        THE_PARTY_WILL_BE_REMOVED     = 7380, -- All party members in Limbus have fallen in battle. Exiting in <number> [minute/minutes].
+        YOU_INSERT_THE_CARD_POLISHED  = 7385, -- You insert the <keyitem> polished with <keyitem> into the slot!
+        CHIP_TRADE                    = 7386, -- The light in the <item> has grown dim.
+        TIME_EXTENDED                 = 7388, -- our time in Limbus has been extended <number> [minute/minutes].
+        TIME_LEFT                     = 7389, -- ou have <number> [minute/minutes] left in Limbus.
+        CONQUEST_BASE                 = 7391, -- Tallying conquest results...
+        ENTERING_THE_BATTLEFIELD_FOR  = 7554, -- You have entered [Temenos - Northern Tower/Temenos - Eastern Tower/Temenos - Western Tower/Central Temenos - 4th Floor/Central Temenos - 3rd Floor/Central Temenos - 2nd Floor/Central Temenos - 1st Floor/Central Temenos - 1st Basement/Central Temenos - 1st Basement/Central Temenos - 4th Floor].
+        CITADEL_BASE                  = 7564, -- 30...
+        CANNOT_OPEN_CHEST             = 7572, -- You cannot open the treasure chest now.
+        GATE_OPEN                     = 7573, -- he gate opens...
+    },
+    mob =
+    {
+    },
+    npc =
+    {
+        C1_LOOT_CRATE = GetFirstID('C1_Loot_Crate'),
+        C2_LOOT_CRATE = GetFirstID('C2_Loot_Crate'),
+        C3_LOOT_CRATE = GetFirstID('C3_Loot_Crate'),
+        C4_LOOT_CRATE = GetFirstID('C4_Loot_Crate'),
+        CB_LOOT_CRATE = GetFirstID('CB_Loot_Crate'),
+        N_LOOT_CRATE  = GetFirstID('N_Loot_Crate'),
+        W_LOOT_CRATE  = GetFirstID('W_Loot_Crate'),
     },
 
     TEMENOS_NORTHERN_TOWER =
@@ -52,13 +65,13 @@ zones[xi.zone.TEMENOS] =
         {
             PORTAL =
             {
-                16929197,
                 16929198,
                 16929199,
                 16929200,
                 16929201,
                 16929202,
                 16929203,
+                16929204,
             },
 
             ITEM_CRATES =
@@ -90,8 +103,6 @@ zones[xi.zone.TEMENOS] =
                 16928806,
                 16928813,
             },
-
-            LOOT_CRATE = 16928830,
         },
 
         LINKED_CRATES =
@@ -132,13 +143,13 @@ zones[xi.zone.TEMENOS] =
         {
             PORTAL =
             {
-                16929211,
                 16929212,
                 16929213,
                 16929214,
                 16929215,
                 16929216,
                 16929217,
+                16929218,
             },
             CRATE_OFFSETS =
             {
@@ -149,7 +160,6 @@ zones[xi.zone.TEMENOS] =
                 16928940,
                 16928949,
             },
-            LOOT_CRATE = 16928958,
         },
     },
 
@@ -165,13 +175,13 @@ zones[xi.zone.TEMENOS] =
         {
             PORTAL =
             {
-                16929204,
                 16929205,
                 16929206,
                 16929207,
                 16929208,
                 16929209,
                 16929210,
+                16929211,
             },
             CRATE_OFFSETS =
             {
@@ -186,35 +196,10 @@ zones[xi.zone.TEMENOS] =
         },
     },
 
-    CENTRAL_TEMENOS_1ST_FLOOR =
-    {
-        npc =
-        {
-            LOOT_CRATE = 16929045,
-        }
-    },
-
-    CENTRAL_TEMENOS_2ND_FLOOR =
-    {
-        npc =
-        {
-            LOOT_CRATE = 16929029,
-        }
-    },
-
-    CENTRAL_TEMENOS_3RD_FLOOR =
-    {
-        npc =
-        {
-            LOOT_CRATE = 16929004,
-        }
-    },
-
     CENTRAL_TEMENOS_4TH_FLOOR =
     {
         npc =
         {
-            LOOT_CRATE = 16928965,
             GROUPS =
             {
                 { offset = 16928967, count = 4 },
@@ -231,14 +216,6 @@ zones[xi.zone.TEMENOS] =
                 { offset = 16928997, count = 7 },
             },
         },
-    },
-
-    CENTRAL_TEMENOS_BASEMENT =
-    {
-        npc =
-        {
-            LOOT_CRATE = 16929052,
-        }
     },
 }
 

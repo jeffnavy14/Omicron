@@ -3,9 +3,10 @@
 -- Klimaform Schema
 -- Teaches the black magic Klimaform
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.KLIMAFORM)
 end
 

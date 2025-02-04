@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MINES]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -28,7 +29,7 @@ end
 
 entity.onTrigger = function(player, npc)
     if npc:getID() == ID.npc.LELEROON_BLUE_DOOR then
-        local letterBlue = player:getCharVar('LeleroonsletterBlue')
+        local letterBlue = player:getCharVar('LeleroonsLetterBlue')
 
         if player:hasKeyItem(xi.ki.LELEROONS_LETTER_BLUE) then
             player:startEvent(519) -- accept letter, now bring me four items
@@ -49,28 +50,25 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 519 then
-        player:setCharVar('LeleroonsletterBlue', 2)
+        player:setCharVar('LeleroonsLetterBlue', 2)
         player:delKeyItem(xi.ki.LELEROONS_LETTER_BLUE)
 
     elseif csid == 521 then
         player:confirmTrade()
-        player:setCharVar('LeleroonsletterBlue', 3)
+        player:setCharVar('LeleroonsLetterBlue', 3)
 
     elseif csid == 524 then
         player:confirmTrade()
-        player:setCharVar('LeleroonsletterBlue', 4)
+        player:setCharVar('LeleroonsLetterBlue', 4)
         player:setCharVar('corAfSubmitDay', VanadielUniqueDay())
 
     elseif
         csid == 522 and
         npcUtil.giveItem(player, xi.item.CORSAIRS_BOTTES)
     then
-        player:setCharVar('LeleroonsletterBlue', 5)
+        player:setCharVar('LeleroonsLetterBlue', 5)
     end
 end
 

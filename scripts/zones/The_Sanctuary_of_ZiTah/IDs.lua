@@ -21,60 +21,52 @@ zones[xi.zone.THE_SANCTUARY_OF_ZITAH] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023,  -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7061,  -- Tallying conquest results...
-        BEASTMEN_BANNER               = 7142,  -- There is a beastmen's banner.
-        CONQUEST                      = 7229,  -- You've earned conquest points!
-        FISHING_MESSAGE_OFFSET        = 7562,  -- You can't fish here.
-        DIG_THROW_AWAY                = 7575,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
-        FIND_NOTHING                  = 7577,  -- You dig and you dig, but find nothing.
-        AMK_DIGGING_OFFSET            = 7643,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
-        AIR_HAS_SUDDENLY_CHANGED      = 7744,  -- The air around you has suddenly changed!
-        SOMETHING_BETTER              = 7745,  -- Don't you have something better to do right now?
-        CANNOT_REMOVE_FRAG            = 7748,  -- It is an oddly shaped stone monument. A shining stone is embedded in it, but cannot be removed...
-        ALREADY_OBTAINED_FRAG         = 7749,  -- You have already obtained this monument's <keyitem>. Try searching for another.
-        FOUND_ALL_FRAGS               = 7751,  -- You have obtained <keyitem>! You now have all 8 fragments of light!
-        ZILART_MONUMENT               = 7752,  -- It is an ancient Zilart monument.
-        AIR_REMAINS_STAGNANT          = 7764,  -- The air in this area remains stagnant. You begin to feel sick... It would be wise to leave immediately.
-        LOOKS_LIKE_STURDY_BRANCH      = 7774,  -- This looks like a sturdy branch. You will need <item> to cut it off.
-        BEAUTIFUL_STURDY_BRANCH       = 7775,  -- It is a beautiful, sturdy branch.
-        SENSE_STRONG_EVIL_PRESENCE    = 7777,  -- You can sense a strong, evil presence!
-        STRANGE_FORCE_PREVENTS        = 7778,  -- Some strange force is preventing you from cutting all the way through.
-        STRANGE_FORCE_VANISHED        = 7779,  -- The strange force has vanished, and <item> has newly sprouted in the cut!
-        NO_LONGER_SENSE_EVIL          = 7780,  -- You no longer sense the evil presence, but there is still a feeling of unrest throughout the forest.
-        NEWLY_SPROUTED_GLOWING        = 7781,  -- The newly sprouted <item> is glowing softly. You no longer feel as if you are being watched.
-        NOT_THE_TIME_FOR_THAT         = 7782,  -- This is not the time for that!
-        SENSE_OMINOUS_PRESENCE        = 7855,  -- You sense an ominous presence...
-        GARRISON_BASE                 = 8042,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-        PLAYER_OBTAINS_ITEM           = 8089,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 8090,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 8091,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 8092,  -- You already possess that temporary item.
-        NO_COMBINATION                = 8097,  -- You were unable to enter a combination.
-        UNITY_WANTED_BATTLE_INTERACT  = 8159,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
-        REGIME_REGISTERED             = 10275, -- New training regime registered!
-        COMMON_SENSE_SURVIVAL         = 12264, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        CONQUEST_BASE                 = 7065,  -- Tallying conquest results...
+        BEASTMEN_BANNER               = 7146,  -- There is a beastmen's banner.
+        CONQUEST                      = 7233,  -- You've earned conquest points!
+        FISHING_MESSAGE_OFFSET        = 7566,  -- You can't fish here.
+        DIG_THROW_AWAY                = 7579,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
+        FIND_NOTHING                  = 7581,  -- You dig and you dig, but find nothing.
+        AMK_DIGGING_OFFSET            = 7647,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
+        AIR_HAS_SUDDENLY_CHANGED      = 7748,  -- The air around you has suddenly changed!
+        SOMETHING_BETTER              = 7749,  -- Don't you have something better to do right now?
+        CANNOT_REMOVE_FRAG            = 7752,  -- It is an oddly shaped stone monument. A shining stone is embedded in it, but cannot be removed...
+        ALREADY_OBTAINED_FRAG         = 7753,  -- You have already obtained this monument's <keyitem>. Try searching for another.
+        FOUND_ALL_FRAGS               = 7755,  -- You have obtained <keyitem>! You now have all 8 fragments of light!
+        ZILART_MONUMENT               = 7756,  -- It is an ancient Zilart monument.
+        AIR_REMAINS_STAGNANT          = 7768,  -- The air in this area remains stagnant. You begin to feel sick... It would be wise to leave immediately.
+        LOOKS_LIKE_STURDY_BRANCH      = 7778,  -- This looks like a sturdy branch. You will need <item> to cut it off.
+        BEAUTIFUL_STURDY_BRANCH       = 7779,  -- It is a beautiful, sturdy branch.
+        SENSE_STRONG_EVIL_PRESENCE    = 7781,  -- You can sense a strong, evil presence!
+        STRANGE_FORCE_PREVENTS        = 7782,  -- Some strange force is preventing you from cutting all the way through.
+        STRANGE_FORCE_VANISHED        = 7783,  -- The strange force has vanished, and <item> has newly sprouted in the cut!
+        NO_LONGER_SENSE_EVIL          = 7784,  -- You no longer sense the evil presence, but there is still a feeling of unrest throughout the forest.
+        NEWLY_SPROUTED_GLOWING        = 7785,  -- The newly sprouted <item> is glowing softly. You no longer feel as if you are being watched.
+        NOT_THE_TIME_FOR_THAT         = 7786,  -- This is not the time for that!
+        SENSE_OMINOUS_PRESENCE        = 7859,  -- You sense an ominous presence...
+        GARRISON_BASE                 = 8046,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+        PLAYER_OBTAINS_ITEM           = 8093,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 8094,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 8095,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 8096,  -- You already possess that temporary item.
+        NO_COMBINATION                = 8101,  -- You were unable to enter a combination.
+        UNITY_WANTED_BATTLE_INTERACT  = 8163,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
+        REGIME_REGISTERED             = 10279, -- New training regime registered!
+        COMMON_SENSE_SURVIVAL         = 12268, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
-        KEEPER_OF_HALIDOM_PH =
-        {
-            [17272977] = 17272978, -- 319.939 -0.037 187.231
-        },
-        NOBLE_MOLD_PH   =
-        {
-            [17273276] = 17273278, -- -391.184 -0.269 -159.086
-            [17273277] = 17273278, -- -378.456 0.425 -162.489
-        },
-        GUARDIAN_TREANT = 17272838,
-        DOOMED_PILGRIMS = 17272839,
-        NOBLE_MOLD      = 17273278,
-        ISONADE         = 17273285,
-        GREENMAN        = 17273295,
+        KEEPER_OF_HALIDOM = GetFirstID('Keeper_of_Halidom'),
+        NOBLE_MOLD        = GetFirstID('Noble_Mold'),
+        GUARDIAN_TREANT   = GetFirstID('Guardian_Treant'),
+        DOOMED_PILGRIMS   = GetFirstID('Doomed_Pilgrims'),
+        ISONADE           = GetFirstID('Isonade'),
+        GREENMAN          = GetFirstID('Greenman'),
     },
     npc =
     {
-        OVERSEER_BASE    = GetFirstID('Credaurion_RK'),
-        CERMET_HEADSTONE = 17273390,
+        OVERSEER_BASE     = GetFirstID('Credaurion_RK'),
+        CERMET_HEADSTONE  = GetFirstID('Cermet_Headstone'),
     },
 }
 

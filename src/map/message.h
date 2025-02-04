@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -74,10 +74,10 @@ namespace message
     void init();
     void init(const char* chatIp, uint16 chatPort);
     void handle_incoming();
-    void send(MSGSERVTYPE type, void* data, size_t datalen, CBasicPacket* packet = nullptr);
+    void send(MSGSERVTYPE type, void* data, size_t datalen, const std::unique_ptr<CBasicPacket>& packet = nullptr);
     void send(uint16 zone, std::string const& luaFunc);
-    void send(uint32 playerId, CBasicPacket* packet);
-    void send(std::string const& playerName, CBasicPacket* packet);
+    void send(uint32 playerId, const std::unique_ptr<CBasicPacket>& packet);
+    void send(std::string const& playerName, const std::unique_ptr<CBasicPacket>& packet);
     void send_charvar_update(uint32 charId, std::string const& varName, uint32 value, uint32 expiry);
     void rpc_send(uint16 sendZone, uint16 recvZone, std::string const& sendStr, sol::function recvFunc);
 

@@ -3,9 +3,10 @@
 -- Scroll of Enchanting Etude
 -- Teaches the song Enchanting Etude
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ENCHANTING_ETUDE)
 end
 

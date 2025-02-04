@@ -4,6 +4,7 @@
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -21,12 +22,12 @@ entity.onMobSpawn = function(mob)
     })
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local mobid = mob:getID()
 
     for member = mobid, mobid + 7 do
         local m = GetMobByID(member)
-        if m:getCurrentAction() == xi.act.ROAMING then
+        if m and m:getCurrentAction() == xi.act.ROAMING then
             m:updateEnmity(target)
         end
     end

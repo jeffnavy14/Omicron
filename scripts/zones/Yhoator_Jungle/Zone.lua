@@ -5,11 +5,8 @@ local ID = zones[xi.zone.YHOATOR_JUNGLE]
 require('scripts/quests/i_can_hear_a_rainbow')
 require('scripts/missions/amk/helpers')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
-
-zoneObject.onChocoboDig = function(player, precheck)
-    return xi.chocoboDig.start(player, precheck)
-end
 
 zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.WOODLAND_SAGE)
@@ -24,21 +21,21 @@ zoneObject.onInitialize = function(zone)
     UpdateNMSpawnPoint(ID.mob.BRIGHT_HANDED_KUNBERRY)
     GetMobByID(ID.mob.BRIGHT_HANDED_KUNBERRY):setRespawnTime(math.random(900, 10800))
 
-    xi.conq.setRegionalConquestOverseers(zone:getRegionID())
+    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
 
-    xi.helm.initZone(zone, xi.helm.type.HARVESTING)
-    xi.helm.initZone(zone, xi.helm.type.LOGGING)
+    xi.helm.initZone(zone, xi.helmType.HARVESTING)
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
     xi.chocobo.initZone(zone)
 
-    xi.bmt.updatePeddlestox(xi.zone.YUHTUNGA_JUNGLE, ID.npc.PEDDLESTOX)
+    xi.beastmenTreasure.updatePeddlestox(xi.zone.YUHTUNGA_JUNGLE, ID.npc.PEDDLESTOX)
 end
 
 zoneObject.onGameDay = function()
-    xi.bmt.updatePeddlestox(xi.zone.YHOATOR_JUNGLE, ID.npc.PEDDLESTOX)
+    xi.beastmenTreasure.updatePeddlestox(xi.zone.YHOATOR_JUNGLE, ID.npc.PEDDLESTOX)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -64,6 +61,10 @@ zoneObject.onZoneIn = function(player, prevZone)
     return cs
 end
 
+zoneObject.afterZoneIn = function(player)
+    xi.chocoboGame.handleMessage(player)
+end
+
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
 end
 
@@ -74,6 +75,11 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
+end
+
+zoneObject.onZoneWeatherChange = function(weather)
+    -- Harvesting points only appear during rainy weather
+    xi.helm.weatherChange(weather, { xi.weather.RAIN, xi.weather.SQUALL }, ID.npc.HARVESTING)
 end
 
 return zoneObject

@@ -4,15 +4,13 @@
 -- Involved in Quest: To Cure a Cough, Over The Hills And Far Away
 -- !pos -75 -12 65 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local aSquiresTestII = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.A_SQUIRES_TEST_II)
-    local medicineWoman = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.THE_MEDICINE_WOMAN)
-    local toCureaCough = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.TO_CURE_A_COUGH)
+    local aSquiresTestII = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_SQUIRES_TEST_II)
+    local medicineWoman = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.THE_MEDICINE_WOMAN)
+    local toCureaCough = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.TO_CURE_A_COUGH)
     local diaryPage = player:getCharVar('DiaryPage')
 
     if diaryPage == 0 then
@@ -20,13 +18,19 @@ entity.onTrigger = function(player, npc)
     elseif diaryPage == 1 then
         player:startEvent(640)          -- reads page 2
     elseif diaryPage == 2 then
-        if medicineWoman == QUEST_COMPLETED and aSquiresTestII == QUEST_COMPLETED then
-            if toCureaCough == QUEST_ACCEPTED then
+        if
+            medicineWoman == xi.questStatus.QUEST_COMPLETED and
+            aSquiresTestII == xi.questStatus.QUEST_COMPLETED
+        then
+            if toCureaCough == xi.questStatus.QUEST_ACCEPTED then
                 player:startEvent(641)  -- reads page 3
             else
                 player:startEvent(640)  -- reads page 2
             end
-        elseif medicineWoman == QUEST_AVAILABLE and aSquiresTestII == QUEST_AVAILABLE then
+        elseif
+            medicineWoman == xi.questStatus.QUEST_AVAILABLE and
+            aSquiresTestII == xi.questStatus.QUEST_AVAILABLE
+        then
             player:startEvent(641)      -- reads page 3
         else
             player:startEvent(640)      -- reads page 2
@@ -36,9 +40,6 @@ entity.onTrigger = function(player, npc)
     --elseif diaryPage >= 4 then
     --    player:startEvent(723)        -- read last page
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

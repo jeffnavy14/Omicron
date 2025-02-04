@@ -4,6 +4,7 @@
 -- Notes: Opens door _473 from behind
 -- !pos -41.377 -17.084 17.036 151
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
@@ -12,18 +13,13 @@ entity.onTrigger = function(player, npc)
     if
         player:getXPos() > -43 and
         npc:getAnimation() == xi.anim.CLOSE_DOOR and
+        brassDoor and
         brassDoor:getAnimation() == xi.anim.CLOSE_DOOR
     then
         npc:openDoor(6.5)
         -- Should be a ~1 second delay here before the door opens
         brassDoor:openDoor(4.5)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

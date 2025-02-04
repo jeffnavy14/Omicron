@@ -2,6 +2,7 @@
 -- Area: Port Jeuno
 --  NPC: Shemo
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local beastmanSeal       = 0
@@ -36,9 +37,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(csid, sealBit1, sealBit2, sealBit3, isTradeNum2)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

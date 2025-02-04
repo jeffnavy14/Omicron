@@ -3,9 +3,10 @@
 -- Scroll of Curaga III
 -- Teaches the white magic Curaga III
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.CURAGA_III)
 end
 

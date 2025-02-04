@@ -3,9 +3,10 @@
 -- Scroll of Firaga
 -- Teaches the black magic Firaga
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FIRAGA)
 end
 

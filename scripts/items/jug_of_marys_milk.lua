@@ -3,9 +3,10 @@
 -- Item: Jug of marys milk
 -- Item Effect: This potion induces sleep.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

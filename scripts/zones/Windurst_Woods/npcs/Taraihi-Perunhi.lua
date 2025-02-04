@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WOODS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -29,14 +30,8 @@ entity.onTrigger = function(player, npc)
             633,    14, -- Olive Oil
             951,   110  -- Wijnruit
         }
-        xi.shop.general(player, stock, xi.quest.fame_area.WINDURST)
+        xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

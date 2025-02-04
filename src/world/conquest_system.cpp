@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2023 LandSandBoat Dev Teams
+  Copyright (c) 2023 LandSandBoat Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -23,8 +23,9 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 #include "message_server.h"
 
+#include "common/database.h"
+
 ConquestSystem::ConquestSystem()
-: sql(std::make_unique<SqlConnection>())
 {
 }
 
@@ -185,20 +186,19 @@ bool ConquestSystem::updateInfluencePoints(int points, unsigned int nation, REGI
         return false;
     }
 
-    std::string Query = "SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system WHERE region_id = %d;";
+    std::string query = "SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system WHERE region_id = ?";
 
-    int ret = sql->Query(Query.c_str(), static_cast<uint8>(region));
-
-    if (ret == SQL_ERROR || sql->NextRow() != SQL_SUCCESS)
+    auto rset = db::preparedStmt(query.c_str(), static_cast<uint8>(region));
+    if (!rset || rset->rowsCount() == 0 || !rset->next())
     {
         return false;
     }
 
     int influences[4] = {
-        sql->GetIntData(0),
-        sql->GetIntData(1),
-        sql->GetIntData(2),
-        sql->GetIntData(3),
+        rset->get<int>("sandoria_influence"),
+        rset->get<int>("bastok_influence"),
+        rset->get<int>("windurst_influence"),
+        rset->get<int>("beastmen_influence"),
     };
 
     if (influences[nation] == 5000)
@@ -221,11 +221,11 @@ bool ConquestSystem::updateInfluencePoints(int points, unsigned int nation, REGI
 
     influences[nation] += lost;
 
-    ret = sql->Query("UPDATE conquest_system SET sandoria_influence = %d, bastok_influence = %d, "
-                     "windurst_influence = %d, beastmen_influence = %d WHERE region_id = %u;",
-                     influences[0], influences[1], influences[2], influences[3], static_cast<uint8>(region));
+    auto rset2 = db::preparedStmt("UPDATE conquest_system SET sandoria_influence = ?, bastok_influence = ?, "
+                                  "windurst_influence = ?, beastmen_influence = ? WHERE region_id = ?",
+                                  influences[0], influences[1], influences[2], influences[3], static_cast<uint8>(region));
 
-    return ret != SQL_ERROR;
+    return !rset2;
 }
 
 void ConquestSystem::updateWeekConquest()
@@ -236,16 +236,16 @@ void ConquestSystem::updateWeekConquest()
     sendTallyStartMsg();
 
     // 2- Do the actual db update
-    const char* Query = "UPDATE conquest_system SET region_control = \
-                            IF(sandoria_influence > bastok_influence AND sandoria_influence > windurst_influence AND \
-                            sandoria_influence > beastmen_influence, 0, \
-                            IF(bastok_influence > sandoria_influence AND bastok_influence > windurst_influence AND \
-                            bastok_influence > beastmen_influence, 1, \
-                            IF(windurst_influence > bastok_influence AND windurst_influence > sandoria_influence AND \
-                            windurst_influence > beastmen_influence, 2, 3)));";
+    auto query = "UPDATE conquest_system SET region_control = "
+                 "IF(sandoria_influence > bastok_influence AND sandoria_influence > windurst_influence AND "
+                 "sandoria_influence > beastmen_influence, 0, "
+                 "IF(bastok_influence > sandoria_influence AND bastok_influence > windurst_influence AND "
+                 "bastok_influence > beastmen_influence, 1, "
+                 "IF(windurst_influence > bastok_influence AND windurst_influence > sandoria_influence AND "
+                 "windurst_influence > beastmen_influence, 2, 3)))";
 
-    int ret = sql->Query(Query);
-    if (ret == SQL_ERROR)
+    auto rset = db::preparedStmt(query);
+    if (!rset)
     {
         ShowError("handleWeeklyUpdate() failed");
     }
@@ -266,20 +266,20 @@ void ConquestSystem::updateVanaHourlyConquest()
 
 auto ConquestSystem::getRegionalInfluences() -> std::vector<influence_t> const
 {
-    const char* Query = "SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system;";
+    auto query = "SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system";
 
-    int32 ret = sql->Query(Query);
+    auto rset = db::preparedStmt(query);
 
     std::vector<influence_t> influences;
-    if (ret != SQL_ERROR && sql->NumRows() != 0)
+    if (rset && rset->rowsCount())
     {
-        while (sql->NextRow() == SQL_SUCCESS)
+        while (rset->next())
         {
             influence_t influence{};
-            influence.sandoria_influence = sql->GetIntData(0);
-            influence.bastok_influence   = sql->GetIntData(1);
-            influence.windurst_influence = sql->GetIntData(2);
-            influence.beastmen_influence = sql->GetIntData(3);
+            influence.sandoria_influence = rset->get<uint16>("sandoria_influence");
+            influence.bastok_influence   = rset->get<uint16>("bastok_influence");
+            influence.windurst_influence = rset->get<uint16>("windurst_influence");
+            influence.beastmen_influence = rset->get<uint16>("beastmen_influence");
             influences.emplace_back(influence);
         }
     }
@@ -289,18 +289,18 @@ auto ConquestSystem::getRegionalInfluences() -> std::vector<influence_t> const
 
 auto ConquestSystem::getRegionControls() -> std::vector<region_control_t> const
 {
-    const char* Query = "SELECT region_control, region_control_prev FROM conquest_system;";
+    auto query = "SELECT region_control, region_control_prev FROM conquest_system";
 
-    int32 ret = sql->Query(Query);
+    auto rset = db::preparedStmt(query);
 
     std::vector<region_control_t> controllers;
-    if (ret != SQL_ERROR && sql->NumRows() != 0)
+    if (rset && rset->rowsCount())
     {
-        while (sql->NextRow() == SQL_SUCCESS)
+        while (rset->next())
         {
             region_control_t regionControl{};
-            regionControl.current = sql->GetIntData(0);
-            regionControl.prev    = sql->GetIntData(1);
+            regionControl.current = rset->get<uint8>("region_control");
+            regionControl.prev    = rset->get<uint8>("region_control_prev");
             controllers.emplace_back(regionControl);
         }
     }

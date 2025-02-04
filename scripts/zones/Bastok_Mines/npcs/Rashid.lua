@@ -4,10 +4,8 @@
 -- Type: Mission Giver
 -- !pos -8.444 -2 -123.575 234
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if player:getNation() ~= xi.nation.BASTOK then
@@ -22,12 +20,6 @@ entity.onTrigger = function(player, npc)
             player:startEvent(1001, flagMission, 0, 0, 0, 0, repeatMission) -- Mission List
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

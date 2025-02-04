@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.PHOMIUNA_AQUEDUCTS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -33,12 +34,6 @@ entity.onTrigger = function(player, npc)
     elseif npc:getAnimation() == 9 then
         player:messageSpecial(ID.text.DOOR_LOCKED, xi.item.BRONZE_KEY)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

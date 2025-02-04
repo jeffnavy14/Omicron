@@ -4,6 +4,7 @@
 -- Allows players to spawn the Jailer of Justice by trading the Second Virtue, Deed of Moderation, and HQ Xzomit Organ to a ???.
 -- !pos , -278 0 -463
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -20,15 +21,6 @@ entity.onTrade = function(player, npc, trade)
         SpawnMob(ID.mob.JAILER_OF_JUSTICE):updateClaim(player)
     end
     --]]
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

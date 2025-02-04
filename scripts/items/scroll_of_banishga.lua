@@ -3,9 +3,10 @@
 -- Scroll of Banishga
 -- Teaches the white magic Banishga
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BANISHGA)
 end
 

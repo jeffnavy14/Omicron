@@ -2,14 +2,10 @@
 -- Area: QuBia_Arena
 --  Mob: Death Clan Destroyer
 -----------------------------------
-local global = require('scripts/zones/QuBia_Arena/Globals')
 local ID = zones[xi.zone.QUBIA_ARENA]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
-
-entity.onEventFinish = function(player, csid, option, npc)
-    global.phaseEventFinish(player, csid)
-end
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.HP_STANDBACK, 60)
@@ -17,7 +13,7 @@ end
 
 entity.onMobFight = function(mob, target)
     local inst = mob:getBattlefield():getArea()
-    local instOffset = ID.mob.HEIR_TO_THE_LIGHT_OFFSET + (14 * (inst-1))
+    local instOffset = ID.mob.WARLORD_ROJGNOJ + (14 * (inst - 1))
     mob:setMP(9999)
 
     -- queue curaga II on any sleeping ally
@@ -40,7 +36,6 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    global.tryPhaseChange(player)
 end
 
 return entity

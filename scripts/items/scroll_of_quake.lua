@@ -3,9 +3,10 @@
 -- Scroll of Quake
 -- Teaches the black magic Quake
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.QUAKE)
 end
 

@@ -6,3 +6,6 @@ colorama
 zmq
 black
 regex
+argparse
+requests
+bcrypt

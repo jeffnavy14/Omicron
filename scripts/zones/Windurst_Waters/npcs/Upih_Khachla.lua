@@ -1,11 +1,10 @@
 -----------------------------------
 -- Area: Windurst Waters
 --  NPC: Upih Khachla
--- Standard Merchant NPC
--- Confirmed shop stock, August 2013
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WATERS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -47,12 +46,6 @@ entity.onTrigger = function(player, npc)
     end
 
     xi.shop.nation(player, stock, xi.nation.WINDURST)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

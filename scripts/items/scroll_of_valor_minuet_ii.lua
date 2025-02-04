@@ -3,9 +3,10 @@
 -- Scroll of Valor Minuet II
 -- Teaches the song Valor Minuet II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.VALOR_MINUET_II)
 end
 

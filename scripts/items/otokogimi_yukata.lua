@@ -3,14 +3,15 @@
 -- otokogimi_yukata
 -- Dispense: Datechochin x99
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.DATECHOCHIN, 99)
+    npcUtil.giveItem(target, { { xi.item.DATECHOCHIN, 99 } })
 end
 
 return itemObject

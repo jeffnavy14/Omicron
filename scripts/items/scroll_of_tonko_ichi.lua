@@ -3,9 +3,10 @@
 -- Scroll of Tonko: Ichi
 -- Teaches the ninjutsu Tonko: Ichi
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.TONKO_ICHI)
 end
 

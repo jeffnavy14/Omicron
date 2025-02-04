@@ -3,14 +3,22 @@
 -----------------------------------
 local ID = zones[xi.zone.SELBINA]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
     xi.server.setExplorerMoogles(ID.npc.EXPLORER_MOOGLE)
+    InitializeFishingContestSystem()
 end
 
 zoneObject.onGameHour = function(zone)
     SetServerVariable('Selbina_Destination', math.random(1, 100))
+end
+
+zoneObject.onZoneTick = function(zone)
+    if xi.settings.main.AUTO_FISHING_CONTEST then
+        ProgressFishingContest()
+    end
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -43,7 +51,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTransportEvent = function(player, transport)
@@ -62,7 +70,7 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
         end
     elseif
         csid == 1101 and
-        npcUtil.completeQuest(player, xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.I_LL_TAKE_THE_BIG_BOX, { item = 14226, fameArea = xi.quest.fame_area.NORG, var = { 'Enagakure_Killed', 'illTakeTheBigBoxCS' } })
+        npcUtil.completeQuest(player, xi.questLog.OUTLANDS, xi.quest.id.outlands.I_LL_TAKE_THE_BIG_BOX, { item = 14226, fameArea = xi.fameArea.NORG, var = { 'Enagakure_Killed', 'illTakeTheBigBoxCS' } })
     then
         player:delKeyItem(xi.ki.SEANCE_STAFF)
     end

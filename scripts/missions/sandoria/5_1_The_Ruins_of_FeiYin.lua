@@ -77,7 +77,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId) == 0 then
-                        return mission:progressEvent(61)
+                        return mission:progressEvent(52)
                     end
                 end,
             },
@@ -97,17 +97,14 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.NORTHERN_SAN_DORIA and
-                        player:getMissionStatus(mission.areaId) == 0
-                    then
-                        return 509
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.NORTHERN_SAN_DORIA and
+                    player:getMissionStatus(mission.areaId) == 0
+                then
+                    return 509
+                end
+            end,
 
             onEventFinish =
             {
@@ -158,14 +155,11 @@ mission.sections =
 
         [xi.zone.FEIYIN] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId) == 10 then
-                        return 1
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId) == 10 then
+                    return 1
+                end
+            end,
 
             onEventFinish =
             {
@@ -182,7 +176,7 @@ mission.sections =
                 [32001] = function(player, csid, option, npc)
                     if
                         player:getMissionStatus(mission.areaId) == 11 and
-                        player:getLocalVar('battlefieldWin') == 512
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.RANK_5_MISSION
                     then
                         npcUtil.giveKeyItem(player, xi.ki.BURNT_SEAL)
                         player:setMissionStatus(mission.areaId, 12)

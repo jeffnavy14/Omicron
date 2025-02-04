@@ -5,9 +5,10 @@
 -- "Just throw your fist at your opponent and it'll all work out."
 -- Adventurers say that their hand-to-hand skill increases after reading this note.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.HAND_TO_HAND)
 end
 

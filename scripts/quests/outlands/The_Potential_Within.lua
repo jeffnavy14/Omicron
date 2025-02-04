@@ -7,19 +7,19 @@ local norgID         = zones[xi.zone.NORG]
 local kuftalTunnelID = zones[xi.zone.KUFTAL_TUNNEL]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.THE_POTENTIAL_WITHIN)
+local quest = Quest:new(xi.questLog.OUTLANDS, xi.quest.id.outlands.THE_POTENTIAL_WITHIN)
 
 quest.reward =
 {
     fame = 30,
-    fameArea = xi.quest.fame_area.NORG,
+    fameArea = xi.fameArea.NORG,
 }
 
 quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:canEquipItem(xi.item.TACHI_OF_TRIALS, true) and
                 player:getCharSkillLevel(xi.skill.GREAT_KATANA) / 10 >= 250 and
                 not player:hasKeyItem(xi.keyItem.WEAPON_TRAINING_GUIDE)
@@ -51,7 +51,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.NORG] =
@@ -85,7 +85,7 @@ quest.sections =
             {
                 [179] = function(player, csid, option, npc)
                     if option == 2 then
-                        player:delQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.THE_POTENTIAL_WITHIN)
+                        player:delQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.THE_POTENTIAL_WITHIN)
                         player:delKeyItem(xi.ki.WEAPON_TRAINING_GUIDE)
                         player:delKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH)
                     elseif not player:hasItem(xi.item.TACHI_OF_TRIALS) then
@@ -117,8 +117,7 @@ quest.sections =
                 onTrigger = function(player, npc)
                     if player:getLocalVar('killed_wsnm') == 1 then
                         player:setLocalVar('killed_wsnm', 0)
-                        player:addKeyItem(xi.ki.ANNALS_OF_TRUTH)
-                        return quest:messageSpecial(kuftalTunnelID.text.KEYITEM_OBTAINED, xi.ki.ANNALS_OF_TRUTH)
+                        return quest:keyItem(xi.ki.ANNALS_OF_TRUTH)
                     elseif
                         player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) and
                         not player:hasKeyItem(xi.keyItem.ANNALS_OF_TRUTH) and
@@ -132,7 +131,9 @@ quest.sections =
             ['Kettenkaefer'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    player:setLocalVar('killed_wsnm', 1)
+                    if player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) then
+                        player:setLocalVar('killed_wsnm', 1)
+                    end
                 end,
             },
         },

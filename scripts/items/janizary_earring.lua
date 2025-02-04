@@ -4,27 +4,21 @@
 -- Item Effect: Defence +32
 -- Duration 3 Minutes
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
-    local effect = target:getStatusEffect(xi.effect.ENCHANTMENT)
-    if effect ~= nil and effect:getSubType() == 14785 then
-        target:delStatusEffect(xi.effect.ENCHANTMENT)
+itemObject.onItemCheck = function(target, item, param, caster)
+    if target:getStatusEffectBySource(xi.effect.ENCHANTMENT, xi.effectSourceType.EQUIPPED_ITEM, xi.item.JANIZARY_EARRING) ~= nil then
+        target:delStatusEffect(xi.effect.ENCHANTMENT, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.JANIZARY_EARRING)
     end
 
     return 0
 end
 
 itemObject.onItemUse = function(target)
-    target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 180, 14785)
-end
-
-itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.DEF, 32)
-end
-
-itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.DEF, 32)
+    if target:hasEquipped(xi.item.JANIZARY_EARRING) then
+        target:addStatusEffect(xi.effect.DEFENSE_BOOST, 32, 0, 180, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.JANIZARY_EARRING)
+    end
 end
 
 return itemObject

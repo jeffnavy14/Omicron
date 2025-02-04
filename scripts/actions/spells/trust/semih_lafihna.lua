@@ -1,6 +1,7 @@
 -----------------------------------
 -- Trust: Semih Lafihna
 -----------------------------------
+---@type TSpellTrust
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -17,18 +18,14 @@ spellObject.onMobSpawn = function(mob)
         [xi.magic.spell.AJIDO_MARUJIDO] = xi.trust.messageOffset.TEAMWORK_2,
     })
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.BARRAGE,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.BARRAGE)
+    mob:addGambit(ai.t.SELF, { ai.c.NOT_STATUS, xi.effect.BARRAGE }, { ai.r.JA, ai.s.SPECIFIC, xi.ja.BARRAGE })
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.SHARPSHOT,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.SHARPSHOT)
+    mob:addGambit(ai.t.SELF, { ai.c.NOT_STATUS, xi.effect.SHARPSHOT }, { ai.r.JA, ai.s.SPECIFIC, xi.ja.SHARPSHOT })
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_STATUS, xi.effect.DOUBLE_SHOT,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.DOUBLE_SHOT)
+    mob:addGambit(ai.t.SELF, { ai.c.NOT_STATUS, xi.effect.DOUBLE_SHOT }, { ai.r.JA, ai.s.SPECIFIC, xi.ja.DOUBLE_SHOT })
 
     -- TODO: Stealth Shot not yet implemented
-    -- mob:addSimpleGambit(ai.t.SELF, ai.c.HAS_TOP_ENMITY, 0,
-    --                    ai.r.JA, ai.s.SPECIFIC, xi.ja.STEALTH_SHOT)
+    -- mob:addGambit(ai.t.SELF, { ai.c.HAS_TOP_ENMITY, 0 }, { ai.r.JA, ai.s.SPECIFIC, xi.ja.STEALTH_SHOT })
 
     mob:addListener('WEAPONSKILL_USE', 'SEMIH_LAFIHNA_WEAPONSKILL_USE', function(mobArg, target, wsid, tp, action)
         if wsid == 3490 then -- Stellar Arrow
@@ -38,11 +35,13 @@ spellObject.onMobSpawn = function(mob)
     end)
 
     -- Ranged Attack as much as possible (limited by 'weapon' delay)
-    mob:addSimpleGambit(ai.t.TARGET, ai.c.ALWAYS, 0, ai.r.RATTACK, 0, 0)
+    mob:addGambit(ai.t.TARGET, { ai.c.ALWAYS, 0 }, { ai.r.RATTACK, 0, 0 })
 
     mob:setAutoAttackEnabled(false)
 
-    mob:addMod(xi.mod.STORETP, 40)
+    -- Gets 252 TP per hit even at level 1, see https://www.bg-wiki.com/ffxi/BGWiki:Trusts#Semih_Lafihna
+    -- Using STP as a hack to ensure proper TP amount, as her delay is not that high on retail.
+    mob:addMod(xi.mod.STORETP, 86)
 
     mob:setMobMod(xi.mobMod.TRUST_DISTANCE, xi.trust.movementType.LONG_RANGE)
 end

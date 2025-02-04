@@ -27,6 +27,7 @@
 #include "blue_spell.h"
 #include "items/item_weapon.h"
 #include "map.h"
+#include "mob_spell_list.h"
 #include "spell.h"
 #include "status_effect_container.h"
 #include "utils/blueutils.h"
@@ -69,7 +70,7 @@ uint8 CSpell::getJob(JOBTYPE JobID)
 
 void CSpell::setJob(int8* jobs)
 {
-    memcpy(&m_job[1], jobs, 22);
+    std::memcpy(&m_job[1], jobs, 22);
 }
 
 uint32 CSpell::getCastTime() const
@@ -452,18 +453,18 @@ namespace spell
     {
         const char* Query = "SELECT spellid, name, jobs, `group`, family, validTargets, skill, castTime, recastTime, animation, animationTime, mpCost, \
                              AOE, base, element, zonemisc, multiplier, message, magicBurstMessage, CE, VE, requirements, content_tag, spell_range \
-                             FROM spell_list;";
+                             FROM spell_list";
 
-        int32 ret = sql->Query(Query);
+        int32 ret = _sql->Query(Query);
 
-        if (ret != SQL_ERROR && sql->NumRows() != 0)
+        if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
-            while (sql->NextRow() == SQL_SUCCESS)
+            while (_sql->NextRow() == SQL_SUCCESS)
             {
                 CSpell* PSpell = nullptr;
-                SpellID id     = (SpellID)sql->GetUIntData(0);
+                SpellID id     = (SpellID)_sql->GetUIntData(0);
 
-                if ((SPELLGROUP)sql->GetIntData(3) == SPELLGROUP_BLUE)
+                if ((SPELLGROUP)_sql->GetIntData(3) == SPELLGROUP_BLUE)
                 {
                     PSpell = new CBlueSpell(id);
                 }
@@ -472,30 +473,30 @@ namespace spell
                     PSpell = new CSpell(id);
                 }
 
-                PSpell->setName(sql->GetStringData(1));
-                PSpell->setJob(sql->GetData(2));
-                PSpell->setSpellGroup((SPELLGROUP)sql->GetIntData(3));
-                PSpell->setSpellFamily((SPELLFAMILY)sql->GetIntData(4));
-                PSpell->setValidTarget(sql->GetIntData(5));
-                PSpell->setSkillType(sql->GetIntData(6));
-                PSpell->setCastTime(sql->GetIntData(7));
-                PSpell->setRecastTime(sql->GetIntData(8));
-                PSpell->setAnimationID(sql->GetIntData(9));
-                PSpell->setAnimationTime(sql->GetIntData(10));
-                PSpell->setMPCost(sql->GetIntData(11));
-                PSpell->setAOE(sql->GetIntData(12));
-                PSpell->setBase(sql->GetIntData(13));
-                PSpell->setElement(sql->GetIntData(14));
-                PSpell->setZoneMisc(sql->GetIntData(15));
-                PSpell->setMultiplier((float)sql->GetIntData(16));
-                PSpell->setMessage(sql->GetIntData(17));
-                PSpell->setMagicBurstMessage(sql->GetIntData(18));
-                PSpell->setCE(sql->GetIntData(19));
-                PSpell->setVE(sql->GetIntData(20));
-                PSpell->setRequirements(sql->GetIntData(21));
-                PSpell->setContentTag(sql->GetStringData(22));
+                PSpell->setName(_sql->GetStringData(1));
+                PSpell->setJob(_sql->GetData(2));
+                PSpell->setSpellGroup((SPELLGROUP)_sql->GetIntData(3));
+                PSpell->setSpellFamily((SPELLFAMILY)_sql->GetIntData(4));
+                PSpell->setValidTarget(_sql->GetIntData(5));
+                PSpell->setSkillType(_sql->GetIntData(6));
+                PSpell->setCastTime(_sql->GetIntData(7));
+                PSpell->setRecastTime(_sql->GetIntData(8));
+                PSpell->setAnimationID(_sql->GetIntData(9));
+                PSpell->setAnimationTime(_sql->GetIntData(10));
+                PSpell->setMPCost(_sql->GetIntData(11));
+                PSpell->setAOE(_sql->GetIntData(12));
+                PSpell->setBase(_sql->GetIntData(13));
+                PSpell->setElement(_sql->GetIntData(14));
+                PSpell->setZoneMisc(_sql->GetIntData(15));
+                PSpell->setMultiplier((float)_sql->GetIntData(16));
+                PSpell->setMessage(_sql->GetIntData(17));
+                PSpell->setMagicBurstMessage(_sql->GetIntData(18));
+                PSpell->setCE(_sql->GetIntData(19));
+                PSpell->setVE(_sql->GetIntData(20));
+                PSpell->setRequirements(_sql->GetIntData(21));
+                PSpell->setContentTag(_sql->GetStringData(22));
 
-                PSpell->setRange(static_cast<float>(sql->GetIntData(23)) / 10);
+                PSpell->setRange(static_cast<float>(_sql->GetIntData(23)) / 10);
 
                 if (PSpell->getAOE())
                 {
@@ -565,22 +566,22 @@ namespace spell
         const char* blueQuery = "SELECT blue_spell_list.spellid, blue_spell_list.mob_skill_id, blue_spell_list.set_points, \
                                 blue_spell_list.trait_category, blue_spell_list.trait_category_weight, blue_spell_list.primary_sc, \
                                 blue_spell_list.secondary_sc, blue_spell_list.tertiary_sc, spell_list.content_tag \
-                             FROM blue_spell_list JOIN spell_list on blue_spell_list.spellid = spell_list.spellid;";
+                             FROM blue_spell_list JOIN spell_list on blue_spell_list.spellid = spell_list.spellid";
 
-        ret = sql->Query(blueQuery);
+        ret = _sql->Query(blueQuery);
 
-        if (ret != SQL_ERROR && sql->NumRows() != 0)
+        if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
-            while (sql->NextRow() == SQL_SUCCESS)
+            while (_sql->NextRow() == SQL_SUCCESS)
             {
-                char* contentTag = (char*)sql->GetData(8);
+                char* contentTag = (char*)_sql->GetData(8);
                 if (!luautils::IsContentEnabled(contentTag))
                 {
                     continue;
                 }
 
                 // Sanity check the spell ID
-                uint16 spellId = sql->GetIntData(0);
+                uint16 spellId = _sql->GetIntData(0);
 
                 if (PSpellList[spellId] == nullptr)
                 {
@@ -588,26 +589,26 @@ namespace spell
                     continue;
                 }
 
-                ((CBlueSpell*)PSpellList[spellId])->setMonsterSkillId(sql->GetIntData(1));
-                ((CBlueSpell*)PSpellList[spellId])->setSetPoints(sql->GetIntData(2));
-                ((CBlueSpell*)PSpellList[spellId])->setTraitCategory(sql->GetIntData(3));
-                ((CBlueSpell*)PSpellList[spellId])->setTraitWeight(sql->GetIntData(4));
-                ((CBlueSpell*)PSpellList[spellId])->setPrimarySkillchain(sql->GetIntData(5));
-                ((CBlueSpell*)PSpellList[spellId])->setSecondarySkillchain(sql->GetIntData(6));
-                ((CBlueSpell*)PSpellList[spellId])->setTertiarySkillchain(sql->GetIntData(7));
-                PMobSkillToBlueSpell.insert(std::make_pair(sql->GetIntData(1), spellId));
+                ((CBlueSpell*)PSpellList[spellId])->setMonsterSkillId(_sql->GetIntData(1));
+                ((CBlueSpell*)PSpellList[spellId])->setSetPoints(_sql->GetIntData(2));
+                ((CBlueSpell*)PSpellList[spellId])->setTraitCategory(_sql->GetIntData(3));
+                ((CBlueSpell*)PSpellList[spellId])->setTraitWeight(_sql->GetIntData(4));
+                ((CBlueSpell*)PSpellList[spellId])->setPrimarySkillchain(_sql->GetIntData(5));
+                ((CBlueSpell*)PSpellList[spellId])->setSecondarySkillchain(_sql->GetIntData(6));
+                ((CBlueSpell*)PSpellList[spellId])->setTertiarySkillchain(_sql->GetIntData(7));
+                PMobSkillToBlueSpell.insert(std::make_pair(_sql->GetIntData(1), spellId));
             }
         }
-        ret = sql->Query(
+        ret = _sql->Query(
             "SELECT spellId, modId, value FROM blue_spell_mods WHERE spellId IN (SELECT spellId FROM spell_list LEFT JOIN blue_spell_list USING (spellId))");
 
-        if (ret != SQL_ERROR && sql->NumRows() != 0)
+        if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
-            while (sql->NextRow() == SQL_SUCCESS)
+            while (_sql->NextRow() == SQL_SUCCESS)
             {
-                uint16 spellId = (uint16)sql->GetUIntData(0);
-                Mod    modID   = static_cast<Mod>(sql->GetUIntData(1));
-                int16  value   = (int16)sql->GetIntData(2);
+                uint16 spellId = (uint16)_sql->GetUIntData(0);
+                Mod    modID   = static_cast<Mod>(_sql->GetUIntData(1));
+                int16  value   = (int16)_sql->GetIntData(2);
 
                 if (PSpellList[spellId])
                 {
@@ -616,23 +617,23 @@ namespace spell
             }
         }
 
-        ret = sql->Query("SELECT spellId, meritId, content_tag FROM spell_list INNER JOIN merits ON spell_list.name = merits.name;");
+        ret = _sql->Query("SELECT spellId, meritId, content_tag FROM spell_list INNER JOIN merits ON spell_list.name = merits.name");
 
-        if (ret != SQL_ERROR && sql->NumRows() != 0)
+        if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {
-            while (sql->NextRow() == SQL_SUCCESS)
+            while (_sql->NextRow() == SQL_SUCCESS)
             {
-                char* contentTag = (char*)sql->GetData(2);
+                char* contentTag = (char*)_sql->GetData(2);
                 if (!luautils::IsContentEnabled(contentTag))
                 {
                     continue;
                 }
 
-                uint16 spellId = (uint16)sql->GetUIntData(0);
+                uint16 spellId = (uint16)_sql->GetUIntData(0);
 
                 if (PSpellList[spellId])
                 {
-                    PSpellList[spellId]->setMeritId(sql->GetUIntData(1));
+                    PSpellList[spellId]->setMeritId(_sql->GetUIntData(1));
                 }
             }
         }
@@ -678,35 +679,26 @@ namespace spell
     // Check If user can cast spell
     bool CanUseSpell(CBattleEntity* PCaster, CSpell* spell)
     {
-        bool usable = false;
-
-        if (spell != nullptr)
+        if (spell == nullptr)
         {
-            uint8 JobMLVL      = spell->getJob(PCaster->GetMJob());
-            uint8 JobSLVL      = spell->getJob(PCaster->GetSJob());
-            uint8 requirements = spell->getRequirements();
+            return false;
+        }
 
-            if (PCaster->objtype == TYPE_MOB || (PCaster->objtype == TYPE_PET && static_cast<CPetEntity*>(PCaster)->getPetType() == PET_TYPE::AUTOMATON) ||
-                PCaster->objtype == TYPE_TRUST)
-            {
-                // cant cast cause im hidden or untargetable
+        bool  usable       = false;
+        uint8 requirements = 0;
+
+        switch (PCaster->objtype)
+        {
+            case TYPE_MOB:
+                // Unable to cast because caster is hidden or untargetable
                 if (PCaster->IsNameHidden() || static_cast<CMobEntity*>(PCaster)->GetUntargetable())
                 {
                     return false;
                 }
-
-                // ensure trust level is appropriate+
-                if (PCaster->objtype == TYPE_TRUST && PCaster->GetMLevel() < JobMLVL && PCaster->GetSLevel() < JobSLVL)
-                {
-                    return false;
-                }
-
                 // Mobs can cast any non-given char spell
                 return true;
-            }
 
-            if (PCaster->objtype == TYPE_PC)
-            {
+            case TYPE_PC:
                 if (spell->getSpellGroup() == SPELLGROUP_TRUST)
                 {
                     return true; // every PC can use trusts
@@ -715,35 +707,88 @@ namespace spell
                 {
                     return true;
                 }
-            }
+                [[fallthrough]];
+            case TYPE_FELLOW:
+            case TYPE_NPC:
+                requirements = spell->getRequirements();
 
-            if (PCaster->GetMLevel() >= JobMLVL)
-            {
-                usable = true;
-                if (requirements & SPELLREQ_TABULA_RASA)
+                // Make sure caster has the right main job and level
+                if (PCaster->GetMLevel() >= spell->getJob(PCaster->GetMJob()))
                 {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_TABULA_RASA))
+                    usable = true;
+                    if (requirements & SPELLREQ_TABULA_RASA)
                     {
-                        usable = false;
+                        if (!PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_TABULA_RASA))
+                        {
+                            usable = false;
+                        }
+                    }
+                    if (PCaster->GetMJob() == JOB_SCH)
+                    {
+                        if (requirements & SPELLREQ_ADDENDUM_BLACK)
+                        {
+                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_BLACK, EFFECT_ENLIGHTENMENT }))
+                            {
+                                usable = false;
+                            }
+                        }
+                        else if (requirements & SPELLREQ_ADDENDUM_WHITE)
+                        {
+                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_WHITE, EFFECT_ENLIGHTENMENT }))
+                            {
+                                usable = false;
+                            }
+                        }
+                    }
+                    if (spell->getSpellGroup() == SPELLGROUP_BLUE && PCaster->objtype == TYPE_PC)
+                    {
+                        if (requirements & SPELLREQ_UNBRIDLED_LEARNING)
+                        {
+                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_UNBRIDLED_LEARNING, EFFECT_UNBRIDLED_WISDOM }))
+                            {
+                                usable = false;
+                            }
+                        }
+                        else if (!blueutils::IsSpellSet((CCharEntity*)PCaster, (CBlueSpell*)spell))
+                        {
+                            usable = false;
+                        }
+                    }
+                    if (usable)
+                    {
+                        return true;
                     }
                 }
-                if (requirements & SPELLREQ_ADDENDUM_BLACK && PCaster->GetMJob() == JOB_SCH)
+
+                // Make sure caster has the right sub job and level
+                if (PCaster->GetSLevel() >= spell->getJob(PCaster->GetSJob()) && !(requirements & SPELLREQ_MAIN_JOB_ONLY))
                 {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_BLACK, EFFECT_ENLIGHTENMENT }))
+                    usable = true;
+                    if (requirements & SPELLREQ_TABULA_RASA)
                     {
-                        usable = false;
+                        if (!PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_TABULA_RASA))
+                        {
+                            usable = false;
+                        }
                     }
-                }
-                else if (requirements & SPELLREQ_ADDENDUM_WHITE && PCaster->GetMJob() == JOB_SCH)
-                {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_WHITE, EFFECT_ENLIGHTENMENT }))
+                    if (PCaster->GetSJob() == JOB_SCH)
                     {
-                        usable = false;
+                        if (requirements & SPELLREQ_ADDENDUM_BLACK)
+                        {
+                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_BLACK, EFFECT_ENLIGHTENMENT }))
+                            {
+                                usable = false;
+                            }
+                        }
+                        else if (requirements & SPELLREQ_ADDENDUM_WHITE)
+                        {
+                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_WHITE, EFFECT_ENLIGHTENMENT }))
+                            {
+                                usable = false;
+                            }
+                        }
                     }
-                }
-                else if (spell->getSpellGroup() == SPELLGROUP_BLUE)
-                {
-                    if (PCaster->objtype == TYPE_PC)
+                    if (spell->getSpellGroup() == SPELLGROUP_BLUE && PCaster->objtype == TYPE_PC)
                     {
                         if (requirements & SPELLREQ_UNBRIDLED_LEARNING)
                         {
@@ -758,55 +803,37 @@ namespace spell
                         }
                     }
                 }
+                return usable;
+
+            case TYPE_PET:
+                if (static_cast<CPetEntity*>(PCaster)->getPetType() == PET_TYPE::AUTOMATON)
+                {
+                    usable = true;
+                }
+                [[fallthrough]];
+            case TYPE_TRUST:
+                // Unable to cast because caster is hidden or untargetable
+                if (PCaster->IsNameHidden() || static_cast<CMobEntity*>(PCaster)->GetUntargetable())
+                {
+                    return false;
+                }
+
                 if (usable)
                 {
                     return true;
                 }
-            }
-            if (PCaster->GetSLevel() >= JobSLVL)
-            {
-                usable = true;
-                if (requirements & SPELLREQ_TABULA_RASA)
+
+                // Ensure pet or trust is level appropriate
+                if (PCaster->GetMLevel() < static_cast<CMobEntity*>(PCaster)->m_SpellListContainer->GetSpellMinLevel(spell->getID()))
                 {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_TABULA_RASA))
-                    {
-                        usable = false;
-                    }
+                    return false;
                 }
-                if (requirements & SPELLREQ_ADDENDUM_BLACK && PCaster->GetSJob() == JOB_SCH)
-                {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_BLACK, EFFECT_ENLIGHTENMENT }))
-                    {
-                        usable = false;
-                    }
-                }
-                else if (requirements & SPELLREQ_ADDENDUM_WHITE && PCaster->GetSJob() == JOB_SCH)
-                {
-                    if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_ADDENDUM_WHITE, EFFECT_ENLIGHTENMENT }))
-                    {
-                        usable = false;
-                    }
-                }
-                else if (spell->getSpellGroup() == SPELLGROUP_BLUE)
-                {
-                    if (PCaster->objtype == TYPE_PC)
-                    {
-                        if (requirements & SPELLREQ_UNBRIDLED_LEARNING)
-                        {
-                            if (!PCaster->StatusEffectContainer->HasStatusEffect({ EFFECT_UNBRIDLED_LEARNING, EFFECT_UNBRIDLED_WISDOM }))
-                            {
-                                usable = false;
-                            }
-                        }
-                        else if (!blueutils::IsSpellSet((CCharEntity*)PCaster, (CBlueSpell*)spell))
-                        {
-                            usable = false;
-                        }
-                    }
-                }
-            }
+                return true;
+
+            default:
+                break;
         }
-        return usable;
+        return false;
     }
 
     // This is a utility method for mobutils, when we want to work out if we can give monsters a spell

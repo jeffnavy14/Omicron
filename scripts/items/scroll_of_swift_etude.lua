@@ -3,9 +3,10 @@
 -- Scroll of Swift Etude
 -- Teaches the song Swift Etude
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SWIFT_ETUDE)
 end
 

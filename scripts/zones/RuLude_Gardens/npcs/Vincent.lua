@@ -4,10 +4,8 @@
 -- Type: Abyssea Warp NPC
 -- !pos 4 0 -65 243
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.abyssea.warpNPCOnTrigger(player, npc)

@@ -2,6 +2,7 @@
 -- Area: Windurst Waters
 --  NPC: Janta-Jonta
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local pathNodes =
@@ -35,19 +36,6 @@ entity.onSpawn = function(npc)
     npc:initNpcAi()
     npc:setPos(xi.path.first(pathNodes))
     npc:pathThrough(pathNodes, bit.bor(xi.path.flag.PATROL, xi.path.flag.RUN))
-end
-
-entity.onTrade = function(player, npc, trade)
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(567)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

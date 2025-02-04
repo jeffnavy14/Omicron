@@ -3,6 +3,7 @@
 -----------------------------------
 xi = xi or {}
 
+---@enum xi.keyItem
 xi.keyItem =
 {
     ZERUHN_REPORT                            = 1,
@@ -2763,6 +2764,7 @@ xi.keyItem =
     SHADOW_THRONE                            = 2833,
     LEAF_BENCH                               = 2834,
     ASTRAL_CUBE                              = 2835,
+    CHOCOBO_CHAIR_II                         = 2836,
     REISENJIMA_SANCTORIUM_ORB                = 2837,
     SAKURA_AND_THE_MAGICKED_NET              = 2838,
     REAPER                                   = 2839,
@@ -3217,6 +3219,21 @@ xi.keyItem =
     SHEET_OF_CHOCOBO_TUNES                   = 3344,
     MOG_KUPON_W_ETH                          = 3345,
     MOG_KUPON_I_ABY                          = 3346,
+    MOG_KUPON_A_DIA                          = 3347,
+    MOG_KUPON_A_EME                          = 3348,
+    WING_OF_WAR                              = 3349,
+    SHEET_OF_NEAR_EAST_TUNES                 = 3350,
+    MOG_KUPON_A_AEV                          = 3351,
+    MOG_KUPON_A_AHM                          = 3352,
+    MOG_KUPON_A_ATT                          = 3353,
+    MOG_KUPON_A_AMR                          = 3354,
+    MOG_KUPON_A_AGK                          = 3355,
+    ORB_OF_RADIANCE_PHANTOM_GEM              = 3356,
+    RAKAZNAR_PLATE_FRAGMENT                  = 3357,
+    -- NULL ENTRY                            = 3358,
+    -- NULL ENTRY                            = 3359,
+    SHEET_OF_DIVINE_TUNES                    = 3360,
 }
 
+---@alias xi.ki xi.keyItem
 xi.ki = xi.keyItem

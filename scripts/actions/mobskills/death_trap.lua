@@ -6,6 +6,7 @@
 -- Utsusemi/Blink absorb: Ignores shadows
 -- Range: 30' radial
 -----------------------------------
+---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
@@ -17,7 +18,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     local duration   = 60
     local power      = mob:getMainLvl() / 3
 
-    if math.random() <= 0.5 then
+    if math.random(1, 100) <= 50 then
         -- stun
         typeEffect = xi.effect.STUN
         duration   = 10

@@ -9,10 +9,11 @@
 -- Base HP drain rate is 24HP/tic. With Ecliptic attrition it is 30HP/tic.
 -- Operates on a shared recast timer with Lasting Emanation
 -----------------------------------
+---@type TAbility
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    return xi.job_utils.geomancer.geoOnAbilityCheck(player, target, ability)
+    return xi.job_utils.geomancer.geoOnEclipticAttritionCheck(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)

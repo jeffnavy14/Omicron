@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ATTOHWA_CHASM]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -38,10 +39,7 @@ zoneObject.onInitialize = function(zone)
     zone:registerTriggerArea(29, -238, 5, -118, 0, 0, 0)
     zone:registerTriggerArea(30, -385.349, 5, -173.973, 0, 0, 0)
 
-    UpdateNMSpawnPoint(ID.mob.TIAMAT)
-    GetMobByID(ID.mob.TIAMAT):setRespawnTime(math.random(86400, 259200))
-
-    xi.helm.initZone(zone, xi.helm.type.EXCAVATION)
+    xi.helm.initZone(zone, xi.helmType.EXCAVATION)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -59,7 +57,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
@@ -83,7 +81,7 @@ end
 zoneObject.onTriggerAreaLeave = function(player, triggerArea)
 end
 
-zoneObject.onGameHour = function(zone)
+zoneObject.onGameHour = function()
     --[[
         the hard-coded id that was here was wrong. there are 22 miasmas in attohwa chasm
         starting at ID.npc.MIASMA_OFFSET. some are supposed to toggle open, but need retail test

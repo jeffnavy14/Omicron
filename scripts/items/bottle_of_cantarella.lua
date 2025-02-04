@@ -3,9 +3,10 @@
 -- Item: Cantarella
 -- Item Effect: Poison 10HP / Removes 2000 HP over 10 minutes
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

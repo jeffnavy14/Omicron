@@ -7,12 +7,12 @@ local portWindurstID = zones[xi.zone.PORT_WINDURST]
 local roMaeveID = zones[xi.zone.ROMAEVE]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.WINDURST, xi.quest.id.windurst.ORASTERY_WOES)
+local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.ORASTERY_WOES)
 
 quest.reward =
 {
     fame = 30,
-    fameArea = xi.quest.fame_area.WINDURST,
+    fameArea = xi.fameArea.WINDURST,
 }
 
 quest.sections =
@@ -20,7 +20,7 @@ quest.sections =
     -- Section: Quest available
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:canEquipItem(xi.item.CLUB_OF_TRIALS, true) and
                 player:getCharSkillLevel(xi.skill.CLUB) / 10 >= 230 and
                 not player:hasKeyItem(xi.keyItem.WEAPON_TRAINING_GUIDE)
@@ -53,7 +53,7 @@ quest.sections =
     -- Section: Quest accepted
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.PORT_WINDURST] =
@@ -89,7 +89,7 @@ quest.sections =
                     if option == 1 and not player:hasItem(xi.item.CLUB_OF_TRIALS) then
                         npcUtil.giveItem(player, xi.item.CLUB_OF_TRIALS)
                     elseif option == 3 then
-                        player:delQuest(xi.quest.log_id.WINDURST, xi.quest.id.windurst.ORASTERY_WOES)
+                        player:delQuest(xi.questLog.WINDURST, xi.quest.id.windurst.ORASTERY_WOES)
                         player:delKeyItem(xi.ki.WEAPON_TRAINING_GUIDE)
                         player:delKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH)
                     end
@@ -119,8 +119,7 @@ quest.sections =
                 onTrigger = function(player, npc)
                     if player:getLocalVar('killed_wsnm') == 1 then
                         player:setLocalVar('killed_wsnm', 0)
-                        player:addKeyItem(xi.ki.ANNALS_OF_TRUTH)
-                        return quest:messageSpecial(roMaeveID.text.KEYITEM_OBTAINED, xi.ki.ANNALS_OF_TRUTH)
+                        return quest:keyItem(xi.ki.ANNALS_OF_TRUTH)
                     elseif
                         player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) and
                         not player:hasKeyItem(xi.keyItem.ANNALS_OF_TRUTH) and
@@ -134,7 +133,9 @@ quest.sections =
             ['Eldhrimnir'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    player:setLocalVar('killed_wsnm', 1)
+                    if player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) then
+                        player:setLocalVar('killed_wsnm', 1)
+                    end
                 end,
             },
         },

@@ -1,11 +1,11 @@
 -----------------------------------
 -- Area: Bastok Markets
 --  NPC: Carmelide
--- Standard Merchant NPC
 -- !pos -151.693 -4.819 -69.635 235
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)

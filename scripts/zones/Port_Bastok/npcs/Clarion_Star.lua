@@ -6,16 +6,11 @@
 -----------------------------------
 local ID = zones[xi.zone.PORT_BASTOK]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
     xi.trust.onTradeCipher(player, trade, 437, 457, 458)
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

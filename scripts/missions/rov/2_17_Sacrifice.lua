@@ -35,9 +35,9 @@ mission.sections =
                     if mission:getVar(player, 'Status') <= 1 then
                         if not xi.rhapsodies.charactersAvailable(player) then
                             player:messageSpecial(walkOfEchoesID.text.CANNOT_PROGRESS_MISSION, 0, 2)
-                        elseif player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.A_FORBIDDEN_REUNION) == QUEST_ACCEPTED then
+                        elseif player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.A_FORBIDDEN_REUNION) == xi.questStatus.QUEST_ACCEPTED then
                             player:messageSpecial(walkOfEchoesID.text.CANNOT_PROGRESS_QUEST, 0, 1)
-                        elseif player:getQuestStatus(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.CHAMPION_OF_THE_DAWN) == QUEST_ACCEPTED then
+                        elseif player:getQuestStatus(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.CHAMPION_OF_THE_DAWN) == xi.questStatus.QUEST_ACCEPTED then
                             player:messageSpecial(walkOfEchoesID.text.CANNOT_PROGRESS_QUEST, 0, 0)
                         else
                             -- NOTE: Parameter 1 changes, but no text change was noted in comparisons.  The below event call is not
@@ -53,21 +53,18 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    -- TODO: This event was observed with a character at minimum requirements for the mission, but not
-                    -- seen while Fate in Haze was active, or WotG and additional quests completed.  This may need to be
-                    -- updated over time as more data becomes available.
+            onZoneIn = function(player, prevZone)
+                -- TODO: This event was observed with a character at minimum requirements for the mission, but not
+                -- seen while Fate in Haze was active, or WotG and additional quests completed.  This may need to be
+                -- updated over time as more data becomes available.
 
-                    if
-                        player:getCurrentMission(xi.mission.log_id.WOTG) < xi.mission.id.wotg.FATE_IN_HAZE and
-                        xi.rhapsodies.charactersAvailable(player)
-                    then
-                        return 26
-                    end
-                end,
-            },
+                if
+                    player:getCurrentMission(xi.mission.log_id.WOTG) < xi.mission.id.wotg.FATE_IN_HAZE and
+                    xi.rhapsodies.charactersAvailable(player)
+                then
+                    return 26
+                end
+            end,
 
             onEventFinish =
             {
@@ -84,14 +81,11 @@ mission.sections =
 
         [xi.zone.GRAUBERG_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if mission:getVar(player, 'Status') == 2 then
-                        return 47
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if mission:getVar(player, 'Status') == 2 then
+                    return 47
+                end
+            end,
 
             onEventFinish =
             {

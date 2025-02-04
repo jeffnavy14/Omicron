@@ -3,9 +3,10 @@
 -- Muteppo
 -- A roman candle-like firework that hurls different colors
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

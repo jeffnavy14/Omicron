@@ -2,7 +2,12 @@
 -- Area: Al'Taieu
 --   NM: Jailer of Justice
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
+end
 
 entity.onMobFight = function(mob, target)
     local popTime = mob:getLocalVar('lastPetPop')

@@ -3,6 +3,7 @@
 --  NPC: Ambrotien
 -- !pos 93.419 -0.001 -57.347 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -26,12 +27,6 @@ entity.onTrigger = function(player, npc)
             player:startEvent(2009, missionMask, 0, 0 , 0 , 0 , repeatMask) -- Mission List
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

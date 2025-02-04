@@ -3,9 +3,10 @@
 -- Reef Fireflies
 -- Transports the user to Ilrusi Atoll Staging Point
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.ILRUSI_ATOLL then
         return 0
     end

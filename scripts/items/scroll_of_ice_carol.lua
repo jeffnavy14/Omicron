@@ -3,9 +3,10 @@
 -- Scroll of Ice Carol
 -- Teaches the song Ice Carol
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ICE_CAROL)
 end
 

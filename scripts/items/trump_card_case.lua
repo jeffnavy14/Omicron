@@ -3,14 +3,15 @@
 -- Lua By Reefed406
 -- ItemID : 5870
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.TRUMP_CARD, 99)
+    npcUtil.giveItem(target, { { xi.item.TRUMP_CARD, 99 } })
 end
 
 return itemObject

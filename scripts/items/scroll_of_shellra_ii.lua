@@ -3,9 +3,10 @@
 -- Scroll of Shellra II
 -- Teaches the white magic Shellra II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SHELLRA_II)
 end
 

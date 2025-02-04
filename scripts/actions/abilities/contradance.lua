@@ -1,10 +1,12 @@
 -----------------------------------
 -- Ability: Contradance
 -- Description: Increases the amount of HP restored by your next Waltz.
+-- Actual function: Doubles final Curing Waltz result, makes Healing Waltz AoE from target (10' range)
 -- Obtained: DNC Level 50
 -- Recast Time: 00:05:00
 -- Duration: 00:01:00
 -----------------------------------
+---@type TAbility
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)

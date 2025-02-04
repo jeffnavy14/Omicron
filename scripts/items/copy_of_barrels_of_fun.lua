@@ -5,9 +5,10 @@
 -- It discusses how to dismantle, clean, and reconstruct firearms in careful detail.
 -- Adventurers note that reading it increases one's marksmanship skill.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.skillBookCheck(target, xi.skill.MARKSMANSHIP)
 end
 

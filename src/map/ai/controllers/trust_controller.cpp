@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2018 Darkstar Dev Teams
+  Copyright (c) 2018 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -40,7 +40,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 
 namespace
 {
-    enum TRUST_MOVEMENT_TYPE
+    enum TRUST_MOVEMENT_TYPE : int8
     {
         // NOTE: If you need to add special movement types, add descending into the minus values.
         //     : All of the positive values are taken for the ranged movement range.
@@ -140,7 +140,7 @@ void CTrustController::DoCombatTick(time_point tick)
 
     if (PTarget)
     {
-        if (POwner->PAI->CanFollowPath() && POwner->speed > 0)
+        if (POwner->PAI->CanFollowPath() && POwner->GetSpeed() > 0)
         {
             float currentDistanceToTarget = distance(POwner->loc.p, PTarget->loc.p);
             float currentDistanceToMaster = distance(POwner->loc.p, PMaster->loc.p);
@@ -171,7 +171,7 @@ void CTrustController::DoCombatTick(time_point tick)
                 case TRUST_MOVEMENT_TYPE::MELEE:
                 {
                     std::unique_ptr<CBasicPacket> err;
-                    if (!POwner->CanAttack(PTarget, err) && POwner->speed > 0)
+                    if (!POwner->CanAttack(PTarget, err) && POwner->GetSpeed() > 0)
                     {
                         if (currentDistanceToTarget > RoamDistance)
                         {
@@ -237,7 +237,7 @@ void CTrustController::DoRoamTick(time_point tick)
             [[fallthrough]];
         default: // Something invalid set
         {
-            // Default retail behaviour: Master engages a monster and executes a melee swing
+            // Default retail behavior: Master engages a monster and executes a melee swing
             trustEngageCondition = PMaster->GetBattleTarget() && masterMeleeSwing;
             break;
         }

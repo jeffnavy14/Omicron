@@ -4,6 +4,7 @@
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local supportOffsets1 = { 1, 2, 3 }
@@ -14,7 +15,7 @@ entity.onMobFight = function(mob, target)
     content.handleBossCombatTick(mob, supportOffsets1, supportOffsets2)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local content = xi.battlefield.contents[xi.battlefield.id.CS_APOLLYON]
     content.handleBossAutoAggro(mob, target)
 end

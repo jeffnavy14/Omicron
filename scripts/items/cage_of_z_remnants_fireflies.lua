@@ -3,9 +3,10 @@
 -- Z. Rem. Fireflies
 -- Transports the user out of Zhayolm Remnants
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.ZHAYOLM_REMNANTS then
         return 0
     end

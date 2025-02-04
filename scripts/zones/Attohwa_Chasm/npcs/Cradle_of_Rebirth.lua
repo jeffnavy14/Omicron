@@ -4,6 +4,7 @@
 -----------------------------------
 local ID = zones[xi.zone.ATTOHWA_CHASM]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -17,15 +18,6 @@ entity.onTrade = function(player, npc, trade)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.POUCH_OF_PARRADAMO_STONES) -- Parradamo Stones
         end
     end
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

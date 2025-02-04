@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.SEA_SERPENT_GROTTO]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -47,12 +48,6 @@ entity.onTrigger = function(player, npc)
     elseif xPos > 55 and zPos < -81 then
         return -1 -- Open the door if coming from the 'inside'
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

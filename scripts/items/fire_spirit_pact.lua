@@ -3,9 +3,10 @@
 -- Fire Spirit Pact
 -- Teaches the summoning magicFire Spirit
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FIRE_SPIRIT)
 end
 

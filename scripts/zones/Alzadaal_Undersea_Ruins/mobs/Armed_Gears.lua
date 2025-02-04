@@ -11,9 +11,11 @@ mixins =
     require('scripts/mixins/families/gears')
 }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 300)
     mob:addMod(xi.mod.MDEF, 60)
     mob:addMod(xi.mod.DEF, 60)
     mob:setAnimationSub(0)

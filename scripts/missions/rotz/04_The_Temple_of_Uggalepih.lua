@@ -38,18 +38,15 @@ mission.sections =
 
         [xi.zone.SACRIFICIAL_CHAMBER] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    local missionStatus = player:getMissionStatus(mission.areaId)
+            onZoneIn = function(player, prevZone)
+                local missionStatus = player:getMissionStatus(mission.areaId)
 
-                    if missionStatus == 1 then
-                        return 7
-                    elseif missionStatus == 2 then
-                        return 8
-                    end
-                end,
-            },
+                if missionStatus == 1 then
+                    return 7
+                elseif missionStatus == 2 then
+                    return 8
+                end
+            end,
 
             onEventUpdate =
             {
@@ -69,7 +66,7 @@ mission.sections =
             onEventFinish =
             {
                 [32001] = function(player, csid, option, npc)
-                    if player:getLocalVar('battlefieldWin') == 128 then
+                    if player:getLocalVar('battlefieldWin') == xi.battlefield.id.TEMPLE_OF_UGGALEPIH then
                         player:setMissionStatus(mission.areaId, 1)
                         player:setPos(-329.762, -0.015, -300.172, 127, xi.zone.SACRIFICIAL_CHAMBER)
                     end
@@ -100,7 +97,7 @@ mission.sections =
     {
         check = function(player, currentMission, missionStatus, vars)
             return currentMission ~= mission.missionId and
-                player:getLocalVar('battlefieldWin') == 128
+                player:getLocalVar('battlefieldWin') == xi.battlefield.id.TEMPLE_OF_UGGALEPIH
         end,
 
         [xi.zone.SACRIFICIAL_CHAMBER] =

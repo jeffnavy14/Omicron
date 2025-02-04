@@ -63,28 +63,25 @@ mission.sections =
         },
     },
 
-    -- 2: Come back and use your ticket
+    -- 2+: Come back and use your ticket
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == mission.missionId and missionStatus == 2
+            return currentMission == mission.missionId and missionStatus >= 2
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
         {
             ['Lion_Springs'] = mission:progressEvent(70, 1, 0, 2964, 0, 66453367, 8366690, 4095, 131140),
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    local missionStatus = player:getMissionStatus(mission.areaId)
+            onZoneIn = function(player, prevZone)
+                local missionStatus = player:getMissionStatus(mission.areaId)
 
-                    if missionStatus == 3 then
-                        return mission:progressEvent(152)
-                    elseif missionStatus == 4 then
-                        return mission:progressEvent(153)
-                    end
-                end,
-            },
+                if missionStatus == 3 then
+                    return 152
+                elseif missionStatus == 4 then
+                    return 153
+                end
+            end,
 
             onEventUpdate =
             {

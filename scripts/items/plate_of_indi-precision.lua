@@ -3,9 +3,10 @@
 -- plate_of_indi-precision
 -- Teaches INDI-PRECISION
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.INDI_PRECISION)
 end
 

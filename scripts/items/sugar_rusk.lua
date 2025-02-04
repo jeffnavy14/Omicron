@@ -6,9 +6,10 @@
 -- High-quality success rate +1
 -- Synthesis failure rate -2%
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -18,12 +19,12 @@ end
 
 itemObject.onEffectGain = function(target, effect)
     target:addMod(xi.mod.SYNTH_HQ_RATE, 1)
-    target:addMod(xi.mod.SYNTH_FAIL_RATE, -2)
+    target:addMod(xi.mod.SYNTH_MATERIAL_LOSS, 2)
 end
 
 itemObject.onEffectLose = function(target, effect)
     target:delMod(xi.mod.SYNTH_HQ_RATE, 1)
-    target:delMod(xi.mod.SYNTH_FAIL_RATE, -2)
+    target:delMod(xi.mod.SYNTH_MATERIAL_LOSS, 2)
 end
 
 return itemObject

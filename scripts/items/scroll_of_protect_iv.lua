@@ -3,9 +3,10 @@
 -- Scroll of Protect IV
 -- Teaches the white magic Protect IV
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.PROTECT_IV)
 end
 

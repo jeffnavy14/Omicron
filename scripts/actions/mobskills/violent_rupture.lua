@@ -5,6 +5,7 @@
 --  Utsusemi/Blink absorb: Ignores shadows
 --  Range: Unknown cone
 -----------------------------------
+---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
@@ -17,7 +18,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
 
     xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STR_DOWN, power, 3, duration)
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, 0.1, 1, xi.element.FIRE, 200)
+    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.1, 1, xi.element.FIRE, 200)
 
     local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.FIRE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
 

@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.LUFAISE_MEADOWS]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -13,15 +14,15 @@ zoneObject.onInitialize = function(zone)
         SpawnMob(v)
     end
 
-    xi.conq.setRegionalConquestOverseers(zone:getRegionID())
+    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
 
     GetMobByID(ID.mob.FLOCKBOCK):setRespawnTime(math.random(3600, 7200))
 
-    xi.helm.initZone(zone, xi.helm.type.LOGGING)
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
@@ -39,15 +40,6 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
-    local triggerAreaID = triggerArea:GetTriggerAreaID()
-
-    if
-        triggerAreaID == 1 and
-        player:getCurrentMission(xi.mission.log_id.COP) == xi.mission.id.cop.DAWN and
-        player:getCharVar('PromathiaStatus') == 6
-    then
-        player:startEvent(116)
-    end
 end
 
 zoneObject.onTriggerAreaLeave = function(player, triggerArea)
@@ -57,10 +49,6 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
-    if csid == 116 then
-        player:setCharVar('PromathiaStatus', 7)
-        player:addTitle(xi.title.BANISHER_OF_EMPTINESS)
-    end
 end
 
 return zoneObject

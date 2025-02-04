@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -185,7 +185,7 @@ bool CAIContainer::Untargetable(duration _duration, bool canChangeState)
 
 bool CAIContainer::Internal_Engage(uint16 targetid)
 {
-    //#TODO: pet engage/disengage
+    // TODO: pet engage/disengage
     auto* entity = dynamic_cast<CBattleEntity*>(PEntity);
 
     if (entity && entity->PAI->IsEngaged())
@@ -197,12 +197,12 @@ bool CAIContainer::Internal_Engage(uint16 targetid)
         }
         return false;
     }
-    //#TODO: use valid target stuff from spell
+    // TODO: use valid target stuff from spell
     if (entity)
     {
-        //#TODO: remove m_battleTarget if possible (need to check disengage)
-        // Check if an entity can change to the attack state
-        // Allow entity with prevent action effect to very briefly switch to the attack state to be properly engaged
+        // TODO: remove m_battleTarget if possible (need to check disengage)
+        //  Check if an entity can change to the attack state
+        //  Allow entity with prevent action effect to very briefly switch to the attack state to be properly engaged
         if (CanChangeState() || (GetCurrentState() && GetCurrentState()->IsCompleted()) || entity->StatusEffectContainer->HasPreventActionEffect(true))
         {
             if (ForceChangeState<CAttackState>(entity, targetid))
@@ -417,11 +417,11 @@ void CAIContainer::Tick(time_point _tick)
     m_PrevTick = m_Tick;
     m_Tick     = _tick;
 
-    //#TODO: timestamp in the event?
+    // TODO: timestamp in the event?
     EventHandler.triggerListener("TICK", CLuaBaseEntity(PEntity));
     PEntity->Tick(_tick);
 
-    //#TODO: check this in the controller instead maybe? (might not want to check every tick)
+    // TODO: check this in the controller instead maybe? (might not want to check every tick)
     ActionQueue.checkAction(_tick);
 
     // check pathfinding only if there is no controller to do it
@@ -527,6 +527,16 @@ void CAIContainer::QueueAction(queueAction_t&& action)
 bool CAIContainer::QueueEmpty()
 {
     return ActionQueue.isEmpty();
+}
+
+void CAIContainer::ClearActionQueue()
+{
+    ActionQueue.clearActionQueue();
+}
+
+void CAIContainer::ClearTimerQueue()
+{
+    ActionQueue.clearTimerQueue();
 }
 
 void CAIContainer::checkQueueImmediately()

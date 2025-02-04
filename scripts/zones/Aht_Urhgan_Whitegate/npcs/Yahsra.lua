@@ -4,6 +4,7 @@
 -- Type: Assault Mission Giver
 -- !pos 120.967 0.161 -44.002 50
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local items =
@@ -22,9 +23,6 @@ local items =
     [12] = { itemid = xi.item.CIPHER_OF_OVJANGS_ALTER_EGO,  price  = 3000 },
     [13] = { itemid = xi.item.CIPHER_OF_MNEJINGS_ALTER_EGO, price =  3000 },
 }
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local rank = xi.besieged.getMercenaryRank(player)

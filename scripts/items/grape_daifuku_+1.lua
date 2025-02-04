@@ -8,9 +8,10 @@
 -- Attack/Ranged Attack +11% (cap 55 on master, cap 80 on pet)
 -- Master MAB + 4 , Pet MAB + 15
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -19,7 +20,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 30)
+    target:addMod(xi.mod.FOOD_HP, 30)
     target:addMod(xi.mod.STR, 3)
     target:addMod(xi.mod.VIT, 4)
     target:addMod(xi.mod.FOOD_ACCP, 11)
@@ -31,7 +32,7 @@ itemObject.onEffectGain = function(target, effect)
     target:addMod(xi.mod.FOOD_RATTP, 11)
     target:addMod(xi.mod.FOOD_RATT_CAP, 55)
     target:addMod(xi.mod.MATT, 4)
-    target:addPetMod(xi.mod.HP, 30)
+    target:addPetMod(xi.mod.FOOD_HP, 30)
     target:addPetMod(xi.mod.STR, 3)
     target:addPetMod(xi.mod.VIT, 4)
     target:addPetMod(xi.mod.FOOD_ACCP, 11)
@@ -46,7 +47,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 30)
+    target:delMod(xi.mod.FOOD_HP, 30)
     target:delMod(xi.mod.STR, 3)
     target:delMod(xi.mod.VIT, 4)
     target:delMod(xi.mod.FOOD_ACCP, 11)
@@ -58,7 +59,7 @@ itemObject.onEffectLose = function(target, effect)
     target:delMod(xi.mod.FOOD_RATTP, 11)
     target:delMod(xi.mod.FOOD_RATT_CAP, 55)
     target:delMod(xi.mod.MATT, 4)
-    target:delPetMod(xi.mod.HP, 30)
+    target:delPetMod(xi.mod.FOOD_HP, 30)
     target:delPetMod(xi.mod.STR, 3)
     target:delPetMod(xi.mod.VIT, 4)
     target:delPetMod(xi.mod.FOOD_ACCP, 11)

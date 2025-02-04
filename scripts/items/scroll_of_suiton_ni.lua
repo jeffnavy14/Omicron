@@ -3,9 +3,10 @@
 -- Scroll of Suiton: Ni
 -- Teaches the ninjutsu Suiton: Ni
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SUITON_NI)
 end
 

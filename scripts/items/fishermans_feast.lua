@@ -7,9 +7,10 @@
 --  https://ffxiclopedia.fandom.com/wiki/Fisherman's_Feast
 --  https://www.bg-wiki.com/ffxi/Fisherman%27s_Feast
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

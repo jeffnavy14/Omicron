@@ -4,6 +4,7 @@
 --  Title Change NPC
 -- !pos 83 0 120 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local eventId = 675
@@ -157,18 +158,12 @@ local titleInfo =
     },
 }
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    xi.title.changerOnTrigger(player, eventId, titleInfo)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
+    xi.titleChanger.onTrigger(player, eventId, titleInfo)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    xi.title.changerOnEventFinish(player, csid, option, eventId, titleInfo)
+    xi.titleChanger.onEventFinish(player, csid, option, eventId, titleInfo)
 end
 
 return entity

@@ -3,9 +3,10 @@
 -- Scroll of Sleep
 -- Teaches the black magic Sleep
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SLEEP)
 end
 

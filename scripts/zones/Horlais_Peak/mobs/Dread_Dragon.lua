@@ -3,6 +3,9 @@
 --  Mob: Dread Dragon
 -- Mission 2-3 BCNM Fight
 -----------------------------------
+mixins = { require('scripts/mixins/draw_in') }
+-----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobDeath = function(mob, player, optParams)

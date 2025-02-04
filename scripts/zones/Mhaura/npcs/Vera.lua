@@ -6,12 +6,16 @@
 -----------------------------------
 local ID = zones[xi.zone.MHAURA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
-    local questStatus = player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
+    local questStatus = player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
 
-    if questStatus == QUEST_ACCEPTED and trade:getItemCount() == 1 then
+    if
+        questStatus == xi.questStatus.QUEST_ACCEPTED and
+        trade:getItemCount() == 1
+    then
         local veraOldLadyVar = player:getCharVar('VeraOldLadyVar')
 
         if
@@ -34,13 +38,13 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local questStatus = player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
+    local questStatus = player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
 
-    if player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.ELDER_MEMORIES) ~= QUEST_AVAILABLE then
+    if player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.ELDER_MEMORIES) ~= xi.questStatus.QUEST_AVAILABLE then
         player:startEvent(130)
-    elseif questStatus == QUEST_COMPLETED then
+    elseif questStatus == xi.questStatus.QUEST_COMPLETED then
         player:startEvent(138)
-    elseif questStatus == QUEST_ACCEPTED then
+    elseif questStatus == xi.questStatus.QUEST_ACCEPTED then
         local veraOldLadyVar = player:getCharVar('VeraOldLadyVar')
 
         if player:hasKeyItem(xi.ki.GILGAMESHS_INTRODUCTORY_LETTER) then
@@ -61,12 +65,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 131 and option == 40 then
-        player:addQuest(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
+        player:addQuest(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
         player:setCharVar('VeraOldLadyVar', 1)
     elseif csid == 135 then
         player:tradeComplete()
@@ -79,7 +80,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:unlockJob(0)
         player:setCharVar('VeraOldLadyVar', 0)
         player:messageSpecial(ID.text.SUBJOB_UNLOCKED)
-        player:completeQuest(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
+        player:completeQuest(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.THE_OLD_LADY)
     end
 end
 

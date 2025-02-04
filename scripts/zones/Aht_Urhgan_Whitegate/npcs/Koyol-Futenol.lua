@@ -4,6 +4,7 @@
 -- Title Change NPC
 -- !pos -129 2 -20 50
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local eventId = 644
@@ -88,6 +89,7 @@ local titleInfo =
             xi.title.MOON_CHARIOTEER,
             xi.title.BLOODY_BERSERKER,
             xi.title.THE_SIXTH_SERPENT,
+            xi.title.PANDEMONIUM_QUELLER,
             xi.title.OUPIRE_IMPALER,
             xi.title.HEIR_OF_THE_BLESSED_RADIANCE,
             xi.title.HEIR_OF_THE_BLIGHTED_GLOOM,
@@ -106,14 +108,8 @@ local titleInfo =
     },
 }
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     xi.titleChanger.onTrigger(player, eventId, titleInfo)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

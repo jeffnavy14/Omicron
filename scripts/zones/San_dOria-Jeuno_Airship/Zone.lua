@@ -1,6 +1,7 @@
 -----------------------------------
 -- Zone: San_dOria-Jeuno_Airship
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -26,8 +27,8 @@ zoneObject.onGameHour = function(zone)
 
     if
         IsMoonFull() and
-        vanadielHour >= 18 and
-        vanadielHour < 6
+        (vanadielHour >= 18 or
+        vanadielHour < 6)
     then
         qmObj:setStatus(xi.status.NORMAL)
     else

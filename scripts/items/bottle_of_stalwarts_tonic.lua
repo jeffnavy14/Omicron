@@ -4,9 +4,10 @@
 -- Item Effect: ACC 50 RACC 50 RATTP 25 ATTP 25
 -----------------------------------
 
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

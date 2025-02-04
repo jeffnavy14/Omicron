@@ -13,6 +13,18 @@ xi.spells.enhancing = xi.spells.enhancing or {}
 -- 1 Basic Function to calculate final duration. Called by the main function.
 -- 1 Main function, called by spell scripts.
 
+local column =
+{
+    EFFECT_TIER           = 1,
+    EFFECT_ID             = 2,
+    EFFECT_LEVEL          = 3,
+    EFFECT_POWER          = 4,
+    EFFECT_DURATION       = 5,
+    EFFECT_COMPOSURE      = 6,
+    EFFECT_WILL_OVERWRITE = 7,
+    EFFECT_TICK_RATE      = 8,
+}
+
 -- Table variables.
 local pTable =
 {
@@ -95,8 +107,9 @@ local pTable =
     [xi.magic.spell.ENWATER_II   ] = { 2, xi.effect.ENWATER_II,    60,    0,  180, true,  false, 0 },
 
     -- Flurry
-    [xi.magic.spell.FLURRY       ] = { 1, xi.effect.FLURRY,        48,   15,  180, true,  false, 0 },
-    [xi.magic.spell.FLURRY_II    ] = { 2, xi.effect.FLURRY_II,     96,   30,  180, true,  false, 0 },
+    [xi.magic.spell.FLURRY       ] = { 1, xi.effect.FLURRY_II,     48,   15,  180, true,  false, 0 }, -- Thats the actual effect. Not a typo.
+    [xi.magic.spell.FLURRY_II    ] = { 2, xi.effect.FLURRY_II,     96,   30,  180, true,  false, 0 }, -- Thats the actual effect. Not a typo.
+
     -- Foil
     [xi.magic.spell.FOIL         ] = { 1, xi.effect.FOIL,          58,  150,   30, true,  false, 3 },
 
@@ -175,20 +188,22 @@ local pTable =
 
     -- Temper
     [xi.magic.spell.TEMPER       ] = { 1, xi.effect.MULTI_STRIKES, 95,    5,  180, true,  false, 0 },
-    -- [xi.magic.spell.TEMPER_II    ] = { 2, 0                      , 99,    5,  180, true,  false, 0 },
+    [xi.magic.spell.TEMPER_II    ] = { 2, xi.effect.MULTI_STRIKES, 99,    5,  180, true,  false, 0 },
 }
 
 -- Enhancing Spell Base Potency function.
 xi.spells.enhancing.calculateEnhancingBasePower = function(caster, target, spell, spellId, spellEffect)
-    local basePower  = pTable[spellId][4]
+    local basePower  = pTable[spellId][column.EFFECT_POWER]
     local skillLevel = caster:getSkillLevel(spell:getSkillType())
     ------------------------------------------------------------
     -- Spell specific equations for potency. (Skill and stat)
     ------------------------------------------------------------
 
     -- Aquaveil
-    if spellEffect == xi.effect.AQUAVEIL then
-        if skillLevel >= 200 then -- Cutoff point is estimated. https://www.bg-wiki.com/bg/Aquaveil
+    if spellEffect == xi.effect.AQUAVEIL then -- Skill Breakpoints per BG Wiki (2024-06-27): https://www.bg-wiki.com/bg/Aquaveil
+        if skillLevel > 500 then -- 501+ Skill = 3 Interruptions
+            basePower = basePower + 2
+        elseif skillLevel > 300 then -- 301+ Skill = 2 Interruptions
             basePower = basePower + 1
         end
 
@@ -264,6 +279,7 @@ xi.spells.enhancing.calculateEnhancingBasePower = function(caster, target, spell
             basePower = 3 * threshold - 190
         end
 
+        ---@cast basePower integer
         basePower = utils.clamp(math.floor(basePower), 1, xi.settings.main.STONESKIN_CAP)
 
     -- Temper
@@ -301,8 +317,12 @@ xi.spells.enhancing.calculateEnhancingFinalPower = function(caster, target, spel
 
     -- TODO: Find a way to replace big if/else chain and still make it look good.
 
+    -- Aquaveil
+    if spellEffect == xi.effect.AQUAVEIL then
+        finalPower = finalPower + caster:getMod(xi.mod.AQUAVEIL_COUNT) -- Aquaveil+ from gear applies during accession (https://www.bg-wiki.com/ffxi/Aquaveil)
+
     -- Bar-Element
-    if spellEffect >= xi.effect.BARFIRE and spellEffect <= xi.effect.BARWATER then
+    elseif spellEffect >= xi.effect.BARFIRE and spellEffect <= xi.effect.BARWATER then
         finalPower = finalPower + caster:getMerit(xi.merit.BAR_SPELL_EFFECT) + caster:getMod(xi.mod.BARSPELL_AMOUNT) + caster:getJobPointLevel(xi.jp.BAR_SPELL_EFFECT) * 2
 
     -- Bar-Status
@@ -316,6 +336,14 @@ xi.spells.enhancing.calculateEnhancingFinalPower = function(caster, target, spel
     elseif spellEffect == xi.effect.PROTECT then
         if target:getMod(xi.mod.ENHANCES_PROT_SHELL_RCVD) > 0 then
             finalPower = finalPower + (tier * 2)
+        end
+
+        -- Handle "Shield Barrier" Job Trait.
+        if
+            caster:isPC() and
+            caster:getMod(xi.mod.SHIELD_BARRIER) > 0
+        then
+            finalPower = finalPower + caster:getShieldDefense()
         end
 
     -- Refresh
@@ -354,9 +382,9 @@ end
 
 -- Enhancing Spell Duration function.
 xi.spells.enhancing.calculateEnhancingDuration = function(caster, target, spell, spellId, spellGroup, spellEffect)
-    local spellLevel   = pTable[spellId][3]
-    local duration     = pTable[spellId][5]
-    local useComposure = pTable[spellId][6]
+    local spellLevel   = pTable[spellId][column.EFFECT_LEVEL]
+    local duration     = pTable[spellId][column.EFFECT_DURATION]
+    local useComposure = pTable[spellId][column.EFFECT_COMPOSURE]
     local targetLevel  = target:getMainLvl()
 
     -- Deodorize, Invisible and Sneak have a random factor to base duration.
@@ -446,13 +474,13 @@ xi.spells.enhancing.useEnhancingSpell = function(caster, target, spell)
     local magicDefenseBonus = 0
 
     -- Get Variables from Parameters Table.
-    local tier            = pTable[spellId][1]
-    local spellEffect     = pTable[spellId][2]
-    local alwaysOverwrite = pTable[spellId][7]
-    local tickTime        = pTable[spellId][8]
+    local tier            = pTable[spellId][column.EFFECT_TIER]
+    local spellEffect     = pTable[spellId][column.EFFECT_ID]
+    local alwaysOverwrite = pTable[spellId][column.EFFECT_WILL_OVERWRITE]
+    local tickTime        = pTable[spellId][column.EFFECT_TICK_RATE]
 
     ------------------------------------------------------------
-    -- Handle exceptions and weird behaviour here, before calculating anything.
+    -- Handle exceptions and weird behavior here, before calculating anything.
     ------------------------------------------------------------
     -- Bar-Element (They use addStatusEffect argument 6. Bar-Status current implementation doesn't.)
     if spellEffect >= xi.effect.BARFIRE and spellEffect <= xi.effect.BARWATER then

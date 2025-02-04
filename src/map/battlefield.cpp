@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -52,7 +52,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 #include "zone.h"
 #include <chrono>
 
-CBattlefield::CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator, bool isInteraction)
+CBattlefield::CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PInitiator)
 : m_isMission(false)
 , m_ID(id)
 , m_Zone(PZone)
@@ -63,7 +63,6 @@ CBattlefield::CBattlefield(uint16 id, CZone* PZone, uint8 area, CCharEntity* PIn
 , m_LastPromptTime(0s)
 , m_MaxParticipants(8)
 , m_LevelCap(0)
-, m_isInteraction(isInteraction)
 {
     m_Initiator.id     = PInitiator->id;
     m_Initiator.name   = PInitiator->name;
@@ -292,11 +291,6 @@ void CBattlefield::ApplyLevelRestrictions(CCharEntity* PChar) const
 bool CBattlefield::IsOccupied() const
 {
     return !m_EnteredPlayers.empty();
-}
-
-bool CBattlefield::isInteraction() const
-{
-    return m_isInteraction;
 }
 
 bool CBattlefield::isEntered(CCharEntity* PChar) const
@@ -628,7 +622,9 @@ bool CBattlefield::RemoveEntity(CBaseEntity* PEntity, uint8 leavecode)
                 {
                     if (std::find(m_AllyList.begin(), m_AllyList.end(), PMobEntity) != m_AllyList.end())
                     {
-                        if (PMobEntity->isAlive() && PMobEntity->PAI->IsSpawned())
+                        // We should not put an isAlive check here because some ally can be dead at cleanup
+                        // but not despawned (for example Prishe in Dawn fight)
+                        if (PMobEntity->PAI->IsSpawned())
                         {
                             PEntity->status = STATUS_TYPE::DISAPPEAR;
                             PEntity->loc.zone->UpdateEntityPacket(PEntity, ENTITY_DESPAWN, UPDATE_NONE);
@@ -660,7 +656,7 @@ bool CBattlefield::RemoveEntity(CBaseEntity* PEntity, uint8 leavecode)
                 PMob->PEnmityContainer->Clear();
             }
         }
-        PEntity->loc.zone->PushPacket(PEntity, CHAR_INRANGE, new CEntityAnimationPacket(PEntity, PEntity, CEntityAnimationPacket::Fade_Out));
+        PEntity->loc.zone->PushPacket(PEntity, CHAR_INRANGE, std::make_unique<CEntityAnimationPacket>(PEntity, PEntity, CEntityAnimationPacket::Fade_Out));
     }
 
     PEntity->PBattlefield = nullptr;
@@ -804,84 +800,24 @@ bool CBattlefield::Cleanup(time_point time, bool force)
 
     if (m_Attacked && m_Status == BATTLEFIELD_STATUS_WON)
     {
-        const char* query        = "SELECT fastestTime FROM bcnm_info WHERE bcnmId = %u AND zoneId = %u";
-        auto        ret          = sql->Query(query, this->GetID(), this->GetZoneID());
+        const char* query        = "SELECT fastestTime FROM bcnm_records WHERE bcnmId = %u AND zoneId = %u";
+        auto        ret          = _sql->Query(query, this->GetID(), this->GetZoneID());
         bool        updateRecord = true;
-        if (ret != SQL_ERROR && sql->NextRow() == SQL_SUCCESS)
+        if (ret != SQL_ERROR && _sql->NextRow() == SQL_SUCCESS)
         {
-            updateRecord = sql->GetUIntData(0) > std::chrono::duration_cast<std::chrono::seconds>(m_Record.time).count();
+            updateRecord = _sql->GetUIntData(0) > std::chrono::duration_cast<std::chrono::seconds>(m_Record.time).count();
         }
 
         if (updateRecord)
         {
-            query          = "UPDATE bcnm_info SET fastestName = '%s', fastestTime = %u, fastestPartySize = %u WHERE bcnmId = %u AND zoneid = %u";
+            query          = "UPDATE bcnm_records SET fastestName = '%s', fastestTime = %u, fastestPartySize = %u WHERE bcnmId = %u AND zoneid = %u";
             auto timeThing = std::chrono::duration_cast<std::chrono::seconds>(m_Record.time).count();
 
-            sql->Query(query, m_Record.name.c_str(), timeThing, m_Record.partySize, this->GetID(), GetZoneID());
+            _sql->Query(query, m_Record.name.c_str(), timeThing, m_Record.partySize, this->GetID(), GetZoneID());
         }
     }
 
     return true;
-}
-
-bool CBattlefield::LoadMobs()
-{
-    // get ids from DB
-    const auto* fmtQuery = "SELECT monsterId, conditions \
-                            FROM bcnm_battlefield \
-                            WHERE bcnmId = %u AND battlefieldNumber = %u";
-
-    auto ret = sql->Query(fmtQuery, this->GetID(), this->GetArea());
-
-    if (ret == SQL_ERROR || sql->NumRows() == 0)
-    {
-        ShowError("Battlefield::LoadMobs() : Cannot find any monster IDs for battlefield %i area %i ", this->GetID(), this->GetArea());
-    }
-    else
-    {
-        while (sql->NextRow() == SQL_SUCCESS)
-        {
-            auto  mobid     = sql->GetUIntData(0);
-            auto  condition = sql->GetUIntData(1);
-            auto* PMob      = static_cast<CMobEntity*>(zoneutils::GetEntity(mobid, TYPE_MOB | TYPE_PET));
-
-            if (PMob)
-            {
-                this->InsertEntity(PMob, true, static_cast<BATTLEFIELDMOBCONDITION>(condition));
-            }
-            else
-            {
-                ShowDebug("Battlefield::LoadMobs() mob %u not found", mobid);
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool CBattlefield::SpawnLoot(CBaseEntity* PEntity)
-{
-    if (!PEntity)
-    {
-        const auto* fmtQuery = "SELECT npcId FROM bcnm_treasure_chests WHERE bcnmId = %u AND battlefieldNumber = %u;";
-        auto        ret      = sql->Query(fmtQuery, this->GetID(), this->GetArea());
-
-        if (ret == SQL_ERROR || sql->NumRows() == 0)
-        {
-            ShowError("Battlefield::SpawnLoot() : Cannot find treasure chest for battlefield %i area %i ", this->GetID(), this->GetArea());
-            return false;
-        }
-        else
-        {
-            if (sql->NextRow() == SQL_SUCCESS)
-            {
-                auto npcId = sql->GetUIntData(0);
-                PEntity    = zoneutils::GetEntity(npcId);
-            }
-        }
-    }
-    SetLocalVar("lootSpawned", 1);
-    return InsertEntity(PEntity, true);
 }
 
 bool CBattlefield::CheckInProgress()
@@ -966,72 +902,61 @@ void CBattlefield::handleDeath(CBaseEntity* PEntity)
         return;
     }
 
-    for (auto& group : m_groups)
-    {
-        for (uint32 mobId : group.mobIds)
-        {
-            if (mobId == PEntity->id)
-            {
-                ++group.deathCount;
-
-                break;
-            }
-        }
-    }
-
+    // Create a copy of groups since m_groups may change during the callbacks
     auto groups(m_groups);
 
     for (auto& group : groups)
     {
+        // Calculate the total mobs that are dead for this group
+        uint8 deathCount = 0;
+
+        for (uint32 mobID : group.mobIds)
+        {
+            CMobEntity* PMob = dynamic_cast<CMobEntity*>(zoneutils::GetEntity(mobID, TYPE_MOB | TYPE_PET));
+            if (PMob == nullptr || PMob->isDead())
+            {
+                ++deathCount;
+            }
+        }
+
         for (uint32 mobId : group.mobIds)
         {
-            if (mobId == PEntity->id)
+            if (mobId != PEntity->id)
             {
-                if (group.deathCallback.valid())
-                {
-                    auto result = group.deathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity), group.deathCount);
-                    if (!result.valid())
-                    {
-                        sol::error err = result;
-                        ShowError("Error in battlefield %s group.death: %s", this->GetName(), err.what());
-                    }
-                }
-
-                if (group.allDeathCallback.valid() && group.deathCount >= group.mobIds.size())
-                {
-                    // Validate all mobs in the group are dead since they may have been revived
-                    uint16 deathCount = 0;
-                    for (auto& deathMobId : group.mobIds)
-                    {
-                        CMobEntity* PMob = (CMobEntity*)zoneutils::GetEntity(deathMobId, TYPE_MOB | TYPE_PET);
-                        if (PMob != nullptr && PMob->isDead())
-                        {
-                            ++deathCount;
-                        }
-                    }
-
-                    if (deathCount == group.mobIds.size())
-                    {
-                        auto result = group.allDeathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity));
-                        if (!result.valid())
-                        {
-                            sol::error err = result;
-                            ShowError("Error in battlefield %s group.allDeath: %s", this->GetName(), err.what());
-                        }
-                    }
-                }
-
-                if (group.randomDeathCallback.valid() && mobId == group.randomMobId)
-                {
-                    auto result = group.randomDeathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity));
-                    if (!result.valid())
-                    {
-                        sol::error err = result;
-                        ShowError("Error in battlefield %s group.randomDeath: %s", this->GetName(), err.what());
-                    }
-                }
-                break;
+                continue;
             }
+
+            if (group.deathCallback.valid())
+            {
+                auto result = group.deathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity), deathCount);
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    ShowError("Error in battlefield %s group.death: %s", this->GetName(), err.what());
+                }
+            }
+
+            if (group.allDeathCallback.valid() && deathCount >= group.mobIds.size())
+            {
+                auto result = group.allDeathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity));
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    ShowError("Error in battlefield %s group.allDeath: %s", this->GetName(), err.what());
+                }
+            }
+
+            if (group.randomDeathCallback.valid() && mobId == group.randomMobId)
+            {
+                auto result = group.randomDeathCallback(CLuaBattlefield(this), CLuaBaseEntity(PEntity));
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    ShowError("Error in battlefield %s group.randomDeath: %s", this->GetName(), err.what());
+                }
+            }
+
+            break;
         }
     }
 }

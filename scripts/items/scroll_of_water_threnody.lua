@@ -3,9 +3,10 @@
 -- Scroll of Water Threnody
 -- Teaches the song Water Threnody
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.WATER_THRENODY)
 end
 

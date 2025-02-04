@@ -3,14 +3,15 @@
 -- Toolbag Jinko
 -- When used, you will obtain one stack of jinko
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.JINKO, 99)
+    npcUtil.giveItem(target, { { xi.item.JINKO, 99 } })
 end
 
 return itemObject

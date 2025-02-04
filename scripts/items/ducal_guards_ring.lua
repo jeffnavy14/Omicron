@@ -3,9 +3,10 @@
 -- Ducal Guard Ring
 -- Enchantment: "Teleport-RuLude Gardens"
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if not target:hasVisitedZone(xi.zone.RULUDE_GARDENS) then
         result = 56

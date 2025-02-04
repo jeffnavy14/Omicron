@@ -3,9 +3,10 @@
 -- Scroll of Wind Carol
 -- Teaches the song Wind Carol
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.WIND_CAROL)
 end
 

@@ -3,9 +3,10 @@
 -- Item: Terror Screen
 -- Effect: 2 Mins of immunity to "Terror" effects.
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:hasStatusEffect(xi.effect.NEGATE_TERROR) then
         return 56
     end

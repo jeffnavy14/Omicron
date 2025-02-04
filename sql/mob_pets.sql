@@ -1458,19 +1458,6 @@ INSERT INTO `mob_pets` VALUES (17506670,5,15,'Kirin','Kirins_Avatar');
 -- LaLoff_Amphitheater (Zone 180)
 -- ------------------------------------------------------------
 
-INSERT INTO `mob_pets` VALUES (17514500,3,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514501,3,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514502,3,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514515,3,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-INSERT INTO `mob_pets` VALUES (17514516,3,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-INSERT INTO `mob_pets` VALUES (17514517,3,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-INSERT INTO `mob_pets` VALUES (17514522,1,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514527,1,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-INSERT INTO `mob_pets` VALUES (17514530,1,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514535,1,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-INSERT INTO `mob_pets` VALUES (17514538,1,9,'Ark_Angel_MR','Ark_Angels_Tiger');
-INSERT INTO `mob_pets` VALUES (17514543,1,14,'Ark_Angel_GK','Ark_Angels_Wyvern');
-
 -- ------------------------------------------------------------
 -- Lower_Delkfutts_Tower (Zone 184)
 -- ------------------------------------------------------------
@@ -1631,12 +1618,6 @@ INSERT INTO `mob_pets` VALUES (17547483,1,9,'Vanguard_Pathfinder','Vanguards_Sli
 INSERT INTO `mob_pets` VALUES (17547487,1,9,'Blazox_Boneybod','Vanguards_Slime');
 INSERT INTO `mob_pets` VALUES (17547494,1,9,'Feralox_Honeylips','Feraloxs_Slime');
 INSERT INTO `mob_pets` VALUES (17547496,1,14,'Scourquix_Scaleskin','Scourquixs_Wyvern');
-
--- ------------------------------------------------------------
--- King_Ranperres_Tomb (Zone 190)
--- ------------------------------------------------------------
-
-INSERT INTO `mob_pets` VALUES (17555890,1,9,'Vrtra','Pey');
 
 -- ------------------------------------------------------------
 -- Ordelles_Caves (Zone 193)

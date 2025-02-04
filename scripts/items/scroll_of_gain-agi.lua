@@ -3,9 +3,10 @@
 -- Scroll of Gain-AGI
 -- Teaches the white magic Gain-AGI
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.GAIN_AGI)
 end
 

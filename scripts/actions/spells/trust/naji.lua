@@ -1,6 +1,7 @@
 -----------------------------------
 -- Trust: Naji
 -----------------------------------
+---@type TSpellTrust
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -26,8 +27,7 @@ spellObject.onMobSpawn = function(mob)
         [xi.magic.spell.AYAME] = xi.trust.messageOffset.TEAMWORK_1,
     })
 
-    mob:addSimpleGambit(ai.t.SELF, ai.c.NOT_HAS_TOP_ENMITY, 0,
-                        ai.r.JA, ai.s.SPECIFIC, xi.ja.PROVOKE)
+    mob:addGambit(ai.t.SELF, { ai.c.NOT_HAS_TOP_ENMITY, 0 }, { ai.r.JA, ai.s.SPECIFIC, xi.ja.PROVOKE })
 end
 
 spellObject.onMobDespawn = function(mob)

@@ -12,6 +12,7 @@
 -- Magic Bursts on: Detonation, Fragmentation, and Light
 -- Combos: Clear Mind
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -26,7 +27,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     local power = 1500
     local resistThreshold = 0.5
 
-    local resist = applyResistance(caster, target, spell, params)
+    local resist = applyResistanceEffect(caster, target, spell, params)
     if resist >= resistThreshold then
         if target:getTP() == 0 then
             spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)

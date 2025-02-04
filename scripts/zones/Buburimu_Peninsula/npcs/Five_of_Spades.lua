@@ -5,23 +5,18 @@
 -----------------------------------
 local ID = zones[xi.zone.BUBURIMU_PENINSULA]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    local aGreetingCardian = player:getQuestStatus(xi.quest.log_id.WINDURST, xi.quest.id.windurst.A_GREETING_CARDIAN)
+    local aGreetingCardian = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.A_GREETING_CARDIAN)
     local aGCcs = player:getCharVar('AGreetingCardian_Event')
 
-    if aGreetingCardian == QUEST_ACCEPTED and aGCcs == 4 then
+    if aGreetingCardian == xi.questStatus.QUEST_ACCEPTED and aGCcs == 4 then
         player:startEvent(1) -- A Greeting Cardian step three
     else
         player:showText(npc, ID.text.FIVEOFSPADES_DIALOG) -- Standard Dialog
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

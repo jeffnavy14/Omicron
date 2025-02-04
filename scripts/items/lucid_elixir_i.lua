@@ -3,9 +3,10 @@
 -- Item: Lucid Elixir I
 -- Item Effect: Restores 50% of HP and MP
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if
         target:getMaxHP() == target:getHP() and
         target:getMaxMP() == target:getMP()

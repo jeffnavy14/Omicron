@@ -3,9 +3,10 @@
 -- Item: Lieutenant's Cape
 -- Item Effect: Restores 50% hp and 25% mp
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

@@ -4,8 +4,7 @@
 -- Starts and Finishes Quest: Missionary Man
 -- !pos -42 -10 -89 250
 -----------------------------------
-local ID = zones[xi.zone.KAZHAM]
------------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -19,52 +18,44 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    local missionaryMan = player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
+    local missionaryMan = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
     local missionaryManVar = player:getCharVar('MissionaryManVar')
 
     if
-        missionaryMan == QUEST_AVAILABLE and
-        player:getFameLevel(xi.quest.fame_area.WINDURST) >= 3
+        missionaryMan == xi.questStatus.QUEST_AVAILABLE and
+        player:getFameLevel(xi.fameArea.WINDURST) >= 3
     then
         player:startEvent(137, 0, xi.item.SLAB_OF_ELSHIMO_MARBLE) -- Start quest "Missionary Man"
-    elseif missionaryMan == QUEST_ACCEPTED and missionaryManVar == 1 then
+    elseif missionaryMan == xi.questStatus.QUEST_ACCEPTED and missionaryManVar == 1 then
         player:startEvent(138, 0, xi.item.SLAB_OF_ELSHIMO_MARBLE) -- During quest (before trade marble) "Missionary Man"
     elseif
-        missionaryMan == QUEST_ACCEPTED and
+        missionaryMan == xi.questStatus.QUEST_ACCEPTED and
         (missionaryManVar == 2 or missionaryManVar == 3)
     then
         player:startEvent(140) -- During quest (after trade marble) "Missionary Man"
-    elseif missionaryMan == QUEST_ACCEPTED and missionaryManVar == 4 then
+    elseif missionaryMan == xi.questStatus.QUEST_ACCEPTED and missionaryManVar == 4 then
         player:startEvent(141) -- Finish quest "Missionary Man"
-    elseif missionaryMan == QUEST_COMPLETED then
+    elseif missionaryMan == xi.questStatus.QUEST_COMPLETED then
         player:startEvent(142) -- New standard dialog
     else
         player:startEvent(136) -- Standard dialog
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 137 and option == 1 then
-        player:addQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
+        player:addQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
         player:setCharVar('MissionaryManVar', 1)
     elseif csid == 139 then
         player:setCharVar('MissionaryManVar', 2)
-        player:addKeyItem(xi.ki.RAUTEINOTS_PARCEL)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.RAUTEINOTS_PARCEL)
+        npcUtil.giveKeyItem(player, xi.ki.RAUTEINOTS_PARCEL)
         player:tradeComplete()
     elseif csid == 141 then
-        if player:getFreeSlotsCount() == 0 then
-            player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.SCROLL_OF_TELEPORT_YHOAT)
-        else
+        if npcUtil.giveItem(player, xi.item.SCROLL_OF_TELEPORT_YHOAT) then
             player:setCharVar('MissionaryManVar', 0)
             player:delKeyItem(xi.ki.SUBLIME_STATUE_OF_THE_GODDESS)
-            player:addItem(xi.item.SCROLL_OF_TELEPORT_YHOAT)
-            player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.SCROLL_OF_TELEPORT_YHOAT)
-            player:addFame(xi.quest.fame_area.WINDURST, 30)
-            player:completeQuest(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
+            player:addFame(xi.fameArea.WINDURST, 30)
+            player:completeQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.MISSIONARY_MAN)
         end
     end
 end

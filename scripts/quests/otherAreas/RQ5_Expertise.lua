@@ -9,9 +9,7 @@
 local mhauraID  = zones[xi.zone.MHAURA]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.EXPERTISE)
-local daysPassed = 0
-local hoursLeft  = 0
+local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.EXPERTISE)
 
 quest.reward =
 {
@@ -24,8 +22,8 @@ quest.sections =
     -- Section: Quest is available.
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
-                player:getQuestStatus(xi.quest.log_id.OTHER_AREAS, xi.quest.id.otherAreas.HIS_NAME_IS_VALGEIR) == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_AVAILABLE and
+                player:getQuestStatus(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.HIS_NAME_IS_VALGEIR) == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.MHAURA] =
@@ -37,7 +35,7 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if
-                        player:getFameLevel(xi.quest.fame_area.WINDURST) > 2 and
+                        player:getFameLevel(xi.fameArea.WINDURST) > 2 and
                         player:getCharVar('Quest[4][3]DayCompleted') + 8 < VanadielUniqueDay()
                     then
                         return quest:progressEvent(61) -- Quest starting event.
@@ -60,7 +58,7 @@ quest.sections =
     -- Section: Quest accepeted.
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.MHAURA] =
@@ -93,20 +91,24 @@ quest.sections =
             ['Valgeir'] =
             {
                 onTrigger = function(player, npc)
-                    if quest:getVar(player, 'Prog') == 0 then
-                        return quest:progressEvent(102, xi.item.SCREAM_FUNGUS, xi.item.SLICE_OF_LAND_CRAB_MEAT) -- Ask for ingredients to cook.
-                    elseif quest:getVar(player, 'Prog') == 1 then
-                        return quest:event(104) -- Reminder.
-                    elseif quest:getVar(player, 'Prog') == 2 then
-                        daysPassed = VanadielDayOfTheYear() - quest:getVar(player, 'DayStarted')
-                        hoursLeft  = 24 - VanadielHour() - (daysPassed * 24) + quest:getVar(player, 'HourStarted')
+                    local questProgress = quest:getVar(player, 'Prog')
 
-                        if hoursLeft < 0 then -- Done waiting
+                    if questProgress == 0 then
+                        return quest:progressEvent(102, xi.item.SCREAM_FUNGUS, xi.item.SLICE_OF_LAND_CRAB_MEAT) -- Ask for ingredients to cook.
+
+                    elseif questProgress == 1 then
+                        return quest:event(104) -- Reminder.
+
+                    elseif questProgress == 2 then
+                        local readyTime = quest:getVar(player, 'readyTime')
+
+                        if readyTime <= os.time() then -- Done waiting
                             return quest:progressEvent(105) -- Get food.
                         else
                             return quest:event(141)
                         end
-                    elseif quest:getVar(player, 'Prog') == 3 then
+
+                    elseif questProgress == 3 then
                         return quest:event(142)
                     end
                 end,
@@ -126,8 +128,7 @@ quest.sections =
 
                 [103] = function(player, csid, option, npc)
                     quest:setVar(player, 'Prog', 2)
-                    quest:setVar(player, 'HourStarted', VanadielHour())
-                    quest:setVar(player, 'DayStarted', VanadielDayOfTheYear())
+                    quest:setVar(player, 'readyTime', os.time() + 24 * 144) -- Current time + 24 hours * 144 real seconds (Thats the ammount of seconds a Vana'Diel hour takes)
                     player:confirmTrade()
                 end,
 

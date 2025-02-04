@@ -3,9 +3,10 @@
 -- Item: Shadow Lord Shirt
 -- Teleports user to Castle Zvahl Keep
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     -- Need retail verification: Is having set foot in the zone a requirement?
     if not target:hasVisitedZone(162) then

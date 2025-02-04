@@ -3,9 +3,10 @@
 -- Teleport ring: Altep
 -- Enchantment: "Teleport-Altep"
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if not target:hasKeyItem(xi.ki.ALTEPA_GATE_CRYSTAL) then
         result = 445

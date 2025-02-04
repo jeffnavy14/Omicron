@@ -3,9 +3,10 @@
 -- Item: Ayran
 -- Item Effect: Restores 120 HP over 180 seconds
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

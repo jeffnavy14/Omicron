@@ -3,9 +3,10 @@
 -- Avenger's Die
 -- Teaches the job ability Avengers Roll
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnAbility(xi.jobAbility.AVENGERS_ROLL)
 end
 

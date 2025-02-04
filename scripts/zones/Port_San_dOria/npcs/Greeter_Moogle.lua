@@ -3,10 +3,8 @@
 --  NPC: Greeter Moogle
 -- !pos 62.5 -16 -126.713 232
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local csid = 806
@@ -15,9 +13,6 @@ end
 
 entity.onEventUpdate = function(player, csid, option, npc)
     xi.events.loginCampaign.onEventUpdate(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

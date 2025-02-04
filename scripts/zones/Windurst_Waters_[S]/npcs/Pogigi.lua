@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WATERS_S]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -31,16 +32,6 @@ entity.onTrade = function(player, npc, trade)
         npc:showText(npc, ID.text.POGIGI_TURN_IN)
         npcUtil.giveKeyItem(player, keyItem)
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(330)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

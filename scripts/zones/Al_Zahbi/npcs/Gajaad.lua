@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.AL_ZAHBI]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -41,12 +42,6 @@ end
 entity.onTrigger = function(player, npc)
     -- TODO besiege result can effect if this NPC will accept trades
     player:startEvent(102, xi.item.IMPERIAL_BRONZE_PIECE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

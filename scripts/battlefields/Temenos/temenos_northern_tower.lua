@@ -18,6 +18,7 @@ local content = Limbus:new({
     entryNpc         = 'Matter_Diffusion_Module',
     requiredKeyItems = { xi.ki.COSMO_CLEANSE, xi.ki.WHITE_CARD, message = ID.text.YOU_INSERT_THE_CARD_POLISHED },
     name             = 'TEMENOS_NORTHERN_TOWER',
+    lootCrateId      = ID.npc.N_LOOT_CRATE,
     timeExtension    = 15,
 })
 
@@ -224,11 +225,13 @@ content.groups =
     },
 
     {
-        mobs =
-        {
-            'Kindreds_Elemental',
-            'Kindreds_Avatar',
-        }
+        mobs    = { 'Kindreds_Avatar' },
+        mixins  = { require('scripts/mixins/families/avatar') },
+        spawned = false,
+    },
+
+    {
+        mobs = { 'Kindreds_Elemental' },
     },
 
     -- Floor 5
@@ -258,10 +261,15 @@ content.groups =
     },
 
     {
+        mobs    = { 'Tonberrys_Avatar' },
+        mixins  = { require('scripts/mixins/families/avatar') },
+        spawned = false,
+    },
+
+    {
         mobs =
         {
             'Tonberrys_Elemental',
-            'Tonberrys_Avatar',
         },
     },
 
@@ -287,7 +295,7 @@ content.groups =
 
         mobMods  = { [xi.mobMod.DETECTION] = xi.detects.HEARING },
         allDeath = function(battlefield, mob)
-            npcUtil.showCrate(GetNPCByID(ID.TEMENOS_NORTHERN_TOWER.npc.LOOT_CRATE))
+            npcUtil.showCrate(GetNPCByID(ID.npc.N_LOOT_CRATE))
         end
     },
 
@@ -341,7 +349,7 @@ content.loot =
         {
             { item = xi.item.NONE,                     weight = xi.loot.weight.VERY_HIGH },
             { item = xi.item.CHUNK_OF_SNOWY_CERMET,    weight = xi.loot.weight.LOW       },
-            { item = xi.item.SPOOL_OF_CHAMELEON_YARN,  weight = xi.loot.weight.LOW       },
+            { item = xi.item.SPOOL_OF_SCARLET_ODOSHI,  weight = xi.loot.weight.LOW       },
             { item = xi.item.SPOOL_OF_GLITTERING_YARN, weight = xi.loot.weight.LOW       },
             { item = xi.item.SQUARE_OF_BRILLIANTINE,   weight = xi.loot.weight.LOW       },
         },
@@ -439,7 +447,7 @@ content.loot =
         },
     },
 
-    [ID.TEMENOS_NORTHERN_TOWER.npc.LOOT_CRATE] =
+    [ID.npc.N_LOOT_CRATE] =
     {
         {
             quantity = 5,

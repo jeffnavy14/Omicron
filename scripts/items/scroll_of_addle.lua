@@ -3,9 +3,10 @@
 -- Scroll of Addle
 -- Teaches the magic Addle
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.ADDLE)
 end
 

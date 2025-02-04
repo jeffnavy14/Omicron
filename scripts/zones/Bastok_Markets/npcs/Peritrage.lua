@@ -1,11 +1,11 @@
 -----------------------------------
 -- Area: Bastok Markets
 --  NPC: Peritrage
--- Standard Merchant NPC
 -- !pos -286.985 -10.319 -142.586 235
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MARKETS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)

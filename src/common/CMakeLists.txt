@@ -8,6 +8,8 @@ set(COMMON_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/cbasetypes.h
     ${CMAKE_CURRENT_SOURCE_DIR}/console_service.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/console_service.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/database.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/database.h
     ${CMAKE_CURRENT_SOURCE_DIR}/debug.h
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_SOURCE_DIR}/debug_linux.cpp>
     $<$<PLATFORM_ID:Darwin>:${CMAKE_CURRENT_SOURCE_DIR}/debug_osx.cpp>
@@ -35,6 +37,7 @@ set(COMMON_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/xirand.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/xirand.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/utils.h
     ${CMAKE_CURRENT_SOURCE_DIR}/uuid.h

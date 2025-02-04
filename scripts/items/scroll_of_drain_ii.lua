@@ -3,9 +3,10 @@
 -- Scroll of Drain II
 -- Teaches the black magic Drain II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DRAIN_II)
 end
 

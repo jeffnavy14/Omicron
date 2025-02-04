@@ -6,6 +6,7 @@
 local ID = zones[xi.zone.THE_GARDEN_OF_RUHMET]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 local chargeOptic = function(mob)
@@ -33,13 +34,14 @@ entity.onMobSpawn = function(mob)
     })
 
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
+    mob:addImmunity(xi.immunity.SILENCE)
     mob:setAnimationSub(0)
     mob:setAutoAttackEnabled(true)
     mob:setMobAbilityEnabled(true)
     mob:setLocalVar('healpercent', math.random(15, 25))
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local mobId = mob:getID()
     -- each pot steps off the pedastal after casting initial spell and engaging target
     switch (mobId): caseof
@@ -56,7 +58,7 @@ entity.onMobEngaged = function(mob, target)
     mob:setMobMod(xi.mobMod.NO_MOVE, 0)
     mob:setLocalVar('changeTime', 0)
     local firstCast = { 144, 149, 154, 164, 169 }
-    mob:castSpell(firstCast[math.random(#firstCast)])
+    mob:castSpell(firstCast[math.random(1, #firstCast)])
 end
 
 entity.onMobFight = function(mob, target)
@@ -115,6 +117,7 @@ entity.onMobFight = function(mob, target)
     local heal = mob:getLocalVar('heal')
     local zdeiOne = GetMobByID(ID.mob.IXZDEI_BASE)
     local zdeiTwo = GetMobByID(ID.mob.IXZDEI_BASE + 1)
+
     if
         hpp < healpercent and
         heal == 0
@@ -123,10 +126,14 @@ entity.onMobFight = function(mob, target)
         switch (mobID): caseof
         {
             [ID.mob.IXZDEI_BASE] = function()
+                if not zdeiOne then
+                    return
+                end
+
                 local spawnPos = zdeiOne:getSpawnPos()
                 mob:setMagicCastingEnabled(false)
                 mob:pathTo(spawnPos.x, spawnPos.y, spawnPos.z) -- go back to pedastal to heal
-                mob:setBehaviour(bit.bor(mob:getBehaviour(), xi.behavior.STANDBACK))
+                mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.STANDBACK))
                 mob:timer(8000, function(mobArg)
                     if
                         mob:checkDistance(spawnPos.x, spawnPos.y, spawnPos.z) < 2 and
@@ -142,10 +149,14 @@ entity.onMobFight = function(mob, target)
             end,
 
             [ID.mob.IXZDEI_BASE + 1] = function()
+                if not zdeiTwo then
+                    return
+                end
+
                 local spawnPos = zdeiTwo:getSpawnPos()
                 mob:setMagicCastingEnabled(false)
                 mob:pathTo(spawnPos.x, spawnPos.y, spawnPos.z)
-                mob:setBehaviour(bit.bor(mob:getBehaviour(), xi.behavior.STANDBACK))
+                mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.STANDBACK))
                 mob:timer(8000, function(mobArg)
                     if
                         mob:checkDistance(spawnPos.x, spawnPos.y, spawnPos.z) < 2 and

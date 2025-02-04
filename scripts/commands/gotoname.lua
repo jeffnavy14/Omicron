@@ -2,6 +2,7 @@
 -- func: gotoname
 -- desc: Go to given mob or npc by name
 -----------------------------------
+---@type TCommand
 local commandObj = {}
 
 commandObj.cmdprops =
@@ -46,7 +47,11 @@ local goToEntity = function(player, entity)
     end
 
     -- display message
-    player:printToPlayer(string.format('Going to %s %s (%i).', entity:getName(), entity:getZoneName(), entity:getID()))
+    if entity:isSpawned() then
+        player:printToPlayer(string.format('Going to %s (%i).', entity:getName(), entity:getID()))
+    else
+        player:printToPlayer(string.format('%s (%i) is not currently up. Going to last known coordinates.', entity:getName(), entity:getID()))
+    end
 
     -- half a second later, go.  this delay gives time for previous message to appear
     player:timer(500, function(playerArg)
@@ -62,6 +67,10 @@ commandObj.onTrigger = function(player, pattern, index)
     end
 
     local zone = player:getZone()
+    if not zone then
+        return
+    end
+
     local unfilteredEntities = zone:queryEntitiesByName(pattern)
     local entities = getValidEntities(unfilteredEntities)
 

@@ -4,9 +4,10 @@
 -- Food Effect: 10 Mins, All Races
 -- Poison 10HP / 3Tic
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

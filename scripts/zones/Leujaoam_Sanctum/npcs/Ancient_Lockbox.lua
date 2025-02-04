@@ -2,10 +2,8 @@
 -- Area: Leujaoam Sanctum
 -- Ancient Lockbox
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local qItem =
@@ -62,12 +60,6 @@ entity.onTrigger = function(player, npc)
 
     local area = player:getCurrentAssault()
     xi.appraisal.assaultChestTrigger(player, npc, qItem[area], regItem[area])
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

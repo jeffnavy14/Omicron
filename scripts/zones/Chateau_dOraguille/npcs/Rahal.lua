@@ -4,22 +4,18 @@
 -- Involved in Quests: The Holy Crest, Lure of the Wildcat (San d'Oria)
 -- !pos -28 0.1 -6 233
 -----------------------------------
-local ID = zones[xi.zone.CHATEAU_DORAGUILLE]
------------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local crestProgress = player:getCharVar('TheHolyCrest_Event')
     local hasDragonCurseRemedy = player:hasKeyItem(xi.ki.DRAGON_CURSE_REMEDY)
-    local stalkerQuest = player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
+    local stalkerQuest = player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
     local stalkerProgress = player:getCharVar('KnightStalker_Progress')
     local wildcatSandy = player:getCharVar('WildcatSandy')
 
     if
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.LURE_OF_THE_WILDCAT) == xi.questStatus.QUEST_ACCEPTED and
         not utils.mask.getBit(wildcatSandy, 17)
     then
         player:startEvent(559)
@@ -31,15 +27,15 @@ entity.onTrigger = function(player, npc)
 
     -- Completed AF2, AF3 available, and currently on DRG.  No level check, since they cleared AF2.
     elseif
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.CHASING_QUOTAS) == QUEST_COMPLETED and
-        stalkerQuest == QUEST_AVAILABLE and player:getMainJob() == xi.job.DRG
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.CHASING_QUOTAS) == xi.questStatus.QUEST_COMPLETED and
+        stalkerQuest == xi.questStatus.QUEST_AVAILABLE and player:getMainJob() == xi.job.DRG
     then
         if player:getCharVar('KnightStalker_Declined') == 0 then
             player:startEvent(121) -- Start AF3
         else
             player:startEvent(120) -- Short version if they previously declined
         end
-    elseif stalkerQuest == QUEST_ACCEPTED then
+    elseif stalkerQuest == xi.questStatus.QUEST_ACCEPTED then
         if stalkerProgress == 0 then
             player:startEvent(119) -- Reminder to go to Brugaire/Ceraulian
         elseif player:hasKeyItem(xi.ki.CHALLENGE_TO_THE_ROYAL_KNIGHTS) then
@@ -59,23 +55,19 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 60 then
-        player:addKeyItem(xi.ki.DRAGON_CURSE_REMEDY)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.DRAGON_CURSE_REMEDY)
+        npcUtil.giveKeyItem(player, xi.ki.DRAGON_CURSE_REMEDY)
     elseif csid == 559 then
         player:setCharVar('WildcatSandy', utils.mask.setBit(player:getCharVar('WildcatSandy'), 17, true))
     elseif csid == 121 then
         if option == 1 then
-            player:addQuest(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
+            player:addQuest(xi.questLog.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
         else
             player:setCharVar('KnightStalker_Declined', 1)
         end
     elseif csid == 120 and option == 1 then
-        player:addQuest(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
+        player:addQuest(xi.questLog.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER)
         player:setCharVar('KnightStalker_Declined', 0)
     elseif csid == 78 then
         player:setCharVar('KnightStalker_Progress', 2)

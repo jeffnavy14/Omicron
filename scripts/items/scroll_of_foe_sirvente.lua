@@ -3,9 +3,10 @@
 -- Scroll of Foe Sirvente
 -- Teaches the song Foe Sirvente
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FOE_SIRVENTE)
 end
 

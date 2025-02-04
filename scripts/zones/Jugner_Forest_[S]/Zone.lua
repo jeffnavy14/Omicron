@@ -3,10 +3,11 @@
 -----------------------------------
 require('scripts/globals/dark_ixion')
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
-    xi.helm.initZone(zone, xi.helm.type.LOGGING)
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
     xi.chocobo.initZone(zone)
     xi.voidwalker.zoneOnInit(zone)
     xi.darkixion.zoneOnInit(zone)

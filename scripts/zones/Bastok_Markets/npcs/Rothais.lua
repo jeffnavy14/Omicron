@@ -3,10 +3,8 @@
 --  NPC: Rothais
 -- Involved in Quest: Gourmet
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local vanatime = VanadielHour()
@@ -18,12 +16,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(206)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

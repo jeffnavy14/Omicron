@@ -16,6 +16,7 @@
 -----------------------------------
 local ID = zones[xi.zone.PHOMIUNA_AQUEDUCTS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 -- Ladder positions which have events associated with them.  There is one
@@ -55,9 +56,6 @@ local function isNpcInBounds(npcXpos, npcYpos, npcZpos, ladderTable)
     return false
 end
 
-entity.onTrade = function(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
     local xPos = player:getXPos()
     local yPos = player:getYPos()
@@ -81,9 +79,6 @@ entity.onTrigger = function(player, npc)
             end
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

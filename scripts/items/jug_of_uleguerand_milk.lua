@@ -3,9 +3,10 @@
 -- Item: Uleguerand Milk
 -- Item Effect: Restores 80 HP over 120 seconds
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

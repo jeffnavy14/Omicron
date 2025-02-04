@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.WEST_RONFAURE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 local pathNodes =
@@ -945,18 +946,6 @@ entity.onPath = function(npc)
     elseif npc:atPoint(xi.path.last(pathNodes)) then
         npc:setLocalVar('reported', 0)
     end
-end
-
-entity.onTrade = function(player, npc, trade)
-end
-
-entity.onTrigger = function(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

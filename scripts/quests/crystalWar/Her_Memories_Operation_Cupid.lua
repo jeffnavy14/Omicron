@@ -8,7 +8,7 @@
 require('scripts/missions/wotg/helpers')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.HER_MEMORIES_OPERATION_CUPID)
+local quest = Quest:new(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.HER_MEMORIES_OPERATION_CUPID)
 
 quest.reward =
 {
@@ -19,20 +19,17 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:getCurrentMission(xi.mission.log_id.WOTG) == xi.mission.id.wotg.HER_MEMORIES
         end,
 
         [xi.zone.BATALLIA_DOWNS_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if prevZone == xi.zone.JUGNER_FOREST_S then
-                        return 23
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if prevZone == xi.zone.JUGNER_FOREST_S then
+                    return 23
+                end
+            end,
 
             onEventFinish =
             {
@@ -45,7 +42,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.SAUROMUGUE_CHAMPAIGN_S] =
@@ -112,17 +109,14 @@ quest.sections =
 
         [xi.zone.BATALLIA_DOWNS_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.ROLANBERRY_FIELDS_S and
-                        quest:getVar(player, 'Prog') == 2
-                    then
-                        return 24
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.ROLANBERRY_FIELDS_S and
+                    quest:getVar(player, 'Prog') == 2
+                then
+                    return 24
+                end
+            end,
 
             onEventFinish =
             {

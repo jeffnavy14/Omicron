@@ -8,9 +8,10 @@
 -- Attack % 19 Cap 95
 -- Undead Killer 6
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
@@ -19,7 +20,7 @@ itemObject.onItemUse = function(target)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.HP, 45)
+    target:addMod(xi.mod.FOOD_HP, 45)
     target:addMod(xi.mod.STR, 6)
     target:addMod(xi.mod.FOOD_ATTP, 19)
     target:addMod(xi.mod.FOOD_ATT_CAP, 95)
@@ -27,7 +28,7 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.HP, 45)
+    target:delMod(xi.mod.FOOD_HP, 45)
     target:delMod(xi.mod.STR, 6)
     target:delMod(xi.mod.FOOD_ATTP, 19)
     target:delMod(xi.mod.FOOD_ATT_CAP, 95)

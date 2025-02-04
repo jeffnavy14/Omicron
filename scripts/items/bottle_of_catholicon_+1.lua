@@ -3,9 +3,10 @@
 -- Item: bottle_of_catholicon_+1
 -- Item Effect: Instantly removes up to 6 negative status effects from target
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

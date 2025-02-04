@@ -5,24 +5,29 @@
 local ID = zones[xi.zone.RUAUN_GARDENS]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobSpawn = function(mob, target)
-    GetNPCByID(ID.npc.PORTAL_TO_SEIRYU):setAnimation(xi.anim.CLOSE_DOOR)
+entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.CANNOT_GUARD, 1)
+    GetNPCByID(ID.npc.PORTAL_OFFSET + 2):setAnimation(xi.anim.CLOSE_DOOR)
 end
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 300)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 1500)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 30000)
 end
 
 entity.onMobMagicPrepare = function(mob, target, spellId)
     if not mob:hasStatusEffect(xi.effect.HUNDRED_FISTS, 0) then
-        local rnd = math.random()
-        if rnd < 0.5 then
+        local rnd = math.random(1, 100)
+        if rnd <= 50 then
             return 186 -- aeroga 3
-        elseif rnd < 0.7 then
+        elseif rnd <= 70 then
             return 157 -- aero 4
-        elseif rnd < 0.9 then
+        elseif rnd <= 90 then
             return 208 -- tornado
         else
             return 237 -- choke
@@ -38,11 +43,11 @@ end
 
 entity.onMobDeath = function(mob, player, optParams)
     player:showText(mob, ID.text.SKY_GOD_OFFSET + 10)
-    GetNPCByID(ID.npc.PORTAL_TO_SEIRYU):setAnimation(xi.anim.OPEN_DOOR)
+    GetNPCByID(ID.npc.PORTAL_OFFSET + 2):setAnimation(xi.anim.OPEN_DOOR)
 end
 
 entity.onMobDespawn = function(mob)
-    GetNPCByID(ID.npc.PORTAL_TO_SEIRYU):setAnimation(xi.anim.OPEN_DOOR)
+    GetNPCByID(ID.npc.PORTAL_OFFSET + 2):setAnimation(xi.anim.OPEN_DOOR)
 end
 
 return entity

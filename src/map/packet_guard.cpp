@@ -35,6 +35,7 @@ namespace PacketGuard
         allowList[SUBSTATE_IN_CS][0x016] = true; // Entity Information Request
         allowList[SUBSTATE_IN_CS][0x01A] = true; // Player Action
         allowList[SUBSTATE_IN_CS][0x03A] = true; // Sort Inventory
+        allowList[SUBSTATE_IN_CS][0x04B] = true; // Fish Ranking Packet
         allowList[SUBSTATE_IN_CS][0x053] = true; // LockStyleSet
         allowList[SUBSTATE_IN_CS][0x058] = true; // Synthesis Suggestion
         allowList[SUBSTATE_IN_CS][0x05A] = true; // Map Update (Conquest, Besieged, Campaign)
@@ -56,9 +57,9 @@ namespace PacketGuard
         // NOTE: You should rate limit any packet that a player can
         //       send at will that results in an immediate database hit
         // ratelimitList[0x03B] = 1; // Mannequin Equip
-        ratelimitList[0x05D] = 2; // Emotes
-        ratelimitList[0x11B] = 2; // Set Job Master Display
-        ratelimitList[0x11D] = 2; // Jump
+        ratelimitList[0x05D] = 2000; // Emotes
+        ratelimitList[0x11B] = 2000; // Set Job Master Display
+        ratelimitList[0x11D] = 2000; // Jump
     }
 
     bool PacketIsValidForPlayerState(CCharEntity* PChar, uint16 SmallPD_Type)
@@ -86,24 +87,24 @@ namespace PacketGuard
         TracyZoneScoped;
         using namespace std::chrono;
         uint32 lastPacketRecievedTime = PChar->m_PacketRecievedTimestamps[SmallPD_Type];
-        uint32 timeNowSeconds         = static_cast<uint32>(time_point_cast<seconds>(server_clock::now()).time_since_epoch().count());
+        uint32 timeNowMilliseconds    = static_cast<uint32>(time_point_cast<milliseconds>(server_clock::now()).time_since_epoch().count());
         uint32 ratelimitTime          = ratelimitList[SmallPD_Type];
 
-        PChar->m_PacketRecievedTimestamps[SmallPD_Type] = timeNowSeconds;
+        PChar->m_PacketRecievedTimestamps[SmallPD_Type] = timeNowMilliseconds;
 
         if (lastPacketRecievedTime == 0 || ratelimitTime == 0)
         {
             return false;
         }
 
-        return timeNowSeconds - lastPacketRecievedTime < ratelimitList[SmallPD_Type];
+        return timeNowMilliseconds - lastPacketRecievedTime < ratelimitList[SmallPD_Type];
     }
 
     void PrintPacketList(CCharEntity* PChar)
     {
         // Count packets in queue
         std::map<std::string, uint32> packetCounterMap;
-        for (auto& entry : PChar->getPacketList())
+        for (auto& entry : PChar->getPacketListCopy())
         {
             auto packetStr = fmt::format("0x{:4X}", entry->getType());
             packetCounterMap[packetStr]++;

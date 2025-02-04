@@ -7,19 +7,19 @@ local upperJeunoID = zones[xi.zone.UPPER_JEUNO]
 local uggalepihID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.AXE_THE_COMPETITION)
+local quest = Quest:new(xi.questLog.JEUNO, xi.quest.id.jeuno.AXE_THE_COMPETITION)
 
 quest.reward =
 {
     fame = 30,
-    fameArea = xi.quest.fame_area.JEUNO,
+    fameArea = xi.fameArea.JEUNO,
 }
 
 quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:canEquipItem(xi.item.PICK_OF_TRIALS, true) and
                 player:getCharSkillLevel(xi.skill.AXE) / 10 >= 240 and
                 not player:hasKeyItem(xi.keyItem.WEAPON_TRAINING_GUIDE)
@@ -51,7 +51,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.UPPER_JEUNO] =
@@ -87,7 +87,7 @@ quest.sections =
                     if option == 1 and not player:hasItem(xi.item.PICK_OF_TRIALS) then
                         npcUtil.giveItem(player, xi.item.PICK_OF_TRIALS)
                     elseif option == 2 then
-                        player:delQuest(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.AXE_THE_COMPETITION)
+                        player:delQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.AXE_THE_COMPETITION)
                         player:delKeyItem(xi.ki.WEAPON_TRAINING_GUIDE)
                         player:delKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH)
                     end
@@ -117,8 +117,7 @@ quest.sections =
                 onTrigger = function(player, npc)
                     if player:getLocalVar('killed_wsnm') == 1 then
                         player:setLocalVar('killed_wsnm', 0)
-                        player:addKeyItem(xi.ki.ANNALS_OF_TRUTH)
-                        return quest:messageSpecial(uggalepihID.text.KEYITEM_OBTAINED, xi.ki.ANNALS_OF_TRUTH)
+                        return quest:keyItem(xi.ki.ANNALS_OF_TRUTH)
                     elseif
                         player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) and
                         not player:hasKeyItem(xi.keyItem.ANNALS_OF_TRUTH) and
@@ -132,7 +131,9 @@ quest.sections =
             ['Yallery_Brown'] =
             {
                 onMobDeath = function(mob, player, optParams)
-                    player:setLocalVar('killed_wsnm', 1)
+                    if player:hasKeyItem(xi.ki.MAP_TO_THE_ANNALS_OF_TRUTH) then
+                        player:setLocalVar('killed_wsnm', 1)
+                    end
                 end,
             },
         },

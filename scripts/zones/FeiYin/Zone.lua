@@ -3,6 +3,7 @@
 -----------------------------------
 local ID = zones[xi.zone.FEIYIN]
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
@@ -34,7 +35,7 @@ zoneObject.onZoneIn = function(player, prevZone)
         cs = 29
     elseif
         prevZone == xi.zone.BEAUCEDINE_GLACIER and
-        player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.PIEUJE_S_DECISION) == QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.PIEUJES_DECISION) == xi.questStatus.QUEST_ACCEPTED and
         player:getCharVar('pieujesDecisionCS') == 0
     then
         cs = 19 -- WHM AF
@@ -44,7 +45,7 @@ zoneObject.onZoneIn = function(player, prevZone)
 end
 
 zoneObject.onConquestUpdate = function(zone, updatetype, influence, owner, ranking, isConquestAlliance)
-    xi.conq.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
+    xi.conquest.onConquestUpdate(zone, updatetype, influence, owner, ranking, isConquestAlliance)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)

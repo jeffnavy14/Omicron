@@ -3,6 +3,7 @@
 -----------------------------------
 xi = xi or {}
 
+---@enum xi.meritCategory
 local meritCategory =
 {
     HP_MP      = 0x0040,
@@ -69,20 +70,22 @@ local meritCategory =
     -- COUNT = 0x0D80,
 }
 
+---@enum xi.merit
 xi.merit =
 {
     -- HP
     MAX_HP                      = meritCategory.HP_MP + 0x00,
     MAX_MP                      = meritCategory.HP_MP + 0x02,
+    MAX_MERIT                   = meritCategory.HP_MP + 0x04,
 
     -- ATTRIBUTES
     STR                         = meritCategory.ATTRIBUTES + 0x00,
     DEX                         = meritCategory.ATTRIBUTES + 0x02,
     VIT                         = meritCategory.ATTRIBUTES + 0x04,
-    AGI                         = meritCategory.ATTRIBUTES + 0x08,
-    INT                         = meritCategory.ATTRIBUTES + 0x0A,
-    MND                         = meritCategory.ATTRIBUTES + 0x0C,
-    CHR                         = meritCategory.ATTRIBUTES + 0x0E,
+    AGI                         = meritCategory.ATTRIBUTES + 0x06,
+    INT                         = meritCategory.ATTRIBUTES + 0x08,
+    MND                         = meritCategory.ATTRIBUTES + 0x0A,
+    CHR                         = meritCategory.ATTRIBUTES + 0x0C,
 
     -- COMBAT SKILLS
     H2H                         = meritCategory.COMBAT + 0x00,

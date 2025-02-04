@@ -18,31 +18,32 @@ zones[xi.zone.YHOATOR_JUNGLE] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7002,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7003,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7023,  -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7061,  -- Tallying conquest results...
-        BEASTMEN_BANNER               = 7142,  -- There is a beastmen's banner.
-        CONQUEST                      = 7229,  -- You've earned conquest points!
-        FISHING_MESSAGE_OFFSET        = 7562,  -- You can't fish here.
-        DIG_THROW_AWAY                = 7575,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
-        FIND_NOTHING                  = 7577,  -- You dig and you dig, but find nothing.
-        AMK_DIGGING_OFFSET            = 7643,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
-        ALREADY_OBTAINED_TELE         = 7662,  -- You already possess the gate crystal for this telepoint.
-        LOGGING_IS_POSSIBLE_HERE      = 7675,  -- Logging is possible here if you have <item>.
-        HARVESTING_IS_POSSIBLE_HERE   = 7682,  -- Harvesting is possible here if you have <item>.
-        TREE_CHECK                    = 7689,  -- The hole in this tree is filled with a sweet-smelling liquid.
-        TREE_FULL                     = 7690,  -- Your wine barrel is already full.
-        WATER_HOLE                    = 7693,  -- There is an Opo-opo drinking well here. It seems they feast here, too.
-        FAINT_CRY                     = 7694,  -- You hear the cry of a famished Opo-opo!
-        PAMAMAS                       = 7697,  -- You might be able to draw an Opo-opo here if you had more pamamas.
-        SOMETHING_IS_BURIED_HERE      = 7734,  -- It looks like something is buried here. If you had <item> you could dig it up.
-        GARRISON_BASE                 = 7744,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-        PLAYER_OBTAINS_ITEM           = 7823,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 7824,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 7825,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 7826,  -- You already possess that temporary item.
-        NO_COMBINATION                = 7831,  -- You were unable to enter a combination.
-        UNITY_WANTED_BATTLE_INTERACT  = 7893,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
-        REGIME_REGISTERED             = 10009, -- New training regime registered!
-        COMMON_SENSE_SURVIVAL         = 11128, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        CONQUEST_BASE                 = 7065,  -- Tallying conquest results...
+        BEASTMEN_BANNER               = 7146,  -- There is a beastmen's banner.
+        CONQUEST                      = 7233,  -- You've earned conquest points!
+        FISHING_MESSAGE_OFFSET        = 7566,  -- You can't fish here.
+        DIG_THROW_AWAY                = 7579,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
+        FIND_NOTHING                  = 7581,  -- You dig and you dig, but find nothing.
+        AMK_DIGGING_OFFSET            = 7647,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
+        ALREADY_OBTAINED_TELE         = 7666,  -- You already possess the gate crystal for this telepoint.
+        LOGGING_IS_POSSIBLE_HERE      = 7679,  -- Logging is possible here if you have <item>.
+        HARVESTING_IS_POSSIBLE_HERE   = 7686,  -- Harvesting is possible here if you have <item>.
+        TREE_CHECK                    = 7693,  -- The hole in this tree is filled with a sweet-smelling liquid.
+        TREE_FULL                     = 7694,  -- Your wine barrel is already full.
+        WATER_HOLE                    = 7697,  -- There is an Opo-opo drinking well here. It seems they feast here, too.
+        FAINT_CRY                     = 7698,  -- You hear the cry of a famished Opo-opo!
+        PAMAMAS                       = 7701,  -- You might be able to draw an Opo-opo here if you had more pamamas.
+        SOMETHING_IS_BURIED_HERE      = 7738,  -- It looks like something is buried here. If you had <item> you could dig it up.
+        GARRISON_BASE                 = 7748,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+        TIME_ELAPSED                  = 7795,  -- Time Elapsed: / [hour/hours] (Vanadiel Time) / [minute/minutes] and [second/seconds] (Earth time)
+        PLAYER_OBTAINS_ITEM           = 7827,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 7828,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 7829,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 7830,  -- You already possess that temporary item.
+        NO_COMBINATION                = 7835,  -- You were unable to enter a combination.
+        UNITY_WANTED_BATTLE_INTERACT  = 7897,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
+        REGIME_REGISTERED             = 10013, -- New training regime registered!
+        COMMON_SENSE_SURVIVAL         = 11132, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
@@ -63,18 +64,8 @@ zones[xi.zone.YHOATOR_JUNGLE] =
     npc =
     {
         OVERSEER_BASE     = GetFirstID('Ilieumort_RK'),
-        PEDDLESTOX        = 17285686,
-        BEASTMEN_TREASURE =
-        {
-            17285696, -- qm4
-            17285689, -- qm5
-            17285690, -- qm6
-            17285691, -- qm7
-            17285692, -- qm8
-            17285693, -- qm9
-            17285694, -- qm10
-            17285695, -- qm11
-        },
+        PEDDLESTOX        = 17285687,
+        BEASTMEN_TREASURE_OFFSET = GetFirstID('qm5'), -- qm4 has an ID after qm11 so start the offset at qm5
 
         HARVESTING = GetTableOfIDs('Harvesting_Point'),
         LOGGING    = GetTableOfIDs('Logging_Point'),

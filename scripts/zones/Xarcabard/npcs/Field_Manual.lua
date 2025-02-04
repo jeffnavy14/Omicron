@@ -2,10 +2,8 @@
 -- Area: Xarcabard
 --  NPC: Field Manual
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.regime.bookOnTrigger(player, xi.regime.type.FIELDS)

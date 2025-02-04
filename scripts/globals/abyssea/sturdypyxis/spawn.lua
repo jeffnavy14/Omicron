@@ -179,10 +179,13 @@ local function GetPyxisID(player)
     if chestId == 0 then
         for i = baseChestId, baseChestId + 79 do
             local npc = GetNPCByID(i)
-            if npc:getStatus() == xi.status.CUTSCENE_ONLY then
-                npc:setStatus(xi.status.DISAPPEAR)
-            elseif npc:getStatus() == xi.status.DISAPPEAR then
-                npc:setLocalVar('[pyxis]SPAWNTIME', (os.time() + 180000))
+
+            if npc then
+                if npc:getStatus() == xi.status.CUTSCENE_ONLY then
+                    npc:setStatus(xi.status.DISAPPEAR)
+                elseif npc:getStatus() == xi.status.DISAPPEAR then
+                    npc:setLocalVar('[pyxis]SPAWNTIME', (os.time() + 180000))
+                end
             end
         end
     end
@@ -537,7 +540,7 @@ local function SetPyxisData(npc, mob, player)
         npc:setLocalVar('CHESTID', npc:getID())
         npc:setPos(mobPos.x, mobPos.y, mobPos.z, mobPos.rot)
         npc:setStatus(xi.status.NORMAL)
-        npc:entityAnimationPacket('deru')
+        npc:entityAnimationPacket(xi.animationString.STATUS_VISIBLE)
         npc:setAnimationSub(12)
         xi.pyxis.messageChest(player, ID.text.MONSTER_CONCEALED_CHEST, 0, 0, 0, 0)
         npc:setModelId(chestModel)

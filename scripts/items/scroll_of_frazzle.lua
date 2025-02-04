@@ -3,9 +3,10 @@
 -- Scroll of Frazzle
 -- Teaches the black magic Frazzle
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.FRAZZLE)
 end
 

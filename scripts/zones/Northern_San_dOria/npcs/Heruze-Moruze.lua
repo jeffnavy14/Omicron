@@ -4,10 +4,8 @@
 -- Involved in Mission: 2-3 Windurst
 -- !pos -56 -3 36 231
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local pNation = player:getNation()
@@ -19,12 +17,6 @@ entity.onTrigger = function(player, npc)
     elseif pNation == xi.nation.SANDORIA then
         player:startEvent(577)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

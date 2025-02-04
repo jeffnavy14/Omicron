@@ -4,16 +4,11 @@
 -- Unlocks: Geo-Fade
 -- !pos 337.643 -16.745 305.544 265
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.geomanticReservoir.onTrigger(player, npc, xi.magic.spell.GEO_FADE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

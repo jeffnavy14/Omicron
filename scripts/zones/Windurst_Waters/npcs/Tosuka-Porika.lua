@@ -8,10 +8,8 @@
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WATERS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- Hat in Hand
@@ -34,9 +32,6 @@ entity.onTrigger = function(player, npc)
         player:startEvent(370) -- 'It doesn't seem like you'd have any business with our distinguished Library of Magic...'
         player:setLocalVar('TosukaDialogueToggle', 1)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

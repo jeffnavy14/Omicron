@@ -3,9 +3,10 @@
 -- Item: Airborne
 -- A goblin with a rainbow colored parasail rides in a downward spiral
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

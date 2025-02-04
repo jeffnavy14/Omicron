@@ -4,12 +4,11 @@
 -----------------------------------
 local ID = zones[xi.zone.NYZUL_ISLE]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
-    -- 'Draw in' should only trigger when target is beyond 20' (out of Radiant_Sacrament range)
-    mob:setMobMod(xi.mobMod.DRAW_IN, 1)
 
     mob:addListener('WEAPONSKILL_STATE_ENTER', 'WS_START_MSG', function(mobArg, skillID)
         -- Radiant Sacrament
@@ -38,7 +37,7 @@ entity.onMobSpawn = function(mob)
     end)
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:showText(mob, ID.text.SHALL_BE_JUDGED)
 end
 
@@ -60,6 +59,16 @@ entity.onMobFight = function(mob, target)
     if mob:getHPP() <= 10 and skillList == 784 then
         mob:setMobMod(xi.mobMod.SKILL_LIST, 785)
     end
+
+    local drawInTable =
+    {
+        conditions =
+        {
+            mob:checkDistance(target) > 20,
+        },
+        position = mob:getPos(),
+    }
+    utils.drawIn(target, drawInTable)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
@@ -70,6 +79,10 @@ end
 
 entity.onMobDespawn = function(mob)
     local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
     instance:setProgress(instance:getProgress() + 1)
 end
 

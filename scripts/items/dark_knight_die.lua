@@ -3,9 +3,10 @@
 -- Dark Knight Die
 -- Teaches the job ability Chaos Roll
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnAbility(xi.jobAbility.CHAOS_ROLL)
 end
 

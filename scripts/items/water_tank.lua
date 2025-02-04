@@ -3,14 +3,15 @@
 --  Water Tank
 --  When used, you will obtain one stack of Distilled Water
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.itemBoxOnItemCheck(target)
 end
 
 itemObject.onItemUse = function(target)
-    target:addItem(xi.item.FLASK_OF_DISTILLED_WATER, 12)
+    npcUtil.giveItem(target, { { xi.item.FLASK_OF_DISTILLED_WATER, 12 } })
 end
 
 return itemObject

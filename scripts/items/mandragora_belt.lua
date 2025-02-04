@@ -3,9 +3,10 @@
 -- Mandragora Belt
 -- Enchantment: 60Min, Costume - Mandragora
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if not target:canUseMisc(xi.zoneMisc.COSTUME) then
         return xi.msg.basic.CANT_BE_USED_IN_AREA
     end

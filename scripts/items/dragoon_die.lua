@@ -3,9 +3,10 @@
 -- Dragoon Die
 -- Teaches the job ability Drachen Roll
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnAbility(xi.jobAbility.DRACHEN_ROLL)
 end
 

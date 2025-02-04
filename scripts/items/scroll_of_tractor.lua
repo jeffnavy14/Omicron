@@ -3,9 +3,10 @@
 -- Scroll of Tractor
 -- Teaches the black magic Tractor
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.TRACTOR)
 end
 

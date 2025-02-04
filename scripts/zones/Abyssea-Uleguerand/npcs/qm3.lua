@@ -4,6 +4,7 @@
 -- Spawns Blanga
 -- !pos -615.221 -39.768 -16.079 253
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -12,12 +13,6 @@ end
 
 entity.onTrigger = function(player, npc)
     -- xi.abyssea.qmOnTrigger(player, npc)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

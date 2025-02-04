@@ -3,9 +3,10 @@
 -- Scroll of Cure IV
 -- Teaches the white magic Cure IV
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.CURE_IV)
 end
 

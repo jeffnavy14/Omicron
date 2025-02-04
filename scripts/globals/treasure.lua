@@ -145,8 +145,8 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.BASTOK, xi.quest.id.bastok.FADED_PROMISES) == QUEST_ACCEPTED and
-                                xi.quest.getVar(player, xi.quest.log_id.BASTOK, xi.quest.id.bastok.FADED_PROMISES, 'Prog') == 1 and
+                            return player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.FADED_PROMISES) == xi.questStatus.QUEST_ACCEPTED and
+                                xi.quest.getVar(player, xi.questLog.BASTOK, xi.quest.id.bastok.FADED_PROMISES, 'Prog') == 1 and
                                 not player:hasKeyItem(xi.ki.DIARY_OF_MUKUNDA)
                         end,
 
@@ -254,7 +254,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.SCATTERED_INTO_SHADOW) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.SCATTERED_INTO_SHADOW) == xi.questStatus.QUEST_ACCEPTED and
                                 player:getCharVar('scatIntoShadowCS') == 1 and not player:hasItem(xi.item.BEAST_COLLAR)
                         end,
 
@@ -292,7 +292,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.WINGS_OF_GOLD) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.WINGS_OF_GOLD) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.GUIDING_BELL)
                         end,
 
@@ -325,7 +325,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.WINGS_OF_GOLD) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.WINGS_OF_GOLD) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.GUIDING_BELL)
                         end,
 
@@ -354,7 +354,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.UN_MOMENT)
                         end,
 
@@ -394,7 +394,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.UN_MOMENT)
                         end,
 
@@ -421,7 +421,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.LEPHEMERE)
                         end,
 
@@ -522,7 +522,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.SIGNED_IN_BLOOD) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.SIGNED_IN_BLOOD) == xi.questStatus.QUEST_ACCEPTED and
                                 player:getCharVar('Quest[0][108]Prog') == 2 and
                                 not player:hasKeyItem(xi.ki.TORN_OUT_PAGES)
                         end,
@@ -534,7 +534,7 @@ xi.treasure.treasureInfo =
 
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= xi.questStatus.QUEST_ACCEPTED and
                                 VanadielRSELocation() == 0 and
                                 VanadielRSERace() == player:getRace() and
                                 not player:hasKeyItem(xi.ki.MAGICAL_PATTERN)
@@ -611,7 +611,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= xi.questStatus.QUEST_ACCEPTED and
                                 VanadielRSELocation() == 1 and
                                 VanadielRSERace() == player:getRace() and
                                 not player:hasKeyItem(xi.ki.MAGICAL_PATTERN)
@@ -650,8 +650,8 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return xi.quest.getVar(player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.ENVELOPED_IN_DARKNESS, 'Prog') >= 2 and
-                                xi.quest.getVar(player, xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.ENVELOPED_IN_DARKNESS, 'Time') == 0 and
+                            return xi.quest.getVar(player, xi.questLog.SANDORIA, xi.quest.id.sandoria.ENVELOPED_IN_DARKNESS, 'Prog') >= 2 and
+                                xi.quest.getVar(player, xi.questLog.SANDORIA, xi.quest.id.sandoria.ENVELOPED_IN_DARKNESS, 'Time') == 0 and
                                 not player:hasKeyItem(xi.ki.CRAWLER_BLOOD)
                         end,
 
@@ -689,7 +689,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.THE_GOBLIN_TAILOR) >= xi.questStatus.QUEST_ACCEPTED and
                                 VanadielRSELocation() == 2 and
                                 VanadielRSERace() == player:getRace() and
                                 not player:hasKeyItem(xi.ki.MAGICAL_PATTERN)
@@ -754,7 +754,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.SORCERY_OF_THE_NORTH) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.SORCERY_OF_THE_NORTH) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.FEIYIN_MAGIC_TOME)
                         end,
 
@@ -794,7 +794,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.BASTOK, xi.quest.id.bastok.A_TEST_OF_TRUE_LOVE) == xi.questStatus.QUEST_ACCEPTED and
                                 not player:hasKeyItem(xi.ki.LANCIENNE)
                         end,
 
@@ -887,9 +887,9 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.BST] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_WILD_HANDS,     reward = 12646 }, -- Beast Jackcoat
-                    [xi.job.PLD] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_STALWART_HANDS, reward = 14220 }, -- Gallant Breeches
-                    [xi.job.MNK] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_STRIKING_HANDS, reward = 12639 }, -- Temple Cyclas
+                    [xi.job.BST] = { quest = xi.quest.id.jeuno.BORGHERTZS_WILD_HANDS,     reward = 12646 }, -- Beast Jackcoat
+                    [xi.job.PLD] = { quest = xi.quest.id.jeuno.BORGHERTZS_STALWART_HANDS, reward = 14220 }, -- Gallant Breeches
+                    [xi.job.MNK] = { quest = xi.quest.id.jeuno.BORGHERTZS_STRIKING_HANDS, reward = 12639 }, -- Temple Cyclas
                 },
                 points =
                 {
@@ -917,9 +917,9 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.DRK] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SHADOWY_HANDS,   reward = 14221 }, -- Chaos Flanchard
-                    [xi.job.RNG] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_CHASING_HANDS,   reward = 12648 }, -- Hunter's Jerkin
-                    [xi.job.BLM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SORCEROUS_HANDS, reward = 12641 }, -- Wizard's Coat
+                    [xi.job.DRK] = { quest = xi.quest.id.jeuno.BORGHERTZS_SHADOWY_HANDS,   reward = 14221 }, -- Chaos Flanchard
+                    [xi.job.RNG] = { quest = xi.quest.id.jeuno.BORGHERTZS_CHASING_HANDS,   reward = 12648 }, -- Hunter's Jerkin
+                    [xi.job.BLM] = { quest = xi.quest.id.jeuno.BORGHERTZS_SORCEROUS_HANDS, reward = 12641 }, -- Wizard's Coat
                 },
                 points =
                 {
@@ -945,10 +945,10 @@ xi.treasure.treasureInfo =
                 key = 1044,
                 af =
                 {
-                    [xi.job.DRK] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SHADOWY_HANDS,    reward = 12645 }, -- Chaos Cuirass
-                    [xi.job.BRD] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_HARMONIOUS_HANDS, reward = 14223 }, -- Choral Cannions
-                    [xi.job.THF] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SNEAKY_HANDS,     reward = 14219 }, -- Rogue's Culottes
-                    [xi.job.RDM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_VERMILLION_HANDS, reward = 12642 }, -- Warlock's Tabard
+                    [xi.job.DRK] = { quest = xi.quest.id.jeuno.BORGHERTZS_SHADOWY_HANDS,    reward = 12645 }, -- Chaos Cuirass
+                    [xi.job.BRD] = { quest = xi.quest.id.jeuno.BORGHERTZS_HARMONIOUS_HANDS, reward = 14223 }, -- Choral Cannions
+                    [xi.job.THF] = { quest = xi.quest.id.jeuno.BORGHERTZS_SNEAKY_HANDS,     reward = 14219 }, -- Rogue's Culottes
+                    [xi.job.RDM] = { quest = xi.quest.id.jeuno.BORGHERTZS_VERMILLION_HANDS, reward = 12642 }, -- Warlock's Tabard
                 },
                 points =
                 {
@@ -979,7 +979,7 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.NIN] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_LURKING_HANDS, reward = 13869 }, -- Ninja Hatsuburi
+                    [xi.job.NIN] = { quest = xi.quest.id.jeuno.BORGHERTZS_LURKING_HANDS, reward = 13869 }, -- Ninja Hatsuburi
                 },
                 points =
                 {
@@ -1010,8 +1010,8 @@ xi.treasure.treasureInfo =
                 map = xi.ki.MAP_OF_TEMPLE_OF_UGGALEPIH,
                 af =
                 {
-                    [xi.job.SMN] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_CALLING_HANDS, reward = 12650 }, -- Evoker's Doublet
-                    [xi.job.SAM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_LOYAL_HANDS,   reward = 13781 }, -- Myochin Domaru
+                    [xi.job.SMN] = { quest = xi.quest.id.jeuno.BORGHERTZS_CALLING_HANDS, reward = 12650 }, -- Evoker's Doublet
+                    [xi.job.SAM] = { quest = xi.quest.id.jeuno.BORGHERTZS_LOYAL_HANDS,   reward = 13781 }, -- Myochin Domaru
                 },
                 points =
                 {
@@ -1064,8 +1064,8 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.WAR] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_WARRING_HANDS, reward = 14214 }, -- Fighter's Cuisses
-                    [xi.job.THF] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SNEAKY_HANDS,  reward = 12643 }, -- Rogue's Vest
+                    [xi.job.WAR] = { quest = xi.quest.id.jeuno.BORGHERTZS_WARRING_HANDS, reward = 14214 }, -- Fighter's Cuisses
+                    [xi.job.THF] = { quest = xi.quest.id.jeuno.BORGHERTZS_SNEAKY_HANDS,  reward = 12643 }, -- Rogue's Vest
                 },
                 misc =
                 {
@@ -1101,18 +1101,18 @@ xi.treasure.treasureInfo =
                 key = 1057,
                 af =
                 {
-                    [xi.job.SMN] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_CALLING_HANDS, reward = 14103 }, -- Evoker's Pigaches
+                    [xi.job.SMN] = { quest = xi.quest.id.jeuno.BORGHERTZS_CALLING_HANDS, reward = 14103 }, -- Evoker's Pigaches
                 },
                 misc =
                 {
                     {
                         test = function(player)
-                            return player:getCharVar('WildCard') == 2
+                            return not player:hasKeyItem(xi.ki.JOKER_CARD) and
+                                (player:getCharVar('Quest[2][77]Prog') == 2 or player:getCharVar('Quest[2][77]Prog') == 3)
                         end,
 
                         code = function(player)
                             npcUtil.giveKeyItem(player, xi.ki.JOKER_CARD)
-                            player:setCharVar('WildCard', 3)
                         end,
                     },
                 },
@@ -1151,7 +1151,7 @@ xi.treasure.treasureInfo =
                 {
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.OUTLANDS, xi.quest.id.outlands.TRUE_WILL) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.TRUE_WILL) == xi.questStatus.QUEST_ACCEPTED and
                                 player:getCharVar('trueWillCS') == 2 and
                                 not player:hasKeyItem(xi.ki.LARGE_TRICK_BOX)
                         end,
@@ -1163,7 +1163,7 @@ xi.treasure.treasureInfo =
 
                     {
                         test = function(player)
-                            return player:getQuestStatus(xi.quest.log_id.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER) == QUEST_ACCEPTED and
+                            return player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.KNIGHT_STALKER) == xi.questStatus.QUEST_ACCEPTED and
                                 player:getCharVar('KnightStalker_Progress') == 1
                         end,
 
@@ -1203,7 +1203,7 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.NIN] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_LURKING_HANDS, reward = 14101 }, -- Ninja Kyahan
+                    [xi.job.NIN] = { quest = xi.quest.id.jeuno.BORGHERTZS_LURKING_HANDS, reward = 14101 }, -- Ninja Kyahan
                 },
                 points =
                 {
@@ -1257,7 +1257,7 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.BLM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_SORCEROUS_HANDS, reward = 14217 }, -- Wizard's Tonban
+                    [xi.job.BLM] = { quest = xi.quest.id.jeuno.BORGHERTZS_SORCEROUS_HANDS, reward = 14217 }, -- Wizard's Tonban
                 },
                 points =
                 {
@@ -1287,10 +1287,10 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.BRD] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_HARMONIOUS_HANDS, reward = 13857 }, -- Choral Roundlet
-                    [xi.job.WAR] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_WARRING_HANDS,    reward = 12511 }, -- Fighter's Mask
-                    [xi.job.WHM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_HEALING_HANDS,    reward = 14216 }, -- Healer's Pantaloons
-                    [xi.job.RNG] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_CHASING_HANDS,    reward = 14224 }, -- Hunter's Braccae
+                    [xi.job.BRD] = { quest = xi.quest.id.jeuno.BORGHERTZS_HARMONIOUS_HANDS, reward = 13857 }, -- Choral Roundlet
+                    [xi.job.WAR] = { quest = xi.quest.id.jeuno.BORGHERTZS_WARRING_HANDS,    reward = 12511 }, -- Fighter's Mask
+                    [xi.job.WHM] = { quest = xi.quest.id.jeuno.BORGHERTZS_HEALING_HANDS,    reward = 14216 }, -- Healer's Pantaloons
+                    [xi.job.RNG] = { quest = xi.quest.id.jeuno.BORGHERTZS_CHASING_HANDS,    reward = 14224 }, -- Hunter's Braccae
                 },
                 points =
                 {
@@ -1318,11 +1318,11 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.BST] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_WILD_HANDS,       reward = 12517 }, -- Beast Helm
-                    [xi.job.PLD] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_STALWART_HANDS,   reward = 12515 }, -- Gallant Coronet
-                    [xi.job.WHM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_HEALING_HANDS,    reward = 13855 }, -- Healer's Cap
-                    [xi.job.MNK] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_STRIKING_HANDS,   reward = 12512 }, -- Temple Crown
-                    [xi.job.RDM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_VERMILLION_HANDS, reward = 14218 }, -- Warlock's Tights
+                    [xi.job.BST] = { quest = xi.quest.id.jeuno.BORGHERTZS_WILD_HANDS,       reward = 12517 }, -- Beast Helm
+                    [xi.job.PLD] = { quest = xi.quest.id.jeuno.BORGHERTZS_STALWART_HANDS,   reward = 12515 }, -- Gallant Coronet
+                    [xi.job.WHM] = { quest = xi.quest.id.jeuno.BORGHERTZS_HEALING_HANDS,    reward = 13855 }, -- Healer's Cap
+                    [xi.job.MNK] = { quest = xi.quest.id.jeuno.BORGHERTZS_STRIKING_HANDS,   reward = 12512 }, -- Temple Crown
+                    [xi.job.RDM] = { quest = xi.quest.id.jeuno.BORGHERTZS_VERMILLION_HANDS, reward = 14218 }, -- Warlock's Tights
                 },
                 points =
                 {
@@ -1350,7 +1350,7 @@ xi.treasure.treasureInfo =
                 },
                 af =
                 {
-                    [xi.job.DRG] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_DRAGON_HANDS, reward = 12649 }, -- Drachen Mail
+                    [xi.job.DRG] = { quest = xi.quest.id.jeuno.BORGHERTZS_DRAGON_HANDS, reward = 12649 }, -- Drachen Mail
                 },
                 points =
                 {
@@ -1379,8 +1379,8 @@ xi.treasure.treasureInfo =
                 map = xi.ki.MAP_OF_THE_QUICKSAND_CAVES,
                 af =
                 {
-                    [xi.job.DRG] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_DRAGON_HANDS, reward = 14102 }, -- Drachen Greaves
-                    [xi.job.SAM] = { quest = xi.quest.id.jeuno.BORGHERTZ_S_LOYAL_HANDS,  reward = 14225 }, -- Myochin Haidate
+                    [xi.job.DRG] = { quest = xi.quest.id.jeuno.BORGHERTZS_DRAGON_HANDS, reward = 14102 }, -- Drachen Greaves
+                    [xi.job.SAM] = { quest = xi.quest.id.jeuno.BORGHERTZS_LOYAL_HANDS,  reward = 14225 }, -- Myochin Haidate
                 },
                 points =
                 {
@@ -1574,7 +1574,7 @@ xi.treasure.onTrade = function(player, npc, trade, chestType)
         if
             info.af and
             info.af[mJob] and
-            player:getQuestStatus(xi.quest.log_id.JEUNO, info.af[mJob].quest) >= QUEST_ACCEPTED and
+            player:getQuestStatus(xi.questLog.JEUNO, info.af[mJob].quest) >= xi.questStatus.QUEST_ACCEPTED and
             not player:hasItem(info.af[mJob].reward)
         then
             player:messageSpecial(msgBase)

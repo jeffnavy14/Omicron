@@ -3,6 +3,7 @@
 --  NPC: Flame Spout
 -- !pos 193.967 -0.400 19.492 205
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -17,12 +18,6 @@ entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.FLAME_SPOUT_OFFSET
     player:startEvent(11 + offset)
     --]]
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

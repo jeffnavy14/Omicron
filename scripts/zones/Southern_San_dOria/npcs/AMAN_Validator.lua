@@ -3,10 +3,8 @@
 -- NPC: A.M.A.N Validator
 -- !pos -83.07 1 -55.58 230
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     xi.deeds.validatorOnTrigger(player, npc)

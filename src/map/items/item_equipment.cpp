@@ -24,21 +24,68 @@
 #include "map.h"
 #include <cstring>
 
+namespace
+{
+    /*
+    From augments.sql:
+
+    `augmentId` smallint(5) unsigned NOT NULL,
+    `multiplier` smallint(2) NOT NULL DEFAULT 0,
+    `modId` smallint(5) unsigned NOT NULL DEFAULT 0,
+    `value` smallint(5) NOT NULL DEFAULT 0,
+    `isPet` tinyint(1) NOT NULL DEFAULT 0,
+    `petType` tinyint(3) unsigned NOT NULL DEFAULT 0,
+    */
+    struct AugmentDataRow
+    {
+        uint16 augmentId;
+        uint16 multiplier;
+        uint16 modId;
+        int16  value; // Can be negative
+        uint8  isPet;
+        uint8  petType;
+    };
+
+    std::unordered_map<uint16, AugmentDataRow> sAugmentData;
+} // namespace
+
+void CItemEquipment::LoadAugmentData()
+{
+    const auto rset = db::preparedStmt("SELECT `augmentId`, `multiplier`, `modId`, `value`, `isPet`, `petType` FROM `augments`");
+    if (rset)
+    {
+        while (rset->next())
+        {
+            const auto augmentId = rset->get<uint16>("augmentId");
+
+            sAugmentData[augmentId] = AugmentDataRow{
+                .augmentId  = augmentId,
+                .multiplier = rset->get<uint16>("multiplier"),
+                .modId      = rset->get<uint16>("modId"),
+                .value      = rset->get<int16>("value"),
+                .isPet      = rset->get<uint8>("isPet"),
+                .petType    = rset->get<uint8>("petType"),
+            };
+        }
+    }
+}
+
 CItemEquipment::CItemEquipment(uint16 id)
 : CItemUsable(id)
 {
     setType(ITEM_EQUIPMENT);
 
-    m_jobs          = 0;
-    m_modelID       = 0;
-    m_removeSlotID  = 0;
-    m_shieldSize    = 0;
-    m_scriptType    = 0;
-    m_reqLvl        = 255;
-    m_iLvl          = 0;
-    m_equipSlotID   = 255;
-    m_absorption    = 0;
-    m_superiorLevel = 0;
+    m_jobs             = 0;
+    m_modelID          = 0;
+    m_removeSlotID     = 0;
+    m_removeSlotLookID = 0;
+    m_shieldSize       = 0;
+    m_scriptType       = 0;
+    m_reqLvl           = 255;
+    m_iLvl             = 0;
+    m_equipSlotID      = 255;
+    m_absorption       = 0;
+    m_superiorLevel    = 0;
 }
 
 CItemEquipment::~CItemEquipment()
@@ -60,9 +107,25 @@ uint16 CItemEquipment::getEquipSlotId() const
     return m_equipSlotID;
 }
 
+/// <summary>
+/// Gets the equip slots which should be unequipped when the item is equipped
+/// Used for items which occupy multiple equipslots - eg. Cloaks which occupy body and head
+/// </summary>
+/// <returns>An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</returns>
 uint16 CItemEquipment::getRemoveSlotId() const
 {
     return m_removeSlotID;
+}
+
+/// <summary>
+/// Gets the equip slots which should be set to blank from the characters appearance when the item is equipped or lockstyled
+/// Used for items which occupy multiple appearance slots
+/// eg. Mandragora Suit which has a getRemoveSlotId of body and legs - but appearance wise occupies hands, body, legs, and feet
+/// </summary>
+/// <returns>An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</returns>
+uint16 CItemEquipment::getRemoveSlotLookId() const
+{
+    return m_removeSlotLookID;
 }
 
 uint8 CItemEquipment::getReqLvl() const
@@ -110,9 +173,25 @@ void CItemEquipment::setEquipSlotId(uint16 equipSlot)
     m_equipSlotID = equipSlot;
 }
 
+/// <summary>
+/// Sets the equip slots which should be unequipped when the item is equipped
+/// Used for items which occupy multiple equipslots - eg. Cloaks which occupy body and head
+/// </summary>
+/// <param name="removeSlot">An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</param>
 void CItemEquipment::setRemoveSlotId(uint16 removSlot)
 {
     m_removeSlotID = removSlot;
+}
+
+/// <summary>
+/// Sets the equip slots which should be set to blank from the characters appearance when the item is equipped or lockstyled
+/// Used for items which occupy multiple appearance slots
+/// eg. Mandragora Suit which has a getRemoveSlotId of body and legs - but appearance wise occupies hands, body, legs, and feet
+/// </summary>
+/// <param name="removeSlotLook">An integer representing a bitmask corresponding to BattleEntity SLOTTYPE</param>
+void CItemEquipment::setRemoveSlotLookId(uint16 removeSlotLook)
+{
+    m_removeSlotLookID = removeSlotLook;
 }
 
 uint8 CItemEquipment::getSlotType() const
@@ -130,6 +209,27 @@ uint8 CItemEquipment::getSuperiorLevel()
 void CItemEquipment::setSuperiorLevel(uint8 level)
 {
     m_superiorLevel = level;
+}
+
+bool CItemEquipment::isEquippableByRace(uint8 race) const
+{
+    // first note that a single race actually represents a race and sex combination (for example hume-male)
+    // the EQUIPEMENT_ONLY_RACE mod is a multi-bit flag (where each set bit denotes that a specific race can use that equip)
+    // this is needed because many equips allow a subset of races
+    // for example Steppe Belt allows both taru-male and taru-female
+    // also note the default mod value of 0 denotes all races can wear
+    auto raceMod      = getModifier(Mod::EQUIPMENT_ONLY_RACE);
+    bool isEquippable = true;
+
+    // if a positive mod (so some race restriction(s) exist) then check against the char race
+    // do so by converting the race flag of a character (which is a value between 1 and 8)
+    // to a multi-bit style flag and then compare
+    if (raceMod > 0 && (raceMod & (1 << (race - 1))) == 0)
+    {
+        isEquippable = false;
+    }
+
+    return isEquippable;
 }
 
 // percentage of damage blocked by shield
@@ -189,14 +289,15 @@ void CItemEquipment::addModifier(CModifier modifier)
 
 int16 CItemEquipment::getModifier(Mod mod) const
 {
-    for (auto& i : modList)
+    int16 totalAmount = 0;
+    for (const auto& i : modList)
     {
         if (i.getModID() == mod)
         {
-            return i.getModAmount();
+            totalAmount += i.getModAmount();
         }
     }
-    return 0;
+    return totalAmount;
 }
 
 void CItemEquipment::addPetModifier(CPetModifier modifier)
@@ -312,6 +413,12 @@ void CItemEquipment::setAugment(uint8 slot, uint16 type, uint8 value)
 
 void CItemEquipment::SetAugmentMod(uint16 type, uint8 value)
 {
+    if (sAugmentData.find(type) == sAugmentData.end())
+    {
+        ShowErrorFmt("Invalid augment type {} requested for item {}", type, this->getID());
+        return;
+    }
+
     if (type != 0)
     {
         setSubType(ITEM_AUGMENTED);
@@ -319,34 +426,28 @@ void CItemEquipment::SetAugmentMod(uint16 type, uint8 value)
         ref<uint8>(m_extra, 0x01) |= 0x03;
     }
 
-    // obtain augment info by querying the db
-    const char* fmtQuery = "SELECT augmentId, multiplier, modId, `value`, `isPet`, `petType` FROM augments WHERE augmentId = %u";
+    const auto& augmentData = sAugmentData[type];
 
-    int32 ret = sql->Query(fmtQuery, type);
+    uint8 multiplier = augmentData.multiplier;
+    Mod   modId      = static_cast<Mod>(augmentData.modId);
+    int16 modValue   = augmentData.value;
 
-    while (ret != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+    // type is 0 unless mod is for pets
+    uint8      isPet   = augmentData.isPet;
+    PetModType petType = static_cast<PetModType>(augmentData.petType);
+
+    // apply modifier to item. increase modifier power by 'value' (default magnitude 1 for most augments) if multiplier isn't specified
+    // otherwise increase modifier power using the multiplier
+    // check if we should be adding to or taking away from the mod power (handle scripted augments properly)
+    modValue = (modValue > 0 ? modValue + value : modValue - value) * (multiplier > 1 ? multiplier : 1);
+
+    if (!isPet)
     {
-        uint8 multiplier = (uint8)sql->GetUIntData(1);
-        Mod   modId      = static_cast<Mod>(sql->GetUIntData(2));
-        int16 modValue   = (int16)sql->GetIntData(3);
-
-        // type is 0 unless mod is for pets
-        uint8      isPet   = (uint8)sql->GetUIntData(4);
-        PetModType petType = static_cast<PetModType>(sql->GetIntData(5));
-
-        // apply modifier to item. increase modifier power by 'value' (default magnitude 1 for most augments) if multiplier isn't specified
-        // otherwise increase modifier power using the multiplier
-        // check if we should be adding to or taking away from the mod power (handle scripted augments properly)
-        modValue = (modValue > 0 ? modValue + value : modValue - value) * (multiplier > 1 ? multiplier : 1);
-
-        if (!isPet)
-        {
-            addModifier(CModifier(modId, modValue));
-        }
-        else
-        {
-            addPetModifier(CPetModifier(modId, petType, modValue));
-        }
+        addModifier(CModifier(modId, modValue));
+    }
+    else
+    {
+        addPetModifier(CPetModifier(modId, petType, modValue));
     }
 }
 

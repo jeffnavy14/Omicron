@@ -3,9 +3,10 @@
 -- Item: Hyper-Ether
 -- Item Effect: Restores 125 MP
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getMP() == target:getMaxMP() then
         return xi.msg.basic.ITEM_UNABLE_TO_USE
     elseif target:hasStatusEffect(xi.effect.MEDICINE) then

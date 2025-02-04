@@ -3,9 +3,10 @@
 -- Scroll of Phalanx II
 -- Teaches the white magic Phalanx II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.PHALANX_II)
 end
 

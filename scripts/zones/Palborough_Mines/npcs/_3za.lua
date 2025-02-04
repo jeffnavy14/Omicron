@@ -4,6 +4,7 @@
 -- Involved In Mission: Journey Abroad
 -- !pos 180 -32 167 143
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -19,16 +20,6 @@ entity.onTrade = function(player, npc, trade)
     else
         player:startEvent(21)
     end
-end
-
-entity.onTrigger = function(player, npc)
-    player:startEvent(18)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

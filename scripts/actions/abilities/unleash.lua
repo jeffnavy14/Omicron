@@ -5,16 +5,15 @@
 -- Recast Time: 01:00:00
 -- Duration: 0:01:00
 -----------------------------------
+---@type TAbility
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
-    ability:setRecast(ability:getRecast() - player:getMod(xi.mod.ONE_HOUR_RECAST))
-
-    return 0, 0
+    return xi.job_utils.beastmaster.onAbilityCheckUnleash(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)
-    player:addStatusEffect(xi.effect.UNLEASH, 9, 0, 60)
+    return xi.job_utils.beastmaster.onUseAbilityUnleash(player, target, ability)
 end
 
 return abilityObject

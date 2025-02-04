@@ -318,6 +318,10 @@ instanceObject.onTrack = function(instance)
     }
 
     local mob = GetMobByID(ID.mob[xi.assault.mission.SEAGULL_GROUNDED].MOBS_START.EXCALIAC, instance)
+    if not mob then
+        return
+    end
+
     local chars = instance:getChars()
     local mobs = instance:getMobs()
     local missionActive = mob:getLocalVar('missionActive')
@@ -377,14 +381,14 @@ instanceObject.onTrack = function(instance)
 
                             mob:setLocalVar('pathLeg', 1)
                             mob:showText(mob, ID.text.EXCALIACE_CRAB1)
-                            mob:setSpeed(60)
+                            mob:setBaseSpeed(60)
                             break
                         elseif enemys:getFamily() == 197 then -- pugil
-                            mob:setSpeed(75)
+                            mob:setBaseSpeed(75)
                             mob:showText(mob, ID.text.EXCALIACE_DEBAUCHER1)
                             break
                         elseif enemys:getFamily() == 86 then -- doomed
-                            mob:setSpeed(100)
+                            mob:setBaseSpeed(100)
                             mob:showText(mob, ID.text.EXCALIACE_DEBAUCHER2)
                             break
                         end
@@ -421,13 +425,13 @@ instanceObject.onTrack = function(instance)
                             mob:setLocalVar('runStart', 0)
                             mob:setLocalVar('chatMessage', 1)
                             mob:setLocalVar('mobChatMessage', 0)
-                            mob:setSpeed(40)
+                            mob:setBaseSpeed(40)
                             break
                         else
                             mob:showText(mob, ID.text.EXCALIACE_TOO_CLOSE)
                             mob:setLocalVar('chatMessage', 1)
                             mob:setLocalVar('mobChatMessage', 0)
-                            mob:setSpeed(40)
+                            mob:setBaseSpeed(40)
                             break
                         end
                     end
@@ -437,7 +441,7 @@ instanceObject.onTrack = function(instance)
                         mob:setLocalVar('moveStatus', 0)
                         if chatMessage == 0 then
                             mob:showText(mob, ID.text.EXCALIACE_TOO_CLOSE)
-                            mob:setSpeed(40)
+                            mob:setBaseSpeed(40)
                             mob:setLocalVar('chatMessage', 1)
                             mob:setLocalVar('mobChatMessage', 0)
                             break
@@ -498,7 +502,7 @@ instanceObject.onTrack = function(instance)
                         mob:setLocalVar('runTimer', os.time() + math.random(30, 40))
                         mob:showText(mob, ID.text.EXCALIACE_RUN)
                         mob:setLocalVar('runStart', 1)
-                        mob:setSpeed(100)
+                        mob:setBaseSpeed(100)
                     end
                 end
             end

@@ -3,9 +3,10 @@
 -- Scroll of Burst
 -- Teaches the black magic Burst
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BURST)
 end
 

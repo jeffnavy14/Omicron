@@ -3,9 +3,10 @@
 -- Item: Federation Stables Scarf
 -- Teleports to Chocobo Stables (Windurst)
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if not target:hasVisitedZone(241) then
         result = 56

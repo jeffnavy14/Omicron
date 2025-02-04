@@ -6,6 +6,7 @@
 -----------------------------------
 local ID = zones[xi.zone.VELUGANNON_PALACE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -19,12 +20,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.EVIL_PRESENCE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

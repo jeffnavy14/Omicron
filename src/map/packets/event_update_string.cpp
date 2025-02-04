@@ -31,7 +31,7 @@ CEventUpdateStringPacket::CEventUpdateStringPacket(std::string const& string0, s
                                                    uint32 param5, uint32 param6, uint32 param7, uint32 param8)
 {
     this->setType(0x5D);
-    this->setSize(0x58);
+    this->setSize(0x68);
 
     ref<uint32>(0x04) = param0;
     ref<uint32>(0x08) = param1;
@@ -43,8 +43,8 @@ CEventUpdateStringPacket::CEventUpdateStringPacket(std::string const& string0, s
     ref<uint32>(0x20) = param7;
     ref<uint32>(0x24) = param8;
 
-    memcpy(data + 0x28, string0.c_str(), 15);
-    memcpy(data + 0x38, string1.c_str(), 15);
-    memcpy(data + 0x48, string2.c_str(), 15);
-    memcpy(data + 0x58, string3.c_str(), 15);
+    std::memcpy(buffer_.data() + 0x28, string0.c_str(), 15);
+    std::memcpy(buffer_.data() + 0x38, string1.c_str(), 15);
+    std::memcpy(buffer_.data() + 0x48, string2.c_str(), 15);
+    std::memcpy(buffer_.data() + 0x58, string3.c_str(), 15);
 }

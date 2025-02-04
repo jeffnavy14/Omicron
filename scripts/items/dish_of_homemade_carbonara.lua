@@ -9,9 +9,10 @@
 -- Ranged Accuracy +12% (cap 80)
 -- Ranged Attack +10% (cap 40)
 -----------------------------------
+---@type TItemFood
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 

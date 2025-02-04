@@ -3,9 +3,10 @@
 -- Item: Qiqirn Mine
 -- When used, Summons a bomb to blowup a wall
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if target:getZoneID() ~= xi.zone.LEBROS_CAVERN then
         result = 55
@@ -16,7 +17,15 @@ end
 
 itemObject.onItemUse = function(target)
     local instance = target:getInstance()
+    if not instance then
+        return
+    end
+
     local bomb = instance:insertAlly(100)
+    if not bomb then
+        return
+    end
+
     local xPos = target:getXPos()
     local zPos = target:getZPos()
     local targ = target:getTarget()

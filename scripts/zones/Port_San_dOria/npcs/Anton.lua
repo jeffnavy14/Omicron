@@ -3,10 +3,8 @@
 --  NPC: Anton
 -- !pos -19 -8 27 232
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.AIRSHIP_PASS) then
@@ -16,9 +14,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(604)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

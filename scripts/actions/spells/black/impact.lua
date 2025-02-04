@@ -3,6 +3,7 @@
 -- Deals dark damage to an enemy and
 -- decreases all 7 base stats by 20%
 -----------------------------------
+---@type TSpell
 local spellObject = {}
 
 spellObject.onMagicCastingCheck = function(caster, target, spell)
@@ -21,7 +22,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     params.resistBonus = 1.0
     params.skillType = xi.skill.ELEMENTAL_MAGIC
 
-    local resist = applyResistance(caster, target, spell, params)
+    local resist = applyResistanceEffect(caster, target, spell, params)
     local duration = 180 * resist -- BG wiki suggests only duration gets effected by resist, not stat amount.
 
     -- Todo: loop to avoid repeatedly doing same thing for each stat
@@ -68,7 +69,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     -- Add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
     dmg = addBonuses(caster, spell, target, dmg)
     -- Add in target adjustment
-    dmg = adjustForTarget(target, dmg, spell:getElement())
+    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, spell:getElement())
     -- Add in final adjustments
     dmg = finalMagicAdjustments(caster, target, spell, dmg)
 

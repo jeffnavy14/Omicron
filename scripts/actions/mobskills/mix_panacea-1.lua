@@ -1,6 +1,7 @@
 -----------------------------------
 -- Mix: Panacea-1 - Removes anything a Panacea can remove.
 -----------------------------------
+---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
@@ -21,6 +22,10 @@ local statii =
     xi.effect.DROWN,
     xi.effect.DIA,
     xi.effect.BIO,
+    xi.effect.SLOW,
+    xi.effect.ELEGY,
+    xi.effect.REQUIEM,
+    xi.effect.HELIX,
     xi.effect.STR_DOWN,
     xi.effect.DEX_DOWN,
     xi.effect.VIT_DOWN,

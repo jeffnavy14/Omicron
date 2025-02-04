@@ -3,9 +3,10 @@
 -- ID 5376
 -- Removes STR Down effect
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return xi.salvage.onCellItemCheck(target, xi.effect.DEBILITATION, 0x001)
 end
 

@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.THE_SHRINE_OF_RUAVITAU]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -26,12 +27,6 @@ end
 
 entity.onTrigger = function(player, npc)
     player:messageSpecial(ID.text.SMALL_HOLE_HERE)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
 end
 
 return entity

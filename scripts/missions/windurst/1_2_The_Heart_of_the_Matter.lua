@@ -98,8 +98,7 @@ local collectOrb = function(player, csid, option, npc)
 
     mission:setVarBit(player, 'GizmoEmpty', gizmoNum)
     mission:setVar(player, 'OrbsCollected', numberCollected + 1)
-    player:addKeyItem(ki)
-    player:messageSpecial(outerHorutotoRuinsID.text.KEYITEM_OBTAINED, ki)
+    npcUtil.giveKeyItem(player, ki)
 
     -- collected all the orbs
     if mission:getVar(player, 'OrbsCollected') == 6 then
@@ -367,12 +366,9 @@ mission.sections =
 
         [xi.zone.EAST_SARUTABARUTA] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    return 48
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                return 48
+            end,
 
             onEventFinish =
             {

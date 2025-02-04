@@ -3,9 +3,10 @@
 -- Scroll of Sentinel's Scherzo
 -- Teaches the song Sentinel's Scherzo
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SENTINELS_SCHERZO)
 end
 

@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.WINDURST_WATERS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -54,22 +55,19 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 941 then
         player:setCharVar('LeleroonsLetterGreen', 2)
         player:delKeyItem(xi.ki.LELEROONS_LETTER_GREEN)
     elseif csid == 943 then
         player:tradeComplete()
-        player:setCharVar('LeleroonsletterGreen', 3)
+        player:setCharVar('LeleroonsLetterGreen', 3)
     elseif csid == 946 then
         player:tradeComplete()
-        player:setCharVar('LeleroonsletterGreen', 4)
+        player:setCharVar('LeleroonsLetterGreen', 4)
         player:setCharVar('corAfSubmitDay', VanadielUniqueDay())
     elseif csid == 944 then
-        player:setCharVar('LeleroonsletterGreen', 5)
+        player:setCharVar('LeleroonsLetterGreen', 5)
         player:addItem(xi.item.CORSAIRS_GANTS) -- corsair's gants
         player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.CORSAIRS_GANTS)
     end

@@ -4,10 +4,8 @@
 -----------------------------------
 local ID = zones[xi.zone.RULUDE_GARDENS]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if xi.settings.main.ENABLE_MAGIAN_TRIALS ~= 1 then
@@ -15,9 +13,6 @@ entity.onTrigger = function(player, npc)
     end
 
     player:startEvent(10133)
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

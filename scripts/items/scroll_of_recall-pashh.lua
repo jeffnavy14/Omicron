@@ -3,9 +3,10 @@
 -- Scroll of Recall-Pashh
 -- Teaches the white magic Recall-Pashh
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.RECALL_PASHH)
 end
 

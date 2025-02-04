@@ -27,10 +27,12 @@ mixins =
 --    Do crit ws hits count differently than regular ws hits on retail?
 --    Should onCriticalHit count WS crit hits if regular WS hits do not count?
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 300)
+    mob:addImmunity(xi.immunity.SILENCE)
 end
 
 entity.onMobSpawn = function(mob)
@@ -75,8 +77,6 @@ entity.onWeaponskillHit = function(mob, attacker, weaponskill)
     if mob:getAnimationSub() == 0 and randVal <= 10 then
         mob:setAnimationSub(1)
     end
-
-    return 0
 end
 
 entity.onMobDeath = function(mob, killer)

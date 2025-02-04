@@ -3,9 +3,10 @@
 -- Scroll of Blind II
 -- Teaches the black magic Blind II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.BLIND_II)
 end
 

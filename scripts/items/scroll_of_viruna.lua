@@ -3,9 +3,10 @@
 -- Scroll of Viruna
 -- Teaches the white magic Viruna
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.VIRUNA)
 end
 

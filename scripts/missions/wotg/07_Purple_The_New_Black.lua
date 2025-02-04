@@ -39,25 +39,22 @@ mission.sections =
     -- 1: Enter the BCNM vs Galarhigg
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == mission.missionId and missionStatus == 1
+            return currentMission == mission.missionId and missionStatus >= 1
         end,
 
         [xi.zone.LA_VAULE_S] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if player:getMissionStatus(mission.areaId) == 2 then
-                        return 6
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if player:getMissionStatus(mission.areaId) == 2 then
+                    return 6
+                end
+            end,
 
             onEventFinish =
             {
                 -- Completed BCNM
                 [32001] = function(player, csid, option, npc)
-                    if player:getLocalVar('battlefieldWin') == 2721 then
+                    if player:getLocalVar('battlefieldWin') == xi.battlefield.id.PURPLE_THE_NEW_BLACK then
                         player:setMissionStatus(mission.areaId, 2)
                         player:setPos(-260.44, 0.134, -156.652, 192, xi.zone.LA_VAULE_S)
                     end

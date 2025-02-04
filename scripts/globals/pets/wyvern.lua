@@ -17,34 +17,37 @@ local wyvernCapabilities =
 
 local wyvernTypes =
 {
-    [xi.job.WAR] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.MNK] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.WHM] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.BLM] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.RDM] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.THF] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.PLD] = wyvernCapabilities.MULTI,
-    [xi.job.DRK] = wyvernCapabilities.MULTI,
-    [xi.job.BST] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.BRD] = wyvernCapabilities.MULTI,
-    [xi.job.RNG] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.SAM] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.NIN] = wyvernCapabilities.MULTI,
-    [xi.job.DRG] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.SMN] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.BLU] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.COR] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.PUP] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.DNC] = wyvernCapabilities.OFFENSIVE,
-    [xi.job.SCH] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.GEO] = wyvernCapabilities.DEFENSIVE,
-    [xi.job.RUN] = wyvernCapabilities.MULTI,
+    [xi.job.NONE] = wyvernCapabilities.OFFENSIVE,
+    [xi.job.WAR]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.MNK]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.WHM]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.BLM]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.RDM]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.THF]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.PLD]  = wyvernCapabilities.MULTI,
+    [xi.job.DRK]  = wyvernCapabilities.MULTI,
+    [xi.job.BST]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.BRD]  = wyvernCapabilities.MULTI,
+    [xi.job.RNG]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.SAM]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.NIN]  = wyvernCapabilities.MULTI,
+    [xi.job.DRG]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.SMN]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.BLU]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.COR]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.PUP]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.DNC]  = wyvernCapabilities.OFFENSIVE,
+    [xi.job.SCH]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.GEO]  = wyvernCapabilities.DEFENSIVE,
+    [xi.job.RUN]  = wyvernCapabilities.MULTI,
 }
 
-local function doHealingBreath(player, threshold)
+-- healing breath uses ratios, so use a divisor as input
+local function doHealingBreath(player, divisor)
     local breathHealRange = 14
 
     local healingbreath = xi.jobAbility.HEALING_BREATH
+    local wyvernType    = wyvernTypes[player:getSubJob()]
 
     if player:getMainLvl() >= 80 then
         healingbreath = xi.jobAbility.HEALING_BREATH_IV
@@ -60,15 +63,15 @@ local function doHealingBreath(player, threshold)
     end
 
     if
-        player:getHPP() <= threshold and
+        player:getHP() <= math.floor(player:getMaxHP() / divisor) and
         inBreathRange(player)
     then
         player:getPet():useJobAbility(healingbreath, player)
-    else
+    elseif wyvernType == wyvernCapabilities.DEFENSIVE then
         local party = player:getPartyWithTrusts()
         for _, member in pairs(party) do
             if
-                member:getHPP() <= threshold and
+                member:getHP() <= math.floor(member:getMaxHP() / divisor) and
                 inBreathRange(member) and
                 not member:isDead()
             then
@@ -92,6 +95,8 @@ local function doStatusBreath(target, player)
         {  1, xi.jobAbility.REMOVE_POISON   , { xi.effect.POISON    } },
     }
 
+    local breathRange = 14
+
     for k, v in pairs(removeBreathTable) do
         local minLevel = v[1]
         local ability = v[2]
@@ -99,7 +104,10 @@ local function doStatusBreath(target, player)
 
         if wyvern:getMainLvl() >= minLevel then
             for _, effect in pairs(statusEffects) do
-                if target:hasStatusEffect(effect) then
+                if
+                    target:hasStatusEffect(effect) and
+                    wyvern:checkDistance(target) <= breathRange
+                then
                     wyvern:useJobAbility(ability, target)
                     return true
                 end
@@ -131,13 +139,14 @@ xi.pets.wyvern.onMobSpawn = function(mob)
             end
         end)
 
+        -- 1/3 and 1/2 divisor for healing breath
         master:addListener('MAGIC_USE', 'PET_WYVERN_MAGIC', function(player, target, spell, action)
-            local threshold = 33
+            local divisor = 3
             if player:getMod(xi.mod.WYVERN_EFFECTIVE_BREATH) > 0 then
-                threshold = 50
+                divisor = 2
             end
 
-            doHealingBreath(player, threshold)
+            doHealingBreath(player, divisor)
         end)
     elseif
         wyvernType == wyvernCapabilities.OFFENSIVE or
@@ -148,14 +157,15 @@ xi.pets.wyvern.onMobSpawn = function(mob)
         end)
     end
 
+    -- 1/4 and 1/3rd divisors for HP
     if wyvernType == wyvernCapabilities.MULTI then
         master:addListener('MAGIC_USE', 'PET_WYVERN_MAGIC', function(player, target, spell, action)
-            local threshold = 25
+            local divisor = 4
             if player:getMod(xi.mod.WYVERN_EFFECTIVE_BREATH) > 0 then
-                threshold = 33
+                divisor = 3
             end
 
-            doHealingBreath(player, threshold)
+            doHealingBreath(player, divisor)
         end)
     end
 

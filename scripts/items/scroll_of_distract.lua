@@ -3,9 +3,10 @@
 -- Scroll of Distract
 -- Teaches the black magic Distract
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.DISTRACT)
 end
 

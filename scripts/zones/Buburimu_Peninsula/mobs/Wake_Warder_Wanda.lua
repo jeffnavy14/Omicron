@@ -2,13 +2,14 @@
 -- Area: Buburimu Peninsula
 --   NM: Wake Warder Wanda
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 50) -- just one spell to spam
 end
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     mob:setMod(xi.mod.REGAIN, 25)
 end
 

@@ -3,9 +3,10 @@
 -- Azouph Fireflies
 -- Transports the user to Azouph Isle
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     if target:getZoneID() == xi.zone.LEUJAOAM_SANCTUM then
         return 0
     end

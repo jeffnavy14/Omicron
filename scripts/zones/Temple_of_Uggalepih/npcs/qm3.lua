@@ -5,10 +5,8 @@
 -----------------------------------
 local ID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     if not player:hasItem(xi.item.UGGALEPIH_WHISTLE) then

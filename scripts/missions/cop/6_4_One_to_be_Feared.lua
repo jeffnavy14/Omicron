@@ -67,18 +67,15 @@ mission.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    local missionStatus = mission:getVar(player, 'Status')
+            onZoneIn = function(player, prevZone)
+                local missionStatus = mission:getVar(player, 'Status')
 
-                    if missionStatus == 1 then
-                        return 15
-                    elseif missionStatus == 4 then
-                        return 33
-                    end
-                end,
-            },
+                if missionStatus == 1 then
+                    return 15
+                elseif missionStatus == 4 then
+                    return 33
+                end
+            end,
 
             onEventUpdate =
             {
@@ -106,7 +103,7 @@ mission.sections =
 
                 [32001] = function(player, csid, option, npc)
                     if
-                        player:getLocalVar('battlefieldWin') == 992 and
+                        player:getLocalVar('battlefieldWin') == xi.battlefield.id.ONE_TO_BE_FEARED and
                         mission:getVar(player, 'Status') == 3
                     then
                         -- While we could queue this, any disconnect would cause the player to have to

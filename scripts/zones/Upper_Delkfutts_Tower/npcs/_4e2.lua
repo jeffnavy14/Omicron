@@ -5,6 +5,7 @@
 -----------------------------------
 local ID = zones[xi.zone.UPPER_DELKFUTTS_TOWER]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -19,9 +20,6 @@ entity.onTrigger = function(player, npc)
     else
         player:messageSpecial(ID.text.THIS_ELEVATOR_GOES_DOWN)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

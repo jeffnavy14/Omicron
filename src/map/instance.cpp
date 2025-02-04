@@ -1,20 +1,20 @@
 ﻿/*
 ===========================================================================
 
-Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2015 Darkstar Dev Teams
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
 
 ===========================================================================
 */
@@ -35,6 +35,7 @@ CInstance::CInstance(CZone* zone, uint16 instanceid)
 , m_instanceid(instanceid)
 , m_zone(zone)
 {
+    TracyZoneScoped;
     LoadInstance();
 
     m_startTime = server_clock::now();
@@ -43,22 +44,7 @@ CInstance::CInstance(CZone* zone, uint16 instanceid)
 
 CInstance::~CInstance()
 {
-    for (auto entity : m_mobList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_npcList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_petList)
-    {
-        destroy(entity.second);
-    }
-    for (auto entity : m_trustList)
-    {
-        destroy(entity.second);
-    }
+    TracyZoneScoped;
 }
 
 uint16 CInstance::GetID() const
@@ -101,20 +87,20 @@ void CInstance::LoadInstance()
                                "WHERE instanceid = %u "
                                "LIMIT 1";
 
-    if (sql->Query(Query, m_instanceid) != SQL_ERROR && sql->NumRows() != 0 && sql->NextRow() == SQL_SUCCESS)
+    if (_sql->Query(Query, m_instanceid) != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
-        m_instanceName.insert(0, (const char*)sql->GetData(0));
+        m_instanceName.insert(0, (const char*)_sql->GetData(0));
 
-        m_timeLimit                       = std::chrono::minutes(sql->GetUIntData(1));
-        m_entrance                        = sql->GetUIntData(2);
-        m_entryloc.x                      = sql->GetFloatData(3);
-        m_entryloc.y                      = sql->GetFloatData(4);
-        m_entryloc.z                      = sql->GetFloatData(5);
-        m_entryloc.rotation               = sql->GetUIntData(6);
-        m_zone_music_override.m_songDay   = sql->GetUIntData(7);
-        m_zone_music_override.m_songNight = sql->GetUIntData(8);
-        m_zone_music_override.m_bSongS    = sql->GetUIntData(9);
-        m_zone_music_override.m_bSongM    = sql->GetUIntData(10);
+        m_timeLimit                       = std::chrono::minutes(_sql->GetUIntData(1));
+        m_entrance                        = _sql->GetUIntData(2);
+        m_entryloc.x                      = _sql->GetFloatData(3);
+        m_entryloc.y                      = _sql->GetFloatData(4);
+        m_entryloc.z                      = _sql->GetFloatData(5);
+        m_entryloc.rotation               = _sql->GetUIntData(6);
+        m_zone_music_override.m_songDay   = _sql->GetUIntData(7);
+        m_zone_music_override.m_songNight = _sql->GetUIntData(8);
+        m_zone_music_override.m_bSongS    = _sql->GetUIntData(9);
+        m_zone_music_override.m_bSongM    = _sql->GetUIntData(10);
 
         // Add to Lua cache
         // TODO: This will happen more often than needed, but not so often that it's a performance concern
@@ -259,17 +245,35 @@ bool CInstance::CharRegistered(CCharEntity* PChar)
 
 void CInstance::ClearEntities()
 {
-    auto clearStates = [](auto& entity)
+    auto clearStates = [](CBattleEntity* entity)
     {
-        if (static_cast<CBattleEntity*>(entity.second)->isAlive())
+        if (static_cast<CBattleEntity*>(entity)->isAlive())
         {
-            entity.second->PAI->ClearStateStack();
+            entity->PAI->ClearStateStack();
         }
     };
-    std::for_each(m_charList.cbegin(), m_charList.cend(), clearStates);
-    std::for_each(m_mobList.cbegin(), m_mobList.cend(), clearStates);
-    std::for_each(m_petList.cbegin(), m_petList.cend(), clearStates);
-    std::for_each(m_trustList.cbegin(), m_trustList.cend(), clearStates);
+
+    // clang-format off
+    ForEachChar([&](CCharEntity* PChar)
+    {
+        clearStates(PChar);
+    });
+
+    ForEachMob([&](CMobEntity* PMob)
+    {
+        clearStates(PMob);
+    });
+
+    ForEachPet([&](CPetEntity* PPet)
+    {
+        clearStates(PPet);
+    });
+
+    ForEachTrust([&](CTrustEntity* PTrust)
+    {
+        clearStates(PTrust);
+    });
+    // clang-format on
 }
 
 void CInstance::Fail()
@@ -311,22 +315,22 @@ bool CInstance::CheckFirstEntry(uint32 id)
     return m_enteredChars.insert(id).second;
 }
 
-uint8 CInstance::GetSoloBattleMusic()
+uint16 CInstance::GetSoloBattleMusic()
 {
-    return m_zone_music_override.m_bSongS != (uint8)-1 ? m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
+    return m_zone_music_override.m_bSongS != (uint16)-1 ? m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
 }
 
-uint8 CInstance::GetPartyBattleMusic()
+uint16 CInstance::GetPartyBattleMusic()
 {
-    return m_zone_music_override.m_bSongM != (uint8)-1 ? m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
+    return m_zone_music_override.m_bSongM != (uint16)-1 ? m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
 }
 
-uint8 CInstance::GetBackgroundMusicDay()
+uint16 CInstance::GetBackgroundMusicDay()
 {
-    return m_zone_music_override.m_songDay != (uint8)-1 ? m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
+    return m_zone_music_override.m_songDay != (uint16)-1 ? m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
 }
 
-uint8 CInstance::GetBackgroundMusicNight()
+uint16 CInstance::GetBackgroundMusicNight()
 {
-    return m_zone_music_override.m_songNight != (uint8)-1 ? m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
+    return m_zone_music_override.m_songNight != (uint16)-1 ? m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
 }

@@ -10,7 +10,7 @@
 require('scripts/missions/wotg/helpers')
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.CRYSTAL_WAR, xi.quest.id.crystalWar.HER_MEMORIES_CARNELIAN_FOOTFALLS)
+local quest = Quest:new(xi.questLog.CRYSTAL_WAR, xi.quest.id.crystalWar.HER_MEMORIES_CARNELIAN_FOOTFALLS)
 
 quest.reward =
 {
@@ -21,7 +21,7 @@ quest.sections =
 {
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and
+            return status == xi.questStatus.QUEST_AVAILABLE and
                 player:getCurrentMission(xi.mission.log_id.WOTG) == xi.mission.id.wotg.HER_MEMORIES and
                 player:getCampaignAllegiance() == 1
         end,
@@ -37,17 +37,14 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.EAST_RONFAURE_S and
-                        quest:getVar(player, 'Prog') == 0
-                    then
-                        return 170
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.EAST_RONFAURE_S and
+                    quest:getVar(player, 'Prog') == 0
+                then
+                    return 170
+                end
+            end,
 
             onEventFinish =
             {
@@ -64,7 +61,7 @@ quest.sections =
 
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.SOUTHERN_SAN_DORIA_S] =
@@ -124,17 +121,14 @@ quest.sections =
                 end,
             },
 
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.SOUTHERN_SAN_DORIA_S and
-                        quest:getVar(player, 'Prog') == 1
-                    then
-                        return 12
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.SOUTHERN_SAN_DORIA_S and
+                    quest:getVar(player, 'Prog') == 1
+                then
+                    return 12
+                end
+            end,
 
             onEventFinish =
             {

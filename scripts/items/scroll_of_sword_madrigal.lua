@@ -3,9 +3,10 @@
 -- Scroll of Sword Madrigal
 -- Teaches the song Sword Madrigal
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.SWORD_MADRIGAL)
 end
 

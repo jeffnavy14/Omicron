@@ -6,10 +6,12 @@
 local ID = zones[xi.zone.ALTAIEU]
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.NO_DROPS, 1)
+    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
 
     mob:addListener('WEAPONSKILL_BEFORE_USE', 'JOP_WS_MIRROR', function(mobArg, skillid)
         if mobArg:getLocalVar('mirrored_ws') == 1 then
@@ -17,9 +19,13 @@ entity.onMobInitialize = function(mob)
             return
         end
 
-        local otherPrudence = mobArg:getID() == ID.mob.JAILER_OF_PRUDENCE_1 and GetMobByID(ID.mob.JAILER_OF_PRUDENCE_2) or GetMobByID(ID.mob.JAILER_OF_PRUDENCE_1)
+        local otherPrudence = mobArg:getID() == ID.mob.JAILER_OF_PRUDENCE and GetMobByID(ID.mob.JAILER_OF_PRUDENCE + 1) or GetMobByID(ID.mob.JAILER_OF_PRUDENCE)
 
-        if otherPrudence:isAlive() and otherPrudence:checkDistance(mob) <= 50 then
+        if
+            otherPrudence and
+            otherPrudence:isAlive() and
+            otherPrudence:checkDistance(mob) <= 50
+        then
             otherPrudence:setLocalVar('mirrored_ws', 1)
             otherPrudence:useMobAbility(skillid)
         end
@@ -35,14 +41,14 @@ entity.onMobSpawn = function(mob)
                 cooldown = 120, -- "Both can use Perfect Dodge multiple times, and will do so almost incessantly." (guessing a 2 minute cooldown)
                 hpp = 95,
                 endCode = function(mobArg)
-                    mobArg:addStatusEffectEx(xi.effect.FLEE, 0, 100, 0, 30) -- "Jailer of Prudence will however gain Flee speed during Perfect Dodge."
+                    mobArg:addStatusEffectEx(xi.effect.FLEE, 0, 10000, 0, 30) -- "Jailer of Prudence will however gain Flee speed during Perfect Dodge."
                 end,
             },
         },
     })
 
     mob:setAnimationSub(0) -- Mouth closed
-    mob:addStatusEffectEx(xi.effect.FLEE, 0, 100, 0, 60)
+    mob:addStatusEffectEx(xi.effect.FLEE, 0, 10000, 0, 60)
     mob:setMod(xi.mod.TRIPLE_ATTACK, 20)
     mob:setMod(xi.mod.REGEN, 10)
     mob:addMod(xi.mod.BIND_MEVA, 30)
@@ -54,15 +60,17 @@ entity.onMobSpawn = function(mob)
     mob:addMod(xi.mod.LULLABY_MEVA, 30)
 end
 
-entity.onMobDisengage = function(mob, target)
+entity.onMobDisengage = function(mob)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    local firstPrudence  = GetMobByID(ID.mob.JAILER_OF_PRUDENCE_1)
-    local secondPrudence = GetMobByID(ID.mob.JAILER_OF_PRUDENCE_2)
-    local count          = player:getLocalVar('prudenceCount')
+    local count = player:getLocalVar('prudenceCount')
+    local mobId = mob:getID()
 
-    if firstPrudence or secondPrudence then
+    if
+        mobId == ID.mob.JAILER_OF_PRUDENCE or
+        mobId == ID.mob.JAILER_OF_PRUDENCE + 1
+    then
         player:setLocalVar('prudenceCount', count + 1)
     end
 
@@ -73,19 +81,24 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    local firstPrudence  = GetMobByID(ID.mob.JAILER_OF_PRUDENCE_1)
-    local secondPrudence = GetMobByID(ID.mob.JAILER_OF_PRUDENCE_2)
+    if mob:getID() == ID.mob.JAILER_OF_PRUDENCE then
+        local secondPrudence = GetMobByID(ID.mob.JAILER_OF_PRUDENCE + 1)
 
-    if mob:getID() == ID.mob.JAILER_OF_PRUDENCE_1 then
-        secondPrudence:setMobMod(xi.mobMod.NO_DROPS, 0)
-        secondPrudence:setAnimationSub(3) -- Mouth Open
-        secondPrudence:addMod(xi.mod.ATTP, 100)
-        secondPrudence:delMod(xi.mod.DEFP, -50)
+        if secondPrudence then
+            secondPrudence:setMobMod(xi.mobMod.NO_DROPS, 0)
+            secondPrudence:setAnimationSub(3) -- Mouth Open
+            secondPrudence:addMod(xi.mod.ATTP, 100)
+            secondPrudence:delMod(xi.mod.DEFP, -50)
+        end
     else
-        firstPrudence:setMobMod(xi.mobMod.NO_DROPS, 0)
-        firstPrudence:setAnimationSub(3) -- Mouth Open
-        firstPrudence:addMod(xi.mod.ATTP, 100)
-        firstPrudence:delMod(xi.mod.DEFP, -50)
+        local firstPrudence = GetMobByID(ID.mob.JAILER_OF_PRUDENCE)
+
+        if firstPrudence then
+            firstPrudence:setMobMod(xi.mobMod.NO_DROPS, 0)
+            firstPrudence:setAnimationSub(3) -- Mouth Open
+            firstPrudence:addMod(xi.mod.ATTP, 100)
+            firstPrudence:delMod(xi.mod.DEFP, -50)
+        end
     end
 end
 

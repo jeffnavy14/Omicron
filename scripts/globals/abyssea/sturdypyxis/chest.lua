@@ -43,24 +43,26 @@ xi.pyxis.chestDropType =
 -----------------------------------
 xi.pyxis.canOpenChest = function(player, npc)
     local playerOwner = GetPlayerByID(npc:getLocalVar('PLAYERID'))
+    local canOpen     = false
 
-    local ally = player:getAlliance()
+    if playerOwner then
+        local ally = player:getAlliance()
 
-    local canOpen = false
-    for k, member in ipairs(ally) do
-        if member:getID() == playerOwner:getID() then
-            canOpen = true
-            break
+        for _, member in ipairs(ally) do
+            if member:getID() == playerOwner:getID() then
+                canOpen = true
+                break
+            end
         end
-    end
 
-    if not canOpen and playerOwner:getZoneID() ~= npc:getZoneID() then
-        canOpen = true
-    end
+        if not canOpen and playerOwner:getZoneID() ~= npc:getZoneID() then
+            canOpen = true
+        end
 
-    if not canOpen then
-        local ID = zones[player:getZoneID()]
-        player:messageSpecial(ID.text.PARTY_NOT_OWN_CHEST)
+        if not canOpen then
+            local ID = zones[player:getZoneID()]
+            player:messageSpecial(ID.text.PARTY_NOT_OWN_CHEST)
+        end
     end
 
     return canOpen
@@ -104,7 +106,7 @@ xi.pyxis.removeChest = function(player, npc, addcruor, delay)
         npcArg:setNpcFlags(3203)
         npcArg:setLocalVar('SPAWNSTATUS', 0)
         npcArg:setStatus(xi.status.DISAPPEAR)
-        npcArg:entityAnimationPacket('kesu')
+        npcArg:entityAnimationPacket(xi.animationString.STATUS_DISAPPEAR)
         npc:setUntargetable(false)
     end)
 end

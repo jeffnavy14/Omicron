@@ -3,6 +3,7 @@
 --  NPC: Leonhardt
 -- Involved in Quest: Too Many Chefs
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -20,9 +21,6 @@ entity.onTrigger = function(player, npc)
     else
         player:startEvent(945) -- standard
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

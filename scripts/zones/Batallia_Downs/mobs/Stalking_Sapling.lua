@@ -5,7 +5,13 @@
 -----------------------------------
 local ID = zones[xi.zone.BATALLIA_DOWNS]
 -----------------------------------
+---@type TMobEntity
 local entity = {}
+
+local totteringPHTable =
+{
+    [ID.mob.TOTTERING_TOBY - 27] = ID.mob.TOTTERING_TOBY, -- -194.234 -18.485 132.208
+}
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.regime.checkRegime(player, mob, 72, 1, xi.regime.type.FIELDS)
@@ -13,7 +19,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.TOTTERING_TOBY_PH, 20, 3600) -- 1 hour
+    xi.mob.phOnDespawn(mob, totteringPHTable, 20, 3600) -- 1 hour
 end
 
 return entity

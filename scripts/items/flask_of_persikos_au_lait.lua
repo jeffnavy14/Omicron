@@ -3,9 +3,10 @@
 -- Item: Persikos au Lait
 -- Item Effect: Restores 800 HP over 600 seconds
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

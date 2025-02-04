@@ -8,14 +8,18 @@ mixins =
     require('scripts/mixins/rage')
 }
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     mob:setMod(xi.mod.UFASTCAST, 100)
+    mob:setMobMod(xi.mobMod.GIL_MIN, 15000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 20000)
 end
 
 entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.CANNOT_GUARD, 1)
     local kingArthroID = mob:getID()
 
     -- Use King Arthro ID to determine Knight Crab Id's, then set their respawn to 0 so they don't spawn while KA is up

@@ -3,9 +3,10 @@
 -- Scroll of Recall-Meriph
 -- Teaches the white magic Recall-Meriph
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.RECALL_MERIPH)
 end
 

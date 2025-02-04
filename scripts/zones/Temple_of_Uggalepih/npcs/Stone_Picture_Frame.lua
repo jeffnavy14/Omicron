@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.TEMPLE_OF_UGGALEPIH]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     local xPos = player:getXPos()
@@ -52,9 +50,6 @@ entity.onTrigger = function(player, npc)
             player:messageSpecial(ID.text.PAINTBRUSH_OFFSET + 11) -- It is a painting of a sublime-looking woman.
         end
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

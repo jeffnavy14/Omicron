@@ -6,7 +6,7 @@
 -- Ekhu Pesshyadha !pos -13.043 0.999 103.423 50
 -----------------------------------
 
-local quest = Quest:new(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.THREE_MEN_AND_A_CLOSET)
+local quest = Quest:new(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.THREE_MEN_AND_A_CLOSET)
 
 quest.reward =
 {
@@ -18,7 +18,8 @@ quest.sections =
     -- Section: Begin quest
     {
         check = function(player, status, vars)
-            return status == QUEST_AVAILABLE and player:getQuestStatus(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.GOT_IT_ALL) == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_AVAILABLE and
+                player:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.GOT_IT_ALL) == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -26,7 +27,7 @@ quest.sections =
             ['Kubhe_Ijyuhla'] =
             {
                 onTrigger = function(player, npc)
-                    return quest:progressEvent(player, 836)
+                    return quest:progressEvent(836)
                 end
             },
 
@@ -42,7 +43,7 @@ quest.sections =
     -- Section: Questing
     {
         check = function(player, status, vars)
-            return status == QUEST_ACCEPTED
+            return status == xi.questStatus.QUEST_ACCEPTED
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =
@@ -116,17 +117,14 @@ quest.sections =
 
         [xi.zone.WAJAOM_WOODLANDS] =
         {
-            onZoneIn =
-            {
-                function(player, prevZone)
-                    if
-                        prevZone == xi.zone.AHT_URHGAN_WHITEGATE and
-                        quest:getVar(player, 'Prog') == 0
-                    then
-                        return 510
-                    end
-                end,
-            },
+            onZoneIn = function(player, prevZone)
+                if
+                    prevZone == xi.zone.AHT_URHGAN_WHITEGATE and
+                    quest:getVar(player, 'Prog') == 0
+                then
+                    return 510
+                end
+            end,
 
             onEventFinish =
             {
@@ -140,7 +138,7 @@ quest.sections =
     -- Section: Completed quest
     {
         check = function(player, status, vars)
-            return status == QUEST_COMPLETED
+            return status == xi.questStatus.QUEST_COMPLETED
         end,
 
         [xi.zone.AHT_URHGAN_WHITEGATE] =

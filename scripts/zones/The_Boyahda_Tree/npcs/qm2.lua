@@ -6,10 +6,8 @@
 -----------------------------------
 local ID = zones[xi.zone.THE_BOYAHDA_TREE]
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- Notes: does ??? depop when Agas is spawned?
@@ -23,7 +21,7 @@ entity.onTrigger = function(player, npc)
         if player:hasKeyItem(xi.ki.MOONDROP) then
             player:messageSpecial(ID.text.CAN_SEE_SKY)
 
-        elseif player:getQuestStatus(xi.quest.log_id.JEUNO, xi.quest.id.jeuno.SEARCHING_FOR_THE_RIGHT_WORDS) == QUEST_ACCEPTED then
+        elseif player:getQuestStatus(xi.questLog.JEUNO, xi.quest.id.jeuno.SEARCHING_FOR_THE_RIGHT_WORDS) == xi.questStatus.QUEST_ACCEPTED then
 
             if IsMoonNew() or not correctTime then
                 player:messageSpecial(ID.text.CANNOT_SEE_MOON)
@@ -42,13 +40,9 @@ entity.onTrigger = function(player, npc)
     end
 end
 
-entity.onEventUpdate = function(player, csid, option, npc)
-end
-
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 14 then
-        player:addKeyItem(xi.ki.MOONDROP)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.MOONDROP)
+        npcUtil.giveKeyItem(player, xi.ki.MOONDROP)
         player:setCharVar('Searching_AgasKilled', 0)
     end
 end

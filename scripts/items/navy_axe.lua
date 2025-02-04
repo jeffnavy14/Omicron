@@ -4,9 +4,10 @@
 -- Item Effect: TP +1000
 -- Duration: Instant
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 

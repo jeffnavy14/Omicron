@@ -3,6 +3,7 @@
 --  NPC: Comitiolus
 -- !pos 100 -7 -13 252
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
@@ -22,9 +23,6 @@ entity.onTrigger = function(player, npc)
     elseif tuningOutProgress == 7 then
         player:startEvent(208) -- Repeat hint for player to go to Beaucedine Glacier
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

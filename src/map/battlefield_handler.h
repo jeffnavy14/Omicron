@@ -1,16 +1,21 @@
 ﻿/*
 ===========================================================================
-Copyright (c) 2010-2015 Darkstar Dev Teams
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+
+  Copyright (c) 2010-2015 Darkstar Dev Teams
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTItem or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+
 ===========================================================================
 */
 
@@ -55,7 +60,6 @@ public:
     uint8         RegisterBattlefield(CCharEntity* PChar, const BattlefieldRegistration& registration); // attempts to register or load battlefield, returns BATTLEFIELD_RETURN_CODE
     bool          RemoveFromBattlefield(CBaseEntity* PEntity, CBattlefield* PBattlefield = nullptr, uint8 leavecode = 3);
     bool          IsRegistered(CCharEntity* PChar);
-    bool          IsEntered(CCharEntity* PChar);
     bool          ReachedMaxCapacity(int battlefieldId = -1) const;
     uint8         MaxBattlefieldAreas() const;
     void          addOrphanedPlayer(CCharEntity* PChar);

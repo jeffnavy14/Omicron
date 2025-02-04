@@ -6,19 +6,14 @@
 -- !pos -190 -3 97 230
 -- csid: 52  732  733  734  735  736  737  738  739  740  741
 -----------------------------------
+---@type TNpcEntity
 local entity = {}
-
-entity.onTrade = function(player, npc, trade)
-end
 
 entity.onTrigger = function(player, npc)
     -- SHARPENING THE SWORD
     if player:getCharVar('sharpeningTheSwordCS') >= 2 then
         player:startEvent(52)
     end
-end
-
-entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

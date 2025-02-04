@@ -7,9 +7,10 @@
 -- Duration: 720 min
 -- Max bonus: 11111 exp
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     local result = 0
     if target:hasStatusEffect(xi.effect.DEDICATION) then
         result = xi.msg.basic.ITEM_UNABLE_TO_USE_2

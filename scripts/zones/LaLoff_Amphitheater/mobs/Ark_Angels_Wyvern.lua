@@ -2,14 +2,15 @@
 -- Area: LaLoff Amphitheater
 --  Mob: Ark Angel's Wyvern
 -----------------------------------
+---@type TMobEntity
 local entity = {}
 
-entity.onMobEngaged = function(mob, target)
+entity.onMobEngage = function(mob, target)
     local mobid = mob:getID()
 
     for member = mobid-7, mobid do
         local m = GetMobByID(member)
-        if m:getCurrentAction() == xi.act.ROAMING then
+        if m and m:getCurrentAction() == xi.act.ROAMING then
             m:updateEnmity(target)
         end
     end

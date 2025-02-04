@@ -3,9 +3,10 @@
 -- Scroll of Stonera II
 -- Teaches the black magic Stonera II
 -----------------------------------
+---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, item, param, caster)
     return target:canLearnSpell(xi.magic.spell.STONERA_II)
 end
 

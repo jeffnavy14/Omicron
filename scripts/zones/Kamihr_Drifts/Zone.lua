@@ -1,9 +1,11 @@
 -----------------------------------
 -- Zone: Kamihr Drifts
 -----------------------------------
+---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
+    xi.reives.setupZone(zone)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
