@@ -51,14 +51,14 @@ class AHAnnouncementModule : public CPPModule
     {
         TracyZoneScoped;
 
-        auto originalHandler = PacketParser[0x04E];
+        const auto originalHandler = PacketParser[0x04E];
 
-        auto newHandler = [this, originalHandler](map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data) -> void
+        const auto newHandler = [originalHandler](map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data) -> void
         {
             TracyZoneScoped;
 
             // Only intercept for action 0x0E: Purchasing Items
-            auto action = data.ref<uint8>(0x04);
+            const auto action = data.ref<uint8>(0x04);
             if (action == 0x0E)
             {
                 // !!!
@@ -66,13 +66,13 @@ class AHAnnouncementModule : public CPPModule
                 //     : If the original code changes, this will have to change too!
                 // !!!
 
-                uint32 price    = data.ref<uint32>(0x08);
-                uint16 itemid   = data.ref<uint16>(0x0C);
-                uint8  quantity = data.ref<uint8>(0x10);
+                const uint32 price    = data.ref<uint32>(0x08);
+                const uint16 itemid   = data.ref<uint16>(0x0C);
+                const uint8  quantity = data.ref<uint8>(0x10);
 
                 if (PChar->getStorage(LOC_INVENTORY)->GetFreeSlotsCount() == 0)
                 {
-                    PChar->pushPacket(new CAuctionHousePacket(action, 0xE5, 0, 0, 0, 0));
+                    PChar->pushPacket<CAuctionHousePacket>(action, 0xE5, 0, 0, 0, 0);
                 }
                 else
                 {
@@ -85,7 +85,7 @@ class AHAnnouncementModule : public CPPModule
                             {
                                 if (PChar->getStorage(LocID)->SearchItem(itemid) != ERROR_SLOTID)
                                 {
-                                    PChar->pushPacket(new CAuctionHousePacket(action, 0xE5, 0, 0, 0, 0));
+                                    PChar->pushPacket<CAuctionHousePacket>(action, 0xE5, 0, 0, 0, 0);
                                     return;
                                 }
                             }
@@ -95,6 +95,7 @@ class AHAnnouncementModule : public CPPModule
 
                         if (gil != nullptr && gil->isType(ITEM_CURRENCY) && gil->getQuantity() >= price && gil->getReserve() == 0)
                         {
+                            bool itemPurchasedSuccessfully = false;
                             // clang-format off
                             TransactionWrapper wrapper([&]() -> void
                             {
@@ -179,13 +180,20 @@ class AHAnnouncementModule : public CPPModule
                                             name[0] = std::toupper(name[0]);
 
                                             // Send message to seller!
-                                            message::send(sellerId, new CChatMessagePacket(PChar, MESSAGE_SYSTEM_3,
+                                            message::send(sellerId, std::make_unique<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3,
                                                 fmt::format("Your '{}' has sold to {} for {} gil!", name, PChar->name, price).c_str(), ""));
                                         }
+
+                                        itemPurchasedSuccessfully = true;
                                     }
                                 }
                             }); // TransactionWrapper
                             // clang-format on
+
+                            if (itemPurchasedSuccessfully)
+                            {
+                                return;
+                            }
                         }
                     }
 

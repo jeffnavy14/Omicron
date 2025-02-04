@@ -16,8 +16,7 @@ end
 
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(xi.ki.MYSTIC_ICE) then
-        player:addKeyItem(xi.ki.MYSTIC_ICE)
-        player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.ki.MYSTIC_ICE)
+        npcUtil.giveKeyItem(player, xi.ki.MYSTIC_ICE)
     else
         player:messageSpecial(ID.text.NOTHING_OUT_OF_ORDINARY)
     end

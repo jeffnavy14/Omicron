@@ -25,7 +25,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     local duration = 30 --  Reference: http://wiki.ffxiclopedia.org/wiki/Absolute_Terror
 
     if skill:isAoE() then
-        duration = 10
+        duration = math.random(10, 18)
     end
 
     skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.TERROR, power, 0, duration))

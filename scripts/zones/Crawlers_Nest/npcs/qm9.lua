@@ -14,7 +14,7 @@ end
 
 entity.onTrigger = function(player, npc)
     if
-        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_BOY_S_DREAM) == xi.questStatus.QUEST_ACCEPTED and
+        player:getQuestStatus(xi.questLog.SANDORIA, xi.quest.id.sandoria.A_BOYS_DREAM) == xi.questStatus.QUEST_ACCEPTED and
         VanadielDayOfTheYear() ~= player:getCharVar('DreadbugNM_Day')
     then
         if
