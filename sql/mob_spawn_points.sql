@@ -8021,7 +8021,7 @@ INSERT INTO `mob_spawn_points` VALUES (16928954,'Enhanced_Pugil','Enhanced Pugil
 INSERT INTO `mob_spawn_points` VALUES (16928955,'Enhanced_Pugil','Enhanced Pugil',50,-420.000,-80.500,-143.500,64);
 INSERT INTO `mob_spawn_points` VALUES (16928956,'Enhanced_Pugil','Enhanced Pugil',50,-423.500,-80.500,-140.000,128);
 INSERT INTO `mob_spawn_points` VALUES (16928957,'Enhanced_Pugil','Enhanced Pugil',50,-410.000,-78.500,-130.000,96);
-INSERT INTO `mob_spawn_points` VALUES (16928958,'Armoury_Crate_Western','Armoury Crate',136,-600.000,85.000,-120.000,64);
+
 INSERT INTO `mob_spawn_points` VALUES (16928959,'Enhanced_Vulture','Enhanced Vulture',51,-600.000,84.500,-124.000,64);
 INSERT INTO `mob_spawn_points` VALUES (16928960,'Enhanced_Vulture','Enhanced Vulture',51,-602.000,84.500,-120.000,64);
 INSERT INTO `mob_spawn_points` VALUES (16928961,'Enhanced_Vulture','Enhanced Vulture',51,-598.000,84.500,-120.000,64);
