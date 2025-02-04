@@ -2758,7 +2758,7 @@ INSERT INTO `mob_skills` VALUES (2740,1890,'silent_storm',0,0.0,7.0,2000,1500,4,
 INSERT INTO `mob_skills` VALUES (2743,1509,'string_shredder',0,0.0,7.0,2000,1,4,0,324,0,10,4,0);
 INSERT INTO `mob_skills` VALUES (2744,1510,'armor_shatterer',0,0.0,7.0,2000,1,4,0,324,0,11,8,0);
 INSERT INTO `mob_skills` VALUES (2745,433,'heat_capacitor',0,0.0,7.0,2000,0,16,4,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (2746,434,'barrage_turbine',0,0.0,7.0,2000,0,16,4,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (2746,16,'barrage_turbine',0,0.0,25.0,2000,0,4,4,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (2747,439,'disruptor',0,0.0,7.0,2000,0,4,4,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2748,1922,'mantid_melee_double',0,0.0,7.0,2000,0,4,4,0,0,0,0,0); -- kaggan melee specials
 -- INSERT INTO `mob_skills` VALUES (2749,1923,'mantid_melee_slice',0,0.0,7.0,2000,0,4,4,0,0,0,0,0);  -- kaggan melee specials

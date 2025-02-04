@@ -158,6 +158,7 @@
 #include "utils/battleutils.h"
 #include "utils/blueutils.h"
 #include "utils/charutils.h"
+#include "utils/dboxutils.h"
 #include "utils/guildutils.h"
 #include "utils/instanceutils.h"
 #include "utils/itemutils.h"
@@ -2495,7 +2496,7 @@ void CLuaBaseEntity::openSendBox()
 {
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        charutils::OpenSendBox(PChar, 0x0D, 2);
+        dboxutils::OpenSendBox(PChar, 0x0D, 2);
     }
 }
 
@@ -5249,6 +5250,24 @@ uint8 CLuaBaseEntity::getRace()
     }
 
     return static_cast<CCharEntity*>(m_PBaseEntity)->look.race;
+}
+
+/************************************************************************
+ *  Function: getFace()
+ *  Purpose : Returns the integer value of the face of a character
+ *  Example : player:getFace()
+ *  Notes   :
+ ************************************************************************/
+
+uint8 CLuaBaseEntity::getFace()
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        return 0;
+    }
+
+    return static_cast<CCharEntity*>(m_PBaseEntity)->look.face;
 }
 
 /************************************************************************
@@ -14202,6 +14221,29 @@ uint16 CLuaBaseEntity::getStat(uint16 statId, sol::variadic_args va)
             value               = PEntity->ATT(weaponSlot);
         }
         break;
+        case Mod::RATT:
+        {
+            SKILLTYPE skill = SKILL_NONE;
+
+            if (PEntity->objtype == TYPE_PET && static_cast<CPetEntity*>(PEntity)->getPetType() == PET_TYPE::AUTOMATON)
+            {
+                skill = SKILLTYPE::SKILL_AUTOMATON_RANGED;
+                value = PEntity->RATT(skill);
+            }
+            else
+            {
+                CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOTTYPE::SLOT_RANGED]);
+                if (PWeapon)
+                {
+                    value = PEntity->RATT(PWeapon->getSkillType());
+                }
+                else
+                {
+                    value = PEntity->RATT(SKILL_MARKSMANSHIP); // TODO: does this edge case exist? will mobs or trusts hit this?
+                }
+            }
+        }
+        break;
         case Mod::DEF:
             value = PEntity->DEF();
             break;
@@ -15153,82 +15195,178 @@ void CLuaBaseEntity::trustPartyMessage(uint32 message_id)
 }
 
 /************************************************************************
- *  Function: addSimpleGambit()
- *  Purpose :
- *  Example : trust:addSimpleGambit(target, condition, condition_arg, reaction, selector, selector_arg)
+ *  Function: addGambit(targetSelector, conditionsTable, actionsTable, retry)
+ *  conditionsTable: { condition, arg1 }
+ *  actionsTable: { reactionType, selector, selectorArg }
+ *  Purpose  : Adds a behavior to the gambit system with an arbitrary number of predicates and reactions
+ *  Examples : trust:addGambit(ai.t.CASTER, {
+ *                  { ai.c.NOT_STATUS, xi.effect.REFRESH },
+ *                  { ai.c.NOT_STATUS, xi.effect.SUBLIMATION_ACTIVATED },
+ *            }, { ai.r.MA, ai.s.HIGHEST, xi.magic.spellFamily.REFRESH })
+ *            trust:addGambit(ai.t.SELF, { ai.c.NOT_STATUS, xi.effect.HASTE }, { ai.r.MA, ai.s.HIGHEST, xi.magic.spellFamily.HASTE })
+ *            trust:addGambit(ai.t.TARGET, { ai.c.NOT_STATUS, xi.effect.FLASH }, {
+ *                  { ai.r.JA, ai.s.SPECIFIC, xi.ja.DIVINE_EMBLEM },
+ *                  { ai.r.MA, ai.s.SPECIFIC, xi.magic.spellFamily.FLASH } })
  *  Notes   : Adds a behavior to the gambit system
  ************************************************************************/
 
-std::string CLuaBaseEntity::addSimpleGambit(uint16 targ, uint16 cond, uint32 condition_arg, uint16 react, uint16 select, uint32 selector_arg, sol::object const& retry)
+std::string CLuaBaseEntity::addGambit(uint16 targ, sol::table const& predicates, sol::table const& reactions, sol::object const& retry)
 {
-    if (m_PBaseEntity->objtype != TYPE_TRUST)
+    const auto* PTrust = dynamic_cast<CTrustEntity*>(m_PBaseEntity);
+    if (!PTrust)
     {
         ShowWarning("Invalid Entity calling function (%s).", m_PBaseEntity->getName());
         return {};
     }
 
     using namespace gambits;
+    Gambit_t g;
 
-    auto target    = static_cast<G_TARGET>(targ);
-    auto condition = static_cast<G_CONDITION>(cond);
+    const auto targetSelector = static_cast<G_TARGET>(targ);
 
-    auto reaction = static_cast<G_REACTION>(react);
-    auto selector = static_cast<G_SELECT>(select);
+    auto extractPredicates = [](sol::table const& conditionsTable) -> std::vector<PredicateGroup_t>
+    {
+        std::vector<PredicateGroup_t> predicateGroups;
+
+        if (conditionsTable.get_type() == sol::type::table)
+        {
+            // Check if we're dealing with a table of conditions
+            // { { condition, arg1 }, { condition, arg1 } }
+            if (conditionsTable.get<sol::optional<sol::table>>(1))
+            {
+                // Iterate over each table in the main table
+                for (const auto& conditionEntry : conditionsTable)
+                {
+                    std::vector<Predicate_t> wrappedPredicates;
+                    G_LOGIC                  logic = G_LOGIC::AND; // Predicates are AND by default, all must be true
+
+                    auto conditionTable = conditionEntry.second.as<sol::table>();
+                    // Check if we're dealing with conditions wrapped in a logic operator
+                    // { ai.l.OR({ condition, arg1 }, { condition, arg1 }) }
+                    //
+                    // The logic function will wrap the conditions in a table
+                    // { logic = ai.l.OR, conditions = { { condition, arg1 }, { condition, arg1 } } }
+                    if (conditionTable["logic"].valid())
+                    {
+                        logic                 = static_cast<G_LOGIC>(conditionTable.get<uint16>("logic"));
+                        auto nestedPredicates = conditionTable.get<sol::table>("conditions");
+                        for (const auto& predicateDefinitionPair : nestedPredicates)
+                        {
+                            const sol::table& predicateTable = predicateDefinitionPair.second.as<sol::table>();
+                            auto              predicateType  = static_cast<G_CONDITION>(predicateTable.get<uint16>(1));
+                            auto              predicateArg   = predicateTable.get<uint32>(2);
+                            wrappedPredicates.emplace_back(predicateType, predicateArg);
+                        }
+                        predicateGroups.emplace_back(logic, wrappedPredicates);
+                    }
+                    else
+                    {
+                        // Else we're dealing with unwrapped predicates, assumed to be AND together:
+                        // { { condition, arg1 }, { condition, arg1 } }
+                        auto predicateType = static_cast<G_CONDITION>(conditionTable.get<uint16>(1));
+                        auto predicateArg  = conditionTable.get<uint32>(2);
+                        wrappedPredicates.emplace_back(predicateType, predicateArg);
+                    }
+                    predicateGroups.emplace_back(logic, wrappedPredicates);
+                }
+            }
+            else if (conditionsTable.size() == 2)
+            {
+                // Single predicate
+                // { condition, arg1 }
+                auto condition     = static_cast<G_CONDITION>(conditionsTable.get<uint16>(1));
+                auto condition_arg = conditionsTable.get<uint32>(2);
+                predicateGroups.emplace_back(G_LOGIC::AND, std::vector<Predicate_t>{ { condition, condition_arg } });
+            }
+        }
+        return predicateGroups;
+    };
+
+    auto extractReactions = [](sol::table const& reactionsTable) -> std::vector<Action_t>
+    {
+        std::vector<Action_t> actions;
+
+        if (reactionsTable.get_type() == sol::type::table)
+        {
+            // Process table of reactions
+            // { { reactionType, selector, selectorArg }, { reactionType, selector, selectorArg } }
+            if (reactionsTable.get<sol::optional<sol::table>>(1))
+            {
+                for (const auto& reactionDefinitionPair : reactionsTable)
+                {
+                    auto reactionTable       = reactionDefinitionPair.second.as<sol::table>();
+                    auto reactionType        = static_cast<G_REACTION>(reactionTable.get<uint16>(1));
+                    auto reactionSelector    = static_cast<G_SELECT>(reactionTable.get<uint16>(2));
+                    auto reactionSelectorArg = reactionTable.get<uint32>(3);
+                    actions.emplace_back(reactionType, reactionSelector, reactionSelectorArg);
+                }
+            }
+            else if (reactionsTable.size() == 3)
+            {
+                // Single reaction
+                // { reactionType, selector, selectorArg }
+                auto reactionType        = static_cast<G_REACTION>(reactionsTable.get<uint16>(1));
+                auto reactionSelector    = static_cast<G_SELECT>(reactionsTable.get<uint16>(2));
+                auto reactionSelectorArg = reactionsTable.get<uint32>(3);
+                actions.emplace_back(reactionType, reactionSelector, reactionSelectorArg);
+            }
+        }
+        return actions;
+    };
+
+    g.predicate_groups = extractPredicates(predicates);
+    g.actions          = extractReactions(reactions);
 
     // Optional
-    uint16 retry_delay = (retry != sol::lua_nil) ? retry.as<uint16>() : 0;
+    const uint16 retryDelay = (retry != sol::lua_nil) ? retry.as<uint16>() : 0;
+    const auto*  controller = static_cast<CTrustController*>(PTrust->PAI->GetController());
 
-    Gambit_t g;
-    g.predicates.emplace_back(target, condition, condition_arg);
-    g.actions.emplace_back(reaction, selector, selector_arg);
-    g.retry_delay = retry_delay;
-    g.identifier  = fmt::format("{}_{}_{}_{}_{}_{}_{}", targ, cond, condition_arg, react, select, selector_arg, retry_delay);
-
-    auto* trust      = static_cast<CTrustEntity*>(m_PBaseEntity);
-    auto* controller = static_cast<CTrustController*>(trust->PAI->GetController());
+    g.retry_delay     = retryDelay;
+    g.target_selector = targetSelector;
+    g.identifier      = controller->m_GambitsContainer->NewGambitIdentifier(g);
 
     return controller->m_GambitsContainer->AddGambit(g);
 }
 
 /************************************************************************
- *  Function: removeSimpleGambit()
+ *  Function: removeGambit()
  *  Purpose :
- *  Example : trust:removeSimpleGambit(id)
+ *  Example : trust:removeGambit(id)
  *  Notes   : Removes a behavior from the gambit system, using the id returned
- *          : from addSimpleGambit
+ *          : from addGambit
  ************************************************************************/
 
-void CLuaBaseEntity::removeSimpleGambit(std::string const& id)
+void CLuaBaseEntity::removeGambit(std::string const& id)
 {
-    if (m_PBaseEntity->objtype != TYPE_TRUST)
+    const auto* PTrust = dynamic_cast<CTrustEntity*>(m_PBaseEntity);
+    if (!PTrust)
     {
         ShowWarning("Invalid Entity calling function (%s).", m_PBaseEntity->getName());
         return;
     }
 
-    auto* trust      = static_cast<CTrustEntity*>(m_PBaseEntity);
-    auto* controller = static_cast<CTrustController*>(trust->PAI->GetController());
+    auto* controller = static_cast<CTrustController*>(PTrust->PAI->GetController());
 
     controller->m_GambitsContainer->RemoveGambit(id);
 }
 
 /************************************************************************
- *  Function: removeAllSimpleGambits()
+ *  Function: removeAllGambits()
  *  Purpose :
- *  Example : trust:removeAllSimpleGambits()
+ *  Example : trust:removeAllGambits()
  *  Notes   : Removes all gambits from a trust.
  ************************************************************************/
 
-void CLuaBaseEntity::removeAllSimpleGambits()
+void CLuaBaseEntity::removeAllGambits()
 {
-    if (m_PBaseEntity->objtype != TYPE_TRUST)
+    const auto* PTrust = dynamic_cast<CTrustEntity*>(m_PBaseEntity);
+    if (!PTrust)
     {
         ShowWarning("Invalid Entity calling function (%s).", m_PBaseEntity->getName());
         return;
     }
 
-    auto* trust      = static_cast<CTrustEntity*>(m_PBaseEntity);
-    auto* controller = static_cast<CTrustController*>(trust->PAI->GetController());
+    auto* controller = static_cast<CTrustController*>(PTrust->PAI->GetController());
 
     controller->m_GambitsContainer->RemoveAllGambits();
 }
@@ -18607,7 +18745,7 @@ auto CLuaBaseEntity::getContestRewardStatus() -> sol::table
         std::string Query = "SELECT contestrank, share "
                             "FROM   fishing_contest_entries "
                             "WHERE  charid = (?) "
-                            "AND    claimed != 1; ";
+                            "AND    claimed != 1";
 
         auto ret = db::preparedStmt(Query, PChar->id);
         if (ret && ret->rowsCount() > 0 && ret->next())
@@ -18887,6 +19025,7 @@ void CLuaBaseEntity::Register()
 
     // Player Appearance
     SOL_REGISTER("getRace", CLuaBaseEntity::getRace);
+    SOL_REGISTER("getFace", CLuaBaseEntity::getFace);
     SOL_REGISTER("getGender", CLuaBaseEntity::getGender);
     SOL_REGISTER("getName", CLuaBaseEntity::getName);
     SOL_REGISTER("getPacketName", CLuaBaseEntity::getPacketName);
@@ -19408,9 +19547,9 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("clearTrusts", CLuaBaseEntity::clearTrusts);
     SOL_REGISTER("getTrustID", CLuaBaseEntity::getTrustID);
     SOL_REGISTER("trustPartyMessage", CLuaBaseEntity::trustPartyMessage);
-    SOL_REGISTER("addSimpleGambit", CLuaBaseEntity::addSimpleGambit);
-    SOL_REGISTER("removeSimpleGambit", CLuaBaseEntity::removeSimpleGambit);
-    SOL_REGISTER("removeAllSimpleGambits", CLuaBaseEntity::removeAllSimpleGambits);
+    SOL_REGISTER("addGambit", CLuaBaseEntity::addGambit);
+    SOL_REGISTER("removeGambit", CLuaBaseEntity::removeGambit);
+    SOL_REGISTER("removeAllGambits", CLuaBaseEntity::removeAllGambits);
     SOL_REGISTER("setTrustTPSkillSettings", CLuaBaseEntity::setTrustTPSkillSettings);
 
     // Mob Entity-Specific

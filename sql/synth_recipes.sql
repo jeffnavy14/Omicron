@@ -52,8 +52,8 @@ CREATE TABLE `synth_recipes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 DELIMITER $$
-DROP TRIGGER IF EXISTS ensure_ingredients_are_ordered;
-CREATE TRIGGER ensure_ingredients_are_ordered
+DROP TRIGGER IF EXISTS ensure_synth_ingredients_are_ordered;
+CREATE TRIGGER ensure_synth_ingredients_are_ordered
      BEFORE INSERT ON synth_recipes FOR EACH ROW BEGIN
           IF NEW.Ingredient2 > 0 AND NEW.Ingredient1 > NEW.Ingredient2
           THEN
@@ -234,6 +234,7 @@ INSERT INTO `synth_recipes` VALUES (1034,1,0,29,0,0,0,0,0,0,0,4100,4242,17090,0,
 INSERT INTO `synth_recipes` VALUES (1036,0,0,30,0,0,0,0,0,0,0,4099,4241,8810,0,0,0,0,0,0,0,17321,17321,17321,17321,33,33,33,33,'Silver Arrow',NULL);
 INSERT INTO `synth_recipes` VALUES (1037,0,0,30,0,0,0,0,0,0,0,4099,4241,715,1217,1222,0,0,0,0,0,17321,17321,17321,17321,33,66,99,99,'Silver Arrow',NULL);
 INSERT INTO `synth_recipes` VALUES (1038,0,0,30,0,7,0,0,0,0,0,4098,4240,705,744,841,841,0,0,0,0,17321,17321,17321,17321,33,66,99,99,'Silver Arrow',NULL);
+INSERT INTO `synth_recipes` VALUES (1039,0,0,0,59,0,0,0,0,0,0,4098,4240,664,0,0,0,0,0,0,0,1773,1773,1773,1773,1,1,1,1,'Dark Scales','COP');
 INSERT INTO `synth_recipes` VALUES (1501,0,0,31,0,0,0,0,0,0,0,4099,4241,706,714,0,0,0,0,0,0,97,97,97,97,1,1,1,1,'Book Holder',NULL);
 INSERT INTO `synth_recipes` VALUES (1502,1,0,31,0,0,0,0,0,0,0,4100,4242,17116,0,0,0,0,0,0,0,707,637,793,793,1,1,1,1,'Misery Staff (desynth)',NULL);
 INSERT INTO `synth_recipes` VALUES (1503,0,1986,31,0,0,0,0,0,0,0,4098,4240,727,727,727,1657,0,0,0,0,728,728,728,728,3,6,9,12,'Dogwood Lumber',NULL);

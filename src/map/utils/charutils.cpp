@@ -5097,8 +5097,14 @@ namespace charutils
 
                 PChar->UpdateHealth();
 
-                PChar->health.hp = PChar->GetMaxHP();
-                PChar->health.mp = PChar->GetMaxMP();
+                if (!expFromRaise)
+                {
+                    // Level up animation and message
+                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[PChar->GetMJob()], 0, 9));
+                    // Set HP and MP to max range
+                    PChar->health.hp = PChar->GetMaxHP();
+                    PChar->health.mp = PChar->GetMaxMP();
+                }
 
                 SaveCharStats(PChar);
                 SaveCharJob(PChar, PChar->GetMJob());
@@ -5115,8 +5121,6 @@ namespace charutils
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
-
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageCombatPacket>(PChar, PMob, PChar->jobs.job[PChar->GetMJob()], 0, 9));
                 PChar->pushPacket<CCharStatsPacket>(PChar);
 
                 luautils::OnPlayerLevelUp(PChar);
@@ -6086,35 +6090,6 @@ namespace charutils
             PChar->look.main            = 0;
         }
         BuildingCharWeaponSkills(PChar);
-    }
-
-    void OpenSendBox(CCharEntity* PChar, uint8 action, uint8 boxtype)
-    {
-        PChar->UContainer->Clean();
-        PChar->UContainer->SetType(UCONTAINER_SEND_DELIVERYBOX);
-        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, 1);
-    }
-
-    void OpenRecvBox(CCharEntity* PChar, uint8 action, uint8 boxtype)
-    {
-        PChar->UContainer->Clean();
-        PChar->UContainer->SetType(UCONTAINER_RECV_DELIVERYBOX);
-        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, 1);
-    }
-
-    bool isSendBoxOpen(CCharEntity* PChar)
-    {
-        return PChar->UContainer->GetType() == UCONTAINER_SEND_DELIVERYBOX;
-    }
-
-    bool isRecvBoxOpen(CCharEntity* PChar)
-    {
-        return PChar->UContainer->GetType() == UCONTAINER_RECV_DELIVERYBOX;
-    }
-
-    bool isAnyDeliveryBoxOpen(CCharEntity* PChar)
-    {
-        return isSendBoxOpen(PChar) || isRecvBoxOpen(PChar);
     }
 
     bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility)
