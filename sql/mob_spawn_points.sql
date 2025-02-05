@@ -70537,14 +70537,14 @@ INSERT INTO `mob_spawn_points` VALUES (17621570,'Mumor','Mumor',74,0.000,0.000,0
 -- ------------------------------------------------------------
 
 -- Trial by Fire
-INSERT INTO `mob_spawn_points` VALUES (17625089,'Ifrit_Prime_Trial','Ifrit Prime',1,503.000,41.000,-367.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17625090,'Ifrit_Prime_Trial','Ifrit Prime',1,22.924,-18.996,32.955,105);
-INSERT INTO `mob_spawn_points` VALUES (17625091,'Ifrit_Prime_Trial','Ifrit Prime',1,-376.950,-79.007,513.097,105);
+INSERT INTO `mob_spawn_points` VALUES (17625089,'Ifrit_Prime_TBF','Ifrit Prime',1,503.000,41.000,-367.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17625090,'Ifrit_Prime_TBF','Ifrit Prime',1,22.924,-18.996,32.955,105);
+INSERT INTO `mob_spawn_points` VALUES (17625091,'Ifrit_Prime_TBF','Ifrit Prime',1,-376.950,-79.007,513.097,105);
 
 -- Trial-size Trial by Fire
-INSERT INTO `mob_spawn_points` VALUES (17625092,'Ifrit_Prime_Trial','Ifrit Prime',2,503.000,41.000,-367.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17625093,'Ifrit_Prime_Trial','Ifrit Prime',2,22.924,-18.996,32.955,105);
-INSERT INTO `mob_spawn_points` VALUES (17625094,'Ifrit_Prime_Trial','Ifrit Prime',2,-376.950,-79.007,513.097,105);
+INSERT INTO `mob_spawn_points` VALUES (17625092,'Ifrit_Prime_TSTBF','Ifrit Prime',2,503.000,41.000,-367.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17625093,'Ifrit_Prime_TSTBF','Ifrit Prime',2,22.924,-18.996,32.955,105);
+INSERT INTO `mob_spawn_points` VALUES (17625094,'Ifrit_Prime_TSTBF','Ifrit Prime',2,-376.950,-79.007,513.097,105);
 
 -- Waking the Beast
 INSERT INTO `mob_spawn_points` VALUES (17625095,'Ifrit_Prime_WTB','Ifrit Prime',3,503,41,-367,105);

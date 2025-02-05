@@ -25,8 +25,6 @@
 #include "event_info.h"
 #include "item_container.h"
 #include "monstrosity.h"
-#include "packets/char.h"
-#include "packets/entity_update.h"
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
@@ -288,7 +286,6 @@ class CRangeState;
 class CItemState;
 class CItemUsable;
 
-typedef std::deque<CBasicPacket*>      PacketList_t;
 typedef std::map<uint32, CBaseEntity*> SpawnIDList_t;
 typedef std::vector<EntityID_t>        BazaarList_t;
 
@@ -416,6 +413,8 @@ public:
 
     uint8 GetGender();
 
+    auto getPacketList() const -> const std::deque<std::unique_ptr<CBasicPacket>>&;
+    auto getPacketListCopy() -> std::deque<std::unique_ptr<CBasicPacket>>; // Return a COPY of packet list
     void clearPacketList();
 
     template <typename T, typename... Args>
@@ -425,16 +424,17 @@ public:
         pushPacket(std::make_unique<T>(std::forward<Args>(args)...));
     }
 
-    void          pushPacket(CBasicPacket*);                                                     // Adding a copy of a package to the PacketList
-    void          pushPacket(std::unique_ptr<CBasicPacket>);                                     // Push packet to packet list
-    void          updateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask);     // Push or update a char packet
-    void          updateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, uint8 updatemask); // Push or update an entity update packet
-    bool          isPacketListEmpty();
-    CBasicPacket* popPacket();     // Get first packet from PacketList
-    PacketList_t  getPacketList(); // Return a COPY of packet list
-    size_t        getPacketCount();
-    void          erasePackets(uint8 num); // Erase num elements from front of packet list
-    virtual void  HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
+    void   pushPacket(std::unique_ptr<CBasicPacket>&&);                                   // Push packet to packet list
+    void   updateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, uint8 updatemask); // Push or update an entity update packet
+    bool   isPacketListEmpty();
+    auto   popPacket() -> std::unique_ptr<CBasicPacket>; // Get first packet from PacketList
+    size_t getPacketCount();
+    void   erasePackets(uint8 num); // Erase num elements from front of packet list
+    bool   isPacketFiltered(std::unique_ptr<CBasicPacket>& packet);
+
+    bool pendingPositionUpdate;
+
+    virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
 
     CLinkshell*    PLinkshell1;
     CLinkshell*    PLinkshell2;
@@ -478,8 +478,7 @@ public:
 
     std::unique_ptr<monstrosity::MonstrosityData_t> m_PMonstrosity;
 
-    uint32     m_InsideTriggerAreaID; // The ID of the trigger area the character is inside
-    uint8      m_LevelRestriction;    // Character level limit
+    uint8      m_LevelRestriction; // Character level limit
     uint16     m_Costume;
     uint16     m_Costume2;
     uint32     m_AHHistoryTimestamp;
@@ -497,8 +496,6 @@ public:
 
     uint32 m_PlayTime;
     uint32 m_SaveTime;
-
-    uint32 m_LastYell;
 
     time_point m_LeaderCreatedPartyTime; // Time that a party member joined and this player was leader.
 
@@ -545,8 +542,6 @@ public:
 
     CItemEquipment* getEquip(SLOTTYPE slot);
 
-    CBasicPacket* PendingPositionPacket = nullptr;
-
     bool requestedInfoSync = false;
 
     fishresponse_t* hookedFish;   // Currently hooked fish/item/monster
@@ -588,6 +583,11 @@ public:
 
     int32 GetTimeCreated();
     uint8 getHighestJobLevel();
+
+    bool isInTriggerArea(uint32 triggerAreaId);
+    void onTriggerAreaEnter(uint32 tiggerAreaId);
+    void onTriggerAreaLeave(uint32 triggerAreaId);
+    void clearTriggerAreas();
 
     bool isInEvent();
     bool isNpcLocked();
@@ -662,13 +662,14 @@ private:
 
     std::unordered_map<std::string, std::pair<int32, uint32>> charVarCache;
     std::unordered_set<std::string>                           charVarChanges;
+    std::unordered_set<uint32>                                charTriggerAreaIDs; // Holds any TriggerArea IDs that the player is currently within the bounds of
 
     uint8      dataToPersist = 0;
     time_point nextDataPersistTime;
 
-    PacketList_t                                     PacketList;           // The list of packets to be sent to the character during the next network cycle
-    std::unordered_map<uint32, CCharPacket*>         PendingCharPackets;   // Keep track of which char packets are queued up for this char, such that they can be updated
-    std::unordered_map<uint32, CEntityUpdatePacket*> PendingEntityPackets; // Keep track of which entity update packets are queued up for this char, such that they can be updated
+    // TODO: Don't use raw ptrs for this, but don't duplicate whole packets with unique_ptr either.
+    std::deque<std::unique_ptr<CBasicPacket>> PacketList;          // The list of packets to be sent to the character during the next network cycle
+    std::unordered_map<uint32, CBasicPacket*> EntityUpdatePackets; // Keep track of entity update packets by ID, such that they can be updated
 };
 
 #endif

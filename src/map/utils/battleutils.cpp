@@ -28,10 +28,8 @@
 #include <cstring>
 #include <unordered_map>
 
-#include "packets/char.h"
 #include "packets/char_health.h"
-#include "packets/char_update.h"
-#include "packets/entity_update.h"
+#include "packets/char_status.h"
 #include "packets/inventory_finish.h"
 #include "packets/message_basic.h"
 
@@ -1121,13 +1119,84 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, actionTarget_t* Action, bool isFirstSwing, CItemWeapon* weapon, int32 finaldamage)
+    void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, actionTarget_t* Action, bool isFirstSwing, CItemWeapon* weapon, int32 finaldamage, CAttack& attack)
     {
         CCharEntity* PChar = nullptr;
 
         if (PAttacker->objtype == TYPE_PC)
         {
-            PChar = (CCharEntity*)PAttacker;
+            PChar = dynamic_cast<CCharEntity*>(PAttacker);
+
+            if (!settings::get<bool>("map.DISABLE_TREASURE_HUNTER_PROCS"))
+            {
+                // TODO: cleanup lua further so we can handle all this add effect stuff somewhere else
+                // Treasure hunter takes priority over enspells
+                if (PChar &&
+                    finaldamage > 0 &&
+                    isFirstSwing &&
+                    PDefender->objtype == TYPE_MOB &&
+                    PChar->GetMJob() == JOB_THF &&
+                    PChar->hasTrait(TRAITTYPE::TRAIT_TREASURE_HUNTER)) // TH trait as a requirement is assumed, but likely. Could this just be a level 15 check instead?
+                {
+                    auto PMob = dynamic_cast<CMobEntity*>(PDefender);
+                    if (PMob && PMob->m_THLvl < (12 + PChar->getMod(Mod::TREASURE_HUNTER_CAP))) // TH proc cap is 12 + job gifts
+                    {
+                        int16 playerTH = PChar->getMod(Mod::TREASURE_HUNTER);
+
+                        int16 THdiff = PMob->m_THLvl - playerTH;
+
+                        // Auto upgrade TH to mod level up to TH8
+                        if (THdiff < 0 && PMob->m_THLvl < 8)
+                        {
+                            PMob->m_THLvl = std::min<int16>(8, playerTH);
+
+                            // Recalculate diff
+                            THdiff = PMob->m_THLvl - playerTH;
+                        }
+
+                        float procRate = 0.04f / std::pow<float>(2.f, std::max<int16>(0, THdiff)); // Numbers below diff of -1 (i.e. TH 10 vs mobs TH8 level) are not known. Assume no extra bonus for now.
+
+                        // Not known if Feint and Gifts are multiplicative or additive. Currently assuming additive
+                        // The mob has an evasion down from feint that applies this mod.
+                        // The player has job point gifts that apply this mod.
+                        float procRateBonus = 1.f + (PChar->getMod(Mod::TREASURE_HUNTER_PROC) + PMob->getMod(Mod::TREASURE_HUNTER_PROC)) / 100.f;
+
+                        // It's unlikely that SATA bonus is multiplicative SA * TA bonus -- the rate would be astronomically higher if it was
+                        // Add the two together if they exist
+                        float sneakAttackTrickAttackBonus = 0.f;
+
+                        // BG wiki claims 10x bonus for SA
+                        if (attack.CheckHadSneakAttack())
+                        {
+                            sneakAttackTrickAttackBonus += 10.f;
+                        }
+
+                        // BG wiki claims 10x bonus for TA
+                        if (attack.CheckHadTrickAttack())
+                        {
+                            sneakAttackTrickAttackBonus += 10.f;
+                        }
+
+                        // way greater than epsilon just in case...
+                        if (sneakAttackTrickAttackBonus > 1.f)
+                        {
+                            procRateBonus *= sneakAttackTrickAttackBonus;
+                        }
+
+                        procRate *= procRateBonus;
+
+                        if (xirand::GetRandomNumber<float>(0.f, 1.f) <= procRate)
+                        {
+                            PMob->m_THLvl++;
+
+                            Action->additionalEffect = SUBEFFECT_LIGHT_DAMAGE; // Looks like enlight, and is reflected in the capture
+                            Action->addEffectMessage = static_cast<uint16>(MsgStd::TreasureHunterProc);
+                            Action->addEffectParam   = PMob->m_THLvl;
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         Action->additionalEffect = SUBEFFECT_NONE;
@@ -1157,11 +1226,11 @@ namespace battleutils
         {
             if (PAttacker->objtype == TYPE_PC && PAttacker->PParty != nullptr)
             {
-                for (auto& member : PAttacker->PParty->members)
+                for (auto* PMember : PAttacker->PParty->members)
                 {
-                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_DRAIN_DAZE, member->id);
-                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_HASTE_DAZE, member->id);
-                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_ASPIR_DAZE, member->id);
+                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_DRAIN_DAZE, PMember->id);
+                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_HASTE_DAZE, PMember->id);
+                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_ASPIR_DAZE, PMember->id);
                 }
             }
             else if (PAttacker->objtype == TYPE_TRUST && PAttacker->PMaster)
@@ -1384,7 +1453,7 @@ namespace battleutils
 
                 if (PAttacker->objtype == TYPE_PC && PAttacker->PParty != nullptr)
                 {
-                    if (auto* PChar = dynamic_cast<CCharEntity*>(PAttacker))
+                    if (PChar)
                     {
                         // clang-format off
                         PChar->ForPartyWithTrusts([&](CBattleEntity* PMember)
@@ -1399,10 +1468,10 @@ namespace battleutils
                 }
                 else if (PAttacker->objtype == TYPE_TRUST)
                 {
-                    if (auto* PChar = dynamic_cast<CCharEntity*>(PAttacker->PMaster))
+                    if (auto* PMaster = dynamic_cast<CCharEntity*>(PAttacker->PMaster))
                     {
                         // clang-format off
-                        PChar->ForPartyWithTrusts([&](CBattleEntity* PMember)
+                        PMaster->ForPartyWithTrusts([&](CBattleEntity* PMember)
                         {
                             if (attackerID == PMember->id)
                             {
@@ -2509,7 +2578,7 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    int32 TakeSpellDamage(CBattleEntity* PDefender, CCharEntity* PAttacker, CSpell* PSpell, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
+    int32 TakeSpellDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, CSpell* PSpell, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
     {
         // Scarlet Delirium: Updates status effect power with damage bonus
         battleutils::HandleScarletDelirium(PDefender, damage);
@@ -2545,7 +2614,7 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    int32 TakeSwipeLungeDamage(CBattleEntity* PDefender, CCharEntity* PAttacker, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
+    int32 TakeSwipeLungeDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, int32 damage, ATTACK_TYPE attackType, DAMAGE_TYPE damageType)
     {
         damage = CheckAndApplyDamageCap(damage, PDefender);
 
@@ -3865,8 +3934,8 @@ namespace battleutils
 
             { SC_LIGHT, { ELEMENT_LIGHT, ELEMENT_FIRE, ELEMENT_WIND, ELEMENT_THUNDER } },
             { SC_DARKNESS, { ELEMENT_DARK, ELEMENT_EARTH, ELEMENT_WATER, ELEMENT_ICE } },
-            { SC_LIGHT_II, { ELEMENT_LIGHT } },
-            { SC_DARKNESS_II, { ELEMENT_DARK } }
+            { SC_LIGHT_II, { ELEMENT_LIGHT, ELEMENT_FIRE, ELEMENT_WIND, ELEMENT_THUNDER } },
+            { SC_DARKNESS_II, { ELEMENT_DARK, ELEMENT_EARTH, ELEMENT_WATER, ELEMENT_ICE } }
         };
 
         return resonanceToElement.at(skillchain);
@@ -4072,34 +4141,34 @@ namespace battleutils
                 {
                     switch (toolID)
                     {
-                        case ITEM_UCHITAKE:
-                        case ITEM_TSURARA:
-                        case ITEM_KAWAHORI_OGI:
-                        case ITEM_MAKIBISHI:
-                        case ITEM_HIRAISHIN:
-                        case ITEM_MIZU_DEPPO:
-                            toolID = ITEM_INOSHISHINOFUDA;
+                        case ITEMID::UCHITAKE:
+                        case ITEMID::TSURARA:
+                        case ITEMID::KAWAHORI_OGI:
+                        case ITEMID::MAKIBISHI:
+                        case ITEMID::HIRAISHIN:
+                        case ITEMID::MIZU_DEPPO:
+                            toolID = ITEMID::INOSHISHINOFUDA;
                             break;
 
-                        case ITEM_RYUNO:
-                        case ITEM_MOKUJIN:
-                        case ITEM_SANJAKU_TENUGUI:
-                        case ITEM_KABENRO:
-                        case ITEM_SHINOBI_TABI:
-                        case ITEM_SHIHEI:
-                        case ITEM_RANKA:
-                        case ITEM_FURUSUMI:
+                        case ITEMID::RYUNO:
+                        case ITEMID::MOKUJIN:
+                        case ITEMID::SANJAKU_TENUGUI:
+                        case ITEMID::KABENRO:
+                        case ITEMID::SHINOBI_TABI:
+                        case ITEMID::SHIHEI:
+                        case ITEMID::RANKA:
+                        case ITEMID::FURUSUMI:
 
-                            toolID = ITEM_SHIKANOFUDA;
+                            toolID = ITEMID::SHIKANOFUDA;
                             break;
 
-                        case ITEM_SOSHI:
-                        case ITEM_KODOKU:
-                        case ITEM_KAGINAWA:
-                        case ITEM_JUSATSU:
-                        case ITEM_SAIRUI_RAN:
-                        case ITEM_JINKO:
-                            toolID = ITEM_CHONOFUDA;
+                        case ITEMID::SOSHI:
+                        case ITEMID::KODOKU:
+                        case ITEMID::KAGINAWA:
+                        case ITEMID::JUSATSU:
+                        case ITEMID::SAIRUI_RAN:
+                        case ITEMID::JINKO:
+                            toolID = ITEMID::CHONOFUDA;
                             break;
 
                         default:
@@ -4121,8 +4190,8 @@ namespace battleutils
             // Check For Futae Effect
             bool hasFutae = PChar->StatusEffectContainer->HasStatusEffect(EFFECT_FUTAE);
             // Futae only applies to Elemental Wheel Tools
-            bool useFutae = (toolID == ITEM_UCHITAKE || toolID == ITEM_TSURARA || toolID == ITEM_KAWAHORI_OGI || toolID == ITEM_MAKIBISHI ||
-                             toolID == ITEM_HIRAISHIN || toolID == ITEM_MIZU_DEPPO);
+            bool useFutae = (toolID == ITEMID::UCHITAKE || toolID == ITEMID::TSURARA || toolID == ITEMID::KAWAHORI_OGI || toolID == ITEMID::MAKIBISHI ||
+                             toolID == ITEMID::HIRAISHIN || toolID == ITEMID::MIZU_DEPPO);
 
             // If you have Futae active, Ninja Tool Expertise does not apply.
             if (ConsumeTool && hasFutae && useFutae)
@@ -4207,16 +4276,16 @@ namespace battleutils
             // Collect all potential TA targets who are closer to the mob than the TA user
             for (auto&& party : taPartyList)
             {
-                for (auto&& member : party->members)
+                for (auto&& PMember : party->members)
                 {
-                    float distTAtarget = distance(member->loc.p, PMob->loc.p);
+                    float distTAtarget = distance(PMember->loc.p, PMob->loc.p);
                     // require closer target not be closer than .5 yalms (.5*.5=.25 distsquared) to mob
                     if (distTAtarget >= worldAngleMinDistance && distTAtarget < distTAmob)
                     {
-                        taTargetList.emplace_back(distTAtarget, member);
+                        taTargetList.emplace_back(distTAtarget, PMember);
                     }
 
-                    if (auto* PChar = dynamic_cast<CCharEntity*>(member))
+                    if (auto* PChar = dynamic_cast<CCharEntity*>(PMember))
                     {
                         for (auto* PTrust : PChar->PTrusts)
                         {
@@ -4289,9 +4358,9 @@ namespace battleutils
             return;
         }
 
-        for (auto* entity : *PTarget->PNotorietyContainer)
+        for (auto* PEntity : *PTarget->PNotorietyContainer)
         {
-            if (CMobEntity* PCurrentMob = dynamic_cast<CMobEntity*>(entity))
+            if (CMobEntity* PCurrentMob = dynamic_cast<CMobEntity*>(PEntity))
             {
                 if (PCurrentMob->m_HiPCLvl > 0 && PCurrentMob->PEnmityContainer->HasID(PTarget->id))
                 {
@@ -4326,10 +4395,8 @@ namespace battleutils
 
         if (PIterSource)
         {
-            for (SpawnIDList_t::const_iterator it = PIterSource->SpawnMOBList.begin(); it != PIterSource->SpawnMOBList.end(); ++it)
+            FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PCurrentMob, PIterSource->SpawnMOBList)
             {
-                CMobEntity* PCurrentMob = (CMobEntity*)it->second;
-
                 if (PCurrentMob->m_HiPCLvl > 0 && PCurrentMob->PEnmityContainer->HasID(PSource->id))
                 {
                     PCurrentMob->PEnmityContainer->UpdateEnmity(PSource, CE, VE, false, false, false);
@@ -4569,9 +4636,9 @@ namespace battleutils
             if (PChar)
             {
                 charutils::BuildingCharAbilityTable(PChar);
-                memset(&PChar->m_PetCommands, 0, sizeof(PChar->m_PetCommands));
+                std::memset(&PChar->m_PetCommands, 0, sizeof(PChar->m_PetCommands));
                 PChar->pushPacket<CCharAbilitiesPacket>(PChar);
-                PChar->pushPacket<CCharUpdatePacket>(PChar);
+                PChar->pushPacket<CCharStatusPacket>(PChar);
                 PChar->pushPacket<CPetSyncPacket>(PChar);
             }
             // clang-format off
@@ -5567,21 +5634,8 @@ namespace battleutils
             else
             {
                 // draw in!
-                PTarget->loc.p.x = nearEntity.x;
-                PTarget->loc.p.y = nearEntity.y;
-                PTarget->loc.p.z = nearEntity.z;
-
-                if (PTarget->objtype == TYPE_PC)
-                {
-                    CCharEntity* PChar = static_cast<CCharEntity*>(PTarget);
-                    PChar->pushPacket<CPositionPacket>(PChar);
-                }
-                else
-                {
-                    PTarget->loc.zone->UpdateEntityPacket(PTarget, ENTITY_UPDATE, UPDATE_POS);
-                }
-
-                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE, new CMessageBasicPacket(PTarget, PTarget, 0, 0, 232));
+                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<CPositionPacket>(PTarget, nearEntity));
+                PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<CMessageBasicPacket>(PTarget, PTarget, 0, 0, 232));
             }
         }
 
@@ -6679,12 +6733,13 @@ namespace battleutils
         // If the cover ability target is in a party, try to find a cover ability user
         if (PCoverAbilityTarget->PParty != nullptr)
         {
-            for (auto member : PCoverAbilityTarget->PParty->members)
+            for (auto* PMember : PCoverAbilityTarget->PParty->members)
             {
-                if (coverAbilityTargetID == member->GetLocalVar("COVER_ABILITY_TARGET") && member->StatusEffectContainer->HasStatusEffect(EFFECT_COVER) &&
-                    member->isAlive())
+                if (coverAbilityTargetID == PMember->GetLocalVar("COVER_ABILITY_TARGET") &&
+                    PMember->StatusEffectContainer->HasStatusEffect(EFFECT_COVER) &&
+                    PMember->isAlive())
                 {
-                    PCoverAbilityUser = member;
+                    PCoverAbilityUser = PMember;
                     break;
                 }
             }

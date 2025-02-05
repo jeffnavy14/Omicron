@@ -25,6 +25,7 @@
 #include "common/cbasetypes.h"
 #include "luautils.h"
 #include "packets/message_standard.h"
+#include "packets/position.h"
 
 class CBaseEntity;
 class CCharEntity;
@@ -186,9 +187,12 @@ public:
     uint8  getContinentID();
     bool   isInMogHouse();
 
-    uint32 getPlayerTriggerAreaInZone();
-    void   updateToEntireZone(uint8 statusID, uint8 animation, sol::object const& matchTime); // Forces an update packet to update the NPC entity zone-wide
+    bool isPlayerInTriggerArea(uint32 triggerAreaId);
+    void onPlayerTriggerAreaEnter(uint32 triggerAreaId);
+    void onPlayerTriggerAreaLeave(uint32 triggerAreaId);
+    void clearPlayerTriggerAreas();
 
+    void updateToEntireZone(uint8 statusID, uint8 animation, sol::object const& matchTime); // Forces an update packet to update the NPC entity zone-wide
     void sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, uint8 entityUpdate, uint8 updateMask);
     void sendEmptyEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate);
 
@@ -203,6 +207,7 @@ public:
     uint8 getRotPos();
     void  setRotation(uint8 rotation);
 
+    void positionSpecial(std::map<std::string, float> pos, POSMODE mode);
     void setPos(sol::variadic_args va);
     void warp();
     void teleport(std::map<std::string, float> pos, sol::object const& arg1); // Set Entity position (without entity despawn/spawn packets)
