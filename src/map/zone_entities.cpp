@@ -1025,8 +1025,8 @@ void CZoneEntities::SpawnPCs(CCharEntity* PChar)
 
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, PChar->SpawnPCList)
     {
-        // Despawn character if it's a hidden GM, is in a different mog house, or if player is in a conflict while other is not, or too far up/down
-        if (PCurrentChar->m_isGMHidden ||
+        // Despawn character if it's a hidden GM that isn't PChar, is in a different mog house, or if player is in a conflict while other is not, or too far up/down
+        if (((PChar != PCurrentChar) && PCurrentChar->m_isGMHidden) ||
             PChar->m_moghouseID != PCurrentChar->m_moghouseID ||
             !isWithinVerticalDistance(PChar, PCurrentChar))
         {

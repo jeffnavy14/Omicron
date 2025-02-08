@@ -2641,7 +2641,7 @@ INSERT INTO `mob_groups` VALUES (42,2541,52,'Mamool_Jas_Wyvern',0,128,0,0,0,76,7
 INSERT INTO `mob_groups` VALUES (43,5140,52,'Nis_Puk',0,32,2894,13000,0,77,77,0);
 INSERT INTO `mob_groups` VALUES (44,2523,52,'Mamool_Ja_Lurker',300,0,1593,0,0,81,83,0);
 INSERT INTO `mob_groups` VALUES (45,2507,52,'Mamool_Ja_Blusterer',300,0,1586,0,0,81,83,0);
-INSERT INTO `mob_groups` VALUES (46,3153,52,'Plague_Chigoe',0,128,0,0,0,75,75,0);
+INSERT INTO `mob_groups` VALUES (46,3153,52,'Plague_Chigoe',0,128,0,4500,0,62,62,0);
 INSERT INTO `mob_groups` VALUES (47,393,52,'Berried_Chigoe',0,128,255,0,0,60,60,0);
 INSERT INTO `mob_groups` VALUES (48,716,52,'Chigoes_Nit',0,128,0,0,0,48,48,0);
 INSERT INTO `mob_groups` VALUES (49,916,52,'Dark_Rider',0,128,0,0,0,95,95,0);
@@ -2765,7 +2765,7 @@ INSERT INTO `mob_groups` VALUES (73,5203,54,'Ephramadian_Shade_mnk',960,0,786,0,
 INSERT INTO `mob_groups` VALUES (74,5202,54,'Ephramadian_Shade_rdm',960,0,786,0,0,68,70,0);
 INSERT INTO `mob_groups` VALUES (75,5204,54,'Ephramadian_Shade_rng',960,0,786,0,0,68,70,0);
 INSERT INTO `mob_groups` VALUES (76,5205,54,'Ephramadian_Shade_cor',960,0,786,0,0,68,70,0);
-INSERT INTO `mob_groups` VALUES (77,573,54,'Bukki',0,128,0,0,0,70,70,0);
+INSERT INTO `mob_groups` VALUES (77,573,54,'Bukki',0,128,0,7500,0,72,72,0);
 INSERT INTO `mob_groups` VALUES (78,2339,54,'Lamia_No11',0,128,0,0,0,80,85,0);
 INSERT INTO `mob_groups` VALUES (79,2348,54,'Lamia_No24',0,128,0,0,0,80,80,0);
 INSERT INTO `mob_groups` VALUES (80,2344,54,'Lamia_No18',0,128,0,0,0,80,85,0);

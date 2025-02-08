@@ -12543,7 +12543,7 @@ INSERT INTO `mob_spawn_points` VALUES (16998830,'Ephramadian_Shade','Ephramadian
 INSERT INTO `mob_spawn_points` VALUES (16998831,'Ephramadian_Shade','Ephramadian Shade',74,-428.033,-4.640,-379.461,29);
 INSERT INTO `mob_spawn_points` VALUES (16998832,'Ephramadian_Shade','Ephramadian Shade',75,-456.876,-4.398,-350.909,79);
 INSERT INTO `mob_spawn_points` VALUES (16998833,'Ephramadian_Shade','Ephramadian Shade',76,-443.369,-4.463,-343.948,121);
-INSERT INTO `mob_spawn_points` VALUES (16998834,'Bukki','Bukki',77,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16998834,'Bukki','Bukki',77,311,-3.674,170.124,0);
 
 -- Lamia Reprisal
 INSERT INTO `mob_spawn_points` VALUES (16998835,'Lamia_No11','Lamia No.11',78,0.000,0.000,0.000,0);
