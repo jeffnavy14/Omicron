@@ -22,6 +22,7 @@
 #include "database.h"
 
 #include "logging.h"
+#include "macros.h"
 #include "settings.h"
 #include "taskmgr.h"
 
@@ -330,9 +331,9 @@ bool db::setAutoCommit(bool value)
 {
     TracyZoneScoped;
 
-    if (!query("SET @@autocommit = %u", (value) ? 1 : 0))
+    if (!db::preparedStmt("SET @@autocommit = ?", value ? 1 : 0))
     {
-        // TODO: Logging
+        ShowError("Failed to set autocommit value");
         return false;
     }
 
@@ -343,13 +344,14 @@ bool db::getAutoCommit()
 {
     TracyZoneScoped;
 
-    auto rset = query("SELECT @@autocommit");
-    if (rset && rset->rowsCount() && rset->next())
+    const auto rset = db::preparedStmt("SELECT @@autocommit");
+    FOR_DB_SINGLE_RESULT(rset)
     {
         return rset->get<uint32>(0) == 1;
     }
 
-    // TODO: Logging
+    ShowError("Failed to get autocommit status");
+
     return false;
 }
 
@@ -357,9 +359,9 @@ bool db::transactionStart()
 {
     TracyZoneScoped;
 
-    if (!query("START TRANSACTION"))
+    if (!db::preparedStmt("START TRANSACTION"))
     {
-        // TODO: Logging
+        ShowError("Failed to start transaction");
         return false;
     }
 
@@ -370,9 +372,9 @@ bool db::transactionCommit()
 {
     TracyZoneScoped;
 
-    if (!query("COMMIT"))
+    if (!db::preparedStmt("COMMIT"))
     {
-        // TODO: Logging
+        ShowError("Failed to commit transaction");
         return false;
     }
 
@@ -383,9 +385,9 @@ bool db::transactionRollback()
 {
     TracyZoneScoped;
 
-    if (!query("ROLLBACK"))
+    if (!db::preparedStmt("ROLLBACK"))
     {
-        // TODO: Logging
+        ShowError("Failed to rollback transaction");
         return false;
     }
 
@@ -395,4 +397,37 @@ bool db::transactionRollback()
 void db::enableTimers()
 {
     timersEnabled = true;
+}
+
+bool db::transaction(const std::function<void()>& transactionFn)
+{
+    TracyZoneScoped;
+
+    const bool wasAutoCommitOn = db::getAutoCommit();
+
+    if (db::setAutoCommit(false) && db::transactionStart())
+    {
+        try
+        {
+            transactionFn();
+            db::transactionCommit();
+        }
+        catch (const std::exception& e)
+        {
+            ShowCritical("Transaction failed: Rolling back!");
+            ShowCritical("Transaction failed: %s", e.what());
+
+            db::transactionRollback();
+            db::setAutoCommit(wasAutoCommitOn);
+            return false;
+        }
+    }
+    else
+    {
+        db::setAutoCommit(wasAutoCommitOn);
+        return false;
+    }
+
+    db::setAutoCommit(wasAutoCommitOn);
+    return true;
 }

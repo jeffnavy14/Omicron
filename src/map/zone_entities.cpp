@@ -39,7 +39,6 @@
 #include "entities/trustentity.h"
 
 #include "packets/change_music.h"
-#include "packets/char.h"
 #include "packets/char_sync.h"
 #include "packets/entity_set_name.h"
 #include "packets/entity_update.h"
@@ -153,58 +152,60 @@ void CZoneEntities::TryAddToNearbySpawnLists(CBaseEntity* PEntity)
 
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, m_charList)
     {
-        const auto isInHeightRange = isWithinVerticalDistance(PEntity, PCurrentChar);
-        const auto isInRange       = isWithinDistance(PEntity->loc.p, PCurrentChar->loc.p, ENTITY_RENDER_DISTANCE);
+        const auto isInRange = isWithinDistance(PEntity->loc.p, PCurrentChar->loc.p, ENTITY_RENDER_DISTANCE);
 
-        if (isInHeightRange && isInRange)
+        if (isInRange)
         {
-            switch (PEntity->objtype)
+            // Exclude NPCs from vertical rendering limits (elevators may go past the normal vertical range)
+            if (PEntity->objtype == TYPE_NPC)
             {
-                case TYPE_PC:
+                PCurrentChar->SpawnNPCList[PEntity->id] = PEntity;
+                PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
+            }
+            else if (isWithinVerticalDistance(PEntity, PCurrentChar))
+            {
+                switch (PEntity->objtype)
                 {
-                    auto* PChar = static_cast<CCharEntity*>(PEntity);
-                    if (PChar->m_moghouseID != PCurrentChar->m_moghouseID)
+                    case TYPE_PC:
                     {
-                        continue;
-                    }
+                        auto* PChar = static_cast<CCharEntity*>(PEntity);
+                        if (PChar->m_moghouseID != PCurrentChar->m_moghouseID)
+                        {
+                            continue;
+                        }
 
-                    PCurrentChar->SpawnPCList[PEntity->id] = PEntity;
-                    PCurrentChar->updateCharPacket(PChar, ENTITY_SPAWN, UPDATE_ALL_CHAR);
-                    break;
+                        PCurrentChar->SpawnPCList[PEntity->id] = PEntity;
+                        PCurrentChar->updateEntityPacket(PChar, ENTITY_SPAWN, UPDATE_ALL_CHAR);
+                        break;
+                    }
+                    case TYPE_MOB:
+                    {
+                        PCurrentChar->SpawnMOBList[PEntity->id] = PEntity;
+                        PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
+                        break;
+                    }
+                    case TYPE_PET:
+                    {
+                        PCurrentChar->SpawnPETList[PEntity->id] = PEntity;
+                        PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
+                        break;
+                    }
+                    case TYPE_TRUST:
+                    {
+                        PCurrentChar->SpawnTRUSTList[PEntity->id] = PEntity;
+                        PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
+                        break;
+                    }
+                    // case TYPE_FELLOW:
+                    // {
+                    //     PCurrentChar->SpawnFellowList[PEntity->id] = PEntity;
+                    //     PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
+                    //     break;
+                    // }
+                    default:
+                        return;
+                        break;
                 }
-                case TYPE_NPC:
-                {
-                    PCurrentChar->SpawnNPCList[PEntity->id] = PEntity;
-                    PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
-                    break;
-                }
-                case TYPE_MOB:
-                {
-                    PCurrentChar->SpawnMOBList[PEntity->id] = PEntity;
-                    PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
-                    break;
-                }
-                case TYPE_PET:
-                {
-                    PCurrentChar->SpawnPETList[PEntity->id] = PEntity;
-                    PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
-                    break;
-                }
-                case TYPE_TRUST:
-                {
-                    PCurrentChar->SpawnTRUSTList[PEntity->id] = PEntity;
-                    PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
-                    break;
-                }
-                // case TYPE_FELLOW:
-                // {
-                //     PCurrentChar->SpawnFellowList[PEntity->id] = PEntity;
-                //     PCurrentChar->updateEntityPacket(PEntity, ENTITY_SPAWN, UPDATE_ALL_MOB);
-                //     break;
-                // }
-                default:
-                    return;
-                    break;
             }
         }
     }
@@ -736,7 +737,7 @@ void CZoneEntities::DespawnPC(CCharEntity* PChar)
         if (isInSpawnList)
         {
             PCurrentChar->SpawnPCList.erase(itr);
-            PCurrentChar->updateCharPacket(PChar, ENTITY_DESPAWN, UPDATE_NONE);
+            PCurrentChar->updateEntityPacket(PChar, ENTITY_DESPAWN, UPDATE_NONE);
         }
     }
 }
@@ -887,7 +888,6 @@ void CZoneEntities::SpawnNPCs(CCharEntity* PChar)
         const auto id              = PCurrentEntity->id;
         const auto itr             = spawnList.find(id);
         const auto isInSpawnList   = itr != spawnList.end();
-        const auto isInHeightRange = isWithinVerticalDistance(PChar, PCurrentEntity);
         const auto isInRange       = isWithinDistance(PChar->loc.p, PCurrentEntity->loc.p, ENTITY_RENDER_DISTANCE);
         const auto isVisibleStatus = PCurrentEntity->status == STATUS_TYPE::NORMAL || PCurrentEntity->status == STATUS_TYPE::UPDATE;
 
@@ -909,7 +909,7 @@ void CZoneEntities::SpawnNPCs(CCharEntity* PChar)
             }
         };
 
-        if (isVisibleStatus && isInHeightRange && isInRange)
+        if (isVisibleStatus && isInRange)
         {
             tryAddToSpawnList();
         }
@@ -1026,8 +1026,8 @@ void CZoneEntities::SpawnPCs(CCharEntity* PChar)
 
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, PChar->SpawnPCList)
     {
-        // Despawn character if it's a hidden GM, is in a different mog house, or if player is in a conflict while other is not, or too far up/down
-        if (PCurrentChar->m_isGMHidden ||
+        // Despawn character if it's a hidden GM that isn't PChar, is in a different mog house, or if player is in a conflict while other is not, or too far up/down
+        if (((PChar != PCurrentChar) && PCurrentChar->m_isGMHidden) ||
             PChar->m_moghouseID != PCurrentChar->m_moghouseID ||
             !isWithinVerticalDistance(PChar, PCurrentChar))
         {
@@ -1067,7 +1067,7 @@ void CZoneEntities::SpawnPCs(CCharEntity* PChar)
 
     for (const auto& removeChar : toRemove)
     {
-        PChar->updateCharPacket(removeChar, ENTITY_DESPAWN, UPDATE_NONE);
+        PChar->updateEntityPacket(removeChar, ENTITY_DESPAWN, UPDATE_NONE);
         PChar->SpawnPCList.erase(removeChar->id);
     }
 
@@ -1147,7 +1147,7 @@ void CZoneEntities::SpawnPCs(CCharEntity* PChar)
                 {
                     CCharEntity* spawnedChar = spawnedCharacters.top().second;
                     PChar->SpawnPCList.erase(spawnedChar->id);
-                    PChar->updateCharPacket(spawnedChar, ENTITY_DESPAWN, UPDATE_NONE);
+                    PChar->updateEntityPacket(spawnedChar, ENTITY_DESPAWN, UPDATE_NONE);
                     spawnedCharacters.pop();
                     ++swapCount;
                 }
@@ -1161,7 +1161,7 @@ void CZoneEntities::SpawnPCs(CCharEntity* PChar)
 
             // Spawn best candidate character
             PChar->SpawnPCList[candidateChar->id] = candidateChar;
-            PChar->updateCharPacket(candidateChar, ENTITY_SPAWN, UPDATE_ALL_CHAR);
+            PChar->updateEntityPacket(candidateChar, ENTITY_SPAWN, UPDATE_ALL_CHAR);
             PChar->pushPacket<CCharSyncPacket>(candidateChar);
         }
     }
@@ -1448,36 +1448,26 @@ CCharEntity* CZoneEntities::GetCharByID(uint32 id)
     return nullptr;
 }
 
-void CZoneEntities::UpdateCharPacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask)
-{
-    TracyZoneScoped;
-
-    // Do not send packets that are updates of a hidden GM
-    if (PChar->m_isGMHidden && type != ENTITY_DESPAWN)
-    {
-        return;
-    }
-
-    FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, m_charList)
-    {
-        if (PCurrentChar == PChar)
-        {
-            continue;
-        }
-
-        if (type == ENTITY_SPAWN || type == ENTITY_DESPAWN || PCurrentChar->SpawnPCList.find(PChar->id) != PCurrentChar->SpawnPCList.end())
-        {
-            PCurrentChar->updateCharPacket(PChar, type, updatemask);
-        }
-    }
-}
-
 void CZoneEntities::UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, uint8 updatemask, bool alwaysInclude)
 {
     TracyZoneScoped;
 
+    // Do not send packets that are updates of a hidden GM
+    if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
+    {
+        if (PChar->m_isGMHidden && type != ENTITY_DESPAWN)
+        {
+            return;
+        }
+    }
+
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, m_charList)
     {
+        if (PCurrentChar == PEntity)
+        {
+            continue;
+        }
+
         if (alwaysInclude || type == ENTITY_SPAWN || type == ENTITY_DESPAWN || charutils::hasEntitySpawned(PCurrentChar, PEntity))
         {
             PCurrentChar->updateEntityPacket(PEntity, type, updatemask);
@@ -1577,7 +1567,7 @@ void CZoneEntities::PushPacket(CBaseEntity* PEntity, GLOBAL_MESSAGE_TYPE message
                                     auto iter = spawnlist.lower_bound(id);
                                     if (iter != spawnlist.end() && !spawnlist.key_comp()(id, iter->first))
                                     {
-                                        PCurrentChar->pushPacket(packet->copy());
+                                        PChar->pushPacket(packet->copy());
                                     }
                                 };
 

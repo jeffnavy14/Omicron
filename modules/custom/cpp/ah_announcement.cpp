@@ -27,24 +27,6 @@ extern uint8 PacketSize[512];
 
 extern std::function<void(map_session_data_t* const, CCharEntity* const, CBasicPacket&)> PacketParser[512];
 
-struct TransactionWrapper
-{
-    TransactionWrapper(std::function<void()> commitFn)
-    {
-        db::transactionStart();
-        try
-        {
-            commitFn();
-            db::transactionCommit();
-        }
-        catch (std::exception& e)
-        {
-            db::transactionRollback();
-            ShowError("Transaction failed: %s", e.what());
-        }
-    }
-};
-
 class AHAnnouncementModule : public CPPModule
 {
     void OnInit() override
@@ -95,9 +77,8 @@ class AHAnnouncementModule : public CPPModule
 
                         if (gil != nullptr && gil->isType(ITEM_CURRENCY) && gil->getQuantity() >= price && gil->getReserve() == 0)
                         {
-                            bool itemPurchasedSuccessfully = false;
                             // clang-format off
-                            TransactionWrapper wrapper([&]() -> void
+                            const auto success = db::transaction([&]()
                             {
                                 // Get the row id of the item we're buying
                                 const auto rowId = [&]() -> uint32
@@ -114,10 +95,11 @@ class AHAnnouncementModule : public CPPModule
                                         )",
                                         itemid, quantity == 0, price);
 
-                                    if (rset && rset->rowsCount() && rset->next())
+                                    FOR_DB_SINGLE_RESULT(rset)
                                     {
                                         return rset->get<uint32>("id");
                                     }
+
                                     return 0;
                                 }();
 
@@ -158,7 +140,7 @@ class AHAnnouncementModule : public CPPModule
                                                 )",
                                                 rowId);
 
-                                            if (rset && rset->rowsCount() && rset->next())
+                                            FOR_DB_SINGLE_RESULT(rset)
                                             {
                                                 sellerId = rset->get<uint32>("seller");
                                             }
@@ -183,17 +165,14 @@ class AHAnnouncementModule : public CPPModule
                                             message::send(sellerId, std::make_unique<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3,
                                                 fmt::format("Your '{}' has sold to {} for {} gil!", name, PChar->name, price).c_str(), ""));
                                         }
-
-                                        itemPurchasedSuccessfully = true;
                                     }
                                 }
-                            }); // TransactionWrapper
-                            // clang-format on
-
-                            if (itemPurchasedSuccessfully)
+                            });
+                            if (success)
                             {
                                 return;
                             }
+                            // clang-format on
                         }
                     }
 

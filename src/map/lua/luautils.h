@@ -84,7 +84,7 @@ class CItem;
 class CInstance;
 class CMobSkill;
 class CPetSkill;
-class CTriggerArea;
+class ITriggerArea;
 class CStatusEffect;
 class CTradeContainer;
 class CItemPuppet;
@@ -158,14 +158,13 @@ namespace luautils
     auto GetAbility(uint16 id) -> std::optional<CLuaAbility>;
     auto GetSpell(uint16 id) -> std::optional<CLuaSpell>;
 
-    auto   SpawnMob(uint32 mobid, sol::object const& arg2, sol::object const& arg3) -> std::optional<CLuaBaseEntity>; // Spawn Mob By Mob Id - NMs, BCNM...
-    void   DespawnMob(uint32 mobid, sol::object const& arg2);                                                         // Despawn (Fade Out) Mob By Id
-    auto   GetPlayerByName(std::string const& name) -> std::optional<CLuaBaseEntity>;
-    auto   GetPlayerByID(uint32 pid) -> std::optional<CLuaBaseEntity>;
-    bool   PlayerHasValidSession(uint32 playerId);
-    uint32 GetPlayerIDByName(std::string const& name);
-    void   SendToJailOffline(uint32 playerId, int8 cellId, float posX, float posY, float posZ, uint8 rot);
-    void   DrawIn(CLuaBaseEntity* PLuaBaseEntity, sol::table const& table, float offset, float degrees);
+    auto SpawnMob(uint32 mobid, sol::object const& arg2, sol::object const& arg3) -> std::optional<CLuaBaseEntity>; // Spawn Mob By Mob Id - NMs, BCNM...
+    void DespawnMob(uint32 mobid, sol::object const& arg2);                                                         // Despawn (Fade Out) Mob By Id
+    auto GetPlayerByName(std::string const& name) -> std::optional<CLuaBaseEntity>;
+    auto GetPlayerByID(uint32 pid) -> std::optional<CLuaBaseEntity>;
+    bool PlayerHasValidSession(uint32 playerId);
+    void SendToJailOffline(uint32 playerId, int8 cellId, float posX, float posY, float posZ, uint8 rot);
+    void DrawIn(CLuaBaseEntity* PLuaBaseEntity, sol::table const& table, float offset, float degrees);
 
     uint32 GetSystemTime();
     uint32 JstMidnight();
@@ -216,8 +215,10 @@ namespace luautils
     void AfterZoneIn(CBaseEntity* PChar);
     void OnZoneInitialize(uint16 ZoneID);
     void OnZoneTick(CZone* PZone);
-    void OnTriggerAreaEnter(CCharEntity* PChar, CTriggerArea* PTriggerArea);
-    void OnTriggerAreaLeave(CCharEntity* PChar, CTriggerArea* PTriggerArea);
+
+    void OnTriggerAreaEnter(CCharEntity* PChar, std::unique_ptr<ITriggerArea> const& PTriggerArea); // when player enters a trigger area in a zone
+    void OnTriggerAreaLeave(CCharEntity* PChar, std::unique_ptr<ITriggerArea> const& PTriggerArea); // when player leaves a trigger area in a zone
+
     void OnTransportEvent(CCharEntity* PChar, uint32 TransportID);
     void OnTimeTrigger(CNpcEntity* PNpc, uint8 triggerID);
     void OnConquestUpdate(CZone* PZone, ConquestUpdate type, uint8 influence, uint8 owner, uint8 ranking, bool isConquestAlliance); // conquest update (hourly or tally)

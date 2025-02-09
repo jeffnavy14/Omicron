@@ -215,6 +215,7 @@ int32 do_init(int32 argc, char** argv)
     map_ip.s_addr = 0;
     map_port      = 0;
 
+    // TODO: Replace with argparse::ArgumentParser
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "--ip") == 0)
@@ -237,7 +238,10 @@ int32 do_init(int32 argc, char** argv)
 
     srand((uint32)time(nullptr));
     xirand::seed();
+    ShowInfo(fmt::format("Random samples (integer): {}", utils::getRandomSampleString(0, 255)));
+    ShowInfo(fmt::format("Random samples (float): {}", utils::getRandomSampleString(0.0f, 1.0f)));
 
+    // TODO: Get rid of legacy _sql and SqlConnection
     ShowInfo("do_init: connecting to database");
     _sql = std::make_unique<SqlConnection>();
 
