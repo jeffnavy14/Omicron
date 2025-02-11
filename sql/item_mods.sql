@@ -25137,12 +25137,14 @@ INSERT INTO `item_mods` VALUES (15028,1,14); -- DEF: 14
 INSERT INTO `item_mods` VALUES (15028,2,12); -- HP: 12
 INSERT INTO `item_mods` VALUES (15028,11,2); -- AGI: 2
 INSERT INTO `item_mods` VALUES (15028,26,5); -- RACC: 5
+INSERT INTO `item_mods` VALUES (15028,365,5); -- SNAPSHOT: 5
 
 -- Commodore Gants +1
 INSERT INTO `item_mods` VALUES (15029,1,15); -- DEF: 15
 INSERT INTO `item_mods` VALUES (15029,2,15); -- HP: 15
 INSERT INTO `item_mods` VALUES (15029,11,3); -- AGI: 3
 INSERT INTO `item_mods` VALUES (15029,26,5); -- RACC: 5
+INSERT INTO `item_mods` VALUES (15029,365,5); -- SNAPSHOT: 5
 
 -- Puppetry Dastanas +1
 INSERT INTO `item_mods` VALUES (15030,1,13);  -- DEF: 13
@@ -59966,7 +59968,8 @@ INSERT INTO `item_mods` VALUES (25774,1,2); -- DEF: 2
 INSERT INTO `item_mods` VALUES (25775,1,2); -- DEF: 2
 
 -- Black Chocobo Suit
-INSERT INTO `item_mods` VALUES (25776,1,1); -- DEF: 1
+INSERT INTO `item_mods` VALUES (25776,1,1);    -- DEF: 1
+INSERT INTO `item_mods` VALUES (25776,1133,1); -- DIG_RARE_ABILITY: 1
 
 -- Iratsugo Happi
 INSERT INTO `item_mods` VALUES (25777,1,1); -- DEF: 1
@@ -60996,6 +60999,10 @@ INSERT INTO `item_mods` VALUES (25910,1,1); -- DEF: 1
 
 -- Denim Pants
 INSERT INTO `item_mods` VALUES (25911,1,1); -- DEF: 1
+
+-- Denim Pants +1
+INSERT INTO `item_mods` VALUES (25912,1,2);    -- DEF: 2
+INSERT INTO `item_mods` VALUES (25912,1133,1); -- DIG_RARE_ABILITY: 1
 
 -- Meghanada Jambeaux
 INSERT INTO `item_mods` VALUES (25927,1,68);     -- DEF: 68

@@ -21,6 +21,7 @@ zones[xi.zone.WAJAOM_WOODLANDS] =
         FISHING_MESSAGE_OFFSET        = 7061, -- You can't fish here.
         DIG_THROW_AWAY                = 7074, -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
         FIND_NOTHING                  = 7076, -- You dig and you dig, but find nothing.
+        FOUND_ITEM_WITH_EASE          = 7151,  -- It appears your chocobo found this item with ease.
         PLACE_HYDROGAUGE              = 7354, -- You set the <item> in the glowing trench.
         ENIGMATIC_LIGHT               = 7355, -- The <item> is giving off an enigmatic light.
         LEYPOINT                      = 7410, -- An eerie red glow emanates from this stone platform. The surrounding air feels alive with energy...
@@ -36,7 +37,7 @@ zones[xi.zone.WAJAOM_WOODLANDS] =
     },
     mob =
     {
-        CHIGOES                =
+        CHIGOES =
         {
             ['Marid'] = GetTableOfIDs('Chigoe', 5),
         },

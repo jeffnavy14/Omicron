@@ -11,20 +11,17 @@ local zoneObject = {}
 zoneObject.onInitialize = function(zone)
     zone:registerCylindricalTriggerArea(1, -484, 292, 10) -- Sets Mark for "Under Oath" Quest cutscene.
 
-    UpdateNMSpawnPoint(ID.mob.FRAELISSA)
-    GetMobByID(ID.mob.FRAELISSA):setRespawnTime(math.random(900, 10800))
-
     UpdateNMSpawnPoint(ID.mob.METEORMAULER)
     GetMobByID(ID.mob.METEORMAULER):setRespawnTime(math.random(900, 10800))
-
-    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
-
-    xi.helm.initZone(zone, xi.helmType.LOGGING)
 
     local respawnTime = 900 + math.random(0, 6) * 1800 -- 0:15 to 3:15 spawn timer in 30 minute intervals
     for offset = 1, 10 do
         GetMobByID(ID.mob.KING_ARTHRO - offset):setRespawnTime(respawnTime)
     end
+
+    xi.conquest.setRegionalConquestOverseers(zone:getRegionID())
+
+    xi.helm.initZone(zone, xi.helmType.LOGGING)
 
     xi.voidwalker.zoneOnInit(zone)
 end

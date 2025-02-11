@@ -1012,6 +1012,7 @@ xi.mod =
     QUICK_DRAW_RECAST       = 1060, -- Quick Draw Charge Reduction (seconds)
 
     DIG_BYPASS_FATIGUE      = 1074, -- Chocobo digging modifier found in "Blue Race Silks". Modifier works as a direct percent.
+    DIG_RARE_ABILITY        = 1133, -- Chocobo digging modifier found in "Black Chocobo Suit" and "Denim Pants +1".
     BREATH_DMG_DEALT        = 1075, -- Breath damage dealt
 
     STEP_TP_CONSUMED        = 1077, -- Modifies the amount of TP consumed by dancer steps

@@ -1945,7 +1945,8 @@ INSERT INTO `mob_skill_lists` VALUES ('Two-faced_Flan',416,1825);
 INSERT INTO `mob_skill_lists` VALUES ('Barbaric_Weapon',417,514); -- Whirl of Rage
 INSERT INTO `mob_skill_lists` VALUES ('Picolaton',418,403); -- Stormwind
 INSERT INTO `mob_skill_lists` VALUES ('Dahu',419,802); -- Great Sandstorm
--- 420 to 435: free
+INSERT INTO `mob_skill_lists` VALUES ('Huwasi',420,678); -- Crystal Rain
+-- 421 to 435: free
 INSERT INTO `mob_skill_lists` VALUES ('Bloodlapper',436,2162);
 INSERT INTO `mob_skill_lists` VALUES ('Ghillie_Dhu',437,685);
 INSERT INTO `mob_skill_lists` VALUES ('Highlander_Lizard',438,371);

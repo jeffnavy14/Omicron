@@ -20,6 +20,7 @@ zones[xi.zone.BHAFLAU_THICKETS] =
         FISHING_MESSAGE_OFFSET        = 7061, -- You can't fish here.
         DIG_THROW_AWAY                = 7074, -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
         FIND_NOTHING                  = 7076, -- You dig and you dig, but find nothing.
+        FOUND_ITEM_WITH_EASE          = 7151, -- It appears your chocobo found this item with ease.
         STAGING_GATE_CLOSER           = 7321, -- You must move closer.
         STAGING_GATE_INTERACT         = 7322, -- This gate guards an area under Imperial control.
         STAGING_GATE_MAMOOL           = 7324, -- Mamool Ja Staging Point.
