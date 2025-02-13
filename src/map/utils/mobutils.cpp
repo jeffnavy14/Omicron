@@ -788,6 +788,11 @@ namespace mobutils
             SetupNMMob(PMob);
         }
 
+        if (zoneType & ZONE_TYPE::INSTANCED)
+        {
+            SetupDungeonInstanceMob(PMob);
+        }
+
         if (PMob->m_Type & MOBTYPE_EVENT)
         {
             SetupEventMob(PMob);
@@ -1151,6 +1156,26 @@ namespace mobutils
             {
                 // whm nms have stronger regen effect
                 PMob->addModifier(Mod::REGEN, mLvl / 4);
+            }
+        }
+    }
+
+    void SetupDungeonInstanceMob(CMobEntity* PMob)
+    {
+        PMob->setMobMod(MOBMOD_GIL_MAX, 0);
+        PMob->setMobMod(MOBMOD_MUG_GIL, 0);
+        PMob->loc.p = PMob->m_SpawnPoint;
+        // never despawn
+        PMob->SetDespawnTime(0s);
+        PMob->setMobMod(MOBMOD_NO_DESPAWN, 1);
+        // Salvage and Nyzul
+        if (PMob->getZone() >= ZONE_ZHAYOLM_REMNANTS && PMob->getZone() <= ZONE_NYZUL_ISLE)
+        {
+            // Salvage and Nyzul mobs can not be charmed
+            PMob->setMobMod(MOBMOD_CHARMABLE, 0);
+            if (PMob->getZone() != ZONE_NYZUL_ISLE)
+            {
+                PMob->setMobMod(MOBMOD_CHECK_AS_NM, 1);
             }
         }
     }

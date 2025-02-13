@@ -647,7 +647,7 @@ INSERT INTO `mob_family_mods` VALUES (212,52,20,1); -- ROAM_RATE: 20
 
 -- Sahagin
 INSERT INTO `mob_family_mods` VALUES (213,10,8,1);   -- SUBLINK: 8
-INSERT INTO `mob_family_mods` VALUES (213,20,128,0); -- WATER_RES: 128
+INSERT INTO `mob_family_mods` VALUES (213,20,128,0); -- WATER_MEVA: 128
 
 -- Sapling
 INSERT INTO `mob_family_mods` VALUES (216,10,4,1);  -- SUBLINK: 4

@@ -2693,10 +2693,7 @@ void SmallPacket0x058(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x059(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    if (PChar->animation == ANIMATION_SYNTH)
-    {
-        synthutils::sendSynthDone(PChar);
-    }
+    // Do nothing. This is handled in synth state.
 }
 
 /************************************************************************

@@ -1068,7 +1068,7 @@ INSERT INTO `mob_droplist` VALUES (124,4,0,1000,643,0);          -- Chunk Of Iro
 -- ZoneID: 125 - Antican Hoplomachus
 INSERT INTO `mob_droplist` VALUES (125,0,0,1000,16995,@RARE); -- Piece Of Rotten Meat (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (125,0,0,1000,1118,@RARE);  -- Antican Pauldron (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (125,0,0,1000,1478,@RARE);  -- Xhifhut Bow (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (125,0,0,1000,1478,@VRARE); -- Xhifhut Bow (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (125,0,0,1000,644,@VRARE);  -- Chunk Of Mythril Ore (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (125,2,0,1000,749,0);       -- Mythril Beastcoin (Steal)
 INSERT INTO `mob_droplist` VALUES (125,4,0,1000,643,0);       -- Chunk Of Iron Ore (Despoil)
@@ -3035,6 +3035,7 @@ INSERT INTO `mob_droplist` VALUES (348,4,0,1000,4552,0);         -- Serving Of H
 
 -- ZoneID:  89 - Brass Quadav
 -- ZoneID:  91 - Brass Quadav
+-- ZoneID: 171 - Brass Quadav
 INSERT INTO `mob_droplist` VALUES (349,0,0,1000,2504,@RARE); -- Heavy Quadav Chestplate (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (349,0,0,1000,2505,@RARE); -- Heavy Quadav Backplate (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (349,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
@@ -3054,65 +3055,73 @@ INSERT INTO `mob_droplist` VALUES (350,4,0,1000,4409,0);         -- Hard-Boiled 
 INSERT INTO `mob_droplist` VALUES (350,4,0,1000,4552,0);         -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 110 - Brass Quadav
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,17397,270);  -- Shell Bug (27.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,12449,30);   -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,12961,30);   -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,501,20);     -- Quadav Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,12705,20);   -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,12833,20);   -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,606,@VRARE); -- Quadav Fetich Head (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (351,0,0,1000,607,@VRARE); -- Quadav Fetich Torso (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (351,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (351,0,0,1000,17397,@COMMON);  -- Shell Bug (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (351,0,0,1000,608,@VRARE);     -- Quadav Fetich Arms (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (351,0,0,1000,609,@VRARE);     -- Quadav Fetich Legs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (351,0,0,1000,606,@VRARE);     -- Quadav Fetich Head (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (351,0,0,1000,607,@VRARE);     -- Quadav Fetich Torso (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (351,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (351,4,0,1000,4409,0);         -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (351,4,0,1000,4552,0);         -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 143 - Brass Quadav
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,17397,300);   -- Shell Bug (30.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,1025,@RARE);  -- Palborough Chest Key (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12833,@RARE); -- Brass Subligar (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,2758,30);     -- Quadav Backscale (3.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12449,30);    -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12961,30);    -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,607,20);      -- Quadav Fetich Torso (2.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,608,20);      -- Quadav Fetich Arms (2.0%)
-INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12705,20);    -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (352,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,17397,@COMMON); -- Shell Bug (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,2758,@RARE);    -- Quadav Backscale (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,1025,@RARE);    -- Palborough Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,608,@VRARE);    -- Quadav Fetich Arms (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,609,@VRARE);    -- Quadav Fetich Legs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,606,@VRARE);    -- Quadav Fetich Head (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,607,@VRARE);    -- Quadav Fetich Torso (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12833,@VRARE);  -- Brass Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12449,@VRARE);  -- Brass Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12961,@VRARE);  -- Brass Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,0,0,1000,12705,@VRARE);  -- Brass Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (352,2,0,1000,750,0);         -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (352,4,0,1000,4409,0);        -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (352,4,0,1000,4552,0);        -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 147 - Brass Quadav
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,17397,230);    -- Shell Bug (23.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,609,40);       -- Quadav Fetich Legs (4.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,606,30);       -- Quadav Fetich Head (3.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,607,30);       -- Quadav Fetich Torso (3.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12961,30);     -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,501,20);       -- Quadav Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12705,20);     -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12833,20);     -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,608,@VRARE);   -- Quadav Fetich Arms (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12449,@VRARE); -- Brass Cap (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (353,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,17397,@COMMON); -- Shell Bug (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,608,@VRARE);    -- Quadav Fetich Arms (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,609,@VRARE);    -- Quadav Fetich Legs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,606,@VRARE);    -- Quadav Fetich Head (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,607,@VRARE);    -- Quadav Fetich Torso (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12833,@VRARE);  -- Brass Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12449,@VRARE);  -- Brass Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12961,@VRARE);  -- Brass Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,0,0,1000,12705,@VRARE);  -- Brass Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (353,2,0,1000,750,0);         -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (353,4,0,1000,4409,0);        -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (353,4,0,1000,4552,0);        -- Serving Of Herb Crawler Eggs (Despoil)
 
+-- ZoneID:  89 - Heliodor Quadav
 -- ZoneID:  91 - Heliodor Quadav
 -- ZoneID: 171 - Heliodor Quadav
--- ZoneID: 171 - Brass Quadav
-INSERT INTO `mob_droplist` VALUES (354,2,0,1000,2531,0); -- Shard Of Obsidian (Steal)
+INSERT INTO `mob_droplist` VALUES (354,0,0,1000,4866,@VRARE); -- Scroll Of Bind (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (354,0,0,1000,4862,@VRARE); -- Scroll Of Blind (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (354,2,0,1000,2531,0);      -- Shard Of Obsidian (Steal)
+INSERT INTO `mob_droplist` VALUES (354,4,0,1000,4409,0);      -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (354,4,0,1000,4552,0);      -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID:  92 - Bres
-INSERT INTO `mob_droplist` VALUES (355,0,0,1000,2687,@ALWAYS);   -- Brass Letterbox (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (355,0,0,1000,11391,@VCOMMON); -- Emissary Boots (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (355,0,0,1000,18760,220);      -- Useshi (22.0%)
+INSERT INTO `mob_droplist` VALUES (355,0,0,1000,2687,@ALWAYS);    -- Brass Letterbox (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (355,0,0,1000,11391,@UNCOMMON); -- Emissary Boots (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (355,0,0,1000,18760,@UNCOMMON); -- Useshi (Uncommon, 10%)
 
--- ZoneID: 132 - Briareus
+-- ZoneID: 132 - Briareus -- TODO: Abyssea NM
 INSERT INTO `mob_droplist` VALUES (356,0,0,1000,11519,@ALWAYS);  -- Hakke Hachimaki (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (356,0,0,1000,2929,@ALWAYS);   -- Helm Of Briareus (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (356,0,0,1000,2929,@VCOMMON);  -- Helm Of Briareus (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (356,0,0,1000,2929,@COMMON);   -- Helm Of Briareus (Common, 15%)
 INSERT INTO `mob_droplist` VALUES (356,0,0,1000,16379,@VCOMMON); -- Inmicus Cuisses (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (356,0,0,1000,3228,@VCOMMON); -- Jewel Of Voyage (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (356,0,0,1000,3226,@RARE); -- Stone Of Voyage (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (356,0,0,1000,2498,@RARE); -- Briareus's Sash (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (356,0,0,1000,3228,@VCOMMON);  -- Jewel Of Voyage (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (356,0,0,1000,3226,@RARE);     -- Stone Of Voyage (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (356,0,0,1000,2498,@RARE);     -- Briareus's Sash (Rare, 5%)
 
 -- ZoneID: 177 - Brigandish Blade
-INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1420,@ALWAYS); -- Gem Of The South (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1420,300);     -- Gem Of The South (30.0%)
-INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1441,200);     -- Libation Abjuration (20.0%)
-INSERT INTO `mob_droplist` VALUES (357,2,0,1000,17622,0);      -- Buccaneers Knife (Steal)
+INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1420,@ALWAYS);  -- Gem Of The South (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1420,@COMMON);  -- Gem Of The South (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (357,0,0,1000,1441,@VCOMMON); -- Libation Abjuration (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (357,2,0,1000,17622,0);       -- Buccaneers Knife (Steal)
 
 -- ZoneID: 124 - Bright-Handed Kunberry
 INSERT INTO `mob_droplist` VALUES (358,0,0,1000,15468,@VCOMMON); -- Resentment Cape (Very Common, 24%)
@@ -3121,15 +3130,18 @@ INSERT INTO `mob_droplist` VALUES (358,0,0,1000,15468,@VCOMMON); -- Resentment C
 -- ZoneID:   5 - Tyrannotaur
 -- ZoneID:   5 - Molech
 -- ZoneID: 137 - Gorgotaur
--- ZoneID: 155 - Shadowhorn
-INSERT INTO `mob_droplist` VALUES (359,0,0,1000,1621,80); -- Taurus Wing (8.0%)
-INSERT INTO `mob_droplist` VALUES (359,0,0,1000,1620,60); -- Taurus Horn (6.0%)
+-- ZoneID: 155 - Titanotaur
+INSERT INTO `mob_droplist` VALUES (359,0,0,1000,1620,@UNCOMMON); -- Taurus Horn (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (359,0,0,1000,1621,@RARE);     -- Taurus Wing (Rare, 5%)
 
 -- ZoneID:  89 - Bronze Quadav
 -- ZoneID:  91 - Bronze Quadav
 -- ZoneID: 171 - Bronze Quadav
-INSERT INTO `mob_droplist` VALUES (360,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (360,2,0,1000,2531,0);  -- Shard Of Obsidian (Steal)
+INSERT INTO `mob_droplist` VALUES (360,0,0,1000,2504,@RARE); -- Heavy Quadav Chestplate (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (360,0,0,1000,2505,@RARE); -- Heavy Quadav Backplate (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (360,2,0,1000,2531,0);     -- Shard Of Obsidian (Steal)
+INSERT INTO `mob_droplist` VALUES (360,4,0,1000,4409,0);     -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (360,4,0,1000,4552,0);     -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 110 - Bronze Quadav
 -- ZoneID: 110 - Zircon Quadav
@@ -3138,188 +3150,194 @@ INSERT INTO `mob_droplist` VALUES (361,4,0,1000,4409,0); -- Hard-Boiled Egg (Des
 INSERT INTO `mob_droplist` VALUES (361,4,0,1000,4552,0); -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 147 - Bronze Quadav
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,17397,270); -- Shell Bug (27.0%)
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,1533,80);   -- Silver Engraving (8.0%)
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12944,40);  -- Scale Greaves (4.0%)
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12432,20);  -- Faceguard (2.0%)
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12688,20);  -- Scale Finger Gauntlets (2.0%)
-INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12816,20);  -- Scale Cuisses (2.0%)
-INSERT INTO `mob_droplist` VALUES (362,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (362,2,0,1000,4569,0);    -- Bowl Of Quadav Stew (Steal)
+INSERT INTO `mob_droplist` VALUES (362,0,0,1000,1533,@RARE);   -- Silver Engraving (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12944,@VRARE); -- Scale Greaves (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12432,@VRARE); -- Faceguard (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12688,@VRARE); -- Scale Finger Gauntlets (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (362,0,0,1000,12816,@VRARE); -- Scale Cuisses (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (362,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (362,2,0,1000,4569,0);       -- Bowl Of Quadav Stew (Steal)
+INSERT INTO `mob_droplist` VALUES (362,4,0,1000,4409,0);       -- Hard-Boiled Egg (Despoil)
+INSERT INTO `mob_droplist` VALUES (362,4,0,1000,4552,0);       -- Serving Of Herb Crawler Eggs (Despoil)
 
 -- ZoneID: 147 - Broo
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,1150);     -- Slice Of Giant Sheep Meat (115.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,1010);      -- Sheepskin (101.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,570);      -- Slice Of Giant Sheep Meat (57.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,510);       -- Sheepskin (51.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,470);      -- Jug Of Selbina Milk (47.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,380);      -- Slice Of Giant Sheep Meat (38.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,340);       -- Sheepskin (34.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,@VCOMMON); -- Jug Of Selbina Milk (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,882,200);       -- Sheep Tooth (20.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,160);      -- Jug Of Selbina Milk (16.0%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,882,@UNCOMMON); -- Sheep Tooth (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (363,0,0,1000,1034,40);       -- Beadeaux Chest Key (4.0%)
-INSERT INTO `mob_droplist` VALUES (363,2,0,1000,832,0);         -- Clump Of Sheep Wool (Steal)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,@VCOMMON);  -- Slice Of Giant Sheep Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,@VCOMMON);   -- Sheepskin (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,@VCOMMON);  -- Slice Of Giant Sheep Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,@VCOMMON);   -- Sheepskin (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,@COMMON);   -- Jug Of Selbina Milk (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4372,@VCOMMON);  -- Slice Of Giant Sheep Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,505,@COMMON);    -- Sheepskin (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,@UNCOMMON); -- Jug Of Selbina Milk (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,882,@UNCOMMON);  -- Sheep Tooth (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,4378,@UNCOMMON); -- Jug Of Selbina Milk (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,882,@RARE);      -- Sheep Tooth (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (363,0,0,1000,1034,@RARE);     -- Beadeaux Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (363,2,0,1000,832,0);          -- Clump Of Sheep Wool (Steal)
+INSERT INTO `mob_droplist` VALUES (363,4,0,1000,882,@RARE);      -- Sheep Tooth (Despoil)
 
--- ZoneID: 132 - Brooder
-INSERT INTO `mob_droplist` VALUES (364,0,0,1000,11552,400);       -- Libeccio Mantle (40.0%)
-INSERT INTO `mob_droplist` VALUES (364,0,0,1000,14085,@UNCOMMON); -- Serpentes Sabots (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (364,0,0,1000,722,@VRARE);      -- Divine Log (Very Rare, 1%)
+-- ZoneID: 132 - Brooder -- TODO: Abyssea NM
+INSERT INTO `mob_droplist` VALUES (364,0,0,1000,11552,@COMMON); -- Libeccio Mantle (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (364,0,0,1000,14085,@RARE);   -- Serpentes Sabots (Rare, 5%)
 
 -- ZoneID: 176 - Brook Sahagin
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,888,420);    -- Seashell (42.0%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,4579,160);   -- Elshimo Newt (16.0%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1664,110);   -- Eastern Gem (11.0%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1055,60);    -- Grotto Chest Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,4599,45);    -- Blackened Toad (4.5%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1542,40);    -- Sheep Leather Missive (4.0%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1480,15);    -- Mermaid Head (1.5%)
-INSERT INTO `mob_droplist` VALUES (365,0,0,1000,792,@VRARE); -- Pearl (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (365,2,0,1000,749,0);      -- Mythril Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (365,4,0,1000,4514,0);     -- Quus (Despoil)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,888,@COMMON);    -- Seashell (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,4579,@RARE);     -- Elshimo Newt (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1664,@UNCOMMON); -- Eastern Gem (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1055,@RARE);     -- Grotto Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,4599,@VRARE);    -- Blackened Toad (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1542,@RARE);     -- Sheep Leather Missive (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,1480,@VRARE);    -- Mermaid Head (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (365,0,0,1000,792,@VRARE);     -- Pearl (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (365,2,0,1000,749,0);          -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (365,4,0,1000,4514,0);         -- Quus (Despoil)
+INSERT INTO `mob_droplist` VALUES (365,4,0,1000,4580,0);         -- Coral Butterfly (Despoil)
 
--- ZoneID: 218 - Brulo
-INSERT INTO `mob_droplist` VALUES (366,0,0,1000,3294,@UNCOMMON);  -- Colorless Soul (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (366,0,0,1000,11699,@UNCOMMON); -- Clearview Earring (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (366,0,0,1000,18473,@UNCOMMON); -- Flame Sachet (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (366,0,0,1000,18552,@UNCOMMON); -- Maleficus (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (366,0,0,1000,3294,@RARE);      -- Colorless Soul (Rare, 5%)
+-- ZoneID: 218 - Brulo -- TODO: Abyssea NM
+INSERT INTO `mob_droplist` VALUES (366,0,0,1000,3294,@ALWAYS);   -- Colorless Soul (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (366,0,0,1000,3294,@COMMON);   -- Colorless Soul (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (366,0,0,1000,11699,@COMMON);  -- Clearview Earring (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (366,0,0,1000,18473,@VCOMMON); -- Flame Sachet (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (366,0,0,1000,18552,@RARE);    -- Maleficus (Rare, 5%)
 
 -- ZoneID:  81 - Wild Sheep
 -- ZoneID:  82 - Brutal Sheep
 -- ZoneID:  88 - Ornery Sheep
+INSERT INTO `mob_droplist` VALUES (367,0,0,1000,882,@RARE);     -- Sheep Tooth (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (367,0,0,1000,505,@UNCOMMON); -- Sheepskin (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (367,0,0,1000,4372,@COMMON);  -- Slice Of Giant Sheep Meat (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (367,2,0,1000,832,0);         -- Clump Of Sheep Wool (Steal)
+INSERT INTO `mob_droplist` VALUES (367,4,0,1000,882,@RARE);     -- Sheep Tooth (Despoil)
+
 -- ZoneID: 102 - Mad Sheep
 -- ZoneID: 103 - Brutal Sheep
-INSERT INTO `mob_droplist` VALUES (367,0,0,1000,882,170);        -- Sheep Tooth (17.0%)
-INSERT INTO `mob_droplist` VALUES (367,0,0,1000,505,120);        -- Sheepskin (12.0%)
-INSERT INTO `mob_droplist` VALUES (367,0,0,1000,4372,@UNCOMMON); -- Slice Of Giant Sheep Meat (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (367,2,0,1000,832,0);          -- Clump Of Sheep Wool (Steal)
-
 -- ZoneID: 104 - Brutal Sheep
-INSERT INTO `mob_droplist` VALUES (368,0,0,1000,505,210);  -- Sheepskin (21.0%)
-INSERT INTO `mob_droplist` VALUES (368,0,0,1000,882,180);  -- Sheep Tooth (18.0%)
-INSERT INTO `mob_droplist` VALUES (368,0,0,1000,4372,180); -- Slice Of Giant Sheep Meat (18.0%)
+INSERT INTO `mob_droplist` VALUES (368,0,0,1000,882,@UNCOMMON); -- Sheep Tooth (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (368,0,0,1000,505,@COMMON);   -- Sheepskin (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (368,0,0,1000,4372,@VCOMMON); -- Slice Of Giant Sheep Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (368,2,0,1000,832,0);         -- Clump Of Sheep Wool (Steal)
+INSERT INTO `mob_droplist` VALUES (368,4,0,1000,882,@RARE);     -- Sheep Tooth (Despoil)
 
 -- ZoneID: 118 - Buburimboo
-INSERT INTO `mob_droplist` VALUES (369,0,0,1000,868,@COMMON);   -- Handful Of Pugil Scales (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (369,0,0,1000,868,@VCOMMON);  -- Handful Of Pugil Scales (Very Common, 24%)
 INSERT INTO `mob_droplist` VALUES (369,0,0,1000,13057,@COMMON); -- Buburimu Gorget (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (369,2,0,1000,864,0);     -- Handful Of Fish Scales (Steal)
+INSERT INTO `mob_droplist` VALUES (369,2,0,1000,864,0);         -- Handful Of Fish Scales (Steal)
 
 -- ZoneID:   5 - Buffalo
-INSERT INTO `mob_droplist` VALUES (370,0,0,1000,5703,360); -- Jug Of Uleguerand Milk (36.0%)
-INSERT INTO `mob_droplist` VALUES (370,0,0,1000,5152,200); -- Slice Of Buffalo Meat (20.0%)
-INSERT INTO `mob_droplist` VALUES (370,0,0,1000,1628,20);  -- Buffalo Hide (2.0%)
-INSERT INTO `mob_droplist` VALUES (370,4,0,1000,1628,0);   -- Buffalo Hide (Despoil)
-INSERT INTO `mob_droplist` VALUES (370,4,0,1000,5152,0);   -- Slice Of Buffalo Meat (Despoil)
+INSERT INTO `mob_droplist` VALUES (370,0,0,1000,5703,@COMMON);   -- Jug Of Uleguerand Milk (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (370,0,0,1000,5152,@UNCOMMON); -- Slice Of Buffalo Meat (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (370,0,0,1000,1628,@VRARE);    -- Buffalo Hide (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (370,4,0,1000,1628,0);         -- Buffalo Hide (Despoil)
+INSERT INTO `mob_droplist` VALUES (370,4,0,1000,5152,0);         -- Slice Of Buffalo Meat (Despoil)
 
 -- ZoneID:  24 - Bugard
-INSERT INTO `mob_droplist` VALUES (371,0,0,1000,1640,350); -- Bugard Skin (35.0%)
-INSERT INTO `mob_droplist` VALUES (371,0,0,1000,1622,20);  -- Bugard Tusk (2.0%)
-INSERT INTO `mob_droplist` VALUES (371,2,0,1000,4372,0);   -- Slice Of Giant Sheep Meat (Steal)
+-- ZoneID:  83 - Bugard
+INSERT INTO `mob_droplist` VALUES (371,0,0,1000,1640,@COMMON); -- Bugard Skin (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (371,0,0,1000,1622,@VRARE);  -- Bugard Tusk (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (371,2,0,1000,4372,0);       -- Slice Of Giant Sheep Meat (Steal)
+INSERT INTO `mob_droplist` VALUES (371,4,0,1000,1640,0);       -- Bugard Skin (Despoil)
+INSERT INTO `mob_droplist` VALUES (371,4,0,1000,1622,0);       -- Bugard Tusk (Despoil)
 
 -- ZoneID:  25 - Bugard
--- ZoneID:  83 - Bugard
-INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1640,420); -- Bugard Skin (42.0%)
-INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1680,70);  -- High-Quality Bugard Skin (7.0%)
-INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1622,20);  -- Bugard Tusk (2.0%)
-INSERT INTO `mob_droplist` VALUES (372,2,0,1000,4372,0);   -- Slice Of Giant Sheep Meat (Steal)
+INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1640,@COMMON); -- Bugard Skin (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1680,@RARE);   -- High-Quality Bugard Skin (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (372,0,0,1000,1622,@VRARE);  -- Bugard Tusk (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (372,2,0,1000,4372,0);       -- Slice Of Giant Sheep Meat (Steal)
+INSERT INTO `mob_droplist` VALUES (372,4,0,1000,1640,0);       -- Bugard Skin (Despoil)
+INSERT INTO `mob_droplist` VALUES (372,4,0,1000,1622,0);       -- Bugard Tusk (Despoil)
 
 -- ZoneID:  11 - Bugbear Bondman
-INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1650,330); -- Chunk Of Kopparnickel Ore (33.0%)
-INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1696,130); -- Magicked Steel Ingot (13.0%)
-INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1062,90);  -- Oldton Chest Key (9.0%)
-INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1624,80);  -- Bugbear Mask (8.0%)
-INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1654,40);  -- Igneous Rock (4.0%)
-INSERT INTO `mob_droplist` VALUES (373,2,0,1000,1654,0);   -- Igneous Rock (Steal)
+INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1650,@COMMON); -- Chunk Of Kopparnickel Ore (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1062,@RARE);   -- Oldton Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1624,@RARE);   -- Bugbear Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (373,0,0,1000,1654,@VRARE);  -- Igneous Rock (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (373,2,0,1000,1654,0);       -- Igneous Rock (Steal)
+INSERT INTO `mob_droplist` VALUES (373,4,0,1000,1624,0);       -- Bugbear Mask (Despoil)
 
 -- ZoneID:  12 - Bugbear Deathsman
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1781,@COMMON); -- Sylvan Stone (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1624,130);     -- Bugbear Mask (13.0%)
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1650,130);     -- Chunk Of Kopparnickel Ore (13.0%)
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1696,130);     -- Magicked Steel Ingot (13.0%)
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1063,60);      -- Newton Coffer Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1654,20);      -- Igneous Rock (2.0%)
-INSERT INTO `mob_droplist` VALUES (374,2,0,1000,644,0);        -- Chunk Of Mythril Ore (Steal)
+-- ZoneID:  12 - Bugbear Watchman
+INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1781,@UNCOMMON); -- Sylvan Stone (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1624,@RARE);     -- Bugbear Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1650,@UNCOMMON); -- Chunk Of Kopparnickel Ore (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1063,@RARE);     -- Newton Coffer Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (374,0,0,1000,1654,@VRARE);    -- Igneous Rock (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (374,2,0,1000,644,0);          -- Chunk Of Mythril Ore (Steal)
+INSERT INTO `mob_droplist` VALUES (374,4,0,1000,1624,0);         -- Bugbear Mask (Despoil)
 
 -- ZoneID:  12 - Bugbear Matman
-INSERT INTO `mob_droplist` VALUES (375,0,0,1000,15349,@VCOMMON); -- Rutter Sabatons (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (375,0,0,1000,1781,@COMMON);   -- Sylvan Stone (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (375,0,0,1000,15349,@COMMON);  -- Rutter Sabatons (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (375,0,0,1000,1781,@UNCOMMON); -- Sylvan Stone (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (375,0,0,1000,1650,@RARE);     -- Chunk Of Kopparnickel Ore (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (375,0,0,1000,1624,@VRARE);    -- Bugbear Mask (Very Rare, 1%)
 
 -- ZoneID:  11 - Bugbear Muscleman
-INSERT INTO `mob_droplist` VALUES (376,0,0,1000,2827,@COMMON); -- Spool Of Rugged Gold Thread (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (376,0,0,1000,2827,@UNCOMMON); -- Spool Of Rugged Gold Thread (Uncommon, 10%)
 
 -- ZoneID:  11 - Bugbear Servingman
-INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1650,330);    -- Chunk Of Kopparnickel Ore (33.0%)
-INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1696,130);    -- Magicked Steel Ingot (13.0%)
-INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1624,110);    -- Bugbear Mask (11.0%)
-INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1654,@VRARE); -- Igneous Rock (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (377,2,0,1000,1654,0);      -- Igneous Rock (Steal)
+INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1650,@COMMON); -- Chunk Of Kopparnickel Ore (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1624,@RARE);   -- Bugbear Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (377,0,0,1000,1654,@VRARE);  -- Igneous Rock (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (377,2,0,1000,1654,0);       -- Igneous Rock (Steal)
+INSERT INTO `mob_droplist` VALUES (377,4,0,1000,1624,0);       -- Bugbear Mask (Despoil)
 
 -- ZoneID:  11 - Bugbear Strongman
-INSERT INTO `mob_droplist` VALUES (378,0,0,1000,15369,@VCOMMON); -- Aikido Koshita (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (378,0,0,1000,14334,@COMMON);  -- Shinimusha Haidate (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (378,0,0,1000,1624,@RARE);     -- Bugbear Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (378,0,0,1000,15369,@COMMON);   -- Aikido Koshita (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (378,0,0,1000,14334,@UNCOMMON); -- Shinimusha Haidate (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (378,0,0,1000,1624,@RARE);      -- Bugbear Mask (Rare, 5%)
 
 -- ZoneID:  12 - Bugbear Trashman
-INSERT INTO `mob_droplist` VALUES (379,0,0,1000,1781,140); -- Sylvan Stone (14.0%)
+INSERT INTO `mob_droplist` VALUES (379,0,0,1000,1781,@UNCOMMON); -- Sylvan Stone (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (379,0,0,1000,1624,@RARE);     -- Bugbear Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (379,0,0,1000,1650,@COMMON);   -- Chunk Of Kopparnickel Ore (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (379,0,0,1000,1654,@VRARE);    -- Igneous Rock (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (379,2,0,1000,644,0);          -- Chunk Of Mythril Ore (Steal)
+INSERT INTO `mob_droplist` VALUES (379,4,0,1000,1624,0);         -- Bugbear Mask (Despoil)
 
--- ZoneID:  12 - Bugbear Watchman
-INSERT INTO `mob_droplist` VALUES (380,0,0,1000,1781,220);       -- Sylvan Stone (22.0%)
-INSERT INTO `mob_droplist` VALUES (380,0,0,1000,1650,120);       -- Chunk Of Kopparnickel Ore (12.0%)
-INSERT INTO `mob_droplist` VALUES (380,0,0,1000,1654,@UNCOMMON); -- Igneous Rock (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (380,0,0,1000,1063,20);        -- Newton Coffer Key (2.0%)
-INSERT INTO `mob_droplist` VALUES (380,2,0,1000,644,0);          -- Chunk Of Mythril Ore (Steal)
+-- 380 Available
 
--- ZoneID: 218 - Bugul Noz
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3164,740);      -- Callers Seal Hands (74.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3158,730);      -- Ferine Seal Hands (73.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3160,660);      -- Sylvan Seal Hands (66.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3234,590);      -- Bottle Of Oasis Water (59.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3165,500);      -- Mavi Seal Hands (50.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3164,370);      -- Callers Seal Hands (37.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3158,360);      -- Ferine Seal Hands (36.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3160,330);      -- Sylvan Seal Hands (33.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,11445,270);     -- Etamin Gambieras (27.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3164,250);      -- Callers Seal Hands (25.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3165,250);      -- Mavi Seal Hands (25.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3158,@VCOMMON); -- Ferine Seal Hands (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3160,220);      -- Sylvan Seal Hands (22.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3165,170);      -- Mavi Seal Hands (17.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3160,160);      -- Sylvan Seal Hands (16.0%)
-INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3165,130);      -- Mavi Seal Hands (13.0%)
+-- ZoneID: 218 - Bugul Noz -- TODO: Abyssea NM
+INSERT INTO `mob_droplist` VALUES (381,0,0,1000,3234,@COMMON);    -- Bottle Of Oasis Water (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (381,0,0,1000,11445,@UNCOMMON); -- Etamin Gambieras (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (381,1,1,@ALWAYS,3164,250);     -- Callers Seal Hands (Group 1, Always, 100%)
+INSERT INTO `mob_droplist` VALUES (381,1,1,@ALWAYS,3158,250);     -- Ferine Seal Hands (Group 1, Always, 100%)
+INSERT INTO `mob_droplist` VALUES (381,1,1,@ALWAYS,3160,250);     -- Sylvan Seal Hands (Group 1, Always, 100%)
+INSERT INTO `mob_droplist` VALUES (381,1,1,@ALWAYS,3165,250);     -- Mavi Seal Hands (Group 1, Always, 100%)
+INSERT INTO `mob_droplist` VALUES (381,1,2,@UNCOMMON,3164,250);   -- Callers Seal Hands (Group 2, Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (381,1,2,@UNCOMMON,3158,250);   -- Ferine Seal Hands (Group 2, Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (381,1,2,@UNCOMMON,3160,250);   -- Sylvan Seal Hands (Group 2, Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (381,1,2,@UNCOMMON,3165,250);   -- Mavi Seal Hands (Group 2, Uncommon, 10%)
 
--- ZoneID: 217 - Bukhis
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,2966,@UNCOMMON);  -- Bukhiss Wing (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3214,@UNCOMMON);  -- Stone Of Ardor (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3216,@UNCOMMON);  -- Jewel Of Ardor (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3226,@UNCOMMON);  -- Stone Of Voyage (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3229,@UNCOMMON);  -- Card Of Voyage (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,18454,@UNCOMMON); -- Ishikirimaru (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,18619,70);        -- Chthonic Staff (7.0%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,2966,@RARE);      -- Bukhiss Wing (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3226,@RARE);      -- Stone Of Voyage (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3226,30);         -- Stone Of Voyage (3.0%)
+-- ZoneID: 217 - Bukhis -- TODO: Abyssea NM
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,18454,@ALWAYS);  -- Ishikirimaru (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,18619,@RARE);    -- Chthonic Staff (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,2966,@ALWAYS);   -- Bukhiss Wing (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,2966,@COMMON);   -- Bukhiss Wing (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3226,@ALWAYS);   -- Stone Of Voyage (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3229,@UNCOMMON); -- Card Of Voyage (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3214,@UNCOMMON); -- Stone Of Ardor (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (382,0,0,1000,3216,@UNCOMMON); -- Jewel Of Ardor (Uncommon, 10%)
 
 -- ZoneID: 160 - Bullbeggar
-INSERT INTO `mob_droplist` VALUES (383,0,0,1000,4468,110);        -- Bunch Of Pamamas (11.0%)
-INSERT INTO `mob_droplist` VALUES (383,0,0,1000,17296,@UNCOMMON); -- Pebble (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (383,0,0,1000,5187,70);         -- Elshimo Coconut (7.0%)
+INSERT INTO `mob_droplist` VALUES (383,0,0,1000,17296,@COMMON);  -- Pebble (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (383,0,0,1000,4468,@UNCOMMON); -- Bunch Of Pamamas (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (383,0,0,1000,5187,@RARE);     -- Elshimo Coconut (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (383,0,0,1000,4596,@VRARE);    -- Bunch Of Wild Pamamas (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (383,4,0,1000,4468,0);         -- Bunch Of Pamamas (Despoil)
 
 -- ZoneID:  73 - Bull Bugard
 INSERT INTO `mob_droplist` VALUES (384,0,0,1000,5373,@ALWAYS); -- Duplicatus Cell
 
 -- ZoneID: 118 - Bull Dhalmel
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,4359,1080);     -- Slice Of Dhalmel Meat (108.0%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,4359,540);      -- Slice Of Dhalmel Meat (54.0%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,541,420);       -- Cup Of Dhalmel Saliva (42.0%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,857,290);       -- Dhalmel Hide (29.0%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,857,140);       -- Dhalmel Hide (14.0%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,893,130);       -- Giant Femur (13.0%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,4359,@VCOMMON); -- Slice Of Dhalmel Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,4359,@VCOMMON); -- Slice Of Dhalmel Meat (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,541,@UNCOMMON); -- Cup Of Dhalmel Saliva (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (385,0,0,1000,857,@UNCOMMON); -- Dhalmel Hide (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (385,0,0,1000,938,90);        -- Sprig Of Papaka Grass (9.0%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,857,@RARE);     -- Dhalmel Hide (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,893,@UNCOMMON); -- Giant Femur (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,857,@RARE);     -- Dhalmel Hide (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (385,0,0,1000,938,@RARE);     -- Sprig Of Papaka Grass (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (385,4,0,1000,4359,0);        -- Slice Of Dhalmel Meat (Despoil)
+INSERT INTO `mob_droplist` VALUES (385,4,0,1000,857,0);         -- Dhalmel Hide (Despoil)
 INSERT INTO `mob_droplist` VALUES (385,4,0,1000,893,0);         -- Giant Femur (Despoil)
 
 -- ZoneID:   2 - Specter Bat
@@ -3342,16 +3360,22 @@ INSERT INTO `mob_droplist` VALUES (386,0,0,1000,924,@VRARE);    -- Vial Of Fiend
 INSERT INTO `mob_droplist` VALUES (386,4,0,1000,922,0);         -- Bat Wing (Despoil)
 
 -- ZoneID:  95 - Bumblebee
-INSERT INTO `mob_droplist` VALUES (387,0,0,1000,846,250);    -- Insect Wing (25.0%)
-INSERT INTO `mob_droplist` VALUES (387,0,0,1000,4370,@RARE); -- Pot Of Honey (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (387,2,0,1000,4370,0);     -- Pot Of Honey (Steal)
+INSERT INTO `mob_droplist` VALUES (387,0,0,1000,846,@UNCOMMON); -- Insect Wing (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (387,0,0,1000,4370,@RARE);    -- Pot Of Honey (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (387,2,0,1000,4370,0);        -- Pot Of Honey (Steal)
+INSERT INTO `mob_droplist` VALUES (387,4,0,1000,912,0);         -- Beehive Chip (Despoil)
+INSERT INTO `mob_droplist` VALUES (387,4,0,1000,925,0);         -- Giant Stinger (Despoil)
+INSERT INTO `mob_droplist` VALUES (387,4,0,1000,4370,0);        -- Pot Of Honey (Despoil)
 
 -- ZoneID: 115 - Bumblebee
 -- ZoneID: 116 - Bumblebee
-INSERT INTO `mob_droplist` VALUES (388,0,0,1000,846,190);  -- Insect Wing (19.0%)
-INSERT INTO `mob_droplist` VALUES (388,0,0,1000,4444,190); -- Rarab Tail (19.0%)
-INSERT INTO `mob_droplist` VALUES (388,0,0,1000,4370,110); -- Pot Of Honey (11.0%)
-INSERT INTO `mob_droplist` VALUES (388,2,0,1000,4370,0);   -- Pot Of Honey (Steal)
+INSERT INTO `mob_droplist` VALUES (388,0,0,1000,846,@UNCOMMON);  -- Insect Wing (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (388,0,0,1000,4444,@UNCOMMON); -- Rarab Tail (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (388,0,0,1000,4370,@RARE);     -- Pot Of Honey (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (388,2,0,1000,4370,0);         -- Pot Of Honey (Steal)
+INSERT INTO `mob_droplist` VALUES (388,4,0,1000,912,0);          -- Beehive Chip (Despoil)
+INSERT INTO `mob_droplist` VALUES (388,4,0,1000,925,0);          -- Giant Stinger (Despoil)
+INSERT INTO `mob_droplist` VALUES (388,4,0,1000,4370,0);         -- Pot Of Honey (Despoil)
 
 -- ZoneID: 212 - Bune
 INSERT INTO `mob_droplist` VALUES (389,0,0,1000,866,@RARE);     -- Handful Of Wyvern Scales (Rare, 5%)
@@ -3359,108 +3383,100 @@ INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1122,@VCOMMON); -- Wyvern Skin (
 INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1122,@VCOMMON); -- Wyvern Skin (Very Common, 24%)
 INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1122,@VCOMMON); -- Wyvern Skin (Very Common, 24%)
 INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1122,@VCOMMON); -- Wyvern Skin (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@VCOMMON); -- Wyvern Wing (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@VCOMMON); -- Wyvern Wing (Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@VCOMMON); -- Wyvern Wing (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@COMMON);  -- Wyvern Wing (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@COMMON);  -- Wyvern Wing (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (389,0,0,1000,1124,@COMMON);  -- Wyvern Wing (Common, 15%)
 INSERT INTO `mob_droplist` VALUES (389,0,0,1000,16605,@RARE);   -- Enhancing Sword (Rare, 5%)
 
--- 390 Available
+-- ZoneID:  77 - Black Pudding
+-- ZoneID:  77 - Ebony Pudding
+-- ZoneID:  77 - Caramel Custard
+-- ZoneID:  77 - Cardamon Custard
+-- ZoneID:  77 - Groaty Custard
+-- ZoneID:  92 - Pitchy Pudding
+INSERT INTO `mob_droplist` VALUES (390,0,0,1000,2175,@COMMON); -- Chunk Of Flan Meat (Common, 15%)
 
 -- ZoneID: 196 - Burned Bergmann
-INSERT INTO `mob_droplist` VALUES (391,0,0,1000,825,@ALWAYS); -- Square Of Cotton Cloth (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (391,0,0,1000,940,@COMMON); -- Revival Tree Root (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (391,0,0,1000,13510,130);   -- Malflame Ring (13.0%)
-INSERT INTO `mob_droplist` VALUES (391,0,0,1000,529,60);      -- Luminicloth (6.0%)
-INSERT INTO `mob_droplist` VALUES (391,2,0,1000,825,0);       -- Square Of Cotton Cloth (Steal)
+INSERT INTO `mob_droplist` VALUES (391,0,0,1000,825,@ALWAYS);   -- Square Of Cotton Cloth (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (391,0,0,1000,13510,@COMMON); -- Malflame Ring (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (391,0,0,1000,940,@UNCOMMON); -- Revival Tree Root (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (391,0,0,1000,529,@VRARE);    -- Luminicloth (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (391,2,0,1000,825,0);         -- Square Of Cotton Cloth (Steal)
 
 -- ZoneID:   7 - Burrow Antlion
-INSERT INTO `mob_droplist` VALUES (392,0,0,1000,1616,120); -- Antlion Jaw (12.0%)
-INSERT INTO `mob_droplist` VALUES (392,0,0,1000,1649,30);  -- Scarlet Stone (3.0%)
-INSERT INTO `mob_droplist` VALUES (392,2,0,1000,852,0);    -- Lizard Skin (Steal)
+INSERT INTO `mob_droplist` VALUES (392,0,0,1000,1616,@RARE); -- Antlion Jaw (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (392,0,0,1000,1649,@RARE); -- Scarlet Stone (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (392,2,0,1000,852,0);      -- Lizard Skin (Steal)
+INSERT INTO `mob_droplist` VALUES (392,4,0,1000,1616,0);     -- Antlion Jaw (Despoil)
 
--- ZoneID: 254 - Burstrox Powderpate
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,3264,@UNCOMMON);  -- Jar Of Goblin Gunpowder (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,4756,@UNCOMMON);  -- Scroll Of Fire V (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,11908,@UNCOMMON); -- Brute Gauntlets (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,12318,@UNCOMMON); -- Argos Shield (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,5568,80);         -- Apkallu Egg (8.0%)
-INSERT INTO `mob_droplist` VALUES (393,0,0,1000,511,70);          -- Goblin Mask (7.0%)
+-- ZoneID: 254 - Burstrox Powderpate -- TODO: Abyssea NM
+INSERT INTO `mob_droplist` VALUES (393,0,0,1000,3264,@VCOMMON); -- Jar Of Goblin Gunpowder (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (393,0,0,1000,11908,@COMMON); -- Brute Gauntlets (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (393,0,0,1000,12318,@COMMON); -- Argos Shield (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (393,0,0,1000,511,@RARE);     -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (393,0,0,1000,510,@VRARE);    -- Goblin Armor (Very Rare, 1%)
 
 -- ZoneID: 130 - Byakko
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1406,@ALWAYS);  -- Seal Of Byakko (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,18163,@ALWAYS); -- Zephyr (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1406,300);      -- Seal Of Byakko (30.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,18198,260);     -- Byakkos Axe (26.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,722,200);       -- Divine Log (20.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,837,200);       -- Spool Of Malboro Fiber (20.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,860,@COMMON);   -- Behemoth Hide (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,860,@COMMON);   -- Behemoth Hide (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,12818,@COMMON); -- Byakkos Haidate (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,658,20);        -- Damascus Ingot (2.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1311,20);       -- Piece Of Oxblood (2.0%)
-INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1110,@VRARE);   -- Vial Of Black Beetle Blood (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (394,1,1,500,1341,280);       -- Neptunal Abjuration Hands (Group 1 - 28.0%)
-INSERT INTO `mob_droplist` VALUES (394,1,1,500,1317,@VCOMMON);  -- Dryadic Abjuration Legs (Group 1 - Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (394,1,1,500,1323,@VCOMMON);  -- Earthen Abjuration Feet (Group 1 - Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (394,1,1,500,1324,@VCOMMON);  -- Aquarian Abjuration Head (Group 1 - Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (394,1,2,200,1341,280);       -- Neptunal Abjuration Hands (Group 2 - 28.0%)
-INSERT INTO `mob_droplist` VALUES (394,1,2,200,1317,@VCOMMON);  -- Dryadic Abjuration Legs (Group 2 - Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (394,1,2,200,1323,@VCOMMON);  -- Earthen Abjuration Feet (Group 2 - Very Common, 24%)
-INSERT INTO `mob_droplist` VALUES (394,1,2,200,1324,@VCOMMON);  -- Aquarian Abjuration Head (Group 2 - Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1406,@ALWAYS);   -- Seal Of Byakko (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,18163,@ALWAYS);  -- Zephyr (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1406,@COMMON);   -- Seal Of Byakko (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,18198,@COMMON);  -- Byakkos Axe (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,722,@UNCOMMON);  -- Divine Log (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,837,@UNCOMMON);  -- Spool Of Malboro Fiber (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,860,@UNCOMMON);  -- Behemoth Hide (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,860,@UNCOMMON);  -- Behemoth Hide (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,12818,@COMMON);  -- Byakkos Haidate (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,658,@VRARE);     -- Damascus Ingot (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (394,0,0,1000,1311,@VRARE);    -- Piece Of Oxblood (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (394,1,1,@ALWAYS,1341,310);    -- Neptunal Abjuration Hands (Group 1, Always, 100% - 31%)
+INSERT INTO `mob_droplist` VALUES (394,1,1,@ALWAYS,1317,230);    -- Dryadic Abjuration Legs (Group 1, Always, 100% - 23%)
+INSERT INTO `mob_droplist` VALUES (394,1,1,@ALWAYS,1323,230);    -- Earthen Abjuration Feet (Group 1, Always, 100% - 23%)
+INSERT INTO `mob_droplist` VALUES (394,1,1,@ALWAYS,1324,230);    -- Aquarian Abjuration Head (Group 1, Always, 100% - 23%)
+INSERT INTO `mob_droplist` VALUES (394,1,2,@UNCOMMON,1341,310);  -- Neptunal Abjuration Hands (Group 2, Uncommon, 10% - 31%)
+INSERT INTO `mob_droplist` VALUES (394,1,2,@UNCOMMON,1317,230);  -- Dryadic Abjuration Legs (Group 2, Uncommon, 10% - 23%)
+INSERT INTO `mob_droplist` VALUES (394,1,2,@UNCOMMON,1323,230);  -- Earthen Abjuration Feet (Group 2, Uncommon, 10% - 23%)
+INSERT INTO `mob_droplist` VALUES (394,1,2,@UNCOMMON,1324,230);  -- Aquarian Abjuration Head (Group 2, Uncommon, 10% - 23%)
 
 -- ZoneID: 114 - Cactrot Rapido
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1817,180);        -- Cactus Arm (18.0%)
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,916,140);         -- Cactuar Needle (14.0%)
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,13401,@UNCOMMON); -- Arete Del Sol (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,17165,@UNCOMMON); -- Arco De Velocidad (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1236,80);         -- Bag Of Cactus Stems (8.0%)
-INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1592,80);         -- Cactuar Root (8.0%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,13401,@COMMON); -- Arete Del Sol (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1236,@VCOMMON); -- Bag Of Cactus Stems (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,17165,@RARE);   -- Arco De Velocidad (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,916,@RARE);     -- Cactuar Needle (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1236,@VCOMMON); -- Bag Of Cactus Stems (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1592,@VCOMMON); -- Cactuar Root (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1817,@VCOMMON); -- Cactus Arm (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (395,0,0,1000,1817,@COMMON);  -- Cactus Arm (Common, 15%)
 
 -- ZoneID: 114 - Sabotender
 -- ZoneID: 125 - Cactuar
-INSERT INTO `mob_droplist` VALUES (396,0,0,1000,4509,250); -- Flask Of Distilled Water (25.0%)
-INSERT INTO `mob_droplist` VALUES (396,0,0,1000,1817,180); -- Cactus Arm (18.0%)
-INSERT INTO `mob_droplist` VALUES (396,0,0,1000,916,140);  -- Cactuar Needle (14.0%)
-INSERT INTO `mob_droplist` VALUES (396,0,0,1000,1663,80);  -- Arnica Root (8.0%)
+INSERT INTO `mob_droplist` VALUES (396,0,0,1000,4509,@VCOMMON);  -- Flask Of Distilled Water (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (396,0,0,1000,1817,@VCOMMON);  -- Cactus Arm (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (396,0,0,1000,916,@UNCOMMON);  -- Cactuar Needle (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (396,0,0,1000,1663,@UNCOMMON); -- Arnica Root (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (396,4,0,1000,916,0);          -- Cactuar Needle (Despoil)
 
 -- ZoneID:  77 - Cactuar Cantautor
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,2196,@UNCOMMON); -- ??? Footwear (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,17742,20);       -- Vorpal Sword (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,17743,20);       -- Wightslayer (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,17744,20);       -- Brave Blade (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,17956,20);       -- Double Axe (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18003,20);       -- Swordbreaker (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18034,20);       -- Dancing Dagger (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18120,20);       -- Radiant Lance (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18426,20);       -- Sasuke Katana (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18443,20);       -- Windslicer (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18492,20);       -- Sturdy Axe (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18589,20);       -- Mages Staff (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18590,20);       -- Scepter Staff (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18592,20);       -- Elder Staff (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18719,20);       -- Killer Bow (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18720,20);       -- Quicksilver (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18753,20);       -- Burning Fists (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18754,20);       -- Inferno Claws (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18851,20);       -- Werebuster (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,18944,20);       -- Death Sickle (2.0%)
-INSERT INTO `mob_droplist` VALUES (397,0,0,1000,19102,20);       -- Main Gauche (2.0%)
+-- ZoneID:  77 - Sabotender Bailarin
+-- ZoneID:  77 - Sabotender Mariachi
+INSERT INTO `mob_droplist` VALUES (397,0,0,1000,4509,@VCOMMON); -- Flask Of Distilled Water (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (397,0,0,1000,916,@UNCOMMON); -- Cactuar Needle (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (397,0,0,1000,1236,@RARE);    -- Bag Of Cactus Stems (Rare, 5%)
 
 -- ZoneID: 125 - Cactuar Cantautor
 INSERT INTO `mob_droplist` VALUES (398,0,0,1000,916,@ALWAYS);     -- Cactuar Needle (Always, 100%)
-INSERT INTO `mob_droplist` VALUES (398,0,0,1000,916,@ALWAYS);     -- Cactuar Needle (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (398,0,0,1000,1236,@ALWAYS);    -- Bag Of Cactus Stems (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (398,0,0,1000,916,@ALWAYS);     -- Cactuar Needle (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (398,0,0,1000,14128,@UNCOMMON); -- Kung Fu Shoes (Uncommon, 10%)
 
 -- 399 Available
 
 -- ZoneID:   9 - Camazotz
-INSERT INTO `mob_droplist` VALUES (400,0,0,1000,1782,320);      -- Florid Stone (32.0%)
-INSERT INTO `mob_droplist` VALUES (400,0,0,1000,922,160);       -- Bat Wing (16.0%)
-INSERT INTO `mob_droplist` VALUES (400,0,0,1000,924,@UNCOMMON); -- Vial Of Fiend Blood (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (400,0,0,1000,891,70);        -- Bat Fang (7.0%)
+INSERT INTO `mob_droplist` VALUES (400,0,0,1000,1782,@RARE);    -- Florid Stone (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (400,0,0,1000,922,@COMMON);   -- Bat Wing (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (400,0,0,1000,891,@UNCOMMON); -- Bat Fang (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (400,0,0,1000,1064,@RARE);    -- Psoxja Chest Key (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (400,0,0,1000,930,@VRARE);    -- Vial Of Beastman Blood (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (400,4,0,1000,922,0);         -- Bat Wing (Despoil)
 
 -- ZoneID:  11 - Dark Bats
 -- ZoneID:  27 - Canal Bats
@@ -6008,7 +6024,6 @@ INSERT INTO `mob_droplist` VALUES (739,0,0,1000,14466,350); -- Fomor Tunic (35.0
 
 -- ZoneID:  61 - Ebony Pudding
 -- ZoneID:  62 - Ebony Pudding
--- ZoneID:  77 - Ebony Pudding
 INSERT INTO `mob_droplist` VALUES (740,0,0,1000,2175,340); -- Chunk Of Flan Meat (34.0%)
 
 -- ZoneID:  15 - Eccentric Eve
@@ -7182,7 +7197,6 @@ INSERT INTO `mob_droplist` VALUES (905,0,0,1000,703,@RARE);      -- Petrified Lo
 -- ZoneID:  77 - Helldiver
 -- ZoneID:  77 - Northern Shadow
 -- ZoneID:  77 - Roc
--- ZoneID:  77 - Sabotender Mariachi
 -- ZoneID:  77 - Keeper Of Halidom
 -- ZoneID:  77 - Odqan
 -- ZoneID:  77 - Tottering Toby
@@ -10340,10 +10354,7 @@ INSERT INTO `mob_droplist` VALUES (1289,0,0,1000,3217,490);     -- Card Of Ardor
 INSERT INTO `mob_droplist` VALUES (1289,0,0,1000,3216,390);     -- Jewel Of Ardor (39.0%)
 INSERT INTO `mob_droplist` VALUES (1289,0,0,1000,17105,90);     -- Soulscourge (9.0%)
 
--- ZoneID:  89 - Heliodor Quadav
-INSERT INTO `mob_droplist` VALUES (1290,0,0,1000,4866,@RARE); -- Scroll Of Bind (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1290,2,0,1000,2531,0);     -- Shard Of Obsidian (Steal)
-INSERT INTO `mob_droplist` VALUES (1290,4,0,1000,4409,0);     -- Hard-Boiled Egg (Despoil)
+-- 1290 Available
 
 -- ZoneID:  30 - Heliodromos
 INSERT INTO `mob_droplist` VALUES (1291,0,0,1000,1690,@ALWAYS);    -- Hippogryph Tailfeather (Always, 100%)
@@ -27533,6 +27544,22 @@ INSERT INTO `mob_droplist` VALUES (3406,0,0,1000,5372,@VCOMMON);
 -- ZoneID:  73 - Poroggo Gent
 INSERT INTO `mob_droplist` VALUES (3407,0,0,1000,5366,@VCOMMON);
 INSERT INTO `mob_droplist` VALUES (3407,0,0,1000,5370,@VCOMMON);
+
+-- ZoneID:  73 - Archaic Rampart, Poroggo Madame
+INSERT INTO `mob_droplist` VALUES (3408,0,0,1000,14962,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3408,0,0,1000,14978,@ALWAYS);
+
+-- ZoneID:  73 - Archaic Rampart, Poroggo Madame
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5383,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5383,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5383,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5383,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5383,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5384,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5384,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5384,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5384,@ALWAYS);
+INSERT INTO `mob_droplist` VALUES (3409,0,0,1000,5384,@ALWAYS);
 
 /*!40000 ALTER TABLE `mob_droplist` ENABLE KEYS */;
 UNLOCK TABLES;

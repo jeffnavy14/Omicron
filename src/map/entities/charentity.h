@@ -661,6 +661,9 @@ public:
 
     bool m_Locked; // Is the player locked in a cutscene
 
+    // Starts a synth with skillType X
+    bool startSynth(SKILLTYPE synthSkill);
+
     CCharEntity();
     ~CCharEntity();
 
