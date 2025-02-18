@@ -909,11 +909,11 @@ INSERT INTO `mob_skill_lists` VALUES ('Ram',208,266);
 INSERT INTO `mob_skill_lists` VALUES ('Ram',208,267);
 INSERT INTO `mob_skill_lists` VALUES ('Ram',208,268);
 INSERT INTO `mob_skill_lists` VALUES ('Ram',208,269);
--- INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2032);
--- INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2033);
--- INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2034);
--- INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2035);
--- INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2036);
+INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2032); -- Roller Chain
+INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2033); -- Choke Chain
+INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2034); -- Reinforcements
+INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2035); -- Biomagnet
+INSERT INTO `mob_skill_lists` VALUES ('Rampart',209,2036); -- Astral Gate
 INSERT INTO `mob_skill_lists` VALUES ('Raptor',210,374);
 INSERT INTO `mob_skill_lists` VALUES ('Raptor',210,376);
 INSERT INTO `mob_skill_lists` VALUES ('Raptor',210,379);
@@ -3545,10 +3545,18 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_Maat',1048,3416); -- Dragon Kick (M
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Maat',1048,3417); -- Asuran Fists (Maat)
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_D_Shantotto',1049,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Star_Sibyl',1050,0);
--- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,0);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,3336); -- Howling Moon
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,183); -- Spirit Taker
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,179); -- Starburst
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,180); -- Sunburst
+-- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Karaha-Baruha',1051,3337); -- Lunar Bay,disable wrong animation
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Cid',1052,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Gilgamesh',1053,0);
--- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,0);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,37); -- Seraph Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,40); -- Vorpal Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,42); -- Savage Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,3438);  -- Dragon Breath (Areuhat)
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Areuhat',1054,3439); -- Hurricane Wing (Areuhat)
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Semih_Lafihna',1055,3487); -- Sidewinder (Semih Lafihna)
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Semih_Lafihna',1055,3488); -- Arching Arrow (Semih Lafihna)
 INSERT INTO `mob_skill_lists` VALUES ('TRUST_Semih_Lafihna',1055,3489); -- Lux Arrow
@@ -3563,7 +3571,10 @@ INSERT INTO `mob_skill_lists` VALUES ('TRUST_Uka_Totlihn',1062,167); -- Judgemen
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Klara',1063,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Romaa_Mihgo',1064,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Kuyin_Hathdenna',1065,0);
--- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal',1066,0);
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal', 1066, 32); -- Fast Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal', 1066, 37); -- Seraph Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal', 1066, 42); -- Savage Blade
+INSERT INTO `mob_skill_lists` VALUES ('TRUST_Rahal', 1066, 41); -- Swift Blade
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Koru-Moru',1067,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Pieuje_UC',1068,0);
 -- INSERT INTO `mob_skill_lists` VALUES ('TRUST_Invincible_Shield_UC',1069,0);
@@ -3954,7 +3965,44 @@ INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym',2017,2952); -- blac
 
 INSERT INTO `mob_skill_lists` VALUES ('Unfettered_Twitherym_low_50',2018,2953); -- smouldering_swarm
 
--- Next available ID: 2019
+/*INSERT INTO `mob_skill_lists` VALUES ('Supernal_Chapuli',2019,2945); -- natures_meditation
+INSERT INTO `mob_skill_lists` VALUES ('Supernal_Chapuli',2019,2946); -- sensilla_blades
+INSERT INTO `mob_skill_lists` VALUES ('Supernal_Chapuli',2019,2947); -- tegmina_buffet
+INSERT INTO `mob_skill_lists` VALUES ('Supernal_Chapuli',2019,2948); -- sanguinary_slash*/
+
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion',2020,353); -- death_scissors
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion',2020,354); -- wild_rage
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion',2020,356); -- sharp_strike
+
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,353); -- death_scissors (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,354); -- wild_rage (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,356); -- sharp_strike (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,721); -- stasis (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,723); -- earthbreaker (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,2221); -- hell_scissors (Below 50%)
+
+/*INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2158); -- insipid_nip
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2160); -- bombilation
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2161); -- cimicine_discharge
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2162); -- emetic_discharge
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2770); -- booming_bombination*/
+
+/*INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1951); -- magma_fan
+INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1952); -- erratic_flutter
+INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1953); -- proboscis
+INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1954); -- erosion_dust
+INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1955); -- exuviation
+INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1956); -- fire_break
+
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1951); -- magma_fan (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1952); -- erratic_flutter (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1953); -- proboscis (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1954); -- erosion_dust (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1955); -- exuviation (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,1956); -- fire_break (Below 50%)
+INSERT INTO `mob_skill_lists` VALUES ('Taxet_low_50',2024,3044); -- benumbing_blaze (Below 50%)*/
+
+-- Next ID : 2025
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

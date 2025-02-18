@@ -41,6 +41,7 @@
 #include "states/raise_state.h"
 #include "states/range_state.h"
 #include "states/respawn_state.h"
+#include "states/synth_state.h"
 #include "states/trigger_state.h"
 #include "states/weaponskill_state.h"
 #include "status_effect_container.h"
@@ -558,6 +559,16 @@ bool CAIContainer::Internal_Respawn(duration _duration)
     if (!IsCurrentState<CRespawnState>())
     {
         return ForceChangeState<CRespawnState>(PEntity, _duration);
+    }
+    return false;
+}
+
+bool CAIContainer::Internal_Synth(SKILLTYPE synthSkill)
+{
+    auto PChar = dynamic_cast<CCharEntity*>(PEntity);
+    if (PChar && !IsCurrentState<CSynthState>())
+    {
+        return ForceChangeState<CSynthState>(PChar, synthSkill);
     }
     return false;
 }

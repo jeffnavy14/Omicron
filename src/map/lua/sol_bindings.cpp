@@ -90,9 +90,17 @@ SOL_BIND_DEF_SUB(CLuaItem, CItem, CItemShop);
 SOL_BIND_DEF_SUB(CLuaItem, CItem, CItemUsable);
 SOL_BIND_DEF_SUB(CLuaItem, CItem, CItemWeapon);
 
+#include "utils/itemutils.h"
+#include "lua_loot.h"
+SOL_BIND_DEF(CLuaLootContainer, LootContainer);
+
 #include "mobskill.h"
 #include "lua_mobskill.h"
 SOL_BIND_DEF(CLuaMobSkill, CMobSkill);
+
+#include "petskill.h"
+#include "lua_petskill.h"
+SOL_BIND_DEF(CLuaPetSkill, CPetSkill);
 
 #include "spell.h"
 #include "lua_spell.h"

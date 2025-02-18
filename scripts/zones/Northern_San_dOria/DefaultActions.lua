@@ -56,6 +56,7 @@ return {
     ['Rodaillece']        = { text = ID.text.RODAILLECE_DIALOG },
     ['Rondipur']          = { event = 721 },
     ['Ronpaurege']        = { event = 669 },
+    ['Secodiand']         = { event =  17 },
     ['Shakir']            = { event = 538 },
     ['Sochiene']          = { text = ID.text.SOCHIENE_DIALOG },
     ['Suspicious_Elvaan'] = { event = 881 },
