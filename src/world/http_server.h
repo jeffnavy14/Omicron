@@ -29,7 +29,6 @@
 #include <mutex>
 
 #include <httplib.h>
-#include <task_system.hpp>
 
 class HTTPServer
 {
@@ -42,8 +41,6 @@ public:
 private:
     httplib::Server         m_httpServer;
     std::atomic<time_point> m_lastUpdate;
-
-    std::unique_ptr<ts::task_system> ts;
 
     struct APIDataCache
     {
