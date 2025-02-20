@@ -42,7 +42,6 @@
 #include "packets/synth_message.h"
 #include "packets/synth_result.h"
 
-#include "anticheat.h"
 #include "item_container.h"
 #include "map.h"
 #include "roe.h"
