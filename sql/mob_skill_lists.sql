@@ -685,7 +685,6 @@ INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2028);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,559);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,560);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,563);
-INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,1148);
 INSERT INTO `mob_skill_lists` VALUES ('Ladybug_Day',170,2178);
 INSERT INTO `mob_skill_lists` VALUES ('Ladybug_Day',170,2179);
 INSERT INTO `mob_skill_lists` VALUES ('Ladybug_Day',170,2180);
