@@ -35,7 +35,7 @@ xi.mobskills.physicalTpBonus =
 {
     NO_EFFECT   = 0,
     ACC_VARIES  = 1, -- Not implemented
-    ATK_VARIES  = 2, -- Not implemented
+    ATK_VARIES  = 2,
     DMG_VARIES  = 3, -- Damage formula incorrect
     CRIT_VARIES = 4, -- Not implemented
     RANGED      = 5, -- Needs varification
@@ -170,12 +170,17 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, ftp
         hitdamage = hitdamage * fTP(skill:getTP(), mtp000, mtp150, mtp300)
     end
 
-    local applyLevelCorrection = xi.combat.levelCorrection.isLevelCorrectedZone(mob)
-    local weaponType           = xi.skill.NONE -- use NONE for mobs
-    local attMod               = 1             -- TODO: implement attack boosts for mobskills
-    local canCrit              = false         -- TODO: implement which skills can crit
-    local isCannonball         = isCannonball or false
-    local pDif                 = xi.combat.physical.calculateMeleePDIF(mob, target, weaponType, attMod, canCrit, applyLevelCorrection, false, 0, false, xi.slot.MAIN, isCannonball)
+    local attMod = 1
+
+    if tpEffect == xi.mobskills.physicalTpBonus.ATK_VARIES then
+        attMod = fTP(skill:getTP(), mtp000, mtp150, mtp300)
+    end
+
+    local applyLevelCorrection  = xi.combat.levelCorrection.isLevelCorrectedZone(mob)
+    local weaponType            = xi.skill.NONE -- use NONE for mobs
+    local canCrit               = false         -- TODO: implement which skills can crit
+    local useDefInPlaceOfAttack = isCannonball or false
+    local pDif                  = xi.combat.physical.calculateMeleePDIF(mob, target, weaponType, attMod, canCrit, applyLevelCorrection, false, 0, false, xi.slot.MAIN, useDefInPlaceOfAttack)
 
     hitdamage = hitdamage * pDif
 

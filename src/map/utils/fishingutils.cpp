@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -222,7 +222,7 @@ namespace fishingutils
             waitTime -= 1;
         }
 
-        if (gear.waist == FISHERMANS_BELT)
+        if (gear.waist == FISHERS_ROPE)
         {
             waitTime -= 1;
         }
@@ -952,6 +952,8 @@ namespace fishingutils
 
     uint16 CalculateCriticalBite(uint8 fishingSkill, uint8 fishSkill, rod_t* rod)
     {
+        // TODO: Does gear discerment really help with this?
+        // https://wiki.ffo.jp/html/24002.html
         uint16 chance     = 0;
         uint8  ebisuBonus = 0;
 
@@ -972,7 +974,8 @@ namespace fishingutils
 
         // Moon mod (max + 20)
         float moonModifier = 2 * MOONPATTERN_3(GetMoonPhase());
-        chance += (uint16)(10 * (2 - (moonModifier)));
+        chance += (uint16)(10 * (2 - moonModifier));
+
         return std::clamp<uint16>(chance, 0, 70);
     }
 

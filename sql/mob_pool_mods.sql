@@ -184,9 +184,6 @@ INSERT INTO `mob_pool_mods` VALUES (1792,368,70,0); -- REGAIN: 70
 -- Greater Manticore
 INSERT INTO `mob_pool_mods` VALUES (1806,28,10,1); -- EXP_BONUS: 10
 
--- Guivre
-INSERT INTO `mob_pool_mods` VALUES (1841,28,10,1); -- EXP_BONUS: 10
-
 -- Hydras Hound
 INSERT INTO `mob_pool_mods` VALUES (2032,34,20,1);  -- MAGIC_COOL: 20
 INSERT INTO `mob_pool_mods` VALUES (2032,35,0,1);   -- STANDBACK_COOL: 0
@@ -291,9 +288,6 @@ INSERT INTO `mob_pool_mods` VALUES (3051,4,4,1); -- SIGHT_RANGE: 4
 
 -- Parata
 INSERT INTO `mob_pool_mods` VALUES (3099,23,23,1); -- IMMUNITY: 23
-
--- Phantom Worm
-INSERT INTO `mob_pool_mods` VALUES (3129,370,50,0); -- REGEN: 50
 
 -- Polar Hare
 INSERT INTO `mob_pool_mods` VALUES (3168,28,10,1); -- EXP_BONUS: 10
@@ -599,9 +593,20 @@ INSERT INTO `mob_pool_mods` VALUES (5922,6,150,0);      -- MPP: 150
 -- Trust: Fablinix
 INSERT INTO `mob_pool_mods` VALUES (5932,6,250,0);    -- MPP: 250
 
+-- Trust: Karaha-Baruha
+INSERT INTO `mob_pool_mods` VALUES (5936,3,-10,0); -- HPP: -10
+INSERT INTO `mob_pool_mods` VALUES (5936,6,20,0); -- MPP: 20
+
+-- Trust: Areuhat
+INSERT INTO `mob_pool_mods` VALUES (5939,1046,30,0); -- ENHANCES_BLOOD_RAGE: 30
+INSERT INTO `mob_pool_mods` VALUES (5939,234,8,0);  -- DEMON_KILLER: 8
+
 -- Trust: Ferreous Coffin
 INSERT INTO `mob_pool_mods` VALUES (5944,3,-10,0);      -- HPP: -10
 INSERT INTO `mob_pool_mods` VALUES (5944,6,35,0);       -- MPP: 35
+
+-- Trust: Rahal
+INSERT INTO `mob_pool_mods` VALUES (5951,233,8,0); -- DRAGON_KILLER: 8
 
 -- Trust: Prishe II
 INSERT INTO `mob_pool_mods` VALUES (6011,165,25,0);     -- CRITHITRATE: 25

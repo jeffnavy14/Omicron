@@ -2197,16 +2197,12 @@ void SmallPacket0x03D(map_session_data_t* const PSession, CCharEntity* const PCh
         PChar->pushPacket<CBlacklistEditResponsePacket>(0, "", 0x02);
     };
 
-    // Attempt to locate the character by their name
-    const auto rset = db::preparedStmt("SELECT charid, accid FROM chars WHERE charname = ? LIMIT 1", name);
-    if (!rset || rset->rowsCount() != 1 || !rset->next())
+    const auto [charid, accid] = charutils::getCharIdAndAccountIdFromName(name);
+    if (!charid)
     {
         sendFailPacket();
         return;
     }
-
-    uint32 charid = rset->get<uint32>("charid");
-    uint32 accid  = rset->get<uint32>("accid");
 
     // User is trying to add someone to their blacklist
     if (cmd == 0x00)
@@ -2697,10 +2693,7 @@ void SmallPacket0x058(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x059(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    if (PChar->animation == ANIMATION_SYNTH)
-    {
-        synthutils::sendSynthDone(PChar);
-    }
+    // Do nothing. This is handled in synth state.
 }
 
 /************************************************************************
@@ -3556,12 +3549,10 @@ void SmallPacket0x071(map_session_data_t* const PSession, CCharEntity* const PCh
                 {
                     const auto victimName = escapeString(asStringFromUntrustedSource(data[0x0C], 15));
 
-                    int32 ret = _sql->Query("SELECT charid FROM chars WHERE charname = '%s'", victimName);
-                    if (ret != SQL_ERROR && _sql->NumRows() == 1 && _sql->NextRow() == SQL_SUCCESS)
+                    if (const auto victimId = charutils::getCharIdFromName(victimName))
                     {
-                        uint32 id = _sql->GetUIntData(0);
-                        if (_sql->Query("DELETE FROM accounts_parties WHERE partyid = %u AND charid = %u", PChar->id, id) == SQL_SUCCESS &&
-                            _sql->AffectedRows())
+                        const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM accounts_parties WHERE partyid = ? AND charid = ?", PChar->id, victimId);
+                        if (rset && affectedRows)
                         {
                             ShowDebug("%s has removed %s from party", PChar->getName(), victimName);
 
@@ -3578,7 +3569,7 @@ void SmallPacket0x071(map_session_data_t* const PSession, CCharEntity* const PCh
                             }
 
                             // Notify the player they were just kicked -- they are no longer in the DB and party/alliance reloads won't notify them.
-                            ref<uint32>(reloadData, 0) = id;
+                            ref<uint32>(reloadData, 0) = victimId;
                             message::send(MSG_PLAYER_KICK, reloadData, sizeof(reloadData), nullptr);
                         }
                     }
@@ -3654,22 +3645,21 @@ void SmallPacket0x071(map_session_data_t* const PSession, CCharEntity* const PCh
                 if (!PVictim && PChar->PParty->m_PAlliance->getMainParty() == PChar->PParty)
                 {
                     const auto victimName = escapeString(asStringFromUntrustedSource(data[0x0C], 15));
+                    uint32     allianceID = PChar->PParty->m_PAlliance->m_AllianceID;
 
-                    uint32 allianceID = PChar->PParty->m_PAlliance->m_AllianceID;
-
-                    int32 ret = _sql->Query("SELECT charid FROM chars WHERE charname = '%s'", victimName);
-                    if (ret != SQL_ERROR && _sql->NumRows() == 1 && _sql->NextRow() == SQL_SUCCESS)
+                    if (const auto victimId = charutils::getCharIdFromName(victimName))
                     {
-                        uint32 charid = _sql->GetUIntData(0);
-                        ret           = _sql->Query(
-                            "SELECT partyid FROM accounts_parties WHERE charid = %u AND allianceid = %u AND partyflag & %d",
-                            charid, PChar->PParty->m_PAlliance->m_AllianceID, PARTY_LEADER | PARTY_SECOND | PARTY_THIRD);
-                        if (ret != SQL_ERROR && _sql->NumRows() == 1 && _sql->NextRow() == SQL_SUCCESS)
+                        const auto rset = db::preparedStmt(
+                            "SELECT partyid FROM accounts_parties WHERE charid = ? AND allianceid = ? AND partyflag & ?",
+                            victimId, PChar->PParty->m_PAlliance->m_AllianceID, PARTY_LEADER | PARTY_SECOND | PARTY_THIRD);
+
+                        FOR_DB_SINGLE_RESULT(rset)
                         {
-                            uint32 partyid = _sql->GetUIntData(0);
-                            if (_sql->Query("UPDATE accounts_parties SET allianceid = 0, partyflag = partyflag & ~%d WHERE partyid = %u",
-                                            PARTY_SECOND | PARTY_THIRD, partyid) == SQL_SUCCESS &&
-                                _sql->AffectedRows())
+                            uint32 partyid = rset->get<uint32>("partyid");
+
+                            const auto [rset2, affectedRows] = db::preparedStmtWithAffectedRows("UPDATE accounts_parties SET allianceid = 0, partyflag = partyflag & ~? WHERE partyid = ?",
+                                                                                                PARTY_SECOND | PARTY_THIRD, partyid);
+                            if (rset2 && affectedRows)
                             {
                                 ShowDebug("%s has removed %s party from alliance", PChar->getName(), victimName);
 
@@ -4022,49 +4012,72 @@ void SmallPacket0x084(map_session_data_t* const PSession, CCharEntity* const PCh
 void SmallPacket0x085(map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
+
     // Retrieve item-to-sell from last slot of the shop's container
     uint32 quantity = PChar->Container->getQuantity(PChar->Container->getExSize());
     uint16 itemID   = PChar->Container->getItemID(PChar->Container->getExSize());
     uint8  slotID   = PChar->Container->getInvSlotID(PChar->Container->getExSize());
 
-    CItem* gil   = PChar->getStorage(LOC_INVENTORY)->GetItem(0);
-    CItem* PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(slotID);
+    CItem* PGilItem = PChar->getStorage(LOC_INVENTORY)->GetItem(0);
 
-    if (PItem != nullptr && (gil != nullptr && gil->isType(ITEM_CURRENCY)))
+    const bool gilIsValid = PGilItem != nullptr && PGilItem->isType(ITEM_CURRENCY);
+    if (!gilIsValid)
     {
-        if (PChar->animation == ANIMATION_SYNTH || (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
-        {
-            ShowWarning("SmallPacket0x085: Player %s trying to sell while in the middle of a synth!", PChar->getName());
-            return;
-        }
-
-        if (quantity < 1 || quantity > PItem->getStackSize()) // Possible exploit
-        {
-            ShowWarning("SmallPacket0x085: Player %s trying to sell invalid quantity %u of itemID %u [to VENDOR] ", PChar->getName(), quantity, PItem->getID());
-            return;
-        }
-
-        if (PItem->isSubType(ITEM_LOCKED)) // Possible exploit
-        {
-            ShowWarning("SmallPacket0x085: Player %s trying to sell %u of a LOCKED item! ID %i [to VENDOR] ", PChar->getName(), quantity, PItem->getID());
-            return;
-        }
-
-        if (PItem->getReserve() > 0) // Usually caused by bug during synth, trade, etc. reserving the item. We don't want such items sold in this state.
-        {
-            ShowError("SmallPacket0x085: Player %s trying to sell %u of a RESERVED(%u) item! ID %i [to VENDOR] ", PChar->getName(), quantity, PItem->getReserve(), PItem->getID());
-            return;
-        }
-
-        const auto cost = quantity * PItem->getBasePrice();
-
-        charutils::UpdateItem(PChar, LOC_INVENTORY, 0, cost);
-        charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -(int32)quantity);
-        ShowInfo("SmallPacket0x085: Player '%s' sold %u of itemID %u (Total: %u gil) [to VENDOR] ", PChar->getName(), quantity, itemID, cost);
-        PChar->pushPacket<CMessageStandardPacket>(nullptr, itemID, quantity, MsgStd::Sell);
-        PChar->pushPacket<CInventoryFinishPacket>();
-        PChar->Container->setItem(PChar->Container->getSize() - 1, 0, -1, 0);
+        ShowWarning("SmallPacket0x085: Player %s trying to sell an item without valid gil!", PChar->getName());
+        return;
     }
+
+    CItem* PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(slotID);
+    if (!PItem)
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell an invalid item!", PChar->getName());
+        return;
+    }
+
+    if (PChar->animation == ANIMATION_SYNTH || (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell while in the middle of a synth!", PChar->getName());
+        return;
+    }
+
+    if (quantity < 1 || quantity > PItem->getStackSize()) // Possible exploit
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell invalid quantity %u of itemID %u [to VENDOR] ", PChar->getName(), quantity, PItem->getID());
+        return;
+    }
+
+    if (quantity > PItem->getQuantity())
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell more items than they have in stack (%u/%u) of itemID %u [to VENDOR] ", PChar->getName(), quantity, PItem->getQuantity());
+        return;
+    }
+
+    if (itemID != PItem->getID())
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell an item different than the original ID (original: %u, current %u) [to VENDOR] ", PChar->getName(), itemID, PItem->getID());
+        return;
+    }
+
+    if (PItem->isSubType(ITEM_LOCKED)) // Possible exploit
+    {
+        ShowWarning("SmallPacket0x085: Player %s trying to sell %u of a LOCKED item! ID %i [to VENDOR] ", PChar->getName(), quantity, PItem->getID());
+        return;
+    }
+
+    if (PItem->getReserve() > 0) // Usually caused by bug during synth, trade, etc. reserving the item. We don't want such items sold in this state.
+    {
+        ShowError("SmallPacket0x085: Player %s trying to sell %u of a RESERVED(%u) item! ID %i [to VENDOR] ", PChar->getName(), quantity, PItem->getReserve(), PItem->getID());
+        return;
+    }
+
+    const auto cost = quantity * PItem->getBasePrice();
+
+    charutils::UpdateItem(PChar, LOC_INVENTORY, 0, cost);
+    charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -(int32)quantity);
+    ShowInfo("SmallPacket0x085: Player '%s' sold %u of itemID %u (Total: %u gil) [to VENDOR] ", PChar->getName(), quantity, itemID, cost);
+    PChar->pushPacket<CMessageStandardPacket>(nullptr, itemID, quantity, MsgStd::Sell);
+    PChar->pushPacket<CInventoryFinishPacket>();
+    PChar->Container->setItem(PChar->Container->getSize() - 1, 0, -1, 0);
 }
 
 /************************************************************************

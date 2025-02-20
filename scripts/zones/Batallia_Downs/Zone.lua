@@ -28,9 +28,6 @@ zoneObject.onInitialize = function(zone)
     -- A Chocobo Riding Game finish line
     zone:registerCylindricalTriggerArea(1, 467.16, -156.82, 20)
 
-    UpdateNMSpawnPoint(ID.mob.AHTU)
-    GetMobByID(ID.mob.AHTU):setRespawnTime(math.random(900, 10800))
-
     for i = 0, 7 do
         registerRegionAroundNPC(zone, ID.npc.RAPTOR_FOOD_BASE + i, i + 1)
     end

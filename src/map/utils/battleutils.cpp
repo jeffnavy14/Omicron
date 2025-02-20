@@ -75,6 +75,7 @@
 #include "utils/petutils.h"
 #include "weapon_skill.h"
 #include "zoneutils.h"
+#include "../treasure_pool.h"
 
 /************************************************************************
  *                                                                       *
@@ -1659,11 +1660,10 @@ namespace battleutils
 
         auto levelCorrectionFunc = lua["xi"]["combat"]["levelCorrection"]["isLevelCorrectedZone"];
         auto rangedPDIFFunc      = lua["xi"]["combat"]["physical"]["calculateRangedPDIF"];
-        auto luaAttackerEntity   = CLuaBaseEntity(PAttacker);
 
         if (rangedPDIFFunc.valid() && levelCorrectionFunc.valid())
         {
-            auto levelCorrectionResult = levelCorrectionFunc(luaAttackerEntity);
+            auto levelCorrectionResult = levelCorrectionFunc(PAttacker);
             if (!levelCorrectionResult.valid())
             {
                 sol::error err = levelCorrectionResult;
@@ -1671,7 +1671,7 @@ namespace battleutils
                 return pDIF;
             }
 
-            auto rangedPDIFFuncResult = rangedPDIFFunc(luaAttackerEntity, CLuaBaseEntity(PDefender), weaponType, 1.0, isCritical, levelCorrectionResult.get<bool>(0), false, 0.0, false, bonusRangedAttack);
+            auto rangedPDIFFuncResult = rangedPDIFFunc(PAttacker, PDefender, weaponType, 1.0, isCritical, levelCorrectionResult.get<bool>(0), false, 0.0, false, bonusRangedAttack);
             if (!rangedPDIFFuncResult.valid())
             {
                 sol::error err = rangedPDIFFuncResult;
@@ -2601,7 +2601,7 @@ namespace battleutils
             auto tpGainFunc = lua["xi"]["combat"]["tp"]["calculateTPGainOnMagicalDamage"];
             if (tpGainFunc.valid())
             {
-                PDefender->addTP(tpGainFunc(damage, CLuaBaseEntity(PAttacker), CLuaBaseEntity(PDefender)));
+                PDefender->addTP(tpGainFunc(damage, PAttacker, PDefender));
             }
         }
 
@@ -2965,11 +2965,10 @@ namespace battleutils
 
         auto levelCorrectionFunc = lua["xi"]["combat"]["levelCorrection"]["isLevelCorrectedZone"];
         auto meleePDIFFunc       = lua["xi"]["combat"]["physical"]["calculateMeleePDIF"];
-        auto luaAttackerEntity   = CLuaBaseEntity(PAttacker);
 
         if (meleePDIFFunc.valid() && levelCorrectionFunc.valid())
         {
-            auto levelCorrectionResult = levelCorrectionFunc(luaAttackerEntity);
+            auto levelCorrectionResult = levelCorrectionFunc(PAttacker);
             if (!levelCorrectionResult.valid())
             {
                 sol::error err = levelCorrectionResult;
@@ -2977,7 +2976,7 @@ namespace battleutils
                 return pDIF;
             }
 
-            auto meleePDIFFuncResult = meleePDIFFunc(luaAttackerEntity, CLuaBaseEntity(PDefender), weaponType, bonusAttPercent, isCritical, levelCorrectionResult.get<bool>(0), false, 0.0, false, weaponSlot, false);
+            auto meleePDIFFuncResult = meleePDIFFunc(PAttacker, PDefender, weaponType, bonusAttPercent, isCritical, levelCorrectionResult.get<bool>(0), false, 0.0, false, weaponSlot, false);
             if (!meleePDIFFuncResult.valid())
             {
                 sol::error err = meleePDIFFuncResult;
@@ -6034,6 +6033,15 @@ namespace battleutils
             return true;
         }
 
+        if (PEntity->objtype == TYPE_PC) 
+        {
+            CCharEntity* PChar = static_cast<CCharEntity*>(PEntity);
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+            {
+                return true;
+            }
+        }
+        
         bool found = false;
 
         // clang-format off

@@ -1,15 +1,10 @@
 -----------------------------------
 -- Zone: Bhaflau_Thickets (52)
 -----------------------------------
-local ID = zones[xi.zone.BHAFLAU_THICKETS]
------------------------------------
 ---@type TZone
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
-    UpdateNMSpawnPoint(ID.mob.HARVESTMAN)
-    GetMobByID(ID.mob.HARVESTMAN):setRespawnTime(math.random(900, 10800))
-
     xi.helm.initZone(zone, xi.helmType.HARVESTING)
     xi.darkRider.addHoofprints(zone)
 end

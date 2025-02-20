@@ -19,6 +19,7 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 1
 end
 
+-- TODO: this is totally wrong, see https://docs.google.com/spreadsheets/d/1YBoveP-weMdidrirY-vPDzHyxbEI2ryECINlfCnFkLI/
 mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     local numhits = 1
     local accmod = 1
@@ -33,7 +34,11 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
 
     mob:setHP(0)
 
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, xi.mobskills.physicalTpBonus.DMG_VARIES, 1, 2, 3)
+    if mob:isDead() then
+        mob:setAnimationSub(1) -- Don't die twice
+    end
+
+    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, xi.mobskills.physicalTpBonus.NO_EFFECT, 0, 0, 0)
     local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.SLASHING, info.hitslanded)
     target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.SLASHING)
     return dmg

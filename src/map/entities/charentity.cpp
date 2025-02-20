@@ -2389,6 +2389,11 @@ bool CCharEntity::IsMobOwner(CBattleEntity* PBattleTarget)
         return true;
     }
 
+    if (PTreasurePool != nullptr && PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+    {
+        return true;
+    }
+
     bool found = false;
 
     // clang-format off
@@ -3357,4 +3362,13 @@ void CCharEntity::clearCharVarsWithPrefix(std::string const& prefix)
     }
 
     _sql->Query("DELETE FROM char_vars WHERE charid = %u AND varname LIKE '%s%%'", this->id, prefix.c_str());
+}
+
+bool CCharEntity::startSynth(SKILLTYPE synthSkill)
+{
+    if (PAI)
+    {
+        return PAI->Internal_Synth(synthSkill);
+    }
+    return false;
 }

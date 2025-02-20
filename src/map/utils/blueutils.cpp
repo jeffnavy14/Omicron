@@ -484,6 +484,14 @@ namespace blueutils
                                         break;
                                     }
                                 }
+                                else if ((PTrait->getMod() == Mod::DOUBLE_ATTACK && iter->getMod() == Mod::TRIPLE_ATTACK) ||
+                                         (PTrait->getMod() == Mod::GILFINDER && iter->getMod() == Mod::TREASURE_HUNTER))
+                                {
+                                    // Triple Attack (16 pts) overwrites Double Attack (8 pts)
+                                    // Treasure Hunter (18 pts) overwrites Gilfinder (12 pts)
+                                    add = false;
+                                    break;
+                                }
                             }
 
                             if (add)

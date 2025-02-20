@@ -723,4 +723,12 @@ namespace db
     bool transactionRollback();
 
     void enableTimers();
+
+    // Execute a transaction with the given transaction function.
+    //
+    // Will handle maintenance of the autocommit state and rollback the transaction if the transaction function throws.
+    // Otherwise will commit the transaction. on successful completion of the transaction function.
+    //
+    // Returns true if the transaction was successful and committed or false if the transaction was rolled back.
+    bool transaction(const std::function<void()>& transactionFn);
 } // namespace db

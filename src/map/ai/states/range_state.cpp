@@ -72,26 +72,32 @@ CRangeState::CRangeState(CBattleEntity* PEntity, uint16 targid)
     auto delay = m_PEntity->GetRangedWeaponDelay(false);
     delay      = battleutils::GetRangedDelayReduction(m_PEntity, delay);
 
-    // TODO: verify can use rapid shot
+    // Rapid Shot
     if (m_PEntity->objtype == TYPE_PC || m_PEntity->objtype == TYPE_TRUST)
     {
-        auto chance{ m_PEntity->getMod(Mod::RAPID_SHOT) };
-
-        if (auto* PChar = dynamic_cast<CCharEntity*>(m_PEntity))
+        CItemWeapon* weapon     = dynamic_cast<CItemWeapon*>(m_PEntity->m_Weapons[SLOT_RANGED]);
+        bool         isThrowing = weapon && weapon->isThrowing();
+        // Don't apply Rapid Shot to throwing weapons
+        if (!isThrowing)
         {
-            chance += PChar->PMeritPoints->GetMeritValue(MERIT_RAPID_SHOT_RATE, PChar);
-        }
+            auto chance{ m_PEntity->getMod(Mod::RAPID_SHOT) };
 
-        // Don't bother if we cant even proc
-        if (chance > 0)
-        {
-            if (xirand::GetRandomNumber(100) < chance)
+            if (auto* PChar = dynamic_cast<CCharEntity*>(m_PEntity))
             {
-                // reduce delay by 1/16 - 8/16
-                // https://wiki.ffo.jp/html/2986.html
-                // https://www.bg-wiki.com/ffxi/Delay#Ranged_Delay
-                delay       = (int16)(delay * (1.f - xirand::GetRandomNumber<uint16>(1, 8) / 16.f));
-                m_rapidShot = true;
+                chance += PChar->PMeritPoints->GetMeritValue(MERIT_RAPID_SHOT_RATE, PChar);
+            }
+
+            // Don't bother if we cant even proc
+            if (chance > 0)
+            {
+                if (xirand::GetRandomNumber(100) < chance)
+                {
+                    // reduce delay by 2-50%
+                    // https://www.bg-wiki.com/ffxi/Rapid_Shot
+                    // https://www.ffxiah.com/forum/topic/49806/ranger-firing-range-testing/4/#3233650
+                    delay       = (int16)(delay * (1.f - xirand::GetRandomNumber<uint16>(2, 50) / 100.f));
+                    m_rapidShot = true;
+                }
             }
         }
     }
@@ -109,7 +115,7 @@ CRangeState::CRangeState(CBattleEntity* PEntity, uint16 targid)
     actionTarget_t& actionTarget = actionList.getNewActionTarget();
     actionTarget.animation       = ANIMATION_RANGED;
 
-    m_PEntity->PAI->EventHandler.triggerListener("RANGE_START", CLuaBaseEntity(m_PEntity), CLuaAction(&action));
+    m_PEntity->PAI->EventHandler.triggerListener("RANGE_START", m_PEntity, &action);
 
     m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
 }
@@ -155,7 +161,7 @@ bool CRangeState::Update(time_point tick)
             // reset aim time so interrupted players only have to wait the correct 2.7s until next shot
             m_aimTime = std::chrono::seconds(0);
             m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
-            m_PEntity->PAI->EventHandler.triggerListener("RANGE_STATE_EXIT", CLuaBaseEntity(m_PEntity), nullptr, CLuaAction(&action));
+            m_PEntity->PAI->EventHandler.triggerListener("RANGE_STATE_EXIT", m_PEntity, nullptr, &action);
         }
         else
         {
@@ -163,7 +169,7 @@ bool CRangeState::Update(time_point tick)
 
             m_PEntity->OnRangedAttack(*this, action);
             m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
-            m_PEntity->PAI->EventHandler.triggerListener("RANGE_STATE_EXIT", CLuaBaseEntity(m_PEntity), CLuaBaseEntity(PTarget), CLuaAction(&action));
+            m_PEntity->PAI->EventHandler.triggerListener("RANGE_STATE_EXIT", m_PEntity, PTarget, &action);
         }
 
         Complete();
