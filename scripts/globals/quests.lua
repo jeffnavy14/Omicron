@@ -64,7 +64,7 @@ xi.quest.id =
         ADVANCED_TEAMWORK               = 65, -- + Converted
         GRIMY_SIGNPOSTS                 = 66, -- + Converted
         A_JOB_FOR_THE_CONSORTIUM        = 67,
-        TROUBLE_AT_THE_SLUICE           = 68, -- +
+        TROUBLE_AT_THE_SLUICE           = 68, -- + Converted
         THE_MERCHANTS_BIDDING           = 69, -- ±
         UNEXPECTED_TREASURE             = 70,
         BLACKMAIL                       = 71, -- +
@@ -704,7 +704,7 @@ xi.quest.id =
     {
         LOST_IN_TRANSLOCATION            = 0,  -- + Converted
         MESSAGE_ON_THE_WINDS             = 1,  -- + Converted
-        THE_WEEKLY_ADVENTURER            = 2,
+        THE_WEEKLY_ADVENTURER            = 2,  -- + Converted
         HEALING_HERBS                    = 3,
         REDEEMING_ROCKS                  = 4,
         THE_DAWN_OF_DELECTABILITY        = 5,  -- + Converted
