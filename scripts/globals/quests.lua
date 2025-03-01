@@ -65,14 +65,14 @@ xi.quest.id =
         GRIMY_SIGNPOSTS                 = 66, -- + Converted
         A_JOB_FOR_THE_CONSORTIUM        = 67,
         TROUBLE_AT_THE_SLUICE           = 68, -- + Converted
-        THE_MERCHANTS_BIDDING           = 69, -- ±
+        THE_MERCHANTS_BIDDING           = 69, -- ± Converted
         UNEXPECTED_TREASURE             = 70,
         BLACKMAIL                       = 71, -- + Converted
         THE_SETTING_SUN                 = 72, -- + Converted
         DISTANT_LOYALTIES               = 74, -- ± Converted
         THE_RIVALRY                     = 75, -- ±
         THE_COMPETITION                 = 76, -- ±
-        STARTING_A_FLAME                = 77, -- ±
+        STARTING_A_FLAME                = 77, -- ± Converted
         FEAR_OF_THE_DARK                = 78, -- + Converted
         WARDING_VAMPIRES                = 79, -- + Converted
         SLEEPLESS_NIGHTS                = 80, -- + Converted
@@ -82,7 +82,7 @@ xi.quest.id =
         THE_CRIMSON_TRIAL               = 84, -- ± Converted
         ENVELOPED_IN_DARKNESS           = 85, -- ± Converted
         PEACE_FOR_THE_SPIRIT            = 86, -- ±
-        MESSENGER_FROM_BEYOND           = 87, -- ±
+        MESSENGER_FROM_BEYOND           = 87, -- ± Converted
         PRELUDE_OF_BLACK_AND_WHITE      = 88, -- ±
         PIEUJES_DECISION                = 89, -- +
         SHARPENING_THE_SWORD            = 90, -- ±
@@ -503,7 +503,7 @@ xi.quest.id =
         SURVIVAL_OF_THE_WISEST          = 33,
         MONSTROSITY                     = 34, -- + Converted
         A_HARD_DAYS_KNIGHT              = 64, -- + Converted
-        X_MARKS_THE_SPOT                = 65,
+        X_MARKS_THE_SPOT                = 65, -- + Converted
         A_BITTER_PAST                   = 66,
         THE_CALL_OF_THE_SEA             = 67,
         PARADISE_SALVATION_AND_MAPS     = 68,
@@ -1214,6 +1214,8 @@ xi.quest.id =
 local function getVarPrefix(areaId, questId)
     return string.format('Quest[%d][%d]', areaId, questId)
 end
+
+xi.quest.getVarPrefix = getVarPrefix
 
 -- Interaction Framework Helper Functions
 xi.quest.incrementVar = function(player, areaId, questId, name, value)

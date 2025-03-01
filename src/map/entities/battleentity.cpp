@@ -2527,13 +2527,6 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                     }
                 }
 
-                if (attack.IsParried() || !settings::get<bool>("map.PARRY_OLD_SKILLUP_STYLE"))
-                {
-                    if (battleutils::GetParryRate(this, PTarget) > 0)
-                    {
-                        charutils::TrySkillUP((CCharEntity*)PTarget, SKILL_PARRY, GetMLevel());
-                    }
-                }
                 if (!attack.IsCountered() && !attack.IsParried())
                 {
                     charutils::TrySkillUP((CCharEntity*)PTarget, SKILL_EVASION, GetMLevel());

@@ -33,6 +33,7 @@ zones[xi.zone.VALKURM_DUNES] =
         SIGNPOST2                      = 7377,  -- Northeast: La Theine Plateau Southeast: Konschtat Highlands West: Selbina
         SIGNPOST1                      = 7378,  -- Northeast: La Theine Plateau Southeast: Konschtat Highlands Southwest: Selbina
         CONQUEST                       = 7388,  -- You've earned conquest points!
+        FOUL_PRESENCE                  = 7722,  -- You sense a foul presence.
         YOU_SENSE_AN_EVIL_PRESENCE     = 7732,  -- You sense an evil presence...
         WHAT_DO_YOU_THINK              = 7734,  -- What do you think you are doing!?
         AN_EMPTY_LIGHT_SWIRLS          = 7766,  -- An empty light swirls about the cave, eating away at the surroundings...
@@ -68,6 +69,7 @@ zones[xi.zone.VALKURM_DUNES] =
     {
         SUNSAND_QM    = GetFirstID('qm1'),
         OVERSEER_BASE = GetFirstID('Quanteilleron_RK'),
+        WHM_AF1_QM    = GetFirstID('qm2')
     },
 }
 
