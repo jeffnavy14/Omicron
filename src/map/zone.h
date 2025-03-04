@@ -583,6 +583,7 @@ public:
     bool CanUseMisc(uint16 misc) const;
     void SetWeather(WEATHER weatherCondition);
     void UpdateWeather();
+    bool CheckMobsPathedBack();
 
     virtual void SpawnPCs(CCharEntity* PChar);
     virtual void SpawnMOBs(CCharEntity* PChar);

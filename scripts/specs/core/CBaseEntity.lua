@@ -3938,6 +3938,11 @@ function CBaseEntity:addTreasure(itemID, arg1, arg2)
 end
 
 ---@nodiscard
+---@return CTreasurePool?
+function CBaseEntity:getTreasurePool()
+end
+
+---@nodiscard
 ---@return integer
 function CBaseEntity:getStealItem()
 end

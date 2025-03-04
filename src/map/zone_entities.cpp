@@ -1882,7 +1882,7 @@ void CZoneEntities::ZoneServer(time_point tick)
 
             if (PChar->PTreasurePool)
             {
-                PChar->PTreasurePool->CheckItems(tick);
+                PChar->PTreasurePool->checkItems(tick);
             }
         }
 

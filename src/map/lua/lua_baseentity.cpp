@@ -612,6 +612,28 @@ int32 CLuaBaseEntity::getCharVar(std::string const& varName)
 }
 
 /************************************************************************
+ *  Function: getCharVarsWithPrefix()
+ *  Purpose :
+ *  Example : local vars = player:getCharVarsWithPrefix("[ZM]")
+ *  Notes   :
+ ************************************************************************/
+
+auto CLuaBaseEntity::getCharVarsWithPrefix(std::string const& prefix) -> sol::table
+{
+    sol::table table = lua.create_table();
+
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        for (auto const& [varName, value] : PChar->getCharVarsWithPrefix(prefix))
+        {
+            table[varName] = value;
+        }
+    }
+
+    return table;
+}
+
+/************************************************************************
  *  Function: setCharVar()
  *  Purpose : Updates PC's variable to an explicit value
  *  Example : player:setCharVar("[ZM]Status", 4)
@@ -18147,6 +18169,23 @@ void CLuaBaseEntity::addTreasure(uint16 itemID, sol::object const& arg1, sol::ob
 }
 
 /************************************************************************
+ *  Function: getTreasurePool()
+ *  Purpose : Returns PC treasure pool
+ *  Example : player:getTreasurePool()
+ *  Notes   :
+ ************************************************************************/
+
+auto CLuaBaseEntity::getTreasurePool() -> CTreasurePool*
+{
+    if (const auto PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        return PChar->PTreasurePool;
+    }
+
+    return nullptr;
+}
+
+/************************************************************************
  *  Function: getStealItem()
  *  Purpose : Used to return the Item ID of a mob's item which can be stolen
  *  Example : local steamItem = target:getStealItem()
@@ -18866,6 +18905,7 @@ void CLuaBaseEntity::Register()
 
     // Variables
     SOL_REGISTER("getCharVar", CLuaBaseEntity::getCharVar);
+    SOL_REGISTER("getCharVarsWithPrefix", CLuaBaseEntity::getCharVarsWithPrefix);
     SOL_REGISTER("setCharVar", CLuaBaseEntity::setCharVar);
     SOL_REGISTER("setCharVarExpiration", CLuaBaseEntity::setCharVarExpiration);
     SOL_REGISTER("getVar", CLuaBaseEntity::getCharVar); // Compatibility binding
@@ -19674,6 +19714,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getDropID", CLuaBaseEntity::getDropID);
     SOL_REGISTER("setDropID", CLuaBaseEntity::setDropID);
     SOL_REGISTER("addTreasure", CLuaBaseEntity::addTreasure);
+    SOL_REGISTER("getTreasurePool", CLuaBaseEntity::getTreasurePool);
     SOL_REGISTER("getStealItem", CLuaBaseEntity::getStealItem);
     SOL_REGISTER("getDespoilItem", CLuaBaseEntity::getDespoilItem);
     SOL_REGISTER("getDespoilDebuff", CLuaBaseEntity::getDespoilDebuff);

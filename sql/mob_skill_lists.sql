@@ -3980,11 +3980,11 @@ INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,721); 
 INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,723); -- earthbreaker (Below 50%)
 INSERT INTO `mob_skill_lists` VALUES ('Transcendent_Scorpion_low_50',2021,2221); -- hell_scissors (Below 50%)
 
-/*INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2158); -- insipid_nip
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2158); -- insipid_nip
 INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2160); -- bombilation
 INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2161); -- cimicine_discharge
 INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2162); -- emetic_discharge
-INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2770); -- booming_bombination*/
+INSERT INTO `mob_skill_lists` VALUES ('Mastop',2022,2770); -- booming_bombination
 
 /*INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1951); -- magma_fan
 INSERT INTO `mob_skill_lists` VALUES ('Taxet',2023,1952); -- erratic_flutter

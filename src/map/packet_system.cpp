@@ -447,7 +447,7 @@ void SmallPacket0x00C(map_session_data_t* const PSession, CCharEntity* const PCh
     // TODO: While in mog house; treasure pool is not created.
     if (PChar->PTreasurePool != nullptr)
     {
-        PChar->PTreasurePool->UpdatePool(PChar);
+        PChar->PTreasurePool->updatePool(PChar);
     }
     PChar->loc.zone->SpawnTransport(PChar);
 
@@ -2251,9 +2251,9 @@ void SmallPacket0x041(map_session_data_t* const PSession, CCharEntity* const PCh
 
     if (PChar->PTreasurePool != nullptr)
     {
-        if (!PChar->PTreasurePool->HasLottedItem(PChar, SlotID))
+        if (!PChar->PTreasurePool->hasLottedItem(PChar, SlotID))
         {
-            PChar->PTreasurePool->LotItem(PChar, SlotID, xirand::GetRandomNumber(1, 1000)); // 1 ~ 998+1
+            PChar->PTreasurePool->lotItem(PChar, SlotID, xirand::GetRandomNumber(1, 1000)); // 1 ~ 998+1
         }
     }
 }
@@ -2278,9 +2278,9 @@ void SmallPacket0x042(map_session_data_t* const PSession, CCharEntity* const PCh
 
     if (PChar->PTreasurePool != nullptr)
     {
-        if (!PChar->PTreasurePool->HasPassedItem(PChar, SlotID))
+        if (!PChar->PTreasurePool->hasPassedItem(PChar, SlotID))
         {
-            PChar->PTreasurePool->PassItem(PChar, SlotID);
+            PChar->PTreasurePool->passItem(PChar, SlotID);
         }
     }
 }

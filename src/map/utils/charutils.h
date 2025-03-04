@@ -253,7 +253,6 @@ namespace charutils
     void  SetCharVar(uint32 charId, std::string const& var, int32 value, uint32 expiry = 0);
     void  SetCharVar(CCharEntity* PChar, std::string const& var, int32 value, uint32 expiry = 0);
     int32 ClearCharVarsWithPrefix(CCharEntity* PChar, std::string const& prefix);
-    int32 RemoveCharVarsWithTag(CCharEntity* PChar, std::string const& varsTag);
     void  ClearCharVarFromAll(std::string const& varName, bool localOnly = false);
     void  IncrementCharVar(CCharEntity* PChar, std::string const& var, int32 value);
 

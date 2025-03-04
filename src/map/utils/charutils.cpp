@@ -4176,7 +4176,7 @@ namespace charutils
 
         if (thDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
         {
-            PChar->PTreasurePool->AddItem(itemid, PEntity);
+            PChar->PTreasurePool->addItem(itemid, PEntity);
         }
     }
 
@@ -6696,17 +6696,6 @@ namespace charutils
         }
 
         PChar->clearCharVarsWithPrefix(prefix);
-        return 0;
-    }
-
-    int32 RemoveCharVarsWithTag(CCharEntity* PChar, std::string const& varsTag)
-    {
-        if (PChar == nullptr)
-        {
-            return 0;
-        }
-
-        PChar->clearCharVarsWithPrefix(fmt::sprintf("[%s]", varsTag));
         return 0;
     }
 

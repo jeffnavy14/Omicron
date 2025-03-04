@@ -430,7 +430,7 @@ void CZone::LoadZoneSettings()
         }
         if (m_miscMask & MISC_TREASURE)
         {
-            m_TreasurePool = new CTreasurePool(TREASUREPOOL_ZONE);
+            m_TreasurePool = new CTreasurePool(TreasurePoolType::Zone);
         }
         if (m_CampaignHandler && m_CampaignHandler->m_PZone == nullptr)
         {
@@ -668,6 +668,28 @@ void CZone::UpdateWeather()
     // clang-format on
 }
 
+bool CZone::CheckMobsPathedBack()
+{
+    bool allMobsHomeAndHealed = true;
+    if (m_zoneEntities && m_zoneEntities->GetMobList().size() > 0)
+    {
+        EntityList_t mobListMap = m_zoneEntities->GetMobList();
+        for (const auto& pair : mobListMap)
+        {
+            CMobEntity* mob = dynamic_cast<CMobEntity*>(pair.second);
+            // if the mob is (not dead/despawned AND it is not fully healed) OR it is pathing home
+            if (mob && ((!mob->isDead() && !mob->isFullyHealed()) || mob->m_IsPathingHome))
+            {
+                // at least one mob is away from home or not fully healed
+                allMobsHomeAndHealed = false;
+                break;
+            }
+        }
+    }
+
+    return allMobsHomeAndHealed;
+}
+
 /************************************************************************
  *                                                                       *
  *  Remove a character from the zone. If ZoneServer and character are    *
@@ -842,15 +864,13 @@ void CZone::ZoneServer(time_point tick)
         m_BattlefieldHandler->HandleBattlefields(tick);
     }
 
-    if (ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < server_clock::now())
+    if (ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < server_clock::now() && CheckMobsPathedBack())
     {
         ZoneTimer->m_type = CTaskMgr::TASK_REMOVE;
         ZoneTimer         = nullptr;
 
         ZoneTimerTriggerAreas->m_type = CTaskMgr::TASK_REMOVE;
         ZoneTimerTriggerAreas         = nullptr;
-
-        m_zoneEntities->HealAllMobs();
     }
 }
 
@@ -992,10 +1012,10 @@ void CZone::CharZoneIn(CCharEntity* PChar)
     PChar->ReloadPartyInc();
 
     // Zone-wide treasure pool takes precendence over all others
-    if (m_TreasurePool && m_TreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+    if (m_TreasurePool && m_TreasurePool->getPoolType() == TreasurePoolType::Zone)
     {
         PChar->PTreasurePool = m_TreasurePool;
-        PChar->PTreasurePool->AddMember(PChar);
+        PChar->PTreasurePool->addMember(PChar);
     }
     else
     {
@@ -1005,19 +1025,10 @@ void CZone::CharZoneIn(CCharEntity* PChar)
         }
         else
         {
-            if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-            
+            PChar->PTreasurePool = new CTreasurePool(TreasurePoolType::Solo);
+            PChar->PTreasurePool->addMember(PChar);
         }
-        else
-        {
-            PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-     }
-	}
+    }
 
     if (!(m_zoneType & ZONE_TYPE::INSTANCED))
     {
@@ -1127,15 +1138,15 @@ void CZone::CharZoneOut(CCharEntity* PChar)
 
     if (PChar->PTreasurePool != nullptr) // TODO: Condition for eliminating problems with MobHouse, we need to solve it once and for all!
     {
-        PChar->PTreasurePool->DelMember(PChar);
+        PChar->PTreasurePool->delMember(PChar);
     }
 
     // If zone-wide treasure pool but no players in zone then destroy current pool and create new pool
     // this prevents loot from staying in zone pool after the last player leaves the zone
-    if (m_TreasurePool && m_TreasurePool->GetPoolType() == TREASUREPOOL_ZONE && m_zoneEntities->CharListEmpty())
+    if (m_TreasurePool && m_TreasurePool->getPoolType() == TreasurePoolType::Zone && m_zoneEntities->CharListEmpty())
     {
         destroy(m_TreasurePool);
-        m_TreasurePool = new CTreasurePool(TREASUREPOOL_ZONE);
+        m_TreasurePool = new CTreasurePool(TreasurePoolType::Zone);
     }
 
     PChar->loc.zone = nullptr;

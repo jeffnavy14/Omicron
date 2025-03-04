@@ -140,12 +140,12 @@ void CParty::DisbandParty(bool playerInitiated)
 
             // TODO: TreasurePool should stay with the last character, but now it is not critical
 
-            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() != TREASUREPOOL_ZONE)
+            if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->getPoolType() != TreasurePoolType::Zone)
             {
-                PChar->PTreasurePool->DelMember(PChar);
-                PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-                PChar->PTreasurePool->AddMember(PChar);
-                PChar->PTreasurePool->UpdatePool(PChar);
+                PChar->PTreasurePool->delMember(PChar);
+                PChar->PTreasurePool = new CTreasurePool(TreasurePoolType::Solo);
+                PChar->PTreasurePool->addMember(PChar);
+                PChar->PTreasurePool->updatePool(PChar);
             }
             CStatusEffect* sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
             if (sync && sync->GetDuration() == 0)
@@ -364,12 +364,12 @@ void CParty::RemoveMember(CBattleEntity* PEntity)
                     });
                 }
 
-                if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() != TREASUREPOOL_ZONE)
+                if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->getPoolType() != TreasurePoolType::Zone)
                 {
-                    PChar->PTreasurePool->DelMember(PChar);
-                    PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-                    PChar->PTreasurePool->AddMember(PChar);
-                    PChar->PTreasurePool->UpdatePool(PChar);
+                    PChar->PTreasurePool->delMember(PChar);
+                    PChar->PTreasurePool = new CTreasurePool(TreasurePoolType::Solo);
+                    PChar->PTreasurePool->addMember(PChar);
+                    PChar->PTreasurePool->updatePool(PChar);
                 }
             }
 
@@ -440,12 +440,12 @@ void CParty::DelMember(CBattleEntity* PEntity)
                 PChar->pushPacket<CCharStatusPacket>(PChar);
                 PChar->PParty = nullptr;
 
-                if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() != TREASUREPOOL_ZONE)
+                if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->getPoolType() != TreasurePoolType::Zone)
                 {
-                    PChar->PTreasurePool->DelMember(PChar);
-                    PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-                    PChar->PTreasurePool->AddMember(PChar);
-                    PChar->PTreasurePool->UpdatePool(PChar);
+                    PChar->PTreasurePool->delMember(PChar);
+                    PChar->PTreasurePool = new CTreasurePool(TreasurePoolType::Solo);
+                    PChar->PTreasurePool->addMember(PChar);
+                    PChar->PTreasurePool->updatePool(PChar);
                 }
             }
             else
@@ -644,7 +644,7 @@ void CParty::AddMember(CBattleEntity* PEntity)
             PChar->pushPacket<CCharSyncPacket>(PChar);
         }
 
-        PChar->PTreasurePool->UpdatePool(PChar);
+        PChar->PTreasurePool->updatePool(PChar);
 
         // Apply level sync if the party is level synced
         if (m_PSyncTarget != nullptr)
@@ -969,7 +969,7 @@ void CParty::ReloadTreasurePool(CCharEntity* PChar)
         return;
     }
 
-    if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
+    if (PChar->PTreasurePool != nullptr && PChar->PTreasurePool->getPoolType() == TreasurePoolType::Zone)
     {
         return;
     }
@@ -989,10 +989,10 @@ void CParty::ReloadTreasurePool(CCharEntity* PChar)
                     {
                         if (PChar->PTreasurePool != nullptr)
                         {
-                            PChar->PTreasurePool->DelMember(PChar);
+                            PChar->PTreasurePool->delMember(PChar);
                         }
                         PChar->PTreasurePool = PPartyMember->PTreasurePool;
-                        PChar->PTreasurePool->AddMember(PChar);
+                        PChar->PTreasurePool->addMember(PChar);
                         return;
                     }
                 }
@@ -1009,10 +1009,10 @@ void CParty::ReloadTreasurePool(CCharEntity* PChar)
                 {
                     if (PChar->PTreasurePool != nullptr)
                     {
-                        PChar->PTreasurePool->DelMember(PChar);
+                        PChar->PTreasurePool->delMember(PChar);
                     }
                     PChar->PTreasurePool = PPartyMember->PTreasurePool;
-                    PChar->PTreasurePool->AddMember(PChar);
+                    PChar->PTreasurePool->addMember(PChar);
                     return;
                 }
             }
@@ -1021,8 +1021,8 @@ void CParty::ReloadTreasurePool(CCharEntity* PChar)
 
     if (PChar->PTreasurePool == nullptr)
     {
-        PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
-        PChar->PTreasurePool->AddMember(PChar);
+        PChar->PTreasurePool = new CTreasurePool(TreasurePoolType::Solo);
+        PChar->PTreasurePool->addMember(PChar);
     }
 }
 

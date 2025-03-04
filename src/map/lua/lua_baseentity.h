@@ -69,6 +69,7 @@ public:
 
     // Variables
     int32  getCharVar(std::string const& varName);
+    auto   getCharVarsWithPrefix(std::string const& prefix) -> sol::table;
     void   setCharVar(std::string const& varname, int32 value, sol::object const& expiry);
     void   setCharVarExpiration(std::string const& varName, uint32 expiry); // Sets character variable expiration timestamp
     void   incrementCharVar(std::string const& varname, int32 value);       // Increments/decrements/sets a character variable
@@ -902,6 +903,7 @@ public:
     uint32 getDropID();
     void   setDropID(uint32 dropID);
     void   addTreasure(uint16 itemID, sol::object const& arg1, sol::object const& arg2);
+    auto   getTreasurePool() -> CTreasurePool*;
     uint16 getStealItem();
     uint16 getDespoilItem();                // gets ItemID of droplist despoil item from mob (steal item if no despoil item)
     uint16 getDespoilDebuff(uint16 itemID); // gets the status effect id to apply to the mob on successful despoil
