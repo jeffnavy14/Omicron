@@ -21,6 +21,7 @@ zones[xi.zone.DYNAMIS_BASTOK_D] =
     },
     mob =
     {
+	17985540,
     },
     npc =
     {

@@ -2389,11 +2389,6 @@ bool CCharEntity::IsMobOwner(CBattleEntity* PBattleTarget)
         return true;
     }
 
-    if (PTreasurePool != nullptr && PTreasurePool->GetPoolType() == TREASUREPOOL_ZONE)
-    {
-        return true;
-    }
-
     bool found = false;
 
     // clang-format off

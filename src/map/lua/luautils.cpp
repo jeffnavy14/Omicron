@@ -1916,7 +1916,6 @@ namespace luautils
         ShowTraceFmt("luautils::OnZoneTick: {}", name);
 
         auto onZoneTick = GetCacheEntryFromFilename(filename)["onZoneTick"];
-
         if (!onZoneTick.valid())
         {
             return;

@@ -279,7 +279,7 @@ xi.instance.lookup =
 
     [xi.zone.DYNAMIS_BASTOK_D] =
     {
-
+    { 28000, { 5511, 258, 8 }, { 5511, 8 }, { 258, 8 } }, -- Dyna Basty D
     },
 
     [xi.zone.DYNAMIS_WINDURST_D] =
