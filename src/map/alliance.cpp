@@ -206,9 +206,9 @@ void CAlliance::delParty(CParty* party)
     for (auto* entry : party->members)
     {
         auto* member = dynamic_cast<CCharEntity*>(entry);
-        if (member != nullptr && member->PTreasurePool != nullptr && member->PTreasurePool->GetPoolType() != TREASUREPOOL_ZONE)
+        if (member != nullptr && member->PTreasurePool != nullptr && member->PTreasurePool->getPoolType() != TreasurePoolType::Zone)
         {
-            member->PTreasurePool->DelMember(member);
+            member->PTreasurePool->delMember(member);
         }
     }
 

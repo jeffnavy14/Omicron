@@ -358,7 +358,7 @@ void IPCServer::handleIncomingMessages()
 
         DebugIPCFmt("Incoming {} message from {}", msgType, message.ipp.toString());
 
-        ipc::IIPCMessageHandler::handleMessage(message.ipp, { message.payload.data(), message.payload.size() });
+        handleMessage(message.ipp, { message.payload.data(), message.payload.size() });
     }
 }
 

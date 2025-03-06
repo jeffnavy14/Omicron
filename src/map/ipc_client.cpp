@@ -124,7 +124,7 @@ void IPCClient::handleIncomingMessages()
         // TODO: Make an IPP for the world server, so we can use it here
         DebugIPCFmt("Incoming {} message", msgType);
 
-        ipc::IIPCMessageHandler::handleMessage(IPP(), { static_cast<uint8*>(out.data()), out.size() });
+        handleMessage(IPP(), { static_cast<uint8*>(out.data()), out.size() });
     }
 }
 
@@ -678,7 +678,7 @@ void IPCClient::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
 
     map_session_data_t* sessionToDelete = nullptr;
 
-    for (const auto [_, session] : map_session_list)
+    for (const auto& [_, session] : map_session_list)
     {
         if (session->charID == message.victimId)
         {

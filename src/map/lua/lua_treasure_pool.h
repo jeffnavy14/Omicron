@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,29 @@
 ===========================================================================
 */
 
-#ifndef _CCHARUPDATEPACKET_H
-#define _CCHARUPDATEPACKET_H
+#pragma once
 
 #include "common/cbasetypes.h"
+#include "luautils.h"
 
-#include "basic.h"
-
-class CCharEntity;
-
-class CCharUpdatePacket : public CBasicPacket
+enum class TreasurePoolType : uint8;
+class CTreasurePool;
+class CLuaTreasurePool
 {
-public:
-    CCharUpdatePacket(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask);
-    void updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 updatemask);
-};
+    CTreasurePool* m_PLuaTreasurePool;
 
-#endif
+public:
+    CLuaTreasurePool(CTreasurePool* PTreasurePool);
+
+    auto getType() const -> TreasurePoolType;
+    void flush() const;
+    void addMember(CBaseEntity* PEntity) const;
+    void delMember(CBaseEntity* PEntity) const;
+    void update(CBaseEntity* PEntity) const;
+    auto addItem(uint16 ItemID, CBaseEntity* PEntity) const -> uint8;
+    auto memberCount() const -> size_t;
+    auto getItems() const -> sol::table;
+    auto getMembers() const -> sol::table;
+
+    static void Register();
+};

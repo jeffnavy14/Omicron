@@ -66,6 +66,18 @@ inline bool isWithinDistance(const position_t& A, const position_t& B, float wit
     return distanceSquared(A, B, ignoreVertical) <= square(within);
 }
 
+// Used for setting "proper" packet sizes rounded to the nearest four away from zero
+constexpr auto roundUpToNearestFour(uint32 input) -> uint32
+{
+    const auto remainder = input % 4U;
+    if (remainder == 0)
+    {
+        return input;
+    }
+
+    return input + 4U - remainder;
+}
+
 int32      intpow32(int32 base, int32 exponent); // Exponential power of integers
 void       getMSB(uint32* result, uint32 value); // fast Most Significant Byte search under GCC or MSVC. Fallback included.
 float      rotationToRadian(uint8 rotation);

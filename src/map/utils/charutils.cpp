@@ -365,6 +365,7 @@ namespace charutils
                                "pos_z, "
                                "moghouse, "
                                "boundary, "
+                               "accid, "
                                "home_zone, "
                                "home_rot, "
                                "home_x, "
@@ -409,6 +410,7 @@ namespace charutils
             PChar->loc.p.z         = rset->get<float>("pos_z");
             PChar->m_moghouseID    = rset->get<uint32>("moghouse");
             PChar->loc.boundary    = rset->get<uint16>("boundary");
+            PChar->accid           = rset->get<uint32>("accid");
 
             PChar->profile.home_point.destination = rset->get<uint16>("home_zone");
             PChar->profile.home_point.p.rotation  = rset->get<uint8>("home_rot");
@@ -4176,7 +4178,7 @@ namespace charutils
 
         if (thDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
         {
-            PChar->PTreasurePool->AddItem(itemid, PEntity);
+            PChar->PTreasurePool->addItem(itemid, PEntity);
         }
     }
 
@@ -6696,17 +6698,6 @@ namespace charutils
         }
 
         PChar->clearCharVarsWithPrefix(prefix);
-        return 0;
-    }
-
-    int32 RemoveCharVarsWithTag(CCharEntity* PChar, std::string const& varsTag)
-    {
-        if (PChar == nullptr)
-        {
-            return 0;
-        }
-
-        PChar->clearCharVarsWithPrefix(fmt::sprintf("[%s]", varsTag));
         return 0;
     }
 

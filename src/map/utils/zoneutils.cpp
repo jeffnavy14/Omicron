@@ -702,7 +702,7 @@ namespace zoneutils
         const auto rset = db::preparedStmt(query, ZoneID);
         if (rset && rset->rowsCount() && rset->next())
         {
-            const auto zoneType    = static_cast<ZONE_TYPE>(rset->get<uint8>("zonetype"));
+            const auto zoneType    = static_cast<ZONE_TYPE>(rset->get<uint16>("zonetype"));
             const auto restriction = rset->get<uint8>("restriction");
 
             if (zoneType & ZONE_TYPE::INSTANCED)
