@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -35,10 +35,10 @@
 
 #include "ability.h"
 #include "daily_system.h"
+#include "ipc_client.h"
 #include "job_points.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "message.h"
 #include "mob_spell_list.h"
 #include "monstrosity.h"
 #include "packet_guard.h"
@@ -124,12 +124,6 @@ namespace
     uint32 TotalPacketsDelayedPerTick = 0U;
 } // namespace
 
-/************************************************************************
- *                                                                       *
- *  mapsession_getbyipp                                                  *
- *                                                                       *
- ************************************************************************/
-
 map_session_data_t* mapsession_getbyipp(uint64 ipp)
 {
     TracyZoneScoped;
@@ -145,11 +139,20 @@ map_session_data_t* mapsession_getbyipp(uint64 ipp)
     return nullptr;
 }
 
-/************************************************************************
- *                                                                       *
- *  mapsession_createsession                                             *
- *                                                                       *
- ************************************************************************/
+map_session_data_t* mapsession_getbychar(CCharEntity* PChar)
+{
+    TracyZoneScoped;
+
+    for (const auto& [_, session] : map_session_list)
+    {
+        if (PChar && session->PChar->id == PChar->id)
+        {
+            return session;
+        }
+    }
+
+    return nullptr;
+}
 
 map_session_data_t* mapsession_createsession(uint32 ip, uint16 port)
 {
@@ -215,6 +218,7 @@ int32 do_init(int32 argc, char** argv)
     map_ip.s_addr = 0;
     map_port      = 0;
 
+    // TODO: Replace with argparse::ArgumentParser
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "--ip") == 0)
@@ -233,11 +237,15 @@ int32 do_init(int32 argc, char** argv)
         }
     }
 
-    ShowInfo(fmt::format("map_port: {}", map_port));
+    ShowInfoFmt("map_port: {}", map_port);
+    ShowInfoFmt("Zones assigned to this process: {}", zoneutils::GetZonesAssignedToThisProcess().size());
 
     srand((uint32)time(nullptr));
     xirand::seed();
+    ShowInfo(fmt::format("Random samples (integer): {}", utils::getRandomSampleString(0, 255)));
+    ShowInfo(fmt::format("Random samples (float): {}", utils::getRandomSampleString(0.0f, 1.0f)));
 
+    // TODO: Get rid of legacy _sql and SqlConnection
     ShowInfo("do_init: connecting to database");
     _sql = std::make_unique<SqlConnection>();
 
@@ -259,7 +267,6 @@ int32 do_init(int32 argc, char** argv)
 
     ShowInfo("do_init: starting ZMQ thread");
     message::init();
-    messageThread = nonstd::jthread(message::listen);
 
     ShowInfo("do_init: loading items");
     itemutils::Initialize();
@@ -329,6 +336,8 @@ int32 do_init(int32 argc, char** argv)
     CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 15min, map_garbage_collect);
     CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
 
+    zoneutils::TOTDChange(CVanaTime::getInstance()->GetCurrentTOTD()); // This tells the zones to spawn stuff based on time of day conditions (such as undead at night)
+
     ShowInfo("do_init: Removing expired database variables");
     uint32 currentTimestamp = CVanaTime::getInstance()->getSysTime();
     _sql->Query("DELETE FROM char_vars WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
@@ -394,8 +403,7 @@ int32 do_init(int32 argc, char** argv)
         }
 
         fmt::print("Promoting {} to GM level {}\n", PChar->name, level);
-        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3,
-            fmt::format("You have been set to GM level {}.", level), "");
+        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
     });
 
     gConsoleService->RegisterCommand("reload_settings", "Reload settings files.",
@@ -457,7 +465,6 @@ void do_final(int code)
     trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
-    message::close();
     messageThread.join();
 
     CTaskMgr::delInstance();
@@ -780,22 +787,22 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
 
         if (map_session_data->PChar == nullptr)
         {
-            uint32 CharID = ref<uint32>(buff, FFXI_HEADER_SIZE + 0x0C);
-            uint16 LangID = ref<uint16>(buff, FFXI_HEADER_SIZE + 0x58);
+            uint32 charID = ref<uint32>(buff, FFXI_HEADER_SIZE + 0x0C);
+            uint16 langID = ref<uint16>(buff, FFXI_HEADER_SIZE + 0x58);
 
-            std::ignore = LangID;
+            std::ignore = langID;
 
-            auto rset = db::preparedStmt("SELECT charid FROM chars WHERE charid = (?) LIMIT 1", CharID);
+            auto rset = db::preparedStmt("SELECT charid FROM chars WHERE charid = ? LIMIT 1", charID);
             if (!rset || rset->rowsCount() == 0 || !rset->next())
             {
-                ShowError("recv_parse: Cannot load charid %u", CharID);
+                ShowError("recv_parse: Cannot load charid %u", charID);
                 return -1;
             }
 
-            rset = db::preparedStmt("SELECT session_key FROM accounts_sessions WHERE charid = (?) LIMIT 1", CharID);
+            rset = db::preparedStmt("SELECT session_key FROM accounts_sessions WHERE charid = ? LIMIT 1", charID);
             if (!rset || rset->rowsCount() == 0 || !rset->next())
             {
-                ShowError("recv_parse: Cannot load session_key for charid %u", CharID);
+                ShowError("recv_parse: Cannot load session_key for charid %u", charID);
             }
             else
             {
@@ -804,16 +811,15 @@ int32 recv_parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_da
                 map_session_data->initBlowfish();
             }
 
-            map_session_data->PChar  = charutils::LoadChar(CharID);
-            map_session_data->charID = CharID;
+            map_session_data->PChar  = charutils::LoadChar(charID);
+            map_session_data->charID = charID;
 
             // If we're a new char on a new instance and prevzone != zone
             if (map_session_data->blowfish.status == BLOWFISH_WAITING && map_session_data->PChar->loc.destination != map_session_data->PChar->loc.prevzone)
             {
-                uint8 data[4]{};
-                ref<uint32>(data, 0) = CharID;
-
-                message::send(MSG_KILL_SESSION, data, sizeof(data), nullptr);
+                message::send(ipc::KillSession{
+                    .victimId = charID,
+                });
             }
         }
 
@@ -937,6 +943,13 @@ int32 parse(int8* buff, size_t* buffsize, sockaddr_in* from, map_session_data_t*
             {
                 ShowWarning("[PacketGuard] Caught mismatch between player substate and recieved packet: Player: %s - Packet: %03hX",
                             PChar->getName(), SmallPD_Type);
+                // TODO: Plug in optional jailutils usage
+                continue; // skip this packet
+            }
+
+            if (settings::get<bool>("map.PACKETGUARD_ENABLED") && !PacketGuard::PacketsArrivingInCorrectOrder(PChar, SmallPD_Type))
+            {
+                ShowWarning("[PacketGuard] Caught out-of-order packet: Player: %s - Packet: %03hX", PChar->getName(), SmallPD_Type);
                 // TODO: Plug in optional jailutils usage
                 continue; // skip this packet
             }

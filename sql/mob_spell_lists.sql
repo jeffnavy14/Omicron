@@ -3550,11 +3550,21 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,68,13,255);  -- 
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,69,5,255);   -- barstonra (5~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,70,25,255);  -- barthundra (25~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,71,9,255);   -- barwatera (9~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,43,7,255); -- protect (7~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,44,27,255); -- protect_ii (27~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,45,47,255); -- protect_iii (47~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,46,63,255); -- protect_iv (63~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,47,75,255); -- protect_v (75~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,125,7,255);  -- protectra (7~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,126,27,255); -- protectra_ii (27~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,127,47,255); -- protectra_iii (47~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,128,63,255); -- protectra_iv (63~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,129,75,255); -- protectra_v (75~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,48,17,255); -- shell (17~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,49,37,255); -- shell_ii (37~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,50,57,255); -- shell_iii (57~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,51,68,255); -- shell_iv (68~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,52,75,255); -- shell_v (75~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,130,17,255); -- shellra (17~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,131,37,255); -- shellra_ii (37~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_Karaha-Baruha',348,132,57,255); -- shellra_iii (57~255)
@@ -5084,7 +5094,38 @@ INSERT INTO `mob_spell_lists` VALUES ('Unfettered_Twitherym',508,359,1,255); -- 
 INSERT INTO `mob_spell_lists` VALUES ('Unfettered_Twitherym',508,360,1,255); -- dispelga (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Unfettered_Twitherym',508,187,1,255); -- aeroga_iv (1~255)
 
--- Next Available: 509
+-- Mastop (509)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,286,83,255); -- Addle (83-255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,252,37,255); -- Stun (37-255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,357,44,255); -- Slowga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,359,75,255); -- Silencega (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,273,31,255); -- Sleepga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,360,38,255); -- Dispelga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Mastop',509,365,49,255); -- Breakga (1~255)
+
+/*-- Supernal Chapuli (510)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli',510,157,72,255); -- Aero IV (72-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli',510,187,75,255); -- Aeroga IV (75-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli',510,366,91,255); -- Graviga (91-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli',510,359,75,255); -- Silencega (75~255)
+
+-- Supernal Chapuli HP under 50% (511)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli_low_50',511,158,83,255); -- Aero V (83-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli_low_50',511,188,9,255); -- Aeroga V (90-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli_low_50',511,366,91,255); -- Graviga (91-255)
+INSERT INTO `mob_spell_lists` VALUES ('Supernal_Chapuli_low_50',511,359,75,255); -- Silencega (75~255)*/
+
+/*-- Tax'et (512)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,146,83,255); -- Fire III (83-255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,147,37,255); -- Fire IV (37-255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,148,86,255); -- Fire V (86-255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,204,60,255); -- Flare (60~255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,176,69,255); -- Firaga_iii (69~255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,177,92,255); -- Firaga_iv (92~255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,178,99,255); -- Firaga V (99~255)
+INSERT INTO `mob_spell_lists` VALUES ('Taxet',512,496,90,255); -- Firaja (90~255)*/
+
+-- Next Available: 513
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;

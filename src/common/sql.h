@@ -236,16 +236,6 @@ public:
     /// Frees the result of the query.
     void FreeResult();
 
-    bool GetAutoCommit();
-    bool SetAutoCommit(bool value);
-
-    bool TransactionStart();
-    bool TransactionCommit();
-    bool TransactionRollback();
-
-    void StartProfiling();
-    void FinishProfiling();
-
 private:
     Sql_t* self;
 

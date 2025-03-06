@@ -659,11 +659,11 @@ namespace fishingcontest
             CurrentFishingContest.startTime  = rset->get<uint32>("starttime");
             CurrentFishingContest.changeTime = rset->get<uint32>("nextstagetime");
         }
-        else if (rset->rowsCount() == 0)
+        else if (rset && rset->rowsCount() == 0)
         {
             // No contests found in the database, so we need to create one
             InitNewContest();
-            ShowWarning("No Active Fishing Contest found in database.  Initializing new one.");
+            ShowWarning("No Active Fishing Contest found in database. Initializing new one.");
         }
     }
 

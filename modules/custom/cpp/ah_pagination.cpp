@@ -67,10 +67,11 @@ class AHPaginationModule : public CPPModule
                         const auto ahListings = [&]() -> uint32
                         {
                             const auto rset = db::preparedStmt("SELECT COUNT(*) FROM auction_house WHERE seller = ? AND sale = 0", PChar->id);
-                            if (rset && rset->rowsCount() && rset->next())
+                            FOR_DB_SINGLE_RESULT(rset)
                             {
                                 return rset->get<uint32>(0);
                             }
+
                             return 0;
                         }();
                         PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have {} items listed for sale.", ahListings).c_str(), "");
@@ -106,17 +107,14 @@ class AHPaginationModule : public CPPModule
                     // Desired (10 items): Current page: 2 of 2. Showing 4 items.
                     PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("Current page: {} of {}. Showing {} items.", currentAHPage + 1, TOTAL_PAGES, rset->rowsCount()).c_str(), "");
 
-                    if (rset && rset->rowsCount())
+                    FOR_DB_MULTIPLE_RESULTS(rset)
                     {
-                        while (rset->next())
-                        {
-                            PChar->m_ah_history.emplace_back(AuctionHistory_t{
-                                .itemid = rset->get<uint16>("itemid"),
-                                .stack  = rset->get<uint8>("stack"),
-                                .price  = rset->get<uint32>("price"),
-                                .status = 0,
-                            });
-                        }
+                        PChar->m_ah_history.emplace_back(AuctionHistory_t{
+                            .itemid = rset->get<uint16>("itemid"),
+                            .stack  = rset->get<uint8>("stack"),
+                            .price  = rset->get<uint32>("price"),
+                            .status = 0,
+                        });
                     }
 
                     const auto totalItemsOnAh = PChar->m_ah_history.size();

@@ -319,7 +319,7 @@ local function getSingleHitDamage(attacker, target, dmg, ftp, wsParams, calcPara
     end
 
     if calcParams.attackType == xi.attackType.PHYSICAL then
-        calcParams.pdif = xi.combat.physical.calculateMeleePDIF(attacker, target, calcParams.attackInfo.weaponType, atkMultiplier, criticalHit, applyLevelCorrection, ignoresDefense, ignoreDefMultiplier, true, calcParams.attackInfo.slot)
+        calcParams.pdif = xi.combat.physical.calculateMeleePDIF(attacker, target, calcParams.attackInfo.weaponType, atkMultiplier, criticalHit, applyLevelCorrection, ignoresDefense, ignoreDefMultiplier, true, calcParams.attackInfo.slot, false)
     else
         calcParams.pdif = xi.combat.physical.calculateRangedPDIF(attacker, target, calcParams.skillType, atkMultiplier, criticalHit, applyLevelCorrection, ignoresDefense, ignoreDefMultiplier, true, 0)
     end
@@ -343,19 +343,19 @@ local function modifyMeleeHitDamage(attacker, target, attackTbl, wsParams, rawDa
         adjustedDamage = target:physicalDmgTaken(adjustedDamage, attackTbl.damageType)
 
         if attackTbl.weaponType == xi.skill.HAND_TO_HAND then
-            adjustedDamage = adjustedDamage * target:getMod(xi.mod.HTH_SDT) / 1000
+            adjustedDamage = adjustedDamage * (1 + target:getMod(xi.mod.HTH_SDT) / 10000)
         elseif
             attackTbl.weaponType == xi.skill.DAGGER or
             attackTbl.weaponType == xi.skill.POLEARM
         then
-            adjustedDamage = adjustedDamage * target:getMod(xi.mod.PIERCE_SDT) / 1000
+            adjustedDamage = adjustedDamage * (1 + target:getMod(xi.mod.PIERCE_SDT) / 10000)
         elseif
             attackTbl.weaponType == xi.skill.CLUB or
             attackTbl.weaponType == xi.skill.STAFF
         then
-            adjustedDamage = adjustedDamage * target:getMod(xi.mod.IMPACT_SDT) / 1000
+            adjustedDamage = adjustedDamage * (1 + target:getMod(xi.mod.IMPACT_SDT) / 10000)
         else
-            adjustedDamage = adjustedDamage * target:getMod(xi.mod.SLASH_SDT) / 1000
+            adjustedDamage = adjustedDamage * (1 + target:getMod(xi.mod.SLASH_SDT) / 10000)
         end
     end
 
@@ -882,7 +882,7 @@ xi.weaponskills.doRangedWeaponskill = function(attacker, target, wsID, wsParams,
 
     -- Calculate reductions
     finaldmg = target:rangedDmgTaken(finaldmg)
-    finaldmg = finaldmg * target:getMod(xi.mod.PIERCE_SDT) / 1000
+    finaldmg = finaldmg * (1 + target:getMod(xi.mod.PIERCE_SDT) / 10000)
     finaldmg = math.floor(finaldmg)
 
     -- Add in magic damage for hybrid weaponskills

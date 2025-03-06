@@ -215,7 +215,7 @@ void view_session::read_func()
                 {
                     invalidNameReason = "Internal entity name query failed.";
                 }
-                else if (rset0->rowsCount() != 0)
+                else if (rset0 && rset0->rowsCount() != 0)
                 {
                     invalidNameReason = "Name already in use.";
                 }
@@ -237,7 +237,7 @@ void view_session::read_func()
                     {
                         invalidNameReason = "Internal entity name query failed";
                     }
-                    else if (rset1->rowsCount() != 0)
+                    else if (rset1 && rset1->rowsCount() != 0)
                     {
                         invalidNameReason = "Name already in use.";
                     }

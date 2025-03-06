@@ -23,8 +23,8 @@
 
 #include "common/database.h"
 #include "common/logging.h"
+#include "common/macros.h"
 #include "common/settings.h"
-#include "common/sql.h"
 #include "common/tracy.h"
 
 #include "entities/charentity.h"
@@ -200,45 +200,40 @@ void dboxutils::SendOldItems(CCharEntity* PChar, uint8 action, uint8 boxtype)
         return;
     }
 
-    const char* fmtQuery = "SELECT itemid, itemsubid, slot, quantity, sent, extra, sender, charname FROM delivery_box WHERE charid = %u AND box = %d "
-                           "AND slot < 8 ORDER BY slot";
-
-    int32 ret = _sql->Query(fmtQuery, PChar->id, boxtype);
-
-    if (ret != SQL_ERROR)
+    const auto rset = db::preparedStmt("SELECT itemid, itemsubid, slot, quantity, sent, extra, sender, charname FROM delivery_box WHERE charid = ? AND box = ? "
+                                       "AND slot < 8 ORDER BY slot",
+                                       PChar->id, boxtype);
+    if (rset)
     {
-        int items = 0;
-        if (_sql->NumRows() != 0)
+        uint8 items = 0;
+
+        if (rset->rowsCount())
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            while (rset->next())
             {
-                CItem* PItem = itemutils::GetItem(_sql->GetIntData(0));
-
-                if (PItem != nullptr) // Prevent an access violation in the event that an item doesn't exist for an ID
+                CItem* PItem = itemutils::GetItem(rset->get<uint16>("itemid"));
+                if (PItem != nullptr)
                 {
-                    PItem->setSubID(_sql->GetIntData(1));
-                    PItem->setSlotID(_sql->GetIntData(2));
-                    PItem->setQuantity(_sql->GetUIntData(3));
+                    PItem->setSubID(rset->get<uint16>("itemsubid"));
+                    PItem->setSlotID(rset->get<uint8>("slot"));
+                    PItem->setQuantity(rset->get<uint32>("quantity"));
 
-                    if (_sql->GetUIntData(4) > 0)
+                    if (rset->get<uint8>("sent") == 1)
                     {
                         PItem->setSent(true);
                     }
 
-                    size_t length = 0;
-                    char*  extra  = nullptr;
-                    _sql->GetData(5, &extra, &length);
-                    std::memcpy(PItem->m_extra, extra, (length > sizeof(PItem->m_extra) ? sizeof(PItem->m_extra) : length));
+                    db::extractFromBlob(rset, "extra", PItem->m_extra);
 
                     if (boxtype == 2)
                     {
-                        PItem->setSender(_sql->GetStringData(7));
-                        PItem->setReceiver(_sql->GetStringData(6));
+                        PItem->setSender(rset->get<std::string>("charname"));
+                        PItem->setReceiver(rset->get<std::string>("sender"));
                     }
                     else
                     {
-                        PItem->setSender(_sql->GetStringData(6));
-                        PItem->setReceiver(_sql->GetStringData(7));
+                        PItem->setSender(rset->get<std::string>("sender"));
+                        PItem->setReceiver(rset->get<std::string>("charname"));
                     }
 
                     PChar->UContainer->SetItem(PItem->getSlotID(), PItem);
@@ -246,6 +241,7 @@ void dboxutils::SendOldItems(CCharEntity* PChar, uint8 action, uint8 boxtype)
                 }
             }
         }
+
         for (uint8 i = 0; i < 8; ++i)
         {
             PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PChar->UContainer->GetItem(i), i, items, 1);
@@ -276,11 +272,9 @@ void dboxutils::AddItemsToBeSent(CCharEntity* PChar, uint8 action, uint8 boxtype
 
     if (PChar->UContainer->IsSlotEmpty(slotID))
     {
-        auto rset = db::preparedStmt("SELECT charid, accid FROM chars WHERE charname = ? LIMIT 1", recieverName);
-        if (rset && rset->rowsCount() && rset->next())
+        const auto [recvCharid, recvAccid] = charutils::getCharIdAndAccountIdFromName(recieverName);
+        if (recvCharid && recvAccid)
         {
-            uint32 charid = rset->get<uint32>("charid");
-
             if (PItem->getFlag() & ITEM_FLAG_NODELIVERY)
             {
                 if (!(PItem->getFlag() & ITEM_FLAG_MAIL2ACCOUNT))
@@ -288,19 +282,11 @@ void dboxutils::AddItemsToBeSent(CCharEntity* PChar, uint8 action, uint8 boxtype
                     return;
                 }
 
-                uint32 accid = rset->get<uint32>("accid");
-
-                // clang-format off
-                auto exists = [&]() -> bool
-                {
-                    auto rset2 = db::preparedStmt("SELECT COUNT(*) FROM chars WHERE charid = ? AND accid = ? LIMIT 1", PChar->id, accid);
-                    return rset2 && rset2->rowsCount() && rset2->next() && rset2->get<uint32>("COUNT(*)");
-                }();
-                if (!exists)
+                // Different accounts
+                if (PChar->accid != recvAccid)
                 {
                     return;
                 }
-                // clang-format on
             }
 
             CItem* PUBoxItem = itemutils::GetItem(PItem->getID());
@@ -316,16 +302,13 @@ void dboxutils::AddItemsToBeSent(CCharEntity* PChar, uint8 action, uint8 boxtype
             PUBoxItem->setSlotID(PItem->getSlotID());
             std::memcpy(PUBoxItem->m_extra, PItem->m_extra, sizeof(PUBoxItem->m_extra));
 
-            char extra[sizeof(PItem->m_extra) * 2 + 1];
-            _sql->EscapeStringLen(extra, (const char*)PItem->m_extra, sizeof(PItem->m_extra));
-
             // NOTE: This will trigger SQL trigger: delivery_box_insert
-            auto ret = _sql->Query(
+            const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows(
                 "INSERT INTO delivery_box(charid, charname, box, slot, itemid, itemsubid, quantity, extra, senderid, sender) "
-                "VALUES(%u, '%s', %u, %u, %u, %u, %u, '%s', %u, '%s')",
-                PChar->id, PChar->getName(), 2, slotID, PItem->getID(), PItem->getSubID(), quantity, extra, charid, recieverName);
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                PChar->id, PChar->getName(), 2, slotID, PItem->getID(), PItem->getSubID(), quantity, PItem->m_extra, recvCharid, recieverName);
 
-            if (ret != SQL_ERROR && _sql->AffectedRows() == 1 && charutils::UpdateItem(PChar, LOC_INVENTORY, invslot, -(int32)quantity))
+            if (rset && affectedRows && charutils::UpdateItem(PChar, LOC_INVENTORY, invslot, -(int32)quantity))
             {
                 PChar->UContainer->SetItem(slotID, PUBoxItem);
                 PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PUBoxItem, slotID, PChar->UContainer->GetItemsCount(), 1);
@@ -362,49 +345,39 @@ void dboxutils::SendConfirmation(CCharEntity* PChar, uint8 action, uint8 boxtype
 
         if (PItem && !PItem->isSent())
         {
-            bool isAutoCommitOn = _sql->GetAutoCommit();
-            bool commit         = false;
-
-            if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+            // clang-format off
+            const auto success = db::transaction([&]()
             {
-                int32 ret = _sql->Query("SELECT charid FROM chars WHERE charname = '%s' LIMIT 1", PItem->getReceiver());
-                if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+                uint32 charid = charutils::getCharIdFromName(PItem->getReceiver());
+
+                const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("UPDATE delivery_box SET sent = 1 WHERE charid = ? AND senderid = ? AND slot = ? AND box = ?",
+                                                                                   PChar->id, charid, slotID, 2);
+                if (rset && affectedRows)
                 {
-                    uint32 charid = _sql->GetUIntData(0);
+                    // NOTE: This will trigger SQL trigger: delivery_box_insert
+                    const auto [rset2, affectedRows2] = db::preparedStmtWithAffectedRows(
+                        "INSERT INTO delivery_box(charid, charname, box, itemid, itemsubid, quantity, extra, senderid, sender) "
+                        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        charid, PItem->getReceiver(), 1, PItem->getID(), PItem->getSubID(), PItem->getQuantity(), PItem->m_extra, PChar->id, PChar->getName());
 
-                    ret = _sql->Query("UPDATE delivery_box SET sent = 1 WHERE charid = %u AND senderid = %u AND slot = %u AND box = 2",
-                                      PChar->id, charid, slotID);
-
-                    if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
+                    if (rset2 && affectedRows2)
                     {
-                        char extra[sizeof(PItem->m_extra) * 2 + 1];
-                        _sql->EscapeStringLen(extra, (const char*)PItem->m_extra, sizeof(PItem->m_extra));
-
-                        // NOTE: This will trigger SQL trigger: delivery_box_insert
-                        ret = _sql->Query(
-                            "INSERT INTO delivery_box(charid, charname, box, itemid, itemsubid, quantity, extra, senderid, sender) "
-                            "VALUES(%u, '%s', 1, %u, %u, %u, '%s', %u, '%s'); ",
-                            charid, PItem->getReceiver(), PItem->getID(), PItem->getSubID(), PItem->getQuantity(), extra, PChar->id, PChar->getName());
-
-                        if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
-                        {
-                            PItem->setSent(true);
-                            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, send_items, 0x02);
-                            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, send_items, 0x01);
-                            commit = true;
-                        }
+                        PItem->setSent(true);
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, send_items, 0x02);
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, send_items, 0x01);
+                        return;
                     }
                 }
 
-                if (!commit || !_sql->TransactionCommit())
-                {
-                    _sql->TransactionRollback();
-                    ShowErrorFmt("DBOX: Could not finalize send transaction (player: {} ({}), target: {}, slotID: {})",
-                                 PChar->getName(), PChar->id, PItem->getReceiver(), slotID);
-                }
-
-                _sql->SetAutoCommit(isAutoCommitOn);
+                // If we got here, something went wrong.
+                throw std::runtime_error(fmt::format("DBOX: Could not finalize send confirmation transaction (player: {} ({}), target: {}, slotID: {})",
+                                                     PChar->getName(), PChar->id, PItem->getReceiver(), slotID));
+            });
+            if (success)
+            {
+                // TODO: Debug logging
             }
+            // clang-format on
         }
     }
 }
@@ -419,72 +392,56 @@ void dboxutils::CancelSendingItem(CCharEntity* PChar, uint8 action, uint8 boxtyp
 
     if (!PChar->UContainer->IsSlotEmpty(slotID))
     {
-        bool   isAutoCommitOn = _sql->GetAutoCommit();
-        bool   commit         = false;
-        bool   orphan         = false;
-        CItem* PItem          = PChar->UContainer->GetItem(slotID);
+        CItem* PItem = PChar->UContainer->GetItem(slotID);
 
-        if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+        // clang-format off
+        const auto success = db::transaction([&]()
         {
-            int32 ret = _sql->Query("SELECT charid FROM chars WHERE charname = '%s' LIMIT 1", PChar->UContainer->GetItem(slotID)->getReceiver());
-            if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+            uint32 charid = charutils::getCharIdFromName(PChar->UContainer->GetItem(slotID)->getReceiver());
+            if (charid)
             {
-                uint32 charid = _sql->GetUIntData(0);
-                ret           = _sql->Query(
-                    "UPDATE delivery_box SET sent = 0 WHERE charid = %u AND box = 2 AND slot = %u AND sent = 1 AND received = 0 LIMIT 1",
+                const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows(
+                    "UPDATE delivery_box SET sent = 0 WHERE charid = ? AND box = 2 AND slot = ? AND sent = 1 AND received = 0 LIMIT 1",
                     PChar->id, slotID);
 
-                if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
+                if (rset && affectedRows)
                 {
-                    ret = _sql->Query(
-                        "DELETE FROM delivery_box WHERE senderid = %u AND box = 1 AND charid = %u AND itemid = %u AND quantity = %u "
+                    const auto [rset2, affectedRows2] = db::preparedStmtWithAffectedRows(
+                        "DELETE FROM delivery_box WHERE senderid = ? AND box = 1 AND charid = ? AND itemid = ? AND quantity = ? "
                         "AND slot >= 8 LIMIT 1",
                         PChar->id, charid, PItem->getID(), PItem->getQuantity());
 
-                    if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
+                    if (rset2 && affectedRows2 == 1)
                     {
                         PChar->UContainer->GetItem(slotID)->setSent(false);
-                        commit = true;
-                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PChar->UContainer->GetItem(slotID), slotID,
-                                                              PChar->UContainer->GetItemsCount(), 0x02);
-                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PChar->UContainer->GetItem(slotID), slotID,
-                                                              PChar->UContainer->GetItemsCount(), 0x01);
-                    }
-                    else if (ret != SQL_ERROR && _sql->AffectedRows() == 0)
-                    {
-                        orphan = true;
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PChar->UContainer->GetItem(slotID), slotID, PChar->UContainer->GetItemsCount(), 0x02);
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PChar->UContainer->GetItem(slotID), slotID, PChar->UContainer->GetItemsCount(), 0x01);
+
+                        return;
                     }
                 }
             }
-            else if (ret != SQL_ERROR && _sql->NumRows() == 0)
+
+            // If we got here, something went wrong.
+            throw std::runtime_error(fmt::format("DBOX: Could not finalize cancel send transaction (player: {} ({}), target: {}, slotID: {})",
+                                                 PChar->getName(), PChar->id, PItem->getReceiver(), slotID));
+        });
+        if (!success)
+        {
+            const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows(
+                "DELETE FROM delivery_box WHERE box = 2 AND charid = ? AND itemid = ? AND quantity = ? AND slot = ? LIMIT 1",
+                PChar->id, PItem->getID(), PItem->getQuantity(), slotID);
+            if (rset && affectedRows)
             {
-                orphan = true;
+                ShowErrorFmt("DBOX: Deleting orphaned outbox record (player: {} ({}), target: {}, slotID: {})",
+                                PChar->getName(), PChar->id, PItem->getReceiver(), slotID);
+                PChar->pushPacket<CDeliveryBoxPacket>(0x0F, boxtype, 0, 1);
             }
 
-            if (!commit || !_sql->TransactionCommit())
-            {
-                _sql->TransactionRollback();
-                ShowErrorFmt("DBOX: Could not finalize cancel send transaction (player: {} ({}), target: {}, slotID: {})",
-                             PChar->getName(), PChar->id, PItem->getReceiver(), slotID);
-                if (orphan)
-                {
-                    _sql->SetAutoCommit(true);
-                    ret = _sql->Query(
-                        "DELETE FROM delivery_box WHERE box = 2 AND charid = %u AND itemid = %u AND quantity = %u AND slot = %u LIMIT 1",
-                        PChar->id, PItem->getID(), PItem->getQuantity(), slotID);
-                    if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
-                    {
-                        ShowErrorFmt("DBOX: Deleting orphaned outbox record (player: {} ({}), target: {}, slotID: {})",
-                                     PChar->getName(), PChar->id, PItem->getReceiver(), slotID);
-                        PChar->pushPacket<CDeliveryBoxPacket>(0x0F, boxtype, 0, 1);
-                    }
-                }
-                // error message: "Delivery orders are currently backlogged."
-                PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, -1);
-            }
-
-            _sql->SetAutoCommit(isAutoCommitOn);
+            // error message: "Delivery orders are currently backlogged."
+            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, -1);
         }
+        // clang-format on
     }
 }
 
@@ -497,32 +454,36 @@ void dboxutils::SendClientNewItemCount(CCharEntity* PChar, uint8 action, uint8 b
         return;
     }
 
-    uint8 received_items = 0;
-    int32 ret            = SQL_ERROR;
-
-    if (boxtype == 0x01)
+    const uint8 received_items = [&]() -> uint8
     {
-        int limit = 0;
-        for (int i = 0; i < 8; ++i)
+        if (boxtype == 0x01)
         {
-            if (PChar->UContainer->IsSlotEmpty(i))
+            int limit = 0;
+            for (int i = 0; i < 8; ++i)
             {
-                limit++;
+                if (PChar->UContainer->IsSlotEmpty(i))
+                {
+                    limit++;
+                }
+            }
+
+            const auto rset = db::preparedStmt("SELECT charid FROM delivery_box WHERE charid = ? AND box = 1 AND slot >= 8 ORDER BY slot ASC LIMIT ?", PChar->id, limit);
+            if (rset)
+            {
+                return rset->rowsCount();
             }
         }
-        std::string Query = "SELECT charid FROM delivery_box WHERE charid = %u AND box = 1 AND slot >= 8 ORDER BY slot ASC LIMIT %u";
-        ret               = _sql->Query(Query.c_str(), PChar->id, limit);
-    }
-    else if (boxtype == 0x02)
-    {
-        std::string Query = "SELECT charid FROM delivery_box WHERE charid = %u AND received = 1 AND box = 2";
-        ret               = _sql->Query(Query.c_str(), PChar->id);
-    }
+        else if (boxtype == 0x02)
+        {
+            const auto rset = db::preparedStmt("SELECT charid FROM delivery_box WHERE charid = ? AND received = 1 AND box = 2", PChar->id);
+            if (rset)
+            {
+                return rset->rowsCount();
+            }
+        }
 
-    if (ret != SQL_ERROR)
-    {
-        received_items = (uint8)_sql->NumRows();
-    }
+        return 0;
+    }();
 
     PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0xFF, 0x02);
     PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, received_items, 0x01);
@@ -538,77 +499,69 @@ void dboxutils::SendNewItems(CCharEntity* PChar, uint8 action, uint8 boxtype, ui
 
     if (boxtype == 1)
     {
-        bool isAutoCommitOn = _sql->GetAutoCommit();
-        bool commit         = false;
-
-        if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+        // clang-format off
+        const auto success = db::transaction([&]()
         {
-            std::string Query = "SELECT itemid, itemsubid, quantity, extra, sender, senderid FROM delivery_box WHERE charid = %u "
-                                "AND box = 1 AND slot >= 8 ORDER BY slot ASC LIMIT 1";
-
-            int32 ret = _sql->Query(Query.c_str(), PChar->id);
-
             CItem* PItem = nullptr;
 
-            if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+            const auto rset = db::preparedStmt("SELECT itemid, itemsubid, quantity, extra, sender, senderid FROM delivery_box WHERE charid = ? "
+                                               "AND box = 1 AND slot >= 8 ORDER BY slot ASC LIMIT 1",
+                                               PChar->id);
+            FOR_DB_SINGLE_RESULT(rset)
             {
-                PItem = itemutils::GetItem(_sql->GetUIntData(0));
+                PItem = itemutils::GetItem(rset->get<uint32>("itemid"));
                 if (PItem)
                 {
-                    PItem->setSubID(_sql->GetIntData(1));
-                    PItem->setQuantity(_sql->GetUIntData(2));
+                    PItem->setSubID(rset->get<uint16>("itemsubid"));
+                    PItem->setQuantity(rset->get<uint32>("quantity"));
+                    db::extractFromBlob(rset, "extra", PItem->m_extra);
+                    PItem->setSender(rset->get<std::string>("sender"));
 
-                    size_t length = 0;
-                    char*  extra  = nullptr;
-                    _sql->GetData(3, &extra, &length);
-                    std::memcpy(PItem->m_extra, extra, (length > sizeof(PItem->m_extra) ? sizeof(PItem->m_extra) : length));
-
-                    PItem->setSender(_sql->GetStringData(4));
                     if (PChar->UContainer->IsSlotEmpty(slotID))
                     {
-                        int senderID = _sql->GetUIntData(5);
+                        uint32 senderID = rset->get<uint32>("senderid");
                         PItem->setSlotID(slotID);
 
                         // the result of this query doesn't really matter, it can be sent from the auction house which has no sender record
-                        _sql->Query("UPDATE delivery_box SET received = 1 WHERE senderid = %u AND charid = %u AND box = 2 AND received = 0 AND quantity "
-                                    "= %u AND sent = 1 AND itemid = %u LIMIT 1",
-                                    PChar->id, senderID, PItem->getQuantity(), PItem->getID());
+                        db::preparedStmt("UPDATE delivery_box SET received = 1 WHERE senderid = ? AND charid = ? AND box = 2 AND received = 0 AND quantity = ? AND sent = 1 AND itemid = ? LIMIT 1",
+                                         PChar->id, senderID, PItem->getQuantity(), PItem->getID());
 
-                        _sql->Query("SELECT slot FROM delivery_box WHERE charid = %u AND box = 1 AND slot > 7 ORDER BY slot ASC", PChar->id);
-                        if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+                        const auto rset = db::preparedStmt("SELECT slot FROM delivery_box WHERE charid = ? AND box = 1 AND slot > 7 ORDER BY slot ASC", PChar->id);
+                        FOR_DB_SINGLE_RESULT(rset)
                         {
-                            uint8 queue = _sql->GetUIntData(0);
-                            Query       = "UPDATE delivery_box SET slot = %u WHERE charid = %u AND box = 1 AND slot = %u";
-                            ret         = _sql->Query(Query.c_str(), slotID, PChar->id, queue);
-                            if (ret != SQL_ERROR)
+                            uint8 queue = rset->get<uint8>("slot");
+
+                            const auto rset2 = db::preparedStmt("UPDATE delivery_box SET slot = ? WHERE charid = ? AND box = 1 AND slot = ?", slotID, PChar->id, queue);
+                            if (rset2)
                             {
-                                Query = "UPDATE delivery_box SET slot = slot - 1 WHERE charid = %u AND box = 1 AND slot > %u";
-                                ret   = _sql->Query(Query.c_str(), PChar->id, queue);
-                                if (ret != SQL_ERROR)
+                                const auto rset3 = db::preparedStmt("UPDATE delivery_box SET slot = slot - 1 WHERE charid = ? AND box = 1 AND slot > ?", PChar->id, queue);
+                                if (rset3)
                                 {
                                     PChar->UContainer->SetItem(slotID, PItem);
 
                                     // TODO: increment "count" for every new item, if needed
                                     PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, nullptr, slotID, 1, 2);
                                     PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, 1, 1);
-                                    commit = true;
+                                    return;
                                 }
                             }
                         }
+
+                        // If we got here, something is going wrong.
+                        destroy(PItem);
                     }
                 }
             }
 
-            if (!commit || !_sql->TransactionCommit())
-            {
-                destroy(PItem);
-
-                _sql->TransactionRollback();
-                ShowErrorFmt("DBOX: Could not finalize send transaction (player: {} ({}), slotID: {})", PChar->getName(), PChar->id, slotID);
-                PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, 0xEB);
-            }
+            // If we got here, something went wrong.
+            throw std::runtime_error(fmt::format("DBOX: Could not finalize send new items transaction (player: {} ({}), slotID: {})",
+                                                 PChar->getName(), PChar->id, slotID));
+        });
+        if (!success)
+        {
+            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, 0xEB);
         }
-        _sql->SetAutoCommit(isAutoCommitOn);
+        // clang-format on
     }
 }
 
@@ -620,30 +573,29 @@ void dboxutils::RemoveDeliveredItemFromSendingBox(CCharEntity* PChar, uint8 acti
         return;
     }
 
-    uint8 received_items = 0;
+    uint8 receivedItems  = 0;
     uint8 deliverySlotID = 0;
 
-    int32 ret = _sql->Query("SELECT slot FROM delivery_box WHERE charid = %u AND received = 1 AND box = 2 ORDER BY slot ASC", PChar->id);
-
-    if (ret != SQL_ERROR)
+    const auto rset = db::preparedStmt("SELECT slot FROM delivery_box WHERE charid = ? AND received = 1 AND box = 2 ORDER BY slot ASC", PChar->id);
+    if (rset)
     {
-        received_items = (uint8)_sql->NumRows();
-        if (received_items && _sql->NextRow() == SQL_SUCCESS)
+        receivedItems = rset->rowsCount();
+        if (receivedItems && rset->next())
         {
-            deliverySlotID = _sql->GetUIntData(0);
+            deliverySlotID = rset->get<uint8>("slot");
             if (!PChar->UContainer->IsSlotEmpty(deliverySlotID))
             {
                 CItem* PItem = PChar->UContainer->GetItem(deliverySlotID);
                 if (PItem && PItem->isSent())
                 {
-                    ret = _sql->Query("DELETE FROM delivery_box WHERE charid = %u AND box = 2 AND slot = %u LIMIT 1", PChar->id, deliverySlotID);
-                    if (ret != SQL_ERROR && _sql->AffectedRows() == 1)
+                    const auto [rset2, affectedRows2] = db::preparedStmtWithAffectedRows("DELETE FROM delivery_box WHERE charid = ? AND box = 2 AND slot = ? LIMIT 1", PChar->id, deliverySlotID);
+                    if (rset2 && affectedRows2)
                     {
                         DebugDeliveryBoxFmt("DBOX: RemoveDeliveredItemFromSendingBox (action: {:02X}): player: {} ({}) removed item: {} ({})",
                                             action, PChar->getName(), PChar->id, PItem->getName(), PItem->getID());
 
                         PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0, 0x02);
-                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, deliverySlotID, received_items, 0x01);
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, deliverySlotID, receivedItems, 0x01);
                         PChar->UContainer->SetItem(deliverySlotID, nullptr);
                         destroy(PItem);
                     }
@@ -677,67 +629,63 @@ void dboxutils::ReturnToSender(CCharEntity* PChar, uint8 action, uint8 boxtype, 
 
     if (!PChar->UContainer->IsSlotEmpty(slotID))
     {
-        bool isAutoCommitOn = _sql->GetAutoCommit();
-        bool commit         = false; // When in doubt back it out.
+        CItem* PItem = PChar->UContainer->GetItem(slotID);
 
-        CItem*      PItem    = PChar->UContainer->GetItem(slotID);
-        auto        item_id  = PItem->getID();
-        auto        quantity = PItem->getQuantity();
-        uint32      senderID = 0;
-        std::string senderName;
+        // For logging
+        const auto itemId   = PItem->getID();
+        const auto quantity = PItem->getQuantity();
 
-        if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+        // clang-format off
+        const auto success = db::transaction([&]()
         {
             // Get sender of delivery record
-            int32 ret = _sql->Query("SELECT senderid, sender FROM delivery_box WHERE charid = %u AND slot = %u AND box = 1 LIMIT 1",
-                                    PChar->id, slotID);
-
-            if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+            const auto [senderID, senderName] = [&]() -> std::pair<uint32, std::string>
             {
-                senderID = _sql->GetUIntData(0);
-                senderName.insert(0, (const char*)_sql->GetData(1));
-
-                if (senderID != 0)
+                const auto rset = db::preparedStmt("SELECT senderid, sender FROM delivery_box WHERE charid = ? AND slot = ? AND box = 1 LIMIT 1",
+                                                   PChar->id, slotID);
+                FOR_DB_SINGLE_RESULT(rset)
                 {
-                    char extra[sizeof(PItem->m_extra) * 2 + 1];
-                    _sql->EscapeStringLen(extra, (const char*)PItem->m_extra, sizeof(PItem->m_extra));
+                    const auto senderID = rset->get<uint32>("senderid");
+                    const auto senderName = rset->get<std::string>("sender");
+                    return std::make_pair(senderID, senderName);
+                }
 
-                    // Insert a return record into delivery_box
-                    ret = _sql->Query("INSERT INTO delivery_box(charid, charname, box, itemid, itemsubid, quantity, extra, senderid, sender) "
-                                      "VALUES(%u, '%s', %u, %u, %u, %u, '%s', %u, '%s')",
-                                      senderID, senderName, 1, PItem->getID(), PItem->getSubID(), PItem->getQuantity(), extra, PChar->id, PChar->getName());
+                return std::make_pair(0, std::string());
+            }();
 
-                    if (ret != SQL_ERROR && _sql->AffectedRows() > 0)
+            if (senderID)
+            {
+                // NOTE: This will trigger SQL trigger: delivery_box_insert
+                const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("INSERT INTO delivery_box (charid, charname, box, itemid, itemsubid, quantity, extra, senderid, sender) "
+                                                                                   "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                                                                   senderID, senderName, 1, PItem->getID(), PItem->getSubID(), PItem->getQuantity(), PItem->m_extra, PChar->id, PChar->getName());
+                if (rset && affectedRows)
+                {
+                    // Remove original delivery record
+                    const auto [rset2, affectedRows2] = db::preparedStmtWithAffectedRows("DELETE FROM delivery_box WHERE charid = ? AND slot = ? AND box = 1 LIMIT 1", PChar->id, slotID);
+                    if (rset2 && affectedRows2)
                     {
-                        // Remove original delivery record
-                        ret = _sql->Query("DELETE FROM delivery_box WHERE charid = %u AND slot = %u AND box = 1 LIMIT 1", PChar->id, slotID);
+                        PChar->UContainer->SetItem(slotID, nullptr);
+                        PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 1);
 
-                        if (ret != SQL_ERROR && _sql->AffectedRows() > 0)
-                        {
-                            PChar->UContainer->SetItem(slotID, nullptr);
-                            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 1);
-                            destroy(PItem);
-                            commit = true;
-                        }
+                        DebugDeliveryBoxFmt("DBOX: ReturnToSender (action: {:02X}): player: {} ({}) returned item: {} ({}) to sender: {} ({})",
+                                            action, PChar->getName(), PChar->id, PItem->getName(), itemId, senderName, senderID);
+
+                        destroy(PItem);
+                        return;
                     }
                 }
             }
 
-            if (!commit || !_sql->TransactionCommit())
-            {
-                _sql->TransactionRollback();
-                ShowErrorFmt("DBOX: Could not finalize delivery return transaction (player: {} ({}), sender: {}, itemID: {}, quantity: {})",
-                             PChar->getName(), PChar->id, senderName, item_id, quantity);
-                PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 0xEB);
-            }
-            else
-            {
-                DebugDeliveryBoxFmt("DBOX: ReturnToSender (action: {:02X}): player: {} ({}) returned item: {} ({}) to sender: {} ({})",
-                                    action, PChar->getName(), PChar->id, PItem->getName(), item_id, senderName, senderID);
-            }
-
-            _sql->SetAutoCommit(isAutoCommitOn);
+            // If we got here, something went wrong.
+            throw std::runtime_error(fmt::format("DBOX: Could not finalize delivery return transaction (player: {} ({}), sender: {}, itemID: {}, quantity: {})",
+                                                 PChar->getName(), PChar->id, senderName, itemId, quantity));
+        });
+        if (!success)
+        {
+            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 0xEB);
         }
+        // clang-format on
     }
 }
 
@@ -751,10 +699,6 @@ void dboxutils::TakeItemFromCell(CCharEntity* PChar, uint8 action, uint8 boxtype
 
     if (!PChar->UContainer->IsSlotEmpty(slotID))
     {
-        bool isAutoCommitOn = _sql->GetAutoCommit();
-        bool commit         = false;
-        bool invErr         = false;
-
         CItem* PItem = PChar->UContainer->GetItem(slotID);
 
         if (!PItem->isType(ITEM_CURRENCY) && PChar->getStorage(LOC_INVENTORY)->GetFreeSlotsCount() == 0)
@@ -763,55 +707,53 @@ void dboxutils::TakeItemFromCell(CCharEntity* PChar, uint8 action, uint8 boxtype
             return;
         }
 
-        if (_sql->SetAutoCommit(false) && _sql->TransactionStart())
+        // clang-format off
+        const auto success = db::transaction([&]()
         {
-            int32 ret = SQL_ERROR;
             if (boxtype == 0x01)
             {
-                ret = _sql->Query("DELETE FROM delivery_box WHERE charid = %u AND slot = %u AND box = %u LIMIT 1",
-                                  PChar->id, slotID, boxtype);
+                const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM delivery_box WHERE charid = ? AND slot = ? AND box = ? LIMIT 1",
+                                                                   PChar->id, slotID, boxtype);
+                if (rset && affectedRows)
+                {
+                    if (charutils::AddItem(PChar, LOC_INVENTORY, itemutils::GetItem(PItem), true) != ERROR_SLOTID)
+                    {
+                        return;
+                    }
+                }
             }
             else if (boxtype == 0x02)
             {
-                ret = _sql->Query("DELETE FROM delivery_box WHERE charid = %u AND sent = 0 AND slot = %u AND box = %u LIMIT 1",
-                                  PChar->id, slotID, boxtype);
-            }
-
-            if (ret != SQL_ERROR && _sql->AffectedRows() != 0)
-            {
-                if (charutils::AddItem(PChar, LOC_INVENTORY, itemutils::GetItem(PItem), true) != ERROR_SLOTID)
+                const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM delivery_box WHERE charid = ? AND sent = 0 AND slot = ? AND box = ? LIMIT 1",
+                                                                                   PChar->id, slotID, boxtype);
+                if (rset && affectedRows)
                 {
-                    commit = true;
-                }
-                else
-                {
-                    invErr = true;
+                    if (charutils::AddItem(PChar, LOC_INVENTORY, itemutils::GetItem(PItem), true) != ERROR_SLOTID)
+                    {
+                        return;
+                    }
                 }
             }
 
-            if (!commit || !_sql->TransactionCommit())
-            {
-                _sql->TransactionRollback();
-                PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 0xBA);
-                if (!invErr)
-                {
-                    // only display error in log if there's a database problem, not if inv is full or rare item conflict
-                    ShowErrorFmt("DBOX: Could not finalize receive transaction player: {} ({}), slotID: {}", PChar->getName(), PChar->id, slotID);
-                }
-            }
-            else
-            {
-                DebugDeliveryBoxFmt("DBOX: TakeItemFromCell (action: {:02X}): player: {} ({}) received item: {} ({}) from slot {}",
-                                    action, PChar->getName(), PChar->id, PItem->getName(), PItem->getID(), slotID);
+            // If we got here, something went wrong.
+            throw std::runtime_error(fmt::format("DBOX: Could not finalize take item transaction (player: {} ({}), slotID: {})",
+                                                 PChar->getName(), PChar->id, slotID));
+        });
+        if (success)
+        {
+            DebugDeliveryBoxFmt("DBOX: TakeItemFromCell (action: {:02X}): player: {} ({}) received item: {} ({}) from slot {}",
+                                action, PChar->getName(), PChar->id, PItem->getName(), PItem->getID(), slotID);
 
-                PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 1);
-                PChar->pushPacket<CInventoryFinishPacket>();
-                PChar->UContainer->SetItem(slotID, nullptr);
-                destroy(PItem);
-            }
+            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 1);
+            PChar->pushPacket<CInventoryFinishPacket>();
+            PChar->UContainer->SetItem(slotID, nullptr);
+            destroy(PItem);
         }
-
-        _sql->SetAutoCommit(isAutoCommitOn);
+        else
+        {
+            PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 0xBA);
+        }
+        // clang-format on
     }
 }
 
@@ -825,9 +767,8 @@ void dboxutils::RemoveItemFromCell(CCharEntity* PChar, uint8 action, uint8 boxty
 
     if (!PChar->UContainer->IsSlotEmpty(slotID))
     {
-        int32 ret = _sql->Query("DELETE FROM delivery_box WHERE charid = %u AND slot = %u AND box = 1 LIMIT 1", PChar->id, slotID);
-
-        if (ret != SQL_ERROR && _sql->AffectedRows() != 0)
+        const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM delivery_box WHERE charid = ? AND slot = ? AND box = 1 LIMIT 1", PChar->id, slotID);
+        if (rset && affectedRows)
         {
             CItem* PItem = PChar->UContainer->GetItem(slotID);
             PChar->UContainer->SetItem(slotID, nullptr);
@@ -849,12 +790,11 @@ void dboxutils::ConfirmNameBeforeSending(CCharEntity* PChar, uint8 action, uint8
         return;
     }
 
-    int32 ret = _sql->Query("SELECT accid FROM chars WHERE charname = '%s' LIMIT 1", recieverName);
-    if (ret != SQL_ERROR && _sql->NumRows() > 0 && _sql->NextRow() == SQL_SUCCESS)
+    uint32 accid = charutils::getAccountIdFromName(recieverName);
+    if (accid)
     {
-        uint32 accid = _sql->GetUIntData(0);
-        ret          = _sql->Query("SELECT COUNT(*) FROM chars WHERE charid = '%u' AND accid = '%u' LIMIT 1", PChar->id, accid);
-        if (ret != SQL_ERROR && _sql->NextRow() == SQL_SUCCESS && _sql->GetUIntData(0))
+        const auto rset = db::preparedStmt("SELECT COUNT(*) FROM chars WHERE charid = ? AND accid = ? LIMIT 1", PChar->id, accid);
+        if (rset && rset->rowsCount() && rset->next() && rset->get<uint32>("COUNT(*)"))
         {
             PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0xFF, 0x02);
             PChar->pushPacket<CDeliveryBoxPacket>(action, boxtype, 0x01, 0x01);

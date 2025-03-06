@@ -24,7 +24,6 @@
 #include "common/database.h"
 #include "common/logging.h"
 #include "common/settings.h"
-#include "common/sql.h"
 #include "common/tracy.h"
 
 #include "entities/charentity.h"
@@ -344,11 +343,10 @@ void auctionutils::CancelSale(CCharEntity* PChar, uint8 action, uint8 slotid)
 
     if (slotid < PChar->m_ah_history.size())
     {
-        const bool isAutoCommitOn = db::getAutoCommit();
-
         AuctionHistory_t canceledItem = PChar->m_ah_history[slotid];
 
-        if (db::setAutoCommit(false) && db::transactionStart())
+        // clang-format off
+        const auto success = db::transaction([&]()
         {
             const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows("DELETE FROM auction_house WHERE seller = ? AND itemid = ? AND stack = ? AND price = ? AND sale = 0 LIMIT 1",
                                                                                PChar->id, canceledItem.itemid, canceledItem.stack, canceledItem.price);
@@ -360,22 +358,21 @@ void auctionutils::CancelSale(CCharEntity* PChar, uint8 action, uint8 slotid)
                     uint8 SlotID = charutils::AddItem(PChar, LOC_INVENTORY, canceledItem.itemid, (canceledItem.stack != 0 ? PDelItem->getStackSize() : 1), true);
                     if (SlotID != ERROR_SLOTID)
                     {
-                        db::transactionCommit();
-                        PChar->pushPacket<CAuctionHousePacket>(action, 0, PChar, slotid, false);
-                        PChar->pushPacket<CInventoryFinishPacket>();
-                        db::setAutoCommit(isAutoCommitOn);
                         return;
                     }
                 }
             }
-            else
-            {
-                ShowErrorFmt("AH: Failed to return item id {} stack {} to char. ", canceledItem.itemid, canceledItem.stack);
-            }
 
-            db::transactionRollback();
-            db::setAutoCommit(isAutoCommitOn);
+            // If we got here, something went wrong.
+            throw std::runtime_error(fmt::format("AH: Failed to return item id {} stack {} to char {} ({})", canceledItem.itemid, canceledItem.stack, PChar->getName(), PChar->id));
+        });
+        if (success)
+        {
+            PChar->pushPacket<CAuctionHousePacket>(action, 0, PChar, slotid, false);
+            PChar->pushPacket<CInventoryFinishPacket>();
+            return;
         }
+        // clang-format on
     }
 
     // Let client know something went wrong

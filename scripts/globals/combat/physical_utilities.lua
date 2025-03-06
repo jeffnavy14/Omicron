@@ -389,7 +389,8 @@ end
 ---@param tpFactor number
 ---@param isWeaponskill boolean
 ---@param weaponSlot xi.slot
-xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill, weaponSlot)
+---@param isCannonball boolean
+xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill, weaponSlot, isCannonball)
     local pDif = 0
 
     ----------------------------------------
@@ -419,6 +420,10 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         local ignoreDefenseFactor = 1 - tpFactor
 
         targetDefense = math.floor(targetDefense * ignoreDefenseFactor)
+    end
+
+    if isCannonball then
+        actorAttack = actor:getStat(xi.mod.DEF)
     end
 
     -- Actor Attack / Target Defense ratio
@@ -569,7 +574,7 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     local levelDifFactor = 0
 
     if applyLevelCorrection then
-        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.05
+        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.025
     end
 
     -- Only players suffer from negative level difference.
@@ -702,7 +707,7 @@ xi.combat.physical.criticalRateFromFencer = function(actor)
 end
 
 -- Critical rate from Building Flourish.
--- TODO: Study case were if we can attach modifiers to the effect itself, both this and the effect may need refactoring.
+-- TODO: Study case where if we can attach modifiers to the effect itself, both this and the effect may need refactoring.
 xi.combat.physical.criticalRateFromFlourish = function(actor)
     local buildingFlourishBonus = 0
 
@@ -1026,13 +1031,31 @@ xi.combat.physical.isParried = function(defender, attacker)
         xi.combat.physical.calculateParryRate(defender, attacker) > math.random(1, 100)
     then
         parried = true
+
+        -- https://www.bg-wiki.com/ffxi/Turms_Mittens
+        if
+            defender:getMod(xi.mod.PARRY_HP_RECOVERY) > 0 and
+            not defender:hasStatusEffect(xi.effect.CURSE_II)
+        then
+            local recoveryValue = defender:getMod(xi.mod.PARRY_HP_RECOVERY)
+            defender:addHP(recoveryValue)
+        end
+
         if defender:isPC() then
-            -- TODO: implement Turms mod here (when that mod is added to LSB)
-            defender:trySkillUp(xi.skill.PARRY, attacker:getMainLvl())
             -- handle tactical parry
             if defender:hasTrait(xi.trait.TACTICAL_PARRY) then
                 defender:addTP(defender:getMod(xi.mod.TACTICAL_PARRY))
             end
+        end
+    end
+
+    -- Handle skill ups.
+    if defender:isPC() then
+        if
+            parried or -- We parried
+            not xi.settings.map.PARRY_OLD_SKILLUP_STYLE -- Old style skillup is not enabled
+        then
+            defender:trySkillUp(xi.skill.PARRY, attacker:getMainLvl())
         end
     end
 
