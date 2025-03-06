@@ -2685,7 +2685,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.MANDAU,
+            itemId = xi.item.MANDAU_75,
         },
 
         textOffset     = 349,
@@ -2696,7 +2696,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -2709,7 +2709,7 @@ xi.magian.trials =
         previousTrial = 991,
         requiredItem  =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -2724,7 +2724,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -2893,7 +2893,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.SPHARAI,
+            itemId = xi.item.SPHARAI_75,
         },
 
         textOffset     = 357,
@@ -2904,7 +2904,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -2917,7 +2917,7 @@ xi.magian.trials =
         previousTrial = 1003,
         requiredItem  =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -2932,7 +2932,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -3049,7 +3049,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.EXCALIBUR,
+            itemId = xi.item.EXCALIBUR_75,
         },
 
         textOffset     = 363,
@@ -3060,7 +3060,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -3073,7 +3073,7 @@ xi.magian.trials =
         previousTrial = 1012,
         requiredItem  =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -3088,7 +3088,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3257,7 +3257,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.RAGNAROK,
+            itemId = xi.item.RAGNAROK_75,
         },
 
         textOffset     = 371,
@@ -3268,7 +3268,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3281,7 +3281,7 @@ xi.magian.trials =
         previousTrial = 1024,
         requiredItem  =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3296,7 +3296,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -3309,7 +3309,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.GUTTLER,
+            itemId = xi.item.GUTTLER_75,
         },
 
         textOffset     = 373,
@@ -3320,7 +3320,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3333,7 +3333,7 @@ xi.magian.trials =
         previousTrial = 1027,
         requiredItem  =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3348,7 +3348,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -3413,7 +3413,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.BRAVURA,
+            itemId = xi.item.BRAVURA_75,
         },
 
         textOffset     = 377,
@@ -3424,7 +3424,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3437,7 +3437,7 @@ xi.magian.trials =
         previousTrial = 1033,
         requiredItem  =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3452,7 +3452,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -3517,7 +3517,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.GUNGNIR,
+            itemId = xi.item.GUNGNIR_75,
         },
 
         textOffset     = 381,
@@ -3528,7 +3528,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3541,7 +3541,7 @@ xi.magian.trials =
         previousTrial = 1039,
         requiredItem  =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3556,7 +3556,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -3621,7 +3621,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.APOCALYPSE,
+            itemId = xi.item.APOCALYPSE_75,
         },
 
         textOffset     = 385,
@@ -3632,7 +3632,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3645,7 +3645,7 @@ xi.magian.trials =
         previousTrial = 1045,
         requiredItem  =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3660,7 +3660,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -3725,7 +3725,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.KIKOKU,
+            itemId = xi.item.KIKOKU_75,
         },
 
         textOffset     = 389,
@@ -3736,7 +3736,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -3749,7 +3749,7 @@ xi.magian.trials =
         previousTrial = 1051,
         requiredItem  =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 0 }, -- DMG:+1
@@ -3764,7 +3764,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -3829,7 +3829,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.AMANOMURAKUMO,
+            itemId = xi.item.AMANOMURAKUMO_75,
         },
 
         textOffset     = 393,
@@ -3840,7 +3840,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3853,7 +3853,7 @@ xi.magian.trials =
         previousTrial = 1057,
         requiredItem  =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3868,7 +3868,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 4 }, -- DMG:+5
@@ -3933,7 +3933,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.MJOLLNIR,
+            itemId = xi.item.MJOLLNIR_75,
         },
 
         textOffset     = 397,
@@ -3944,7 +3944,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3957,7 +3957,7 @@ xi.magian.trials =
         previousTrial = 1063,
         requiredItem  =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -3972,7 +3972,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 7 }, -- DMG:+8
@@ -4037,7 +4037,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.CLAUSTRUM,
+            itemId = xi.item.CLAUSTRUM_75,
         },
 
         textOffset     = 401,
@@ -4048,7 +4048,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 3 }, -- DMG:+4
@@ -4061,7 +4061,7 @@ xi.magian.trials =
         previousTrial = 1069,
         requiredItem  =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 3 }, -- DMG:+4
@@ -4076,7 +4076,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 9 }, -- DMG:+10
@@ -4245,7 +4245,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.ANNIHILATOR,
+            itemId = xi.item.ANNIHILATOR_75,
         },
 
         textOffset     = 409,
@@ -4256,7 +4256,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 1 }, -- DMG:+2 (Ranged)
@@ -4269,7 +4269,7 @@ xi.magian.trials =
         previousTrial = 1081,
         requiredItem  =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 1 }, -- DMG:+2 (Ranged)
@@ -4284,7 +4284,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 5 }, -- DMG:+6 (Ranged)
@@ -4401,7 +4401,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.YOICHINOYUMI,
+            itemId = xi.item.YOICHINOYUMI_75,
         },
 
         textOffset     = 415,
@@ -4412,7 +4412,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 1 }, -- DMG:+2 (Ranged)
@@ -4425,7 +4425,7 @@ xi.magian.trials =
         previousTrial = 1090,
         requiredItem  =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 1 }, -- DMG:+2 (Ranged)
@@ -4440,7 +4440,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 4 }, -- DMG:+5 (Ranged)
@@ -5006,7 +5006,7 @@ xi.magian.trials =
         previousTrial = 992,
         requiredItem  =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -5021,7 +5021,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -5034,7 +5034,7 @@ xi.magian.trials =
         previousTrial = 1818,
         requiredItem  =
         {
-            itemId       = xi.item.MANDAU,
+            itemId       = xi.item.MANDAU_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -5142,7 +5142,7 @@ xi.magian.trials =
         previousTrial = 1004,
         requiredItem  =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -5157,7 +5157,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 7 }, -- DMG:+8
@@ -5170,7 +5170,7 @@ xi.magian.trials =
         previousTrial = 1826,
         requiredItem  =
         {
-            itemId       = xi.item.SPHARAI,
+            itemId       = xi.item.SPHARAI_75,
             itemAugments =
             {
                 [1] = { 740, 7 },
@@ -5250,7 +5250,7 @@ xi.magian.trials =
         previousTrial = 1013,
         requiredItem  =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 1 }, -- DMG:+2
@@ -5265,7 +5265,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -5278,7 +5278,7 @@ xi.magian.trials =
         previousTrial = 1832,
         requiredItem  =
         {
-            itemId       = xi.item.EXCALIBUR,
+            itemId       = xi.item.EXCALIBUR_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -5386,7 +5386,7 @@ xi.magian.trials =
         previousTrial = 1025,
         requiredItem  =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5401,7 +5401,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 9 }, -- DMG:+10
@@ -5414,7 +5414,7 @@ xi.magian.trials =
         previousTrial = 1840,
         requiredItem  =
         {
-            itemId       = xi.item.RAGNAROK,
+            itemId       = xi.item.RAGNAROK_75,
             itemAugments =
             {
                 [1] = { 740, 9 }, -- DMG:+10
@@ -5438,7 +5438,7 @@ xi.magian.trials =
         previousTrial = 1028,
         requiredItem  =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -5453,7 +5453,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -5466,7 +5466,7 @@ xi.magian.trials =
         previousTrial = 1842,
         requiredItem  =
         {
-            itemId       = xi.item.GUTTLER,
+            itemId       = xi.item.GUTTLER_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -5518,7 +5518,7 @@ xi.magian.trials =
         previousTrial = 1034,
         requiredItem  =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -5533,7 +5533,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5546,7 +5546,7 @@ xi.magian.trials =
         previousTrial = 1846,
         requiredItem  =
         {
-            itemId       = xi.item.BRAVURA,
+            itemId       = xi.item.BRAVURA_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5598,7 +5598,7 @@ xi.magian.trials =
         previousTrial = 1040,
         requiredItem  =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -5613,7 +5613,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5626,7 +5626,7 @@ xi.magian.trials =
         previousTrial = 1850,
         requiredItem  =
         {
-            itemId       = xi.item.GUNGNIR,
+            itemId       = xi.item.GUNGNIR_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5678,7 +5678,7 @@ xi.magian.trials =
         previousTrial = 1046,
         requiredItem  =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 6 }, -- DMG:+7
@@ -5693,7 +5693,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5706,7 +5706,7 @@ xi.magian.trials =
         previousTrial = 1854,
         requiredItem  =
         {
-            itemId       = xi.item.APOCALYPSE,
+            itemId       = xi.item.APOCALYPSE_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5758,7 +5758,7 @@ xi.magian.trials =
         previousTrial = 1052,
         requiredItem  =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 2 }, -- DMG:+3
@@ -5773,7 +5773,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 3 }, -- DMG:+4
@@ -5786,7 +5786,7 @@ xi.magian.trials =
         previousTrial = 1858,
         requiredItem  =
         {
-            itemId       = xi.item.KIKOKU,
+            itemId       = xi.item.KIKOKU_75,
             itemAugments =
             {
                 [1] = { 740, 3 }, -- DMG:+4
@@ -5838,7 +5838,7 @@ xi.magian.trials =
         previousTrial = 1058,
         requiredItem  =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 4 }, -- DMG:+5
@@ -5853,7 +5853,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -5866,7 +5866,7 @@ xi.magian.trials =
         previousTrial = 1862,
         requiredItem  =
         {
-            itemId       = xi.item.AMANOMURAKUMO,
+            itemId       = xi.item.AMANOMURAKUMO_75,
             itemAugments =
             {
                 [1] = { 740, 5 }, -- DMG:+6
@@ -5918,7 +5918,7 @@ xi.magian.trials =
         previousTrial = 1064,
         requiredItem  =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 7 }, -- DMG:+8
@@ -5933,7 +5933,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5946,7 +5946,7 @@ xi.magian.trials =
         previousTrial = 1866,
         requiredItem  =
         {
-            itemId       = xi.item.MJOLLNIR,
+            itemId       = xi.item.MJOLLNIR_75,
             itemAugments =
             {
                 [1] = { 740, 8 }, -- DMG:+9
@@ -5998,7 +5998,7 @@ xi.magian.trials =
         previousTrial = 1070,
         requiredItem  =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 9 }, -- DMG:+10
@@ -6013,7 +6013,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 11 }, -- DMG:+12
@@ -6026,7 +6026,7 @@ xi.magian.trials =
         previousTrial = 1870,
         requiredItem  =
         {
-            itemId       = xi.item.CLAUSTRUM,
+            itemId       = xi.item.CLAUSTRUM_75,
             itemAugments =
             {
                 [1] = { 740, 11 }, -- DMG:+12
@@ -6134,7 +6134,7 @@ xi.magian.trials =
         previousTrial = 1082,
         requiredItem  =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 5 }, -- DMG:+6 (Ranged)
@@ -6149,7 +6149,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 7 }, -- DMG:+8 (Ranged)
@@ -6162,7 +6162,7 @@ xi.magian.trials =
         previousTrial = 1878,
         requiredItem  =
         {
-            itemId       = xi.item.ANNIHILATOR,
+            itemId       = xi.item.ANNIHILATOR_75,
             itemAugments =
             {
                 [1] = { 746, 7 }, -- DMG:+8 (Ranged)
@@ -6242,7 +6242,7 @@ xi.magian.trials =
         previousTrial = 1091,
         requiredItem  =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 4 }, -- DMG:+5 (Ranged)
@@ -6257,7 +6257,7 @@ xi.magian.trials =
 
         rewardItem =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 7 }, -- DMG:+8 (Ranged)
@@ -6270,7 +6270,7 @@ xi.magian.trials =
         previousTrial = 1884,
         requiredItem  =
         {
-            itemId       = xi.item.YOICHINOYUMI,
+            itemId       = xi.item.YOICHINOYUMI_75,
             itemAugments =
             {
                 [1] = { 746, 7 }, -- DMG:+8 (Ranged)
@@ -7013,7 +7013,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.GJALLARHORN,
+            itemId = xi.item.GJALLARHORN_75,
         },
 
         textOffset  = 1131,
@@ -11513,7 +11513,7 @@ xi.magian.trials =
         previousTrial = 0,
         requiredItem  =
         {
-            itemId = xi.item.AEGIS,
+            itemId = xi.item.AEGIS_75,
         },
 
         textOffset  = 1132,

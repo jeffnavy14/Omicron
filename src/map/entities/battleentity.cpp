@@ -2291,6 +2291,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
     {
         // TODO: Should not be removed by AoE effects that don't target the player.
         PTarget->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DETECTABLE);
+        PTarget->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_ON_ATTACK);
     }
 
     battleutils::ClaimMob(PTarget, this); // Mobs get claimed whether or not your attack actually is intimidated/paralyzed
