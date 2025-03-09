@@ -111,6 +111,11 @@ end
 function CBaseEntity:getVar(varName)
 end
 
+---@param prefix string
+---@return table
+function CBaseEntity:getCharVarsWithPrefix(prefix)
+end
+
 ---@param varName string
 ---@param value integer
 ---@param expiry integer?
