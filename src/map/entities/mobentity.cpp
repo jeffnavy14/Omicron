@@ -769,7 +769,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
             }
 
             // Determine if this group should drop an item.
-            if (groupDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= groupDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
+            if (groupDropRate > 0 && (1 + xirand::GetRandomNumber(10000)) <= groupDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
             {
                 // Each item in the group is given its own weight range which is the previous value to the previous value + item.DropRate
                 // Such as 2 items with drop rates of 200 and 800 would be 0-199 and 200-999 respectively
@@ -798,7 +798,7 @@ void CMobEntity::DropItems(CCharEntity* PChar)
                 itemDropRate = thDropRateFunction(m_THLvl, itemDropRate);
             }
 
-            if (itemDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= itemDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
+            if (itemDropRate > 0 && (1 + xirand::GetRandomNumber(10000)) <= itemDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
             {
                 AddItemToPool(item.ItemID);
             }

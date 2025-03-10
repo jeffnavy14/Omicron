@@ -236,12 +236,14 @@ public:
     uint32 getItemCount(uint16 itemID);
     bool   addItem(sol::variadic_args va);
     bool   delItem(uint16 itemID, int32 quantity, sol::object const& containerID);
+    bool   delItemAt(uint16 itemID, int32 quantity, uint8 containerId, uint8 slotId);
     bool   delContainerItems(sol::object const& containerID);
     bool   addUsedItem(uint16 itemID);
     bool   addTempItem(uint16 itemID, sol::object const& arg1);
     uint8  getWornUses(uint16 itemID);                                     // Check if the item is already worn
     uint8  incrementItemWear(uint16 itemID);                               // Increment the item's worn value and returns it
     auto   findItem(uint16 itemID, sol::object const& location) -> CItem*; // Like hasItem, but returns the item object (nil if not found)
+    auto   findItems(uint16 itemID, sol::object const& location) -> sol::table;
 
     void createShop(uint8 size, sol::object const& arg1);
     void addShopItem(uint16 itemID, double rawPrice, sol::object const& arg2, sol::object const& arg3);

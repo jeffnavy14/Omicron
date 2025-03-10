@@ -8136,12 +8136,16 @@ INSERT INTO `mob_droplist` VALUES (1023,4,0,1000,4495,0);         -- Goblin Choc
 INSERT INTO `mob_droplist` VALUES (1023,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
 INSERT INTO `mob_droplist` VALUES (1023,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
+-- ZoneID:   4 - Hobgoblin Animalier
 -- ZoneID:   4 - Hobgoblin Fascinator
 -- ZoneID:   4 - Hobgoblin Toreador
+-- ZoneID:  83 - Goblin Flagman
 -- ZoneID:  84 - Goblin Corpsman
 -- ZoneID:  84 - Goblin Blastmaster
 -- ZoneID:  89 - Goblin Corpsman
 -- ZoneID:  89 - Goblin Blastmaster
+-- ZoneID:  90 - Goblin Flagman
+-- ZoneID:  98 - Goblin Flagman
 -- ZoneID: 175 - Goblin Blastmaster
 -- ZoneID: 175 - Goblin Corpsman
 INSERT INTO `mob_droplist` VALUES (1024,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
@@ -8439,6 +8443,7 @@ INSERT INTO `mob_droplist` VALUES (1049,4,0,1000,4465,0);       -- Bowl Of Gobli
 INSERT INTO `mob_droplist` VALUES (1049,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  12 - Goblin Fireman
+-- ZoneID:  12 - Goblin Packman
 INSERT INTO `mob_droplist` VALUES (1050,0,0,1000,1684,@UNCOMMON); -- Gold Key (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (1050,0,0,1000,508,@RARE);      -- Goblin Helm (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (1050,0,0,1000,507,@VRARE);     -- Goblin Mail (Very Rare, 1%)
@@ -8449,630 +8454,537 @@ INSERT INTO `mob_droplist` VALUES (1050,4,0,1000,4465,0);         -- Bowl Of Gob
 INSERT INTO `mob_droplist` VALUES (1050,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 100 - Goblin Fisher
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,508,90);    -- Goblin Helm (9.0%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17390,90);  -- Yew Fishing Rod (9.0%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,507,@RARE); -- Goblin Mail (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17389,40);  -- Bamboo Fishing Rod (4.0%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,656,20);    -- Beastcoin (2.0%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17383,20);  -- Clothespole (2.0%)
-INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17388,20);  -- Fastwater Fishing Rod (2.0%)
-INSERT INTO `mob_droplist` VALUES (1051,2,0,1000,656,0);     -- Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1051,2,0,1000,17391,0);   -- Willow Fishing Rod (Steal)
-
 -- ZoneID: 101 - Goblin Fisher
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,508,40);     -- Goblin Helm (4.0%)
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17389,30);   -- Bamboo Fishing Rod (3.0%)
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17390,30);   -- Yew Fishing Rod (3.0%)
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17383,20);   -- Clothespole (2.0%)
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17388,20);   -- Fastwater Fishing Rod (2.0%)
-INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1052,2,0,1000,656,0);      -- Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1052,2,0,1000,17391,0);    -- Willow Fishing Rod (Steal)
-
 -- ZoneID: 102 - Goblin Fisher
 -- ZoneID: 106 - Goblin Fisher
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,17390,70); -- Yew Fishing Rod (7.0%)
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,17389,40); -- Bamboo Fishing Rod (4.0%)
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,507,20);   -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,508,20);   -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,17383,20); -- Clothespole (2.0%)
-INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,17388,20); -- Fastwater Fishing Rod (2.0%)
-INSERT INTO `mob_droplist` VALUES (1053,2,0,1000,656,0);    -- Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1053,2,0,1000,17391,0);  -- Willow Fishing Rod (Steal)
-
 -- ZoneID: 107 - Goblin Fisher
 -- ZoneID: 115 - Goblin Fisher
 -- ZoneID: 116 - Goblin Fisher
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,656,@UNCOMMON); -- Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,17390,70);      -- Yew Fishing Rod (7.0%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,17389,40);      -- Bamboo Fishing Rod (4.0%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,507,20);        -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,508,20);        -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,17383,20);      -- Clothespole (2.0%)
-INSERT INTO `mob_droplist` VALUES (1054,0,0,1000,17388,20);      -- Fastwater Fishing Rod (2.0%)
-INSERT INTO `mob_droplist` VALUES (1054,2,0,1000,656,0);         -- Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1054,2,0,1000,17391,0);       -- Willow Fishing Rod (Steal)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,508,@VRARE);   -- Goblin Helm (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,507,@VRARE);   -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,656,@VRARE);   -- Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17390,@VRARE); -- Yew Fishing Rod (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17389,@VRARE); -- Bamboo Fishing Rod (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17383,@SRARE); -- Clothespole (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1051,0,0,1000,17388,@SRARE); -- Fastwater Fishing Rod (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1051,2,0,1000,656,0);        -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1051,2,0,1000,17391,0);      -- Willow Fishing Rod (Steal)
+INSERT INTO `mob_droplist` VALUES (1051,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1051,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1051,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1051,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 191 - Goblin Fisher
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,17390,70);     -- Yew Fishing Rod (7.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,17389,40);     -- Bamboo Fishing Rod (4.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,507,20);       -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,508,20);       -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,12832,20);     -- Bronze Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,12960,20);     -- Bronze Leggings (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,17383,20);     -- Clothespole (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,17388,20);     -- Fastwater Fishing Rod (2.0%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,12448,@VRARE); -- Bronze Cap (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1055,0,0,1000,12704,@VRARE); -- Bronze Mittens (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1055,2,0,1000,656,0);        -- Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1055,2,0,1000,17391,0);      -- Willow Fishing Rod (Steal)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17390,@RARE);  -- Yew Fishing Rod (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17389,@VRARE); -- Bamboo Fishing Rod (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17383,@SRARE); -- Clothespole (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,17388,@VRARE); -- Fastwater Fishing Rod (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,12448,@VRARE); -- Bronze Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,12704,@VRARE); -- Bronze Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,12832,@VRARE); -- Bronze Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,0,0,1000,12960,@VRARE); -- Bronze Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1052,2,0,1000,656,0);        -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1052,2,0,1000,17391,0);      -- Willow Fishing Rod (Steal)
+INSERT INTO `mob_droplist` VALUES (1052,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1052,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1052,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1052,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
--- ZoneID:  81 - Goblin Patrolman
 -- ZoneID:  83 - Goblin Flagman
--- ZoneID:  83 - Goblin Guerrilla
--- ZoneID:  88 - Goblin Patrolman
--- ZoneID:  90 - Goblin Guerrilla
 -- ZoneID:  90 - Goblin Flagman
--- ZoneID:  91 - Goblin Patrolman
 -- ZoneID:  98 - Goblin Flagman
+INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1053,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1053,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1053,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1053,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1053,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1053,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- 1054-1055 Available
+
+-- ZoneID:  83 - Goblin Guerrilla
+-- ZoneID:  90 - Goblin Guerrilla
 -- ZoneID:  98 - Goblin Guerrilla
-INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,2525,20);   -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1056,2,0,1000,748,0);     -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,511,@RARE);    -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,510,@VRARE);   -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1056,0,0,1000,17865,@VRARE); -- Jug Of Singing Herbal Broth (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1056,2,0,1000,748,0);        -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1056,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1056,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1056,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1056,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  12 - Goblin Foreman
-INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,1684,120); -- Gold Key (12.0%)
-INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,511,30);   -- Goblin Mask (3.0%)
-INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,510,20);   -- Goblin Armor (2.0%)
-INSERT INTO `mob_droplist` VALUES (1057,2,0,1000,748,0);    -- Gold Beastcoin (Steal)
+-- ZoneID:  12 - Goblin Lengthman
+INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,1684,@UNCOMMON); -- Gold Key (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,511,@RARE);      -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1057,0,0,1000,510,@VRARE);     -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1057,2,0,1000,748,0);          -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1057,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1057,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1057,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1057,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  81 - Goblin Franctireur
--- ZoneID:  95 - Goblin Franctireur
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,508,60);  -- Goblin Helm (6.0%)
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4878,30); -- Scroll Of Absorb-Int (3.0%)
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,507,20);  -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4876,20); -- Scroll Of Absorb-Vit (2.0%)
-INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4877,20); -- Scroll Of Absorb-Agi (2.0%)
-INSERT INTO `mob_droplist` VALUES (1058,2,0,1000,748,0);   -- Gold Beastcoin (Steal)
-
 -- ZoneID:  88 - Goblin Franctireur
-INSERT INTO `mob_droplist` VALUES (1059,0,0,1000,507,20);      -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1059,0,0,1000,4877,20);     -- Scroll Of Absorb-Agi (2.0%)
-INSERT INTO `mob_droplist` VALUES (1059,0,0,1000,508,@VRARE);  -- Goblin Helm (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1059,0,0,1000,2525,@VRARE); -- Bottled Pixie (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1059,0,0,1000,4876,@VRARE); -- Scroll Of Absorb-Vit (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1059,2,0,1000,748,0);       -- Gold Beastcoin (Steal)
-
 -- ZoneID:  91 - Goblin Franctireur
-INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,507,20);      -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,508,20);      -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,2525,20);     -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,4876,@VRARE); -- Scroll Of Absorb-Vit (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,4878,@VRARE); -- Scroll Of Absorb-Int (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1060,2,0,1000,748,0);       -- Gold Beastcoin (Steal)
+-- ZoneID:  95 - Goblin Franctireur
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,508,@RARE);   -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,507,@VRARE);  -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,2525,@VRARE); -- Bottled Pixie (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4878,@VRARE); -- Scroll Of Absorb-Int (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4876,@VRARE); -- Scroll Of Absorb-Vit (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1058,0,0,1000,4877,@VRARE); -- Scroll Of Absorb-Agi (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1058,2,0,1000,748,0);       -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1058,4,0,1000,4458,0);      -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1058,4,0,1000,4495,0);      -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1058,4,0,1000,4465,0);      -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1058,4,0,1000,4543,0);      -- Goblin Mushpot (Despoil)
 
--- ZoneID:  11 - Goblin Freelance
-INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,1858,250); -- Moblumin Ingot (25.0%)
-INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,508,130);  -- Goblin Helm (13.0%)
-INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,507,40);   -- Goblin Mail (4.0%)
-INSERT INTO `mob_droplist` VALUES (1061,2,0,1000,749,0);    -- Mythril Beastcoin (Steal)
+-- 1059 Available
 
 -- ZoneID:  88 - Goblin Freelance
--- ZoneID: 138 - Orcish Augur
+INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1060,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1060,2,0,1000,751,0);      -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1060,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1060,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1060,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1060,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- ZoneID:  11 - Goblin Freelance
+INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,1858,@UNCOMMON); -- Moblumin Ingot (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,508,@RARE);      -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1061,0,0,1000,507,@VRARE);     -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1061,2,0,1000,749,0);          -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1061,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1061,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1061,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1061,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
+
+-- ZoneID:  82 - Orcish Dragonbrander
+-- ZoneID:  85 - Orcish Dragonbrander
+-- ZoneID:  85 - Orcish Warlord
+-- ZoneID:  85 - Orcish Wyrmbrander
 -- ZoneID: 138 - Orcish Champion
--- ZoneID: 138 - Orcish Protector
 -- ZoneID: 138 - Orcish Dragonbrander
--- ZoneID: 138 - Orcish Veteran
 -- ZoneID: 138 - Orcish Warlord
-INSERT INTO `mob_droplist` VALUES (1062,2,0,1000,751,0); -- Platinum Beastcoin (Steal)
+-- ZoneID: 155 - Orcish Wyrmbrander
+INSERT INTO `mob_droplist` VALUES (1062,0,0,1000,2525,@UNCOMMON); -- Bottled Pixie (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1062,2,0,1000,751,0);          -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1062,4,0,1000,4376,0);         -- Strip Of Meat Jerky (Despoil)
+INSERT INTO `mob_droplist` VALUES (1062,4,0,1000,4438,0);         -- Dhalmel Steak (Despoil)
+INSERT INTO `mob_droplist` VALUES (1062,4,0,1000,5196,0);         -- Strip Of Buffalo Jerky (Despoil)
 
 -- ZoneID:   4 - Hobgoblin Martialist
--- ZoneID:   4 - Hobgoblin Animalier
 -- ZoneID:  84 - Goblin Freesword
 -- ZoneID:  89 - Goblin Freesword
 -- ZoneID: 175 - Goblin Freesword
-INSERT INTO `mob_droplist` VALUES (1063,0,0,1000,507,20); -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1063,0,0,1000,508,20); -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1063,2,0,1000,748,0);  -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1063,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1063,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1063,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1063,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1063,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1063,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1063,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   7 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,850,70);    -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1064,2,0,1000,17336,0);   -- Crossbow Bolt (Steal)
-
 -- ZoneID: 105 - Goblin Furrier
 -- ZoneID: 110 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,850,70);     -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,848,20);     -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1065,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
-
 -- ZoneID: 111 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,850,70);     -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12698,40);   -- Studded Gloves (4.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12442,30);   -- Studded Bandana (3.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,848,20);     -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12826,20);   -- Studded Trousers (2.0%)
-INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1066,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
-
 -- ZoneID: 120 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,510,40);     -- Goblin Armor (4.0%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,511,40);     -- Goblin Mask (4.0%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,749,30);     -- Mythril Beastcoin (3.0%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,848,30);     -- Square Of Dhalmel Leather (3.0%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,506,@VRARE); -- Square Of Coeurl Leather (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,850,@VRARE); -- Square Of Sheep Leather (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1067,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
-
 -- ZoneID: 121 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1068,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1068,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1068,0,0,1000,506,20);    -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1068,0,0,1000,848,20);    -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1068,2,0,1000,17336,0);   -- Crossbow Bolt (Steal)
-
 -- ZoneID: 123 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,850,@RARE);  -- Square Of Sheep Leather (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,511,40);     -- Goblin Mask (4.0%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,510,20);     -- Goblin Armor (2.0%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,749,20);     -- Mythril Beastcoin (2.0%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,848,@VRARE); -- Square Of Dhalmel Leather (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1069,0,0,1000,855,0);      -- Square Of Black Tiger Leather (0.0%)
-INSERT INTO `mob_droplist` VALUES (1069,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,850,@VRARE); -- Square Of Sheep Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,848,@VRARE); -- Square Of Dhalmel Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,855,@SRARE); -- Square Of Black Tiger Leather (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1064,0,0,1000,506,@URARE); -- Square Of Coeurl Leather (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1064,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1064,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1064,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1064,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1064,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 157 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,850,80);     -- Square Of Sheep Leather (8.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,848,70);     -- Square Of Dhalmel Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,12698,30);   -- Studded Gloves (3.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,12826,20);   -- Studded Trousers (2.0%)
-INSERT INTO `mob_droplist` VALUES (1070,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1070,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
-
--- ZoneID: Unknown - Unknown
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,850,70);    -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,12442,30);  -- Studded Bandana (3.0%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,506,20);    -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,848,20);    -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1071,0,0,1000,855,20);    -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1071,2,0,1000,17336,0);   -- Crossbow Bolt (Steal)
+-- ZoneID: 166 - Goblin Tanner
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,850,@VRARE);   -- Square Of Sheep Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,848,@VRARE);   -- Square Of Dhalmel Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,855,@SRARE);   -- Square Of Black Tiger Leather (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,506,@URARE);   -- Square Of Coeurl Leather (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,12442,@SRARE); -- Studded Bandana (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,12698,@SRARE); -- Studded Gloves (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,12826,@SRARE); -- Studded Trousers (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1065,0,0,1000,12954,@SRARE); -- Studded Boots (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1065,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1065,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1065,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1065,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1065,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 193 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,1030,80);    -- Ordelle Chest Key (8.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,850,70);     -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,1531,40);    -- Sack Of Galka Fangs (4.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,12954,30);   -- Studded Boots (3.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,848,20);     -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,12826,20);   -- Studded Trousers (2.0%)
-INSERT INTO `mob_droplist` VALUES (1072,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1072,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,1030,@RARE);   -- Ordelle Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,1531,@RARE);   -- Sack Of Galka Fangs (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,850,@VRARE);   -- Square Of Sheep Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,848,@VRARE);   -- Square Of Dhalmel Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,855,@SRARE);   -- Square Of Black Tiger Leather (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,506,@URARE);   -- Square Of Coeurl Leather (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12442,@SRARE); -- Studded Bandana (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12698,@SRARE); -- Studded Gloves (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12826,@SRARE); -- Studded Trousers (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1066,0,0,1000,12954,@SRARE); -- Studded Boots (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1066,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1066,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1066,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1066,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1066,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 198 - Goblin Furrier
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,850,70);     -- Square Of Sheep Leather (7.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,1032,40);    -- Shakhrami Chest Key (4.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,1534,40);    -- Sack Of Mithra Fangs (4.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,12442,30);   -- Studded Bandana (3.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,12954,30);   -- Studded Boots (3.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,506,20);     -- Square Of Coeurl Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,848,20);     -- Square Of Dhalmel Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,855,20);     -- Square Of Black Tiger Leather (2.0%)
-INSERT INTO `mob_droplist` VALUES (1073,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1073,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,1032,@RARE);   -- Shakhrami Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,850,@VRARE);   -- Square Of Sheep Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,848,@VRARE);   -- Square Of Dhalmel Leather (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,855,@SRARE);   -- Square Of Black Tiger Leather (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,506,@URARE);   -- Square Of Coeurl Leather (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,12442,@SRARE); -- Studded Bandana (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,12698,@SRARE); -- Studded Gloves (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,12826,@SRARE); -- Studded Trousers (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1067,0,0,1000,12954,@SRARE); -- Studded Boots (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1067,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1067,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1067,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1067,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1067,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
+
+-- 1068-1080 Available
 
 -- ZoneID: 103 - Goblin Gambler
--- ZoneID: 110 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,12857,30);  -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,12985,30);  -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,12473,20);  -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1074,0,0,1000,12729,20);  -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1074,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
 -- ZoneID: 104 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1075,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1075,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1075,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
 -- ZoneID: 105 - Goblin Gambler
 -- ZoneID: 106 - Goblin Gambler
--- ZoneID: 121 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1076,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1076,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
 -- ZoneID: 109 - Goblin Gambler
+-- ZoneID: 110 - Goblin Gambler
+-- ZoneID: 118 - Goblin Gambler
 -- ZoneID: 119 - Goblin Gambler
 -- ZoneID: 120 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1077,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1077,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1077,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
--- ZoneID: 118 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1078,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1078,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1078,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1078,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1078,4,0,1000,4495,0);    -- Chunk Of Goblin Chocolate (Despoil)
+-- ZoneID: 121 - Goblin Gambler
+INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,952,@VRARE); -- Bag Of Poison Flour (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1081,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1081,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1081,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1081,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1081,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 166 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1079,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1079,0,0,1000,12857,30);  -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1079,0,0,1000,12985,30);  -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1079,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
+-- ZoneID: 184 - Goblin Gambler
+-- ZoneID: 193 - Goblin Gambler
+-- ZoneID: 198 - Goblin Gambler
+INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,952,@RARE);    -- Bag Of Poison Flour (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,12729,@VRARE); -- Linen Cuffs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,12985,@VRARE); -- Holly Clogs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1082,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1082,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1082,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1082,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1082,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 190 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1080,0,0,1000,2757,@UNCOMMON); -- Orcish Armor Plate (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1080,0,0,1000,952,@RARE);      -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1080,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
-
--- ZoneID: Unknown - Unknown
-INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,12985,30);  -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1081,0,0,1000,12473,20);  -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1081,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,2757,@RARE);   -- Orcish Armor Plate (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,952,@RARE);    -- Bag Of Poison Flour (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12729,@VRARE); -- Linen Cuffs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12985,@VRARE); -- Holly Clogs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1083,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1083,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1083,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1083,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1083,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 192 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,1029,60);   -- Horutoto Chest Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1082,0,0,1000,12985,30);  -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1082,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
--- ZoneID: 193 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12985,30);  -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1083,0,0,1000,12729,20);  -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1083,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-
--- ZoneID: 198 - Goblin Gambler
-INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,952,@RARE); -- Bag Of Poison Flour (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,12473,20);  -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1084,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,1029,@VRARE);  -- Horutoto Chest Key (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,952,@RARE);    -- Bag Of Poison Flour (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,12473,@SRARE); -- Poets Circlet (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,12729,@SRARE); -- Linen Cuffs (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,12857,@SRARE); -- Linen Slops (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1084,0,0,1000,12985,@SRARE); -- Holly Clogs (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1084,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1084,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1084,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1084,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1084,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 188 - Goblin Golem
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1449,90);     -- Tukuku Whiteshell (9.0%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1455,90);     -- One Byne Bill (9.0%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1474,80);     -- Infinity Core (8.0%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,748,@VRARE);  -- Gold Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,749,@VRARE);  -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1450,@VRARE); -- Lungo-Nango Jadeshell (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1452,@VRARE); -- Ordelle Bronzepiece (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1456,@VRARE); -- One Hundred Byne Bill (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,3419,@VRARE); -- Fiendish Tome Chapter 16 (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,3419,@ALWAYS);   -- Fiendish Tome Chapter 16 (Always, 100%)
+INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1474,@UNCOMMON); -- Infinity Core (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,748,@VRARE);     -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,749,@RARE);      -- Mythril Beastcoin (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1085,0,0,1000,1470,@VRARE);    -- Sparkling Stone (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1085,1,1,@RARE,3497,333);      -- Forgotten step (Group 1, Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1085,1,1,@RARE,3495,333);      -- Forgotten touch (Group 1, Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1085,1,1,@RARE,3496,333);      -- Forgotten journey (Group 1, Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1085,1,2,@VRARE,1450,333);     -- Lungo-Nango Jadeshell (Group 2, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1085,1,2,@VRARE,1453,333);     -- Montiont Silverpiece (Group 2, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1085,1,2,@VRARE,1456,333);     -- One Hundred Byne Bill (Group 2, Very Rare, 1%)
 
 -- ZoneID:  83 - Goblin Grenadier
 -- ZoneID:  90 - Goblin Grenadier
 -- ZoneID:  98 - Goblin Grenadier
-INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,507,20);  -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,508,20);  -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1086,2,0,1000,748,0);   -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,2525,@RARE); -- Bottled Pixie (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1086,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1086,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1086,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1086,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1086,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1086,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 190 - Goblin Gruel
-INSERT INTO `mob_droplist` VALUES (1087,0,0,1000,13364,140); -- Valor Earring (14.0%)
-INSERT INTO `mob_droplist` VALUES (1087,0,0,1000,1027,80);   -- Ranperre Chest Key (8.0%)
+INSERT INTO `mob_droplist` VALUES (1087,0,0,1000,13364,@RARE); -- Valor Earring (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1087,0,0,1000,1027,@RARE);  -- Ranperre Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1087,4,0,1000,637,0);       -- Vial Of Slime Oil (Despoil)
 
 -- ZoneID:  11 - Goblin Gutterman
-INSERT INTO `mob_droplist` VALUES (1088,0,0,1000,511,70); -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1088,2,0,1000,750,0);  -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1088,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1088,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1088,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1088,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1088,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1088,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1088,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  11 - Goblin Hammerman
 INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,1696,@UNCOMMON); -- Magicked Steel Ingot (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,508,70);         -- Goblin Helm (7.0%)
-INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,511,70);         -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,507,20);         -- Goblin Mail (2.0%)
+INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,508,@RARE);      -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1089,0,0,1000,507,@VRARE);     -- Goblin Mail (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1089,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1089,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1089,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1089,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1089,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  12 - Goblin Hangman
-INSERT INTO `mob_droplist` VALUES (1090,0,0,1000,507,20); -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1090,0,0,1000,508,20); -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1090,2,0,1000,751,0);  -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1090,0,0,1000,508,@RARE);     -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1090,0,0,1000,507,@VRARE);    -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1090,0,0,1000,947,@UNCOMMON); -- Jar Of Firesand (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1090,2,0,1000,751,0);         -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1090,4,0,1000,4458,0);        -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1090,4,0,1000,4495,0);        -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1090,4,0,1000,4465,0);        -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1090,4,0,1000,4543,0);        -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  12 - Goblin Headman
-INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,947,120); -- Jar Of Firesand (12.0%)
-INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,511,60);  -- Goblin Mask (6.0%)
-INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,511,40);  -- Goblin Mask (4.0%)
-INSERT INTO `mob_droplist` VALUES (1091,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
+-- ZoneID:  12 - Goblin Marksman
+INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,511,@RARE);     -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,510,@VRARE);    -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1091,0,0,1000,947,@UNCOMMON); -- Jar Of Firesand (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1091,2,0,1000,751,0);         -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1091,4,0,1000,4458,0);        -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1091,4,0,1000,4495,0);        -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1091,4,0,1000,4465,0);        -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1091,4,0,1000,4543,0);        -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   9 - Goblin Hunter
-INSERT INTO `mob_droplist` VALUES (1092,2,0,1000,17336,0); -- Crossbow Bolt (Steal)
-
 -- ZoneID: 124 - Goblin Hunter
-INSERT INTO `mob_droplist` VALUES (1093,0,0,1000,511,60);  -- Goblin Mask (6.0%)
-INSERT INTO `mob_droplist` VALUES (1093,0,0,1000,748,30);  -- Gold Beastcoin (3.0%)
-INSERT INTO `mob_droplist` VALUES (1093,0,0,1000,510,20);  -- Goblin Armor (2.0%)
-INSERT INTO `mob_droplist` VALUES (1093,2,0,1000,17336,0); -- Crossbow Bolt (Steal)
+-- ZoneID: 125 - Goblin Hunter
+INSERT INTO `mob_droplist` VALUES (1092,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1092,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1092,0,0,1000,748,@VRARE); -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1092,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1092,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1092,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1092,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1092,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- 1093 Available
 
 -- ZoneID: 162 - Goblin Hunter
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,748,@UNCOMMON); -- Gold Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,511,70);        -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,510,@RARE);     -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,1038,@RARE);    -- Zvahl Chest Key (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12828,30);      -- Raptor Trousers (3.0%)
-INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12956,30);      -- Raptor Ledelsens (3.0%)
-INSERT INTO `mob_droplist` VALUES (1094,2,0,1000,17336,0);       -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,1038,@RARE);   -- Zvahl Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12444,@URARE); -- Raptor Helm (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12700,@URARE); -- Raptor Gloves (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12828,@URARE); -- Raptor Trousers (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1094,0,0,1000,12956,@URARE); -- Raptor Ledelsens (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1094,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1094,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1094,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1094,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1094,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 213 - Goblin Hunter
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,510,@RARE);    -- Goblin Armor (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,1056,@RARE);   -- Onzozo Chest Key (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12700,30);     -- Raptor Gloves (3.0%)
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12828,30);     -- Raptor Trousers (3.0%)
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12444,@VRARE); -- Raptor Helm (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12956,@VRARE); -- Raptor Ledelsens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12444,@URARE); -- Raptor Helm (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12700,@URARE); -- Raptor Gloves (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12828,@URARE); -- Raptor Trousers (Ultra Rare, 0.1%)
+INSERT INTO `mob_droplist` VALUES (1095,0,0,1000,12956,@URARE); -- Raptor Ledelsens (Ultra Rare, 0.1%)
 INSERT INTO `mob_droplist` VALUES (1095,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1095,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1095,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1095,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1095,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  12 - Goblin Junkman
-INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,947,120); -- Jar Of Firesand (12.0%)
-INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,508,60);  -- Goblin Helm (6.0%)
-INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,1063,60); -- Newton Coffer Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,507,40);  -- Goblin Mail (4.0%)
-INSERT INTO `mob_droplist` VALUES (1096,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,947,@UNCOMMON); -- Jar Of Firesand (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,1063,@RARE);    -- Newton Coffer Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,508,@RARE);     -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1096,0,0,1000,507,@VRARE);    -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1096,2,0,1000,751,0);         -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1096,4,0,1000,4458,0);        -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1096,4,0,1000,4495,0);        -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1096,4,0,1000,4465,0);        -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1096,4,0,1000,4543,0);        -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  11 - Goblin Leadman
-INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,1696,130);  -- Magicked Steel Ingot (13.0%)
-INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,1696,@UNCOMMON); -- Magicked Steel Ingot (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,511,@RARE);      -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1097,0,0,1000,510,@VRARE);     -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1097,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1097,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1097,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1097,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1097,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 103 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4744,60);     -- Scroll Of Invisible (6.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4666,@RARE);  -- Scroll Of Paralyze (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4680,@RARE);  -- Scroll Of Barsleep (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,511,40);      -- Goblin Mask (4.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,750,40);      -- Silver Beastcoin (4.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4667,40);     -- Scroll Of Silence (4.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4745,20);     -- Scroll Of Sneak (2.0%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,510,@VRARE);  -- Goblin Armor (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,656,@VRARE);  -- Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4746,@VRARE); -- Scroll Of Deodorize (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1098,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
-
 -- ZoneID: 104 - Goblin Leecher
--- ZoneID: 120 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,750,@UNCOMMON); -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,511,70);        -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4666,60);       -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4744,40);       -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4683,30);       -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4746,30);       -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4667,20);       -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4680,20);       -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4681,20);       -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4733,20);       -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4745,@VRARE);   -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1099,2,0,1000,750,0);         -- Silver Beastcoin (Steal)
-
 -- ZoneID: 105 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,750,@UNCOMMON); -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4744,40);       -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4683,30);       -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4746,30);       -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4667,20);       -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4680,20);       -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4681,20);       -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4733,20);       -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4745,@VRARE);   -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1100,2,0,1000,750,0);         -- Silver Beastcoin (Steal)
-
 -- ZoneID: 106 - Goblin Leecher
--- ZoneID: 110 - Goblin Leecher
--- ZoneID: 119 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4746,30);     -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4667,20);     -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4680,20);     -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1101,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
-
 -- ZoneID: 109 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,511,70);      -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4746,30);     -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4667,20);     -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4680,20);     -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1102,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1102,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
-
+-- ZoneID: 110 - Goblin Leecher
 -- ZoneID: 118 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4666,80);     -- Scroll Of Paralyze (8.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,511,60);      -- Goblin Mask (6.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4667,60);     -- Scroll Of Silence (6.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4746,@RARE);  -- Scroll Of Deodorize (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,510,40);      -- Goblin Armor (4.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,750,40);      -- Silver Beastcoin (4.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4680,40);     -- Scroll Of Barsleep (4.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4745,40);     -- Scroll Of Sneak (4.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1103,0,0,1000,4733,@VRARE); -- Scroll Of Protectra (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1103,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
-
+-- ZoneID: 119 - Goblin Leecher
+-- ZoneID: 120 - Goblin Leecher
 -- ZoneID: 121 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4666,60);     -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4746,30);     -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4667,20);     -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4680,20);     -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1104,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1104,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,511,@RARE);   -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,510,@VRARE);  -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4666,@RARE);  -- Scroll Of Paralyze (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4680,@VRARE); -- Scroll Of Barsleep (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,750,@VRARE);  -- Silver Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4667,@VRARE); -- Scroll Of Silence (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4681,@VRARE); -- Scroll Of Barpoison (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4733,@VRARE); -- Scroll Of Protectra (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4744,@SRARE); -- Scroll Of Invisible (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1098,0,0,1000,4746,@SRARE); -- Scroll Of Deodorize (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1098,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1098,4,0,1000,4458,0);      -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1098,4,0,1000,4495,0);      -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1098,4,0,1000,4465,0);      -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1098,4,0,1000,4543,0);      -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 166 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4733,190);     -- Scroll Of Protectra (19.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4680,@COMMON); -- Scroll Of Barsleep (Common, 15%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4666,110);     -- Scroll Of Paralyze (11.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4667,110);     -- Scroll Of Silence (11.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4746,80);      -- Scroll Of Deodorize (8.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4681,40);      -- Scroll Of Barpoison (4.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4744,40);      -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4745,40);      -- Scroll Of Sneak (4.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,4683,30);      -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,12857,30);     -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,12729,20);     -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1105,0,0,1000,12985,20);     -- Holly Clogs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1105,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+-- ZoneID: 184 - Goblin Leecher
+-- ZoneID: 193 - Goblin Leecher
+-- ZoneID: 198 - Goblin Leecher
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4666,@RARE);   -- Scroll Of Paralyze (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4680,@RARE);   -- Scroll Of Barsleep (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4667,@RARE);   -- Scroll Of Silence (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4681,@VRARE);  -- Scroll Of Barpoison (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4733,@RARE);   -- Scroll Of Protectra (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4745,@RARE);   -- Scroll Of Sneak (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4744,@VRARE);  -- Scroll Of Invisible (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,4746,@VRARE);  -- Scroll Of Deodorize (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,12729,@VRARE); -- Linen Cuffs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,0,0,1000,12985,@VRARE); -- Holly Clogs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1099,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1099,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1099,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1099,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1099,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 190 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,2757,@UNCOMMON); -- Orcish Armor Plate (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4666,60);        -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4744,40);        -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4683,30);        -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4746,30);        -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,12857,30);       -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4667,20);        -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4680,20);        -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4681,20);        -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4733,20);        -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,12473,20);       -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,12729,20);       -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1106,0,0,1000,4745,@VRARE);    -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1106,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
-
--- ZoneID: Unknown - Unknown
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4666,60);     -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4746,30);     -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,12857,30);    -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,12985,30);    -- Holly Clogs (3.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4667,20);     -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4680,20);     -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,12473,20);    -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,12729,20);    -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1107,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1107,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,2757,@RARE);   -- Orcish Armor Plate (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4666,@RARE);   -- Scroll Of Paralyze (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4680,@RARE);   -- Scroll Of Barsleep (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4667,@RARE);   -- Scroll Of Silence (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4681,@VRARE);  -- Scroll Of Barpoison (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4733,@RARE);   -- Scroll Of Protectra (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4745,@RARE);   -- Scroll Of Sneak (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4744,@VRARE);  -- Scroll Of Invisible (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,4746,@VRARE);  -- Scroll Of Deodorize (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,12729,@VRARE); -- Linen Cuffs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,0,0,1000,12985,@VRARE); -- Holly Clogs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1100,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1100,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1100,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1100,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1100,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 192 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,2759,@UNCOMMON); -- Block Of Yagudo Caulk (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,1029,60);        -- Horutoto Chest Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4666,60);        -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4744,40);        -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4683,30);        -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4746,30);        -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,12857,30);       -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4667,20);        -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4680,20);        -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4681,20);        -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4733,20);        -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,12473,20);       -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,12729,20);       -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1108,0,0,1000,4745,@VRARE);    -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1108,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,2759,@RARE);   -- Block Of Yagudo Caulk (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,1029,@VRARE);  -- Horutoto Chest Key (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4666,@RARE);   -- Scroll Of Paralyze (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4680,@RARE);   -- Scroll Of Barsleep (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4667,@RARE);   -- Scroll Of Silence (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4681,@VRARE);  -- Scroll Of Barpoison (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4733,@RARE);   -- Scroll Of Protectra (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4745,@RARE);   -- Scroll Of Sneak (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4744,@VRARE);  -- Scroll Of Invisible (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,4746,@VRARE);  -- Scroll Of Deodorize (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,12729,@VRARE); -- Linen Cuffs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,0,0,1000,12985,@VRARE); -- Holly Clogs (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1101,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1101,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1101,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1101,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1101,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
--- ZoneID: 193 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4666,160);     -- Scroll Of Paralyze (16.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4733,110);     -- Scroll Of Protectra (11.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4745,90);      -- Scroll Of Sneak (9.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4667,80);      -- Scroll Of Silence (8.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4680,80);      -- Scroll Of Barsleep (8.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4681,40);      -- Scroll Of Barpoison (4.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4683,30);      -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4746,20);      -- Scroll Of Deodorize (2.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,12729,20);     -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,4744,@VRARE);  -- Scroll Of Invisible (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,12473,@VRARE); -- Poets Circlet (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1109,0,0,1000,12857,@VRARE); -- Linen Slops (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1109,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
-
--- ZoneID: 198 - Goblin Leecher
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4666,60);     -- Scroll Of Paralyze (6.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4744,40);     -- Scroll Of Invisible (4.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4683,30);     -- Scroll Of Barblind (3.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4746,30);     -- Scroll Of Deodorize (3.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,12857,30);    -- Linen Slops (3.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4667,20);     -- Scroll Of Silence (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4680,20);     -- Scroll Of Barsleep (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4681,20);     -- Scroll Of Barpoison (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4733,20);     -- Scroll Of Protectra (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,12473,20);    -- Poets Circlet (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,12729,20);    -- Linen Cuffs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1110,0,0,1000,4745,@VRARE); -- Scroll Of Sneak (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1110,2,0,1000,750,0);       -- Silver Beastcoin (Steal)
-
--- ZoneID:  12 - Goblin Lengthman
-INSERT INTO `mob_droplist` VALUES (1111,0,0,1000,1684,120);   -- Gold Key (12.0%)
-INSERT INTO `mob_droplist` VALUES (1111,0,0,1000,511,30);     -- Goblin Mask (3.0%)
-INSERT INTO `mob_droplist` VALUES (1111,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1111,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
-
--- ZoneID:  12 - Goblin Marksman
-INSERT INTO `mob_droplist` VALUES (1112,0,0,1000,947,120);       -- Jar Of Firesand (12.0%)
-INSERT INTO `mob_droplist` VALUES (1112,0,0,1000,511,@UNCOMMON); -- Goblin Mask (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1112,0,0,1000,510,40);        -- Goblin Armor (4.0%)
+-- 1102-1112 Available
 
 -- ZoneID: 254 - Goblin Meatgrinder
 INSERT INTO `mob_droplist` VALUES (1113,0,0,1000,3274,@UNCOMMON); -- Jar Of Goblin Oil (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1113,0,0,1000,507,20);         -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1113,0,0,1000,508,20);         -- Goblin Helm (2.0%)
+INSERT INTO `mob_droplist` VALUES (1113,0,0,1000,507,@RARE);      -- Goblin Mail (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1113,0,0,1000,508,@VRARE);     -- Goblin Helm (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1113,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1113,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
 INSERT INTO `mob_droplist` VALUES (1113,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
-INSERT INTO `mob_droplist` VALUES (1113,4,0,1000,4495,0);         -- Chunk Of Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1113,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   9 - Goblin Mercenary
 -- ZoneID: 113 - Goblin Mercenary
+INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,1426,@RARE); -- Warriors Testimony (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,748,@VRARE); -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1114,2,0,1000,656,0);      -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1114,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1114,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1114,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1114,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- ZoneID: 174 - Goblin Mercenary
 -- ZoneID: 205 - Goblin Mercenary
 -- ZoneID: 212 - Goblin Mercenary
 -- ZoneID: 213 - Goblin Mercenary
-INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,748,@UNCOMMON); -- Gold Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,1426,40);       -- Warriors Testimony (4.0%)
-INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,507,20);        -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1114,0,0,1000,508,20);        -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1114,2,0,1000,656,0);         -- Beastcoin (Steal)
-
--- ZoneID: 174 - Goblin Mercenary
-INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,511,70);  -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,1426,40); -- Warriors Testimony (4.0%)
-INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,507,20);  -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,508,20);  -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1115,2,0,1000,656,0);   -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,1426,@RARE); -- Warriors Testimony (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1115,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1115,2,0,1000,656,0);      -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1115,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1115,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1115,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1115,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 213 - Goblin Miner
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,605,160);   -- Pickaxe (16.0%)
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,17314,80);  -- Quake Grenade (8.0%)
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,1056,60);   -- Onzozo Chest Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,737,30);    -- Chunk Of Gold Ore (3.0%)
-INSERT INTO `mob_droplist` VALUES (1116,2,0,1000,656,0);     -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,605,@UNCOMMON); -- Pickaxe (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,17314,@RARE);   -- Quake Grenade (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,1056,@RARE);    -- Onzozo Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1116,0,0,1000,737,@VRARE);    -- Chunk Of Gold Ore (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1116,2,0,1000,656,0);         -- Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1116,4,0,1000,4458,0);        -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1116,4,0,1000,4495,0);        -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1116,4,0,1000,4465,0);        -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1116,4,0,1000,4543,0);        -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 103 - Goblin Mugger
 -- ZoneID: 104 - Goblin Mugger
@@ -9084,216 +8996,228 @@ INSERT INTO `mob_droplist` VALUES (1116,2,0,1000,656,0);     -- Beastcoin (Steal
 -- ZoneID: 119 - Goblin Mugger
 -- ZoneID: 120 - Goblin Mugger
 -- ZoneID: 121 - Goblin Mugger
+INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,750,@VRARE); -- Silver Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1117,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1117,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1117,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1117,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1117,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- ZoneID: 190 - Goblin Mugger
+INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,2757,@RARE);   -- Orcish Armor Plate (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12449,@VRARE); -- Brass Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12705,@VRARE); -- Brass Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12833,@VRARE); -- Brass Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12961,@VRARE); -- Brass Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1118,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1118,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1118,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1118,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1118,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
+
 -- ZoneID: 166 - Goblin Mugger
 -- ZoneID: 184 - Goblin Mugger
 -- ZoneID: 191 - Goblin Brigand
 -- ZoneID: 193 - Goblin Mugger
 -- ZoneID: 198 - Goblin Mugger
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,750,@UNCOMMON); -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,511,70);        -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,510,@RARE);     -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,12449,30);      -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,12961,30);      -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,12705,20);      -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (1117,0,0,1000,12833,20);      -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (1117,2,0,1000,750,0);         -- Silver Beastcoin (Steal)
-
--- ZoneID: 190 - Goblin Mugger
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,750,@UNCOMMON);  -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,2757,@UNCOMMON); -- Orcish Armor Plate (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,511,70);         -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,510,@RARE);      -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12449,30);       -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12961,30);       -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12705,20);       -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (1118,0,0,1000,12833,20);       -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (1118,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
-
--- ZoneID: Unknown - Unknown
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,750,@UNCOMMON);  -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,2758,@UNCOMMON); -- Quadav Backscale (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,511,70);         -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,510,@RARE);      -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12449,30);       -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12961,30);       -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12705,20);       -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12833,20);       -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (1119,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12449,@VRARE); -- Brass Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12705,@VRARE); -- Brass Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12833,@VRARE); -- Brass Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1119,0,0,1000,12961,@VRARE); -- Brass Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1119,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1119,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1119,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1119,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1119,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 192 - Goblin Mugger
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,750,@UNCOMMON);  -- Silver Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,2759,@UNCOMMON); -- Block Of Yagudo Caulk (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,511,70);         -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,1029,60);        -- Horutoto Chest Key (6.0%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,510,@RARE);      -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12449,30);       -- Brass Cap (3.0%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12961,30);       -- Brass Leggings (3.0%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12705,20);       -- Brass Mittens (2.0%)
-INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12833,20);       -- Brass Subligar (2.0%)
-INSERT INTO `mob_droplist` VALUES (1120,2,0,1000,750,0);          -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1120,4,0,1000,4495,0);         -- Chunk Of Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,2759,@RARE);   -- Block Of Yagudo Caulk (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,1029,@VRARE);  -- Horutoto Chest Key (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12449,@VRARE); -- Brass Cap (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12705,@VRARE); -- Brass Mittens (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12833,@VRARE); -- Brass Subligar (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1120,0,0,1000,12961,@VRARE); -- Brass Leggings (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1120,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1120,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1120,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1120,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1120,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  11 - Goblin Oilman
-INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,1696,190); -- Magicked Steel Ingot (19.0%)
-INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,508,170);  -- Goblin Helm (17.0%)
-INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,1062,90);  -- Oldton Chest Key (9.0%)
-INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,507,30);   -- Goblin Mail (3.0%)
-INSERT INTO `mob_droplist` VALUES (1121,2,0,1000,749,0);    -- Mythril Beastcoin (Steal)
-
--- ZoneID:  12 - Goblin Packman
-INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,1684,140); -- Gold Key (14.0%)
-INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,507,20);   -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,508,20);   -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1122,2,0,1000,748,0);    -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,1696,@UNCOMMON); -- Magicked Steel Ingot (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,1062,@RARE);     -- Oldton Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,508,@RARE);      -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1121,0,0,1000,507,@VRARE);     -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1121,2,0,1000,749,0);          -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1121,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1121,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1121,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1121,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  82 - Goblin Paratrooper
-INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,507,20);  -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,508,20);  -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1123,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
-
 -- ZoneID:  97 - Goblin Paratrooper
-INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,748,@UNCOMMON); -- Gold Beastcoin (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,507,20);        -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,508,20);        -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,2525,20);       -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1124,2,0,1000,751,0);         -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,508,@RARE);  -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,507,@VRARE); -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1122,0,0,1000,748,@VRARE); -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1122,2,0,1000,751,0);      -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1122,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1122,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1122,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1122,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   4 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1125,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
-
 -- ZoneID: 105 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,510,30);     -- Goblin Armor (3.0%)
-INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1126,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
-
 -- ZoneID: 110 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1127,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1127,0,0,1000,510,@RARE);    -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1127,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1127,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1127,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
-
 -- ZoneID: 111 - Goblin Pathfinder
--- ZoneID: 124 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1128,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1128,0,0,1000,510,@RARE);    -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1128,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1128,0,0,1000,749,@VRARE);   -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1128,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1128,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
-
 -- ZoneID: 120 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,511,120);      -- Goblin Mask (12.0%)
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,749,30);       -- Mythril Beastcoin (3.0%)
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,510,20);       -- Goblin Armor (2.0%)
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1129,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1129,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+-- ZoneID: 124 - Goblin Pathfinder
+INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,1708,@RARE); -- Handful of Counterfeit Gil (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1123,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1123,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1123,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1123,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1123,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1123,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 157 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1130,0,0,1000,12817,30);     -- Brass Cuisses (3.0%)
-INSERT INTO `mob_droplist` VALUES (1130,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1130,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1130,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1130,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
-
--- ZoneID: Unknown - Unknown
-INSERT INTO `mob_droplist` VALUES (1131,0,0,1000,12817,40);     -- Brass Cuisses (4.0%)
-INSERT INTO `mob_droplist` VALUES (1131,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1131,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1131,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1131,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+-- ZoneID: 166 - Goblin Chaser
+INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,12817,@VRARE); -- Brass Cuisses (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,12433,@VRARE); -- Brass Mask (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1124,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1124,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1124,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1124,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1124,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1124,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 193 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1132,0,0,1000,1030,80);      -- Ordelle Chest Key (8.0%)
-INSERT INTO `mob_droplist` VALUES (1132,0,0,1000,1531,40);      -- Sack Of Galka Fangs (4.0%)
-INSERT INTO `mob_droplist` VALUES (1132,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1132,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1132,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1132,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,1030,@RARE);   -- Ordelle Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,1531,@RARE);   -- Sack Of Galka Fangs (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,12817,@VRARE); -- Brass Cuisses (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,12433,@VRARE); -- Brass Mask (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1125,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1125,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1125,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1125,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1125,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1125,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 198 - Goblin Pathfinder
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,1032,40);      -- Shakhrami Chest Key (4.0%)
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,1534,40);      -- Sack Of Mithra Fangs (4.0%)
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,12817,40);     -- Brass Cuisses (4.0%)
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,12433,20);     -- Brass Mask (2.0%)
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1133,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1133,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,1032,@RARE);   -- Shakhrami Chest Key (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,12817,@VRARE); -- Brass Cuisses (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,12433,@VRARE); -- Brass Mask (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,12689,@VRARE); -- Brass Finger Gauntlets (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1126,0,0,1000,12945,@VRARE); -- Brass Greaves (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1126,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1126,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1126,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1126,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1126,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
+-- 1127-1133 Available
+
+-- ZoneID:  81 - Goblin Patrolman
+-- ZoneID:  88 - Goblin Patrolman
+-- ZoneID:  91 - Goblin Patrolman
 -- ZoneID:  95 - Goblin Patrolman
-INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,828,@RARE); -- Square Of Velvet Cloth (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,2525,20);   -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1134,2,0,1000,748,0);     -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1134,0,0,1000,828,@SRARE); -- Square Of Velvet Cloth (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1134,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1134,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1134,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1134,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1134,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
--- ZoneID:  81 - Goblin Picaroon
 -- ZoneID:  82 - Goblin Picket
--- ZoneID:  88 - Goblin Picaroon
-INSERT INTO `mob_droplist` VALUES (1135,0,0,1000,2542,80); -- Goblin Mess Tin (8.0%)
-INSERT INTO `mob_droplist` VALUES (1135,0,0,1000,2543,80); -- Goblin Weel (8.0%)
-INSERT INTO `mob_droplist` VALUES (1135,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1135,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
-
 -- ZoneID:  97 - Goblin Picket
-INSERT INTO `mob_droplist` VALUES (1136,0,0,1000,2542,80); -- Goblin Mess Tin (8.0%)
-INSERT INTO `mob_droplist` VALUES (1136,0,0,1000,2543,80); -- Goblin Weel (8.0%)
-INSERT INTO `mob_droplist` VALUES (1136,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1136,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1136,4,0,1000,4495,0);  -- Chunk Of Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1135,0,0,1000,2542,@UNCOMMON); -- Goblin Mess Tin (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1135,0,0,1000,2543,@UNCOMMON); -- Goblin Weel (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1135,2,0,1000,751,0);          -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1135,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1135,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1135,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1135,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  84 - Goblin Pioneer
-INSERT INTO `mob_droplist` VALUES (1137,0,0,1000,2542,60); -- Goblin Mess Tin (6.0%)
-INSERT INTO `mob_droplist` VALUES (1137,0,0,1000,2543,20); -- Goblin Weel (2.0%)
-INSERT INTO `mob_droplist` VALUES (1137,2,0,1000,748,0);   -- Gold Beastcoin (Steal)
-
 -- ZoneID:  89 - Goblin Pioneer
 -- ZoneID:  96 - Goblin Pioneer
 -- ZoneID: 175 - Goblin Pioneer
-INSERT INTO `mob_droplist` VALUES (1138,0,0,1000,2542,80); -- Goblin Mess Tin (8.0%)
-INSERT INTO `mob_droplist` VALUES (1138,0,0,1000,2543,80); -- Goblin Weel (8.0%)
-INSERT INTO `mob_droplist` VALUES (1138,2,0,1000,748,0);   -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1136,0,0,1000,2542,@RARE); -- Goblin Mess Tin (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1136,0,0,1000,2543,@RARE); -- Goblin Weel (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1136,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1136,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1136,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1136,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1136,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 254 - Goblin Plunderer
-INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,3273,@UNCOMMON); -- Length Of Goblin Rope (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,511,70);         -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1139,2,0,1000,4458,0);         -- Loaf Of Goblin Bread (Steal)
-INSERT INTO `mob_droplist` VALUES (1139,2,0,1000,4495,0);         -- Chunk Of Goblin Chocolate (Steal)
+INSERT INTO `mob_droplist` VALUES (1137,0,0,1000,3273,@UNCOMMON); -- Length Of Goblin Rope (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (1137,0,0,1000,511,@RARE);      -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1137,0,0,1000,510,@VRARE);     -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1137,4,0,1000,4458,0);         -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1137,4,0,1000,4495,0);         -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1137,4,0,1000,4465,0);         -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1137,4,0,1000,4543,0);         -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   7 - Goblin Poacher
 -- ZoneID: 111 - Goblin Poacher
 -- ZoneID: 114 - Goblin Poacher
 -- ZoneID: 123 - Goblin Poacher
 -- ZoneID: 124 - Goblin Poacher
+INSERT INTO `mob_droplist` VALUES (1138,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1138,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1138,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1138,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1138,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1138,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1138,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1138,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
 -- ZoneID: 161 - Goblin Poacher
 -- ZoneID: 162 - Goblin Poacher
 -- ZoneID: 212 - Goblin Poacher
 -- ZoneID: 213 - Goblin Poacher
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,510,@RARE);    -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,12443,20);     -- Cuir Bandana (2.0%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,12699,20);     -- Cuir Gloves (2.0%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,12955,20);     -- Cuir Highboots (2.0%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,749,@VRARE);   -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,12827,@VRARE); -- Cuir Trousers (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1140,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,12443,@SRARE); -- Cuir Bandana (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,12699,@SRARE); -- Cuir Gloves (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,12827,@SRARE); -- Cuir Trousers (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1139,0,0,1000,12955,@SRARE); -- Cuir Highboots (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1139,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1139,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1139,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1139,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1139,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 121 - Goblin Poacher
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,511,140);      -- Goblin Mask (14.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,510,90);       -- Goblin Armor (9.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,749,60);       -- Mythril Beastcoin (6.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,1539,20);      -- Sack Of Hell Hound Fangs (2.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,12443,20);     -- Cuir Bandana (2.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,12699,20);     -- Cuir Gloves (2.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,12955,20);     -- Cuir Highboots (2.0%)
-INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,12827,@VRARE); -- Cuir Trousers (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1141,2,0,1000,17336,0);      -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,1539,@RARE); -- Sack Of Hell Hound Fangs (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1140,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1140,2,0,1000,17336,0);    -- Crossbow Bolt (Steal)
+INSERT INTO `mob_droplist` VALUES (1140,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1140,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1140,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1140,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- ZoneID: 161 - Goblin Reaper
+-- ZoneID: 162 - Goblin Reaper
+-- ZoneID: 212 - Goblin Reaper
+-- ZoneID: 213 - Goblin Reaper
+INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,4860,@RARE);   -- Scroll Of Stun (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,4876,@VRARE);  -- Scroll Of Absorb-Vit (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,4877,@VRARE);  -- Scroll Of Absorb-Agi (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1141,0,0,1000,4878,@VRARE);  -- Scroll Of Absorb-Int (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1141,2,0,1000,749,0);        -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1141,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1141,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1141,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1141,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   7 - Goblin Reaper
 -- ZoneID: 111 - Goblin Reaper
@@ -9301,19 +9225,17 @@ INSERT INTO `mob_droplist` VALUES (1141,2,0,1000,17336,0);      -- Crossbow Bolt
 -- ZoneID: 121 - Goblin Reaper
 -- ZoneID: 123 - Goblin Reaper
 -- ZoneID: 124 - Goblin Reaper
--- ZoneID: 161 - Goblin Reaper
--- ZoneID: 162 - Goblin Reaper
--- ZoneID: 212 - Goblin Reaper
--- ZoneID: 213 - Goblin Reaper
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4860,230);     -- Scroll Of Stun (23.0%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,507,20);       -- Goblin Mail (2.0%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,508,20);       -- Goblin Helm (2.0%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,749,@VRARE);   -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4876,@VRARE);  -- Scroll Of Absorb-Vit (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4877,@VRARE);  -- Scroll Of Absorb-Agi (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4878,@VRARE);  -- Scroll Of Absorb-Int (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,12416,@VRARE); -- Sallet (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1142,2,0,1000,749,0);        -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,508,@RARE);   -- Goblin Helm (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,507,@VRARE);  -- Goblin Mail (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4876,@VRARE); -- Scroll Of Absorb-Vit (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4877,@VRARE); -- Scroll Of Absorb-Agi (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,4878,@VRARE); -- Scroll Of Absorb-Int (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1142,0,0,1000,749,@VRARE);  -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1142,2,0,1000,749,0);       -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1142,4,0,1000,4458,0);      -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1142,4,0,1000,4495,0);      -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1142,4,0,1000,4465,0);      -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1142,4,0,1000,4543,0);      -- Goblin Mushpot (Despoil)
 
 -- ZoneID:  39 - Goblin Replica
 -- ZoneID:  39 - Goblin Replica
@@ -9322,89 +9244,81 @@ INSERT INTO `mob_droplist` VALUES (1142,2,0,1000,749,0);        -- Mythril Beast
 -- ZoneID:  41 - Goblin Replica
 -- ZoneID:  41 - Goblin Replica
 -- ZoneID:  42 - Goblin Replica
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,749,@RARE);   -- Mythril Beastcoin (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,4248,@RARE);  -- Copy Of Ginuvas Battle Theory (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,748,20);      -- Gold Beastcoin (2.0%)
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,1449,@VRARE); -- Tukuku Whiteshell (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,1452,@VRARE); -- Ordelle Bronzepiece (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,1455,@VRARE); -- One Byne Bill (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,4248,@RARE); -- Copy Of Ginuvas Battle Theory (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1143,0,0,1000,748,@VRARE); -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1143,1,1,@VRARE,1449,333); -- Tukuku Whiteshell (Group 1, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1143,1,1,@VRARE,1452,333); -- Ordelle Bronzepiece (Group 1, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1143,1,1,@VRARE,1455,333); -- One Byne Bill (Group 1, Very Rare, 1%)
 
 -- ZoneID: 188 - Goblin Replica
 -- ZoneID: 188 - Goblin Replica
 INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1474,@UNCOMMON); -- Infinity Core (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,749,@RARE);      -- Mythril Beastcoin (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1470,@RARE);     -- Sparkling Stone (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,748,20);         -- Gold Beastcoin (2.0%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1449,@VRARE);    -- Tukuku Whiteshell (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1452,@VRARE);    -- Ordelle Bronzepiece (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1455,@VRARE);    -- One Byne Bill (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,749,@VRARE);     -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,1470,@VRARE);    -- Sparkling Stone (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,0,0,1000,748,@VRARE);     -- Gold Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,1,1,@VRARE,1449,333);     -- Tukuku Whiteshell (Group 1, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,1,1,@VRARE,1452,333);     -- Ordelle Bronzepiece (Group 1, Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1144,1,1,@VRARE,1455,333);     -- One Byne Bill (Group 1, Very Rare, 1%)
 
 -- ZoneID:   7 - Goblin Robber
 -- ZoneID: 111 - Goblin Robber
 -- ZoneID: 114 - Goblin Robber
 -- ZoneID: 123 - Goblin Robber
 -- ZoneID: 124 - Goblin Robber
+INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1145,2,0,1000,749,0);      -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1145,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1145,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1145,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1145,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- ZoneID: 121 - Goblin Robber
+INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,1168,@VCOMMON); -- Sack Of Fish Bait (Very Common, 24%)
+INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,1539,@RARE);    -- Sack Of Hell Hound Fangs (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,511,@RARE);     -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,510,@VRARE);    -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,749,@VRARE);    -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1146,2,0,1000,749,0);         -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1146,4,0,1000,4458,0);        -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1146,4,0,1000,4495,0);        -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1146,4,0,1000,4465,0);        -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1146,4,0,1000,4543,0);        -- Goblin Mushpot (Despoil)
+
 -- ZoneID: 161 - Goblin Robber
 -- ZoneID: 162 - Goblin Robber
 -- ZoneID: 212 - Goblin Robber
 -- ZoneID: 213 - Goblin Robber
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,510,@RARE);    -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,12443,20);     -- Cuir Bandana (2.0%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,12699,20);     -- Cuir Gloves (2.0%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,12955,20);     -- Cuir Highboots (2.0%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,749,@VRARE);   -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1145,0,0,1000,12827,@VRARE); -- Cuir Trousers (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1145,2,0,1000,749,0);        -- Mythril Beastcoin (Steal)
-
--- ZoneID: 121 - Goblin Robber
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,1168,250);     -- Sack Of Fish Bait (25.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,511,70);       -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,1539,70);      -- Sack Of Hell Hound Fangs (7.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,510,60);       -- Goblin Armor (6.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,12443,20);     -- Cuir Bandana (2.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,12699,20);     -- Cuir Gloves (2.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,12955,20);     -- Cuir Highboots (2.0%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,749,@VRARE);   -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1146,0,0,1000,12827,@VRARE); -- Cuir Trousers (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1146,2,0,1000,749,0);        -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,12443,@SRARE); -- Cuir Bandana (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,12699,@SRARE); -- Cuir Gloves (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,12827,@SRARE); -- Cuir Trousers (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,12955,@SRARE); -- Cuir Highboots (Super Rare, 0.5%)
+INSERT INTO `mob_droplist` VALUES (1147,2,0,1000,749,0);        -- Mythril Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4458,0);       -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4495,0);       -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4465,0);       -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4543,0);       -- Goblin Mushpot (Despoil)
 
 -- ZoneID:   4 - Goblin Shaman
 -- ZoneID:   7 - Goblin Pathfinder
--- ZoneID: 105 - Goblin Shaman
-INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1147,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1147,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
-INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
-INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
-INSERT INTO `mob_droplist` VALUES (1147,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
-
 -- ZoneID:   7 - Goblin Shaman
-INSERT INTO `mob_droplist` VALUES (1148,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1148,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-
+-- ZoneID: 105 - Goblin Shaman
 -- ZoneID: 110 - Goblin Shaman
-INSERT INTO `mob_droplist` VALUES (1149,0,0,1000,511,70);    -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1149,0,0,1000,510,@RARE); -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1149,0,0,1000,12986,30);  -- Chestnut Sabots (3.0%)
-INSERT INTO `mob_droplist` VALUES (1149,0,0,1000,12474,20);  -- Wool Hat (2.0%)
-INSERT INTO `mob_droplist` VALUES (1149,0,0,1000,12858,20);  -- Wool Slops (2.0%)
-INSERT INTO `mob_droplist` VALUES (1149,2,0,1000,750,0);     -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1149,2,0,1000,4495,0);    -- Chunk Of Goblin Chocolate (Steal)
-
 -- ZoneID: 111 - Goblin Shaman
 -- ZoneID: 120 - Goblin Shaman
 -- ZoneID: 124 - Goblin Shaman
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,511,70);     -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,510,@RARE);  -- Goblin Armor (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,12986,30);   -- Chestnut Sabots (3.0%)
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,12474,20);   -- Wool Hat (2.0%)
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,12858,20);   -- Wool Slops (2.0%)
-INSERT INTO `mob_droplist` VALUES (1150,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
-INSERT INTO `mob_droplist` VALUES (1150,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
-INSERT INTO `mob_droplist` VALUES (1150,4,0,1000,4495,0);     -- Chunk Of Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1148,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1148,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1148,0,0,1000,749,@VRARE); -- Mythril Beastcoin (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1148,2,0,1000,750,0);      -- Silver Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1148,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1148,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1148,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1148,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
+
+-- 1149-1150 Available
 
 -- ZoneID: 157 - Goblin Shaman
 INSERT INTO `mob_droplist` VALUES (1151,0,0,1000,12986,30);     -- Chestnut Sabots (3.0%)
@@ -10640,8 +10554,14 @@ INSERT INTO `mob_droplist` VALUES (1326,0,0,1000,4745,@VRARE); -- Scroll Of Snea
 INSERT INTO `mob_droplist` VALUES (1326,2,0,1000,748,0);       -- Gold Beastcoin (Steal)
 
 -- ZoneID:   4 - Hobgoblin Venerer
-INSERT INTO `mob_droplist` VALUES (1327,0,0,1000,511,70); -- Goblin Mask (7.0%)
-INSERT INTO `mob_droplist` VALUES (1327,2,0,1000,748,0);  -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1327,0,0,1000,511,@RARE);  -- Goblin Mask (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1327,0,0,1000,510,@VRARE); -- Goblin Armor (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (1327,0,0,1000,1878,@RARE); -- Air Tank (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (1327,2,0,1000,748,0);      -- Gold Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1327,4,0,1000,4458,0);     -- Loaf Of Goblin Bread (Despoil)
+INSERT INTO `mob_droplist` VALUES (1327,4,0,1000,4495,0);     -- Goblin Chocolate (Despoil)
+INSERT INTO `mob_droplist` VALUES (1327,4,0,1000,4465,0);     -- Bowl Of Goblin Stew (Despoil)
+INSERT INTO `mob_droplist` VALUES (1327,4,0,1000,4543,0);     -- Goblin Mushpot (Despoil)
 
 -- ZoneID: 193 - Hognosed Bat
 INSERT INTO `mob_droplist` VALUES (1328,0,0,1000,922,230);        -- Bat Wing (23.0%)
@@ -14994,14 +14914,12 @@ INSERT INTO `mob_droplist` VALUES (1870,0,0,1000,4368,60);        -- Two-Leaf Ma
 
 -- ZoneID:  82 - Orcish Bowshooter
 -- ZoneID:  82 - Orcish Champion
--- ZoneID:  82 - Orcish Dragonbrander
--- ZoneID:  82 - Orcish Protector
--- ZoneID:  83 - Orcish Zerker
--- ZoneID:  99 - Yagudo Conductor
+-- ZoneID: 138 - Orcish Augur
 -- ZoneID: 155 - Orcish Prophetess
--- ZoneID: 155 - Orcish Wyrmbrander
-INSERT INTO `mob_droplist` VALUES (1871,0,0,1000,2525,20); -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (1871,2,0,1000,751,0);   -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1871,2,0,1000,751,0);  -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1871,4,0,1000,4376,0); -- Strip Of Meat Jerky (Despoil)
+INSERT INTO `mob_droplist` VALUES (1871,4,0,1000,4438,0); -- Dhalmel Steak (Despoil)
+INSERT INTO `mob_droplist` VALUES (1871,4,0,1000,5196,0); -- Strip Of Buffalo Jerky (Despoil)
 
 -- ZoneID: 140 - Orcish Barricader
 INSERT INTO `mob_droplist` VALUES (1872,0,0,1000,12342,40); -- Lantern Shield (4.0%)
@@ -15397,10 +15315,18 @@ INSERT INTO `mob_droplist` VALUES (1921,0,0,1000,12680,@VRARE); -- Chain Mittens
 INSERT INTO `mob_droplist` VALUES (1921,0,0,1000,12936,@VRARE); -- Greaves (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (1921,2,0,1000,750,0);        -- Silver Beastcoin (Steal)
 
+-- ZoneID:  82 - Orcish Protector
 -- ZoneID:  82 - Orcish Veteran
+-- ZoneID:  83 - Orcish Zerker
+-- ZoneID:  85 - Orcish Protector
+-- ZoneID:  85 - Orcish Veteran
+-- ZoneID: 138 - Orcish Protector
+-- ZoneID: 138 - Orcish Veteran
 INSERT INTO `mob_droplist` VALUES (1922,0,0,1000,2510,@UNCOMMON); -- Orc Helmet (Uncommon, 10%)
-INSERT INTO `mob_droplist` VALUES (1922,0,0,1000,2525,20);        -- Bottled Pixie (2.0%)
 INSERT INTO `mob_droplist` VALUES (1922,2,0,1000,751,0);          -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (1922,4,0,1000,4376,0);         -- Strip Of Meat Jerky (Despoil)
+INSERT INTO `mob_droplist` VALUES (1922,4,0,1000,4438,0);         -- Dhalmel Steak (Despoil)
+INSERT INTO `mob_droplist` VALUES (1922,4,0,1000,5196,0);         -- Strip Of Buffalo Jerky (Despoil)
 
 -- ZoneID: 100 - Orcish Mesmerizer
 INSERT INTO `mob_droplist` VALUES (1923,0,0,1000,4866,130);     -- Scroll Of Bind (13.0%)
@@ -21997,11 +21923,14 @@ INSERT INTO `mob_droplist` VALUES (2696,2,0,1000,656,0);         -- Beastcoin (S
 
 -- ZoneID:  97 - Yagudo Chanter
 -- ZoneID:  99 - Yagudo Chanter
-INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,5022,170); -- Scroll Of Warding Round (17.0%)
-INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,2558,130); -- Block Of Yagudo Glue (13.0%)
-INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,5072,120); -- Scroll Of Goddesss Hymnus (12.0%)
-INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,2525,20);  -- Bottled Pixie (2.0%)
-INSERT INTO `mob_droplist` VALUES (2697,2,0,1000,751,0);    -- Platinum Beastcoin (Steal)
+-- ZoneID:  99 - Yagudo Conductor
+INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,2558,@COMMON);   -- Block Of Yagudo Glue (Common, 15%)
+INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,5022,@UNCOMMON); -- Scroll Of Warding Round (Uncommon, 10%)
+INSERT INTO `mob_droplist` VALUES (2697,0,0,1000,5072,@RARE);     -- Scroll Of Goddesss Hymnus (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (2697,2,0,1000,751,0);          -- Platinum Beastcoin (Steal)
+INSERT INTO `mob_droplist` VALUES (2697,4,0,1000,4537,0);         -- Roast Carp (Despoil)
+INSERT INTO `mob_droplist` VALUES (2697,4,0,1000,4538,0);         -- Roast Pipira (Despoil)
+INSERT INTO `mob_droplist` VALUES (2697,4,0,1000,4540,0);         -- Boiled Tuna Head (Despoil)
 
 -- ZoneID: 138 - Yagudo Chanter
 -- ZoneID: 151 - Yagudo Chanter

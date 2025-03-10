@@ -951,6 +951,14 @@ end
 function CBaseEntity:delItem(itemID, quantity, containerID)
 end
 
+---@param itemId integer
+---@param quantity integer
+---@param containerId integer
+---@param slotId integer
+---@return boolean
+function CBaseEntity:delItemAt(itemId, quantity, containerId, slotId)
+end
+
 ---@param containerID integer?
 ---@return boolean
 function CBaseEntity:delContainerItems(containerID)
@@ -984,6 +992,13 @@ end
 ---@param location integer?
 ---@return CItem?
 function CBaseEntity:findItem(itemID, location)
+end
+
+---@nodiscard
+---@param itemID integer
+---@param location integer?
+---@return table
+function CBaseEntity:findItems(itemID, location)
 end
 
 ---@param size integer

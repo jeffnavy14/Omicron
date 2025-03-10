@@ -1,17 +1,17 @@
 -----------------------------------
--- Area: Cloister of Flames
+-- Area: Cloister of Storms
 -- BCNM: Waking the Beast
 -----------------------------------
 
 local content = BattlefieldQuest:new({
-    zoneId           = xi.zone.CLOISTER_OF_FLAMES,
-    battlefieldId    = xi.battlefield.id.WAKING_THE_BEAST_CLOISTER_OF_FLAMES,
+    zoneId           = xi.zone.CLOISTER_OF_STORMS,
+    battlefieldId    = xi.battlefield.id.WAKING_THE_BEAST_CLOISTER_OF_STORMS,
     canLoseExp       = false,
     maxPlayers       = 18,
     timeLimit        = utils.minutes(30),
-    index            = 2,
-    entryNpc         = 'FP_Entrance',
-    exitNpc          = 'Fire_Protocrystal',
+    index            = 3,
+    entryNpc         = 'LP_Entrance',
+    exitNpc          = 'Lightning_Protocrystal',
     requiredKeyItems = { xi.ki.RAINBOW_RESONATOR },
 
     questArea = xi.questLog.OTHER_AREAS,
@@ -19,13 +19,13 @@ local content = BattlefieldQuest:new({
 })
 
 function content:onEventFinishWin(player, csid, option, npc)
-    npcUtil.giveKeyItem(player, xi.ki.EYE_OF_FLAMES)
+    npcUtil.giveKeyItem(player, xi.ki.EYE_OF_STORMS)
 end
 
 content.groups =
 {
     {
-        mobs = { 'Ifrit_Prime_WTB' },
+        mobs = { 'Ramuh_Prime_WTB' },
         allDeath = function(battlefield, mob)
             -- when avatar defeated then all elementals should also die
             for i = 1, 4 do
@@ -42,8 +42,8 @@ content.groups =
     {
         mobs =
         {
-            'Ifrit_Prime_WTB',
-            'Fire_Elemental',
+            'Ramuh_Prime_WTB',
+            'Thunder_Elemental',
         },
         isParty   = true,
         superlink = true,

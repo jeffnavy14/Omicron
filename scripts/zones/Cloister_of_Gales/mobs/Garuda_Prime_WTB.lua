@@ -1,6 +1,6 @@
 -----------------------------------
--- Area: Cloister of Flames
--- Mob: Ifrit Prime
+-- Area: Cloister of Gales
+-- Mob: Garuda Prime
 -- Quest: Waking the Beast
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
@@ -15,7 +15,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = 848, hpp = math.random(10, 90) },
+            { id = 875, hpp = math.random(10, 90) },
         },
     })
 
@@ -25,8 +25,8 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.UDMGPHYS, -6000)
     mob:setMod(xi.mod.UDMGRANGE, -6000)
     mob:setMod(xi.mod.UDMGMAGIC, -2000)
-    mob:setMod(xi.mod.FIRE_ABSORB, 100)
-    -- do not need to set res rank for fire because WTB primes have own
+    mob:setMod(xi.mod.WIND_ABSORB, 100)
+    -- do not need to set res rank for wind because WTB primes have own
     -- mob resistances row that sets it already
     mob:addImmunity(xi.immunity.GRAVITY)
     mob:addImmunity(xi.immunity.BIND)
@@ -37,16 +37,16 @@ entity.onMobSpawn = function(mob)
     mob:addImmunity(xi.immunity.TERROR)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     -- element specific immunities
-    mob:addImmunity(xi.immunity.PARALYZE)
+    mob:addImmunity(xi.immunity.SLOW)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.ENFIRE, { chance = 100, power = math.random(75, 125) })
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.ENAERO, { chance = 100, power = math.random(75, 125) })
 end
 
 entity.onMobWeaponSkill = function(target, mob, skill)
     -- if not all four elementals are alive then respawn one after using level 75 BP
-    if skill:getID() == 847 then
+    if skill:getID() == 874 then
         local pos = target:getPos()
 
         for i = 1, 4 do
@@ -67,7 +67,7 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
-    -- every 30-60 seconds have one of the elementals heal (via absorbing T4 spell) either self or Ifrit
+    -- every 30-60 seconds have one of the elementals heal (via absorbing T4 spell) either self or Garuda
     if mob:getLocalVar('healTimer') < os.time() then
         local avatarDamaged = mob:getHPP() < 100
 
@@ -93,7 +93,7 @@ entity.onMobFight = function(mob, target)
                 end
 
                 if spellTarget then
-                    elemental:castSpell(xi.magic.spell.FIRE_IV, spellTarget)
+                    elemental:castSpell(xi.magic.spell.AERO_IV, spellTarget)
                     mob:setLocalVar('healTimer', os.time() + math.random(30, 60))
                     break
                 end

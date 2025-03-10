@@ -4176,7 +4176,7 @@ namespace charutils
             thDropRate = thDropRateFunction(PMob->m_THLvl, thDropRate);
         }
 
-        if (thDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
+        if (thDropRate > 0 && (1 + xirand::GetRandomNumber(10000)) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
         {
             PChar->PTreasurePool->addItem(itemid, PEntity);
         }
