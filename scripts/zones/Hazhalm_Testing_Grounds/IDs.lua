@@ -83,12 +83,12 @@ zones[xi.zone.HAZHALM_TESTING_GROUNDS] =
         WINEBIBBER           = GetTableOfIDs('Winebibber'),
 
         -- Einherjar: Wing 2: Bosses
-        ANDHRIMNIR     = GetFirstID('Andhrimnir'),
-        ARIRI_SAMARIRI = GetFirstID('Ariri_Samariri'),
-        BALRAHN        = GetFirstID('Balrahn'),
-        HRUNGNIR       = GetFirstID('Hrungnir'),
-        MOKKURALFI     = GetFirstID('Mokkuralfi'),
-        TANGRISNIR     = GetFirstID('Tanngrisnir'),
+        ANDHRIMNIR      = GetFirstID('Andhrimnir'),
+        ARIRI_SAMARIRI  = GetFirstID('Ariri_Samariri'),
+        BALRAHN         = GetFirstID('Balrahn'),
+        HRUNGNIR        = GetFirstID('Hrungnir'),
+        MOKKURALFI      = GetFirstID('Mokkuralfi'),
+        TANNGRISNIR     = GetFirstID('Tanngrisnir'),
 
         -- Einherjar: Wing 3: Mobs
         AUDHUMBLA            = GetTableOfIDs('Audhumbla'),

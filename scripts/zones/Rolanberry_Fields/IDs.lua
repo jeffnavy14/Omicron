@@ -14,6 +14,7 @@ zones[xi.zone.ROLANBERRY_FIELDS] =
         KEYITEM_OBTAINED              = 6416,  -- Obtained key item: <keyitem>.
         NOT_ENOUGH_GIL                = 6418,  -- You do not have enough gil.
         FELLOW_MESSAGE_OFFSET         = 6442,  -- I'm ready. I suppose.
+        NOTHING_OUT_OF_ORDINARY       = 6427,  -- There is nothing out of the ordinary here.
         CARRIED_OVER_POINTS           = 7024,  -- You have carried over <number> login point[/s].
         LOGIN_CAMPAIGN_UNDERWAY       = 7025,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7026,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.

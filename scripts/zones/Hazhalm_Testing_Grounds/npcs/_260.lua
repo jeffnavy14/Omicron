@@ -66,7 +66,8 @@ entity.onEventUpdate = function(player, csid, option, npc)
                 xi.item.SMOLDERING_LAMP,
                 xi.item.GLOWING_LAMP)
         if player:getFreeSlotsCount() ~= 0 then
-            -- TODO: Reserve chamber, generate waves, and create lamp
+            -- TODO: Reserve chamber, generate waves
+            xi.einherjar.makeLamp(player, option, os.time(), os.time() + (xi.einherjar.settings.EINHERJAR_TIME_LIMIT * 60))
             player:instanceEntry(npc, 4)
         else
             player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, xi.item.GLOWING_LAMP)
@@ -81,6 +82,7 @@ entity.onEventFinish = function(player, csid, option)
         player:messageSpecial(ID.text.GLOWING_LAMP_OBTAINED, xi.item.GLOWING_LAMP)
         player:messageSpecial(ID.text.CLAIM_RELINQUISH, xi.item.GLOWING_LAMP, xi.einherjar.settings.EINHERJAR_RESERVATION_TIMEOUT)
         player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.GLOWING_LAMP)
+        player:confirmTrade()
     elseif csid == 3 and option == 1 then -- player requested entry into chamber
         local _ = player:getTrade():getItem()
         -- TODO: Read lamp and warp player in
