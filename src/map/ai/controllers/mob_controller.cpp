@@ -624,7 +624,7 @@ void CMobController::DoCombatTick(time_point tick)
             return;
         }
 
-        if (m_Tick >= m_LastMobSkillTime && xirand::GetRandomNumber(1, 10000) <= PMob->TPUseChance() && MobSkill())
+        if (m_Tick >= m_LastMobSkillTime && (1 + xirand::GetRandomNumber(10000)) <= PMob->TPUseChance() && MobSkill())
         {
             return;
         }

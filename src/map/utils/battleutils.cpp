@@ -512,6 +512,7 @@ namespace battleutils
         return g_PMobSkillLists[ListID];
     }
 
+    // TODO: Apply fire in generous quantities. Replace with existing lua functions.
     int32 CalculateEnspellDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 Tier, uint8 element)
     {
         int32 damage = 0;
@@ -530,10 +531,10 @@ namespace battleutils
         {
             // Tier 2 enspells calculate the damage on each hit and increment the potency in Mod::ENSPELL_DMG per hit
             uint16 skill = PAttacker->GetSkill(SKILL_ENHANCING_MAGIC);
-            uint16 cap   = 3 + ((6 * skill) / 100);
+            uint16 cap   = 3 + 6 * skill / 100;
             if (skill > 200)
             {
-                cap = 5 + ((5 * skill) / 100);
+                cap = 5 + 5 * skill / 100;
             }
             cap *= 2;
 
@@ -633,10 +634,8 @@ namespace battleutils
             {
                 // see https://bugs.llvm.org/show_bug.cgi?id=18767#c1 ; essentially, [min, max] range on this RNG call excludes the max
                 // so we must add +1 to our max to achieve the range we want
-                max = max + 1;
-
                 // TODO: verify gaussian vs linear distribution for RNG from retail
-                damage = (int32)xirand::GetRandomNumber<double>(min, max);
+                damage = (int32)xirand::GetRandomNumber<double>(min, max + 1);
             }
         }
 
@@ -4261,42 +4260,32 @@ namespace battleutils
 
         if (taUser->PParty != nullptr)
         {
-            std::vector<CParty*> taPartyList;
-            if (taUser->PParty->m_PAlliance != nullptr)
-            {
-                taPartyList = taUser->PParty->m_PAlliance->partyList;
-            }
-            else
-            {
-                taPartyList.emplace_back(taUser->PParty);
-            }
-
             // Collect all potential TA targets who are closer to the mob than the TA user
-            for (auto&& party : taPartyList)
-            {
-                for (auto&& PMember : party->members)
-                {
-                    float distTAtarget = distance(PMember->loc.p, PMob->loc.p);
-                    // require closer target not be closer than .5 yalms (.5*.5=.25 distsquared) to mob
-                    if (distTAtarget >= worldAngleMinDistance && distTAtarget < distTAmob)
-                    {
-                        taTargetList.emplace_back(distTAtarget, PMember);
-                    }
 
-                    if (auto* PChar = dynamic_cast<CCharEntity*>(PMember))
+            // clang-format off
+            taUser->ForAlliance([&PMob, distTAmob, &taTargetList](CBattleEntity* PMember)
+            {
+                float distTAtarget = distance(PMember->loc.p, PMob->loc.p);
+                // require closer target not be closer than .5 yalms (.5*.5=.25 distsquared) to mob
+                if (distTAtarget >= worldAngleMinDistance && distTAtarget < distTAmob)
+                {
+                    taTargetList.emplace_back(distTAtarget, PMember);
+                }
+
+                if (auto* PChar = dynamic_cast<CCharEntity*>(PMember))
+                {
+                    for (auto* PTrust : PChar->PTrusts)
                     {
-                        for (auto* PTrust : PChar->PTrusts)
+                        distTAtarget = distance(PTrust->loc.p, PMob->loc.p);
+                        // require closer target not be closer than .5 yalms (.5*.5=.25 distsquared) to mob
+                        if (distTAtarget >= worldAngleMinDistance && distTAtarget < distTAmob)
                         {
-                            float distTAtarget = distance(PTrust->loc.p, PMob->loc.p);
-                            // require closer target not be closer than .5 yalms (.5*.5=.25 distsquared) to mob
-                            if (distTAtarget >= worldAngleMinDistance && distTAtarget < distTAmob)
-                            {
-                                taTargetList.emplace_back(distTAtarget, PTrust);
-                            }
+                            taTargetList.emplace_back(distTAtarget, PTrust);
                         }
                     }
                 }
-            }
+            });
+            // clang-format on
         }
 
         // Check TA user's fellow

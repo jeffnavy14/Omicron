@@ -2388,6 +2388,11 @@ namespace charutils
             }
 
             auto removeSlotID = PItem->getRemoveSlotLookId();
+            // Some of the items don't have rslotlook set so we fall back on rslot to know which part to hide
+            if (removeSlotID == 0)
+            {
+                removeSlotID = PItem->getRemoveSlotId();
+            }
             if (removeSlotID > 0)
             {
                 for (auto i = 4u; i <= 8u; i++)
@@ -4176,7 +4181,7 @@ namespace charutils
             thDropRate = thDropRateFunction(PMob->m_THLvl, thDropRate);
         }
 
-        if (thDropRate > 0 && xirand::GetRandomNumber(1, 10000) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
+        if (thDropRate > 0 && (1 + xirand::GetRandomNumber(10000)) <= thDropRate * settings::get<float>("map.DROP_RATE_MULTIPLIER"))
         {
             PChar->PTreasurePool->addItem(itemid, PEntity);
         }

@@ -4198,6 +4198,38 @@ bool CLuaBaseEntity::delItem(uint16 itemID, int32 quantity, sol::object const& c
 }
 
 /************************************************************************
+ *  Function: delItemAt()
+ *  Purpose : Deletes an item from a player's inventory at specified container/slot
+ *  Example : player:delItemAt(4102, 1, xi.inv.INVENTORY, 5)
+ *  Notes   :
+ ************************************************************************/
+bool CLuaBaseEntity::delItemAt(const uint16 itemID, const int32 quantity, uint8 containerId, const uint8 slotId)
+{
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+    if (!PChar)
+    {
+        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        return false;
+    }
+
+    if (containerId >= CONTAINER_ID::MAX_CONTAINER_ID)
+    {
+        ShowWarning("Lua::delItemAt: Attempting to delete an item from an invalid slot. Defaulting to main inventory.");
+        containerId = LOC_INVENTORY;
+    }
+
+    if (const auto* PItem = PChar->getStorage(containerId)->GetItem(slotId); PItem && PItem->getID() == itemID)
+    {
+        charutils::UpdateItem(PChar, containerId, slotId, -quantity);
+        PChar->pushPacket<CInventoryFinishPacket>();
+
+        return true;
+    }
+
+    return false;
+}
+
+/************************************************************************
  *  Function: delContainerItems()
  *  Purpose : Deletes all items from a specific player's container
  *  Example : player:delContainerItems(xi.inv.INVENTORY)
@@ -4436,6 +4468,61 @@ auto CLuaBaseEntity::findItem(uint16 itemID, sol::object const& location) -> CIt
 
     // Didn't find any matches
     return nullptr;
+}
+
+/************************************************************************
+ *  Function: findItems()
+ *  Purpose : Like findItem, but returns all matching item objects (empty if none found)
+ *  Example : local items = player:findItems(xi.item.GLOWING_LAMP)
+ *  Notes   :
+ ************************************************************************/
+auto CLuaBaseEntity::findItems(uint16 itemID, sol::object const& location) -> sol::table
+{
+    auto  table = lua.create_table();
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+
+    if (!PChar)
+    {
+        return table;
+    }
+
+    // Look in a specific container
+    if (location != sol::lua_nil)
+    {
+        uint8 locationID = LOC_INVENTORY;
+
+        locationID = location.as<uint8>();
+        locationID = (locationID < CONTAINER_ID::MAX_CONTAINER_ID ? locationID : (uint8)LOC_INVENTORY);
+
+        if (const auto slots = PChar->getStorage(locationID)->SearchItems(itemID); !slots.empty())
+        {
+            for (const auto slot : slots)
+            {
+                if (auto* item = PChar->getStorage(locationID)->GetItem(slot))
+                {
+                    table.add(item);
+                }
+            }
+        }
+    }
+    else // Look in all containers
+    {
+        for (uint8 i = 0; i < CONTAINER_ID::MAX_CONTAINER_ID; ++i)
+        {
+            if (auto slots = PChar->getStorage(i)->SearchItems(itemID); !slots.empty())
+            {
+                for (const auto slot : slots)
+                {
+                    if (auto* item = PChar->getStorage(i)->GetItem(slot))
+                    {
+                        table.add(item);
+                    }
+                }
+            }
+        }
+    }
+
+    return table;
 }
 
 /************************************************************************
@@ -19053,12 +19140,14 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getItemCount", CLuaBaseEntity::getItemCount);
     SOL_REGISTER("addItem", CLuaBaseEntity::addItem);
     SOL_REGISTER("delItem", CLuaBaseEntity::delItem);
+    SOL_REGISTER("delItemAt", CLuaBaseEntity::delItemAt);
     SOL_REGISTER("delContainerItems", CLuaBaseEntity::delContainerItems);
     SOL_REGISTER("addUsedItem", CLuaBaseEntity::addUsedItem);
     SOL_REGISTER("addTempItem", CLuaBaseEntity::addTempItem);
     SOL_REGISTER("getWornUses", CLuaBaseEntity::getWornUses);
     SOL_REGISTER("incrementItemWear", CLuaBaseEntity::incrementItemWear);
     SOL_REGISTER("findItem", CLuaBaseEntity::findItem);
+    SOL_REGISTER("findItems", CLuaBaseEntity::findItems);
 
     SOL_REGISTER("createShop", CLuaBaseEntity::createShop);
     SOL_REGISTER("addShopItem", CLuaBaseEntity::addShopItem);

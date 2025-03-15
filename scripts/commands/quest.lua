@@ -82,11 +82,12 @@ commandObj.onTrigger = function(player, logId, questId, target)
             playerArg:printToPlayer(string.format('Player %s status for %s quest ID %i is: %s', targ:getName(), logName, questId, statusName), xi.msg.channel.NS_LINKSHELL3)
             playerArg:printToPlayer(string.format('Player %s variables for %s Quest %i are:', targ:getName(), logName, questId), xi.msg.channel.NS_LINKSHELL3)
 
-            local vars = playerArg:getCharVarsWithPrefix(xi.quest.getVarPrefix(logId, questId))
+            local targetQuest = xi.quest.getVarPrefix(logId, questId)
+            local questVars   = targ:getCharVarsWithPrefix(targetQuest)
+            local count       = 0
 
-            local count = 0
-            for k, v in pairs(vars) do
-                playerArg:printToPlayer(string.format('%s = %s', k, v), xi.msg.channel.NS_LINKSHELL3)
+            for tag, value in pairs(questVars) do
+                playerArg:printToPlayer(string.format('%s = %s', tag, value), xi.msg.channel.NS_LINKSHELL3)
                 count = count + 1
             end
 
