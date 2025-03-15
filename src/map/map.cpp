@@ -27,6 +27,7 @@
 #include "common/database.h"
 #include "common/debug.h"
 #include "common/logging.h"
+#include "common/socket.h"
 #include "common/timer.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
@@ -480,7 +481,6 @@ void do_final(int code)
     Async::delInstance();
 
     timer_final();
-    socket_final();
 
     for (auto session : map_session_list)
     {
@@ -513,17 +513,6 @@ void do_final(int code)
 void do_abort()
 {
     do_final(EXIT_FAILURE);
-}
-
-/************************************************************************
- *                                                                       *
- *  set_socket_type                                                      *
- *                                                                       *
- ************************************************************************/
-
-void set_socket_type()
-{
-    SOCKET_TYPE = socket_type::UDP;
 }
 
 void ReportTracyStats()

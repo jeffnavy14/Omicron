@@ -19,21 +19,26 @@
 ===========================================================================
 */
 
-#ifndef _KERNEL_H_
-#define _KERNEL_H_
+#pragma once
 
 #include "cbasetypes.h"
 #include "console_service.h"
 #include "settings.h"
+#include "socket.h"
 
-extern std::atomic<bool> gRunFlag;
+//
+// Global variables
+//
 
-extern void  log_init(int, char**);
-extern int32 do_init(int32, char**);
-extern void  set_socket_type(void);
-extern void  do_abort(void);
-extern void  do_final(int);
-
+extern std::atomic<bool>               gRunFlag;
 extern std::unique_ptr<ConsoleService> gConsoleService;
 
-#endif // _KERNEL_H_
+//
+// Functions
+//
+
+extern void log_init(int, char**);
+extern auto do_init(int32, char**) -> int32;
+extern auto do_sockets(fd_set*, duration) -> int32;
+extern void do_abort(void);
+extern void do_final(int);
