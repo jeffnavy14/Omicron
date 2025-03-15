@@ -43752,7 +43752,7 @@ INSERT INTO `mob_spawn_points` VALUES (17277007,'Water_Elemental','Water Element
 INSERT INTO `mob_spawn_points` VALUES (17277008,'Apocalyptic_Weapon','Apocalyptic Weapon',10,-202.351,-8.500,-46.018,127);
 INSERT INTO `mob_spawn_points` VALUES (17277009,'Infernal_Weapon','Infernal Weapon',11,-200.057,-8.500,-38.039,58);
 INSERT INTO `mob_spawn_points` VALUES (17277010,'Cursed_Puppet','Cursed Puppet',4,-190.027,-8.499,-34.157,127);
-INSERT INTO `mob_spawn_points` VALUES (17277011,'Martinet','Martinet',12,-196.000,-8.000,-48.000,32); -- Pos data needs correction
+INSERT INTO `mob_spawn_points` VALUES (17277011,'Martinet','Martinet',12,-189.696,-8.500,-33.497,32);
 INSERT INTO `mob_spawn_points` VALUES (17277012,'Apocalyptic_Weapon','Apocalyptic Weapon',10,-163.567,-8.499,-21.382,127);
 INSERT INTO `mob_spawn_points` VALUES (17277013,'Infernal_Weapon','Infernal Weapon',11,-185.180,-8.500,-12.199,16);
 INSERT INTO `mob_spawn_points` VALUES (17277014,'Cursed_Puppet','Cursed Puppet',4,-79.223,-11.480,60.435,115);
@@ -43844,7 +43844,7 @@ INSERT INTO `mob_spawn_points` VALUES (17277099,'Magic_Flagon','Magic Flagon',7,
 INSERT INTO `mob_spawn_points` VALUES (17277100,'Apocalyptic_Weapon','Apocalyptic Weapon',10,-158.640,-7.837,50.393,127);
 INSERT INTO `mob_spawn_points` VALUES (17277101,'Infernal_Weapon','Infernal Weapon',11,-150.077,3.500,108.614,127);
 INSERT INTO `mob_spawn_points` VALUES (17277102,'Darksteel_Golem','Darksteel Golem',14,-143.373,3.499,101.769,127);
-INSERT INTO `mob_spawn_points` VALUES (17277103,'Nargun','Nargun',16,-171.571,3.884,108.852,127);
+INSERT INTO `mob_spawn_points` VALUES (17277103,'Nargun','Nargun',16,-127.626,4.000,106.828,127);
 INSERT INTO `mob_spawn_points` VALUES (17277104,'Apocalyptic_Weapon','Apocalyptic Weapon',10,-162.479,2.352,85.123,127);
 INSERT INTO `mob_spawn_points` VALUES (17277105,'Darksteel_Golem','Darksteel Golem',14,-172.296,3.167,71.227,83);
 INSERT INTO `mob_spawn_points` VALUES (17277106,'Apocalyptic_Weapon','Apocalyptic Weapon',10,209.381,-4.499,65.228,61);

@@ -2388,6 +2388,11 @@ namespace charutils
             }
 
             auto removeSlotID = PItem->getRemoveSlotLookId();
+            // Some of the items don't have rslotlook set so we fall back on rslot to know which part to hide
+            if (removeSlotID == 0)
+            {
+                removeSlotID = PItem->getRemoveSlotId();
+            }
             if (removeSlotID > 0)
             {
                 for (auto i = 4u; i <= 8u; i++)

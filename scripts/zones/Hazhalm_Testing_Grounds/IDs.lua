@@ -57,7 +57,7 @@ zones[xi.zone.HAZHALM_TESTING_GROUNDS] =
         INFECTED_WAMOURA = GetTableOfIDs('Infected_Wamoura'),
         LOGI             = GetTableOfIDs('Logi'),
         NICKUR           = GetTableOfIDs('Nickur'),
-        ROTTING_HUSKARL  = GetTableOfIDs('Rotting_Huskarl'),
+        ROTTING_HUSKARL  = GetTableOfIDs('Rotting_Huskarl'), -- TODO: This is 3 sets of mob, BLM x12, WAR x12, DRK x12
         SJOKRAKJEN       = GetTableOfIDs('Sjokrakjen'),
 
         -- Einherjar: Wing 1: Bosses

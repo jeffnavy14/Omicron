@@ -191,6 +191,75 @@ map_session_data_t* mapsession_createsession(uint32 ip, uint16 port)
     return map_session_data;
 }
 
+void initConsoleService()
+{
+    // clang-format off
+    gConsoleService = std::make_unique<ConsoleService>();
+
+    gConsoleService->RegisterCommand("crash", "Force-crash the process.",
+    [](std::vector<std::string>& inputs)
+    {
+        crash();
+    });
+
+    gConsoleService->RegisterCommand("gm", "Change a character's GM level.",
+    [](std::vector<std::string>& inputs)
+    {
+        if (inputs.size() != 3)
+        {
+            fmt::print("Usage: gm <char_name> <level>. example: gm Testo 1\n");
+            return;
+        }
+
+        auto  name  = inputs[1];
+        auto* PChar = zoneutils::GetCharByName(name);
+        if (!PChar)
+        {
+            fmt::print("Couldnt find character: {}\n", name);
+            return;
+        }
+
+        auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
+
+        PChar->m_GMlevel = level;
+
+        // NOTE: This is the same logic as charutils::SaveCharGMLevel(PChar);
+        // But we're not executing on the main thread, so we're doing it with
+        // our own SQL connection.
+        {
+            auto otherSql  = std::make_unique<SqlConnection>();
+            auto query = "UPDATE %s SET %s %u WHERE charid = %u";
+            otherSql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
+        }
+
+        fmt::print("Promoting {} to GM level {}\n", PChar->name, level);
+        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
+    });
+
+    gConsoleService->RegisterCommand("reload_settings", "Reload settings files.",
+    [&](std::vector<std::string>& inputs)
+    {
+        fmt::print("Reloading settings files\n");
+        settings::init();
+    });
+
+    gConsoleService->RegisterCommand("reload_recipes", "Reload crafting recipes.",
+    [&](std::vector<std::string>& inputs)
+    {
+        fmt::print("Reloading crafting recipes\n");
+        synthutils::LoadSynthRecipes();
+    });
+
+    gConsoleService->RegisterCommand("exit", "Terminate the program.",
+    [&](std::vector<std::string>& inputs)
+    {
+        fmt::print("> Goodbye!\n");
+        gConsoleService->stop();
+        gRunFlag = false;
+    });
+    // clang-format on
+}
+
 /************************************************************************
  *                                                                       *
  *  do_init                                                              *
@@ -352,6 +421,8 @@ int32 do_init(int32 argc, char** argv)
 
     PacketGuard::Init();
 
+    initConsoleService();
+
     moduleutils::OnInit();
 
     luautils::OnServerStart();
@@ -362,72 +433,6 @@ int32 do_init(int32 argc, char** argv)
 
     ShowInfo("The map-server is ready to work!");
     ShowInfo("=======================================================================");
-
-    // clang-format off
-    gConsoleService = std::make_unique<ConsoleService>();
-
-    gConsoleService->RegisterCommand("crash", "Force-crash the process.",
-    [](std::vector<std::string>& inputs)
-    {
-        crash();
-    });
-
-    gConsoleService->RegisterCommand("gm", "Change a character's GM level.",
-    [](std::vector<std::string>& inputs)
-    {
-        if (inputs.size() != 3)
-        {
-            fmt::print("Usage: gm <char_name> <level>. example: gm Testo 1\n");
-            return;
-        }
-
-        auto  name  = inputs[1];
-        auto* PChar = zoneutils::GetCharByName(name);
-        if (!PChar)
-        {
-            fmt::print("Couldnt find character: {}\n", name);
-            return;
-        }
-
-        auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
-
-        PChar->m_GMlevel = level;
-
-        // NOTE: This is the same logic as charutils::SaveCharGMLevel(PChar);
-        // But we're not executing on the main thread, so we're doing it with
-        // our own SQL connection.
-        {
-            auto otherSql  = std::make_unique<SqlConnection>();
-            auto query = "UPDATE %s SET %s %u WHERE charid = %u";
-            otherSql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
-        }
-
-        fmt::print("Promoting {} to GM level {}\n", PChar->name, level);
-        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
-    });
-
-    gConsoleService->RegisterCommand("reload_settings", "Reload settings files.",
-    [&](std::vector<std::string>& inputs)
-    {
-        fmt::print("Reloading settings files\n");
-        settings::init();
-    });
-
-    gConsoleService->RegisterCommand("reload_recipes", "Reload crafting recipes.",
-    [&](std::vector<std::string>& inputs)
-    {
-        fmt::print("Reloading crafting recipes\n");
-        synthutils::LoadSynthRecipes();
-    });
-
-    gConsoleService->RegisterCommand("exit", "Terminate the program.",
-    [&](std::vector<std::string>& inputs)
-    {
-        fmt::print("> Goodbye!\n");
-        gConsoleService->stop();
-        gRunFlag = false;
-    });
-    // clang-format on
 
 #ifdef TRACY_ENABLE
     ShowInfo("*** TRACY IS ENABLED ***");
