@@ -44,7 +44,6 @@ xi.settings.logging =
     LOG_LUA     = true, -- Prints from Lua using `print()`
 
     -- Specific Debug loggers
-    -- NOTE: None of these will print unless you also have the above LOG_DEBUG setting set to true!
     DEBUG_SOCKETS        = false, -- Calls in C++: DebugSockets(...)
     DEBUG_IPC            = false, -- Calls in C++: DebugIPC(...)
     DEBUG_NAVMESH        = false, -- Calls in C++: DebugNavmesh(...)

@@ -122,7 +122,9 @@ sigfunc* compat_signal(int signo, sigfunc* func)
 #endif
 
     if (sigaction(signo, &sact, &oact) < 0)
+    {
         return (SIG_ERR);
+    }
 
     return (oact.sa_handler);
 }
@@ -166,7 +168,6 @@ static void sig_proc(int sn)
             raise(sn);
 #endif // _DEBUG
 #endif // _WIN32
-
             break;
 #ifndef _WIN32
         case SIGXFSZ:
@@ -255,20 +256,35 @@ int main(int argc, char** argv)
         // clang-format off
         auto period   = settings::get<uint32>("main.INACTIVITY_WATCHDOG_PERIOD");
         auto periodMs = (period > 0) ? std::chrono::milliseconds(period) : 2000ms;
-        auto watchdog = Watchdog(periodMs, [&]()
+        auto watchdog = Watchdog(periodMs, [period]()
         {
-            ShowCritical(fmt::format("Process main tick has taken {}ms or more.", period).c_str());
             if (debug::isRunningUnderDebugger())
             {
+                ShowCritical("!!! INACTIVITY WATCHDOG HAS TRIGGERED !!!");
+                ShowCriticalFmt("Process main tick has taken {}ms or more.", period);
                 ShowCritical("Detaching watchdog thread, it will not fire again until restart.");
             }
             else if (!settings::get<bool>("main.DISABLE_INACTIVITY_WATCHDOG"))
             {
-#ifndef SIGKILL
-#define SIGKILL 9
-#endif // SIGKILL
-                ShowCritical("Watchdog thread time exceeded. Killing process.");
-                std::raise(SIGKILL);
+                std::string outputStr = "!!! INACTIVITY WATCHDOG HAS TRIGGERED !!!\n\n";
+
+                outputStr += fmt::format("Process main tick has taken {}ms or more.\n", period);
+                outputStr += fmt::format("Backtrace Messages:\n\n");
+
+                const auto backtrace = logging::GetBacktrace();
+                for (const auto& line : backtrace)
+                {
+                    outputStr += fmt::format("    {}\n", line);
+                }
+
+                outputStr += "\nKilling Process!!!\n";
+
+                ShowCritical(outputStr);
+
+                // Allow some time for logging to flush
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+                throw std::runtime_error("Watchdog thread time exceeded. Killing process.");
             }
         });
         // clang-format on

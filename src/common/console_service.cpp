@@ -150,6 +150,12 @@ ConsoleService::ConsoleService()
         crash();
     });
 
+    RegisterCommand("throw", "Throw an exception from the console worker thread",
+    [](std::vector<std::string>& inputs)
+    {
+        throw std::runtime_error("Exception thrown from console command (from worker thread)");
+    });
+
     RegisterCommand("db", "Run both a query and a prepared statement to test the database connection",
     [](std::vector<std::string>& inputs)
     {
