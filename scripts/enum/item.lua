@@ -179,6 +179,7 @@ xi.item =
     SIRENS_TEAR                         = 576,
     EAGLE_BUTTON                        = 578,
     GILT_GLASSES                        = 579,
+    BRONZE_BOX                          = 580,
     METEORITE                           = 582,
     SMOOTH_STONE                        = 583,
     TORN_EPISTLE                        = 584,
