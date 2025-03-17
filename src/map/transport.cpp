@@ -124,10 +124,7 @@ void CTransportHandler::InitializeTransport()
                             zone_settings ON ((transport >> 12) & 0xFFF) = zoneid WHERE \
                             IF(%d <> 0, '%s' = zoneip AND %d = zoneport, TRUE)";
 
-    char address[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &map_ip, address, INET_ADDRSTRLEN);
-    int32 ret = _sql->Query(fmtQuery, map_ip.s_addr, address, map_port);
-
+    int32 ret = _sql->Query(fmtQuery, gMapIPP.getIP(), gMapIPP.getIPString(), gMapIPP.getPort());
     if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
         while (_sql->NextRow() == SQL_SUCCESS)
@@ -189,8 +186,7 @@ void CTransportHandler::InitializeTransport()
                 zone_settings ON zone = zoneid WHERE \
                 IF(%d <> 0, '%s' = zoneip AND %d = zoneport, TRUE)";
 
-    ret = _sql->Query(fmtQuery, map_ip.s_addr, address, map_port);
-
+    ret = _sql->Query(fmtQuery, gMapIPP.getIP(), gMapIPP.getIPString(), gMapIPP.getPort());
     if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
         while (_sql->NextRow() == SQL_SUCCESS)

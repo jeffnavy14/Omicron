@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,30 +19,20 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "server_ip.h"
-#include "utils/zoneutils.h"
+// 2.5 tick/updates per second
+static constexpr auto kServerTickRate = 2.5f;
 
-CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 zone_type, IPP zone_ipp)
-{
-    this->setType(0x0B);
-    this->setSize(0x1C);
+// Tick/update every 400ms
+static constexpr auto kServerTickInterval = 1000.0f / kServerTickRate;
 
-    ref<uint8>(0x04)  = zone_type;
-    ref<uint32>(0x08) = zone_ipp.getIP();
-    ref<uint16>(0x0C) = zone_ipp.getPort();
-}
+// Check Trigger Areas every 200ms
+static constexpr auto kServerTriggerAreaInterval = kServerTickInterval / 2.0f;
 
-uint8 CServerIPPacket::zoneType()
-{
-    return ref<uint8>(0x04);
-}
+// Packet & networking constants
+static constexpr auto kMaxBufferSize           = 2500U;
+static constexpr auto kMaxPacketPerCompression = 32U;
+static constexpr auto kMaxPacketBacklogSize    = kMaxPacketPerCompression * 6U; // If we hit this number, things are going very very badly.
 
-IPP CServerIPPacket::zoneIPP()
-{
-    const auto ip   = ref<uint32>(0x08);
-    const auto port = ref<uint16>(0x0C);
-    return IPP(ip, port);
-}
+using NetworkBuffer = std::array<uint8, kMaxBufferSize>;

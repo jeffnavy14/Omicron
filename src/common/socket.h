@@ -26,6 +26,8 @@
 #include "common/cbasetypes.h"
 #endif
 
+class IPP;
+
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -152,19 +154,14 @@ extern time_t last_tick;
 
 void socket_init();
 
-// hostname/ip conversion functions
-std::string ip2str(uint32 ip);
-
-uint32 str2ip(const char* ip_str);
-
 void set_nonblocking(int fd, unsigned long yes);
 
 int32 makeBind_udp(uint32 ip, uint16 port);
 
 void socket_init_udp(void);
 
-int32 recvudp(int32 fd, void* buff, size_t nbytes, int32 flags, struct sockaddr* from, socklen_t* addrlen);
-int32 sendudp(int32 fd, void* buff, size_t nbytes, int32 flags, const struct sockaddr* from, socklen_t addrlen);
+int32 recvudp(int32 fd, void* buff, size_t nbytes, int32 flags, sockaddr* from, socklen_t* addrlen);
+int32 sendudp(int32 fd, void* buff, size_t nbytes, int32 flags, const sockaddr* from, socklen_t addrlen);
 
 template <typename T, typename U>
 auto ref(U* buf, std::size_t index) -> T&

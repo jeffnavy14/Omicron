@@ -16,6 +16,8 @@ set(COMMON_SOURCES
     $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_SOURCE_DIR}/debug_windows.cpp>
     ${CMAKE_CURRENT_SOURCE_DIR}/filewatcher.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/filewatcher.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipp.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipp.h
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/kernel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/logging.cpp
