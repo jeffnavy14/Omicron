@@ -90,8 +90,6 @@ void operator delete[](void* ptr, std::size_t count) noexcept
 
 std::atomic<bool> gRunFlag = true;
 
-std::array<std::unique_ptr<socket_data>, MAX_FD> sessions;
-
 // This must be manually created
 std::unique_ptr<ConsoleService> gConsoleService;
 
@@ -234,7 +232,6 @@ int main(int argc, char** argv)
 #endif // _WIN32
 
     log_init(argc, argv);
-    set_socket_type();
     signals_init();
     timer_init();
 

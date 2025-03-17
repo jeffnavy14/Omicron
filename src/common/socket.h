@@ -53,15 +53,7 @@ typedef long in_addr_t;
 #include <memory>
 #include <string>
 
-/*
- *
- *              COMMON LEVEL
- *
- */
-/////////////////////////////////////////////////////////////////////
-#if defined(WIN32)
-/////////////////////////////////////////////////////////////////////
-// windows portability layer
+#if defined(WIN32) // windows portability layer
 typedef int socklen_t;
 
 #define sErrno         WSAGetLastError()
@@ -122,8 +114,7 @@ int sSocket(int af, int type, int protocol);
 #define sFD_CLR(fd, set)                                FD_CLR(fd2sock(fd), set)
 #define sFD_ISSET(fd, set)                              FD_ISSET(fd2sock(fd), set)
 #define sFD_ZERO                                        FD_ZERO
-#else
-// nix portability layer
+#else // nix portability layer
 
 #define SOCKET_ERROR (-1)
 
@@ -155,178 +146,22 @@ int sSocket(int af, int type, int protocol);
 
 #endif
 
-#define TOB(n) ((uint8)((n) & std::numeric_limits<uint8>::max()))
-#define TOW(n) ((uint16)((n) & std::numeric_limits<uint16>::max()))
-#define TOL(n) ((uint32)((n) & std::numeric_limits<uint32>::max()))
-
-enum class socket_type
-{
-    TCP,
-    UDP
-};
-
-extern socket_type SOCKET_TYPE;
-
 extern fd_set readfds;
 extern int    fd_max;
 extern time_t last_tick;
-extern time_t stall_time;
-
-int32 makeConnection(uint32 ip, uint16 port, int32 type);
-
-int32 do_sockets(fd_set* rfd, duration next);
-
-void do_close(int32 fd);
 
 void socket_init();
-
-void socket_final();
 
 // hostname/ip conversion functions
 std::string ip2str(uint32 ip);
 
 uint32 str2ip(const char* ip_str);
 
-/************************************************/
-/*
- *
- *      TCP LEVEL
- *
- */
-
-// initial recv buffer size (this will also be the max. size)
-// biggest known packet: S 0153 <len>.w <emblem data>.?B -> 24x24 256 color .bmp (0153 + len.w + 1618/1654/1756 bytes)
-#define RFIFO_SIZE (2 * 1024)
-// initial send buffer size (will be resized as needed)
-#define WFIFO_SIZE (16 * 1024)
-
-// Maximum size of pending data in the write fifo. (for non-server connections)
-// The connection is closed if it goes over the limit.
-#define WFIFO_MAX (1 * 1024 * 1024)
-
-// Struct declaration
-typedef int (*RecvFunc)(int fd);
-typedef int (*SendFunc)(int fd);
-typedef int (*ParseFunc)(int fd);
-
-// socket I/O macros
-#define RFIFOHEAD(fd)
-#define WFIFOHEAD(fd, size)                                                      \
-    do                                                                           \
-    {                                                                            \
-        if ((fd) && sessions[fd]->wdata_size + (size) > sessions[fd]->max_wdata) \
-            realloc_writefifo(fd, size);                                         \
-    } while (0)
-//-------------------
-#define RFIFOP(fd, pos) (sessions[fd]->rdata + sessions[fd]->rdata_pos + (pos))
-#define WFIFOP(fd, pos) (sessions[fd]->wdata + sessions[fd]->wdata_size + (pos))
-
-#define RFIFOB(fd, pos) (*(uint8*)RFIFOP(fd, pos))
-#define WFIFOB(fd, pos) (*(uint8*)WFIFOP(fd, pos))
-#define RFIFOW(fd, pos) (*(uint16*)RFIFOP(fd, pos))
-#define WFIFOW(fd, pos) (*(uint16*)WFIFOP(fd, pos))
-#define RFIFOL(fd, pos) (*(uint32*)RFIFOP(fd, pos))
-#define WFIFOL(fd, pos) (*(uint32*)WFIFOP(fd, pos))
-
-#define RFIFOREST(fd) (sessions[fd]->flag.eof ? 0 : sessions[fd]->rdata.size() - sessions[fd]->rdata_pos)
-#define RFIFOFLUSH(fd)                                             \
-    do                                                             \
-    {                                                              \
-        if (sessions[fd]->rdata.size() == sessions[fd]->rdata_pos) \
-        {                                                          \
-            sessions[fd]->rdata_pos = 0;                           \
-            sessions[fd]->rdata.clear();                           \
-        }                                                          \
-        else                                                       \
-        {                                                          \
-            sessions[fd]->rdata.erase(0, sessions[fd]->rdata_pos); \
-            sessions[fd]->rdata_pos = 0;                           \
-        }                                                          \
-    } while (0)
-
-struct socket_data
-{
-    struct
-    {
-        unsigned char eof : 1;
-        unsigned char server : 1;
-    } flag;
-
-    uint32 client_addr; // remote client address
-
-    std::string rdata, wdata;
-    size_t      rdata_pos;
-    time_t      rdata_tick; // time of last recv (for detecting timeouts); zero when timeout is disabled
-
-    RecvFunc  func_recv;
-    SendFunc  func_send;
-    ParseFunc func_parse;
-
-    bool  ver_mismatch;
-    void* session_data; // stores application-specific data related to the session
-
-    socket_data(RecvFunc _func_recv, SendFunc _func_send, ParseFunc _func_parse)
-    : rdata_tick(time(0))
-    , func_recv(_func_recv)
-    , func_send(_func_send)
-    , func_parse(_func_parse)
-    {
-        client_addr  = 0;
-        flag.eof     = '\0';
-        flag.server  = '\0';
-        rdata_pos    = 0;
-        ver_mismatch = 0;
-        session_data = nullptr;
-    }
-};
-
-// Data prototype declaration
-extern std::array<std::unique_ptr<socket_data>, MAX_FD> sessions;
-
-//////////////////////////////////
-// some checking on sockets
-bool session_isValid(int fd);
-bool session_isActive(int fd);
-
-int create_session(int fd, RecvFunc func_recv, SendFunc func_send, ParseFunc func_parse);
-int delete_session(int fd);
-//////////////////////////////////
-int32 recv_to_fifo(int32 fd);
-
-int32 send_from_fifo(int32 fd);
-
-int32 connect_client(int32 listen_fd, sockaddr_in& client_address);
-
-int32 makeConnection_tcp(uint32 ip, uint16 port);
-
-int32 makeListenBind_tcp(const char* ip, uint16 port, RecvFunc connect_client);
-
-int32 RFIFOSKIP(int32 fd, size_t len);
-
-void socket_init_tcp(void);
-void socket_final_tcp(void);
-
-void do_close_tcp(int32 fd);
-
-void flush_fifo(int32 fd);
-void flush_fifos(void);
-
-void set_defaultparse(ParseFunc defaultparse);
-
-void set_eof(int32 fd);
-
 void set_nonblocking(int fd, unsigned long yes);
 
-/*
- *
- *      UDP LEVEL
- *
- */
 int32 makeBind_udp(uint32 ip, uint16 port);
 
 void socket_init_udp(void);
-void do_close_udp(int32 fd);
-void socket_final_udp(void);
 
 int32 recvudp(int32 fd, void* buff, size_t nbytes, int32 flags, struct sockaddr* from, socklen_t* addrlen);
 int32 sendudp(int32 fd, void* buff, size_t nbytes, int32 flags, const struct sockaddr* from, socklen_t addrlen);

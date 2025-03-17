@@ -3247,6 +3247,12 @@ void SmallPacket0x06E(map_session_data_t* const PSession, CCharEntity* const PCh
         return;
     }
 
+    // Block invite if target has blacklisted the initiator
+    if (blacklistutils::IsBlacklisted(inviteeCharId, PInviter->id))
+    {
+        return;
+    }
+
     switch (data.ref<uint8>(0x0A))
     {
         case INVITE_PARTY: // party - must by party leader or solo
