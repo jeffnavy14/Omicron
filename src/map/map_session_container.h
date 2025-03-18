@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,30 +19,29 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "server_ip.h"
-#include "utils/zoneutils.h"
+#include "common/ipp.h"
 
-CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 zone_type, IPP zone_ipp)
+class CCharEntity;
+struct MapSession;
+
+class MapSessionContainer
 {
-    this->setType(0x0B);
-    this->setSize(0x1C);
+public:
+    auto createSession(IPP ipp) -> MapSession*;
 
-    ref<uint8>(0x04)  = zone_type;
-    ref<uint32>(0x08) = zone_ipp.getIP();
-    ref<uint16>(0x0C) = zone_ipp.getPort();
-}
+    auto getSessionByIPP(IPP ipp) -> MapSession*;
+    auto getSessionByIPP(uint64 ipp) -> MapSession*;
+    auto getSessionByChar(CCharEntity* PChar) -> MapSession*;
+    auto getSessionByCharId(uint32 charId) -> MapSession*;
+    auto getSessionByCharName(const std::string& name) -> MapSession*;
 
-uint8 CServerIPPacket::zoneType()
-{
-    return ref<uint8>(0x04);
-}
+    void cleanupSessions();
 
-IPP CServerIPPacket::zoneIPP()
-{
-    const auto ip   = ref<uint32>(0x08);
-    const auto port = ref<uint16>(0x0C);
-    return IPP(ip, port);
-}
+    void destroySession(IPP ipp);
+    void destroySession(MapSession* map_session_data);
+
+private:
+    std::map<IPP, std::unique_ptr<MapSession>> sessions_;
+};

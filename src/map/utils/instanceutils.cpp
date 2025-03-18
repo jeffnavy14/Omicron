@@ -54,9 +54,7 @@ namespace instanceutils
             "ON instance_zone = zone_settings.zoneid "
             "WHERE IF(%d <> 0, '%s' = zoneip AND %d = zoneport, TRUE)";
 
-        char address[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &map_ip, address, INET_ADDRSTRLEN);
-        int32 ret = _sql->Query(query, map_ip.s_addr, address, map_port);
+        int32 ret = _sql->Query(query, gMapIPP.getIP(), gMapIPP.getIPString(), gMapIPP.getPort());
 
         if (ret != SQL_ERROR && _sql->NumRows() != 0)
         {

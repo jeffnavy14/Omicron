@@ -412,8 +412,8 @@ void CZone::LoadZoneSettings()
     if (_sql->Query(Query, m_zoneID) != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
         m_zoneName.insert(0, (const char*)_sql->GetData(0));
+        m_zoneIP = str2ip((const char*)_sql->GetData(1));
 
-        inet_pton(AF_INET, (const char*)_sql->GetData(1), &m_zoneIP);
         m_zonePort              = (uint16)_sql->GetUIntData(2);
         m_zoneMusic.m_songDay   = (uint8)_sql->GetUIntData(3);           // background music (day)
         m_zoneMusic.m_songNight = (uint8)_sql->GetUIntData(4);           // background music (night)
@@ -962,8 +962,8 @@ void CZone::createZoneTimers()
 {
     TracyZoneScoped;
 
-    const auto tickInterval        = std::chrono::milliseconds(static_cast<uint32>(server_tick_interval));
-    const auto triggerAreaInterval = std::chrono::milliseconds(static_cast<uint32>(server_trigger_area_interval));
+    const auto tickInterval        = std::chrono::milliseconds(static_cast<uint32>(kServerTickInterval));
+    const auto triggerAreaInterval = std::chrono::milliseconds(static_cast<uint32>(kServerTriggerAreaInterval));
 
     // clang-format off
     ZoneTimer = CTaskMgr::getInstance()->AddTask(m_zoneName, server_clock::now(), this, CTaskMgr::TASK_INTERVAL, tickInterval,

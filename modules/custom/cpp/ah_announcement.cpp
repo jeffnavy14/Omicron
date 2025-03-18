@@ -25,7 +25,7 @@
 
 extern uint8 PacketSize[512];
 
-extern std::function<void(map_session_data_t* const, CCharEntity* const, CBasicPacket&)> PacketParser[512];
+extern std::function<void(MapSession* const, CCharEntity* const, CBasicPacket&)> PacketParser[512];
 
 class AHAnnouncementModule : public CPPModule
 {
@@ -35,7 +35,7 @@ class AHAnnouncementModule : public CPPModule
 
         const auto originalHandler = PacketParser[0x04E];
 
-        const auto newHandler = [originalHandler](map_session_data_t* const PSession, CCharEntity* const PChar, CBasicPacket& data) -> void
+        const auto newHandler = [originalHandler](MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data) -> void
         {
             TracyZoneScoped;
 

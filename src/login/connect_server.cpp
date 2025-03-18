@@ -32,15 +32,10 @@ namespace
     {
         // We will only ever have a single login server, so we can use different logic for the routing id
 
-        const auto   ip   = settings::get<std::string>("network.LOGIN_AUTH_IP");
-        const uint64 port = settings::get<uint16>("network.LOGIN_AUTH_PORT");
+        const auto ip   = str2ip(settings::get<std::string>("network.LOGIN_AUTH_IP"));
+        const auto port = settings::get<uint16>("network.LOGIN_AUTH_PORT");
 
-        uint64 ipp{};
-        inet_pton(AF_INET, ip.c_str(), &ipp);
-
-        ipp |= (port << 32);
-
-        return ipp;
+        return IPP(ip, port).getRawIPP();
     }
 } // namespace
 

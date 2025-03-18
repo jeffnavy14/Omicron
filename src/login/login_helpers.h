@@ -82,11 +82,6 @@ namespace loginHelpers
 
     session_t& get_authenticated_session(std::string const& ipAddr, std::string const& sessionHash);
 
-    // hostname/ip conversion functions
-    std::string ip2str(uint32 ip);
-
-    uint32 str2ip(const char* ip_str);
-
     // https://github.com/atom0s/XiPackets/blob/main/lobby/S2C_0x0004_ResponseError.md
     void generateErrorMessage(char* packet, uint16 errorCode);
 

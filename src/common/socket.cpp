@@ -20,6 +20,7 @@
 */
 
 #include "common/cbasetypes.h"
+#include "common/ipp.h"
 #include "common/kernel.h"
 #include "common/logging.h"
 #include "common/mmo.h"
@@ -162,25 +163,6 @@ int32  fd_max;
 time_t last_tick;
 time_t tick_time;
 
-// hostname/ip conversion functions
-std::string ip2str(uint32 ip)
-{
-    uint32 reversed_ip = htonl(ip);
-    char   address[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &reversed_ip, address, INET_ADDRSTRLEN);
-
-    // This is internal, so we can trust it.
-    return fmt::format("{}", asStringFromUntrustedSource(address));
-}
-
-uint32 str2ip(const char* ip_str)
-{
-    uint32 ip = 0;
-    inet_pton(AF_INET, ip_str, &ip);
-
-    return ntohl(ip);
-}
-
 void set_nonblocking(int fd, unsigned long yes)
 {
     TracyZoneScoped;
@@ -289,13 +271,13 @@ void socket_init_udp()
     last_tick = time(nullptr);
 }
 
-int32 recvudp(int32 fd, void* buff, size_t nbytes, int32 flags, struct sockaddr* from, socklen_t* addrlen)
+int32 recvudp(int32 fd, void* buff, size_t nbytes, int32 flags, sockaddr* from, socklen_t* addrlen)
 {
     TracyZoneScoped;
     return sRecvfrom(fd, (char*)buff, (int)nbytes, flags, from, addrlen);
 }
 
-int32 sendudp(int32 fd, void* buff, size_t nbytes, int32 flags, const struct sockaddr* from, socklen_t addrlen)
+int32 sendudp(int32 fd, void* buff, size_t nbytes, int32 flags, const sockaddr* from, socklen_t addrlen)
 {
     TracyZoneScoped;
     return sSendto(fd, (const char*)buff, (int)nbytes, flags, from, addrlen);

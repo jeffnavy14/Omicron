@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,30 +19,30 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
+#include "map_session.h"
 
-#include "entities/charentity.h"
-#include "server_ip.h"
-#include "utils/zoneutils.h"
+#include "common/md52.h"
 
-CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 zone_type, IPP zone_ipp)
+void MapSession::incrementBlowfish()
 {
-    this->setType(0x0B);
-    this->setSize(0x1C);
+    prev_blowfish = blowfish;
 
-    ref<uint8>(0x04)  = zone_type;
-    ref<uint32>(0x08) = zone_ipp.getIP();
-    ref<uint16>(0x0C) = zone_ipp.getPort();
+    blowfish.key[4] += 2;
+
+    initBlowfish();
 }
 
-uint8 CServerIPPacket::zoneType()
+void MapSession::initBlowfish()
 {
-    return ref<uint8>(0x04);
-}
+    md5((uint8*)(blowfish.key), blowfish.hash, 20);
 
-IPP CServerIPPacket::zoneIPP()
-{
-    const auto ip   = ref<uint32>(0x08);
-    const auto port = ref<uint16>(0x0C);
-    return IPP(ip, port);
+    for (uint32 i = 0; i < 16; ++i)
+    {
+        if (blowfish.hash[i] == 0)
+        {
+            std::memset(blowfish.hash + i, 0, 16 - i);
+            break;
+        }
+    }
+    blowfish_init((int8*)blowfish.hash, 16, blowfish.P, blowfish.S[0]);
 }

@@ -77,6 +77,10 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell.h
     ${CMAKE_CURRENT_SOURCE_DIR}/map.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session_container.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session_container.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map_session.h
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/merit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/mob_modifier.h

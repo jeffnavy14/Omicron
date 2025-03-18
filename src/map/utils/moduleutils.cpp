@@ -33,8 +33,6 @@
 #include <string>
 #include <vector>
 
-extern uint16 map_port;
-
 namespace
 {
     // static storage, init and access
@@ -242,7 +240,7 @@ namespace moduleutils
                         if (parts.size() >= 3 && parts[0] == "xi" && parts[1] == "zones")
                         {
                             const auto zoneName    = parts[2];
-                            const auto currentPort = map_port == 0 ? settings::get<uint16>("network.MAP_PORT") : map_port;
+                            const auto currentPort = gMapIPP.getPort() == 0 ? settings::get<uint16>("network.MAP_PORT") : gMapIPP.getPort();
 
                             if (zoneSettingsPorts.find(zoneName) != zoneSettingsPorts.end() && zoneSettingsPorts[zoneName] != currentPort)
                             {
