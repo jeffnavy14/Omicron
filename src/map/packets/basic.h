@@ -22,8 +22,8 @@
 #pragma once
 
 #include "common/cbasetypes.h"
-#include "common/socket.h"
 #include "common/tracy.h"
+#include "common/utils.h"
 
 #include <cstdio>
 #include <cstring>

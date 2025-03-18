@@ -25,7 +25,7 @@
 #include "common/logging.h"
 #include "common/lua.h"
 #include "common/settings.h"
-#include "common/socket.h"
+
 #include "common/taskmgr.h"
 #include "common/timer.h"
 #include "common/version.h"
@@ -242,11 +242,8 @@ int main(int argc, char** argv)
 
     usercheck();
 
-    socket_init();
-
     do_init(argc, argv);
 
-    fd_set rfd = {};
     { // Main runtime cycle
         duration next = std::chrono::milliseconds(200);
 
@@ -289,7 +286,7 @@ int main(int argc, char** argv)
         while (gRunFlag)
         {
             next = CTaskMgr::getInstance()->DoTimer(server_clock::now());
-            do_sockets(&rfd, next);
+            do_sockets(next);
             watchdog.update();
         }
     }

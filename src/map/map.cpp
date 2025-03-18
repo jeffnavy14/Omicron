@@ -28,7 +28,6 @@
 #include "common/debug.h"
 #include "common/ipp.h"
 #include "common/logging.h"
-#include "common/socket.h"
 #include "common/timer.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
@@ -103,18 +102,18 @@ std::unordered_map<uint32, std::unordered_map<uint16, std::vector<std::pair<uint
 
 extern std::atomic<bool> gProcessLoaded;
 
+// TODO: This should eventually live inside a MapNetworking class
+std::unique_ptr<MapSocket> gMapSocket;
+
+// Forward declare
+void handle_incoming_packet(const std::error_code& ec, std::span<uint8> buffer, IPP ipp);
+
 namespace
 {
-    // Map UDP socket file descriptor
-    int32 map_fd = 0;
-
     // Map udp buffers
-    NetworkBuffer PBuff;        // Global packet clipboard
-    NetworkBuffer PBuffCopy;    // Copy of above, used to decrypt a second time if necessary.
-    NetworkBuffer PScratchBuff; // Temporary packet clipboard
-
-    // ZMQ message thread
-    nonstd::jthread messageThread;
+    NetworkBuffer PBuff;          // Global packet clipboard
+    NetworkBuffer PBuffCopy;      // Copy of above, used to decrypt a second time if necessary.
+    NetworkBuffer PScratchBuffer; // Temporary packet clipboard
 
     // Runtime statistics
     uint32 TotalPacketsToSendPerTick  = 0U;
@@ -190,12 +189,6 @@ void initConsoleService()
     });
     // clang-format on
 }
-
-/************************************************************************
- *                                                                       *
- *  do_init                                                              *
- *                                                                       *
- ************************************************************************/
 
 int32 do_init(int32 argc, char** argv)
 {
@@ -275,9 +268,6 @@ int32 do_init(int32 argc, char** argv)
     ShowInfo("do_init: loading plants");
     gardenutils::Initialize();
 
-    // One method to initialize all data in battleutils
-    // and one method to free this data
-
     ShowInfo("do_init: loading spells");
     spell::LoadSpellList();
     mobSpellList::LoadMobSpellList();
@@ -323,8 +313,8 @@ int32 do_init(int32 argc, char** argv)
 
     monstrosity::LoadStaticData();
 
-    ShowInfo("do_init: server is binding with port %u", gMapIPP.getPort() == 0 ? settings::get<uint16>("network.MAP_PORT") : gMapIPP.getPort());
-    map_fd = makeBind_udp(INADDR_ANY, gMapIPP.getPort() == 0 ? settings::get<uint16>("network.MAP_PORT") : gMapIPP.getPort());
+    const auto udpPort = gMapIPP.getPort() == 0 ? settings::get<uint16>("network.MAP_PORT") : gMapIPP.getPort();
+    gMapSocket         = std::make_unique<MapSocket>(udpPort);
 
     CVanaTime::getInstance()->setCustomEpoch(settings::get<int32>("map.VANADIEL_TIME_EPOCH"));
 
@@ -341,8 +331,8 @@ int32 do_init(int32 argc, char** argv)
 
     ShowInfo("do_init: Removing expired database variables");
     uint32 currentTimestamp = CVanaTime::getInstance()->getSysTime();
-    _sql->Query("DELETE FROM char_vars WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
-    _sql->Query("DELETE FROM server_variables WHERE expiry > 0 AND expiry <= %d", currentTimestamp);
+    db::preparedStmt("DELETE FROM char_vars WHERE expiry > 0 AND expiry <= ?", currentTimestamp);
+    db::preparedStmt("DELETE FROM server_variables WHERE expiry > 0 AND expiry <= ?", currentTimestamp);
 
     PacketGuard::Init();
 
@@ -368,11 +358,6 @@ int32 do_init(int32 argc, char** argv)
     return 0;
 }
 
-/************************************************************************
- *                                                                       *
- *  do_final                                                             *
- *                                                                       *
- ************************************************************************/
 void do_final(int code)
 {
     TracyZoneScoped;
@@ -391,11 +376,6 @@ void do_final(int code)
     trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
-    if (messageThread.joinable())
-    {
-        messageThread.join();
-    }
-
     CTaskMgr::delInstance();
     CVanaTime::delInstance();
     Async::delInstance();
@@ -405,24 +385,11 @@ void do_final(int code)
     luautils::cleanup();
     logging::ShutDown();
 
-#ifdef WIN32
-    shutdown(map_fd, SD_SEND);
-#else
-    shutdown(map_fd, SHUT_WR);
-#endif
-    close(map_fd);
-
     if (code != EXIT_SUCCESS)
     {
         std::exit(code);
     }
 }
-
-/************************************************************************
- *                                                                       *
- *  do_abort                                                             *
- *                                                                       *
- ************************************************************************/
 
 void do_abort()
 {
@@ -467,107 +434,83 @@ void ReportTracyStats()
     TotalPacketsDelayedPerTick = 0;
 }
 
-/************************************************************************
- *                                                                       *
- *  do_sockets                                                           *
- *                                                                       *
- ************************************************************************/
+void handle_incoming_packet(const std::error_code& ec, std::span<uint8> buffer, IPP ipp)
+{
+    if (!ec && !buffer.empty())
+    {
+        // find player session
+        MapSession* map_session_data = gMapSessions.getSessionByIPP(ipp);
+        if (map_session_data == nullptr)
+        {
+            map_session_data = gMapSessions.createSession(ipp);
+            if (map_session_data == nullptr)
+            {
+                gMapSessions.destroySession(ipp);
+                return;
+            }
+        }
 
-int32 do_sockets(fd_set* rfd, duration next)
+        // TODO: Don't copy into PBuff, use buffer directly and smaller scratch buffers if required
+        std::memcpy(PBuff.data(), buffer.data(), buffer.size());
+        size_t size = buffer.size();
+
+        int32 decryptCount = recv_parse(PBuff.data(), &size, map_session_data);
+        if (decryptCount != -1)
+        {
+            // DecryptCount of 0 means the main key decrypted the packet
+            if (decryptCount == 0)
+            {
+                // If the previous package was lost, then we do not collect a new one,
+                // and send the previous packet again
+                if (!parse(PBuff.data(), &size, map_session_data))
+                {
+                    send_parse(PBuff.data(), &size, map_session_data, false);
+                }
+            }
+            else if (decryptCount == 1 && map_session_data->blowfish.status == BLOWFISH_PENDING_ZONE)
+            {
+                // TODO: Client will send 0x00D in response to 0x00B, so we are probably always sending an extra 0x00B when we don't need to.
+                // However, the client will fail to decrypt this if they received it before, effectively being a no-op.
+                // It could be beneficial to parse 0x00D here anyway.
+
+                // Client failed to receive 0x00B, resend it
+                if (auto PChar = map_session_data->PChar)
+                {
+                    PChar->clearPacketList();
+                    PChar->pushPacket<CServerIPPacket>(PChar, map_session_data->zone_type, map_session_data->zone_ipp);
+                }
+
+                send_parse(PBuff.data(), &size, map_session_data, true);
+
+                // Increment sync count with every packet
+                // TODO: match incoming with a new parse that only cares about sync count
+                map_session_data->server_packet_id += 1;
+            }
+
+            gMapSocket->send(ipp, { PBuff.data(), size });
+
+            std::swap(PBuff, map_session_data->server_packet_data);
+            std::swap(size, map_session_data->server_packet_size);
+        }
+
+        // If client is logging out, just close it.
+        if (map_session_data->shuttingDown == 1)
+        {
+            gMapSessions.destroySession(map_session_data);
+        }
+    }
+    else if (ec)
+    {
+        ShowErrorFmt("Receive error: {}", ec.message());
+    }
+}
+
+int32 do_sockets(duration next)
 {
     message::handle_incoming();
 
-    timeval timeout{};
-    int32   ret = 0;
-    std::memcpy(rfd, &readfds, sizeof(*rfd));
-
-    timeout.tv_sec  = std::chrono::duration_cast<std::chrono::seconds>(next).count();
-    timeout.tv_usec = std::chrono::duration_cast<std::chrono::microseconds>(next - std::chrono::duration_cast<std::chrono::seconds>(next)).count();
-
-    ret = sSelect(fd_max, rfd, nullptr, nullptr, &timeout);
-    if (ret == SOCKET_ERROR)
-    {
-        if (sErrno != S_EINTR)
-        {
-            ShowCritical("do_sockets: select() failed, error code %d!", sErrno);
-            do_final(EXIT_FAILURE);
-        }
-        return 0; // interrupted by a signal, just loop and try again
-    }
-
-    last_tick = time(nullptr);
-
-    if (sFD_ISSET(map_fd, rfd))
-    {
-        sockaddr_in from{};
-        socklen_t   fromlen = sizeof(from);
-
-        ret = recvudp(map_fd, PBuff.data(), kMaxBufferSize, 0, (struct sockaddr*)&from, &fromlen);
-        if (ret != -1)
-        {
-            const auto ip   = sockaddr2netip(from);
-            const auto port = sockaddr2hostport(from);
-            const auto ipp  = IPP(ip, port);
-
-            // find player char
-            MapSession* map_session_data = gMapSessions.getSessionByIPP(ipp);
-            if (map_session_data == nullptr)
-            {
-                map_session_data = gMapSessions.createSession(ipp);
-                if (map_session_data == nullptr)
-                {
-                    gMapSessions.destroySession(ipp);
-                    return -1;
-                }
-            }
-
-            size_t size = ret;
-
-            int32 decryptCount = recv_parse(PBuff.data(), &size, &from, map_session_data);
-            if (decryptCount != -1)
-            {
-                // DecryptCount of 0 means the main key decrypted the packet
-                if (decryptCount == 0)
-                {
-                    // If the previous package was lost, then we do not collect a new one,
-                    // and send the previous packet again
-                    if (!parse(PBuff.data(), &size, &from, map_session_data))
-                    {
-                        send_parse(PBuff.data(), &size, &from, map_session_data, false);
-                    }
-                }
-                else if (decryptCount == 1 && map_session_data->blowfish.status == BLOWFISH_PENDING_ZONE)
-                {
-                    // TODO: Client will send 0x00D in response to 0x00B, so we are probably always sending an extra 0x00B when we don't need to.
-                    // However, the client will fail to decrypt this if they received it before, effectively being a no-op.
-                    // It could be beneficial to parse 0x00D here anyway.
-
-                    // Client failed to receive 0x00B, resend it
-                    if (auto PChar = map_session_data->PChar)
-                    {
-                        PChar->clearPacketList();
-                        PChar->pushPacket<CServerIPPacket>(PChar, map_session_data->zone_type, map_session_data->zone_ipp);
-                    }
-                    send_parse(PBuff.data(), &size, &from, map_session_data, true);
-
-                    // Increment sync count with every packet
-                    // TODO: match incoming with a new parse that only cares about sync count
-                    map_session_data->server_packet_id += 1;
-                }
-
-                ret = sendudp(map_fd, PBuff.data(), size, 0, (const struct sockaddr*)&from, fromlen);
-
-                std::swap(PBuff, map_session_data->server_packet_data);
-                std::swap(size, map_session_data->server_packet_size);
-            }
-
-            // If client is logging out, just close it.
-            if (map_session_data->shuttingDown == 1)
-            {
-                gMapSessions.destroySession(map_session_data);
-            }
-        }
-    }
+    const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(next - std::chrono::duration_cast<std::chrono::seconds>(next));
+    gMapSocket->recvFor(duration, &handle_incoming_packet);
 
     ReportTracyStats();
 
@@ -576,13 +519,7 @@ int32 do_sockets(fd_set* rfd, duration next)
     return 0;
 }
 
-/************************************************************************
- *                                                                       *
- *  map_decipher_packet                                                  *
- *                                                                       *
- ************************************************************************/
-
-int32 map_decipher_packet(uint8* buff, size_t size, sockaddr_in* from, MapSession* PSession, blowfish_t* pbfkey)
+int32 map_decipher_packet(uint8* buff, size_t buffsize, MapSession* PSession, blowfish_t* pbfkey)
 {
     TracyZoneScoped;
 
@@ -590,17 +527,17 @@ int32 map_decipher_packet(uint8* buff, size_t size, sockaddr_in* from, MapSessio
     uint16 i   = 0;
 
     // counting blocks whose size = 4 byte
-    tmp = (uint16)((size - FFXI_HEADER_SIZE) / 4);
+    tmp = (uint16)((buffsize - FFXI_HEADER_SIZE) / 4);
     tmp -= tmp % 2;
 
-    const auto ip = sockaddr2netip(*from);
+    const auto ip = PSession->client_ipp.getIP();
 
     for (i = 0; i < tmp; i += 2)
     {
         blowfish_decipher((uint32*)buff + i + 7, (uint32*)buff + i + 8, pbfkey->P, pbfkey->S[0]);
     }
 
-    if (checksum((uint8*)(buff + FFXI_HEADER_SIZE), (uint32)(size - (FFXI_HEADER_SIZE + 16)), (char*)(buff + size - 16)) == 0)
+    if (checksum((uint8*)(buff + FFXI_HEADER_SIZE), (uint32)(buffsize - (FFXI_HEADER_SIZE + 16)), (char*)(buff + buffsize - 16)) == 0)
     {
         return 0;
     }
@@ -610,16 +547,11 @@ int32 map_decipher_packet(uint8* buff, size_t size, sockaddr_in* from, MapSessio
     {
         ShowError(fmt::format("map_decipher_packet: bad packet from <{}>", ip2str(ip)));
     }
+
     return -1;
 }
 
-/************************************************************************
- *                                                                       *
- *  main function to parse recv packets                                  *
- *                                                                       *
- ************************************************************************/
-
-int32 recv_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* map_session_data)
+int32 recv_parse(uint8* buff, size_t* buffsize, MapSession* map_session_data)
 {
     TracyZoneScoped;
 
@@ -735,14 +667,15 @@ int32 recv_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
             // Copy buff into the backup buffer. Blowfish can't be rewound currently.
             std::memcpy(PBuffCopy.data(), buff, *buffsize);
         }
+
         int decryptCount = 0;
-        // char packets
-        if (map_decipher_packet(buff, *buffsize, from, map_session_data, &map_session_data->blowfish) == -1)
+
+        if (map_decipher_packet(buff, *buffsize, map_session_data, &map_session_data->blowfish) == -1)
         {
             // If the client is pending zone, they might not have received 0x00B, and thus not incremented their key
             // Check old blowfish data
             if (map_session_data->blowfish.status == BLOWFISH_PENDING_ZONE &&
-                map_decipher_packet(PBuffCopy.data(), *buffsize, from, map_session_data, &map_session_data->prev_blowfish) != -1)
+                map_decipher_packet(PBuffCopy.data(), *buffsize, map_session_data, &map_session_data->prev_blowfish) != -1)
             {
                 // Copy decrypted bytes back into buffer
                 std::memcpy(buff, PBuffCopy.data(), *buffsize);
@@ -759,14 +692,14 @@ int32 recv_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
         uint32 PacketDataSize = ref<uint32>(buff, *buffsize - sizeof(int32) - 16);
 
         // it's decompressing data and getting new size
-        PacketDataSize = zlib_decompress((int8*)(buff + FFXI_HEADER_SIZE), PacketDataSize, (int8*)PScratchBuff.data(), kMaxBufferSize);
+        PacketDataSize = zlib_decompress((int8*)(buff + FFXI_HEADER_SIZE), PacketDataSize, (int8*)PScratchBuffer.data(), kMaxBufferSize);
 
         // Not sure why zlib_decompress is defined to return a uint32 when it returns -1 in situations.
         if (static_cast<int32>(PacketDataSize) != -1)
         {
             // it's making result buff
             // don't need std::memcpy header
-            std::memcpy(buff + FFXI_HEADER_SIZE, PScratchBuff.data(), PacketDataSize);
+            std::memcpy(buff + FFXI_HEADER_SIZE, PScratchBuffer.data(), PacketDataSize);
             *buffsize = FFXI_HEADER_SIZE + PacketDataSize;
 
             return decryptCount;
@@ -774,15 +707,11 @@ int32 recv_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
 
         return decryptCount;
     }
+
+    // return -1;
 }
 
-/************************************************************************
- *                                                                       *
- *  main function parsing the packets                                    *
- *                                                                       *
- ************************************************************************/
-
-int32 parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* map_session_data)
+int32 parse(uint8* buff, size_t* buffsize, MapSession* map_session_data)
 {
     TracyZoneScoped;
 
@@ -893,10 +822,8 @@ int32 parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* map_se
 
     if (ref<uint16>(buff, 2) != map_session_data->server_packet_id)
     {
-        /*
-         * If the client and server have become out of sync, then caching takes place. However, caching
-         * zone packets will result in the client never properly connecting. Ignore those specifically.
-         */
+        // If the client and server have become out of sync, then caching takes place. However, caching
+        // zone packets will result in the client never properly connecting. Ignore those specifically.
         if (SmallPD_Type == 0x0A)
         {
             return 0;
@@ -920,13 +847,7 @@ int32 parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* map_se
     return 0;
 }
 
-/************************************************************************
- *                                                                       *
- *  main function is building big packet                                 *
- *                                                                       *
- ************************************************************************/
-
-int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* map_session_data, bool usePreviousKey)
+int32 send_parse(uint8* buff, size_t* buffsize, MapSession* map_session_data, bool usePreviousKey)
 {
     TracyZoneScoped;
 
@@ -1016,7 +937,7 @@ int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
 
             // Compress the data without regard to the header
             // The returned size is 8 times the real data
-            PacketSize = zlib_compress((int8*)(buff + FFXI_HEADER_SIZE), (uint32)(*buffsize - FFXI_HEADER_SIZE), (int8*)PScratchBuff.data(), kMaxBufferSize);
+            PacketSize = zlib_compress((int8*)(buff + FFXI_HEADER_SIZE), (uint32)(*buffsize - FFXI_HEADER_SIZE), (int8*)PScratchBuffer.data(), kMaxBufferSize);
 
             // handle compression error
             if (PacketSize == static_cast<uint32>(-1))
@@ -1025,7 +946,7 @@ int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
                 continue;
             }
 
-            ref<uint32>(PScratchBuff.data(), zlib_compressed_size(PacketSize)) = PacketSize;
+            ref<uint32>(PScratchBuffer.data(), zlib_compressed_size(PacketSize)) = PacketSize;
 
             PacketSize = (uint32)zlib_compressed_size(PacketSize) + 4;
 
@@ -1045,23 +966,24 @@ int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
             }
         }
     } while (PacketSize == static_cast<uint32>(-1));
+
     PChar->erasePackets(packets);
     TotalPacketsSentPerTick += packets;
     TracyZoneString(fmt::format("Sending {} packets", packets));
 
     // Record data size excluding header
     uint8 hash[16];
-    md5(PScratchBuff.data(), hash, PacketSize);
-    std::memcpy(PScratchBuff.data() + PacketSize, hash, 16);
+    md5(PScratchBuffer.data(), hash, PacketSize);
+    std::memcpy(PScratchBuffer.data() + PacketSize, hash, 16);
     PacketSize += 16;
 
     if (PacketSize > kMaxBufferSize)
     {
-        ShowCritical("Memory manager: PScratchBuff is overflowed (%u)", PacketSize);
+        ShowCritical("Network: PScratchBuffer is overflowed (%u) by %s", PacketSize, PChar->name);
     }
 
-    // Making total packet
-    std::memcpy(buff + FFXI_HEADER_SIZE, PScratchBuff.data(), PacketSize);
+    // Making total outgoing packet
+    std::memcpy(buff + FFXI_HEADER_SIZE, PScratchBuffer.data(), PacketSize);
 
     uint32 CypherSize = (PacketSize / 4) & -2;
 
@@ -1089,7 +1011,6 @@ int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
         char session_key[20 * 2 + 1];
         bin2hex(session_key, (uint8*)map_session_data->blowfish.key, 20);
         const char* fmtQuery = "UPDATE accounts_sessions SET session_key = x'%s' WHERE charid = %u";
-
         _sql->Query(fmtQuery, session_key, PChar->id);
     }
 
@@ -1123,13 +1044,6 @@ int32 send_parse(uint8* buff, size_t* buffsize, sockaddr_in* from, MapSession* m
 
     return 0;
 }
-
-/************************************************************************
- *                                                                       *
- *  Timer function that cleans up all timed out players                  *
- *  and removes stale dynamic targIDs after some time                    *
- *                                                                       *
- ************************************************************************/
 
 int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
 {

@@ -346,70 +346,64 @@ void CLuaBaseEntity::printToArea(std::string const& message, sol::object const& 
 
     if (messageRange == MESSAGE_AREA_SYSTEM)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageServerMessage{
-            .senderId   = PChar->id,
-            .senderName = name,
-            .message    = message,
+            .senderId    = PChar->id,
+            .senderName  = name,
+            .message     = message,
+            .messageType = messageLook,
         });
     }
     else if (messageRange == MESSAGE_AREA_SAY)
     {
-        PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_SHOUT)
     {
         PChar->loc.zone->PushPacket(PChar, CHAR_INSHOUT, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
-        PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
+        PChar->pushPacket(std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_PARTY)
     {
-        if (PChar->PParty->m_PAlliance)
+        if (PChar->PParty && PChar->PParty->m_PAlliance)
         {
-            // TODO: Support messageLook
-
             message::send(ipc::ChatMessageAlliance{
-                .allianceId = PChar->PParty->m_PAlliance->m_AllianceID,
-                .senderId   = PChar->id,
-                .senderName = name,
-                .message    = message,
+                .allianceId  = PChar->PParty->m_PAlliance->m_AllianceID,
+                .senderId    = PChar->id,
+                .senderName  = name,
+                .message     = message,
+                .messageType = messageLook,
             });
         }
         else if (PChar->PParty)
         {
-            // TODO: Support messageLook
-
             message::send(ipc::ChatMessageParty{
-                .partyId    = PChar->PParty->GetPartyID(),
-                .senderId   = PChar->id,
-                .senderName = name,
-                .message    = message,
+                .partyId     = PChar->PParty->GetPartyID(),
+                .senderId    = PChar->id,
+                .senderName  = name,
+                .message     = message,
+                .messageType = messageLook,
             });
         }
     }
     else if (messageRange == MESSAGE_AREA_YELL)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageYell{
-            .senderId   = PChar->id,
-            .senderName = name,
-            .message    = message,
+            .senderId    = PChar->id,
+            .senderName  = name,
+            .message     = message,
+            .messageType = messageLook,
         });
 
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_UNITY)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageUnity{
             .unityLeaderId = PChar->id,
             .senderId      = PChar->id,
             .senderName    = name,
             .message       = message,
+            .messageType   = messageLook,
         });
 
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));

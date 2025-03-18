@@ -25,7 +25,7 @@
 #include "common/ipc.h"
 #include "common/lua.h"
 #include "common/mmo.h"
-#include "common/socket.h"
+
 #include "common/sql.h"
 #include "common/zmq_dealer_wrapper.h"
 

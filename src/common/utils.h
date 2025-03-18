@@ -34,6 +34,19 @@
 #include <math.h>
 #include <set>
 
+template <typename T, typename U>
+auto ref(U* buf, std::size_t index) -> T&
+{
+    return *reinterpret_cast<T*>(reinterpret_cast<uint8*>(buf) + index);
+}
+
+template <typename T, typename U>
+auto as(U& object) -> T*
+{
+    static_assert(std::is_standard_layout_v<T>, "Type must be standard layout (No virtual functions, inheritance, etc.)");
+    return reinterpret_cast<T*>(&object);
+}
+
 constexpr size_t PacketNameLength = 16; // 15 + null terminator
 
 constexpr size_t DecodeStringLength    = 21; // used for size of decoded strings of signature/linkshells

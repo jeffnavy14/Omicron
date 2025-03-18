@@ -23,10 +23,36 @@
 
 #include "cbasetypes.h"
 #include "logging.h"
-#include "socket.h"
 
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
+
+#ifdef _WIN32
+#include <io.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
+#include <arpa/inet.h>
+#include <cerrno>
+#include <errno.h>
+#include <net/if.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
+#include <array>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <memory>
+#include <string>
 
 auto ip2str(uint32 ip) -> std::string;
 auto str2ip(const std::string& ip_str) -> uint32;

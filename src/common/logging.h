@@ -43,7 +43,7 @@
 #include <fmt/format.h>
 #include <fmt/printf.h>
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 // Forward declaration
 namespace settings

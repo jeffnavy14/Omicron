@@ -233,7 +233,7 @@ void IPCClient::handleMessage_ChatMessageParty(const IPP& ipp, const ipc::ChatMe
     });
     if (PParty)
     {
-        PParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_PARTY, message.message, message.gmLevel));
+        PParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
     }
     // clang-format on
 }
@@ -268,7 +268,7 @@ void IPCClient::handleMessage_ChatMessageAlliance(const IPP& ipp, const ipc::Cha
     {
         for (const auto& currentParty : PAlliance->partyList)
         {
-            currentParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_PARTY, message.message, message.gmLevel));
+            currentParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
         }
     }
     // clang-format on
@@ -291,7 +291,7 @@ void IPCClient::handleMessage_ChatMessageUnity(const IPP& ipp, const ipc::ChatMe
 
     if (CUnityChat* PUnityChat = unitychat::GetUnityChat(message.unityLeaderId))
     {
-        PUnityChat->PushPacket(message.senderId, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_UNITY, message.message, message.gmLevel));
+        PUnityChat->PushPacket(message.senderId, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
     }
 }
 
@@ -309,7 +309,7 @@ void IPCClient::handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMes
                 // Don't push to sender
                 if (PChar->id != message.senderId)
                 {
-                    PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_YELL, message.message, message.gmLevel));
+                    PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
                 }
             });
         }
@@ -326,7 +326,7 @@ void IPCClient::handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc
     {
         PZone->ForEachChar([&](CCharEntity* PChar)
         {
-            PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_SYSTEM_1, message.message, message.gmLevel));
+            PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
         });
     });
     // clang-format on

@@ -25,8 +25,8 @@
 
 #include <common/md52.h>
 #include <common/mmo.h>
-#include <common/socket.h> // for ref<T>
 #include <common/sql.h>
+#include <common/utils.h>
 #include <common/xirand.h>
 
 #include "login_errors.h"

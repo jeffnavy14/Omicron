@@ -25,7 +25,6 @@
 #include "status_effect_container.h"
 
 #include "common/database.h"
-#include "common/socket.h"
 
 #include "entities/charentity.h"
 

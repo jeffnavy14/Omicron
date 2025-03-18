@@ -19,7 +19,6 @@
 ===========================================================================
 */
 
-#include "common/socket.h"
 #include "map.h"
 
 #include "synth_suggestion.h"
