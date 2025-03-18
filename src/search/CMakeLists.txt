@@ -17,9 +17,7 @@ set(SOURCES
 # TODO: Remove this block
 list(REMOVE_ITEM SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/kernel.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/kernel.h
-    ${CMAKE_SOURCE_DIR}/src/common/socket.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/socket.h)
+    ${CMAKE_SOURCE_DIR}/src/common/kernel.h)
 
 if(UNIX)
     set(resource "")

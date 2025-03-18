@@ -83,7 +83,7 @@ xi.quest.id =
         ENVELOPED_IN_DARKNESS           = 85, -- ± Converted
         PEACE_FOR_THE_SPIRIT            = 86, -- ±
         MESSENGER_FROM_BEYOND           = 87, -- ± Converted
-        PRELUDE_OF_BLACK_AND_WHITE      = 88, -- ±
+        PRELUDE_OF_BLACK_AND_WHITE      = 88, -- ± Converted
         PIEUJES_DECISION                = 89, -- +
         SHARPENING_THE_SWORD            = 90, -- ±
         A_BOYS_DREAM                    = 91, -- ±
@@ -602,7 +602,7 @@ xi.quest.id =
 
         -- Rabao (192-201)
         DONT_FORGET_THE_ANTIDOTE        = 192, -- ±
-        THE_MISSING_PIECE               = 193, -- ±
+        THE_MISSING_PIECE               = 193, -- ± Converted
         TRIAL_BY_WIND                   = 194, -- ±
         THE_KUFTAL_TOUR                 = 195,
         THE_IMMORTAL_LU_SHANG           = 196, -- ±

@@ -24,7 +24,6 @@
 #include "cbasetypes.h"
 #include "console_service.h"
 #include "settings.h"
-#include "socket.h"
 
 //
 // Global variables
@@ -39,6 +38,6 @@ extern std::unique_ptr<ConsoleService> gConsoleService;
 
 extern void log_init(int, char**);
 extern auto do_init(int32, char**) -> int32;
-extern auto do_sockets(fd_set*, duration) -> int32;
+extern auto do_sockets(duration) -> int32;
 extern void do_abort(void);
 extern void do_final(int);

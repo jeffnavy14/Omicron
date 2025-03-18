@@ -21,7 +21,6 @@
 
 #include "auction_house.h"
 
-#include "common/socket.h"
 #include "common/vana_time.h"
 
 #include <cstring>

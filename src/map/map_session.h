@@ -54,4 +54,6 @@ struct MapSession
 
     void incrementBlowfish();
     void initBlowfish();
+
+    auto toString() -> std::string;
 };

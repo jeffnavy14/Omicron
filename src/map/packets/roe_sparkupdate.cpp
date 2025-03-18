@@ -21,8 +21,6 @@
 
 #include <math.h>
 
-#include "common/socket.h"
-
 #include "roe_sparkupdate.h"
 
 #include "entities/charentity.h"
