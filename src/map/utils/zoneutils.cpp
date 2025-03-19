@@ -477,7 +477,7 @@ namespace zoneutils
                             mainWeapon->setDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
                             mainWeapon->setBaseDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
 
-                            PMob->m_Behavior    = static_cast<BEHAVIOR>(rset->get<uint8>("behavior"));
+                            PMob->m_Behavior    = rset->get<uint16>("behavior");
                             PMob->m_Link        = rset->get<uint32>("links");
                             PMob->m_Type        = static_cast<MOBTYPE>(rset->get<uint32>("mobType"));
                             PMob->m_Immunity    = rset->get<uint32>("immunity");
