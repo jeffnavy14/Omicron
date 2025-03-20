@@ -5,9 +5,9 @@ xi = xi or {}
 xi.einherjar = xi.einherjar or {}
 
 xi.einherjar.meetsRequirementsForReservation = function(player)
-    local texts = zones[xi.zone.HAZHALM_TESTING_GROUNDS].text
+    local texts   = zones[xi.zone.HAZHALM_TESTING_GROUNDS].text
     local lockout = xi.einherjar.isLockedOut(player)
-    local toau = player:hasCompletedMission(xi.mission.log_id.TOAU, xi.mission.id.toau.IMMORTAL_SENTRIES)
+    local toau    = player:hasCompletedMission(xi.mission.log_id.TOAU, xi.mission.id.toau.IMMORTAL_SENTRIES)
 
     -- 1. Player must be level EINHERJAR_LEVEL_MIN+
     if player:getMainLvl() < xi.einherjar.settings.EINHERJAR_LEVEL_MIN then
@@ -31,9 +31,9 @@ xi.einherjar.meetsRequirementsForReservation = function(player)
 end
 
 xi.einherjar.meetsRequirementsForEntry = function(player, chamberId)
-    local texts = zones[xi.zone.HAZHALM_TESTING_GROUNDS].text
-    local lockout = xi.einherjar.isLockedOut(player)
-    local toau = player:hasCompletedMission(xi.mission.log_id.TOAU, xi.mission.id.toau.IMMORTAL_SENTRIES)
+    local texts       = zones[xi.zone.HAZHALM_TESTING_GROUNDS].text
+    local lockout     = xi.einherjar.isLockedOut(player)
+    local toau        = player:hasCompletedMission(xi.mission.log_id.TOAU, xi.mission.id.toau.IMMORTAL_SENTRIES)
     local chamberData = xi.einherjar.getChamber(chamberId)
 
     if not chamberData then

@@ -5,7 +5,8 @@ xi = xi or {}
 xi.einherjar = xi.einherjar or {}
 
 -- Retail defaults
-xi.einherjar.settings = {
+xi.einherjar.settings =
+{
     -- Should Einherjar be enabled? Entry gate interactions disabled if false
     EINHERJAR_ENABLED = xi.settings.main.EINHERJAR_ENABLED or false,
 

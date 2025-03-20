@@ -14,8 +14,10 @@ xi.einherjar.unlockMob = function(mobId)
     lockedMobs[mobId] = nil
 end
 
-local mobPool = {
-    [xi.einherjar.wing.WING_1] = {
+local mobPool =
+{
+    [xi.einherjar.wing.WING_1] =
+    {
         ID.mob.BUGARD_X,
         ID.mob.CHIGOE,
         ID.mob.CRAVEN_EINHERJAR,
@@ -31,7 +33,8 @@ local mobPool = {
         ID.mob.ROTTING_HUSKARL_BLM,
         ID.mob.SJOKRAKJEN,
     },
-    [xi.einherjar.wing.WING_2] = {
+    [xi.einherjar.wing.WING_2] =
+    {
         ID.mob.BATTLEMITE,
         ID.mob.CHIGOE,
         ID.mob.CORRUPT_EINHERJAR,
@@ -53,7 +56,8 @@ local mobPool = {
         ID.mob.WALDGEIST,
         ID.mob.WINEBIBBER,
     },
-    [xi.einherjar.wing.WING_3] = {
+    [xi.einherjar.wing.WING_3] =
+    {
         ID.mob.AUDHUMBLA,
         ID.mob.BERSERKR,
         ID.mob.CORRUPT_EINHERJAR,
@@ -104,8 +108,10 @@ local function getRandomMobFamily(chamberTier)
     return selectedFamily
 end
 
-local bossPool = {
-    [xi.einherjar.wing.WING_1] = {
+local bossPool =
+{
+    [xi.einherjar.wing.WING_1] =
+    {
         ID.mob.HAKENMANN,
         ID.mob.HILDESVINI,
         ID.mob.HIMINRJOT,
@@ -113,7 +119,8 @@ local bossPool = {
         ID.mob.MORBOL_EMPEROR,
         ID.mob.NIHHUS,
     },
-    [xi.einherjar.wing.WING_2] = {
+    [xi.einherjar.wing.WING_2] =
+    {
         ID.mob.ANDHRIMNIR,
         ID.mob.ARIRI_SAMARIRI,
         ID.mob.BALRAHN,
@@ -121,7 +128,8 @@ local bossPool = {
         ID.mob.MOKKURALFI,
         ID.mob.TANNGRISNIR,
     },
-    [xi.einherjar.wing.WING_3] = {
+    [xi.einherjar.wing.WING_3] =
+    {
         ID.mob.DENDAINSONNE,
         ID.mob.FREKE,
         ID.mob.GORGIMERA,
@@ -148,26 +156,28 @@ local function getRandomBoss(chamberTier)
     end
 
     -- Select a random boss
-    local index = math.random(#availableBosses)
+    local index        = math.random(#availableBosses)
     local selectedBoss = availableBosses[index]
 
     -- Lock the selected boss and return it
     lockedMobs[selectedBoss] = true
+
     return selectedBoss
 end
 
-local specialPool = {
-    { ids = 0,                 chance = 2 },  -- Special mob may not spawn
+local specialPool =
+{
+    { ids = 0,                 chance =  2 },  -- Special mob may not spawn
     { ids = ID.mob.HUGINN,     chance = 30 },
     { ids = ID.mob.MUNINN,     chance = 30 },
-    { ids = ID.mob.HEITHRUN,   chance = 8 },
+    { ids = ID.mob.HEITHRUN,   chance =  8 },
     { ids = ID.mob.SAEHRIMNIR, chance = 30 },
 }
 
 -- Returns a random special mob
 -- No lock is necessary since 9 copies exist
 local function getRandomSpecial(chamberId)
-    local rand = math.random(100)
+    local rand       = math.random(1, 100)
     local cumulative = 0
 
     for _, choice in ipairs(specialPool) do
@@ -188,16 +198,16 @@ local function generateDistribution(familyCount, waveCount)
 
     -- Distribute remaining families with a max limit of 2 per wave
     local remainingFamilies = familyCount - waveCount
-    local validWaves = {}
+    local validWaves        = {}
 
     for i = 1, waveCount do
         table.insert(validWaves, i)
     end
 
     while remainingFamilies > 0 and #validWaves > 0 do
-        local waveIndex = validWaves[math.random(1, #validWaves)]
+        local waveIndex         = validWaves[math.random(1, #validWaves)]
         distribution[waveIndex] = distribution[waveIndex] + 1
-        remainingFamilies = remainingFamilies - 1
+        remainingFamilies       = remainingFamilies - 1
 
         if distribution[waveIndex] == 2 then
             for i, v in ipairs(validWaves) do
@@ -215,18 +225,19 @@ end
 local function getWaveCount(familyCount, chamberTier)
     if chamberTier == 1 then
         return 1  -- Always 1 wave
-    else
-        -- Generate wave count, but it cannot exceed family count
-        local maxWaves = math.min(familyCount, (chamberTier == 2 and 2) or 3)
+    end
 
-        if chamberTier == 2 then
-            -- 1 or 2 waves (40%-60%)
-            return math.random(100) > 40 and maxWaves or 1
-        elseif chamberTier == 3 then
-            -- 1 to 3 waves (5%-45%-45%), but max cannot exceed family count
-            local roll = math.random(100)
-            return (roll > 50 and maxWaves) or (roll > 5 and math.min(2, maxWaves)) or 1
-        end
+    -- Generate wave count, but it cannot exceed family count
+    local maxWaves = math.min(familyCount, (chamberTier == 2 and 2) or 3)
+
+    if chamberTier == 2 then
+        -- 1 or 2 waves (40%-60%)
+        return math.random(1, 100) > 40 and maxWaves or 1
+    elseif chamberTier == 3 then
+        -- 1 to 3 waves (5%-45%-45%), but max cannot exceed family count
+        local roll = math.random(1, 100)
+
+        return (roll > 50 and maxWaves) or (roll > 5 and math.min(2, maxWaves)) or 1
     end
 end
 
@@ -234,10 +245,11 @@ end
 -- All selected mobs are locked until released by the chamber
 xi.einherjar.makeChamberPlan = function(chamberId)
     local chamberTier = math.ceil(chamberId / 3)
-    local chamberConfig = {
-        boss = getRandomBoss(chamberTier),
+    local chamberConfig =
+    {
+        boss    = getRandomBoss(chamberTier),
         special = getRandomSpecial(chamberId),
-        waves = {}
+        waves   = {}
     }
 
     -- If we didn't get a boss, abort
@@ -250,13 +262,13 @@ xi.einherjar.makeChamberPlan = function(chamberId)
     local familyCount
     if chamberTier == 1 then
         -- 1 to 2 families (40%-60%) over 1 wave
-        familyCount = math.random(100) > 40 and 2 or 1
+        familyCount = math.random(1, 100) > 40 and 2 or 1
     elseif chamberTier == 2 then
         -- 2 to 3 families (75%-25%) over 1 or 2 waves (40%-60%)
-        familyCount = math.random(100) > 25 and 2 or 3
+        familyCount = math.random(1, 100) > 25 and 2 or 3
     elseif chamberTier == 3 then
         -- 2 to 4 families (25%-50%-25%) over 1, 2, or 3 waves (5%-45%-45%)
-        local roll = math.random(100)
+        local roll  = math.random(1, 100)
         familyCount = (roll > 75 and 4) or (roll > 25 and 3) or 2
     end
 
@@ -268,8 +280,12 @@ xi.einherjar.makeChamberPlan = function(chamberId)
         local randomFamily = {}
 
         -- Special case: If the boss is MOTSOGNIR, last wave gets specific IDs
-        if chamberConfig.boss == ID.mob.MOTSOGNIR and j == familyCount then
-            randomFamily = {
+        if
+            chamberConfig.boss == ID.mob.MOTSOGNIR and
+            j == familyCount
+        then
+            randomFamily =
+            {
                 ID.mob.HERVARTH,
                 ID.mob.HJORVARTH,
                 ID.mob.HRANI,
@@ -331,15 +347,15 @@ end
 -- Subdivides a list of mob IDs into random-sized subgroups
 xi.einherjar.subDivideMobs = function(mobIds)
     local subdividedGroups = {}
-    local shuffled = utils.shuffle(mobIds)
+    local shuffled         = utils.shuffle(mobIds)
+    local index            = 1
 
     -- Divide into random-sized subgroups (between 2 and 5)
-    local index = 1
     while index <= #shuffled do
         local remaining = #shuffled - index + 1
         -- Random group size between 2 and 5, but not exceeding remaining mobs
         local groupSize = math.min(math.random(2, 5), remaining)
-        local subGroup = {}
+        local subGroup  = {}
 
         for i = 0, groupSize - 1 do
             table.insert(subGroup, shuffled[index + i])
@@ -353,22 +369,19 @@ xi.einherjar.subDivideMobs = function(mobIds)
 end
 
 xi.einherjar.getRandomPosForMobGroup = function(chamberId, min, max)
-    local function getGroupCenterOffset()
-        return math.random(min, max)
-    end
+    local groupOffsetX = math.random(min, max)
+    local groupOffsetZ = math.random(min, max)
 
-    local groupOffsetX = getGroupCenterOffset()
-    local groupOffsetZ = getGroupCenterOffset()
-
-    if math.random() > 0.5 then
+    if math.random(1, 100) <= 50 then
         groupOffsetX = -groupOffsetX
     end
 
-    if math.random() > 0.5 then
+    if math.random(1, 100) <= 50 then
         groupOffsetZ = -groupOffsetZ
     end
 
-    return {
+    return
+    {
         xi.einherjar.chambers[chamberId].center[1] + groupOffsetX,
         xi.einherjar.chambers[chamberId].center[2],
         xi.einherjar.chambers[chamberId].center[3] + groupOffsetZ
