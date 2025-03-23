@@ -39,7 +39,7 @@
 #include "ipc_client.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_server.h"
 #include "monstrosity.h"
 #include "notoriety_container.h"
 #include "party.h"

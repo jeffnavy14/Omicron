@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "map.h"
+#include "map_server.h"
 
 #include "synth_suggestion.h"
 #include <map>

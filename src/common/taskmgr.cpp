@@ -84,7 +84,7 @@ void CTaskMgr::RemoveTask(std::string const& TaskName)
     m_TaskList = newPq;
 }
 
-duration CTaskMgr::DoTimer(time_point tick)
+duration CTaskMgr::DoTimer(time_point tick) // tick is ::now()
 {
     TracyZoneScoped;
 

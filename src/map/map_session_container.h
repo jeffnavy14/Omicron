@@ -37,7 +37,7 @@ public:
     auto getSessionByCharId(uint32 charId) -> MapSession*;
     auto getSessionByCharName(const std::string& name) -> MapSession*;
 
-    void cleanupSessions();
+    void cleanupSessions(IPP mapIPP);
 
     void destroySession(IPP ipp);
     void destroySession(MapSession* map_session_data);

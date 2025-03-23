@@ -21,6 +21,7 @@
 
 #include "common/logging.h"
 #include "common/macros.h"
+#include "common/settings.h"
 #include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
@@ -28,9 +29,6 @@
 
 #include <array>
 #include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
 
 #include "lua/luautils.h"
 
@@ -80,7 +78,8 @@
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_networking.h"
+#include "map_server.h"
 #include "mob_modifier.h"
 #include "recast_container.h"
 #include "roe.h"
@@ -7239,12 +7238,10 @@ namespace charutils
 
     void removeCharFromZone(CCharEntity* PChar)
     {
-        MapSession* PSession = gMapSessions.getSessionByCharId(PChar->id);
-
         // Store old blowfish, recalculate expected new blowfish
-        if (PSession)
+        if (PChar->PSession)
         {
-            PSession->blowfish.status = BLOWFISH_PENDING_ZONE;
+            PChar->PSession->blowfish.status = BLOWFISH_PENDING_ZONE;
         }
 
         PChar->TradePending.clean();
@@ -7308,12 +7305,12 @@ namespace charutils
                 PChar->resetPetZoningInfo();
             }
 
-            PSession->shuttingDown = 1;
+            PChar->PSession->shuttingDown = 1;
             _sql->Query("UPDATE char_stats SET zoning = 0 WHERE charid = %u", PChar->id);
         }
         else
         {
-            PSession->shuttingDown = 2;
+            PChar->PSession->shuttingDown = 2;
             _sql->Query("UPDATE char_stats SET zoning = 1 WHERE charid = %u", PChar->id);
             charutils::CheckEquipLogic(PChar, SCRIPT_CHANGEZONE, PChar->getZone());
         }
@@ -7323,7 +7320,7 @@ namespace charutils
             PChar->loc.zone->DecreaseZoneCounter(PChar);
         }
 
-        PChar->StatusEffectContainer->SaveStatusEffects(PSession->shuttingDown == 1);
+        PChar->StatusEffectContainer->SaveStatusEffects(PChar->PSession->shuttingDown == 1);
         PChar->PersistData();
         charutils::SavePlayTime(PChar);
         charutils::SaveCharStats(PChar);

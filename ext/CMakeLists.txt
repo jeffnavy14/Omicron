@@ -90,7 +90,7 @@ CPMAddPackage(
 CPMAddPackage(
     NAME argparse
     GITHUB_REPOSITORY p-ranav/argparse
-    GIT_TAG cbd9fd8ed675ed6a2ac1bd7142d318c6ad5d3462
+    GIT_TAG d924b84eba1f0f0adf38b20b7b4829f6f65b6570
 ) # defines: argparse
 
 CPMAddPackage(

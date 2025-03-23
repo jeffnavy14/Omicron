@@ -24,8 +24,6 @@
 #include "packets/char_job_extra.h"
 #include "packets/char_spells.h"
 
-#include <cmath>
-
 #include "packets/char_health.h"
 #include "packets/char_stats.h"
 #include "packets/message_basic.h"

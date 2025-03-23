@@ -21,11 +21,20 @@
 
 #include "map_socket.h"
 
-MapSocket::MapSocket(uint16 port)
+MapSocket::MapSocket(uint16 port, ReceiveFn onReceiveFn)
 : port_(port)
 , socket_(io_context_)
+, onReceiveFn_(onReceiveFn)
 {
     TracyZoneScoped;
+
+    ShowInfoFmt("MapSocket: Starting on port {}", port_);
+
+    asio::ip::udp::endpoint listen_endpoint(asio::ip::udp::v4(), port_);
+    socket_.open(listen_endpoint.protocol());
+    socket_.bind(listen_endpoint);
+
+    startReceive();
 }
 
 MapSocket::~MapSocket()
@@ -38,13 +47,13 @@ MapSocket::~MapSocket()
     }
 }
 
-void MapSocket::startReceive(ReceiveFn onReceiveFn)
+void MapSocket::startReceive()
 {
     TracyZoneScoped;
 
     socket_.async_receive_from(
         asio::buffer(buffer_), remote_endpoint_,
-        [this, onReceiveFn](const std::error_code& ec, std::size_t bytes_recvd)
+        [this](const std::error_code& ec, std::size_t bytes_recvd)
         {
             // NOTE: ASIO returns the address in host byte order, but we store it in network byte order,
             //     : so we convert it back.
@@ -56,30 +65,18 @@ void MapSocket::startReceive(ReceiveFn onReceiveFn)
 
             DebugPacketsFmt("Received {} bytes from {}", buffer.size(), ipp.toString());
 
-            onReceiveFn(ec, buffer, ipp);
+            onReceiveFn_(ec, buffer, ipp);
 
-            startReceive(onReceiveFn); // Queue up more work
+            startReceive(); // Queue up more work
         });
 }
 
-void MapSocket::recvFor(duration duration, ReceiveFn onReceiveFn)
+void MapSocket::recvFor(duration duration)
 {
     TracyZoneScoped;
 
-    // Lazy initialization of the socket
-    if (!socket_.is_open())
-    {
-        ShowInfoFmt("MapSocket: Starting on port {}", port_);
-
-        asio::ip::udp::endpoint listen_endpoint(asio::ip::udp::v4(), port_);
-        socket_.open(listen_endpoint.protocol());
-        socket_.bind(listen_endpoint);
-
-        // Queue up first work
-        startReceive(onReceiveFn);
-    }
-
-    io_context_.run_for(duration); // Blocks until the duration is up
+    // Blocks until the duration is up
+    io_context_.run_for(duration);
 
     // Once run_for() or run() return the io_context enters a stopped state,
     // even if there are still pending asynchronous operations. You need to

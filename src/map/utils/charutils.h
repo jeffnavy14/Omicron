@@ -27,6 +27,7 @@
 #include "entities/charentity.h"
 #include "items/item_equipment.h"
 #include "trait.h"
+#include "zone.h"
 
 class CPetEntity;
 class CMobEntity;

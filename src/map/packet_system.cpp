@@ -36,6 +36,7 @@
 
 #include "alliance.h"
 #include "campaign_system.h"
+#include "command_handler.h"
 #include "conquest_system.h"
 #include "enmity_container.h"
 #include "fishingcontest.h"
@@ -43,7 +44,9 @@
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_networking.h"
+#include "map_server.h"
+#include "map_session.h"
 #include "mob_modifier.h"
 #include "monstrosity.h"
 #include "notoriety_container.h"

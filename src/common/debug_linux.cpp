@@ -26,7 +26,7 @@
 #include <sys/types.h>
 
 #include "debug.h"
-#include "kernel.h"
+#include "logging.h"
 
 #define BACKWARD_HAS_BFD 1
 #include "ext/backward/backward.hpp"

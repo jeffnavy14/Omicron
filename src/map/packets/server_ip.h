@@ -34,8 +34,8 @@ class CServerIPPacket : public CBasicPacket
 public:
     CServerIPPacket(CCharEntity* PChar, uint8 zone_type, IPP zone_ipp);
 
-    uint8 zoneType();
-    IPP   zoneIPP();
+    auto zoneType() const -> uint8;
+    auto zoneIPP() const -> IPP;
 };
 
 #endif

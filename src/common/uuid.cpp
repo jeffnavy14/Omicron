@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2023 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,25 +19,26 @@
 ===========================================================================
 */
 
-#pragma once
+#include "uuid.h"
 
-#include "cbasetypes.h"
-#include "console_service.h"
-#include "settings.h"
+auto uuid::GenerateUUID() -> std::string
+{
+    // https://stackoverflow.com/questions/24365331/how-can-i-generate-uuid-in-c-without-using-boost-library
+    const char* v      = "0123456789abcdef";
+    const bool  dash[] = { 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0 };
 
-//
-// Global variables
-//
+    std::string res;
 
-extern std::atomic<bool>               gRunFlag;
-extern std::unique_ptr<ConsoleService> gConsoleService;
+    for (int i = 0; i < 16; i++)
+    {
+        if (dash[i])
+        {
+            res += "-";
+        }
 
-//
-// Functions
-//
+        res += v[xirand::GetRandomNumber(16)];
+        res += v[xirand::GetRandomNumber(16)];
+    }
 
-extern void log_init(int, char**);
-extern auto do_init(int32, char**) -> int32;
-extern auto do_sockets(duration) -> int32;
-extern void do_abort(void);
-extern void do_final(int);
+    return res;
+}

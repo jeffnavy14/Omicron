@@ -27,7 +27,7 @@
 #include "ipc_client.h"
 #include "job_points.h"
 #include "latent_effect_container.h"
-#include "map.h"
+#include "map_server.h"
 #include "party.h"
 #include "status_effect_container.h"
 #include "treasure_pool.h"
@@ -460,6 +460,12 @@ void CParty::DelMember(CBattleEntity* PEntity)
 
 void CParty::PopMember(CBattleEntity* PEntity)
 {
+    if (PEntity == nullptr || PEntity->PParty != this)
+    {
+        ShowWarning("CParty::PopMember() - PEntity was null, or PParty mismatch.");
+        return;
+    }
+
     auto memberToDelete = std::find(members.begin(), members.end(), PEntity);
 
     if (memberToDelete != members.end())
@@ -501,14 +507,17 @@ bool CParty::RemovePartyLeader(CBattleEntity* PEntity)
         return false;
     }
 
-    int ret = _sql->Query("SELECT charname FROM accounts_sessions JOIN chars ON accounts_sessions.charid = chars.charid \
-                                    JOIN accounts_parties ON accounts_parties.charid = chars.charid WHERE partyid = %u AND NOT partyflag & %d \
-                                    ORDER BY timestamp ASC LIMIT 1",
-                          m_PartyID, PARTY_LEADER);
-    if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+    if (m_PartyType != PARTYTYPE::PARTY_MOBS)
     {
-        std::string newLeader((const char*)_sql->GetData(0));
-        SetLeader(newLeader);
+        int ret = _sql->Query("SELECT charname FROM accounts_sessions JOIN chars ON accounts_sessions.charid = chars.charid \
+                                        JOIN accounts_parties ON accounts_parties.charid = chars.charid WHERE partyid = %u AND NOT partyflag & %d \
+                                        ORDER BY timestamp ASC LIMIT 1",
+                              m_PartyID, PARTY_LEADER);
+        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        {
+            std::string newLeader((const char*)_sql->GetData(0));
+            SetLeader(newLeader);
+        }
     }
 
     if (m_PartyType == PARTYTYPE::PARTY_MOBS) // mob party, mob destructor being called and is leader of a party
@@ -534,12 +543,19 @@ bool CParty::RemovePartyLeader(CBattleEntity* PEntity)
     {
         RemoveMember(PEntity);
     }
+
     return true;
 }
 
 std::vector<CParty::partyInfo_t> CParty::GetPartyInfo() const
 {
     std::vector<CParty::partyInfo_t> memberinfo;
+
+    if (m_PartyType != PARTY_PCS)
+    {
+        ShowWarning("Attempting to get Party data for Mob Party.");
+        return memberinfo;
+    }
 
     const auto rset = db::preparedStmt("SELECT chars.charid, partyid, allianceid, charname, partyflag, pos_zone, pos_prevzone FROM accounts_parties "
                                        "LEFT JOIN chars ON accounts_parties.charid = chars.charid WHERE "
@@ -931,6 +947,12 @@ void CParty::ReloadParty()
 // update party info for PChar
 void CParty::ReloadPartyMembers(CCharEntity* PChar)
 {
+    if (PChar == nullptr)
+    {
+        ShowWarning("CParty::ReloadPartyMembers() - PChar was null.");
+        return;
+    }
+
     PChar->ReloadPartyDec();
     PChar->pushPacket<CPartyDefinePacket>(this);
 
@@ -1314,11 +1336,17 @@ bool CParty::IsFull() const
 
 uint32 CParty::LoadPartySize() const
 {
+    if (m_PartyType != PARTYTYPE::PARTY_PCS)
+    {
+        return static_cast<uint32>(members.size());
+    }
+
     int ret = _sql->Query("SELECT COUNT(*) FROM accounts_parties WHERE partyid = %d", m_PartyID);
     if (ret != SQL_ERROR && _sql->NextRow() == SQL_SUCCESS)
     {
         return _sql->GetUIntData(0);
     }
+
     return 0;
 }
 

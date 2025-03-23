@@ -32,7 +32,8 @@
 #include "entities/npcentity.h"
 #include "items/item_weapon.h"
 #include "lua/luautils.h"
-#include "map.h"
+#include "map_networking.h"
+#include "map_server.h"
 #include "mob_modifier.h"
 #include "mob_spell_list.h"
 #include "mobutils.h"
@@ -221,11 +222,11 @@ namespace zoneutils
         return PTertiary;
     }
 
-    auto GetZonesAssignedToThisProcess() -> std::vector<uint16>
+    auto GetZonesAssignedToThisProcess(IPP mapIPP) -> std::vector<uint16>
     {
-        const auto ip    = gMapIPP.getIP();
-        const auto ipStr = gMapIPP.getIPString();
-        const auto port  = gMapIPP.getPort();
+        const auto ip    = mapIPP.getIP();
+        const auto ipStr = mapIPP.getIPString();
+        const auto port  = mapIPP.getPort();
 
         const auto zonesQuery = fmt::format("SELECT zoneid "
                                             "FROM zone_settings "
@@ -246,9 +247,9 @@ namespace zoneutils
         return zonesOnThisProcess;
     }
 
-    bool IsZoneAssignedToThisProcess(ZONEID zoneId)
+    bool IsZoneAssignedToThisProcess(IPP mapIPP, ZONEID zoneId)
     {
-        std::vector processZones = GetZonesAssignedToThisProcess();
+        std::vector processZones = GetZonesAssignedToThisProcess(mapIPP);
         for (auto& zone : processZones)
         {
             if (zone == zoneId)
@@ -266,12 +267,12 @@ namespace zoneutils
      *                                                                       *
      ************************************************************************/
 
-    void LoadNPCList()
+    void LoadNPCList(IPP mapIPP)
     {
         TracyZoneScoped;
         ShowInfo("Loading NPCs");
 
-        const auto zonesOnThisProcess = GetZonesAssignedToThisProcess();
+        const auto zonesOnThisProcess = GetZonesAssignedToThisProcess(mapIPP);
 
         // clang-format off
         for (const auto zoneId : zonesOnThisProcess)
@@ -390,12 +391,12 @@ namespace zoneutils
      *                                                                       *
      ************************************************************************/
 
-    void LoadMOBList()
+    void LoadMOBList(IPP mapIPP)
     {
         TracyZoneScoped;
         ShowInfo("Loading Mobs");
 
-        const auto zonesOnThisProcess = GetZonesAssignedToThisProcess();
+        const auto zonesOnThisProcess = GetZonesAssignedToThisProcess(mapIPP);
 
         const auto normalLevelRangeMin = settings::get<uint8>("main.NORMAL_MOB_MAX_LEVEL_RANGE_MIN");
         const auto normalLevelRangeMax = settings::get<uint8>("main.NORMAL_MOB_MAX_LEVEL_RANGE_MAX");
@@ -728,7 +729,7 @@ namespace zoneutils
      *                                                                       *
      ************************************************************************/
 
-    void LoadZoneList()
+    void LoadZoneList(IPP mapIPP)
     {
         TracyZoneScoped;
 
@@ -736,11 +737,11 @@ namespace zoneutils
 
         g_PTrigger = new CNpcEntity(); // you need to set the default model in the CNpcEntity constructor
 
-        std::vector<uint16> zones = GetZonesAssignedToThisProcess();
+        std::vector<uint16> zones = GetZonesAssignedToThisProcess(mapIPP);
         if (zones.empty())
         {
             ShowCritical("Unable to load any zones! Check IP and port params");
-            do_final(EXIT_FAILURE);
+            std::exit(1);
         }
 
         ShowInfo(fmt::format("Loading {} zones", zones.size()));
@@ -787,8 +788,8 @@ namespace zoneutils
         // IDs attached to xi.zone[name] need to be populated before NPCs and Mobs are loaded
         luautils::PopulateIDLookupsByZone();
 
-        LoadNPCList();
-        LoadMOBList();
+        LoadNPCList(mapIPP);
+        LoadMOBList(mapIPP);
 
         campaign::LoadState();
         campaign::LoadNations();

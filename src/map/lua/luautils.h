@@ -127,7 +127,7 @@ namespace luautils
         auto findGlobalLuaFunction(const std::string& funcName) -> sol::function;
     } // namespace detail
 
-    void init();
+    void init(IPP mapIPP, bool isRunningInCI);
     void garbageCollectStep();
     void garbageCollectFull();
     void cleanup();
