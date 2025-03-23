@@ -26,7 +26,7 @@
 #include "ai/ai_container.h"
 #include "battlefield.h"
 #include "instance.h"
-#include "map.h"
+#include "map_server.h"
 #include "zone.h"
 
 #include <cstring>

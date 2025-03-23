@@ -59,6 +59,9 @@ auto str2ip(const std::string& ip_str) -> uint32;
 auto sockaddr2netip(const sockaddr_in& addr) -> uint32;
 auto sockaddr2hostport(const sockaddr_in& addr) -> uint16;
 
+//
+// An IP-Port Pair
+//
 class IPP final
 {
 public:

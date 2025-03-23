@@ -9,9 +9,17 @@
 #include "map/utils/moduleutils.h"
 
 #include "common/timer.h"
+
+#include "map/packet_system.h"
 #include "map/packets/auction_house.h"
+#include "map/packets/basic.h"
 #include "map/packets/chat_message.h"
+
+#include "map/map_session.h"
 #include "map/zone.h"
+
+#include <functional>
+#include <numeric>
 
 extern uint8                                                                     PacketSize[512];
 extern std::function<void(MapSession* const, CCharEntity* const, CBasicPacket&)> PacketParser[512];

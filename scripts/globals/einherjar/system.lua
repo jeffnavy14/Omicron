@@ -6,7 +6,8 @@ xi.einherjar = xi.einherjar or {}
 
 local ID = zones[xi.zone.HAZHALM_TESTING_GROUNDS]
 
-local mobType = {
+local mobType =
+{
     REGULAR = 1,
     BOSS    = 2,
     SPECIAL = 3,
@@ -34,11 +35,11 @@ local function log(chamberId, msg)
     print(string.format('[einherjar][%s] ', getChamberNameById(chamberId)) .. msg)
 end
 
---=============================
+-----------------------------------
 -- Chamber instances management
---=============================
-
-local chambersInstances = {
+-----------------------------------
+local chambersInstances =
+{
     [xi.einherjar.chamber.ROSSWEISSE]   = nil,
     [xi.einherjar.chamber.GRIMGERDE]    = nil,
     [xi.einherjar.chamber.SIEGRUNE]     = nil,
@@ -161,7 +162,8 @@ local function onArmouryCrateTrigger(chamberData, chestOpener, armouryCrate)
 end
 
 local function onSpecialMobDespawn(chamberData, mob)
-    local specialMobHandlers = {
+    local specialMobHandlers =
+    {
         ['Saehrimnir'] = function()
             -- TODO: The exact value is unknown but it appears to provide a certain amount of regain to all mobs
             -- Future mobs will have 30% regain
@@ -184,7 +186,8 @@ local function onSpecialMobDespawn(chamberData, mob)
 end
 
 local function onSpecialMobDeath(chamberData, mob)
-    local specialMobHandlers = {
+    local specialMobHandlers =
+    {
         ['Saehrimnir'] = function()
             mob:removeListener('EINHERJAR_DESPAWN')
         end,
@@ -253,7 +256,7 @@ local function onMobEngage(chamberData, mob)
             -- Unknown if that's the actual trigger for countdown
             -- Captures show special spawn as early as 1.5 minutes from engaging mobs
             chamberData.eventsQueue[os.time() + math.random(90, 300)] = function()
-                local x, y, z = unpack(xi.einherjar.getRandomPosForMobGroup(chamberData.id, 10, 30))
+                local x, y, z    = unpack(xi.einherjar.getRandomPosForMobGroup(chamberData.id, 10, 30))
                 local specialMob = GetMobByID(chamberData.encounters.special)
                 if specialMob then
                     specialMob:setSpawn(x, y, z, math.random(0, 255))
@@ -267,7 +270,8 @@ end
 xi.einherjar.new = function(chamberId, leaderId)
     local startTime = os.time()
 
-    local chamberData = {
+    local chamberData =
+    {
         id          = chamberId,
         leaderId    = leaderId,
         startTime   = startTime,
@@ -279,7 +283,8 @@ xi.einherjar.new = function(chamberId, leaderId)
         mobs        = {},
         deadMobs    = {},
         plannedMobs = 0,
-        mobMods     = {
+        mobMods     =
+        {
             [xi.mobMod.ALLI_HATE]      = 100,
             [xi.mobMod.CHECK_AS_NM]    = 1,
             [xi.mobMod.CHARMABLE]      = 0,
@@ -321,7 +326,8 @@ xi.einherjar.new = function(chamberId, leaderId)
 
     -- TODO: Create a chamber-scoped shared treasure pool
 
-    chamberData.eventsQueue = {
+    chamberData.eventsQueue =
+    {
         [chamberData.startTime + (xi.einherjar.settings.EINHERJAR_RESERVATION_TIMEOUT * 60)] = function()
             if not chamberData.players[chamberData.leaderId] then
                 log(chamberId, 'Leader never entered chamber, cancelling reservation.')
@@ -355,6 +361,7 @@ xi.einherjar.new = function(chamberId, leaderId)
     }
 
     log(chamberId, 'Created chamber with ' .. #chamberData.encounters.waves .. ' waves.')
+
     return chamberData
 end
 
@@ -480,6 +487,7 @@ xi.einherjar.cycleWave = function(chamberData)
         log(chamberData.id, 'All waves cleared! Showing armoury crate.')
         npcUtil.showCrate(chamberData.lootCrate)
         chamberData.lootCrate:setLocalVar('[ein]chamber', chamberData.id)
+
         return
     end
 
@@ -521,10 +529,9 @@ xi.einherjar.cycleWave = function(chamberData)
     end
 end
 
---=============================
+-----------------------------------
 -- Zone events listeners
---=============================
-
+-----------------------------------
 local function onChamberTick(chamberData)
     if not chamberData.eventsQueue or next(chamberData.eventsQueue) == nil then
         return

@@ -19,9 +19,8 @@
 ===========================================================================
 */
 
-#include <cmath>
-
 #include "lua_baseentity.h"
+
 #include "lua_battlefield.h"
 #include "lua_instance.h"
 #include "lua_item.h"
@@ -31,7 +30,6 @@
 #include "lua_zone.h"
 #include "luautils.h"
 
-#include "common/kernel.h"
 #include "common/logging.h"
 #include "common/timer.h"
 #include "common/utils.h"
@@ -48,7 +46,7 @@
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_server.h"
 #include "mob_modifier.h"
 #include "mob_spell_container.h"
 #include "mobskill.h"

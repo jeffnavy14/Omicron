@@ -27,7 +27,8 @@
 #include <cstdlib>
 
 #include "entities/charentity.h"
-#include "map.h"
+#include "map_networking.h"
+#include "map_server.h"
 #include "packets/entity_update.h"
 #include "packets/event.h"
 #include "utils/zoneutils.h"
@@ -110,7 +111,7 @@ void Elevator_t::closeDoor(CNpcEntity* npc) const
  *                                                                       *
  ************************************************************************/
 
-void CTransportHandler::InitializeTransport()
+void CTransportHandler::InitializeTransport(IPP mapIPP)
 {
     if (townZoneList.size() != 0)
     {
@@ -124,7 +125,7 @@ void CTransportHandler::InitializeTransport()
                             zone_settings ON ((transport >> 12) & 0xFFF) = zoneid WHERE \
                             IF(%d <> 0, '%s' = zoneip AND %d = zoneport, TRUE)";
 
-    int32 ret = _sql->Query(fmtQuery, gMapIPP.getIP(), gMapIPP.getIPString(), gMapIPP.getPort());
+    int32 ret = _sql->Query(fmtQuery, mapIPP.getIP(), mapIPP.getIPString(), mapIPP.getPort());
     if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
         while (_sql->NextRow() == SQL_SUCCESS)
@@ -186,7 +187,7 @@ void CTransportHandler::InitializeTransport()
                 zone_settings ON zone = zoneid WHERE \
                 IF(%d <> 0, '%s' = zoneip AND %d = zoneport, TRUE)";
 
-    ret = _sql->Query(fmtQuery, gMapIPP.getIP(), gMapIPP.getIPString(), gMapIPP.getPort());
+    ret = _sql->Query(fmtQuery, mapIPP.getIP(), mapIPP.getIPString(), mapIPP.getPort());
     if (ret != SQL_ERROR && _sql->NumRows() != 0)
     {
         while (_sql->NextRow() == SQL_SUCCESS)

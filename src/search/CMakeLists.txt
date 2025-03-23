@@ -13,12 +13,6 @@ set(SOURCES
     search_server.cpp
 )
 
-# Temporarily remove clashing old code
-# TODO: Remove this block
-list(REMOVE_ITEM SOURCES
-    ${CMAKE_SOURCE_DIR}/src/common/kernel.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/kernel.h)
-
 if(UNIX)
     set(resource "")
 else()

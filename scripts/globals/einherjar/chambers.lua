@@ -4,8 +4,10 @@
 xi = xi or {}
 xi.einherjar = xi.einherjar or {}
 
-local chambersByTier = {
-    [xi.einherjar.wing.WING_1] = {
+local chambersByTier =
+{
+    [xi.einherjar.wing.WING_1] =
+    {
         {
             id     = xi.einherjar.chamber.ROSSWEISSE,
             ki     = xi.ki.ROSSWEISSES_FEATHER,
@@ -28,7 +30,8 @@ local chambersByTier = {
             ichor  = 960,
         },
     },
-    [xi.einherjar.wing.WING_2] = {
+    [xi.einherjar.wing.WING_2] =
+    {
         {
             id     = xi.einherjar.chamber.HELMWIGE,
             ki     = xi.ki.HELMWIGES_FEATHER,
@@ -51,7 +54,8 @@ local chambersByTier = {
             ichor  = 1440,
         },
     },
-    [xi.einherjar.wing.WING_3] = {
+    [xi.einherjar.wing.WING_3] =
+    {
         {
             id     = xi.einherjar.chamber.ORTLINDE,
             ki     = xi.ki.ORTLINDES_FEATHER,
@@ -74,7 +78,8 @@ local chambersByTier = {
             ichor  = 1920,
         },
     },
-    [xi.einherjar.wing.VALGRIND] = {
+    [xi.einherjar.wing.VALGRIND] =
+    {
         {
             id     = xi.einherjar.chamber.ODIN,
             ki     = 0,
@@ -92,7 +97,8 @@ local chambersByTier = {
     },
 }
 
-xi.einherjar.chambers = {
+xi.einherjar.chambers =
+{
     [xi.einherjar.chamber.ROSSWEISSE]   = chambersByTier[xi.einherjar.wing.WING_1][1],
     [xi.einherjar.chamber.GRIMGERDE]    = chambersByTier[xi.einherjar.wing.WING_1][2],
     [xi.einherjar.chamber.SIEGRUNE]     = chambersByTier[xi.einherjar.wing.WING_1][3],
@@ -110,15 +116,16 @@ xi.einherjar.chambers = {
 -- Wing 1 is always accessible
 xi.einherjar.getChambersMenu = function(player)
     local mask = 0xFF0
-    local wings = {
+    local wings =
+    {
         xi.einherjar.wing.WING_1,
         xi.einherjar.wing.WING_2,
         xi.einherjar.wing.WING_3,
-        -- xi.einherjar.wing.ODIN -- Not implemented
+        -- xi.einherjar.wing.ODIN, -- Not implemented
     }
 
     for i = 1, #wings do
-        local tierChambers = chambersByTier[wings[i]]
+        local tierChambers     = chambersByTier[wings[i]]
         local nextTierChambers = chambersByTier[wings[i + 1]]
 
         -- Check if player owns all key items in the current tier

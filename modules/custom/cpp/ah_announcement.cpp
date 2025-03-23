@@ -11,13 +11,17 @@
 #include "common/database.h"
 #include "common/timer.h"
 
-#include "map/ipc_client.h"
-#include "map/item_container.h"
+#include "map/packet_system.h"
 #include "map/packets/auction_house.h"
+#include "map/packets/basic.h"
 #include "map/packets/chat_message.h"
 #include "map/packets/inventory_finish.h"
 #include "map/utils/charutils.h"
 #include "map/utils/itemutils.h"
+
+#include "map/ipc_client.h"
+#include "map/item_container.h"
+#include "map/map_session.h"
 #include "map/zone.h"
 
 #include <functional>

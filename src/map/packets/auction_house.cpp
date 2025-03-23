@@ -26,7 +26,7 @@
 #include <cstring>
 
 #include "entities/charentity.h"
-#include "map.h"
+#include "map_server.h"
 #include "utils/itemutils.h"
 
 bool IsAuctionOpen = true; // Trading is allowed at the auction

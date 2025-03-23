@@ -21,6 +21,8 @@
 
 #include "map_session_container.h"
 
+#include "map_networking.h"
+#include "map_server.h"
 #include "map_session.h"
 #include "status_effect_container.h"
 
@@ -137,7 +139,7 @@ auto MapSessionContainer::getSessionByCharName(const std::string& name) -> MapSe
     return nullptr;
 }
 
-void MapSessionContainer::cleanupSessions()
+void MapSessionContainer::cleanupSessions(IPP mapIPP)
 {
     TracyZoneScoped;
 
@@ -177,7 +179,7 @@ void MapSessionContainer::cleanupSessions()
 
                     // s_addr of 0 is single process map server without IP address set explicitly in commandline
                     // map_port is 0 without the port being explicitly set in commandline
-                    if ((gMapIPP.getIP() != 0 && server_addr != gMapIPP.getIP()) || (gMapIPP.getPort() != 0 && server_port != gMapIPP.getPort()))
+                    if ((mapIPP.getIP() != 0 && server_addr != mapIPP.getIP()) || (mapIPP.getPort() != 0 && server_port != mapIPP.getPort()))
                     {
                         otherMap = true;
                     }
@@ -257,6 +259,8 @@ void MapSessionContainer::destroySession(IPP ipp)
 
 void MapSessionContainer::destroySession(MapSession* map_session_data)
 {
+    TracyZoneScoped;
+
     if (map_session_data == nullptr)
     {
         return;

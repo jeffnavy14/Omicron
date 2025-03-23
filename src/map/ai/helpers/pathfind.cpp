@@ -30,8 +30,6 @@
 #include "status_effect_container.h"
 #include "zone.h"
 
-#include <cfloat>
-
 namespace
 {
     bool arePositionsClose(const position_t& a, const position_t& b)

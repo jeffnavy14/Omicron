@@ -56531,10 +56531,10 @@ INSERT INTO `mob_spawn_points` VALUES (17428485,'Bouncing_Ball','Bouncing Ball',
 
 INSERT INTO `mob_spawn_points` VALUES (17428486,'Bonze_Marberry','Bonze Marberry',4,340.103,-0.001,222.666,127);
 INSERT INTO `mob_spawn_points` VALUES (17428487,'Trompe_LOeil','Trompe L\'Oeil',5,80.031,-0.500,-38.824,197);
-INSERT INTO `mob_spawn_points` VALUES (17428488,'Cook_Solberry','Cook Solberry',6,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17428489,'Cook_Nalberry','Cook Nalberry',7,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17428490,'Cook_Minberry','Cook Minberry',8,0.000,0.000,0.000,64);
-INSERT INTO `mob_spawn_points` VALUES (17428491,'Cook_Fulberry','Cook Fulberry',9,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17428488,'Cook_Solberry','Cook Solberry',6,-144.0,0.000,-97.0,231);
+INSERT INTO `mob_spawn_points` VALUES (17428489,'Cook_Nalberry','Cook Nalberry',7,-130.0,0.000,-101.0,186);
+INSERT INTO `mob_spawn_points` VALUES (17428490,'Cook_Minberry','Cook Minberry',8,-142.0,0.000,-101.0,234);
+INSERT INTO `mob_spawn_points` VALUES (17428491,'Cook_Fulberry','Cook Fulberry',9,-132.0,0.000,-97.0,123);
 INSERT INTO `mob_spawn_points` VALUES (17428492,'Tonberrys_Elemental','Tonberry\'s Elemental',10,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17428493,'Tonberrys_Avatar','Tonberry\'s Avatar',11,0.000,0.000,0.000,127);
 INSERT INTO `mob_spawn_points` VALUES (17428494,'Temple_Guardian','Temple Guardian',12,-64.472,-0.023,-102.889,191);

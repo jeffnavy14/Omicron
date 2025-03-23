@@ -29,6 +29,8 @@
 #include "alliance.h"
 #include "conquest_system.h"
 #include "linkshell.h"
+#include "map_networking.h"
+#include "map_server.h"
 #include "party.h"
 #include "status_effect_container.h"
 #include "unitychat.h"
@@ -51,57 +53,59 @@
 #include "utils/serverutils.h"
 #include "utils/zoneutils.h"
 
-namespace
-{
-    auto getZMQEndpointString() -> std::string
-    {
-        return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
-    }
-
-    auto getZMQRoutingId() -> uint64
-    {
-        auto ip   = gMapIPP.getIP();
-        auto port = gMapIPP.getPort();
-
-        // if no ip/port were supplied, set to 1 (0 is not valid for an identity)
-        if (ip == 0 && port == 0)
-        {
-            const auto rset = db::preparedStmt("SELECT zoneip, zoneport FROM zone_settings GROUP BY zoneip, zoneport ORDER BY COUNT(*) DESC");
-            if (rset && rset->rowsCount() && rset->next())
-            {
-                ip   = str2ip(rset->get<std::string>("zoneip"));
-                port = rset->get<uint16>("zoneport");
-            }
-        }
-
-        auto ipp = IPP(ip, port).getRawIPP();
-        if (ipp == 0)
-        {
-            ShowWarning("ZMQ Routing ID IPP calculated as 0 - setting to 1. Check your zone_settings!");
-            ipp = 1;
-        }
-
-        return ipp;
-    }
-} // namespace
-
 // TODO: Don't do this
 std::unique_ptr<IPCClient> ipcClient_;
 
-void message::init()
+void message::init(MapNetworking& networking)
 {
-    ipcClient_ = std::make_unique<IPCClient>();
+    TracyZoneScoped;
+
+    ipcClient_ = std::make_unique<IPCClient>(networking);
 }
 
 void message::handle_incoming()
 {
+    TracyZoneScoped;
+
     ipcClient_->handleIncomingMessages();
 }
 
-IPCClient::IPCClient()
-: zmqDealerWrapper_(getZMQEndpointString(), getZMQRoutingId())
+IPCClient::IPCClient(MapNetworking& networking)
+: networking_(networking)
+, zmqDealerWrapper_(getZMQEndpointString(), getZMQRoutingId())
 {
     TracyZoneScoped;
+}
+
+auto IPCClient::getZMQEndpointString() -> std::string
+{
+    return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
+}
+
+auto IPCClient::getZMQRoutingId() -> uint64
+{
+    auto ip   = networking_.ipp().getIP();
+    auto port = networking_.ipp().getPort();
+
+    // if no ip/port were supplied, set to 1 (0 is not valid for an identity)
+    if (ip == 0 && port == 0)
+    {
+        const auto rset = db::preparedStmt("SELECT zoneip, zoneport FROM zone_settings GROUP BY zoneip, zoneport ORDER BY COUNT(*) DESC");
+        if (rset && rset->rowsCount() && rset->next())
+        {
+            ip   = str2ip(rset->get<std::string>("zoneip"));
+            port = rset->get<uint16>("zoneport");
+        }
+    }
+
+    auto ipp = IPP(ip, port).getRawIPP();
+    if (ipp == 0)
+    {
+        ShowWarning("ZMQ Routing ID IPP calculated as 0 - setting to 1. Check your zone_settings!");
+        ipp = 1;
+    }
+
+    return ipp;
 }
 
 void IPCClient::handleIncomingMessages()
@@ -670,12 +674,12 @@ void IPCClient::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
 {
     TracyZoneScoped;
 
-    if (auto sessionToDelete = gMapSessions.getSessionByCharId(message.victimId))
+    if (auto sessionToDelete = networking_.sessions().getSessionByCharId(message.victimId))
     {
         if (sessionToDelete->blowfish.status == BLOWFISH_PENDING_ZONE)
         {
             ShowDebugFmt("Closing session of charid {} on request of other process", message.victimId);
-            gMapSessions.destroySession(sessionToDelete);
+            networking_.sessions().destroySession(sessionToDelete);
         }
         else
         {

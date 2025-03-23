@@ -19,12 +19,13 @@
 ===========================================================================
 */
 
+#include "battleutils.h"
+
 #include "common/timer.h"
 #include "common/utils.h"
 
 #include <algorithm>
 #include <array>
-#include <cmath>
 #include <cstring>
 #include <unordered_map>
 
@@ -44,7 +45,6 @@
 #include "alliance.h"
 #include "attack.h"
 #include "attackutils.h"
-#include "battleutils.h"
 #include "charutils.h"
 #include "enmity_container.h"
 #include "entities/battleentity.h"
@@ -55,7 +55,7 @@
 #include "items.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
-#include "map.h"
+#include "map_server.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "modifier.h"
@@ -3990,8 +3990,14 @@ namespace battleutils
         //            TODO:     × (1 + Day/Weather bonuses)
         //            TODO:     × (1 + Staff Affinity)
 
-        auto damage = (int32)floor((double)(abs(lastSkillDamage)) * g_SkillChainDamageModifiers[chainLevel][chainCount] / 1000 *
-                                   (100 + PAttacker->getMod(Mod::SKILLCHAINBONUS)) / 100 * (10000 + PAttacker->getMod(Mod::SKILLCHAINDMG)) / 10000);
+        const auto closingDamage      = (double)(abs(lastSkillDamage));
+        const auto skillchainLevel    = g_SkillChainDamageModifiers[chainLevel][chainCount] / 1000.0f;
+        const auto skillchainBonus    = (100 + PAttacker->getMod(Mod::SKILLCHAINBONUS)) / 100.0f;
+        const auto skillchainDmgBonus = (10000 + PAttacker->getMod(Mod::SKILLCHAINDMG)) / 10000.0f;
+        const auto dayWeatherBonus    = 1.0f; // TODO: Implement day/weather bonuses
+        const auto staffAffinity      = 1.0f; // TODO: Implement staff affinity
+
+        auto damage = (int32)floor(closingDamage * skillchainLevel * skillchainBonus * skillchainDmgBonus * dayWeatherBonus * staffAffinity);
 
         auto* PChar = dynamic_cast<CCharEntity*>(PAttacker);
         if (PChar && PChar->StatusEffectContainer->HasStatusEffect(EFFECT_INNIN) && behind(PChar->loc.p, PDefender->loc.p, 64))

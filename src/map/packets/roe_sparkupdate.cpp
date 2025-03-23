@@ -19,8 +19,6 @@
 ===========================================================================
 */
 
-#include <math.h>
-
 #include "roe_sparkupdate.h"
 
 #include "entities/charentity.h"

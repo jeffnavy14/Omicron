@@ -33,12 +33,12 @@ CServerIPPacket::CServerIPPacket(CCharEntity* PChar, uint8 zone_type, IPP zone_i
     ref<uint16>(0x0C) = zone_ipp.getPort();
 }
 
-uint8 CServerIPPacket::zoneType()
+auto CServerIPPacket::zoneType() const -> uint8
 {
     return ref<uint8>(0x04);
 }
 
-IPP CServerIPPacket::zoneIPP()
+auto CServerIPPacket::zoneIPP() const -> IPP
 {
     const auto ip   = ref<uint32>(0x08);
     const auto port = ref<uint16>(0x0C);
