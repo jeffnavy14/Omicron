@@ -7,11 +7,12 @@ xi.einherjar = xi.einherjar or {}
 xi.einherjar.makeLamp = function(player, chamberId, startTime, endTime)
     player:addItem({
         id = xi.item.GLOWING_LAMP,
-        exdata = {
-            [0] = 0x1D + chamberId,
-            [2] = 0x01,
-            [8] = bit.band(endTime, 0xFF),
-            [9] = bit.band(bit.rshift(endTime, 8), 0xFF),
+        exdata =
+        {
+            [ 0] = 0x1D + chamberId,
+            [ 2] = 0x01,
+            [ 8] = bit.band(endTime, 0xFF),
+            [ 9] = bit.band(bit.rshift(endTime, 8), 0xFF),
             [10] = bit.band(bit.rshift(endTime, 16), 0xFF),
             [11] = bit.band(bit.rshift(endTime, 24), 0xFF),
             [12] = bit.band(startTime, 0xFF),
@@ -39,11 +40,12 @@ xi.einherjar.voidLamp = function(player, lampObj)
     player:delItemAt(xi.item.GLOWING_LAMP, 1, lampObj:getLocationID(), lampObj:getSlotID())
     player:addItem({
         id = xi.item.GLOWING_LAMP,
-        exdata = {
-            [0] = 0x0,
-            [2] = 0x0,
-            [8] = 0x0,
-            [9] = 0x0,
+        exdata =
+        {
+            [ 0] = 0x0,
+            [ 2] = 0x0,
+            [ 8] = 0x0,
+            [ 9] = 0x0,
             [10] = 0x0,
             [11] = 0x0,
             [12] = 0x0,
@@ -57,33 +59,52 @@ end
 -- Reads a given Glowing Lamp and returns the chamber, enter time, and exit time
 xi.einherjar.decypherLamp = function(lampObj)
     local exData = lampObj and lampObj:getExData()
-
-    if not exData or #exData < 16 or exData[0] == 0 then
-        return { chamber = 0, tier = 0, enter = 0, exit = 0 }
+    if
+        not exData or
+        #exData < 16 or
+        exData[0] == 0
+    then
+        return { chamber = 0, tier = 0, startTime = 0, endTime = 0 }
     end
 
     local chamber = exData[0] - 0x1D
-
-    local exit = bit.bor(
+    local endTime = bit.bor(
         exData[8] or 0,
         bit.lshift(exData[9] or 0, 8),
         bit.lshift(exData[10] or 0, 16),
         bit.lshift(exData[11] or 0, 24)
     )
 
-    local enter = bit.bor(
+    local startTime = bit.bor(
         exData[12] or 0,
         bit.lshift(exData[13] or 0, 8),
         bit.lshift(exData[14] or 0, 16),
         bit.lshift(exData[15] or 0, 24)
     )
 
-    return { chamber = chamber, enter = enter, exit = exit }
+    return { chamber = chamber, startTime = startTime, endTime = endTime }
 end
 
 xi.einherjar.isLampExpired = function(lampObj)
     local lampData = xi.einherjar.decypherLamp(lampObj)
-    return lampData and lampData.exit and os.time() > lampData.exit
+
+    return lampData and lampData.endTime and os.time() > lampData.endTime
+end
+
+xi.einherjar.getMatchingLamps = function(player, chamberId, startTime)
+    local matchingLamps = { }
+
+    for _, item in ipairs(player:findItems(xi.item.GLOWING_LAMP)) do
+        local lampData = xi.einherjar.decypherLamp(item)
+        if
+            lampData.chamber == chamberId and
+            lampData.startTime == startTime
+        then
+            table.insert(matchingLamps, item)
+        end
+    end
+
+    return matchingLamps
 end
 
 xi.einherjar.onLampCheck = function(player, lampObj)
@@ -119,11 +140,16 @@ xi.einherjar.onLampUse = function(player, lampObj)
         return
     end
 
+    local chamberInstance = xi.einherjar.getChamber(lampData.chamber)
+    if not chamberInstance then
+        xi.einherjar.voidLamp(player, lampObj)
+        return
+    end
+
     -- Using the lamp consumes it, so we need to make two new ones
-    -- TODO: Check if chamber is still active
     -- TODO: Figure out if lamp consumption can be blocked
     for _ = 1, 2 do
-        xi.einherjar.makeLamp(player, lampData.chamber, lampData.enter, lampData.exit)
+        xi.einherjar.makeLamp(player, lampData.chamber, lampData.startTime, lampData.endTime)
     end
 end
 
@@ -135,12 +161,16 @@ xi.einherjar.onLampDrop = function(player, lampObj)
     end
 
     local lampData = xi.einherjar.decypherLamp(lampObj)
-
     if lampData.chamber == 0 then
         return
     end
 
-    -- TODO: Check if chamber is still reserved
-    -- TODO: Check if player has other matching lamps
-    -- TODO: Ask Chamber to kick player out
+    local chamberData = xi.einherjar.getChamber(lampData.chamber)
+    if not chamberData then
+        return
+    end
+
+    if #xi.einherjar.getMatchingLamps(player, lampData.chamber, lampData.startTime) == 0 then
+        xi.einherjar.onChamberExit(chamberData, player)
+    end
 end

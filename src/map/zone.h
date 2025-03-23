@@ -24,7 +24,7 @@
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
-#include "common/taskmgr.h"
+#include "common/task_manager.h"
 #include "common/vana_time.h"
 
 #include <list>
@@ -537,7 +537,7 @@ typedef std::map<uint16, CBaseEntity*> EntityList_t;
 
 using QueryByNameResult_t = std::vector<CBaseEntity*>;
 
-int32 zone_update_weather(uint32 tick, CTaskMgr::CTask* PTask);
+int32 zone_update_weather(uint32 tick, CTaskManager::CTask* PTask);
 
 class CZone
 {
@@ -686,8 +686,8 @@ private:
     std::unordered_map<std::string, QueryByNameResult_t> m_queryByNameResults;
 
 protected:
-    CTaskMgr::CTask* ZoneTimer; // The pointer to the created timer is Zoneserver.necessary for the possibility of stopping it
-    CTaskMgr::CTask* ZoneTimerTriggerAreas;
+    CTaskManager::CTask* ZoneTimer; // The pointer to the created timer is Zoneserver.necessary for the possibility of stopping it
+    CTaskManager::CTask* ZoneTimerTriggerAreas;
 
     triggerAreaList_t m_triggerAreaList;
 

@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _LOGGING_H
-#define _LOGGING_H
+#pragma once
 
 #include "cbasetypes.h"
 #include "macros.h"
@@ -43,7 +42,7 @@
 #include <fmt/format.h>
 #include <fmt/printf.h>
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 // Forward declaration
 namespace settings
@@ -61,6 +60,8 @@ namespace logging
 
     void AddBacktrace(std::string const& str);
     auto GetBacktrace() -> std::vector<std::string>;
+
+    void tapWarningOrError();
 } // namespace logging
 
 // clang-format off
@@ -144,19 +145,19 @@ inline auto format_as(type v) \
 #define ShowTrace(...)    logging::AddBacktrace(fmt::sprintf(__VA_ARGS__))
 #define ShowDebug(...)    LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.LOG_DEBUG", __VA_ARGS__)
 #define ShowInfo(...)     LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_INFO, "info", "logging.LOG_INFO", __VA_ARGS__)
-#define ShowWarning(...)  LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_WARN, "warn", "logging.LOG_WARNING", __VA_ARGS__)
-#define ShowLua(...)      LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_INFO, "lua", "logging.LOG_LUA", __VA_ARGS__)
-#define ShowError(...)    LOGGER_BODY(SPDLOG_LOGGER_ERROR, "error", __VA_ARGS__)
-#define ShowCritical(...) LOGGER_BODY(SPDLOG_LOGGER_CRITICAL, "critical", __VA_ARGS__)
+#define ShowWarning(...)  LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_WARN, "warn", "logging.LOG_WARNING", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowLua(...)      LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_INFO, "lua", "logging.LOG_LUA", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowError(...)    LOGGER_BODY(SPDLOG_LOGGER_ERROR, "error", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowCritical(...) LOGGER_BODY(SPDLOG_LOGGER_CRITICAL, "critical", __VA_ARGS__); logging::tapWarningOrError()
 
 // Regular Loggers fmt variants
 #define ShowTraceFmt(...)    logging::AddBacktrace(fmt::format(__VA_ARGS__))
 #define ShowDebugFmt(...)    LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.LOG_DEBUG", __VA_ARGS__)
 #define ShowInfoFmt(...)     LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_INFO, "info", "logging.LOG_INFO", __VA_ARGS__)
-#define ShowWarningFmt(...)  LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_WARN, "warn", "logging.LOG_WARNING", __VA_ARGS__)
-#define ShowLuaFmt(...)      LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_INFO, "lua", "logging.LOG_LUA", __VA_ARGS__)
-#define ShowErrorFmt(...)    LOGGER_BODY_FMT(SPDLOG_LOGGER_ERROR, "error", __VA_ARGS__)
-#define ShowCriticalFmt(...) LOGGER_BODY_FMT(SPDLOG_LOGGER_CRITICAL, "critical", __VA_ARGS__)
+#define ShowWarningFmt(...)  LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_WARN, "warn", "logging.LOG_WARNING", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowLuaFmt(...)      LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_INFO, "lua", "logging.LOG_LUA", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowErrorFmt(...)    LOGGER_BODY_FMT(SPDLOG_LOGGER_ERROR, "error", __VA_ARGS__); logging::tapWarningOrError()
+#define ShowCriticalFmt(...) LOGGER_BODY_FMT(SPDLOG_LOGGER_CRITICAL, "critical", __VA_ARGS__); logging::tapWarningOrError()
 
 // Debug Loggers
 #define DebugSockets(...)     LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_SOCKETS", __VA_ARGS__)
@@ -170,6 +171,7 @@ inline auto format_as(type v) \
 #define DebugAuctions(...)    LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_AUCTIONS", __VA_ARGS__)
 #define DebugDeliveryBox(...) LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_DELIVERY_BOX", __VA_ARGS__)
 #define DebugBazaars(...)     LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_BAZAARS", __VA_ARGS__)
+#define DebugPerformance(...) LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_PERFORMANCE", __VA_ARGS__)
 
 // Debug Loggers fmt variants
 #define DebugSocketsFmt(...)     LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_SOCKETS", __VA_ARGS__)
@@ -183,7 +185,6 @@ inline auto format_as(type v) \
 #define DebugAuctionsFmt(...)    LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_AUCTIONS", __VA_ARGS__)
 #define DebugDeliveryBoxFmt(...) LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_DELIVERY_BOX", __VA_ARGS__)
 #define DebugBazaarsFmt(...)     LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_BAZAARS", __VA_ARGS__)
+#define DebugPerformanceFmt(...) LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_PERFORMANCE", __VA_ARGS__)
 
 // clang-format on
-
-#endif // _LOGGING_H

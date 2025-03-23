@@ -39,7 +39,7 @@ struct greater_equal
     }
 };
 
-class CTaskMgr : public Singleton<CTaskMgr>
+class CTaskManager : public Singleton<CTaskManager>
 {
 public:
     class CTask;
@@ -77,7 +77,7 @@ public:
         TaskFunc_t  m_func;
     };
 
-    ~CTaskMgr();
+    ~CTaskManager();
 
     TaskList_t& getTaskList()
     {
@@ -92,32 +92,32 @@ public:
         return AddTask(new CTask(InitName, InitTick, InitData, InitType, InitInterval, std::forward<F>(InitFunc)));
     }
 
-    duration DoTimer(time_point tick);
-    void     RemoveTask(std::string const& TaskName);
+    auto doExpiredTasks(time_point tick) -> duration;
+    void RemoveTask(std::string const& TaskName);
 
 protected:
-    CTaskMgr() = default;
+    CTaskManager() = default;
 
 private:
     TaskList_t m_TaskList;
 };
 
-inline bool operator<(const CTaskMgr::CTask& a, const CTaskMgr::CTask& b)
+inline bool operator<(const CTaskManager::CTask& a, const CTaskManager::CTask& b)
 {
     return a.m_tick < b.m_tick;
 };
 
-inline bool operator>(const CTaskMgr::CTask& a, const CTaskMgr::CTask& b)
+inline bool operator>(const CTaskManager::CTask& a, const CTaskManager::CTask& b)
 {
     return a.m_tick > b.m_tick;
 };
 
-inline bool operator>=(const CTaskMgr::CTask& a, const CTaskMgr::CTask& b)
+inline bool operator>=(const CTaskManager::CTask& a, const CTaskManager::CTask& b)
 {
     return a.m_tick >= b.m_tick;
 };
 
-inline bool operator<=(const CTaskMgr::CTask& a, const CTaskMgr::CTask& b)
+inline bool operator<=(const CTaskManager::CTask& a, const CTaskManager::CTask& b)
 {
     return a.m_tick <= b.m_tick;
 }

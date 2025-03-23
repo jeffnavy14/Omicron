@@ -4,10 +4,12 @@
 xi = xi or {}
 xi.einherjar = xi.einherjar or {}
 
-local chambersByTier = {
-    [xi.einherjar.wing.WING_1] = {
+local chambersByTier =
+{
+    [xi.einherjar.wing.WING_1] =
+    {
         {
-            id     = xi.einherjar.chamber.ROSSWEISS,
+            id     = xi.einherjar.chamber.ROSSWEISSE,
             ki     = xi.ki.ROSSWEISSES_FEATHER,
             menu   = 0x2,
             center = { 401.1, -216, 40.6, 28 },
@@ -28,30 +30,32 @@ local chambersByTier = {
             ichor  = 960,
         },
     },
-    [xi.einherjar.wing.WING_2] = {
+    [xi.einherjar.wing.WING_2] =
+    {
         {
-            id     = xi.einherjar.chamber.WALTRAUTE,
-            ki     = xi.ki.WALTRAUTES_FEATHER,
+            id     = xi.einherjar.chamber.HELMWIGE,
+            ki     = xi.ki.HELMWIGES_FEATHER,
             menu   = 0x10,
             center = { -197.32, -146, -439.5, 218 },
             ichor  = 1440,
         },
         {
-            id     = xi.einherjar.chamber.HELMWIGE,
-            ki     = xi.ki.HELMWIGES_FEATHER,
+            id     = xi.einherjar.chamber.SCHWERTLEITE,
+            ki     = xi.ki.SCHWERTLEITES_FEATHER,
             menu   = 0x20,
             center = { -437.3986, -126.0, -281.89, 34 },
             ichor  = 1440,
         },
         {
-            id     = xi.einherjar.chamber.SCHWERTLEITE,
-            ki     = xi.ki.SCHWERTLEITES_FEATHER,
+            id     = xi.einherjar.chamber.WALTRAUTE,
+            ki     = xi.ki.WALTRAUTES_FEATHER,
             menu   = 0x40,
             center = { -678, -106, -120, 28 },
             ichor  = 1440,
         },
     },
-    [xi.einherjar.wing.WING_3] = {
+    [xi.einherjar.wing.WING_3] =
+    {
         {
             id     = xi.einherjar.chamber.ORTLINDE,
             ki     = xi.ki.ORTLINDES_FEATHER,
@@ -74,7 +78,8 @@ local chambersByTier = {
             ichor  = 1920,
         },
     },
-    [xi.einherjar.wing.ODIN] = {
+    [xi.einherjar.wing.VALGRIND] =
+    {
         {
             id     = xi.einherjar.chamber.ODIN,
             ki     = 0,
@@ -92,42 +97,35 @@ local chambersByTier = {
     },
 }
 
-xi.einherjar.chambers = {
-    [xi.einherjar.chamber.ROSSWEISS]    = chambersByTier[xi.einherjar.wing.WING_1][1],
+xi.einherjar.chambers =
+{
+    [xi.einherjar.chamber.ROSSWEISSE]   = chambersByTier[xi.einherjar.wing.WING_1][1],
     [xi.einherjar.chamber.GRIMGERDE]    = chambersByTier[xi.einherjar.wing.WING_1][2],
     [xi.einherjar.chamber.SIEGRUNE]     = chambersByTier[xi.einherjar.wing.WING_1][3],
-    [xi.einherjar.chamber.WALTRAUTE]    = chambersByTier[xi.einherjar.wing.WING_2][1],
-    [xi.einherjar.chamber.HELMWIGE]     = chambersByTier[xi.einherjar.wing.WING_2][2],
-    [xi.einherjar.chamber.SCHWERTLEITE] = chambersByTier[xi.einherjar.wing.WING_2][3],
+    [xi.einherjar.chamber.HELMWIGE]     = chambersByTier[xi.einherjar.wing.WING_2][1],
+    [xi.einherjar.chamber.SCHWERTLEITE] = chambersByTier[xi.einherjar.wing.WING_2][2],
+    [xi.einherjar.chamber.WALTRAUTE]    = chambersByTier[xi.einherjar.wing.WING_2][3],
     [xi.einherjar.chamber.ORTLINDE]     = chambersByTier[xi.einherjar.wing.WING_3][1],
     [xi.einherjar.chamber.GERHILDE]     = chambersByTier[xi.einherjar.wing.WING_3][2],
     [xi.einherjar.chamber.BRUNNHILDE]   = chambersByTier[xi.einherjar.wing.WING_3][3],
-    [xi.einherjar.chamber.ODIN]         = chambersByTier[xi.einherjar.wing.ODIN][1],
+    -- [xi.einherjar.chamber.ODIN]         = chambersByTier[xi.einherjar.wing.VALGRIND][1], -- Not implemented
 }
-
-xi.einherjar.isLockedOut = function(player)
-    local lockout = player:getCharVar('[ein]lockout')
-    if lockout == 0 then
-        return 0
-    end
-
-    return math.ceil((lockout - os.time()) / 2088) -- Vanadiel days
-end
 
 -- Bitmask of chambers the player has access to
 -- Player must own all key items from previous tier to access the next tier
 -- Wing 1 is always accessible
 xi.einherjar.getChambersMenu = function(player)
     local mask = 0xFF0
-    local wings = {
+    local wings =
+    {
         xi.einherjar.wing.WING_1,
         xi.einherjar.wing.WING_2,
         xi.einherjar.wing.WING_3,
-        xi.einherjar.wing.ODIN
+        -- xi.einherjar.wing.ODIN, -- Not implemented
     }
 
     for i = 1, #wings do
-        local tierChambers = chambersByTier[wings[i]]
+        local tierChambers     = chambersByTier[wings[i]]
         local nextTierChambers = chambersByTier[wings[i + 1]]
 
         -- Check if player owns all key items in the current tier

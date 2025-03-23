@@ -1003,16 +1003,17 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             }
             skill = SKILL_HAND_TO_HAND;
         }
-        int32 ACC = GetSkill(skill) + iLvlSkill;
-        ACC       = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
+        int32 ACC           = GetSkill(skill) + iLvlSkill;
+        ACC                 = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
+        float dexMultiplier = settings::get<bool>("main.USE_PRE_2013_DEX_MULTIPLIER") ? 0.50f : 0.75f;
         if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]); weapon && weapon->isTwoHanded())
         {
-            ACC += (int16)(DEX() * 0.75);
+            ACC += (int16)(DEX() * dexMultiplier);
             ACC += m_modStat[Mod::TWOHAND_ACC];
         }
         else
         {
-            ACC += (int16)(DEX() * 0.75);
+            ACC += (int16)(DEX() * dexMultiplier);
         }
         ACC = (ACC + m_modStat[Mod::ACC] + offsetAccuracy);
 

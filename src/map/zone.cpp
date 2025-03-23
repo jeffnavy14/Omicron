@@ -26,7 +26,7 @@
 #include "zone.h"
 
 #include "common/logging.h"
-#include "common/socket.h"
+
 #include "common/timer.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
@@ -39,7 +39,7 @@
 #include "ipc_client.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_server.h"
 #include "monstrosity.h"
 #include "notoriety_container.h"
 #include "party.h"
@@ -412,8 +412,8 @@ void CZone::LoadZoneSettings()
     if (_sql->Query(Query, m_zoneID) != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
     {
         m_zoneName.insert(0, (const char*)_sql->GetData(0));
+        m_zoneIP = str2ip((const char*)_sql->GetData(1));
 
-        inet_pton(AF_INET, (const char*)_sql->GetData(1), &m_zoneIP);
         m_zonePort              = (uint16)_sql->GetUIntData(2);
         m_zoneMusic.m_songDay   = (uint8)_sql->GetUIntData(3);           // background music (day)
         m_zoneMusic.m_songNight = (uint8)_sql->GetUIntData(4);           // background music (night)
@@ -655,8 +655,8 @@ void CZone::UpdateWeather()
     luautils::OnZoneWeatherChange(GetID(), Weather);
 
     // clang-format off
-    CTaskMgr::getInstance()->AddTask("zone_update_weather", server_clock::now() + std::chrono::seconds(WeatherNextUpdate), this, CTaskMgr::TASK_ONCE, 1s,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    CTaskManager::getInstance()->AddTask("zone_update_weather", server_clock::now() + std::chrono::seconds(WeatherNextUpdate), this, CTaskManager::TASK_ONCE, 1s,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         if (!PZone->IsWeatherStatic())
@@ -866,10 +866,10 @@ void CZone::ZoneServer(time_point tick)
 
     if (ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < server_clock::now() && CheckMobsPathedBack())
     {
-        ZoneTimer->m_type = CTaskMgr::TASK_REMOVE;
+        ZoneTimer->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimer         = nullptr;
 
-        ZoneTimerTriggerAreas->m_type = CTaskMgr::TASK_REMOVE;
+        ZoneTimerTriggerAreas->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimerTriggerAreas         = nullptr;
     }
 }
@@ -962,20 +962,17 @@ void CZone::createZoneTimers()
 {
     TracyZoneScoped;
 
-    const auto tickInterval        = std::chrono::milliseconds(static_cast<uint32>(server_tick_interval));
-    const auto triggerAreaInterval = std::chrono::milliseconds(static_cast<uint32>(server_trigger_area_interval));
-
     // clang-format off
-    ZoneTimer = CTaskMgr::getInstance()->AddTask(m_zoneName, server_clock::now(), this, CTaskMgr::TASK_INTERVAL, tickInterval,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    ZoneTimer = CTaskManager::getInstance()->AddTask(m_zoneName, server_clock::now(), this, CTaskManager::TASK_INTERVAL, kLogicUpdateInterval,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         PZone->ZoneServer(tick);
         return 0;
     });
 
-    ZoneTimerTriggerAreas = CTaskMgr::getInstance()->AddTask(m_zoneName + "TriggerAreas", server_clock::now(), this, CTaskMgr::TASK_INTERVAL, triggerAreaInterval,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    ZoneTimerTriggerAreas = CTaskManager::getInstance()->AddTask(m_zoneName + "TriggerAreas", server_clock::now(), this, CTaskManager::TASK_INTERVAL, kTriggerAreaInterval,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         PZone->CheckTriggerAreas();

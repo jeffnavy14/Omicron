@@ -23,12 +23,8 @@
 
 #include "common/database.h"
 #include "common/logging.h"
-#include "common/socket.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
-
-#include <cmath>
-#include <cstring>
 
 #include "entities/battleentity.h"
 
@@ -43,7 +39,7 @@
 #include "packets/synth_result.h"
 
 #include "item_container.h"
-#include "map.h"
+#include "map_server.h"
 #include "roe.h"
 #include "trade_container.h"
 

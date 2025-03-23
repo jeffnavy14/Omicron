@@ -56,6 +56,7 @@ xi.settings.logging =
     DEBUG_AUCTIONS       = false, -- Special logic in auctionutils.cpp
     DEBUG_DELIVERY_BOX   = false, -- Special logic in dboxutils.cpp
     DEBUG_BAZAARS        = false, -- Additional debug logs for bazaar interactions in packet_system.cpp
+    DEBUG_PERFORMANCE    = false, -- Calls in C++: DebugPerformance(...)
 
     SQL_SLOW_QUERY_LOG_ENABLE   = true, -- true/false. If true, slow SQL queries will generate warning or error logs if they exceed the durations listed below.
     SQL_SLOW_QUERY_WARNING_TIME = 100,  -- uint (milliseconds).

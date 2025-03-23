@@ -21,7 +21,7 @@
 
 #include "common/logging.h"
 #include "common/macros.h"
-#include "common/socket.h"
+#include "common/settings.h"
 #include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
@@ -29,9 +29,6 @@
 
 #include <array>
 #include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
 
 #include "lua/luautils.h"
 
@@ -81,7 +78,8 @@
 #include "item_container.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
-#include "map.h"
+#include "map_networking.h"
+#include "map_server.h"
 #include "mob_modifier.h"
 #include "recast_container.h"
 #include "roe.h"
@@ -6525,47 +6523,42 @@ namespace charutils
         }
     }
 
-    void SendToZone(CCharEntity* PChar, ZoningType type, uint64 ipp)
+    void SendToZone(CCharEntity* PChar, uint16 zoneId)
     {
         TracyZoneScoped;
 
-        if (type == ZoningType::Zoning)
+        auto ipp = IPP(zoneutils::GetZoneIPP(zoneId));
+        if (ipp.getIP() == 0)
         {
-            auto ip   = (uint32)ipp;
-            auto port = (uint32)(ipp >> 32);
-            _sql->Query("UPDATE accounts_sessions SET server_addr = %u, server_port = %u WHERE charid = %u",
-                        ip, port, PChar->id);
-
-            const char* Query = "UPDATE chars "
-                                "SET "
-                                "pos_zone = %u,"
-                                "pos_prevzone = %u,"
-                                "pos_rot = %u,"
-                                "pos_x = %.3f,"
-                                "pos_y = %.3f,"
-                                "pos_z = %.3f,"
-                                "moghouse = %u,"
-                                "boundary = %u "
-                                "WHERE charid = %u";
-
-            _sql->Query(Query, PChar->loc.destination,
-                        (PChar->m_moghouseID || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(), PChar->loc.p.rotation,
-                        PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z, PChar->m_moghouseID, PChar->loc.boundary, PChar->id);
-
-            message::send(ipc::CharZone{
-                .charId            = PChar->id,
-                .destinationZoneId = PChar->loc.destination,
-            });
+            ShowError("charutils::SendToZone : Invalid zoneId %u", zoneId);
+            return;
         }
-        else // ZoningType::Logout
-        {
-            SaveCharPosition(PChar);
 
-            message::send(ipc::CharZone{
-                .charId            = PChar->id,
-                .destinationZoneId = 0xFFFF, // Clear cache
-            });
-        }
+        auto ip   = ipp.getIP();
+        auto port = ipp.getPort();
+        _sql->Query("UPDATE accounts_sessions SET server_addr = %u, server_port = %u WHERE charid = %u",
+                    ip, port, PChar->id);
+
+        const char* Query = "UPDATE chars "
+                            "SET "
+                            "pos_zone = %u,"
+                            "pos_prevzone = %u,"
+                            "pos_rot = %u,"
+                            "pos_x = %.3f,"
+                            "pos_y = %.3f,"
+                            "pos_z = %.3f,"
+                            "moghouse = %u,"
+                            "boundary = %u "
+                            "WHERE charid = %u";
+
+        _sql->Query(Query, PChar->loc.destination,
+                    (PChar->m_moghouseID || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(), PChar->loc.p.rotation,
+                    PChar->loc.p.x, PChar->loc.p.y, PChar->loc.p.z, PChar->m_moghouseID, PChar->loc.boundary, PChar->id);
+
+        message::send(ipc::CharZone{
+            .charId            = PChar->id,
+            .destinationZoneId = PChar->loc.destination,
+        });
 
         if (PChar->shouldPetPersistThroughZoning())
         {
@@ -6582,15 +6575,29 @@ namespace charutils
             charutils::forceSynthCritFail("SendToZone", PChar);
         }
 
-        PChar->pushPacket<CServerIPPacket>(PChar, static_cast<uint8>(type), ipp);
+        PChar->pushPacket<CServerIPPacket>(PChar, 2, IPP(ipp));
 
         removeCharFromZone(PChar);
+    }
+
+    void SendDisconnect(CCharEntity* PChar)
+    {
+        TracyZoneScoped;
+
+        SaveCharPosition(PChar);
+
+        message::send(ipc::CharZone{
+            .charId            = PChar->id,
+            .destinationZoneId = 0xFFFF, // Clear cache
+        });
+
+        PChar->pushPacket<CServerIPPacket>(PChar, 1, IPP());
     }
 
     void ForceLogout(CCharEntity* PChar)
     {
         PChar->status = STATUS_TYPE::SHUTDOWN;
-        charutils::SendToZone(PChar, ZoningType::Logout, 0);
+        charutils::SendDisconnect(PChar);
     }
 
     void ForceRezone(CCharEntity* PChar)
@@ -6601,7 +6608,7 @@ namespace charutils
 
         PChar->clearPacketList();
 
-        SendToZone(PChar, ZoningType::Zoning, zoneutils::GetZoneIPP(PChar->loc.destination));
+        SendToZone(PChar, PChar->loc.destination);
     }
 
     void HomePoint(CCharEntity* PChar, bool resetHPMP)
@@ -6630,7 +6637,7 @@ namespace charutils
         PChar->updatemask |= UPDATE_HP;
 
         PChar->clearPacketList();
-        SendToZone(PChar, ZoningType::Zoning, zoneutils::GetZoneIPP(PChar->loc.destination));
+        SendToZone(PChar, PChar->loc.destination);
     }
 
     bool AddWeaponSkillPoints(CCharEntity* PChar, SLOTTYPE slotid, int wspoints)
@@ -7231,21 +7238,10 @@ namespace charutils
 
     void removeCharFromZone(CCharEntity* PChar)
     {
-        map_session_data_t* PSession = nullptr;
-
-        for (auto session : map_session_list)
-        {
-            if (session.second->charID == PChar->id)
-            {
-                PSession = session.second;
-                break;
-            }
-        }
-
         // Store old blowfish, recalculate expected new blowfish
-        if (PSession)
+        if (PChar->PSession)
         {
-            PSession->blowfish.status = BLOWFISH_PENDING_ZONE;
+            PChar->PSession->blowfish.status = BLOWFISH_PENDING_ZONE;
         }
 
         PChar->TradePending.clean();
@@ -7309,12 +7305,12 @@ namespace charutils
                 PChar->resetPetZoningInfo();
             }
 
-            PSession->shuttingDown = 1;
+            PChar->PSession->shuttingDown = 1;
             _sql->Query("UPDATE char_stats SET zoning = 0 WHERE charid = %u", PChar->id);
         }
         else
         {
-            PSession->shuttingDown = 2;
+            PChar->PSession->shuttingDown = 2;
             _sql->Query("UPDATE char_stats SET zoning = 1 WHERE charid = %u", PChar->id);
             charutils::CheckEquipLogic(PChar, SCRIPT_CHANGEZONE, PChar->getZone());
         }
@@ -7324,7 +7320,7 @@ namespace charutils
             PChar->loc.zone->DecreaseZoneCounter(PChar);
         }
 
-        PChar->StatusEffectContainer->SaveStatusEffects(PSession->shuttingDown == 1);
+        PChar->StatusEffectContainer->SaveStatusEffects(PChar->PSession->shuttingDown == 1);
         PChar->PersistData();
         charutils::SavePlayTime(PChar);
         charutils::SaveCharStats(PChar);
