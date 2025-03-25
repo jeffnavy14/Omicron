@@ -92,7 +92,7 @@ entity.onEventUpdate = function(player, csid, option, npc)
                 player:messageSpecial(ID.text.CHAMBER_OCCUPIED, option)
                 return
             else
-                chamberData = xi.einherjar.createNewChamber(option, player:getID())
+                chamberData = xi.einherjar.createNewChamber(option, player)
                 if not chamberData then
                     player:messageSpecial(ID.text.COULD_NOT_GATHER_DATA)
                     player:instanceEntry(npc, 3)

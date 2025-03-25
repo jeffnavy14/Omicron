@@ -22,6 +22,8 @@
 #include <tuple>
 
 #include "campaign_system.h"
+#include "common/database.h"
+#include "common/sql.h"
 #include "map/utils/zoneutils.h"
 #include "map_server.h"
 #include "packets/campaign_map.h"

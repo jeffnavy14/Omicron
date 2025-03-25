@@ -21,14 +21,39 @@
 
 #pragma once
 
-// 2.5 tick/updates per second
-static constexpr auto kServerTickRate = 2.5f;
+#include "common/cbasetypes.h"
+
+#include <array>
+#include <chrono>
+#include <cstdint>
+
+using namespace std::chrono_literals;
+
+//
+// There are 3 types of updates, all with similar names but different functions:
+// - The time server tick interval is every 2400ms, and is used for things like status effect ticks, etc. (the same as the FFXI tick)
+// - The server logic update interval is every 400ms, and is used for things like AI updates, etc.
+// - The server main loop update interval is every 200ms, and is split between the task manager and the networking workload.
+//
+
+static constexpr auto kTimeServerTickInterval = 2400ms;
+
+// 2.5 logic updates per second
+static constexpr auto kLogicUpdateRate = 2.5f;
 
 // Tick/update every 400ms
-static constexpr auto kServerTickInterval = 1000.0f / kServerTickRate;
+// NOTE: Many things are tied to and balanced around this rate, so changing it will have a significant impact on gameplay.
+//     : ie. DO NOT CHANGE!
+static constexpr auto kLogicUpdateInterval = std::chrono::milliseconds(static_cast<uint64>(1000.0f / kLogicUpdateRate));
 
-// Check Trigger Areas every 200ms
-static constexpr auto kServerTriggerAreaInterval = kServerTickInterval / 2.0f;
+// Check Trigger Areas 2x as often as the server tick rate (200ms)
+static constexpr auto kTriggerAreaInterval = std::chrono::milliseconds(static_cast<uint64>(1000.0f / (kLogicUpdateRate * 2.0f)));
+
+// Split betweek task manager and networking workload (200ms)
+static constexpr auto kMainLoopInterval = std::chrono::milliseconds(200);
+
+// If the main loop is more than 100ms behind, we're in trouble.
+static constexpr auto kMainLoopBacklogThreshold = std::chrono::milliseconds(100);
 
 // Packet & networking constants
 static constexpr auto kMaxBufferSize           = 2500U;

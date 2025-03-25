@@ -26,7 +26,7 @@
 #include "logging.h"
 #include "lua.h"
 #include "settings.h"
-#include "taskmgr.h"
+#include "task_manager.h"
 #include "tracy.h"
 #include "utils.h"
 #include "version.h"
@@ -157,7 +157,7 @@ void ConsoleService::registerDefaultCommands()
     registerCommand("tasks", "Show the current amount of tasks registered to the application task manager",
     [](std::vector<std::string>& inputs)
     {
-        fmt::print("> tasks registered to the application task manager: {}\n", CTaskMgr::getInstance()->getTaskList().size());
+        fmt::print("> tasks registered to the application task manager: {}\n", CTaskManager::getInstance()->getTaskList().size());
     });
 
     registerCommand("reload_settings", "Reload settings files",

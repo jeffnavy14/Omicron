@@ -22,6 +22,7 @@
 #pragma once
 
 #include "cbasetypes.h"
+#include "logging.h"
 #include "synchronized.h"
 #include "tracy.h"
 #include "xi.h"
@@ -684,6 +685,7 @@ namespace db
     {
         TracyZoneScoped;
 
+        // TODO: static_assert(std::is_trivial_v<T>, "T must be trivial");
         static_assert(std::is_trivially_copyable_v<T>, "T must be trivially copyable");
 
         // If we use getString on a null blob we will get back garbage data.
@@ -699,7 +701,23 @@ namespace db
             // Login server creates new chars with null blobs. Map server then initializes.
             // We don't want to overwrite the initialized map data with null blobs / 0 values.
             // See: login_helpers.cpp saveCharacter() and charutils::LoadChar
-            std::memset(&destination, 0x00, sizeof(T));
+
+            // Zero-initialize the destination object
+            if constexpr (std::is_array_v<T>)
+            {
+                using Element = std::remove_extent_t<T>;
+                std::fill(std::begin(destination), std::end(destination), Element{});
+            }
+            else if constexpr (std::is_assignable_v<T&, T>)
+            {
+                destination = T{};
+            }
+            else
+            {
+                std::fill_n(reinterpret_cast<uint8_t*>(&destination), sizeof(T), 0);
+            }
+
+            // Copy the blob into the destination object
             std::memcpy(&destination, blobStr.c_str(), std::min(sizeof(T), blobStr.length()));
         }
     }

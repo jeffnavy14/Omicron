@@ -25,6 +25,9 @@
 #include "map_server.h"
 #include "zone.h"
 
+#include "common/database.h"
+#include "common/sql.h"
+
 CCampaignHandler::CCampaignHandler(CZone* PZone)
 {
     m_PZone = nullptr;

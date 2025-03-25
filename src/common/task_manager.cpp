@@ -22,12 +22,12 @@
 #include <utility>
 
 #include "common/logging.h"
-#include "common/taskmgr.h"
+#include "common/task_manager.h"
 #include "common/timer.h"
 #include "common/tracy.h"
 #include "common/utils.h"
 
-CTaskMgr::~CTaskMgr()
+CTaskManager::~CTaskManager()
 {
     while (!m_TaskList.empty())
     {
@@ -38,7 +38,7 @@ CTaskMgr::~CTaskMgr()
     }
 }
 
-CTaskMgr::CTask* CTaskMgr::AddTask(CTask* PTask)
+CTaskManager::CTask* CTaskManager::AddTask(CTask* PTask)
 {
     TracyZoneScoped;
 
@@ -46,7 +46,7 @@ CTaskMgr::CTask* CTaskMgr::AddTask(CTask* PTask)
     return PTask;
 }
 
-void CTaskMgr::RemoveTask(std::string const& TaskName)
+void CTaskManager::RemoveTask(std::string const& TaskName)
 {
     TracyZoneScoped;
 
@@ -84,12 +84,13 @@ void CTaskMgr::RemoveTask(std::string const& TaskName)
     m_TaskList = newPq;
 }
 
-duration CTaskMgr::DoTimer(time_point tick) // tick is ::now()
+duration CTaskManager::doExpiredTasks(time_point tick) // tick is normally server_clock::now()
 {
     TracyZoneScoped;
 
-    duration diff = 1s;
+    const auto start = server_clock::now();
 
+    duration diff = 1s;
     while (!m_TaskList.empty())
     {
         CTask* PTask = m_TaskList.top();
@@ -125,5 +126,7 @@ duration CTaskMgr::DoTimer(time_point tick) // tick is ::now()
             break;
         }
     }
-    return std::clamp<duration>(diff, 50ms, 1000ms);
+
+    // We clamp with a minimum to ensure that the network phase doesn't starve
+    return std::clamp<duration>(server_clock::now() - start, 50ms, 1000ms);
 }

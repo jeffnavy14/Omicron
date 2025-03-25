@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#pragma once
 
 #include <string>
 
@@ -32,5 +31,3 @@ namespace version
     const char* GetGitCommitSubject();
     const char* GetVersionString();
 } // namespace version
-
-#endif /* _VERSION_H_ */

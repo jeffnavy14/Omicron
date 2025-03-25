@@ -72,8 +72,8 @@ public:
     // Maintenance
     //
 
-    int32 map_cleanup(time_point tick, CTaskMgr::CTask* PTask); // Clean up timed out players
-    int32 map_garbage_collect(time_point tick, CTaskMgr::CTask* PTask);
+    int32 map_cleanup(time_point tick, CTaskManager::CTask* PTask); // Clean up timed out players
+    int32 map_garbage_collect(time_point tick, CTaskManager::CTask* PTask);
 
     //
     // Accessors

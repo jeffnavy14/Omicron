@@ -72,7 +72,7 @@ public:
     void requestExit();
 
     // Is expected to block until requestExit() is called and/or isRunning() returns false
-    virtual void run();
+    virtual void run() = 0;
 
     bool isRunningInCI();
 

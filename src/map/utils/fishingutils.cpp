@@ -21,6 +21,9 @@
 
 #include "fishingutils.h"
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/utils.h"
 #include "common/vana_time.h"
 

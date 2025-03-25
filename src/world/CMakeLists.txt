@@ -38,7 +38,8 @@ add_executable(xi_world
 
 target_link_libraries(xi_world
     PUBLIC
-        ${EXTERNAL_LIBS}
+        ${SHARED_EXTERNAL_LIBS}
+        ${WORLD_ONLY_EXTERNAL_LIBS}
         project_options
     PRIVATE
         project_warnings

@@ -21,6 +21,9 @@
 
 #include "battleutils.h"
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
 
@@ -55,10 +58,12 @@
 #include "items.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
+#include "los/zone_los.h"
 #include "map_server.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "modifier.h"
+#include "navmesh.h"
 #include "notoriety_container.h"
 #include "packets/char_abilities.h"
 #include "packets/char_recast.h"

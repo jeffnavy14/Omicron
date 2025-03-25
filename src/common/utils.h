@@ -22,7 +22,10 @@
 #pragma once
 
 #include "common/cbasetypes.h"
+#include "common/database.h"
+#include "common/logging.h"
 #include "common/mmo.h"
+#include "common/sql.h"
 #include "common/stdext.h"
 #include "common/synchronized.h"
 #include "common/xirand.h"
@@ -33,6 +36,9 @@
 #endif // _USE_MATH_DEFINES
 #include <math.h>
 
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 #include <filesystem>
 #include <iostream>
 #include <set>

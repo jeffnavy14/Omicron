@@ -22,6 +22,7 @@
 #include "map_networking.h"
 
 #include "common/arguments.h"
+#include "common/md52.h"
 #include "common/tracy.h"
 #include "common/zlib.h"
 
@@ -134,7 +135,7 @@ void MapNetworking::tapStatistics()
     mapStatistics_.set(MapStatistics::Key::ActiveZones, activeZoneCount);
     mapStatistics_.set(MapStatistics::Key::ConnectedPlayers, playerCount);
     mapStatistics_.set(MapStatistics::Key::ActiveMobs, mobCount);
-    mapStatistics_.set(MapStatistics::Key::TaskManagerTasks, CTaskMgr::getInstance()->getTaskList().size());
+    mapStatistics_.set(MapStatistics::Key::TaskManagerTasks, CTaskManager::getInstance()->getTaskList().size());
 
     const auto percent = (static_cast<double>(dynamicTargIdCount) / static_cast<double>(dynamicTargIdCapacity)) * 100.0;
     mapStatistics_.set(MapStatistics::Key::DynamicTargIdUsagePercent, static_cast<int64>(percent));
@@ -145,7 +146,7 @@ void MapNetworking::tapStatistics()
     TotalPacketsDelayedPerTick = 0U;
 }
 
-auto MapNetworking::doSockets(duration next) -> duration
+auto MapNetworking::doSocketsBlocking(duration next) -> duration
 {
     TracyZoneScoped;
 
@@ -512,7 +513,7 @@ int32 MapNetworking::parse(uint8* buff, size_t* buffsize, MapSession* map_sessio
                 // TODO: We should be passing a non-modifyable span of the packet data into the parser
                 //     : instead of creating a new packet here.
                 auto basicPacket = CBasicPacket::createFromBuffer(reinterpret_cast<uint8*>(SmallPD_ptr));
-                ShowTrace(fmt::format("map::parse: Char: {} ({}): 0x{:03X}", PChar->getName(), PChar->id, basicPacket->getType()).c_str());
+                ShowTraceFmt("map::parse: Char: {} ({}): {}", PChar->getName(), PChar->id, hex16ToString(basicPacket->getType()));
                 PacketParser[SmallPD_Type](map_session_data, PChar, *basicPacket);
             }
         }
@@ -626,8 +627,8 @@ int32 MapNetworking::send_parse(uint8* buff, size_t* buffsize, MapSession* map_s
                         {
                             auto offset = entry.first;
                             auto value  = entry.second;
-                            ShowInfo(fmt::format("Packet Mod ({}): {:04X}: {:04X}: {:02X}",
-                                                 PChar->name, type, offset, value));
+                            ShowInfo(fmt::format("Packet Mod ({}): {}: {}: {}",
+                                                 PChar->name, hex16ToString(type), hex16ToString(offset), hex8ToString(value)));
                             PSmallPacket->ref<uint8>(offset) = value;
                         }
                     }

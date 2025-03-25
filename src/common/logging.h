@@ -31,10 +31,14 @@
 // Set this higher to strip out lower messages at compile time
 // NOTE: We don't strip anything by default, as we use all the logger
 //     : levels for different things.
+#ifndef SPDLOG_ACTIVE_LEVEL
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#endif
 
 // TODO: Remove this
+#ifndef FMT_CONSTEVAL
 #define FMT_CONSTEVAL
+#endif
 
 #include <fmt/args.h>
 #include <fmt/chrono.h>
@@ -171,6 +175,7 @@ inline auto format_as(type v) \
 #define DebugAuctions(...)    LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_AUCTIONS", __VA_ARGS__)
 #define DebugDeliveryBox(...) LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_DELIVERY_BOX", __VA_ARGS__)
 #define DebugBazaars(...)     LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_BAZAARS", __VA_ARGS__)
+#define DebugPerformance(...) LOGGER_BODY_CONDITIONAL(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_PERFORMANCE", __VA_ARGS__)
 
 // Debug Loggers fmt variants
 #define DebugSocketsFmt(...)     LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_SOCKETS", __VA_ARGS__)
@@ -184,5 +189,6 @@ inline auto format_as(type v) \
 #define DebugAuctionsFmt(...)    LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_AUCTIONS", __VA_ARGS__)
 #define DebugDeliveryBoxFmt(...) LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_DELIVERY_BOX", __VA_ARGS__)
 #define DebugBazaarsFmt(...)     LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_BAZAARS", __VA_ARGS__)
+#define DebugPerformanceFmt(...) LOGGER_BODY_CONDITIONAL_FMT(SPDLOG_LOGGER_DEBUG, "debug", "logging.DEBUG_PERFORMANCE", __VA_ARGS__)
 
 // clang-format on

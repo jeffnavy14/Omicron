@@ -214,40 +214,42 @@ void MapServer::run()
 {
     Application::markLoaded();
 
-    const auto getMilliseconds = [](const duration& d) -> int64
-    {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
-    };
-
-    duration networkDuration;
-    duration next;
-
-    //
-    // Main runtime cycle
-    //
     while (Application::isRunning())
     {
+        duration tasksDuration;
+        duration networkDuration;
+        duration tickDuration;
+
         const auto tickStart = server_clock::now();
         {
-            next            = CTaskMgr::getInstance()->DoTimer(server_clock::now());
-            networkDuration = networking_->doSockets(next);
+            tasksDuration   = CTaskManager::getInstance()->doExpiredTasks(tickStart);
+            networkDuration = networking_->doSocketsBlocking(kMainLoopInterval - tasksDuration); // Use tick remainder for networking
             watchdog_->update();
         }
-        const auto tickDuration  = server_clock::now() - tickStart;
-        const auto logicDuration = tickDuration - networkDuration;
+        tickDuration  = server_clock::now() - tickStart;
+        tasksDuration = tickDuration - networkDuration; // Since we don't measure logic directly, we can calculate it based on the total and network durations
 
-        mapStatistics_->set(MapStatistics::Key::LogicTickTime, getMilliseconds(logicDuration));
+        const auto tickDiffTime = kMainLoopInterval - tickDuration;
+
+        mapStatistics_->set(MapStatistics::Key::TasksTickTime, getMilliseconds(tasksDuration));
         mapStatistics_->set(MapStatistics::Key::NetworkTickTime, getMilliseconds(networkDuration));
         mapStatistics_->set(MapStatistics::Key::TotalTickTime, getMilliseconds(tickDuration));
+        mapStatistics_->set(MapStatistics::Key::TickDiffTime, getMilliseconds(tickDiffTime));
         mapStatistics_->flush();
 
-        // If we're ahead of schedule, sleep for the remaining time.
-        //
-        // TODO: Once all logic is moved onto io_context::run(), we won't
-        //     : need this!
-        if (tickDuration < next)
+        DebugPerformanceFmt("Tasks: {}ms, Network: {}ms, Total: {}ms, Diff/Sleep: {}ms",
+                            getMilliseconds(tasksDuration),
+                            getMilliseconds(networkDuration),
+                            getMilliseconds(tickDuration),
+                            getMilliseconds(tickDiffTime));
+
+        if (tickDiffTime > 0ms)
         {
-            std::this_thread::sleep_for(next - tickDuration);
+            std::this_thread::sleep_for(tickDiffTime);
+        }
+        else if (tickDiffTime < -kMainLoopBacklogThreshold)
+        {
+            RATE_LIMIT(15s, ShowWarningFmt("Main loop is running {}ms behind, performance is degraded!", -getMilliseconds(tickDiffTime)));
         }
     }
 }
@@ -360,10 +362,10 @@ void MapServer::do_init()
 
     CTransportHandler::getInstance()->InitializeTransport(mapIPP);
 
-    CTaskMgr::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 2400ms, time_server);
-    CTaskMgr::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 5s, std::bind(&MapServer::map_cleanup, this, std::placeholders::_1, std::placeholders::_2));
-    CTaskMgr::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 15min, std::bind(&MapServer::map_garbage_collect, this, std::placeholders::_1, std::placeholders::_2));
-    CTaskMgr::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskMgr::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
+    CTaskManager::getInstance()->AddTask("time_server", server_clock::now(), nullptr, CTaskManager::TASK_INTERVAL, kTimeServerTickInterval, time_server);
+    CTaskManager::getInstance()->AddTask("map_cleanup", server_clock::now(), nullptr, CTaskManager::TASK_INTERVAL, 5s, std::bind(&MapServer::map_cleanup, this, std::placeholders::_1, std::placeholders::_2));
+    CTaskManager::getInstance()->AddTask("garbage_collect", server_clock::now(), nullptr, CTaskManager::TASK_INTERVAL, 15min, std::bind(&MapServer::map_garbage_collect, this, std::placeholders::_1, std::placeholders::_2));
+    CTaskManager::getInstance()->AddTask("persist_server_vars", server_clock::now(), nullptr, CTaskManager::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
 
     zoneutils::TOTDChange(CVanaTime::getInstance()->GetCurrentTOTD()); // This tells the zones to spawn stuff based on time of day conditions (such as undead at night)
 
@@ -408,7 +410,7 @@ void MapServer::do_final()
     trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
-    CTaskMgr::delInstance();
+    CTaskManager::delInstance();
     CVanaTime::delInstance();
     Async::delInstance();
 
@@ -418,7 +420,7 @@ void MapServer::do_final()
     logging::ShutDown();
 }
 
-int32 MapServer::map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
+int32 MapServer::map_cleanup(time_point tick, CTaskManager::CTask* PTask)
 {
     TracyZoneScoped;
 
@@ -434,11 +436,11 @@ int32 MapServer::map_cleanup(time_point tick, CTaskMgr::CTask* PTask)
     return 0;
 }
 
-int32 MapServer::map_garbage_collect(time_point tick, CTaskMgr::CTask* PTask)
+int32 MapServer::map_garbage_collect(time_point tick, CTaskManager::CTask* PTask)
 {
     TracyZoneScoped;
 
-    ShowInfo("CTaskMgr Active Tasks: %i", CTaskMgr::getInstance()->getTaskList().size());
+    ShowInfo("CTaskManager Active Tasks: %i", CTaskManager::getInstance()->getTaskList().size());
 
     luautils::garbageCollectFull();
     return 0;

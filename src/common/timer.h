@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _TIMER_H
-#define _TIMER_H
+#pragma once
 
 #include "common/cbasetypes.h"
 
@@ -34,4 +33,4 @@ void timer_final(void);
 
 uint32 getCurrentTimeMs();
 
-#endif
+auto getMilliseconds(const duration& d) -> int64;

@@ -20,8 +20,14 @@
 */
 
 #include "blacklistutils.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/utils.h"
+
 #include "entities/charentity.h"
+
 #include "map_server.h"
 
 #include "packets/send_blacklist.h"

@@ -21,6 +21,8 @@
 
 #include "map_socket.h"
 
+#include "common/logging.h"
+
 MapSocket::MapSocket(uint16 port, ReceiveFn onReceiveFn)
 : port_(port)
 , socket_(io_context_)

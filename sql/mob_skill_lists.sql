@@ -4037,7 +4037,13 @@ INSERT INTO `mob_skill_lists` VALUES ('Avatar_Titan_WTB',2029,856); -- Waking th
 INSERT INTO `mob_skill_lists` VALUES ('MamoolJa_NM',2030,1736); -- Axe Throw 
 INSERT INTO `mob_skill_lists` VALUES ('MamoolJa_NM',2030,1839); -- Rajing Rush
 
--- Next ID : 2031
+INSERT INTO `mob_skill_lists` VALUES ('Avatar_Carbuncle_WTB',2031,907); -- Waking the Beast, poison_nails
+INSERT INTO `mob_skill_lists` VALUES ('Avatar_Carbuncle_WTB',2031,908); -- Waking the Beast, shining_ruby
+INSERT INTO `mob_skill_lists` VALUES ('Avatar_Carbuncle_WTB',2031,909); -- Waking the Beast, glittering_ruby
+INSERT INTO `mob_skill_lists` VALUES ('Avatar_Carbuncle_WTB',2031,910); -- Waking the Beast, meteorite
+INSERT INTO `mob_skill_lists` VALUES ('Avatar_Carbuncle_WTB',2031,911); -- Waking the Beast, healing_ruby_ii
+
+-- Next ID : 2032
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

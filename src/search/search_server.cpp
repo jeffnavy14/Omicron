@@ -31,7 +31,7 @@ SearchServer::~SearchServer() = default;
 
 void SearchServer::run()
 {
-    ShowInfo("creating ports");
+    ShowInfoFmt("creating ports");
 
     // clang-format off
     const auto search_handler_handler = handler(io_context_, settings::get<uint32>("network.SEARCH_PORT"), [&](asio::ip::tcp::socket socket) {
@@ -45,7 +45,7 @@ void SearchServer::run()
 
     if (settings::get<bool>("search.EXPIRE_AUCTIONS"))
     {
-        ShowInfo("AH task to return items older than %u days is running", settings::get<uint16>("search.EXPIRE_DAYS"));
+        ShowInfoFmt("AH task to return items older than {} days is running", settings::get<uint16>("search.EXPIRE_DAYS"));
 
         ahCleanup();
 
@@ -88,13 +88,13 @@ void SearchServer::run()
             catch (std::exception& e)
             {
                 // TODO: make a list of "allowed exceptions", the rest can/should cause shutdown.
-                ShowError(fmt::format("Inner fatal: {}", e.what()));
+                ShowErrorFmt("Inner fatal: {}", e.what());
             }
         }
     }
     catch (std::exception& e)
     {
-        ShowError(fmt::format("Outer fatal: {}", e.what()));
+        ShowErrorFmt("Outer fatal: {}", e.what());
     }
 }
 
