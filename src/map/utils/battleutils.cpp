@@ -2426,6 +2426,16 @@ namespace battleutils
             damage = 0;
         }
 
+        // Handle damage nullification.
+        if (attackType == ATTACK_TYPE::RANGED && xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_RANGED_DAMAGE))
+        {
+            damage = 0;
+        }
+        else if (attackType == ATTACK_TYPE::PHYSICAL && xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_PHYSICAL_DAMAGE))
+        {
+            damage = 0;
+        }
+
         if (damage > 0)
         {
             damage = std::max(damage - PDefender->getMod(Mod::PHALANX), 0);

@@ -780,7 +780,8 @@ search_req search_handler::_HandleSearchRequest()
         }
     }
 
-    ShowInfoFmt("Name: {} Job: {} Lvls: {} ~ {}", (nameLen > 0 ? name : nullptr), jobid, minLvl, maxLvl);
+    const auto printableName = nameLen > 0 ? name : "<empty>";
+    ShowInfoFmt("Name: {} Job: {} Lvls: {} ~ {}", printableName, jobid, minLvl, maxLvl);
 
     search_req sr;
     sr.jobid  = jobid;

@@ -391,7 +391,7 @@ namespace db
             }
             else if constexpr (std::is_same_v<UnderlyingT, uint16>)
             {
-                stmt->setShort(counter, value);
+                stmt->setUInt(counter, value);
             }
             else if constexpr (std::is_same_v<UnderlyingT, int8>)
             {
