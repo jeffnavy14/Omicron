@@ -22,7 +22,6 @@
 #pragma once
 
 #include "cbasetypes.h"
-#include "logging.h"
 
 #include <zmq.hpp>
 #include <zmq_addon.hpp>

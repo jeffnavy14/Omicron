@@ -83,32 +83,6 @@
 #include <variant>
 #include <vector>
 
-#include "common/blowfish.h"
-#include "common/cbasetypes.h"
-#include "common/circular_buffer.h"
-#include "common/database.h"
-#include "common/debug.h"
-#include "common/ipp.h"
-#include "common/lazy.h"
-#include "common/logging.h"
-#include "common/lua.h"
-#include "common/macros.h"
-#include "common/md52.h"
-#include "common/mmo.h"
-#include "common/settings.h"
-#include "common/singleton.h"
-#include "common/sql.h"
-#include "common/task_manager.h"
-#include "common/timer.h"
-#include "common/tracy.h"
-#include "common/utils.h"
-#include "common/uuid.h"
-#include "common/vana_time.h"
-#include "common/version.h"
-#include "common/xi.h"
-#include "common/xirand.h"
-#include "common/zlib.h"
-
 #include <argparse/argparse.hpp>
 #include <asio.hpp>
 #include <concurrentqueue.h>
@@ -121,5 +95,3 @@
 
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
-
-#include "map_constants.h"

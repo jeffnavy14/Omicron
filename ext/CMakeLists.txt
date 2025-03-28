@@ -19,7 +19,6 @@ if(TRACY_ENABLE)
         OPTIONS
             "TRACY_ENABLE ON"
             "TRACY_ON_DEMAND ON"
-            "TRACY_CALLSTACK ON" # Value hardcoded to 4 in common/tracy.h
             "TRACY_NO_BROADCAST ON"
             "TRACY_NO_CONTEXT_SWITCH ON"
             "TRACY_NO_EXIT ON"
@@ -232,25 +231,19 @@ CPMAddPackage(
     GIT_TAG 1a1824df7ac798177a521eed952720681b0bf482
 ) # defines: magic_enum
 
-set(EXTERNAL_LIBS
+set(SHARED_EXTERNAL_LIBS
     fmt::fmt
     spdlog
     concurrentqueue
     mariadbclient
     mariadbcpp
-    RecastNavigation::Recast
-    RecastNavigation::Detour
-    fast_obj
     sol2_single
     argparse
     efsw
     jthread-lite
     expected-lite
-    httplib::httplib
-    nlohmann_json::nlohmann_json
     pcg-cpp
     asio
-    bcrypt
     alpaca
     magic_enum
 )
@@ -259,26 +252,67 @@ if(WIN32)
     # add wepoll for epoll support on windows
     add_subdirectory(wepoll)
 
-    list(APPEND EXTERNAL_LIBS
+    list(APPEND SHARED_EXTERNAL_LIBS
         wepoll
     )
 
 # backwards needs these to add to linker
 elseif(APPLE)
     # MacOS has bfd built in clang
-    list(APPEND EXTERNAL_LIBS
+    list(APPEND SHARED_EXTERNAL_LIBS
         dl
     )
 elseif(UNIX)
     # Linux needs bfd as it's not native like MacOS
-    list(APPEND EXTERNAL_LIBS
+    list(APPEND SHARED_EXTERNAL_LIBS
         bfd
         dl
     )
 endif()
 
-# copy external libs to parent scope
-set(EXTERNAL_LIBS
-    ${EXTERNAL_LIBS}
+set(CONNECT_ONLY_EXTERNAL_LIBS
+    bcrypt
+)
+
+set(MAP_ONLY_EXTERNAL_LIBS
+    RecastNavigation::Recast
+    RecastNavigation::Detour
+    fast_obj
+)
+
+set(SEARCH_ONLY_EXTERNAL_LIBS
+)
+
+set(WORLD_ONLY_EXTERNAL_LIBS
+    httplib::httplib
+    nlohmann_json::nlohmann_json
+)
+
+#
+# copy external lib lists to parent scope
+#
+
+set(SHARED_EXTERNAL_LIBS
+    ${SHARED_EXTERNAL_LIBS}
+    PARENT_SCOPE
+)
+
+set(CONNECT_ONLY_EXTERNAL_LIBS
+    ${CONNECT_ONLY_EXTERNAL_LIBS}
+    PARENT_SCOPE
+)
+
+set(MAP_ONLY_EXTERNAL_LIBS
+    ${MAP_ONLY_EXTERNAL_LIBS}
+    PARENT_SCOPE
+)
+
+set(SEARCH_ONLY_EXTERNAL_LIBS
+    ${SEARCH_ONLY_EXTERNAL_LIBS}
+    PARENT_SCOPE
+)
+
+set(WORLD_ONLY_EXTERNAL_LIBS
+    ${WORLD_ONLY_EXTERNAL_LIBS}
     PARENT_SCOPE
 )

@@ -23,6 +23,9 @@
 
 #include "gardenutils.h"
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/vana_time.h"
 
 #include "entities/charentity.h"

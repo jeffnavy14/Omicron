@@ -33,10 +33,15 @@
 
 #include "battlefield_handler.h"
 #include "campaign_handler.h"
-#include "los/zone_los.h"
-#include "navmesh.h"
 #include "packets/weather.h"
 #include "trigger_area.h"
+
+//
+// Forward Declarations
+//
+
+class CNavMesh;
+class ZoneLos;
 
 enum ZONEID : uint16
 {

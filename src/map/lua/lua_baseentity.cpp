@@ -5731,6 +5731,11 @@ void CLuaBaseEntity::setAnimationSub(uint8 animationsub, sol::object const& send
     }
 }
 
+void CLuaBaseEntity::setSpawnAnimation(uint8 spawnAnimation)
+{
+    m_PBaseEntity->spawnAnimation = static_cast<SPAWN_ANIMATION>(spawnAnimation);
+}
+
 /************************************************************************
  *  Function: getCallForHelpFlag()
  *  Purpose : Find out if CFH has been called on a mob.
@@ -18912,8 +18917,8 @@ void CLuaBaseEntity::addPacketMod(uint16 packetId, uint16 offset, uint8 value)
 
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowInfo(fmt::format("Adding Packet Mod ({}): 0x{:04X}: 0x{:04X}: 0x{:02X}",
-                             PChar->name, packetId, offset, value));
+        ShowInfo(fmt::format("Adding Packet Mod ({}): {}: {}: {}",
+                             PChar->name, hex16ToString(packetId), hex16ToString(offset), hex8ToString(value)));
         PacketMods[PChar->id][packetId].emplace_back(std::make_pair(offset, value));
     }
 }
@@ -19163,6 +19168,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("setAnimation", CLuaBaseEntity::setAnimation);
     SOL_REGISTER("getAnimationSub", CLuaBaseEntity::getAnimationSub);
     SOL_REGISTER("setAnimationSub", CLuaBaseEntity::setAnimationSub);
+    SOL_REGISTER("setSpawnAnimation", CLuaBaseEntity::setSpawnAnimation);
     SOL_REGISTER("getCallForHelpFlag", CLuaBaseEntity::getCallForHelpFlag);
     SOL_REGISTER("setCallForHelpFlag", CLuaBaseEntity::setCallForHelpFlag);
     SOL_REGISTER("getCallForHelpBlocked", CLuaBaseEntity::getCallForHelpBlocked);

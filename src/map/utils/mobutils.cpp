@@ -19,6 +19,11 @@
 ===========================================================================
 */
 
+#include "mobutils.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/utils.h"
 
 #include "battlefield.h"
@@ -29,7 +34,6 @@
 #include "mob_modifier.h"
 #include "mob_spell_container.h"
 #include "mob_spell_list.h"
-#include "mobutils.h"
 #include "packets/action.h"
 #include "petutils.h"
 #include "spell.h"

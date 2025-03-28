@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _TASK_MGR_H
-#define _TASK_MGR_H
+#pragma once
 
 #include "cbasetypes.h"
 #include "singleton.h"
@@ -29,15 +28,6 @@
 #include <functional>
 #include <queue>
 #include <string>
-
-template <class _Ty>
-struct greater_equal
-{ // functor for operator>
-    bool operator()(const _Ty& _Left, const _Ty& _Right) const
-    { // apply operator> to operands
-        return ((*_Left) > (*_Right));
-    }
-};
 
 class CTaskManager : public Singleton<CTaskManager>
 {
@@ -53,6 +43,16 @@ public:
     };
 
     using TaskFunc_t = std::function<int32(time_point, CTask*)>;
+
+    template <class _Ty>
+    struct greater_equal
+    { // functor for operator>
+        bool operator()(const _Ty& _Left, const _Ty& _Right) const
+        { // apply operator> to operands
+            return ((*_Left) > (*_Right));
+        }
+    };
+
     typedef std::priority_queue<CTask*, std::deque<CTask*>, greater_equal<CTask*>> TaskList_t;
 
     class CTask
@@ -121,5 +121,3 @@ inline bool operator<=(const CTaskManager::CTask& a, const CTaskManager::CTask& 
 {
     return a.m_tick <= b.m_tick;
 }
-
-#endif

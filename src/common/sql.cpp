@@ -313,7 +313,7 @@ int32 SqlConnection::QueryStr(const char* query)
     FreeResult();
     self->buf.clear();
 
-    auto startTime = hires_clock::now();
+    auto startTime = server_clock::now();
 
     {
         self->buf += query;
@@ -335,7 +335,7 @@ int32 SqlConnection::QueryStr(const char* query)
         }
     }
 
-    auto endTime = hires_clock::now();
+    auto endTime = server_clock::now();
     auto dTime   = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
 
     if (m_TimersEnabled && settings::get<bool>("logging.SQL_SLOW_QUERY_LOG_ENABLE"))

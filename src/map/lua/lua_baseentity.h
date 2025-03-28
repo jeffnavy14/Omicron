@@ -301,6 +301,7 @@ public:
     void   setAnimation(uint8 animation);
     uint8  getAnimationSub();
     void   setAnimationSub(uint8 animationsub, sol::object const& sendUpdate);
+    void   setSpawnAnimation(uint8 spawnAnimation);
     bool   getCallForHelpFlag() const;
     void   setCallForHelpFlag(bool cfh);
     bool   getCallForHelpBlocked() const;

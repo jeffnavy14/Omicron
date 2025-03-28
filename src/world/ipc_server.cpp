@@ -588,7 +588,7 @@ void IPCServer::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
         {
             const auto zoneSettings = zoneSettings_.zoneSettingsMap_.at(prevZoneID);
 
-            DebugIPCFmt(fmt::format("Message: -> rerouting to {}", zoneSettings.ipp.toString()));
+            DebugIPCFmt("Message: -> rerouting to {}", zoneSettings.ipp.toString());
 
             sendMessage(zoneSettings.ipp, message);
         }
@@ -597,7 +597,7 @@ void IPCServer::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
     {
         for (const auto& ipp : zoneSettings_.mapEndpoints_)
         {
-            DebugIPCFmt(fmt::format("Message: -> rerouting to {}", ipp.toString()));
+            DebugIPCFmt("Message: -> rerouting to {}", ipp.toString());
 
             sendMessage(ipp, message);
         }

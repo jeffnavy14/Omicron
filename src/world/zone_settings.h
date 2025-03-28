@@ -46,7 +46,7 @@ public:
         const auto rset = db::preparedStmt("SELECT zoneid, zoneip, zoneport, misc FROM zone_settings");
         if (!rset)
         {
-            ShowCritical("Error loading zone settings from DB");
+            ShowCriticalFmt("Error loading zone settings from DB");
             throw std::runtime_error("Message Server: Failed to load zone settings from database");
         }
 

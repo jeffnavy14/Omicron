@@ -193,6 +193,10 @@ jobs:
             exit 1
           fi
           exit 0
+      - name: License Header Checks
+        if: always()
+        run: |
+          python3 tools/ci/detect_license_headers.py
 
   Linux_LuaLanguageServer:
     needs: Sanity_Checks

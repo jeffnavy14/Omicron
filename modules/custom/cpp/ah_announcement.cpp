@@ -81,6 +81,8 @@ class AHAnnouncementModule : public CPPModule
 
                         if (gil != nullptr && gil->isType(ITEM_CURRENCY) && gil->getQuantity() >= price && gil->getReserve() == 0)
                         {
+                            bool itemPurchasedSuccessfully = false;
+
                             // clang-format off
                             const auto success = db::transaction([&]()
                             {
@@ -173,10 +175,12 @@ class AHAnnouncementModule : public CPPModule
                                                 .messageType = MESSAGE_SYSTEM_3,
                                             });
                                         }
+
+                                        itemPurchasedSuccessfully = true;
                                     }
                                 }
                             });
-                            if (success)
+                            if (itemPurchasedSuccessfully && success)
                             {
                                 return;
                             }

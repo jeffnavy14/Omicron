@@ -135,6 +135,7 @@ local abjurations =
     {
         xi.item.EARTHEN_ABJURATION_HANDS,
         xi.item.PHANTASMAL_ABJURATION_HEAD,
+        xi.item.PHANTASMAL_ABJURATION_FEET,
         xi.item.HADEAN_ABJURATION_HEAD,
         xi.item.HADEAN_ABJURATION_HANDS,
         xi.item.NEPTUNAL_ABJURATION_LEGS,
@@ -258,4 +259,46 @@ end
 xi.einherjar.hideCrate = function(crateNpc)
     crateNpc:setStatus(xi.status.INVISIBLE)
     crateNpc:setUntargetable(true)
+end
+
+local tempItems =
+{
+    { item = xi.item.BOTTLE_OF_AMRITA,            min = 1,  max = 10 },
+    { item = xi.item.DUSTY_ELIXIR,                min = 1,  max = 10 },
+    { item = xi.item.DUSTY_ETHER,                 min = 12, max = 24 },
+    { item = xi.item.DUSTY_POTION,                min = 12, max = 24 },
+    { item = xi.item.DUSTY_SCROLL_OF_RERAISE,     min = 8,  max = 19 },
+    { item = xi.item.BOTTLE_OF_ASSASSINS_DRINK,   min = 1,  max =  4 },
+    { item = xi.item.BOTTLE_OF_BRAVERS_DRINK,     min = 1,  max =  2 },
+    { item = xi.item.BOTTLE_OF_CHAMPIONS_DRINK,   min = 1,  max =  2 },
+    { item = xi.item.BOTTLE_OF_CLERICS_DRINK,     min = 1,  max =  2 },
+    { item = xi.item.BOTTLE_OF_FANATICS_DRINK,    min = 1,  max =  6 },
+    { item = xi.item.BOTTLE_OF_FIGHTERS_DRINK,    min = 1,  max = 10 },
+    { item = xi.item.BOTTLE_OF_VICARS_DRINK,      min = 1,  max =  7 },
+    { item = xi.item.BOTTLE_OF_SPYS_DRINK,        min = 1,  max =  9 },
+    { item = xi.item.FLASK_OF_STRANGE_MILK,       min = 12, max = 24 },
+    { item = xi.item.BOTTLE_OF_STRANGE_JUICE,     min = 12, max = 24 },
+    { item = xi.item.MAX_POTION,                  min = 1,  max = 13 },
+    { item = xi.item.PINCH_OF_MANA_POWDER,        min = 1,  max =  3 },
+    { item = xi.item.REVITALIZER,                 min = 1,  max =  2 },
+}
+
+-- Generates a table of 6 random temporary items with random quantities
+-- The quantity is encoded in the upper 16 bits of the returned value
+xi.einherjar.getTempItems = function()
+    local temp = { }
+
+    local availableTempItems = { unpack(tempItems) }
+
+    for _ = 1, 6 do
+        local roll             = math.random(1, #availableTempItems)
+        local selectedTempItem = availableTempItems[roll]
+        local selectedQty      = math.random(selectedTempItem.min, selectedTempItem.max)
+
+        table.insert(temp, bit.bor(bit.lshift(selectedQty, 16), selectedTempItem.item))
+
+        table.remove(availableTempItems, roll)
+    end
+
+    return temp
 end

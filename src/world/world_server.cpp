@@ -37,6 +37,7 @@ namespace
 {
     static constexpr auto kTimeServerTickTime = 2400ms;
     static constexpr auto kPumpQueuesTime     = 250ms;
+    static constexpr auto kMainTickTime       = 200ms;
 } // namespace
 
 /*
@@ -94,12 +95,11 @@ void WorldServer::run()
 {
     Application::markLoaded();
 
-    const auto targetInternalTickLength = 200ms;
     while (Application::isRunning())
     {
         const auto tickStart     = server_clock::now();
         const auto tasksDuration = CTaskManager::getInstance()->doExpiredTasks(tickStart);
-        const auto sleepFor      = targetInternalTickLength - tasksDuration;
+        const auto sleepFor      = kMainTickTime - tasksDuration;
         std::this_thread::sleep_for(sleepFor);
     }
 }

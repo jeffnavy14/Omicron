@@ -19,9 +19,14 @@
 ===========================================================================
 */
 
+#include "synth_suggestion.h"
+
 #include "map_server.h"
 
-#include "synth_suggestion.h"
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+
 #include <map>
 
 CSynthSuggestionListPacket::CSynthSuggestionListPacket(uint16 skillID, uint16 skillLevel, uint8 skillRank, uint16 resultOffset)

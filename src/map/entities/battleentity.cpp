@@ -19,10 +19,12 @@
 ===========================================================================
 */
 
-#include "common/logging.h"
-#include "common/utils.h"
-
 #include "battleentity.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+#include "common/utils.h"
 
 #include "ai/ai_container.h"
 #include "ai/states/attack_state.h"

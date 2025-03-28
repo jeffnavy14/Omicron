@@ -13721,7 +13721,7 @@ INSERT INTO `item_mods` VALUES (12716,1,11); -- DEF: 11
 -- Scorpion Gauntlets +1
 INSERT INTO `item_mods` VALUES (12717,1,13);  -- DEF: 13
 INSERT INTO `item_mods` VALUES (12717,15,6);  -- FIRE_MEVA: 6
-INSERT INTO `item_mods` VALUES (12717,244,3); -- SILENCERES: 3
+INSERT INTO `item_mods` VALUES (12717,244,2); -- SILENCERES: 2
 
 -- Iron Mittens +1
 INSERT INTO `item_mods` VALUES (12718,1,9); -- DEF: 9
@@ -13853,7 +13853,7 @@ INSERT INTO `item_mods` VALUES (12750,5,8); -- MP: 8
 -- Scorpion Gauntlets
 INSERT INTO `item_mods` VALUES (12751,1,12);  -- DEF: 12
 INSERT INTO `item_mods` VALUES (12751,15,5);  -- FIRE_MEVA: 5
-INSERT INTO `item_mods` VALUES (12751,244,2); -- SILENCERES: 2
+INSERT INTO `item_mods` VALUES (12751,244,1); -- SILENCERES: 1
 
 -- Legionnaires Mittens
 INSERT INTO `item_mods` VALUES (12752,1,3);  -- DEF: 3
@@ -18882,14 +18882,14 @@ INSERT INTO `item_mods` VALUES (13876,1,30);  -- DEF: 30
 INSERT INTO `item_mods` VALUES (13876,7,50);  -- CONVHPTOMP: 50
 INSERT INTO `item_mods` VALUES (13876,12,3);  -- INT: 3
 INSERT INTO `item_mods` VALUES (13876,13,3);  -- MND: 3
-INSERT INTO `item_mods` VALUES (13876,244,2); -- SILENCERES: 2
+INSERT INTO `item_mods` VALUES (13876,244,1); -- SILENCERES: 1
 
 -- Zenith Crown +1
 INSERT INTO `item_mods` VALUES (13877,1,31);  -- DEF: 31
 INSERT INTO `item_mods` VALUES (13877,7,55);  -- CONVHPTOMP: 55
 INSERT INTO `item_mods` VALUES (13877,12,4);  -- INT: 4
 INSERT INTO `item_mods` VALUES (13877,13,4);  -- MND: 4
-INSERT INTO `item_mods` VALUES (13877,244,3); -- SILENCERES: 3
+INSERT INTO `item_mods` VALUES (13877,244,2); -- SILENCERES: 2
 
 -- Carapace Helm
 INSERT INTO `item_mods` VALUES (13878,1,23); -- DEF: 23
@@ -22695,7 +22695,7 @@ INSERT INTO `item_mods` VALUES (14544,23,6);  -- ATT: 6
 INSERT INTO `item_mods` VALUES (14544,25,6);  -- ACC: 6
 INSERT INTO `item_mods` VALUES (14544,28,7);  -- MATT: 7
 INSERT INTO `item_mods` VALUES (14544,30,7);  -- MACC: 7
-INSERT INTO `item_mods` VALUES (14544,244,2); -- SILENCERES: 2
+INSERT INTO `item_mods` VALUES (14544,244,1); -- SILENCERES: 1
 
 -- Corselet +1
 INSERT INTO `item_mods` VALUES (14545,1,45);  -- DEF: 45
@@ -25407,7 +25407,7 @@ INSERT INTO `item_mods` VALUES (15074,1,24);  -- DEF: 24
 INSERT INTO `item_mods` VALUES (15074,5,25);  -- MP: 25
 INSERT INTO `item_mods` VALUES (15074,10,4);  -- VIT: 4
 INSERT INTO `item_mods` VALUES (15074,27,-4); -- ENMITY: -4
-INSERT INTO `item_mods` VALUES (15074,244,5); -- SILENCERES: 5
+INSERT INTO `item_mods` VALUES (15074,244,1); -- SILENCERES: 1
 
 -- Sorcerers Petasos
 INSERT INTO `item_mods` VALUES (15075,1,23);   -- DEF: 23

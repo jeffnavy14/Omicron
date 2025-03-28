@@ -126,10 +126,10 @@ Synchronized<db::detail::State>& db::detail::getState()
 auto db::detail::timer(std::string const& query) -> xi::final_action<std::function<void()>>
 {
     // clang-format off
-    const auto start = hires_clock::now();
+    const auto start = server_clock::now();
     return xi::finally<std::function<void()>>([query, start]() -> void
     {
-        const auto end      = hires_clock::now();
+        const auto end      = server_clock::now();
         const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if (timersEnabled && settings::get<bool>("logging.SQL_SLOW_QUERY_LOG_ENABLE"))
         {

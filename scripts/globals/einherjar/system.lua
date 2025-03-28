@@ -21,6 +21,16 @@ local function forEachPlayer(players, callback)
     end
 end
 
+local function allPlayersDead(players)
+    for _, player in pairs(players) do
+        if player and not player:isDead() then
+            return false
+        end
+    end
+
+    return true
+end
+
 local function log(chamberId, msg)
     local function getChamberNameById(id)
         for name, value in pairs(xi.einherjar.chamber) do
@@ -58,9 +68,9 @@ xi.einherjar.getChamber = function(id)
 end
 
 -- Create a new chamber instance
-xi.einherjar.createNewChamber = function(chamberId, leaderId)
+xi.einherjar.createNewChamber = function(chamberId, leader)
     log(chamberId, 'Creating chamber ' .. chamberId)
-    local newInstance = xi.einherjar.new(chamberId, leaderId)
+    local newInstance = xi.einherjar.new(chamberId, leader)
     chambersInstances[chamberId] = newInstance
     if newInstance then
         xi.einherjar.cycleWave(newInstance)
@@ -111,7 +121,6 @@ local function expelAllFromChamber(chamberData)
     forEachPlayer(chamberData.players, function(player)
         log(chamberData.id, 'Expelling player: ' .. player:getName() .. ' (' .. player:getID() .. ')')
         xi.einherjar.onChamberExit(chamberData, player)
-        player:messageSpecial(ID.text.TIMEOUT_EXPIRED)
     end)
 end
 
@@ -123,12 +132,7 @@ local function onWin(chamberData)
                 xi.einherjar.settings.EINHERJAR_CLEAR_EXTRA_TIME,
                 chamberData.id - 1
         )
-        if xi.einherjar.chambers[chamberData.id].ki then
-            if not player:hasKeyItem(xi.einherjar.chambers[chamberData.id].ki) then
-                player:addKeyItem(xi.einherjar.chambers[chamberData.id].ki)
-                player:messageSpecial(ID.text.KEYITEM_OBTAINED, xi.einherjar.chambers[chamberData.id].ki)
-            end
-        end
+        xi.einherjar.giveChamberFeather(player, chamberData.id)
     end)
 
     -- Cancel all pending events
@@ -219,6 +223,7 @@ local function onSpecialMobDeath(chamberData, mob)
                     mob:getRotPos()
                 )
                 npcUtil.showCrate(chamberData.tempCrate)
+                chamberData.tempCrate:setLocalVar('[ein]tempCrate', chamberData.id)
             end
         end,
     }
@@ -267,13 +272,52 @@ local function onMobEngage(chamberData, mob)
     end
 end
 
-xi.einherjar.new = function(chamberId, leaderId)
+-- Check if everyone is dead, queue emergency teleportation
+local function onPlayerDeath(chamberData, player)
+    if not allPlayersDead(chamberData.players) then
+        return
+    end
+
+    log(chamberData.id, string.format('All players dead, queueing emergency teleportation in %d minutes.', xi.einherjar.settings.EINHERJAR_KO_EXPEL_TIME))
+
+    local expelTime = os.time() + (xi.einherjar.settings.EINHERJAR_KO_EXPEL_TIME * 60)
+    forEachPlayer(chamberData.players, function(chamberPlayer)
+        chamberPlayer:messageSpecial(ID.text.EXPEDITION_INCAPACITATED_WARN, xi.einherjar.settings.EINHERJAR_KO_EXPEL_TIME)
+    end)
+
+    local function checkExpel()
+        if not allPlayersDead(chamberData.players) then
+            log(chamberData.id, 'Players no longer dead, cancelling emergency teleportation.')
+            return
+        end
+
+        if os.time() >= expelTime then
+            log(chamberData.id, 'Emergency teleportation, expelling all players.')
+            forEachPlayer(chamberData.players, function(chamberPlayer)
+                chamberPlayer:messageSpecial(ID.text.EXPEDITION_INCAPACITATED)
+            end)
+
+            expelAllFromChamber(chamberData)
+            cleanChamber(chamberData)
+            releaseChamber(chamberData.id)
+        else
+            chamberData.eventsQueue[os.time() + 5] = checkExpel
+        end
+    end
+
+    chamberData.eventsQueue[os.time() + 5] = checkExpel
+end
+
+xi.einherjar.new = function(chamberId, leader)
+    local leaderId  = leader:getID()
     local startTime = os.time()
 
     local chamberData =
     {
         id          = chamberId,
         leaderId    = leaderId,
+        -- TODO: Create a chamber-scoped shared treasure pool
+        pool        = leader:getTreasurePool(),
         startTime   = startTime,
         endTime     = startTime + (xi.einherjar.settings.EINHERJAR_TIME_LIMIT * 60),
         locked      = false,
@@ -290,11 +334,13 @@ xi.einherjar.new = function(chamberId, leaderId)
             [xi.mobMod.CHARMABLE]      = 0,
             [xi.mobMod.DONT_ROAM_HOME] = 1,
             [xi.mobMod.CLAIM_TYPE]     = xi.claimType.NON_EXCLUSIVE,
+            [xi.mobMod.EXP_BONUS]      = -100,
+            [xi.mobMod.GIL_BONUS]      = -100,
         },
         mods        = {},
         waveIndex   = 0,
         lootCrate   = GetNPCByID(ID.npc.ARMOURY_CRATE[chamberId]),
-        tempCrate   = GetNPCByID(ID.npc.ARMOURY_CRATE[chamberId * 2]),
+        tempCrate   = GetNPCByID(ID.npc.ARMOURY_CRATE[9 + chamberId]),
     }
 
     -- Back out if we failed to create a plan
@@ -323,8 +369,6 @@ xi.einherjar.new = function(chamberId, leaderId)
     if chamberData.tempCrate then
         xi.einherjar.hideCrate(chamberData.tempCrate)
     end
-
-    -- TODO: Create a chamber-scoped shared treasure pool
 
     chamberData.eventsQueue =
     {
@@ -370,6 +414,7 @@ xi.einherjar.onChamberEnter = function(chamberData, player, reconnecting)
     log(chamberData.id, 'Player entered: ' .. player:getName() .. ' (' .. playerId .. ')')
 
     player:setCharVar('[ein]chamber', chamberData.id, chamberData.endTime)
+    player:addListener('DEATH', 'EINHERJAR_DEATH', utils.bind(onPlayerDeath, chamberData))
     -- TODO: Add to chamber treasure pool
 
     for i = 0, 3 do
@@ -384,6 +429,7 @@ xi.einherjar.onChamberEnter = function(chamberData, player, reconnecting)
 end
 
 xi.einherjar.onChamberExit = function(chamberData, player)
+    player:delContainerItems(xi.inv.TEMPITEMS)
     if not chamberData.players[player:getID()] then -- player dropped glass without entering
         return
     end
@@ -560,6 +606,7 @@ end
 -- Zoning out without dropping glass forfeits ichor rewards
 xi.einherjar.onZoneOut = function(chamberData, player)
     if chamberData.players[player:getID()] then
+        player:delContainerItems(xi.inv.TEMPITEMS)
         log(chamberData.id, 'Player zoned out: ' .. player:getName() .. ' (' .. player:getID() .. ')')
         chamberData.players[player:getID()] = nil
     end
@@ -575,7 +622,11 @@ xi.einherjar.onReconnection = function(chamberData, player)
 
     chamberData.players[playerId] = player
     log(chamberData.id, 'Player reconnected: ' .. player:getName() .. ' (' .. playerId .. ')')
-    xi.einherjar.onChamberEnter(chamberData, player, true)
+
+    -- Delay the event to ensure the player is fully loaded, else the music packets are not processed
+    player:timer(5000, function()
+        xi.einherjar.onChamberEnter(chamberData, player, true)
+    end)
 
     return true
 end

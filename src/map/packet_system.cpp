@@ -794,7 +794,7 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
         return;
     }
 
-    auto actionStr = fmt::format("Player Action: {}: {} (0x{:02X}) -> targid: {}", PChar->getName(), actionToStr(action), action, TargID);
+    const auto actionStr = fmt::format("Player Action: {}: {} ({}) -> targid: {}", PChar->getName(), actionToStr(action), hex8ToString(action), TargID);
     TracyZoneString(actionStr);
     ShowTrace(actionStr);
     DebugActions(actionStr);
@@ -1190,7 +1190,7 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
         break;
         default:
         {
-            ShowWarning(fmt::format("CLIENT {} PERFORMING UNHANDLED ACTION {} (0x{:02X})", PChar->getName(), actionStr, action));
+            ShowWarningFmt("CLIENT {} PERFORMING UNHANDLED ACTION {} ({})", PChar->getName(), actionStr, hex8ToString(action));
             return;
         }
         break;

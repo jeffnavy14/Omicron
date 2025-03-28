@@ -21,9 +21,13 @@
 
 #pragma once
 
+#include "common/cbasetypes.h"
+
 #include <array>
 #include <chrono>
 #include <cstdint>
+
+using namespace std::chrono_literals;
 
 //
 // There are 3 types of updates, all with similar names but different functions:
