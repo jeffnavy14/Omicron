@@ -128,21 +128,6 @@ namespace moduleutils
         // Load the helper file
         lua.safe_script_file("./modules/module_utils.lua");
 
-        lua.safe_script(R""(
-            function applyOverride(base_table, name, func, fullname, filename)
-                local old = base_table[name]
-
-                local thisenv = getfenv(old)
-
-                local env = { super = old }
-                setmetatable(env, { __index = thisenv })
-
-                setfenv(func, env)
-
-                base_table[name] = func
-            end
-        )"");
-
         // Read lines from init.txt
         std::vector<std::string> list;
         std::ifstream            file("./modules/init.txt", std::ios_base::in);

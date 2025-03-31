@@ -1504,7 +1504,7 @@ namespace fishingutils
 
             if (Fish == nullptr)
             {
-                ShowError("Invalid ItemID %i for fished item\n", FishID);
+                ShowError("Invalid ItemID %i for fished item", FishID);
                 PChar->animation = ANIMATION_FISHING_STOP;
                 PChar->updatemask |= UPDATE_HP;
                 PChar->pushPacket<CMessageTextPacket>(PChar, MessageOffset + FISHMESSAGEOFFSET_LOST);
@@ -1551,7 +1551,7 @@ namespace fishingutils
 
             if (Item == nullptr)
             {
-                ShowError("Invalid ItemID %i for fished item\n", ItemID);
+                ShowError("Invalid ItemID %i for fished item", ItemID);
                 PChar->animation = ANIMATION_FISHING_STOP;
                 PChar->updatemask |= UPDATE_HP;
                 PChar->pushPacket<CMessageTextPacket>(PChar, MessageOffset + FISHMESSAGEOFFSET_LOST);
@@ -1589,7 +1589,7 @@ namespace fishingutils
         {
             if (!PMob->isAlive())
             {
-                ShowError("Invalid MobID %i for fished monster\n", MobID);
+                ShowError("Invalid MobID %i for fished monster", MobID);
             }
 
             PChar->animation = ANIMATION_FISHING_STOP;
@@ -1648,7 +1648,7 @@ namespace fishingutils
 
         if (Chest == nullptr || (Chest != nullptr && Chest->GetLocalVar("catchable") == 0))
         {
-            ShowError("Invalid NpcID %i for fished chest\n", NpcID);
+            ShowError("Invalid NpcID %i for fished chest", NpcID);
             PChar->animation = ANIMATION_FISHING_STOP;
             PChar->updatemask |= UPDATE_HP;
             PChar->pushPacket<CMessageTextPacket>(PChar, MessageOffset + FISHMESSAGEOFFSET_LOST);

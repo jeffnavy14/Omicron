@@ -330,6 +330,11 @@ void IPCClient::handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc
     {
         PZone->ForEachChar([&](CCharEntity* PChar)
         {
+            if (PChar->id == message.senderId && message.skipSender)
+            {
+                return;
+            }
+
             PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
         });
     });

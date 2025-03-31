@@ -198,4 +198,125 @@ namespace xi
         return final_action<std::decay_t<F>>{ std::forward<F>(f) };
     }
 
+    // std::bitset is not trivial, so we need to create our own bitset
+    // that is for use with the database
+    template <std::size_t N>
+    struct bitset
+    {
+        static constexpr std::size_t    storage_size = (N + 7) / 8;
+        std::array<uint8, storage_size> data;
+
+        void set(std::size_t pos, bool value)
+        {
+            if (value)
+            {
+                data[pos / 8] |= (1 << (pos % 8));
+            }
+            else
+            {
+                data[pos / 8] &= ~(1 << (pos % 8));
+            }
+        }
+
+        void set(std::size_t pos)
+        {
+            set(pos, true);
+        }
+
+        bool get(std::size_t pos) const
+        {
+            return (data[pos / 8] >> (pos % 8)) & 0x01;
+        }
+
+        bool test(std::size_t pos) const
+        {
+            return get(pos);
+        }
+
+        bool none() const
+        {
+            for (std::size_t i = 0; i < storage_size; ++i)
+            {
+                if (data[i] != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        void reset()
+        {
+            std::fill(data.begin(), data.end(), 0);
+        }
+
+        void reset(std::size_t pos)
+        {
+            set(pos, false);
+        }
+
+        void flip()
+        {
+            for (std::size_t i = 0; i < storage_size; ++i)
+            {
+                data[i] = ~data[i];
+            }
+        }
+
+        void flip(std::size_t pos)
+        {
+            data[pos / 8] ^= (1 << (pos % 8));
+        }
+
+        std::size_t size() const
+        {
+            return N;
+        }
+
+        xi::bitset<storage_size>& operator=(xi::bitset<storage_size>&& other)
+        {
+            data = std::move(other.data);
+            return *this;
+        }
+
+        bool& operator[](std::size_t pos)
+        {
+            return reinterpret_cast<bool&>(data[pos / 8] |= (1 << (pos % 8)));
+        }
+
+        bool operator[](std::size_t pos) const
+        {
+            return get(pos);
+        }
+
+        xi::bitset<N> operator&(const xi::bitset<N>& other) const
+        {
+            xi::bitset<N> result;
+            for (std::size_t i = 0; i < storage_size; ++i)
+            {
+                result.data[i] = data[i] & other.data[i];
+            }
+            return result;
+        }
+
+        xi::bitset<N> operator~() const
+        {
+            xi::bitset<N> result;
+            for (std::size_t i = 0; i < storage_size; ++i)
+            {
+                result.data[i] = ~data[i];
+            }
+            return result;
+        }
+
+        xi::bitset<N>& operator&=(const xi::bitset<N>& other)
+        {
+            for (std::size_t i = 0; i < storage_size; ++i)
+            {
+                data[i] &= other.data[i];
+            }
+            return *this;
+        }
+    };
+
 } // namespace xi

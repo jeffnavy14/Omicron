@@ -112,7 +112,7 @@ void ConnectServer::loadConsoleCommands()
             uniqueAccounts += loginHelpers::getAuthenticatedSessions()[ipAddrMap.first].size();
         }
 
-        ShowInfo("Serving %u IP addresses with %u accounts\n", uniqueIPs, uniqueAccounts);
+        ShowInfo("Serving %u IP addresses with %u accounts", uniqueIPs, uniqueAccounts);
     });
     // clang-format on
 }

@@ -227,6 +227,9 @@ namespace luautils
     void  SetRegionalConquestOverseers(uint8 regionID); // Update NPC Conquest Guard
     void  SendLuaFuncStringToZone(uint16 requestingZoneId, uint16 executorZoneId, std::string const& str);
 
+    void UpdateSanrakusMobs(); // Update sanraku's (ZNM) subject of interest and recommended fauna
+    void ZNMPopPriceDecay();   // Price of ZNM pop items decay over time
+
     auto GetReadOnlyItem(uint32 id) -> CItem*; // Returns a read only lookup item object of the specified ID
     auto GetAbility(uint16 id) -> CAbility*;
     auto GetSpell(uint16 id) -> CSpell*;

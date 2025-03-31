@@ -27,10 +27,14 @@
 #include "tracy.h"
 #include "xi.h"
 
+#include <array>
+#include <bitset>
 #include <istream>
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 // TODO: mariadb-connector-cpp triggers this. Remove once they fix it.
 // 4263 'function': member function does not override any base class member functions
@@ -202,97 +206,157 @@ namespace db
             std::unordered_map<std::string, std::unique_ptr<sql::PreparedStatement>> lazyPreparedStatements;
         };
 
+        enum class ResultSetType
+        {
+            Select,  // We can query the rset for data
+            Update,  // The rset only has rowsCount()/rowsAffected() populated
+            Invalid, // The query is invalid and we can't do anything with it
+        };
+
+        auto validateQueryLeadingKeyword(std::string const& query) -> ResultSetType;
+        auto validateQueryContent(std::string const& query) -> bool;
+
         class ResultSetWrapper final
         {
         public:
-            ResultSetWrapper(std::unique_ptr<sql::ResultSet>&& resultSet, const std::string& query)
-            : resultSet(std::move(resultSet))
-            , query(query)
+            explicit ResultSetWrapper(std::unique_ptr<sql::ResultSet>&& resultSet, const std::string& query)
+            : resultSet_(std::move(resultSet))
+            , query_(query)
+            , type_(ResultSetType::Select)
             {
+            }
+
+            explicit ResultSetWrapper(std::size_t rowsAffected, const std::string& query)
+            : resultSet_(nullptr)
+            , query_(query)
+            , type_(ResultSetType::Update)
+            , rowsAffected_(rowsAffected)
+            {
+            }
+
+            auto type() -> ResultSetType
+            {
+                return type_;
             }
 
             auto next() -> bool
             {
-                return resultSet->next();
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::next: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return false;
+                }
+
+                return resultSet_->next();
             }
 
             auto rowsCount() -> std::size_t
             {
-                DebugSQLFmt("rowsCount: {}", resultSet->rowsCount());
-                return resultSet->rowsCount();
+                DebugSQLFmt("rowsCount: {}", resultSet_->rowsCount());
+
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::rowsCount: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return 0;
+                }
+
+                return resultSet_->rowsCount();
+            }
+
+            auto rowsAffected() -> std::size_t
+            {
+                DebugSQLFmt("rowsAffected: {}", rowsAffected_);
+
+                if (type_ != ResultSetType::Update)
+                {
+                    ShowErrorFmt("ResultSetWrapper::rowsAffected: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return 0;
+                }
+
+                return rowsAffected_;
             }
 
             // Get the value of the associated key.
             template <typename T>
             auto get(const std::string& key) -> T
             {
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::get: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return T{};
+                }
+
                 using UnderlyingT = std::decay_t<T>;
 
                 UnderlyingT value{};
 
                 if (!is_blob_v<UnderlyingT>)
                 {
-                    if (resultSet->isNull(key.c_str()))
+                    if (resultSet_->isNull(key.c_str()))
                     {
                         ShowErrorFmt("ResultSetWrapper::get: key {} is null", key.c_str());
-                        ShowErrorFmt("Query: {}", query.c_str());
+                        ShowErrorFmt("Query: {}", query_.c_str());
                         return value;
                     }
                 }
 
                 if constexpr (std::is_same_v<UnderlyingT, int64>)
                 {
-                    value = static_cast<T>(resultSet->getInt64(key.c_str()));
+                    value = static_cast<T>(resultSet_->getInt64(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, uint64>)
                 {
-                    value = static_cast<T>(resultSet->getUInt64(key.c_str()));
+                    value = static_cast<T>(resultSet_->getUInt64(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, int32>)
                 {
-                    value = static_cast<T>(resultSet->getInt(key.c_str()));
+                    value = static_cast<T>(resultSet_->getInt(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, uint32>)
                 {
-                    value = static_cast<T>(resultSet->getUInt(key.c_str()));
+                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, int16>)
                 {
-                    value = static_cast<T>(resultSet->getInt(key.c_str()));
+                    value = static_cast<T>(resultSet_->getInt(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, uint16>)
                 {
-                    value = static_cast<T>(resultSet->getUInt(key.c_str()));
+                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, int8>)
                 {
                     // There is only a signed byte accessor
-                    value = static_cast<T>(resultSet->getByte(key.c_str()));
+                    value = static_cast<T>(resultSet_->getByte(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, uint8>)
                 {
                     // There isn't an unsigned byte accessor, so we'll just use getUInt
-                    value = static_cast<T>(resultSet->getUInt(key.c_str()));
+                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, bool>)
                 {
-                    value = static_cast<T>(resultSet->getBoolean(key.c_str()));
+                    value = static_cast<T>(resultSet_->getBoolean(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, double>)
                 {
-                    value = static_cast<T>(resultSet->getDouble(key.c_str()));
+                    value = static_cast<T>(resultSet_->getDouble(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, float>)
                 {
-                    value = static_cast<T>(resultSet->getFloat(key.c_str()));
+                    value = static_cast<T>(resultSet_->getFloat(key.c_str()));
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, std::string>)
                 {
-                    value = resultSet->getString(key.c_str());
+                    value = resultSet_->getString(key.c_str());
                 }
                 else if constexpr (std::is_same_v<UnderlyingT, char*>)
                 {
-                    value = resultSet->getString(key.c_str());
+                    value = resultSet_->getString(key.c_str());
                 }
                 else if constexpr (is_blob_v<UnderlyingT>)
                 {
@@ -311,7 +375,14 @@ namespace db
             template <typename T>
             auto get(const uint32 index) -> T
             {
-                const auto columnName = resultSet->getMetaData()->getColumnLabel(index + 1);
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::get: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return T{};
+                }
+
+                const auto columnName = resultSet_->getMetaData()->getColumnLabel(index + 1);
                 return get<T>(columnName.c_str());
             }
 
@@ -319,7 +390,14 @@ namespace db
             template <typename T>
             auto getOrDefault(const std::string& key, T defaultValue) -> T
             {
-                if (resultSet->isNull(key.c_str()))
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::getOrDefault: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return defaultValue;
+                }
+
+                if (resultSet_->isNull(key.c_str()))
                 {
                     return defaultValue;
                 }
@@ -331,19 +409,33 @@ namespace db
             template <typename T>
             auto getOrDefault(const uint32 index, T defaultValue) -> T
             {
-                const auto columnName = resultSet->getMetaData()->getColumnLabel(index + 1);
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::getOrDefault: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return defaultValue;
+                }
+
+                const auto columnName = resultSet_->getMetaData()->getColumnLabel(index + 1);
                 return getOrDefault<T>(columnName.c_str(), defaultValue);
             }
 
             // Check if the value of the associated key is null/not-populated.
             auto isNull(const std::string& key) -> bool
             {
-                return resultSet->isNull(key.c_str());
+                if (type_ != ResultSetType::Select)
+                {
+                    ShowErrorFmt("ResultSetWrapper::isNull: Invalid type {}", static_cast<int>(type_));
+                    ShowErrorFmt("Query: {}", query_.c_str());
+                    return false;
+                }
+
+                return resultSet_->isNull(key.c_str());
             }
 
-            auto getQuery() const
+            auto query() const
             {
-                return query;
+                return query_;
             }
 
             //
@@ -354,8 +446,10 @@ namespace db
             friend void db::extractFromBlob(WrapperPtrT const& rset, std::string const& blobKey, T& destination);
 
         private:
-            std::unique_ptr<sql::ResultSet> resultSet;
-            std::string                     query;
+            std::unique_ptr<sql::ResultSet> resultSet_;
+            std::string                     query_;
+            ResultSetType                   type_;
+            std::size_t                     rowsAffected_;
         };
 
         auto getState() -> Synchronized<db::detail::State>&;
@@ -515,6 +609,20 @@ namespace db
         TracyZoneString(rawQuery);
         // TODO: Collect up bound args and report to tracy here
 
+        // TODO: This could be cached inside lazyPreparedStatements
+        const auto queryType = detail::validateQueryLeadingKeyword(rawQuery);
+        if (queryType == detail::ResultSetType::Invalid)
+        {
+            ShowErrorFmt("Invalid query: {}", rawQuery);
+            return nullptr;
+        }
+
+        if (!detail::validateQueryContent(rawQuery))
+        {
+            ShowErrorFmt("Invalid query content: {}", rawQuery);
+            return nullptr;
+        }
+
         // clang-format off
         return detail::getState().write([&](detail::State& state) -> std::unique_ptr<db::detail::ResultSetWrapper>
         {
@@ -541,8 +649,17 @@ namespace db
                 auto& stmt = lazyPreparedStatements[rawQuery];
                 db::detail::binder(stmt, counter, blobs, std::forward<Args>(args)...);
                 auto queryTimer = detail::timer(rawQuery);
-                auto rset       = std::unique_ptr<sql::ResultSet>(stmt->executeQuery());
-                return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
+
+                if (queryType == detail::ResultSetType::Select)
+                {
+                    auto rset = std::unique_ptr<sql::ResultSet>(stmt->executeQuery());
+                    return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
+                }
+                else // Update
+                {
+                    auto rowsAffected = stmt->executeUpdate();
+                    return std::make_unique<db::detail::ResultSetWrapper>(rowsAffected, rawQuery);
+                }
             };
 
             const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
@@ -575,107 +692,6 @@ namespace db
         // clang-format on
     }
 
-    // @brief Execute a prepared statement with the given query string and arguments.
-    // @param query The query string to execute.
-    // @param args The arguments to bind to the prepared statement.
-    // @return A pair of: unique pointer to the result set of the query, number of rows affected by the query as told by MariaDB's ROW_COUNT().
-    // @note If the query hasn't been seen before it will generate a prepared statement for it to be used immediately and in the future.
-    // @note Everything in database-land is 1-indexed, not 0-indexed.
-    // @note This is a workaround for the fact that MariaDB's C++ connector hasn't yet implemented ResultSet::rowUpdated(), ResultSet::rowInserted(),
-    //       and ResultSet::rowDeleted().
-    template <typename... Args>
-    auto preparedStmtWithAffectedRows(std::string const& rawQuery, Args&&... args) -> std::pair<std::unique_ptr<db::detail::ResultSetWrapper>, std::size_t>
-    {
-        TracyZoneScoped;
-        TracyZoneString(rawQuery);
-        // TODO: Collect up bound args and report to tracy here
-
-        // clang-format off
-        return detail::getState().write([&](detail::State& state) -> std::pair<std::unique_ptr<db::detail::ResultSetWrapper>, std::size_t>
-        {
-            const auto operation = [&]() -> std::pair<std::unique_ptr<db::detail::ResultSetWrapper>, std::size_t>
-            {
-                auto& lazyPreparedStatements = state.lazyPreparedStatements;
-
-                // If we don't have it, lazily make it
-                // cppcheck-suppress stlFindInsert
-                if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
-                {
-                    try
-                    {
-                        // cppcheck-suppress stlFindInsert
-                        lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
-                    }
-                    catch (const std::exception& e)
-                    {
-                        ShowErrorFmt("Failed to lazy prepare query: {}", rawQuery, rawQuery.size());
-                        ShowErrorFmt("{}", e.what());
-                        return { nullptr, 0 };
-                    }
-                }
-
-                const auto rowCountQuery = "SELECT ROW_COUNT() AS count";
-
-                // If we don't have it, lazily make it
-                // cppcheck-suppress stlFindInsert
-                if (lazyPreparedStatements.find(rowCountQuery) == lazyPreparedStatements.end())
-                {
-                    // cppcheck-suppress stlFindInsert
-                    lazyPreparedStatements[rowCountQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rowCountQuery));
-                }
-
-                auto& stmt      = lazyPreparedStatements[rawQuery];
-                auto& countStmt = lazyPreparedStatements[rowCountQuery];
-
-                // NOTE: Everything is 1-indexed, but we're going to increment right away insider binder!
-                auto counter = 0;
-
-                // All blobs are stored here so they can be kept alive until the query is executed.
-                std::vector<std::shared_ptr<BlobWrapper>> blobs;
-
-                db::detail::binder(stmt, counter, blobs, std::forward<Args>(args)...);
-                auto queryTimer = detail::timer(rawQuery);
-                auto rset       = std::unique_ptr<sql::ResultSet>(stmt->executeQuery());
-                auto rset2      = std::unique_ptr<sql::ResultSet>(countStmt->executeQuery());
-                if (!rset2 || !rset2->next())
-                {
-                    ShowErrorFmt("Failed to get row count");
-                    return { nullptr, 0 };
-                }
-                auto rowCount = rset2->getUInt("count");
-                return { std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery), rowCount };
-            };
-
-            const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
-            for (auto i = 0U; i < queryRetryCount; ++i)
-            {
-                try
-                {
-                    if (i > 0)
-                    {
-                        ShowInfo("Connection lost, re-establishing connection and retrying query (attempt %d)", i);
-                        state.reset();
-                    }
-                    return operation();
-                }
-                catch (const std::exception& e)
-                {
-                    if (!detail::isConnectionIssue(e))
-                    {
-                        ShowErrorFmt("Query Failed: {}", rawQuery.c_str());
-                        ShowErrorFmt("{}", e.what());
-                        return { nullptr, 0 };
-                    }
-                }
-            }
-
-            ShowCritical("Query Failed after %d retries: %s", queryRetryCount, rawQuery.c_str());
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            std::terminate();
-        });
-        // clang-format on
-    }
-
     // @brief Extract a struct from a blob string.
     // @param rset The result set to extract the blob from.
     // @param blobKey The key of the blob in the result set.
@@ -696,7 +712,7 @@ namespace db
             //     : because it will truncate the blob result. So we're using a friend
             //     : function to allow us to get access to the raw resultSet and
             //     : call getString directly. This does not truncate the result.
-            auto blobStr = rset->resultSet->getString(blobKey.c_str());
+            auto blobStr = rset->resultSet_->getString(blobKey.c_str());
 
             // Login server creates new chars with null blobs. Map server then initializes.
             // We don't want to overwrite the initialized map data with null blobs / 0 values.
@@ -725,7 +741,9 @@ namespace db
     // @brief Escape a string for use in a query.
     // @param str The string to escape.
     // @return The escaped string.
-    auto escapeString(std::string const& str) -> std::string;
+    auto escapeString(std::string_view str) -> std::string;
+    auto escapeString(const std::string& str) -> std::string;
+    auto escapeString(const char* str) -> std::string;
 
     // @brief Get the database schema.
     // @return The database schema.
@@ -761,4 +779,6 @@ namespace db
     //
     // Returns true if the transaction was successful and committed or false if the transaction was rolled back.
     bool transaction(const std::function<void()>& transactionFn);
+
+    auto getTableColumnNames(std::string const& tableName) -> std::vector<std::string>;
 } // namespace db

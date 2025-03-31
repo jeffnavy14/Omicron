@@ -647,8 +647,8 @@ public:
     CBattlefieldHandler* m_BattlefieldHandler; // BCNM Instances in this zone
     CCampaignHandler*    m_CampaignHandler;    // WOTG campaign information for this zone
 
-    CNavMesh* m_navMesh   = nullptr;
-    ZoneLos*  lineOfSight = nullptr;
+    std::unique_ptr<CNavMesh> m_navMesh;
+    std::unique_ptr<ZoneLos>  lineOfSight;
 
     time_point m_LoadedAt; // The time the zone was loaded
 

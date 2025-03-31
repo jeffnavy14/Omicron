@@ -1279,12 +1279,8 @@ namespace synthutils
                     std::memset(&encodedSignature, 0, sizeof(encodedSignature));
                     PItem->setSignature(EncodeStringSignature(PChar->name.c_str(), encodedSignature));
 
-                    char signature_esc[31]; // max charname: 15 chars * 2 + 1
-                    _sql->EscapeStringLen(signature_esc, PChar->name.c_str(), strlen(PChar->name.c_str()));
-
-                    char fmtQuery[] = "UPDATE char_inventory SET signature = '%s' WHERE charid = %u AND location = 0 AND slot = %u;\0";
-
-                    _sql->Query(fmtQuery, signature_esc, PChar->id, invSlotID);
+                    db::preparedStmt("UPDATE char_inventory SET signature = ? WHERE charid = ? AND location = 0 AND slot = ? LIMIT 1",
+                                     PChar->name, PChar->id, invSlotID);
                 }
                 PChar->pushPacket<CInventoryItemPacket>(PItem, LOC_INVENTORY, invSlotID);
             }

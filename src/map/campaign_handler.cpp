@@ -145,7 +145,7 @@ void CCampaignHandler::SetBattleStatus(uint8 status)
     int         ret   = _sql->Query(query.c_str(), current, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to set campaign battle status.\n");
+        ShowError("Unable to set campaign battle status.");
         return;
     }
     m_status = current;
@@ -158,7 +158,7 @@ void CCampaignHandler::SetZoneControl(uint8 nation)
     int         ret      = _sql->Query(query.c_str(), nationid, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to set campaign zone control.\n");
+        ShowError("Unable to set campaign zone control.");
         return;
     }
     m_controllingNation = nationid;
@@ -172,7 +172,7 @@ void CCampaignHandler::SetHeroism(int16 amount)
     int         ret   = _sql->Query(query.c_str(), current, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to set campaign region control.\n");
+        ShowError("Unable to set campaign region control.");
         return;
     }
     m_heroism = current;
@@ -186,7 +186,7 @@ void CCampaignHandler::SetFortification(int16 amount)
     int         ret   = _sql->Query(query.c_str(), current, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to update campaign fortifications.\n");
+        ShowError("Unable to update campaign fortifications.");
         return;
     }
     m_currentFortifications = current;
@@ -200,7 +200,7 @@ void CCampaignHandler::SetResource(int16 amount)
     int         ret   = _sql->Query(query.c_str(), current, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to update campaign resources.\n");
+        ShowError("Unable to update campaign resources.");
         return;
     }
     m_currentResources = current;
@@ -214,7 +214,7 @@ void CCampaignHandler::SetMaxFortification(int16 amount)
     int         ret   = _sql->Query(query.c_str(), max, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to update max campaign fortifications.\n");
+        ShowError("Unable to update max campaign fortifications.");
         return;
     }
     m_maxFortifications = max;
@@ -228,7 +228,7 @@ void CCampaignHandler::SetMaxResource(int16 amount)
     int         ret   = _sql->Query(query.c_str(), max, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to update max campaign resources.\n");
+        ShowError("Unable to update max campaign resources.");
         return;
     }
     m_maxResources = max;
@@ -262,7 +262,7 @@ void CCampaignHandler::SetInfluence(CampaignArmy army, int16 amount)
     int         ret   = _sql->Query(query.c_str(), type, current, m_PZone->GetID());
     if (ret == SQL_ERROR)
     {
-        ShowError("Unable to update influence.\n");
+        ShowError("Unable to update influence.");
         return;
     }
 

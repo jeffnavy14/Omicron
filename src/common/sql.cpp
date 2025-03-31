@@ -140,36 +140,6 @@ int32 SqlConnection::GetTimeout(uint32* out_timeout)
     return SQL_ERROR;
 }
 
-int32 SqlConnection::GetColumnNames(const char* table, char* out_buf, size_t buf_len, char sep)
-{
-    char*  data = nullptr;
-    size_t len  = 0;
-    size_t off  = 0;
-
-    if (self == nullptr || SQL_ERROR == Query("EXPLAIN `%s`", table))
-    {
-        return SQL_ERROR;
-    }
-
-    out_buf[off] = '\0';
-    while (SQL_SUCCESS == NextRow() && SQL_SUCCESS == GetData(0, &data, &len))
-    {
-        len = strnlen(data, len);
-        if (off + len + 2 > buf_len)
-        {
-            ShowDebug("GetColumns: output buffer is too small");
-            *out_buf = '\0';
-            return SQL_ERROR;
-        }
-        memcpy(out_buf + off, data, len);
-        off += len;
-        out_buf[off++] = sep;
-    }
-    out_buf[off] = '\0';
-    FreeResult();
-    return SQL_SUCCESS;
-}
-
 int32 SqlConnection::SetEncoding(const char* encoding)
 {
     if (mysql_set_character_set(&self->handle, encoding) == 0)
@@ -244,53 +214,6 @@ int32 SqlConnection::TryPing()
     return SQL_ERROR;
 }
 
-size_t SqlConnection::EscapeStringLen(char* out_to, const char* from, size_t from_len)
-{
-    TracyZoneScoped;
-
-    if (self)
-    {
-        return mysql_real_escape_string(&self->handle, out_to, from, static_cast<uint32>(from_len));
-    }
-
-    return mysql_escape_string(out_to, from, static_cast<uint32>(from_len));
-}
-
-size_t SqlConnection::EscapeStringLen(char* out_to, std::string_view from)
-{
-    TracyZoneScoped;
-
-    return EscapeStringLen(out_to, from.data(), from.size());
-}
-
-size_t SqlConnection::EscapeString(char* out_to, const char* from)
-{
-    TracyZoneScoped;
-
-    return EscapeStringLen(out_to, from, strlen(from));
-}
-
-std::string SqlConnection::EscapeString(std::string_view from)
-{
-    TracyZoneScoped;
-
-    if (from.empty())
-    {
-        return {};
-    }
-
-    auto buffer = std::vector<char>(from.size() * 2 + 1);
-    auto len    = EscapeStringLen(buffer.data(), from);
-    return std::string(buffer.data(), len);
-}
-
-std::string SqlConnection::EscapeString(const std::string& from)
-{
-    TracyZoneScoped;
-
-    return EscapeString(std::string_view(from));
-}
-
 int32 SqlConnection::QueryStr(const char* query)
 {
     TracyZoneScoped;
@@ -351,15 +274,6 @@ int32 SqlConnection::QueryStr(const char* query)
     }
 
     return SQL_SUCCESS;
-}
-
-uint64 SqlConnection::AffectedRows()
-{
-    if (self)
-    {
-        return (uint64)mysql_affected_rows(&self->handle);
-    }
-    return 0;
 }
 
 uint64 SqlConnection::LastInsertId()

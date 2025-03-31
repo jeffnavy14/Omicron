@@ -26,6 +26,7 @@
 #include "macros.h"
 #include "settings.h"
 #include "task_manager.h"
+#include "utils.h"
 
 #include <chrono>
 using namespace std::chrono_literals;
@@ -35,17 +36,6 @@ namespace
     // TODO: Manual checkout and pooling of state
     // Each thread gets its own connection, so we don't need to worry about thread safety.
     thread_local Synchronized<db::detail::State> state;
-
-    // Replacement map similar to str_replace in PHP
-    const std::unordered_map<char, std::string> replacements = {
-        { '\\', "\\\\" },
-        { '\0', "\\0" },
-        { '\n', "\\n" },
-        { '\r', "\\r" },
-        { '\'', "\\'" },
-        { '\"', "\\\"" },
-        { '\x1a', "\\Z" }
-    };
 
     const std::vector<std::string> connectionIssues = {
         "Lost connection",
@@ -93,6 +83,102 @@ auto db::detail::isConnectionIssue(const std::exception& e) -> bool
     }
 
     return false;
+}
+
+auto db::detail::validateQueryLeadingKeyword(std::string const& query) -> ResultSetType
+{
+    auto parts = split(to_upper(query), " ");
+
+    std::vector<std::string> cleanedParts;
+    for (const auto& part : parts)
+    {
+        if (!part.empty() && part != "\n")
+        {
+            cleanedParts.push_back(trim(trim(part), "\n"));
+        }
+    }
+    parts = std::move(cleanedParts);
+
+    if (parts.empty())
+    {
+        return ResultSetType::Invalid;
+    }
+
+    const auto keyword = parts[0];
+    if (keyword == "SELECT")
+    {
+        return ResultSetType::Select;
+    }
+    else if (keyword == "INSERT")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "UPDATE")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "DELETE")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "REPLACE")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "CREATE")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "ALTER")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "DROP")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "TRUNCATE")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "SET")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "SHOW")
+    {
+        return ResultSetType::Select;
+    }
+    else if (keyword == "START")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "COMMIT")
+    {
+        return ResultSetType::Update;
+    }
+    else if (keyword == "ROLLBACK")
+    {
+        return ResultSetType::Update;
+    }
+
+    // Else
+    return ResultSetType::Invalid;
+}
+
+auto db::detail::validateQueryContent(std::string const& query) -> bool
+{
+    if (query.find("{}") != std::string::npos)
+    {
+        return false;
+    }
+
+    if (query.find(";") != std::string::npos)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 Synchronized<db::detail::State>& db::detail::getState()
@@ -150,7 +236,22 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
 {
     TracyZoneScoped;
     TracyZoneString(rawQuery);
-    // TODO: Collect up bound args and report to tracy here
+    // TODO: Collect up bound args and report to tracy
+
+    ShowWarning("db::query and db::queryStr are deprecated. Please use db::preparedStmt instead.");
+
+    const auto queryType = detail::validateQueryLeadingKeyword(rawQuery);
+    if (queryType == detail::ResultSetType::Invalid)
+    {
+        ShowErrorFmt("Invalid query: {}", rawQuery);
+        return nullptr;
+    }
+
+    if (!detail::validateQueryContent(rawQuery))
+    {
+        ShowErrorFmt("Invalid query content: {}", rawQuery);
+        return nullptr;
+    }
 
     // clang-format off
     return detail::getState().write([&](detail::State& state) -> std::unique_ptr<db::detail::ResultSetWrapper>
@@ -161,8 +262,17 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
 
             DebugSQL(fmt::format("query: {}", rawQuery));
             auto queryTimer = detail::timer(rawQuery);
-            auto rset       = std::unique_ptr<sql::ResultSet>(stmt->executeQuery(rawQuery.data()));
-            return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
+
+            if (queryType == detail::ResultSetType::Select)
+            {
+                auto rset = std::unique_ptr<sql::ResultSet>(stmt->executeQuery(rawQuery.c_str()));
+                return std::make_unique<db::detail::ResultSetWrapper>(std::move(rset), rawQuery);
+            }
+            else // Update
+            {
+                auto rowsAffected = stmt->executeUpdate(rawQuery.c_str());
+                return std::make_unique<db::detail::ResultSetWrapper>(rowsAffected, rawQuery);
+            }
         };
 
         const auto queryRetryCount = 1 + settings::get<uint32>("network.SQL_QUERY_RETRY_COUNT");
@@ -195,8 +305,25 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
     // clang-format on
 }
 
-auto db::escapeString(std::string const& str) -> std::string
+auto db::escapeString(std::string_view str) -> std::string
 {
+    static const std::unordered_map<char, std::string> replacements = {
+        // Replacement map similar to str_replace in PHP
+        { '\\', "\\\\" },
+        { '\0', "\\0" },
+        { '\n', "\\n" },
+        { '\r', "\\r" },
+        { '\'', "\\'" },
+        { '\"', "\\\"" },
+        { '\x1a', "\\Z" },
+
+        // Extras
+        { '\b', "\\b" },
+        { '%', "\\%" },
+        { '|', "\\|" },
+        { ';', "\\;" },
+    };
+
     std::string escapedStr;
 
     for (size_t i = 0; i < str.size(); ++i)
@@ -221,6 +348,26 @@ auto db::escapeString(std::string const& str) -> std::string
     }
 
     return escapedStr;
+}
+
+auto db::escapeString(const std::string& str) -> std::string
+{
+    if (str.empty())
+    {
+        return {};
+    }
+
+    return db::escapeString(std::string_view(str));
+}
+
+auto db::escapeString(const char* str) -> std::string
+{
+    if (str == nullptr)
+    {
+        return {};
+    }
+
+    return db::escapeString(std::string_view(str));
 }
 
 auto db::getDatabaseSchema() -> std::string
@@ -266,7 +413,7 @@ void db::checkCharset()
     TracyZoneScoped;
 
     // Check that the SQL charset is what we require
-    auto rset = query("SELECT @@character_set_database, @@collation_database");
+    auto rset = preparedStmt("SELECT @@character_set_database, @@collation_database");
     if (rset && rset->rowsCount())
     {
         bool foundError = false;
@@ -432,4 +579,23 @@ bool db::transaction(const std::function<void()>& transactionFn)
 
     db::setAutoCommit(wasAutoCommitOn);
     return true;
+}
+
+auto db::getTableColumnNames(std::string const& tableName) -> std::vector<std::string>
+{
+    TracyZoneScoped;
+
+    const auto rset = db::preparedStmt("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?", tableName, db::getDatabaseSchema());
+    if (rset && rset->rowsCount())
+    {
+        std::vector<std::string> columnNames;
+        while (rset->next())
+        {
+            columnNames.emplace_back(rset->get<std::string>(0));
+        }
+
+        return columnNames;
+    }
+
+    return {};
 }

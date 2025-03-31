@@ -24,6 +24,7 @@ zones[xi.zone.RIVERNE_SITE_A01] =
         SD_HAS_GROWN                  = 7609, -- The spatial displacement has grown.
         SPACE_SEEMS_DISTORTED         = 7610, -- The space around you seems oddly distorted and disrupted.
         MONUMENT                      = 7617, -- Something has been engraved on this stone, but the message is too difficult to make out.
+        NOTHING_OUT_OF_THE_ORDINARY   = 7655, -- There is nothing out of the ordinary here.
         HOMEPOINT_SET                 = 7745, -- Home point set!
         UNITY_WANTED_BATTLE_INTERACT  = 7803, -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
     },

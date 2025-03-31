@@ -28,18 +28,6 @@
 #include <string>
 #include <string_view>
 
-// Set this higher to strip out lower messages at compile time
-// NOTE: We don't strip anything by default, as we use all the logger
-//     : levels for different things.
-#ifndef SPDLOG_ACTIVE_LEVEL
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#endif
-
-// TODO: Remove this
-#ifndef FMT_CONSTEVAL
-#define FMT_CONSTEVAL
-#endif
-
 #include <fmt/args.h>
 #include <fmt/chrono.h>
 #include <fmt/core.h>

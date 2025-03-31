@@ -30,7 +30,9 @@
         "item_utils",
 
         "Module",
+        "Override",
         "super",
+        "applyOverride",
 
         "mixins",
         "g_mixins",

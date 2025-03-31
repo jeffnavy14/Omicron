@@ -386,14 +386,10 @@ void data_session::read_func()
                     // If the session was not processed by the game server, then it must be deleted.
                     db::preparedStmt("DELETE FROM accounts_sessions WHERE accid = ? AND client_port = 0", session.accountID);
 
-                    char session_key[sizeof(key3) * 2 + 1];
-                    bin2hex(session_key, key3, sizeof(key3));
-
-                    // TODO: Figure out how to encode session_key as a hex string using db::preparedStmt. Encode as a blob?
-                    if (!db::query("INSERT INTO accounts_sessions(accid, charid, session_key, server_addr, server_port, client_addr, version_mismatch) "
-                                   "VALUES(%u, %u, x'%s', %u, %u, %u, %u)",
-                                   session.accountID, charid, session_key, ZoneIP, ZonePort, accountIP,
-                                   session.versionMismatch ? 1 : 0))
+                    if (!db::preparedStmt("INSERT INTO accounts_sessions(accid, charid, session_key, server_addr, server_port, client_addr, version_mismatch) "
+                                          "VALUES(?, ?, ?, ?, ?, ?, ?)",
+                                          session.accountID, charid, key3, ZoneIP, ZonePort, accountIP,
+                                          session.versionMismatch ? 1 : 0))
                     {
                         if (auto data = session.view_session.get())
                         {

@@ -55,15 +55,19 @@ void CGuild::updateGuildPointsPattern(uint8 pattern)
     {
         m_GPItemsRank[i] = (m_GPItemsRank[i] + 1) % (i + 4);
 
-        std::string query = "SELECT itemid, points, max_points FROM guild_item_points WHERE "
-                            "guildid = %u AND pattern = %u AND rank = %u";
-        int         ret   = _sql->Query(query.c_str(), m_id, pattern, m_GPItemsRank[i]);
+        const auto rset = db::preparedStmt("SELECT itemid, points, max_points FROM guild_item_points WHERE "
+                                           "guildid = ? AND pattern = ? AND rank = ?",
+                                           m_id, pattern, m_GPItemsRank[i]);
 
-        if (ret != SQL_ERROR && _sql->NumRows() > 0)
+        if (rset && rset->rowsCount())
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            while (rset->next())
             {
-                m_GPItems[i].emplace_back(itemutils::GetItemPointer(_sql->GetUIntData(0)), _sql->GetUIntData(2), _sql->GetUIntData(1));
+                const auto itemId    = rset->get<uint16>("itemid");
+                const auto points    = rset->get<uint16>("points");
+                const auto maxPoints = rset->get<uint16>("max_points");
+
+                m_GPItems[i].emplace_back(itemutils::GetItemPointer(itemId), points, maxPoints);
             }
         }
     }

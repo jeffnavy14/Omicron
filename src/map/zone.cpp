@@ -96,7 +96,6 @@ CZone::CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, ui
     m_TreasurePool       = nullptr;
     m_BattlefieldHandler = nullptr;
     m_Weather            = WEATHER_NONE;
-    m_navMesh            = nullptr;
     m_zoneEntities       = new CZoneEntities(this);
     m_CampaignHandler    = new CCampaignHandler(this);
 
@@ -120,16 +119,6 @@ CZone::~CZone()
     if (m_CampaignHandler)
     {
         destroy(m_CampaignHandler);
-    }
-
-    if (m_navMesh)
-    {
-        destroy(m_navMesh);
-    }
-
-    if (lineOfSight)
-    {
-        destroy(lineOfSight);
     }
 
     m_triggerAreaList.clear();
@@ -451,7 +440,7 @@ void CZone::LoadNavMesh()
 
     if (m_navMesh == nullptr)
     {
-        m_navMesh = new CNavMesh((uint16)GetID());
+        m_navMesh = std::make_unique<CNavMesh>(static_cast<uint16>(GetID()));
     }
 
     char file[255];
@@ -461,7 +450,7 @@ void CZone::LoadNavMesh()
     if (!m_navMesh->load(file))
     {
         DebugNavmesh("CZone::LoadNavMesh: Cannot load navmesh file (%s)", file);
-        destroy(m_navMesh);
+        m_navMesh = nullptr;
     }
 }
 
@@ -478,7 +467,7 @@ void CZone::LoadZoneLos()
     if (lineOfSight)
     {
         // Clean up previous object if one exists.
-        destroy(lineOfSight);
+        lineOfSight = nullptr;
     }
 
     lineOfSight = ZoneLos::Load((uint16)GetID(), fmt::sprintf("losmeshes/%s.obj", getName()));
@@ -1081,6 +1070,9 @@ void CZone::CharZoneIn(CCharEntity* PChar)
             PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_LEVEL_RESTRICTION);
         }
     }
+
+    // Mark current zone as visited
+    PChar->m_ZonesVisitedList[PChar->getZone() >> 3] |= (1 << (PChar->getZone() % 8));
 
     monstrosity::HandleZoneIn(PChar);
 
