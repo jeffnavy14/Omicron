@@ -201,16 +201,10 @@ if(WIN32)
     set_target_properties(xi_map PROPERTIES OUTPUT_NAME xi_map)
 endif()
 
-target_compile_definitions(
-    xi_map
-    PUBLIC
-    -DdsUDPSERV
-    -DDEBUGLOGMAP
-)
-
 target_link_libraries(xi_map
     PUBLIC
-        ${EXTERNAL_LIBS}
+        ${SHARED_EXTERNAL_LIBS}
+        ${MAP_ONLY_EXTERNAL_LIBS}
         project_options
     PRIVATE
         project_warnings

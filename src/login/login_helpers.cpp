@@ -204,7 +204,7 @@ namespace loginHelpers
 
     int32 createCharacter(session_t& session, char* buf)
     {
-        char_mini createchar;
+        char_mini createchar{};
 
         std::memcpy(createchar.m_name, session.requestedNewCharacterName.c_str(), 16);
 

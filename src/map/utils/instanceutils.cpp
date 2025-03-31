@@ -19,10 +19,15 @@
 ===========================================================================
 */
 
-#include "instance_loader.h"
+#include "instanceutils.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+
 #include "lua/luautils.h"
 
-#include "instanceutils.h"
+#include "instance_loader.h"
 #include "map_networking.h"
 #include "map_server.h"
 #include "zoneutils.h"

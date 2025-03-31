@@ -167,3 +167,8 @@ uint32 getCurrentTimeMs()
 {
     return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() % 1000;
 }
+
+auto getMilliseconds(const duration& d) -> int64
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
+};

@@ -19,6 +19,11 @@
 ===========================================================================
 */
 
+#include "blueutils.h"
+
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/utils.h"
 
 #include "packets/char_job_extra.h"
@@ -31,7 +36,6 @@
 #include "battleutils.h"
 #include "blue_spell.h"
 #include "blue_trait.h"
-#include "blueutils.h"
 #include "charutils.h"
 #include "grades.h"
 #include "job_points.h"

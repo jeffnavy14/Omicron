@@ -27,7 +27,7 @@
 #include "logging.h"
 #include "lua.h"
 #include "settings.h"
-#include "taskmgr.h"
+#include "task_manager.h"
 #include "timer.h"
 #include "version.h"
 #include "xirand.h"
@@ -274,22 +274,6 @@ void Application::requestExit()
 {
     gIsRunning = false;
     io_context_.stop();
-}
-
-void Application::run()
-{
-    Application::markLoaded();
-
-    //
-    // Simple TaskManager-only main tick
-    //
-
-    duration next;
-    while (isRunning())
-    {
-        next = CTaskMgr::getInstance()->DoTimer(server_clock::now());
-        std::this_thread::sleep_for(next);
-    }
 }
 
 bool Application::isRunningInCI()

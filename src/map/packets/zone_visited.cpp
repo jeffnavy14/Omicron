@@ -30,5 +30,5 @@ CZoneVisitedPacket::CZoneVisitedPacket(CCharEntity* PChar)
     this->setType(0x08);
     this->setSize(0x34);
 
-    std::memcpy(buffer_.data() + 4, PChar->m_ZonesList, 38);
+    std::memcpy(buffer_.data() + 4, PChar->m_ZonesVisitedList, 38);
 }

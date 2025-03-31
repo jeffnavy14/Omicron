@@ -19,11 +19,16 @@
 ===========================================================================
 */
 
+#include "itemutils.h"
+
 #include <array>
 #include <cstring>
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
+
 #include "entities/battleentity.h"
-#include "itemutils.h"
 #include "lua/luautils.h"
 #include "map_server.h"
 

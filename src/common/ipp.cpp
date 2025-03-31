@@ -21,6 +21,8 @@
 
 #include "ipp.h"
 
+#include "logging.h"
+
 // Converts a network-order IP to a host-order string.
 auto ip2str(uint32 ip) -> std::string
 {

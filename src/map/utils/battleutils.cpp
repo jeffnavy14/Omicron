@@ -21,6 +21,9 @@
 
 #include "battleutils.h"
 
+#include "common/database.h"
+#include "common/logging.h"
+#include "common/sql.h"
 #include "common/timer.h"
 #include "common/utils.h"
 
@@ -55,10 +58,12 @@
 #include "items.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
+#include "los/zone_los.h"
 #include "map_server.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "modifier.h"
+#include "navmesh.h"
 #include "notoriety_container.h"
 #include "packets/char_abilities.h"
 #include "packets/char_recast.h"
@@ -2421,6 +2426,16 @@ namespace battleutils
             damage = 0;
         }
 
+        // Handle damage nullification.
+        if (attackType == ATTACK_TYPE::RANGED && xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_RANGED_DAMAGE))
+        {
+            damage = 0;
+        }
+        else if (attackType == ATTACK_TYPE::PHYSICAL && xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_PHYSICAL_DAMAGE))
+        {
+            damage = 0;
+        }
+
         if (damage > 0)
         {
             damage = std::max(damage - PDefender->getMod(Mod::PHALANX), 0);
@@ -4238,7 +4253,7 @@ namespace battleutils
         int16 angleDiff = angleDifference(firstEntityWorldAngle, worldAngle(anchorEntity->loc.p, otherEntity->loc.p));
 
         // Useful for debugging if trick attack/cover aren't reliably calculating eligability, but chatty otherwise
-        // ShowDebug("InLine check angleDiff: %d\n", angleDiff);
+        // ShowDebug("InLine check angleDiff: %d", angleDiff);
 
         return std::abs(angleDiff) <= worldAngleMaxDeviance;
     }
@@ -6009,6 +6024,12 @@ namespace battleutils
 
     bool HasClaim(CBattleEntity* PEntity, CBattleEntity* PTarget)
     {
+        if (PEntity == nullptr)
+        {
+            ShowWarning("PEntity is null.");
+            return false;
+        }
+
         if (PTarget == nullptr)
         {
             ShowWarning("PTarget is null.");

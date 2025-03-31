@@ -45,7 +45,7 @@ public:
     //
 
     void tapStatistics();
-    auto doSockets(duration) -> duration;
+    auto doSocketsBlocking(duration) -> duration;
 
     // TODO: Pass around std::span<uint8> instead of uint8* and size_t*
     // TODO: Stop changing the buffsize size_t as we go along

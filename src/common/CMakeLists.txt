@@ -32,8 +32,8 @@ set(COMMON_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/sql.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/sql.h
     ${CMAKE_CURRENT_SOURCE_DIR}/string.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/taskmgr.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/taskmgr.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/task_manager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/task_manager.h
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tracy.cpp

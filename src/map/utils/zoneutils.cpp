@@ -228,6 +228,8 @@ namespace zoneutils
         const auto ipStr = mapIPP.getIPString();
         const auto port  = mapIPP.getPort();
 
+        // NOTE: We normally don't want to build a prepared statement with fmt::format,
+        //     : but this query is entirely internal, so it's OK.
         const auto zonesQuery = fmt::format("SELECT zoneid "
                                             "FROM zone_settings "
                                             "WHERE IF({} <> 0, '{}' = zoneip AND {} = zoneport, TRUE)",

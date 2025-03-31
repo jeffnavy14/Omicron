@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _CVANATIME_H
-#define _CVANATIME_H
+#pragma once
 
 #ifdef _WIN32
 #define timegm _mkgmtime
@@ -115,5 +114,3 @@ private:
 
     int32 m_customEpoch{}; // Custom epoch to use instead of VTIME_BASEDATE
 };
-
-#endif

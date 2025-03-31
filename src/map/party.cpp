@@ -154,7 +154,8 @@ void CParty::DisbandParty(bool playerInitiated)
                 sync->SetStartTime(server_clock::now());
                 sync->SetDuration(30000);
             }
-            _sql->Query("DELETE FROM accounts_parties WHERE charid = %u", PChar->id);
+
+            db::preparedStmt("DELETE FROM accounts_parties WHERE charid = ?", PChar->id);
         }
 
         // make sure message server isn't notified of a disband if this came from the message server already
@@ -349,7 +350,7 @@ void CParty::RemoveMember(CBattleEntity* PEntity)
                 PChar->pushPacket<CPartyMemberUpdatePacket>(PChar, 0, 0, PChar->getZone());
                 PChar->pushPacket<CCharStatusPacket>(PChar);
 
-                _sql->Query("DELETE FROM accounts_parties WHERE charid = %u", PChar->id);
+                db::preparedStmt("DELETE FROM accounts_parties WHERE charid = ?", PChar->id);
 
                 if (m_PAlliance)
                 {
@@ -509,13 +510,13 @@ bool CParty::RemovePartyLeader(CBattleEntity* PEntity)
 
     if (m_PartyType != PARTYTYPE::PARTY_MOBS)
     {
-        int ret = _sql->Query("SELECT charname FROM accounts_sessions JOIN chars ON accounts_sessions.charid = chars.charid \
-                                        JOIN accounts_parties ON accounts_parties.charid = chars.charid WHERE partyid = %u AND NOT partyflag & %d \
-                                        ORDER BY timestamp ASC LIMIT 1",
-                              m_PartyID, PARTY_LEADER);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT charname FROM accounts_sessions JOIN chars ON accounts_sessions.charid = chars.charid "
+                                           "JOIN accounts_parties ON accounts_parties.charid = chars.charid WHERE partyid = ? AND NOT partyflag & ? "
+                                           "ORDER BY timestamp ASC LIMIT 1",
+                                           m_PartyID, PARTY_LEADER);
+        if (rset && rset->rowsCount() && rset->next())
         {
-            std::string newLeader((const char*)_sql->GetData(0));
+            std::string newLeader = rset->get<std::string>("charname");
             SetLeader(newLeader);
         }
     }
@@ -629,8 +630,8 @@ void CParty::AddMember(CBattleEntity* PEntity)
             allianceid = m_PAlliance->m_AllianceID;
         }
 
-        _sql->Query("INSERT INTO accounts_parties (charid, partyid, allianceid, partyflag) VALUES (%u, %u, %u, %u)", PChar->id, m_PartyID, allianceid,
-                    GetMemberFlags(PChar));
+        db::preparedStmt("INSERT INTO accounts_parties (charid, partyid, allianceid, partyflag) VALUES (?, ?, ?, ?)",
+                         PChar->id, m_PartyID, allianceid, GetMemberFlags(PChar));
 
         if (m_PAlliance)
         {
@@ -705,8 +706,9 @@ void CParty::AddMember(uint32 id)
                 Flags = PARTY_THIRD;
             }
         }
-        _sql->Query("INSERT INTO accounts_parties (charid, partyid, allianceid, partyflag) VALUES (%u, %u, %u, %u)", id, m_PartyID, allianceid,
-                    Flags);
+
+        db::preparedStmt("INSERT INTO accounts_parties (charid, partyid, allianceid, partyflag) VALUES (?, ?, ?, ?)",
+                         id, m_PartyID, allianceid, Flags);
 
         if (m_PAlliance)
         {
@@ -1053,21 +1055,20 @@ void CParty::SetLeader(const std::string& MemberName)
     if (m_PartyType == PARTY_PCS)
     {
         uint32 newId = 0;
-        int    ret   = _sql->Query(
-            "SELECT chars.charid from accounts_sessions JOIN chars ON chars.charid = accounts_sessions.charid WHERE charname = ('%s')", MemberName);
 
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT chars.charid from accounts_sessions JOIN chars ON chars.charid = accounts_sessions.charid WHERE charname = ?", MemberName);
+        if (rset && rset->rowsCount() && rset->next())
         {
-            newId = _sql->GetUIntData(0);
+            newId = rset->get<uint32>(0);
         }
         else
         {
             return;
         }
 
-        _sql->Query("UPDATE accounts_parties SET partyflag = partyflag & ~%d WHERE partyid = %u AND partyflag & %d", ALLIANCE_LEADER | PARTY_LEADER, m_PartyID, PARTY_LEADER);
-        _sql->Query("UPDATE accounts_parties SET partyid = %u WHERE partyid = %u", newId, m_PartyID);
-        _sql->Query("UPDATE accounts_parties SET allianceid = %u WHERE allianceid = %u", newId, m_PartyID);
+        db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag & ~? WHERE partyid = ? AND partyflag & ?", ALLIANCE_LEADER | PARTY_LEADER, m_PartyID, PARTY_LEADER);
+        db::preparedStmt("UPDATE accounts_parties SET partyid = ? WHERE partyid = ?", newId, m_PartyID);
+        db::preparedStmt("UPDATE accounts_parties SET allianceid = ? WHERE allianceid = ?", newId, m_PartyID);
 
         m_PLeader = GetMemberByName(MemberName);
         if (this->m_PAlliance && this->m_PAlliance->m_AllianceID == m_PartyID)
@@ -1076,7 +1077,7 @@ void CParty::SetLeader(const std::string& MemberName)
         }
 
         m_PartyID = newId;
-        _sql->Query("UPDATE accounts_parties SET partyflag = partyflag | IF(allianceid = partyid, %d, %d) WHERE charid = %u", ALLIANCE_LEADER | PARTY_LEADER, PARTY_LEADER, newId);
+        db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag | IF(allianceid = partyid, ?, ?) WHERE charid = ?", ALLIANCE_LEADER | PARTY_LEADER, PARTY_LEADER, newId);
 
         // Passing leader dismisses trusts
         for (auto* PMemberEntity : members)
@@ -1141,10 +1142,10 @@ void CParty::SetSyncTarget(const std::string& MemberName, MsgStd message)
                         member->loc.zone->PushPacket(member, CHAR_INRANGE, std::make_unique<CCharSyncPacket>(member));
                     }
                 }
-                _sql->Query("UPDATE accounts_parties SET partyflag = partyflag & ~%d WHERE partyid = %u AND partyflag & %d", PARTY_SYNC, m_PartyID,
-                            PARTY_SYNC);
-                _sql->Query("UPDATE accounts_parties SET partyflag = partyflag | %d WHERE partyid = %u AND charid = '%u'", PARTY_SYNC, m_PartyID,
-                            PChar->id);
+                db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag & ~? WHERE partyid = ? AND partyflag & ?",
+                                 PARTY_SYNC, m_PartyID, PARTY_SYNC);
+                db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag | ? WHERE partyid = ? AND charid = ?",
+                                 PARTY_SYNC, m_PartyID, PChar->id);
             }
         }
         else
@@ -1174,8 +1175,8 @@ void CParty::SetSyncTarget(const std::string& MemberName, MsgStd message)
                 }
             }
             m_PSyncTarget = nullptr;
-            _sql->Query("UPDATE accounts_parties SET partyflag = partyflag & ~%d WHERE partyid = %u AND partyflag & %d", PARTY_SYNC, m_PartyID,
-                        PARTY_SYNC);
+            db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag & ~? WHERE partyid = ? AND partyflag & ?",
+                             PARTY_SYNC, m_PartyID, PARTY_SYNC);
         }
     }
 }
@@ -1185,12 +1186,14 @@ void CParty::SetQuarterMaster(const std::string& MemberName)
 {
     CBattleEntity* PEntity = GetMemberByName(MemberName);
     m_PQuarterMaster       = PEntity;
-    _sql->Query("UPDATE accounts_parties SET partyflag = partyflag & ~%d WHERE partyid = %u AND partyflag & %d", PARTY_QM, m_PartyID, PARTY_QM);
+
+    db::preparedStmt("UPDATE accounts_parties SET partyflag = partyflag & ~? WHERE partyid = ? AND partyflag & ?", PARTY_QM, m_PartyID, PARTY_QM);
+
     if (PEntity != nullptr)
     {
-        _sql->Query("UPDATE accounts_parties JOIN chars ON accounts_parties.charid = chars.charid \
-                              SET partyflag = partyflag | %d WHERE partyid = %u AND charname = '%s'",
-                    PARTY_QM, m_PartyID, MemberName);
+        db::preparedStmt("UPDATE accounts_parties JOIN chars ON accounts_parties.charid = chars.charid "
+                         "SET partyflag = partyflag | ? WHERE partyid = ? AND charname = ?",
+                         PARTY_QM, m_PartyID, MemberName);
     }
 }
 
@@ -1226,8 +1229,9 @@ void CParty::PushEffectsPacket()
 
         for (auto& PMember : members)
         {
-            auto* PMemberChar = static_cast<CCharEntity*>(PMember);
-            auto  effects     = std::make_unique<CPartyEffectsPacket>();
+            auto*                     PMemberChar = static_cast<CCharEntity*>(PMember);
+            std::vector<CCharEntity*> sameZoneMembers;
+
             for (auto& memberinfo : info)
             {
                 if (memberinfo.partyid == m_PartyID && memberinfo.id != PMemberChar->id)
@@ -1235,11 +1239,13 @@ void CParty::PushEffectsPacket()
                     auto* PPartyMember = zoneutils::GetChar(memberinfo.id);
                     if (PPartyMember && PPartyMember->getZone() == PMemberChar->getZone())
                     {
-                        effects->AddMemberEffects(PPartyMember);
+                        sameZoneMembers.push_back(PPartyMember);
                     }
                 }
             }
-            PMemberChar->pushPacket(std::move(effects));
+
+            // Make and send packet for PMemberChar
+            PMemberChar->pushPacket<CPartyEffectsPacket>(sameZoneMembers);
         }
         m_EffectsChanged = false;
     }
@@ -1341,10 +1347,10 @@ uint32 CParty::LoadPartySize() const
         return static_cast<uint32>(members.size());
     }
 
-    int ret = _sql->Query("SELECT COUNT(*) FROM accounts_parties WHERE partyid = %d", m_PartyID);
-    if (ret != SQL_ERROR && _sql->NextRow() == SQL_SUCCESS)
+    const auto rset = db::preparedStmt("SELECT COUNT(*) FROM accounts_parties WHERE partyid = ?", m_PartyID);
+    if (rset && rset->rowsCount() && rset->next())
     {
-        return _sql->GetUIntData(0);
+        return rset->get<uint32>(0);
     }
 
     return 0;

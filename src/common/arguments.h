@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "logging.h"
-
 #include <optional>
 #include <string>
 

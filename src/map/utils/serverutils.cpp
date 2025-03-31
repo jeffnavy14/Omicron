@@ -89,14 +89,14 @@ namespace serverutils
         return GetServerVar(name);
     }
 
-    int32 PersistVolatileServerVars(time_point tick, CTaskMgr::CTask* PTask)
+    int32 PersistVolatileServerVars(time_point tick, CTaskManager::CTask* PTask)
     {
         if (serverVarChanges.empty())
         {
             return 0;
         }
 
-        for (auto&& name : serverVarChanges)
+        for (const auto& name : serverVarChanges)
         {
             auto   cachedServerVar = serverVarCache[name];
             int32  value           = cachedServerVar.first;

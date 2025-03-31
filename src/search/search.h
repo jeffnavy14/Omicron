@@ -51,7 +51,7 @@ public:
         if (length > max_size)
         {
             size = 0;
-            ShowError(fmt::format("Error: search packet with size above {} requested!", max_size));
+            ShowErrorFmt("Error: search packet with size above {} requested!", max_size);
             return;
         }
 

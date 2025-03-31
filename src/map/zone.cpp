@@ -39,8 +39,10 @@
 #include "ipc_client.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
+#include "los/zone_los.h"
 #include "map_server.h"
 #include "monstrosity.h"
+#include "navmesh.h"
 #include "notoriety_container.h"
 #include "party.h"
 #include "spell.h"
@@ -94,7 +96,6 @@ CZone::CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, ui
     m_TreasurePool       = nullptr;
     m_BattlefieldHandler = nullptr;
     m_Weather            = WEATHER_NONE;
-    m_navMesh            = nullptr;
     m_zoneEntities       = new CZoneEntities(this);
     m_CampaignHandler    = new CCampaignHandler(this);
 
@@ -118,16 +119,6 @@ CZone::~CZone()
     if (m_CampaignHandler)
     {
         destroy(m_CampaignHandler);
-    }
-
-    if (m_navMesh)
-    {
-        destroy(m_navMesh);
-    }
-
-    if (lineOfSight)
-    {
-        destroy(lineOfSight);
     }
 
     m_triggerAreaList.clear();
@@ -449,7 +440,7 @@ void CZone::LoadNavMesh()
 
     if (m_navMesh == nullptr)
     {
-        m_navMesh = new CNavMesh((uint16)GetID());
+        m_navMesh = std::make_unique<CNavMesh>(static_cast<uint16>(GetID()));
     }
 
     char file[255];
@@ -459,7 +450,7 @@ void CZone::LoadNavMesh()
     if (!m_navMesh->load(file))
     {
         DebugNavmesh("CZone::LoadNavMesh: Cannot load navmesh file (%s)", file);
-        destroy(m_navMesh);
+        m_navMesh = nullptr;
     }
 }
 
@@ -476,7 +467,7 @@ void CZone::LoadZoneLos()
     if (lineOfSight)
     {
         // Clean up previous object if one exists.
-        destroy(lineOfSight);
+        lineOfSight = nullptr;
     }
 
     lineOfSight = ZoneLos::Load((uint16)GetID(), fmt::sprintf("losmeshes/%s.obj", getName()));
@@ -655,8 +646,8 @@ void CZone::UpdateWeather()
     luautils::OnZoneWeatherChange(GetID(), Weather);
 
     // clang-format off
-    CTaskMgr::getInstance()->AddTask("zone_update_weather", server_clock::now() + std::chrono::seconds(WeatherNextUpdate), this, CTaskMgr::TASK_ONCE, 1s,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    CTaskManager::getInstance()->AddTask("zone_update_weather", server_clock::now() + std::chrono::seconds(WeatherNextUpdate), this, CTaskManager::TASK_ONCE, 1s,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         if (!PZone->IsWeatherStatic())
@@ -866,10 +857,10 @@ void CZone::ZoneServer(time_point tick)
 
     if (ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < server_clock::now() && CheckMobsPathedBack())
     {
-        ZoneTimer->m_type = CTaskMgr::TASK_REMOVE;
+        ZoneTimer->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimer         = nullptr;
 
-        ZoneTimerTriggerAreas->m_type = CTaskMgr::TASK_REMOVE;
+        ZoneTimerTriggerAreas->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimerTriggerAreas         = nullptr;
     }
 }
@@ -962,20 +953,17 @@ void CZone::createZoneTimers()
 {
     TracyZoneScoped;
 
-    const auto tickInterval        = std::chrono::milliseconds(static_cast<uint32>(kServerTickInterval));
-    const auto triggerAreaInterval = std::chrono::milliseconds(static_cast<uint32>(kServerTriggerAreaInterval));
-
     // clang-format off
-    ZoneTimer = CTaskMgr::getInstance()->AddTask(m_zoneName, server_clock::now(), this, CTaskMgr::TASK_INTERVAL, tickInterval,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    ZoneTimer = CTaskManager::getInstance()->AddTask(m_zoneName, server_clock::now(), this, CTaskManager::TASK_INTERVAL, kLogicUpdateInterval,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         PZone->ZoneServer(tick);
         return 0;
     });
 
-    ZoneTimerTriggerAreas = CTaskMgr::getInstance()->AddTask(m_zoneName + "TriggerAreas", server_clock::now(), this, CTaskMgr::TASK_INTERVAL, triggerAreaInterval,
-    [](time_point tick, CTaskMgr::CTask* PTask)
+    ZoneTimerTriggerAreas = CTaskManager::getInstance()->AddTask(m_zoneName + "TriggerAreas", server_clock::now(), this, CTaskManager::TASK_INTERVAL, kTriggerAreaInterval,
+    [](time_point tick, CTaskManager::CTask* PTask)
     {
         CZone* PZone = std::any_cast<CZone*>(PTask->m_data);
         PZone->CheckTriggerAreas();
@@ -1082,6 +1070,9 @@ void CZone::CharZoneIn(CCharEntity* PChar)
             PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_LEVEL_RESTRICTION);
         }
     }
+
+    // Mark current zone as visited
+    PChar->m_ZonesVisitedList[PChar->getZone() >> 3] |= (1 << (PChar->getZone() % 8));
 
     monstrosity::HandleZoneIn(PChar);
 

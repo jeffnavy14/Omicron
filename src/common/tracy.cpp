@@ -20,6 +20,9 @@
 */
 
 #ifdef TRACY_ENABLE
+
+#include "tracy.h"
+
 void* operator new(std::size_t count)
 {
     void* ptr = malloc(count);

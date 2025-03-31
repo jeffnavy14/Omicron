@@ -42,12 +42,14 @@ auto MapStatistics::toString(Key key)
             return "Total Packets Sent Per Tick";
         case Key::TotalPacketsDelayedPerTick:
             return "Total Packets Delayed Per Tick";
-        case Key::LogicTickTime:
-            return "Logic Tick Time (ms)";
+        case Key::TasksTickTime:
+            return "Tasks Tick Time (ms)";
         case Key::NetworkTickTime:
             return "Network Tick Time (ms)";
         case Key::TotalTickTime:
             return "Total Tick Time (ms)";
+        case Key::TickDiffTime:
+            return "Tick Diff/Sleep Time (ms)";
         case Key::ActiveZones:
             return "Active Zones (Process)";
         case Key::ConnectedPlayers:
