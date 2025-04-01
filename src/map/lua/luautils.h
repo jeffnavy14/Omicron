@@ -278,7 +278,7 @@ namespace luautils
     void  Terminate();                                                                                   // Logs off all characters and terminates the server
 
     int32 GetTextIDVariable(uint16 ZoneID, const char* variable); // Load the value of the TextID variable of the specified zone
-    bool  IsContentEnabled(const char* content);
+    bool  IsContentEnabled(const std::string& content);
 
     void OnGameDay(CZone* PZone);
     void OnGameHour(CZone* PZone);

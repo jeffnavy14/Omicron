@@ -413,12 +413,12 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    int16 GetEnmityModDamage(int16 level)
+    int32 GetEnmityModDamage(int16 level)
     {
         return level * 31 / 50 + 6;
     }
 
-    int16 GetEnmityModCure(int16 level)
+    int32 GetEnmityModCure(int16 level)
     {
         if (level <= 10)
         {
@@ -4379,7 +4379,7 @@ namespace battleutils
     }
 
     // Generate enmity for all targets in range
-    void GenerateInRangeEnmity(CBattleEntity* PSource, int16 CE, int16 VE)
+    void GenerateInRangeEnmity(CBattleEntity* PSource, int32 CE, int32 VE)
     {
         if (PSource == nullptr)
         {

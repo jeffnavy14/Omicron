@@ -317,10 +317,10 @@ void CEnmityContainer::LowerEnmityByPercent(CBattleEntity* PEntity, uint8 percen
     {
         float mod = ((float)(percent) / 100.0f);
 
-        auto CEValue = (int16)(enmity_obj->second.CE * mod);
+        auto CEValue = (int32)(enmity_obj->second.CE * mod);
         enmity_obj->second.CE -= (CEValue < 0 ? 0 : CEValue);
 
-        auto VEValue = (int16)(enmity_obj->second.VE * mod);
+        auto VEValue = (int32)(enmity_obj->second.VE * mod);
         enmity_obj->second.VE -= (VEValue < 0 ? 0 : VEValue);
 
         // transfer hate if HateReceiver not nullptr

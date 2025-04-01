@@ -280,7 +280,7 @@ public:
     uint16          styleItems[16]{};      // Item IDs for items that are style locked.
 
     uint8            m_ZonesVisitedList[38]{}; // List of zones visited by the character
-    xi::bitset<1024> m_SpellList;              // List of learned spells
+    xi::bitset<1024> m_SpellList{};            // List of learned spells
     uint8            m_TitleList[143]{};       // List of obtained titles
     uint8            m_Abilities[64]{};        // List of current abilities
     uint8            m_LearnedAbilities[49]{}; // Learnable abilities (corsair rolls)

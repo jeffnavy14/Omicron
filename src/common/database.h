@@ -362,6 +362,10 @@ namespace db
                 {
                     extractFromBlob(&*this, key, value);
                 }
+                else if constexpr (std::is_same_v<UnderlyingT, size_t>)
+                {
+                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
+                }
                 else
                 {
                     static_assert(always_false_v<T>, "Trying to extract unsupported type from ResultSetWrapper");
@@ -531,6 +535,10 @@ namespace db
                 DebugSQL(fmt::format("binding {}: {}", counter, blobWrapper->toString()));
 
                 stmt->setBlob(counter, &blobWrapper->istream);
+            }
+            else if constexpr (std::is_same_v<UnderlyingT, size_t>)
+            {
+                stmt->setUInt(counter, value);
             }
             else
             {

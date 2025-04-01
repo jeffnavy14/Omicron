@@ -2674,6 +2674,7 @@ xi.item =
     BOTTLE_OF_TERROANIMA                = 5263,
     MISTMELT                            = 5265,
     CHUNK_OF_SHUMEYO_SALT               = 5267,
+    CCB_POLYMER                         = 5268,
     OLD_BULLET_BOX                      = 5284,
     TOOLBAG_UCHITAKE                    = 5308,
     TOOLBAG_TSURARA                     = 5309,

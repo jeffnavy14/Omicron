@@ -390,7 +390,6 @@ void MapServer::do_final()
 {
     TracyZoneScoped;
 
-    ability::CleanupAbilitiesList();
     itemutils::FreeItemList();
     battleutils::FreeWeaponSkillsList();
     battleutils::FreeMobSkillList();

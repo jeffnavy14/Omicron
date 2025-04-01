@@ -1886,11 +1886,11 @@ namespace luautils
      *                                                                       *
      ************************************************************************/
 
-    bool IsContentEnabled(const char* contentTag)
+    bool IsContentEnabled(const std::string& contentTag)
     {
         TracyZoneScoped;
 
-        if (contentTag == nullptr || std::strlen(contentTag) == 0)
+        if (contentTag.empty())
         {
             return true;
         }

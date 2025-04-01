@@ -233,22 +233,22 @@ void CAbility::setRecastId(uint16 recastId)
     m_recastId = recastId;
 }
 
-void CAbility::setCE(uint16 CE)
+void CAbility::setCE(int32 CE)
 {
     m_CE = CE;
 }
 
-uint16 CAbility::getCE() const
+int32 CAbility::getCE() const
 {
     return m_CE;
 }
 
-void CAbility::setVE(uint16 VE)
+void CAbility::setVE(int32 VE)
 {
     m_VE = VE;
 }
 
-uint16 CAbility::getVE() const
+int32 CAbility::getVE() const
 {
     return m_VE;
 }
@@ -337,9 +337,9 @@ uint16 CAbility::getAoEMsg() const
 
 namespace ability
 {
-    std::map<uint16, CAbility*>               PAbilityList;    // Complete Abilities List
-    std::map<JOBTYPE, std::vector<CAbility*>> PAbilitiesByJob; // Abilities by Job
-    std::vector<Charge_t*>                    PChargesList;    // Abilities with charges
+    std::map<uint16, std::unique_ptr<CAbility>> PAbilityList;    // Complete Abilities List
+    std::map<JOBTYPE, std::vector<CAbility*>>   PAbilitiesByJob; // Abilities by Job
+    std::vector<std::unique_ptr<Charge_t>>      PChargesList;    // Abilities with charges
 
     /************************************************************************
      *                                                                       *
@@ -351,72 +351,67 @@ namespace ability
     {
         // TODO: Add message field to table
 
-        const char* Query = "SELECT "
-                            "abilityId,"
-                            "IFNULL(min_id,0),"
-                            "name,"
-                            "job,"
-                            "level,"
-                            "validTarget,"
-                            "recastTime,"
-                            "message1, "
-                            "message2, "
-                            "animation,"
-                            "animationTime,"
-                            "castTime,"
-                            "actionType,"
-                            "`range`,"
-                            "isAOE,"
-                            "recastId,"
-                            "CE,"
-                            "VE, "
-                            "meritModID, "
-                            "addType, "
-                            "content_tag "
-                            "FROM abilities LEFT JOIN (SELECT mob_skill_name, MIN(mob_skill_id) AS min_id "
-                            "FROM mob_skills GROUP BY mob_skill_name) mob_skills_1 ON "
-                            "abilities.name = mob_skills_1.mob_skill_name "
-                            "WHERE job < %u AND abilityId < %u "
-                            "ORDER BY job, level ASC";
+        const auto rset = db::preparedStmt("SELECT "
+                                           "abilityId, "
+                                           "IFNULL(min_id, 0) AS mobskillId, "
+                                           "name, "
+                                           "job, "
+                                           "level, "
+                                           "validTarget, "
+                                           "recastTime, "
+                                           "message1, "
+                                           "message2, "
+                                           "animation, "
+                                           "animationTime, "
+                                           "castTime, "
+                                           "actionType, "
+                                           "`range`, "
+                                           "isAOE, "
+                                           "recastId, "
+                                           "CE, "
+                                           "VE, "
+                                           "meritModID, "
+                                           "addType, "
+                                           "content_tag "
+                                           "FROM abilities LEFT JOIN (SELECT mob_skill_name, MIN(mob_skill_id) AS min_id "
+                                           "FROM mob_skills GROUP BY mob_skill_name) mob_skills_1 ON "
+                                           "abilities.name = mob_skills_1.mob_skill_name "
+                                           "WHERE job < ? AND abilityId < ? "
+                                           "ORDER BY job, level ASC",
+                                           MAX_JOBTYPE, MAX_ABILITY_ID);
 
-        int32 ret = _sql->Query(Query, MAX_JOBTYPE, MAX_ABILITY_ID);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        if (rset && rset->rowsCount())
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            while (rset->next())
             {
-                char* contentTag = nullptr;
-                _sql->GetData(20, &contentTag, nullptr);
-
+                const auto contentTag = rset->getOrDefault<std::string>("content_tag", "");
                 if (!luautils::IsContentEnabled(contentTag))
                 {
                     continue;
                 }
 
-                CAbility* PAbility = new CAbility(_sql->GetIntData(0));
+                const auto abilityId = rset->get<uint16>("abilityId");
+                auto       PAbility  = std::make_unique<CAbility>(abilityId);
 
-                PAbility->setMobSkillID(_sql->GetIntData(1));
-                PAbility->setName(_sql->GetStringData(2));
-                PAbility->setJob((JOBTYPE)_sql->GetIntData(3));
-                PAbility->setLevel(_sql->GetIntData(4));
-                PAbility->setValidTarget(_sql->GetIntData(5));
-                PAbility->setRecastTime(_sql->GetIntData(6));
-                PAbility->setMessage(_sql->GetIntData(7));
+                PAbility->setMobSkillID(rset->get<uint16>("mobskillId"));
+                PAbility->setName(rset->get<std::string>("name"));
+                PAbility->setJob(rset->get<JOBTYPE>("job"));
+                PAbility->setLevel(rset->get<uint8>("level"));
+                PAbility->setValidTarget(rset->get<uint16>("validTarget"));
+                PAbility->setRecastTime(rset->get<uint16>("recastTime"));
+                PAbility->setMessage(rset->get<uint16>("message1"));
                 // Unused - message2
-                PAbility->setAnimationID(_sql->GetIntData(9));
-                PAbility->setAnimationTime(std::chrono::milliseconds(_sql->GetIntData(10)));
-                PAbility->setCastTime(std::chrono::milliseconds(_sql->GetIntData(11)));
-                PAbility->setActionType(static_cast<ACTIONTYPE>(_sql->GetUIntData(12)));
-                PAbility->setRange(_sql->GetFloatData(13));
-                PAbility->setAOE(_sql->GetIntData(14));
-                PAbility->setRecastId(_sql->GetIntData(15));
-                PAbility->setCE(_sql->GetIntData(16));
-                PAbility->setVE(_sql->GetIntData(17));
-                PAbility->setMeritModID(_sql->GetIntData(18));
-                PAbility->setAddType(_sql->GetUIntData(19));
-
-                PAbilityList[PAbility->getID()] = PAbility;
-                PAbilitiesByJob[PAbility->getJob()].emplace_back(PAbility);
+                PAbility->setAnimationID(rset->get<uint16>("animation"));
+                PAbility->setAnimationTime(std::chrono::milliseconds(rset->get<uint16>("animationTime")));
+                PAbility->setCastTime(std::chrono::milliseconds(rset->get<uint16>("castTime")));
+                PAbility->setActionType(rset->get<ACTIONTYPE>("actionType"));
+                PAbility->setRange(rset->get<float>("range"));
+                PAbility->setAOE(rset->get<uint8>("isAOE"));
+                PAbility->setRecastId(rset->get<uint16>("recastId"));
+                PAbility->setCE(rset->get<int32>("CE"));
+                PAbility->setVE(rset->get<int32>("VE"));
+                PAbility->setMeritModID(rset->get<uint16>("meritModID"));
+                PAbility->setAddType(rset->get<uint16>("addType"));
 
                 auto filename = fmt::format("./scripts/actions/abilities/{}.lua", PAbility->getName());
                 if (PAbility->isPetAbility())
@@ -424,55 +419,30 @@ namespace ability
                     filename = fmt::format("./scripts/actions/abilities/pets/{}.lua", PAbility->getName());
                 }
                 luautils::CacheLuaObjectFromFile(filename);
+
+                PAbilitiesByJob[PAbility->getJob()].emplace_back(PAbility.get());
+                PAbilityList[PAbility->getID()] = std::move(PAbility);
             }
         }
 
-        const char* Query2 = "SELECT recastId, job, level, maxCharges, chargeTime, meritModId FROM abilities_charges ORDER BY job, level ASC";
-
-        ret = _sql->Query(Query2);
-
-        if (ret != SQL_ERROR && _sql->NumRows() != 0)
+        const auto rset2 = db::preparedStmt("SELECT recastId, job, level, maxCharges, chargeTime, meritModId FROM abilities_charges ORDER BY job, level ASC");
+        if (rset2 && rset2->rowsCount())
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            while (rset2->next())
             {
-                Charge_t* PCharge   = new Charge_t;
-                PCharge->ID         = _sql->GetUIntData(0);
-                PCharge->job        = (JOBTYPE)_sql->GetUIntData(1);
-                PCharge->level      = _sql->GetUIntData(2);
-                PCharge->maxCharges = _sql->GetUIntData(3);
-                PCharge->chargeTime = _sql->GetUIntData(4);
-                PCharge->merit      = _sql->GetUIntData(5);
+                auto PCharge        = std::make_unique<Charge_t>();
+                PCharge->ID         = rset2->get<uint16>("recastId");
+                PCharge->job        = rset2->get<JOBTYPE>("job");
+                PCharge->level      = rset2->get<uint8>("level");
+                PCharge->maxCharges = rset2->get<uint8>("maxCharges");
+                PCharge->chargeTime = rset2->get<uint32>("chargeTime");
+                PCharge->merit      = rset2->get<uint16>("meritModId");
 
-                PChargesList.emplace_back(PCharge);
+                PChargesList.emplace_back(std::move(PCharge));
             }
         }
     }
 
-    void CleanupAbilitiesList()
-    {
-        // Call delete on Charge_t* in PChargeslist, because these are not STL containers and will not be destructed
-        for (auto* charge : PChargesList)
-        {
-            destroy(charge);
-        }
-
-        // Delete everything in the abilities list
-        for (int i = 0; i < MAX_ABILITY_ID; i++)
-        {
-            if (PAbilityList[i])
-            {
-                destroy(PAbilityList[i]);
-            }
-        }
-
-        // Clear every vector that now has invalid pointers
-        for (auto& [_, vec] : PAbilitiesByJob)
-        {
-            vec.clear();
-        }
-
-        PChargesList.clear();
-    }
     /************************************************************************
      *                                                                       *
      *  Get Ability By ID                                                    *
@@ -483,7 +453,7 @@ namespace ability
     {
         if (auto itr = PAbilityList.find(AbilityID); itr != PAbilityList.end())
         {
-            return itr->second;
+            return itr->second.get();
         }
         ShowDebug("Unable to look up ability %d", AbilityID);
         return nullptr;
@@ -603,7 +573,7 @@ namespace ability
     Charge_t* GetCharge(CBattleEntity* PUser, uint16 chargeID)
     {
         Charge_t* charge = nullptr;
-        for (auto PCharge : PChargesList)
+        for (auto& PCharge : PChargesList)
         {
             if (PCharge->ID == chargeID)
             {
@@ -611,7 +581,7 @@ namespace ability
                 {
                     if (PUser->GetMLevel() >= PCharge->level)
                     {
-                        charge = PCharge;
+                        charge = PCharge.get();
                     }
                     else
                     {
@@ -622,7 +592,7 @@ namespace ability
                 {
                     if (PUser->GetSLevel() >= PCharge->level)
                     {
-                        charge = PCharge;
+                        charge = PCharge.get();
                     }
                     else
                     {
