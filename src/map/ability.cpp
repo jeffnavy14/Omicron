@@ -390,12 +390,13 @@ namespace ability
                     continue;
                 }
 
-                const auto abilityId = rset->get<uint16>("abilityId");
-                auto       PAbility  = std::make_unique<CAbility>(abilityId);
+                const auto abilityId    = rset->get<uint16>("abilityId");
+                PAbilityList[abilityId] = std::make_unique<CAbility>(abilityId);
+                const auto& PAbility    = PAbilityList[abilityId];
 
                 PAbility->setMobSkillID(rset->get<uint16>("mobskillId"));
                 PAbility->setName(rset->get<std::string>("name"));
-                PAbility->setJob(rset->get<JOBTYPE>("job"));
+                PAbility->setJob(static_cast<JOBTYPE>(rset->get<uint8>("job")));
                 PAbility->setLevel(rset->get<uint8>("level"));
                 PAbility->setValidTarget(rset->get<uint16>("validTarget"));
                 PAbility->setRecastTime(rset->get<uint16>("recastTime"));
@@ -404,7 +405,7 @@ namespace ability
                 PAbility->setAnimationID(rset->get<uint16>("animation"));
                 PAbility->setAnimationTime(std::chrono::milliseconds(rset->get<uint16>("animationTime")));
                 PAbility->setCastTime(std::chrono::milliseconds(rset->get<uint16>("castTime")));
-                PAbility->setActionType(rset->get<ACTIONTYPE>("actionType"));
+                PAbility->setActionType(static_cast<ACTIONTYPE>(rset->get<uint8>("actionType")));
                 PAbility->setRange(rset->get<float>("range"));
                 PAbility->setAOE(rset->get<uint8>("isAOE"));
                 PAbility->setRecastId(rset->get<uint16>("recastId"));
@@ -413,15 +414,14 @@ namespace ability
                 PAbility->setMeritModID(rset->get<uint16>("meritModID"));
                 PAbility->setAddType(rset->get<uint16>("addType"));
 
+                PAbilitiesByJob[PAbility->getJob()].emplace_back(PAbility.get());
+
                 auto filename = fmt::format("./scripts/actions/abilities/{}.lua", PAbility->getName());
                 if (PAbility->isPetAbility())
                 {
                     filename = fmt::format("./scripts/actions/abilities/pets/{}.lua", PAbility->getName());
                 }
                 luautils::CacheLuaObjectFromFile(filename);
-
-                PAbilitiesByJob[PAbility->getJob()].emplace_back(PAbility.get());
-                PAbilityList[PAbility->getID()] = std::move(PAbility);
             }
         }
 
@@ -432,7 +432,7 @@ namespace ability
             {
                 auto PCharge        = std::make_unique<Charge_t>();
                 PCharge->ID         = rset2->get<uint16>("recastId");
-                PCharge->job        = rset2->get<JOBTYPE>("job");
+                PCharge->job        = static_cast<JOBTYPE>(rset2->get<uint8>("job"));
                 PCharge->level      = rset2->get<uint8>("level");
                 PCharge->maxCharges = rset2->get<uint8>("maxCharges");
                 PCharge->chargeTime = rset2->get<uint32>("chargeTime");

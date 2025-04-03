@@ -51,12 +51,12 @@ auto db::getConnection() -> std::unique_ptr<sql::Connection>
 {
     try
     {
-        auto login  = settings::get<std::string>("network.SQL_LOGIN");
-        auto passwd = settings::get<std::string>("network.SQL_PASSWORD");
-        auto host   = settings::get<std::string>("network.SQL_HOST");
-        auto port   = settings::get<uint16>("network.SQL_PORT");
-        auto schema = settings::get<std::string>("network.SQL_DATABASE");
-        auto url    = fmt::format("tcp://{}:{}/{}", host, port, schema);
+        const auto login  = settings::get<std::string>("network.SQL_LOGIN");
+        const auto passwd = settings::get<std::string>("network.SQL_PASSWORD");
+        const auto host   = settings::get<std::string>("network.SQL_HOST");
+        const auto port   = settings::get<uint16>("network.SQL_PORT");
+        const auto schema = settings::get<std::string>("network.SQL_DATABASE");
+        const auto url    = fmt::format("tcp://{}:{}/{}", host, port, schema);
 
         return std::unique_ptr<sql::Connection>(sql::mariadb::get_driver_instance()->connect(url.c_str(), login.c_str(), passwd.c_str()));
     }
@@ -261,7 +261,7 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
             auto stmt = state.connection->createStatement();
 
             DebugSQL(fmt::format("query: {}", rawQuery));
-            auto queryTimer = detail::timer(rawQuery);
+            const auto queryTimer = detail::timer(rawQuery);
 
             if (queryType == detail::ResultSetType::Select)
             {
@@ -270,7 +270,7 @@ auto db::queryStr(std::string const& rawQuery) -> std::unique_ptr<db::detail::Re
             }
             else // Update
             {
-                auto rowsAffected = stmt->executeUpdate(rawQuery.c_str());
+                const auto rowsAffected = stmt->executeUpdate(rawQuery.c_str());
                 return std::make_unique<db::detail::ResultSetWrapper>(rowsAffected, rawQuery);
             }
         };
@@ -336,7 +336,7 @@ auto db::escapeString(std::string_view str) -> std::string
             break;
         }
 
-        auto it = replacements.find(c);
+        const auto it = replacements.find(c);
         if (it != replacements.end())
         {
             escapedStr += it->second;
@@ -413,14 +413,14 @@ void db::checkCharset()
     TracyZoneScoped;
 
     // Check that the SQL charset is what we require
-    auto rset = preparedStmt("SELECT @@character_set_database, @@collation_database");
+    const auto rset = preparedStmt("SELECT @@character_set_database, @@collation_database");
     if (rset && rset->rowsCount())
     {
         bool foundError = false;
         while (rset->next())
         {
-            auto charsetSetting   = rset->get<std::string>(0);
-            auto collationSetting = rset->get<std::string>(1);
+            const auto charsetSetting   = rset->get<std::string>(0);
+            const auto collationSetting = rset->get<std::string>(1);
             if (!starts_with(charsetSetting, "utf8") || !starts_with(collationSetting, "utf8"))
             {
                 foundError = true;
@@ -456,10 +456,9 @@ void db::checkTriggers()
     };
 
     bool foundError = false;
-
     for (const auto& trigger : triggers)
     {
-        auto rset = preparedStmt(triggerQuery, trigger);
+        const auto rset = preparedStmt(triggerQuery, trigger);
         if (!rset || rset->rowsCount() == 0)
         {
             ShowWarning(fmt::format("Missing trigger: {}", trigger));

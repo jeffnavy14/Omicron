@@ -194,6 +194,21 @@ namespace db
         template <typename T>
         inline constexpr bool is_blob_v = is_blob<T>;
 
+        template <typename T, bool = std::is_enum_v<T>>
+        struct enum_decay_impl
+        {
+            using type = std::decay_t<T>;
+        };
+
+        template <typename T>
+        struct enum_decay_impl<T, true>
+        {
+            using type = std::underlying_type_t<T>;
+        };
+
+        template <typename T>
+        using enum_decay_t = typename enum_decay_impl<T>::type;
+
         struct State final
         {
             void reset()
@@ -234,7 +249,7 @@ namespace db
             {
             }
 
-            auto type() -> ResultSetType
+            auto type() const -> ResultSetType
             {
                 return type_;
             }
@@ -251,10 +266,8 @@ namespace db
                 return resultSet_->next();
             }
 
-            auto rowsCount() -> std::size_t
+            auto rowsCount() const -> std::size_t
             {
-                DebugSQLFmt("rowsCount: {}", resultSet_->rowsCount());
-
                 if (type_ != ResultSetType::Select)
                 {
                     ShowErrorFmt("ResultSetWrapper::rowsCount: Invalid type {}", static_cast<int>(type_));
@@ -262,13 +275,12 @@ namespace db
                     return 0;
                 }
 
+                DebugSQLFmt("rowsCount: {}", resultSet_->rowsCount());
                 return resultSet_->rowsCount();
             }
 
-            auto rowsAffected() -> std::size_t
+            auto rowsAffected() const -> std::size_t
             {
-                DebugSQLFmt("rowsAffected: {}", rowsAffected_);
-
                 if (type_ != ResultSetType::Update)
                 {
                     ShowErrorFmt("ResultSetWrapper::rowsAffected: Invalid type {}", static_cast<int>(type_));
@@ -276,12 +288,13 @@ namespace db
                     return 0;
                 }
 
+                DebugSQLFmt("rowsAffected: {}", rowsAffected_);
                 return rowsAffected_;
             }
 
             // Get the value of the associated key.
             template <typename T>
-            auto get(const std::string& key) -> T
+            auto get(const std::string& key) const -> T
             {
                 if (type_ != ResultSetType::Select)
                 {
@@ -290,7 +303,8 @@ namespace db
                     return T{};
                 }
 
-                using UnderlyingT = std::decay_t<T>;
+                // TODO: First-class support for enum types
+                using UnderlyingT = enum_decay_t<T>;
 
                 UnderlyingT value{};
 
@@ -304,71 +318,100 @@ namespace db
                     }
                 }
 
-                if constexpr (std::is_same_v<UnderlyingT, int64>)
+                //
+                // If the resultSet_->getX gets an invalid, incorrectly sized, or incorrectly signed value, it will throw an exception.
+                // So we'll wrap the whole extraction step in try/catch.
+                //
+
+                try
                 {
-                    value = static_cast<T>(resultSet_->getInt64(key.c_str()));
+                    if constexpr (std::is_same_v<UnderlyingT, int64>)
+                    {
+                        value = static_cast<T>(resultSet_->getInt64(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, uint64>)
+                    {
+                        value = static_cast<T>(resultSet_->getUInt64(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, int32>)
+                    {
+                        value = static_cast<T>(resultSet_->getInt(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, uint32>)
+                    {
+                        value = static_cast<T>(resultSet_->getUInt(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, int16>)
+                    {
+                        value = static_cast<T>(resultSet_->getInt(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, uint16>)
+                    {
+                        value = static_cast<T>(resultSet_->getUInt(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, int8>)
+                    {
+                        // There is only a signed byte accessor
+                        value = static_cast<T>(resultSet_->getByte(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, uint8>)
+                    {
+                        // There isn't an unsigned byte accessor, so we'll just use getUInt
+                        value = static_cast<T>(resultSet_->getUInt(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, bool>)
+                    {
+                        value = static_cast<T>(resultSet_->getBoolean(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, double>)
+                    {
+                        value = static_cast<T>(resultSet_->getDouble(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, float>)
+                    {
+                        value = static_cast<T>(resultSet_->getFloat(key.c_str()));
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, std::string>)
+                    {
+                        value = resultSet_->getString(key.c_str());
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, char*>)
+                    {
+                        value = resultSet_->getString(key.c_str());
+                    }
+                    else if constexpr (std::is_same_v<UnderlyingT, size_t>)
+                    {
+                        value = static_cast<T>(resultSet_->getUInt(key.c_str()));
+                    }
+                    else if constexpr (is_blob_v<UnderlyingT>)
+                    {
+                        extractFromBlob(&*this, key, value);
+                    }
+                    else
+                    {
+                        static_assert(always_false_v<T>, "Trying to extract unsupported type from ResultSetWrapper");
+                    }
                 }
-                else if constexpr (std::is_same_v<UnderlyingT, uint64>)
+                catch (sql::SQLException& e)
                 {
-                    value = static_cast<T>(resultSet_->getUInt64(key.c_str()));
+                    ShowErrorFmt("ResultSetWrapper::get: SQL Error: {}", e.what());
+                    ShowErrorFmt("Key: {}", key);
+                    ShowErrorFmt("Query: {}", query_);
+                    return T{};
                 }
-                else if constexpr (std::is_same_v<UnderlyingT, int32>)
+                catch (std::exception& e)
                 {
-                    value = static_cast<T>(resultSet_->getInt(key.c_str()));
+                    ShowErrorFmt("ResultSetWrapper::get: Error: {}", e.what());
+                    ShowErrorFmt("Key: {}", key);
+                    ShowErrorFmt("Query: {}", query_);
+                    return T{};
                 }
-                else if constexpr (std::is_same_v<UnderlyingT, uint32>)
+                catch (...)
                 {
-                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, int16>)
-                {
-                    value = static_cast<T>(resultSet_->getInt(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, uint16>)
-                {
-                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, int8>)
-                {
-                    // There is only a signed byte accessor
-                    value = static_cast<T>(resultSet_->getByte(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, uint8>)
-                {
-                    // There isn't an unsigned byte accessor, so we'll just use getUInt
-                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, bool>)
-                {
-                    value = static_cast<T>(resultSet_->getBoolean(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, double>)
-                {
-                    value = static_cast<T>(resultSet_->getDouble(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, float>)
-                {
-                    value = static_cast<T>(resultSet_->getFloat(key.c_str()));
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, std::string>)
-                {
-                    value = resultSet_->getString(key.c_str());
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, char*>)
-                {
-                    value = resultSet_->getString(key.c_str());
-                }
-                else if constexpr (is_blob_v<UnderlyingT>)
-                {
-                    extractFromBlob(&*this, key, value);
-                }
-                else if constexpr (std::is_same_v<UnderlyingT, size_t>)
-                {
-                    value = static_cast<T>(resultSet_->getUInt(key.c_str()));
-                }
-                else
-                {
-                    static_assert(always_false_v<T>, "Trying to extract unsupported type from ResultSetWrapper");
+                    ShowErrorFmt("ResultSetWrapper::get: Unknown error");
+                    ShowErrorFmt("Key: {}", key);
+                    ShowErrorFmt("Query: {}", query_);
+                    return T{};
                 }
 
                 return value;
@@ -377,7 +420,7 @@ namespace db
             // Get the value of the 0-indexed column. Behind the scenes this is automatically converted to be 1-indexed for
             // use by the underlying database library.
             template <typename T>
-            auto get(const uint32 index) -> T
+            auto get(const uint32 index) const -> T
             {
                 if (type_ != ResultSetType::Select)
                 {
@@ -392,7 +435,7 @@ namespace db
 
             // Get the value of the associated key or the default value if the key is null/not-populated.
             template <typename T>
-            auto getOrDefault(const std::string& key, T defaultValue) -> T
+            auto getOrDefault(const std::string& key, T defaultValue) const -> T
             {
                 if (type_ != ResultSetType::Select)
                 {
@@ -411,7 +454,7 @@ namespace db
 
             // Get the value of the 0-indexed column or the default value if the column is null/not-populated.
             template <typename T>
-            auto getOrDefault(const uint32 index, T defaultValue) -> T
+            auto getOrDefault(const uint32 index, T defaultValue) const -> T
             {
                 if (type_ != ResultSetType::Select)
                 {
@@ -425,7 +468,7 @@ namespace db
             }
 
             // Check if the value of the associated key is null/not-populated.
-            auto isNull(const std::string& key) -> bool
+            auto isNull(const std::string& key) const -> bool
             {
                 if (type_ != ResultSetType::Select)
                 {
@@ -459,11 +502,12 @@ namespace db
         auto getState() -> Synchronized<db::detail::State>&;
 
         template <typename T>
-        void bindValue(std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& value)
+        void bindValue(const std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& value)
         {
             TracyZoneScoped;
 
-            using UnderlyingT = std::decay_t<T>;
+            // TODO: First-class support for enum types
+            using UnderlyingT = enum_decay_t<T>;
 
             if constexpr (!is_blob_v<UnderlyingT>)
             {
@@ -527,18 +571,18 @@ namespace db
             {
                 stmt->setString(counter, value);
             }
+            else if constexpr (std::is_same_v<UnderlyingT, size_t>)
+            {
+                stmt->setUInt(counter, value);
+            }
             else if constexpr (is_blob_v<UnderlyingT>)
             {
-                auto blobWrapper = BlobWrapper::create(value);
+                const auto blobWrapper = BlobWrapper::create(value);
                 blobs.push_back(blobWrapper);
 
                 DebugSQL(fmt::format("binding {}: {}", counter, blobWrapper->toString()));
 
                 stmt->setBlob(counter, &blobWrapper->istream);
-            }
-            else if constexpr (std::is_same_v<UnderlyingT, size_t>)
-            {
-                stmt->setUInt(counter, value);
             }
             else
             {
@@ -547,14 +591,14 @@ namespace db
         }
 
         // Base case
-        inline void binder(std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs)
+        inline void binder(const std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs)
         {
         }
 
         // Final case
         // TODO: Why is this needed? Why can't the regular and base case handle this?
         template <typename T>
-        void binder(std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& first)
+        void binder(const std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& first)
         {
             bindValue(stmt, ++counter, blobs, std::forward<T>(first));
             binder(stmt, counter, blobs);
@@ -562,7 +606,7 @@ namespace db
 
         // Regular case
         template <typename T, typename... Args>
-        void binder(std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& first, Args&&... rest)
+        void binder(const std::unique_ptr<sql::PreparedStatement>& stmt, int& counter, std::vector<std::shared_ptr<BlobWrapper>>& blobs, T&& first, Args&&... rest)
         {
             bindValue(stmt, ++counter, blobs, std::forward<T>(first));
             binder(stmt, counter, blobs, std::forward<Args>(rest)...);
@@ -636,14 +680,12 @@ namespace db
         {
             const auto operation = [&]() -> std::unique_ptr<db::detail::ResultSetWrapper>
             {
-                auto& lazyPreparedStatements = state.lazyPreparedStatements;
-
                 // If we don't have it, lazily make it
                 // cppcheck-suppress stlFindInsert
-                if (lazyPreparedStatements.find(rawQuery) == lazyPreparedStatements.end())
+                if (state.lazyPreparedStatements.find(rawQuery) == state.lazyPreparedStatements.end())
                 {
                     // cppcheck-suppress stlFindInsert
-                    lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
+                    state.lazyPreparedStatements[rawQuery] = std::unique_ptr<sql::PreparedStatement>(state.connection->prepareStatement(rawQuery.c_str()));
                 }
 
                 DebugSQL(fmt::format("preparedStmt: {}", rawQuery));
@@ -654,9 +696,9 @@ namespace db
                 // All blobs are stored here so they can be kept alive until the query is executed.
                 std::vector<std::shared_ptr<BlobWrapper>> blobs;
 
-                auto& stmt = lazyPreparedStatements[rawQuery];
+                const auto& stmt = state.lazyPreparedStatements[rawQuery];
                 db::detail::binder(stmt, counter, blobs, std::forward<Args>(args)...);
-                auto queryTimer = detail::timer(rawQuery);
+                const auto queryTimer = detail::timer(rawQuery);
 
                 if (queryType == detail::ResultSetType::Select)
                 {
@@ -665,7 +707,7 @@ namespace db
                 }
                 else // Update
                 {
-                    auto rowsAffected = stmt->executeUpdate();
+                    const auto rowsAffected = stmt->executeUpdate();
                     return std::make_unique<db::detail::ResultSetWrapper>(rowsAffected, rawQuery);
                 }
             };
@@ -720,7 +762,7 @@ namespace db
             //     : because it will truncate the blob result. So we're using a friend
             //     : function to allow us to get access to the raw resultSet and
             //     : call getString directly. This does not truncate the result.
-            auto blobStr = rset->resultSet_->getString(blobKey.c_str());
+            const auto blobStr = rset->resultSet_->getString(blobKey.c_str());
 
             // Login server creates new chars with null blobs. Map server then initializes.
             // We don't want to overwrite the initialized map data with null blobs / 0 values.
