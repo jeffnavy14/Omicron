@@ -94,6 +94,7 @@
 #include "los/zone_los.h"
 #include "map_networking.h"
 #include "map_server.h"
+#include "mob_modifier.h"
 #include "mobskill.h"
 #include "monstrosity.h"
 #include "navmesh.h"
@@ -5494,6 +5495,56 @@ namespace luautils
                     sol::error err = result;
                     ShowError("applyMixins: %s: %s", PMob->name.c_str(), err.what());
                 }
+            }
+
+            // Allow for overrides of defaults on TYPE_MOB
+            // If no value is specified, mob_groups.sql values are used
+            const auto minLevel = table["minLevel"].get_or<uint8>(0);
+            if (minLevel > 0)
+            {
+                PMob->m_minLevel = minLevel;
+            }
+
+            const auto maxLevel = table["maxLevel"].get_or<uint8>(0);
+            if (maxLevel > 0)
+            {
+                PMob->m_maxLevel = maxLevel;
+            }
+
+            const auto dropId = table["dropId"].get_or<uint16>(0);
+            if (dropId > 0)
+            {
+                PMob->m_DropID = dropId;
+            }
+
+            const auto skillList = table["skillList"].get_or<uint16>(0);
+            if (skillList > 0)
+            {
+                PMob->m_MobSkillList = skillList;
+                PMob->setMobMod(MOBMOD_SKILL_LIST, skillList);
+            }
+
+            const auto spellList = table["spellList"].get_or<uint16>(0);
+            if (spellList > 0)
+            {
+                mobutils::SetSpellList(PMob, spellList);
+            }
+
+            const auto respawn = table["respawn"].get_or<uint32>(0);
+            if (respawn > 0)
+            {
+                PMob->m_RespawnTime  = respawn * 1000;
+                PMob->m_AllowRespawn = true;
+            }
+            else
+            {
+                PMob->m_AllowRespawn = false;
+            }
+
+            const auto spawnType = table["spawnType"].get_or<uint16>(0);
+            if (spawnType > 0)
+            {
+                PMob->m_SpawnType = (SPAWNTYPE)spawnType;
             }
 
             luautils::OnEntityLoad(PMob);
