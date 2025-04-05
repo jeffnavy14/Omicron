@@ -11,7 +11,7 @@ xi.events.domainCampaign = xi.events.domainCampaign or {}
 
 xi.events.domainCampaign.onTrigger = function(player, csid)
 
-    local escha = player:getCurrency("escha_beads")
+    local escha = player:getCurrency("domain_points")
 	local cDate = player:getMainLvl()
     local domainInvasion = prizes
     local price = {}
@@ -58,7 +58,7 @@ xi.events.domainCampaign.onEventUpdate = function(player, csid, option)
     local itemSelected = bit.band(bit.rshift(option, 5), 31)
     local itemQuantity = bit.band(bit.rshift(option, 11), 511)
     local domainInvasion = prizes
-    local escha = player:getCurrency("escha_beads")
+    local escha = player:getCurrency("domain_points")
 
     if
         showItems == 1 or
@@ -118,10 +118,10 @@ xi.events.domainCampaign.onEventUpdate = function(player, csid, option)
             escha)
     else
         if npcUtil.giveItem(player, { {domainInvasion[showItems - 2]["items"][itemSelected + 1], itemQuantity} }) then
-            player:delCurrency("escha_beads", domainInvasion[showItems - 2]["price"] * itemQuantity)
+            player:delCurrency("domain_points", domainInvasion[showItems - 2]["price"] * itemQuantity)
             player:updateEvent(
                 domainInvasion[showItems - 2]["items"][itemSelected + 1],
-                player:getCurrency("escha_beads"), -- Login Points after purchase
+                player:getCurrency("domain_points"), -- Login Points after purchase
                 0, -- Unknown (most likely totalItemMask)
                 domainInvasion[showItems - 2]["price"],
                 escha) -- Login points before purchase
