@@ -128,22 +128,21 @@ uint8 CBattlefieldHandler::LoadBattlefield(CCharEntity* PChar, const Battlefield
 
     auto* PBattlefield = new CBattlefield(registration.id, m_PZone, registration.area, PChar);
 
-    const auto* fmtQuery = "SELECT name, fastestName, fastestTime, fastestPartySize\
-                            FROM bcnm_records i\
-                            WHERE bcnmId = %u";
+    const auto rset = db::preparedStmt("SELECT name, fastestName, fastestTime, fastestPartySize "
+                                       "FROM bcnm_records "
+                                       "WHERE bcnmId = ?",
+                                       registration.id);
 
-    auto ret = _sql->Query(fmtQuery, registration.id);
-
-    if (ret == SQL_ERROR || _sql->NumRows() == 0 || _sql->NextRow() != SQL_SUCCESS)
+    if (!rset || rset->rowsCount() == 0 || !rset->next())
     {
         ShowError("Cannot load battlefield : %u ", registration.id);
         return BATTLEFIELD_RETURN_CODE_REQS_NOT_MET;
     }
 
-    auto name            = _sql->GetStringData(0);
-    auto recordholder    = _sql->GetStringData(1);
-    auto recordtime      = std::chrono::seconds(_sql->GetUIntData(2));
-    auto recordPartySize = _sql->GetUIntData(3);
+    const auto name            = rset->get<std::string>("name");
+    const auto recordholder    = rset->get<std::string>("fastestName");
+    const auto recordtime      = std::chrono::seconds(rset->get<uint32>("fastestTime"));
+    const auto recordPartySize = rset->get<size_t>("fastestPartySize");
 
     PBattlefield->SetName(name);
     PBattlefield->SetRecord(recordholder, recordtime, recordPartySize);

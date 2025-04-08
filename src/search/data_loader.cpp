@@ -102,6 +102,9 @@ std::vector<ahItem*> CDataLoader::GetAHItemsToCategory(uint8 ahCategoryID, const
         const auto fromTable = settings::get<bool>("search.OMIT_NO_HISTORY") ? subQuery : "item_basic";
 
         // Build the query string with optional subquery and order-by statements before passing it to the prepared statement.
+        //
+        // NOTE: We normally don't want to build a prepared statement with fmt::format,
+        //     : but this query is entirely internal, so it's OK.
         const auto queryStr = fmt::format("SELECT item_basic.itemid, item_basic.stackSize, COUNT(*)-SUM(stack), SUM(stack) "
                                           "FROM {} "
                                           "LEFT JOIN auction_house ON item_basic.itemId = auction_house.itemid AND auction_house.buyer_name IS NULL "
@@ -742,10 +745,10 @@ void CDataLoader::ExpireAHItems(uint16 expireAgeInDays)
                 listing.sellerName = rset1->get<std::string>("charname");
             }
 
-            const auto [rset2, affectedRows] = db::preparedStmtWithAffectedRows("INSERT INTO delivery_box (charid, charname, box, itemid, itemsubid, quantity, senderid, sender) VALUES "
-                                                                                "(?, ?, 1, ?, 0, ?, 0, 'AH-Jeuno')",
-                                                                                listing.sellerID, listing.sellerName, listing.itemID, listing.ahStack == 1 ? listing.itemStack : 1);
-            if (rset2 && affectedRows > 0)
+            const auto rset2 = db::preparedStmt("INSERT INTO delivery_box (charid, charname, box, itemid, itemsubid, quantity, senderid, sender) VALUES "
+                                                "(?, ?, 1, ?, 0, ?, 0, 'AH-Jeuno')",
+                                                listing.sellerID, listing.sellerName, listing.itemID, listing.ahStack == 1 ? listing.itemStack : 1);
+            if (rset2 && rset2->rowsAffected())
             {
                 // delete the item from the auction house
                 db::preparedStmt("DELETE FROM auction_house WHERE id = ?", listing.saleID);

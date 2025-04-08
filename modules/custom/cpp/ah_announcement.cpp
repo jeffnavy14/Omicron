@@ -112,15 +112,13 @@ class AHAnnouncementModule : public CPPModule
                                 // Now that we have the row id, we can use it to update the purchase information
                                 const auto successfulUpdate = [&]() -> bool
                                 {
-                                    const auto [rset, affectedRows] = db::preparedStmtWithAffectedRows(R"""(
-                                        UPDATE auction_house
-                                        SET buyer_name = ?, sale = ?, sell_date = ?
-                                        WHERE id = ?
-                                        LIMIT 1;
-                                        )""",
+                                    const auto rset = db::preparedStmt("UPDATE auction_house "
+                                        "SET buyer_name = ?, sale = ?, sell_date = ? "
+                                        "WHERE id = ? "
+                                        "LIMIT 1 ",
                                         PChar->getName(), price, (uint32)time(nullptr), rowId);
 
-                                    return rset && affectedRows;
+                                    return rset && rset->rowsAffected();
                                 }();
 
                                 // If the update was successful we can now add the item to the buyer's inventory

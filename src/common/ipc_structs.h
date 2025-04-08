@@ -131,6 +131,7 @@ namespace ipc
         uint16            zoneId{};
         uint8             gmLevel{};
         CHAT_MESSAGE_TYPE messageType{ MESSAGE_SYSTEM_1 };
+        bool              skipSender{};
     };
 
     struct ChatMessageCustom

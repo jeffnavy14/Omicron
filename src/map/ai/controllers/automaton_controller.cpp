@@ -469,9 +469,9 @@ bool CAutomatonController::TryHeal(const CurrentManeuvers& maneuvers)
         }
         else
         {
-            uint16 selfEnmity   = selfEnmity_obj->second.CE + selfEnmity_obj->second.VE;
-            uint16 masterEnmity = masterEnmity_obj->second.CE + masterEnmity_obj->second.VE;
-            haveHate            = selfEnmity > masterEnmity;
+            int32 selfEnmity   = selfEnmity_obj->second.CE + selfEnmity_obj->second.VE;
+            int32 masterEnmity = masterEnmity_obj->second.CE + masterEnmity_obj->second.VE;
+            haveHate           = selfEnmity > masterEnmity;
         }
     }
 

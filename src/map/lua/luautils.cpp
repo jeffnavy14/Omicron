@@ -94,6 +94,7 @@
 #include "los/zone_los.h"
 #include "map_networking.h"
 #include "map_server.h"
+#include "mob_modifier.h"
 #include "mobskill.h"
 #include "monstrosity.h"
 #include "navmesh.h"
@@ -1407,6 +1408,32 @@ namespace luautils
         });
     }
 
+    void UpdateSanrakusMobs()
+    {
+        auto UpdateSanrakusMobs = lua["xi"]["znm"]["UpdateSanrakusMobs"];
+
+        if (!UpdateSanrakusMobs.valid())
+        {
+            ShowError("luautils::UpdateSanrakusMobs: UpdateSanrakusMobs call into Lua failed because it was invalid.");
+            return;
+        }
+
+        UpdateSanrakusMobs();
+    }
+
+    void ZNMPopPriceDecay()
+    {
+        auto ZNMPopPriceDecay = lua["xi"]["znm"]["ZNMPopPriceDecay"];
+
+        if (!ZNMPopPriceDecay.valid())
+        {
+            ShowError("luautils::ZNMPopPriceDecay: ZNMPopPriceDecay call into Lua failed because it was invalid.");
+            return;
+        }
+
+        ZNMPopPriceDecay();
+    }
+
     uint32 VanadielTime()
     {
         TracyZoneScoped;
@@ -1822,7 +1849,8 @@ namespace luautils
     {
         TracyZoneScoped;
         charutils::PersistCharVar(playerId, "inJail", cellId);
-        _sql->Query("UPDATE chars SET pos_x=%f, pos_y=%f, pos_z=%f, pos_rot=%u, pos_zone=%d, moghouse=0 WHERE charid=%u", posX, posY, posZ, rot, ZONEID::ZONE_MORDION_GAOL, playerId);
+        db::preparedStmt("UPDATE chars SET pos_x = ?, pos_y = ?, pos_z = ?, pos_rot = ?, pos_zone = ?, moghouse = 0 WHERE charid = ?",
+                         posX, posY, posZ, rot, ZONEID::ZONE_MORDION_GAOL, playerId);
     }
 
     void DrawIn(CLuaBaseEntity* PLuaBaseEntity, sol::table const& table, float offset, float degrees)
@@ -1859,11 +1887,11 @@ namespace luautils
      *                                                                       *
      ************************************************************************/
 
-    bool IsContentEnabled(const char* contentTag)
+    bool IsContentEnabled(const std::string& contentTag)
     {
         TracyZoneScoped;
 
-        if (contentTag == nullptr || std::strlen(contentTag) == 0)
+        if (contentTag.empty())
         {
             return true;
         }
@@ -4767,11 +4795,12 @@ namespace luautils
         CMobEntity* PMob = (CMobEntity*)zoneutils::GetEntity(mobid, TYPE_MOB);
         if (PMob != nullptr)
         {
-            int32 r   = 0;
-            int32 ret = _sql->Query("SELECT count(mobid) FROM `nm_spawn_points` where mobid=%u", mobid);
-            if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS && _sql->GetUIntData(0) > 0)
+            int32 r = 0;
+
+            const auto rset = db::preparedStmt("SELECT COUNT(mobid) FROM `nm_spawn_points` WHERE mobid = ?", mobid);
+            if (rset && rset->rowsCount() && rset->next() && rset->get<uint32>(0) > 0)
             {
-                r = xirand::GetRandomNumber(_sql->GetUIntData(0));
+                r = xirand::GetRandomNumber(rset->get<uint32>(0));
             }
             else
             {
@@ -4779,15 +4808,13 @@ namespace luautils
                 return;
             }
 
-            ret = _sql->Query("SELECT pos_x, pos_y, pos_z FROM `nm_spawn_points` WHERE mobid=%u AND pos=%i", mobid, r);
-            if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+            const auto rset2 = db::preparedStmt("SELECT pos_x, pos_y, pos_z FROM `nm_spawn_points` WHERE mobid = ? AND pos = ?", mobid, r);
+            if (rset2 && rset2->rowsCount() && rset2->next())
             {
                 PMob->m_SpawnPoint.rotation = xirand::GetRandomNumber(256);
-                PMob->m_SpawnPoint.x        = _sql->GetFloatData(0);
-                PMob->m_SpawnPoint.y        = _sql->GetFloatData(1);
-                PMob->m_SpawnPoint.z        = _sql->GetFloatData(2);
-                // ShowDebug(CL_RED"UpdateNMSpawnPoint: After %i - %f, %f, %f, %i", r,
-                // PMob->m_SpawnPoint.x,PMob->m_SpawnPoint.y,PMob->m_SpawnPoint.z,PMob->m_SpawnPoint.rotation);
+                PMob->m_SpawnPoint.x        = rset2->get<float>(0);
+                PMob->m_SpawnPoint.y        = rset2->get<float>(1);
+                PMob->m_SpawnPoint.z        = rset2->get<float>(2);
             }
             else
             {
@@ -4840,19 +4867,20 @@ namespace luautils
                               "INNER JOIN zone_settings z ON z.zoneid = c.pos_zone "
                               "WHERE "
                               "varname = '[Fish]LastCastTime' AND "
-                              "FROM_UNIXTIME(cv.value) > NOW() - INTERVAL %u MINUTE "
+                              "FROM_UNIXTIME(cv.value) > NOW() - INTERVAL ? MINUTE "
                               "ORDER BY z.name, z.name, stats.mlvl, skill";
 
-        if (_sql->Query(Query, lookbackTime) != SQL_ERROR && _sql->NumRows() != 0)
+        const auto rset = db::preparedStmt(Query, lookbackTime);
+        if (rset && rset->rowsCount())
         {
-            while (_sql->NextRow() == SQL_SUCCESS)
+            while (rset->next())
             {
                 auto fisher          = lua.create_table();
-                auto charId          = _sql->GetUIntData(0);
-                fisher["playerName"] = _sql->GetStringData(1);
-                fisher["jobLevel"]   = _sql->GetUIntData(2);
-                fisher["zoneName"]   = _sql->GetStringData(3);
-                fisher["skill"]      = _sql->GetUIntData(4);
+                auto charId          = rset->get<uint32>(0);
+                fisher["playerName"] = rset->get<std::string>(1);
+                fisher["jobLevel"]   = rset->get<uint32>(2);
+                fisher["zoneName"]   = rset->get<std::string>(3);
+                fisher["skill"]      = rset->get<uint32>(4);
                 fishers[charId]      = fisher;
             }
         }
@@ -5050,14 +5078,13 @@ namespace luautils
     {
         TracyZoneScoped;
 
-        uint16 effectId = 0;
-        int32  ret      = _sql->Query("SELECT effectId FROM despoil_effects WHERE itemId = %u", itemId);
-        if (ret != SQL_ERROR && _sql->NumRows() != 0 && _sql->NextRow() == SQL_SUCCESS)
+        const auto rset = db::preparedStmt("SELECT effectId FROM despoil_effects WHERE itemId = ? LIMIT 1", itemId);
+        if (rset && rset->rowsCount() && rset->next())
         {
-            effectId = (uint16)_sql->GetUIntData(0);
+            return rset->get<uint16>("effectId");
         }
 
-        return effectId;
+        return 0;
     }
 
     void OnFurniturePlaced(CCharEntity* PChar, CItemFurnishing* PItem)
@@ -5468,6 +5495,56 @@ namespace luautils
                     sol::error err = result;
                     ShowError("applyMixins: %s: %s", PMob->name.c_str(), err.what());
                 }
+            }
+
+            // Allow for overrides of defaults on TYPE_MOB
+            // If no value is specified, mob_groups.sql values are used
+            const auto minLevel = table["minLevel"].get_or<uint8>(0);
+            if (minLevel > 0)
+            {
+                PMob->m_minLevel = minLevel;
+            }
+
+            const auto maxLevel = table["maxLevel"].get_or<uint8>(0);
+            if (maxLevel > 0)
+            {
+                PMob->m_maxLevel = maxLevel;
+            }
+
+            const auto dropId = table["dropId"].get_or<uint16>(0);
+            if (dropId > 0)
+            {
+                PMob->m_DropID = dropId;
+            }
+
+            const auto skillList = table["skillList"].get_or<uint16>(0);
+            if (skillList > 0)
+            {
+                PMob->m_MobSkillList = skillList;
+                PMob->setMobMod(MOBMOD_SKILL_LIST, skillList);
+            }
+
+            const auto spellList = table["spellList"].get_or<uint16>(0);
+            if (spellList > 0)
+            {
+                mobutils::SetSpellList(PMob, spellList);
+            }
+
+            const auto respawn = table["respawn"].get_or<uint32>(0);
+            if (respawn > 0)
+            {
+                PMob->m_RespawnTime  = respawn * 1000;
+                PMob->m_AllowRespawn = true;
+            }
+            else
+            {
+                PMob->m_AllowRespawn = false;
+            }
+
+            const auto spawnType = table["spawnType"].get_or<uint16>(0);
+            if (spawnType > 0)
+            {
+                PMob->m_SpawnType = (SPAWNTYPE)spawnType;
             }
 
             luautils::OnEntityLoad(PMob);

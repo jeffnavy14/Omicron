@@ -123,26 +123,19 @@ void MapServer::loadConsoleCommands()
             return;
         }
 
-        auto  name  = inputs[1];
-        auto* PChar = zoneutils::GetCharByName(name);
+        const auto name  = inputs[1];
+        auto*      PChar = zoneutils::GetCharByName(name);
         if (!PChar)
         {
             fmt::print("Couldnt find character: {}\n", name);
             return;
         }
 
-        auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
+        const auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
 
         PChar->m_GMlevel = level;
 
-        // NOTE: This is the same logic as charutils::SaveCharGMLevel(PChar);
-        // But we're not executing on the main thread, so we're doing it with
-        // our own SQL connection.
-        {
-            auto otherSql  = std::make_unique<SqlConnection>();
-            auto query = "UPDATE %s SET %s %u WHERE charid = %u";
-            otherSql->Query(query, "chars", "gmlevel =", PChar->m_GMlevel, PChar->id);
-        }
+        charutils::SaveCharGMLevel(PChar);
 
         fmt::print("> Promoting {} to GM level {}\n", PChar->name, level);
         PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
@@ -296,8 +289,9 @@ void MapServer::do_init()
 
     PacketParserInitialize();
 
-    _sql->Query("DELETE FROM accounts_sessions WHERE IF(%u = 0 AND %u = 0, true, server_addr = %u AND server_port = %u)",
-                mapIPP.getIP(), mapIPP.getPort(), mapIPP.getIP(), mapIPP.getPort());
+    // Delete sessions that are associated with this map process, but leave others alone
+    db::preparedStmt("DELETE FROM accounts_sessions WHERE IF(? = 0 AND ? = 0, true, server_addr = ? AND server_port = ?)",
+                     mapIPP.getIP(), mapIPP.getPort(), mapIPP.getIP(), mapIPP.getPort());
 
     ShowInfo("do_init: zlib is reading");
     zlib_init();
@@ -396,7 +390,6 @@ void MapServer::do_final()
 {
     TracyZoneScoped;
 
-    ability::CleanupAbilitiesList();
     itemutils::FreeItemList();
     battleutils::FreeWeaponSkillsList();
     battleutils::FreeMobSkillList();
@@ -407,7 +400,6 @@ void MapServer::do_final()
     traits::ClearTraitsList();
 
     petutils::FreePetList();
-    trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
     CTaskManager::delInstance();

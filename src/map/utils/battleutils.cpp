@@ -413,12 +413,12 @@ namespace battleutils
      *                                                                       *
      ************************************************************************/
 
-    int16 GetEnmityModDamage(int16 level)
+    int32 GetEnmityModDamage(int16 level)
     {
         return level * 31 / 50 + 6;
     }
 
-    int16 GetEnmityModCure(int16 level)
+    int32 GetEnmityModCure(int16 level)
     {
         if (level <= 10)
         {
@@ -4253,7 +4253,7 @@ namespace battleutils
         int16 angleDiff = angleDifference(firstEntityWorldAngle, worldAngle(anchorEntity->loc.p, otherEntity->loc.p));
 
         // Useful for debugging if trick attack/cover aren't reliably calculating eligability, but chatty otherwise
-        // ShowDebug("InLine check angleDiff: %d\n", angleDiff);
+        // ShowDebug("InLine check angleDiff: %d", angleDiff);
 
         return std::abs(angleDiff) <= worldAngleMaxDeviance;
     }
@@ -4379,7 +4379,7 @@ namespace battleutils
     }
 
     // Generate enmity for all targets in range
-    void GenerateInRangeEnmity(CBattleEntity* PSource, int16 CE, int16 VE)
+    void GenerateInRangeEnmity(CBattleEntity* PSource, int32 CE, int32 VE)
     {
         if (PSource == nullptr)
         {
@@ -6024,6 +6024,12 @@ namespace battleutils
 
     bool HasClaim(CBattleEntity* PEntity, CBattleEntity* PTarget)
     {
+        if (PEntity == nullptr)
+        {
+            ShowWarning("PEntity is null.");
+            return false;
+        }
+
         if (PTarget == nullptr)
         {
             ShowWarning("PTarget is null.");

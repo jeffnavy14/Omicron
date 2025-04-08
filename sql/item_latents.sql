@@ -2843,6 +2843,11 @@ INSERT INTO `item_latents` VALUES (27367,399,16,52,6);   -- Pedagogy Loafers+1: 
 INSERT INTO `item_latents` VALUES (27367,399,16,52,7);   -- Pedagogy Loafers+1: Weather: Enhances Celerity and Alacrity Effect +16% (LIGHT)
 INSERT INTO `item_latents` VALUES (27367,399,16,52,8);   -- Pedagogy Loafers+1: Weather: Enhances Celerity and Alacrity Effect +16% (DARK)
 
+-- She-slime Hat
+INSERT INTO `item_latents` VALUES (27726,370,1,13,2);   -- While Sleeping: REGEN +1
+INSERT INTO `item_latents` VALUES (27726,370,1,13,19);  -- While Sleeping: REGEN +1
+INSERT INTO `item_latents` VALUES (27726,370,1,13,193); -- While Sleeping: REGEN +1
+
 -- Councilor's Garb
 INSERT INTO `item_latents` VALUES (27923,76,24,63,0);   -- While in Adoulin: MOVE_SPEED_GEAR_BONUS +25% (retail testing shows +24%)
 

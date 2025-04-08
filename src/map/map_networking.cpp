@@ -348,15 +348,14 @@ int32 MapNetworking::recv_parse(uint8* buff, size_t* buffsize, MapSession* map_s
             }
 
             rset = db::preparedStmt("SELECT session_key FROM accounts_sessions WHERE charid = ? LIMIT 1", charID);
-            if (!rset || rset->rowsCount() == 0 || !rset->next())
+            if (rset && rset->rowsCount() && rset->next())
             {
-                ShowError("recv_parse: Cannot load session_key for charid %u", charID);
+                db::extractFromBlob(rset, "session_key", map_session_data->blowfish.key);
+                map_session_data->initBlowfish();
             }
             else
             {
-                db::extractFromBlob(rset, "session_key", map_session_data->blowfish.key);
-
-                map_session_data->initBlowfish();
+                ShowError("recv_parse: Cannot load session_key for charid %u", charID);
             }
 
             auto PChar = charutils::LoadChar(charID);
@@ -730,10 +729,8 @@ int32 MapNetworking::send_parse(uint8* buff, size_t* buffsize, MapSession* map_s
     {
         map_session_data->incrementBlowfish();
 
-        char session_key[20 * 2 + 1];
-        bin2hex(session_key, (uint8*)map_session_data->blowfish.key, 20);
-        const char* fmtQuery = "UPDATE accounts_sessions SET session_key = x'%s' WHERE charid = %u";
-        _sql->Query(fmtQuery, session_key, PChar->id);
+        db::preparedStmt("UPDATE accounts_sessions SET session_key = ? WHERE charid = ? LIMIT 1",
+                         map_session_data->blowfish.key, PChar->id);
     }
 
     // Control the size of the sent packet.
