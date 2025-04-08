@@ -314,14 +314,14 @@ namespace zoneutils
                 {
                     while (rset->next())
                     {
-                        // If there is no content tag, always load the NPC
-                        const auto contentTagFound = !rset->isNull("content_tag");
-                        if (contentTagFound && !luautils::IsContentEnabled(rset->get<std::string>("content_tag").c_str()))
+                        // If there is no content tag, the NPC will always be loaded
+                        const auto contentTag = rset->getOrDefault<std::string>("content_tag", "");
+                        if (!luautils::IsContentEnabled(contentTag))
                         {
                             continue;
                         }
 
-                        uint32 NpcID = rset->get<uint32>("npcid");
+                        const auto NpcID = rset->get<uint32>("npcid");
 
                         if (!(PZone->GetTypeMask() & ZONE_TYPE::INSTANCED))
                         {

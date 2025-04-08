@@ -302,7 +302,7 @@ namespace synthutils
         {
             const auto& recipe = synthRecipes[possibleRecipeKey];
 
-            if (!luautils::IsContentEnabled(recipe.ContentTag.c_str()))
+            if (!luautils::IsContentEnabled(recipe.ContentTag))
             {
                 PChar->pushPacket<CSynthMessagePacket>(PChar, SYNTH_BADRECIPE);
                 return false;

@@ -15,6 +15,7 @@ return {
     ['Gottna']      = { event = 66 },
     ['Hayris']      = { event = 215 },
     ['Heillal']     = { event = 64 },
+    ['Heizo']       = { event = 126 },
     ['Jaucribaix']  = { event = 71 },
     ['Kamui']       = { event = 61 },
     ['Keal']        = { event = 89 },

@@ -390,7 +390,6 @@ void MapServer::do_final()
 {
     TracyZoneScoped;
 
-    ability::CleanupAbilitiesList();
     itemutils::FreeItemList();
     battleutils::FreeWeaponSkillsList();
     battleutils::FreeMobSkillList();
@@ -401,7 +400,6 @@ void MapServer::do_final()
     traits::ClearTraitsList();
 
     petutils::FreePetList();
-    trustutils::FreeTrustList();
     zoneutils::FreeZoneList();
 
     CTaskManager::delInstance();

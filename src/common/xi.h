@@ -198,8 +198,45 @@ namespace xi
         return final_action<std::decay_t<F>>{ std::forward<F>(f) };
     }
 
+    class bit_reference
+    {
+    public:
+        bit_reference(uint8& byte, size_t bit)
+        : byte_(byte)
+        , bit_(bit)
+        {
+        }
+
+        operator bool() const
+        {
+            return (byte_ & (1 << bit_)) != 0;
+        }
+
+        bit_reference& operator=(bool value)
+        {
+            if (value)
+            {
+                byte_ |= (1 << bit_);
+            }
+            else
+            {
+                byte_ &= ~(1 << bit_);
+            }
+            return *this;
+        }
+
+        bit_reference& operator=(const bit_reference& other)
+        {
+            return *this = static_cast<bool>(other);
+        }
+
+    private:
+        uint8& byte_;
+        size_t bit_;
+    };
+
     // std::bitset is not trivial, so we need to create our own bitset
-    // that is for use with the database
+    // for use with the database
     template <std::size_t N>
     struct bitset
     {
@@ -279,9 +316,9 @@ namespace xi
             return *this;
         }
 
-        bool& operator[](std::size_t pos)
+        bit_reference operator[](std::size_t pos)
         {
-            return reinterpret_cast<bool&>(data[pos / 8] |= (1 << (pos % 8)));
+            return bit_reference(data[pos / 8], pos % 8);
         }
 
         bool operator[](std::size_t pos) const

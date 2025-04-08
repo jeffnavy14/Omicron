@@ -38,6 +38,8 @@ xi.mobSkill =
 
     RANGED_ATTACK_2          =  412,
 
+    VULTURE_3                =  626,
+
     DISPELLING_WIND          =  813,
     DEADLY_DRIVE             =  814,
     WIND_WALL                =  815,

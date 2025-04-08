@@ -73,11 +73,16 @@ CPMAddPackage(
 CPMAddPackage(
     NAME recastnavigation
     GITHUB_REPOSITORY recastnavigation/recastnavigation
-    GIT_TAG 0096f0dae9fd0c42757d1fd57d7d3bcccc9bcd38
+    GIT_TAG bd98d84c274ee06842bf51a4088ca82ac71f8c2d
     OPTIONS
+        # TODO: Remove this once recast is updated to use CMake 3.5+, it's currently set to what we use in the root CMakeLists.txt
+        "CMAKE_POLICY_VERSION_MINIMUM 3.20"
         "RECASTNAVIGATION_DEMO OFF"
         "RECASTNAVIGATION_TESTS OFF"
         "RECASTNAVIGATION_EXAMPLES OFF"
+        "RECASTNAVIGATION_DT_POLYREF64 OFF"
+        "RECASTNAVIGATION_DT_VIRTUAL_QUERYFILTER OFF"
+        "RECASTNAVIGATION_ENABLE_ASSERTS OFF"
 ) # defines: RecastNavigation::Recast, RecastNavigation::Detour
 
 CPMAddPackage(

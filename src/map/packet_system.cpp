@@ -5281,9 +5281,13 @@ void SmallPacket0x0D2(MapSession* const PSession, CCharEntity* const PChar, CBas
     // clang-format off
     PChar->ForAlliance([PChar](CBattleEntity* PPartyMember)
     {
-        if (PPartyMember->getZone() == PChar->getZone() && ((CCharEntity*)PPartyMember)->m_moghouseID == PChar->m_moghouseID)
+        if (PPartyMember)
         {
-            PChar->pushPacket<CPartyMapPacket>((CCharEntity*)PPartyMember);
+            auto* partyMember = static_cast<CCharEntity*>(PPartyMember);
+            if (partyMember->getZone() == PChar->getZone() && partyMember->m_moghouseID == PChar->m_moghouseID)
+            {
+                PChar->pushPacket<CPartyMapPacket>(partyMember);
+            }
         }
     });
     // clang-format on
