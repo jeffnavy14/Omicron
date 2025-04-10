@@ -5027,6 +5027,7 @@ xi.item =
     HI_ETHER_TANK                       = 13689,
     FORAGERS_MANTLE                     = 13690,
     KNIGHTLY_MANTLE                     = 13691,
+    ARIES_MANTLE                        = 13693,
     PSILOS_MANTLE                       = 13694,
     BEAK_HELM                           = 13698,
     BEAK_JERKIN                         = 13699,

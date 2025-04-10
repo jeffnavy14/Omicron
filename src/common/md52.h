@@ -23,12 +23,12 @@
 
 #include "common/cbasetypes.h"
 
-typedef struct
+struct md5_context final
 {
     uint32 total[2];
     uint32 state[4];
     uint8  buffer[64];
-} md5_context;
+};
 
 void md5(uint8* text, uint8* hash, int32 size);
 void md5_starts(md5_context* ctx);

@@ -5168,7 +5168,11 @@ INSERT INTO `mob_spell_lists` VALUES ('Jailer_of_Love_Dark',520,274,1,255); -- S
 INSERT INTO `mob_spell_lists` VALUES ('Jailer_of_Love_Dark',520,360,1,255); -- Dispelga (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Jailer_of_Love_Dark',520,361,1,255); -- Blindga (1~255)
 
--- Next Available: 521
+-- Aries (KS30 Today's Horoscope Ram) (521)
+INSERT INTO `mob_spell_lists` VALUES ('Aries',521,54,1,255);  -- Stoneskin (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Aries',521,356,1,255); -- Paralyga (1~255)
+
+-- Next Available: 522
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;

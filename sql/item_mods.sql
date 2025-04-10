@@ -37288,7 +37288,7 @@ INSERT INTO `item_mods` VALUES (18394,71,2); -- MPHEAL: 2
 
 -- Seawolf Cudgel
 INSERT INTO `item_mods` VALUES (18395,8,5);   -- STR: 5
-INSERT INTO `item_mods` VALUES (18395,23,5);  -- ATT: 5
+INSERT INTO `item_mods` VALUES (18395,23,-5); -- ATT: -5
 INSERT INTO `item_mods` VALUES (18395,25,15); -- ACC: 15
 
 -- Sea Robber Cudgel
