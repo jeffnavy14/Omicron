@@ -5880,80 +5880,92 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const char* column = "";
-        uint32      value  = 0;
-
         switch (type)
         {
             case TELEPORT_TYPE::OUTPOST_SANDY:
-                column = "outpost_sandy";
-                value  = PChar->teleport.outpostSandy;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET outpost_sandy = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.outpostSandy, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::OUTPOST_BASTOK:
-                column = "outpost_bastok";
-                value  = PChar->teleport.outpostBastok;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET outpost_bastok = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.outpostBastok, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::OUTPOST_WINDY:
-                column = "outpost_windy";
-                value  = PChar->teleport.outpostWindy;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET outpost_windy = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.outpostWindy, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::RUNIC_PORTAL:
-                column = "runic_portal";
-                value  = PChar->teleport.runicPortal;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET runic_portal = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.runicPortal, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::PAST_MAW:
-                column = "maw";
-                value  = PChar->teleport.pastMaw;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET maw = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.pastMaw, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::CAMPAIGN_SANDY:
-                column = "campaign_sandy";
-                value  = PChar->teleport.campaignSandy;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET campaign_sandy = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.campaignSandy, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::CAMPAIGN_BASTOK:
-                column = "campaign_bastok";
-                value  = PChar->teleport.campaignBastok;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET campaign_bastok = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.campaignBastok, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::CAMPAIGN_WINDY:
-                column = "campaign_windy";
-                value  = PChar->teleport.campaignWindy;
-                break;
+            {
+                db::preparedStmt("UPDATE char_unlocks SET campaign_windy = ? WHERE charid = ? LIMIT 1",
+                                 PChar->teleport.campaignWindy, PChar->id);
+            }
+            break;
             case TELEPORT_TYPE::HOMEPOINT:
             {
                 db::preparedStmt("UPDATE char_unlocks SET homepoints = ? WHERE charid = ? LIMIT 1",
                                  PChar->teleport.homepoint, PChar->id);
-                return;
             }
+            break;
             case TELEPORT_TYPE::SURVIVAL:
             {
                 db::preparedStmt("UPDATE char_unlocks SET survivals = ? WHERE charid = ? LIMIT 1",
                                  PChar->teleport.survival, PChar->id);
-                return;
             }
+            break;
             case TELEPORT_TYPE::ABYSSEA_CONFLUX:
             {
                 db::preparedStmt("UPDATE char_unlocks SET abyssea_conflux = ? WHERE charid = ? LIMIT 1",
                                  PChar->teleport.abysseaConflux, PChar->id);
-                return;
             }
+            break;
             case TELEPORT_TYPE::WAYPOINT:
             {
                 db::preparedStmt("UPDATE char_unlocks SET waypoints = ? WHERE charid = ? LIMIT 1",
                                  PChar->teleport.waypoints, PChar->id);
-                return;
             }
+            break;
             case TELEPORT_TYPE::ESCHAN_PORTAL:
             {
                 db::preparedStmt("UPDATE char_unlocks SET eschan_portals = ? WHERE charid = ? LIMIT 1",
                                  PChar->teleport.eschanPortal, PChar->id);
-                return;
             }
+            break;
             default:
-                ShowError("charutils:SaveTeleport : Unknown type parameter.");
-                return;
+            {
+                ShowError("charutils:SaveTeleport: Unknown type parameter.");
+            }
+            break;
         }
-
-        db::preparedStmt("UPDATE char_unlocks SET ? = ? WHERE charid = ?",
-                         column, value, PChar->id);
     }
 
     float AddExpBonus(CCharEntity* PChar, float exp)
