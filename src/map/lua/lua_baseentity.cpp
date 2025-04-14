@@ -18772,7 +18772,7 @@ void CLuaBaseEntity::setMannequinPose(uint16 itemID, uint8 race, uint8 pose)
 
                         const char* fmtQuery = "UPDATE char_inventory "
                                                "SET extra = ? "
-                                               "WHERE charid = ? AND itemId = ?"
+                                               "WHERE charid = ? AND itemId = ? "
                                                "LIMIT 1";
 
                         if (!db::preparedStmt(fmtQuery, PMannequin->m_extra, PChar->id, PMannequin->getID()))

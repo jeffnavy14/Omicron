@@ -869,6 +869,7 @@ end
 ---@param tType integer
 ---@param bit integer
 ---@param arg2 integer?
+---@return boolean
 function CBaseEntity:hasTeleport(tType, bit, arg2)
 end
 
