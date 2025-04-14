@@ -1547,7 +1547,7 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
             if (PItem != nullptr)
             {
                 // get the item lua script and check if it has valid functions
-                auto itemName     = "globals/items/" + PItem->getName();
+                auto itemName     = "items/" + PItem->getName();
                 auto itemFullName = fmt::format("./scripts/{}.lua", itemName);
                 auto cacheEntry   = luautils::GetCacheEntryFromFilename(itemFullName);
                 auto onEffectGain = cacheEntry["onEffectGain"].get<sol::function>();
@@ -1565,17 +1565,17 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
     }
 
     // Determine if this is a BRD Song or COR Effect.
-    if (subType == 0 ||
-        ((subType > 20000 ||
-          (effect >= EFFECT_REQUIEM && effect <= EFFECT_NOCTURNE) ||
-          (effect >= EFFECT_DOUBLE_UP_CHANCE && effect <= EFFECT_NATURALISTS_ROLL) ||
-          effect == EFFECT_RUNEISTS_ROLL ||
-          effect == EFFECT_DRAIN_DAZE ||
-          effect == EFFECT_ASPIR_DAZE ||
-          effect == EFFECT_HASTE_DAZE ||
-          effect == EFFECT_ATMA ||
-          effect == EFFECT_BATTLEFIELD) &&
-         !effectFromItemEnchant))
+    if (!effectFromItemEnchant &&
+        (subType == 0 ||
+         subType > 20000 ||
+         (effect >= EFFECT_REQUIEM && effect <= EFFECT_NOCTURNE) ||
+         (effect >= EFFECT_DOUBLE_UP_CHANCE && effect <= EFFECT_NATURALISTS_ROLL) ||
+         effect == EFFECT_RUNEISTS_ROLL ||
+         effect == EFFECT_DRAIN_DAZE ||
+         effect == EFFECT_ASPIR_DAZE ||
+         effect == EFFECT_HASTE_DAZE ||
+         effect == EFFECT_ATMA ||
+         effect == EFFECT_BATTLEFIELD))
     {
         name.insert(0, "effects/");
         name.insert(name.size(), effects::EffectsParams[effect].Name);

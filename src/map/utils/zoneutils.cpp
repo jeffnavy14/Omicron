@@ -928,7 +928,7 @@ namespace zoneutils
             case ZONE_NORG:
             case ZONE_SEA_SERPENT_GROTTO:
             case ZONE_YUHTUNGA_JUNGLE:
-                return REGION_TYPE::ELSHIMOLOWLANDS;
+                return REGION_TYPE::ELSHIMO_LOWLANDS;
             case ZONE_CLOISTER_OF_FLAMES:
             case ZONE_CLOISTER_OF_TIDES:
             case ZONE_DEN_OF_RANCOR:
@@ -936,7 +936,7 @@ namespace zoneutils
             case ZONE_SACRIFICIAL_CHAMBER:
             case ZONE_TEMPLE_OF_UGGALEPIH:
             case ZONE_YHOATOR_JUNGLE:
-                return REGION_TYPE::ELSHIMOUPLANDS;
+                return REGION_TYPE::ELSHIMO_UPLANDS;
             case ZONE_THE_CELESTIAL_NEXUS:
             case ZONE_LALOFF_AMPHITHEATER:
             case ZONE_RUAUN_GARDENS:

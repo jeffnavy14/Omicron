@@ -655,14 +655,14 @@ INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,652); -- blaster
 INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,653); -- chaotic_eye
 INSERT INTO `mob_skill_lists` VALUES ('Coeurl_WoTG',162,483); -- charged_whisker
 INSERT INTO `mob_skill_lists` VALUES ('RavenousCrawler',163,344); -- Sticky Thread
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1828);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1829);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1830);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1831);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1832);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1834);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1835);
-INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1836);
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1828); -- pyric_blast
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1829); -- pyric_bulwark
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1830); -- polar_blast
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1831); -- polar_bulwark
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1832); -- barofield
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1834); -- trembling
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1835); -- serpentine_tail
+INSERT INTO `mob_skill_lists` VALUES ('Hydra',164,1836); -- nerve_gas
 INSERT INTO `mob_skill_lists` VALUES ('Imp',165,1709);
 INSERT INTO `mob_skill_lists` VALUES ('Imp',165,1710);
 INSERT INTO `mob_skill_lists` VALUES ('Imp',165,1711);
@@ -674,13 +674,13 @@ INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,261);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,262);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,264);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,1837);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2022);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2023);
--- INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2024);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2025);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2026);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2027);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2028);
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2022); -- tenebrous_mist
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2023); -- thunderstrike
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2024); -- tourbillion
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2025); -- dreadstorm
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2026); -- fossilizing_breath
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2027); -- plague_swipe
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2028); -- fulmination
 -- INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2698);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,559);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,560);
