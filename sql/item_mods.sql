@@ -37288,7 +37288,7 @@ INSERT INTO `item_mods` VALUES (18394,71,2); -- MPHEAL: 2
 
 -- Seawolf Cudgel
 INSERT INTO `item_mods` VALUES (18395,8,5);   -- STR: 5
-INSERT INTO `item_mods` VALUES (18395,23,5);  -- ATT: 5
+INSERT INTO `item_mods` VALUES (18395,23,-5); -- ATT: -5
 INSERT INTO `item_mods` VALUES (18395,25,15); -- ACC: 15
 
 -- Sea Robber Cudgel
@@ -74276,6 +74276,13 @@ INSERT INTO `item_mods` VALUES (27725,31,75);   -- MEVA: 75
 INSERT INTO `item_mods` VALUES (27725,68,36);   -- EVA: 36
 INSERT INTO `item_mods` VALUES (27725,296,3);   -- CONSERVE_MP: 3
 INSERT INTO `item_mods` VALUES (27725,384,600); -- HASTE_GEAR: 600
+
+-- She-Slime Hat
+INSERT INTO `item_mods` VALUES (27726,1,1);    -- DEF: 1
+
+-- Metal Slime Hat
+INSERT INTO `item_mods` VALUES (27727,1,2);    -- DEF: 2
+INSERT INTO `item_mods` VALUES (27727,382,1);    -- EXP_BONUS: 1
 
 -- Cizin Helm +1
 INSERT INTO `item_mods` VALUES (27728,1,111);   -- DEF: 111

@@ -674,13 +674,13 @@ INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,261);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,262);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,264);
 INSERT INTO `mob_skill_lists` VALUES ('Karakul',167,1837);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2022);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2023);
--- INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2024);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2025);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2026);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2027);
-INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2028);
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2022); -- tenebrous_mist
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2023); -- thunderstrike
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2024); -- tourbillion
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2025); -- dreadstorm
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2026); -- fossilizing_breath
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2027); -- plague_swipe
+INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2028); -- fulmination
 -- INSERT INTO `mob_skill_lists` VALUES ('Khimaira',168,2698);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,559);
 INSERT INTO `mob_skill_lists` VALUES ('Kindred',169,560);

@@ -52,7 +52,7 @@ void auth_session::start()
             }
             else
             {
-                auto errStr = fmt::format("Error from {}: (EC: {}), {}", ipAddress, ec.value(), ec.message());
+                const auto errStr = fmt::format("Error from {}: (EC: {}), {}", ipAddress, ec.value(), ec.message());
                 ShowWarning(errStr);
                 ShowWarning("Failed to handshake!");
                 if (errStr.find("wrong version number (SSL routines)") != std::string::npos)
@@ -70,7 +70,7 @@ void auth_session::start()
 void auth_session::do_read()
 {
     // clang-format off
-    socket_.async_read_some(asio::buffer(data_, max_length),
+    socket_.async_read_some(asio::buffer(buffer_.data(), buffer_.size()),
     [this, self = shared_from_this()](std::error_code ec, std::size_t length)
     {
         if (!ec)
@@ -88,11 +88,11 @@ void auth_session::do_read()
 
 void auth_session::read_func()
 {
-    const auto newModeFlag = ref<uint8>(data_, 0) == 0xFF;
+    const auto newModeFlag = ref<uint8>(buffer_.data(), 0) == 0xFF;
     if (!newModeFlag)
     {
         ShowDebug("Old xiloader connected. Not supported.");
-        ref<uint8>(data_, 0) = LOGIN_ERROR;
+        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
         do_write(1);
         return;
     }
@@ -102,10 +102,10 @@ void auth_session::read_func()
     char usernameBuffer[17] = {};
     char passwordBuffer[33] = {};
 
-    std::memcpy(usernameBuffer, data_ + 0x09, 16);
-    std::memcpy(passwordBuffer, data_ + 0x19, 32);
+    std::memcpy(usernameBuffer, buffer_.data() + 0x09, 16);
+    std::memcpy(passwordBuffer, buffer_.data() + 0x19, 32);
     // 1 byte of command at 0x39
-    const std::string version(data_ + 0x61, 5);
+    const std::string version = asStringFromUntrustedSource(buffer_.data() + 0x61, 5);
 
     std::string username{ usernameBuffer };
     std::string password{ passwordBuffer };
@@ -116,13 +116,13 @@ void auth_session::read_func()
     // Major and minor version changes should be breaking, patch should not.
     if (strncmp(version.c_str(), SUPPORTED_XILOADER_VERSION, 3) != 0)
     {
-        ref<uint8>(data_, 0) = LOGIN_ERROR_VERSION_UNSUPPORTED;
+        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_VERSION_UNSUPPORTED;
 
         do_write(1);
         return;
     }
 
-    const int8 code = ref<uint8>(data_, 0x39);
+    const int8 code = ref<uint8>(buffer_.data(), 0x39);
 
     DebugSockets(fmt::format("auth code: {} from {}", code, ipAddress));
 
@@ -138,9 +138,6 @@ void auth_session::read_func()
         ShowWarningFmt("login_parse: malformed password from {}", ipAddress);
         return;
     }
-
-    username = db::escapeString(username);
-    password = db::escapeString(password);
 
     switch (code)
     {
@@ -170,7 +167,7 @@ void auth_session::read_func()
                 // It's a BCrypt hash, so we can validate it.
                 if (!BCrypt::validatePassword(password, passHash))
                 {
-                    ref<uint8>(data_, 0) = LOGIN_ERROR;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
                     do_write(1);
                     return;
                 }
@@ -184,7 +181,7 @@ void auth_session::read_func()
                 {
                     if (rset->get<std::string>(0) != passHash)
                     {
-                        ref<uint8>(data_, 0) = LOGIN_ERROR;
+                        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
                         do_write(1);
                         return;
                     }
@@ -193,7 +190,7 @@ void auth_session::read_func()
                     db::preparedStmt("UPDATE accounts SET accounts.password = ? WHERE accounts.login = ?", passHash, username);
                     if (!BCrypt::validatePassword(password, passHash))
                     {
-                        ref<uint8>(data_, 0) = LOGIN_ERROR;
+                        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
                         do_write(1);
                         return;
                     }
@@ -257,43 +254,43 @@ void auth_session::read_func()
 
                         // This error message doesn't work when sent this way. Unknown how to transmit "1039" error message to a client already logged in.
                         // session_t& authenticatedSession = get_authenticated_session(socket_, session.sentAccountID);
-                        // if (auto data = authenticatedSession.data_session)
+                        // if (auto data = authenticatedSession.buffer_.data()session)
                         // {
-                        //  generateErrorMessage(data->data_, 139);
+                        //  generateErrorMessage(data->buffer_.data(), 139);
                         //  data->do_write(0x24);
                         //  return;
                         //}
-                        ref<uint8>(data_, 0) = LOGIN_ERROR_ALREADY_LOGGED_IN;
+                        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_ALREADY_LOGGED_IN;
                         do_write(1);
                         return;
                     }
                     */
 
                     // Success
-                    std::memset(data_, 0, 49);
-                    ref<uint8>(data_, 0)  = LOGIN_SUCCESS;
-                    ref<uint32>(data_, 1) = accountID;
+                    std::memset(buffer_.data(), 0, 49);
+                    ref<uint8>(buffer_.data(), 0)  = LOGIN_SUCCESS;
+                    ref<uint32>(buffer_.data(), 1) = accountID;
 
                     unsigned char hash[16];
                     uint32        hashData = std::time(nullptr) ^ getpid();
                     md5(reinterpret_cast<uint8*>(&hashData), hash, sizeof(hashData));
-                    std::memcpy(data_ + 5, hash, 16);
+                    std::memcpy(buffer_.data() + 5, hash, 16);
 
                     do_write(21);
 
-                    auto& session          = loginHelpers::get_authenticated_session(ipAddress, std::string(reinterpret_cast<const char*>(hash), sizeof(hash)));
+                    auto& session          = loginHelpers::get_authenticated_session(ipAddress, asStringFromUntrustedSource(hash, sizeof(hash)));
                     session.accountID      = accountID;
                     session.authorizedTime = server_clock::now();
                 }
                 else if (status & ACCOUNT_STATUS_CODE::BANNED)
                 {
-                    ref<uint8>(data_, 0) = LOGIN_FAIL;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_FAIL;
                     do_write(33);
                 }
             }
             else // No account match
             {
-                ref<uint8>(data_, 0) = LOGIN_ERROR;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
                 do_write(1);
             }
         }
@@ -307,7 +304,7 @@ void auth_session::read_func()
             {
                 ShowWarningFmt("login_parse: New account attempt <{}> but is disabled in settings.",
                                username);
-                ref<uint8>(data_, 0) = LOGIN_ERROR_CREATE_DISABLED;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CREATE_DISABLED;
                 do_write(1);
                 return;
             }
@@ -316,7 +313,7 @@ void auth_session::read_func()
             const auto rset = db::preparedStmt("SELECT accounts.id FROM accounts WHERE accounts.login = ?", username);
             if (!rset)
             {
-                ref<uint8>(data_, 0) = LOGIN_ERROR_CREATE;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CREATE;
                 do_write(1);
                 return;
             }
@@ -333,7 +330,7 @@ void auth_session::read_func()
                 }
                 else
                 {
-                    ref<uint8>(data_, 0) = LOGIN_ERROR_CREATE;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CREATE;
                     do_write(1);
                     return;
                 }
@@ -355,18 +352,18 @@ void auth_session::read_func()
                                                     accid, username, BCrypt::generateHash(password), strtimecreate, static_cast<uint8>(ACCOUNT_STATUS_CODE::NORMAL), static_cast<uint8>(ACCOUNT_PRIVILEGE_CODE::USER));
                 if (!rset2)
                 {
-                    ref<uint8>(data_, 0) = LOGIN_ERROR_CREATE;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CREATE;
                     do_write(1);
                     return;
                 }
 
-                ref<uint8>(data_, 0) = LOGIN_SUCCESS_CREATE;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_SUCCESS_CREATE;
                 do_write(1);
                 return;
             }
             else
             {
-                ref<uint8>(data_, 0) = LOGIN_ERROR_CREATE_TAKEN;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CREATE_TAKEN;
                 do_write(1);
                 return;
             }
@@ -392,7 +389,7 @@ void auth_session::read_func()
                 // It's a BCrypt hash, so we can validate it.
                 if (!BCrypt::validatePassword(password, passHash))
                 {
-                    ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                     do_write(1);
                     return;
                 }
@@ -406,7 +403,7 @@ void auth_session::read_func()
                 {
                     if (rset->get<std::string>(0) != passHash)
                     {
-                        ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                        ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                         do_write(1);
                         return;
                     }
@@ -416,7 +413,7 @@ void auth_session::read_func()
                         db::preparedStmt("UPDATE accounts SET accounts.password = ? WHERE accounts.login = ?", passHash.c_str(), username);
                         if (!BCrypt::validatePassword(password, passHash))
                         {
-                            ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                            ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                             do_write(1);
                             return;
                         }
@@ -431,7 +428,7 @@ void auth_session::read_func()
             if (rset == nullptr || rset->rowsCount() == 0)
             {
                 ShowWarningFmt("login_parse: user <{}> could not be found using the provided information. Aborting.", username);
-                ref<uint8>(data_, 0) = LOGIN_ERROR;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR;
                 do_write(1);
                 return;
             }
@@ -444,24 +441,22 @@ void auth_session::read_func()
             if (status & ACCOUNT_STATUS_CODE::BANNED)
             {
                 ShowInfoFmt("login_parse: banned user <{}> detected. Aborting.", username);
-                ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                 do_write(1);
             }
 
             if (status & ACCOUNT_STATUS_CODE::NORMAL)
             {
                 // Account info verified, grab password
-                std::string updated_password(data_ + 0x40, 32);
+                std::string updated_password = asStringFromUntrustedSource(buffer_.data() + 0x40, 32);
 
                 if (updated_password == "")
                 {
                     ShowWarningFmt("login_parse: Empty password: Could not update password for user <{}>.", username);
-                    ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                     do_write(1);
                     return;
                 }
-
-                updated_password = db::escapeString(updated_password);
 
                 db::preparedStmt("UPDATE accounts SET accounts.timelastmodify = NULL WHERE accounts.id = ?", accid);
 
@@ -470,13 +465,13 @@ void auth_session::read_func()
                 if (!rset2)
                 {
                     ShowWarningFmt("login_parse: Error trying to update password in database for user <{}>.", username);
-                    ref<uint8>(data_, 0) = LOGIN_ERROR_CHANGE_PASSWORD;
+                    ref<uint8>(buffer_.data(), 0) = LOGIN_ERROR_CHANGE_PASSWORD;
                     do_write(1);
                     return;
                 }
 
-                memset(data_, 0, 33);
-                ref<uint8>(data_, 0) = LOGIN_SUCCESS_CHANGE_PASSWORD;
+                std::memset(buffer_.data(), 0, 33);
+                ref<uint8>(buffer_.data(), 0) = LOGIN_SUCCESS_CHANGE_PASSWORD;
                 do_write(33);
 
                 ShowInfoFmt("login_parse: password updated for account {} successfully.", accid);
@@ -495,7 +490,7 @@ void auth_session::read_func()
 void auth_session::do_write(std::size_t length)
 {
     // clang-format off
-    asio::async_write(socket_, asio::buffer(data_, length),
+    asio::async_write(socket_, asio::buffer(buffer_.data(), length),
     [this, self = shared_from_this()](std::error_code ec, std::size_t /*length*/)
     {
         if (!ec)
