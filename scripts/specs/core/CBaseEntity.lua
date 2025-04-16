@@ -2729,6 +2729,11 @@ function CBaseEntity:setVE(target, amount)
 end
 
 ---@param PEntity CBaseEntity
+---@return nil
+function CBaseEntity:addBaseEnmity(PEntity)
+end
+
+---@param PEntity CBaseEntity
 ---@param CE integer
 ---@param VE integer
 ---@return nil
@@ -2950,8 +2955,9 @@ end
 
 ---@param PTargetEntity CBaseEntity
 ---@param flagObj integer?
+---@param silentObj boolean?
 ---@return integer
-function CBaseEntity:stealStatusEffect(PTargetEntity, flagObj)
+function CBaseEntity:stealStatusEffect(PTargetEntity, flagObj, silentObj)
 end
 
 ---@param type integer

@@ -1083,7 +1083,7 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
                                                                   1800,
                                                                   0,
                                                                   0x40), // previously known as nameflag "FLAG_CHOCOBO"
-                                                              true);
+                                                              EffectNotice::Silent);
 
                 PChar->PRecastContainer->Add(RECAST_ABILITY, 256, 60);
                 PChar->pushPacket<CCharRecastPacket>(PChar);
@@ -4504,6 +4504,7 @@ void SmallPacket0x0AC(MapSession* const PSession, CCharEntity* const PChar, CBas
             uint8      shopSlotID = PChar->PGuildShop->SearchItem(itemID);
             CItemShop* shopItem   = (CItemShop*)PChar->PGuildShop->GetItem(shopSlotID);
             CItem*     charItem   = PChar->getStorage(LOC_INVENTORY)->GetItem(slot);
+            uint32     basePrice  = shopItem->getBasePrice();
 
             if (PChar->PGuildShop->GetItem(shopSlotID)->getQuantity() + quantity > PChar->PGuildShop->GetItem(shopSlotID)->getStackSize())
             {
@@ -4515,6 +4516,25 @@ void SmallPacket0x0AC(MapSession* const PSession, CCharEntity* const PChar, CBas
             {
                 if (charutils::UpdateItem(PChar, LOC_INVENTORY, slot, -quantity) == itemID)
                 {
+                    if (settings::get<bool>("map.AUDIT_PLAYER_VENDOR"))
+                    {
+                        Async::getInstance()->submit(
+                            [itemid      = charItem->getID(),
+                             quantity    = quantity,
+                             seller      = PChar->id,
+                             seller_name = PChar->getName(),
+                             baseprice   = basePrice,
+                             totalprice  = basePrice * quantity,
+                             time        = static_cast<uint32>(time(nullptr))]()
+                            {
+                                const auto query = "INSERT INTO audit_vendor(itemid, quantity, seller, seller_name, baseprice, totalprice, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                                if (!db::preparedStmt(query, itemid, quantity, seller, seller_name, baseprice, totalprice, time))
+                                {
+                                    ShowErrorFmt("Failed to log vendor sale (item: {}, quantity: {}, seller: {}, baseprice: {}, totalprice: {}, time: {})",
+                                                 itemid, quantity, seller, baseprice, totalprice, time);
+                                }
+                            });
+                    }
                     charutils::UpdateItem(PChar, LOC_INVENTORY, 0, shopItem->getSellPrice() * quantity);
                     ShowInfo("SmallPacket0x0AC: Player '%s' sold %u of itemID %u [to GUILD] ", PChar->getName(), quantity, itemID);
                     PChar->PGuildShop->GetItem(shopSlotID)->setQuantity(PChar->PGuildShop->GetItem(shopSlotID)->getQuantity() + quantity);

@@ -647,6 +647,7 @@ public:
     int32 getVE(CLuaBaseEntity const* target);
     void  setCE(CLuaBaseEntity* target, uint16 amount);
     void  setVE(CLuaBaseEntity* target, uint16 amount);
+    void  addBaseEnmity(CLuaBaseEntity* PEntity);
     void  addEnmity(CLuaBaseEntity* PEntity, int32 CE, int32 VE); // Add specified amount of enmity (target, CE, VE)
     void  lowerEnmity(CLuaBaseEntity* PEntity, uint8 percent);
     void  updateEnmity(CLuaBaseEntity* PEntity);
@@ -680,7 +681,7 @@ public:
     uint8  eraseAllStatusEffect();
     int32  dispelStatusEffect(sol::object const& flagObj);
     uint8  dispelAllStatusEffect(sol::object const& flagObj);
-    uint16 stealStatusEffect(CLuaBaseEntity* PTargetEntity, sol::object const& flagObj);
+    uint16 stealStatusEffect(CLuaBaseEntity* PTargetEntity, sol::object const& flagObj, sol::object const& silentObj);
 
     void  addMod(uint16 type, int16 amount);
     int16 getMod(uint16 modID);
