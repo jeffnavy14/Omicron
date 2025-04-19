@@ -470,6 +470,22 @@ xi.einherjar.onChamberExit = function(chamberData, player)
     end
 end
 
+xi.einherjar.onBossInitialize = function(mob)
+    -- All bosses are immune to sleep, petrify, and terror
+    mob:addImmunity(xi.immunity.LIGHT_SLEEP)
+    mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:addImmunity(xi.immunity.PETRIFY)
+    mob:addImmunity(xi.immunity.TERROR)
+
+    -- Bosses aggro 20 yalms in any direction (regardless of their family aggro behaviors)
+    mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
+    mob:setMobMod(xi.mobMod.SOUND_RANGE, 20)
+    mob:setMobMod(xi.mobMod.DETECTION, bit.bor(xi.detects.SIGHT, xi.detects.HEARING))
+
+    -- Bosses have +100 Regain
+    mob:setMod(xi.mod.REGAIN, 100)
+end
+
 xi.einherjar.spawnMob = function(mob, newMobType, chamberData)
     mob:setCallForHelpBlocked(true)
 
