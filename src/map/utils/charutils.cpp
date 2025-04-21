@@ -6614,6 +6614,8 @@ namespace charutils
         });
 
         PChar->pushPacket<CServerIPPacket>(PChar, 1, IPP());
+
+        removeCharFromZone(PChar);
     }
 
     void ForceLogout(CCharEntity* PChar)

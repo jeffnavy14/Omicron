@@ -57,7 +57,6 @@ local function reset(mob)
     mob:setAutoAttackEnabled(true)
     mob:setMagicCastingEnabled(true)
     mob:setMobAbilityEnabled(true)
-    mob:setLocalVar('nextTransform', os.time() + 120)
 end
 
 local function disableInteractions(mob)
@@ -151,6 +150,7 @@ local function checkReappear(mob)
 
         if allAddsDespawned then
             reset(mob)
+            mob:setLocalVar('nextTransform', os.time() + 120)
         end
     end
 end
@@ -169,7 +169,14 @@ end
 -- Should not be necessary but just in case, ensure all adds are despawned
 entity.onMobDespawn = despawnAllAdds
 entity.onMobSpawn   = despawnAllAdds
-entity.onMobEngage  = reset
+
+entity.onMobEngage  = function(mob, target)
+    if mob:getLocalVar('nextTransform') == 0 then
+        mob:setLocalVar('nextTransform', os.time() + 120)
+    end
+
+    reset(mob)
+end
 
 -- Check if adds are gone and we should reappear
 entity.onMobFight = checkReappear
