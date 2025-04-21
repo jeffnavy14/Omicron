@@ -52927,18 +52927,18 @@ INSERT INTO `mob_spawn_points` VALUES (17375403,'Macan_Gadangan','Macan Gadangan
 INSERT INTO `mob_spawn_points` VALUES (17375405,'Macan_Gadangan','Macan Gadangan',37,182.059,-64.000,174.999,190);
 
 -- Seasons Greetings
-INSERT INTO `mob_spawn_points` VALUES (17375407,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375408,'Goga_Tlugvi','Goga Tlugvi',39,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375409,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375410,'Gola_Tlugvi','Gola Tlugvi',41,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375412,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,21.056,-4.459,-14.897,188);
-INSERT INTO `mob_spawn_points` VALUES (17375413,'Goga_Tlugvi','Goga Tlugvi',39,22.545,-3.878,-26.263,32);
-INSERT INTO `mob_spawn_points` VALUES (17375414,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,14.626,-4.492,-14.684,178);
-INSERT INTO `mob_spawn_points` VALUES (17375415,'Gola_Tlugvi','Gola Tlugvi',41,19.039,-3.855,-20.649,207);
-INSERT INTO `mob_spawn_points` VALUES (17375417,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375418,'Goga_Tlugvi','Goga Tlugvi',39,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375419,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17375420,'Gola_Tlugvi','Gola Tlugvi',41,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17375407,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,-137.46,56.63,-222.27,223);
+INSERT INTO `mob_spawn_points` VALUES (17375408,'Goga_Tlugvi','Goga Tlugvi',39,-137.46,56.62,-226.27,32);
+INSERT INTO `mob_spawn_points` VALUES (17375409,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,-140.46,56.62,-226.27,96);
+INSERT INTO `mob_spawn_points` VALUES (17375410,'Gola_Tlugvi','Gola Tlugvi',41,-140.46,56.63,-222.27,159);
+INSERT INTO `mob_spawn_points` VALUES (17375412,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,22.5,-4,-23,223);
+INSERT INTO `mob_spawn_points` VALUES (17375413,'Goga_Tlugvi','Goga Tlugvi',39,22.5,-4,-27,32);
+INSERT INTO `mob_spawn_points` VALUES (17375414,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,19.5,-4,-27,96);
+INSERT INTO `mob_spawn_points` VALUES (17375415,'Gola_Tlugvi','Gola Tlugvi',41,19.5,-4,-23,159);
+INSERT INTO `mob_spawn_points` VALUES (17375417,'Gilagoge_Tlugvi','Gilagoge Tlugvi',38,182.6,-63.37,177.7,223);
+INSERT INTO `mob_spawn_points` VALUES (17375418,'Goga_Tlugvi','Goga Tlugvi',39,182.6,-63.38,173.7,32);
+INSERT INTO `mob_spawn_points` VALUES (17375419,'Ulagohvsdi_Tlugvi','Ulagohvsdi Tlugvi',40,179.6,-63.38,173.7,96);
+INSERT INTO `mob_spawn_points` VALUES (17375420,'Gola_Tlugvi','Gola Tlugvi',41,179.6,-63.37,177.7,159);
 
 -- Royale Ramble
 INSERT INTO `mob_spawn_points` VALUES (17375422,'King_of_Cups','King of Cups',42,-133.000,55.500,-224.300,192);
