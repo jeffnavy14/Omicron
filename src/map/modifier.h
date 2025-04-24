@@ -449,6 +449,7 @@ enum class Mod
 
     // Paladin
     HOLY_CIRCLE_DURATION   = 857,  // Holy Circle extended duration in seconds
+    HOLY_CIRCLE_POTENCY    = 1141, // Increases the potency of the Holy Circle effect (e.g. mod value 2 = +2% Undead Killer)
     RAMPART_DURATION       = 92,   // Rampart duration in seconds
     ABSORB_PHYSDMG_TO_MP   = 426,  // Absorbs a percentage of physical damage taken to MP.
     SHIELD_MASTERY_TP      = 485,  // Shield mastery TP bonus when blocking with a shield
@@ -542,6 +543,7 @@ enum class Mod
 
     // Samurai
     WARDING_CIRCLE_DURATION   = 95,   // Warding Circle extended duration in seconds
+    WARDING_CIRCLE_POTENCY    = 1143, // Increases the potency of the Warding Circle effect (e.g. mod value 2 = +2% Demon Killer)
     MEDITATE_DURATION         = 94,   // Meditate duration in seconds
     ZANSHIN                   = 306,  // Zanshin percent chance
     THIRD_EYE_COUNTER_RATE    = 508,  // Adds counter to 3rd eye anticipates & if using Seigan counter rate is increased by 15%
@@ -563,6 +565,7 @@ enum class Mod
 
     // Dragoon
     ANCIENT_CIRCLE_DURATION    = 859,  // Ancient Circle extended duration in seconds
+    ANCIENT_CIRCLE_POTENCY     = 1142, // Increases the potency of the Ancient Circle effect (e.g. mod value 2 = +2% Dragon Killer)
     JUMP_TP_BONUS              = 361,  // bonus tp player receives when using jump
     JUMP_SPIRIT_TP_BONUS       = 285,  // bonus tp player receives when using jump for spirit jump only
     JUMP_ATT_BONUS             = 362,  // ATT% bonus for all jumps
@@ -601,10 +604,12 @@ enum class Mod
     SPIRIT_CAST_REDUCTION     = 140,  // Spirit Pact casting time reduction in seconds
 
     // Blue Mage
-    BLUE_POINTS          = 309,  // Tracks extra blue points
-    BLUE_LEARN_CHANCE    = 945,  // Additional chance to learn blue magic
-    BLUE_JOB_TRAIT_BONUS = 1058, // TODO: Increases job traits gained from equipped blue magic (percent)
-    BLUE_MAGIC_EFFECT    = 1059, // TODO: Bonus to Attribute Value of spell (percent)
+    BLUE_POINTS             = 309,  // Tracks extra blue points
+    BLUE_LEARN_CHANCE       = 945,  // Additional chance to learn blue magic
+    BLUE_JOB_TRAIT_BONUS    = 1058, // TODO: Increases job traits gained from equipped blue magic (percent)
+    BLUE_MAGIC_EFFECT       = 1059, // TODO: Bonus to Attribute Value of spell (percent)
+    ENHANCES_BURST_AFFINITY = 1139, // Increases WSC bonus on spells cast with Burst Affinity (percent)
+    ENHANCES_CHAIN_AFFINITY = 1140, // TODO: Increases WSC bonus on spells cast with Chain Affinity (base damage +)
 
     // Corsair
     EXP_BONUS         = 382,  //
@@ -1072,7 +1077,7 @@ enum class Mod
     // 570 through 825 used by WS DMG mods these are not spares.
     //
     // SPARE IDs: 544 to 551, both included.
-    // SPARE IDs: 1139 and onward
+    // SPARE IDs: 1144 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

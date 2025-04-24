@@ -629,9 +629,14 @@ end
 -- Adds a status effect to a target
 xi.mobskills.mobStatusEffectMove = function(mob, target, typeEffect, power, tick, duration, subType, subPower, tier)
     if target:canGainStatusEffect(typeEffect, power) then
-        local statmod = xi.mod.INT
-        local element = mob:getStatusEffectElement(typeEffect)
-        local resist  = xi.mobskills.applyPlayerResistance(mob, typeEffect, target, mob:getStat(statmod)-target:getStat(statmod), 0, element)
+        local statmod    = xi.mod.INT
+        local element    = mob:getStatusEffectElement(typeEffect)
+        local fullResist = xi.combat.statusEffect.isTargetResistant(mob, target, typeEffect)
+        local resist     = xi.mobskills.applyPlayerResistance(mob, typeEffect, target, mob:getStat(statmod)-target:getStat(statmod), 0, element)
+
+        if fullResist then
+            return xi.msg.basic.SKILL_MISS -- resist !
+        end
 
         if resist >= 0.25 then
             local totalDuration = utils.clamp(duration * resist, 1)

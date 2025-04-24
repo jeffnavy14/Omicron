@@ -1442,7 +1442,7 @@ INSERT INTO `item_latents` VALUES (16032,289,3,22,19);   -- Muffle Earring,Subtl
 INSERT INTO `item_latents` VALUES (16033,71,1,22,20);    -- Sylph Earring,Healing MP +1 if SCH is in party
 
 -- Aesir Ear Pendant
--- NEED modID# INSERT INTO `item_latents` VALUES (16057,??,6,52,8); -- conserve tp+6 during dark weather
+INSERT INTO `item_latents` VALUES (16057,944,3,52,8);    -- conserve tp+6 during dark weather (already has +3)
 
 -- Colossus's Earring
 INSERT INTO `item_latents` VALUES (16058,161,-100,52,7);   -- physical damage -2% during light weather (has -1% normally)
