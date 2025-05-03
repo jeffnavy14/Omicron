@@ -8,12 +8,14 @@ local instanceObject = {}
 
 instanceObject.registryRequirements = function(player)
     return player:hasKeyItem(xi.ki.LIGHTNING_CELL) and
-        xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog') >= 3
+            (xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.WAKING_THE_COLOSSUS, 'Prog') >= 3 or
+            xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog') >= 3)
 end
 
 instanceObject.entryRequirements = function(player)
     return player:hasKeyItem(xi.ki.LIGHTNING_CELL) and
-        xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog') >= 3
+            (xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.WAKING_THE_COLOSSUS, 'Prog') >= 3 or
+            xi.quest.getVar(player, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog') >= 3)
 end
 
 instanceObject.onInstanceCreated = function(instance)
@@ -63,7 +65,11 @@ instanceObject.onInstanceComplete = function(instance)
 
     for _, v in pairs(chars) do
         v:startEvent(1)
-        xi.quest.setVar(v, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog', 4)
+        if v:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.WAKING_THE_COLOSSUS) == xi.questStatus.QUEST_ACCEPTED then
+            xi.quest.setVar(v, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.WAKING_THE_COLOSSUS, 'Prog', 4)
+        elseif v:getQuestStatus(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE) == xi.questStatus.QUEST_ACCEPTED then
+            xi.quest.setVar(v, xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INTERFERENCE, 'Prog', 4)
+        end
     end
 end
 

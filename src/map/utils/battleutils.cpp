@@ -1186,13 +1186,13 @@ namespace battleutils
                         float sneakAttackTrickAttackBonus = 0.f;
 
                         // BG wiki claims 10x bonus for SA
-                        if (attack.CheckHadSneakAttack())
+                        if (attack.IsSneakAttack())
                         {
                             sneakAttackTrickAttackBonus += 10.f;
                         }
 
                         // BG wiki claims 10x bonus for TA
-                        if (attack.CheckHadTrickAttack())
+                        if (attack.IsTrickAttack())
                         {
                             sneakAttackTrickAttackBonus += 10.f;
                         }
@@ -2400,9 +2400,23 @@ namespace battleutils
                     sBlowMerit = PChar->PMeritPoints->GetMeritValue(MERIT_TYPE::MERIT_SUBTLE_BLOW_EFFECT, PChar);
                 }
 
+                // Check for Tandem Blow bonus while pet+master are fighting same target
+                int32 tandemBlowBonus = 0;
+                if (petutils::IsTandemActive(PAttacker))
+                {
+                    if (PAttacker->PMaster && PAttacker->PMaster->objtype == TYPE_PC)
+                    {
+                        tandemBlowBonus = PAttacker->PMaster->getMod(Mod::TANDEM_BLOW_POWER);
+                    }
+                    else
+                    {
+                        tandemBlowBonus = PAttacker->getMod(Mod::TANDEM_BLOW_POWER);
+                    }
+                }
+
                 // account for attacker's subtle blow which reduces the baseTP gain for the defender
                 float sBlow1    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW) + sBlowMerit), -50.0f, 50.0f);
-                float sBlow2    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW_II), -50.0f, 50.0f);
+                float sBlow2    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW_II) + tandemBlowBonus), -50.0f, 50.0f);
                 float sBlowMult = ((100.0f - std::clamp(sBlow1 + sBlow2, -75.0f, 75.0f)) / 100.0f);
 
                 // mobs hit get basetp+30 whereas pcs hit get basetp/3
@@ -2571,9 +2585,23 @@ namespace battleutils
                 sBlowMerit = PChar->PMeritPoints->GetMeritValue(MERIT_TYPE::MERIT_SUBTLE_BLOW_EFFECT, PChar);
             }
 
+            // Check for Tandem Blow bonus while pet+master are fighting same target
+            int32 tandemBlowBonus = 0;
+            if (petutils::IsTandemActive(PAttacker))
+            {
+                if (PAttacker->PMaster && PAttacker->PMaster->objtype == TYPE_PC)
+                {
+                    tandemBlowBonus = PAttacker->PMaster->getMod(Mod::TANDEM_BLOW_POWER);
+                }
+                else
+                {
+                    tandemBlowBonus = PAttacker->getMod(Mod::TANDEM_BLOW_POWER);
+                }
+            }
+
             // account for attacker's subtle blow which reduces the baseTP gain for the defender
             float sBlow1    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW) + sBlowMerit), -50.0f, 50.0f);
-            float sBlow2    = std::clamp((float)PAttacker->getMod(Mod::SUBTLE_BLOW_II), -50.0f, 50.0f);
+            float sBlow2    = std::clamp((float)(PAttacker->getMod(Mod::SUBTLE_BLOW_II) + tandemBlowBonus), -50.0f, 50.0f);
             float sBlowMult = (100.0f - std::clamp(sBlow1 + sBlow2, -75.0f, 75.0f)) / 100.0f;
 
             // mobs hit get basetp+30 whereas pcs hit get basetp/3
@@ -6404,6 +6432,15 @@ namespace battleutils
         }
 
         recast = std::max<int32>(recast, static_cast<int32>(base * 0.2f));
+
+        if (PSpell->getSkillType() == SKILLTYPE::SKILL_ELEMENTAL_MAGIC)
+        {
+            recast = static_cast<int32>(recast * ((100.0f + PEntity->getMod(Mod::ELEMENTAL_MAGIC_RECAST)) / 100.0f));
+        }
+        if (PSpell->getSkillType() == SKILLTYPE::SKILL_BLUE_MAGIC)
+        {
+            recast = static_cast<int32>(recast * ((100.0f + PEntity->getMod(Mod::BLUE_MAGIC_RECAST)) / 100.0f));
+        }
 
         // Light/Dark arts recast bonus/penalties applies after other bonuses
         if (PSpell->getSpellGroup() == SPELLGROUP_BLACK)

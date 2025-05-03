@@ -214,6 +214,7 @@ namespace petutils
     void SetupPetWithMaster(CBattleEntity* PMaster, CPetEntity* PPet);
 
     bool CheckPetModType(CBattleEntity* PPet, PetModType petmod);
+    bool IsTandemActive(CBattleEntity* PAttacker);
 
     Pet_t* GetPetInfo(uint32 PetID);
 }; // namespace petutils

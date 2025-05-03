@@ -14,6 +14,7 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.PETRIFY)
+    mob:setMod(xi.mod.REGAIN, 150)
 end
 
 entity.onMobSpawn = function(mob)

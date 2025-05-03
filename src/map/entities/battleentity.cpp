@@ -1024,6 +1024,11 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             ACC += this->getMod(Mod::ENSPELL_DMG);
         }
 
+        if (petutils::IsTandemActive(this))
+        {
+            ACC += this->getMod(Mod::TANDEM_STRIKE_POWER);
+        }
+
         auto* PChar = dynamic_cast<CCharEntity*>(this);
         if (PChar)
         {
@@ -1045,6 +1050,14 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             ACC += this->getMod(Mod::ENSPELL_DMG);
         }
 
+        if (petutils::IsTandemActive(this))
+        {
+            if (this->PMaster && this->PMaster->objtype == TYPE_PC)
+            {
+                ACC += this->PMaster->getMod(Mod::TANDEM_STRIKE_POWER);
+            }
+        }
+
         ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]);
         return std::max<int16>(0, ACC);
     }
@@ -1055,6 +1068,14 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
         if (this->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
         {
             ACC += this->getMod(Mod::ENSPELL_DMG);
+        }
+
+        if (petutils::IsTandemActive(this))
+        {
+            if (this->PMaster && this->PMaster->objtype == TYPE_PC)
+            {
+                ACC += this->PMaster->getMod(Mod::TANDEM_STRIKE_POWER);
+            }
         }
 
         ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]) + DEX() / 2; // Account for food mods here for Snatch Morsel

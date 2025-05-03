@@ -28,11 +28,6 @@
 #include "status_effect_container.h"
 #include "utils/puppetutils.h"
 
-/************************************************************************
- *                                                                      *
- *  Constructor.                                                            *
- *                                                                      *
- ************************************************************************/
 CAttack::CAttack(CBattleEntity* attacker, CBattleEntity* defender, PHYSICAL_ATTACK_TYPE type, PHYSICAL_ATTACK_DIRECTION direction, CAttackRound* attackRound)
 : m_attacker(attacker)
 , m_victim(defender)
@@ -47,17 +42,17 @@ CAttack::CAttack(CBattleEntity* attacker, CBattleEntity* defender, PHYSICAL_ATTA
  *  Returns the attack direction.                                       *
  *                                                                      *
  ************************************************************************/
-PHYSICAL_ATTACK_DIRECTION CAttack::GetAttackDirection()
+PHYSICAL_ATTACK_DIRECTION CAttack::GetAttackDirection() const
 {
     return m_attackDirection;
 }
 
 /************************************************************************
  *                                                                      *
- *  Returns the attack type.                                                *
+ *  Returns the attack type.                                            *
  *                                                                      *
  ************************************************************************/
-PHYSICAL_ATTACK_TYPE CAttack::GetAttackType()
+PHYSICAL_ATTACK_TYPE CAttack::GetAttackType() const
 {
     return m_attackType;
 }
@@ -74,7 +69,7 @@ void CAttack::SetAttackType(PHYSICAL_ATTACK_TYPE type)
 
 /************************************************************************
  *                                                                      *
- *  Returns the isCritical flag.                                            *
+ *  Returns the isCritical flag.                                        *
  *                                                                      *
  ************************************************************************/
 bool CAttack::IsCritical() const
@@ -459,12 +454,12 @@ bool CAttack::CheckAnticipated()
     }
 }
 
-bool CAttack::CheckHadSneakAttack() const
+bool CAttack::IsSneakAttack() const
 {
     return m_isSA;
 }
 
-bool CAttack::CheckHadTrickAttack() const
+bool CAttack::IsTrickAttack() const
 {
     return m_isTA;
 }
@@ -566,7 +561,7 @@ bool CAttack::CheckCover()
 
 /************************************************************************
  *                                                                      *
- *  Processes the damage for this swing.                                    *
+ *  Processes the damage for this swing.                                *
  *                                                                      *
  ************************************************************************/
 void CAttack::ProcessDamage()
@@ -650,13 +645,13 @@ void CAttack::ProcessDamage()
         attackutils::CheckForDamageMultiplier((CCharEntity*)m_attacker, dynamic_cast<CItemWeapon*>(m_attacker->m_Weapons[slot]), m_damage, m_attackType, slot, m_isFirstSwing);
 
     // Apply Sneak Attack Augment Mod
-    if (m_attacker->getMod(Mod::AUGMENTS_SA) > 0 && CheckHadSneakAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK))
+    if (m_attacker->getMod(Mod::AUGMENTS_SA) > 0 && IsSneakAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK))
     {
         m_damage += (int32)(m_damage * ((100 + (m_attacker->getMod(Mod::AUGMENTS_SA))) / 100.0f));
     }
 
     // Apply Trick Attack Augment Mod
-    if (m_attacker->getMod(Mod::AUGMENTS_TA) > 0 && CheckHadTrickAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK))
+    if (m_attacker->getMod(Mod::AUGMENTS_TA) > 0 && IsTrickAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK))
     {
         m_damage += (int32)(m_damage * ((100 + (m_attacker->getMod(Mod::AUGMENTS_TA))) / 100.0f));
     }

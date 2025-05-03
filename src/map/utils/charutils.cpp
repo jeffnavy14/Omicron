@@ -5207,6 +5207,11 @@ namespace charutils
     {
         TracyZoneScoped;
 
+        if (PChar->status == STATUS_TYPE::DISAPPEAR)
+        {
+            return;
+        }
+
         const char* Query = "UPDATE chars "
                             "SET "
                             "pos_rot = %u,"

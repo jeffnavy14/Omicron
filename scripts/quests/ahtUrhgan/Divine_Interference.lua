@@ -17,7 +17,7 @@ local quest = Quest:new(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.DIVINE_INT
 quest.reward =
 {
     title = xi.title.HEIR_OF_THE_BLESSED_RADIANCE,
-    item = { xi.item.IMPERIAL_GOLD_PIECE }
+    item  = { xi.item.IMPERIAL_GOLD_PIECE }
 }
 
 local rewardItems =
@@ -81,7 +81,7 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if quest:getVar(player, 'Prog') == 1 then
-                        return quest:progressEvent(931, xi.besieged.getMercenaryRank(player), 0, 0, 0, 0, 0, 0, 0, 0)
+                        return quest:progressEvent(931, { text_table = 0 })
                     end
                 end,
             },
@@ -90,7 +90,7 @@ quest.sections =
             {
                 [13] = function(player, triggerArea)
                     if quest:getVar(player, 'Prog') == 0 then
-                        return quest:progressEvent(930, xi.besieged.getMercenaryRank(player), 0, 0, 0, 0, 0, 0, 0, 0)
+                        return quest:progressEvent(930, { text_table = 0, [0] = xi.besieged.getMercenaryRank(player), [1] = 1 })
                     end
                 end,
             },
@@ -198,7 +198,7 @@ quest.sections =
             ['Naja_Salaheem'] =
             {
                 onTrigger = function(player, npc)
-                    return quest:progressEvent(932, xi.besieged.getMercenaryRank(player), 0, 0, 0, 0, 0, 0, getRewardMask(player), 0)
+                    return quest:progressEvent(932, { text_table = 0, [0] = xi.besieged.getMercenaryRank(player), [7] = getRewardMask(player) })
                 end,
             },
 
@@ -226,7 +226,7 @@ quest.sections =
             ['Imperial_Whitegate'] =
             {
                 onTrigger = function(player, npc)
-                    return quest:progressEvent(931, xi.besieged.getMercenaryRank(player), 0, 0, 0, 0, 0, 0, 0, 0)
+                    return quest:progressEvent(931, { text_table = 0 })
                 end,
             },
 

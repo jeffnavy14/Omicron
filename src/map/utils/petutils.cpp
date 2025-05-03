@@ -1916,6 +1916,40 @@ namespace petutils
         return false;
     }
 
+    bool IsTandemActive(CBattleEntity* PAttacker)
+    {
+        /*  This is used for Tandem Strike (acc/m.acc+) and Tandem Blow (subtle blow II+).
+            To get the bonus, both pet and master must be engaged in combat with the same target.
+            Inspired by TiberonKalkaz's approach in ASB.
+            https://github.com/AirSkyBoat/AirSkyBoat/pull/3134/files#diff-dea0a7c8d005d1e7507dcb2370aff3a46df84ab53d87ba50beeab376c3082621
+        */
+        CBattleEntity* tandemPartner;
+        if (PAttacker->objtype == TYPE_PC)
+        {
+            if (PAttacker->PPet == nullptr)
+                return false;
+
+            tandemPartner = PAttacker->PPet;
+        }
+        else
+        {
+            if (PAttacker->PMaster == nullptr || PAttacker->PMaster->objtype != TYPE_PC)
+                return false;
+
+            tandemPartner = PAttacker->PMaster;
+        }
+
+        if (
+            tandemPartner->PAI->IsEngaged() &&
+            tandemPartner->GetBattleTarget() != nullptr &&
+            tandemPartner->GetBattleTargetID() == PAttacker->GetBattleTargetID())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     Pet_t* GetPetInfo(uint32 PetID)
     {
         for (Pet_t* info : g_PPetList)

@@ -3090,6 +3090,11 @@ function CBaseEntity:uncharm()
 end
 
 ---@nodiscard
+---@return boolean
+function CBaseEntity:isTandemActive()
+end
+
+---@nodiscard
 ---@param element integer
 ---@param burden integer
 ---@return integer
@@ -3160,13 +3165,6 @@ end
 ---@param damageType integer?
 ---@return integer
 function CBaseEntity:physicalDmgTaken(damage, damageType)
-end
-
----@nodiscard
----@param damage number
----@param element integer?
----@return integer
-function CBaseEntity:magicDmgTaken(damage, element)
 end
 
 ---@nodiscard
