@@ -1969,7 +1969,7 @@ void CBattleEntity::OnCastInterrupted(CMagicState& state, action_t& action, MSGB
     {
         action.id         = id;
         action.spellgroup = PSpell->getSpellGroup();
-        action.recast     = 0;
+        action.recast     = 0s;
         action.actiontype = ACTION_MAGIC_INTERRUPT;
 
         actionList_t& actionList  = action.getNewActionList();
@@ -2319,7 +2319,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
     }
 
     battleutils::ClaimMob(PTarget, this); // Mobs get claimed whether or not your attack actually is intimidated/paralyzed
-    PTarget->LastAttacked = server_clock::now();
+    PTarget->LastAttacked = timer::now();
 
     if (battleutils::IsParalyzed(this))
     {
@@ -2517,7 +2517,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 // Apply Feint
                 if (CStatusEffect* PFeintEffect = StatusEffectContainer->GetStatusEffect(EFFECT_FEINT))
                 {
-                    if (PTarget->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_EVASION_DOWN, EFFECT_EVASION_DOWN, PFeintEffect->GetPower(), 3, 30)))
+                    if (PTarget->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_EVASION_DOWN, EFFECT_EVASION_DOWN, PFeintEffect->GetPower(), 3s, 30s)))
                     {
                         auto PEffect = PTarget->StatusEffectContainer->GetStatusEffect(EFFECT_EVASION_DOWN);
 
@@ -2699,14 +2699,14 @@ void CBattleEntity::OnDespawn(CDespawnState& /*unused*/)
     PAI->Internal_Respawn(0s);
 }
 
-void CBattleEntity::SetBattleStartTime(time_point time)
+void CBattleEntity::SetBattleStartTime(timer::time_point time)
 {
     m_battleStartTime = time;
 }
 
-duration CBattleEntity::GetBattleTime()
+timer::duration CBattleEntity::GetBattleTime()
 {
-    return server_clock::now() - m_battleStartTime;
+    return timer::now() - m_battleStartTime;
 }
 
 void CBattleEntity::setBattleID(uint16 battleID)
@@ -2719,7 +2719,7 @@ uint16 CBattleEntity::getBattleID()
     return m_battleID;
 }
 
-void CBattleEntity::Tick(time_point /*unused*/)
+void CBattleEntity::Tick(timer::time_point /*unused*/)
 {
     TracyZoneScoped;
 }

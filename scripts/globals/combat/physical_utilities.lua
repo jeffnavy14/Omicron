@@ -234,7 +234,11 @@ end
 
 -- TP factor equation. Used to determine TP modifer across all cases of 'X varies with TP'
 xi.combat.physical.calculateTPfactor = function(actorTP, tpModifierTable)
-    local tpFactor = 0
+    if not tpModifierTable then
+        return 0
+    end
+
+    local tpFactor = tpModifierTable[1] -- Assume this will be used for monstrosity fixed TP moved someday.
 
     if actorTP >= 2000 then
         tpFactor = tpModifierTable[2] + (actorTP - 2000) * (tpModifierTable[3] - tpModifierTable[2]) / 1000
@@ -246,15 +250,12 @@ xi.combat.physical.calculateTPfactor = function(actorTP, tpModifierTable)
 end
 
 -- TP Multiplier calculations.
-xi.combat.physical.calculateFTP = function(actor, tpFactor)
-    ------------------------------
-    -- Regular fTP
-    ------------------------------
-    local fTP = tpFactor
+xi.combat.physical.calculateFTPBonus = function(actor)
+    local fTPBonus = 0
 
     -- Early return: Gear bonuses only come from gear.
     if actor:getObjType() ~= xi.objType.PC then
-        return fTP
+        return fTPBonus
     end
 
     -- Early return: Gear bonuses only apply to weaponskills with elemental properties.
@@ -264,12 +265,10 @@ xi.combat.physical.calculateFTP = function(actor, tpFactor)
         scProp2 == xi.skillchainType.NONE and
         scProp3 == xi.skillchainType.NONE
     then
-        return fTP
+        return fTPBonus
     end
 
-    ------------------------------
-    -- fTP bonuses.
-    ------------------------------
+    -- fTP bonuses from gear.
     local dayElement = VanadielDayElement()
 
     for elementChecked = xi.element.FIRE, xi.element.DARK do
@@ -278,17 +277,17 @@ xi.combat.physical.calculateFTP = function(actor, tpFactor)
             wsElementalProperties[scProp2][elementChecked] == 1 or
             wsElementalProperties[scProp3][elementChecked] == 1
         then
-            fTP = fTP + actor:getMod(xi.combat.element.getElementalFTPModifier(elementChecked)) / 256
+            fTPBonus = fTPBonus + actor:getMod(xi.combat.element.getElementalFTPModifier(elementChecked)) / 256
 
             if dayElement == elementChecked then
-                fTP = fTP + actor:getMod(xi.mod.DAY_FTP_BONUS) / 256
+                fTPBonus = fTPBonus + actor:getMod(xi.mod.DAY_FTP_BONUS) / 256
             end
         end
     end
 
-    fTP = fTP + actor:getMod(xi.mod.ANY_FTP_BONUS) / 256
+    fTPBonus = fTPBonus + actor:getMod(xi.mod.ANY_FTP_BONUS) / 256
 
-    return fTP
+    return fTPBonus
 end
 
 -- WARNING: This function is used in src/utils/battleutils.cpp "GetDamageRatio" function.

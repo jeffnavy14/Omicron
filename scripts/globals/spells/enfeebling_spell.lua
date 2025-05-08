@@ -324,6 +324,8 @@ xi.spells.enfeebling.calculateDuration = function(caster, target, spellId, spell
                 duration = duration + caster:getJobPointLevel(xi.jp.STYMIE_EFFECT)
             end
         end
+
+        duration = math.floor(duration * (1 + caster:getMod(xi.mod.ENF_MAG_DURATION) / 100))
     end
 
     ---@cast duration integer

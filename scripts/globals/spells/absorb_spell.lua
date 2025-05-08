@@ -216,6 +216,7 @@ xi.spells.absorb.doAbsorbTPSpell = function(caster, target, spell)
     local elementalStaffBonus  = xi.spells.damage.calculateElementalStaffBonus(caster, xi.element.DARK)
     local dayAndWeather        = xi.spells.damage.calculateDayAndWeather(caster, xi.element.DARK, false)
     local absorbMultiplier     = 1 + caster:getMod(xi.mod.AUGMENTS_ABSORB) / 100
+    local absorbTpMultiplier   = 1 + caster:getMod(xi.mod.AUGMENTS_ABSORB_TP) / 100 -- TODO: Additive with aug abs or multiplicative?
     local liberatorMultiplier  = 1 + caster:getMod(xi.mod.AUGMENTS_ABSORB_LIBERATOR) / 100
 
     -- Operations.
@@ -225,6 +226,7 @@ xi.spells.absorb.doAbsorbTPSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * elementalStaffBonus)
     finalDamage = math.floor(finalDamage * dayAndWeather)
     finalDamage = math.floor(finalDamage * absorbMultiplier)
+    finalDamage = math.floor(finalDamage * absorbTpMultiplier)
     finalDamage = math.floor(finalDamage * liberatorMultiplier)
 
     -- Clamp

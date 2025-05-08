@@ -593,7 +593,16 @@ void CAttack::ProcessDamage()
     {
         m_naturalH2hDamage = (int32)(m_attacker->GetSkill(SKILL_HAND_TO_HAND) * 0.11f) + 3;
         m_baseDamage       = m_attacker->GetMainWeaponDmg();
-        m_damage           = (uint32)(((m_baseDamage + m_naturalH2hDamage + m_bonusBasePhysicalDamage + battleutils::GetFSTR(m_attacker, m_victim, slot)) * m_damageRatio));
+
+        if (m_attackType == PHYSICAL_ATTACK_TYPE::KICK)
+        {
+            int32 kickDamage = m_naturalH2hDamage + m_attacker->getMod(Mod::KICK_DMG); // KICK_DMG includes weapon dmg if footwork is active
+            m_damage         = (uint32)(((kickDamage + m_bonusBasePhysicalDamage + battleutils::GetFSTR(m_attacker, m_victim, slot)) * m_damageRatio));
+        }
+        else
+        {
+            m_damage = (uint32)(((m_baseDamage + m_naturalH2hDamage + m_bonusBasePhysicalDamage + battleutils::GetFSTR(m_attacker, m_victim, slot)) * m_damageRatio));
+        }
     }
     else if (slot == SLOT_MAIN)
     {

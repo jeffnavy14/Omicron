@@ -659,7 +659,8 @@ end
 -- damage is returned, handles reductions based on target resistances and passes off to xi.weaponskills.takeWeaponskillDamage.
 xi.weaponskills.doPhysicalWeaponskill = function(attacker, target, wsID, wsParams, tp, action, primaryMsg, taChar)
     -- Set up conditions and wsParams used for calculating weaponskill damage
-    local gorgetBeltFTP, gorgetBeltAcc = xi.weaponskills.handleWSGorgetBelt(attacker)
+    local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
+    local gearAcc = math.floor(gearFTP * 10)
     local attack =
     {
         ['type']       = xi.attackType.PHYSICAL,
@@ -696,8 +697,8 @@ xi.weaponskills.doPhysicalWeaponskill = function(attacker, target, wsID, wsParam
         calcParams.bonusAcc    = attacker:getMod(xi.mod.JUMP_ACC_BONUS)
         calcParams.bonusWSmods = 0
     else
-        calcParams.bonusfTP    = gorgetBeltFTP or 0
-        calcParams.bonusAcc    = (gorgetBeltAcc or 0) + attacker:getMod(xi.mod.WSACC)
+        calcParams.bonusfTP    = gearFTP
+        calcParams.bonusAcc    = gearAcc + attacker:getMod(xi.mod.WSACC)
         calcParams.bonusWSmods = wsParams.bonusWSmods or 0
     end
 
@@ -737,7 +738,9 @@ end
 -- damage is returned, handles reductions based on target resistances and passes off to xi.weaponskills.takeWeaponskillDamage.
 xi.weaponskills.doRangedWeaponskill = function(attacker, target, wsID, wsParams, tp, action, primaryMsg)
     -- Set up conditions and params used for calculating weaponskill damage
-    local gorgetBeltFTP, gorgetBeltAcc = xi.weaponskills.handleWSGorgetBelt(attacker)
+    local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
+    local gearAcc = math.floor(gearFTP * 10)
+
     local attack =
     {
         ['type']       = xi.attackType.RANGED,
@@ -765,8 +768,8 @@ xi.weaponskills.doRangedWeaponskill = function(attacker, target, wsID, wsParams,
         flourishEffect          = false,
         tpUsed                  = tp,
         bonusTP                 = wsParams.bonusTP or 0,
-        bonusfTP                = gorgetBeltFTP or 0,
-        bonusAcc                = (gorgetBeltAcc or 0) + attacker:getMod(xi.mod.WSACC),
+        bonusfTP                = gearFTP,
+        bonusAcc                = gearAcc + attacker:getMod(xi.mod.WSACC),
         bonusWSmods             = wsParams.bonusWSmods or 0,
         attackType              = xi.attackType.RANGED
     }
@@ -831,11 +834,10 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
         ['wsID']            = wsID
     }
 
-    local bonusfTP, bonusacc = xi.weaponskills.handleWSGorgetBelt(attacker)
-    bonusacc                 = bonusacc + attacker:getMod(xi.mod.WSACC)
-
-    local fint = utils.clamp(8 + attacker:getStat(xi.mod.INT) - target:getStat(xi.mod.INT), -32, 32)
-    local dmg  = 0
+    local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
+    local gearAcc = math.floor(gearFTP * 10) + attacker:getMod(xi.mod.WSACC)
+    local fint    = utils.clamp(8 + attacker:getStat(xi.mod.INT) - target:getStat(xi.mod.INT), -32, 32)
+    local dmg     = 0
 
     -- Magic-based WSes never miss, so we don't need to worry about calculating a miss, only if a shadow absorbed it.
     if not shadowAbsorb(target) then
@@ -843,7 +845,7 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
         dmg = dmg + attacker:getMainLvl() + 2 + fint
 
         -- Applying fTP multiplier
-        local ftp = xi.weaponskills.fTP(tp, wsParams.ftpMod) + bonusfTP
+        local ftp = xi.weaponskills.fTP(tp, wsParams.ftpMod) + gearFTP
 
         dmg = dmg * ftp
 
@@ -867,7 +869,7 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
 
         -- Calculate magical bonuses and reductions
         dmg = math.floor(addBonusesAbility(attacker, wsParams.ele, target, dmg, wsParams))
-        dmg = math.floor(dmg * applyResistanceAbility(attacker, target, wsParams.ele, wsParams.skill, bonusacc))
+        dmg = math.floor(dmg * applyResistanceAbility(attacker, target, wsParams.ele, wsParams.skill, gearAcc))
         dmg = math.floor(dmg * xi.spells.damage.calculateTMDA(target, wsParams.ele))
 
         if dmg < 0 then
@@ -1106,93 +1108,6 @@ xi.weaponskills.calculatedIgnoredDef = function(tp, def, ignoredDefenseTable)
     end
 
     return 0
-end
-
-xi.weaponskills.handleWSGorgetBelt = function(attacker)
-    local ftpBonus = 0
-    local accBonus = 0
-
-    if attacker:getObjType() == xi.objType.PC then
-        local elementalGorget = -- Ordered by element correctly. TODO: mods/latents instead of items
-        {
-            xi.item.FLAME_GORGET,
-            xi.item.SNOW_GORGET,
-            xi.item.BREEZE_GORGET,
-            xi.item.SOIL_GORGET,
-            xi.item.THUNDER_GORGET,
-            xi.item.AQUA_GORGET,
-            xi.item.LIGHT_GORGET,
-            xi.item.SHADOW_GORGET
-        }
-
-        local elementalBelt = -- Ordered by element correctly. TODO: mods/latents instead of items
-        {
-            xi.item.FLAME_BELT,
-            xi.item.SNOW_BELT,
-            xi.item.BREEZE_BELT,
-            xi.item.SOIL_BELT,
-            xi.item.THUNDER_BELT,
-            xi.item.AQUA_BELT,
-            xi.item.LIGHT_BELT,
-            xi.item.SHADOW_BELT
-        }
-
-        local neck                      = attacker:getEquipID(xi.slot.NECK)
-        local belt                      = attacker:getEquipID(xi.slot.WAIST)
-        local weapon                    = attacker:getEquipID(xi.slot.MAIN)
-        local scProp1, scProp2, scProp3 = attacker:getWSSkillchainProp()
-
-        for i, v in ipairs(elementalGorget) do
-            if neck == v then
-                if
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp1) or
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp2) or
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp3)
-                then
-                    accBonus = accBonus + 10
-                    ftpBonus = ftpBonus + 0.1
-                end
-
-                break
-            end
-        end
-
-        if neck == xi.item.FOTIA_GORGET then -- Fotia Gorget
-            accBonus = accBonus + 10
-            ftpBonus = ftpBonus + 0.1
-        end
-
-        for i, v in ipairs(elementalBelt) do
-            if belt == v then
-                if
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp1) or
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp2) or
-                    xi.magicburst.doesElementMatchWeaponskill(i, scProp3)
-                then
-                    accBonus = accBonus + 10
-                    ftpBonus = ftpBonus + 0.1
-                end
-
-                break
-            end
-        end
-
-        if belt == xi.item.FOTIA_BELT then -- Fotia Belt
-            accBonus = accBonus + 10
-            ftpBonus = ftpBonus + 0.1
-        end
-
-        if
-            weapon == xi.item.PRESTER and
-            (xi.magicburst.doesElementMatchWeaponskill(xi.element.WIND, scProp1) or
-            xi.magicburst.doesElementMatchWeaponskill(xi.element.WIND, scProp2) or
-            xi.magicburst.doesElementMatchWeaponskill(xi.element.WIND, scProp3))
-        then -- Prester
-            ftpBonus = ftpBonus + 0.1
-        end
-    end
-
-    return ftpBonus, accBonus
 end
 
 xi.weaponskills.handleWeaponskillEffect = function(actor, target, effectId, actionElement, damage, power, duration)

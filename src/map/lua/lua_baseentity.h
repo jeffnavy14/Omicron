@@ -251,7 +251,7 @@ public:
     bool breakLinkshell(std::string const& lsname);
     bool addLinkpearl(std::string const& lsname, bool equip);
 
-    auto addSoulPlate(std::string const& name, uint16 mobFamily, uint8 zeni, uint16 skillIndex, uint8 fp) -> CItem*;
+    auto addSoulPlate(std::string const& name, uint32 interestData, uint8 zeni, uint16 skillIndex, uint8 fp) -> CItem*;
 
     // Trading
     uint8 getContainerSize(uint8 locationID);
@@ -342,7 +342,7 @@ public:
     void  setAnimationSpeed(uint8 speedVal);
 
     uint32 getPlaytime(sol::object const& shouldUpdate);
-    int32  getTimeCreated();
+    uint32 getTimeCreated();
 
     // Player Jobs and Levels
     uint8 getMainJob();
@@ -656,7 +656,7 @@ public:
     void  updateEnmityFromCure(CLuaBaseEntity* PEntity, int32 amount, sol::object const& fixedCE, sol::object const& fixedVE);
     void  resetEnmity(CLuaBaseEntity* PEntity);
     void  updateClaim(sol::object const& entity);
-    bool  hasClaim(CBattleEntity* PTarget);
+    bool  hasClaim(CLuaBaseEntity* PTarget);
     bool  hasEnmity();
     auto  getNotorietyList() -> sol::table;
     void  clearEnmityForEntity(CLuaBaseEntity* PEntity);
@@ -916,7 +916,7 @@ public:
     void   setTHlevel(int16 newLevel);      // Sets the Monster's current Treasure Hunter Tier
 
     uint32 getAvailableTraverserStones();
-    time_t getTraverserEpoch();
+    uint32 getTraverserEpoch();
     void   setTraverserEpoch();
     uint32 getClaimedTraverserStones();
     void   addClaimedTraverserStones(uint16 numStones);
