@@ -82,6 +82,9 @@ INSERT INTO `item_mods_pet` VALUES (10972,164,-300,0); -- All Pets - DMGRANGE: -
 -- Esper Earring
 INSERT INTO `item_mods_pet` VALUES (11052,126,3,1); -- Avatar - BP_DAMAGE: 3
 
+-- Ferine Cabasset +2
+INSERT INTO `item_mods_pet` VALUES (11072,1155,20,0); -- All Pets - ENHANCES_MONSTER_CORRELATION: 20
+
 -- Callers Doublet +2
 INSERT INTO `item_mods_pet` VALUES (11098,126,10,1); -- Avatar - BP_DAMAGE: 10
 
@@ -93,6 +96,9 @@ INSERT INTO `item_mods_pet` VALUES (11138,345,500,1); -- Avatar - TP_BONUS: 500
 
 -- Callers Pigaches +2
 INSERT INTO `item_mods_pet` VALUES (11158,30,5,1); -- Avatar - MACC: 5
+
+-- Ferine Cabasset +1
+INSERT INTO `item_mods_pet` VALUES (11172,1155,10,0); -- All Pets - ENHANCES_MONSTER_CORRELATION: 10
 
 -- Callers Doublet +1
 INSERT INTO `item_mods_pet` VALUES (11198,126,5,1); -- Avatar - BP_DAMAGE: 5
@@ -750,7 +756,7 @@ INSERT INTO `item_mods_pet` VALUES (23083,2,500,8); -- Luopan - HP: 500
 INSERT INTO `item_mods_pet` VALUES (23093,25,51,0); -- Pet: ACC: 51
 INSERT INTO `item_mods_pet` VALUES (23093,26,51,0); -- Pet: RACC: 51
 INSERT INTO `item_mods_pet` VALUES (23093,30,51,0); -- Pet: MACC: 51
--- TODO: Monster correlation effects +26
+INSERT INTO `item_mods_pet` VALUES (23093,1155,26,0); -- All Pets - ENHANCES_MONSTER_CORRELATION: 26
 
 -- Peltast's Mezail +2
 INSERT INTO `item_mods_pet` VALUES (23098,25,51,2);  -- Wyvern - ACC: 51
@@ -1270,6 +1276,12 @@ INSERT INTO `item_mods_pet` VALUES (26659,370,3,3); -- Automaton - REGEN: 3
 INSERT INTO `item_mods_pet` VALUES (26677,2,110,1); -- Avatar - HP: 110
 INSERT INTO `item_mods_pet` VALUES (26677,25,35,1); -- Avatar - ACC: 35
 INSERT INTO `item_mods_pet` VALUES (26677,27,10,1); -- Avatar - ENMITY: 10
+
+-- Nukumi Cabasset
+INSERT INTO `item_mods_pet` VALUES (26756,1155,22,0); -- All Pets - ENHANCES_MONSTER_CORRELATION: 22
+
+-- Nukumi Cabasset +1
+INSERT INTO `item_mods_pet` VALUES (26757,1155,24,0); -- All Pets - ENHANCES_MONSTER_CORRELATION: 24
 
 -- Karagoz Capello
 INSERT INTO `item_mods_pet` VALUES (26774,345,525,3); -- Automaton - TP_BONUS: 525

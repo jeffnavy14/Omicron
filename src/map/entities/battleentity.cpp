@@ -911,6 +911,24 @@ uint16 CBattleEntity::ATT(SLOTTYPE slot)
     {
         ATT += this->GetSkill(SKILL_AUTOMATON_MELEE);
     }
+    else if (this->objtype == TYPE_PET)
+    {
+        auto getEcoStrBonusFunc = lua["utils"]["getEcosystemStrengthBonus"];
+
+        if (getEcoStrBonusFunc.valid())
+        {
+            CBattleEntity* thisTarget = nullptr;
+            if (this->PAI->IsEngaged())
+            {
+                thisTarget = this->GetBattleTarget();
+            }
+
+            if (thisTarget != nullptr && (int8)getEcoStrBonusFunc(this->m_EcoSystem, thisTarget->m_EcoSystem) > 0)
+            {
+                ATTP += this->getMod(Mod::ENHANCES_MONSTER_CORRELATION);
+            }
+        }
+    }
     // use max to prevent underflow
     return std::max(1, ATT + (ATT * ATTP / 100) + std::min<int16>((ATT * m_modStat[Mod::FOOD_ATTP] / 100), m_modStat[Mod::FOOD_ATT_CAP]));
 }
@@ -1077,7 +1095,24 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
                 ACC += this->PMaster->getMod(Mod::TANDEM_STRIKE_POWER);
             }
         }
+        if (this->objtype == TYPE_PET)
+        {
+            auto getEcoStrBonusFunc = lua["utils"]["getEcosystemStrengthBonus"];
 
+            if (getEcoStrBonusFunc.valid())
+            {
+                CBattleEntity* thisTarget = nullptr;
+                if (this->PAI->IsEngaged())
+                {
+                    thisTarget = this->GetBattleTarget();
+                }
+
+                if (thisTarget != nullptr && (int8)getEcoStrBonusFunc(this->m_EcoSystem, thisTarget->m_EcoSystem) > 0)
+                {
+                    ACC += this->getMod(Mod::ENHANCES_MONSTER_CORRELATION);
+                }
+            }
+        }
         ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]) + DEX() / 2; // Account for food mods here for Snatch Morsel
         return std::max<int16>(0, ACC);
     }

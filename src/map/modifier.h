@@ -439,11 +439,12 @@ enum class Mod
     ELEMENTAL_DEBUFF_EFFECT = 1150, // Increase stat reduction by N, and DoT by N/2 HP per tick
 
     // Red Mage
-    BLINK             = 299, // Tracks blink shadows
-    STONESKIN         = 300, // Tracks stoneskin HP pool
-    PHALANX           = 301, // Tracks direct damage reduction
-    ENF_MAG_POTENCY   = 290, // Increases Enfeebling magic potency %
-    ENHANCES_SABOTEUR = 297, // Increases Saboteur Potency %
+    BLINK             = 299,  // Tracks blink shadows
+    STONESKIN         = 300,  // Tracks stoneskin HP pool
+    PHALANX           = 301,  // Tracks direct damage reduction
+    ENF_MAG_POTENCY   = 290,  // Increases Enfeebling magic potency %
+    ENF_MAG_DURATION  = 1151, // Increases enfeebling magic duration %
+    ENHANCES_SABOTEUR = 297,  // Increases Saboteur Potency %
 
     // Thief
     FLEE_DURATION        = 93,   // Flee duration in seconds
@@ -501,18 +502,20 @@ enum class Mod
     ENHANCES_ABSORB_EFFECTS = 1136, // Absorb Spell duration +x seconds (Enhances "Absorb" effects)
     AUGMENTS_ABSORB         = 1137, // Non-Liberator Absorb Spell potency +x% (Augments "Absorb" effects)
     ABSORB_EFFECT_DURATION  = 1138, // Absorb Spell duration +% ("Absorb" effect duration +x%)
+    AUGMENTS_ABSORB_TP      = 1153, // Increases absorb-TP potency, stacks with AUGMENTS_ABSORB
 
     // Beastmaster
-    TAME                = 304,  // Additional percent chance to charm
-    CHARM_TIME          = 360,  // extends the charm time only, no effect of charm chance
-    REWARD_HP_BONUS     = 364,  // Percent to add to reward HP healed. (364)
-    CHARM_CHANCE        = 391,  // extra chance to charm (light+apollo staff ect)
-    FERAL_HOWL_DURATION = 503,  // +20% duration per merit when wearing augmented Monster Jackcoat +2
-    JUG_LEVEL_RANGE     = 564,  // Decreases the level range of spawned jug pets. Maxes out at 2.
-    CALL_BEAST_DELAY    = 273,  // Lowers Call Beast recast
-    SIC_READY_RECAST    = 1052, // SIC/Ready recast reduction (seconds)
-    TANDEM_STRIKE_POWER = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
-    TANDEM_BLOW_POWER   = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
+    TAME                         = 304,  // Additional percent chance to charm
+    CHARM_TIME                   = 360,  // extends the charm time only, no effect of charm chance
+    REWARD_HP_BONUS              = 364,  // Percent to add to reward HP healed. (364)
+    CHARM_CHANCE                 = 391,  // extra chance to charm (light+apollo staff ect)
+    FERAL_HOWL_DURATION          = 503,  // +20% duration per merit when wearing augmented Monster Jackcoat +2
+    JUG_LEVEL_RANGE              = 564,  // Decreases the level range of spawned jug pets. Maxes out at 2.
+    CALL_BEAST_DELAY             = 273,  // Lowers Call Beast recast
+    SIC_READY_RECAST             = 1052, // SIC/Ready recast reduction (seconds)
+    TANDEM_STRIKE_POWER          = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
+    TANDEM_BLOW_POWER            = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
+    ENHANCES_MONSTER_CORRELATION = 1155, // Grants your pet acc +X and attp +X% against a weaker opposing ecosystem. Typically applied to pet, not owner (item_mods_pet.sql)
 
     // Bard
     MINNE_EFFECT           = 433,  //
@@ -1088,16 +1091,14 @@ enum class Mod
     PARRY_HP_RECOVERY = 1135, // Recover <Mod Value> HP on successful parry.
 
     // TODO: These mods are not yet implemented.
-    ENF_MAG_DURATION   = 1151, // TODO: Increase enfeebling spell duration (percent)
-    REWARD_RECAST      = 1152, // TODO: Reward recast time reduction (seconds)
-    AUGMENTS_ABSORB_TP = 1153, // TODO: Increases absorb-TP potency, stacks with AUGMENTS_ABSORB
+    REWARD_RECAST = 1152, // TODO: Reward recast time reduction (seconds)
 
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
 
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1155 and onward
+    // SPARE IDs: 1156 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it
