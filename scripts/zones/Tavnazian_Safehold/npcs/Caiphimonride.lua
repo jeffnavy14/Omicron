@@ -18,11 +18,11 @@ entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.SHELTERING_DOUBT then
         stock =
         {
-            16450,  2030,  -- Dagger
-            16566,  9216,  -- Longsword
-            17335,     4,  -- Rusty Bolt
-            18375, 37296,  -- Falx
-            18214, 20762,  -- Voulge
+            { 16450,  2030, }, -- Dagger
+            { 16566,  9216, }, -- Longsword
+            { 17335,     4, }, -- Rusty Bolt
+            { 18375, 37296, }, -- Falx
+            { 18214, 20762, }, -- Voulge
         }
     end
 

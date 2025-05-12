@@ -173,6 +173,14 @@ xi.mobSkill =
     BILGESTORM               = 2118,
     THUNDRIS_SHRIEK          = 2119,
 
+    RADIANT_SACRAMENT        = 2141,
+    MEGA_HOLY                = 2142,
+    PERFECT_DEFENSE          = 2143,
+    DIVINE_SPEAR             = 2144,
+    GOSPEL_OF_THE_LOST       = 2145,
+    VOID_OF_REPENTANCE       = 2146,
+    DIVINE_JUDGMENT          = 2147,
+
     HELL_SCISSORS            = 2221,
 
     QUEASYSHROOM_2           = 2232,

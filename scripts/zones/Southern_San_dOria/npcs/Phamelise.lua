@@ -18,13 +18,13 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            4372,   44,    -- Giant Sheep Meat
-            622,    44,    -- Dried Marjoram
-            610,    55,    -- San d'Orian Flour
-            611,    36,    -- Rye Flour
-            1840, 1840,    -- Semolina
-            4366,   22,    -- La Theine Cabbage
-            4378,   55,    -- Selbina Milk
+            { 4372,   44, }, -- Giant Sheep Meat
+            { 622,    44, }, -- Dried Marjoram
+            { 610,    55, }, -- San d'Orian Flour
+            { 611,    36, }, -- Rye Flour
+            { 1840, 1840, }, -- Semolina
+            { 4366,   22, }, -- La Theine Cabbage
+            { 4378,   55, }, -- Selbina Milk
         }
 
         player:showText(npc, ID.text.PHAMELISE_OPEN_DIALOG)

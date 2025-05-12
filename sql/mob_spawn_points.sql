@@ -19598,14 +19598,14 @@ INSERT INTO `mob_spawn_points` VALUES (17093140,'Imperial_Gears','Imperial Gears
 INSERT INTO `mob_spawn_points` VALUES (17093141,'Imperial_Gears','Imperial Gears',288,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17093142,'Naja_Salaheem','Naja Salaheem',289,503.107,-0.230,-545.704,111);
 INSERT INTO `mob_spawn_points` VALUES (17093143,'Razfahd','Razfahd',290,-486.500,-4.449,420.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17093144,'Alexander','Alexander',291,-486.500,-4.449,420.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17093144,'Alexander_NP','Alexander',291,-486.500,-4.449,420.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17093145,'Raubahn','Raubahn',292,-481.075,-4.500,423.191,0);
 INSERT INTO `mob_spawn_points` VALUES (17093146,'Zahak','Zahak',293,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17093147,'Balrahn','Balrahn',294,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17093148,'Alexander','Alexander',295,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17093149,'Alexander_Image','Alexander Image',296,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17093150,'Alexander_Image','Alexander Image',296,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17093151,'Alexander_Image','Alexander Image',296,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17093148,'Alexander_WTC','Alexander',295,-483.716,-3.950,419.987,0);
+INSERT INTO `mob_spawn_points` VALUES (17093149,'Alexander_Image','Alexander Image',296,-483.716,-3.950,419.987,0);
+INSERT INTO `mob_spawn_points` VALUES (17093150,'Alexander_Image','Alexander Image',296,-483.716,-3.950,419.987,0);
+INSERT INTO `mob_spawn_points` VALUES (17093151,'Alexander_Image','Alexander Image',296,-483.716,-3.950,419.987,0);
 INSERT INTO `mob_spawn_points` VALUES (17093152,'Moon_Rabbit','Moon Rabbit',297,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17093153,'Moon_Rabbit','Moon Rabbit',297,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17093154,'Moon_Rabbit','Moon Rabbit',297,0.000,0.000,0.000,0);
@@ -60757,7 +60757,7 @@ INSERT INTO `mob_spawn_points` VALUES (17489923,'Stygian_Pugil','Stygian Pugil',
 INSERT INTO `mob_spawn_points` VALUES (17489924,'Stygian_Pugil','Stygian Pugil',2,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17489925,'Devil_Manta','Devil Manta',3,1.000,1.000,1.000,0);
 
-INSERT INTO `mob_spawn_points` VALUES (17489926,'Gordovs_Ghost','Gordov\'s Ghost',4,-27.909,-0.693,-185.259,205);
+INSERT INTO `mob_spawn_points` VALUES (17489926,'Gordovs_Ghost','Gordov\'s Ghost',4,-27.909,-10.693,-185.259,205);
 INSERT INTO `mob_spawn_points` VALUES (17489927,'Dervos_Ghost','Dervo\'s Ghost',5,-25.142,-10.931,-184.100,158);
 INSERT INTO `mob_spawn_points` VALUES (17489928,'Gizerls_Ghost','Gizerl\'s Ghost',6,-29.320,-10.436,-182.119,15);
 INSERT INTO `mob_spawn_points` VALUES (17489929,'Sand_Lizard','Sand Lizard',7,-25.047,-20.514,-191.365,127);

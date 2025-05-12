@@ -19,7 +19,7 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            954,  4032  -- Magic Pot Shard
+            { 954,  4032, }, -- Magic Pot Shard
         }
 
         player:showText(npc, ID.text.MILLEROVIEUNET_OPEN_DIALOG)

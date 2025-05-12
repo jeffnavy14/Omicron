@@ -14,7 +14,7 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            954, 4121,    -- Magic Pot Shard
+            { 954, 4121, }, -- Magic Pot Shard
         }
 
         player:showText(npc, ID.text.EUGBALLION_OPEN_DIALOG)

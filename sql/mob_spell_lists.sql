@@ -2328,12 +2328,12 @@ INSERT INTO `mob_spell_lists` VALUES ('Amnaf_blu',212,641,1,255); -- hysteric_ba
 -- Raubahn (213)
 INSERT INTO `mob_spell_lists` VALUES ('Raubahn',213,557,1,255); -- eyes_on_me (1~255)
 
--- Alexander (214)
-INSERT INTO `mob_spell_lists` VALUES ('Alexander',214,22,1,255); -- holy_ii (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Alexander',214,25,1,255); -- dia_iii (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Alexander',214,31,1,255); -- banish_iv (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Alexander',214,35,1,255); -- diaga_iii (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Alexander',214,40,1,255); -- banishga_iii (1~255)
+-- Alexander_NP (214)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_NP',214,22,1,255); -- holy_ii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_NP',214,25,1,255); -- dia_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_NP',214,31,1,255); -- banish_iv (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_NP',214,35,1,255); -- diaga_iii (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_NP',214,40,1,255); -- banishga_iii (1~255)
 
 -- Amun (215)
 INSERT INTO `mob_spell_lists` VALUES ('Amun',215,148,1,255); -- fire_v (1~255)
@@ -5581,7 +5581,25 @@ INSERT INTO `mob_spell_lists` VALUES ('Gilagoge_Tlugvi',545,58,1,255);   -- Para
 INSERT INTO `mob_spell_lists` VALUES ('Gilagoge_Tlugvi',545,59,1,255);   -- Silence (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Gilagoge_Tlugvi',545,112,1,255);  -- Flash (1~255)
 
--- Next Available: 546
+-- Alexander_WTC (546)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,22,1,255);  -- Holy II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,25,1,255);  -- Dia III (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,31,1,255);  -- Banish IV (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,35,1,255);  -- Diaga III (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,40,1,255);  -- Banishga III (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,46,1,255);  -- Protect IV (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,51,1,255);  -- Shell IV (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,128,1,255); -- Protectra IV (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_WTC',546,133,1,255); -- Shellra IV (1~255)
+
+-- Alexander Image (547)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_Image',547,21,1,255);  -- Holy (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_Image',547,30,1,255);  -- Banish III (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_Image',547,34,1,255);  -- Diaga II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_Image',547,40,1,255);  -- Banishga III (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Alexander_Image',547,112,1,255); -- Flash (1~255)
+
+-- Next Available: 548
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -19,19 +19,17 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            1840,  1840,  -- Semolina
-            4372,    44,  -- Giant Sheep Meat
-            622,     44,  -- Dried Marjoram
-            610,     55,  -- San d'Orian Flour
-            611,     36,  -- Rye Flour
-            4366,    22,  -- La Theine Cabbage
-            4378,    55   -- Selbina Milk
+            { 4372,    44, }, -- Giant Sheep Meat
+            { 622,     44, }, -- Dried Marjoram
+            { 610,     55, }, -- San d'Orian Flour
+            { 611,     36, }, -- Rye Flour
+            { 4366,    22, }, -- La Theine Cabbage
+            { 4378,    55, }, -- Selbina Milk
         }
 
         local rank = GetNationRank(xi.nation.WINDURST)
         if rank ~= 3 then
-            table.insert(stock, 1840) --Semolina
-            table.insert(stock, 1840)
+            table.insert(stock, { 1840, 1840, }) --Semolina
         end
 
         xi.shop.general(player, stock, xi.fameArea.WINDURST)

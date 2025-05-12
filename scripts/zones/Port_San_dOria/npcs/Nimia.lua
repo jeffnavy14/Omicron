@@ -14,13 +14,13 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            xi.item.BUNCH_OF_KAZHAM_PEPPERS,   62,
-            xi.item.KAZHAM_PINEAPPLE,          62,
-            xi.item.MITHRAN_TOMATO,            41,
-            xi.item.PINCH_OF_BLACK_PEPPER,    265,
-            xi.item.OGRE_PUMPKIN,              99,
-            xi.item.KUKURU_BEAN,              124,
-            xi.item.PHALAENOPSIS,            1872,
+            { xi.item.BUNCH_OF_KAZHAM_PEPPERS,   62, },
+            { xi.item.KAZHAM_PINEAPPLE,          62, },
+            { xi.item.MITHRAN_TOMATO,            41, },
+            { xi.item.PINCH_OF_BLACK_PEPPER,    265, },
+            { xi.item.OGRE_PUMPKIN,              99, },
+            { xi.item.KUKURU_BEAN,              124, },
+            { xi.item.PHALAENOPSIS,            1872, },
         }
 
         player:showText(npc, ID.text.NIMIA_OPEN_DIALOG)

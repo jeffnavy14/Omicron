@@ -14,8 +14,8 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            xi.item.SPRIG_OF_SAGE, 192,
-            xi.item.FROST_TURNIP,   33,
+            { xi.item.SPRIG_OF_SAGE, 192, },
+            { xi.item.FROST_TURNIP,   33, },
         }
 
         player:showText(npc, ID.text.PALGUEVION_OPEN_DIALOG)

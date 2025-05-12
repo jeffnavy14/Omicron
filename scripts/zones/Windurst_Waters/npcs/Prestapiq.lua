@@ -19,11 +19,11 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            640,    11,   --Copper Ore
-            4450,   694,   --Coral Fungus
-            4375,  4032,   --Danceshroom
-            1650,  6500,   --Kopparnickel Ore
-            5165,   736    --Movalpolos Water
+            {  640,    11, }, --Copper Ore
+            { 4450,   694, }, --Coral Fungus
+            { 4375,  4032, }, --Danceshroom
+            { 1650,  6500, }, --Kopparnickel Ore
+            { 5165,   736, }, --Movalpolos Water
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end

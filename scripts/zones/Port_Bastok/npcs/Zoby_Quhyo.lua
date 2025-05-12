@@ -14,13 +14,13 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            626,   234,    -- Black Pepper
-            612,    55,    -- Kazham Peppers
-            4432,   55,    -- Kazham Pineapple
-            632,   110,    -- Kukuru Bean
-            4390,   36,    -- Mithran Tomato
-            630,    88,    -- Ogre Pumpkin
-            1411, 1656,    -- Phalaenopsis
+            { 626,   234, }, -- Black Pepper
+            { 612,    55, }, -- Kazham Peppers
+            { 4432,   55, }, -- Kazham Pineapple
+            { 632,   110, }, -- Kukuru Bean
+            { 4390,   36, }, -- Mithran Tomato
+            { 630,    88, }, -- Ogre Pumpkin
+            { 1411, 1656, }, -- Phalaenopsis
         }
 
         player:showText(npc, ID.text.ZOBYQUHYO_OPEN_DIALOG)

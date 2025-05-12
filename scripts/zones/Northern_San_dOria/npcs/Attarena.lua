@@ -18,8 +18,8 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            623,   119,    -- Bay Leaves
-            4154, 6440,    -- Holy Water
+            { 623,   119, }, -- Bay Leaves
+            { 4154, 6440, }, -- Holy Water
         }
 
         player:showText(npc, ID.text.ATTARENA_OPEN_DIALOG)

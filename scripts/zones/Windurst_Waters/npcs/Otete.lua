@@ -19,8 +19,8 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            623,    119, -- Bay Leaves
-            4154,  6440  -- Holy Water
+            { 623,    119, }, -- Bay Leaves
+            { 4154,  6440, }, -- Holy Water
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end

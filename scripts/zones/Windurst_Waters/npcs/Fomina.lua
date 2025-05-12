@@ -19,13 +19,13 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            612,     55,  -- Kazham Peppers
-            4432,    55,  -- Kazham Pineapple
-            4390,    36,  -- Mithran Tomato
-            626,    234,  -- Black Pepper
-            630,     88,  -- Ogre Pumpkin
-            632,    110,  -- Kukuru Bean
-            1411,  1656   -- Phalaenopsis
+            { 612,     55, }, -- Kazham Peppers
+            { 4432,    55, }, -- Kazham Pineapple
+            { 4390,    36, }, -- Mithran Tomato
+            { 626,    234, }, -- Black Pepper
+            { 630,     88, }, -- Ogre Pumpkin
+            { 632,    110, }, -- Kukuru Bean
+            { 1411,  1656, }, -- Phalaenopsis
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end

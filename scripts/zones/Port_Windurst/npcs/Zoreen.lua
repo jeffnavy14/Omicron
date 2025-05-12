@@ -14,8 +14,8 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            4382, 29,    -- Frost Turnip
-            638, 170,    -- Sage
+            { 4382, 29, }, -- Frost Turnip
+            { 638, 170, }, -- Sage
         }
 
         player:showText(npc, ID.text.ZOREEN_OPEN_DIALOG)

@@ -10,22 +10,22 @@ local entity = {}
 
 local stock =
 {
-    4250,   22,    -- Crackler
-    4167,   25,    -- Cracker
-    4168,   25,    -- Twinkle Shower
-    4169,   25,    -- Little Comet
-    4217,   25,    -- Sparkling Hand
-    4215,   50,    -- Popstar
-    4216,   50,    -- Brilliant Snow
-    5769,   50,    -- Popper
-    4186,  100,    -- Airborne
-    4218,  100,    -- Air Rider
-    5937,  150,    -- Bubble Breeze
-    5883,  200,    -- Falling Star
-    5882,  250,    -- Marine Bliss
-    4257,  300,    -- Papillion
-    5441,  300,    -- Angelwing
-    5936,  300,    -- Mog Missile
+    { 4250,   22, }, -- Crackler
+    { 4167,   25, }, -- Cracker
+    { 4168,   25, }, -- Twinkle Shower
+    { 4169,   25, }, -- Little Comet
+    { 4217,   25, }, -- Sparkling Hand
+    { 4215,   50, }, -- Popstar
+    { 4216,   50, }, -- Brilliant Snow
+    { 5769,   50, }, -- Popper
+    { 4186,  100, }, -- Airborne
+    { 4218,  100, }, -- Air Rider
+    { 5937,  150, }, -- Bubble Breeze
+    { 5883,  200, }, -- Falling Star
+    { 5882,  250, }, -- Marine Bliss
+    { 4257,  300, }, -- Papillion
+    { 5441,  300, }, -- Angelwing
+    { 5936,  300, }, -- Mog Missile
 }
 
 entity.onTrigger = function(player, npc)

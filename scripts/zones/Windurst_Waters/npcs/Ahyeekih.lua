@@ -23,11 +23,11 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            4503,   184,  -- Buburimu Grape
-            1120,  1620,  -- Casablanca
-            4359,   220,  -- Dhalmel Meat
-            614,     72,  -- Mhaura Garlic
-            4445,    40   -- Yagudo Cherry
+            { 4503,   184, }, -- Buburimu Grape
+            { 1120,  1620, }, -- Casablanca
+            { 4359,   220, }, -- Dhalmel Meat
+            { 614,     72, }, -- Mhaura Garlic
+            { 4445,    40, }, -- Yagudo Cherry
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end

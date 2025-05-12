@@ -23,9 +23,9 @@ entity.onTrigger = function(player, npc)
 
         local stock =
         {
-            916,   855,  -- Cactuar Needle
-            4412,  299,  -- Thundermelon
-            4491,  184   -- Watermelon
+            { 916,   855, }, -- Cactuar Needle
+            { 4412,  299, }, -- Thundermelon
+            { 4491,  184, }, -- Watermelon
         }
         xi.shop.general(player, stock, xi.fameArea.WINDURST)
     end

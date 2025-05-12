@@ -14,9 +14,9 @@ entity.onTrigger = function(player, npc)
     else
         local stock =
         {
-            916,  855,    -- Cactuar Needle
-            4412, 299,    -- Thundermelon
-            4491, 184,    -- Watermelon
+            { 916,  855, }, -- Cactuar Needle
+            { 4412, 299, }, -- Thundermelon
+            { 4491, 184, }, -- Watermelon
         }
 
         player:showText(npc, ID.text.VATTIAN_OPEN_DIALOG)
