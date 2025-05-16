@@ -1722,9 +1722,10 @@ void CStatusEffectContainer::SaveStatusEffects(bool logout)
             continue;
         }
 
-        auto realduration = PStatusEffect->GetStartTime() + PStatusEffect->GetDuration() - timer::now();
+        const auto durationSeconds     = timer::count_seconds(PStatusEffect->GetDuration());
+        const auto realDurationSeconds = timer::count_seconds(PStatusEffect->GetStartTime() + PStatusEffect->GetDuration() - timer::now());
 
-        if (realduration > 0s || PStatusEffect->GetDuration() == 0s)
+        if (realDurationSeconds > 0 || durationSeconds == 0)
         {
             const char* Query = "INSERT INTO char_effects (charid, effectid, icon, power, tick, duration, subid, subpower, tier, flags, timestamp) "
                                 "VALUES(%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u)";
@@ -1743,20 +1744,19 @@ void CStatusEffectContainer::SaveStatusEffects(bool logout)
                 PStatusEffect->SetPower(m_POwner->getMod(Mod::STONESKIN));
             }
 
-            uint32 tick     = static_cast<uint32>(timer::count_seconds(PStatusEffect->GetTickTime()));
             uint32 duration = 0;
 
-            if (PStatusEffect->GetDuration() > 0s)
+            if (durationSeconds > 0)
             {
                 if (PStatusEffect->HasEffectFlag(EFFECTFLAG_OFFLINE_TICK))
                 {
-                    duration = static_cast<uint32>(timer::count_seconds(PStatusEffect->GetDuration()));
+                    duration = static_cast<uint32>(durationSeconds);
                 }
                 else
                 {
-                    if (realduration > 0s)
+                    if (realDurationSeconds > 0)
                     {
-                        duration = static_cast<uint32>(timer::count_seconds(realduration));
+                        duration = static_cast<uint32>(realDurationSeconds);
                     }
                     else
                     {
@@ -1764,7 +1764,10 @@ void CStatusEffectContainer::SaveStatusEffects(bool logout)
                     }
                 }
             }
-            auto timestamp = earth_time::timestamp(timer::to_utc(PStatusEffect->GetStartTime()));
+
+            uint32 tick      = static_cast<uint32>(timer::count_seconds(PStatusEffect->GetTickTime()));
+            auto   timestamp = earth_time::timestamp(timer::to_utc(PStatusEffect->GetStartTime()));
+
             _sql->Query(Query, m_POwner->id, PStatusEffect->GetStatusID(), PStatusEffect->GetIcon(), PStatusEffect->GetPower(), tick, duration,
                         PStatusEffect->GetSubID(), PStatusEffect->GetSubPower(), PStatusEffect->GetTier(), PStatusEffect->GetEffectFlags(),
                         timestamp);

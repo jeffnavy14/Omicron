@@ -99,10 +99,10 @@ void CInstance::LoadInstance()
         m_entryloc.y                      = rset->get<float>("start_y");
         m_entryloc.z                      = rset->get<float>("start_z");
         m_entryloc.rotation               = rset->get<uint8>("start_rot");
-        m_zone_music_override.m_songDay   = rset->get<uint16>("music_day");
-        m_zone_music_override.m_songNight = rset->get<uint16>("music_night");
-        m_zone_music_override.m_bSongS    = rset->get<uint16>("battlesolo");
-        m_zone_music_override.m_bSongM    = rset->get<uint16>("battlemulti");
+        m_zone_music_override.m_songDay   = !rset->isNull("music_day") ? xi::optional(rset->get<uint16>("music_day")) : std::nullopt;
+        m_zone_music_override.m_songNight = !rset->isNull("music_night") ? xi::optional(rset->get<uint16>("music_night")) : std::nullopt;
+        m_zone_music_override.m_bSongS    = !rset->isNull("battlesolo") ? xi::optional(rset->get<uint16>("battlesolo")) : std::nullopt;
+        m_zone_music_override.m_bSongM    = !rset->isNull("battlemulti") ? xi::optional(rset->get<uint16>("battlemulti")) : std::nullopt;
 
         // Add to Lua cache
         // TODO: This will happen more often than needed, but not so often that it's a performance concern
@@ -319,20 +319,20 @@ bool CInstance::CheckFirstEntry(uint32 id)
 
 uint16 CInstance::GetSoloBattleMusic()
 {
-    return m_zone_music_override.m_bSongS != (uint16)-1 ? m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
+    return m_zone_music_override.m_bSongS ? *m_zone_music_override.m_bSongS : GetZone()->GetSoloBattleMusic();
 }
 
 uint16 CInstance::GetPartyBattleMusic()
 {
-    return m_zone_music_override.m_bSongM != (uint16)-1 ? m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
+    return m_zone_music_override.m_bSongM ? *m_zone_music_override.m_bSongM : GetZone()->GetPartyBattleMusic();
 }
 
 uint16 CInstance::GetBackgroundMusicDay()
 {
-    return m_zone_music_override.m_songDay != (uint16)-1 ? m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
+    return m_zone_music_override.m_songDay ? *m_zone_music_override.m_songDay : GetZone()->GetBackgroundMusicDay();
 }
 
 uint16 CInstance::GetBackgroundMusicNight()
 {
-    return m_zone_music_override.m_songNight != (uint16)-1 ? m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
+    return m_zone_music_override.m_songNight ? *m_zone_music_override.m_songNight : GetZone()->GetBackgroundMusicNight();
 }
