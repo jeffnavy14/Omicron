@@ -318,6 +318,21 @@ local function magicAccuracyFromWeatherElement(actor, actionElement)
     return magicAcc
 end
 
+-- Magic Accuracy from Tandem Strike (BST trait).
+local function magicAccuracyFromTandemStrike(actor)
+    local magicAcc = 0
+
+    if actor:isTandemActive() then
+        if actor:getMaster() ~= nil and actor:getMaster():isPC() then
+            magicAcc = actor:getMaster():getMod(xi.mod.TANDEM_STRIKE_POWER)
+        else
+            magicAcc = actor:getMod(xi.mod.TANDEM_STRIKE_POWER)
+        end
+    end
+
+    return magicAcc
+end
+
 -- Magic Accuracy from Food.
 local function magicAccuracyFromFoodMultiplier(actor)
     local magicAcc          = 1
@@ -369,13 +384,14 @@ xi.combat.magicHitRate.calculateActorMagicAccuracy = function(actor, target, spe
     local magicAccBurst     = magicAccuracyFromMagicBurst(target, actionElement, statUsed)
     local magicAccDay       = magicAccuracyFromDayElement(actor, actionElement)
     local magicAccWeather   = magicAccuracyFromWeatherElement(actor, actionElement)
+    local magicAccTandem    = magicAccuracyFromTandemStrike(actor)
 
     -- Multipliers
     local magicAccFoodFactor      = magicAccuracyFromFoodMultiplier(actor)
     local magicAccSoulVoiceFactor = magicAccuracyFromSoulVoiceMultiplier(actor, skillType, effectId)
 
     -- Add up food magic accuracy.
-    finalMagicAcc = magicAccBase + magicAccSkill + magicAccElement + magicAccStatDiff + magicAccEffects + magicAccMerits + magicAccJobPoints + magicAccBurst + magicAccDay + magicAccWeather + bonusMacc
+    finalMagicAcc = magicAccBase + magicAccSkill + magicAccElement + magicAccStatDiff + magicAccEffects + magicAccMerits + magicAccJobPoints + magicAccBurst + magicAccDay + magicAccWeather + magicAccTandem + bonusMacc
     finalMagicAcc = math.floor(finalMagicAcc * magicAccFoodFactor * magicAccSoulVoiceFactor)
 
     return finalMagicAcc

@@ -40,7 +40,7 @@ CObjectiveUtilityPacket::CObjectiveUtilityPacket(uint32 duration, uint32 warning
 void CObjectiveUtilityPacket::addCountdown(uint32 duration, uint32 warning /* = 0 */)
 {
     ref<uint32>(0x04) = ref<uint32>(0x04) == 0 ? 0x01 : ref<uint32>(0x04);
-    ref<uint32>(0x08) = CVanaTime::getInstance()->getVanaTime();
+    ref<uint32>(0x08) = earth_time::vanadiel_timestamp();
     ref<uint32>(0x0C) = duration;
     ref<uint32>(0x10) = warning; // If 0, defaults to 60.
     ref<uint8>(0x24) |= OBJECTIVEUTILITY_COUNTDOWN;

@@ -96,12 +96,8 @@ xi.mob.phOnDespawn = function(ph, phList, chance, cooldown, params)
                 not lotteryPrimed(phList) and
                 math.random(1, 1000) <= chance
             then
-                local nextRepopTime = os.time() + GetMobRespawnTime(phId)
-                -- That's earth time, subtract SE epoch to get Vanatime
-                nextRepopTime = nextRepopTime - 1009810800
-                -- The enum bakes in a multiplication of 2.4, gotta reverse that to get accurate hour
-                local nextRepopDate = (nextRepopTime / 60 * 25) + 886 * (xi.vanaTime.YEAR / 2.4)
-                local nextRepopHour = (nextRepopDate % (xi.vanaTime.DAY / 2.4)) / (xi.vanaTime.HOUR / 2.4)
+                local nextRepopTime = VanadielTime() + GetMobRespawnTime(phId)
+                local nextRepopHour = math.floor((nextRepopTime % xi.vanaTime.DAY) / xi.vanaTime.HOUR)
                 -- If the NM is day only and spawn would happen during the night, bail out
                 if
                     params.dayOnly and

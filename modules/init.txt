@@ -35,10 +35,9 @@
 # Will load only custom/cpp/custom_module.cpp and custom/lua/claim_shield.lua.
 #
 # Live example:
-
-custom/cpp/
 custom/lua/new_player_linkshell.lua
-omicron/
+custom/cpp/
+omicronxi/
 
 
 
