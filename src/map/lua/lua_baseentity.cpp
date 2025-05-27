@@ -12050,7 +12050,7 @@ void CLuaBaseEntity::countdown(sol::object const& secondsObj)
                 strongholdNameOverride = 0
             },
             fence = {
-                pos = {x = 0.000, y = 0.000}, -- center of fence
+                pos = {x = 0.000, z = 0.000}, -- center of fence
                 radius = 25.00, -- radius from pos in yalms
                 render = 25.00, -- distance from fence it becomes visible
                 blue = true -- optional, turns default red fence bars blue
@@ -12137,18 +12137,18 @@ void CLuaBaseEntity::objectiveUtility(sol::object const& obj)
         {
             sol::object fencePosObj = fenceObj.as<sol::table>()["pos"];
             float       posX        = 0.000;
-            float       posY        = 0.000;
+            float       posZ        = 0.000;
             if (fencePosObj.valid() && fencePosObj.is<sol::table>())
             {
                 posX = fencePosObj.as<sol::table>().get<float>("x");
-                posY = fencePosObj.as<sol::table>().get<float>("y");
+                posZ = fencePosObj.as<sol::table>().get<float>("z");
             }
 
             float radius = fenceObj.as<sol::table>().get_or<float>("radius", 0.00);
             float render = fenceObj.as<sol::table>().get_or<float>("render", 25.00);
             bool  blue   = fenceObj.as<sol::table>().get_or<bool, std::string, bool>("blue", false);
 
-            packet->addFence(posX, posY, radius, render, blue);
+            packet->addFence(posX, posZ, radius, render, blue);
         }
 
         sol::object helpObj = obj.as<sol::table>()["help"];
