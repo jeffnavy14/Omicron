@@ -1,16 +1,15 @@
 -----------------------------------
--- Area: Kuftal Tunnel
---   NM: Gordov's Ghost
--- Bastok mission 8-2
+-- Area: Throne Room
+--  Mob: Zeid (Phase 1)
+-- Bastok mission 9-2 BCNM Fight (Phase 1)
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
 
 entity.onMobInitialize = function(mob)
-    mob:addImmunity(xi.immunity.SILENCE)
+    mob:addImmunity(xi.immunity.PETRIFY)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
-    mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
 end
 
 return entity
