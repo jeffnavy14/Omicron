@@ -823,7 +823,7 @@ void CStatusEffectContainer::DelStatusEffectsByFlag(uint32 flag, EffectNotice no
             if (
                 flag & EFFECTFLAG_DAMAGE &&
                 PStatusEffect->GetStatusID() == EFFECT_SLEEP &&
-                PStatusEffect->GetTier() > 1)
+                PStatusEffect->GetTier() >= 5) // Tier 5 = Diabolos NM Nightmare
             {
                 continue;
             }
@@ -2076,7 +2076,7 @@ void CStatusEffectContainer::TickRegen(timer::time_point tick)
                 if (
                     !(
                         m_POwner->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP) &&
-                        m_POwner->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() > 0))
+                        m_POwner->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() >= 4)) // Tier 4 = Player Avatar Nightmare
                 {
                     WakeUp();
                 }

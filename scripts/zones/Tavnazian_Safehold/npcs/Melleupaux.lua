@@ -10,9 +10,9 @@ local entity = {}
 entity.onTrigger = function(player, npc)
     local stock =
     {
-        16450, 2030, -- Dagger
-        16566, 9216, -- Longsword
-        17335,    4, -- Rusty Bolt
+        { 16450, 2030, }, -- Dagger
+        { 16566, 9216, }, -- Longsword
+        { 17335,    4, }, -- Rusty Bolt
     }
 
     if player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.SHELTERING_DOUBT then
