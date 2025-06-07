@@ -555,7 +555,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
             dayAndWeather = dayAndWeather + 0.1 + caster:getMod(xi.mod.DAY_NUKE_BONUS) / 100 -- sorc. tonban(+1)/zodiac ring
 
         -- Weak day.
-        elseif dayElement == xi.combat.element.getOppositeElement(spellElement) then
+        elseif dayElement == xi.combat.element.getElementWeakness(spellElement) then
             dayAndWeather = dayAndWeather - 0.1
         end
     end

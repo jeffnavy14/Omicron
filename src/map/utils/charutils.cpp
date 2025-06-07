@@ -1678,6 +1678,18 @@ namespace charutils
 
     void UnequipItem(CCharEntity* PChar, uint8 equipSlotID, bool update)
     {
+        if (PChar == nullptr)
+        {
+            ShowWarning("PChar was null.");
+            return;
+        }
+
+        if (equipSlotID > 15)
+        {
+            ShowWarning("Invalid slot ID. Must be between 0 and 15.");
+            return;
+        }
+
         CItem* PItem = PChar->getEquip((SLOTTYPE)equipSlotID);
 
         if ((PItem != nullptr) && PItem->isType(ITEM_EQUIPMENT))

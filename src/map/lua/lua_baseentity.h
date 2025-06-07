@@ -264,7 +264,7 @@ public:
     // Equipping
     bool canEquipItem(uint16 itemID, sol::object const& chkLevel);
     void equipItem(uint16 itemID, sol::object const& container);
-    void unequipItem(uint8 itemID);
+    void unequipItem(uint8 slotID);
 
     void setEquipBlock(uint16 equipBlock);
     void lockEquipSlot(uint8 slot);

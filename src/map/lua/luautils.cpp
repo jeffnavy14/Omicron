@@ -5448,6 +5448,18 @@ namespace luautils
             }
         }
 
+        // Look must be set _before_ inserting the entity into the zone,
+        // else equipped NPCs/Mobs will be invisible.
+        if (table["look"].get_type() == sol::type::number)
+        {
+            PEntity->SetModelId(table.get<uint16>("look"));
+        }
+        else if (table["look"].get_type() == sol::type::string)
+        {
+            auto lookStr  = table.get<std::string>("look");
+            PEntity->look = stringToLook(lookStr);
+        }
+
         if (auto* PNpc = dynamic_cast<CNpcEntity*>(PEntity))
         {
             PNpc->namevis     = table.get_or<uint8>("namevis", 0);
@@ -5559,16 +5571,6 @@ namespace luautils
             }
 
             PZone->InsertMOB(PMob);
-        }
-
-        if (table["look"].get_type() == sol::type::number)
-        {
-            PEntity->SetModelId(table.get<uint16>("look"));
-        }
-        else if (table["look"].get_type() == sol::type::string)
-        {
-            auto lookStr  = table.get<std::string>("look");
-            PEntity->look = stringToLook(lookStr);
         }
 
         PEntity->updatemask |= UPDATE_ALL_CHAR;

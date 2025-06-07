@@ -53,7 +53,7 @@ weaponskillObject.onUseWeaponSkill = function(player, target, wsID, tp, primary,
     local damage = 0
 
     -- Calculate damage caps (item level and level based)
-    local levelUsed       = player:getAverageItemLevel() > 0 and player:getAverageItemLevel() or player:getMainLvl()
+    local levelUsed       = player:getAverageItemLevel() > 99 and player:getAverageItemLevel() or player:getMainLvl()
     -- local hitDamageCap    = (levelUsed + 14) * 5 -- iLvl 119 -> 665
     local globalDamageCap = levelUsed * 10       -- iLvl 119 -> 1190
 

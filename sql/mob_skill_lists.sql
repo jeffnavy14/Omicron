@@ -2216,7 +2216,6 @@ INSERT INTO `mob_skill_lists` VALUES ('Zeid',480,980); -- Freeze Bite
 INSERT INTO `mob_skill_lists` VALUES ('Zeid',480,981); -- GroundStrike
 INSERT INTO `mob_skill_lists` VALUES ('Zeid',480,982); -- Abyssal Drain
 INSERT INTO `mob_skill_lists` VALUES ('Zeid',480,983); -- Abyssal strike
-INSERT INTO `mob_skill_lists` VALUES ('Zeid',480,1002); -- Summonshadows
 INSERT INTO `mob_skill_lists` VALUES ('Ajido-Marujido',481,988); -- Warp In (Works the same as Ealdnarche's)
 INSERT INTO `mob_skill_lists` VALUES ('Ajido-Marujido',481,989); -- Warp Out (Works the same as Ealdnarche's)
 INSERT INTO `mob_skill_lists` VALUES ('Volker',482,973); -- Red Lotus Blade
@@ -3797,6 +3796,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Snoll_Tzar',1164,598); -- Berserk
 
 INSERT INTO `mob_skill_lists` VALUES ('Shikaree_X',1165,18); -- Shadowstitch
 INSERT INTO `mob_skill_lists` VALUES ('Shikaree_X',1165,23); -- Dancing edge
+INSERT INTO `mob_skill_lists` VALUES ('Shikaree_X',1165,24); -- Shark Bite
 INSERT INTO `mob_skill_lists` VALUES ('Shikaree_X',1165,25); -- Evisceration
 
 INSERT INTO `mob_skill_lists` VALUES ('Shikaree_Y',1166,101); -- Vorpal Scythe

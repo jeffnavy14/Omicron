@@ -282,7 +282,7 @@ local function magicAccuracyFromDayElement(actor, actionElement)
             magicAcc = magicAcc + 5
 
         -- Weak day.
-        elseif dayElement == xi.combat.element.getOppositeElement(actionElement) then
+        elseif dayElement == xi.combat.element.getElementWeakness(actionElement) then
             magicAcc = magicAcc - 5
         end
     end

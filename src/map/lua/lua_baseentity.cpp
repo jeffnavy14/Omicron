@@ -4976,17 +4976,17 @@ void CLuaBaseEntity::equipItem(uint16 itemID, sol::object const& container)
 
 /************************************************************************
  *  Function: unequipItem()
- *  Purpose : Unequips an item from player
- *  Example : player:unequipItem(17845)
- *  Notes   :
+ *  Purpose : Unequips an item from player based on slot id
+ *  Example : player:unequipItem(4) -- Head
+ *  Notes   : Range 0 - 15
  ************************************************************************/
 
-void CLuaBaseEntity::unequipItem(uint8 itemID)
+void CLuaBaseEntity::unequipItem(uint8 slotID)
 {
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
         auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-        charutils::UnequipItem(PChar, itemID);
+        charutils::UnequipItem(PChar, slotID);
     }
 }
 
@@ -9851,7 +9851,7 @@ void CLuaBaseEntity::takeDamage(int32 damage, sol::object const& attacker, sol::
     // Check to see if the target has a nightmare effect active, reset wakeUp accordingly
     // see mobskills/nightmare.lua for full explanation
     if (PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP) &&
-        PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() > 0)
+        PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() >= 4) // Tier 4 = Player Avatar Nightmare
     {
         // Don't break nightmare sleep from any dmg that doesn't break bind (DoT damage)
         if (breakBind == false)
@@ -9862,7 +9862,7 @@ void CLuaBaseEntity::takeDamage(int32 damage, sol::object const& attacker, sol::
         // Diabolos NM/mob ability
         // "Damage will not wake you up from Nightmare, only Cure and Benediction (Benediction will also remove the Bio effect)."
         if (wakeUp == true &&
-            PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() > 1)
+            PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SLEEP)->GetTier() >= 5) // Tier 5 = Diabolos NM Nightmare
         {
             wakeUp = false;
         }
@@ -12050,7 +12050,7 @@ void CLuaBaseEntity::countdown(sol::object const& secondsObj)
                 strongholdNameOverride = 0
             },
             fence = {
-                pos = {x = 0.000, y = 0.000}, -- center of fence
+                pos = {x = 0.000, z = 0.000}, -- center of fence
                 radius = 25.00, -- radius from pos in yalms
                 render = 25.00, -- distance from fence it becomes visible
                 blue = true -- optional, turns default red fence bars blue
@@ -12137,18 +12137,18 @@ void CLuaBaseEntity::objectiveUtility(sol::object const& obj)
         {
             sol::object fencePosObj = fenceObj.as<sol::table>()["pos"];
             float       posX        = 0.000;
-            float       posY        = 0.000;
+            float       posZ        = 0.000;
             if (fencePosObj.valid() && fencePosObj.is<sol::table>())
             {
                 posX = fencePosObj.as<sol::table>().get<float>("x");
-                posY = fencePosObj.as<sol::table>().get<float>("y");
+                posZ = fencePosObj.as<sol::table>().get<float>("z");
             }
 
             float radius = fenceObj.as<sol::table>().get_or<float>("radius", 0.00);
             float render = fenceObj.as<sol::table>().get_or<float>("render", 25.00);
             bool  blue   = fenceObj.as<sol::table>().get_or<bool, std::string, bool>("blue", false);
 
-            packet->addFence(posX, posY, radius, render, blue);
+            packet->addFence(posX, posZ, radius, render, blue);
         }
 
         sol::object helpObj = obj.as<sol::table>()["help"];
@@ -16073,8 +16073,8 @@ bool CLuaBaseEntity::hasAttachment(uint16 itemID)
 
 /************************************************************************
  *  Function: getAutomatonName()
- *  Purpose : Returns the string name of the automation pet
- *  Example : local name = pet:getAutomatonName()
+ *  Purpose : Returns the string name of the player's automaton
+ *  Example : local name = player:getAutomatonName()
  *  Notes   :
  ************************************************************************/
 
@@ -16088,7 +16088,7 @@ auto CLuaBaseEntity::getAutomatonName() -> std::string
 
     const auto rset = db::preparedStmt("SELECT name FROM "
                                        "char_pet LEFT JOIN pet_name ON automatonid = id "
-                                       "WHERE charid = %u LIMIT 1",
+                                       "WHERE charid = ? LIMIT 1",
                                        m_PBaseEntity->id);
 
     if (rset && rset->rowsCount() && rset->next())

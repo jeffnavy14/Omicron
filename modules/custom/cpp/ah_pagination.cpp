@@ -60,7 +60,7 @@ class AHPaginationModule : public CPPModule
             if (action == 0x05)
             {
                 const timer::time_point curTick = timer::now();
-                if (curTick - PChar->m_AHHistoryTimestamp > 1500ms)
+                if (curTick > PChar->m_AHHistoryTimestamp + 1500ms)
                 {
                     // Not const, because we're going to increment it below
                     // This will get wiped on zoning

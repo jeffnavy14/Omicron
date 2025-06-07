@@ -154,7 +154,7 @@ void auctionutils::OpenListOfSales(CCharEntity* PChar, uint8 action, uint16 item
 
     const auto curTick = timer::now();
 
-    if (curTick - PChar->m_AHHistoryTimestamp > 5s)
+    if (curTick > PChar->m_AHHistoryTimestamp + 5s)
     {
         PChar->m_ah_history.clear();
         PChar->m_AHHistoryTimestamp = curTick;
@@ -278,7 +278,7 @@ void auctionutils::ProofOfPurchase(CCharEntity* PChar, uint8 action, uint32 pric
     }
 }
 
-void auctionutils::PurchasingItems(CCharEntity* PChar, uint8 action, uint32 price, uint16 itemid, uint8 quantity)
+bool auctionutils::PurchasingItems(CCharEntity* PChar, uint8 action, uint32 price, uint16 itemid, uint8 quantity)
 {
     TracyZoneScoped;
 
@@ -299,7 +299,7 @@ void auctionutils::PurchasingItems(CCharEntity* PChar, uint8 action, uint32 pric
                     if (PChar->getStorage(LocID)->SearchItem(itemid) != ERROR_SLOTID)
                     {
                         PChar->pushPacket<CAuctionHousePacket>(action, 0xE5, 0, 0, 0, 0);
-                        return;
+                        return false;
                     }
                 }
             }
@@ -320,8 +320,9 @@ void auctionutils::PurchasingItems(CCharEntity* PChar, uint8 action, uint32 pric
 
                         PChar->pushPacket<CAuctionHousePacket>(action, 0x01, itemid, price, quantity, PItem->getStackSize());
                         PChar->pushPacket<CInventoryFinishPacket>();
+
+                        return true;
                     }
-                    return;
                 }
             }
         }
@@ -336,6 +337,8 @@ void auctionutils::PurchasingItems(CCharEntity* PChar, uint8 action, uint32 pric
             PChar->pushPacket<CAuctionHousePacket>(action, 0xC5, itemid, price, quantity, 0);
         }
     }
+
+    return false;
 }
 
 void auctionutils::CancelSale(CCharEntity* PChar, uint8 action, uint8 slotid)
