@@ -214,6 +214,45 @@ enum CHAR_PERSIST : uint8
     EFFECTS  = 0x04,
 };
 
+enum class CharRace : uint8
+{
+    HumeMale       = 1,
+    HumeFemale     = 2,
+    ElvaanMale     = 3,
+    ElvaanFemale   = 4,
+    TarutaruMale   = 5,
+    TarutaruFemale = 6,
+    Mithra         = 7,
+    Galka          = 8,
+};
+
+enum class CharSize : uint8
+{
+    Small  = 0,
+    Medium = 1,
+    Large  = 2,
+};
+
+enum class CharFace : uint8
+{
+    Face1A = 0,
+    Face1B = 1,
+    Face2A = 2,
+    Face2B = 3,
+    Face3A = 4,
+    Face3B = 5,
+    Face4A = 6,
+    Face4B = 7,
+    Face5A = 8,
+    Face5B = 9,
+    Face6A = 10,
+    Face6B = 11,
+    Face7A = 12,
+    Face7B = 13,
+    Face8A = 14,
+    Face8B = 15,
+};
+
 class CBasicPacket;
 class CLinkshell;
 class CUnityChat;

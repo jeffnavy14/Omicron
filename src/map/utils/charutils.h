@@ -293,6 +293,8 @@ namespace charutils
 
     bool isOrchestrionPlaced(CCharEntity* PChar);
     void updateMannequins(CCharEntity* PChar);
+
+    bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize newSize);
 }; // namespace charutils
 
 #endif // _CHARUTILS_H
