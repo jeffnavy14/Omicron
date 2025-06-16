@@ -287,12 +287,15 @@ public:
     uint8  getRace();
     uint8  getFace();
     uint8  getGender();
+    uint8  getSize();
+    bool   raceChange(CharRace newRace, CharFace newFace, CharSize newSize);
     auto   getName() -> std::string;
     auto   getPacketName() -> std::string;
     void   renameEntity(std::string const& newName, sol::object const& arg2);
     void   hideName(bool isHidden);
     uint16 getModelId();
     void   setModelId(uint16 modelId, sol::object const& slotObj);
+    void   setLook(sol::table const& look);
     uint16 getCostume();
     void   setCostume(uint16 costume);
     uint16 getCostume2();

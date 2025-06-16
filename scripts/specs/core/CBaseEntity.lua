@@ -1177,7 +1177,25 @@ end
 
 ---@nodiscard
 ---@return integer
+function CBaseEntity:getFace()
+end
+
+---@nodiscard
+---@return integer
 function CBaseEntity:getGender()
+end
+
+---@nodiscard
+---@return integer
+function CBaseEntity:getSize()
+end
+
+---@nodiscard
+---@param newRace integer
+---@param newFace integer
+---@param newSize integer
+---@return boolean
+function CBaseEntity:raceChange(newRace, newFace, newSize)
 end
 
 ---@nodiscard
@@ -1210,6 +1228,11 @@ end
 ---@param slotObj integer?
 ---@return nil
 function CBaseEntity:setModelId(modelId, slotObj)
+end
+
+---@param look table
+---@return nil
+function CBaseEntity:setLook(look)
 end
 
 ---@nodiscard

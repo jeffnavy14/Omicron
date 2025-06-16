@@ -6213,9 +6213,9 @@ INSERT INTO `mob_spawn_points` VALUES (16904207,'Hamadryad','Hamadryad',3,2.982,
 INSERT INTO `mob_spawn_points` VALUES (16904209,'Hamadryad','Hamadryad',3,595.000,-78.300,0.000,0);
 
 -- Fire in the Sky
-INSERT INTO `mob_spawn_points` VALUES (16904211,'Razon','Razon',4,-548.619,79.683,-0.941,1);
-INSERT INTO `mob_spawn_points` VALUES (16904213,'Razon','Razon',4,17.436,1.500,-4.149,240);
-INSERT INTO `mob_spawn_points` VALUES (16904215,'Razon','Razon',4,618.808,-78.699,-6.534,218);
+INSERT INTO `mob_spawn_points` VALUES (16904211,'Razon','Razon',4,-605,82.2,0,0);
+INSERT INTO `mob_spawn_points` VALUES (16904213,'Razon','Razon',4,-1.1,0.7,0.9,0);
+INSERT INTO `mob_spawn_points` VALUES (16904215,'Razon','Razon',4,596.1,-78.9,-1.5,0);
 
 -- Beloved of the Atlantes
 INSERT INTO `mob_spawn_points` VALUES (16904217,'Watch_Hippogryph','Watch Hippogryph',5,-580.226,81.500,4.074,188);

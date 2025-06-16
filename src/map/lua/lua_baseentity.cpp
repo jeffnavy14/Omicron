@@ -5396,13 +5396,13 @@ void CLuaBaseEntity::retrieveItemFromSlip(uint16 slipId, uint16 itemId, uint16 e
 
 uint8 CLuaBaseEntity::getRace()
 {
-    if (m_PBaseEntity->objtype != TYPE_PC)
+    if (const auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-        return 0;
+        return PChar->look.race;
     }
 
-    return static_cast<CCharEntity*>(m_PBaseEntity)->look.race;
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
 }
 
 /************************************************************************
@@ -5414,13 +5414,13 @@ uint8 CLuaBaseEntity::getRace()
 
 uint8 CLuaBaseEntity::getFace()
 {
-    if (m_PBaseEntity->objtype != TYPE_PC)
+    if (const auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-        return 0;
+        return PChar->look.face;
     }
 
-    return static_cast<CCharEntity*>(m_PBaseEntity)->look.face;
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
 }
 
 /************************************************************************
@@ -5432,15 +5432,49 @@ uint8 CLuaBaseEntity::getFace()
 
 uint8 CLuaBaseEntity::getGender()
 {
-    if (m_PBaseEntity->objtype != TYPE_PC)
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-        return 0;
+        return PChar->GetGender();
     }
 
-    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
+}
 
-    return PChar->GetGender();
+/************************************************************************
+ *  Function: getSize()
+ *  Purpose : Returns the integer value of the size of the character
+ *  Small: 0, Medium: 1, Large: 2
+ *  Example : player:getSize()
+ ************************************************************************/
+
+uint8 CLuaBaseEntity::getSize()
+{
+    if (const auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        return PChar->look.size;
+    }
+
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
+}
+
+/************************************************************************
+ *  Function: raceChange()
+ *  Purpose : Updates a character race, face and size.
+ *  Example : player:raceChange(xi.race.HUME_F, 1, 0)
+ *  Note    : Will force-zone the character after the change.
+ ************************************************************************/
+
+bool CLuaBaseEntity::raceChange(const CharRace newRace, const CharFace newFace, const CharSize newSize)
+{
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        return charutils::raceChange(PChar, newRace, newFace, newSize);
+    }
+
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return false;
 }
 
 /************************************************************************
@@ -5572,6 +5606,25 @@ void CLuaBaseEntity::setModelId(uint16 modelId, sol::object const& slotObj)
         m_PBaseEntity->SetModelId(modelId);
     }
     m_PBaseEntity->updatemask |= UPDATE_LOOK;
+}
+
+/************************************************************************
+ *  Function: setLook()
+ *  Purpose : Updates the look of an equipped NPC
+ *  Example : npc:setLook({ race = xi.race.HUME_M, face = 1 })
+ *  Note    : Only for equipped NPCs that dynamically change their race/face
+ ************************************************************************/
+void CLuaBaseEntity::setLook(sol::table const& look)
+{
+    if (auto* PNpc = dynamic_cast<CNpcEntity*>(m_PBaseEntity))
+    {
+        PNpc->look.size = MODEL_EQUIPPED;
+        PNpc->look.face = look.get_or<uint32>("face", 0);
+        PNpc->look.race = look.get_or<uint32>("race", 0);
+        return;
+    }
+
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
 }
 
 /************************************************************************
@@ -19206,12 +19259,15 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getRace", CLuaBaseEntity::getRace);
     SOL_REGISTER("getFace", CLuaBaseEntity::getFace);
     SOL_REGISTER("getGender", CLuaBaseEntity::getGender);
+    SOL_REGISTER("getSize", CLuaBaseEntity::getSize);
+    SOL_REGISTER("raceChange", CLuaBaseEntity::raceChange);
     SOL_REGISTER("getName", CLuaBaseEntity::getName);
     SOL_REGISTER("getPacketName", CLuaBaseEntity::getPacketName);
     SOL_REGISTER("renameEntity", CLuaBaseEntity::renameEntity);
     SOL_REGISTER("hideName", CLuaBaseEntity::hideName);
     SOL_REGISTER("getModelId", CLuaBaseEntity::getModelId);
     SOL_REGISTER("setModelId", CLuaBaseEntity::setModelId);
+    SOL_REGISTER("setLook", CLuaBaseEntity::setLook);
     SOL_REGISTER("getCostume", CLuaBaseEntity::getCostume);
     SOL_REGISTER("setCostume", CLuaBaseEntity::setCostume);
     SOL_REGISTER("getCostume2", CLuaBaseEntity::getCostume2);

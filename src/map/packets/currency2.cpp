@@ -27,7 +27,7 @@
 CCurrencyPacket2::CCurrencyPacket2(CCharEntity* PChar)
 {
     this->setType(0x118);
-    this->setSize(150);
+    this->setSize(159);
 
     const char* query = "SELECT bayld, kinetic_unit, imprimaturs, mystical_canteen, obsidian_fragment, lebondopt_wing, \
                          pulchridopt_wing, mweya_plasm, ghastly_stone, ghastly_stone_1, ghastly_stone_2, verdigris_stone, \
@@ -45,7 +45,8 @@ CCurrencyPacket2::CCurrencyPacket2(CCharEntity* PChar)
                          detonation_spheres_set, scission_spheres_set, impaction_spheres_set, reverberation_spheres_set, \
                          transfixion_spheres_set, compression_spheres_set, fusion_spheres_set, distortion_spheres_set, \
                          fragmentation_spheres_set, gravitation_spheres_set, light_spheres_set, darkness_spheres_set, \
-                         silver_aman_voucher, domain_points, domain_points_daily, mog_segments, gallimaufry, is_accolades \
+                         silver_aman_voucher, domain_points, domain_points_daily, mog_segments, gallimaufry, is_accolades, \
+                         temenos_units, apollyon_units \
                          FROM char_points WHERE charid = ?";
 
     const auto rset = db::preparedStmt(query, PChar->id);
@@ -155,5 +156,7 @@ CCurrencyPacket2::CCurrencyPacket2(CCharEntity* PChar)
         ref<uint32>(0x8C) = rset->get<uint32>("mog_segments");
         ref<uint32>(0x90) = rset->get<uint32>("gallimaufry");
         ref<uint16>(0x94) = rset->get<uint16>("is_accolades");
+        ref<uint32>(0x98) = rset->get<uint32>("temenos_units");
+        ref<uint32>(0x9C) = rset->get<uint32>("apollyon_units");
     }
 }
