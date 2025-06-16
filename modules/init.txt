@@ -35,9 +35,28 @@
 # Will load only custom/cpp/custom_module.cpp and custom/lua/claim_shield.lua.
 #
 # Live example:
+# COMPLETE override: No use of "super" the fuction contained will be brand new.
+# ADDITIVE override: Use of "super" to ADD to whatever is already in the function.
+#                    This must be made AFTER FULL overrides.
+#
+# Database overrides here:
+omicronxi/Domain/SQL
+#
+# Core overrides here:
+omicronxi/Domain/domain_invasion
+#
+# Lua BASE updates here:
+omicronxi/Domain/enum
+#
+# Lua FULL overrides here:
+omicronxi/Domain/complete_overrides/
+#
+# Lua ADDITIVE overrides here:
+omicronxi/Domain/additive_override/
+#
+# Other
+omicronxi
 custom/lua/new_player_linkshell.lua
-custom/cpp/
-omicronxi/
 
 
 
