@@ -442,7 +442,7 @@ bool CBattleEntity::Rest(float rate)
     return didRest;
 }
 
-int16 CBattleEntity::GetWeaponDelay(bool tp)
+uint16 CBattleEntity::GetWeaponDelay(bool tp)
 {
     TracyZoneScoped;
     uint16 WeaponDelay = 9999;
@@ -460,7 +460,7 @@ int16 CBattleEntity::GetWeaponDelay(bool tp)
             MinimumDelay += subweapon->getDelay();
             WeaponDelay += subweapon->getDelay();
             // apply dual wield delay reduction
-            WeaponDelay = (uint16)(WeaponDelay * ((100.0f - getMod(Mod::DUAL_WIELD)) / 100.0f));
+            WeaponDelay = WeaponDelay * ((100.0f - getMod(Mod::DUAL_WIELD)) / 100.0f);
         }
 
         // apply haste and delay reductions that don't affect tp
@@ -490,15 +490,15 @@ int16 CBattleEntity::GetWeaponDelay(bool tp)
             // Divide by float to get a more accurate reduction, then use int16 cast to truncate
             if (!specialAttackList)
             {
-                WeaponDelay -= (int16)(WeaponDelay * (hasteMagic + hasteAbility + hasteGear) / 10000.f);
+                WeaponDelay -= WeaponDelay * (hasteMagic + hasteAbility + hasteGear) / 10000.f;
             }
         }
-        WeaponDelay = (uint16)(WeaponDelay * ((100.0f + getMod(Mod::DELAYP)) / 100.0f));
+        WeaponDelay = WeaponDelay * ((100.0f + getMod(Mod::DELAYP)) / 100.0f);
 
         // Global delay reduction cap of "about 80%" being enforced.
         // This should be enforced on -delay equipment, martial arts, dual wield, and haste, hence MinimumDelay * 0.2.
         // TODO: Could be converted to value/1024 if the exact cap is ever determined.
-        MinimumDelay -= (uint16)(MinimumDelay * 0.8);
+        MinimumDelay -= MinimumDelay * 0.8;
 
         // if hundred fists then use the min delay (as hundred fists also reduces base delay by 80%
         if (StatusEffectContainer->HasStatusEffect(EFFECT_HUNDRED_FISTS) && !tp)
