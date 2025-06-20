@@ -29,6 +29,7 @@
 #
 # Core overrides here:
 omicronxi/Domain/CPP/
+omicronxi/Custom CPP/
 #
 # Lua BASE updates here:
 omicronxi/Domain/enum
@@ -44,11 +45,12 @@ omicronxi/Custom Gaes Fete
 #omicronxi/af_reforged
 #omicronxi/Bastion
 omicronxi/besieged
-#omicronxi/commands
+omicronxi/commands
 #omicronxi/contrib
+omixeonxi/global
 omicronxi/Custom NPCs
 omicronxi/Custom_HNMs
-omicronxi/Decent
+omicronxi/Descent
 omicronxi/Domain Invasion
 #omicronxi/mimic
 omicronxi/Sky2.0
