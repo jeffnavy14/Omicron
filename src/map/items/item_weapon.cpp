@@ -317,7 +317,7 @@ void CItemWeapon::setDelay(uint16 delay)
  *                                                                      *
  ************************************************************************/
 
-int16 CItemWeapon::getDelay() const
+uint16 CItemWeapon::getDelay() const
 {
     return m_delay;
 }
@@ -342,7 +342,7 @@ void CItemWeapon::setBaseDelay(uint16 delay)
  *                                                                       *
  ************************************************************************/
 
-int16 CItemWeapon::getBaseDelay() const
+uint16 CItemWeapon::getBaseDelay() const
 {
     return m_baseDelay;
 }

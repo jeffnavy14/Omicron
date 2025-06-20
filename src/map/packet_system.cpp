@@ -84,6 +84,11 @@
 #include "packets/bazaar_message.h"
 #include "packets/bazaar_purchase.h"
 #include "packets/blacklist_edit_response.h"
+#include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x113_sitchair.h"
+#include "packets/c2s/0x11d_jump.h"
+#include "packets/c2s/0x41_trophy_entry.h"
+#include "packets/c2s/0x58_recipe.h"
 #include "packets/campaign_map.h"
 #include "packets/change_music.h"
 #include "packets/char_abilities.h"
@@ -2206,33 +2211,6 @@ void SmallPacket0x03D(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Treasure Pool (Lot On Item)                                          *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x041(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    uint8 SlotID = data.ref<uint8>(0x04);
-
-    if (SlotID >= TREASUREPOOL_SIZE)
-    {
-        ShowWarning("SmallPacket0x041: Invalid slot ID passed to packet %u by %s", SlotID, PChar->getName());
-        return;
-    }
-
-    if (PChar->PTreasurePool != nullptr)
-    {
-        if (!PChar->PTreasurePool->hasLottedItem(PChar, SlotID))
-        {
-            PChar->PTreasurePool->lotItem(PChar, SlotID, xirand::GetRandomNumber(1, 1000)); // 1 ~ 998+1
-        }
-    }
-}
-
-/************************************************************************
- *                                                                       *
  *  Treasure Pool (Pass Item)                                            *
  *                                                                       *
  ************************************************************************/
@@ -2625,35 +2603,6 @@ void SmallPacket0x053(MapSession* const PSession, CCharEntity* const PChar, CBas
     {
         PChar->pushPacket<CCharAppearancePacket>(PChar);
         PChar->pushPacket<CCharSyncPacket>(PChar);
-    }
-}
-
-/*************************************************************************
- *                                                                       *
- *  Request synthesis suggestion                                         *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x058(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    uint16 skillID     = data.ref<uint16>(0x04);
-    uint16 skillLevel  = data.ref<uint16>(0x06); // Player's current skill level (whole number only)
-    uint8  requestType = data.ref<uint8>(0x0A);  // 02 is list view, 03 is recipe
-    uint8  skillRank   = data.ref<uint8>(0x12);  // Requested Rank for item suggestions
-
-    if (requestType == 2)
-    {
-        // For pagination, the client sends the range in increments of 16. (0..0x10, 0x10..0x20, etc)
-        // uint16 resultMax  = data.ref<uint16>(0x0E); // Unused, maximum in range is always 16 greater
-        uint16 resultMin = data.ref<uint16>(0x0C);
-
-        PChar->pushPacket<CSynthSuggestionListPacket>(skillID, skillLevel, skillRank, resultMin);
-    }
-    else
-    {
-        uint16 selectedRecipeOffset = data.ref<uint16>(0x10);
-        PChar->pushPacket<CSynthSuggestionRecipePacket>(skillID, skillLevel, skillRank, selectedRecipeOffset);
     }
 }
 
@@ -6994,60 +6943,6 @@ void SmallPacket0x104(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Clicking "View wares", opening the bazaar for browsing               *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x105(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    if (PChar->BazaarID.id != 0)
-    {
-        ShowWarning("BazaarID.id is not equal to zero.");
-        return;
-    }
-
-    if (PChar->BazaarID.targid != 0)
-    {
-        ShowWarning("BazaarID.targid is not equal to zero.");
-        return;
-    }
-
-    uint32 charid = data.ref<uint32>(0x04);
-
-    CCharEntity* PTarget = charid != 0 ? PChar->loc.zone->GetCharByID(charid) : (CCharEntity*)PChar->GetEntity(PChar->m_TargID, TYPE_PC);
-
-    if (PTarget != nullptr && PTarget->id == charid && PTarget->hasBazaar())
-    {
-        PChar->BazaarID.id     = PTarget->id;
-        PChar->BazaarID.targid = PTarget->targid;
-
-        EntityID_t EntityID = { PChar->id, PChar->targid };
-
-        if (!PChar->m_isGMHidden || (PChar->m_isGMHidden && PTarget->m_GMlevel >= PChar->m_GMlevel))
-        {
-            PTarget->pushPacket<CBazaarCheckPacket>(PChar, BAZAAR_ENTER);
-        }
-        PTarget->BazaarCustomers.emplace_back(EntityID);
-
-        CItemContainer* PBazaar = PTarget->getStorage(LOC_INVENTORY);
-
-        for (uint8 SlotID = 1; SlotID <= PBazaar->GetSize(); ++SlotID)
-        {
-            CItem* PItem = PBazaar->GetItem(SlotID);
-
-            if ((PItem != nullptr) && (PItem->getCharPrice() != 0))
-            {
-                PChar->pushPacket<CBazaarItemPacket>(PItem, SlotID, PChar->loc.zone->GetTax());
-            }
-        }
-
-        DebugBazaarsFmt("Bazaar Interaction [View Wares] - Buyer: {}, Seller: {}", PChar->name, PTarget->name);
-    }
-}
-
-/************************************************************************
- *                                                                       *
  *  Purchasing an item from a bazaar                                     *
  *                                                                       *
  ************************************************************************/
@@ -7430,49 +7325,6 @@ void SmallPacket0x112(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  /sitchair                                                            *
- *                                                                       *
- ************************************************************************/
-void SmallPacket0x113(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (PChar->status != STATUS_TYPE::NORMAL)
-    {
-        return;
-    }
-
-    if (PChar->StatusEffectContainer->HasPreventActionEffect())
-    {
-        return;
-    }
-
-    uint8 type = data.ref<uint8>(0x04);
-    if (type == 2)
-    {
-        PChar->animation = ANIMATION_NONE;
-        PChar->updatemask |= UPDATE_HP;
-        return;
-    }
-
-    uint8 chairId = data.ref<uint8>(0x08) + ANIMATION_SITCHAIR_0;
-    if (chairId < 63 || chairId > 83)
-    {
-        return;
-    }
-
-    // Validate key item ownership for 64 through 83
-    if (chairId != 63 && !charutils::hasKeyItem(PChar, chairId + 0xACA))
-    {
-        chairId = ANIMATION_SITCHAIR_0;
-    }
-
-    PChar->animation = PChar->animation == chairId ? (uint8)ANIMATION_NONE : chairId;
-    PChar->updatemask |= UPDATE_HP;
-}
-
-/************************************************************************
- *                                                                       *
  *  Map Marker Request Packet                                            *
  *                                                                       *
  ************************************************************************/
@@ -7564,25 +7416,21 @@ void SmallPacket0x11B(MapSession* const PSession, CCharEntity* const PChar, CBas
     PChar->pushPacket<CCharStatusPacket>(PChar);
 }
 
-/************************************************************************
- *                                                                       *
- *  Jump (/jump)                                                         *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x11D(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
+template <typename T>
+void ValidatedPacketHandler(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     TracyZoneScoped;
-    if (jailutils::InPrison(PChar))
+
+    const T* packet = data.as<T>();
+
+    if (const auto result = packet->validate(PSession, PChar); result.valid())
     {
-        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
-        return;
+        packet->process(PSession, PChar);
     }
-
-    auto const& targetIndex = data.ref<uint16>(0x08);
-    auto const& extra       = data.ref<uint16>(0x0A);
-
-    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CCharEmotionJumpPacket>(PChar, targetIndex, extra));
+    else
+    {
+        ShowWarningFmt("Invalid {} packet from {}: {} ", packet->getName(), PChar->name, result.errorString());
+    }
 }
 
 /************************************************************************
@@ -7623,7 +7471,7 @@ void PacketParserInitialize()
     PacketSize[0x03B] = 0x10; PacketParser[0x03B] = &SmallPacket0x03B;
     PacketSize[0x03C] = 0x00; PacketParser[0x03C] = &SmallPacket0x03C;
     PacketSize[0x03D] = 0x00; PacketParser[0x03D] = &SmallPacket0x03D;
-    PacketSize[0x041] = 0x00; PacketParser[0x041] = &SmallPacket0x041;
+    PacketSize[0x041] = 0x00; PacketParser[0x041] = &ValidatedPacketHandler<GP_CLI_COMMAND_TROPHY_ENTRY>;
     PacketSize[0x042] = 0x00; PacketParser[0x042] = &SmallPacket0x042;
     PacketSize[0x04B] = 0x00; PacketParser[0x04B] = &SmallPacket0x04B;
     PacketSize[0x04D] = 0x00; PacketParser[0x04D] = &SmallPacket0x04D;
@@ -7632,7 +7480,7 @@ void PacketParserInitialize()
     PacketSize[0x051] = 0x24; PacketParser[0x051] = &SmallPacket0x051;
     PacketSize[0x052] = 0x26; PacketParser[0x052] = &SmallPacket0x052;
     PacketSize[0x053] = 0x44; PacketParser[0x053] = &SmallPacket0x053;
-    PacketSize[0x058] = 0x0A; PacketParser[0x058] = &SmallPacket0x058;
+    PacketSize[0x058] = 0x0A; PacketParser[0x058] = &ValidatedPacketHandler<GP_CLI_COMMAND_RECIPE>;
     PacketSize[0x059] = 0x00; PacketParser[0x059] = &SmallPacket0x059;
     PacketSize[0x05A] = 0x02; PacketParser[0x05A] = &SmallPacket0x05A;
     PacketSize[0x05B] = 0x0A; PacketParser[0x05B] = &SmallPacket0x05B;
@@ -7700,7 +7548,7 @@ void PacketParserInitialize()
     PacketSize[0x100] = 0x04; PacketParser[0x100] = &SmallPacket0x100;
     PacketSize[0x102] = 0x52; PacketParser[0x102] = &SmallPacket0x102;
     PacketSize[0x104] = 0x02; PacketParser[0x104] = &SmallPacket0x104;
-    PacketSize[0x105] = 0x06; PacketParser[0x105] = &SmallPacket0x105;
+    PacketSize[0x105] = 0x06; PacketParser[0x105] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_LIST>;
     PacketSize[0x106] = 0x06; PacketParser[0x106] = &SmallPacket0x106;
     PacketSize[0x109] = 0x00; PacketParser[0x109] = &SmallPacket0x109;
     PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &SmallPacket0x10A;
@@ -7712,7 +7560,7 @@ void PacketParserInitialize()
     PacketSize[0x110] = 0x0A; PacketParser[0x110] = &SmallPacket0x110;
     PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0x111;
     PacketSize[0x112] = 0x00; PacketParser[0x112] = &SmallPacket0x112;
-    PacketSize[0x113] = 0x06; PacketParser[0x113] = &SmallPacket0x113;
+    PacketSize[0x113] = 0x06; PacketParser[0x113] = &ValidatedPacketHandler<GP_CLI_COMMAND_SITCHAIR>;
     PacketSize[0x114] = 0x00; PacketParser[0x114] = &SmallPacket0x114;
     PacketSize[0x115] = 0x02; PacketParser[0x115] = &SmallPacket0x115;
     PacketSize[0x116] = 0x00; PacketParser[0x116] = &SmallPacket0x116;
@@ -7720,6 +7568,6 @@ void PacketParserInitialize()
     PacketSize[0x118] = 0x00; PacketParser[0x118] = &SmallPacket0x118;
     PacketSize[0x119] = 0x00; PacketParser[0x119] = &SmallPacket0x119;
     PacketSize[0x11B] = 0x00; PacketParser[0x11B] = &SmallPacket0x11B;
-    PacketSize[0x11D] = 0x00; PacketParser[0x11D] = &SmallPacket0x11D;
+    PacketSize[0x11D] = 0x00; PacketParser[0x11D] = &ValidatedPacketHandler<GP_CLI_COMMAND_JUMP>;
     // clang-format on
 }
