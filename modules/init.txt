@@ -40,18 +40,18 @@ omicronxi/Domain/complete_overrides/
 # Lua ADDITIVE overrides here:
 omicronxi/Domain/additive_override/
 #
-# Other
+# Other Modules
 omicronxi/Custom Gaes Fete
 #omicronxi/af_reforged
 #omicronxi/Bastion
 omicronxi/besieged
 omicronxi/commands
 #omicronxi/contrib
-omixeonxi/global
+omicronxi/global
 omicronxi/Custom NPCs
 omicronxi/Custom_HNMs
 omicronxi/Descent
-omicronxi/Domain Invasion
+#omicronxi/Domain Invasion
 #omicronxi/mimic
 omicronxi/Sky2.0
 omicronxi/the_arena
