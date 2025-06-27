@@ -42,9 +42,29 @@ xi.mobSkill =
     LEAFSTORM                =  331,
     ENTANGLE                 =  332,
 
+    VELOCIOUS_BLADE          =  347, -- Mammet-800
+
     RANGED_ATTACK_2          =  412,
 
+    SCISSION_THRUST          =  419, -- Mammet-800
+
+    SONIC_BLADE              =  422, -- Mammet-800
+
+    MICROQUAKE               =  441, -- Mammet-800
+
+    PERCUSSIVE_FOIN          =  447, -- Mammet-800
+
+    GRAVITY_WHEEL            =  457, -- Mammet-800
+
+    PSYCHOMANCY              =  464, -- Mammet-800
+
+    MIND_WALL                =  471, -- Mammet-800
+
+    TRANSMOGRIFICATION       =  487, -- Mammet-800
+
     DANSE_MACABRE            =  533,
+
+    TREMOROUS_TREAD          =  540, -- Mammet-800
 
     VULTURE_3                =  626,
 
