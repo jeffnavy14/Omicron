@@ -21,6 +21,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
+                player:hasCompletedQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.NEW_WORLDS_AWAIT) and
                 player:getLevelCap() == 80
         end,
 

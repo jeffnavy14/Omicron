@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x58_recipe.h"
+#include "0x058_recipe.h"
 
 #include "entities/charentity.h"
 #include "packets/synth_suggestion.h"

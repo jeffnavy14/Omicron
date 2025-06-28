@@ -19,21 +19,18 @@
 ===========================================================================
 */
 
-#include "0x41_trophy_entry.h"
+#pragma once
+#include "base.h"
 
-#include "entities/charentity.h"
-
-PacketValidationResult GP_CLI_COMMAND_TROPHY_ENTRY::validate(MapSession* PSession, const CCharEntity* PChar) const
+enum class GP_CLI_COMMAND_MASTERY_DISPLAY_MODE : uint8_t
 {
-    return PacketValidator()
-        .mustNotEqual(PChar->PTreasurePool, nullptr, "Character does not have a treasure pool")
-        .range("TrophyItemIndex", TrophyItemIndex, 0, TREASUREPOOL_SIZE - 1);
-}
+    Off = 0x00,
+    On  = 0x01,
+};
 
-void GP_CLI_COMMAND_TROPHY_ENTRY::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    if (!PChar->PTreasurePool->hasLottedItem(PChar, TrophyItemIndex))
-    {
-        PChar->PTreasurePool->lotItem(PChar, TrophyItemIndex, xirand::GetRandomNumber(1, 1000)); // 1 ~ 998+1
-    }
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x011B
+// This packet is sent by the client when changing their job mastery display. (/jobmasterdisp)
+GP_CLI_PACKET(GP_CLI_COMMAND_MASTERY_DISPLAY,
+              uint8_t Mode;
+              uint8_t padding00[3]; // unused
+);

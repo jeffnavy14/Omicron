@@ -1,15 +1,15 @@
 -----------------------------------
--- ID: 15446
--- Item: Goldsmith's Belt
--- Enchantment: Synthesis image support
--- Duration: 8Min
--- Goldsmithing Skill +3
+-- ID: 15452
+-- Item: Fisherman's belt
+-- Enchantment: Fishing image support
+-- Duration: 120Min
+-- Fishing Skill +2
 -----------------------------------
 ---@type TItem
 local itemObject = {}
 
 itemObject.onItemCheck = function(target, item, param, caster)
-    if target:hasStatusEffect(xi.effect.GOLDSMITHING_IMAGERY) then
+    if target:hasStatusEffect(xi.effect.FISHING_IMAGERY) then
         return xi.msg.basic.ITEM_UNABLE_TO_USE
     end
 
@@ -17,7 +17,7 @@ itemObject.onItemCheck = function(target, item, param, caster)
 end
 
 itemObject.onItemUse = function(target)
-    target:addStatusEffect(xi.effect.GOLDSMITHING_IMAGERY, 3, 0, 480)
+    target:addStatusEffect(xi.effect.FISHING_IMAGERY, 2, 0, 120 * 60)
 end
 
 return itemObject

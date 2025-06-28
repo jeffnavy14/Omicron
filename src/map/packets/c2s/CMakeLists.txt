@@ -1,15 +1,31 @@
 set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/base.h
     ${CMAKE_CURRENT_SOURCE_DIR}/validation.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x41_trophy_entry.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x41_trophy_entry.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x58_recipe.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x58_recipe.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x114_map_markers.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x114_map_markers.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x115_currencies_2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x115_currencies_2.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x116_unity_menu.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x116_unity_menu.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x117_unity_quest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x117_unity_quest.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x118_unity_toggle.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x118_unity_toggle.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x119_emote_list.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x119_emote_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11b_mastery_display.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11b_mastery_display.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.h
     PARENT_SCOPE
 )
