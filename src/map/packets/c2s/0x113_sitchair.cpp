@@ -26,7 +26,7 @@
 #include "utils/charutils.h"
 #include "validation.h"
 
-PacketValidationResult GP_CLI_COMMAND_SITCHAIR::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_SITCHAIR::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustEqual(PChar->status, STATUS_TYPE::NORMAL, "Character abnormal status")

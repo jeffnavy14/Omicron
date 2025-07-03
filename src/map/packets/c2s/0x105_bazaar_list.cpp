@@ -25,7 +25,7 @@
 #include "packets/bazaar_check.h"
 #include "packets/bazaar_item.h"
 
-PacketValidationResult GP_CLI_COMMAND_BAZAAR_LIST::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_BAZAAR_LIST::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustEqual(PChar->BazaarID.id, 0, "Character already has a Bazaar ID")

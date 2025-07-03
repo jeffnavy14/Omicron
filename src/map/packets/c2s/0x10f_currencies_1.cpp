@@ -24,7 +24,7 @@
 #include "entities/charentity.h"
 #include "packets/currency1.h"
 
-PacketValidationResult GP_CLI_COMMAND_CURRENCIES_1::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_CURRENCIES_1::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // No parameters to validate for this packet.
     return PacketValidator();

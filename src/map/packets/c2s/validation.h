@@ -29,13 +29,15 @@ public:
     {
     }
 
-    void addError(const std::string& error)
+    auto addError(const std::string& error) -> PacketValidationResult&
     {
         m_Errors.push_back(error);
         setValid(false);
+
+        return *this;
     }
 
-    bool valid() const
+    auto valid() const -> bool
     {
         return m_Valid;
     }
@@ -45,7 +47,7 @@ public:
         m_Valid = valid;
     }
 
-    std::string errorString() const
+    auto errorString() const -> std::string
     {
         std::string errorMessages;
         for (const auto& error : m_Errors)
@@ -73,7 +75,7 @@ public:
 
     // Left value must equal right value
     template <typename T1, typename T2>
-    PacketValidator& mustEqual(T1 left, T2 right, const std::string& errMsg)
+    auto mustEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
     {
         const auto rightVal = static_cast<T1>(right);
         if (left != rightVal)
@@ -86,7 +88,7 @@ public:
 
     // Left value must not equal right value
     template <typename T1, typename T2>
-    PacketValidator& mustNotEqual(T1 left, T2 right, const std::string& errMsg)
+    auto mustNotEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
     {
         const auto rightVal = static_cast<T1>(right);
         if (left == rightVal)
@@ -99,7 +101,7 @@ public:
 
     // Inclusive range check
     template <typename T, typename MinT, typename MaxT>
-    PacketValidator& range(const std::string& fieldName, T value, MinT min, MaxT max)
+    auto range(const std::string& fieldName, T value, MinT min, MaxT max) -> PacketValidator&
     {
         const auto val    = value;
         const auto minVal = static_cast<T>(min);
@@ -116,7 +118,7 @@ public:
 
     // Value must be a multiple of divisor
     template <typename T, typename DivT>
-    PacketValidator& multipleOf(const std::string& fieldName, T value, DivT divisor)
+    auto multipleOf(const std::string& fieldName, T value, DivT divisor) -> PacketValidator&
     {
         const auto divVal = static_cast<T>(divisor);
         if (value % divVal != 0)
@@ -127,9 +129,21 @@ public:
         return *this;
     }
 
+    // Value must be in the vector of allowed values
+    template <typename T>
+    PacketValidator& oneOf(const std::string& fieldName, T value, const std::set<T>& container)
+    {
+        if (!container.contains(value))
+        {
+            result_.addError(std::format("{} value {} is not allowed.", fieldName, value));
+        }
+
+        return *this;
+    }
+
     // Custom validation function
     template <typename Func>
-    PacketValidator& custom(Func customValidation)
+    auto custom(Func customValidation) -> PacketValidator&
     {
         customValidation(*this);
         return *this;

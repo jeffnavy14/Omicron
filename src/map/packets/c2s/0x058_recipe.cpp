@@ -25,7 +25,7 @@
 #include "packets/synth_suggestion.h"
 #include "validation.h"
 
-PacketValidationResult GP_CLI_COMMAND_RECIPE::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_RECIPE::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .range("skill", skill, 0x01, 0x08) // Fishing 0x00 to Digging 0x0A. 0x00, 0x09, and 0x0A are not implemented

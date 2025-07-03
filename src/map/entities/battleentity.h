@@ -579,8 +579,8 @@ public:
     bool isMounted();
     bool isSitting();
 
-    JOBTYPE GetMJob();
-    JOBTYPE GetSJob();
+    JOBTYPE GetMJob() const;
+    JOBTYPE GetSJob() const;
     uint8   GetMLevel() const;
     uint8   GetSLevel() const;
 

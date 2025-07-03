@@ -28,6 +28,7 @@
 #include "common/utils.h"
 #include "common/vana_time.h"
 
+#include "packets/c2s/0x066_fishing.h"
 #include "packets/caught_fish.h"
 #include "packets/caught_monster.h"
 #include "packets/char_skills.h"
@@ -57,6 +58,7 @@
 #include "item_container.h"
 #include "itemutils.h"
 #include "mob_modifier.h"
+#include "packets/c2s/0x110_fishing_2.h"
 #include "status_effect_container.h"
 #include "trade_container.h"
 #include "universal_container.h"
@@ -74,16 +76,6 @@ namespace fishingutils
     std::map<uint16, std::map<uint8, uint16>>         FishingCatchLists;     // zoneid, areaid, groupid
     std::map<uint16, std::map<uint32, uint16>>        FishingGroups;         // groupid, fishid, rarity
     std::map<uint16, std::map<uint32, uint8>>         FishingBaitAffinities; // baitid, fishid, power
-
-    uint32 HandleFishingAction(CCharEntity* PChar, CBasicPacket& data)
-    {
-        uint16 stamina = data.ref<uint16>(0x08);
-        uint8  action  = data.ref<uint8>(0x0E);
-        uint32 special = data.ref<uint32>(0x10);
-        fishingutils::FishingAction(PChar, (FISHACTION)action, stamina, special);
-
-        return 1;
-    }
 
     /************************************************************************
      *                                                                       *
@@ -2666,8 +2658,11 @@ namespace fishingutils
         return catchResponse;
     }
 
-    void FishingAction(CCharEntity* PChar, FISHACTION action, uint16 stamina, uint32 special)
+    void FishingAction(CCharEntity* PChar, const GP_CLI_COMMAND_FISHING_2_MODE mode, const uint32 para, const uint32 para2)
     {
+        const uint32 stamina = para;
+        const uint32 special = para2;
+
         if (!settings::get<bool>("map.FISHING_ENABLE") || PChar->GetMLevel() < settings::get<uint8>("map.FISHING_MIN_LEVEL"))
         {
             ShowWarning("Fishing is currently disabled, but somehow we have someone commencing a fishing action");
@@ -2679,9 +2674,9 @@ namespace fishingutils
         uint16 MessageOffset = GetMessageOffset(PChar->getZone());
         uint32 vanaTime      = earth_time::vanadiel_timestamp();
 
-        switch (action)
+        switch (mode)
         {
-            case FISHACTION_CHECK:
+            case GP_CLI_COMMAND_FISHING_2_MODE::RequestCheckHook:
             {
                 if (vanaTime < PChar->lastCastTime + PChar->hookDelay - 2)
                 {
@@ -2752,7 +2747,7 @@ namespace fishingutils
             }
             break;
 
-            case FISHACTION_FINISH:
+            case GP_CLI_COMMAND_FISHING_2_MODE::RequestEndMiniGame:
             {
                 if (stamina <= 4)
                 {
@@ -2867,7 +2862,7 @@ namespace fishingutils
             }
             break;
 
-            case FISHACTION_WARNING:
+            case GP_CLI_COMMAND_FISHING_2_MODE::RequestPotentialTimeout:
             {
                 // message: "You don't know how much longer you can keep this one on the line..."
                 PChar->pushPacket<CMessageTextPacket>(PChar, MessageOffset + FISHMESSAGEOFFSET_WARNING);
@@ -2876,7 +2871,7 @@ namespace fishingutils
             break;
 
             default:
-            case FISHACTION_END:
+            case GP_CLI_COMMAND_FISHING_2_MODE::RequestRelease:
             {
                 if (PChar->hookedFish != nullptr)
                 {

@@ -29,6 +29,7 @@
 #include <map>
 #include <vector>
 
+enum class GP_CLI_COMMAND_FISHING_2_MODE : uint8_t;
 struct lsbret_t
 { // lose/snap/break return values
     uint8 failReason;
@@ -508,14 +509,6 @@ enum FISHPOOLFLAGS : uint32
     FISHPOOL_REMOVE  = 0x200
 };
 
-enum FISHACTION : uint8
-{
-    FISHACTION_CHECK   = 2, // This is always the first 0x110 packet.
-    FISHACTION_FINISH  = 3, // This is the next 0x110 after 0x115.
-    FISHACTION_END     = 4, // This is sent when the fishing session ends completely
-    FISHACTION_WARNING = 5  // This is the 0x110 packet if the time is going on too long.
-};
-
 enum FISHMESSAGEOFFSET : uint8
 {
     FISHMESSAGEOFFSET_NOROD                    = 0x01, // You can't fish without a rod in your hands.
@@ -925,10 +918,9 @@ class CItemWeapon;
 namespace fishingutils
 {
     // Catch Pools
-    void   ReduceFishPool(uint16 zoneId, uint8 areaId, uint16 fishId);
-    void   RestockFishingAreas();
-    void   CreateFishingPools();
-    uint32 HandleFishingAction(CCharEntity* PChar, CBasicPacket& data);
+    void ReduceFishPool(uint16 zoneId, uint8 areaId, uint16 fishId);
+    void RestockFishingAreas();
+    void CreateFishingPools();
 
     // Calculations
     uint8               GetMoonPhase();
@@ -1003,7 +995,7 @@ namespace fishingutils
     uint8            UnhookMob(CCharEntity* PChar, bool lost);
     fishresponse_t*  FishingCheck(CCharEntity* PChar, uint8 fishingSkill, rod_t* rod, bait_t* bait, fishingarea_t* area);
     catchresponse_t* ReelCheck(CCharEntity* PChar, fishresponse_t* response, rod_t* rod);
-    void             FishingAction(CCharEntity* PChar, FISHACTION action, uint16 stamina, uint32 special);
+    void             FishingAction(CCharEntity* PChar, GP_CLI_COMMAND_FISHING_2_MODE mode, uint32 para, uint32 para2);
     CItemFish*       GetFish(uint16 itemid); // creates a `new` CItemFish if possible
 
     // Initialization

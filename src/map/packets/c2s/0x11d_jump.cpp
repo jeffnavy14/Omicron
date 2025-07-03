@@ -25,7 +25,7 @@
 #include "packets/char_emotion_jump.h"
 #include "utils/jailutils.h"
 
-PacketValidationResult GP_CLI_COMMAND_JUMP::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_JUMP::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustEqual(UniqueNo, PChar->id, "Character ID mismatch")
