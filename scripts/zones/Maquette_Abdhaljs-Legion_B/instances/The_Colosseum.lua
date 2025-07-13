@@ -15,7 +15,7 @@ instanceObject.onInstanceCreatedCallback = function(player, instance)
     omicron.colosseum_util.onInstanceCreatedCallback(player, instance)
 end
 
-instanceObject.afterInstanceRegister = function(player)
+instanceObject.afterInstanceRegister = function(player, instance)
     omicron.colosseum_util.afterInstanceRegister(player, instance)
 end
 

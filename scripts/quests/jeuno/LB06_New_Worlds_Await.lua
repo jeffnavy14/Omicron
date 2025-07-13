@@ -23,7 +23,7 @@ quest.reward =
 
 quest.sections =
 {
-    -- Section: Quest accepted.
+    -- Section: Quest accepted. There is no quest pre-requisite.
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and

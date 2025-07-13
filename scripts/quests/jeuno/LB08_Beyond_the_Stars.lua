@@ -26,6 +26,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
+                player:hasCompletedQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.EXPANDING_HORIZONS) and
                 player:getLevelCap() == 85
         end,
 
@@ -44,7 +45,7 @@ quest.sections =
                     then
                         if playerLevel > 80 then
                             lastQuestNumber = 3
-                        elseif playerLevel == 80 then
+                        elseif playerLevel >= 75 then
                             lastQuestNumber = 2
                             lastQuestStage  = 2
                         end

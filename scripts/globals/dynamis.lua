@@ -164,9 +164,8 @@ local entryInfo =
         beatKI   = xi.ki.DYNAMIS_TAVNAZIA_SLIVER,
         enterPos = { 0.1, -7, -21, 190, 42 },
         reqs     = function(player)
-            return player:hasKeyItem(xi.ki.DYNAMIS_BUBURIMU_SLIVER) and
-                player:hasKeyItem(xi.ki.DYNAMIS_QUFIM_SLIVER) and
-                player:hasKeyItem(xi.ki.DYNAMIS_VALKURM_SLIVER)
+            return player:hasKeyItem(xi.ki.DYNAMIS_BUBURIMU_SLIVER) or
+                xi.settings.main.FREE_COP_DYNAMIS == 1
         end,
     },
 }

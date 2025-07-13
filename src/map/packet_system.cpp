@@ -84,19 +84,23 @@
 #include "packets/bazaar_message.h"
 #include "packets/bazaar_purchase.h"
 #include "packets/blacklist_edit_response.h"
+#include "packets/c2s/0x041_trophy_entry.h"
+#include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x10f_currencies_1.h"
 #include "packets/c2s/0x113_sitchair.h"
+#include "packets/c2s/0x114_map_markers.h"
+#include "packets/c2s/0x115_currencies_2.h"
+#include "packets/c2s/0x116_unity_menu.h"
+#include "packets/c2s/0x117_unity_quest.h"
+#include "packets/c2s/0x118_unity_toggle.h"
+#include "packets/c2s/0x119_emote_list.h"
+#include "packets/c2s/0x11b_mastery_display.h"
 #include "packets/c2s/0x11d_jump.h"
-#include "packets/c2s/0x41_trophy_entry.h"
-#include "packets/c2s/0x58_recipe.h"
-#include "packets/campaign_map.h"
-#include "packets/change_music.h"
 #include "packets/char_abilities.h"
 #include "packets/char_appearance.h"
 #include "packets/char_check.h"
-#include "packets/char_emote_list.h"
 #include "packets/char_emotion.h"
-#include "packets/char_emotion_jump.h"
 #include "packets/char_equip.h"
 #include "packets/char_health.h"
 #include "packets/char_job_extra.h"
@@ -112,8 +116,6 @@
 #include "packets/chocobo_digging.h"
 #include "packets/conquest_map.h"
 #include "packets/cs_position.h"
-#include "packets/currency1.h"
-#include "packets/currency2.h"
 #include "packets/downloading_data.h"
 #include "packets/entity_update.h"
 #include "packets/fish_ranking.h"
@@ -134,7 +136,6 @@
 #include "packets/linkshell_message.h"
 #include "packets/lock_on.h"
 #include "packets/macroequipset.h"
-#include "packets/map_marker.h"
 #include "packets/menu_config.h"
 #include "packets/menu_jobpoints.h"
 #include "packets/menu_merit.h"
@@ -163,7 +164,6 @@
 #include "packets/shop_appraise.h"
 #include "packets/shop_buy.h"
 #include "packets/status_effects.h"
-#include "packets/synth_suggestion.h"
 #include "packets/trade_action.h"
 #include "packets/trade_item.h"
 #include "packets/trade_request.h"
@@ -7252,18 +7252,6 @@ void SmallPacket0x10E(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                        *
- *  Request Currency1 tab                                                 *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x10F(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PChar->pushPacket<CCurrencyPacket1>(PChar);
-}
-
-/************************************************************************
  *                                                                       *
  *  Fishing (New)                                                        *
  *                                                                       *
@@ -7321,99 +7309,6 @@ void SmallPacket0x112(MapSession* const PSession, CCharEntity* const PChar, CBas
             PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
         }
     }
-}
-
-/************************************************************************
- *                                                                       *
- *  Map Marker Request Packet                                            *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x114(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PChar->pushPacket<CMapMarkerPacket>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
- *  Request Currency2 tab                                                  *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x115(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PChar->pushPacket<CCurrencyPacket2>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
- *  Unity Menu Packet (Possibly incomplete)                               *
- *  This stub only handles the needed RoE updates.                        *
- *                                                                        *
- ************************************************************************/
-void SmallPacket0x116(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
-    PChar->pushPacket<CMenuUnityPacket>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
- *  Unity Rankings Menu Packet (Possibly incomplete)                      *
- *  This stub only handles the needed RoE updates.                        *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x117(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
-    PChar->pushPacket<CMenuUnityPacket>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
- *  Unity Chat Toggle                                                     *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x118(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    bool active = data.ref<uint8>(0x04);
-    if (PChar->PUnityChat)
-    {
-        unitychat::DelOnlineMember(PChar, PChar->PUnityChat->getLeader());
-    }
-    if (active)
-    {
-        unitychat::AddOnlineMember(PChar, PChar->profile.unity_leader);
-    }
-}
-
-/************************************************************************
- *                                                                        *
- *  Request Emote List                                                    *
- *                                                                        *
- ************************************************************************/
-void SmallPacket0x119(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    PChar->pushPacket<CCharEmoteListPacket>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
- *  Set Job Master Display                                                *
- *                                                                        *
- ************************************************************************/
-void SmallPacket0x11B(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    PChar->m_jobMasterDisplay = data.ref<uint8>(0x04) > 0;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
 }
 
 template <typename T>
@@ -7556,18 +7451,18 @@ void PacketParserInitialize()
     PacketSize[0x10C] = 0x04; PacketParser[0x10C] = &SmallPacket0x10C;
     PacketSize[0x10D] = 0x04; PacketParser[0x10D] = &SmallPacket0x10D;
     PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &SmallPacket0x10E;
-    PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &SmallPacket0x10F;
+    PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_1>;
     PacketSize[0x110] = 0x0A; PacketParser[0x110] = &SmallPacket0x110;
     PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0x111;
     PacketSize[0x112] = 0x00; PacketParser[0x112] = &SmallPacket0x112;
     PacketSize[0x113] = 0x06; PacketParser[0x113] = &ValidatedPacketHandler<GP_CLI_COMMAND_SITCHAIR>;
-    PacketSize[0x114] = 0x00; PacketParser[0x114] = &SmallPacket0x114;
-    PacketSize[0x115] = 0x02; PacketParser[0x115] = &SmallPacket0x115;
-    PacketSize[0x116] = 0x00; PacketParser[0x116] = &SmallPacket0x116;
-    PacketSize[0x117] = 0x00; PacketParser[0x117] = &SmallPacket0x117;
-    PacketSize[0x118] = 0x00; PacketParser[0x118] = &SmallPacket0x118;
-    PacketSize[0x119] = 0x00; PacketParser[0x119] = &SmallPacket0x119;
-    PacketSize[0x11B] = 0x00; PacketParser[0x11B] = &SmallPacket0x11B;
+    PacketSize[0x114] = 0x00; PacketParser[0x114] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_MARKERS>;
+    PacketSize[0x115] = 0x02; PacketParser[0x115] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_2>;
+    PacketSize[0x116] = 0x00; PacketParser[0x116] = &ValidatedPacketHandler<GP_CLI_COMMAND_UNITY_MENU>;
+    PacketSize[0x117] = 0x00; PacketParser[0x117] = &ValidatedPacketHandler<GP_CLI_COMMAND_UNITY_QUEST>;
+    PacketSize[0x118] = 0x00; PacketParser[0x118] = &ValidatedPacketHandler<GP_CLI_COMMAND_UNITY_TOGGLE>;
+    PacketSize[0x119] = 0x00; PacketParser[0x119] = &ValidatedPacketHandler<GP_CLI_COMMAND_EMOTE_LIST>;
+    PacketSize[0x11B] = 0x00; PacketParser[0x11B] = &ValidatedPacketHandler<GP_CLI_COMMAND_MASTERY_DISPLAY>;
     PacketSize[0x11D] = 0x00; PacketParser[0x11D] = &ValidatedPacketHandler<GP_CLI_COMMAND_JUMP>;
     // clang-format on
 }
