@@ -250,3 +250,4 @@ xi_search.dSYM
 modules/contrib/
 modules/omicronXI/
 /modules
+settings/default/network.lua
