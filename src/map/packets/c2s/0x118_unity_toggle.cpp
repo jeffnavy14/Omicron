@@ -24,10 +24,10 @@
 #include "entities/charentity.h"
 #include "unitychat.h"
 
-PacketValidationResult GP_CLI_COMMAND_UNITY_TOGGLE::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_UNITY_TOGGLE::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .range("Mode", Mode, GP_CLI_COMMAND_UNITY_TOGGLE_MODE::Inactive, GP_CLI_COMMAND_UNITY_TOGGLE_MODE::Active);
+        .oneOf<GP_CLI_COMMAND_UNITY_TOGGLE_MODE>(Mode);
 }
 
 void GP_CLI_COMMAND_UNITY_TOGGLE::process(MapSession* PSession, CCharEntity* PChar) const

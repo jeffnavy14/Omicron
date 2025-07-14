@@ -297,7 +297,7 @@ xi.battlefield.id =
     YOU_ARE_WHAT_YOU_EAT                       = 801, -- Experimental
     EMPTY_DREAMS                               = 802,
     ANCIENT_FLAMES_BECKON_SPIRE_OF_MEA         = 832, -- Converted
-    PLAYING_HOST                               = 833,
+    PLAYING_HOST                               = 833, -- Experimental
     EMPTY_DESIRES                              = 834,
     DESIRES_OF_EMPTINESS                       = 864, -- Converted
     PULLING_THE_PLUG                           = 865,
@@ -1438,7 +1438,7 @@ function BattlefieldMission:onEventFinishWin(player, csid, option, npc)
     end
 
     -- Only grant mission XP once per JP midnight
-    if self.grantXP and self:getVar(player, 'XP') <= os.time() then
+    if self.grantXP and self:getVar(player, 'XP') <= GetSystemTime() then
         self:setVar(player, 'XP', getMidnight())
         player:addExp(self.grantXP)
     end

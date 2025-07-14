@@ -25,7 +25,7 @@
 #include "packets/menu_unity.h"
 #include "packets/roe_sparkupdate.h"
 
-PacketValidationResult GP_CLI_COMMAND_UNITY_QUEST::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_UNITY_QUEST::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustEqual(Kind, 0x0, "Kind not 0x0"); // Client always sends 0x0 despite possibly supporting 0x1, 0x2

@@ -23,7 +23,7 @@
 
 #include "entities/charentity.h"
 
-PacketValidationResult GP_CLI_COMMAND_TROPHY_ENTRY::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_TROPHY_ENTRY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustNotEqual(PChar->PTreasurePool, nullptr, "Character does not have a treasure pool")

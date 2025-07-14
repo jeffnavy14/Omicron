@@ -80,6 +80,7 @@ enum ITEMID : uint16
     WATER_CRYSTAL       = 4101,
     LIGHT_CRYSTAL       = 4102,
     DARK_CRYSTAL        = 4103,
+    DARK_CLUSTER        = 4111,
     INFERNO_CRYSTAL     = 4238,
     GLACIER_CRYSTAL     = 4239,
     CYCLONE_CRYSTAL     = 4240,
@@ -90,4 +91,5 @@ enum ITEMID : uint16
     TWILIGHT_CRYSTAL    = 4245,
     RANKA               = 8803,
     FURUSUMI            = 8804,
+    GIL                 = 65535,
 };

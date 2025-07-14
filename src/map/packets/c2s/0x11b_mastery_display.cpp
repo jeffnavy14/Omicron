@@ -25,10 +25,10 @@
 #include "packets/char_status.h"
 #include "utils/charutils.h"
 
-PacketValidationResult GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .range("Mode", Mode, GP_CLI_COMMAND_MASTERY_DISPLAY_MODE::Off, GP_CLI_COMMAND_MASTERY_DISPLAY_MODE::On);
+        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
 }
 
 void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const

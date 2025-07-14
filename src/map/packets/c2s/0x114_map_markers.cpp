@@ -24,7 +24,7 @@
 #include "entities/charentity.h"
 #include "packets/map_marker.h"
 
-PacketValidationResult GP_CLI_COMMAND_MAP_MARKERS::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_MAP_MARKERS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // No parameters to validate for this packet.
     return PacketValidator();

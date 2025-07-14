@@ -25,7 +25,7 @@
 #include "packets/menu_unity.h"
 #include "packets/roe_sparkupdate.h"
 
-PacketValidationResult GP_CLI_COMMAND_UNITY_MENU::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_UNITY_MENU::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .range("Kind", Kind, 0x0, 0x1); // Kind 0 = First set of 32 packets, Kind 1 = Second set of 32 packets

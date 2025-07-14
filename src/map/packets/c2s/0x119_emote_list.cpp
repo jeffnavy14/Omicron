@@ -24,7 +24,7 @@
 #include "entities/charentity.h"
 #include "packets/char_emote_list.h"
 
-PacketValidationResult GP_CLI_COMMAND_EMOTE_LIST::validate(MapSession* PSession, const CCharEntity* PChar) const
+auto GP_CLI_COMMAND_EMOTE_LIST::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // No input validation is needed for this packet.
     return PacketValidator();

@@ -29,6 +29,7 @@
 
 #include <array>
 
+struct mon_data_t;
 class CCharEntity;
 
 // ===
@@ -78,7 +79,7 @@ namespace monstrosity
     void   SendFullMonstrosityUpdate(CCharEntity* PChar);
 
     void HandleMonsterSkillActionPacket(CCharEntity* PChar, CBasicPacket& data);
-    void HandleEquipChangePacket(CCharEntity* PChar, CBasicPacket& data);
+    void HandleEquipChangePacket(CCharEntity* PChar, const mon_data_t& data);
 
     void SetLevel(CCharEntity* PChar, uint8 id, uint8 level);
 

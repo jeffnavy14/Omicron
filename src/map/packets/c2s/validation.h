@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include "magic_enum/magic_enum.hpp"
+
+class CCharEntity;
 class PacketValidationResult
 {
 public:
@@ -29,13 +32,15 @@ public:
     {
     }
 
-    void addError(const std::string& error)
+    auto addError(const std::string& error) -> PacketValidationResult&
     {
         m_Errors.push_back(error);
         setValid(false);
+
+        return *this;
     }
 
-    bool valid() const
+    auto valid() const -> bool
     {
         return m_Valid;
     }
@@ -45,7 +50,7 @@ public:
         m_Valid = valid;
     }
 
-    std::string errorString() const
+    auto errorString() const -> std::string
     {
         std::string errorMessages;
         for (const auto& error : m_Errors)
@@ -73,7 +78,7 @@ public:
 
     // Left value must equal right value
     template <typename T1, typename T2>
-    PacketValidator& mustEqual(T1 left, T2 right, const std::string& errMsg)
+    auto mustEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
     {
         const auto rightVal = static_cast<T1>(right);
         if (left != rightVal)
@@ -86,7 +91,7 @@ public:
 
     // Left value must not equal right value
     template <typename T1, typename T2>
-    PacketValidator& mustNotEqual(T1 left, T2 right, const std::string& errMsg)
+    auto mustNotEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
     {
         const auto rightVal = static_cast<T1>(right);
         if (left == rightVal)
@@ -99,7 +104,7 @@ public:
 
     // Inclusive range check
     template <typename T, typename MinT, typename MaxT>
-    PacketValidator& range(const std::string& fieldName, T value, MinT min, MaxT max)
+    auto range(const std::string& fieldName, T value, MinT min, MaxT max) -> PacketValidator&
     {
         const auto val    = value;
         const auto minVal = static_cast<T>(min);
@@ -116,7 +121,7 @@ public:
 
     // Value must be a multiple of divisor
     template <typename T, typename DivT>
-    PacketValidator& multipleOf(const std::string& fieldName, T value, DivT divisor)
+    auto multipleOf(const std::string& fieldName, T value, DivT divisor) -> PacketValidator&
     {
         const auto divVal = static_cast<T>(divisor);
         if (value % divVal != 0)
@@ -127,9 +132,52 @@ public:
         return *this;
     }
 
+    // Value must be in the set of allowed values
+    template <typename T>
+    auto oneOf(const std::string& fieldName, T value, const std::set<T>& container) -> PacketValidator&
+    {
+        if (!container.contains(value))
+        {
+            if constexpr (std::is_enum_v<T>)
+            {
+                result_.addError(std::format("{} value {} is not allowed.", fieldName, static_cast<std::underlying_type_t<T>>(value)));
+            }
+            else
+            {
+                result_.addError(std::format("{} value {} is not allowed.", fieldName, value));
+            }
+        }
+
+        return *this;
+    }
+
+    // Value must be contained in the enum class
+    template <typename E>
+    auto oneOf(const std::underlying_type_t<E> value) -> PacketValidator&
+    {
+        static_assert(std::is_enum_v<E>, "Template parameter E must be an enum");
+
+        if (!magic_enum::enum_contains<E>(value))
+        {
+            constexpr std::string_view enumTypeName = magic_enum::enum_type_name<E>();
+            result_.addError(std::format("{} not a valid {} value.", value, enumTypeName));
+        }
+
+        return *this;
+    }
+
+    // Character must not be crafting
+    auto isNotCrafting(const CCharEntity* PChar) -> PacketValidator&;
+    // Character current status must be NORMAL
+    auto isNormalStatus(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not have any status effect preventing action (Sleep, Stun, Terror etc..)
+    auto isNotPreventedAction(const CCharEntity* PChar) -> PacketValidator&;
+    // Character is not assuming a Monstrosity form
+    auto isNotMonstrosity(const CCharEntity* PChar) -> PacketValidator&;
+
     // Custom validation function
     template <typename Func>
-    PacketValidator& custom(Func customValidation)
+    auto custom(Func customValidation) -> PacketValidator&
     {
         customValidation(*this);
         return *this;

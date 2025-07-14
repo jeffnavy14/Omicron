@@ -507,11 +507,11 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
                     hasteAbility = hasteAbility - getMod(Mod::TWOHAND_HASTE_ABILITY) / 10000.0f;
                 }
 
-                hasteMagic   = std::clamp<float>(hasteMagic, -0.4375f, 1.0f);
+                hasteMagic   = std::clamp<float>(hasteMagic, -1.0f, 0.4375f);
                 hasteAbility = std::clamp<float>(hasteAbility, -0.25f, 0.25f);
                 hasteGear    = std::clamp<float>(hasteGear, -0.25f, 0.25f);
 
-                hasteMultiplier = std::clamp<float>(1.0f + hasteMagic + hasteAbility + hasteGear, 0.2f, 2.0f);
+                hasteMultiplier = std::clamp<float>(1.0f - hasteMagic - hasteAbility - hasteGear, 0.2f, 2.0f);
             }
         }
 
@@ -1188,7 +1188,7 @@ uint16 CBattleEntity::EVA()
     return std::max(1, evasion + (this->objtype == TYPE_MOB || this->objtype == TYPE_PET ? 0 : m_modStat[Mod::EVA])); // The mod for a pet or mob is already calclated in the above so return 0
 }
 
-JOBTYPE CBattleEntity::GetMJob()
+JOBTYPE CBattleEntity::GetMJob() const
 {
     return m_mjob;
 }
@@ -1198,12 +1198,13 @@ uint8 CBattleEntity::GetMLevel() const
     return m_mlvl;
 }
 
-JOBTYPE CBattleEntity::GetSJob()
+JOBTYPE CBattleEntity::GetSJob() const
 {
     if (StatusEffectContainer->HasStatusEffect({ EFFECT_OBLIVISCENCE, EFFECT_SJ_RESTRICTION }))
     {
         return JOB_NON;
     }
+
     return m_sjob;
 }
 
@@ -1213,6 +1214,7 @@ uint8 CBattleEntity::GetSLevel() const
     {
         return 0;
     }
+
     return m_slvl;
 }
 

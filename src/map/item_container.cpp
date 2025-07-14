@@ -182,12 +182,13 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
     return ERROR_SLOTID;
 }
 
-CItem* CItemContainer::GetItem(uint8 SlotID)
+CItem* CItemContainer::GetItem(uint8 slotID) const
 {
-    if (SlotID <= m_size)
+    if (slotID <= m_size)
     {
-        return m_ItemList[SlotID];
+        return m_ItemList[slotID];
     }
+
     return nullptr;
 }
 
