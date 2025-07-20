@@ -892,16 +892,17 @@ timer::duration CCharEntity::GetPlayTime(bool needUpdate)
     return m_PlayTime;
 }
 
-CItemEquipment* CCharEntity::getEquip(SLOTTYPE slot)
+auto CCharEntity::getEquip(const SLOTTYPE slot) const -> CItemEquipment*
 {
-    uint8           loc  = equip[slot];
-    uint8           est  = equipLoc[slot];
+    const uint8     loc  = equip[slot];
+    const uint8     est  = equipLoc[slot];
     CItemEquipment* item = nullptr;
 
     if (loc != 0)
     {
-        item = (CItemEquipment*)getStorage(est)->GetItem(loc);
+        item = static_cast<CItemEquipment*>(getStorage(est)->GetItem(loc));
     }
+
     return item;
 }
 
@@ -3224,7 +3225,7 @@ void CCharEntity::clearTriggerAreas()
     charTriggerAreaIDs.clear();
 }
 
-bool CCharEntity::isInEvent()
+auto CCharEntity::isInEvent() const -> bool
 {
     return currentEvent->eventId != -1;
 }

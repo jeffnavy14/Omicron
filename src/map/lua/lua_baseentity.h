@@ -28,6 +28,7 @@
 #include "packets/position.h"
 #include "utils/charutils.h"
 
+enum class ChocoboColor : uint8_t;
 class CBaseEntity;
 class CCharEntity;
 class CLuaBattlefield;
@@ -787,7 +788,7 @@ public:
 
     auto getPetName() -> const std::string;
     void setPetName(uint8 pType, uint16 value, sol::object const& arg2);
-    void registerChocobo(uint32 value);
+    void registerChocobo(ChocoboColor color, sol::table const& traits) const;
 
     void petAttack(CLuaBaseEntity* PEntity);
     void petAbility(uint16 abilityID); // Function exists, but is not implemented.  Warning will be displayed.

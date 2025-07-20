@@ -161,6 +161,7 @@
 #include "utils/itemutils.h"
 #include "utils/jailutils.h"
 #include "utils/mobutils.h"
+#include "utils/mountutils.h"
 #include "utils/petutils.h"
 #include "utils/puppetutils.h"
 #include "utils/trustutils.h"
@@ -15954,17 +15955,30 @@ void CLuaBaseEntity::setPetName(uint8 pType, uint16 value, sol::object const& ar
     }
 }
 
-void CLuaBaseEntity::registerChocobo(uint32 value)
+void CLuaBaseEntity::registerChocobo(const ChocoboColor color, sol::table const& traits) const
 {
-    if (m_PBaseEntity == nullptr || m_PBaseEntity->objtype != TYPE_PC)
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid Entity");
+        const auto largeBeak   = traits.get_or("largeBeak", false);
+        const auto fullTail    = traits.get_or("fullTail", false);
+        const auto largeTalons = traits.get_or("largeTalons", false);
+
+        const ChocoboCustomProperties newChocobo{
+            .traits = ChocoboPhysicalTraits{
+                .largeBeak   = largeBeak,
+                .largeTalons = largeTalons,
+                .fullTail    = fullTail,
+            },
+            .color = color,
+        };
+
+        PChar->m_FieldChocobo = newChocobo.properties;
+        PChar->m_mountId      = 0;
+        db::preparedStmt("UPDATE char_pet SET field_chocobo = ? WHERE charid = ?", PChar->m_FieldChocobo, PChar->id);
         return;
     }
 
-    auto* PChar           = static_cast<CCharEntity*>(m_PBaseEntity);
-    PChar->m_FieldChocobo = value;
-    db::preparedStmt("UPDATE char_pet SET field_chocobo = ? WHERE charid = ?", value, PChar->id);
+    ShowWarning("Invalid Entity (PC: %s) calling function.", m_PBaseEntity->getName());
 }
 
 /************************************************************************

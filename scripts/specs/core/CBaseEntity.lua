@@ -3444,9 +3444,10 @@ end
 function CBaseEntity:setPetName(pType, value, arg2)
 end
 
----@param value integer
+---@param color xi.chocobo.color
+---@param traits table
 ---@return nil
-function CBaseEntity:registerChocobo(value)
+function CBaseEntity:registerChocobo(color, traits)
 end
 
 ---@nodiscard

@@ -129,6 +129,7 @@ enum class MsgStd : uint16
     PollProposalLinkshell2       = 289, // Player Name's proposal to the linkshell group (cast vote with command: "/vote ?"):
     CurrentPollResultsLinkshell2 = 290, // Player Name's proposal - Current poll results:
     FinalPollResultsLinkshell2   = 291, // Player Name's proposal - Final poll results:
+    SuccessfulRemodel            = 293, // Your second floor has been successfully remodeled.
     TrustCannotLFP               = 296, // You cannot use Trust magic while seeking a party.
     WaitParty                    = 297, // While inviting a party member, you must wait a while before using Trust magic.
     TrustMaximumNumber           = 298, // You have called forth your maximum number of alter egos.

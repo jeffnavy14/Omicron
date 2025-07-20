@@ -343,6 +343,7 @@ public:
     std::array<uint8, 20> m_SetBlueSpells{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
 
     uint32 m_FieldChocobo{};
+    uint8  m_mountId{}; // Do not reset to 0. Only update when the mount changes.
     uint32 m_claimedDeeds[5]{};
     uint32 m_uniqueEvents[5]{};
 
@@ -561,7 +562,7 @@ public:
     void            SetPlayTime(timer::duration playTime); // Set playtime
     timer::duration GetPlayTime(bool needUpdate = true);   // Get playtime
 
-    CItemEquipment* getEquip(SLOTTYPE slot);
+    auto getEquip(SLOTTYPE slot) const -> CItemEquipment*;
 
     bool requestedInfoSync = false;
 
@@ -611,7 +612,7 @@ public:
     void onTriggerAreaLeave(uint32 triggerAreaId);
     void clearTriggerAreas();
 
-    bool isInEvent();
+    auto isInEvent() const -> bool;
     bool isNpcLocked();
     void queueEvent(EventInfo* eventToQueue);
     void endCurrentEvent();

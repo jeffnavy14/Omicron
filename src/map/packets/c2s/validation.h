@@ -23,6 +23,7 @@
 
 #include "magic_enum/magic_enum.hpp"
 
+enum LSTYPE : std::uint8_t;
 class CCharEntity;
 class PacketValidationResult
 {
@@ -174,6 +175,10 @@ public:
     auto isNotPreventedAction(const CCharEntity* PChar) -> PacketValidator&;
     // Character is not assuming a Monstrosity form
     auto isNotMonstrosity(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be in a valid event state, with optional eventId check.
+    auto isInEvent(const CCharEntity* PChar, std::optional<uint16_t> eventId = std::nullopt) -> PacketValidator&;
+    // Character must have necessary rank in the linkshell in the given slot
+    auto hasLinkshellRank(const CCharEntity* PChar, uint8_t slot, LSTYPE rank) -> PacketValidator&;
 
     // Custom validation function
     template <typename Func>

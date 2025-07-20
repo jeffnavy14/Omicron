@@ -44,7 +44,6 @@
 #include "monstrosity.h"
 #include "packet_system.h"
 
-#include "items.h"
 #include "party.h"
 #include "recast_container.h"
 #include "roe.h"
@@ -95,6 +94,9 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x059_effectend.h"
 #include "packets/c2s/0x05a_reqconquest.h"
+#include "packets/c2s/0x05b_eventend.h"
+#include "packets/c2s/0x05c_eventendxzy.h"
+#include "packets/c2s/0x060_passwards.h"
 #include "packets/c2s/0x061_clistatus.h"
 #include "packets/c2s/0x063_dig.h"
 #include "packets/c2s/0x066_fishing.h"
@@ -116,6 +118,9 @@
 #include "packets/c2s/0x0be_merits.h"
 #include "packets/c2s/0x0bf_job_points_spend.h"
 #include "packets/c2s/0x0c0_job_points_req.h"
+#include "packets/c2s/0x0c3_group_comlink_make.h"
+#include "packets/c2s/0x0c4_group_comlink_active.h"
+#include "packets/c2s/0x0cb_myroom_is.h"
 #include "packets/c2s/0x0d2_map_group.h"
 #include "packets/c2s/0x0d3_faq_gmcall.h"
 #include "packets/c2s/0x0d4_faq_gmparam.h"
@@ -175,10 +180,7 @@
 #include "packets/chocobo_digging.h"
 #include "packets/cs_position.h"
 #include "packets/fish_ranking.h"
-#include "packets/inventory_assign.h"
 #include "packets/inventory_finish.h"
-#include "packets/inventory_item.h"
-#include "packets/linkshell_equip.h"
 #include "packets/macroequipset.h"
 #include "packets/menu_config.h"
 #include "packets/menu_jobpoints.h"
@@ -716,6 +718,8 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
                     return;
                 }
 
+                // Rendering packets need to send MountIndex even after char is unmounted.
+                PChar->m_mountId = MountID ? MountID + 1 : 0;
                 PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(
                                                                   EFFECT_MOUNTED,
                                                                   EFFECT_MOUNTED,
@@ -1175,150 +1179,6 @@ void SmallPacket0x053(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Event Update (Completion or Update)                                  *
- *                                                                       *
- ************************************************************************/
-
-// https://github.com/atom0s/XiPackets/blob/main/world/client/0x005B/README.md
-struct GP_CLI_EVENTEND
-{
-    uint16_t id : 9;
-    uint16_t size : 7;
-    uint16_t sync;
-    uint32_t UniqueNo;  // PS2: UniqueNo
-    uint32_t EndPara;   // PS2: EndPara
-    uint16_t ActIndex;  // PS2: ActIndex
-    uint16_t Mode;      // PS2: Mode
-    uint16_t EventNum;  // PS2: EventNum
-    uint16_t EventPara; // PS2: EventPara
-};
-
-void SmallPacket0x05B(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (!PChar->isInEvent())
-        return;
-
-    auto eventData = data.as<GP_CLI_EVENTEND>();
-
-    auto Result  = eventData->EndPara;
-    auto EventID = eventData->EventPara;
-
-    if (PChar->currentEvent->eventId == EventID)
-    {
-        if (PChar->currentEvent->option != 0)
-        {
-            Result = PChar->currentEvent->option;
-        }
-
-        if (eventData->Mode == 1) // This mode is used when updating a pending event tag.
-        {
-            // If optional cutscene is started, we check to see if the selected option should lock the player
-            if (Result != -1 && PChar->currentEvent->hasCutsceneOption(Result))
-            {
-                PChar->setLocked(true);
-            }
-            luautils::OnEventUpdate(PChar, EventID, Result);
-        }
-        else
-        {
-            luautils::OnEventFinish(PChar, EventID, Result);
-            // reset if this event did not initiate another event
-            if (PChar->currentEvent->eventId == EventID)
-            {
-                PChar->endCurrentEvent();
-            }
-        }
-    }
-
-    PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::EVENT);
-    PChar->updatemask |= UPDATE_HP;
-}
-
-/************************************************************************
- *                                                                       *
- *  Event Update (Update Player Position)                                *
- *                                                                       *
- ************************************************************************/
-
-// https://github.com/atom0s/XiPackets/blob/main/world/client/0x005C/README.md
-struct GP_CLI_EVENTENDXZY
-{
-    uint16_t id : 9;
-    uint16_t size : 7;
-    uint16_t sync;
-    float    x;         // PS2: x
-    float    y;         // PS2: y
-    float    z;         // PS2: z
-    uint32_t UniqueNo;  // PS2: UniqueNo
-    uint32_t EndPara;   // PS2: EndPara
-    uint16_t EventNum;  // PS2: EventNum
-    uint16_t EventPara; // PS2: EventPara
-    uint16_t ActIndex;  // PS2: ActIndex
-    uint8_t  Mode;      // PS2: Mode
-    uint8_t  dir;       // PS2: dir
-};
-
-void SmallPacket0x05C(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (!PChar->isInEvent())
-        return;
-
-    auto eventData = data.as<GP_CLI_EVENTENDXZY>();
-
-    auto Result  = eventData->EndPara;
-    auto EventID = eventData->EventPara;
-
-    if (PChar->currentEvent->eventId == EventID)
-    {
-        bool updatePosition = false;
-
-        if (eventData->Mode == 1) // This value is always set to 1.
-        {
-            // TODO: Currently the return value for onEventUpdate in Interaction Framework is not received.  Remove
-            // the localVar check when this is resolved.
-
-            int32  updateResult     = luautils::OnEventUpdate(PChar, EventID, Result);
-            uint32 noPositionUpdate = PChar->GetLocalVar("noPosUpdate");
-            updatePosition          = noPositionUpdate == 0 ? updateResult == 1 : false;
-
-            PChar->SetLocalVar("noPosUpdate", 0);
-        }
-        else
-        {
-            PChar->m_Substate = CHAR_SUBSTATE::SUBSTATE_NONE;
-            updatePosition    = luautils::OnEventFinish(PChar, EventID, Result) == 1;
-            if (PChar->currentEvent->eventId == EventID)
-            {
-                PChar->endCurrentEvent();
-            }
-        }
-
-        if (updatePosition)
-        {
-            position_t newPos = {
-                eventData->x,
-                eventData->y,
-                eventData->z,
-                0,
-                eventData->dir,
-            };
-            PChar->pushPacket<CCSPositionPacket>(PChar, newPos, POSMODE::EVENT);
-            PChar->pushPacket<CPositionPacket>(PChar, newPos, POSMODE::NORMAL);
-        }
-        else
-        {
-            PChar->pushPacket<CCSPositionPacket>(PChar, PChar->loc.p, POSMODE::CLEAR);
-        }
-    }
-    PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::EVENT);
-}
-
-/************************************************************************
- *                                                                       *
  *  Emote (/jobemote [job])                                              *
  *                                                                       *
  ************************************************************************/
@@ -1605,27 +1465,6 @@ void SmallPacket0x05E(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 
     charutils::SendToZone(PChar, destination);
-}
-
-/************************************************************************
- *                                                                       *
- *  Event Update (String Update)                                         *
- *  Player sends string for event update.                                *
- *                                                                       *
- ************************************************************************/
-
-// zone 245 cs 0x00C7 Password
-
-void SmallPacket0x060(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // TODO: This isn't going near the db, does this need to be escaped? It contains binary data?
-    const auto updateString = asStringFromUntrustedSource(data[0x0C]);
-    luautils::OnEventUpdate(PChar, updateString);
-
-    PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::EVENT);
-    PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::PLAYERINPUT);
 }
 
 /************************************************************************
@@ -2482,261 +2321,6 @@ void SmallPacket0x096(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Create Linkpearl                                                     *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0C3(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    uint8           lsNum          = data.ref<uint8>(0x05);
-    CItemLinkshell* PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK1);
-    if (lsNum == 2)
-    {
-        PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK2);
-    }
-
-    if (PItemLinkshell != nullptr && PItemLinkshell->isType(ITEM_LINKSHELL) &&
-        (PItemLinkshell->GetLSType() == LSTYPE_PEARLSACK || PItemLinkshell->GetLSType() == LSTYPE_LINKSHELL))
-    {
-        CItemLinkshell* PItemLinkPearl = (CItemLinkshell*)itemutils::GetItem(ITEMID::LINKPEARL);
-        if (PItemLinkPearl)
-        {
-            PItemLinkPearl->setQuantity(1);
-            std::memcpy(PItemLinkPearl->m_extra, PItemLinkshell->m_extra, 24);
-            PItemLinkPearl->SetLSType(LSTYPE_LINKPEARL);
-            charutils::AddItem(PChar, LOC_INVENTORY, PItemLinkPearl);
-        }
-    }
-}
-
-/************************************************************************
- *                                                                       *
- *  Create Linkshell (Also equips the linkshell.)                        *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0C4(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    uint8 SlotID     = data.ref<uint8>(0x06);
-    uint8 LocationID = data.ref<uint8>(0x07);
-    uint8 action     = data.ref<uint8>(0x08);
-    uint8 lsNum      = data.ref<uint8>(0x1B);
-
-    CItemLinkshell* PItemLinkshell = (CItemLinkshell*)PChar->getStorage(LocationID)->GetItem(SlotID);
-
-    if (PItemLinkshell != nullptr && PItemLinkshell->isType(ITEM_LINKSHELL))
-    {
-        // Create new linkshell
-        if (PItemLinkshell->getID() == ITEMID::NEW_LINKSHELL)
-        {
-            uint32 LinkshellID    = 0;
-            uint16 LinkshellColor = data.ref<uint16>(0x04);
-
-            char DecodedName[DecodeStringLength];
-            char EncodedName[LinkshellStringLength];
-
-            std::memset(&DecodedName, 0, sizeof(DecodedName));
-            std::memset(&EncodedName, 0, sizeof(EncodedName));
-
-            const auto incomingName = db::escapeString(asStringFromUntrustedSource(data[0x0C], 20));
-
-            DecodeStringLinkshell(incomingName.data(), DecodedName);
-            EncodeStringLinkshell(DecodedName, EncodedName);
-
-            // TODO: Check if a linebreak is needed
-
-            LinkshellID = linkshell::RegisterNewLinkshell(DecodedName, LinkshellColor);
-            if (LinkshellID != 0)
-            {
-                destroy(PItemLinkshell);
-                PItemLinkshell = (CItemLinkshell*)itemutils::GetItem(ITEMID::LINKSHELL);
-                if (PItemLinkshell == nullptr)
-                {
-                    return;
-                }
-
-                PItemLinkshell->setQuantity(1);
-                PChar->getStorage(LocationID)->InsertItem(PItemLinkshell, SlotID);
-                PItemLinkshell->SetLSID(LinkshellID);
-                PItemLinkshell->SetLSType(LSTYPE_LINKSHELL);
-                PItemLinkshell->setSignature(EncodedName); // because apparently the format from the packet isn't right, and is missing terminators
-                PItemLinkshell->SetLSColor(LinkshellColor);
-
-                const auto rset = db::preparedStmt("UPDATE char_inventory SET signature = ?, extra = ?, itemId = 513 WHERE charid = ? AND location = 0 AND slot = ? LIMIT 1",
-                                                   DecodedName, PItemLinkshell->m_extra, PChar->id, SlotID);
-                if (rset && rset->rowsAffected())
-                {
-                    PChar->pushPacket<CInventoryItemPacket>(PItemLinkshell, LocationID, SlotID);
-                }
-            }
-            else
-            {
-                PChar->pushPacket<CMessageStandardPacket>(MsgStd::LinkshellUnavailable);
-                // DE
-                // 20
-                // 1D
-                return;
-            }
-        }
-        else
-        {
-            SLOTTYPE    slot         = SLOT_LINK1;
-            CLinkshell* OldLinkshell = PChar->PLinkshell1;
-            if (lsNum == 2)
-            {
-                slot         = SLOT_LINK2;
-                OldLinkshell = PChar->PLinkshell2;
-            }
-            switch (action)
-            {
-                case 0: // unequip linkshell
-                {
-                    linkshell::DelOnlineMember(PChar, PItemLinkshell);
-
-                    PItemLinkshell->setSubType(ITEM_UNLOCKED);
-
-                    PChar->equip[slot]    = 0;
-                    PChar->equipLoc[slot] = 0;
-                    if (lsNum == 1)
-                    {
-                        PChar->updatemask |= UPDATE_HP;
-                    }
-
-                    PChar->pushPacket<CInventoryAssignPacket>(PItemLinkshell, INV_NORMAL);
-                }
-                break;
-                case 1: // equip linkshell
-                {
-                    const auto rset = db::preparedStmt("SELECT broken FROM linkshells WHERE linkshellid = ? LIMIT 1", PItemLinkshell->GetLSID());
-                    if (rset && rset->rowsCount() && rset->next() && rset->get<uint8>("broken") == 1)
-                    {
-                        // if the linkshell has been broken, break the item
-                        PItemLinkshell->SetLSType(LSTYPE_BROKEN);
-
-                        db::preparedStmt("UPDATE char_inventory SET extra = ? WHERE charid = ? AND location = ? AND slot = ? LIMIT 1",
-                                         PItemLinkshell->m_extra, PChar->id, PItemLinkshell->getLocationID(), PItemLinkshell->getSlotID());
-
-                        PChar->pushPacket<CInventoryItemPacket>(PItemLinkshell, PItemLinkshell->getLocationID(), PItemLinkshell->getSlotID());
-                        PChar->pushPacket<CInventoryFinishPacket>();
-                        PChar->pushPacket<CMessageStandardPacket>(MsgStd::LinkshellNoLongerExists);
-                        return;
-                    }
-                    if (PItemLinkshell->GetLSID() == 0)
-                    {
-                        PChar->pushPacket<CMessageStandardPacket>(MsgStd::LinkshellNoLongerExists);
-                        return;
-                    }
-                    if (OldLinkshell != nullptr) // switching linkshell group
-                    {
-                        CItemLinkshell* POldItemLinkshell = (CItemLinkshell*)PChar->getEquip(slot);
-
-                        if (POldItemLinkshell != nullptr && POldItemLinkshell->isType(ITEM_LINKSHELL))
-                        {
-                            linkshell::DelOnlineMember(PChar, POldItemLinkshell);
-
-                            POldItemLinkshell->setSubType(ITEM_UNLOCKED);
-                            PChar->pushPacket<CInventoryAssignPacket>(POldItemLinkshell, INV_NORMAL);
-                        }
-                    }
-                    linkshell::AddOnlineMember(PChar, PItemLinkshell, lsNum);
-
-                    PItemLinkshell->setSubType(ITEM_LOCKED);
-
-                    PChar->equip[slot]    = SlotID;
-                    PChar->equipLoc[slot] = LocationID;
-                    if (lsNum == 1)
-                    {
-                        PChar->updatemask |= UPDATE_HP;
-                    }
-
-                    PChar->pushPacket<CInventoryAssignPacket>(PItemLinkshell, INV_LINKSHELL);
-                }
-                break;
-            }
-            charutils::SaveCharStats(PChar);
-            charutils::SaveCharEquip(PChar);
-
-            PChar->pushPacket<CLinkshellEquipPacket>(PChar, lsNum);
-            PChar->pushPacket<CInventoryItemPacket>(PItemLinkshell, LocationID, SlotID);
-        }
-        PChar->pushPacket<CInventoryFinishPacket>();
-        PChar->pushPacket<CCharStatusPacket>(PChar);
-    }
-}
-
-/************************************************************************
- *                                                                       *
- *  Mog House actions                                                    *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0CB(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    auto operation = data.ref<uint8>(0x04);
-    if (operation == 1)
-    {
-        // open mog house
-
-        // NOTE: If you zone or move floors while in the MH and you have someone visiting, they will be booted.
-        // NOTE: When you zone or move floors your "open MH" flag will be reset.
-    }
-    else if (operation == 2)
-    {
-        // close mog house
-    }
-    else if (operation == 5)
-    {
-        // remodel mog house
-        auto type = data.ref<uint8>(0x06); // Sandy: 103, Bastok: 104, Windy: 105, Patio: 106
-
-        if (type == 106 && !charutils::hasKeyItem(PChar, KeyItem::MOG_PATIO_DESIGN_DOCUMENT))
-        {
-            ShowWarning(fmt::format("Player {} is trying to remodel to MH2F to Patio without owning the KI to unlock it.", PChar->getName()));
-            return;
-        }
-
-        // 0x0080: This bit and the next track which 2F decoration style is being used (0: SANDORIA, 1: BASTOK, 2: WINDURST, 3: PATIO)
-        // 0x0100: ^ As above
-
-        // Extract original model and add 103 so it's in line with what comes in with the packet.
-        uint16 oldType = (uint8)(((PChar->profile.mhflag & 0x0100) + (PChar->profile.mhflag & 0x0080)) >> 7) + 103;
-
-        // Clear bits first
-        PChar->profile.mhflag &= ~(0x0080);
-        PChar->profile.mhflag &= ~(0x0100);
-
-        // Write new model bits
-        PChar->profile.mhflag |= ((type - 103) << 7);
-        charutils::SaveCharStats(PChar);
-
-        // TODO: Send message on successful remodel
-
-        // If the model changes AND you're on MH2F; force a rezone so the model change can take effect.
-        if (type != oldType && PChar->profile.mhflag & 0x0040)
-        {
-            auto zoneid = PChar->getZone();
-
-            PChar->loc.destination = zoneid;
-            PChar->status          = STATUS_TYPE::DISAPPEAR;
-
-            PChar->clearPacketList();
-            charutils::SendToZone(PChar, zoneid);
-        }
-    }
-    else
-    {
-        ShowWarning("SmallPacket0x0CB : unknown byte <%.2X>", data.ref<uint8>(0x04));
-    }
-}
-
-/************************************************************************
- *                                                                       *
  *  Set Chat Filters / Preferred Language                                *
  *                                                                       *
  ************************************************************************/
@@ -3204,11 +2788,11 @@ void PacketParserInitialize()
     PacketSize[0x058] = 0x0A; PacketParser[0x058] = &ValidatedPacketHandler<GP_CLI_COMMAND_RECIPE>;
     PacketSize[0x059] = 0x00; PacketParser[0x059] = &ValidatedPacketHandler<GP_CLI_COMMAND_EFFECTEND>;
     PacketSize[0x05A] = 0x02; PacketParser[0x05A] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQCONQUEST>;
-    PacketSize[0x05B] = 0x0A; PacketParser[0x05B] = &SmallPacket0x05B;
-    PacketSize[0x05C] = 0x00; PacketParser[0x05C] = &SmallPacket0x05C;
+    PacketSize[0x05B] = 0x0A; PacketParser[0x05B] = &ValidatedPacketHandler<GP_CLI_COMMAND_EVENTEND>;
+    PacketSize[0x05C] = 0x00; PacketParser[0x05C] = &ValidatedPacketHandler<GP_CLI_COMMAND_EVENTENDXZY>;
     PacketSize[0x05D] = 0x08; PacketParser[0x05D] = &SmallPacket0x05D;
     PacketSize[0x05E] = 0x0C; PacketParser[0x05E] = &SmallPacket0x05E;
-    PacketSize[0x060] = 0x00; PacketParser[0x060] = &SmallPacket0x060;
+    PacketSize[0x060] = 0x00; PacketParser[0x060] = &ValidatedPacketHandler<GP_CLI_COMMAND_PASSWARDS>;
     PacketSize[0x061] = 0x04; PacketParser[0x061] = &ValidatedPacketHandler<GP_CLI_COMMAND_CLISTATUS>;
     PacketSize[0x063] = 0x00; PacketParser[0x063] = &ValidatedPacketHandler<GP_CLI_COMMAND_DIG>;
     PacketSize[0x064] = 0x26; PacketParser[0x064] = &SmallPacket0x064;
@@ -3239,9 +2823,9 @@ void PacketParserInitialize()
     PacketSize[0x0BE] = 0x00; PacketParser[0x0BE] = &ValidatedPacketHandler<GP_CLI_COMMAND_MERITS>;
     PacketSize[0x0BF] = 0x04; PacketParser[0x0BF] = &ValidatedPacketHandler<GP_CLI_COMMAND_JOB_POINTS_SPEND>;
     PacketSize[0x0C0] = 0x00; PacketParser[0x0C0] = &ValidatedPacketHandler<GP_CLI_COMMAND_JOB_POINTS_REQ>;
-    PacketSize[0x0C3] = 0x00; PacketParser[0x0C3] = &SmallPacket0x0C3;
-    PacketSize[0x0C4] = 0x0E; PacketParser[0x0C4] = &SmallPacket0x0C4;
-    PacketSize[0x0CB] = 0x04; PacketParser[0x0CB] = &SmallPacket0x0CB;
+    PacketSize[0x0C3] = 0x00; PacketParser[0x0C3] = &ValidatedPacketHandler<GP_CLI_COMMAND_GROUP_COMLINK_MAKE>;
+    PacketSize[0x0C4] = 0x0E; PacketParser[0x0C4] = &ValidatedPacketHandler<GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE>;
+    PacketSize[0x0CB] = 0x04; PacketParser[0x0CB] = &ValidatedPacketHandler<GP_CLI_COMMAND_MYROOM_IS>;
     PacketSize[0x0D2] = 0x04; PacketParser[0x0D2] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_GROUP>;
     PacketSize[0x0D3] = 0x00; PacketParser[0x0D3] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMCALL>;
     PacketSize[0x0D4] = 0x04; PacketParser[0x0D4] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMPARAM>;

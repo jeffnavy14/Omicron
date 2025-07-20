@@ -58,6 +58,12 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x059_effectend.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x05a_reqconquest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x05a_reqconquest.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x05b_eventend.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x05b_eventend.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x05c_eventendxzy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x05c_eventendxzy.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x060_passwards.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x060_passwards.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x061_clistatus.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x061_clistatus.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x063_dig.cpp
@@ -99,6 +105,12 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c3_group_comlink_make.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c3_group_comlink_make.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c4_group_comlink_active.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c4_group_comlink_active.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0cb_myroom_is.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0cb_myroom_is.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d2_map_group.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d2_map_group.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d3_faq_gmcall.cpp

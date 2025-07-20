@@ -22,6 +22,7 @@
 #include "validation.h"
 
 #include "entities/charentity.h"
+#include "items/item_linkshell.h"
 #include "status_effect_container.h"
 #include "trade_container.h"
 
@@ -61,6 +62,79 @@ auto PacketValidator::isNotMonstrosity(const CCharEntity* PChar) -> PacketValida
     if (PChar->m_PMonstrosity)
     {
         result_.addError("Character is a Monstrosity.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isInEvent(const CCharEntity* PChar, std::optional<uint16_t> eventId) -> PacketValidator&
+{
+    if (!PChar->isInEvent())
+    {
+        result_.addError("Not in an event.");
+    }
+    else
+    {
+        if (eventId.has_value())
+        {
+            if (PChar->currentEvent->eventId != eventId.value())
+            {
+                result_.addError(fmt::format("Event ID mismatch {} != {}.", PChar->currentEvent->eventId, eventId.value()));
+            }
+        }
+    }
+
+    return *this;
+}
+
+auto PacketValidator::hasLinkshellRank(const CCharEntity* PChar, const uint8_t slot, const LSTYPE rank) -> PacketValidator&
+{
+    CItemLinkshell* PItemLinkshell = nullptr;
+
+    switch (slot)
+    {
+        case 1:
+            PItemLinkshell = reinterpret_cast<CItemLinkshell*>(PChar->getEquip(SLOT_LINK1));
+            break;
+        case 2:
+            PItemLinkshell = reinterpret_cast<CItemLinkshell*>(PChar->getEquip(SLOT_LINK2));
+            break;
+        default:
+            result_.addError("Invalid linkshell slot.");
+            return *this;
+    }
+
+    if (!PItemLinkshell || !PItemLinkshell->isType(ITEM_LINKSHELL))
+    {
+        result_.addError("Invalid linkshell item.");
+        return *this;
+    }
+
+    const auto actualRank   = PItemLinkshell->GetLSType();
+    auto       matchingRank = false;
+
+    switch (rank)
+    {
+        case LSTYPE_LINKSHELL:
+            matchingRank = actualRank == LSTYPE_LINKSHELL;
+            break;
+        case LSTYPE_PEARLSACK:
+            matchingRank = (actualRank == LSTYPE_LINKSHELL ||
+                            actualRank == LSTYPE_PEARLSACK);
+            break;
+        case LSTYPE_LINKPEARL:
+            matchingRank = (actualRank == LSTYPE_LINKSHELL ||
+                            actualRank == LSTYPE_LINKPEARL ||
+                            actualRank == LSTYPE_PEARLSACK);
+            break;
+        default:
+            matchingRank = false;
+            break;
+    }
+
+    if (!matchingRank)
+    {
+        result_.addError("Invalid linkshell rank.");
     }
 
     return *this;
