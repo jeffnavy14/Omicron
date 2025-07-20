@@ -279,7 +279,7 @@ namespace jobpointutils
 
         for (auto&& gift : jpGifts[jobId])
         {
-            if (gift.jpRequired > totalJpSpent || PChar->GetMLevel() < 74)
+            if (gift.jpRequired > totalJpSpent || PChar->GetMLevel() < 75)
             {
                 break;
             }
