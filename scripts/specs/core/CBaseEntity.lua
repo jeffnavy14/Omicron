@@ -3913,6 +3913,12 @@ end
 function CBaseEntity:useMobAbility()
 end
 
+---@param skillId integer
+---@param PLuaBaseEntity CBaseEntity?
+---@return nil
+function CBaseEntity:usePetAbility(skillId, PLuaBaseEntity)
+end
+
 ---@nodiscard
 ---@param skillID integer
 ---@return number

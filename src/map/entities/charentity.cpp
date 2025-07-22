@@ -579,6 +579,12 @@ void CCharEntity::setPetZoningInfo()
             petZoningInfo.jugDuration  = PPetEntity->getJugDuration();
             [[fallthrough]];
         case PET_TYPE::AVATAR:
+            if (PPetEntity->m_PetID == PETID_ALEXANDER || PPetEntity->m_PetID == PETID_ODIN)
+            {
+                // Alexander and Odin cannot persist through zoning.
+                break;
+            }
+            [[fallthrough]];
         case PET_TYPE::AUTOMATON:
         case PET_TYPE::WYVERN:
             petZoningInfo.petLevel = PPetEntity->getSpawnLevel();
@@ -607,7 +613,7 @@ void CCharEntity::resetPetZoningInfo()
     petZoningInfo.jugDuration  = 0s;
 }
 
-bool CCharEntity::shouldPetPersistThroughZoning()
+auto CCharEntity::shouldPetPersistThroughZoning() const -> bool
 {
     PET_TYPE petType{};
     auto     PPetEntity = dynamic_cast<CPetEntity*>(PPet);

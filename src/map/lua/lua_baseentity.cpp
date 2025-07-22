@@ -5301,38 +5301,36 @@ uint8 CLuaBaseEntity::storeWithPorterMoogle(uint16 slipId, sol::table const& ext
  *  Notes   : See scripts/globals/porter_moogle.lua
  ************************************************************************/
 
-sol::table CLuaBaseEntity::getRetrievableItemsForSlip(uint16 slipId)
+auto CLuaBaseEntity::getRetrievableItemsForSlip(const uint16 slipId) const -> sol::table
 {
-    if (m_PBaseEntity->objtype != TYPE_PC)
+    if (const auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-        return {};
+        const auto slipSlotId = PChar->getStorage(LOC_INVENTORY)->SearchItem(slipId);
+
+        if (slipSlotId == ERROR_SLOTID)
+        {
+            return {};
+        }
+
+        auto* slip = PChar->getStorage(LOC_INVENTORY)->GetItem(slipSlotId);
+
+        if (slip == nullptr)
+        {
+            ShowError("Slip item was null.");
+            return {};
+        }
+
+        sol::table table = lua.create_table();
+        for (int i = 0; i < CItem::extra_size; i++)
+        {
+            table.add(slip->m_extra[i]);
+        }
+
+        return table;
     }
 
-    CCharEntity* PChar      = (CCharEntity*)m_PBaseEntity;
-    auto         slipSlotId = PChar->getStorage(LOC_INVENTORY)->SearchItem(slipId);
-
-    if (slipSlotId == 255)
-    {
-        return {};
-    }
-
-    auto* slip = PChar->getStorage(LOC_INVENTORY)->GetItem(slipSlotId);
-
-    if (slip == nullptr)
-    {
-        ShowError("Slip item was null.");
-        return {};
-    }
-
-    sol::table table = lua.create_table();
-    // TODO Is extra sized defined anywhere?
-    for (int i = 0; i < 24; i++)
-    {
-        table.add(slip->m_extra[i]);
-    }
-
-    return table;
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return {};
 }
 
 /************************************************************************
@@ -6929,6 +6927,7 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
             charutils::BuildingCharTraitsTable(PChar);
             charutils::BuildingCharAbilityTable(PChar);
             charutils::CheckValidEquipment(PChar);
+            luautils::CheckForGearSet(PChar);
 
             PChar->updatemask |= UPDATE_HP;
 
@@ -17983,6 +17982,47 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
 }
 
 /************************************************************************
+ *  Function: usePetAbility()
+ *  Purpose : Instruct a Pet to use a specified Job Ability
+ *  Example : pet:usePetAbility(xi.ability.PERFECT_DEFENSE, pet)
+ *  Notes   : Inserts directly into queue stack with 0ms delay,
+ *  and checks queue for immediate use.
+ ************************************************************************/
+
+void CLuaBaseEntity::usePetAbility(uint16 skillId, sol::object const& target) const
+{
+    CBattleEntity* PTarget{ nullptr };
+
+    if (!battleutils::GetPetSkill(skillId))
+    {
+        return;
+    }
+
+    if ((target != sol::lua_nil) && target.is<CLuaBaseEntity*>())
+    {
+        const auto* PLuaBaseEntity = target.as<CLuaBaseEntity*>();
+        PTarget                    = static_cast<CBattleEntity*>(PLuaBaseEntity->m_PBaseEntity);
+    }
+
+    // clang-format off
+    m_PBaseEntity->PAI->QueueAction(queueAction_t(0ms, true, [PTarget, skillId](auto PEntity)
+    {
+        if (PTarget)
+        {
+            PEntity->PAI->PetSkill(PTarget->targid, skillId);
+        }
+        else if (dynamic_cast<CMobEntity*>(PEntity))
+        {
+            PEntity->PAI->PetSkill(static_cast<CMobEntity*>(PEntity)->GetBattleTargetID(), skillId);
+        }
+    }));
+    // clang-format on
+
+    // Check queue immediately in case of 0 ms delay abilities
+    m_PBaseEntity->PAI->checkQueueImmediately();
+}
+
+/************************************************************************
  *  Function: getAbilityDistance()
  *  Purpose : Returns the distance for a specified ability from mob_skills
  *  Example : mob:getAbilityDistance(740)
@@ -19868,6 +19908,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("castSpell", CLuaBaseEntity::castSpell);
     SOL_REGISTER("useJobAbility", CLuaBaseEntity::useJobAbility);
     SOL_REGISTER("useMobAbility", CLuaBaseEntity::useMobAbility);
+    SOL_REGISTER("usePetAbility", CLuaBaseEntity::usePetAbility);
     SOL_REGISTER("getAbilityDistance", CLuaBaseEntity::getAbilityDistance);
     SOL_REGISTER("hasTPMoves", CLuaBaseEntity::hasTPMoves);
     SOL_REGISTER("drawIn", CLuaBaseEntity::drawIn);

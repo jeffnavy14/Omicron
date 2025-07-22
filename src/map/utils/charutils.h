@@ -221,7 +221,7 @@ namespace charutils
     bool isRecvBoxOpen(CCharEntity* PChar);
     bool isAnyDeliveryBoxOpen(CCharEntity* PChar);
 
-    bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility);
+    auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool;
 
     void RemoveStratagems(CCharEntity* PChar, CSpell* PSpell);
 

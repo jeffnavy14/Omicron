@@ -336,9 +336,9 @@ public:
     uint32           m_lastBcnmTimePrompt{};          // The last message prompt in seconds
     PetInfo_t        petZoningInfo{};                 // Used to repawn dragoons pets ect on zone
 
-    void setPetZoningInfo();              // Set pet zoning info (when zoning and logging out)
-    void resetPetZoningInfo();            // Reset pet zoning info (when changing job ect)
-    bool shouldPetPersistThroughZoning(); // If true, zoning should not cause a currently active pet to despawn
+    void setPetZoningInfo();                            // Set pet zoning info (when zoning and logging out)
+    void resetPetZoningInfo();                          // Reset pet zoning info (when changing job ect)
+    auto shouldPetPersistThroughZoning() const -> bool; // If true, zoning should not cause a currently active pet to despawn
 
     std::array<uint8, 20> m_SetBlueSpells{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
 

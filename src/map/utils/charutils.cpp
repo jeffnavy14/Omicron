@@ -6233,17 +6233,17 @@ namespace charutils
         BuildingCharWeaponSkills(PChar);
     }
 
-    bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility)
+    auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool
     {
         if (PAbility->getAddType() & ADDTYPE_MERIT)
         {
-            if (!PChar->PMeritPoints->GetMerit((MERIT_TYPE)PAbility->getMeritModID()))
+            if (!PChar->PMeritPoints->GetMerit(static_cast<MERIT_TYPE>(PAbility->getMeritModID())))
             {
                 ShowWarning("charutils::CheckAbilityAddtype: Attempt to add invalid Merit Ability (%d).", PAbility->getMeritModID());
                 return false;
             }
 
-            if (!(PChar->PMeritPoints->GetMerit((MERIT_TYPE)PAbility->getMeritModID())->count > 0))
+            if (!(PChar->PMeritPoints->GetMerit(static_cast<MERIT_TYPE>(PAbility->getMeritModID()))->count > 0))
             {
                 return false;
             }
@@ -6301,6 +6301,13 @@ namespace charutils
         if (PAbility->getAddType() & ADDTYPE_AVATAR)
         {
             if (!PChar->PPet || PChar->PPet->objtype != TYPE_PET || static_cast<CPetEntity*>(PChar->PPet)->getPetType() != PET_TYPE::AVATAR)
+            {
+                return false;
+            }
+
+            // Alexander and Odin grant no abilities (Assault, Release...) to the master.
+            const auto* petEntity = static_cast<CPetEntity*>(PChar->PPet);
+            if (petEntity->m_PetID == PETID_ALEXANDER || petEntity->m_PetID == PETID_ODIN)
             {
                 return false;
             }
