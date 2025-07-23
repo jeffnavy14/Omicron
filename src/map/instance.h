@@ -34,6 +34,14 @@ enum INSTANCE_STATUS
     INSTANCE_COMPLETE
 };
 
+struct zoneMusicOverride_t
+{
+    xi::optional<uint16> m_songDay;   // music (daytime)
+    xi::optional<uint16> m_songNight; // music (nighttime)
+    xi::optional<uint16> m_bSongS;    // battle music (solo)
+    xi::optional<uint16> m_bSongM;    // battle music (party)
+};
+
 class CInstance : public CZoneEntities
 {
 public:
@@ -95,7 +103,7 @@ private:
     uint32              m_progress{ 0 };
     uint32              m_stage{ 0 };
     position_t          m_entryloc{};
-    zoneMusic_t         m_zone_music_override{};
+    zoneMusicOverride_t m_zone_music_override{};
     INSTANCE_STATUS     m_status{ INSTANCE_NORMAL };
     std::vector<uint32> m_registeredChars;
     std::set<uint32>    m_enteredChars;

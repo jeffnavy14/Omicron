@@ -42,18 +42,41 @@ xi.mobSkill =
     LEAFSTORM                =  331,
     ENTANGLE                 =  332,
 
+    VELOCIOUS_BLADE          =  347, -- Mammet-800
+
     RANGED_ATTACK_2          =  412,
 
+    SCISSION_THRUST          =  419, -- Mammet-800
+
+    SONIC_BLADE              =  422, -- Mammet-800
+
+    MICROQUAKE               =  441, -- Mammet-800
+
+    PERCUSSIVE_FOIN          =  447, -- Mammet-800
+
+    GRAVITY_WHEEL            =  457, -- Mammet-800
+
+    PSYCHOMANCY              =  464, -- Mammet-800
+
+    MIND_WALL                =  471, -- Mammet-800
+
+    TRANSMOGRIFICATION       =  487, -- Mammet-800
+
     DANSE_MACABRE            =  533,
+
+    TREMOROUS_TREAD          =  540, -- Mammet-800
 
     VULTURE_3                =  626,
 
     BENEDICTION_1            =  689, -- Season's Greetings KSNM 30 (Gilagoge Tlugvi)
     HUNDRED_FISTS_1          =  690, -- Season's Greetings KSNM 30 (Goga Tlugvi)
 
-    BLOOD_WEAPON_1           =  695, -- Season's Greetings KSNM 30 (Gola Tlugvi)
+    BLOOD_WEAPON_1           =  695,
 
+    MEIKYO_SHISUI_1          =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1           =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
+
+    FAMILIAR_1               =  740, -- "Tango with a Tracker" Shikaree X
 
     DISPELLING_WIND          =  813,
     DEADLY_DRIVE             =  814,
@@ -92,6 +115,18 @@ xi.mobSkill =
     JUDGMENT_BOLT_2          =  918, -- Confirmed usage: Untargetable avatar astral flow. (Ex. Kirin) (Ramuh model avatar)
     SEARING_LIGHT_2          =  919, -- Confirmed usage: Untargetable avatar astral flow. (Ex. Kirin, Crimson-toothed Pawberry) (Carbuncle model avatar)
 
+    PHASE_SHIFT_1_EXOPLATES  =  993,
+
+    PHASE_SHIFT_2_EXOPLATES  =  997,
+
+    PHASE_SHIFT_3_EXOPLATES  = 1001,
+
+    ZEID_SUMMON_SHADOWS_1    = 1002, -- TODO: Investigate why was this in sql, where it came from and why wasnt it actually used in an scripted way.
+
+    ZEID_SUMMON_SHADOWS_2    = 1007, -- Captured. Bastok mission 9-2 BCNM, phase 2. No actual name in log.
+
+    CALL_BEAST               = 1017, -- "Tango with a Tracker" Shikaree X
+
     RANGED_ATTACK_3          = 1154,
 
     INFERNO_3                = 1162, -- Confirmed usage: "Trial-Size Trial by Fire" bcnm. (Ifrit)
@@ -115,8 +150,21 @@ xi.mobSkill =
     RANGED_ATTACK_14         = 1214,
 
     MANTLE_PIERCE            = 1349,
+
     AERIAL_COLLISION         = 1353,
+
     SINUATE_RUSH             = 1367,
+
+    AMATSU_TORIMAI           = 1390,
+    AMATSU_KAZAKIRI          = 1391,
+
+    AMATSU_HANAIKUSA         = 1394,
+    AMATSU_TSUKIKAGE         = 1395,
+    COSMIC_ELUCIDATION       = 1396,
+
+    RANGED_ATTACK_TENZEN_1   = 1398, -- Tenzen Bow High
+    RICEBALL_TENZEN          = 1399,
+    RANGED_ATTACK_TENZEN_2   = 1400, -- Tenzen Bow Low
 
     HOWLING_MOON_3           = 1520, -- Unknown usage.
 

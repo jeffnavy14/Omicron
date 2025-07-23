@@ -79,10 +79,10 @@ void CObjectiveUtilityPacket::addScoreboard(const std::pair<int32, int32>& score
     ref<uint32>(0x44) = data[5];      // Stronghold Name Override - When non-zero, replace Stronghold name with Balamor's Adumbration.
 }
 
-void CObjectiveUtilityPacket::addFence(float x, float y, float radius, float render, bool blue /* = false */)
+void CObjectiveUtilityPacket::addFence(float x, float z, float radius, float render, bool blue /* = false */)
 {
     ref<int32>(0x14)  = static_cast<int32>(x * 1000);
-    ref<int32>(0x18)  = static_cast<int32>(y * 1000);
+    ref<int32>(0x18)  = static_cast<int32>(z * 1000);
     ref<uint32>(0x1C) = static_cast<uint32>(radius * 1000);
     ref<uint32>(0x20) = static_cast<uint32>(render * 1000);
     ref<uint8>(0x24) |= OBJECTIVEUTILITY_FENCE;

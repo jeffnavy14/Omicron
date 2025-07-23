@@ -74,13 +74,13 @@ end
 
 local absorbPointsData =
 {
-    -- [spell ID] = { skill-mult < 300, skill mult > 300, min potency correction, increase max HP }
-    [xi.magic.spell.DRAIN    ] = { xi.mod.HP, 0.1, 0.90, 0.50, false },
-    [xi.magic.spell.DRAIN_II ] = { xi.mod.HP, 0.2, 1.35, 0.66, true  },
-    [xi.magic.spell.DRAIN_III] = { xi.mod.HP, 0.3, 1.80, 0.75, true  },
-    [xi.magic.spell.ASPIR    ] = { xi.mod.MP, 0.3, 0.40, 0.50, false },
-    [xi.magic.spell.ASPIR_II ] = { xi.mod.MP, 0.5, 0.60, 0.50, false },
-    [xi.magic.spell.ASPIR_III] = { xi.mod.MP, 0.7, 0.80, 0.50, false },
+    -- [spell ID] = { parameter, { skill <= 300 }, { skill > 300 }, divisor, increase max HP? }
+    [xi.magic.spell.DRAIN    ] = { xi.mod.HP, {   1,  20 }, { 0.625, 132.5 }, 0.50, false },
+    [xi.magic.spell.DRAIN_II ] = { xi.mod.HP, {   1, 165 }, {     1,   165 }, 0.66, true  },
+    [xi.magic.spell.DRAIN_III] = { xi.mod.HP, {   1, 255 }, {   1.5,   105 }, 0.75, true  },
+    [xi.magic.spell.ASPIR    ] = { xi.mod.MP, { 0.3,  20 }, {   0.4,     0 }, 0.50, false },
+    [xi.magic.spell.ASPIR_II ] = { xi.mod.MP, { 0.5,  30 }, {   0.6,     0 }, 0.50, false },
+    [xi.magic.spell.ASPIR_III] = { xi.mod.MP, { 0.7,  40 }, {   0.8,     0 }, 0.50, false },
 }
 
 -- https://www.bg-wiki.com/ffxi/Category:Drain/Aspir_Spell
@@ -117,8 +117,9 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
 
     -- Base damage.
     local casterSkill        = caster:getSkillLevel(xi.skill.DARK_MAGIC)
-    local maxDamagePotential = casterSkill > 300 and casterSkill * absorbPointsData[spellId][3] or casterSkill * absorbPointsData[spellId][2]
-    local minDamagePotential = maxDamagePotential * absorbPointsData[spellId][4]
+    local skillEquation      = casterSkill > 300 and 3 or 2
+    local maxDamagePotential = math.floor(casterSkill * absorbPointsData[spellId][skillEquation][1] + absorbPointsData[spellId][skillEquation][2])
+    local minDamagePotential = math.floor(maxDamagePotential * absorbPointsData[spellId][4])
     local baseDamage         = math.random(minDamagePotential, maxDamagePotential)
 
     -- Multipliers.
@@ -166,13 +167,30 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
         target:updateEnmityFromDamage(caster, finalDamage)
     end
 
-    -- Drain II and Drain III increase max HP.
+    -- Drain II and Drain III increase max HP via effect.
     if absorbPointsData[spellId][5] then
         local overflow = finalDamage + caster:getHP() - caster:getMaxHP()
         if overflow > 0 then
-            local power    = 100 * overflow / caster:getMaxHP()
-            local duration = 180 + 180 * caster:getMod(xi.mod.DARK_MAGIC_DURATION) / 100
-            caster:addStatusEffect(xi.effect.MAX_HP_BOOST, power, 0, duration)
+            -- Check if effect should be applied. Only 1 "Max HP Effect" can be in place at a time.
+            -- Retail testing suggest that %power effect takes precedent over flat power.
+            local hasMaxHPEffect      = caster:hasStatusEffect(xi.effect.MAX_HP_BOOST)
+            local maxHPEffectPower    = 0
+            local maxHPEffectSubpower = 0
+
+            if hasMaxHPEffect then
+                maxHPEffectPower    = caster:getStatusEffect(xi.effect.MAX_HP_BOOST):getPower()
+                maxHPEffectSubpower = caster:getStatusEffect(xi.effect.MAX_HP_BOOST):getSubPower()
+            end
+
+            if
+                not hasMaxHPEffect or           -- No effect present, so apply.
+                (maxHPEffectPower == 0 and      -- Effect present, but it isn't %. If subpower is higher, we can override the effect.
+                maxHPEffectSubpower < overflow) -- Subpower present is lower than new one, so we can override the effect.
+            then
+                local duration = 180 + 180 * caster:getMod(xi.mod.DARK_MAGIC_DURATION) / 100
+                caster:delStatusEffect(xi.effect.MAX_HP_BOOST)
+                caster:addStatusEffect(xi.effect.MAX_HP_BOOST, 0, 0, duration, 0, overflow)
+            end
         end
     end
 
@@ -194,7 +212,7 @@ xi.spells.absorb.doAbsorbTPSpell = function(caster, target, spell)
     local finalDamage = 0
 
     -- Early return: Target absorbs or nullifies dark.
-    if xi.spells.damage.calculateNukeAbsorbOrNullify(target, xi.element.DARK) then
+    if xi.spells.damage.calculateNukeAbsorbOrNullify(target, xi.element.DARK) ~= 1 then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         return finalDamage
     end

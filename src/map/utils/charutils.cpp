@@ -101,6 +101,7 @@
 #include "battleutils.h"
 #include "blueutils.h"
 #include "charutils.h"
+#include "enums/key_items.h"
 #include "itemutils.h"
 #include "petutils.h"
 #include "puppetutils.h"
@@ -117,6 +118,40 @@
 static constexpr int32                               ExpTableRowCount = 60;
 std::array<std::array<uint16, 20>, ExpTableRowCount> g_ExpTable;
 std::array<uint16, 100>                              g_ExpPerLevel;
+
+namespace
+{
+    // Key items granting an increase to the rate of skillups
+    const std::set skillupIncreaseKeyItems = {
+        KeyItem::RHAPSODY_IN_WHITE,
+        KeyItem::RHAPSODY_IN_CRIMSON,
+        KeyItem::RHAPSODY_IN_FUCHSIA
+    };
+
+    // Key items granting an increase to earned experience points
+    const std::set experienceBonusKeyItems = {
+        KeyItem::RHAPSODY_IN_WHITE,
+        KeyItem::RHAPSODY_IN_UMBER,
+        KeyItem::RHAPSODY_IN_AZURE,
+        KeyItem::RHAPSODY_IN_CRIMSON,
+        KeyItem::RHAPSODY_IN_EMERALD,
+        KeyItem::RHAPSODY_IN_MAUVE,
+    };
+
+    // Key items granting an increase to earned capacity points
+    const std::set capacityBonusKeyItems = {
+        KeyItem::RHAPSODY_IN_FUCHSIA,
+        KeyItem::RHAPSODY_IN_PUCE,
+        KeyItem::RHAPSODY_IN_OCHRE,
+    };
+
+    // Key items reducing the time for traverser stones
+    const std::set traverserStoneReductionKeyItems = {
+        KeyItem::AZURE_ABYSSITE_OF_CELERITY,
+        KeyItem::CRIMSON_ABYSSITE_OF_CELERITY,
+        KeyItem::IVORY_ABYSSITE_OF_CELERITY
+    };
+} // namespace
 
 namespace charutils
 {
@@ -168,22 +203,29 @@ namespace charutils
 
         uint8 race = 0; // Hume
 
-        switch (PChar->look.race)
+        switch (static_cast<CharRace>(PChar->look.race))
         {
-            case 3:
-            case 4:
+            case CharRace::HumeMale:
+            case CharRace::HumeFemale:
+                race = 0;
+                break;
+            case CharRace::ElvaanMale:
+            case CharRace::ElvaanFemale:
                 race = 1;
-                break; // Elvaan
-            case 5:
-            case 6:
+                break;
+            case CharRace::TarutaruMale:
+            case CharRace::TarutaruFemale:
                 race = 2;
-                break; // Tarutaru
-            case 7:
+                break;
+            case CharRace::Mithra:
                 race = 3;
-                break; // Mithra
-            case 8:
+                break;
+            case CharRace::Galka:
                 race = 4;
-                break; // Galka
+                break;
+            default:
+                race = 0;
+                break;
         }
 
         // HP Calculation from Main Job
@@ -340,12 +382,13 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    CCharEntity* LoadChar(uint32 charId)
+    auto LoadChar(uint32 charId) -> std::unique_ptr<CCharEntity>
     {
         TracyZoneScoped;
 
-        CCharEntity* PChar = new CCharEntity();
-        PChar->id          = charId;
+        std::unique_ptr<CCharEntity> charEntity = std::make_unique<CCharEntity>();
+        auto*                        PChar      = charEntity.get();
+        PChar->id                               = charId;
 
         uint8  meritPoints = 0;
         uint16 limitPoints = 0;
@@ -393,7 +436,7 @@ namespace charutils
                                "moghancement, "
                                "UNIX_TIMESTAMP(`lastupdate`) AS lastonline "
                                "FROM chars "
-                               "WHERE charid = (?)";
+                               "WHERE charid = ?";
 
         auto rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -476,7 +519,7 @@ namespace charutils
                    "fame_adoulin,"
                    "unity_leader "
                    "FROM char_profile "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -524,7 +567,7 @@ namespace charutils
                    "wardrobe7,"
                    "wardrobe8 "
                    "FROM char_storage "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -555,7 +598,7 @@ namespace charutils
         // TODO: LoadFromCharLookSQL
         fmtQuery = "SELECT face, race, size, head, body, hands, legs, feet, main, sub, ranged "
                    "FROM char_look "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -577,7 +620,7 @@ namespace charutils
         }
 
         // LoadFromCharStyleSQL
-        fmtQuery = "SELECT head, body, hands, legs, feet, main, sub, ranged FROM char_style WHERE charid = (?)";
+        fmtQuery = "SELECT head, body, hands, legs, feet, main, sub, ranged FROM char_style WHERE charid = ?";
         rset     = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
         {
@@ -594,7 +637,7 @@ namespace charutils
         // LoadFromCharJobsSQL
         fmtQuery = "SELECT unlocked, genkai, war, mnk, whm, blm, rdm, thf, pld, drk, bst, brd, rng, sam, nin, drg, smn, blu, cor, pup, dnc, sch, geo, run "
                    "FROM char_jobs "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -629,7 +672,7 @@ namespace charutils
         // LoadFromCharExpSQL
         fmtQuery = "SELECT mode, war, mnk, whm, blm, rdm, thf, pld, drk, bst, brd, rng, sam, nin, drg, smn, blu, cor, pup, dnc, sch, geo, run, merits, limits "
                    "FROM char_exp "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -666,7 +709,7 @@ namespace charutils
         // TODO: LoadFromCharStatsSQL
         fmtQuery = "SELECT mjob, sjob, hp, mp, mhflag, title, bazaar_message, zoning, "
                    "pet_id, pet_type, pet_hp, pet_mp, pet_level "
-                   "FROM char_stats WHERE charid = (?)";
+                   "FROM char_stats WHERE charid = ?";
 
         uint8 zoning = 0;
         rset         = db::preparedStmt(fmtQuery, PChar->id);
@@ -729,7 +772,7 @@ namespace charutils
         PChar->SetSLevel(PChar->jobs.job[PChar->GetSJob()]);
 
         // TODO: LoadFromCharRecastSQL
-        fmtQuery = "SELECT id, time, recast FROM char_recast WHERE charid = (?)";
+        fmtQuery = "SELECT id, time, recast FROM char_recast WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount())
@@ -757,7 +800,7 @@ namespace charutils
         // TODO: LoadFromCharSkillsSQL
         fmtQuery = "SELECT skillid, value, rank "
                    "FROM char_skills "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount())
@@ -781,7 +824,7 @@ namespace charutils
                    "campaign_sandy, campaign_bastok, campaign_windy, homepoints, survivals, "
                    "abyssea_conflux, waypoints, eschan_portals, claimed_deeds, unique_event "
                    "FROM char_unlocks "
-                   "WHERE charid = (?)";
+                   "WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -805,19 +848,19 @@ namespace charutils
         }
 
         // TODO: Remove raw new's
-        PChar->PMeritPoints = new CMeritPoints(PChar);
+        PChar->PMeritPoints = std::make_unique<CMeritPoints>(PChar);
         PChar->PMeritPoints->SetMeritPoints(meritPoints);
         PChar->PMeritPoints->SetLimitPoints(limitPoints);
-        PChar->PJobPoints = new CJobPoints(PChar);
+        PChar->PJobPoints = std::make_unique<CJobPoints>(PChar);
 
-        rset = db::preparedStmt("SELECT field_chocobo FROM char_pet WHERE charid = (?)", PChar->id);
+        rset = db::preparedStmt("SELECT field_chocobo FROM char_pet WHERE charid = ?", PChar->id);
         if (rset && rset->rowsCount() && rset->next())
         {
             PChar->m_FieldChocobo = rset->get<uint32>("field_chocobo");
         }
 
         // TODO: LoadCharFlagsFromSQL
-        fmtQuery = "SELECT gmModeEnabled, gmHiddenEnabled FROM char_flags WHERE charid = (?)";
+        fmtQuery = "SELECT gmModeEnabled, gmHiddenEnabled FROM char_flags WHERE charid = ?";
 
         rset = db::preparedStmt(fmtQuery, PChar->id);
         if (rset && rset->rowsCount() && rset->next())
@@ -867,7 +910,7 @@ namespace charutils
 
         PChar->status = STATUS_TYPE::DISAPPEAR;
 
-        return PChar;
+        return charEntity;
     }
 
     void LoadSpells(CCharEntity* PChar)
@@ -895,7 +938,7 @@ namespace charutils
                                  "FROM char_spells "
                                  "JOIN spell_list "
                                  "ON spell_list.spellid = char_spells.spellid "
-                                 "WHERE charid = (?) AND "
+                                 "WHERE charid = ? AND "
                                  "(spell_list.content_tag IN ({}) OR "
                                  "spell_list.content_tag IS NULL)",
                                  fmt::join(enabledExpansions, ","));
@@ -933,7 +976,7 @@ namespace charutils
                             "signature, "
                             "extra "
                             "FROM char_inventory "
-                            "WHERE charid = (?) "
+                            "WHERE charid = ? "
                             "ORDER BY FIELD(location,0,1,9,2,3,4,5,6,7,8,10,11,12)";
 
         auto rset = db::preparedStmt(query, PChar->id);
@@ -1032,7 +1075,7 @@ namespace charutils
                             "equipslotid,"
                             "containerid "
                             "FROM char_equip "
-                            "WHERE charid = (?)";
+                            "WHERE charid = ?";
 
         auto rset = db::preparedStmt(Query, PChar->id);
         if (rset)
@@ -1094,7 +1137,7 @@ namespace charutils
 
             if (PLinkshell1)
             {
-                rset = db::preparedStmt("SELECT broken FROM linkshells WHERE linkshellid = (?) LIMIT 1", PLinkshell1->GetLSID());
+                rset = db::preparedStmt("SELECT broken FROM linkshells WHERE linkshellid = ? LIMIT 1", PLinkshell1->GetLSID());
                 if (rset && rset->rowsCount() && rset->next() && rset->get<uint32>("broken") == 1)
                 { // if the linkshell has been broken, unequip
                     uint8 SlotID     = PLinkshell1->getSlotID();
@@ -1112,7 +1155,7 @@ namespace charutils
 
             if (PLinkshell2)
             {
-                rset = db::preparedStmt("SELECT broken FROM linkshells WHERE linkshellid = (?) LIMIT 1", PLinkshell2->GetLSID());
+                rset = db::preparedStmt("SELECT broken FROM linkshells WHERE linkshellid = ? LIMIT 1", PLinkshell2->GetLSID());
                 if (rset && rset->rowsCount() && rset->next() && rset->get<uint32>("broken") == 1)
                 { // if the linkshell has been broken, unequip
                     uint8 SlotID     = PLinkshell2->getSlotID();
@@ -1678,6 +1721,18 @@ namespace charutils
 
     void UnequipItem(CCharEntity* PChar, uint8 equipSlotID, bool update)
     {
+        if (PChar == nullptr)
+        {
+            ShowWarning("PChar was null.");
+            return;
+        }
+
+        if (equipSlotID > 15)
+        {
+            ShowWarning("Invalid slot ID. Must be between 0 and 15.");
+            return;
+        }
+
         CItem* PItem = PChar->getEquip((SLOTTYPE)equipSlotID);
 
         if ((PItem != nullptr) && PItem->isType(ITEM_EQUIPMENT))
@@ -2108,8 +2163,9 @@ namespace charutils
                         CItemWeapon* weapon = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO));
                         if (weapon)
                         {
+                            // If the subtype of the ranged weapon is not compatible with the ammo, unequip it, except for Archery where Longbow and Shortbow both use arrows
                             if (static_cast<CItemWeapon*>(PItem)->getSkillType() != weapon->getSkillType() ||
-                                static_cast<CItemWeapon*>(PItem)->getSubSkillType() != weapon->getSubSkillType())
+                                (weapon->getSkillType() != SKILL_ARCHERY && static_cast<CItemWeapon*>(PItem)->getSubSkillType() != weapon->getSubSkillType()))
                             {
                                 UnequipItem(PChar, SLOT_AMMO, false);
                             }
@@ -2127,8 +2183,9 @@ namespace charutils
                         CItemWeapon* weapon = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_RANGED));
                         if (weapon)
                         {
+                            // If the subtype of the ammo is not compatible with the ranged weapon, unequip it, except for Archery where Longbow and Shortbow both use arrows
                             if (static_cast<CItemWeapon*>(PItem)->getSkillType() != weapon->getSkillType() ||
-                                static_cast<CItemWeapon*>(PItem)->getSubSkillType() != weapon->getSubSkillType())
+                                (weapon->getSkillType() != SKILL_ARCHERY && static_cast<CItemWeapon*>(PItem)->getSubSkillType() != weapon->getSubSkillType()))
                             {
                                 UnequipItem(PChar, SLOT_RANGED, false);
                             }
@@ -2579,25 +2636,25 @@ namespace charutils
             return;
         }
 
-        const char* Query = "REPLACE INTO char_equip_saved SET \
-                                    charid = %u, \
-                                    jobid = %u, \
-                                    main = %u, \
-                                    sub = %u, \
-                                    ranged = %u, \
-                                    ammo = %u, \
-                                    head = %u, \
-                                    body = %u, \
-                                    hands = %u, \
-                                    legs = %u, \
-                                    feet = %u, \
-                                    neck = %u, \
-                                    waist = %u, \
-                                    ear1 = %u, \
-                                    ear2 = %u, \
-                                    ring1 = %u, \
-                                    ring2 = %u, \
-                                    back = %u";
+        const char* Query = "REPLACE INTO char_equip_saved SET "
+                            "charid = %u, "
+                            "jobid = %u, "
+                            "main = %u, "
+                            "sub = %u, "
+                            "ranged = %u, "
+                            "ammo = %u, "
+                            "head = %u, "
+                            "body = %u, "
+                            "hands = %u, "
+                            "legs = %u, "
+                            "feet = %u, "
+                            "neck = %u, "
+                            "waist = %u, "
+                            "ear1 = %u, "
+                            "ear2 = %u, "
+                            "ring1 = %u, "
+                            "ring2 = %u, "
+                            "back = %u";
 
         auto getEquipIdFromSlot = [](CCharEntity* PChar, SLOTTYPE slot) -> uint16
         {
@@ -3576,17 +3633,15 @@ namespace charutils
                 CapSkill = CapSkill * 10;
 
                 int16 rovBonus = 1;
-                for (auto i = 2884; i <= 2890; i += 3) // RHAPSODY KI
+
+                for (const auto skillupIncreaseKeyItem : skillupIncreaseKeyItems)
                 {
-                    if (hasKeyItem(PChar, i))
+                    if (hasKeyItem(PChar, skillupIncreaseKeyItem))
                     {
                         rovBonus += 1;
                     }
-                    else
-                    {
-                        break; // No need to check further as you can't get KI out of order, so break out.
-                    }
                 }
+
                 SkillAmount *= rovBonus;
                 if (SkillAmount > 9)
                 {
@@ -3672,69 +3727,88 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    bool hasKeyItem(CCharEntity* PChar, uint16 KeyItemID)
+    auto hasKeyItem(const CCharEntity* PChar, const KeyItem keyItemId) -> bool
     {
-        auto table = KeyItemID / 512;
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-        if (table >= MAX_KEYS_TABLE)
+        if (keyItemTable >= MAX_KEYS_TABLE)
         {
-            ShowWarning("Attempt to check for keyItem out of range (%d)!", KeyItemID);
+            ShowWarning("Attempt to check for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
             return false;
         }
 
-        return PChar->keys.tables[table].keyList[KeyItemID % 512];
+        return PChar->keys.tables[keyItemTable].keyList[keyItemIndex];
     }
 
-    bool seenKeyItem(CCharEntity* PChar, uint16 KeyItemID)
+    auto seenKeyItem(CCharEntity* PChar, KeyItem keyItemId) -> bool
     {
-        auto table = KeyItemID / 512;
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-        if (table >= MAX_KEYS_TABLE)
+        if (keyItemTable >= MAX_KEYS_TABLE)
         {
-            ShowWarning("Attempt to see for keyItem out of range (%d)!", KeyItemID);
+            ShowWarning("Attempt to see for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
             return false;
         }
 
-        return PChar->keys.tables[table].seenList[KeyItemID % 512];
+        return PChar->keys.tables[keyItemTable].seenList[keyItemIndex];
     }
 
-    void unseenKeyItem(CCharEntity* PChar, uint16 KeyItemID)
+    void markSeenKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     {
-        auto table = KeyItemID / 512;
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-        if (table >= MAX_KEYS_TABLE)
+        if (keyItemTable >= MAX_KEYS_TABLE)
         {
-            ShowWarning("Attempt to unsee for keyItem out of range (%d)!", KeyItemID);
+            ShowWarning("Attempt to mark keyItem in table out of range (%d)!", static_cast<uint16_t>(keyItemId));
             return;
         }
 
-        PChar->keys.tables[table].seenList[KeyItemID % 512] = false;
+        PChar->keys.tables[keyItemTable].seenList[keyItemIndex] = true;
     }
 
-    void addKeyItem(CCharEntity* PChar, uint16 KeyItemID)
+    void unseenKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     {
-        auto table = KeyItemID / 512;
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-        if (table >= MAX_KEYS_TABLE)
+        if (keyItemTable >= MAX_KEYS_TABLE)
         {
-            ShowWarning("Attempt to add for keyItem out of range (%d)!", KeyItemID);
+            ShowWarning("Attempt to unsee for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
             return;
         }
 
-        PChar->keys.tables[table].keyList[KeyItemID % 512] = true;
+        PChar->keys.tables[keyItemTable].seenList[keyItemIndex] = false;
     }
 
-    void delKeyItem(CCharEntity* PChar, uint16 KeyItemID)
+    void addKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     {
-        auto table = KeyItemID / 512;
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-        if (table >= MAX_KEYS_TABLE)
+        if (keyItemTable >= MAX_KEYS_TABLE)
         {
-            ShowWarning("Attempt to delete keyItem out of range (%d)!", KeyItemID);
+            ShowWarning("Attempt to add for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
             return;
         }
 
-        PChar->keys.tables[table].keyList[KeyItemID % 512] = false;
+        PChar->keys.tables[keyItemTable].keyList[keyItemIndex] = true;
+    }
+
+    void delKeyItem(CCharEntity* PChar, KeyItem keyItemId)
+    {
+        const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
+        const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
+
+        if (keyItemTable >= MAX_KEYS_TABLE)
+        {
+            ShowWarning("Attempt to delete keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+            return;
+        }
+
+        PChar->keys.tables[keyItemTable].keyList[keyItemIndex] = false;
     }
 
     /************************************************************************
@@ -4690,20 +4764,20 @@ namespace charutils
                 return;
             }
 
-            if (!hasKeyItem(PMember, 2544) || PMember->GetMLevel() < 74)
+            if (!hasKeyItem(PMember, KeyItem::JOB_BREAKER) || PMember->GetMLevel() < 99)
             {
                 // Do not grant Capacity points without Job Breaker or Level 99
                 return;
             }
 
             bool  chainActive = false;
-            int16 levelDiff   = mobLevel - 76; // Passed previous 99 check, no need to calculate
+            int16 levelDiff   = mobLevel - 99; // Passed previous 99 check, no need to calculate
 
             // Capacity Chains are only granted for Mobs level 100+
             // Ref: https://www.bg-wiki.com/ffxi/Job_Points
             float capacityPoints = 0;
 
-            if (mobLevel > 76)
+            if (mobLevel > 99)
             {
                 // Base Capacity Point formula derived from the table located at:
                 // https://ffxiclopedia.fandom.com/wiki/Job_Points#Capacity_Points
@@ -4785,9 +4859,9 @@ namespace charutils
         }
 
         // RoV Key Items - Fuchsia, Puce, Ochre (30%)
-        for (uint16 rovKeyItem = 2890; rovKeyItem <= 2892; rovKeyItem++)
+        for (auto capacityBonusKeyItem : capacityBonusKeyItems)
         {
-            if (hasKeyItem(PChar, rovKeyItem))
+            if (hasKeyItem(PChar, capacityBonusKeyItem))
             {
                 rawBonus += 30;
             }
@@ -6002,15 +6076,11 @@ namespace charutils
         }
 
         int16 rovBonus = 0;
-        for (auto i = 2884; i <= 2889; ++i) // RHAPSODY KI are sequential, so start at WHITE and end at MAUVE, last 3 are CP
+        for (const auto experienceBonusKeyItem : experienceBonusKeyItems)
         {
-            if (hasKeyItem(PChar, i))
+            if (hasKeyItem(PChar, experienceBonusKeyItem))
             {
                 rovBonus += 30;
-            }
-            else
-            {
-                break; // No need to check further as you can't get KI out of order, so break out.
             }
         }
 
@@ -6028,14 +6098,39 @@ namespace charutils
         return exp;
     }
 
-    bool hasMogLockerAccess(CCharEntity* PChar)
+    auto hasMogLockerAccess(const CCharEntity* PChar) -> bool
     {
         TracyZoneScoped;
-        auto tstamp = static_cast<uint32>(PChar->getCharVar("mog-locker-expiry-timestamp"));
+
+        const auto tstamp     = static_cast<uint32>(PChar->getCharVar("mog-locker-expiry-timestamp"));
+        const auto accessType = static_cast<uint32>(PChar->getCharVar("mog-locker-access-type"));
         if (earth_time::vanadiel_timestamp() < tstamp)
         {
-            return true;
+            const auto curZone = PChar->loc.zone;
+            switch (accessType)
+            {
+                case 1: // All areas
+                    // Allowed if in a zone with a Nomad Moogle or in your own Mog House
+                    return curZone->CanUseMisc(MISC_MOGMENU) || PChar->m_moghouseID == PChar->id;
+                case 0: // Al Zahbi only
+                default:
+                    const auto zoneId = curZone->GetID();
+
+                    // Either in your own MH in Al Zahbi or Whitegate
+                    if (PChar->m_moghouseID == PChar->id &&
+                        (zoneId == ZONE_AL_ZAHBI || zoneId == ZONE_AHT_URHGAN_WHITEGATE))
+                    {
+                        return true;
+                    }
+
+                    // Or in Nashmau where a Nomad Moogle is present.
+                    if (zoneId == ZONE_NASHMAU)
+                    {
+                        return true;
+                    }
+            };
         }
+
         return false;
     }
 
@@ -6152,17 +6247,17 @@ namespace charutils
         BuildingCharWeaponSkills(PChar);
     }
 
-    bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility)
+    auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool
     {
         if (PAbility->getAddType() & ADDTYPE_MERIT)
         {
-            if (!PChar->PMeritPoints->GetMerit((MERIT_TYPE)PAbility->getMeritModID()))
+            if (!PChar->PMeritPoints->GetMerit(static_cast<MERIT_TYPE>(PAbility->getMeritModID())))
             {
                 ShowWarning("charutils::CheckAbilityAddtype: Attempt to add invalid Merit Ability (%d).", PAbility->getMeritModID());
                 return false;
             }
 
-            if (!(PChar->PMeritPoints->GetMerit((MERIT_TYPE)PAbility->getMeritModID())->count > 0))
+            if (!(PChar->PMeritPoints->GetMerit(static_cast<MERIT_TYPE>(PAbility->getMeritModID()))->count > 0))
             {
                 return false;
             }
@@ -6220,6 +6315,13 @@ namespace charutils
         if (PAbility->getAddType() & ADDTYPE_AVATAR)
         {
             if (!PChar->PPet || PChar->PPet->objtype != TYPE_PET || static_cast<CPetEntity*>(PChar->PPet)->getPetType() != PET_TYPE::AVATAR)
+            {
+                return false;
+            }
+
+            // Alexander and Odin grant no abilities (Assault, Release...) to the master.
+            const auto* petEntity = static_cast<CPetEntity*>(PChar->PPet);
+            if (petEntity->m_PetID == PETID_ALEXANDER || petEntity->m_PetID == PETID_ODIN)
             {
                 return false;
             }
@@ -6925,9 +7027,7 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "UPDATE char_unlocks SET traverser_start = CURRENT_TIMESTAMP() WHERE charid = %u";
-
-        _sql->Query(fmtQuery, PChar->id);
+        db::preparedStmt("UPDATE char_unlocks SET traverser_start = CURRENT_TIMESTAMP() WHERE charid = ?", PChar->id);
     }
 
     uint32 getClaimedTraverserStones(CCharEntity* PChar)
@@ -6949,18 +7049,14 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "UPDATE char_unlocks SET traverser_claimed = traverser_claimed + %u WHERE charid = %u";
-
-        _sql->Query(fmtQuery, numStones, PChar->id);
+        db::preparedStmt("UPDATE char_unlocks SET traverser_claimed = traverser_claimed + ? WHERE charid = ?", numStones, PChar->id);
     }
 
     void setClaimedTraverserStones(CCharEntity* PChar, uint16 stoneTotal)
     {
         TracyZoneScoped;
 
-        auto fmtQuery = "UPDATE char_unlocks SET traverser_claimed = %u WHERE charid = %u";
-
-        _sql->Query(fmtQuery, stoneTotal, PChar->id);
+        db::preparedStmt("UPDATE char_unlocks SET traverser_claimed = ? WHERE charid = ?", stoneTotal, PChar->id);
     }
 
     uint32 getAvailableTraverserStones(CCharEntity* PChar)
@@ -6987,13 +7083,14 @@ namespace charutils
 
         // Handle reduction for Celerity Key Items
         earth_time::duration stoneWaitHours = 20h;
-        for (int keyItem = 1385; keyItem <= 1387; ++keyItem)
+        for (const auto traverserStoneReductionKeyItem : traverserStoneReductionKeyItems)
         {
-            if (hasKeyItem(PChar, keyItem))
+            if (hasKeyItem(PChar, traverserStoneReductionKeyItem))
             {
                 stoneWaitHours -= 4h;
             }
         }
+
         earth_time::duration elapsedSinceEpoch = earth_time::now() - traverserEpoch;
         uint32               stonesGenerated   = std::chrono::floor<std::chrono::hours>(elapsedSinceEpoch) / stoneWaitHours;
 
@@ -7342,12 +7439,12 @@ namespace charutils
             }
 
             PChar->PSession->shuttingDown = 1;
-            _sql->Query("UPDATE char_stats SET zoning = 0 WHERE charid = %u", PChar->id);
+            db::preparedStmt("UPDATE char_stats SET zoning = 0 WHERE charid = ?", PChar->id);
         }
         else
         {
             PChar->PSession->shuttingDown = 2;
-            _sql->Query("UPDATE char_stats SET zoning = 1 WHERE charid = %u", PChar->id);
+            db::preparedStmt("UPDATE char_stats SET zoning = 1 WHERE charid = ?", PChar->id);
             charutils::CheckEquipLogic(PChar, SCRIPT_CHANGEZONE, PChar->getZone());
         }
 
@@ -7483,5 +7580,45 @@ namespace charutils
                 }
             }
         }
+    }
+
+    bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize newSize)
+    {
+        if (!PChar)
+        {
+            return false;
+        }
+
+        if (newRace < CharRace::HumeMale ||
+            newRace > CharRace::Galka ||
+            newFace > CharFace::Face8B ||
+            newSize > CharSize::Large)
+        {
+            ShowError("charutils::raceChange: Arguments out of bounds for charid: %u", PChar->id);
+            return false;
+        }
+
+        if (!db::preparedStmt("UPDATE char_look SET "
+                              "face = ?, race = ?, size = ? "
+                              "WHERE charid = ?",
+                              newFace, newRace, newSize, PChar->id))
+        {
+            ShowError("charutils::raceChange: Failed to update char_look for charid: %u", PChar->id);
+            return false;
+        }
+
+        for (uint8 slotId = SLOT_MAIN; slotId <= SLOT_BACK; ++slotId)
+        {
+            if (auto* PItem = PChar->getEquip(static_cast<SLOTTYPE>(slotId)))
+            {
+                if (!PItem->isEquippableByRace(static_cast<uint8>(newRace)))
+                {
+                    charutils::UnequipItem(PChar, slotId);
+                }
+            }
+        }
+
+        ForceRezone(PChar);
+        return true;
     }
 }; // namespace charutils

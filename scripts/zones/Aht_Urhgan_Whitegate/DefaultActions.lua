@@ -23,7 +23,6 @@ return {
     ['Hashayra']           = { event = 676 },
     ['Hishahma']           = { event = 571 },
     ['Imperial_Whitegate'] = { messageSpecial = ID.text.GATE_IS_FIRMLY_CLOSED },
-    ['Jarafah']            = { event = 702 },
     ['Jumaaf']             = { event = 243 },
     ['Kabihyam']           = { event = 245 },
     ['Kalimahf']           = { event = 680 },

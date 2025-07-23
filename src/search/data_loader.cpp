@@ -159,19 +159,11 @@ ahItem CDataLoader::GetAHItemFromItemID(uint16 ItemID)
                                  "LEFT JOIN item_weapon ON item_basic.itemid = item_weapon.itemid "
                                  "WHERE item_basic.itemid = ?",
                                  ItemID);
-    if (rset && rset->rowsCount())
+    FOR_DB_SINGLE_RESULT(rset)
     {
-        while (rset->next())
-        {
-            CAHItem.Category     = rset->get<uint16>("aH");
-            CAHItem.SingleAmount = rset->getOrDefault<uint32>("COUNT(*)-SUM(stack)", 0);
-            CAHItem.StackAmount  = rset->getOrDefault<uint32>("SUM(stack)", 0);
-
-            if (rset->getOrDefault<uint32>("COUNT(*)-SUM(stack)", 0) == 1)
-            {
-                CAHItem.StackAmount = 0;
-            }
-        }
+        CAHItem.Category     = rset->get<uint16>("aH");
+        CAHItem.SingleAmount = rset->getOrDefault<uint32>("COUNT(*)-SUM(stack)", 0);
+        CAHItem.StackAmount  = rset->getOrDefault<uint32>("SUM(stack)", 0);
     }
     return CAHItem;
 }
@@ -691,7 +683,7 @@ std::list<SearchEntity*> CDataLoader::GetLinkshellList(uint32 LinkshellID)
 
 std::string CDataLoader::GetSearchComment(uint32 playerId)
 {
-    auto rset = db::preparedStmt("SELECT seacom_message FROM accounts_sessions WHERE charid = (?)", playerId);
+    auto rset = db::preparedStmt("SELECT seacom_message FROM accounts_sessions WHERE charid = ?", playerId);
     if (rset && rset->rowsCount() && rset->next())
     {
         return rset->get<std::string>("seacom_message");

@@ -42,7 +42,8 @@ xi.combat.element.dataTable =
     [xi.element.DARK   ] = { xi.element.LIGHT,   xi.day.DARKSDAY,     xi.weather.GLOOM,      xi.weather.DARKNESS,      xi.mod.DARK_SDT,    xi.mod.DARK_RES_RANK,    xi.mod.DARK_NULL,  xi.mod.DARK_ABSORB,  xi.mod.DARK_MAB,    xi.mod.DARK_MACC,    xi.mod.DARK_MEVA,    xi.mod.DARK_FTP_BONUS,    xi.mod.DARK_STAFF_BONUS,    xi.mod.FORCE_DARK_DWBONUS,      0,                     0,                                0                                 },
 }
 
-xi.combat.element.getOppositeElement = function(element)
+-- Get element to which the element being checked is weak against.
+xi.combat.element.getElementWeakness = function(element)
     -- Validate fed value.
     local elementToCheck = utils.defaultIfNil(element, 0)
 
@@ -51,6 +52,24 @@ xi.combat.element.getOppositeElement = function(element)
     end
 
     return xi.combat.element.dataTable[elementToCheck][column.ELEMENT_OPPOSED]
+end
+
+-- Get element to which the element being checked is strong against.
+xi.combat.element.getElementStrength = function(element)
+    -- Validate fed value.
+    local elementToCheck = utils.defaultIfNil(element, 0)
+
+    if elementToCheck < xi.element.FIRE or elementToCheck > xi.element.DARK then
+        return 0
+    end
+
+    -- Get element.
+    for i = xi.element.FIRE, xi.element.DARK do
+        local opositeElement = xi.combat.element.dataTable[i][column.ELEMENT_OPPOSED]
+        if opositeElement == elementToCheck then
+            return i
+        end
+    end
 end
 
 -----------------------------------

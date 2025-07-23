@@ -29,7 +29,7 @@ local function spawnArkAngelPet(mob, target)
             pet:addListener('DEATH', 'AAGK_PET_DEATH', function(petArg)
                 local petBattlefield = petArg:getBattlefield()
 
-                petBattlefield:setLocalVar('petRespawnGK', os.time() + 30)
+                petBattlefield:setLocalVar('petRespawnGK', GetSystemTime() + 30)
             end)
 
             pet:updateEnmity(target)
@@ -38,6 +38,14 @@ local function spawnArkAngelPet(mob, target)
         mob:setAutoAttackEnabled(true)
         mob:setMobMod(xi.mobMod.NO_MOVE, 0)
     end
+end
+
+entity.onMobInitialize = function(mob)
+    mob:addImmunity(xi.immunity.SILENCE)
+    mob:addImmunity(xi.immunity.PETRIFY)
+    mob:addImmunity(xi.immunity.LIGHT_SLEEP)
+    mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:setMobMod(xi.mobMod.CAN_PARRY, 3)
 end
 
 entity.onMobSpawn = function(mob)
@@ -63,16 +71,17 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
+    local order = mob:getLocalVar('order')
     if mob:hasStatusEffect(xi.effect.MEIKYO_SHISUI) then
-        if mob:getLocalVar('order') == 0 then
+        if order == 0 then
             mob:useMobAbility(946) -- Tachi - Yukikaze
             mob:setLocalVar('order', 1)
             mob:setTP(2000)
-        elseif mob:getLocalVar('order') == 1 then
+        elseif order == 1 then
             mob:useMobAbility(947) -- Tachi - Gekko
             mob:setLocalVar('order', 2)
             mob:setTP(1000)
-        elseif mob:getLocalVar('order') == 2 then
+        elseif order == 2 then
             mob:useMobAbility(948) -- Tachi - Kasha
             mob:setLocalVar('order', 3)
             mob:setTP(0)
@@ -82,7 +91,7 @@ entity.onMobFight = function(mob, target)
     local respawnTime = mob:getBattlefield():getLocalVar('petRespawnGK')
     if
         respawnTime ~= 0 and
-        respawnTime <= os.time()
+        respawnTime <= GetSystemTime()
     then
         local battlefield = mob:getBattlefield()
         if battlefield then
@@ -90,9 +99,6 @@ entity.onMobFight = function(mob, target)
             spawnArkAngelPet(mob, target)
         end
     end
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

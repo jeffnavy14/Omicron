@@ -60,7 +60,7 @@ class AHPaginationModule : public CPPModule
             if (action == 0x05)
             {
                 const timer::time_point curTick = timer::now();
-                if (curTick - PChar->m_AHHistoryTimestamp > 1500ms)
+                if (curTick > PChar->m_AHHistoryTimestamp + 1500ms)
                 {
                     // Not const, because we're going to increment it below
                     // This will get wiped on zoning
@@ -128,12 +128,12 @@ class AHPaginationModule : public CPPModule
                     const auto totalItemsOnAh = PChar->m_ah_history.size();
                     for (size_t slot = 0; slot < totalItemsOnAh; slot++)
                     {
-                        PChar->pushPacket<CAuctionHousePacket>(0x0C, (uint8)slot, PChar);
+                        PChar->pushPacket<CAuctionHousePacket>(static_cast<GP_CLI_COMMAND_AUC_COMMAND>(0x0C), static_cast<uint8>(slot), PChar);
                     }
                 }
                 else
                 {
-                    PChar->pushPacket<CAuctionHousePacket>(action, 246, 0, 0, 0, 0); // try again in a little while msg
+                    PChar->pushPacket<CAuctionHousePacket>(static_cast<GP_CLI_COMMAND_AUC_COMMAND>(action), 246, 0, 0, 0, 0); // try again in a little while msg
                 }
             }
             else // Otherwise, call original handler
