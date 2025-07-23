@@ -46,7 +46,9 @@ enum MSGBASIC_ID : uint16
     MSGBASIC_COUNTER_ABS_BY_SHADOW      = 14,  // The <player>'s attack is countered by the <target>. .. of <player>'s shadows absorbs the damage and disappears.
     MSGBASIC_IS_INTERRUPTED             = 16,  // The <player>'s casting is interrupted.
     MSGBASIC_UNABLE_TO_CAST             = 18,  // Unable to cast spells at this time.
+    MSGBASIC_CFH                        = 19,  // <player> calls for help!
     MSGBASIC_FALLS_TO_GROUND            = 20,  // The <target> falls to the ground.
+    MSGBASIC_CANNOT_CFH                 = 22,  // You cannot call for help at this time.
     MSGBASIC_IS_PARALYZED               = 29,  // The <player> is paralyzed.
     MSGBASIC_SHADOW_ABSORB              = 31,  // .. of <target>'s shadows absorb the damage and disappear.
     MSGBASIC_NOT_ENOUGH_MP              = 34,  // The <player> does not have enough MP to cast (nullptr).
@@ -173,6 +175,7 @@ enum MSGBASIC_ID : uint16
     MSGBASIC_CHECKPARAM_ILVL            = 731,
     MSGBASIC_CHECKPARAM_NAME            = 733,
     MSGBASIC_AUTO_EXCEEDS_CAPACITY      = 745, // Your automaton exceeds one or more elemental capacity values and cannot be activated.
+    MSGBASIC_MOUNT_REQUIRED_LEVEL       = 775, // You are unable to call forth your mount because your main job level is not at least <level>.
 };
 
 class CBaseEntity;

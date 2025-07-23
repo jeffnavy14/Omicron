@@ -182,6 +182,12 @@ public:
     auto hasLinkshellRank(const CCharEntity* PChar, uint8_t slot, LSTYPE rank) -> PacketValidator&;
     // Character zone must allow specified flag. GMs can bypass this check.
     auto hasZoneMiscFlag(const CCharEntity* PChar, ZONEMISC flag) -> PacketValidator&;
+    // Character must be the party leader
+    auto isPartyLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be the alliance leader
+    auto isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be fishing
+    auto isNotFishing(const CCharEntity* PChar) -> PacketValidator&;
 
     // Custom validation function
     template <typename Func>

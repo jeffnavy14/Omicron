@@ -103,6 +103,8 @@
 #include "charutils.h"
 #include "enums/key_items.h"
 #include "itemutils.h"
+#include "packets/roe_questlog.h"
+#include "packets/roe_update.h"
 #include "petutils.h"
 #include "puppetutils.h"
 #include "synthutils.h"
@@ -1220,6 +1222,31 @@ namespace charutils
         // Current Nation, Zilart, COP, Add-On, SOA, and ROV missions are all sent in a shared, single packet.
         // So sending this packet updates multiple Mission logs at once.
         PChar->pushPacket<CQuestMissionLogPacket>(PChar, MISSION_ZILART, LOG_MISSION_CURRENT);
+    }
+
+    void SendRecordsOfEminenceLog(CCharEntity* PChar)
+    {
+        // Send spark updates
+        PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
+
+        if (settings::get<bool>("main.ENABLE_ROE"))
+        {
+            // Current RoE quests
+            PChar->pushPacket<CRoeUpdatePacket>(PChar);
+
+            // Players logging in to a new timed record get one-time message
+            if (PChar->m_eminenceCache.notifyTimedRecord)
+            {
+                PChar->m_eminenceCache.notifyTimedRecord = false;
+                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, roeutils::GetActiveTimedRecord(), 0, MSGBASIC_ROE_TIMED);
+            }
+
+            // 4-part Eminence Completion bitmap
+            for (int i = 0; i < 4; i++)
+            {
+                PChar->pushPacket<CRoeQuestLogPacket>(PChar, i);
+            }
+        }
     }
 
     /************************************************************************

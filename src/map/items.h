@@ -89,6 +89,7 @@ enum ITEMID : uint16
     TORRENT_CRYSTAL     = 4243,
     AURORA_CRYSTAL      = 4244,
     TWILIGHT_CRYSTAL    = 4245,
+    GYSAHL_GREENS       = 4545,
     PYRE_CRYSTAL        = 6506,
     FROST_CRYSTAL       = 6507,
     VORTEX_CRYSTAL      = 6508,

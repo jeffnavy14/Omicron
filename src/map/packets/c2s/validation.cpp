@@ -149,3 +149,46 @@ auto PacketValidator::hasZoneMiscFlag(const CCharEntity* PChar, const ZONEMISC f
 
     return *this;
 }
+
+auto PacketValidator::isPartyLeader(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (!PChar->PParty)
+    {
+        result_.addError("Not in a party.");
+    }
+    else if (PChar->PParty->GetLeader() != PChar)
+    {
+        result_.addError("Not the party leader.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (!PChar->PParty)
+    {
+        result_.addError("Not in a party.");
+    }
+    else if (!PChar->PParty->m_PAlliance)
+    {
+        result_.addError("Not in an alliance.");
+    }
+    else if (PChar->PParty->m_PAlliance->getMainParty()->GetLeader() != PChar)
+    {
+        result_.addError("Not the alliance leader.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isNotFishing(const CCharEntity* PChar) -> PacketValidator&
+{
+    if ((PChar->animation >= ANIMATION_FISHING_FISH && PChar->animation <= ANIMATION_FISHING_STOP) ||
+        PChar->animation == ANIMATION_FISHING_START_OLD || PChar->animation == ANIMATION_FISHING_START)
+    {
+        result_.addError("Character is fishing.");
+    }
+
+    return *this;
+}

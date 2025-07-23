@@ -2545,11 +2545,11 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
  *  Example : player:openSendBox()
  ************************************************************************/
 
-void CLuaBaseEntity::openSendBox()
+void CLuaBaseEntity::openSendBox() const
 {
     if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        dboxutils::OpenSendBox(PChar, 0x0D, 2);
+        dboxutils::OpenSendBox(PChar);
     }
 }
 

@@ -170,7 +170,7 @@ public:
     void changeMusic(uint16 blockID, uint16 musicTrackID);                  // Sets the specified music Track for specified music block.
     void sendMenu(uint32 menu);                                             // Displays a menu (AH,Raise,Tractor,MH etc)
     bool sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 holiday); // Sends guild shop menu
-    void openSendBox();                                                     // Opens send box (to deliver items)
+    void openSendBox() const;                                               // Opens send box (to deliver items)
     void leaveGame();
     void sendEmote(CLuaBaseEntity* target, uint8 emID, uint8 emMode);
 

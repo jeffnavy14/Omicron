@@ -45,6 +45,7 @@
 #include "utils/charutils.h"
 #include "utils/zoneutils.h"
 
+#include "packets/c2s/0x01a_action.h"
 #include "packets/c2s/0x102_extended_job.h"
 #include "status_effect.h"
 #include "status_effect_container.h"
@@ -383,27 +384,22 @@ void monstrosity::SendFullMonstrosityUpdate(CCharEntity* PChar)
     PChar->updatemask |= UPDATE_LOOK;
 }
 
-void monstrosity::HandleMonsterSkillActionPacket(CCharEntity* PChar, CBasicPacket& data)
+void monstrosity::HandleMonsterSkillActionPacket(const CCharEntity* PChar, const GP_CLI_COMMAND_ACTION& data)
 {
     if (PChar->GetMJob() != JOB_MON)
     {
         return;
     }
 
-    if (PChar->m_PMonstrosity == nullptr)
+    if (!PChar->m_PMonstrosity)
     {
         return;
     }
 
-    // uint16 other = data.ref<uint16>(0x0A); // Always 25?
-
-    uint16 targId  = data.ref<uint16>(0x08);
-    uint16 skillId = data.ref<uint16>(0x0C);
-
     // TODO: Validate that this move is available at this level, for this species, and that
     // we're capable of using it (state, TP, etc.).
 
-    PChar->PAI->Internal_MobSkill(targId, skillId);
+    PChar->PAI->Internal_MobSkill(data.ActIndex, data.MonsterSkill.SkillId);
 }
 
 void monstrosity::HandleEquipChangePacket(CCharEntity* PChar, const mon_data_t& data)
@@ -570,9 +566,9 @@ void monstrosity::SetLevel(CCharEntity* PChar, uint8 id, uint8 level)
     PChar->m_PMonstrosity->levels[id] = level;
 }
 
-void monstrosity::HandleDeathMenu(CCharEntity* PChar, uint8 type)
+void monstrosity::HandleDeathMenu(CCharEntity* PChar, const GP_CLI_COMMAND_ACTION_HOMEPOINTMENU type)
 {
-    if (PChar->m_PMonstrosity == nullptr)
+    if (!PChar->m_PMonstrosity)
     {
         return;
     }
@@ -583,14 +579,11 @@ void monstrosity::HandleDeathMenu(CCharEntity* PChar, uint8 type)
 
     PChar->updatemask |= UPDATE_HP;
 
-    // Monstrosity death menu:
-    // 2: Retry
-    // 1: Cancel
-    if (type == 1)
+    if (type == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::MonstrosityCancel)
     {
         luautils::OnMonstrosityReturnToEntrance(PChar);
     }
-    else if (type == 2)
+    else if (type == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::MonstrosityRetry)
     {
         // TODO: Pick a location from the starting points list
 

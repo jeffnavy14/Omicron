@@ -41,6 +41,7 @@ void GP_CLI_COMMAND_CLSTAT::process(MapSession* PSession, CCharEntity* PChar) co
 {
     charutils::SendKeyItems(PChar);
     charutils::SendQuestMissionLog(PChar);
+    charutils::SendRecordsOfEminenceLog(PChar);
 
     PChar->pushPacket<CCharSpellsPacket>(PChar);
     PChar->pushPacket<CCharMountsPacket>(PChar);
