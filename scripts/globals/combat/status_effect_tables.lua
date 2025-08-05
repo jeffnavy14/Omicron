@@ -39,6 +39,7 @@ xi.combat.statusEffect.dataTable =
     [xi.effect.BIND         ] = { 0,               0,                  xi.element.ICE,     xi.immunity.BIND,       xi.mod.BINDRES,     0, xi.mod.BIND_MEVA,     xi.mod.BIND_IMMUNOBREAK     },
     [xi.effect.BLINDNESS    ] = { 0,               0,                  xi.element.DARK,    xi.immunity.BLIND,      xi.mod.BLINDRES,    0, xi.mod.BLIND_MEVA,    xi.mod.BLIND_IMMUNOBREAK    },
     [xi.effect.BURN         ] = { xi.effect.DROWN, 0,                  xi.element.FIRE,    0,                      0,                  0, 0,                    0                           },
+    [xi.effect.CHARM_I      ] = { 0,               0,                  xi.element.LIGHT,   0,                      xi.mod.CHARMRES,    0, xi.mod.CHARM_MEVA,    0                           }, -- TODO: charm should be moved from a mob property to a regular immunity
     [xi.effect.CHOKE        ] = { xi.effect.FROST, 0,                  xi.element.WIND,    0,                      0,                  0, 0,                    0                           },
     [xi.effect.CURSE_I      ] = { 0,               0,                  xi.element.DARK,    xi.immunity.NONE,       xi.mod.CURSERES,    0, xi.mod.CURSE_MEVA,    0                           },
     [xi.effect.DROWN        ] = { xi.effect.SHOCK, 0,                  xi.element.WATER,   0,                      0,                  0, 0,                    0                           },

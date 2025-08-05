@@ -605,8 +605,6 @@ INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1393);
 INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1394);
 INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1395);
 INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1397);
--- INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1398);
-INSERT INTO `mob_skill_lists` VALUES ('Humanoid-Hume',149,1399);
 INSERT INTO `mob_skill_lists` VALUES ('Gears3',150,2043);
 INSERT INTO `mob_skill_lists` VALUES ('Gears3',150,2044);
 INSERT INTO `mob_skill_lists` VALUES ('Gears3',150,2045);
@@ -2476,6 +2474,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Jug_Hare',733,673);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Hare',733,674);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Hare',733,735);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Mandragora',734,675);
+INSERT INTO `mob_skill_lists` VALUES ('Jug_Mandragora',734,676);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Mandragora',734,677);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Mandragora',734,678);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Mandragora',734,679);
@@ -2577,6 +2576,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Jug_Spider',764,778);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lynx',765,730);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lynx',765,731);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lycopodium',766,675);
+INSERT INTO `mob_skill_lists` VALUES ('Jug_Lycopodium',766,676);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lycopodium',766,677);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lycopodium',766,678);
 INSERT INTO `mob_skill_lists` VALUES ('Jug_Lycopodium',766,679);
@@ -3814,7 +3814,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Bugbear_Muscleman',1169,361);
 INSERT INTO `mob_skill_lists` VALUES ('Cop_Wardens',1170,561); -- Electromagnetic Field
 INSERT INTO `mob_skill_lists` VALUES ('Cop_Wardens',1170,562); -- Reactive Armor
 
-INSERT INTO `mob_skill_lists` VALUES ('Tenzen_Ranged',1171,1396); -- Tenzen Ranged Attack
+-- SPARE ID: 1171
 
 INSERT INTO `mob_skill_lists` VALUES ('Goblin_NM',1172,590);
 INSERT INTO `mob_skill_lists` VALUES ('Goblin_NM',1172,591);
@@ -4174,7 +4174,10 @@ INSERT INTO `mob_skill_lists` VALUES ('Vampyr_Jarl',2054,2110); -- Wings of Gehe
 INSERT INTO `mob_skill_lists` VALUES ('Vampyr_Jarl',2054,2111); -- Eternal Damnation
 INSERT INTO `mob_skill_lists` VALUES ('Vampyr_Jarl',2054,2112); -- Nocturnal Servitude
 
--- Next ID : 2055
+INSERT INTO `mob_skill_lists` VALUES ('Tenzen_Ranged_High',2055,1398); -- Tenzen Ranged Attack
+INSERT INTO `mob_skill_lists` VALUES ('Tenzen_Ranged_Low',2056,1400); -- Tenzen Ranged Attack
+
+-- Next ID : 2057
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

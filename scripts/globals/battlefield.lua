@@ -866,6 +866,7 @@ function Battlefield:onEntryEventUpdate(player, csid, option, npc)
         for _, member in pairs(alliance) do
             if
                 member:getZoneID() == zone and
+                member:getStatus() ~= xi.status.DISAPPEAR and
                 not member:hasStatusEffect(xi.effect.BATTLEFIELD) and
                 not member:getBattlefield()
             then

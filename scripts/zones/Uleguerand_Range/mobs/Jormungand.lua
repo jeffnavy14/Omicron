@@ -132,7 +132,7 @@ entity.onMobFight = function(mob, target)
     -- Animation (Ground or flight mode) logic.
     if
         not mob:hasStatusEffect(xi.effect.BLOOD_WEAPON) and
-        mob:actionQueueEmpty()
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         local flightTime  = mob:getLocalVar('flightTime')
         local twohourTime = mob:getLocalVar('twohourTime')

@@ -30,12 +30,9 @@
 
 #include <concurrentqueue.h>
 #include <memory>
-#include <queue>
-#include <set>
 
 #include "common/database.h"
 #include "common/logging.h"
-#include "common/regional_event.h"
 
 namespace
 {
@@ -229,6 +226,13 @@ auto IPCServer::getIPPsForYellZones() -> std::vector<IPP>
     return zoneSettings_.yellMapEndpoints_;
 }
 
+auto IPCServer::getIPPsForAssistZones() -> std::vector<IPP>
+{
+    TracyZoneScoped;
+
+    return zoneSettings_.assistMapEndpoints_;
+}
+
 auto IPCServer::getIPPsForAllZones() -> std::vector<IPP>
 {
     TracyZoneScoped;
@@ -330,6 +334,17 @@ void IPCServer::rerouteMessageToYellZones(const auto& message)
     for (const auto& ipp : getIPPsForYellZones())
     {
         DebugIPCFmt("Message: -> rerouting to yell zone on {}", ipp.toString());
+        sendMessage(ipp, message);
+    }
+}
+
+void IPCServer::rerouteMessageToAssistZones(const auto& message)
+{
+    TracyZoneScoped;
+
+    for (const auto& ipp : getIPPsForAssistZones())
+    {
+        DebugIPCFmt("Message: -> rerouting to assist zone on {}", ipp.toString());
         sendMessage(ipp, message);
     }
 }
@@ -444,6 +459,13 @@ void IPCServer::handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMes
     TracyZoneScoped;
 
     rerouteMessageToYellZones(message);
+}
+
+void IPCServer::handleMessage_ChatMessageAssist(const IPP& ipp, const ipc::ChatMessageAssist& message)
+{
+    TracyZoneScoped;
+
+    rerouteMessageToAssistZones(message);
 }
 
 void IPCServer::handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc::ChatMessageServerMessage& message)
@@ -666,6 +688,13 @@ void IPCServer::handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::Se
     TracyZoneScoped;
 
     rerouteMessageToCharId(message.targetId, message);
+}
+
+void IPCServer::handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::AssistChannelEvent& message)
+{
+    TracyZoneScoped;
+
+    rerouteMessageToCharId(message.receiverId, message);
 }
 
 void IPCServer::handleUnknownMessage(const IPP& ipp, const std::span<uint8_t> message)

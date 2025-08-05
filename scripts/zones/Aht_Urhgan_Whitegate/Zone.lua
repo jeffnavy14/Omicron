@@ -21,30 +21,28 @@ zoneObject.onInitialize = function(zone)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
-    local cs = -1
-
     if
         player:getXPos() == 0 and
         player:getYPos() == 0 and
         player:getZPos() == 0
     then
-        if prevZone == xi.zone.OPEN_SEA_ROUTE_TO_AL_ZAHBI then
+        if
+            player:hasKeyItem(xi.ki.FERRY_TICKET) and
+            prevZone == xi.zone.OPEN_SEA_ROUTE_TO_AL_ZAHBI
+        then
             player:setPos(-11, 2, -142, 192)
-            cs = 201
+            return 201
         elseif
-            prevZone == xi.zone.SILVER_SEA_ROUTE_TO_AL_ZAHBI or
-            prevZone == xi.zone.SILVER_SEA_ROUTE_TO_NASHMAU
+            player:hasKeyItem(xi.ki.SILVER_SEA_FERRY_TICKET) and
+            (prevZone == xi.zone.SILVER_SEA_ROUTE_TO_AL_ZAHBI or
+            prevZone == xi.zone.SILVER_SEA_ROUTE_TO_NASHMAU)
         then
             player:setPos(11, 2, 142, 64)
-            cs = 204
-        else
-            -- MOG HOUSE EXIT
-            local position = math.random(1, 5) - 83
-            player:setPos(-100, 0, position, 0)
+            return 204
         end
     end
 
-    return cs
+    return xi.moghouse.onMoghouseZoneEvent(player, prevZone)
 end
 
 zoneObject.afterZoneIn = function(player)
@@ -54,7 +52,7 @@ end
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
     switch (triggerArea:getTriggerAreaID()): caseof
     {
-        [1] = function()  -- Cutscene for Got It All quest.
+        [1] = function() -- Cutscene for Got It All quest.
             if player:getCharVar('gotitallCS') == 5 then
                 player:startEvent(526)
             end
@@ -83,14 +81,26 @@ zoneObject.onTriggerAreaLeave = function(player, triggerArea)
 end
 
 zoneObject.onTransportEvent = function(player, transport)
+    -- Boat to Mhaura.
     if transport == 46 or transport == 47 then
-        player:startEvent(200)
+        if player:hasKeyItem(xi.ki.FERRY_TICKET) then
+            player:startEvent(200)
+        else
+            player:setPos(-11, 2, -142, 192)
+        end
+
+    -- Boat to Nashmau.
     elseif transport == 58 or transport == 59 then
-        player:startEvent(203)
+        if player:hasKeyItem(xi.ki.SILVER_SEA_FERRY_TICKET) then
+            player:startEvent(203)
+        else
+            player:setPos(11, 2, 142, 64)
+        end
     end
 end
 
 zoneObject.onEventUpdate = function(player, csid, option, npc)
+    -- This exist when boats leave among others. TODO: Add them. Things work better when they are added.
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
@@ -109,7 +119,7 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
         player:setCharVar('gotitallCS', 6)
         player:setPos(60, 0, -71, 38)
     elseif csid == 797 then
-        player:setCharVar('AgainstAllOdds', 1) -- Set For Corsair BCNM
+        player:setCharVar('AgainstAllOdds', 1)                                          -- Set For Corsair BCNM
         player:addQuest(xi.questLog.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS) -- Start of af 3 not completed yet
         npcUtil.giveKeyItem(player, xi.ki.LIFE_FLOAT)
         player:setCharVar('AgainstAllOddsTimer', getMidnight())

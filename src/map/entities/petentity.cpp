@@ -407,9 +407,14 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
     */
 
     // Mob buff abilities also hit monster's pets
-    if (PSkill->getValidTargets() == TARGET_SELF)
+    if (PSkill->getValidTargets() & TARGET_SELF)
     {
         findFlags |= FINDFLAGS_PET;
+        // skill can target self and is aoe, add itself to targetfind first
+        if (PSkill->isAoE())
+        {
+            PTarget = this;
+        }
     }
 
     if ((PSkill->getValidTargets() & TARGET_IGNORE_BATTLEID) == TARGET_IGNORE_BATTLEID)
@@ -424,7 +429,15 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
 
     action.id         = id;
     action.actiontype = (ACTIONTYPE)PSkill->getSkillFinishCategory();
-    action.actionid   = PSkill->getID();
+    if (PSkill->getMobSkillID() > 0)
+    {
+        // jug pet skills emulate mob skills but still have the same flow as wyvern and smn pet skills
+        action.actionid = PSkill->getMobSkillID();
+    }
+    else
+    {
+        action.actionid = PSkill->getID();
+    }
 
     if (PAI->TargetFind->isWithinRange(&PTarget->loc.p, distance))
     {

@@ -9,7 +9,7 @@ entity.onMobFight = function(mob, target)
     -- captures show cure v repeatedly every 15 sec below 50% health
     if
         mob:getHPP() <= 50 and
-        mob:actionQueueEmpty() and
+        not xi.combat.behavior.isEntityBusy(mob) and
         GetSystemTime() > mob:getLocalVar('cureDelay')
     then
         mob:castSpell(xi.magic.spell.CURE_V, mob)

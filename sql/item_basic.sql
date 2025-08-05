@@ -7622,6 +7622,7 @@ INSERT INTO `item_basic` VALUES (10080,0,'♪byakko','♪byakko',1,61504,@NONE,1
 INSERT INTO `item_basic` VALUES (10081,0,'♪noble_chocobo','♪noble_chocobo',1,61504,@NONE,1,0);
 INSERT INTO `item_basic` VALUES (10082,0,'♪ixion','♪ixion',1,61504,@NONE,1,0);
 INSERT INTO `item_basic` VALUES (10083,0,'♪phuabo','♪phuabo',1,61504,@NONE,1,0);
+INSERT INTO `item_basic` VALUES (10084,0,'♪craklaw','♪craklaw',1,61504,@NONE,1,0);
 INSERT INTO `item_basic` VALUES (10112,906,'cipher_of_zeids_alter_ego','cipher_zeid',1,61504,@NONE,0,0);
 INSERT INTO `item_basic` VALUES (10113,907,'cipher_of_lions_alter_ego','cipher_lion',1,61504,@NONE,0,0);
 INSERT INTO `item_basic` VALUES (10114,908,'cipher_of_tenzens_alter_ego','cipher_tenzen',1,61504,@NONE,0,0);

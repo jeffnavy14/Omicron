@@ -22,6 +22,7 @@
 #pragma once
 
 #include "magic_enum/magic_enum.hpp"
+#include "zone.h"
 
 enum LSTYPE : std::uint8_t;
 class CCharEntity;
@@ -179,6 +180,14 @@ public:
     auto isInEvent(const CCharEntity* PChar, std::optional<uint16_t> eventId = std::nullopt) -> PacketValidator&;
     // Character must have necessary rank in the linkshell in the given slot
     auto hasLinkshellRank(const CCharEntity* PChar, uint8_t slot, LSTYPE rank) -> PacketValidator&;
+    // Character zone must allow specified flag. GMs can bypass this check.
+    auto hasZoneMiscFlag(const CCharEntity* PChar, ZONEMISC flag) -> PacketValidator&;
+    // Character must be the party leader
+    auto isPartyLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be the alliance leader
+    auto isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be fishing
+    auto isNotFishing(const CCharEntity* PChar) -> PacketValidator&;
 
     // Custom validation function
     template <typename Func>

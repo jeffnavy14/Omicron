@@ -248,7 +248,7 @@ namespace battleutils
         // Load all pet skills
         const char* specialQuery = "SELECT pet_skill_id, pet_anim_id, pet_skill_name, "
                                    "pet_skill_aoe, pet_skill_distance, pet_anim_time, pet_prepare_time, "
-                                   "pet_valid_targets, pet_message, pet_skill_flag, pet_skill_param, pet_skill_finish_category, knockback, primary_sc, secondary_sc, tertiary_sc "
+                                   "pet_valid_targets, pet_message, pet_skill_flag, pet_skill_param, pet_skill_finish_category, knockback, primary_sc, secondary_sc, tertiary_sc, mob_skill_id "
                                    "FROM pet_skills";
 
         int32 ret = _sql->Query(specialQuery);
@@ -273,6 +273,7 @@ namespace battleutils
                 PPetSkill->setPrimarySkillchain(_sql->GetUIntData(13));
                 PPetSkill->setSecondarySkillchain(_sql->GetUIntData(14));
                 PPetSkill->setTertiarySkillchain(_sql->GetUIntData(15));
+                PPetSkill->setMobSkillID(_sql->GetUIntData(16));
                 g_PPetSkillList[PPetSkill->getID()] = PPetSkill;
 
                 auto filename = fmt::format("./scripts/actions/abilities/pet/{}.lua", PPetSkill->getName());

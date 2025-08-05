@@ -1,5 +1,5 @@
 -----------------------------------
--- xi.effect.SLEEP
+-- xi.effect.SLEEP_I
 -----------------------------------
 ---@type TEffect
 local effectObject = {}

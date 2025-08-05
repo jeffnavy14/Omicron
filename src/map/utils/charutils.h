@@ -73,6 +73,7 @@ namespace charutils
     void LoadEquip(CCharEntity* PChar);
 
     void SendQuestMissionLog(CCharEntity* PChar);
+    void SendRecordsOfEminenceLog(CCharEntity* PChar);
     void SendKeyItems(CCharEntity* PChar);
     void SendInventory(CCharEntity* PChar);
 
@@ -136,6 +137,7 @@ namespace charutils
 
     auto hasKeyItem(const CCharEntity* PChar, KeyItem keyItemId) -> bool; // checking the presence of a key item
     auto seenKeyItem(CCharEntity* PChar, KeyItem keyItemId) -> bool;      // checking whether the description of the key item has been read
+    void markSeenKeyItem(CCharEntity* PChar, KeyItem keyItemId);          // mark key item as seen (description read)
     void unseenKeyItem(CCharEntity* PChar, KeyItem keyItemId);            // attempt to remove keyitem from seen list
     void addKeyItem(CCharEntity* PChar, KeyItem keyItemId);               // add a key item
     void delKeyItem(CCharEntity* PChar, KeyItem keyItemId);               // delete a key item
@@ -205,6 +207,7 @@ namespace charutils
     void SaveTeleport(CCharEntity* PChar, TELEPORT_TYPE type); // save the character's teleports (homepoints, outposts, maws, etc)
     void SaveDeathTime(CCharEntity* PChar);                    // save when this character last died
     void SavePlayTime(CCharEntity* PChar);                     // save this character's total play time
+    void SaveLastLogout(const CCharEntity* PChar);             // save the last logout time of this character
     bool hasMogLockerAccess(const CCharEntity* PChar);         // true if have access, false otherwise
 
     uint8 getQuestStatus(CCharEntity* PChar, uint8 log, uint8 quest); // Get Quest status (used in FishingUtils.cpp, allows to fish quest specific mobs, like PLD AF NM)
@@ -221,7 +224,7 @@ namespace charutils
     bool isRecvBoxOpen(CCharEntity* PChar);
     bool isAnyDeliveryBoxOpen(CCharEntity* PChar);
 
-    bool CheckAbilityAddtype(CCharEntity* PChar, CAbility* PAbility);
+    auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool;
 
     void RemoveStratagems(CCharEntity* PChar, CSpell* PSpell);
 
@@ -250,6 +253,7 @@ namespace charutils
     void  SetCharVar(CCharEntity* PChar, std::string const& var, int32 value, uint32 expiry = 0);
     int32 ClearCharVarsWithPrefix(CCharEntity* PChar, std::string const& prefix);
     void  ClearCharVarFromAll(std::string const& varName, bool localOnly = false);
+    void  IncrementCharVar(uint32 charId, std::string const& var, int32 value);
     void  IncrementCharVar(CCharEntity* PChar, std::string const& var, int32 value);
 
     auto FetchCharVar(uint32 charId, std::string const& var) -> std::pair<int32, uint32>;

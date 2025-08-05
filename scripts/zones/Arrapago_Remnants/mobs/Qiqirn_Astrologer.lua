@@ -52,26 +52,13 @@ entity.onMobFight = function(mob, target)
         return
     end
 
-    local act     = mob:getCurrentAction()
-    local isBusy  = false
     local runTime = mob:getLocalVar('runTime')
     local stage   = instance:getStage()
     local prog    = instance:getProgress()
 
-    if
-        act == xi.act.MOBABILITY_START or
-        act == xi.act.MOBABILITY_USING or
-        act == xi.act.MOBABILITY_FINISH or
-        act == xi.act.MAGIC_START or
-        act == xi.act.MAGIC_CASTING or
-        act == xi.act.MAGIC_START
-    then
-        isBusy = true -- is set to true if mob is in any stage of using a mobskill or casting a spell
-    end
-
     if not mob:isFollowingPath() then
         if GetSystemTime() - runTime > 10 then
-            if mob:actionQueueEmpty() and not isBusy then
+            if not xi.combat.behavior.isEntityBusy(mob) then
                 if mob:getLocalVar('run') <= 1 then
                     mob:setLocalVar('run', 1)
                     mob:setLocalVar('runTime', GetSystemTime())

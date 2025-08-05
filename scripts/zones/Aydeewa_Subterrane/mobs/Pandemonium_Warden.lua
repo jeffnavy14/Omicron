@@ -194,7 +194,7 @@ entity.onMobFight = function(mob, target)
     -- Check for time limit, too
     if
         GetSystemTime() > depopTime and
-        mob:actionQueueEmpty()
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         for i = 0, 1 do
             for j = 1, 8 do

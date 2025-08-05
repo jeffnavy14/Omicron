@@ -7535,8 +7535,8 @@ INSERT INTO `mob_groups` VALUES (59,1879,104,'Halforc_Dark_Knight',0,128,0,0,0,0
 INSERT INTO `mob_groups` VALUES (60,1883,104,'Halforc_Ranger',0,128,0,0,0,35,35,0);
 INSERT INTO `mob_groups` VALUES (61,1880,104,'Halforc_Dragoon',0,128,0,0,0,35,35,0);
 INSERT INTO `mob_groups` VALUES (62,3048,104,'Orcs_Wyvern',0,128,0,0,0,32,32,0);
-INSERT INTO `mob_groups` VALUES (63,1605,104,'Giollemitte_B_Feroun',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (64,3645,104,'Skeleton_Esquire',0,128,0,0,0,17,29,0);
+INSERT INTO `mob_groups` VALUES (63,1605,104,'Giollemitte_B_Feroun',0,128,0,2950,0,38,38,0);
+INSERT INTO `mob_groups` VALUES (64,3645,104,'Skeleton_Esquire_NM',0,128,0,2120,0,35,35,0);
 
 -- garrison
 INSERT INTO `mob_groups` VALUES (65,3009,104,'Orcish_Fighter_G',0,128,3226,0,0,30,35,0);
@@ -11481,7 +11481,7 @@ INSERT INTO `mob_groups` VALUES (20,233,167,'Arioch',0,32,2388,0,0,56,62,0);
 INSERT INTO `mob_groups` VALUES (21,6393,167,'Bloodsucker',300,0,174,0,0,65,68,0);
 INSERT INTO `mob_groups` VALUES (22,1505,167,'Gespenst',300,0,950,0,0,68,70,0);
 INSERT INTO `mob_groups` VALUES (23,2548,167,'Manes',0,32,2879,0,0,72,73,0);
-INSERT INTO `mob_groups` VALUES (24,5138,167,'Bloodsucker_NM',0,128,2892,3600,0,71,73,0);
+INSERT INTO `mob_groups` VALUES (24,5138,167,'Bloodsucker_NM',3600,0,2892,3600,0,71,73,0);
 INSERT INTO `mob_groups` VALUES (25,482,167,'Bodach',0,128,0,7500,0,80,80,0);
 INSERT INTO `mob_groups` VALUES (26,6723,167,'Garbage_Gel',0,128,0,0,0,122,122,0);
 

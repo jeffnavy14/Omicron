@@ -89,7 +89,7 @@ entity.onMobFight = function(mob, target)
         mob:setMobMod(xi.mobMod.NO_MOVE, 0)
     end
 
-    if not mob:actionQueueEmpty() then
+    if xi.combat.behavior.isEntityBusy(mob) then
         return
     end
 

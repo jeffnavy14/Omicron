@@ -22,11 +22,11 @@
 #ifndef _CHARENTITY_H
 #define _CHARENTITY_H
 
+#include "aman.h"
 #include "event_info.h"
 #include "item_container.h"
 #include "map_session.h"
 #include "monstrosity.h"
-#include "treasure_pool.h"
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
@@ -303,7 +303,6 @@ public:
     bool isSeekingParty() const;       // is seeking party or not
     bool isAnon() const;               // is /anon
     bool isAway() const;               // is /away (tells will not go through)
-    bool isMentor() const;             // If player is a mentor or not.
     bool hasAutoTargetEnabled() const; // has autotarget enabled
 
     profile_t       profile{};
@@ -336,13 +335,14 @@ public:
     uint32           m_lastBcnmTimePrompt{};          // The last message prompt in seconds
     PetInfo_t        petZoningInfo{};                 // Used to repawn dragoons pets ect on zone
 
-    void setPetZoningInfo();              // Set pet zoning info (when zoning and logging out)
-    void resetPetZoningInfo();            // Reset pet zoning info (when changing job ect)
-    bool shouldPetPersistThroughZoning(); // If true, zoning should not cause a currently active pet to despawn
+    void setPetZoningInfo();                            // Set pet zoning info (when zoning and logging out)
+    void resetPetZoningInfo();                          // Reset pet zoning info (when changing job ect)
+    auto shouldPetPersistThroughZoning() const -> bool; // If true, zoning should not cause a currently active pet to despawn
 
     std::array<uint8, 20> m_SetBlueSpells{}; // The 0x200 offsetted blue magic spell IDs which the user has set. (1 byte per spell)
 
     uint32 m_FieldChocobo{};
+    uint8  m_mountId{}; // Do not reset to 0. Only update when the mount changes.
     uint32 m_claimedDeeds[5]{};
     uint32 m_uniqueEvents[5]{};
 
@@ -519,10 +519,11 @@ public:
 
     timer::time_point m_LeaderCreatedPartyTime{}; // Time that a party member joined and this player was leader.
 
+    auto aman() -> CAMANContainer&;
+
     uint8 m_GMlevel;    // Level of the GM flag assigned to this character
     bool  m_isGMHidden; // GM Hidden flag to prevent player updates from being processed.
 
-    bool   m_mentorUnlocked;
     bool   m_jobMasterDisplay; // Job Master Stars display
     uint32 m_moghouseID;
     uint16 m_moghancementID;
@@ -663,6 +664,8 @@ protected:
     void TrackArrowUsageForScavenge(CItemWeapon* PAmmo);
 
 private:
+    xi::lazy<CAMANContainer> m_AMAN;
+
     std::unique_ptr<CItemContainer> m_Inventory;
     std::unique_ptr<CItemContainer> m_Mogsafe;
     std::unique_ptr<CItemContainer> m_Storage;

@@ -21,6 +21,7 @@
 
 #include "char_status.h"
 
+#include "aman.h"
 #include "common/logging.h"
 
 #include "common/vana_time.h"
@@ -33,6 +34,7 @@
 #include "item_container.h"
 #include "status_effect_container.h"
 #include "utils/itemutils.h"
+#include "utils/mountutils.h"
 
 // https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037
 
@@ -267,8 +269,9 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
 
     if (auto* effect = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_MOUNTED))
     {
-        packet->mount_id     = effect->GetPower();
-        flags0.Chocobo_Index = effect->GetSubPower();
+        const auto [ChocoboIndex, CustomProperties] = mountutils::packetDefinition(PChar);
+        packet->mount_id                            = effect->GetPower();
+        flags0.Chocobo_Index                        = ChocoboIndex;
     }
 
     // flags 1 starts at 0x2C
@@ -308,7 +311,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     flags3.TrialFlag        = false; // Trial account icon flag
     flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK);
     flags3.NewCharacterFlag = PChar->isNewPlayer();
-    flags3.MentorFlag       = PChar->isMentor();
+    flags3.MentorFlag       = PChar->aman().isMentor();
     flags3.unknown_0_5      = 0; // unknown
     flags3.unknown_0_6      = 0; // unknown
     flags3.unknown_0_7      = 0;

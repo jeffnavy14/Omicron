@@ -163,17 +163,17 @@ entity.onMobFight = function(mob, target)
 
     -- Gains a delay reduction (from 210 to 160) when health is under 10%
     if hpp <= 10 and mob:getLocalVar('appliedDelayReduction') == 0 then
-        mob:addMod(xi.mod.DELAY, 833)
+        mob:addMod(xi.mod.DELAY, -833)
         mob:setLocalVar('appliedDelayReduction', 1)
     elseif hpp > 10 and mob:getLocalVar('appliedDelayReduction') == 1 then
-        mob:delMod(xi.mod.DELAY, 833)
+        mob:delMod(xi.mod.DELAY, -833)
         mob:setLocalVar('appliedDelayReduction', 0)
     end
 
     -- Animation (Ground or flight mode) logic.
     if
         not mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and
-        mob:actionQueueEmpty()
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         local flightTime  = mob:getLocalVar('flightTime')
         local twohourTime = mob:getLocalVar('twohourTime')

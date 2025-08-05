@@ -73,6 +73,7 @@ xi.mobSkill =
 
     BLOOD_WEAPON_1           =  695,
 
+    MEIKYO_SHISUI_1          =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1           =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
 
     FAMILIAR_1               =  740, -- "Tango with a Tracker" Shikaree X
@@ -149,8 +150,21 @@ xi.mobSkill =
     RANGED_ATTACK_14         = 1214,
 
     MANTLE_PIERCE            = 1349,
+
     AERIAL_COLLISION         = 1353,
+
     SINUATE_RUSH             = 1367,
+
+    AMATSU_TORIMAI           = 1390,
+    AMATSU_KAZAKIRI          = 1391,
+
+    AMATSU_HANAIKUSA         = 1394,
+    AMATSU_TSUKIKAGE         = 1395,
+    COSMIC_ELUCIDATION       = 1396,
+
+    RANGED_ATTACK_TENZEN_1   = 1398, -- Tenzen Bow High
+    RICEBALL_TENZEN          = 1399,
+    RANGED_ATTACK_TENZEN_2   = 1400, -- Tenzen Bow Low
 
     HOWLING_MOON_3           = 1520, -- Unknown usage.
 

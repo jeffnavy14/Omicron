@@ -285,17 +285,6 @@ xi.voidwalker.zoneOnInit = function(zone)
     end
 end
 
-local mobIsBusy = function(mob)
-    local act = mob:getCurrentAction()
-
-    return  act == xi.act.MOBABILITY_START or
-            act == xi.act.MOBABILITY_USING or
-            act == xi.act.MOBABILITY_FINISH or
-            act == xi.act.MAGIC_START or
-            act == xi.act.MAGIC_CASTING or
-            act == xi.act.MAGIC_FINISH
-end
-
 local function doMobSkillEveryHPP(mob, every, start, mobskill, condition)
     local mobhpp = mob:getHPP()
 
@@ -378,7 +367,10 @@ local mixinByMobName =
 {
     ['Capricornus'] = function(mob)
         doMobSkillEveryHPP(mob, 20, 80, xi.jsa.MIGHTY_STRIKES, not mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES))
-        if mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and not mobIsBusy(mob) then
+        if
+            mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and
+            not xi.combat.behavior.isEntityBusy(mob)
+        then
             mob:useMobAbility(xi.mob.skills.RECOIL_DIVE)
         end
     end,

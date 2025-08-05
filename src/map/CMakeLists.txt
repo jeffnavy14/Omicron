@@ -23,6 +23,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.h
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/alliance.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/aman.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/attack.h
     ${CMAKE_CURRENT_SOURCE_DIR}/attackround.cpp

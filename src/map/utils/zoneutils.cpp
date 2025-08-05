@@ -22,6 +22,7 @@
 #include "zoneutils.h"
 
 #include "ai/ai_container.h"
+#include "aman.h"
 #include "battlefield.h"
 #include "campaign_system.h"
 #include "common/async.h"
@@ -149,21 +150,20 @@ namespace zoneutils
         return nullptr;
     }
 
-    CCharEntity* GetCharFromWorld(uint32 charid, uint16 targid)
+    auto GetCharFromWorld(const uint32 charid, const uint16 targid) -> CCharEntity*
     {
-        // will not return pointers to players in Mog House
-        for (auto PZone : g_PZoneList)
+        for (auto [zoneId, PZone] : g_PZoneList)
         {
-            if (PZone.first == 0)
+            if (zoneId == 0)
             {
                 continue;
             }
-            CBaseEntity* PEntity = PZone.second->GetEntity(targid, TYPE_PC);
-            if (PEntity != nullptr && PEntity->id == charid)
+            if (CBaseEntity* PEntity = PZone->GetEntity(targid, TYPE_PC); PEntity != nullptr && PEntity->id == charid)
             {
-                return (CCharEntity*)PEntity;
+                return static_cast<CCharEntity*>(PEntity);
             }
         }
+
         return nullptr;
     }
 
@@ -1212,12 +1212,13 @@ namespace zoneutils
 
     void AfterZoneIn(CBaseEntity* PEntity)
     {
-        CCharEntity* PChar = dynamic_cast<CCharEntity*>(PEntity);
+        auto* PChar = dynamic_cast<CCharEntity*>(PEntity);
         if (PChar != nullptr && (PChar->PBattlefield == nullptr || !PChar->PBattlefield->isEntered(PChar)))
         {
             GetZone(PChar->getZone())->updateCharLevelRestriction(PChar);
         }
 
+        PChar->aman().onZoneIn();
         luautils::AfterZoneIn(PChar);
     }
 

@@ -85,6 +85,7 @@ namespace PacketGuard
         ratelimitList[0x017] = 1s; // Invalid NPC Information Response
         ratelimitList[0x03B] = 1s; // Mannequin Equip
         ratelimitList[0x05D] = 2s; // Emotes
+        ratelimitList[0x0B7] = 1s; // Assist Channel
         ratelimitList[0x0F4] = 1s; // Wide Scan
         ratelimitList[0x0F5] = 1s; // Wide Scan Track
         ratelimitList[0x11B] = 2s; // Set Job Master Display
