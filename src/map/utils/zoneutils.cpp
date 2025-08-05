@@ -22,6 +22,7 @@
 #include "zoneutils.h"
 
 #include "ai/ai_container.h"
+#include "aman.h"
 #include "battlefield.h"
 #include "campaign_system.h"
 #include "common/async.h"
@@ -1211,12 +1212,13 @@ namespace zoneutils
 
     void AfterZoneIn(CBaseEntity* PEntity)
     {
-        CCharEntity* PChar = dynamic_cast<CCharEntity*>(PEntity);
+        auto* PChar = dynamic_cast<CCharEntity*>(PEntity);
         if (PChar != nullptr && (PChar->PBattlefield == nullptr || !PChar->PBattlefield->isEntered(PChar)))
         {
             GetZone(PChar->getZone())->updateCharLevelRestriction(PChar);
         }
 
+        PChar->aman().onZoneIn();
         luautils::AfterZoneIn(PChar);
     }
 

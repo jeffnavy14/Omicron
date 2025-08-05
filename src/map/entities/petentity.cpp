@@ -429,7 +429,15 @@ void CPetEntity::OnPetSkillFinished(CPetSkillState& state, action_t& action)
 
     action.id         = id;
     action.actiontype = (ACTIONTYPE)PSkill->getSkillFinishCategory();
-    action.actionid   = PSkill->getID();
+    if (PSkill->getMobSkillID() > 0)
+    {
+        // jug pet skills emulate mob skills but still have the same flow as wyvern and smn pet skills
+        action.actionid = PSkill->getMobSkillID();
+    }
+    else
+    {
+        action.actionid = PSkill->getID();
+    }
 
     if (PAI->TargetFind->isWithinRange(&PTarget->loc.p, distance))
     {

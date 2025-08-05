@@ -483,6 +483,7 @@ enum ZONEMISC : uint16
     MISC_TRUST            = 0x0800, // Ability to summon Trust NPC
     MISC_LOS_PLAYER_BLOCK = 0x1000, // Players can't use magic/JAs through walls if this is set
     MISC_LOS_OFF          = 0x2000, // Zone should not have LoS checks
+    MISC_ASSIST           = 0x4000, // Send and receive /assiste, /assistj commands
 };
 DECLARE_FORMAT_AS_UNDERLYING(ZONEMISC);
 

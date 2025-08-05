@@ -445,7 +445,7 @@ bool CBattleEntity::Rest(float rate)
 uint16 CBattleEntity::GetWeaponDelay(bool tp)
 {
     TracyZoneScoped;
-    uint16 finalDelay = 9999;
+    uint16 finalDelay = 8000; // 480 (base) * 1000 / 60 (milisecond conversion)
 
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]))
     {
@@ -462,7 +462,6 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
         // H2H
         if (weapon->isHandToHand())
         {
-            weaponDelay = weaponDelay + 8000;                    // (480) base * (1000 / 60) milisecond conversion
             martialArts = getMod(Mod::MARTIAL_ARTS) * 1000 / 60; // TODO: Job points?
         }
 
@@ -478,7 +477,7 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
         if (!tp && StatusEffectContainer->HasStatusEffect(EFFECT_HUNDRED_FISTS))
         {
             finalDelay = std::clamp<uint16>(weaponDelay - martialArts, 1600, 8000);
-            finalDelay = finalDelay * 0.25;
+            finalDelay = finalDelay * 0.25f;
 
             return finalDelay;
         }
@@ -2201,6 +2200,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
     PSkill->setTotalTargets(targets);
     PSkill->setPrimaryTargetID(PTarget->id);
     PSkill->setTP(state.GetSpentTP());
+    PSkill->setHP(health.hp);
     PSkill->setHPP(GetHPP());
 
     uint16 msg            = 0;

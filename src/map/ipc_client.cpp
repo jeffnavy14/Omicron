@@ -27,6 +27,7 @@
 #include <queue>
 
 #include "alliance.h"
+#include "aman.h"
 #include "conquest_system.h"
 #include "linkshell.h"
 #include "map_networking.h"
@@ -47,6 +48,7 @@
 #include "packets/server_ip.h"
 
 #include "items/item_linkshell.h"
+#include "packets/c2s/0x0b7_assist_channel.h"
 
 #include "utils/charutils.h"
 #include "utils/jailutils.h"
@@ -314,6 +316,31 @@ void IPCClient::handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMes
                 if (PChar->id != message.senderId)
                 {
                     PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
+                }
+            });
+        }
+    });
+    // clang-format on
+}
+
+void IPCClient::handleMessage_ChatMessageAssist(const IPP& ipp, const ipc::ChatMessageAssist& message) const
+{
+    TracyZoneScoped;
+
+    // clang-format off
+    zoneutils::ForEachZone([&](CZone* PZone)
+    {
+        if (PZone->CanUseMisc(MISC_ASSIST))
+        {
+            PZone->ForEachChar([&](CCharEntity* PChar)
+            {
+                // Don't push to sender
+                if (PChar->id != message.senderId)
+                {
+                    if (PChar->aman().isAssistChannelEligible())
+                    {
+                        PChar->pushPacket(std::make_unique<CChatMessagePacket>(message));
+                    }
                 }
             });
         }
@@ -603,7 +630,16 @@ void IPCClient::handleMessage_MessageStandard(const IPP& ipp, const ipc::Message
 
     if (CCharEntity* PChar = zoneutils::GetChar(message.recipientId))
     {
-        PChar->pushPacket(std::make_unique<CMessageStandardPacket>(PChar, message.param0, message.param1, message.message));
+        // TODO: Exchange the packet struct over IPC to avoid having to match one-offs.
+        // This matches messages with just a string parameter.
+        if (message.string2.size() > 0 && message.param0 == 0 && message.param1 == 0)
+        {
+            PChar->pushPacket(std::make_unique<CMessageStandardPacket>(message.string2, message.message));
+        }
+        else
+        {
+            PChar->pushPacket(std::make_unique<CMessageStandardPacket>(PChar, message.param0, message.param1, message.message));
+        }
     }
 }
 
@@ -836,6 +872,33 @@ void IPCClient::handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::Se
         PChar->clearPacketList();
 
         charutils::SendToZone(PChar, PChar->loc.destination);
+    }
+}
+
+void IPCClient::handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::AssistChannelEvent& message) const
+{
+    TracyZoneScoped;
+
+    CCharEntity* PChar = zoneutils::GetChar(message.receiverId);
+    if (!PChar)
+    {
+        return;
+    }
+
+    switch (static_cast<GP_CLI_COMMAND_ASSIST_CHANNEL_KIND>(message.action))
+    {
+        case GP_CLI_COMMAND_ASSIST_CHANNEL_KIND::AddToMuteList:
+            PChar->aman().mute(message.senderId);
+            break;
+        case GP_CLI_COMMAND_ASSIST_CHANNEL_KIND::RemoveFromMuteList:
+            PChar->aman().unmute(message.senderId);
+            break;
+        case GP_CLI_COMMAND_ASSIST_CHANNEL_KIND::GiveThumbsUp:
+            PChar->aman().addThumbsUp(message.senderId);
+            break;
+        case GP_CLI_COMMAND_ASSIST_CHANNEL_KIND::IssueWarning:
+            PChar->aman().addThumbsDown(message.senderId);
+            break;
     }
 }
 

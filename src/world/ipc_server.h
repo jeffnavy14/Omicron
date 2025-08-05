@@ -59,6 +59,7 @@ public:
     auto getIPPsForLinkshell(uint32 linkshellId) -> std::vector<IPP>;
     auto getIPPsForUnity(uint32 unityId) -> std::vector<IPP>;
     auto getIPPsForYellZones() -> std::vector<IPP>;
+    auto getIPPsForAssistZones() -> std::vector<IPP>;
     auto getIPPsForAllZones() -> std::vector<IPP>;
 
     //
@@ -73,6 +74,7 @@ public:
     void rerouteMessageToLinkshellMembers(uint32 linkshellId, const auto& message);
     void rerouteMessageToUnityMembers(uint32 unityId, const auto& message);
     void rerouteMessageToYellZones(const auto& message);
+    void rerouteMessageToAssistZones(const auto& message);
     void rerouteMessageToAllZones(const auto& message);
 
     //
@@ -89,6 +91,7 @@ public:
     void handleMessage_ChatMessageLinkshell(const IPP& ipp, const ipc::ChatMessageLinkshell& message);
     void handleMessage_ChatMessageUnity(const IPP& ipp, const ipc::ChatMessageUnity& message);
     void handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMessageYell& message);
+    void handleMessage_ChatMessageAssist(const IPP& ipp, const ipc::ChatMessageAssist& message);
     void handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc::ChatMessageServerMessage& message);
     void handleMessage_ChatMessageCustom(const IPP& ipp, const ipc::ChatMessageCustom& message);
     void handleMessage_PartyInvite(const IPP& ipp, const ipc::PartyInvite& message);
@@ -112,6 +115,7 @@ public:
     void handleMessage_EntityInformationRequest(const IPP& ipp, const ipc::EntityInformationRequest& message);
     void handleMessage_EntityInformationResponse(const IPP& ipp, const ipc::EntityInformationResponse& message);
     void handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::SendPlayerToLocation& message);
+    void handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::AssistChannelEvent& message);
 
     void handleUnknownMessage(const IPP& ipp, const std::span<uint8_t> message);
 

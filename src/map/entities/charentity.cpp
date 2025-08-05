@@ -39,7 +39,6 @@
 #include "packets/inventory_finish.h"
 #include "packets/key_items.h"
 #include "packets/lock_on.h"
-#include "packets/menu_raisetractor.h"
 #include "packets/message_special.h"
 #include "packets/message_standard.h"
 #include "packets/message_system.h"
@@ -51,15 +50,13 @@
 #include "ai/helpers/targetfind.h"
 #include "ai/states/ability_state.h"
 #include "ai/states/attack_state.h"
-#include "ai/states/death_state.h"
-#include "ai/states/inactive_state.h"
 #include "ai/states/item_state.h"
 #include "ai/states/magic_state.h"
-#include "ai/states/raise_state.h"
 #include "ai/states/range_state.h"
 #include "ai/states/weaponskill_state.h"
 
 #include "ability.h"
+#include "aman.h"
 #include "attack.h"
 #include "automatonentity.h"
 #include "battlefield.h"
@@ -99,6 +96,7 @@
 
 CCharEntity::CCharEntity()
 : m_PlayTime(0s)
+, m_AMAN(xi::lazy<CAMANContainer>::with_args(this))
 {
     TracyZoneScoped;
     objtype     = TYPE_PC;
@@ -260,7 +258,6 @@ CCharEntity::CCharEntity()
     m_ActionOffsetPos  = {};
     m_previousLocation = {};
 
-    m_mentorUnlocked   = false;
     m_jobMasterDisplay = false;
     m_EffectsChanged   = false;
 
@@ -544,11 +541,6 @@ bool CCharEntity::isAway() const
     return playerConfig.AwayFlg;
 }
 
-bool CCharEntity::isMentor() const
-{
-    return playerConfig.MentorFlg;
-}
-
 bool CCharEntity::hasAutoTargetEnabled() const
 {
     return !playerConfig.AutoTargetOffFlg;
@@ -769,6 +761,11 @@ auto CCharEntity::getStorage(const uint8 locationId) const -> CItemContainer*
 
     ShowWarning("Unhandled or Invalid Location ID (%d) passed to function.", locationId);
     return nullptr;
+}
+
+auto CCharEntity::aman() -> CAMANContainer&
+{
+    return m_AMAN;
 }
 
 int8 CCharEntity::getShieldSize()
@@ -1612,23 +1609,27 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
 
                             actionTarget.additionalEffect = effect;
 
-                            // Despite appearances, ws_points_skillchain is not a multiplier it is just an amount "per element"
-                            auto wsPointsSkillchain = settings::get<uint8>("map.WS_POINTS_SKILLCHAIN");
+                            // Despite appearances, ws_points_skillchain is not a multiplier it is just an amount "per skillchain level"
+                            const auto wsPointsSkillchain = settings::get<uint8>("map.WS_POINTS_SKILLCHAIN");
                             if (effect >= 7 && effect < 15)
                             {
-                                wspoints += (1 * wsPointsSkillchain); // 1 element
+                                wspoints += (1 * wsPointsSkillchain); // Level 1
                             }
                             else if (effect >= 3)
                             {
-                                wspoints += (2 * wsPointsSkillchain); // 2 elements
+                                wspoints += (2 * wsPointsSkillchain); // Level 2
                             }
                             else
                             {
-                                wspoints += (4 * wsPointsSkillchain); // 4 elements
+                                wspoints += (3 * wsPointsSkillchain); // Level 3
                             }
                         }
                     }
                     // check for ws points
+                    // TODO: As a general rule, mobs not granting EXP do not give WSP
+                    // The following exceptions apply:
+                    // - PC targeted weaponskills always give WSP
+                    // - A handful of content: Besieged, DI
                     if (charutils::CheckMob(this->GetMLevel(), PTarget->GetMLevel()) > EMobDifficulty::TooWeak)
                     {
                         charutils::AddWeaponSkillPoints(this, damslot, wspoints);
@@ -1854,7 +1855,9 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             CPetEntity* PPetEntity = dynamic_cast<CPetEntity*>(PPet);
             CPetSkill*  PPetSkill  = battleutils::GetPetSkill(PAbility->getID());
 
-            if (PPetEntity && PPetEntity->getPetType() != PET_TYPE::JUG_PET && PPetSkill) // is a real pet (not charmed or a jugpet which is mob-like) and has pet ability - don't display msg and notify pet
+            // is a real pet (charmed pets won't return a valid PPetEntity)
+            // and has pet ability in the pet_skills sql table
+            if (PPetEntity && PPetSkill) // don't display msg and notify pet
             {
                 actionList_t& actionList     = action.getNewActionList();
                 actionList.ActionTargetID    = PTarget->id;
@@ -1866,6 +1869,19 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
                 actionTarget.messageID       = 0;
 
                 auto PPetTarget = PTarget->targid;
+
+                // set primary target for jug ready abilities (JA targets the player, but the pet acts like a mob and makes its own decision on the skill target)
+                if (PPetEntity->getPetType() == PET_TYPE::JUG_PET)
+                {
+                    if (PPetSkill->getValidTargets() & TARGET_ENEMY)
+                    {
+                        PPetTarget = PPetEntity->GetBattleTargetID();
+                    }
+                    else
+                    {
+                        PPetTarget = PPetEntity->targid;
+                    }
+                }
 
                 PPetEntity->PAI->PetSkill(PPetTarget, PPetSkill->getID());
             }

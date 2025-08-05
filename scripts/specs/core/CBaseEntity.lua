@@ -3788,13 +3788,18 @@ function CBaseEntity:setDamage(damage)
 end
 
 ---@nodiscard
+---@return integer
+function CBaseEntity:getSpellListId()
+end
+
+---@nodiscard
 ---@return boolean
 function CBaseEntity:hasSpellList()
 end
 
----@param spellList integer
+---@param spellListId integer
 ---@return nil
-function CBaseEntity:setSpellList(spellList)
+function CBaseEntity:setSpellList(spellListId)
 end
 
 ---@param state boolean

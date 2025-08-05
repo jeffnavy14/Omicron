@@ -1293,6 +1293,12 @@ namespace fishingutils
 
     fishingarea_t* GetFishingArea(CCharEntity* PChar)
     {
+        if (PChar->m_moghouseID > 0)
+        {
+            ShowWarning("fishingutils::GetFishingArea() - Player %s is attempting to fish from Mog House", PChar->name);
+            return nullptr;
+        }
+
         int16        zoneId = PChar->getZone();
         position_t   p      = PChar->loc.p;
         areavector_t loc    = { p.x, p.y, p.z };

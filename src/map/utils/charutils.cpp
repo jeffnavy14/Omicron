@@ -40,7 +40,6 @@
 #include "packets/char_abilities.h"
 #include "packets/char_appearance.h"
 #include "packets/char_equip.h"
-#include "packets/char_health.h"
 #include "packets/char_job_extra.h"
 #include "packets/char_jobs.h"
 #include "packets/char_recast.h"
@@ -48,9 +47,7 @@
 #include "packets/char_stats.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
-#include "packets/chat_message.h"
 #include "packets/conquest_map.h"
-#include "packets/delivery_box.h"
 #include "packets/inventory_assign.h"
 #include "packets/inventory_count.h"
 #include "packets/inventory_finish.h"
@@ -62,17 +59,19 @@
 #include "packets/menu_merit.h"
 #include "packets/message_basic.h"
 #include "packets/message_combat.h"
-#include "packets/message_special.h"
 #include "packets/message_standard.h"
 #include "packets/monipulator1.h"
 #include "packets/monipulator2.h"
 #include "packets/objective_utility.h"
 #include "packets/quest_mission_log.h"
+#include "packets/roe_questlog.h"
 #include "packets/roe_sparkupdate.h"
+#include "packets/roe_update.h"
 #include "packets/server_ip.h"
 
 #include "ability.h"
 #include "alliance.h"
+#include "aman.h"
 #include "conquest_system.h"
 #include "grades.h"
 #include "ipc_client.h"
@@ -101,14 +100,13 @@
 #include "battleutils.h"
 #include "blueutils.h"
 #include "charutils.h"
-#include "enums/key_items.h"
 #include "itemutils.h"
-#include "packets/roe_questlog.h"
-#include "packets/roe_update.h"
 #include "petutils.h"
 #include "puppetutils.h"
 #include "synthutils.h"
 #include "zoneutils.h"
+
+#include "enums/key_items.h"
 
 /************************************************************************
  *                                                                       *
@@ -384,7 +382,7 @@ namespace charutils
      *                                                                       *
      ************************************************************************/
 
-    auto LoadChar(uint32 charId) -> std::unique_ptr<CCharEntity>
+    auto LoadChar(const uint32 charId) -> std::unique_ptr<CCharEntity>
     {
         TracyZoneScoped;
 
@@ -428,7 +426,6 @@ namespace charutils
                                "playtime, "
                                "gmlevel, "
                                "languages, "
-                               "mentor, "
                                "job_master, "
                                "campaign_allegiance, "
                                "isstylelocked, "
@@ -483,12 +480,11 @@ namespace charutils
             PChar->search.language = rset->get<uint8>("languages");
 
             PChar->m_GMlevel          = rset->get<uint8>("gmlevel");
-            PChar->m_mentorUnlocked   = rset->get<uint32>("mentor") > 0;
             PChar->m_jobMasterDisplay = rset->get<uint32>("job_master") > 0;
 
-            uint32 playerSettings = rset->get<uint32>("settings");
-            uint32 MessageFilter  = rset->get<uint32>("chatfilters_1");
-            uint32 MessageFilter2 = rset->get<uint32>("chatfilters_2");
+            const auto playerSettings = rset->get<uint32>("settings");
+            const auto MessageFilter  = rset->get<uint32>("chatfilters_1");
+            const auto MessageFilter2 = rset->get<uint32>("chatfilters_2");
 
             std::memcpy(&PChar->playerConfig, &playerSettings, sizeof(uint32_t));
             std::memcpy(&PChar->playerConfig.MessageFilter, &MessageFilter, sizeof(uint32_t));
@@ -5648,17 +5644,6 @@ namespace charutils
                          PChar->visibleGmLevel >= 3 ? 1 : 0, PChar->id);
     }
 
-    void SaveMentorFlag(CCharEntity* PChar)
-    {
-        TracyZoneScoped;
-
-        db::preparedStmt("UPDATE chars "
-                         "SET mentor = ? "
-                         "WHERE charid = ? "
-                         "LIMIT 1",
-                         PChar->m_mentorUnlocked, PChar->id);
-    }
-
     void SavePlayerSettings(CCharEntity* PChar)
     {
         TracyZoneScoped;
@@ -6081,6 +6066,16 @@ namespace charutils
             }
             break;
         }
+    }
+
+    void SaveLastLogout(const CCharEntity* PChar)
+    {
+        TracyZoneScoped;
+
+        db::preparedStmt("UPDATE chars "
+                         "SET last_logout = CURRENT_TIMESTAMP "
+                         "WHERE charid = ?",
+                         PChar->id);
     }
 
     float AddExpBonus(CCharEntity* PChar, float exp)
@@ -6899,6 +6894,11 @@ namespace charutils
         // clang-format on
     }
 
+    void IncrementCharVar(uint32 charId, std::string const& var, int32 value)
+    {
+        db::preparedStmt("INSERT INTO char_vars SET charid = ?, varname = ?, value = ? ON DUPLICATE KEY UPDATE value = value + ?", charId, var, value, value);
+    }
+
     void IncrementCharVar(CCharEntity* PChar, std::string const& var, int32 value)
     {
         if (PChar == nullptr)
@@ -6906,7 +6906,7 @@ namespace charutils
             return;
         }
 
-        db::preparedStmt("INSERT INTO char_vars SET charid = ?, varname = ?, value = ? ON DUPLICATE KEY UPDATE value = value + ?", PChar->id, var, value, value);
+        IncrementCharVar(PChar->id, var, value);
 
         PChar->removeFromCharVarCache(var);
     }
@@ -7486,6 +7486,7 @@ namespace charutils
         charutils::SaveCharStats(PChar);
         charutils::SaveCharExp(PChar, PChar->GetMJob());
         charutils::SaveEminenceData(PChar);
+        charutils::SaveLastLogout(PChar);
 
         PChar->status = STATUS_TYPE::DISAPPEAR;
     }

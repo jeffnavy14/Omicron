@@ -2007,7 +2007,7 @@ namespace luautils
             prevZoneStr = prevZone->getName();
         }
 
-        auto name     = PChar->m_moghouseID ? "Residential_Area" : destinationZone->getName();
+        auto name     = destinationZone->getName();
         auto filename = fmt::format("./scripts/zones/{}/Zone.lua", name);
 
         ShowTraceFmt("luautils::OnZoneIn: {}: {} -> {}", PChar->getName(), prevZoneStr, name);

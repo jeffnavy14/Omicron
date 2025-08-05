@@ -35392,7 +35392,7 @@ INSERT INTO `mob_spawn_points` VALUES (17203663,'Halforc_Ranger','Halforc Ranger
 INSERT INTO `mob_spawn_points` VALUES (17203664,'Halforc_Dragoon','Halforc Dragoon',61,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17203665,'Orcs_Wyvern','Orc\'s Wyvern',62,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17203666,'Giollemitte_B_Feroun','Giollemitte B Feroun',63,-308.447,-0.354,405.531,197);
-INSERT INTO `mob_spawn_points` VALUES (17203667,'Skeleton_Esquire','Skeleton Esquire',64,-310.132,-0.337,404.861,218);
+INSERT INTO `mob_spawn_points` VALUES (17203667,'Skeleton_Esquire_NM','Skeleton Esquire',64,-317.101,0.000,399.182,217);
 
 -- Garrison
 INSERT INTO `mob_spawn_points` VALUES (17203668,'Orcish_Fighter','Orcish Fighter',65,67.926,0.422,8.893,160);
@@ -59190,7 +59190,7 @@ INSERT INTO `mob_spawn_points` VALUES (17461474,'Bloodsucker','Bloodsucker',21,-
 INSERT INTO `mob_spawn_points` VALUES (17461475,'Bloodsucker','Bloodsucker',21,-1.737,16.966,-140.550,120);
 INSERT INTO `mob_spawn_points` VALUES (17461476,'Gespenst','Gespenst',22,13.833,16.557,-137.831,118);
 INSERT INTO `mob_spawn_points` VALUES (17461477,'Gespenst','Gespenst',22,18.542,16.500,-140.040,115);
-INSERT INTO `mob_spawn_points` VALUES (17461478,'Bloodsucker','Bloodsucker',24,-96.875,16.999,-277.037,182); -- Bloodsucker NM
+INSERT INTO `mob_spawn_points` VALUES (17461478,'Bloodsucker_NM','Bloodsucker',24,-96.875,16.999,-277.037,182);
 INSERT INTO `mob_spawn_points` VALUES (17461479,'Bodach','Bodach',25,19.728,16.841,-139.080,130);
 INSERT INTO `mob_spawn_points` VALUES (17461480,'Garbage_Gel','Garbage Gel',26,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17461481,'Garbage_Gel','Garbage Gel',26,68.449,0.074,-290.609,0);

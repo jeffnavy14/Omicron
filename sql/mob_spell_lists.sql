@@ -5620,7 +5620,10 @@ INSERT INTO `mob_spell_lists` VALUES ('T3_Ga_Spells',549,191,1,255);  -- Stonega
 INSERT INTO `mob_spell_lists` VALUES ('T3_Ga_Spells',549,196,1,255);  -- Thundaga III (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('T3_Ga_Spells',549,201,1,255);  -- Waterga III (1~255)
 
--- Next Available: 550
+-- Giollemitte B Feroun (550)
+INSERT INTO `mob_spell_lists` VALUES ('Giollemitte_B_Feroun',550,112,37,255);  -- Flash (1~255)
+
+-- Next Available: 551
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;
