@@ -240,6 +240,13 @@ void CStatusEffect::addMod(Mod modType, int16 amount)
         }
     }
     modList.emplace_back(modType, amount);
+
+    // Since an effect's mod list is only applied to entity when adding the effect
+    // we need to add the mod to the entity manually if the effect is already applied
+    if (m_POwner)
+    {
+        m_POwner->addModifier(modType, amount);
+    }
 }
 
 void CStatusEffect::setMod(Mod modType, int16 value)
@@ -248,9 +255,23 @@ void CStatusEffect::setMod(Mod modType, int16 value)
     {
         if (i.getModID() == modType)
         {
+            // Since an effect's mod list is only applied to entity when adding the effect
+            // we need to add the mod to the entity manually if the effect is already applied
+            if (m_POwner)
+            {
+                m_POwner->addModifier(modType, value - i.getModAmount());
+            }
+
             i.setModAmount(value);
             return;
         }
     }
     modList.emplace_back(modType, value);
+
+    // Since an effect's mod list is only applied to entity when adding the effect
+    // we need to add the mod to the entity manually if the effect is already applied
+    if (m_POwner)
+    {
+        m_POwner->addModifier(modType, value);
+    }
 }

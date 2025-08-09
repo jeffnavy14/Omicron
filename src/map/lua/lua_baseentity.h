@@ -763,6 +763,7 @@ public:
     // Pets and Automations
     void spawnPet(sol::object const& arg0);
     void despawnPet();
+    void setJugRemainingTime(uint32 remainingSeconds);
 
     auto   spawnTrust(uint16 trustId) -> CBaseEntity*;
     void   clearTrusts();

@@ -5329,11 +5329,12 @@ INSERT INTO `item_mods` VALUES (11151,30,8);   -- MACC: 8
 INSERT INTO `item_mods` VALUES (11151,902,25); -- OCCULT_ACUMEN: 25
 
 -- Ferine Ocreae +2
-INSERT INTO `item_mods` VALUES (11152,1,25);  -- DEF: 25
-INSERT INTO `item_mods` VALUES (11152,8,7);   -- STR: 7
-INSERT INTO `item_mods` VALUES (11152,9,7);   -- DEX: 7
-INSERT INTO `item_mods` VALUES (11152,25,8);  -- ACC: 8
-INSERT INTO `item_mods` VALUES (11152,288,3); -- DOUBLE_ATTACK: 3
+INSERT INTO `item_mods` VALUES (11152,1,25);    -- DEF: 25
+INSERT INTO `item_mods` VALUES (11152,8,7);     -- STR: 7
+INSERT INTO `item_mods` VALUES (11152,9,7);     -- DEX: 7
+INSERT INTO `item_mods` VALUES (11152,25,8);    -- ACC: 8
+INSERT INTO `item_mods` VALUES (11152,288,3);   -- DOUBLE_ATTACK: 3
+INSERT INTO `item_mods` VALUES (11152,1157,10); -- ENHANCES_SPUR: 10
 
 -- Aoidos Cothurnes +2
 INSERT INTO `item_mods` VALUES (11153,1,18);   -- DEF: 18
@@ -6021,11 +6022,12 @@ INSERT INTO `item_mods` VALUES (11251,30,6);   -- MACC: 6
 INSERT INTO `item_mods` VALUES (11251,902,15); -- OCCULT_ACUMEN: 15
 
 -- Ferine Ocreae +1
-INSERT INTO `item_mods` VALUES (11252,1,23);  -- DEF: 23
-INSERT INTO `item_mods` VALUES (11252,8,5);   -- STR: 5
-INSERT INTO `item_mods` VALUES (11252,9,5);   -- DEX: 5
-INSERT INTO `item_mods` VALUES (11252,25,5);  -- ACC: 5
-INSERT INTO `item_mods` VALUES (11252,288,2); -- DOUBLE_ATTACK: 2
+INSERT INTO `item_mods` VALUES (11252,1,23);   -- DEF: 23
+INSERT INTO `item_mods` VALUES (11252,8,5);    -- STR: 5
+INSERT INTO `item_mods` VALUES (11252,9,5);    -- DEX: 5
+INSERT INTO `item_mods` VALUES (11252,25,5);   -- ACC: 5
+INSERT INTO `item_mods` VALUES (11252,288,2);  -- DOUBLE_ATTACK: 2
+INSERT INTO `item_mods` VALUES (11252,1157,5); -- ENHANCES_SPUR: 5
 
 -- Aoidos Cothurnes +1
 INSERT INTO `item_mods` VALUES (11253,1,16);   -- DEF: 16
@@ -53567,8 +53569,8 @@ INSERT INTO `item_mods` VALUES (23361,31,120);  -- MEVA: 120
 INSERT INTO `item_mods` VALUES (23361,68,95);   -- EVA:  95
 INSERT INTO `item_mods` VALUES (23361,288,5);   -- DOUBLE_ATTACK: 5
 INSERT INTO `item_mods` VALUES (23361,384,300); -- HASTE_GEAR: 3%
+INSERT INTO `item_mods` VALUES (23361,1157,18); -- ENHANCES_SPUR: 18
 -- TODO: Physical damage limit +7%
--- TODO: "Spur"+18
 
 -- Fili Cothurnes +2
 INSERT INTO `item_mods` VALUES (23362,1,86);    -- DEF: 86
@@ -72361,6 +72363,7 @@ INSERT INTO `item_mods` VALUES (27427,31,54);   -- MEVA: 54
 INSERT INTO `item_mods` VALUES (27427,68,25);   -- EVA: 25
 INSERT INTO `item_mods` VALUES (27427,288,3);   -- DOUBLE_ATTACK: 3
 INSERT INTO `item_mods` VALUES (27427,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27427,1157,12); -- ENHANCES_SPUR: 12
 
 -- Nukumi Ocreae +1
 INSERT INTO `item_mods` VALUES (27428,1,71);    -- DEF: 71
@@ -72376,6 +72379,7 @@ INSERT INTO `item_mods` VALUES (27428,31,80);   -- MEVA: 80
 INSERT INTO `item_mods` VALUES (27428,68,55);   -- EVA: 55
 INSERT INTO `item_mods` VALUES (27428,288,4);   -- DOUBLE_ATTACK: 4
 INSERT INTO `item_mods` VALUES (27428,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27428,1157,15); -- ENHANCES_SPUR: 15
 
 -- Fili Cothurnes
 INSERT INTO `item_mods` VALUES (27429,1,46);    -- DEF: 46

@@ -98,7 +98,7 @@ namespace mobSpellList
             return PMobSpellList[mobSpellListId].get();
         }
 
-        ShowCriticalFmt("Mob spell list ID {} does not exist.", mobSpellListId);
+        ShowErrorFmt("Mob spell list ID {} does not exist.", mobSpellListId);
         return nullptr;
     }
 }; // namespace mobSpellList
