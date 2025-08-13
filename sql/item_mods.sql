@@ -2923,6 +2923,7 @@ INSERT INTO `item_mods` VALUES (10715,8,5);   -- STR: 5
 INSERT INTO `item_mods` VALUES (10715,9,5);   -- DEX: 5
 INSERT INTO `item_mods` VALUES (10715,25,10); -- ACC: 10
 INSERT INTO `item_mods` VALUES (10715,27,6);  -- ENMITY: 6
+INSERT INTO `item_mods` VALUES (10715,897,1); -- GILFINDER: 1 (Unconfirmed)
 
 -- Valor Breeches +2
 INSERT INTO `item_mods` VALUES (10716,1,56);     -- DEF: 56
@@ -20078,6 +20079,7 @@ INSERT INTO `item_mods` VALUES (14074,23,12); -- ATT: 12
 -- Andvaranauts
 INSERT INTO `item_mods` VALUES (14075,1,12);  -- DEF: 12
 INSERT INTO `item_mods` VALUES (14075,12,-7); -- INT: -7
+INSERT INTO `item_mods` VALUES (14075,897,1); -- GILFINDER: 1
 
 -- Hecatomb Mittens
 INSERT INTO `item_mods` VALUES (14076,1,25);     -- DEF: 25
@@ -25860,6 +25862,7 @@ INSERT INTO `item_mods` VALUES (15122,1,34);  -- DEF: 34
 INSERT INTO `item_mods` VALUES (15122,2,19);  -- HP: 19
 INSERT INTO `item_mods` VALUES (15122,27,4);  -- ENMITY: 4
 INSERT INTO `item_mods` VALUES (15122,298,5); -- STEAL: 5
+INSERT INTO `item_mods` VALUES (15122,897,1); -- GILFINDER: 1 (Unconfirmed)
 
 -- Valor Breeches
 INSERT INTO `item_mods` VALUES (15123,1,43);   -- DEF: 43
@@ -28207,6 +28210,7 @@ INSERT INTO `item_mods` VALUES (15585,1,35);  -- DEF: 35
 INSERT INTO `item_mods` VALUES (15585,2,25);  -- HP: 25
 INSERT INTO `item_mods` VALUES (15585,27,5);  -- ENMITY: 5
 INSERT INTO `item_mods` VALUES (15585,298,5); -- STEAL: 5
+INSERT INTO `item_mods` VALUES (15585,897,1); -- GILFINDER: 1 (Unconfirmed)
 
 -- Valor Breeches +1
 INSERT INTO `item_mods` VALUES (15586,1,44);   -- DEF: 44
@@ -31368,7 +31372,8 @@ INSERT INTO `item_mods` VALUES (16276,71,1);  -- MPHEAL: 1
 INSERT INTO `item_mods` VALUES (16276,72,1);  -- HPHEAL: 1
 
 -- Bandolero Scarf
-INSERT INTO `item_mods` VALUES (16277,68,5); -- EVA: 5
+INSERT INTO `item_mods` VALUES (16277,68,5);  -- EVA: 5
+INSERT INTO `item_mods` VALUES (16277,897,1); -- GILFINDER: 1 (Unconfirmed)
 
 -- Pipers Torque
 INSERT INTO `item_mods` VALUES (16278,14,5);  -- CHR: 5
@@ -69008,6 +69013,7 @@ INSERT INTO `item_mods` VALUES (27162,29,2);    -- MDEF: 2
 INSERT INTO `item_mods` VALUES (27162,31,47);   -- MEVA: 47
 INSERT INTO `item_mods` VALUES (27162,68,17);   -- EVA: 17
 INSERT INTO `item_mods` VALUES (27162,384,600); -- HASTE_GEAR: 600
+INSERT INTO `item_mods` VALUES (27162,897,2);   -- GILFINDER: 2
 
 -- Plunderers Culottes +1
 INSERT INTO `item_mods` VALUES (27163,1,110);   -- DEF: 110
@@ -69025,6 +69031,7 @@ INSERT INTO `item_mods` VALUES (27163,29,5);    -- MDEF: 5
 INSERT INTO `item_mods` VALUES (27163,31,69);   -- MEVA: 69
 INSERT INTO `item_mods` VALUES (27163,68,38);   -- EVA: 38
 INSERT INTO `item_mods` VALUES (27163,384,600); -- HASTE_GEAR: 600
+INSERT INTO `item_mods` VALUES (27163,897,2);   -- GILFINDER: 2
 
 -- Caballarius Breeches
 INSERT INTO `item_mods` VALUES (27164,1,95);     -- DEF: 95
@@ -73371,6 +73378,7 @@ INSERT INTO `item_mods` VALUES (27584,369,1);  -- REFRESH: 1
 -- Gorney Ring
 INSERT INTO `item_mods` VALUES (27585,298,2); -- STEAL: 2
 INSERT INTO `item_mods` VALUES (27585,303,1); -- TREASURE_HUNTER: 1
+INSERT INTO `item_mods` VALUES (27585,897,2); -- GILFINDER: 1
 
 -- Haverton Ring
 INSERT INTO `item_mods` VALUES (27586,26,20);  -- RACC: 20

@@ -76,6 +76,7 @@
 #include "grades.h"
 #include "ipc_client.h"
 #include "item_container.h"
+#include "items.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
 #include "map_networking.h"
@@ -2297,6 +2298,13 @@ namespace charutils
             CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PItem);
             CItemWeapon* AWeapon = dynamic_cast<CItemWeapon*>(AItem);
 
+            // Marvelous Cheer special case
+            // It is not technically a Wind Instrument, but it can lockstyle one.
+            if (AItem->getID() == MARVELOUS_CHEER && PWeapon->getSkillType() == SKILL_WIND_INSTRUMENT)
+            {
+                return HasItem(PChar, AItem->getID());
+            }
+
             if (PWeapon && AWeapon && PWeapon->getSkillType() == AWeapon->getSkillType())
             {
                 return HasItem(PChar, AItem->getID()) && canEquipItemOnAnyJob(PChar, AItem);
@@ -3247,6 +3255,82 @@ namespace charutils
         }
     }
 
+    // determines if this player has bonus for this skill based on the active sch arts
+    bool isArtsBonusActive(CCharEntity* PChar, SKILLTYPE SkillID)
+    {
+        return (SkillID >= SKILL_DIVINE_MAGIC && SkillID <= SKILL_ENFEEBLING_MAGIC &&
+                PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_LIGHT_ARTS, EFFECT_ADDENDUM_WHITE })) ||
+               (SkillID >= SKILL_ENFEEBLING_MAGIC && SkillID <= SKILL_DARK_MAGIC &&
+                PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_DARK_ARTS, EFFECT_ADDENDUM_BLACK }));
+    }
+
+    // calculates the bonus skill based on active sch arts
+    int16 ArtsBonusSkill(CCharEntity* PChar, SKILLTYPE SkillID)
+    {
+        int16 skillBonus = 0;
+
+        uint16 maxMainSkill = battleutils::GetMaxSkill(SkillID, PChar->GetMJob(), PChar->GetMLevel());
+        uint16 maxSubSkill  = battleutils::GetMaxSkill(SkillID, PChar->GetSJob(), PChar->GetSLevel());
+
+        uint16 artsSkill    = battleutils::GetMaxSkill(SKILL_ENHANCING_MAGIC, JOB_RDM, PChar->GetMLevel());                               // B+ skill
+        uint16 skillCapD    = battleutils::GetMaxSkill(SkillID, JOB_SCH, PChar->GetMLevel());                                             // D skill cap
+        uint16 skillCapE    = battleutils::GetMaxSkill(SKILL_DARK_MAGIC, JOB_RDM, PChar->GetMLevel());                                    // E skill cap
+        auto   currentSkill = std::clamp<uint16>((PChar->RealSkills.skill[(int32)SkillID] / 10), 0, std::max(maxMainSkill, maxSubSkill)); // working skill before bonuses
+        uint16 artsBaseline = 0;                                                                                                          // Level based baseline to which to raise skills
+        uint8  mLevel       = PChar->GetMLevel();
+        if (mLevel < 51)
+        {
+            artsBaseline = (uint16)(5 + 2.7 * (mLevel - 1));
+        }
+        else if (mLevel < 61)
+        {
+            artsBaseline = (uint16)(137 + 4.7 * (mLevel - 50));
+        }
+        else if (mLevel < 71)
+        {
+            artsBaseline = (uint16)(184 + 3.7 * (mLevel - 60));
+        }
+        else if (mLevel < 75)
+        {
+            artsBaseline = (uint16)(221 + 5.0 * (mLevel - 70));
+        }
+        else // >= 75
+        {
+            artsBaseline = skillCapD + 36;
+        }
+
+        if (currentSkill < skillCapE)
+        {
+            // If the player's skill is below the E cap
+            // give enough bonus points to raise it to the arts baseline
+            skillBonus += std::max(artsBaseline - currentSkill, 0);
+        }
+        else if (currentSkill < skillCapD)
+        {
+            // if the skill is at or above the E cap but below the D cap
+            // raise it up to the B+ skill cap minus the difference between the current skill rank and the scholar base skill cap (D)
+            // i.e. give a bonus of the difference between the B+ skill cap and the D skill cap
+            skillBonus += std::max((artsSkill - skillCapD), 0);
+        }
+        else if (currentSkill < artsSkill)
+        {
+            // If the player's skill is at or above the D cap but below the B+ cap
+            // give enough bonus points to raise it to the B+ cap
+            skillBonus += std::max(artsSkill - currentSkill, 0);
+        }
+
+        if (PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_LIGHT_ARTS, EFFECT_ADDENDUM_WHITE }))
+        {
+            skillBonus += PChar->getMod(Mod::LIGHT_ARTS_SKILL);
+        }
+        else
+        {
+            skillBonus += PChar->getMod(Mod::DARK_ARTS_SKILL);
+        }
+
+        return skillBonus;
+    }
+
     /************************************************************************
      *                                                                       *
      *  Collect the work table of the character skills based on real.        *
@@ -3312,64 +3396,9 @@ namespace charutils
             int16  skillBonus   = 0;
 
             // apply arts bonuses
-            if ((i >= SKILL_DIVINE_MAGIC && i <= SKILL_ENFEEBLING_MAGIC && PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_LIGHT_ARTS, EFFECT_ADDENDUM_WHITE })) ||
-                (i >= SKILL_ENFEEBLING_MAGIC && i <= SKILL_DARK_MAGIC && PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_DARK_ARTS, EFFECT_ADDENDUM_BLACK })))
+            if (isArtsBonusActive(PChar, static_cast<SKILLTYPE>(i)))
             {
-                uint16 artsSkill    = battleutils::GetMaxSkill(SKILL_ENHANCING_MAGIC, JOB_RDM, PChar->GetMLevel());                  // B+ skill
-                uint16 skillCapD    = battleutils::GetMaxSkill((SKILLTYPE)i, JOB_SCH, PChar->GetMLevel());                           // D skill cap
-                uint16 skillCapE    = battleutils::GetMaxSkill(SKILL_DARK_MAGIC, JOB_RDM, PChar->GetMLevel());                       // E skill cap
-                auto   currentSkill = std::clamp<uint16>((PChar->RealSkills.skill[i] / 10), 0, std::max(maxMainSkill, maxSubSkill)); // working skill before bonuses
-                uint16 artsBaseline = 0;                                                                                             // Level based baseline to which to raise skills
-                uint8  mLevel       = PChar->GetMLevel();
-                if (mLevel < 51)
-                {
-                    artsBaseline = (uint16)(5 + 2.7 * (mLevel - 1));
-                }
-                else if (mLevel < 61)
-                {
-                    artsBaseline = (uint16)(137 + 4.7 * (mLevel - 50));
-                }
-                else if (mLevel < 71)
-                {
-                    artsBaseline = (uint16)(184 + 3.7 * (mLevel - 60));
-                }
-                else if (mLevel < 75)
-                {
-                    artsBaseline = (uint16)(221 + 5.0 * (mLevel - 70));
-                }
-                else // >= 75
-                {
-                    artsBaseline = skillCapD + 36;
-                }
-
-                if (currentSkill < skillCapE)
-                {
-                    // If the player's skill is below the E cap
-                    // give enough bonus points to raise it to the arts baseline
-                    skillBonus += std::max(artsBaseline - currentSkill, 0);
-                }
-                else if (currentSkill < skillCapD)
-                {
-                    // if the skill is at or above the E cap but below the D cap
-                    // raise it up to the B+ skill cap minus the difference between the current skill rank and the scholar base skill cap (D)
-                    // i.e. give a bonus of the difference between the B+ skill cap and the D skill cap
-                    skillBonus += std::max((artsSkill - skillCapD), 0);
-                }
-                else if (currentSkill < artsSkill)
-                {
-                    // If the player's skill is at or above the D cap but below the B+ cap
-                    // give enough bonus points to raise it to the B+ cap
-                    skillBonus += std::max(artsSkill - currentSkill, 0);
-                }
-
-                if (PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_LIGHT_ARTS, EFFECT_ADDENDUM_WHITE }))
-                {
-                    skillBonus += PChar->getMod(Mod::LIGHT_ARTS_SKILL);
-                }
-                else
-                {
-                    skillBonus += PChar->getMod(Mod::DARK_ARTS_SKILL);
-                }
+                skillBonus += ArtsBonusSkill(PChar, static_cast<SKILLTYPE>(i));
             }
             else if (i >= SKILL_AUTOMATON_MELEE && i <= SKILL_AUTOMATON_MAGIC)
             {
@@ -3688,12 +3717,32 @@ namespace charutils
                     PChar->WorkingSkills.skill[SkillID] |= 0x8000;
                 }
 
+                // check if skillup changed the bonus from sch arts
+                int16 skillBonus = 0;
+                if (isArtsBonusActive(PChar, SkillID))
+                {
+                    skillBonus = ArtsBonusSkill(PChar, SkillID);
+                }
+
                 PChar->RealSkills.skill[SkillID] += SkillAmount;
                 PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SkillID, SkillAmount, 38);
 
                 if ((CurSkill / 10) < (CurSkill + SkillAmount) / 10) // if gone up a level
                 {
-                    PChar->WorkingSkills.skill[SkillID] += 1;
+                    // Light/Dark Arts artificially boost certain skills
+                    // if skillup happens when real skill is below the base for active arts, don't increment the shown skill
+                    if (isArtsBonusActive(PChar, SkillID))
+                    {
+                        // if the bonus is the same, our real skill was already past the base bonus, so increment the shown skill from skillup
+                        if (skillBonus == ArtsBonusSkill(PChar, SkillID))
+                        {
+                            PChar->WorkingSkills.skill[SkillID] += 1;
+                        }
+                    }
+                    else
+                    {
+                        PChar->WorkingSkills.skill[SkillID] += 1;
+                    }
                     PChar->pushPacket<CCharSkillsPacket>(PChar);
                     PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SkillID, (CurSkill + SkillAmount) / 10, 53);
 

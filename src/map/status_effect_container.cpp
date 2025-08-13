@@ -502,8 +502,6 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, Effec
         // remove clean up other effects
         OverwriteStatusEffect(PStatusEffect);
 
-        PStatusEffect->SetOwner(m_POwner);
-
         SetEffectParams(PStatusEffect);
 
         // remove effects with same type
@@ -517,6 +515,9 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, Effec
 
         luautils::OnEffectGain(m_POwner, PStatusEffect);
         m_POwner->PAI->EventHandler.triggerListener("EFFECT_GAIN", m_POwner, PStatusEffect);
+
+        // Set owner after triggering all "effect gain" lua actions, to ensure effect:addMod() doesn't double up mod powers on the entity
+        PStatusEffect->SetOwner(m_POwner);
 
         m_POwner->addModifiers(&PStatusEffect->modList);
 
