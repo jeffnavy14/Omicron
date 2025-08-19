@@ -26,6 +26,7 @@
 #include "luautils.h"
 #include "packets/message_standard.h"
 #include "packets/position.h"
+#include "utils/battleutils.h"
 #include "utils/charutils.h"
 
 enum class ChocoboColor : uint8_t;
@@ -246,6 +247,7 @@ public:
     uint8  incrementItemWear(uint16 itemID);                               // Increment the item's worn value and returns it
     auto   findItem(uint16 itemID, sol::object const& location) -> CItem*; // Like hasItem, but returns the item object (nil if not found)
     auto   findItems(uint16 itemID, sol::object const& location) -> sol::table;
+    auto   getItems(sol::object const& location) -> sol::table;
 
     void createShop(uint8 size, sol::object const& arg1);
     void addShopItem(uint16 itemID, double rawPrice, sol::object const& arg2, sol::object const& arg3);
@@ -265,7 +267,7 @@ public:
 
     // Equipping
     bool canEquipItem(uint16 itemID, sol::object const& chkLevel);
-    void equipItem(uint16 itemID, sol::object const& container);
+    void equipItem(uint16 itemID, sol::object const& container, sol::object const& equipSlot) const;
     void unequipItem(uint8 slotID);
 
     void setEquipBlock(uint16 equipBlock);
@@ -713,6 +715,7 @@ public:
 
     void charm(CLuaBaseEntity const* target, sol::object const& p0);
     void uncharm();
+    auto isCharmed() const -> bool;
     bool isTandemActive();
 
     uint8 addBurden(uint8 element, uint8 burden);
@@ -830,7 +833,7 @@ public:
     uint8  getEcosystem();
     uint16 getSuperFamily();
     uint16 getFamily();
-    bool   isMobType(uint8 mobType); // True if mob is of type passed to function
+    auto   isMobType(uint8 mobType) const -> bool; // True if mob is of type passed to function
     bool   isUndead();
     bool   isNM();
 
@@ -880,6 +883,7 @@ public:
     void  delMobMod(uint16 mobModID, int16 value);
 
     uint32 getBattleTime();
+    auto   getCrystalElement() const -> ELEMENT;
 
     uint16 getBehavior();
     void   setBehavior(uint16 behavior);

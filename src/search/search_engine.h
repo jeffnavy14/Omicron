@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2024 LandSandBoat Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,14 +22,7 @@
 #pragma once
 
 #include "common/application.h"
-#include "common/console_service.h"
-
-#include "common/logging.h"
-#include "common/lua.h"
-#include "common/md52.h"
-#include "common/settings.h"
 #include "common/utils.h"
-#include "common/xirand.h"
 
 #include <unordered_set>
 
@@ -39,27 +32,26 @@
 
 // search specific stuff
 #include "handler.h"
-#include "search_handler.h"
 
-class SearchServer final : public Application
+class SearchEngine final : public Engine
 {
 public:
-    SearchServer(int argc, char** argv);
-    ~SearchServer() override;
+    SearchEngine(asio::io_context& io_context);
+    ~SearchEngine() override;
 
-    void loadConsoleCommands() override;
+    void onInitialize() override;
 
-    void run() override;
+    void onAHCleanup(std::vector<std::string>& inputs) const;
+    void onExpireAll(std::vector<std::string>& inputs) const;
 
-    void periodicCleanup(const asio::error_code& error, asio::steady_timer* timer);
-    void ahCleanup();
+    void expireAH(std::optional<uint16> days) const;
 
 private:
-    // A single IP should only have one request in flight at a time, so we are going to
-    // be tracking the IP addresses of incoming requests and if we haven't cleared the
-    // record for it - we block until it's done
-    SynchronizedShared<std::map<std::string, uint16_t>> IPAddressesInUse_;
+    handler            m_searchHandler;
+    asio::steady_timer m_periodicCleanupTimer;
+
+    void periodicCleanup(const asio::error_code& error);
 
     // NOTE: We're only using the read-lock for this
-    SynchronizedShared<std::unordered_set<std::string>> IPAddressWhitelist_;
+    SynchronizedShared<std::unordered_set<std::string>> m_ipWhitelist;
 };

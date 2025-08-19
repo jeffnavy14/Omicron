@@ -133,6 +133,7 @@ CMobEntity::CMobEntity()
 , m_HiPCLvl(0)
 , m_HiPartySize(0)
 , m_THLvl(0)
+, m_GilfinderLevel(0)
 , m_ItemStolen(false)
 , m_ItemDespoiled(false)
 , m_Family(0)
@@ -594,14 +595,15 @@ void CMobEntity::Spawn()
 {
     TracyZoneScoped;
     CBattleEntity::Spawn();
-    m_giveExp       = true;
-    m_HiPCLvl       = 0;
-    m_HiPartySize   = 0;
-    m_THLvl         = 0;
-    m_ItemStolen    = false;
-    m_ItemDespoiled = false;
-    m_DropItemTime  = 1000ms;
-    animationsub    = (uint8)getMobMod(MOBMOD_SPAWN_ANIMATIONSUB);
+    m_giveExp        = true;
+    m_HiPCLvl        = 0;
+    m_HiPartySize    = 0;
+    m_THLvl          = 0;
+    m_GilfinderLevel = 0;
+    m_ItemStolen     = false;
+    m_ItemDespoiled  = false;
+    m_DropItemTime   = 1000ms;
+    animationsub     = (uint8)getMobMod(MOBMOD_SPAWN_ANIMATIONSUB);
     SetCallForHelpFlag(false);
 
     PEnmityContainer->Clear();
@@ -1188,7 +1190,9 @@ void CMobEntity::Die()
 
             DistributeRewards();
             m_OwnerID.clean();
-            m_THLvl = 0;
+
+            m_THLvl          = 0;
+            m_GilfinderLevel = 0;
         }
     }));
     // clang-format on

@@ -27,17 +27,24 @@
 #include "common/timer.h"
 #include "common/watchdog.h"
 
+#include "common/ipp.h"
 #include "zone.h"
 
 //
 // Forward Declarations
 //
 
-class MapServer;
+class IPP;
 class SqlConnection;
 class MapNetworking;
 class MapStatistics;
 class CZone;
+
+struct MapConfig final
+{
+    IPP  ipp{};
+    bool inCI{ false };
+};
 
 //
 // Exposed globals
@@ -46,19 +53,13 @@ class CZone;
 extern std::unique_ptr<SqlConnection> _sql;
 extern std::map<uint16, CZone*>       g_PZoneList; // Global array of pointers for zones
 
-class MapServer final : public Application
+class MapEngine final : public Engine
 {
 public:
-    MapServer(int argc, char** argv);
-    ~MapServer() override;
+    MapEngine(asio::io_context& io_context, MapConfig& config);
+    ~MapEngine() override;
 
-    //
-    // Application
-    //
-
-    void loadConsoleCommands() override;
-
-    void run() override;
+    void gameLoop(asio::io_context& io_context);
 
     //
     // Init
@@ -67,26 +68,36 @@ public:
     void prepareWatchdog();
 
     void do_init();
-    void do_final();
+    void do_final() const;
 
     //
     // Maintenance
     //
 
-    int32 map_cleanup(timer::time_point tick, CTaskManager::CTask* PTask); // Clean up timed out players
-    int32 map_garbage_collect(timer::time_point tick, CTaskManager::CTask* PTask);
+    int32 map_cleanup(timer::time_point tick, CTaskManager::CTask* PTask) const; // Clean up timed out players
+    int32 map_garbage_collect(timer::time_point tick, CTaskManager::CTask* PTask) const;
+
+    //
+    // Commands callbacks
+    //
+
+    void onStats(std::vector<std::string>& inputs) const;
+    void onBacktrace(std::vector<std::string>& inputs) const;
+    void onReloadRecipes(std::vector<std::string>& inputs) const;
+    void onGM(const std::vector<std::string>& inputs) const;
 
     //
     // Accessors
     //
 
-    auto networking() -> MapNetworking&;
-    auto statistics() -> MapStatistics&;
-    auto zones() -> std::map<uint16, CZone*>&; // g_PZoneList
+    auto networking() const -> MapNetworking&;
+    auto statistics() const -> MapStatistics&;
+    auto zones() const -> std::map<uint16, CZone*>&; // g_PZoneList
     // gameState()
 
 private:
     std::unique_ptr<MapStatistics> mapStatistics_;
     std::unique_ptr<MapNetworking> networking_;
     std::unique_ptr<Watchdog>      watchdog_;
+    MapConfig&                     engineConfig_;
 };

@@ -33,6 +33,7 @@
 #include "instance.h"
 #include "items/item_weapon.h"
 #include "lua/luautils.h"
+#include "map_engine.h"
 #include "mob_modifier.h"
 #include "mob_spell_list.h"
 #include "zone_entities.h"

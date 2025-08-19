@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "map_server.h"
+#include "map_engine.h"
 
 #include "common/async.h"
 #include "common/blowfish.h"
@@ -41,7 +41,6 @@
 #include "ipc_client.h"
 #include "job_points.h"
 #include "latent_effect_container.h"
-#include "linkshell.h"
 #include "map_networking.h"
 #include "map_statistics.h"
 #include "mob_spell_list.h"
@@ -60,9 +59,7 @@
 
 #include "items/item_equipment.h"
 
-#include "packets/basic.h"
 #include "packets/chat_message.h"
-#include "packets/server_ip.h"
 
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
@@ -98,79 +95,32 @@
 std::unique_ptr<SqlConnection>  _sql;
 extern std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 
-MapServer::MapServer(int argc, char** argv)
-: Application("map", argc, argv)
-, mapStatistics_(std::make_unique<MapStatistics>())
-, networking_(std::make_unique<MapNetworking>(*this, *mapStatistics_))
+MapEngine::MapEngine(asio::io_context& io_context, MapConfig& config)
+: mapStatistics_(std::make_unique<MapStatistics>())
+, networking_(std::make_unique<MapNetworking>(*mapStatistics_, config, io_context))
+, engineConfig_(config)
 {
     do_init();
-}
 
-MapServer::~MapServer()
-{
-    do_final();
-}
-
-void MapServer::loadConsoleCommands()
-{
+    // Queue the first game loop iteration
     // clang-format off
-    consoleService_->registerCommand("gm", "Change a character's GM level",
-    [](std::vector<std::string>& inputs)
+    asio::post(io_context, [&]()
     {
-        if (inputs.size() != 3)
-        {
-            fmt::print("Usage: gm <char_name> <level>. example: gm Testo 1\n");
-            return;
-        }
-
-        const auto name  = inputs[1];
-        auto*      PChar = zoneutils::GetCharByName(name);
-        if (!PChar)
-        {
-            fmt::print("Couldnt find character: {}\n", name);
-            return;
-        }
-
-        const auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
-
-        PChar->m_GMlevel = level;
-
-        charutils::SaveCharGMLevel(PChar);
-
-        fmt::print("> Promoting {} to GM level {}\n", PChar->name, level);
-        PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
-    });
-
-    consoleService_->registerCommand("reload_recipes", "Reload crafting recipes",
-    [&](std::vector<std::string>& inputs)
-    {
-        fmt::print("> Reloading crafting recipes\n");
-        synthutils::LoadSynthRecipes();
-    });
-
-    consoleService_->registerCommand("stats", "Print runtime stats",
-    [&](std::vector<std::string>& inputs)
-    {
-        mapStatistics_->print();
-    });
-
-    consoleService_->registerCommand("backtrace", "Print backtrace",
-    [&](std::vector<std::string>& inputs)
-    {
-        const auto backtrace = logging::GetBacktrace();
-        for (const auto& line : backtrace)
-        {
-            fmt::print("{}\n", line);
-        }
+        gameLoop(io_context);
     });
     // clang-format on
 }
 
-void MapServer::prepareWatchdog()
+MapEngine::~MapEngine()
+{
+    do_final();
+}
+
+void MapEngine::prepareWatchdog()
 {
     auto period = settings::get<uint32>("main.INACTIVITY_WATCHDOG_PERIOD");
 
-    if (Application::isRunningInCI())
+    if (engineConfig_.inCI)
     {
         // Double the timer period, to account for the slower CI environment
         period *= 2;
@@ -213,53 +163,56 @@ void MapServer::prepareWatchdog()
     // clang-format on
 }
 
-void MapServer::run()
+void MapEngine::gameLoop(asio::io_context& io_context)
 {
-    Application::markLoaded();
+    timer::duration tasksDuration;
+    timer::duration networkDuration;
+    timer::duration tickDuration;
 
-    while (Application::isRunning())
+    const auto tickStart = timer::now();
     {
-        timer::duration tasksDuration;
-        timer::duration networkDuration;
-        timer::duration tickDuration;
-
-        const auto tickStart = timer::now();
-        {
-            tasksDuration = CTaskManager::getInstance()->doExpiredTasks(tickStart);
-            // Use tick remainder for networking with a maximum to ensure that the network phase
-            // doesn't starve and a minimum to prevent bumping up against the time limit.
-            networkDuration = networking_->doSocketsBlocking(kMainLoopInterval - std::clamp<timer::duration>(tasksDuration, 50ms, 150ms));
-        }
-        tickDuration = timer::now() - tickStart;
-
-        const auto tickDiffTime = kMainLoopInterval - tickDuration;
-
-        mapStatistics_->set(MapStatistics::Key::TasksTickTime, timer::count_milliseconds(tasksDuration));
-        mapStatistics_->set(MapStatistics::Key::NetworkTickTime, timer::count_milliseconds(networkDuration));
-        mapStatistics_->set(MapStatistics::Key::TotalTickTime, timer::count_milliseconds(tickDuration));
-        mapStatistics_->set(MapStatistics::Key::TickDiffTime, timer::count_milliseconds(tickDiffTime));
-        mapStatistics_->flush();
-
-        DebugPerformanceFmt("Tasks: {}ms, Network: {}ms, Total: {}ms, Diff/Sleep: {}ms",
-                            timer::count_milliseconds(tasksDuration),
-                            timer::count_milliseconds(networkDuration),
-                            timer::count_milliseconds(tickDuration),
-                            timer::count_milliseconds(tickDiffTime));
-
-        watchdog_->update();
-
-        if (tickDiffTime > 0ms)
-        {
-            std::this_thread::sleep_for(tickDiffTime);
-        }
-        else if (tickDiffTime < -kMainLoopBacklogThreshold)
-        {
-            RATE_LIMIT(15s, ShowWarningFmt("Main loop is running {}ms behind, performance is degraded!", -timer::count_milliseconds(tickDiffTime)));
-        }
+        tasksDuration = CTaskManager::getInstance()->doExpiredTasks(tickStart);
+        // Use tick remainder for networking with a maximum to ensure that the network phase
+        // doesn't starve and a minimum to prevent bumping up against the time limit.
+        networkDuration = networking_->doSocketsBlocking(kMainLoopInterval - std::clamp<timer::duration>(tasksDuration, 50ms, 150ms));
     }
+    tickDuration = timer::now() - tickStart;
+
+    const auto tickDiffTime = kMainLoopInterval - tickDuration;
+
+    mapStatistics_->set(MapStatistics::Key::TasksTickTime, timer::count_milliseconds(tasksDuration));
+    mapStatistics_->set(MapStatistics::Key::NetworkTickTime, timer::count_milliseconds(networkDuration));
+    mapStatistics_->set(MapStatistics::Key::TotalTickTime, timer::count_milliseconds(tickDuration));
+    mapStatistics_->set(MapStatistics::Key::TickDiffTime, timer::count_milliseconds(tickDiffTime));
+    mapStatistics_->flush();
+
+    DebugPerformanceFmt("Tasks: {}ms, Network: {}ms, Total: {}ms, Diff/Sleep: {}ms",
+                        timer::count_milliseconds(tasksDuration),
+                        timer::count_milliseconds(networkDuration),
+                        timer::count_milliseconds(tickDuration),
+                        timer::count_milliseconds(tickDiffTime));
+
+    watchdog_->update();
+
+    if (tickDiffTime > 0ms)
+    {
+        std::this_thread::sleep_for(tickDiffTime);
+    }
+    else if (tickDiffTime < -kMainLoopBacklogThreshold)
+    {
+        RATE_LIMIT(15s, ShowWarningFmt("Main loop is running {}ms behind, performance is degraded!", -timer::count_milliseconds(tickDiffTime)));
+    }
+
+    // Requeue loop
+    // clang-format off
+    asio::post(io_context, [&]()
+    {
+        gameLoop(io_context);
+    });
+    // clang-format on
 }
 
-void MapServer::do_init()
+void MapEngine::do_init()
 {
     TracyZoneScoped;
 
@@ -290,14 +243,14 @@ void MapServer::do_init()
     ShowInfo(fmt::format("database server version: {}", db::getDatabaseVersion()).c_str());
     ShowInfo(fmt::format("database client version: {}", db::getDriverVersion()).c_str());
 
-    if (!isRunningInCI())
+    if (!engineConfig_.inCI)
     {
         db::checkCharset();
     }
 
     db::checkTriggers();
 
-    luautils::init(mapIPP, isRunningInCI()); // Also calls moduleutils::LoadLuaModules();
+    luautils::init(mapIPP, engineConfig_.inCI); // Also calls moduleutils::LoadLuaModules();
 
     PacketParserInitialize();
 
@@ -367,8 +320,8 @@ void MapServer::do_init()
     CTransportHandler::getInstance()->InitializeTransport(mapIPP);
 
     CTaskManager::getInstance()->AddTask("time_server", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, kTimeServerTickInterval, time_server);
-    CTaskManager::getInstance()->AddTask("map_cleanup", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, 5s, std::bind(&MapServer::map_cleanup, this, std::placeholders::_1, std::placeholders::_2));
-    CTaskManager::getInstance()->AddTask("garbage_collect", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, 15min, std::bind(&MapServer::map_garbage_collect, this, std::placeholders::_1, std::placeholders::_2));
+    CTaskManager::getInstance()->AddTask("map_cleanup", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, 5s, std::bind(&MapEngine::map_cleanup, this, std::placeholders::_1, std::placeholders::_2));
+    CTaskManager::getInstance()->AddTask("garbage_collect", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, 15min, std::bind(&MapEngine::map_garbage_collect, this, std::placeholders::_1, std::placeholders::_2));
     CTaskManager::getInstance()->AddTask("persist_server_vars", timer::now(), nullptr, CTaskManager::TASK_INTERVAL, 1min, serverutils::PersistVolatileServerVars);
 
     zoneutils::TOTDChange(vanadiel_time::get_totd()); // This tells the zones to spawn stuff based on time of day conditions (such as undead at night)
@@ -396,7 +349,7 @@ void MapServer::do_init()
 #endif // TRACY_ENABLE
 }
 
-void MapServer::do_final()
+void MapEngine::do_final() const
 {
     TracyZoneScoped;
 
@@ -416,10 +369,9 @@ void MapServer::do_final()
     Async::delInstance();
 
     luautils::cleanup();
-    logging::ShutDown();
 }
 
-int32 MapServer::map_cleanup(timer::time_point tick, CTaskManager::CTask* PTask)
+auto MapEngine::map_cleanup(timer::time_point tick, CTaskManager::CTask* PTask) const -> int32
 {
     TracyZoneScoped;
 
@@ -435,7 +387,7 @@ int32 MapServer::map_cleanup(timer::time_point tick, CTaskManager::CTask* PTask)
     return 0;
 }
 
-int32 MapServer::map_garbage_collect(timer::time_point tick, CTaskManager::CTask* PTask)
+auto MapEngine::map_garbage_collect(timer::time_point tick, CTaskManager::CTask* PTask) const -> int32
 {
     TracyZoneScoped;
 
@@ -445,17 +397,63 @@ int32 MapServer::map_garbage_collect(timer::time_point tick, CTaskManager::CTask
     return 0;
 }
 
-auto MapServer::networking() -> MapNetworking&
+void MapEngine::onStats(std::vector<std::string>& inputs) const
+{
+    mapStatistics_->print();
+}
+
+void MapEngine::onBacktrace(std::vector<std::string>& inputs) const
+{
+    const auto backtrace = logging::GetBacktrace();
+    for (const auto& line : backtrace)
+    {
+        fmt::print("{}\n", line);
+    }
+}
+
+void MapEngine::onReloadRecipes(std::vector<std::string>& inputs) const
+{
+    fmt::print("> Reloading crafting recipes\n");
+    synthutils::LoadSynthRecipes();
+}
+
+void MapEngine::onGM(const std::vector<std::string>& inputs) const
+{
+    if (inputs.size() != 3)
+    {
+        fmt::print("Usage: gm <char_name> <level>. example: gm Testo 1\n");
+        return;
+    }
+
+    const auto name  = inputs[1];
+    auto*      PChar = zoneutils::GetCharByName(name);
+    if (!PChar)
+    {
+        fmt::print("Couldnt find character: {}\n", name);
+        return;
+    }
+
+    const auto level = std::clamp<uint8>(static_cast<uint8>(stoi(inputs[2])), 0, 5);
+
+    PChar->m_GMlevel = level;
+
+    charutils::SaveCharGMLevel(PChar);
+
+    fmt::print("> Promoting {} to GM level {}\n", PChar->name, level);
+    PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
+}
+
+auto MapEngine::networking() const -> MapNetworking&
 {
     return *networking_;
 }
 
-auto MapServer::statistics() -> MapStatistics&
+auto MapEngine::statistics() const -> MapStatistics&
 {
     return *mapStatistics_;
 }
 
-auto MapServer::zones() -> std::map<uint16, CZone*>&
+auto MapEngine::zones() const -> std::map<uint16, CZone*>&
 {
     return g_PZoneList;
 }

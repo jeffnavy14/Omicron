@@ -28,7 +28,6 @@
 #include "battlefield.h"
 #include "instance.h"
 #include "los/zone_los.h"
-#include "map_server.h"
 #include "navmesh.h"
 #include "zone.h"
 

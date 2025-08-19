@@ -46,19 +46,7 @@
 #include "lua_zone.h"
 
 #include "ai/ai_container.h"
-#include "ai/states/ability_state.h"
-#include "ai/states/attack_state.h"
-#include "ai/states/death_state.h"
-#include "ai/states/inactive_state.h"
-#include "ai/states/item_state.h"
-#include "ai/states/magic_state.h"
-#include "ai/states/mobskill_state.h"
-#include "ai/states/raise_state.h"
-#include "ai/states/range_state.h"
-#include "ai/states/respawn_state.h"
-#include "ai/states/weaponskill_state.h"
 
-#include "entities/automatonentity.h"
 #include "entities/baseentity.h"
 #include "entities/charentity.h"
 #include "entities/mobentity.h"
@@ -68,7 +56,6 @@
 #include "packets/action.h"
 #include "packets/char_emotion.h"
 #include "packets/chat_message.h"
-#include "packets/entity_update.h"
 #include "packets/entity_visual.h"
 #include "packets/menu_raisetractor.h"
 
@@ -84,22 +71,17 @@
 #include "utils/zoneutils.h"
 
 #include "ability.h"
-#include "alliance.h"
 #include "battlefield.h"
-#include "campaign_system.h"
 #include "conquest_system.h"
 #include "daily_system.h"
 #include "fishingcontest.h"
 #include "instance.h"
 #include "ipc_client.h"
-#include "los/zone_los.h"
-#include "map_networking.h"
-#include "map_server.h"
+#include "map_engine.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "monstrosity.h"
 #include "navmesh.h"
-#include "party.h"
 #include "petskill.h"
 #include "roe.h"
 #include "spell.h"
@@ -107,11 +89,9 @@
 #include "timetriggers.h"
 #include "trade_container.h"
 #include "transport.h"
-#include "treasure_pool.h"
 #include "weapon_skill.h"
 #include "zone.h"
 #include "zone_entities.h"
-#include "zone_instance.h"
 
 #include <array>
 #include <filesystem>
@@ -302,6 +282,7 @@ namespace luautils
         lua.set_function("VanadielMoonDirection", &luautils::VanadielMoonDirection);
         lua.set_function("VanadielRSERace", &luautils::VanadielRSERace);
         lua.set_function("VanadielRSELocation", &luautils::VanadielRSELocation);
+        lua.set_function("SetTimeOffset", &luautils::SetTimeOffset);
         lua.set_function("IsMoonNew", &luautils::IsMoonNew);
         lua.set_function("IsMoonFull", &luautils::IsMoonFull);
         lua.set_function("RunElevator", &luautils::StartElevator);
@@ -1647,6 +1628,14 @@ namespace luautils
     {
         TracyZoneScoped;
         return vanadiel_time::rse::get_location();
+    }
+
+    void SetTimeOffset(const int32 offset)
+    {
+        TracyZoneScoped;
+
+        earth_time::reset_offset();
+        earth_time::add_offset(std::chrono::seconds(offset));
     }
 
     bool IsMoonNew()

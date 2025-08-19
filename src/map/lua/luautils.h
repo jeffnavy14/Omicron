@@ -269,6 +269,7 @@ namespace luautils
     uint8  VanadielMoonDirection();
     uint8  VanadielRSERace();
     uint8  VanadielRSELocation();
+    void   SetTimeOffset(int32 offset); // Manipulate earth time forward or backward by offset seconds. Affects Vana'Diel time.
     bool   IsMoonNew();
     bool   IsMoonFull();
     void   StartElevator(uint32 ElevatorID);

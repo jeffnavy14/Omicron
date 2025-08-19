@@ -1097,12 +1097,14 @@ enum class Mod
     // TODO: These mods are not yet implemented.
     REWARD_RECAST = 1152, // TODO: Reward recast time reduction (seconds)
 
+    MOGHANCEMENT_GIL_BONUS_P = 1158, // Kill shot gil bonus (yes, really)
+
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
 
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1158 and onward
+    // SPARE IDs: 1159 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

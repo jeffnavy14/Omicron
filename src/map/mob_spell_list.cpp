@@ -23,7 +23,6 @@
 
 #include "lua/luautils.h"
 
-#include "map_server.h"
 #include "mob_spell_list.h"
 
 CMobSpellList::CMobSpellList(const uint16 listId)

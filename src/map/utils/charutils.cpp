@@ -80,7 +80,6 @@
 #include "latent_effect_container.h"
 #include "linkshell.h"
 #include "map_networking.h"
-#include "map_server.h"
 #include "mob_modifier.h"
 #include "recast_container.h"
 #include "roe.h"
@@ -102,6 +101,7 @@
 #include "blueutils.h"
 #include "charutils.h"
 #include "itemutils.h"
+#include "map_engine.h"
 #include "petutils.h"
 #include "puppetutils.h"
 #include "synthutils.h"
@@ -3048,7 +3048,8 @@ namespace charutils
             {
                 PItem = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[std::get<0>(slot)]);
 
-                if (PItem)
+                // As of writing, the only unlockable weapons are: wsnm, ksnm, nyzul vigil weapons
+                if (PItem && (!PItem->isUnlockable() || PItem->isUnlocked()))
                 {
                     std::get<1>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL);
                     std::get<2>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL_DYN);
@@ -3634,11 +3635,11 @@ namespace charutils
             if ((SkillID >= 1 && SkillID <= 12) || (SkillID >= 25 && SkillID <= 31))
             // if should effect automaton replace the above with: (SkillID >= 1 && SkillID <= 31)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.0f);
             }
             else if (SkillID >= 32 && SkillID <= 44)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.0f);
             }
 
             if (Diff > 0 && (random < SkillUpChance || forceSkillUp))
@@ -4281,6 +4282,24 @@ namespace charutils
             gil += std::clamp<uint32>(gBonus, 1, settings::get<uint32>("map.MAX_GIL_BONUS"));
         }
 
+        // TODO: pin down moghancement money which seems to be a % bonus applied individually?
+        // Gilfinder bonus is 1 + (128 + 0..GF level * 16)/256
+        // https://docs.google.com/spreadsheets/d/134YjiVWoqn9UKOFrJFXZPHZChNa6heWzY0xXOGIteC8/edit
+        if (PMob->m_GilfinderLevel > 0)
+        {
+            double multiplier = 1 + ((128 + xirand::GetRandomNumber<uint16_t>(0, PMob->m_GilfinderLevel * 16)) / 256.);
+
+            gil = gil * multiplier;
+        }
+
+        int16 killshotBonus = PChar->getMod(Mod::MOGHANCEMENT_GIL_BONUS_P);
+        if (killshotBonus > 0)
+        {
+            double multiplier = (100.0 + killshotBonus) / 100.0;
+
+            gil = gil * multiplier;
+        }
+
         // Distribute gil to player/party/alliance
         if (PChar->PParty != nullptr)
         {
@@ -4290,7 +4309,7 @@ namespace charutils
             // clang-format off
             PChar->ForAlliance([PMob, &members](CBattleEntity* PPartyMember)
             {
-                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.f))
+                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.0f)) // TODO: verify range
                 {
                     members.emplace_back((CCharEntity*)PPartyMember);
                 }
@@ -4300,20 +4319,8 @@ namespace charutils
             // all members might not be in range
             if (!members.empty())
             {
-                // Check for highest gilfinder tier
-                uint16 gilFinderActive = 0;
-
-                for (auto PMember : members)
-                {
-                    if (PMember->getMod(Mod::GILFINDER) > gilFinderActive)
-                    {
-                        gilFinderActive = PMember->getMod(Mod::GILFINDER);
-                    }
-                }
-
                 // Calculate gil for each party member.
                 uint32 gilPerPerson = static_cast<uint32>(gil / members.size());
-                gilPerPerson        = gilPerPerson * (100 + gilFinderActive) / 100;
 
                 for (auto PMember : members)
                 {
@@ -4322,10 +4329,8 @@ namespace charutils
                 }
             }
         }
-        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.f))
+        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.0f))
         {
-            // Check for gilfinder
-            gil += gil * PChar->getMod(Mod::GILFINDER) / 100;
             UpdateItem(PChar, LOC_INVENTORY, 0, static_cast<int32>(gil));
             PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, static_cast<int32>(gil), 0, 565);
         }
@@ -4524,22 +4529,22 @@ namespace charutils
 
                     if (PMob->getMobMod(MOBMOD_EXP_BONUS))
                     {
-                        const float monsterbonus = 1.f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.f;
+                        const float monsterbonus = 1.0f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.0f;
                         exp *= monsterbonus;
                     }
 
                     // Per monster caps pulled from: https://ffxiclopedia.fandom.com/wiki/Experience_Points
                     if (PMember->GetMLevel() <= 50)
                     {
-                        exp = std::fmin(exp, 400.f);
+                        exp = std::fmin(exp, 400.0f);
                     }
                     else if (PMember->GetMLevel() <= 60)
                     {
-                        exp = std::fmin(exp, 500.f);
+                        exp = std::fmin(exp, 500.0f);
                     }
                     else
                     {
-                        exp = std::fmin(exp, 600.f);
+                        exp = std::fmin(exp, 600.0f);
                     }
 
                     if (mobCheck > EMobDifficulty::DecentChallenge)
@@ -4939,7 +4944,7 @@ namespace charutils
             }
         }
 
-        capacityPoints *= 1.f + rawBonus / 100;
+        capacityPoints *= 1.0f + rawBonus / 100;
         return capacityPoints;
     }
 
@@ -6864,8 +6869,10 @@ namespace charutils
             if (PWeapon->addWsPoints(wspoints))
             {
                 // weapon is now broken
+                charutils::BuildingCharWeaponSkills(PChar);
                 PChar->PLatentEffectContainer->CheckLatentsWeaponBreak(slotid);
                 PChar->pushPacket<CCharStatsPacket>(PChar);
+                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
             }
 
             db::preparedStmt("UPDATE char_inventory SET extra = ? WHERE charid = ? AND location = ? AND slot = ? LIMIT 1",
@@ -7309,7 +7316,7 @@ namespace charutils
 
         if (highestItem > 99)
         {
-            itemLevelDiff += (highestItem - 99) / 2.f;
+            itemLevelDiff += (highestItem - 99) / 2.0f;
         }
 
         for (uint8 slotID = 4; slotID < 9; ++slotID)
@@ -7318,7 +7325,7 @@ namespace charutils
 
             if (PItem && PItem->getILvl() > 99)
             {
-                itemLevelDiff += (PItem->getILvl() - 99) / 10.f;
+                itemLevelDiff += (PItem->getILvl() - 99) / 10.0f;
             }
         }
 

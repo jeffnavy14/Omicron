@@ -22,40 +22,16 @@
 #pragma once
 
 #include "common/application.h"
-#include "common/task_manager.h"
-#include "common/zmq_router_wrapper.h"
-
-#include "http_server.h"
 
 //
 // Forward declarations
 //
 
-class IPCServer;
-class PartySystem;
-class ConquestSystem;
-class BesiegedSystem;
-class CampaignSystem;
-class ColonizationSystem;
-
-class WorldServer final : public Application
+class WorldApplication final : public Application
 {
 public:
-    WorldServer(int argc, char** argv);
-    ~WorldServer() override;
+    WorldApplication(int argc, char** argv);
+    ~WorldApplication() override;
 
-    void loadConsoleCommands() override;
-
-    void run() override;
-
-    std::unique_ptr<IPCServer> ipcServer_;
-
-    std::unique_ptr<PartySystem> partySystem_;
-
-    std::unique_ptr<ConquestSystem>     conquestSystem_;
-    std::unique_ptr<BesiegedSystem>     besiegedSystem_;
-    std::unique_ptr<CampaignSystem>     campaignSystem_;
-    std::unique_ptr<ColonizationSystem> colonizationSystem_;
-
-    std::unique_ptr<HTTPServer> httpServer_;
+    auto createEngine() -> std::unique_ptr<Engine> override;
 };

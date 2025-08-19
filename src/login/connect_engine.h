@@ -22,34 +22,7 @@
 #pragma once
 
 #include "common/application.h"
-#include "common/console_service.h"
-#include "common/logging.h"
-#include "common/lua.h"
-#include "common/md52.h"
-#include "common/settings.h"
-#include "common/utils.h"
-#include "common/xirand.h"
 #include "common/zmq_dealer_wrapper.h"
-
-#include "map/packets/basic.h"
-
-#include <asio/ssl.hpp>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
-
-#include <chrono>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <thread>
-#include <type_traits>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-#include <zmq.hpp>
-
-#include <nonstd/jthread.hpp>
 
 #ifndef _WIN32
 #include <sys/resource.h>
@@ -57,30 +30,26 @@
 
 // Login specific stuff
 #include "auth_session.h"
-#include "cert_helpers.h"
+#include "common/engine.h"
 #include "data_session.h"
 #include "handler.h"
-#include "handler_session.h"
-#include "login_helpers.h"
-#include "login_packets.h"
-#include "session.h"
 #include "view_session.h"
 
-class ConnectServer final : public Application
+class ConnectEngine final : public Engine
 {
 public:
-    ConnectServer(int argc, char** argv);
-    ~ConnectServer() override;
-
-    void loadConsoleCommands() override;
-
-    void run() override;
+    ConnectEngine(asio::io_context& io_context);
+    ~ConnectEngine() override;
 
     // This cleanup function is to periodically poll for auth sessions that were successful but xiloader failed to actually launch FFXI
     // When this happens, the data/view socket are never opened and will never be cleaned up normally.
     // Auth is closed before any other sessions are open, so the data/view cleanups aren't sufficient
-    void periodicCleanup(const asio::error_code& error, asio::steady_timer* timer);
+    void periodicCleanup(const asio::error_code& error);
 
 private:
-    ZMQDealerWrapper zmqDealerWrapper_;
+    ZMQDealerWrapper      zmqDealerWrapper_;
+    handler<auth_session> m_authHandler;
+    handler<data_session> m_dataHandler;
+    handler<view_session> m_viewHandler;
+    asio::steady_timer    m_sessionCleanupTimer;
 };

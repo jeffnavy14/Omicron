@@ -25862,7 +25862,7 @@ INSERT INTO `item_mods` VALUES (15122,1,34);  -- DEF: 34
 INSERT INTO `item_mods` VALUES (15122,2,19);  -- HP: 19
 INSERT INTO `item_mods` VALUES (15122,27,4);  -- ENMITY: 4
 INSERT INTO `item_mods` VALUES (15122,298,5); -- STEAL: 5
-INSERT INTO `item_mods` VALUES (15122,897,1); -- GILFINDER: 1 (Unconfirmed)
+INSERT INTO `item_mods` VALUES (15122,897,1); -- GILFINDER: 1
 
 -- Valor Breeches
 INSERT INTO `item_mods` VALUES (15123,1,43);   -- DEF: 43
@@ -31373,7 +31373,7 @@ INSERT INTO `item_mods` VALUES (16276,72,1);  -- HPHEAL: 1
 
 -- Bandolero Scarf
 INSERT INTO `item_mods` VALUES (16277,68,5);  -- EVA: 5
-INSERT INTO `item_mods` VALUES (16277,897,1); -- GILFINDER: 1 (Unconfirmed)
+INSERT INTO `item_mods` VALUES (16277,897,1); -- GILFINDER: 1
 
 -- Pipers Torque
 INSERT INTO `item_mods` VALUES (16278,14,5);  -- CHR: 5
@@ -35645,6 +35645,15 @@ INSERT INTO `item_mods` VALUES (17739,5,10); -- MP: 10
 -- Steel Kilij +1
 INSERT INTO `item_mods` VALUES (17740,5,15); -- MP: 15
 
+-- Vorpal Sword
+INSERT INTO `item_mods` VALUES (17742,355,44); -- ADDS_WEAPONSKILL: 44
+
+-- Wightslayer
+INSERT INTO `item_mods` VALUES (17743,355,46); -- ADDS_WEAPONSKILL: 46
+
+-- Brave Blade
+INSERT INTO `item_mods` VALUES (17744,355,45); -- ADDS_WEAPONSKILL: 45
+
 -- Hofud
 INSERT INTO `item_mods` VALUES (17745,3,3);    -- HPP: 3
 INSERT INTO `item_mods` VALUES (17745,13,5);   -- MND: 5
@@ -36063,6 +36072,9 @@ INSERT INTO `item_mods` VALUES (17949,15,8); -- FIRE_MEVA: 8
 -- Zoraal Jas Axe
 INSERT INTO `item_mods` VALUES (17953,364,10); -- REWARD_HP_BONUS: 10
 
+-- Double Axe
+INSERT INTO `item_mods` VALUES (17956,355,74); -- ADDS_WEAPONSKILL: 74
+
 -- Iron Ram Pick
 INSERT INTO `item_mods` VALUES (17958,23,10); -- ATT: 10
 INSERT INTO `item_mods` VALUES (17958,248,2); -- CURSERES: 2
@@ -36181,6 +36193,9 @@ INSERT INTO `item_mods` VALUES (18000,14,1); -- CHR: 1
 
 -- Perseuss Harpe
 INSERT INTO `item_mods` VALUES (18002,246,2); -- PETRIFYRES: 2
+
+-- Swordbreaker
+INSERT INTO `item_mods` VALUES (18003,355,27); -- ADDS_WEAPONSKILL: 27
 
 -- Trailers Kukri
 INSERT INTO `item_mods` VALUES (18004,26,14); -- RACC: 14
@@ -36309,6 +36324,9 @@ INSERT INTO `item_mods` VALUES (18033,501,15);  -- ITEM_ADDEFFECT_CHANCE: 15
 INSERT INTO `item_mods` VALUES (18033,951,148); -- ITEM_ADDEFFECT_STATUS: 148
 INSERT INTO `item_mods` VALUES (18033,952,10);  -- ITEM_ADDEFFECT_POWER: 10
 INSERT INTO `item_mods` VALUES (18033,953,60);  -- ITEM_ADDEFFECT_DURATION: 60
+
+-- Dancing Dagger
+INSERT INTO `item_mods` VALUES (18034,355,28); -- ADDS_WEAPONSKILL: 28
 
 -- Deathbone Knife
 INSERT INTO `item_mods` VALUES (18035,21,-5); -- LIGHT_MEVA: -5
@@ -36520,6 +36538,9 @@ INSERT INTO `item_mods` VALUES (18119,501,15);  -- ITEM_ADDEFFECT_CHANCE: 15
 INSERT INTO `item_mods` VALUES (18119,951,148); -- ITEM_ADDEFFECT_STATUS: 148
 INSERT INTO `item_mods` VALUES (18119,952,10);  -- ITEM_ADDEFFECT_POWER: 10
 INSERT INTO `item_mods` VALUES (18119,953,30);  -- ITEM_ADDEFFECT_DURATION: 30
+
+-- Radiant Lance
+INSERT INTO `item_mods` VALUES (18120,355,122); -- ADDS_WEAPONSKILL: 122
 
 -- Valkyries Fork
 INSERT INTO `item_mods` VALUES (18121,73,3);  -- STORETP: 3
@@ -37522,6 +37543,9 @@ INSERT INTO `item_mods` VALUES (18423,23,3); -- ATT: 3
 -- Izayoi +1
 INSERT INTO `item_mods` VALUES (18424,23,5); -- ATT: 5
 
+-- Sasuke Katana
+INSERT INTO `item_mods` VALUES (18426,355,138); -- ADDS_WEAPONSKILL: 138
+
 -- Shusui
 INSERT INTO `item_mods` VALUES (18429,2,-20); -- HP: -20
 INSERT INTO `item_mods` VALUES (18429,9,3);   -- DEX: 3
@@ -37571,6 +37595,9 @@ INSERT INTO `item_mods` VALUES (18440,12,3); -- INT: 3
 -- Taimakuniyuki +1
 INSERT INTO `item_mods` VALUES (18442,9,5);  -- DEX: 5
 INSERT INTO `item_mods` VALUES (18442,23,5); -- ATT: 5
+
+-- Windslicer
+INSERT INTO `item_mods` VALUES (18443,355,154); -- ADDS_WEAPONSKILL: 154
 
 -- Pachipachio
 INSERT INTO `item_mods` VALUES (18446,23,12); -- ATT: 12
@@ -37710,6 +37737,9 @@ INSERT INTO `item_mods` VALUES (18489,245,2); -- VIRUSRES: 2
 
 -- Dark Amood +1
 INSERT INTO `item_mods` VALUES (18490,245,3); -- VIRUSRES: 3
+
+-- Sturdy Axe
+INSERT INTO `item_mods` VALUES (18492,355,90); -- ADDS_WEAPONSKILL: 90
 
 -- Fourth Division Toporok
 INSERT INTO `item_mods` VALUES (18494,23,10); -- ATT: 10
@@ -38002,8 +38032,17 @@ INSERT INTO `item_mods` VALUES (18585,72,2); -- HPHEAL: 2
 INSERT INTO `item_mods` VALUES (18587,5,50);   -- MP: 50
 INSERT INTO `item_mods` VALUES (18587,374,10); -- CURE_POTENCY: 10
 
+-- Mages Staff
+INSERT INTO `item_mods` VALUES (18589,355,186); -- ADDS_WEAPONSKILL: 186
+
+-- Scepter Staff
+INSERT INTO `item_mods` VALUES (18590,355,187); -- ADDS_WEAPONSKILL: 187
+
 -- Pastoral Staff
 INSERT INTO `item_mods` VALUES (18591,23,4); -- ATT: 4
+
+-- Elder Staff
+INSERT INTO `item_mods` VALUES (18592,355,188); -- ADDS_WEAPONSKILL: 188
 
 -- Alkalurops
 INSERT INTO `item_mods` VALUES (18593,2,-10); -- HP: -10
@@ -38655,6 +38694,12 @@ INSERT INTO `item_mods` VALUES (18715,26,3); -- RACC: 3
 -- Marss Hexagun +1
 INSERT INTO `item_mods` VALUES (18716,26,5); -- RACC: 5
 
+-- Killer Bow
+INSERT INTO `item_mods` VALUES (18719,355,217); -- ADDS_WEAPONSKILL: 217
+
+-- Quicksilver
+INSERT INTO `item_mods` VALUES (18720,355,218); -- ADDS_WEAPONSKILL: 218
+
 -- Peiste Dart
 INSERT INTO `item_mods` VALUES (18726,8,1);  -- STR: 1
 INSERT INTO `item_mods` VALUES (18726,11,1); -- AGI: 1
@@ -38734,6 +38779,12 @@ INSERT INTO `item_mods` VALUES (18751,107,5); -- GUARD: 5
 INSERT INTO `item_mods` VALUES (18752,25,3);   -- ACC: 3
 INSERT INTO `item_mods` VALUES (18752,68,-10); -- EVA: -10
 INSERT INTO `item_mods` VALUES (18752,291,5);  -- COUNTER: 5
+
+-- Burning Fists
+INSERT INTO `item_mods` VALUES (18753,355,11); -- ADDS_WEAPONSKILL: 11
+
+-- Inferno Claws
+INSERT INTO `item_mods` VALUES (18754,355,12); -- ADDS_WEAPONSKILL: 12
 
 -- Noble Himantes
 INSERT INTO `item_mods` VALUES (18755,25,3); -- ACC: 3
@@ -39018,7 +39069,7 @@ INSERT INTO `item_mods` VALUES (18849,5,-31); -- MP: -31
 INSERT INTO `item_mods` VALUES (18849,10,6);  -- VIT: 6
 
 -- Werebuster
-INSERT INTO `item_mods` VALUES (18851,8,8); -- STR: 8
+INSERT INTO `item_mods` VALUES (18851,355,171); -- ADDS_WEAPONSKILL: 171
 
 -- Spirit Maul
 INSERT INTO `item_mods` VALUES (18853,13,2);   -- MND: 2
@@ -39262,6 +39313,9 @@ INSERT INTO `item_mods` VALUES (18915,238,5); -- LUMINION_KILLER: 5
 INSERT INTO `item_mods` VALUES (18916,3,5);   -- HPP: 5
 INSERT INTO `item_mods` VALUES (18916,13,10); -- MND: 10
 INSERT INTO `item_mods` VALUES (18916,14,10); -- CHR: 10
+
+-- Death Sickle
+INSERT INTO `item_mods` VALUES (18944,355,106); -- ADDS_WEAPONSKILL: 106
 
 -- Fourth Division Zaghnal
 INSERT INTO `item_mods` VALUES (18946,25,7);  -- ACC: 7
@@ -39878,6 +39932,9 @@ INSERT INTO `item_mods` VALUES (19099,355,188); -- ADDS_WEAPONSKILL: 188
 INSERT INTO `item_mods` VALUES (19100,2,16);  -- HP: 16
 INSERT INTO `item_mods` VALUES (19100,5,16);  -- MP: 16
 INSERT INTO `item_mods` VALUES (19100,248,2); -- CURSERES: 2
+
+-- Main Gauche
+INSERT INTO `item_mods` VALUES (19102,355,29); -- ADDS_WEAPONSKILL: 29
 
 -- Darksteel Jambiya
 INSERT INTO `item_mods` VALUES (19103,25,1); -- ACC: 1

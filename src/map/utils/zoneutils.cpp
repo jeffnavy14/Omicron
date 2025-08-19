@@ -27,18 +27,15 @@
 #include "campaign_system.h"
 #include "common/async.h"
 #include "common/logging.h"
-#include "common/timer.h"
 #include "conquest_system.h"
 #include "entities/mobentity.h"
 #include "entities/npcentity.h"
 #include "items/item_weapon.h"
 #include "lua/luautils.h"
 #include "map_networking.h"
-#include "map_server.h"
 #include "mob_modifier.h"
 #include "mob_spell_list.h"
 #include "mobutils.h"
-#include "packets/entity_update.h"
 #include "zone_instance.h"
 
 #include <algorithm>
