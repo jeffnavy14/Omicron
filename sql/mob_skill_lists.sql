@@ -1013,18 +1013,9 @@ INSERT INTO `mob_skill_lists` VALUES ('Spheroid',235,984);
 INSERT INTO `mob_skill_lists` VALUES ('Spider',236,810);
 INSERT INTO `mob_skill_lists` VALUES ('Spider',236,811);
 INSERT INTO `mob_skill_lists` VALUES ('Spider',236,812);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,990);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,991);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,992);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,993);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,994);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,995);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,996);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,997);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,998);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,999);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,1000);
-INSERT INTO `mob_skill_lists` VALUES ('Structure_Exoplate',237,1001);
+
+-- Spare ID: 237
+
 INSERT INTO `mob_skill_lists` VALUES ('Eldritch_Edge',238,397); -- Flurry of rage
 INSERT INTO `mob_skill_lists` VALUES ('Thunderclaw_Thuban',239,378); -- thunderbolt
 INSERT INTO `mob_skill_lists` VALUES ('Tauri',240,498);
@@ -4155,7 +4146,19 @@ INSERT INTO `mob_skill_lists` VALUES ('Vampyr_Jarl',2054,2112); -- Nocturnal Ser
 INSERT INTO `mob_skill_lists` VALUES ('Tenzen_Ranged_High',2055,1398); -- Tenzen Ranged Attack
 INSERT INTO `mob_skill_lists` VALUES ('Tenzen_Ranged_Low',2056,1400); -- Tenzen Ranged Attack
 
--- Next ID : 2057
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_1',2057,990);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_1',2057,991);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_1',2057,992);
+
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_2',2058,994);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_2',2058,995);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_2',2058,996);
+
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_3',2059,998);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_3',2059,999);
+INSERT INTO `mob_skill_lists` VALUES ('Exoplate_Phase_3',2059,1000);
+
+-- Next ID : 2060
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

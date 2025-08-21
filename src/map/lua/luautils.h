@@ -211,7 +211,7 @@ namespace luautils
     void PopulateIDLookupsByZone(std::optional<uint16> maybeZoneId = std::nullopt);
 
     void SendEntityVisualPacket(uint32 npcid, const char* command);
-    void InitInteractionGlobal();
+    void InitInteractionGlobal(const std::vector<uint16>& zoneIds);
     auto GetZone(uint16 zoneId) -> CZone*;
     auto GetItemByID(uint32 itemId) -> CItem*;
     auto GetNPCByID(uint32 npcid, sol::object const& instanceObj) -> CBaseEntity*;
@@ -414,7 +414,7 @@ namespace luautils
 
     uint32 GetMobRespawnTime(uint32 mobid);
     void   DisallowRespawn(uint32 mobid, bool allowRespawn);
-    void   UpdateNMSpawnPoint(uint32 mobid);
+    bool   UpdateNMSpawnPoint(uint32 mobid);
 
     std::string GetServerMessage(uint8 language);               // Get the message to be delivered to player on first zone in of a session
     auto        GetRecentFishers(uint16 minutes) -> sol::table; // returns a list of recently active fishers (that fished in the last specified minutes)

@@ -262,6 +262,7 @@ jobs:
             xi_map
             xi_search
             xi_world
+            xi_test
 
   Linux_ClangTidy18_64bit:
     needs: Sanity_Checks
@@ -354,6 +355,7 @@ jobs:
             xi_map.exe
             xi_search.exe
             xi_world.exe
+            xi_test.exe
 
   Windows_64bit_Release_Tracy_Modules:
     needs: Sanity_Checks
@@ -398,6 +400,7 @@ jobs:
             xi_map_tracy.exe
             xi_search.exe
             xi_world.exe
+            xi_test.exe
 
   MacOS_64bit:
     needs: Sanity_Checks

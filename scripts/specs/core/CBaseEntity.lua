@@ -3338,6 +3338,13 @@ end
 function CBaseEntity:checkDamageCap(damage)
 end
 
+---@nodiscard
+---@param damage integer
+---@param isPhysical boolean
+---@return integer
+function CBaseEntity:handleSevereDamage(damage, isPhysical)
+end
+
 ---@param arg0 integer? Optional Pet ID
 ---@return nil
 function CBaseEntity:spawnPet(arg0)
