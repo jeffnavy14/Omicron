@@ -4,8 +4,15 @@
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
+local ID = zones[xi.zone.MIDDLE_DELKFUTTS_TOWER]
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
+
+entity.phList =
+{
+    [ID.mob.OGYGOS + 1] = ID.mob.OGYGOS, -- -503 -127.715 24
+}
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 339)

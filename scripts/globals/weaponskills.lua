@@ -19,42 +19,6 @@ require('scripts/globals/combat/physical_utilities')
 xi = xi or {}
 xi.weaponskills = xi.weaponskills or {}
 
--- http://wiki.ffo.jp/html/1705.html
--- https://www.ffxiah.com/forum/topic/21497/stalwart-soul/ some anecdotal data that aligns with JP
--- https://www.bg-wiki.com/ffxi/Agwu%27s_Scythe Souleater Effect that goes beyond established cap, Stalwart Soul bonus being additive to trait
-local function souleaterBonus(attacker, wsParams)
-    if attacker:hasStatusEffect(xi.effect.SOULEATER) then
-        local souleaterEffect   = attacker:getMaxGearMod(xi.mod.SOULEATER_EFFECT) / 100
-        local souleaterEffectII = attacker:getMod(xi.mod.SOULEATER_EFFECT_II) / 100
-        local stalwartSoulBonus = 1 - attacker:getMod(xi.mod.STALWART_SOUL) / 100
-        local bonusDamage       = math.floor(attacker:getHP() * (0.1 + souleaterEffect + souleaterEffectII))
-
-        if bonusDamage >= 1 then
-            attacker:delHP(utils.stoneskin(attacker, bonusDamage * stalwartSoulBonus))
-
-            if attacker:getMainJob() ~= xi.job.DRK then
-                return math.floor(bonusDamage / 2)
-            end
-
-            return bonusDamage
-        end
-    end
-
-    return 0
-end
-
-local consumeManaBonus = function(attacker)
-    local bonus = 0
-
-    if attacker:hasStatusEffect(xi.effect.CONSUME_MANA) then
-        bonus = math.floor(attacker:getMP() / 10)
-        attacker:setMP(0)
-        attacker:delStatusEffect(xi.effect.CONSUME_MANA)
-    end
-
-    return bonus
-end
-
 local function shadowAbsorb(target)
     local targetShadows = target:getMod(xi.mod.UTSUSEMI)
     local shadowType    = xi.mod.UTSUSEMI
@@ -250,7 +214,7 @@ local function getSingleHitDamage(attacker, target, dmg, ftp, wsParams, calcPara
         calcParams.pdif = xi.combat.physical.calculateRangedPDIF(attacker, target, calcParams.skillType, atkMultiplier, criticalHit, applyLevelCorrection, ignoresDefense, ignoreDefMultiplier, true, 0)
     end
 
-    hitDamage = (dmg + consumeManaBonus(attacker)) * ftp * calcParams.pdif
+    hitDamage = (dmg + xi.combat.damage.consumeManaAddition(attacker)) * ftp * calcParams.pdif
 
     -- handle blocking and reduce the hit damage if needed
     if xi.combat.physical.isBlocked(target, attacker) then
@@ -289,7 +253,7 @@ local function modifyMeleeHitDamage(attacker, target, attackTbl, wsParams, rawDa
     adjustedDamage = adjustedDamage * xi.combat.damage.scarletDeliriumMultiplier(attacker)
 
     -- Souleater
-    adjustedDamage = adjustedDamage + souleaterBonus(attacker, wsParams)
+    adjustedDamage = adjustedDamage + xi.combat.damage.souleaterAddition(attacker)
 
     if adjustedDamage > 0 then
         adjustedDamage = adjustedDamage - target:getMod(xi.mod.PHALANX)
@@ -851,7 +815,7 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
         dmg = dmg * ftp
 
         -- Apply Consume Mana and Scarlet Delirium
-        -- dmg = dmg + consumeManaBonus(attacker
+        -- dmg = dmg + xi.combat.damage.consumeManaAddition(attacker)
         dmg = dmg * xi.combat.damage.scarletDeliriumMultiplier(attacker)
 
         -- Factor in "all hits" bonus damage mods

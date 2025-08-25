@@ -38,6 +38,7 @@ extern sol::state lua;
 
 #include "common/xi.h"
 
+#include "attack.h"
 #include "items/item_equipment.h"
 #include "spell.h"
 

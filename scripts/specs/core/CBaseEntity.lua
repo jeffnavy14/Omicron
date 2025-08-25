@@ -2852,8 +2852,26 @@ end
 function CBaseEntity:addStatusEffect(effect)
 end
 
--- NOTE: Currently this function allows for an optional last parameter at any position.  This is represented
+-- NOTE: TODO: Currently this function allows for an optional last parameter at any position.  This is represented
 -- in currently-used overloads, but should be standardized in the future and just pass 0-values.
+
+---@param effectID integer
+---@param effectIcon integer
+---@param power number
+---@param tick number
+---@param duration number
+---@param subType integer?
+---@param subPower integer?
+---@param tier integer?
+---@param effectFlag integer?
+---@param sourceType integer?
+---@param sourceTypeParam integer?
+---@param originID integer?
+---@param silent boolean?
+---@return boolean
+function CBaseEntity:addStatusEffectEx(effectID, effectIcon, power, tick, duration, subType, subPower, tier, effectFlag, sourceType, sourceTypeParam, originID, silent)
+end
+
 ---@param effectID integer
 ---@param effectIcon integer
 ---@param power number
@@ -3070,11 +3088,14 @@ end
 ---@param power integer
 ---@param tick integer
 ---@param duration integer
----@param arg6 integer?
----@param arg7 integer?
----@param arg8 integer?
+---@param subType integer
+---@param subPower integer
+---@param tier integer
+---@param sourceType integer
+---@param sourceTypeParam integer
+---@param originID integer
 ---@return boolean
-function CBaseEntity:addCorsairRoll(casterJob, bustDuration, effectID, power, tick, duration, arg6, arg7, arg8)
+function CBaseEntity:addCorsairRoll(casterJob, bustDuration, effectID, power, tick, duration, subType, subPower, tier, sourceType, sourceTypeParam, originID)
 end
 
 ---@nodiscard
@@ -3264,6 +3285,11 @@ end
 ---@nodiscard
 ---@return integer
 function CBaseEntity:getWeaponHitCount(offhand)
+end
+
+---@nodiscard
+---@return integer
+function CBaseEntity:addDamageFromMultipliers(damage, attackType, weaponSlot, allowProc)
 end
 
 ---@return nil

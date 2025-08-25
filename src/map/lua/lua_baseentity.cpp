@@ -13433,7 +13433,7 @@ bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
  *  Notes   : For instance, Chocobo status, Fireflights, Teleport
  ************************************************************************/
 
-bool CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va)
+auto CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va) -> bool
 {
     auto* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
     if (!PBattleEntity)
@@ -13460,10 +13460,13 @@ bool CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va)
     auto duration   = static_cast<uint32>(va[4].as<double>());
 
     // Optional
-    auto subType    = va[5].is<uint32>() ? va[5].as<uint32>() : 0;
-    auto subPower   = va[6].is<double>() ? static_cast<uint16>(va[6].as<double>()) : 0;
-    auto tier       = va[7].is<uint16>() ? va[7].as<uint16>() : 0;
-    auto effectFlag = va[8].is<uint32>() ? va[8].as<uint32>() : 0;
+    auto subType         = va[5].is<uint32>() ? va[5].as<uint32>() : 0;
+    auto subPower        = va[6].is<double>() ? static_cast<uint16>(va[6].as<double>()) : 0;
+    auto tier            = va[7].is<uint16>() ? va[7].as<uint16>() : 0;
+    auto effectFlag      = va[8].is<uint32>() ? va[8].as<uint32>() : 0;
+    auto sourceType      = va[9].is<uint16>() ? va[9].as<uint16>() : 0;
+    auto sourceTypeParam = va[10].is<uint32>() ? va[10].as<uint32>() : 0;
+    auto originID        = va[11].is<uint32>() ? va[11].as<uint32>() : 0;
 
     CStatusEffect* PEffect =
         new CStatusEffect(effectID,
@@ -13477,6 +13480,14 @@ bool CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va)
                           effectFlag); // Effect Flag (i.e in lua xi.effectFlag.AURA will make this an aura effect)
 
     auto addNotice = silent ? EffectNotice::Silent : EffectNotice::ShowMessage;
+
+    if (sourceType != EffectSourceType::SOURCE_NONE && sourceTypeParam > 0)
+    {
+        PEffect->SetSource(sourceType, sourceTypeParam);
+    }
+
+    // Set the originID. This is the original source of the effect(Usually an entity)
+    PEffect->SetOriginID(originID);
 
     return ((CBattleEntity*)m_PBaseEntity)->StatusEffectContainer->AddStatusEffect(PEffect, addNotice);
 }
@@ -14250,11 +14261,11 @@ bool CLuaBaseEntity::doRandomDeal(CLuaBaseEntity* PTarget)
 /************************************************************************
  *  Function: addCorsairRoll()
  *  Purpose : Adds the Corsair Roll to the Target's Status Effect Container
- *  Example : target:addCorsairRoll(caster:getMainJob(), caster:getMerit(xi.merit.BUST_DURATION), xi.effect.CHAOS_ROLL, effectpower, 0, duration, caster:getID(),
- *total, MOD_ATTP) Notes   : Returns true if success (Is range a factor?)
+ *  Example : target:addCorsairRoll(caster:getMainJob(), caster:getMerit(xi.merit.BUST_DURATION), xi.effect.CHAOS_ROLL, effectpower, 0, duration, subType(MOD ID),
+ * rollTotal, 0, sourceType, sourceTypeParam, originID) Notes   : Returns true if success (Is range a factor?)
  ************************************************************************/
 
-bool CLuaBaseEntity::addCorsairRoll(uint8 casterJob, uint8 bustDuration, uint16 effectID, uint16 power, uint32 tick, uint32 duration, sol::object const& arg6, sol::object const& arg7, sol::object const& arg8)
+auto CLuaBaseEntity::addCorsairRoll(sol::variadic_args va) -> bool
 {
     if (m_PBaseEntity->objtype == TYPE_NPC)
     {
@@ -14262,18 +14273,39 @@ bool CLuaBaseEntity::addCorsairRoll(uint8 casterJob, uint8 bustDuration, uint16 
         return false;
     }
 
-    CStatusEffect* PEffect = new CStatusEffect(static_cast<EFFECT>(effectID),                  // Effect ID
-                                               effectID,                                       // Effect Icon (Associated with ID)
-                                               power,                                          // Power
-                                               std::chrono::seconds(tick),                     // Tick
-                                               std::chrono::seconds(duration),                 // Duration
-                                               (arg6 != sol::lua_nil) ? arg6.as<uint32>() : 0, // SubType or 0
-                                               (arg7 != sol::lua_nil) ? arg7.as<uint16>() : 0, // SubPower or 0
-                                               (arg8 != sol::lua_nil) ? arg8.as<uint16>() : 0  // Tier or 0
+    if (va.size() < 12)
+    {
+        return false;
+    }
+
+    // Mandatory parameters
+    auto casterJob       = va[0].as<uint8>();
+    auto bustDuration    = va[1].as<uint8>();
+    auto effectID        = va[2].as<uint16>();
+    auto power           = static_cast<uint16>(va[3].as<double>());
+    auto tick            = static_cast<uint32>(va[4].as<double>());
+    auto duration        = static_cast<uint32>(va[5].as<double>());
+    auto subType         = va[6].is<uint32>() ? va[6].as<uint32>() : 0;
+    auto subPower        = va[7].is<double>() ? static_cast<uint16>(va[7].as<double>()) : 0;
+    auto tier            = va[8].is<uint16>() ? va[8].as<uint16>() : 0;
+    auto sourceType      = va[9].is<uint16>() ? va[9].as<uint16>() : 0;
+    auto sourceTypeParam = va[10].is<uint32>() ? va[10].as<uint32>() : 0;
+    auto originID        = va[11].is<uint32>() ? va[11].as<uint32>() : 0;
+
+    CStatusEffect* PEffect = new CStatusEffect(static_cast<EFFECT>(effectID),  // Effect ID
+                                               effectID,                       // Effect Icon (Associated with ID)
+                                               power,                          // Power (Mod power)
+                                               std::chrono::seconds(tick),     // Tick
+                                               std::chrono::seconds(duration), // Duration
+                                               subType,                        // SubType (Mod ID)
+                                               subPower,                       // SubPower (Roll #)
+                                               tier                            // Tier
     );
 
-    uint8 maxRolls = 2;
+    PEffect->SetSource(sourceType, sourceTypeParam);
+    PEffect->SetOriginID(originID);
 
+    uint8 maxRolls = 2;
     if (casterJob != JOB_COR)
     {
         maxRolls = 1;
@@ -15107,6 +15139,24 @@ uint16 CLuaBaseEntity::getWeaponHitCount(bool offhand)
     }
 
     return 0;
+}
+
+/************************************************************************
+ *  Function: addDamageFromMultipliers()
+ *  Purpose : Adds damage multipliers from relics, etc.
+ *  Example : damage = attacker:addDamageFromMultipliers(damage, physicalAttackType, slot, isFirstSwing)
+ ************************************************************************/
+
+uint32 CLuaBaseEntity::addDamageFromMultipliers(uint32 damage, PHYSICAL_ATTACK_TYPE attackType, uint8 weaponSlot, bool allowProc)
+{
+    if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
+    {
+        CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PChar->getEquip((SLOTTYPE)weaponSlot));
+
+        return attackutils::CheckForDamageMultiplier(PChar, PWeapon, damage, attackType, weaponSlot, allowProc);
+    }
+
+    return damage;
 }
 
 /************************************************************************
@@ -19970,6 +20020,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getRangedDmgRank", CLuaBaseEntity::getRangedDmgRank);
     SOL_REGISTER("getAmmoDmg", CLuaBaseEntity::getAmmoDmg);
     SOL_REGISTER("getWeaponHitCount", CLuaBaseEntity::getWeaponHitCount);
+    SOL_REGISTER("addDamageFromMultipliers", CLuaBaseEntity::addDamageFromMultipliers);
 
     SOL_REGISTER("removeAmmo", CLuaBaseEntity::removeAmmo);
 

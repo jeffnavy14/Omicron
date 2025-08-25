@@ -650,11 +650,13 @@ namespace zoneutils
                 luautils::OnEntityLoad(PMob);
             });
 
-            PZone->ForEachMob([](CMobEntity* PMob)
+            PZone->ForEachMob([&PZone](CMobEntity* PMob)
             {
                 mobutils::AddSqlModifiers(PMob);
 
                 luautils::OnMobInitialize(PMob);
+                PZone->FindPartyForMob(PMob);
+
                 luautils::ApplyMixins(PMob);
                 luautils::ApplyZoneMixins(PMob);
 

@@ -290,6 +290,7 @@ CInstance* CInstanceLoader::LoadInstance()
         m_PInstance->ForEachMob([&](CMobEntity* PMob)
         {
             luautils::OnMobInitialize(PMob);
+            m_PInstance->FindPartyForMob(PMob);
             luautils::ApplyMixins(PMob);
             ((CMobEntity*)PMob)->saveModifiers();
             ((CMobEntity*)PMob)->saveMobModifiers();

@@ -672,7 +672,7 @@ public:
 
     // Status Effects
     bool  addStatusEffect(sol::variadic_args va);
-    bool  addStatusEffectEx(sol::variadic_args va);
+    auto  addStatusEffectEx(sol::variadic_args va) -> bool;
     auto  getStatusEffect(uint16 StatusID, sol::object const& SubType, sol::object const& SourceType, sol::object const& SourceTypeParam) -> CStatusEffect*;
     auto  getStatusEffectBySource(uint16 StatusID, EffectSourceType SourceType, uint16 SourceTypeParam) -> CStatusEffect*;
     auto  getStatusEffects() -> sol::table;
@@ -706,8 +706,7 @@ public:
     void   fold();
     void   doWildCard(CLuaBaseEntity* PEntity, uint8 total);
     bool   doRandomDeal(CLuaBaseEntity* PTarget);
-    bool   addCorsairRoll(uint8 casterJob, uint8 bustDuration, uint16 effectID, uint16 power, uint32 tick, uint32 duration,
-                          sol::object const& arg6, sol::object const& arg7, sol::object const& arg8);
+    auto   addCorsairRoll(sol::variadic_args va) -> bool;
     bool   hasCorsairEffect();
     bool   hasBustEffect(uint16 id); // Checks to see if a character has a specified busted corsair roll
     uint8  numBustEffects();         // Gets the number of bust effects on the player
@@ -749,6 +748,7 @@ public:
     uint16 getRangedDmgRank();              // Get ranged weapond DMG rating used for calculating rank
     uint16 getAmmoDmg();                    // Get ammo DMG rating
     uint16 getWeaponHitCount(bool offhand); // Get PC weapon hit count (Occasionally Attacks N times weapons)
+    uint32 addDamageFromMultipliers(uint32 damage, PHYSICAL_ATTACK_TYPE attackType, uint8 weaponSlot, bool allowProc);
 
     void removeAmmo();
 

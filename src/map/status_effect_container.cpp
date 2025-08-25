@@ -1041,7 +1041,7 @@ bool CStatusEffectContainer::ApplyBardEffect(CStatusEffect* PStatusEffect, uint8
     return false;
 }
 
-bool CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, uint8 maxRolls, uint8 bustDuration)
+auto CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, uint8 maxRolls, uint8 bustDuration) -> bool
 {
     // Don't process if not a COR roll.
     if (!((PStatusEffect->GetStatusID() >= EFFECT_FIGHTERS_ROLL && PStatusEffect->GetStatusID() <= EFFECT_NATURALISTS_ROLL) ||
@@ -1050,20 +1050,26 @@ bool CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, ui
         return false;
     }
 
-    // if all match tier/id/effect then overwrite
+    // Effect Power    = Mod Power
+    // Effect SubID    = Mod ID
+    // Effect SubPower = Roll #
+    // Effect Tier     = Unused Currently (Previously used to store Mod ID)
 
-    // if tier/effect match then overwrite //but id doesn't, NO EFFECT
-    // if targ has <2 of your rolls on, then just apply
-    // if targ has 2 of your rolls, remove oldest one and apply this one.
+    // if all match roll #/id/effect then overwrite.
+
+    // If roll #/ effect match then overwrite, but id doesn't, NO EFFECT
+    // If targ has less than 2 of your rolls on, then just apply
+    // If targ already has 2 of your rolls, remove oldest one and apply this one.
 
     uint8          numOfEffects = 0;
     CStatusEffect* oldestRoll   = nullptr;
+
     for (auto&& PEffect : m_StatusEffectSet)
     {
         if ((PEffect->GetStatusID() >= EFFECT_FIGHTERS_ROLL && PEffect->GetStatusID() <= EFFECT_NATURALISTS_ROLL) ||
-            PEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL || PEffect->GetStatusID() == EFFECT_BUST) // is a cor effect
+            PEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL || PEffect->GetStatusID() == EFFECT_BUST) // is a COR effect
         {
-            if (PEffect->GetStatusID() == PStatusEffect->GetStatusID() && PEffect->GetSubID() == PStatusEffect->GetSubID() &&
+            if (PEffect->GetStatusID() == PStatusEffect->GetStatusID() && PEffect->GetSourceTypeParam() == PStatusEffect->GetSourceTypeParam() &&
                 PEffect->GetSubPower() < PStatusEffect->GetSubPower())
             { // same type, double up
                 if (PStatusEffect->GetSubPower() < 12)
@@ -1074,36 +1080,59 @@ bool CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, ui
                     AddStatusEffect(PStatusEffect, EffectNotice::Silent);
                     return true;
                 }
-                else
+                else // We rolled over 12 and busted.
                 {
-                    if (PEffect->GetSubID() == m_POwner->id)
+                    if (PEffect->GetSourceTypeParam() == m_POwner->id) // Check to see if this effect is from the initial caster.
                     {
-                        if (!CheckForElevenRoll())
+                        if (!CheckForElevenRoll()) // If caster has 11 roll active, do not gain the bust effect.
                         {
+                            // Pass Roll effect values into the Bust effect. Used to handle Bust debuffs in scripts/effects/bust.lua
                             timer::duration duration = 5min;
                             duration -= std::chrono::seconds(bustDuration);
-                            CStatusEffect* bustEffect = new CStatusEffect(EFFECT_BUST, EFFECT_BUST, PStatusEffect->GetPower(), 0s, duration,
-                                                                          PStatusEffect->GetTier(), PStatusEffect->GetStatusID());
+                            CStatusEffect* bustEffect = new CStatusEffect(EFFECT_BUST,                  // Effect ID
+                                                                          EFFECT_BUST,                  // Effect Icon
+                                                                          PStatusEffect->GetPower(),    // Effect Power (Mod Power)
+                                                                          0s,                           // Effect Tick
+                                                                          duration,                     // Effect Duration
+                                                                          PStatusEffect->GetSubID(),    // Effect SubType (Mod ID)
+                                                                          PStatusEffect->GetSubPower(), // Effect SubPower (Roll #)
+                                                                          PStatusEffect->GetTier());    // Effect Tier
+
+                            bustEffect->SetSource(PEffect->GetSourceType(), PEffect->GetSourceTypeParam());
+                            bustEffect->SetOriginID(PEffect->GetOriginID());
+
                             AddStatusEffect(bustEffect, EffectNotice::Silent);
                             DelStatusEffectSilent(EFFECT_DOUBLE_UP_CHANCE);
                         }
                     }
+                    // Everyone still loses the roll effect if the caster rolled 12+(Bust).
                     DelStatusEffectSilent(PStatusEffect->GetStatusID());
 
                     return true;
                 }
             }
-            if (PEffect->GetSubID() == PStatusEffect->GetSubID() || PEffect->GetStatusID() == EFFECT_BUST)
-            { // YOUR cor effect
-                numOfEffects++;
-                if (oldestRoll == nullptr)
+
+            // Handle Roll/Bust ordering
+            if (PEffect->GetSourceTypeParam() == PStatusEffect->GetSourceTypeParam() || PEffect->GetStatusID() == EFFECT_BUST)
+            {
+                // Increment if its a roll or a bust from yourself. Do not count busts when counting roll effects from others.
+                if (!(PEffect->GetStatusID() == EFFECT_BUST && PStatusEffect->GetSourceTypeParam() != m_POwner->id))
                 {
-                    oldestRoll = PEffect;
+                    numOfEffects++;
                 }
-                else if (PEffect->GetStartTime() + PEffect->GetDuration() <
-                         oldestRoll->GetStartTime() + oldestRoll->GetDuration())
+
+                // Only consider rolls(Not Busts) for oldest roll tracking.
+                if (PEffect->GetStatusID() != EFFECT_BUST)
                 {
-                    oldestRoll = PEffect;
+                    if (oldestRoll == nullptr)
+                    {
+                        oldestRoll = PEffect;
+                    }
+                    else if (PEffect->GetStartTime() + PEffect->GetDuration() <
+                             oldestRoll->GetStartTime() + oldestRoll->GetDuration())
+                    {
+                        oldestRoll = PEffect;
+                    }
                 }
             }
         }
@@ -1115,13 +1144,19 @@ bool CStatusEffectContainer::ApplyCorsairEffect(CStatusEffect* PStatusEffect, ui
         AddStatusEffect(PStatusEffect, EffectNotice::Silent);
         return true;
     }
-    else
+    else if (oldestRoll != nullptr)
     {
-        // i'm a liar, can overwrite rolls
+        // Overwrite the oldest roll
         PStatusEffect->SetEffectSlot(oldestRoll->GetEffectSlot());
         DelStatusEffect(oldestRoll->GetStatusID());
         AddStatusEffect(PStatusEffect);
         return true;
+    }
+    else
+    {
+        // Fallback: Shouldn't get here normally.
+        ShowWarning("CStatusEffectContainer::ApplyCorsairEffect reached fallback condition");
+        return false;
     }
 }
 
@@ -1132,7 +1167,7 @@ bool CStatusEffectContainer::HasCorsairEffect(uint32 charid)
         if ((PStatusEffect->GetStatusID() >= EFFECT_FIGHTERS_ROLL && PStatusEffect->GetStatusID() <= EFFECT_NATURALISTS_ROLL) ||
             PStatusEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL || PStatusEffect->GetStatusID() == EFFECT_BUST) // is a cor effect
         {
-            if (PStatusEffect->GetSubID() == charid || PStatusEffect->GetStatusID() == EFFECT_BUST)
+            if (PStatusEffect->GetSourceTypeParam() == charid || PStatusEffect->GetStatusID() == EFFECT_BUST)
             {
                 return true;
             }
@@ -1149,7 +1184,7 @@ void CStatusEffectContainer::Fold(uint32 charid)
         if ((PStatusEffect->GetStatusID() >= EFFECT_FIGHTERS_ROLL && PStatusEffect->GetStatusID() <= EFFECT_NATURALISTS_ROLL) ||
             PStatusEffect->GetStatusID() == EFFECT_RUNEISTS_ROLL || PStatusEffect->GetStatusID() == EFFECT_BUST) // is a cor effect
         {
-            if (PStatusEffect->GetSubID() == charid || PStatusEffect->GetStatusID() == EFFECT_BUST)
+            if (PStatusEffect->GetSourceTypeParam() == charid || PStatusEffect->GetStatusID() == EFFECT_BUST)
             {
                 if (oldestRoll == nullptr)
                 {
@@ -1357,7 +1392,7 @@ CStatusEffect* CStatusEffectContainer::StealStatusEffect(EFFECTFLAG flag, Effect
         // make a copy
         CStatusEffect* EffectCopy = new CStatusEffect(oldEffect->GetStatusID(), oldEffect->GetIcon(), oldEffect->GetPower(), oldEffect->GetTickTime(),
                                                       oldEffect->GetDuration(), oldEffect->GetSubID(), oldEffect->GetSubPower(), oldEffect->GetTier(),
-                                                      oldEffect->GetEffectFlags());
+                                                      oldEffect->GetEffectFlags(), oldEffect->GetSourceType(), oldEffect->GetSourceTypeParam(), oldEffect->GetOriginID());
 
         RemoveStatusEffect(oldEffect, notice);
 
@@ -1597,7 +1632,7 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
         effect != EFFECT_ENCHANTMENT &&                               // The effect is not an enchantment that has an effect source defined currently.
         effectSourceType != EffectSourceType::SOURCE_EQUIPPED_ITEM && // The source is not from an equipped item
         (effect != EFFECT_FOOD ||                                     // Exclude food effects with a sourceTypeParam > 0 (See condition below)
-        (effect == EFFECT_FOOD && effectSourceTypeParam == 0)))       // Food effects from FoV/Gov Books have a subType of 0 and are handled in the scripts/effects/food.lua
+         (effect == EFFECT_FOOD && effectSourceTypeParam == 0)))      // Food effects from FoV/Gov Books have a subType of 0 and are handled in the scripts/effects/food.lua
     {
         name.insert(0, "effects/");
         name.insert(name.size(), effects::EffectsParams[effect].Name);
