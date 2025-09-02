@@ -3251,6 +3251,12 @@ void CLuaBaseEntity::setPos(sol::variadic_args va)
             PChar->loc.boundary        = 0;
             PChar->m_moghouseID        = 0;
             PChar->requestedZoneChange = true;
+
+            // Edge case for !zone and cutscenes teleporting you
+            if (PChar->PPet)
+            {
+                PChar->setPetZoningInfo();
+            }
         }
         else if (PChar->status != STATUS_TYPE::DISAPPEAR)
         {
@@ -15166,7 +15172,7 @@ uint32 CLuaBaseEntity::addDamageFromMultipliers(uint32 damage, PHYSICAL_ATTACK_T
  *  Notes   : Ammo consumed is calculated in charentity.cpp and passed to battleutils
  ************************************************************************/
 
-void CLuaBaseEntity::removeAmmo()
+void CLuaBaseEntity::removeAmmo(uint8 ammoUsed)
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -15174,7 +15180,7 @@ void CLuaBaseEntity::removeAmmo()
         return;
     }
 
-    battleutils::RemoveAmmo(static_cast<CCharEntity*>(m_PBaseEntity));
+    battleutils::RemoveAmmo(static_cast<CCharEntity*>(m_PBaseEntity), ammoUsed);
 }
 
 /************************************************************************

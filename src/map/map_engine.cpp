@@ -96,19 +96,12 @@ std::unique_ptr<SqlConnection>  _sql;
 extern std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 
 MapEngine::MapEngine(asio::io_context& io_context, MapConfig& config)
-: mapStatistics_(std::make_unique<MapStatistics>())
-, networking_(std::make_unique<MapNetworking>(*mapStatistics_, config, io_context))
+: ioContext_(io_context)
+, mapStatistics_(std::make_unique<MapStatistics>())
+, networking_(std::make_unique<MapNetworking>(*mapStatistics_, config, ioContext_))
 , engineConfig_(config)
 {
     do_init();
-
-    // Queue the first game loop iteration
-    // clang-format off
-    asio::post(io_context, [&]()
-    {
-        gameLoop(io_context);
-    });
-    // clang-format on
 }
 
 MapEngine::~MapEngine()
@@ -163,7 +156,7 @@ void MapEngine::prepareWatchdog()
     // clang-format on
 }
 
-void MapEngine::gameLoop(asio::io_context& io_context)
+void MapEngine::gameLoop()
 {
     timer::duration tasksDuration;
     timer::duration networkDuration;
@@ -205,14 +198,6 @@ void MapEngine::gameLoop(asio::io_context& io_context)
     {
         RATE_LIMIT(15s, ShowWarningFmt("Main loop is running {}ms behind, performance is degraded!", -timer::count_milliseconds(tickDiffTime)));
     }
-
-    // Requeue loop
-    // clang-format off
-    asio::post(io_context, [&]()
-    {
-        gameLoop(io_context);
-    });
-    // clang-format on
 }
 
 void MapEngine::do_init()
