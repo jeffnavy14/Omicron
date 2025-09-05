@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -28,6 +28,7 @@
 #include "ai/states/inactive_state.h"
 #include "ai/states/magic_state.h"
 #include "ai/states/weaponskill_state.h"
+#include "battlefield.h"
 #include "common/utils.h"
 #include "enmity_container.h"
 #include "entities/mobentity.h"
@@ -459,9 +460,21 @@ auto CMobController::TryCastSpell() -> bool
 
     // Find random spell from list
     std::optional<SpellID> chosenSpellId;
-    if (m_firstSpell)
+    if (!PMob->PAI->IsEngaged())
     {
-        // mobs first spell, should be aggro spell
+        if (PMob->SpellContainer->HasBuffSpells())
+        {
+            chosenSpellId = PMob->SpellContainer->GetBuffSpell();
+        }
+        else
+        {
+            // is this even possible to have a valid target?
+            chosenSpellId = PMob->SpellContainer->GetSpell();
+        }
+    }
+    else if (m_firstSpell)
+    {
+        // mobs first combat spell, should be aggro spell
         chosenSpellId = PMob->SpellContainer->GetAggroSpell();
         m_firstSpell  = false;
     }
@@ -768,7 +781,7 @@ void CMobController::Move()
                             for (auto PSpawnedMob : static_cast<CCharEntity*>(PTarget)->SpawnMOBList)
                             {
                                 if (PSpawnedMob.second != PMob && !PSpawnedMob.second->PAI->PathFind->IsFollowingPath() &&
-                                    distance(PSpawnedMob.second->loc.p, PMob->loc.p) < 1.f)
+                                    distance(PSpawnedMob.second->loc.p, PMob->loc.p) < 1.0f)
                                 {
                                     auto angle = worldAngle(PMob->loc.p, PTarget->loc.p) + 64;
 
@@ -1010,21 +1023,20 @@ void CMobController::DoRoamTick(timer::time_point tick)
                 {
                     // I spawned a pet
                 }
-                else if (PMob->GetMJob() == JOB_SMN && CanCastSpells() && PMob->SpellContainer->HasBuffSpells() && m_Tick >= m_nextMagicTime)
+                else if (
+                    (!PMob->PBattlefield || PMob->PBattlefield->GetStatus() != BATTLEFIELD_STATUS_OPEN) &&
+                    PMob->GetMJob() == JOB_SMN && CanCastSpells() &&
+                    PMob->SpellContainer->HasBuffSpells() && m_Tick >= m_nextMagicTime)
                 {
                     // summon pet
-                    if (const auto spellID = PMob->SpellContainer->GetBuffSpell())
-                    {
-                        CastSpell(spellID.value());
-                    }
+                    // - initial summoner-mob pets in battlefields will happen via battlefield.lua, so the first player sees the action
+                    // - Once battlefield is locked, behavior is back to normal with no rng added to pet summoning
+                    TryCastSpell();
                 }
                 else if (CanCastSpells() && xirand::GetRandomNumber(10) < 3 && PMob->SpellContainer->HasBuffSpells())
                 {
                     // cast buff
-                    if (const auto spellID = PMob->SpellContainer->GetBuffSpell())
-                    {
-                        CastSpell(spellID.value());
-                    }
+                    TryCastSpell();
                 }
                 else if (PMob->m_roamFlags & ROAMFLAG_SCRIPTED)
                 {
@@ -1189,8 +1201,9 @@ auto CMobController::Disengage() -> bool
     PMob->SetCallForHelpFlag(false);
     PMob->animation = ANIMATION_NONE;
     // https://www.bluegartr.com/threads/108198-Random-Facts-Thread-Traits-and-Stats-(Player-and-Monster)?p=5670209&viewfull=1#post5670209
-    PMob->m_THLvl = 0;
-    m_mobHealTime = m_Tick;
+    PMob->m_THLvl          = 0;
+    PMob->m_GilfinderLevel = 0; // Assumed to work like TH
+    m_mobHealTime          = m_Tick;
     return CController::Disengage();
 }
 

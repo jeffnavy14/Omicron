@@ -26,7 +26,7 @@ xi.mobSkill =
     VENOM_SPRAY_1            =  277,
     PIT_AMBUSH_1             =  278,
     MANDIBULAR_BITE_1        =  279,
-
+    SUBSTITUTE               =  307,
     FROGKICK_1               =  308,
     SPORE_1                  =  309,
     QUEASYSHROOM_1           =  310,
@@ -228,6 +228,8 @@ xi.mobSkill =
     GOSPEL_OF_THE_LOST       = 2145,
     VOID_OF_REPENTANCE       = 2146,
     DIVINE_JUDGMENT          = 2147,
+
+    PEDAL_PIROUETTE          = 2210,
 
     HELL_SCISSORS            = 2221,
 

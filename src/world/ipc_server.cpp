@@ -26,7 +26,6 @@
 #include "character_cache.h"
 #include "colonization_system.h"
 #include "conquest_system.h"
-#include "world_server.h"
 
 #include <concurrentqueue.h>
 #include <memory>
@@ -42,7 +41,7 @@ namespace
     }
 } // namespace
 
-IPCServer::IPCServer(WorldServer& worldServer)
+IPCServer::IPCServer(WorldEngine& worldServer)
 : worldServer_(worldServer)
 , zmqRouterWrapper_(getZMQEndpointString())
 {
@@ -384,13 +383,17 @@ void IPCServer::handleMessage_EmptyStruct(const IPP& ipp, const ipc::EmptyStruct
     ShowWarningFmt("Received EmptyStruct message from {} - this is probably a bug", ipp.toString());
 }
 
-void IPCServer::handleMessage_CharLogin(const IPP& ipp, const ipc::CharLogin& message)
+void IPCServer::handleMessage_AccountLogin(const IPP& ipp, const ipc::AccountLogin& message)
 {
     TracyZoneScoped;
 
-    DebugIPCFmt("Received CharLogin message from {} for account {} char {}", ipp.toString(), message.accountId, message.charId);
+    DebugIPCFmt("Received AccountLogin message from {} for account {}", ipp.toString(), message.accountId);
 
-    // NOTE: Originally a NO-OP
+    for (const auto& zoneIIP : getIPPsForAllZones())
+    {
+        DebugIPCFmt("Message: -> rerouting to all zones on {}", ipp.toString());
+        sendMessage(zoneIIP, message);
+    }
 }
 
 void IPCServer::handleMessage_CharZone(const IPP& ipp, const ipc::CharZone& message)

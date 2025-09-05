@@ -125,10 +125,8 @@ CZoneEntities::~CZoneEntities()
         destroy(npc.second);
     }
 
-    for (auto character : m_charList)
-    {
-        destroy(character.second);
-    }
+    // destroying PChars in m_charList is handled via map_session (auto generated) destructor on cleanup.
+    m_charList.clear(); // Remove elements, do not call destructor.
 
     for (auto transport : m_TransportList)
     {
@@ -246,7 +244,6 @@ void CZoneEntities::InsertMOB(CBaseEntity* PMob)
     {
         PMob->loc.zone = m_zone;
 
-        FindPartyForMob(PMob);
         m_mobList[PMob->targid] = PMob;
 
         TryAddToNearbySpawnLists(PMob);
@@ -368,7 +365,7 @@ void CZoneEntities::FindPartyForMob(CBaseEntity* PEntity)
 
             int16 sublink = PMob->getMobMod(MOBMOD_SUBLINK);
 
-            if (PCurrentMob->allegiance == PMob->allegiance &&
+            if (PCurrentMob->PParty && PCurrentMob->allegiance == PMob->allegiance &&
                 (forceLink || PCurrentMob->m_Family == PMob->m_Family || (sublink && sublink == PCurrentMob->getMobMod(MOBMOD_SUBLINK))))
             {
                 if (PCurrentMob->PMaster == nullptr || PCurrentMob->PMaster->objtype == TYPE_MOB)

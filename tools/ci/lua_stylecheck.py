@@ -25,6 +25,7 @@ import sys
 # [["deprecated func", "suggested replacement"], ...]
 deprecated_functions = [
     ["table.getn", "#t"],
+    ["os.time", "GetSystemTime"],
 ]
 
 deprecated_requires = [
@@ -349,6 +350,12 @@ class LuaStyleCheck:
             if len(paramList) != 2:
                 self.error(f"math.random() calls should have upper and lower bounds ({randString.group(0)}).")
 
+    def check_getpool_magic_number(self, line):
+        """Detects usage of :getPool() with any conditional operator and an integer, and triggers an error."""
+        match = re.search(r":getPool\(\)\s*(==|~=|<=|>=|<|>)\s*\d+", line)
+        if match:
+            self.error(":getPool() compared to integer literal (magic number) using a conditional operator is not allowed.")
+
     def run_style_check(self):
         if self.filename is None:
             print("ERROR: No filename provided to LuaStyleCheck class.")
@@ -398,6 +405,7 @@ class LuaStyleCheck:
                 # Checks that apply to all lines
                 self.check_table_formatting(code_line)
                 self.check_parameter_padding(code_line)
+                self.check_getpool_magic_number(code_line)
 
                 # If this is a spec file, allow for uppercase definitions
                 if "/specs/" not in self.filename:
@@ -512,7 +520,7 @@ elif target == 'scripts':
         total_errors += LuaStyleCheck(filename).errcount
 elif target == 'test':
     total_errors = LuaStyleCheck('tools/ci/tests/stylecheck.lua', show_errors = False).errcount
-    expected_errors = 82
+    expected_errors = 83
 else:
     total_errors = LuaStyleCheck(target).errcount
 

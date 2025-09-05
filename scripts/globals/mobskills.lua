@@ -496,6 +496,7 @@ xi.mobskills.mobFinalAdjustments = function(dmg, mob, skill, target, attackType,
         local element = utils.clamp(damageType - 5, xi.element.NONE, xi.element.DARK) -- Transform damage type to element
         dmg = math.floor(dmg * xi.spells.damage.calculateTMDA(target, element))
         dmg = math.floor(dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, element))
+        dmg = math.floor(target:handleSevereDamage(dmg, false))
     elseif attackType == xi.attackType.BREATH then
         dmg = target:breathDmgTaken(dmg)
     elseif attackType == xi.attackType.RANGED then
@@ -695,40 +696,4 @@ xi.mobskills.calculateDuration = function(tp, minimum, maximum)
     end
 
     return minimum + (maximum - minimum) * ((tp - 1000) / 1000)
-end
-
--- adjusts the messages for aoe mobskills to match what secondary targets should have
-xi.mobskills.jugPetAdjustMessage = function(target, pet, petskill, owner, action)
-    switch (petskill:getMsg()) : caseof
-    {
-        [xi.msg.basic.SKILL_GAIN_EFFECT] = function(x)
-            if target:getID() ~= action:getPrimaryTargetID() then
-                petskill:setMsg(xi.msg.basic.JA_GAIN_EFFECT)
-            end
-        end,
-
-        [xi.msg.basic.SELF_HEAL] = function(x)
-            if target:getID() ~= action:getPrimaryTargetID() then
-                petskill:setMsg(xi.msg.basic.AOE_HP_RECOVERY)
-            end
-        end,
-
-        [xi.msg.basic.SKILL_MISS] = function(x)
-            if target:getID() ~= action:getPrimaryTargetID() then
-                petskill:setMsg(xi.msg.basic.EVADES)
-            end
-        end,
-
-        [xi.msg.basic.DAMAGE] = function(x)
-            if target:getID() ~= action:getPrimaryTargetID() then
-                petskill:setMsg(xi.msg.basic.DAMAGE_SECONDARY)
-            end
-        end,
-
-        [xi.msg.basic.SKILL_ENFEEB_IS] = function(x)
-            if target:getID() ~= action:getPrimaryTargetID() then
-                petskill:setMsg(xi.msg.basic.IS_EFFECT)
-            end
-        end,
-    }
 end

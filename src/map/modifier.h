@@ -527,6 +527,7 @@ enum class Mod
     TANDEM_STRIKE_POWER          = 271,  // Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
     TANDEM_BLOW_POWER            = 272,  // Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
     ENHANCES_MONSTER_CORRELATION = 1155, // Grants your pet acc +X and attp +X% against a weaker opposing ecosystem. Typically applied to pet, not owner (item_mods_pet.sql)
+    ENHANCES_SPUR                = 1157, // Increases Store TP bonus by the mod amount when using job ability Spur
 
     // Bard
     MINNE_EFFECT           = 433,  //
@@ -732,24 +733,25 @@ enum class Mod
     STEP_TP_CONSUMED         = 1077, // Modifies the amount of TP consumed when using steps
 
     // Scholar
-    BLACK_MAGIC_COST         = 393, // MP cost for black magic (light/dark arts)
-    WHITE_MAGIC_COST         = 394, // MP cost for white magic (light/dark arts)
-    BLACK_MAGIC_CAST         = 395, // Cast time for black magic (light/dark arts)
-    WHITE_MAGIC_CAST         = 396, // Cast time for black magic (light/dark arts)
-    BLACK_MAGIC_RECAST       = 397, // Recast time for black magic (light/dark arts)
-    WHITE_MAGIC_RECAST       = 398, // Recast time for white magic (light/dark arts)
-    ALACRITY_CELERITY_EFFECT = 399, // Bonus for celerity/alacrity effect
-    LIGHT_ARTS_EFFECT        = 334, //
-    DARK_ARTS_EFFECT         = 335, //
-    LIGHT_ARTS_SKILL         = 336, //
-    DARK_ARTS_SKILL          = 337, //
-    LIGHT_ARTS_REGEN         = 338, // Regen bonus flat HP amount from Light Arts and Tabula Rasa
-    REGEN_DURATION           = 339, //
-    HELIX_EFFECT             = 478, //
-    HELIX_DURATION           = 477, //
-    STORMSURGE_EFFECT        = 400, //
-    SUBLIMATION_BONUS        = 401, //
-    GRIMOIRE_SPELLCASTING    = 489, // "Grimoire: Reduces spellcasting time" bonus
+    BLACK_MAGIC_COST         = 393,  // MP cost for black magic (light/dark arts)
+    WHITE_MAGIC_COST         = 394,  // MP cost for white magic (light/dark arts)
+    BLACK_MAGIC_CAST         = 395,  // Cast time for black magic (light/dark arts)
+    WHITE_MAGIC_CAST         = 396,  // Cast time for black magic (light/dark arts)
+    BLACK_MAGIC_RECAST       = 397,  // Recast time for black magic (light/dark arts)
+    WHITE_MAGIC_RECAST       = 398,  // Recast time for white magic (light/dark arts)
+    ALACRITY_CELERITY_EFFECT = 399,  // Bonus for celerity/alacrity effect
+    LIGHT_ARTS_EFFECT        = 334,  //
+    DARK_ARTS_EFFECT         = 335,  //
+    LIGHT_ARTS_SKILL         = 336,  //
+    DARK_ARTS_SKILL          = 337,  //
+    LIGHT_ARTS_REGEN         = 338,  // Regen bonus flat HP amount from Light Arts and Tabula Rasa
+    REGEN_DURATION           = 339,  //
+    HELIX_EFFECT             = 478,  //
+    HELIX_DURATION           = 477,  //
+    STORMSURGE_EFFECT        = 400,  //
+    SUBLIMATION_BONUS        = 401,  //
+    GRIMOIRE_SPELLCASTING    = 489,  // "Grimoire: Reduces spellcasting time" bonus
+    STRATAGEM_RECAST         = 1159, // Recast reduction in seconds
 
     // Geo
     CARDINAL_CHANT       = 959,
@@ -1096,12 +1098,14 @@ enum class Mod
     // TODO: These mods are not yet implemented.
     REWARD_RECAST = 1152, // TODO: Reward recast time reduction (seconds)
 
+    MOGHANCEMENT_GIL_BONUS_P = 1158, // Kill shot gil bonus (yes, really)
+
     // IF YOU ADD ANY NEW MODIFIER HERE, ADD IT IN scripts/enum/mod.lua ASWELL!
 
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1157 and onward
+    // SPARE IDs: 1160 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

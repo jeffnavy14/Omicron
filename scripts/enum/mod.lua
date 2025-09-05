@@ -524,6 +524,7 @@ xi.mod =
     TANDEM_STRIKE_POWER             = 271,  -- Grants a bonus to your and your pet's accuracy and magic accuracy when you and your pet are attacking the same target.
     TANDEM_BLOW_POWER               = 272,  -- Reduces amount of TP gained by enemies when striking them if you and your pet are attacking the same target.
     ENHANCES_MONSTER_CORRELATION    = 1155, -- Grants acc +X and attp +X% against a weaker opposing ecosystem. Typically applied to pet, not owner (item_mods_pet.sql)
+    ENHANCES_SPUR                   = 1157, -- Increases Store TP bonus by the mod amount when using job ability Spur
 
     -- Samurai
     SENGIKORI_SC_DMG_DEBUFF         = 1088, -- % Increase to closing skillchain damage. Applied to defender.
@@ -673,6 +674,7 @@ xi.mod =
     ACC_COLLAB_EFFECT               = 884,  -- Increases amount of enmity transferred
     HIDE_DURATION                   = 885,  -- Hide duration increase (percentage based
     GILFINDER                       = 897,  -- Gil % increase
+    MOGHANCEMENT_GIL_BONUS_P        = 1158, -- Kill shot gil bonus (yes, really)
     REVERSE_FLOURISH_EFFECT         = 836,  -- Reverse Flourish effect in tenths of squared term multiplier
     SENTINEL_EFFECT                 = 837,  -- Sentinel effect in percents
     REGEN_MULTIPLIER                = 838,  -- Regen base multiplier
@@ -1040,6 +1042,7 @@ xi.mod =
     BLUE_JOB_TRAIT_BONUS    = 1058, -- TODO: Increases job traits gained from equipped blue magic (percent)
     BLUE_MAGIC_EFFECT       = 1059, -- TODO: Bonus to Attribute Value of spell (percent)
     QUICK_DRAW_RECAST       = 1060, -- Quick Draw Charge Reduction (seconds)
+    STRATAGEM_RECAST        = 1159, -- Recast reduction in seconds
 
     DIG_BYPASS_FATIGUE      = 1074, -- Chocobo digging modifier found in "Blue Race Silks". Modifier works as a direct percent.
     DIG_RARE_ABILITY        = 1133, -- Chocobo digging modifier found in "Black Chocobo Suit" and "Denim Pants +1".
