@@ -246,6 +246,7 @@ xi.mob.additionalEffect =
     WEIGHT     = 22,
     ENAMNESIA  = 23,
     DISPEL     = 24,
+    BIND       = 25,
 }
 xi.mob.ae = xi.mob.additionalEffect
 
@@ -562,6 +563,20 @@ local additionalEffects =
         applyEffect = false,
         power       = 1,
     },
+
+    [xi.mob.ae.BIND] =
+    {
+        chance      = 10,
+        ele         = xi.element.ICE,
+        sub         = xi.subEffect.DISPEL, -- TODO
+        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff         = xi.effect.BIND,
+        power       = 1,
+        duration    = 30,
+        minDuration = 1,
+        maxDuration = 90,
+    },
 }
 
 --[[
@@ -744,3 +759,173 @@ xi.mob.difficulty =
     MAX                  = 8,
 }
 xi.mob.diff = xi.mob.difficulty
+
+-----------------------------------
+-- Centralized function for calling one or more mob "pets"
+-- It may be helpful to think of mobs with multiple as having "helpers" rather than explicitly pets
+-- Since this is a looser definition than an explicit `->PMaster` and `->PPet` relationship that exists:
+-- - some of these "pets" can have real pets of their own
+-- - some mobs can have multiple "pets"
+-- TODO make this function better handle real pets vs "helpers that spawn while the owner is fighting, but only exist in the context of the owner"
+--      doing so will reduce the number of listeners required to behave as we need
+-----------------------------------
+
+xi.mob.callPets = function(mob, petIds, params)
+    params = params or {}
+    -- params table:
+    --      params.dieWithOwner: will kill pets if owner dies
+    --      params.noAnimation:  no animation packet from owner when calling pet
+    --      params.inactiveTime: how long for the call pet to take (owner will be inactive during period)
+    --          this implies using summoner start/stop entity animation packet (which most mobs use when calling either pets or additional helpers)
+    -- if inactiveTime is zero, the following will determine an action packet to signal the mob is calling a pet
+    --      params.callPetJob will map to a particular mobskill action packet
+    --      will use a generic 2-hour action packet if callPetJob isn't specified
+    --          optionally you can override particular action packet params with params.action.X (see below)
+    -- NOTE these are not arbitrary choices, but multiple options to emulate retail behavior for any particular owner of pets/helpers
+    if xi.combat.behavior.isEntityBusy(mob) then
+        return false
+    end
+
+    -- make sure at least one pet is available to summon
+    if type(petIds) == 'number' then
+        petIds = { petIds }
+    end
+
+    local canSummonPets = false
+    for _, petId in ipairs(petIds) do
+        local petToSummon = GetMobByID(petId)
+        if
+            petToSummon and
+            not petToSummon:isSpawned()
+        then
+            canSummonPets = true
+        end
+    end
+
+    if not canSummonPets then
+        return false
+    end
+
+    -- don't allow times so short the animations will bug out
+    if params.inactiveTime == nil or params.inactiveTime < 1000 then
+        params.inactiveTime = 0
+    end
+
+    local actionParams = nil
+    if params.inactiveTime == 0 and not params.action then
+        -- job based action packet
+        switch (params.callPetJob) : caseof
+        {
+            [xi.job.BST] = function(x)
+                -- inject "<mob> uses Call Beast"
+                actionParams =
+                {
+                    finishCategory = 11,
+                    animationID = 718,
+                    actionID = xi.mobSkill.CALL_BEAST,
+                    messageID = 101,
+                }
+            end,
+
+            [xi.job.DRG] = function(x)
+                -- inject "<mob> uses Call Wyvern"
+                actionParams =
+                {
+                    finishCategory = 11,
+                    animationID = 438,
+                    actionID = xi.mobSkill.CALL_WYVERN,
+                    messageID = 101,
+                }
+            end,
+        }
+    end
+
+    params.action = params.action or {}
+    if not actionParams then
+    -- Generic 2-hour animation with no message or options from params table
+        actionParams =
+        {
+            finishCategory = params.action.finishCategory or 11,
+            actionID = params.action.messageID or 307,
+            animationID = params.action.animationID or 439,
+            messageID = params.action.messageID or 0,
+            param = params.action.param or 0,
+        }
+    end
+
+    -- function to execute when pets are actually called (there may be an inactiveTime)
+    local callPetFinish = function(mobArg)
+        if mobArg:isDead() then
+            return
+        end
+
+        -- inject action packet to indicate mob is summoning a pet
+        if not params.noAnimation then
+            if params.inactiveTime > 0 then
+                mobArg:entityAnimationPacket(xi.animationString.CAST_SUMMONER_STOP)
+            else
+                if actionParams then
+                    -- Generic 2-hour animation with no message
+                    mobArg:injectActionPacket(mobArg:getID(), actionParams.finishCategory, actionParams.animationID, 0, 0x18, actionParams.messageID, 0, actionParams.actionID, actionParams.param)
+                end
+            end
+        end
+
+        local spawnPos = mobArg:getSpawnPos()
+        local pos = mobArg:getPos()
+        for _, petId in ipairs(petIds) do
+            local petToSummon = GetMobByID(petId)
+            if
+                petToSummon and
+                not petToSummon:isSpawned()
+            then
+                -- spawn pet around owner
+                petToSummon:setSpawn(pos.x + math.random(-2, 2), pos.y, pos.z + math.random(-2, 2), pos.rot)
+                petToSummon:spawn()
+                -- set home to be the owner's home position
+                petToSummon:setSpawn(spawnPos.x, spawnPos.y, spawnPos.z, spawnPos.rot)
+
+                if params.dieWithOwner then
+                    local listenerName = fmt('OWNER_DEATH_{}', petId)
+                    mobArg:addListener('DEATH', listenerName, function(owner)
+                        local petToKill = GetMobByID(petId)
+                        if petToKill and petToKill:isSpawned() then
+                            petToKill:setHP(0)
+                        end
+
+                        owner:removeListener(listenerName)
+                    end)
+                end
+
+                -- make pet assist with a slight delay to allow spawn to complete so animations don't get bugged
+                local ownerID = mobArg:getID()
+                petToSummon:stun(500)
+                petToSummon:addListener('ROAM_TICK', 'ASSIST_OWNER', function(petArg)
+                    local owner = GetMobByID(ownerID)
+                    local newtarget = owner and owner:getTarget() or nil
+                    if newtarget then
+                        petArg:updateEnmity(newtarget)
+                    elseif not petArg:hasFollowTarget() then
+                        petArg:follow(owner, xi.followType.ROAM)
+                    end
+                end)
+            end
+        end
+    end
+
+    if params.inactiveTime > 0 then
+        -- put owner into inactive state until the timer fires
+        mob:stun(params.inactiveTime)
+
+        -- start call pet animation
+        if not params.noAnimation then
+            mob:entityAnimationPacket(xi.animationString.CAST_SUMMONER_START)
+        end
+    end
+
+    -- regardless, call the anonymous function from above in params.inactiveTime ms (possibly zero)
+    -- note that timers cause xi.combat.behavior.isEntityBusy to return true, and so does mob:stun(X)
+    mob:timer(params.inactiveTime, callPetFinish)
+
+    return true
+end

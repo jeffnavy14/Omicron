@@ -386,7 +386,7 @@ auto CMobController::MobSkill(int listId) -> bool
 
                 if (currentDistance <= PMobSkill->getDistance())
                 {
-                    return MobSkill(PActionTarget->targid, PMobSkill->getID());
+                    return MobSkill(PActionTarget->targid, PMobSkill->getID(), std::nullopt);
                 }
             }
         }
@@ -401,7 +401,6 @@ auto CMobController::TrySpecialSkill() -> bool
     // get my special skill
     CMobSkill*     PSpecialSkill  = battleutils::GetMobSkill(PMob->getMobMod(MOBMOD_SPECIAL_SKILL));
     CBattleEntity* PAbilityTarget = nullptr;
-    m_LastSpecialTime             = m_Tick;
 
     if (PSpecialSkill == nullptr)
     {
@@ -444,7 +443,11 @@ auto CMobController::TrySpecialSkill() -> bool
 
     if (luautils::OnMobSkillCheck(PAbilityTarget, PMob, PSpecialSkill) == 0)
     {
-        return MobSkill(PAbilityTarget->targid, PSpecialSkill->getID());
+        if (MobSkill(PAbilityTarget->targid, PSpecialSkill->getID(), std::nullopt))
+        {
+            m_LastSpecialTime = m_Tick;
+            return true;
+        }
     }
 
     return false;
@@ -562,8 +565,9 @@ void CMobController::CastSpell(SpellID spellid)
                         // randomly select a target
                         PCastTarget = PMob->PAI->TargetFind->m_targets[xirand::GetRandomNumber(PMob->PAI->TargetFind->m_targets.size())];
 
-                        // only target if are on same action
-                        if (PMob->PAI->IsEngaged() == PCastTarget->PAI->IsEngaged())
+                        // revert target to self if not on same action
+                        // TODO can engaged mobs buff idle mobs?
+                        if (PMob->PAI->IsEngaged() != PCastTarget->PAI->IsEngaged())
                         {
                             PCastTarget = PMob;
                         }
@@ -689,7 +693,7 @@ void CMobController::Move()
             if (const CMobSkill* teleportBegin = battleutils::GetMobSkill(PMob->getMobMod(MOBMOD_TELEPORT_START)))
             {
                 m_LastSpecialTime = m_Tick;
-                MobSkill(PMob->targid, teleportBegin->getID());
+                MobSkill(PMob->targid, teleportBegin->getID(), std::nullopt);
             }
         }
     }
@@ -747,7 +751,7 @@ void CMobController::Move()
 
                     if (teleportBegin && currentDistance <= teleportBegin->getDistance())
                     {
-                        MobSkill(PMob->targid, teleportBegin->getID());
+                        MobSkill(PMob->targid, teleportBegin->getID(), std::nullopt);
                         m_LastSpecialTime = m_Tick;
                         return;
                     }
@@ -1017,9 +1021,15 @@ void CMobController::DoRoamTick(timer::time_point tick)
             }
             else
             {
+                if (!(PMob->getMobMod(MOBMOD_NO_DESPAWN) != 0) && PMob->PMaster != nullptr && !PMob->PMaster->isAlive())
+                {
+                    // despawn pets if they are disengaged and master is dead
+                    PMob->PAI->Despawn();
+                    return;
+                }
+
                 // No longer including conditional for ROAMFLAG_AMBUSH now that using mixin to handle mob hiding
-                if (PMob->getMobMod(MOBMOD_SPECIAL_SKILL) != 0 &&
-                    m_Tick >= m_LastSpecialTime + std::chrono::milliseconds(PMob->getBigMobMod(MOBMOD_SPECIAL_COOL)) && TrySpecialSkill())
+                if (IsSpecialSkillReady(0) && TrySpecialSkill())
                 {
                     // I spawned a pet
                 }
@@ -1045,30 +1055,42 @@ void CMobController::DoRoamTick(timer::time_point tick)
                     luautils::OnMobRoamAction(PMob);
                     m_LastActionTime = m_Tick;
                 }
-                else if (PMob->CanRoam() && PMob->PAI->PathFind->RoamAround(PMob->m_SpawnPoint, PMob->GetRoamDistance(), static_cast<uint8>(PMob->getMobMod(MOBMOD_ROAM_TURNS)), PMob->m_roamFlags))
+                else if (PMob->CanRoam())
                 {
                     // TODO: #AIToScript (event probably)
-                    if (PMob->m_roamFlags & ROAMFLAG_WORM && !PMob->PAI->IsCurrentState<CMagicState>())
+                    if (PMob->m_roamFlags & ROAMFLAG_WORM && !PMob->IsNameHidden())
                     {
-                        // move down
-                        PMob->animationsub = 1;
-                        PMob->HideName(true);
-                        PMob->SetUntargetable(true);
+                        // don't reset m_LastActionTime until the roaming commences
+                        if (!PMob->PAI->IsCurrentState<CMagicState>())
+                        {
+                            // move down
+                            PMob->animationsub = 1;
+                            PMob->HideName(true);
+                            PMob->SetUntargetable(true);
 
-                        // don't move around until i'm fully in the ground
-                        Wait(2s);
+                            // don't move around until i'm fully in the ground
+                            // Transition underground takes 2s, allow extra time for any magic effect to finish
+                            Wait(3s);
+                        }
                     }
-                    else if ((PMob->m_roamFlags & ROAMFLAG_STEALTH))
+                    else if (PMob->PAI->PathFind->RoamAround(PMob->m_SpawnPoint, PMob->GetRoamDistance(), static_cast<uint8>(PMob->getMobMod(MOBMOD_ROAM_TURNS)), PMob->m_roamFlags))
                     {
-                        // hidden name
-                        PMob->HideName(true);
-                        PMob->SetUntargetable(true);
+                        if ((PMob->m_roamFlags & ROAMFLAG_STEALTH))
+                        {
+                            // hidden name
+                            PMob->HideName(true);
+                            PMob->SetUntargetable(true);
 
-                        PMob->updatemask |= UPDATE_HP;
+                            PMob->updatemask |= UPDATE_HP;
+                        }
+                        else
+                        {
+                            FollowRoamPath();
+                        }
                     }
                     else
                     {
-                        FollowRoamPath();
+                        m_LastActionTime = m_Tick;
                     }
                 }
                 else
@@ -1121,11 +1143,18 @@ void CMobController::FollowRoamPath()
             m_LastActionTime            = m_Tick - std::chrono::milliseconds(xirand::GetRandomNumber(roamRandomness));
 
             // i'm a worm pop back up
-            if (PMob->m_roamFlags & ROAMFLAG_WORM)
+            if (PMob->m_roamFlags & ROAMFLAG_WORM && PMob->PAI->IsUntargetable())
             {
-                PMob->animationsub = 0;
-                PMob->HideName(false);
+                // send a final position update before coming out of the ground to avoid a slight movement as it emerges
+                PMob->loc.zone->UpdateEntityPacket(PMob, ENTITY_UPDATE, UPDATE_POS);
+
+                // don't re-enter this block, but don't roam until emerging
                 PMob->SetUntargetable(false);
+                Wait(2s);
+                PMob->PAI->QueueAction(queueAction_t(2s, false, [](CBaseEntity* MobEntity)
+                                                     {
+                    MobEntity->animationsub = 0;
+                    MobEntity->HideName(false); }));
             }
 
             // face spawn rotation if I just moved back to spawn
@@ -1167,14 +1196,14 @@ void CMobController::Reset()
     ClearFollowTarget();
 }
 
-auto CMobController::MobSkill(const uint16 targid, uint16 wsid) -> bool
+auto CMobController::MobSkill(const uint16 targid, uint16 wsid, std::optional<timer::duration> castTimeOverride) -> bool
 {
     TracyZoneScoped;
     if (POwner)
     {
         FaceTarget(targid);
         PMob->PAI->EventHandler.triggerListener("WEAPONSKILL_BEFORE_USE", PMob, wsid);
-        return POwner->PAI->Internal_MobSkill(targid, wsid);
+        return POwner->PAI->Internal_MobSkill(targid, wsid, castTimeOverride);
     }
 
     return false;

@@ -2826,6 +2826,30 @@ namespace luautils
         }
     }
 
+    void OnSpellInterrupted(CBattleEntity* PCaster, CSpell* PSpell)
+    {
+        TracyZoneScoped;
+
+        if (PCaster->objtype != TYPE_MOB)
+        {
+            return;
+        }
+
+        sol::function onSpellInterrupted = getEntityCachedFunction(PCaster, "onSpellInterrupted");
+        if (!onSpellInterrupted.valid())
+        {
+            return;
+        }
+
+        auto result = onSpellInterrupted(PCaster, PSpell);
+        if (!result.valid())
+        {
+            sol::error err = result;
+            ShowError("luautils::onSpellInterrupted: %s", err.what());
+            ReportErrorToPlayer(PCaster, err.what());
+        }
+    }
+
     std::optional<SpellID> OnMobMagicPrepare(CBattleEntity* PCaster, CBattleEntity* PTarget, std::optional<SpellID> startingSpellId)
     {
         TracyZoneScoped;
@@ -3445,6 +3469,27 @@ namespace luautils
                 ShowError("luautils::onMobDeath: %s", err.what());
             }
         }
+    }
+
+    int32 OnMobSpawnCheck(CBaseEntity* PMob)
+    {
+        TracyZoneScoped;
+
+        auto onMobSpawnCheck = getEntityCachedFunction(PMob, "onMobSpawnCheck");
+        if (!onMobSpawnCheck.valid())
+        {
+            return 0;
+        }
+
+        auto result = onMobSpawnCheck(PMob);
+        if (!result.valid())
+        {
+            sol::error err = result;
+            ShowError("luautils::onMobSpawnCheck: %s", err.what());
+            return 0;
+        }
+
+        return result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0;
     }
 
     void OnMobSpawn(CBaseEntity* PMob)

@@ -60,6 +60,16 @@ xi.mod =
     LIGHT_RES_RANK                  = 198, -- Light Resistance Rank
     DARK_RES_RANK                   = 199, -- Dark Resistance Rank
 
+    -- Magic Evasion RANK versus status effects (resistance ranks)
+    PARALYZE_RES_RANK               = 1160,
+    BIND_RES_RANK                   = 1161,
+    SILENCE_RES_RANK                = 1162,
+    SLOW_RES_RANK                   = 1163,
+    POISON_RES_RANK                 = 1164,
+    LIGHT_SLEEP_RES_RANK            = 1165,
+    DARK_SLEEP_RES_RANK             = 1166,
+    BLIND_RES_RANK                  = 1167,
+
     ATT                             = 23,
     RATT                            = 24,
     ACC                             = 25,

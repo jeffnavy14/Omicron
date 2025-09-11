@@ -69,6 +69,16 @@ enum class Mod
     LIGHT_RES_RANK   = 198, // Light Resistance Rank
     DARK_RES_RANK    = 199, // Dark Resistance Rank
 
+    // Magic Evasion RANK versus status effects (resistance ranks)
+    PARALYZE_RES_RANK    = 1160,
+    BIND_RES_RANK        = 1161,
+    SILENCE_RES_RANK     = 1162,
+    SLOW_RES_RANK        = 1163,
+    POISON_RES_RANK      = 1164,
+    LIGHT_SLEEP_RES_RANK = 1165,
+    DARK_SLEEP_RES_RANK  = 1166,
+    BLIND_RES_RANK       = 1167,
+
     ATT  = 23, // Attack
     RATT = 24, // Ranged Attack
 
@@ -1105,7 +1115,7 @@ enum class Mod
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1160 and onward
+    // SPARE IDs: 1168 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

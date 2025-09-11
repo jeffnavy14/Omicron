@@ -55,7 +55,7 @@ g_mixins.families.aern = function(aernMob)
                 mobArg:setAutoAttackEnabled(true)
                 mobArg:setMobAbilityEnabled(true)
                 mobArg:setMobMod(xi.mobMod.NO_MOVE, 0)
-                mobArg:spawnPet()
+                xi.pet.spawnPet(mobArg)
 
                 -- Add death listener to pet when it spawns
                 mobArg:timer(1000, function(masterMob)

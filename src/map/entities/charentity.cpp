@@ -62,6 +62,8 @@
 #include "battlefield.h"
 #include "char_recast_container.h"
 #include "charentity.h"
+
+#include "blue_spell.h"
 #include "conquest_system.h"
 #include "enums/key_items.h"
 #include "ipc_client.h"
@@ -1888,7 +1890,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
                     }
                 }
 
-                PPet->PAI->MobSkill(PPetTarget, PAbility->getMobSkillID());
+                PPet->PAI->MobSkill(PPetTarget, PAbility->getMobSkillID(), std::nullopt);
             }
         }
         // TODO: make this generic enough to not require an if

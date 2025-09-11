@@ -339,6 +339,7 @@ namespace luautils
     int32 OnMagicCastingCheck(CBaseEntity* PChar, CBaseEntity* PTarget, CSpell* PSpell);
     int32 OnSpellCast(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);
     void  OnSpellPrecast(CBattleEntity* PCaster, CSpell* PSpell);
+    void  OnSpellInterrupted(CBattleEntity* PCaster, CSpell* PSpell);
     auto  OnMobMagicPrepare(CBattleEntity* PCaster, CBattleEntity* PTarget, std::optional<SpellID> startingSpellId) -> std::optional<SpellID>;
     void  OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);
     void  OnWeaponskillHit(CBattleEntity* PMob, CBaseEntity* PAttacker, uint16 PWeaponskill);
@@ -347,6 +348,7 @@ namespace luautils
     void OnMobInitialize(CBaseEntity* PMob);
     void ApplyMixins(CBaseEntity* PMob);
     void ApplyZoneMixins(CBaseEntity* PMob);
+    auto OnMobSpawnCheck(CBaseEntity* PMob) -> int32;
     void OnMobSpawn(CBaseEntity* PMob);
     void OnMobRoamAction(CBaseEntity* PMob); // triggers when event mob is ready for a custom roam action
     void OnMobRoam(CBaseEntity* PMob);
