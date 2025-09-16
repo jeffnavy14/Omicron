@@ -77,6 +77,8 @@ xi.mobSkill =
 
     BLOOD_WEAPON_1           =  695,
 
+    CHARM                    =  710,
+
     MEIKYO_SHISUI_1          =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1           =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
 
