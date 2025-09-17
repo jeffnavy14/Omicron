@@ -22,6 +22,10 @@ content:addEssentialMobs({ 'Evil_Oscar' })
 content.loot =
 {
     {
+        { item = xi.item.GIL, weight = 1000, amount = 24000 }, -- Gil
+    },
+
+    {
         { item = xi.item.SPOOL_OF_MALBORO_FIBER, weight = 1000 }, -- Spool Of Malboro Fiber
     },
 

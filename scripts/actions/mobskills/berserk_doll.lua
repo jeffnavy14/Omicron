@@ -1,6 +1,7 @@
 -----------------------------------
--- Gravity Field
--- Entangles all targets in an area of effect.
+-- Berserk
+-- Berserk Ability for Doll family
+-- Gives Warcry effect instead of Berserk
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,9 +11,8 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
 end
 
 mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SLOW, 4500, 0, math.random(240, 420)))
-
-    return xi.effect.SLOW
+    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.WARCRY, 33, 0, 120))
+    return xi.effect.WARCRY
 end
 
 return mobskillObject

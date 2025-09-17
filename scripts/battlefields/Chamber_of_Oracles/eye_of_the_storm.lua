@@ -22,6 +22,10 @@ content:addEssentialMobs({ 'Radiant_Wyvern', 'Blizzard_Wyvern', 'Lightning_Wyver
 content.loot =
 {
     {
+        { item = xi.item.GIL, weight = 1000, amount = 24000 }, -- Gil
+    },
+
+    {
         { item = xi.item.WYVERN_WING, weight = 1000 }, -- Wyvern Wing
     },
 

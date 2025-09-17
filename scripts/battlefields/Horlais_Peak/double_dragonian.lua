@@ -22,6 +22,10 @@ content:addEssentialMobs({ 'Dragonian_Berzerker', 'Dragonian_Minstrel' })
 content.loot =
 {
     {
+        { item = xi.item.GIL, weight = 1000, amount = 24000 }, -- Gil
+    },
+
+    {
         { item = xi.item.SUBDUER,        weight = 222 }, -- Subduer
         { item = xi.item.DISSECTOR,      weight = 302 }, -- Dissector
         { item = xi.item.DESTROYERS,     weight = 245 }, -- Destroyers

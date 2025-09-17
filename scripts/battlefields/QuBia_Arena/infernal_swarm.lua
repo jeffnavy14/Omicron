@@ -23,7 +23,12 @@ local content = Battlefield:new({
 
 content:addEssentialMobs({ 'Hell_Fly', 'Beelzebub' })
 
-content.loot = {
+content.loot =
+{
+    {
+        { item = xi.item.GIL, weight = 1000, amount = 24000 }, -- Gil
+    },
+
     {
         { item = xi.item.PHOENIX_FEATHER, weight = 1000 }, -- Phoenix Feather
     },

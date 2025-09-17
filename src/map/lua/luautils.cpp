@@ -3510,6 +3510,8 @@ namespace luautils
             return;
         }
 
+        PMob->PAI->EventHandler.triggerListener("PRESPAWN", PMob);
+
         const sol::function onMobSpawn = getEntityCachedFunction(PMob, "onMobSpawn");
         if (onMobSpawn.valid())
         {

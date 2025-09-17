@@ -14982,22 +14982,7 @@ uint16 CLuaBaseEntity::getWeaponDmg()
         return 0;
     }
 
-    uint16 weaponDamage = 0;
-
-    // TODO: Determine if trusts and player fellows use mob or player damage formula
-    if (m_PBaseEntity->objtype == TYPE_MOB ||
-        (m_PBaseEntity->objtype == TYPE_PET &&
-         static_cast<CPetEntity*>(m_PBaseEntity)->getPetType() != PET_TYPE::AUTOMATON))
-    {
-        auto* PMob   = static_cast<CMobEntity*>(m_PBaseEntity);
-        weaponDamage = mobutils::GetWeaponDamage(PMob, SLOT_MAIN);
-    }
-    else
-    {
-        weaponDamage = static_cast<CBattleEntity*>(m_PBaseEntity)->GetMainWeaponDmg();
-    }
-
-    return weaponDamage;
+    return static_cast<CBattleEntity*>(m_PBaseEntity)->GetMainWeaponDmg();
 }
 
 /************************************************************************

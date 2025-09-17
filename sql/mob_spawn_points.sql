@@ -59277,9 +59277,9 @@ INSERT INTO `mob_spawn_points` VALUES (17465405,0,'Lightning_Wyvern','Lightning 
 INSERT INTO `mob_spawn_points` VALUES (17465406,0,'Chaos_Wyvern','Chaos Wyvern',17,-6.000,-100.182,240.000,64);
 
 -- The Scarlet King (KS30)
-INSERT INTO `mob_spawn_points` VALUES (17465408,0,'Purson','Purson',18,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17465410,0,'Purson','Purson',18,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17465412,0,'Purson','Purson',18,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17465408,0,'Purson','Purson',18,-0.100,100.000,-238.000,68);
+INSERT INTO `mob_spawn_points` VALUES (17465410,0,'Purson','Purson',18,0.125,0.000,2.081,68);
+INSERT INTO `mob_spawn_points` VALUES (17465412,0,'Purson','Purson',18,0.155,-100.000,242.335,68);
 
 -- Roar! A Cat Burglar Bares Her Fangs (MKD10)
 INSERT INTO `mob_spawn_points` VALUES (17465414,0,'Nanaa_Mihgo','Nanaa Mihgo',19,0.0,100.325,-240.0,64);
