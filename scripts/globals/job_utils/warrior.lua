@@ -38,7 +38,15 @@ xi.job_utils.warrior.useAggressor = function(player, target, ability)
 end
 
 xi.job_utils.warrior.useBerserk = function(player, target, ability)
-    player:addStatusEffect(xi.effect.BERSERK, 25 + player:getMod(xi.mod.BERSERK_POTENCY), 0, 180 + player:getMod(xi.mod.BERSERK_DURATION))
+    -- Get bonus from WAR lvl as main Job
+    local warriorLevel = player:getMainJob() == xi.job.WAR and player:getMainLvl() or 0
+    local levelScale   = math.floor((warriorLevel - 40) / 10) * 2
+
+    -- Get Power and duration.
+    local power    = 25 + player:getMod(xi.mod.BERSERK_POTENCY) + utils.clamp(levelScale, 0, 10)
+    local duration = 180 + player:getMod(xi.mod.BERSERK_DURATION)
+
+    player:addStatusEffect(xi.effect.BERSERK, power, 0, duration)
 end
 
 xi.job_utils.warrior.useBloodRage = function(player, target, ability)
@@ -59,7 +67,15 @@ xi.job_utils.warrior.useBrazenRush = function(player, target, ability)
 end
 
 xi.job_utils.warrior.useDefender = function(player, target, ability)
-    player:addStatusEffect(xi.effect.DEFENDER, 1, 0, 180 + player:getMod(xi.mod.DEFENDER_DURATION))
+    -- Get bonus from WAR lvl as main Job
+    local warriorLevel = player:getMainJob() == xi.job.WAR and player:getMainLvl() or 0
+    local levelScale   = math.floor((warriorLevel - 40) / 10) * 2
+
+    -- Get Power and duration.
+    local power    = 25 + utils.clamp(levelScale, 0, 10)
+    local duration = 180 + player:getMod(xi.mod.DEFENDER_DURATION)
+
+    player:addStatusEffect(xi.effect.DEFENDER, power, 0, duration)
 end
 
 xi.job_utils.warrior.useMightyStrikes = function(player, target, ability)

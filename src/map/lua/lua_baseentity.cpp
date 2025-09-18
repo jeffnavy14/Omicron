@@ -192,8 +192,14 @@ CLuaBaseEntity::CLuaBaseEntity(CBaseEntity* PEntity)
  *  Notes   : Mainly used for showing retail text specific to an NPC
  ************************************************************************/
 
-void CLuaBaseEntity::showText(CLuaBaseEntity* entity, uint16 messageID, sol::object const& p0, sol::object const& p1, sol::object const& p2, sol::object const& p3)
+void CLuaBaseEntity::showText(CLuaBaseEntity* entity, uint16 messageID, sol::object const& p0, sol::object const& p1, sol::object const& p2, sol::object const& p3, sol::object const& p4, sol::object const& p5)
 {
+    if (!entity)
+    {
+        ShowError("null entity used on showText() function. Message ID (%i)", messageID);
+        return;
+    }
+
     CBaseEntity* PBaseEntity = entity->GetBaseEntity();
 
     if (PBaseEntity == nullptr)
@@ -202,7 +208,14 @@ void CLuaBaseEntity::showText(CLuaBaseEntity* entity, uint16 messageID, sol::obj
         return;
     }
 
-    if (PBaseEntity->objtype == TYPE_NPC)
+    uint32 param0   = (p0 != sol::lua_nil) ? p0.as<uint32>() : 0;
+    uint32 param1   = (p1 != sol::lua_nil) ? p1.as<uint32>() : 0;
+    uint32 param2   = (p2 != sol::lua_nil) ? p2.as<uint32>() : 0;
+    uint32 param3   = (p3 != sol::lua_nil) ? p3.as<uint32>() : 0;
+    bool   showName = (p4 != sol::lua_nil) ? p4.as<bool>() : false; // ShowName is false in CMessageSpecialPacket Constructor, so mimic the same default.
+    bool   turn     = (p5 != sol::lua_nil) ? p5.as<bool>() : true;  // Turn to player, default behavior is true
+
+    if (turn && PBaseEntity->objtype == TYPE_NPC)
     {
         PBaseEntity->m_TargID       = m_PBaseEntity->targid;
         PBaseEntity->loc.p.rotation = worldAngle(PBaseEntity->loc.p, m_PBaseEntity->loc.p);
@@ -210,18 +223,13 @@ void CLuaBaseEntity::showText(CLuaBaseEntity* entity, uint16 messageID, sol::obj
         PBaseEntity->loc.zone->UpdateEntityPacket(PBaseEntity, ENTITY_UPDATE, UPDATE_POS);
     }
 
-    uint32 param0 = (p0 != sol::lua_nil) ? p0.as<uint32>() : 0;
-    uint32 param1 = (p1 != sol::lua_nil) ? p1.as<uint32>() : 0;
-    uint32 param2 = (p2 != sol::lua_nil) ? p2.as<uint32>() : 0;
-    uint32 param3 = (p3 != sol::lua_nil) ? p3.as<uint32>() : 0;
-
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
-        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageSpecialPacket>(PBaseEntity, messageID, param0, param1, param2, param3);
+        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<CMessageSpecialPacket>(PBaseEntity, messageID, param0, param1, param2, param3, showName);
     }
     else
     {
-        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE, std::make_unique<CMessageSpecialPacket>(PBaseEntity, messageID, param0, param1, param3));
+        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE, std::make_unique<CMessageSpecialPacket>(PBaseEntity, messageID, param0, param1, param3, showName));
     }
 }
 

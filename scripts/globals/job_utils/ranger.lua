@@ -273,6 +273,12 @@ xi.job_utils.ranger.useBountyShot = function(player, target, ability, action)
     local playerTHLevel     = player:getMod(xi.mod.TREASURE_HUNTER)
     local newTHLevel        = 0
 
+    -- base animation was for gun, -1 = archery
+    -- Note: hume male's archery animation is bugged and looks like shadowbind
+    if player:getWeaponSkillType(xi.slot.RANGED) == xi.skill.ARCHERY then
+        action:setAnimation(target:getID(), action:getAnimation(target:getID()) - 1)
+    end
+
     player:removeAmmo(1) -- TODO: does this check recycle?
 
     action:speceffect(target:getID(), 0x01) -- functional, animation not correct without this

@@ -188,7 +188,7 @@ xi.job_utils.beastmaster.onUseAbilityTame = function(player, target, ability)
         return 0
     end
 
-    local resist = applyResistanceAbility(player, target, xi.element.NONE, xi.skill.NONE, player:getStat(xi.mod.INT) - target:getStat(xi.mod.INT))
+    local resist = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, 0, xi.element.NONE, xi.mod.INT, 0, 0)
 
     if resist <= 0.25 then
         ability:setMsg(xi.msg.basic.JA_MISS_2)
