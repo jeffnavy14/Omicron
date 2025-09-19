@@ -15891,9 +15891,9 @@ bool CLuaBaseEntity::hasJugPet()
 
     auto* PBattle = static_cast<CBattleEntity*>(m_PBaseEntity);
 
-    if (hasPet())
+    if (auto* PPet = dynamic_cast<CPetEntity*>(PBattle->PPet); PPet && PPet->status != STATUS_TYPE::DISAPPEAR)
     {
-        return static_cast<CPetEntity*>(PBattle->PPet)->getPetType() == PET_TYPE::JUG_PET;
+        return PPet->getPetType() == PET_TYPE::JUG_PET;
     }
 
     return false;
@@ -16236,13 +16236,13 @@ void CLuaBaseEntity::petRetreat()
 }
 
 /************************************************************************
- *  Function: familiar()
- *  Purpose : Increases the power of the entities pet
- *  Example : mob:familiar()
- *  Notes   :
+ *  Function: extendCharm()
+ *  Purpose : Increases the charm duration of the entity by a random number of seconds
+ *  Example : player:getPet():extendCharm(15, 30)
+ *  Notes   : Set min and max to the same value to remove rng
  ************************************************************************/
 
-void CLuaBaseEntity::familiar()
+void CLuaBaseEntity::extendCharm(uint16 minSeconds, uint16 maxSeconds)
 {
     auto* PBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
     if (!PBattle)
@@ -16251,10 +16251,7 @@ void CLuaBaseEntity::familiar()
         return;
     }
 
-    if (PBattle->PPet != nullptr)
-    {
-        petutils::Familiar(PBattle->PPet);
-    }
+    petutils::ExtendCharm(PBattle, minSeconds, maxSeconds);
 }
 
 /************************************************************************
@@ -20053,7 +20050,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("petAttack", CLuaBaseEntity::petAttack);
     SOL_REGISTER("petAbility", CLuaBaseEntity::petAbility);
     SOL_REGISTER("petRetreat", CLuaBaseEntity::petRetreat);
-    SOL_REGISTER("familiar", CLuaBaseEntity::familiar);
+    SOL_REGISTER("extendCharm", CLuaBaseEntity::extendCharm);
 
     SOL_REGISTER("addPetMod", CLuaBaseEntity::addPetMod);
     SOL_REGISTER("setPetMod", CLuaBaseEntity::setPetMod);
