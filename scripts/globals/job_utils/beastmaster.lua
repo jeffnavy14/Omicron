@@ -377,7 +377,7 @@ xi.job_utils.beastmaster.onUseAbilityReward = function(player, target, ability)
 
     pet:delStatusEffect(xi.effect.REGEN)
     pet:addStatusEffect(xi.effect.REGEN, regenAmount, 3, regenTime) -- 3 = tick, each 3 seconds.
-    player:removeAmmo()
+    player:removeAmmo(1)
 
     pet:updateEnmityFromCure(pet, totalHealing)
 

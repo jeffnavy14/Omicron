@@ -15165,9 +15165,10 @@ uint32 CLuaBaseEntity::addDamageFromMultipliers(uint32 damage, PHYSICAL_ATTACK_T
  *  Purpose : Expends one item in the ammo slot (arrow,bullet, etc)
  *  Example : player:removeAmmo()
  *  Notes   : Ammo consumed is calculated in charentity.cpp and passed to battleutils
+ *            Defaults to 1 if no argument is given
  ************************************************************************/
 
-void CLuaBaseEntity::removeAmmo(uint8 ammoUsed)
+void CLuaBaseEntity::removeAmmo(sol::object const& ammoUsed) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -15175,7 +15176,7 @@ void CLuaBaseEntity::removeAmmo(uint8 ammoUsed)
         return;
     }
 
-    battleutils::RemoveAmmo(static_cast<CCharEntity*>(m_PBaseEntity), ammoUsed);
+    battleutils::RemoveAmmo(static_cast<CCharEntity*>(m_PBaseEntity), ammoUsed.is<uint8>() ? ammoUsed.as<uint8>() : 1);
 }
 
 /************************************************************************

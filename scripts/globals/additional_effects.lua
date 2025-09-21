@@ -17,7 +17,6 @@
 -----------------------------------
 require('scripts/globals/teleports') -- For warp weapon proc.
 require('scripts/globals/magic') -- For resist functions
-require('scripts/globals/utils') -- For clamping function
 -----------------------------------
 xi = xi or {}
 xi.additionalEffect = xi.additionalEffect or {}

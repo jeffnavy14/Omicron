@@ -95,7 +95,7 @@ xi.job_utils.warrior.useTomahawk = function(player, target, ability)
     local duration = 30 + merits
 
     target:addStatusEffectEx(xi.effect.TOMAHAWK, 0, 25, 3, duration, 0, 0, 0)
-    player:removeAmmo()
+    player:removeAmmo(1)
 end
 
 xi.job_utils.warrior.useWarcry = function(player, target, ability)

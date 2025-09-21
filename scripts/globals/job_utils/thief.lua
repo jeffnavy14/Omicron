@@ -2,7 +2,6 @@
 -- Thief Job Utilities
 -----------------------------------
 require('scripts/globals/quests')
-require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
 xi.job_utils = xi.job_utils or {}

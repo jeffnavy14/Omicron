@@ -13,7 +13,6 @@
 require('scripts/globals/magicburst')
 require('scripts/globals/ability')
 require('scripts/globals/magic')
-require('scripts/globals/utils')
 require('scripts/globals/combat/physical_utilities')
 -----------------------------------
 xi = xi or {}
@@ -150,7 +149,7 @@ local function getSingleHitDamage(attacker, target, dmg, ftp, wsParams, calcPara
     local hitDamage            = 0
     local atkMultiplier        = xi.weaponskills.fTP(calcParams.tpUsed, wsParams.atkVaries)
     local ignoreDefMultiplier  = xi.weaponskills.fTP(calcParams.tpUsed, wsParams.ignoredDefense)
-    local applyLevelCorrection = xi.combat.levelCorrection.isLevelCorrectedZone(attacker)
+    local applyLevelCorrection = xi.data.levelCorrection.isLevelCorrectedZone(attacker)
     local ignoresDefense       = (wsParams.ignoredDefense ~= nil) -- if the table exists, it ignores defense
 
     -- local pdif = 0 Reminder for Future Implementation!
@@ -1134,9 +1133,9 @@ xi.weaponskills.handleWeaponskillEffect = function(actor, target, effectId, acti
     if
         damage > 0 and
         not target:hasStatusEffect(effectId) and
-        not xi.combat.statusEffect.isTargetImmune(target, effectId, actionElement) and
-        not xi.combat.statusEffect.isTargetResistant(actor, target, effectId) and
-        not xi.combat.statusEffect.isEffectNullified(target, effectId)
+        not xi.data.statusEffect.isTargetImmune(target, effectId, actionElement) and
+        not xi.data.statusEffect.isTargetResistant(actor, target, effectId) and
+        not xi.data.statusEffect.isEffectNullified(target, effectId)
     then
         target:addStatusEffect(effectId, power, 0, duration)
     end

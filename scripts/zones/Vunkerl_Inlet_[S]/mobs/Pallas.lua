@@ -33,33 +33,6 @@ entity.phList =
 entity.onMobSpawn = function(mob)
     -- Do not use call_beast
     mob:setMobMod(xi.mobMod.SPECIAL_SKILL, 0)
-
-    mob:addListener('WEAPONSKILL_STATE_EXIT', 'USE_FAMILIAR', function(mobArg, skillID)
-        if skillID == xi.mobSkill.FAMILIAR_1 then
-            for _, petId in ipairs(pets) do
-                local pet = GetMobByID(petId)
-                if
-                    pet and
-                    pet ~= mobArg:getPet() and -- base familiar mobskill buffs this one
-                    pet:isAlive()
-                then
-                    -- apply familiar buffs to other pets
-                    local rate = 10
-                    local basemaxhp = pet:getMaxHP() - pet:getMod(xi.mod.BASE_HP)
-                    local addedHP = basemaxhp * rate / 100
-                    pet:setMaxHP(basemaxhp + addedHP) -- BASE_HP is added back to generate modhp
-                    -- wakes up pets, as in retail
-                    pet:addHP(addedHP)
-                    pet:addMod(xi.mod.ATTP, rate)
-                    pet:addMod(xi.mod.ACC, rate)
-                    pet:addMod(xi.mod.EVA, rate)
-                    pet:addMod(xi.mod.DEFP, rate)
-
-                    -- TODO If slept, they will awaken when Pallas uses Familiar, and will resist sleep for the remainder of the fight.
-                end
-            end
-        end
-    end)
 end
 
 entity.onMobFight = function(mob, target)
@@ -82,6 +55,22 @@ entity.onMobFight = function(mob, target)
     if allPetsAlive then
         -- Summons another pet 60s after a pet dies when they're all alive
         mob:setLocalVar('petTimer', GetSystemTime() + 60)
+    end
+end
+
+entity.onMobWeaponSkill = function(target, mob, skill)
+    -- Manually apply Familiar to all pets except first one
+    if skill:getID() == xi.mobSkill.FAMILIAR_1 then
+        for _, petId in ipairs(pets) do
+            local pet = GetMobByID(petId)
+            if
+                pet and
+                pet ~= mob:getPet() and -- base familiar mobskill buffs this one
+                pet:isAlive()
+            then
+                xi.pet.applyFamiliarBuffs(mob, pet)
+            end
+        end
     end
 end
 

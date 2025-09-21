@@ -2,11 +2,9 @@
 -- Damage Spell Utilities
 -- Used for spells that deal direct damage. (Black, White, Dark and Ninjutsu)
 -----------------------------------
-require('scripts/globals/combat/element_tables')
 require('scripts/globals/combat/magic_hit_rate')
 require('scripts/globals/jobpoints')
 require('scripts/globals/magicburst')
-require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
@@ -466,7 +464,7 @@ xi.spells.damage.calculateElementalStaffBonus = function(caster, spellElement)
     local elementalStaffBonus = 1
 
     if spellElement > xi.element.NONE then
-        elementalStaffBonus = 1 + caster:getMod(xi.combat.element.getElementalStaffModifier(spellElement)) * 5 / 100
+        elementalStaffBonus = 1 + caster:getMod(xi.data.element.getElementalStaffModifier(spellElement)) * 5 / 100
     end
 
     return elementalStaffBonus
@@ -477,7 +475,7 @@ xi.spells.damage.calculateElementalAffinityBonus = function(caster, spellElement
     local affinityFactor = 1
 
     if spellElement > xi.element.NONE then
-        affinityFactor = 1 + caster:getMod(xi.combat.element.getElementalMABModifier(spellElement)) / 100
+        affinityFactor = 1 + caster:getMod(xi.data.element.getElementalMABModifier(spellElement)) / 100
     end
 
     return affinityFactor
@@ -501,7 +499,7 @@ xi.spells.damage.calculateSDT = function(target, spellElement)
     local sdt = 1 -- The variable we want to calculate
 
     if spellElement > xi.element.NONE then
-        sdt = 1 + target:getMod(xi.combat.element.getElementalSDTModifier(spellElement)) / 10000
+        sdt = 1 + target:getMod(xi.data.element.getElementalSDTModifier(spellElement)) / 10000
     end
 
     return utils.clamp(sdt, 0, 3)
@@ -512,7 +510,7 @@ xi.spells.damage.calculateAdditionalResistTier = function(caster, target, spellE
 
     if
         not caster:hasStatusEffect(xi.effect.SUBTLE_SORCERY) and                               -- Subtle sorcery bypasses this tier.
-        target:getMod(xi.combat.element.getElementalResistanceRankModifier(spellElement)) >= 4 -- Forced only at and after rank 4 (50% EEM).
+        target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement)) >= 4 -- Forced only at and after rank 4 (50% EEM).
     then
         additionalResistTier = additionalResistTier / 2
     end
@@ -539,7 +537,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     then
         applyBonuses   = true
         applyPenalties = true
-    elseif caster:getMod(xi.combat.element.getForcedDayOrWeatherBonusModifier(spellElement)) >= 1 then -- Elemental Obis only force bonuses, not penalties.
+    elseif caster:getMod(xi.data.element.getForcedDayOrWeatherBonusModifier(spellElement)) >= 1 then -- Elemental Obis only force bonuses, not penalties.
         applyBonuses = true
     end
 
@@ -550,9 +548,9 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     -- Calculate bonuses.
     if applyBonuses then
         -- Strong weathers.
-        if weather == xi.combat.element.getAssociatedSingleWeather(spellElement) then
+        if weather == xi.data.element.getAssociatedSingleWeather(spellElement) then
             dayAndWeather = dayAndWeather + 0.1 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
-        elseif weather == xi.combat.element.getAssociatedDoubleWeather(spellElement) then
+        elseif weather == xi.data.element.getAssociatedDoubleWeather(spellElement) then
             dayAndWeather = dayAndWeather + 0.25 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
         end
 
@@ -565,14 +563,14 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     -- Calculate penalties.
     if applyPenalties then
         -- Weak weathers.
-        if weather == xi.combat.element.getOppositeSingleWeather(spellElement) then
+        if weather == xi.data.element.getOppositeSingleWeather(spellElement) then
             dayAndWeather = dayAndWeather - 0.1 - caster:getMod(xi.mod.IRIDESCENCE) * 0.05
-        elseif weather == xi.combat.element.getOppositeDoubleWeather(spellElement) then
+        elseif weather == xi.data.element.getOppositeDoubleWeather(spellElement) then
             dayAndWeather = dayAndWeather - 0.25 - caster:getMod(xi.mod.IRIDESCENCE) * 0.05
         end
 
         -- Weak day.
-        if dayElement == xi.combat.element.getElementWeakness(spellElement) then
+        if dayElement == xi.data.element.getElementWeakness(spellElement) then
             dayAndWeather = dayAndWeather - 0.1
         end
     end
@@ -650,10 +648,10 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
         spellElement >= xi.element.FIRE and
         spellElement <= xi.element.WATER
     then
-        mab = mab + caster:getMerit(xi.combat.element.getElementalPotencyMerit(spellElement))
+        mab = mab + caster:getMerit(xi.data.element.getElementalPotencyMerit(spellElement))
 
-        if target:hasStatusEffect(xi.combat.element.getAssociatedBarspellEffect(spellElement)) then -- bar- spell magic defense bonus
-            mDefBarBonus = target:getStatusEffect(xi.combat.element.getAssociatedBarspellEffect(spellElement)):getSubPower()
+        if target:hasStatusEffect(xi.data.element.getAssociatedBarspellEffect(spellElement)) then -- bar- spell magic defense bonus
+            mDefBarBonus = target:getStatusEffect(xi.data.element.getAssociatedBarspellEffect(spellElement)):getSubPower()
         end
     end
 
@@ -902,8 +900,8 @@ xi.spells.damage.calculateNukeAbsorbOrNullify = function(target, spellElement)
     local nullifyElementModValue = 0
 
     if spellElement > xi.element.NONE then
-        absorbElementModValue  = target:getMod(xi.combat.element.getElementalAbsorptionModifier(spellElement))
-        nullifyElementModValue = target:getMod(xi.combat.element.getElementalNullificationModifier(spellElement))
+        absorbElementModValue  = target:getMod(xi.data.element.getElementalAbsorptionModifier(spellElement))
+        nullifyElementModValue = target:getMod(xi.data.element.getElementalNullificationModifier(spellElement))
     end
 
     -- Calculate chance for spell absorption.
@@ -933,7 +931,7 @@ xi.spells.damage.calculateIfMagicBurst = function(target, spellElement, skillcha
     local magicBurst = 1 -- The variable we want to calculate
 
     if spellElement > xi.element.NONE then
-        local resistRank = target:getMod(xi.combat.element.getElementalResistanceRankModifier(spellElement))
+        local resistRank = target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement))
         local rankTable  = { 1.15, 0.85, 0.6, 0.5, 0.4, 0.15, 0.05 }
         local rankBonus  = 0
 

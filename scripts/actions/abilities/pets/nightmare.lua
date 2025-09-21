@@ -18,9 +18,9 @@ abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
 
     -- Check nullification.
     if
-        xi.combat.statusEffect.isTargetImmune(target, xi.effect.SLEEP_I, xi.element.DARK) or
-        xi.combat.statusEffect.isTargetResistant(pet, target, xi.effect.SLEEP_I) or
-        xi.combat.statusEffect.isEffectNullified(target, xi.effect.SLEEP_I) or
+        xi.data.statusEffect.isTargetImmune(target, xi.effect.SLEEP_I, xi.element.DARK) or
+        xi.data.statusEffect.isTargetResistant(pet, target, xi.effect.SLEEP_I) or
+        xi.data.statusEffect.isEffectNullified(target, xi.effect.SLEEP_I) or
         target:hasStatusEffect(xi.effect.SLEEP_I)
     then
         petskill:setMsg(xi.msg.basic.JA_NO_EFFECT_2)
