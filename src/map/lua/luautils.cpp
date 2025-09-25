@@ -4692,7 +4692,7 @@ namespace luautils
         charutils::ClearCharVarFromAll(varName);
     }
 
-    void OnTransportEvent(CCharEntity* PChar, uint32 TransportID)
+    void OnTransportEvent(CCharEntity* PChar, uint16 prevZoneId, uint16 transportId)
     {
         TracyZoneScoped;
 
@@ -4704,7 +4704,7 @@ namespace luautils
             return;
         }
 
-        auto result = onTransportEvent(PChar, TransportID);
+        auto result = onTransportEvent(PChar, prevZoneId, transportId);
         if (!result.valid())
         {
             sol::error err = result;

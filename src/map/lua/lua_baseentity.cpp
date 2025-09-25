@@ -4378,6 +4378,7 @@ bool CLuaBaseEntity::addUsedItem(uint16 itemID)
             else
             {
                 ShowWarning("addUsedItem: tried to setLastUseTime but itemID <%i> is not type ITEM_CHARGED", itemID);
+                destroy(PItem);
             }
         }
         else
@@ -4802,6 +4803,11 @@ bool CLuaBaseEntity::addLinkpearl(std::string const& lsname, bool equip)
                 return true;
             }
         }
+        else
+        {
+            // Linkshell not found, clean up
+            destroy(PItemLinkPearl);
+        }
     }
     return false;
 }
@@ -5029,7 +5035,7 @@ bool CLuaBaseEntity::canEquipItem(uint16 itemID, sol::object const& chkLevel)
 
     bool checkLevel = (chkLevel != sol::lua_nil) ? chkLevel.as<bool>() : false;
 
-    auto* PItem = static_cast<CItemEquipment*>(itemutils::GetItem(itemID));
+    auto* PItem = static_cast<CItemEquipment*>(itemutils::GetItemPointer(itemID));
     auto* PChar = static_cast<CBattleEntity*>(m_PBaseEntity);
 
     if (PItem == nullptr)
@@ -16336,7 +16342,7 @@ bool CLuaBaseEntity::hasAttachment(uint16 itemID)
         return false;
     }
 
-    CItem* PItem = itemutils::GetItem(itemID);
+    CItem* PItem = itemutils::GetItemPointer(itemID);
     return puppetutils::HasAttachment(static_cast<CCharEntity*>(m_PBaseEntity), PItem);
 }
 
@@ -16467,7 +16473,7 @@ bool CLuaBaseEntity::unlockAttachment(uint16 itemID)
         return false;
     }
 
-    CItem* PItem = itemutils::GetItem(itemID);
+    CItem* PItem = itemutils::GetItemPointer(itemID);
     return puppetutils::UnlockAttachment(static_cast<CCharEntity*>(m_PBaseEntity), PItem);
 }
 
