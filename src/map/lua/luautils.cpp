@@ -357,11 +357,6 @@ namespace luautils
         CLuaZone::Register();
         CLuaItem::Register();
 
-        // Load globals
-        // Truly global files first
-        lua.safe_script_file("./scripts/globals/common.lua");
-        lua.safe_script_file("./scripts/globals/utils.lua");
-
         // Load global enums
         for (auto const& entry : sorted_directory_iterator<std::filesystem::directory_iterator>("./scripts/enum"))
         {
@@ -379,6 +374,12 @@ namespace luautils
                 }
             }
         }
+
+        // Load globals
+        // Truly global files first
+        // TODO: Audit utilities and properly organize them outside of globals folder
+        lua.safe_script_file("./scripts/globals/common.lua");
+        lua.safe_script_file("./scripts/globals/utils.lua");
 
         // Load global data
         for (auto const& entry : sorted_directory_iterator<std::filesystem::directory_iterator>("./scripts/data"))
