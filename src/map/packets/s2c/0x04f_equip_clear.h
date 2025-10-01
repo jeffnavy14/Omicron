@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,19 @@
 ===========================================================================
 */
 
-#ifndef _CCHANGEMUSICPACKET_H
-#define _CCHANGEMUSICPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
+#include "base.h"
 
-#include "basic.h"
-
-class CChangeMusicPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x004F
+// This packet is sent by the server to inform the client to clear its current equipment information.
+class GP_SERV_COMMAND_EQUIP_CLEAR final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_EQUIP_CLEAR, GP_SERV_COMMAND_EQUIP_CLEAR>
 {
 public:
-    CChangeMusicPacket(uint16 BlockID, uint16 MusicTrackID);
-};
+    struct PacketData
+    {
+        uint32_t padding00;
+    };
 
-#endif
+    GP_SERV_COMMAND_EQUIP_CLEAR() = default;
+};

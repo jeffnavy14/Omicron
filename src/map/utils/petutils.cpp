@@ -113,7 +113,7 @@ namespace petutils
             Pet->maxLevel  = rset->get<uint8>("maxLevel");
             Pet->time      = std::chrono::seconds(rset->get<uint32>("time"));
             Pet->radius    = rset->get<uint8>("mobradius");
-            Pet->EcoSystem = static_cast<ECOSYSTEM>(rset->get<uint8>("ecosystemID"));
+            Pet->EcoSystem = rset->get<ECOSYSTEM>("ecosystemID");
             Pet->m_Family  = rset->get<uint16>("familyid");
             Pet->mJob      = rset->get<uint8>("mJob");
             Pet->sJob      = rset->get<uint8>("sJob");
@@ -178,7 +178,7 @@ namespace petutils
             Pet->cmbDelay       = rset->get<uint16>("cmbDelay");
             Pet->name_prefix    = rset->get<uint8>("name_prefix");
             Pet->m_MobSkillList = rset->get<uint16>("skill_list_id");
-            Pet->m_dmgType      = static_cast<DAMAGE_TYPE>(rset->get<uint16>("damageType"));
+            Pet->m_dmgType      = rset->get<DAMAGE_TYPE>("damageType");
 
             g_PPetList.emplace_back(Pet);
         }

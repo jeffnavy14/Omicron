@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,16 @@
 ===========================================================================
 */
 
-#include "event_update.h"
+#include "0x106_bazaar_buy.h"
+
+#include <cstring>
+
 #include "entities/charentity.h"
 
-CEventUpdatePacket::CEventUpdatePacket(std::vector<std::pair<uint8, uint32>> const& params)
+GP_SERV_COMMAND_BAZAAR_BUY::GP_SERV_COMMAND_BAZAAR_BUY(const CCharEntity* PChar, const GP_BAZAAR_BUY_STATE state)
 {
-    this->setType(0x5C);
-    this->setSize(0x24);
+    auto& packet = this->data();
 
-    for (auto paramPair : params)
-    {
-        // Only params 0 through 7 are valid
-        if (paramPair.first <= 7)
-        {
-            ref<uint32>(0x0004 + paramPair.first * 4) = paramPair.second;
-        }
-    }
+    packet.State = state;
+    std::memcpy(packet.sName, PChar->getName().c_str(), std::min<size_t>(PChar->getName().size(), sizeof(packet.sName)));
 }

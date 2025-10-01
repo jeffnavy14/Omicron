@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,17 @@
 ===========================================================================
 */
 
-#ifndef _CLOCKONPACKET_H
-#define _CLOCKONPACKET_H
+#include "0x05c_pendingnum.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-class CCharEntity;
-class CBattleEntity;
-
-class CLockOnPacket : public CBasicPacket
+GP_SERV_COMMAND_PENDINGNUM::GP_SERV_COMMAND_PENDINGNUM(const std::vector<std::pair<uint8_t, uint32_t>>& params)
 {
-public:
-    CLockOnPacket(CCharEntity* PChar, CBattleEntity* PTarget);
-};
+    auto& packet = this->data();
 
-#endif
+    for (const auto& [index, value] : params)
+    {
+        if (index < std::size(packet.num))
+        {
+            packet.num[index] = static_cast<int32_t>(value);
+        }
+    }
+}

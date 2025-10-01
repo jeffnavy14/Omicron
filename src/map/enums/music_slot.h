@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,28 +19,16 @@
 ===========================================================================
 */
 
-#ifndef _CRELEASEPACKET_H
-#define _CRELEASEPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-enum class RELEASE_TYPE : uint8
+enum class MusicSlot : uint16_t
 {
-    STANDARD    = 0,
-    EVENT       = 1,
-    SKIPPING    = 2,
-    PLAYERINPUT = 3, /* Used by player input based event updates. Packet 0x060 (String and Numerical)*/
-    FISHING     = 4
+    ZoneDay     = 0,
+    ZoneNight   = 1,
+    CombatSolo  = 2,
+    CombatParty = 3,
+    Mount       = 4,
+    Dead        = 5,
+    MogHouse    = 6,
+    Fishing     = 7,
 };
-
-class CCharEntity;
-
-class CReleasePacket : public CBasicPacket
-{
-public:
-    CReleasePacket(CCharEntity* PChar, RELEASE_TYPE releaseType = RELEASE_TYPE::STANDARD);
-};
-
-#endif

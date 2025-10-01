@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,22 +19,21 @@
 ===========================================================================
 */
 
-#include "lock_on.h"
+#pragma once
 
-#include "entities/battleentity.h"
-#include "entities/charentity.h"
+#include "base.h"
+#include "enums/music_slot.h"
 
-CLockOnPacket::CLockOnPacket(CCharEntity* PChar, CBattleEntity* PTarget)
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x005F
+// This packet is sent by the server to update a music file to be played.
+class GP_SERV_COMMAND_MUSIC final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_MUSIC, GP_SERV_COMMAND_MUSIC>
 {
-    this->setType(0x58);
-    this->setSize(0x10);
-
-    ref<uint32>(0x04) = PChar->id;
-    ref<uint16>(0x0C) = PChar->targid;
-
-    if (PTarget != nullptr)
+public:
+    struct PacketData
     {
-        ref<uint32>(0x08) = PTarget->id;
-        ref<uint16>(0x0E) = PTarget->targid;
-    }
-}
+        MusicSlot Slot;
+        uint16_t  MusicNum;
+    };
+
+    GP_SERV_COMMAND_MUSIC(MusicSlot slotId, uint16 trackId);
+};

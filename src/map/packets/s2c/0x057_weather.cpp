@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2018 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,13 @@
 ===========================================================================
 */
 
-#ifndef _CRELEASE_SPECIALPACKET_H
-#define _CRELEASE_SPECIALPACKET_H
+#include "0x057_weather.h"
 
-#include "basic.h"
-
-class CCharEntity;
-
-class CSpecialReleasePacket : public CBasicPacket
+GP_SERV_COMMAND_WEATHER::GP_SERV_COMMAND_WEATHER(const uint32_t startTime, const Weather weatherId, const uint16_t offsetTime)
 {
-public:
-    CSpecialReleasePacket(CCharEntity* PChar);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.StartTime         = startTime;
+    packet.WeatherNumber     = weatherId;
+    packet.WeatherOffsetTime = offsetTime;
+}

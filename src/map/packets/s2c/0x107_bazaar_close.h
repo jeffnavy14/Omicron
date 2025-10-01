@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,24 +19,22 @@
 ===========================================================================
 */
 
-#ifndef _CEVENTUPDATESTRINGPACKET_H
-#define _CEVENTUPDATESTRINGPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
-#include "common/mmo.h"
-
-#include <string>
-
-#include "basic.h"
+#include "base.h"
 
 class CCharEntity;
 
-class CEventUpdateStringPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0107
+// This packet is sent by the server when the selling players bazaar has closed while the client was viewing it.
+class GP_SERV_COMMAND_BAZAAR_CLOSE final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_BAZAAR_CLOSE, GP_SERV_COMMAND_BAZAAR_CLOSE>
 {
 public:
-    CEventUpdateStringPacket(std::string const& string0 = "", std::string const& string1 = "", std::string const& string2 = "", std::string const& string3 = "",
-                             uint32 param0 = 0, uint32 param1 = 0, uint32 param2 = 0, uint32 param3 = 0, uint32 param4 = 0, uint32 param5 = 0,
-                             uint32 param6 = 0, uint32 param7 = 0, uint32 param8 = 0);
-};
+    struct PacketData
+    {
+        uint8_t sName[16];
+        uint8_t padding00[4];
+    };
 
-#endif
+    GP_SERV_COMMAND_BAZAAR_CLOSE(const CCharEntity* PChar);
+};

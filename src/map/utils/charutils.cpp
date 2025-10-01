@@ -744,7 +744,7 @@ namespace charutils
                 PChar->petZoningInfo.petHP        = petHP;
                 PChar->petZoningInfo.petID        = rset->get<uint8>("pet_id");
                 PChar->petZoningInfo.petMP        = rset->get<int16>("pet_mp");
-                PChar->petZoningInfo.petType      = static_cast<PET_TYPE>(rset->get<uint8>("pet_type"));
+                PChar->petZoningInfo.petType      = rset->get<PET_TYPE>("pet_type");
                 PChar->petZoningInfo.petLevel     = rset->get<uint8>("pet_level");
                 PChar->petZoningInfo.respawnPet   = true;
                 auto jugTimestamp                 = static_cast<uint32>(PChar->getCharVar("jugpet-spawn-time"));
@@ -2703,7 +2703,7 @@ namespace charutils
 
         const auto rset = db::preparedStmt("SELECT main, sub, ranged, ammo, head, body, hands, legs, feet, neck, waist, ear1, ear2, ring1, ring2, back "
                                            "FROM char_equip_saved AS equip "
-                                           "WHERE charid = ? AND jobid = ?",
+                                           "WHERE charid = ? AND jobid = ? LIMIT 1",
                                            PChar->id, PChar->GetMJob());
         FOR_DB_SINGLE_RESULT(rset)
         {
@@ -6195,7 +6195,7 @@ namespace charutils
         ELEMENT petElement       = static_cast<ELEMENT>(PPet->m_Element);
         uint8   petElementIdx    = static_cast<uint8>(petElement) - 1;
         ELEMENT dayElement       = battleutils::GetDayElement();
-        WEATHER weather          = battleutils::GetWeather(PChar, false);
+        auto    weather          = battleutils::GetWeather(PChar, false);
         int16   perpReduction    = PChar->getMod(Mod::PERPETUATION_REDUCTION);
         int16   dayReduction     = PChar->getMod(Mod::DAY_REDUCTION);     // As seen on Summoner's Doublet (Depending On Day: Avatar perpetuation cost -3) etc.
         int16   weatherReduction = PChar->getMod(Mod::WEATHER_REDUCTION); // As seen on Summoner's Horn (Weather: Avatar perpetuation cost -3) etc.
@@ -6203,8 +6203,8 @@ namespace charutils
         static const Mod strong[8] = { Mod::FIRE_AFFINITY_PERP, Mod::ICE_AFFINITY_PERP, Mod::WIND_AFFINITY_PERP, Mod::EARTH_AFFINITY_PERP,
                                        Mod::THUNDER_AFFINITY_PERP, Mod::WATER_AFFINITY_PERP, Mod::LIGHT_AFFINITY_PERP, Mod::DARK_AFFINITY_PERP };
 
-        static const WEATHER weatherStrong[8] = { WEATHER_HOT_SPELL, WEATHER_SNOW, WEATHER_WIND, WEATHER_DUST_STORM,
-                                                  WEATHER_THUNDER, WEATHER_RAIN, WEATHER_AURORAS, WEATHER_GLOOM };
+        static const Weather weatherStrong[8] = { Weather::HotSpell, Weather::Snow, Weather::Wind, Weather::DustStorm,
+                                                  Weather::Thunder, Weather::Rain, Weather::Auroras, Weather::Gloom };
 
         // If you wear a fire staff, you have +2 perp affinity reduction for fire, but -2 for ice as mods.
         perpReduction += PChar->getMod(strong[petElementIdx]);
@@ -6215,8 +6215,8 @@ namespace charutils
             perpReduction += dayReduction;
         }
 
-        // TODO: Whats the deal with the +1 to weather result here?
-        if (weather == weatherStrong[petElementIdx] || weather == weatherStrong[petElementIdx] + 1)
+        // Match against both tier of weather for element
+        if (weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1))
         {
             perpReduction += weatherReduction;
         }
@@ -6458,7 +6458,7 @@ namespace charutils
         const auto rset = db::preparedStmt("SELECT partyid, allianceid, partyflag & ? AS partyflag "
                                            "FROM accounts_sessions s JOIN accounts_parties p ON "
                                            "s.charid = p.charid "
-                                           "WHERE p.charid = ?",
+                                           "WHERE p.charid = ? LIMIT 1",
                                            (PARTY_SECOND | PARTY_THIRD), PChar->id);
         FOR_DB_SINGLE_RESULT(rset)
         {
@@ -6707,6 +6707,11 @@ namespace charutils
     {
         TracyZoneScoped;
 
+        if (PChar->PSession->blowfish.status == BLOWFISH_PENDING_ZONE)
+        {
+            return;
+        }
+
         auto ipp = IPP(zoneutils::GetZoneIPP(zoneId));
         if (ipp.getIP() == 0)
         {
@@ -6731,11 +6736,6 @@ namespace charutils
                          PChar->m_moghouseID, PChar->loc.boundary,
                          PChar->id);
 
-        message::send(ipc::CharZone{
-            .charId            = PChar->id,
-            .destinationZoneId = PChar->loc.destination,
-        });
-
         if (PChar->shouldPetPersistThroughZoning())
         {
             PChar->setPetZoningInfo();
@@ -6751,9 +6751,13 @@ namespace charutils
             charutils::forceSynthCritFail("SendToZone", PChar);
         }
 
+        PChar->requestedZoneChange = true;
+        PChar->requestedWarp       = false; // a previous warp can get us here, which could infinitely loop. So un-request warp.
+
+        PChar->PSession->zone_ipp = {};
         PChar->pushPacket<CServerIPPacket>(PChar, 2, IPP(ipp));
 
-        removeCharFromZone(PChar);
+        PChar->status = STATUS_TYPE::DISAPPEAR;
     }
 
     void SendDisconnect(CCharEntity* PChar)
@@ -6761,20 +6765,18 @@ namespace charutils
         TracyZoneScoped;
 
         SaveCharPosition(PChar);
+        PChar->clearPacketList();
 
-        message::send(ipc::CharZone{
-            .charId            = PChar->id,
-            .destinationZoneId = 0xFFFF, // Clear cache
-        });
+        PChar->loc.destination     = 0xFFFF;
+        PChar->status              = STATUS_TYPE::SHUTDOWN;
+        PChar->requestedZoneChange = true;
 
         PChar->pushPacket<CServerIPPacket>(PChar, 1, IPP());
-
-        removeCharFromZone(PChar);
     }
 
+    // This is just an alias for SendDisconnect?
     void ForceLogout(CCharEntity* PChar)
     {
-        PChar->status = STATUS_TYPE::SHUTDOWN;
         charutils::SendDisconnect(PChar);
     }
 
@@ -7054,7 +7056,7 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start FROM char_unlocks WHERE charid = ?", PChar->id);
+        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
         FOR_DB_SINGLE_RESULT(rset)
         {
             return earth_time::time_point(std::chrono::seconds(rset->get<uint32>("start")));
@@ -7075,7 +7077,7 @@ namespace charutils
     {
         TracyZoneScoped;
 
-        const auto rset = db::preparedStmt("SELECT traverser_claimed FROM char_unlocks WHERE charid = ?", PChar->id);
+        const auto rset = db::preparedStmt("SELECT traverser_claimed FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
         FOR_DB_SINGLE_RESULT(rset)
         {
             return rset->get<uint32>("traverser_claimed");
@@ -7105,7 +7107,7 @@ namespace charutils
         earth_time::time_point traverserEpoch   = earth_time::time_point::min();
         uint32                 traverserClaimed = 0;
 
-        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start, traverser_claimed FROM char_unlocks WHERE charid = ?", PChar->id);
+        const auto rset = db::preparedStmt("SELECT UNIX_TIMESTAMP(traverser_start) AS start, traverser_claimed FROM char_unlocks WHERE charid = ? LIMIT 1", PChar->id);
         FOR_DB_SINGLE_RESULT(rset)
         {
             traverserEpoch   = earth_time::time_point(std::chrono::seconds(rset->get<uint32>("start")));
@@ -7150,7 +7152,7 @@ namespace charutils
                                            "chats_sent, npc_interactions, battles_fought, "
                                            "gm_calls, distance_travelled "
                                            "FROM char_history "
-                                           "WHERE charid = ?",
+                                           "WHERE charid = ? LIMIT 1",
                                            PChar->id);
         FOR_DB_SINGLE_RESULT(rset)
         {

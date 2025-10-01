@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,25 +19,15 @@
 ===========================================================================
 */
 
-#include "release.h"
+#include "0x107_bazaar_close.h"
+
+#include <cstring>
+
 #include "entities/charentity.h"
 
-CReleasePacket::CReleasePacket(CCharEntity* PChar, RELEASE_TYPE releaseType)
+GP_SERV_COMMAND_BAZAAR_CLOSE::GP_SERV_COMMAND_BAZAAR_CLOSE(const CCharEntity* PChar)
 {
-    this->setType(0x52);
-    this->setSize(0x08);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04) = static_cast<uint8>(releaseType);
-
-    if (releaseType == RELEASE_TYPE::SKIPPING)
-    {
-        ref<uint16>(0x05) = PChar->currentEvent->eventId;
-    }
-
-    PChar->m_Substate = CHAR_SUBSTATE::SUBSTATE_NONE;
+    std::memcpy(packet.sName, PChar->getName().c_str(), std::min<size_t>(PChar->getName().size(), sizeof(packet.sName)));
 }
-
-// Release Types
-// 0 - Conversation with npc without starting the event
-// 2 - Event (indicating the event id)
-// 4 - Fishing

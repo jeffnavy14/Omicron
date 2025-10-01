@@ -1,8 +1,7 @@
-require('scripts/globals/common')
 require('scripts/globals/interaction/quest')
 
 ---@class utils
-utils = {}
+utils = utils or {}
 
 -- Event cancelled constant, replaces the hardcoded value of 1073741824 in many
 -- scripts.
@@ -199,30 +198,6 @@ function utils.join(input1, input2)
     utils.append(result, input1)
     utils.append(result, input2)
     return result
-end
-
--- For use alongside GetSystemTime()
----@nodiscard
----@param minutes integer
----@return integer
-function utils.minutes(minutes)
-    return minutes * 60
-end
-
----@nodiscard
----@param hours integer
----@return integer
--- For use alongside GetSystemTime()
-function utils.hours(hours)
-    return hours * 60 * 60
-end
-
--- For use alongside GetSystemTime()
----@nodiscard
----@param days integer
----@return integer
-function utils.days(days)
-    return days * 60 * 60 * 24
 end
 
 -- Generates a random permutation of integers >= min_val and <= max_val
@@ -794,7 +769,7 @@ function utils.prequire(...)
         return result
     else
         local vars = { ... }
-        printf('Error while trying to load \'%s\': %s', vars[1], result)
+        print(string.format('Error while trying to load \'%s\': %s', vars[1], result))
     end
 end
 
@@ -1169,41 +1144,6 @@ function utils.sameSideOfLine(line, pos1, pos2)
     return cross1 * cross2 >= 0
 end
 
--- Returns 24h Clock Time (example: 04:30 = 430, 21:30 = 2130)
----@nodiscard
----@return number?
-function utils.vanadielClockTime()
-    local clockTime = tonumber(VanadielHour() .. string.format('%02d', VanadielMinute()))
-
-    if not clockTime then
-        print('ERROR: clockTime was nil.')
-    end
-
-    return clockTime
-end
-
--- Returns an integer number of minutes since midnight from a time string like "HH:MM"
----@nodiscard
----@param timeString string
----@return integer
-function utils.timeStringToMinutes(timeString)
-    local hours, minutes = timeString:match('^(%d%d?):(%d%d)$')
-    hours   = tonumber(hours)
-    minutes = tonumber(minutes)
-
-    -- Validate time.
-    local validHours   = hours and hours >= 0 and hours < 24
-    local validMinutes = minutes and minutes >= 0 and minutes < 60
-
-    if not validHours or not validMinutes then
-        print(fmt('[ERROR] Invalid time string: ({}). Expected HH:MM', timeString))
-
-        return -1
-    end
-
-    return hours * 60 + minutes
-end
-
 -- Converts a number to a binary string
 ---@nodiscard
 ---@param x integer
@@ -1310,46 +1250,6 @@ function utils.defaultIfNil(inputValue, defaultValue)
     end
 
     return inputValue
-end
-
----@nodiscard
----@param current table
----@param target table
----@return boolean
-function utils.timeIsAfterOrEqual(current, target)
-    if current.year ~= target.year then
-        return current.year > target.year
-    end
-
-    if current.month ~= target.month then
-        return current.month > target.month
-    end
-
-    if current.day ~= target.day then
-        return current.day > target.day
-    end
-
-    return current.hour >= target.hour
-end
-
----@nodiscard
----@param current table
----@param target table
----@return boolean
-function utils.timeIsBefore(current, target)
-    if current.year ~= target.year then
-        return current.year < target.year
-    end
-
-    if current.month ~= target.month then
-        return current.month < target.month
-    end
-
-    if current.day ~= target.day then
-        return current.day < target.day
-    end
-
-    return current.hour < target.hour
 end
 
 -- Selects loot from a structured table of loot groups
