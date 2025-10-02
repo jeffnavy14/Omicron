@@ -47,11 +47,6 @@
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/conquest_map.h"
-#include "packets/inventory_assign.h"
-#include "packets/inventory_count.h"
-#include "packets/inventory_finish.h"
-#include "packets/inventory_item.h"
-#include "packets/inventory_modify.h"
 #include "packets/key_items.h"
 #include "packets/linkshell_equip.h"
 #include "packets/menu_jobpoints.h"
@@ -66,6 +61,11 @@
 #include "packets/roe_questlog.h"
 #include "packets/roe_sparkupdate.h"
 #include "packets/roe_update.h"
+#include "packets/s2c/0x01d_item_same.h"
+#include "packets/s2c/0x01e_item_num.h"
+#include "packets/s2c/0x01f_item_list.h"
+#include "packets/s2c/0x020_item_attr.h"
+#include "packets/s2c/0x026_item_subcontainer.h"
 #include "packets/server_ip.h"
 
 #include "ability.h"
@@ -98,6 +98,7 @@
 #include "battleutils.h"
 #include "blueutils.h"
 #include "charutils.h"
+#include "enums/item_lockflg.h"
 #include "itemutils.h"
 #include "map_engine.h"
 #include "petutils.h"
@@ -1282,7 +1283,7 @@ namespace charutils
                 CItem* PItem = PChar->getStorage(LocationID)->GetItem(slotID);
                 if (PItem != nullptr)
                 {
-                    PChar->pushPacket<CInventoryItemPacket>(PItem, LocationID, slotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, LocationID, slotID);
                 }
             }
         };
@@ -1305,7 +1306,7 @@ namespace charutils
             if (PItem != nullptr)
             {
                 PItem->setSubType(ITEM_LOCKED);
-                PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NODROP);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::NoDrop);
             }
         }
 
@@ -1314,8 +1315,8 @@ namespace charutils
         {
             PItem->setSubType(ITEM_LOCKED);
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, PChar->equipLoc[SLOT_LINK1], PChar->equip[SLOT_LINK1]);
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_LINKSHELL);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(PChar->equipLoc[SLOT_LINK1]), PChar->equip[SLOT_LINK1]);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Linkshell);
             PChar->pushPacket<CLinkshellEquipPacket>(PChar, 1);
         }
 
@@ -1324,12 +1325,12 @@ namespace charutils
         {
             PItem->setSubType(ITEM_LOCKED);
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, PChar->equipLoc[SLOT_LINK2], PChar->equip[SLOT_LINK2]);
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_LINKSHELL);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(PChar->equipLoc[SLOT_LINK2]), PChar->equip[SLOT_LINK2]);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Linkshell);
             PChar->pushPacket<CLinkshellEquipPacket>(PChar, 2);
         }
 
-        PChar->pushPacket<CInventoryFinishPacket>(); // "Finish" type
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(); // "Finish" type
     }
 
     /************************************************************************
@@ -1417,8 +1418,8 @@ namespace charutils
                 return ERROR_SLOTID;
             }
 
-            PChar->pushPacket<CInventoryItemPacket>(PItem, LocationID, SlotID);
-            PChar->pushPacket<CInventoryFinishPacket>();
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(LocationID), SlotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
         }
         else
         {
@@ -1540,8 +1541,8 @@ namespace charutils
                 {
                     PItemContainer->InsertItem(nullptr, SlotID);
 
-                    PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, SlotID);
-                    PChar->pushPacket<CInventoryItemPacket>(PItemContainer->GetItem(NewSlotID), LocationID, NewSlotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), SlotID);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItemContainer->GetItem(NewSlotID), static_cast<CONTAINER_ID>(LocationID), NewSlotID);
                     return NewSlotID;
                 }
                 PItemContainer->InsertItem(nullptr, NewSlotID); // We cancel all changes in the container
@@ -1564,7 +1565,7 @@ namespace charutils
         if (PItem == nullptr)
         {
             ShowDebug("UpdateItem: No item in slot %u", slotID);
-            PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), slotID);
             return 0;
         }
 
@@ -1601,7 +1602,7 @@ namespace charutils
                              "WHERE charid = ? AND location = ? AND slot = ?",
                              newQuantity, PChar->id, LocationID, slotID);
             PItem->setQuantity(newQuantity);
-            PChar->pushPacket<CInventoryModifyPacket>(LocationID, slotID, newQuantity);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_NUM>(static_cast<CONTAINER_ID>(LocationID), slotID, newQuantity);
         }
         else if (newQuantity == 0)
         {
@@ -1609,7 +1610,7 @@ namespace charutils
                              "WHERE charid = ? AND location = ? AND slot = ?",
                              PChar->id, LocationID, slotID);
             PChar->getStorage(LocationID)->InsertItem(nullptr, slotID);
-            PChar->pushPacket<CInventoryItemPacket>(nullptr, LocationID, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(LocationID), slotID);
 
             if (PChar->getStyleLocked() && !HasItem(PChar, ItemID))
             {
@@ -1655,7 +1656,7 @@ namespace charutils
         {
             ShowInfo("Player %s DROPPING itemID: %s (%u) quantity: %u", PChar->getName(), itemutils::GetItemPointer(ItemID)->getName(), ItemID, quantity);
             PChar->pushPacket<CMessageStandardPacket>(nullptr, ItemID, quantity, MsgStd::ThrowAway);
-            PChar->pushPacket<CInventoryFinishPacket>();
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
         }
     }
 
@@ -1841,7 +1842,7 @@ namespace charutils
             PChar->PLatentEffectContainer->DelLatentEffects(((CItemEquipment*)PItem)->getReqLvl(), equipSlotID);
             PChar->delPetModifiers(&((CItemEquipment*)PItem)->petModList);
 
-            PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NORMAL); // ???
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::Normal); // ???
             PChar->pushPacket<CEquipPacket>(0, equipSlotID, LOC_INVENTORY);
 
             switch (equipSlotID)
@@ -2586,8 +2587,8 @@ namespace charutils
                 OtherContainer->InsertItem(nullptr, slotID);
 
                 // Send update packets
-                PChar->pushPacket<CInventoryItemPacket>(nullptr, container, slotID);
-                PChar->pushPacket<CInventoryItemPacket>(PItem, LOC_RECYCLEBIN, NewSlotID);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(container), slotID);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, LOC_RECYCLEBIN, NewSlotID);
                 PChar->pushPacket<CMessageStandardPacket>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
             }
             else
@@ -2632,15 +2633,15 @@ namespace charutils
             }
 
             // Send update packets
-            PChar->pushPacket<CInventoryItemPacket>(nullptr, container, slotID);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(nullptr, static_cast<CONTAINER_ID>(container), slotID);
             for (int i = 1; i <= 10; ++i)
             {
                 CItem* PUpdatedItem = RecycleBin->GetItem(i);
-                PChar->pushPacket<CInventoryItemPacket>(PUpdatedItem, LOC_RECYCLEBIN, i);
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PUpdatedItem, LOC_RECYCLEBIN, i);
             }
             PChar->pushPacket<CMessageStandardPacket>(nullptr, PItem->getID(), quantity, MsgStd::ThrowAway);
         }
-        PChar->pushPacket<CInventoryFinishPacket>();
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
     }
 
     void EmptyRecycleBin(CCharEntity* PChar)
@@ -2837,7 +2838,7 @@ namespace charutils
 
                         // Do not forget to update the timer when equipping the subject
 
-                        PChar->pushPacket<CInventoryItemPacket>(PItem, containerID, slotID);
+                        PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(containerID), slotID);
                     }
                     PItem->setSubType(ITEM_LOCKED);
 
@@ -2859,7 +2860,7 @@ namespace charutils
                     luautils::OnItemEquip(PChar, PItem);
 
                     PChar->pushPacket<CEquipPacket>(slotID, equipSlotID, containerID);
-                    PChar->pushPacket<CInventoryAssignPacket>(PItem, INV_NODROP);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItem, ItemLockFlg::NoDrop);
                 }
             }
         }
@@ -7582,7 +7583,7 @@ namespace charutils
                             ShowWarning("Invalid Mannequin placed (race of 0 in exdata, when races start at 1). It will be unusable.");
                         }
 
-                        PChar->pushPacket<CInventoryCountPacket>(safeContainerId, slotIndex, headId, bodyId, handsId, legId, feetId, mainId, subId, rangeId);
+                        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SUBCONTAINER>(safeContainerId, slotIndex, headId, bodyId, handsId, legId, feetId, mainId, subId, rangeId);
                     }
                 }
             }

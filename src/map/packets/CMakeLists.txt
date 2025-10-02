@@ -103,18 +103,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/independent_animation.h
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_assign.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_assign.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_count.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_count.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_finish.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_finish.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_item.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_item.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_modify.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_modify.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_size.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_size.h
     ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_details.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_details.h
     ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_update.cpp

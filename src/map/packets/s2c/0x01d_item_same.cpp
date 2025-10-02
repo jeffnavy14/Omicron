@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,19 +19,24 @@
 ===========================================================================
 */
 
-#ifndef _CINVENTORYFINISHPACKET_H
-#define _CINVENTORYFINISHPACKET_H
+#include "0x01d_item_same.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
 #include "item_container.h"
 
-class CInventoryFinishPacket : public CBasicPacket
+GP_SERV_COMMAND_ITEM_SAME::GP_SERV_COMMAND_ITEM_SAME()
 {
-public:
-    explicit CInventoryFinishPacket();
-    explicit CInventoryFinishPacket(CONTAINER_ID id);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.State        = GP_SERV_COMMAND_ITEM_SAME_STATE::AllLoaded;
+    packet.padding00[0] = CONTAINER_ID::MAX_CONTAINER_ID; // This data appears to be used as the container index at times, but the client does not use any part of it at all.
+    packet.Flags        = 0x0003FFFF;
+}
+
+GP_SERV_COMMAND_ITEM_SAME::GP_SERV_COMMAND_ITEM_SAME(const CONTAINER_ID id)
+{
+    auto& packet = this->data();
+
+    packet.State        = GP_SERV_COMMAND_ITEM_SAME_STATE::StillLoading;
+    packet.padding00[0] = id; // This data appears to be used as the container index at times, but the client does not use any part of it at all.
+    // TODO: Missing Flags
+}

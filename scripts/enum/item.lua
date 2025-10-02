@@ -8268,6 +8268,7 @@ xi.item =
     SMART_GRENADE                       = 19202,
     WAR_HOOP                            = 19203,
     MOLYBDOSIS                          = 19209,
+    PINCH_OF_STYGIAN_ASH                = 19210,
     FULLMETAL_BULLET                    = 19214,
     AMANOKAKOYUMI                       = 19215,
     BASILISK                            = 19217,

@@ -33,8 +33,8 @@
 
 #include "packets/char_health.h"
 #include "packets/char_status.h"
-#include "packets/inventory_finish.h"
 #include "packets/message_basic.h"
+#include "packets/s2c/0x01d_item_same.h"
 
 #include "lua/luautils.h"
 
@@ -4265,7 +4265,7 @@ namespace battleutils
             {
                 // Futae Takes 2 of Your Tools
                 charutils::UpdateItem(PChar, LOC_INVENTORY, SlotID, -2);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
             }
             else
             {
@@ -4281,7 +4281,7 @@ namespace battleutils
                 if (ConsumeTool && xirand::GetRandomNumber(100) > chance)
                 {
                     charutils::UpdateItem(PChar, LOC_INVENTORY, SlotID, -1);
-                    PChar->pushPacket<CInventoryFinishPacket>();
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 }
             }
         }
@@ -6650,13 +6650,13 @@ namespace battleutils
                 charutils::UnequipItem(PChar, SLOT_AMMO);
                 PChar->RequestPersist(CHAR_PERSIST::EQUIP);
                 charutils::UpdateItem(PChar, loc, slot, -quantity);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 return true;
             }
             else
             {
                 charutils::UpdateItem(PChar, PChar->equipLoc[SLOT_AMMO], PChar->equip[SLOT_AMMO], -quantity);
-                PChar->pushPacket<CInventoryFinishPacket>();
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                 return false;
             }
         }

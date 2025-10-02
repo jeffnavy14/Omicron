@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,25 +19,24 @@
 ===========================================================================
 */
 
-#ifndef _CINVENTORYASSIGHPACKET_H
-#define _CINVENTORYASSIGHPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
+#include "base.h"
 
-#include "basic.h"
+class CCharEntity;
 
-#define INV_NORMAL    0x00
-#define INV_NODROP    0x05
-#define INV_NOSELECT  0x0F
-#define INV_LINKSHELL 0x13
-#define INV_MANNEQUIN 0x1B // Equipped to the mannequin
-
-class CItem;
-
-class CInventoryAssignPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x001C
+// This packet is sent by the server to inform the client of container sizes.
+class GP_SERV_COMMAND_ITEM_MAX final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_ITEM_MAX, GP_SERV_COMMAND_ITEM_MAX>
 {
 public:
-    CInventoryAssignPacket(CItem* PItem, uint8 Flag);
-};
+    struct PacketData
+    {
+        uint8_t  ItemNum[18];   // PS2: ItemNum
+        uint8_t  padding00[14]; // PS2: (New; did not exist)
+        uint16_t ItemNum2[18];  // PS2: (New; did not exist)
+        uint8_t  padding01[28]; // PS2: (New; did not exist)
+    };
 
-#endif
+    GP_SERV_COMMAND_ITEM_MAX(const CCharEntity* PChar);
+};

@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,14 +19,18 @@
 ===========================================================================
 */
 
-#include "inventory_modify.h"
+#pragma once
 
-CInventoryModifyPacket::CInventoryModifyPacket(uint8 LocationID, uint8 slotID, uint32 quantity)
+#include "common/cbasetypes.h"
+
+// Used in GP_SERV_COMMAND_ITEM_* packets LockFlg
+// TODO: This needs to be checked and compared with client.
+enum class ItemLockFlg : uint8_t
 {
-    this->setType(0x1E);
-    this->setSize(0x10);
-
-    ref<uint32>(0x04) = quantity;
-    ref<uint8>(0x08)  = LocationID;
-    ref<uint8>(0x09)  = slotID;
-}
+    Normal    = 0x00,
+    NoDrop    = 0x05,
+    NoSelect  = 0x0F,
+    Linkshell = 0x13,
+    Unknown0  = 0x19,
+    Mannequin = 0x1B,
+};

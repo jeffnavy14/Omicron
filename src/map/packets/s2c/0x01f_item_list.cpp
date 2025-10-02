@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,18 +19,17 @@
 ===========================================================================
 */
 
+#include "0x01f_item_list.h"
+
 #include "utils/itemutils.h"
 
-#include "inventory_assign.h"
-
-CInventoryAssignPacket::CInventoryAssignPacket(CItem* PItem, uint8 Flag)
+GP_SERV_COMMAND_ITEM_LIST::GP_SERV_COMMAND_ITEM_LIST(const CItem* PItem, const ItemLockFlg flag)
 {
-    this->setType(0x1F);
-    this->setSize(0x10);
+    auto& packet = this->data();
 
-    ref<uint32>(0x04) = PItem->getQuantity();
-    ref<uint16>(0x08) = PItem->getID();
-    ref<uint8>(0x0A)  = PItem->getLocationID();
-    ref<uint8>(0x0B)  = PItem->getSlotID();
-    ref<uint8>(0x0C)  = Flag;
+    packet.ItemNum   = PItem->getQuantity();
+    packet.ItemNo    = PItem->getID();
+    packet.Category  = PItem->getLocationID();
+    packet.ItemIndex = PItem->getSlotID();
+    packet.LockFlg   = flag;
 }

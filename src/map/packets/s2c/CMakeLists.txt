@@ -1,5 +1,17 @@
 set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/base.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01c_item_max.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01c_item_max.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01d_item_same.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01d_item_same.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01e_item_num.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01e_item_num.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01f_item_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01f_item_list.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x020_item_attr.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x020_item_attr.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x026_item_subcontainer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x026_item_subcontainer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x033_eventstr.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x033_eventstr.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x039_mapschedulor.h
