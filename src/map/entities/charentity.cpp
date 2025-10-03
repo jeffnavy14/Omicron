@@ -27,7 +27,6 @@
 
 #include "packets/action.h"
 #include "packets/basic.h"
-#include "packets/char_appearance.h"
 #include "packets/char_health.h"
 #include "packets/char_recast.h"
 #include "packets/char_status.h"
@@ -35,14 +34,15 @@
 #include "packets/char_update.h"
 #include "packets/entity_update.h"
 #include "packets/event.h"
-#include "packets/key_items.h"
 #include "packets/message_special.h"
 #include "packets/message_standard.h"
 #include "packets/message_system.h"
 #include "packets/message_text.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x033_eventstr.h"
+#include "packets/s2c/0x051_grap_list.h"
 #include "packets/s2c/0x052_eventucoff.h"
+#include "packets/s2c/0x055_scenarioitem.h"
 #include "packets/s2c/0x058_assist.h"
 
 #include "ai/ai_container.h"
@@ -1058,7 +1058,7 @@ void CCharEntity::PostTick()
     {
         updatemask |= UPDATE_HP;
         m_EquipSwap = false;
-        pushPacket<CCharAppearancePacket>(this);
+        pushPacket<GP_SERV_COMMAND_GRAP_LIST>(this);
     }
 
     // notify client containers are dirty and then no longer dirty
@@ -2857,17 +2857,17 @@ void CCharEntity::UpdateMoghancement()
         uint8 currentTable = m_moghancementID >> 9;
         if (newTable == currentTable)
         {
-            pushPacket<CKeyItemsPacket>(this, static_cast<KEYS_TABLE>(newTable));
+            pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(newTable));
         }
         else
         {
             if (newTable != 0)
             {
-                pushPacket<CKeyItemsPacket>(this, static_cast<KEYS_TABLE>(newTable));
+                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(newTable));
             }
             if (currentTable != 0)
             {
-                pushPacket<CKeyItemsPacket>(this, static_cast<KEYS_TABLE>(currentTable));
+                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(currentTable));
             }
         }
         charutils::SaveKeyItems(this);

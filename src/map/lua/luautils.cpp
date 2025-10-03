@@ -54,9 +54,9 @@
 #include "items/item_puppet.h"
 
 #include "packets/action.h"
-#include "packets/char_emotion.h"
 #include "packets/chat_message.h"
-#include "packets/menu_raisetractor.h"
+#include "packets/s2c/0x05a_motionmes.h"
+#include "packets/s2c/0x0f9_res.h"
 
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
@@ -2333,7 +2333,7 @@ namespace luautils
         if (PChar->currentEvent->scriptFile.find("/bcnms/") > 0 && PChar->health.hp <= 0)
         { // for some reason the event doesnt enforce death afterwards
             PChar->animation = ANIMATION_DEATH;
-            PChar->pushPacket<CRaiseTractorMenuPacket>(PChar, TYPE_HOMEPOINT);
+            PChar->pushPacket<GP_SERV_COMMAND_RES>(PChar, GP_SERV_COMMAND_RES_TYPE::Homepoint);
             PChar->updatemask |= UPDATE_HP;
         }
 
