@@ -54,6 +54,10 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x107_bazaar_close.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10e_reqsubmapnum.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10e_reqsubmapnum.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_currencies_1.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x113_currencies_1.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x118_currencies_2.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x118_currencies_2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11e_jump.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11e_jump.cpp
     PARENT_SCOPE

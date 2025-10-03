@@ -65,10 +65,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/conquest_map.h
     ${CMAKE_CURRENT_SOURCE_DIR}/cs_position.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/cs_position.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency1.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency1.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency2.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/delivery_box.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/delivery_box.h
     ${CMAKE_CURRENT_SOURCE_DIR}/entity_animation.cpp
