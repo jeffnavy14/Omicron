@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,11 @@
 ===========================================================================
 */
 
-#ifndef _CWORLDPASSPACKET_H
-#define _CWORLDPASSPACKET_H
+#include "0x0f6_tracking_state.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-class CWorldPassPacket : public CBasicPacket
+GP_SERV_COMMAND_TRACKING_STATE::GP_SERV_COMMAND_TRACKING_STATE(const GP_TRACKING_STATE state)
 {
-public:
-    CWorldPassPacket(uint32 WorldPass);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.State = state;
+}

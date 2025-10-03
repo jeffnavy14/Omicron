@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,13 +19,26 @@
 ===========================================================================
 */
 
-#include "shop_buy.h"
+#include "0x059_friendpass.h"
 
-CShopBuyPacket::CShopBuyPacket(uint8 slotID, uint32 quantity)
+GP_SERV_COMMAND_FRIENDPASS::GP_SERV_COMMAND_FRIENDPASS(uint32_t worldPass)
 {
-    this->setType(0x3F);
-    this->setSize(0x0C);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04)  = slotID;
-    ref<uint32>(0x08) = quantity;
+    // TODO: All of this is wrong
+    packet.passPop   = 10000; // price
+    packet.Type      = 0x03;
+    packet.unknown21 = 0x01;
+
+    if (worldPass != 0)
+    {
+        packet.leftNum  = 1;   // number of uses left
+        packet.leftDays = 167; // pass becomes invalid in (hours)
+        packet.Type     = 0x06;
+
+        // Force to be 10 digits
+        const std::string strbuff = fmt::format("{:0>10}", worldPass);
+
+        std::memcpy(packet.String, strbuff.c_str(), strbuff.length());
+    }
 }

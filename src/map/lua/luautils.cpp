@@ -987,7 +987,7 @@ namespace luautils
             break;
             case TYPE_TRUST:
             {
-                const auto name = PEntity->getName();
+                const auto& name = PEntity->getName();
                 CacheLuaObjectFromFile(fmt::format("./scripts/actions/spells/trust/{}.lua", name));
             }
             break;

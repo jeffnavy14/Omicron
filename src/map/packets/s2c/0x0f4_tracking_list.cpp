@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,38 +19,29 @@
 ===========================================================================
 */
 
-#include "wide_scan.h"
-
-#include <cstring>
+#include "0x0f4_tracking_list.h"
 
 #include "entities/charentity.h"
 
-CWideScanPacket::CWideScanPacket(WIDESCAN_STATUS status)
+GP_SERV_COMMAND_TRACKING_LIST::GP_SERV_COMMAND_TRACKING_LIST(const CCharEntity* PChar, CBaseEntity* PEntity)
 {
-    this->setType(0xF6);
-    this->setSize(0x08);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04) = status;
-}
-
-CWideScanPacket::CWideScanPacket(CCharEntity* PChar, CBaseEntity* PEntity)
-{
-    this->setType(0xF4);
-    this->setSize(0x1C);
-
-    ref<uint16>(0x04) = PEntity->targid;
+    packet.ActIndex = PEntity->targid;
     if (PEntity->objtype == TYPE_MOB)
     {
-        ref<uint8>(0x06) = ((CBattleEntity*)PEntity)->GetMLevel();
+        packet.Level = static_cast<CBattleEntity*>(PEntity)->GetMLevel();
     }
 
     // 0 - Black dot (Char??)
     // 1 - Green dot (NPC)
     // 2 - Red dot (Mob)
-    ref<uint8>(0x07) = PEntity->objtype / 2;
+    packet.Type = PEntity->objtype / 2;
 
-    ref<uint16>(0x08) = (int16)(PEntity->loc.p.x - PChar->loc.p.x); // Difference in x-value between character and object coordinates
-    ref<uint16>(0x0A) = (int16)(PEntity->loc.p.z - PChar->loc.p.z); // Difference in z-value between character and object coordinates
+    packet.x = static_cast<int16_t>(PEntity->loc.p.x - PChar->loc.p.x); // Difference in x-value between character and object coordinates
+    // TODO: Shouldn't this be Y?
+    packet.z = static_cast<int16_t>(PEntity->loc.p.z - PChar->loc.p.z); // Difference in z-value between character and object coordinates
 
-    // std::memcpy(buffer_.data()+(0x0C), PEntity->GetName(), (PEntity->name.size() > 14 ? 14 : PEntity->name.size()));
+    // TODO: sName
+    // std::memcpy(packet.sName, PEntity->GetName(), (PEntity->name.size() > 14 ? 14 : PEntity->name.size()));
 }

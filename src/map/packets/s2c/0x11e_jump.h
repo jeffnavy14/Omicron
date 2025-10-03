@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,22 @@
 ===========================================================================
 */
 
-#ifndef _CSHOPAPPRAISEPACKET_H
-#define _CSHOPAPPRAISEPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
+#include "base.h"
 
-#include "basic.h"
+class CCharEntity;
 
-class CShopAppraisePacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x011E
+// This packet is sent by the server to inform the client of another player that has used `/jump`.
+class GP_SERV_COMMAND_JUMP final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_JUMP, GP_SERV_COMMAND_JUMP>
 {
 public:
-    CShopAppraisePacket(uint8 slotID, uint32 sellPrice);
-};
+    struct PacketData
+    {
+        uint16_t ActIndex;     // PS2: ActIndex
+        uint8_t  padding00[2]; // PS2: (New; did not exist)
+    };
 
-#endif
+    GP_SERV_COMMAND_JUMP(CCharEntity* PChar, uint16_t targetIndex);
+};

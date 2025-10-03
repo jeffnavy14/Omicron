@@ -1910,7 +1910,7 @@ namespace petutils
             Inspired by TiberonKalkaz's approach in ASB.
             https://github.com/AirSkyBoat/AirSkyBoat/pull/3134/files#diff-dea0a7c8d005d1e7507dcb2370aff3a46df84ab53d87ba50beeab376c3082621
         */
-        CBattleEntity* tandemPartner;
+        CBattleEntity* tandemPartner = nullptr;
         if (PAttacker->objtype == TYPE_PC)
         {
             if (PAttacker->PPet == nullptr)

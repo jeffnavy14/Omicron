@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,19 +19,13 @@
 ===========================================================================
 */
 
-#ifndef _CWIDESCANTRACKPACKET_H
-#define _CWIDESCANTRACKPACKET_H
+#include "0x03d_shop_sell.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-class CBaseEntity;
-
-class CWideScanTrackPacket : public CBasicPacket
+GP_SERV_COMMAND_SHOP_SELL::GP_SERV_COMMAND_SHOP_SELL(const uint8_t slotId, const uint32_t sellPrice)
 {
-public:
-    CWideScanTrackPacket(const CBaseEntity* PEntity);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.Price             = sellPrice;
+    packet.PropertyItemIndex = slotId;
+    packet.Type              = 0; // 0 = appraisal
+}

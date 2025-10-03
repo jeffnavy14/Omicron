@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,12 @@
 ===========================================================================
 */
 
-#ifndef _CSHOPBUYPACKET_H
-#define _CSHOPBUYPACKET_H
+#include "0x03f_shop_buy.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-class CShopBuyPacket : public CBasicPacket
+GP_SERV_COMMAND_SHOP_BUY::GP_SERV_COMMAND_SHOP_BUY(const uint8_t slotId, const uint32_t quantity)
 {
-public:
-    CShopBuyPacket(uint8 slotID, uint32 quantity);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.ShopItemIndex = slotId;
+    packet.Count         = quantity;
+}

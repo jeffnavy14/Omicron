@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,25 @@
 ===========================================================================
 */
 
-#ifndef _CMENUMOGPACKET_H
-#define _CMENUMOGPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
+#include "base.h"
 
-#include "basic.h"
-
-class CMenuMogPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0059
+// This packet is sent by the server when interacting with an NPC that handles world passes.
+class GP_SERV_COMMAND_FRIENDPASS final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_FRIENDPASS, GP_SERV_COMMAND_FRIENDPASS>
 {
 public:
-    CMenuMogPacket();
-};
+    struct PacketData
+    {
+        int32_t  leftNum;    // PS2: leftNum
+        int32_t  leftDays;   // PS2: leftDays
+        int32_t  passPop;    // PS2: passPop
+        char     String[16]; // PS2: String
+        char     Type;       // PS2: Type
+        char     unknown21;  // PS2: (New; did not exist.)
+        uint16_t padding00;  // PS2: (New; did not exist.)
+    };
 
-#endif
+    GP_SERV_COMMAND_FRIENDPASS(uint32_t worldPass);
+};

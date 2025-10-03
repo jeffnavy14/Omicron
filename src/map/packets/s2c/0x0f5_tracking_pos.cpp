@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,22 +19,19 @@
 ===========================================================================
 */
 
-#include "wide_scan_track.h"
-
-#include <cstring>
+#include "0x0f5_tracking_pos.h"
 
 #include "entities/baseentity.h"
 
-CWideScanTrackPacket::CWideScanTrackPacket(const CBaseEntity* PEntity)
+GP_SERV_COMMAND_TRACKING_POS::GP_SERV_COMMAND_TRACKING_POS(const CBaseEntity* PEntity)
 {
-    this->setType(0xF5);
-    this->setSize(0x18);
+    auto& packet = this->data();
 
-    ref<float>(0x04) = PEntity->loc.p.x;
-    ref<float>(0x08) = PEntity->loc.p.y;
-    ref<float>(0x0C) = PEntity->loc.p.z;
+    packet.x = PEntity->loc.p.x;
+    packet.y = PEntity->loc.p.y; // TODO: Shouldn't Y and Z be swapped?
+    packet.z = PEntity->loc.p.z;
 
-    ref<uint8>(0x10)  = 1;
-    ref<uint16>(0x12) = PEntity->targid;
-    ref<uint8>(0x14)  = PEntity->status == STATUS_TYPE::DISAPPEAR ? 2 : 1;
+    packet.Level    = 1;
+    packet.ActIndex = PEntity->targid;
+    packet.State    = PEntity->status == STATUS_TYPE::DISAPPEAR ? GP_TRACKING_POS_STATE::Lose : GP_TRACKING_POS_STATE::Start;
 }

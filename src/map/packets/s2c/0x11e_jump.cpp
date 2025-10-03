@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 ===========================================================================
 */
 
-#include "shop_appraise.h"
+#include "0x11e_jump.h"
 
-CShopAppraisePacket::CShopAppraisePacket(uint8 slotID, uint32 sellPrice)
+#include "entities/charentity.h"
+
+GP_SERV_COMMAND_JUMP::GP_SERV_COMMAND_JUMP(CCharEntity* PChar, uint16_t targetIndex)
 {
-    this->setType(0x3D);
-    this->setSize(0x10);
+    auto& packet = this->data();
 
-    ref<uint32>(0x04) = sellPrice;
-    ref<uint8>(0x08)  = slotID;
+    packet.ActIndex = targetIndex;
 }

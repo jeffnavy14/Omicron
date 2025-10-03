@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,28 +19,27 @@
 ===========================================================================
 */
 
+#include "0x0d2_trophy_list.h"
+
 #include "common/timer.h"
 #include "entities/baseentity.h"
 #include "treasure_pool.h"
 
-#include "treasure_find_item.h"
-
-CTreasureFindItemPacket::CTreasureFindItemPacket(TreasurePoolItem* PItem, CBaseEntity* PEntity, bool isOldItem)
+GP_SERV_COMMAND_TROPHY_LIST::GP_SERV_COMMAND_TROPHY_LIST(const TreasurePoolItem* PItem, const CBaseEntity* PEntity, const bool isOldItem)
 {
-    this->setType(0x0D2);
-    this->setSize(60);
+    auto& packet = this->data();
 
-    ref<uint32>(0x04) = 1;                 // Item Quantity
-    ref<uint16>(0x0C) = 0;                 // TODO: Gil Found
-    ref<uint16>(0x10) = PItem->ID;         // Item ID
-    ref<uint8>(0x14)  = PItem->SlotID;     // Treasure Pool Slot
-    ref<uint8>(0x15)  = isOldItem ? 1 : 0; // Old Item
-    ref<uint32>(0x18) = static_cast<uint32>(timer::count_milliseconds(PItem->TimeStamp - timer::start_time));
+    packet.TrophyItemNum   = 1;                 // Item Quantity
+    packet.Gold            = 0;                 // TODO: Gil Found
+    packet.TrophyItemNo    = PItem->ID;         // Item ID
+    packet.TrophyItemIndex = PItem->SlotID;     // Treasure Pool Slot
+    packet.Entry           = isOldItem ? 1 : 0; // Old Item
+    packet.StartTime       = static_cast<uint32_t>(timer::count_milliseconds(PItem->TimeStamp - timer::start_time));
 
     if (PEntity != nullptr)
     {
-        ref<uint32>(0x08) = PEntity->id;     // Entity ID
-        ref<uint16>(0x12) = PEntity->targid; // Entity Index
-        ref<uint8>(0x16)  = PEntity->objtype == TYPE_NPC;
+        packet.TargetUniqueNo = PEntity->id;     // Entity ID
+        packet.TargetActIndex = PEntity->targid; // Entity Index
+        packet.IsContainer    = PEntity->objtype == TYPE_NPC;
     }
 }

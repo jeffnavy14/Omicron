@@ -40,7 +40,8 @@
 
 #include "packets/char_sync.h"
 #include "packets/entity_update.h"
-#include "packets/wide_scan.h"
+#include "packets/s2c/0x0f4_tracking_list.h"
+#include "packets/s2c/0x0f6_tracking_state.h"
 
 #include "lua/luautils.h"
 
@@ -1656,18 +1657,18 @@ void CZoneEntities::WideScan(CCharEntity* PChar, uint16 radius)
 {
     TracyZoneScoped;
 
-    PChar->pushPacket<CWideScanPacket>(WIDESCAN_BEGIN);
+    PChar->pushPacket<GP_SERV_COMMAND_TRACKING_STATE>(GP_TRACKING_STATE::ListStart);
     for (const auto& entityList : { m_npcList, m_mobList })
     {
         for (const auto& [_, PEntity] : entityList)
         {
             if (PEntity->isWideScannable() && isWithinDistance(PChar->loc.p, PEntity->loc.p, radius))
             {
-                PChar->pushPacket<CWideScanPacket>(PChar, PEntity);
+                PChar->pushPacket<GP_SERV_COMMAND_TRACKING_LIST>(PChar, PEntity);
             }
         }
     }
-    PChar->pushPacket<CWideScanPacket>(WIDESCAN_END);
+    PChar->pushPacket<GP_SERV_COMMAND_TRACKING_STATE>(GP_TRACKING_STATE::ListEnd);
 }
 
 void CZoneEntities::ZoneServer(timer::time_point tick)
