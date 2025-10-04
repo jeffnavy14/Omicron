@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,21 +19,21 @@
 ===========================================================================
 */
 
-#include "synth_message.h"
+#include "0x06f_combine_ans.h"
+
 #include "entities/charentity.h"
 #include "trade_container.h"
 
-CSynthMessagePacket::CSynthMessagePacket(CCharEntity* PChar, SYNTH_MESSAGE messageID, uint16 itemID, uint8 quantity)
+GP_SERV_COMMAND_COMBINE_ANS::GP_SERV_COMMAND_COMBINE_ANS(const CCharEntity* PChar, const SynthesisResult result, const uint16 itemId, const uint8 quantity)
 {
-    this->setType(0x6F);
-    this->setSize(0x38);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04) = messageID;
+    packet.Result = result;
 
-    if (itemID != 0)
+    if (itemId != 0)
     {
-        ref<uint8>(0x06)  = quantity;
-        ref<uint16>(0x08) = itemID;
+        packet.Count  = quantity;
+        packet.ItemNo = itemId;
     }
 
     for (uint8 i = 0; i < 4; i++)
@@ -41,28 +41,29 @@ CSynthMessagePacket::CSynthMessagePacket(CCharEntity* PChar, SYNTH_MESSAGE messa
         uint8 skillValue = 0;
         for (uint8 skillID = 49; skillID < 57; skillID++)
         {
-            if (skillID == ref<uint8>(0x1A) || skillID == ref<uint8>(0x1B) || skillID == ref<uint8>(0x1C) || skillID == ref<uint8>(0x1D))
+            if (skillID == packet.UpKind[0] || skillID == packet.UpKind[1] || skillID == packet.UpKind[2] || skillID == packet.UpKind[3])
             {
                 continue;
             }
+
             if (PChar->CraftContainer->getQuantity(skillID - 40) > skillValue)
             {
-                skillValue           = PChar->CraftContainer->getQuantity(skillID - 40);
-                ref<uint8>(0x1A + i) = skillID;
+                skillValue       = PChar->CraftContainer->getQuantity(skillID - 40);
+                packet.UpKind[i] = skillID;
             }
         }
     }
 
-    ref<uint16>(0x22) = PChar->CraftContainer->getItemID(0); // crystal
+    packet.CrystalNo = PChar->CraftContainer->getItemID(0);
 
     for (uint8 slotID = 1; slotID <= 8; ++slotID) // recipe materials
     {
-        uint16 slotItemID                      = PChar->CraftContainer->getItemID(slotID);
-        ref<uint16>(0x24 + ((slotID - 1) * 2)) = slotItemID;
+        const uint16 slotItemID       = PChar->CraftContainer->getItemID(slotID);
+        packet.MaterialNo[slotID - 1] = slotItemID;
 
         if (PChar->CraftContainer->getQuantity(slotID) == 0)
         {
-            ref<uint16>(0x0A + ((slotID - 1) * 2)) = slotItemID;
+            packet.BreakNo[slotID - 1] = slotItemID;
         }
     }
 }

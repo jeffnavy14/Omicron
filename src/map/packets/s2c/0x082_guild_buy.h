@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,27 +19,25 @@
 ===========================================================================
 */
 
-#include <cstring>
+#pragma once
 
-#include "guild_menu_buy_update.h"
+#include "common/cbasetypes.h"
 
-#include "entities/charentity.h"
-#include "item_container.h"
+#include "base.h"
 
-#include "items/item_shop.h"
+class CCharEntity;
 
-CGuildMenuBuyUpdatePacket::CGuildMenuBuyUpdatePacket(CCharEntity* PChar, uint8 stock, uint16 itemID, uint8 quantity)
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0082
+// This packet is sent by the server to inform the client of a completed purchase from a guild vendor.
+class GP_SERV_COMMAND_GUILD_BUY final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_GUILD_BUY, GP_SERV_COMMAND_GUILD_BUY>
 {
-    this->setType(0x82);
-    this->setSize(0x08);
-
-    if (PChar == nullptr)
+public:
+    struct PacketData
     {
-        ShowWarning("PChar is null.");
-        return;
-    }
+        uint16_t ItemNo;
+        uint8_t  Count;
+        int8_t   Trade;
+    };
 
-    ref<uint16>(0x04) = itemID;
-    ref<uint8>(0x06)  = stock;
-    ref<uint8>(0x07)  = quantity;
-}
+    GP_SERV_COMMAND_GUILD_BUY(const CCharEntity* PChar, uint8 stock, uint16 itemId, uint8 quantity);
+};

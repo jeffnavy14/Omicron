@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,23 +19,17 @@
 ===========================================================================
 */
 
-#ifndef _CSYNTHRESULTMESSAGEPACKET_H
-#define _CSYNTHRESULTMESSAGEPACKET_H
+#include "0x030_effect.h"
 
-#include "common/cbasetypes.h"
-#include "common/utils.h"
+#include "entities/charentity.h"
 
-#include "packets/synth_message.h"
-
-#include "basic.h"
-
-class CBaseEntity;
-class CCharEntity;
-
-class CSynthResultMessagePacket : public CBasicPacket
+GP_SERV_COMMAND_EFFECT::GP_SERV_COMMAND_EFFECT(const CCharEntity* PChar, const SynthesisEffect effect, const uint8 param)
 {
-public:
-    CSynthResultMessagePacket(CCharEntity* PChar, SYNTH_MESSAGE messageID, uint16 itemID = 0, uint8 quantity = 0);
-};
+    auto& packet = this->data();
 
-#endif
+    packet.UniqueNo  = PChar->id;
+    packet.ActIndex  = PChar->targid;
+    packet.EffectNum = effect;
+    packet.Type      = param;
+    packet.Status    = PChar->animation;
+}

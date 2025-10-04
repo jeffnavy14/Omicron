@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,33 +19,34 @@
 ===========================================================================
 */
 
-#ifndef _CSYNTHMESSAGEPACKET_H
-#define _CSYNTHMESSAGEPACKET_H
+#pragma once
 
 #include "common/cbasetypes.h"
 
-#include "basic.h"
-
-enum SYNTH_MESSAGE
-{
-    SYNTH_SUCCESS         = 0,
-    SYNTH_FAIL            = 1,
-    SYNTH_INTERRUPT       = 2,
-    SYNTH_BADRECIPE       = 3,
-    SYNTH_CANCEL          = 4,
-    SYNTH_FAILCRYSTAL     = 5,
-    SYNTH_NOSKILL         = 6,
-    SYNTH_CANCELRARE      = 7,
-    SYNTH_SUCCESS_DESYNTH = 12,
-    SYNTH_FAIL_CRITICAL   = 14, // 0x0E
-};
+#include "base.h"
 
 class CCharEntity;
+class CItemContainer;
 
-class CSynthMessagePacket : public CBasicPacket
+struct GP_GUILD_ITEM
 {
-public:
-    CSynthMessagePacket(CCharEntity* PChar, SYNTH_MESSAGE messageID, uint16 itemID = 0, uint8 quantity = 0);
+    uint16_t ItemNo;
+    uint8_t  Count;
+    uint8_t  Max;
+    int32_t  Price;
 };
 
-#endif
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0083
+// This packet is sent by the server to inform the client of a guild shops item list available for purchase.
+class GP_SERV_COMMAND_GUILD_BUYLIST final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_GUILD_BUYLIST, GP_SERV_COMMAND_GUILD_BUYLIST>
+{
+public:
+    struct PacketData
+    {
+        GP_GUILD_ITEM List[30];
+        uint8_t       Count;
+        uint8_t       Stat;
+    };
+
+    GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar, const CItemContainer* PGuild);
+};

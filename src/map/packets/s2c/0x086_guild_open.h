@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,30 @@
 ===========================================================================
 */
 
-#ifndef _CGUILDMENUBUYPACKET_H
-#define _CGUILDMENUBUYPACKET_H
+#pragma once
 
 #include "common/cbasetypes.h"
 
-#include "basic.h"
+#include "base.h"
 
-class CCharEntity;
-class CItemContainer;
-
-class CGuildMenuBuyPacket : public CBasicPacket
+enum class GP_SERV_COMMAND_GUILD_OPEN_STAT : uint8
 {
-public:
-    CGuildMenuBuyPacket(CCharEntity* PChar, CItemContainer* PGuild);
+    Open    = 0,
+    Close   = 1,
+    Holiday = 2
 };
 
-#endif
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0086
+// This packet is sent by the server to respond to the client requesting to open a guild shop menu.
+class GP_SERV_COMMAND_GUILD_OPEN final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_GUILD_OPEN, GP_SERV_COMMAND_GUILD_OPEN>
+{
+public:
+    struct PacketData
+    {
+        GP_SERV_COMMAND_GUILD_OPEN_STAT Stat;
+        uint8_t                         padding00[3];
+        uint32_t                        Time;
+    };
+
+    GP_SERV_COMMAND_GUILD_OPEN(GP_SERV_COMMAND_GUILD_OPEN_STAT status, uint8 open, uint8 close, uint8 holiday);
+};

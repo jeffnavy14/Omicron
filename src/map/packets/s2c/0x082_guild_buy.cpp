@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,21 @@
 ===========================================================================
 */
 
-#ifndef _CGUILDMENUSELLPACKET_H
-#define _CGUILDMENUSELLPACKET_H
+#include "0x082_guild_buy.h"
 
-#include "common/cbasetypes.h"
+#include "entities/charentity.h"
 
-#include "basic.h"
-
-class CCharEntity;
-class CItemContainer;
-
-class CGuildMenuSellPacket : public CBasicPacket
+GP_SERV_COMMAND_GUILD_BUY::GP_SERV_COMMAND_GUILD_BUY(const CCharEntity* PChar, const uint8 stock, const uint16 itemId, const uint8 quantity)
 {
-public:
-    CGuildMenuSellPacket(CCharEntity* PChar, CItemContainer* PGuild);
-};
+    if (PChar == nullptr)
+    {
+        ShowWarning("PChar is null.");
+        return;
+    }
 
-#endif
+    auto& packet = this->data();
+
+    packet.ItemNo = itemId;
+    packet.Count  = stock;
+    packet.Trade  = quantity;
+}

@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,29 +19,20 @@
 ===========================================================================
 */
 
-#include "common/utils.h"
+#pragma once
 
-#include "guild_menu.h"
+#include "common/cbasetypes.h"
 
-CGuildMenuPacket::CGuildMenuPacket(GUILDSTATUS status, uint8 open, uint8 close, uint8 holiday)
+// Synthesis elemental effects to be used in packets.
+enum class SynthesisEffect : int16_t
 {
-    this->setType(0x86);
-    this->setSize(0x0C);
-
-    ref<uint8>(0x04) = status;
-
-    switch (status)
-    {
-        case GUILD_OPEN:
-        case GUILD_CLOSE:
-        {
-            packBitsBE(buffer_.data() + 0x08, 0xFFFFFF, open, close - open);
-        }
-        break;
-        case GUILD_HOLYDAY:
-        {
-            ref<uint8>(0x08) = holiday;
-        }
-        break;
-    }
-}
+    None      = 0x0000,
+    Water     = 0x0010,
+    Wind      = 0x0011,
+    Fire      = 0x0012,
+    Earth     = 0x0013,
+    Lightning = 0x0014,
+    Ice       = 0x0015,
+    Light     = 0x0016,
+    Dark      = 0x0017
+};

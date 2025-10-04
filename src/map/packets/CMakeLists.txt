@@ -61,16 +61,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/fishing.h
     ${CMAKE_CURRENT_SOURCE_DIR}/fish_ranking.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/fish_ranking.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_buy.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_buy.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_buy_update.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_buy_update.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_sell.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_sell.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_sell_update.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/guild_menu_sell_update.h
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.h
     ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_details.cpp
@@ -145,12 +135,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/shop_menu.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_animation.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_animation.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_message.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_message.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_result.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_result.h
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.h
     ${CMAKE_CURRENT_SOURCE_DIR}/objective_utility.cpp

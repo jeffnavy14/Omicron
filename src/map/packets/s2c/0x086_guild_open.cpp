@@ -19,18 +19,29 @@
 ===========================================================================
 */
 
-#include "0x0ab_guild_buylist.h"
+#include "0x086_guild_open.h"
 
-#include "entities/charentity.h"
-#include "packets/s2c/0x083_guild_buylist.h"
+#include "common/utils.h"
 
-auto GP_CLI_COMMAND_GUILD_BUYLIST::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+GP_SERV_COMMAND_GUILD_OPEN::GP_SERV_COMMAND_GUILD_OPEN(const GP_SERV_COMMAND_GUILD_OPEN_STAT status, const uint8 open, const uint8 close, const uint8 holiday)
 {
-    return PacketValidator()
-        .mustNotEqual(PChar->PGuildShop, nullptr, "Character does not have a guild shop");
-}
+    auto& packet = this->data();
 
-void GP_CLI_COMMAND_GUILD_BUYLIST::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->pushPacket<GP_SERV_COMMAND_GUILD_BUYLIST>(PChar, PChar->PGuildShop);
+    packet.Stat = status;
+
+    switch (status)
+    {
+        case GP_SERV_COMMAND_GUILD_OPEN_STAT::Open:
+        case GP_SERV_COMMAND_GUILD_OPEN_STAT::Close:
+        {
+            // Pack guild hours into Time field (bits representing open to close hours)
+            packBitsBE(reinterpret_cast<uint8*>(&packet.Time), 0xFFFFFF, open, close - open);
+        }
+        break;
+        case GP_SERV_COMMAND_GUILD_OPEN_STAT::Holiday:
+        {
+            packet.Time = holiday;
+        }
+        break;
+    }
 }

@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,36 +19,34 @@
 ===========================================================================
 */
 
-#include <cstring>
-
-#include "guild_menu_sell.h"
+#include "0x085_guild_selllist.h"
 
 #include "entities/charentity.h"
 #include "item_container.h"
-
 #include "items/item_shop.h"
 
-CGuildMenuSellPacket::CGuildMenuSellPacket(CCharEntity* PChar, CItemContainer* PGuild)
-{
-    this->setType(0x85);
-    this->setSize(0xF8);
+#include <cstring>
 
+GP_SERV_COMMAND_GUILD_SELLLIST::GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const CItemContainer* PGuild)
+{
     if (PChar == nullptr || PGuild == nullptr)
     {
-        ShowError("CGuildMenuSellPacket::CGuildMenuSellPacket() - PChar or PGuild was null.");
+        ShowError("GP_SERV_COMMAND_GUILD_SELLLIST - PChar or PGuild was null.");
         return;
     }
+
+    auto& packet = this->data();
 
     uint8 ItemCount   = 0;
     uint8 PacketCount = 0;
 
     for (uint8 SlotID = 1; SlotID <= PGuild->GetSize(); ++SlotID)
     {
-        CItemShop* PItem = (CItemShop*)PGuild->GetItem(SlotID);
+        auto* PItem = static_cast<CItemShop*>(PGuild->GetItem(SlotID));
 
         if (PItem == nullptr)
         {
-            ShowError("CGuildMenuSellPacket::CGuildMenuSellPacket() - PItem was null for SlotID: %d", SlotID);
+            ShowError("GP_SERV_COMMAND_GUILD_SELLLIST - PItem was null for SlotID: %d", SlotID);
             return;
         }
 
@@ -60,23 +58,25 @@ CGuildMenuSellPacket::CGuildMenuSellPacket(CCharEntity* PChar, CItemContainer* P
 
         if (ItemCount == 30)
         {
-            ref<uint8>(0xF4) = ItemCount;
-            ref<uint8>(0xF5) = (PacketCount == 0 ? 0x40 : PacketCount);
+            packet.Count = ItemCount;
+            packet.Stat  = (PacketCount == 0 ? 0x40 : PacketCount);
 
             PChar->pushPacket(this->copy());
 
             ItemCount = 0;
             PacketCount++;
 
-            std::memset(buffer_.data() + 4, 0, PACKET_SIZE - 8);
+            std::memset(&packet, 0, sizeof(PacketData));
         }
-        ref<uint16>(0x08 * ItemCount + 0x04) = PItem->getID();
-        ref<uint8>(0x08 * ItemCount + 0x06)  = PItem->getQuantity();
-        ref<uint8>(0x08 * ItemCount + 0x07)  = PItem->getStackSize();
-        ref<uint32>(0x08 * ItemCount + 0x08) = PItem->getSellPrice();
+
+        packet.List[ItemCount].ItemNo = PItem->getID();
+        packet.List[ItemCount].Count  = PItem->getQuantity();
+        packet.List[ItemCount].Max    = PItem->getStackSize();
+        packet.List[ItemCount].Price  = PItem->getSellPrice();
 
         ItemCount++;
     }
-    ref<uint8>(0xF4) = ItemCount;
-    ref<uint8>(0xF5) = PacketCount + 0x80;
+
+    packet.Count = ItemCount;
+    packet.Stat  = PacketCount + 0x80;
 }

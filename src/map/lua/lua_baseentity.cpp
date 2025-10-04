@@ -115,8 +115,6 @@
 #include "packets/entity_enable_list.h"
 #include "packets/entity_update.h"
 #include "packets/event.h"
-#include "packets/guild_menu.h"
-#include "packets/guild_menu_buy.h"
 #include "packets/instance_entry.h"
 #include "packets/linkshell_equip.h"
 #include "packets/menu_jobpoints.h"
@@ -148,6 +146,7 @@
 #include "packets/s2c/0x05c_pendingnum.h"
 #include "packets/s2c/0x05d_pendingstr.h"
 #include "packets/s2c/0x05f_music.h"
+#include "packets/s2c/0x086_guild_open.h"
 #include "packets/s2c/0x0f9_res.h"
 #include "packets/server_ip.h"
 #include "packets/shop_items.h"
@@ -2513,24 +2512,24 @@ void CLuaBaseEntity::sendMenu(uint32 menu)
  *  Notes   : L2 and L3 only need simplified 24-hour time format (1,2,etc)
  ************************************************************************/
 
-bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 holiday)
+auto CLuaBaseEntity::sendGuild(const uint16 guildId, uint8 open, uint8 close, uint8 holiday) const -> bool
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
         ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-        return GUILD_OPEN;
+        return false;
     }
 
     if (open > close)
     {
         ShowWarning("Open Time (%d) exceeds Close Time (%d)", open, close);
-        return GUILD_OPEN;
+        return false;
     }
 
-    vanadiel_time::time_point vanaTime     = vanadiel_time::now();
-    uint8                     VanadielHour = static_cast<uint8>(vanadiel_time::get_hour(vanaTime));
+    const vanadiel_time::time_point vanaTime     = vanadiel_time::now();
+    const uint8                     VanadielHour = static_cast<uint8>(vanadiel_time::get_hour(vanaTime));
 
-    GUILDSTATUS status = GUILD_OPEN;
+    auto status = GP_SERV_COMMAND_GUILD_OPEN_STAT::Open;
 
     // Guild holiday - Removed in 2014
     // uint8 vanadielDay = static_cast<uint8>(vanadiel_time::get_weekday(vanaTime));
@@ -2542,16 +2541,16 @@ bool CLuaBaseEntity::sendGuild(uint16 guildID, uint8 open, uint8 close, uint8 ho
 
     if ((VanadielHour < open) || (VanadielHour >= close))
     {
-        status = GUILD_CLOSE;
+        status = GP_SERV_COMMAND_GUILD_OPEN_STAT::Close;
     }
 
-    CItemContainer* PGuildShop = guildutils::GetGuildShop(guildID);
+    CItemContainer* PGuildShop = guildutils::GetGuildShop(guildId);
     auto*           PChar      = static_cast<CCharEntity*>(m_PBaseEntity);
 
     PChar->PGuildShop = PGuildShop;
-    PChar->pushPacket<CGuildMenuPacket>(status, open, close, holiday);
+    PChar->pushPacket<GP_SERV_COMMAND_GUILD_OPEN>(status, open, close, holiday);
 
-    return status == GUILD_OPEN;
+    return status == GP_SERV_COMMAND_GUILD_OPEN_STAT::Open;
 }
 
 /************************************************************************

@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,18 +19,27 @@
 ===========================================================================
 */
 
-#include "synth_animation.h"
-#include "entities/charentity.h"
+#pragma once
 
-CSynthAnimationPacket::CSynthAnimationPacket(CCharEntity* PChar, uint16 effect, uint8 param)
+#include "common/cbasetypes.h"
+
+#include "0x083_guild_buylist.h"
+#include "base.h"
+
+class CCharEntity;
+class CItemContainer;
+
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0085
+// This packet is sent by the server to inform the client of a guild shops item list it is accepting for player sales.
+class GP_SERV_COMMAND_GUILD_SELLLIST final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_GUILD_SELLLIST, GP_SERV_COMMAND_GUILD_SELLLIST>
 {
-    this->setType(0x30);
-    this->setSize(0x10);
+public:
+    struct PacketData
+    {
+        GP_GUILD_ITEM List[30];
+        uint8_t       Count;
+        uint8_t       Stat;
+    };
 
-    ref<uint32>(0x04) = PChar->id;
-    ref<uint16>(0x08) = PChar->targid;
-
-    ref<uint16>(0x0A) = effect;
-    ref<uint8>(0x0C)  = param;
-    ref<uint8>(0x0D)  = PChar->animation;
-}
+    GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const CItemContainer* PGuild);
+};

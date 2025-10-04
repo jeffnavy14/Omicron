@@ -25,6 +25,8 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x02e_openmogmenu.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x02f_dig.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x02f_dig.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x030_effect.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x030_effect.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x033_eventstr.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x033_eventstr.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x038_schedulor.h
@@ -64,6 +66,20 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x05d_pendingstr.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x05f_music.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x05f_music.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x06f_combine_ans.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x06f_combine_ans.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x070_combine_inf.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x070_combine_inf.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x082_guild_buy.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x082_guild_buy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x083_guild_buylist.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x083_guild_buylist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x084_guild_sell.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x084_guild_sell.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x085_guild_selllist.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x085_guild_selllist.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x086_guild_open.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x086_guild_open.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0b4_config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0b4_config.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0fa_myroom_operation.h

@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,40 +19,40 @@
 ===========================================================================
 */
 
-#include "synth_result.h"
+#include "0x070_combine_inf.h"
+
 #include "entities/charentity.h"
-#include "synth_message.h"
+#include "enums/synthesis_result.h"
 #include "trade_container.h"
 
-CSynthResultMessagePacket::CSynthResultMessagePacket(CCharEntity* PChar, SYNTH_MESSAGE messageID, uint16 itemID, uint8 quantity)
+GP_SERV_COMMAND_COMBINE_INF::GP_SERV_COMMAND_COMBINE_INF(const CCharEntity* PChar, const SynthesisResult result, const uint16 itemId, const uint8 quantity)
 {
-    this->setType(0x70);
-    this->setSize(0x60);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04) = messageID;
+    packet.Result = result;
 
-    ref<uint16>(0x1a) = PChar->id;
+    packet.UniqueNo = PChar->id;
+    packet.ActIndex = PChar->targid;
 
-    if (itemID != 0)
+    if (itemId != 0)
     {
-        ref<uint8>(0x06)  = quantity;
-        ref<uint16>(0x08) = itemID;
+        packet.Count  = quantity;
+        packet.ItemNo = itemId;
     }
 
-    if (messageID == SYNTH_FAIL)
+    if (result == SynthesisResult::Failed)
     {
         uint8 count = 0;
         for (uint8 slotID = 1; slotID <= 8; ++slotID)
         {
-            uint32 slotQuantity = PChar->CraftContainer->getQuantity(slotID);
-            if (slotQuantity == 0)
+            if (PChar->CraftContainer->getQuantity(slotID) == 0)
             {
-                uint16 failedItemID             = PChar->CraftContainer->getItemID(slotID);
-                ref<uint16>(0x0A + (count * 2)) = failedItemID;
+                const uint16 failedItemID = PChar->CraftContainer->getItemID(slotID);
+                packet.BreakNo[count]     = failedItemID;
                 count++;
             }
         }
     }
 
-    std::memcpy(buffer_.data() + 0x1E, PChar->getName().c_str(), PChar->getName().size());
+    std::memcpy(packet.name, PChar->getName().c_str(), std::min(PChar->getName().size(), sizeof(packet.name)));
 }
