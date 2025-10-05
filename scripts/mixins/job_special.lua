@@ -149,7 +149,6 @@ local familyEES =
     [337] = xi.jsa.EES_QUADAV,  -- QuadavNM
     [358] = xi.jsa.EES_KINDRED, -- Kindred
     [359] = xi.jsa.EES_SHADE,   -- Fomor
-    [360] = xi.jsa.EES_YAGUDO,  -- YagudoNM
     [373] = xi.jsa.EES_GOBLIN,  -- Goblin_Armored
 }
 

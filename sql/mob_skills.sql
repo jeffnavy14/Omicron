@@ -591,10 +591,10 @@ INSERT INTO `mob_skills` VALUES (570,869,'circle_of_flames',1,0.0,10.0,2000,1500
 -- INSERT INTO `mob_skills` VALUES (574,318,'self-destruct',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (575,319,'self-destruct',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (576,910,'back_heel',0,0.0,7.0,2000,1500,4,0,0,2,0,0,0);
--- INSERT INTO `mob_skills` VALUES (577,321,'jettatura',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+-- INSERT INTO `mob_skills` VALUES (577,911,'jettatura',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (578,912,'nihility_song',1,0.0,12.5,2000,1500,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (579,323,'choke_breath',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (580,324,'fantod',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+-- INSERT INTO `mob_skills` VALUES (579,913,'choke_breath',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (580,914,'fantod',0,0.0,7.0,2000,1500,1,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (581,325,'blow',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (582,326,'cacodemonia',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (583,327,'beatdown',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
@@ -1366,7 +1366,7 @@ INSERT INTO `mob_skills` VALUES (1348,999,'siphon_discharge',4,0.0,15.0,2000,100
 INSERT INTO `mob_skills` VALUES (1349,1000,'mantle_pierce',0,0.0,7.0,2000,1000,4,0,0,3,0,0,0);
 INSERT INTO `mob_skills` VALUES (1350,1001,'ink_cloud',1,0.0,15.0,2000,1000,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1351,1002,'molluscous_mutation',0,0.0,7.0,2000,1000,1,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (1352,1003,'saline_coat',0,0.0,10.0,2000,1000,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (1352,1003,'saline_coat',0,0.0,10.0,2000,1000,1,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1353,1004,'aerial_collision',4,0.0,10.0,2000,1000,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1354,1005,'vapor_spray',4,0.0,12.0,2000,1000,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1355,1006,'spine_lash',0,0.0,12.0,2000,1000,4,0,0,0,0,0,0);
