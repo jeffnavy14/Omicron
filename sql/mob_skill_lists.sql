@@ -562,16 +562,16 @@ INSERT INTO `mob_skill_lists` VALUES ('Hecteyes',139,437);
 INSERT INTO `mob_skill_lists` VALUES ('Hecteyes',139,438);
 INSERT INTO `mob_skill_lists` VALUES ('Hecteyes',139,440);
 INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,576);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,577);
 INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,578);
--- INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,579);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,579);
 INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,580);
-INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',140,2828);
-INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,576);
-INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,578);
--- INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,579);
-INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,580);
--- INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,1330);
-INSERT INTO `mob_skill_lists` VALUES ('Hippogryph',141,2828);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,576);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,577);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,578);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,579);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,580);
+INSERT INTO `mob_skill_lists` VALUES ('Hippogryph_NM',141,1330);
 INSERT INTO `mob_skill_lists` VALUES ('Hound',142,465);
 INSERT INTO `mob_skill_lists` VALUES ('Hound',142,466);
 INSERT INTO `mob_skill_lists` VALUES ('Hound',142,467);
@@ -1256,11 +1256,6 @@ INSERT INTO `mob_skill_lists` VALUES ('Grav_iton',282,920);
 INSERT INTO `mob_skill_lists` VALUES ('Grav_iton',282,921);
 INSERT INTO `mob_skill_lists` VALUES ('Melusine',283,2198); -- winter_breeze
 -- 284: Oupire
-INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1731);
-INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1732);
-INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1733);
-INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1734);
-INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1738);
 INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1797);
 INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1798);
 INSERT INTO `mob_skill_lists` VALUES ('Gulool',285,1799);
@@ -2654,7 +2649,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Alexander_LowHP',785,2146); -- Void of Re
 INSERT INTO `mob_skill_lists` VALUES ('Alexander_LowHP',785,2147); -- Divine Judgment    "Accept thy destruction..."
 INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,576); -- back heel
 INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,578); -- nihlity song
--- INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,579); -- choke breath
+INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,579); -- choke breath
 INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,580); -- fantod
 INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,1330); -- hoof volley
 INSERT INTO `mob_skill_lists` VALUES ('Alkonost',786,2828); -- jettatura

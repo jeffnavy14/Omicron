@@ -2699,7 +2699,7 @@ namespace luautils
     // We use the subject. The return value is the message number or 0.
     // It is also necessary to somehow pass the message parameter (for example,
     // number of recovered MP)
-    void OnItemUse(CBaseEntity* PUser, CBaseEntity* PTarget, CItem* PItem)
+    int32 OnItemUse(CBaseEntity* PUser, CBaseEntity* PTarget, CItem* PItem, action_t& action)
     {
         TracyZoneScoped;
 
@@ -2708,7 +2708,7 @@ namespace luautils
         sol::function onItemUse = GetCacheEntryFromFilename(filename)["onItemUse"].get<sol::function>();
         if (!onItemUse.valid())
         {
-            return;
+            return 0;
         }
 
         // using an item removes invisible status effect
@@ -2720,13 +2720,15 @@ namespace luautils
             }
         }
 
-        auto result = onItemUse(PTarget, PUser, PItem);
+        auto result = onItemUse(PTarget, PUser, PItem, action);
         if (!result.valid())
         {
             sol::error err = result;
             ShowError("luautils::onItemUse: %s", err.what());
             ReportErrorToPlayer(PUser, err.what());
         }
+
+        return result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0;
     }
 
     // Trigger Code on an item when it has been dropped

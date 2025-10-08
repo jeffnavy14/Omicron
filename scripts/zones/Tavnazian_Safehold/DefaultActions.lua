@@ -27,7 +27,7 @@ return {
     ['Kokila']                  = { event = 376 },
     ['Korbi-Marobi']            = { event = 324 },
     ['Latteaune']               = { event = 100 },
-    ['Leporaitceau']            = { event = 171 },
+    ['Leporaitceau']            = { event = 180 },
     ['Liphatte']                = { event = 300 },
     ['Masis']                   = { event = 337 },
     ['Mengrenaux']              = { event = 270 },
