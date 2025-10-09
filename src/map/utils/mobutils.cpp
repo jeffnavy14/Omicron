@@ -1039,9 +1039,9 @@ namespace mobutils
                 }
                 break;
             case JOB_RNG:
-                if ((PMob->m_Family >= 126 && PMob->m_Family <= 130) || PMob->m_Family == 328) // Gigas
+                if (PMob->m_Family == 126) // Gigas
                 {
-                    PMob->defaultMobMod(MOBMOD_SPECIAL_SKILL, 658); // catapult only used while at range
+                    PMob->defaultMobMod(MOBMOD_SPECIAL_SKILL, 658); // Catapult only used while at range
                 }
                 else if (PMob->m_Family == 246) // Trolls
                 {

@@ -198,4 +198,5 @@ xi.mobSuperFamily =
     MACUIL           = 189,
     MEEBLE           = 190,
     BOMB_CLUSTER     = 191,
+    AMOEBAN          = 192,
 }

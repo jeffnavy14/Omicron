@@ -1654,7 +1654,7 @@ local function handleGilDistribution(player, treasureLevel)
 
     -- Distribute gil.
     for i = 1, #playersInZoneTable do
-        npcUtil.giveCurrency(playersInZoneTable[i], 'gil', gilPerEntity)
+        npcUtil.giveCurrency(playersInZoneTable[i], 'gil', gilPerEntity, true)
     end
 end
 
@@ -1937,8 +1937,8 @@ xi.treasure.onTrade = function(player, npc, trade, bypassType, bypassReward)
         -- Distribute gil.
         player:timer(2000, function(playerEntity)
             playerEntity:tradeComplete()
-            handleGilDistribution(playerEntity, treasureLevel)
             playerEntity:messageSpecial(ID.text.CHEST_UNLOCKED)
+            handleGilDistribution(playerEntity, treasureLevel)
             openAndMoveTreasure(npc, respawnType.REGULAR)
         end)
 

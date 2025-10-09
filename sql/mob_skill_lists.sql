@@ -4173,7 +4173,12 @@ INSERT INTO `mob_skill_lists` VALUES ('Gladiatorial_Weapon',2062,398);
 INSERT INTO `mob_skill_lists` VALUES ('Gladiatorial_Weapon',2062,513);
 INSERT INTO `mob_skill_lists` VALUES ('Gladiatorial_Weapon',2062,514);
 
--- Next ID : 2063
+INSERT INTO `mob_skill_lists` VALUES ('The_Waughoon_Kid',2063,581);
+INSERT INTO `mob_skill_lists` VALUES ('The_Waughoon_Kid',2063,583);
+INSERT INTO `mob_skill_lists` VALUES ('The_Waughoon_Kid',2063,584);
+INSERT INTO `mob_skill_lists` VALUES ('The_Waughoon_Kid',2063,586);
+
+-- Next ID : 2064
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section
