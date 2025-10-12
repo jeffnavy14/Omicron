@@ -206,7 +206,7 @@ namespace mobutils
         return static_cast<uint16>(damage);
     }
 
-    // Gest base skill rankings for ACC/ATT/EVA/MEVA
+    // Get base skill rankings for ACC/ATT/EVA/MEVA
     uint16 GetBaseSkill(CMobEntity* PMob, uint8 rank)
     {
         int8 mlvl = PMob->GetMLevel();

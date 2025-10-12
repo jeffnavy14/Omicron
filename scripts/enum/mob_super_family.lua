@@ -199,4 +199,5 @@ xi.mobSuperFamily =
     MEEBLE           = 190,
     BOMB_CLUSTER     = 191,
     AMOEBAN          = 192,
+    BELLADONNA       = 193,
 }
