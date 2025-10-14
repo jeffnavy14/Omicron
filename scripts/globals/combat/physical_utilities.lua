@@ -551,7 +551,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     if tpIgnoresDefense then
         local ignoreDefenseFactor = 1 - tpFactor
 
-        targetDefense = math.floor(targetDefense * ignoreDefenseFactor)
+        targetDefense = math.max(1, math.floor(targetDefense * ignoreDefenseFactor))
     end
 
     if isCannonball then
