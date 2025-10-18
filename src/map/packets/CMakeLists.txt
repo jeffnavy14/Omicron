@@ -15,16 +15,12 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/char_check.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_job_extra.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_job_extra.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/char_recast.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/char_recast.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_status.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_status.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_sync.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_sync.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_update.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_update.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/chat_message.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chat_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/conquest_map.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/conquest_map.h
     ${CMAKE_CURRENT_SOURCE_DIR}/delivery_box.cpp
@@ -33,12 +29,8 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/entity_set_name.h
     ${CMAKE_CURRENT_SOURCE_DIR}/entity_update.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/entity_update.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/event.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/event.h
     ${CMAKE_CURRENT_SOURCE_DIR}/fish_ranking.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/fish_ranking.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/macroequipset.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/macroequipset.h
     ${CMAKE_CURRENT_SOURCE_DIR}/map_marker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map_marker.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_jobpoints.cpp
@@ -47,8 +39,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_merit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_unity.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_unity.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/message_basic.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/message_basic.h
     ${CMAKE_CURRENT_SOURCE_DIR}/monipulator1.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/monipulator1.h
     ${CMAKE_CURRENT_SOURCE_DIR}/monipulator2.cpp
@@ -57,14 +47,10 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/pet_sync.h
     ${CMAKE_CURRENT_SOURCE_DIR}/quest_mission_log.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/quest_mission_log.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.h
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.h
     ${CMAKE_CURRENT_SOURCE_DIR}/objective_utility.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/objective_utility.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_in.cpp

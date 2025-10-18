@@ -28,8 +28,8 @@
 
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
-#include "packets/chat_message.h"
 #include "packets/s2c/0x009_message.h"
+#include "packets/s2c/0x017_chat_std.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x027_talknumwork2.h"
 #include "packets/s2c/0x02a_talknumwork.h"
@@ -49,6 +49,7 @@
 
 #include "battleutils.h"
 #include "charutils.h"
+#include "enums/chat_message_type.h"
 #include "enums/four_cc.h"
 #include "enums/key_items.h"
 #include "enums/msg_std.h"
@@ -58,6 +59,7 @@
 #include "map_engine.h"
 #include "mob_modifier.h"
 #include "packets/c2s/0x110_fishing_2.h"
+#include "packets/s2c/0x029_battle_message.h"
 #include "status_effect_container.h"
 #include "zoneutils.h"
 
@@ -1881,7 +1883,7 @@ namespace fishingutils
             if (skillAmount > 0)
             {
                 PChar->RealSkills.skill[SKILL_FISHING] += skillAmount;
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SKILL_FISHING, skillAmount, 38);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SKILL_FISHING, skillAmount, static_cast<MSGBASIC_ID>(38));
 
                 if ((charSkill / 10) < (charSkill + skillAmount) / 10)
                 {
@@ -1893,7 +1895,7 @@ namespace fishingutils
                     }
 
                     PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
-                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, SKILL_FISHING, (charSkill + skillAmount) / 10, 53);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SKILL_FISHING, (charSkill + skillAmount) / 10, static_cast<MSGBASIC_ID>(53));
                 }
 
                 charutils::SaveCharSkills(PChar, SKILL_FISHING);
@@ -1933,14 +1935,14 @@ namespace fishingutils
         if (!settings::get<bool>("map.FISHING_ENABLE"))
         {
             ShowWarning("Fishing is currently disabled");
-            PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, "Fishing is currently disabled");
+            PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, "Fishing is currently disabled");
             PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Fishing);
             return;
         }
 
         if (PChar->GetMLevel() < settings::get<uint8>("map.FISHING_MIN_LEVEL"))
         {
-            PChar->pushPacket<CChatMessagePacket>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, "Your level is too low to fish.");
+            PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, CHAT_MESSAGE_TYPE::MESSAGE_SYSTEM_1, "Your level is too low to fish.");
             PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Fishing);
             return;
         }

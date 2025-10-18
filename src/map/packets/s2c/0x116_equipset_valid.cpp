@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,11 +19,11 @@
 ===========================================================================
 */
 
-#include "macroequipset.h"
+#include "0x116_equipset_valid.h"
 
-#include "c2s/0x052_equipset_check.h"
 #include "item_container.h"
 #include "items/item_equipment.h"
+#include "packets/c2s/0x052_equipset_check.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
 
@@ -37,10 +37,9 @@
 // etc
 // Later, these sets may be used for /lockstyleset.
 // /lockstyleset commands also have their own checking for slots that should never be used together
-CAddtoEquipSet::CAddtoEquipSet(const CCharEntity* PChar, const GP_CLI_COMMAND_EQUIPSET_CHECK& data)
+GP_SERV_COMMAND_EQUIPSET_VALID::GP_SERV_COMMAND_EQUIPSET_VALID(const CCharEntity* PChar, const GP_CLI_COMMAND_EQUIPSET_CHECK& data)
 {
-    this->setType(0x116);
-    this->setSize(0x46);
+    auto& packet = this->data();
 
     CItemEquipment* equipSet[16]         = {};
     uint8           equipSetBag[16]      = {};
@@ -178,17 +177,17 @@ CAddtoEquipSet::CAddtoEquipSet(const CCharEntity* PChar, const GP_CLI_COMMAND_EQ
         // If the item exists and it can be equipped in that slot
         if (equipSet[i] && equipSet[i]->getEquipSlotId() & (1 << i))
         {
-            // set Active, pack in bag index
-            ref<uint8>(0x04 + 0x04 * i)  = (1 | (equipSetBag[i] << 2));
-            ref<uint8>(0x05 + 0x04 * i)  = equipSetBagIndex[i];
-            ref<uint16>(0x06 + 0x04 * i) = equipSet[i]->getID();
+            // set HasItemFlg=1, pack in Category in upper 6 bits
+            packet.Items[i].HasItemFlg = 1;
+            packet.Items[i].Category   = equipSetBag[i];
+            packet.Items[i].ItemIndex  = equipSetBagIndex[i];
+            packet.Items[i].ItemNo     = equipSet[i]->getID();
         }
         else if (equipSetDisabled[i])
         {
-            // set the disabled bit
-            ref<uint8>(0x04 + 0x04 * i)  = 0x02;
-            ref<uint8>(0x05 + 0x04 * i)  = 0;
-            ref<uint16>(0x06 + 0x04 * i) = 0;
+            packet.Items[i].RemoveItemFlg = 1;
+            packet.Items[i].ItemIndex     = 0;
+            packet.Items[i].ItemNo        = 0;
         }
     }
 }

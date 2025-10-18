@@ -4185,7 +4185,14 @@ INSERT INTO `mob_skill_lists` VALUES ('Prehistoric_Pigeons',2064,922); -- Blind 
 INSERT INTO `mob_skill_lists` VALUES ('Prehistoric_Pigeons',2064,923); -- Giga Scream
 INSERT INTO `mob_skill_lists` VALUES ('Prehistoric_Pigeons',2064,924); -- Dread Dive
 
--- Next ID : 2065
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,472);  -- Grave Reel
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,473);  -- Ectosmash
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,474);  -- Fear Touch
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,475);  -- Terror Touch
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,1339); -- Bane
+INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,477);  -- Dark Sphere
+
+-- Next ID : 2068
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

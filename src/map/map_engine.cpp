@@ -59,7 +59,7 @@
 
 #include "items/item_equipment.h"
 
-#include "packets/chat_message.h"
+#include "packets/s2c/0x017_chat_std.h"
 
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
@@ -298,10 +298,10 @@ void MapEngine::do_init()
         ShowInfo("./losmeshes/ directory isn't present or is empty");
     }
 
+    zoneutils::Initialize(mapIPP, engineConfig_.lazyZones, !engineConfig_.isTestServer);
+
     if (!engineConfig_.lazyZones)
     {
-        ShowInfo("do_init: loading zones");
-        zoneutils::LoadZoneList(mapIPP);
         instanceutils::LoadInstanceList(mapIPP);
         CTransportHandler::getInstance()->InitializeTransport(mapIPP);
     }
@@ -442,7 +442,7 @@ void MapEngine::onGM(const std::vector<std::string>& inputs) const
     charutils::SaveCharGMLevel(PChar);
 
     fmt::print("> Promoting {} to GM level {}\n", PChar->name, level);
-    PChar->pushPacket<CChatMessagePacket>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
+    PChar->pushPacket<GP_SERV_COMMAND_CHAT_STD>(PChar, MESSAGE_SYSTEM_3, fmt::format("You have been set to GM level {}.", level));
 }
 
 auto MapEngine::networking() const -> MapNetworking&

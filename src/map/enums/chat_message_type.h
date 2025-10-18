@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,17 +21,8 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-#include "common/logging.h"
-
-#include "basic.h"
-
-namespace ipc
-{
-    struct ChatMessageAssist;
-}
-// Extracted from client.
-enum CHAT_MESSAGE_TYPE : uint8
+// TODO: Migrate to enum class
+enum CHAT_MESSAGE_TYPE : uint8_t
 {
     MESSAGE_SAY       = 0,
     MESSAGE_SHOUT     = 1,
@@ -67,30 +58,4 @@ enum CHAT_MESSAGE_TYPE : uint8
     MESSAGE_UNITY         = 33,
     MESSAGE_JP_ASSIST     = 34,
     MESSAGE_NA_ASSIST     = 35,
-};
-DECLARE_FORMAT_AS_UNDERLYING(CHAT_MESSAGE_TYPE);
-
-// This is internal and has no relation to anything to do with the client.
-// Used mainly for `printToArea`.
-enum class ChatMessageArea : uint8
-{
-    System = 0, // All zones world wide
-    Say    = 1, // Say range
-    Shout  = 2, // Shout
-    Party  = 3, // Party and Alliance
-    Yell   = 4, // Yell zones only
-    Unity  = 5, // Currently -all- unities
-    Assist = 6, // Assist zones
-};
-DECLARE_FORMAT_AS_UNDERLYING(ChatMessageArea);
-
-class CCharEntity;
-
-class CChatMessagePacket : public CBasicPacket
-{
-public:
-    static const uint16 id{ 0x17 };
-    CChatMessagePacket(CCharEntity* PChar, CHAT_MESSAGE_TYPE MessageType, std::string const& message, std::string const& sender = std::string());
-    CChatMessagePacket(const std::string& name, uint16 zone, CHAT_MESSAGE_TYPE MessageType, const std::string& message, uint8 gmLevel = 0);
-    CChatMessagePacket(const ipc::ChatMessageAssist& payload);
 };
