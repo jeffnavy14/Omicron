@@ -19,18 +19,29 @@
 ===========================================================================
 */
 
-#include "0x114_map_markers.h"
+#include "0x063_miscdata_job_points.h"
 
 #include "entities/charentity.h"
-#include "packets/s2c/0x063_miscdata_homepoints.h"
+#include "enums/key_items.h"
+#include "job_points.h"
+#include "utils/charutils.h"
 
-auto GP_CLI_COMMAND_MAP_MARKERS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+GP_SERV_COMMAND_MISCDATA::JOB_POINTS::JOB_POINTS(const CCharEntity* PChar)
 {
-    // No parameters to validate for this packet.
-    return PacketValidator();
-}
+    auto& packet = this->data();
 
-void GP_CLI_COMMAND_MAP_MARKERS::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::HOMEPOINTS>(PChar);
+    packet.type      = GP_SERV_COMMAND_MISCDATA_TYPE::JobPoints;
+    packet.unknown06 = sizeof(PacketData);
+
+    packet.access = charutils::hasKeyItem(PChar, KeyItem::JOB_BREAKER);
+
+    const JobPoints_t* PJobPoints = PChar->PJobPoints->GetAllJobPoints();
+
+    // Start at WAR (1) since NON (0) is unused
+    for (uint8 i = 1; i < MAX_JOBTYPE; i++)
+    {
+        packet.jobs[i].capacityPoints = PJobPoints[i].capacityPoints;
+        packet.jobs[i].currentJp      = PJobPoints[i].currentJp;
+        packet.jobs[i].totalJpSpent   = PJobPoints[i].totalJpSpent;
+    }
 }

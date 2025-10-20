@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,25 +19,26 @@
 ===========================================================================
 */
 
-#include "status_effects.h"
+#include "0x063_miscdata_status_icons.h"
+
+#include "common/earth_time.h"
 #include "common/timer.h"
 #include "entities/charentity.h"
 #include "status_effect_container.h"
 
-CStatusEffectPacket::CStatusEffectPacket(CCharEntity* PChar)
+GP_SERV_COMMAND_MISCDATA::STATUS_ICONS::STATUS_ICONS(const CCharEntity* PChar)
 {
-    this->setType(0x63);
-    this->setSize(0xC8);
+    auto& packet = this->data();
+
+    packet.type      = GP_SERV_COMMAND_MISCDATA_TYPE::StatusIcons;
+    packet.unknown06 = sizeof(PacketData);
+
+    // Initialize all icons to 0xFF (no icon)
+    std::ranges::fill(packet.icons, 0x00FF);
 
     int i = 0;
-
-    std::fill(reinterpret_cast<uint16*>(buffer_.data() + 0x08), reinterpret_cast<uint16*>(buffer_.data() + 0x08) + 32, 0x00FF);
-
-    ref<uint8>(0x04) = 0x09;
-    ref<uint8>(0x06) = 0xC4;
-
     // clang-format off
-    PChar->StatusEffectContainer->ForEachEffect([this, &i](CStatusEffect* PEffect)
+    PChar->StatusEffectContainer->ForEachEffect([&packet, &i](CStatusEffect* PEffect)
     {
         if (PEffect->GetIcon() != 0)
         {
@@ -49,8 +50,8 @@ CStatusEffectPacket::CStatusEffectPacket(CCharEntity* PChar)
                 durationRemaining += earth_time::vanadiel_timestamp();
                 durationRemaining *= 60;
             }
-            ref<uint16>(0x08 + (i * 0x02)) = PEffect->GetIcon();
-            ref<uint32>(0x48 + (i * 0x04)) = durationRemaining;
+            packet.icons[i]      = PEffect->GetIcon();
+            packet.timestamps[i] = durationRemaining;
             ++i;
         }
     });

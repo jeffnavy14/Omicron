@@ -40,10 +40,6 @@
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/conquest_map.h"
-#include "packets/menu_jobpoints.h"
-#include "packets/menu_merit.h"
-#include "packets/monipulator1.h"
-#include "packets/monipulator2.h"
 #include "packets/objective_utility.h"
 #include "packets/quest_mission_log.h"
 #include "packets/s2c/0x009_message.h"
@@ -96,6 +92,7 @@
 #include "charutils.h"
 #include "enums/item_lockflg.h"
 #include "itemutils.h"
+#include "job_points.h"
 #include "map_engine.h"
 #include "petutils.h"
 #include "puppetutils.h"
@@ -106,6 +103,10 @@
 #include "items/item_furnishing.h"
 #include "items/item_linkshell.h"
 #include "packets/s2c/0x029_battle_message.h"
+#include "packets/s2c/0x063_miscdata_job_points.h"
+#include "packets/s2c/0x063_miscdata_merits.h"
+#include "packets/s2c/0x063_miscdata_monstrosity.h"
+#include "packets/s2c/0x063_miscdata_unity.h"
 #include "packets/s2c/0x110_unity.h"
 #include "packets/s2c/0x111_roe_activelog.h"
 #include "packets/s2c/0x112_roe_log.h"
@@ -1339,6 +1340,78 @@ namespace charutils
         PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(); // "Finish" type
     }
 
+    // Sends all 64 Unity ranking packets to the client (0x063 type 0x07)
+    // Packet sequence:
+    //   - PreviousWeek (resultSet 0x00): 32 packets (types 0x00-0x1F)
+    //   - CurrentWeek  (resultSet 0x01): 32 packets (types 0x00-0x1F)
+    // Client buffers all packets and marks data ready when complete.
+    // Sent on zone-in and when Unity menu is opened.
+    // TODO: Some of it needs further research to determine exact values.
+    void SendUnityPackets(CCharEntity* PChar)
+    {
+        // Query database for unity system data
+        const auto rset = db::preparedStmt("SELECT leader, members_current, points_current, members_prev, points_prev "
+                                           "FROM unity_system");
+
+        std::pair<int32, double> unity_current[11];
+        std::pair<int32, double> unity_previous[11];
+
+        FOR_DB_MULTIPLE_RESULTS(rset)
+        {
+            auto unity_leader = rset->get<int>("leader") - 1;
+            if (unity_leader >= 0 && unity_leader < 11)
+            {
+                unity_current[unity_leader].first   = rset->get<int32>("members_current");
+                unity_current[unity_leader].second  = rset->get<double>("points_current");
+                unity_previous[unity_leader].first  = rset->get<int32>("members_prev");
+                unity_previous[unity_leader].second = rset->get<double>("points_prev");
+            }
+        }
+
+        // Previous week (full results)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::PreviousWeek, UNITY_DATATYPE::Base);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::MEMBERS>(UNITY_RESULTSET::PreviousWeek, unity_previous);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::POINTS>(UNITY_RESULTSET::PreviousWeek, unity_previous);
+        // Types 0x03-0x0F (empty/flag packets)
+        for (int i = 3; i < 0x10; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::PreviousWeek, static_cast<UNITY_DATATYPE>(i));
+        }
+        // Types 0x10-0x1F for PreviousWeek (mostly 0x0008 flags from retail captures)
+        for (int i = 0x10; i < 0x20; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::PreviousWeek, i, 0x0008);
+        }
+
+        // Current week (partial results)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::CurrentWeek, UNITY_DATATYPE::Base);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::MEMBERS>(UNITY_RESULTSET::CurrentWeek, unity_current);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::POINTS>(UNITY_RESULTSET::CurrentWeek, unity_current);
+        // Types 0x03-0x0F (empty/flag packets)
+        for (int i = 3; i < 0x10; i++)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::BASE>(UNITY_RESULTSET::CurrentWeek, static_cast<UNITY_DATATYPE>(i));
+        }
+        // Types 0x10-0x1F for CurrentWeek with appropriate values
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x10, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x11, 0x2CC2);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x12, 0x6867); // ASCII 'gh'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x13, 0x6E6F); // ASCII 'on'
+        // Type 0x14: Personal ranking points (TODO: calculate from player's Unity contributions)
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::PERSONAL>(UNITY_RESULTSET::CurrentWeek, 0);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x15, 0x3605);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x16, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x17, 0x6C6C); // ASCII 'll'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x18, 0x616E); // ASCII 'na'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x19, 0x6767); // ASCII 'gg'
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1A, 0x0000);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1B, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1C, 0x2007);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1D, 0x0022);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1E, 0x0004);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::UNITY::DATA>(UNITY_RESULTSET::CurrentWeek, 0x1F, 0x2007);
+    }
+
     /************************************************************************
      *                                                                       *
      *  Add a new item to the character in the selected container            *
@@ -1507,9 +1580,9 @@ namespace charutils
         PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
         PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CCharStatusPacket>(PChar);
-        PChar->pushPacket<CMenuMeritPacket>(PChar);
-        PChar->pushPacket<CMonipulatorPacket1>(PChar);
-        PChar->pushPacket<CMonipulatorPacket2>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
         PChar->pushPacket<CCharSyncPacket>(PChar);
     }
 
@@ -4972,7 +5045,7 @@ namespace charutils
             {
                 PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PChar, PMob, PChar->PJobPoints->GetJobPoints(), 0, 719));
             }
-            PChar->pushPacket<CMenuJobPointsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::JOB_POINTS>(PChar);
 
             if (PMob != PChar) // Only mob kills count for gain EXP records
             {
@@ -5065,9 +5138,9 @@ namespace charutils
                 PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
                 PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
                 PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
-                PChar->pushPacket<CMenuMeritPacket>(PChar);
-                PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, false);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
@@ -5301,9 +5374,9 @@ namespace charutils
                 PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
                 PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
                 PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
-                PChar->pushPacket<CMenuMeritPacket>(PChar);
-                PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
@@ -5323,9 +5396,9 @@ namespace charutils
 
         if (onLimitMode)
         {
-            PChar->pushPacket<CMenuMeritPacket>(PChar);
-            PChar->pushPacket<CMonipulatorPacket1>(PChar);
-            PChar->pushPacket<CMonipulatorPacket2>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
         }
 
         if (PMob != PChar) // Only mob kills count for gain EXP records

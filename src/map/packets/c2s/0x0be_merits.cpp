@@ -25,12 +25,11 @@
 #include "packets/char_job_extra.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
-#include "packets/menu_merit.h"
-#include "packets/monipulator1.h"
-#include "packets/monipulator2.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "packets/s2c/0x061_clistatus.h"
 #include "packets/s2c/0x062_clistatus2.h"
+#include "packets/s2c/0x063_miscdata_merits.h"
+#include "packets/s2c/0x063_miscdata_monstrosity.h"
 #include "packets/s2c/0x08c_merit.h"
 #include "packets/s2c/0x0ac_command_data.h"
 #include "packets/s2c/0x119_abil_recast.h"
@@ -54,9 +53,9 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
             if (db::preparedStmt("UPDATE char_exp SET mode = ? WHERE charid = ? LIMIT 1", Param1, PChar->id))
             {
                 PChar->MeritMode = Param1;
-                PChar->pushPacket<CMenuMeritPacket>(PChar);
-                PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
             }
         }
         break;
@@ -81,9 +80,9 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
                             break;
                     }
 
-                    PChar->pushPacket<CMenuMeritPacket>(PChar);
-                    PChar->pushPacket<CMonipulatorPacket1>(PChar);
-                    PChar->pushPacket<CMonipulatorPacket2>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MERITS>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY1>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::MONSTROSITY2>(PChar);
                     PChar->pushPacket<GP_SERV_COMMAND_MERIT>(PChar, merit);
 
                     charutils::SaveCharExp(PChar, PChar->GetMJob());

@@ -158,6 +158,9 @@ xi.mobSkill =
     JUDGMENT_BOLT_2          =  918, -- Confirmed usage: Untargetable avatar astral flow. (Ex. Kirin) (Ramuh model avatar)
     SEARING_LIGHT_2          =  919, -- Confirmed usage: Untargetable avatar astral flow. (Ex. Kirin, Crimson-toothed Pawberry) (Carbuncle model avatar)
 
+    AJIDO_WARP_OUT           =  977, -- Windurst 9-2 Ajido teleport
+    AJIDO_WARP_IN            =  978, -- Windurst 9-2 Ajido teleport
+
     PHASE_SHIFT_1_EXOPLATES  =  993,
 
     PHASE_SHIFT_2_EXOPLATES  =  997,

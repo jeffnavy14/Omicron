@@ -104,6 +104,21 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x061_clistatus.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x062_clistatus2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x062_clistatus2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_homepoints.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_homepoints.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_job_points.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_job_points.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_merits.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_merits.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_monstrosity.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_monstrosity.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_status_icons.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_status_icons.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_unity.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_unity.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_unknown.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_miscdata_unknown.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x065_wpos2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x065_wpos2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x06f_combine_ans.h

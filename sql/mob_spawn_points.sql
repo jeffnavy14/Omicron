@@ -5929,9 +5929,9 @@ INSERT INTO `mob_spawn_points` VALUES (16896148,0,'Lunantishee','Lunantishee',6,
 INSERT INTO `mob_spawn_points` VALUES (16896149,0,'Ignidrake','Ignidrake',7,-504.307,0.564,755.287,74);
 INSERT INTO `mob_spawn_points` VALUES (16896150,0,'Nitro_Cluster','Nitro Cluster',8,-809.600,-43.681,146.629,105);
 INSERT INTO `mob_spawn_points` VALUES (16896151,0,'Nitro_Cluster','Nitro Cluster',8,-821.305,-44.016,147.343,248);
-INSERT INTO `mob_spawn_points` VALUES (16896152,0,'Spell_Spitter_Spilospok','Spell Spitter Spilospok',13,293.671,91.900,825.778,49);
-INSERT INTO `mob_spawn_points` VALUES (16896153,0,'Chemical_Cook_Chemachiq','Chemical Cook Chemachiq',14,290.854,90.566,834.649,84);
-INSERT INTO `mob_spawn_points` VALUES (16896154,0,'Book_Browser_Bokabraq','Book Browser Bokabraq',15,289.313,91.846,828.107,232);
+INSERT INTO `mob_spawn_points` VALUES (16896152,0,'Spell_Spitter_Spilospok','Spell Spitter Spilospok',13,278.386,88.067,841.088,27);
+INSERT INTO `mob_spawn_points` VALUES (16896153,0,'Chemical_Cook_Chemachiq','Chemical Cook Chemachiq',14,273.748,88.160,840.823,20);
+INSERT INTO `mob_spawn_points` VALUES (16896154,0,'Book_Browser_Bokabraq','Book Browser Bokabraq',15,278.558,88.079,844.786,25);
 INSERT INTO `mob_spawn_points` VALUES (16896155,0,'Unstable_Cluster','Unstable Cluster',16,309.500,-1.189,-706.500,134);
 
 -- Storms of Fate

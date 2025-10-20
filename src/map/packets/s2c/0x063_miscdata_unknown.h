@@ -19,18 +19,28 @@
 ===========================================================================
 */
 
-#include "0x114_map_markers.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "packets/s2c/0x063_miscdata_homepoints.h"
+#include "0x063_miscdata.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_MAP_MARKERS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+class CCharEntity;
+
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0063
+// This packet is sent by the server to inform the client of multiple different kinds of information.
+namespace GP_SERV_COMMAND_MISCDATA
 {
-    // No parameters to validate for this packet.
-    return PacketValidator();
-}
+    // Type 0x0A: Unknown (data: 32 bytes, total: 40 bytes)
+    class UNKNOWN final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_MISCDATA, UNKNOWN>
+    {
+    public:
+        struct PacketData
+        {
+            GP_SERV_COMMAND_MISCDATA_TYPE type;      // PS2: type
+            uint16_t                      unknown06; // PS2: (New; did not exist.)
+            uint8_t                       data[32];
+        };
 
-void GP_CLI_COMMAND_MAP_MARKERS::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::HOMEPOINTS>(PChar);
-}
+        UNKNOWN(CCharEntity* PChar);
+    };
+} // namespace GP_SERV_COMMAND_MISCDATA

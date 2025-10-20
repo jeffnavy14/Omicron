@@ -19,18 +19,25 @@
 ===========================================================================
 */
 
-#include "0x114_map_markers.h"
+#include "0x063_miscdata_homepoints.h"
 
 #include "entities/charentity.h"
-#include "packets/s2c/0x063_miscdata_homepoints.h"
 
-auto GP_CLI_COMMAND_MAP_MARKERS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+GP_SERV_COMMAND_MISCDATA::HOMEPOINTS::HOMEPOINTS(const CCharEntity* PChar)
 {
-    // No parameters to validate for this packet.
-    return PacketValidator();
-}
+    auto& packet = this->data();
 
-void GP_CLI_COMMAND_MAP_MARKERS::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::HOMEPOINTS>(PChar);
+    packet.type      = GP_SERV_COMMAND_MISCDATA_TYPE::Homepoints;
+    packet.unknown06 = sizeof(PacketData);
+
+    // Copy teleport masks directly
+    std::memcpy(packet.homePoint, PChar->teleport.homepoint.access, sizeof(packet.homePoint));
+    std::memcpy(packet.survivalGuide, PChar->teleport.survival.access, sizeof(packet.survivalGuide));
+    std::memcpy(packet.waypoint, PChar->teleport.waypoints.access, sizeof(packet.waypoint));
+
+    // Everything below is untested/unimplemented
+    // packet.atmos        = PChar->teleport.pastMaw;
+    // packet.eschanPortal = PChar->teleport.eschanPortal;
+    // packet.telepoint = PChar->teleport.telepoint;
+    // packet.unknown00 = PChar->teleport.unknown00;
 }

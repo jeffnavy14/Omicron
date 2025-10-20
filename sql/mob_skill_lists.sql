@@ -4192,7 +4192,17 @@ INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,475);  -- Terror Touch
 INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,1339); -- Bane
 INSERT INTO `mob_skill_lists` VALUES ('Celery',2067,477);  -- Dark Sphere
 
--- Next ID : 2068
+INSERT INTO `mob_skill_lists` VALUES ('Spell_Spitter_Spilospok',2066,1082); -- Smokebomb
+INSERT INTO `mob_skill_lists` VALUES ('Spell_Spitter_Spilospok',2066,1084); -- Crispy Candle
+INSERT INTO `mob_skill_lists` VALUES ('Spell_Spitter_Spilospok',2066,1086); -- Paralysis Shower
+
+INSERT INTO `mob_skill_lists` VALUES ('Book_Browser_Bokabraq',2067,1084); -- Crispy Candle
+INSERT INTO `mob_skill_lists` VALUES ('Book_Browser_Bokabraq',2067,1088); -- Goblin Rush
+
+INSERT INTO `mob_skill_lists` VALUES ('Chemical_Cook_Chemachiq',2068,1084); -- Crispy Candle
+INSERT INTO `mob_skill_lists` VALUES ('Chemical_Cook_Chemachiq',2068,1088); -- Goblin Rush
+
+-- Next ID : 2069
 
 -- ------------------------------------------------------------
 -- Start of Ambuscade section

@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,19 +19,16 @@
 ===========================================================================
 */
 
-#ifndef _CSTATUSEFFECTPACKET_H
-#define _CSTATUSEFFECTPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-class CCharEntity;
-
-class CStatusEffectPacket : public CBasicPacket
+enum class GP_SERV_COMMAND_MISCDATA_TYPE : uint16_t
 {
-public:
-    CStatusEffectPacket(CCharEntity* PChar);
+    Merits       = 0x02,
+    Monstrosity1 = 0x03,
+    Monstrosity2 = 0x04,
+    JobPoints    = 0x05,
+    Homepoints   = 0x06,
+    Unity        = 0x07,
+    StatusIcons  = 0x09,
+    Unknown      = 0x0A,
 };
-
-#endif
