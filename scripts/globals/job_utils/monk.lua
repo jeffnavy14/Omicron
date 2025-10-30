@@ -35,8 +35,10 @@ xi.job_utils.monk.useBoost = function(player, target, ability)
 
     if player:hasStatusEffect(xi.effect.BOOST) then
         local effect = player:getStatusEffect(xi.effect.BOOST)
-        effect:setPower(effect:getPower() + power)
-        player:addMod(xi.mod.ATTP, power)
+
+        effect:setPower(effect:getPower() + power) -- Store updated power in boost for zoning
+        effect:addMod(xi.mod.ATTP, power) -- Add to effect for later cleanup (this does not add to the player directly after effectObject.onEffectGain)
+        player:addMod(xi.mod.ATTP, power) -- Add to player so they get the immediate boost
     else
         player:addStatusEffect(xi.effect.BOOST, power, 0, 180)
     end
