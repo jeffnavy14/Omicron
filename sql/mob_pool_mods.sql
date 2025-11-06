@@ -362,6 +362,9 @@ INSERT INTO `mob_pool_mods` VALUES (3824,29,2,1); -- ASSIST: 2
 -- Tavnazian Ram
 INSERT INTO `mob_pool_mods` VALUES (3853,28,23,1); -- EXP_BONUS: 23
 
+-- Tiny Mandragora
+INSERT INTO `mob_pool_mods` VALUES (3924,91,1,1); -- H2H_SINGLE_SWING: 1
+
 -- Tombstone Prototype
 INSERT INTO `mob_pool_mods` VALUES (3941,163,-1000,0); -- DMGMAGIC: -1000
 

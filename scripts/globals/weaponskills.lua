@@ -675,7 +675,7 @@ end
 xi.weaponskills.doPhysicalWeaponskill = function(attacker, target, wsID, wsParams, tp, action, primaryMsg, taChar)
     -- Set up conditions and wsParams used for calculating weaponskill damage
     local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
-    local gearAcc = math.floor(gearFTP * 10)
+    local gearAcc = math.ceil(gearFTP * 100) -- TODO: Separate gear fTP and acc bonuses
     local attack =
     {
         ['type']       = xi.attackType.PHYSICAL,
@@ -754,7 +754,7 @@ end
 xi.weaponskills.doRangedWeaponskill = function(attacker, target, wsID, wsParams, tp, action, primaryMsg)
     -- Set up conditions and params used for calculating weaponskill damage
     local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
-    local gearAcc = math.floor(gearFTP * 10)
+    local gearAcc = math.ceil(gearFTP * 100) -- TODO: Separate gear fTP and acc bonuses
 
     local attack =
     {
@@ -855,7 +855,7 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
     }
 
     local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
-    local gearAcc = math.floor(gearFTP * 10) + attacker:getMod(xi.mod.WSACC)
+    local gearAcc = math.ceil(gearFTP * 100) + attacker:getMod(xi.mod.WSACC) -- TODO: Separate gear fTP and acc bonuses
     local fint    = utils.clamp(8 + attacker:getStat(xi.mod.INT) - target:getStat(xi.mod.INT), -32, 32)
     local dmg     = 0
 

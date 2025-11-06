@@ -830,8 +830,7 @@ int32 CBattleEntity::addMP(int32 mp)
     return abs(mp);
 }
 
-int32 CBattleEntity::takeDamage(int32 amount, CBattleEntity* attacker /* = nullptr*/, ATTACK_TYPE attackType /* = ATTACK_NONE*/,
-                                DAMAGE_TYPE damageType /* = DAMAGE_NONE*/, bool isSkillchainDamage /* = false */)
+int32 CBattleEntity::takeDamage(int32 amount, CBattleEntity* attacker /* = nullptr*/, ATTACK_TYPE attackType /* = ATTACK_NONE*/, DAMAGE_TYPE damageType /* = DAMAGE_NONE*/, bool isSkillchainDamage /* = false */)
 {
     TracyZoneScoped;
     PLastAttacker                            = attacker;
@@ -926,7 +925,11 @@ uint16 CBattleEntity::ATT(SLOTTYPE slot)
     float strMultiplier = 0.5;
 
     // https://www.bg-wiki.com/ffxi/Strength
-    if (weapon && weapon->isTwoHanded()) // 2-handed weapon
+    if (objtype != TYPE_PC)
+    {
+        strMultiplier = 0.5;
+    }
+    else if (weapon && weapon->isTwoHanded()) // 2-handed weapon
     {
         strMultiplier = 1.0;
     }
@@ -1865,16 +1868,16 @@ void CBattleEntity::Die()
     TracyZoneScoped;
     if (CBaseEntity* PKiller = GetEntity(m_OwnerID.targid))
     {
-        // clang-format off
-        static_cast<CBattleEntity*>(PKiller)->ForAlliance([this](CBattleEntity* PMember)
-        {
-            CCharEntity* member = static_cast<CCharEntity*>(PMember);
-            if (member->PClaimedMob == this)
+        static_cast<CBattleEntity*>(PKiller)->ForAlliance(
+            [this](CBattleEntity* PMember)
             {
-                member->PClaimedMob = nullptr;
-            }
-        });
-        // clang-format on
+                CCharEntity* member = static_cast<CCharEntity*>(PMember);
+                if (member->PClaimedMob == this)
+                {
+                    member->PClaimedMob = nullptr;
+                }
+            });
+
         PAI->EventHandler.triggerListener("DEATH", this, PKiller);
     }
     else
@@ -2406,8 +2409,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
             if (first && PTargetFound->health.hp > 0 && PSkill->getPrimarySkillchain() != 0)
             {
-                SUBEFFECT effect = battleutils::GetSkillChainEffect(PTargetFound, PSkill->getPrimarySkillchain(), PSkill->getSecondarySkillchain(),
-                                                                    PSkill->getTertiarySkillchain());
+                SUBEFFECT effect = battleutils::GetSkillChainEffect(PTargetFound, PSkill->getPrimarySkillchain(), PSkill->getSecondarySkillchain(), PSkill->getTertiarySkillchain());
                 if (effect != SUBEFFECT_NONE)
                 {
                     int32 skillChainDamage = battleutils::TakeSkillchainDamage(this, PTargetFound, target.param, nullptr);
@@ -2736,8 +2738,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 }
 
                 actionTarget.param =
-                    battleutils::TakePhysicalDamage(this, PTarget, attack.GetAttackType(), attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1,
-                                                    attackRound.GetTAEntity(), true, true, attack.IsCountered(), attack.IsCovered(), POriginalTarget);
+                    battleutils::TakePhysicalDamage(this, PTarget, attack.GetAttackType(), attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, attack.IsCountered(), attack.IsCovered(), POriginalTarget);
                 if (actionTarget.param < 0)
                 {
                     actionTarget.param     = -(actionTarget.param);
@@ -2798,8 +2799,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         // if we did hit, run enspell/spike routines as long as this isn't a Daken swing
         if ((actionTarget.reaction & REACTION::MISS) == REACTION::NONE && attack.GetAttackType() != PHYSICAL_ATTACK_TYPE::DAKEN)
         {
-            battleutils::HandleEnspell(this, PTarget, &actionTarget, attack.IsFirstSwing(), (CItemWeapon*)this->m_Weapons[attack.GetWeaponSlot()],
-                                       attack.GetDamage(), attack);
+            battleutils::HandleEnspell(this, PTarget, &actionTarget, attack.IsFirstSwing(), (CItemWeapon*)this->m_Weapons[attack.GetWeaponSlot()], attack.GetDamage(), attack);
             battleutils::HandleSpikesDamage(this, PTarget, &actionTarget, attack.GetDamage());
         }
 
@@ -2950,21 +2950,19 @@ bool CBattleEntity::hasEnmityEXPENSIVE() const
     // TODO: this is bad but because of how super tanking is implemented there's not much we can do without a larger refactor
     if (loc.zone)
     {
-        // clang-format off
         loc.zone->ForEachMob([&](CMobEntity* PMob)
-        {
-            if (!PMob->isAlive())
-            {
-                return;
-            }
-            // Account for charmed mobs attacking normal mobs, etc
-            if (PMob->GetBattleTargetID() == targid && PMob->allegiance != allegiance)
-            {
-                isTargeted = true;
-                return;
-            }
-        });
-        // clang-format on
+                             {
+                                 if (!PMob->isAlive())
+                                 {
+                                     return;
+                                 }
+                                 // Account for charmed mobs attacking normal mobs, etc
+                                 if (PMob->GetBattleTargetID() == targid && PMob->allegiance != allegiance)
+                                 {
+                                     isTargeted = true;
+                                     return;
+                                 }
+                             });
     }
 
     return isTargeted;

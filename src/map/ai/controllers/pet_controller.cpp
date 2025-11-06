@@ -29,11 +29,13 @@
 
 namespace
 {
-    const std::set immobilePets = {
-        PETID_LUOPAN,
-        PETID_ALEXANDER,
-        PETID_ODIN,
-    };
+
+const std::set immobilePets = {
+    PETID_LUOPAN,
+    PETID_ALEXANDER,
+    PETID_ODIN,
+};
+
 }
 
 CPetController::CPetController(CMobEntity* _PPet)
