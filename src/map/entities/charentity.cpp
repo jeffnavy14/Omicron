@@ -2252,7 +2252,11 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
         {
             // TODO
         }
-        luautils::additionalEffectAttack(this, PTarget, (PAmmo != nullptr ? PAmmo : PItem), &actionTarget, totalDamage);
+        // Handle additional effects only if target is not already dead
+        if (PTarget->GetHPP() > 0)
+        {
+            luautils::additionalEffectAttack(this, PTarget, (PAmmo != nullptr ? PAmmo : PItem), &actionTarget, totalDamage);
+        }
     }
     else if (shadowsTaken > 0)
     {

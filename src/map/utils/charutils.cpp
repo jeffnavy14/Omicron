@@ -3323,16 +3323,11 @@ void BuildingCharWeaponSkills(CCharEntity* PChar)
 {
     std::memset(&PChar->m_WeaponSkills, 0, sizeof(PChar->m_WeaponSkills));
 
-    CItemWeapon* PItem        = nullptr;
-    int          main_ws      = 0;
-    int          range_ws     = 0;
-    int          main_ws_dyn  = 0;
-    int          range_ws_dyn = 0;
+    CItemWeapon* PItem    = nullptr;
+    int          main_ws  = 0;
+    int          range_ws = 0;
 
-    bool isInDynamis = PChar->isInDynamis();
-
-    for (auto&& slot :
-         { std::make_tuple(SLOT_MAIN, std::ref(main_ws), std::ref(main_ws_dyn)), std::make_tuple(SLOT_RANGED, std::ref(range_ws), std::ref(range_ws_dyn)) })
+    for (auto&& slot : { std::make_tuple(SLOT_MAIN, std::ref(main_ws)), std::make_tuple(SLOT_RANGED, std::ref(range_ws)) })
     {
         if (PChar->m_Weapons[std::get<0>(slot)])
         {
@@ -3342,7 +3337,6 @@ void BuildingCharWeaponSkills(CCharEntity* PChar)
             if (PItem && (!PItem->isUnlockable() || PItem->isUnlocked()))
             {
                 std::get<1>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL);
-                std::get<2>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL_DYN);
             }
         }
     }
@@ -3354,7 +3348,7 @@ void BuildingCharWeaponSkills(CCharEntity* PChar)
     const auto& MeleeWeaponSkillList = battleutils::GetWeaponSkills(skill);
     for (auto&& PSkill : MeleeWeaponSkillList)
     {
-        if (battleutils::CanUseWeaponskill(PChar, PSkill) || PSkill->getID() == main_ws || (isInDynamis && (PSkill->getID() == main_ws_dyn)))
+        if (battleutils::CanUseWeaponskill(PChar, PSkill) || PSkill->getID() == main_ws)
         {
             addWeaponSkill(PChar, PSkill->getID());
         }
@@ -3368,7 +3362,7 @@ void BuildingCharWeaponSkills(CCharEntity* PChar)
         const auto& RangedWeaponSkillList = battleutils::GetWeaponSkills(skill);
         for (auto&& PSkill : RangedWeaponSkillList)
         {
-            if ((battleutils::CanUseWeaponskill(PChar, PSkill)) || PSkill->getID() == range_ws || (isInDynamis && (PSkill->getID() == range_ws_dyn)))
+            if ((battleutils::CanUseWeaponskill(PChar, PSkill)) || PSkill->getID() == range_ws)
             {
                 addWeaponSkill(PChar, PSkill->getID());
             }
@@ -6582,7 +6576,7 @@ uint8 getQuestStatus(CCharEntity* PChar, uint8 log, uint8 quest)
     return (complete != 0 ? 2 : (current != 0 ? 1 : 0));
 }
 
-uint16 AvatarPerpetuationReduction(CCharEntity* PChar)
+uint16 AvatarPerpetuationReduction(CCharEntity* PChar, int16 perpetuation)
 {
     TracyZoneScoped;
 
@@ -6599,8 +6593,10 @@ uint16 AvatarPerpetuationReduction(CCharEntity* PChar)
     ELEMENT dayElement       = battleutils::GetDayElement();
     auto    weather          = battleutils::GetWeather(PChar, false);
     int16   perpReduction    = PChar->getMod(Mod::PERPETUATION_REDUCTION);
-    int16   dayReduction     = PChar->getMod(Mod::DAY_REDUCTION);     // As seen on Summoner's Doublet (Depending On Day: Avatar perpetuation cost -3) etc.
-    int16   weatherReduction = PChar->getMod(Mod::WEATHER_REDUCTION); // As seen on Summoner's Horn (Weather: Avatar perpetuation cost -3) etc.
+    int16   dayReduction     = PChar->getMod(Mod::DAY_REDUCTION);             // As seen on Summoner's Doublet (Depending On Day: Avatar perpetuation cost -3) etc.
+    int16   weatherReduction = PChar->getMod(Mod::WEATHER_REDUCTION);         // As seen on Summoner's Horn (Weather: Avatar perpetuation cost -3) etc.
+    int16   dayHalf          = PChar->getMod(Mod::DAY_PERPETUATION_HALF);     // As seen on Caller's Bracers +1 (Depending On Day: Half Avatar perp cost)
+    int16   weatherHalf      = PChar->getMod(Mod::WEATHER_PERPETUATION_HALF); // As seen on Beckoner's Bracers (Day or Weather: Half Avatar perp cost)
 
     static const Mod strong[8] = { Mod::FIRE_AFFINITY_PERP, Mod::ICE_AFFINITY_PERP, Mod::WIND_AFFINITY_PERP, Mod::EARTH_AFFINITY_PERP, Mod::THUNDER_AFFINITY_PERP, Mod::WATER_AFFINITY_PERP, Mod::LIGHT_AFFINITY_PERP, Mod::DARK_AFFINITY_PERP };
 
@@ -6610,15 +6606,24 @@ uint16 AvatarPerpetuationReduction(CCharEntity* PChar)
     perpReduction += PChar->getMod(strong[petElementIdx]);
 
     // Compare day element and pet element (both ELEMENT, both 0-based)
-    if (dayElement == petElement)
+    bool dayMatch = (dayElement == petElement);
+
+    // Match against both tier of weather for element
+    bool weatherMatch = (weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1));
+
+    if (dayMatch)
     {
         perpReduction += dayReduction;
     }
 
-    // Match against both tier of weather for element
-    if (weather == weatherStrong[petElementIdx] || weather == static_cast<Weather>(static_cast<uint16_t>(weatherStrong[petElementIdx]) + 1))
+    if (weatherMatch)
     {
         perpReduction += weatherReduction;
+    }
+
+    if ((dayHalf > 0 and dayMatch) or (weatherHalf > 0 and weatherMatch))
+    {
+        perpReduction += perpetuation / 2;
     }
 
     return static_cast<uint16>(perpReduction);

@@ -2799,7 +2799,11 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         // if we did hit, run enspell/spike routines as long as this isn't a Daken swing
         if ((actionTarget.reaction & REACTION::MISS) == REACTION::NONE && attack.GetAttackType() != PHYSICAL_ATTACK_TYPE::DAKEN)
         {
-            battleutils::HandleEnspell(this, PTarget, &actionTarget, attack.IsFirstSwing(), (CItemWeapon*)this->m_Weapons[attack.GetWeaponSlot()], attack.GetDamage(), attack);
+            // Handle addtl effects/enspells only if the target is not already dead
+            if (PTarget->GetHPP() > 0)
+            {
+                battleutils::HandleEnspell(this, PTarget, &actionTarget, attack.IsFirstSwing(), (CItemWeapon*)this->m_Weapons[attack.GetWeaponSlot()], attack.GetDamage(), attack);
+            }
             battleutils::HandleSpikesDamage(this, PTarget, &actionTarget, attack.GetDamage());
         }
 

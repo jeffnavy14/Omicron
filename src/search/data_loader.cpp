@@ -383,6 +383,13 @@ std::list<SearchEntity*> CDataLoader::GetPlayersList(search_req sr, int* count)
                 }
             }
 
+            // filter anon players if job/nation/race/rank/level search
+            if ((PPlayer->flags1 & 0x4000) &&
+                (sr.jobid > 0 || sr.nation != 255 || sr.race != 255 || sr.minRank > 0 || sr.maxRank > 0 || sr.minlvl > 0 || sr.maxlvl > 0))
+            {
+                continue;
+            }
+
             // filter by job
             if (sr.jobid > 0 && sr.jobid != PPlayer->mjob)
             {
