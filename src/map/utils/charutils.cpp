@@ -8069,4 +8069,24 @@ bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize
     return true;
 }
 
+void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Charge_t* charge, const timer::duration baseChargeTime, const timer::duration recastTime)
+{
+    if (charge)
+    {
+        PChar->PRecastContainer->Add(RECAST_ABILITY, PAbility->getRecastId(), recastTime, baseChargeTime, charge->maxCharges);
+    }
+    else
+    {
+        PChar->PRecastContainer->Add(RECAST_ABILITY, PAbility->getRecastId(), recastTime);
+    }
+
+    const uint16 recastId = PAbility->getRecastId();
+    if (settings::get<bool>("map.BLOOD_PACT_SHARED_TIMER") && (recastId == 173 || recastId == 174))
+    {
+        PChar->PRecastContainer->Add(RECAST_ABILITY, (recastId == 173 ? 174 : 173), recastTime);
+    }
+
+    PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
+}
+
 }; // namespace charutils

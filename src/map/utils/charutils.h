@@ -27,6 +27,7 @@
 #include "items/item_equipment.h"
 #include "zone.h"
 
+struct Charge_t;
 enum class MissionLog : uint8_t;
 enum class QuestLog : uint8_t;
 enum class KeyItem : uint16_t;
@@ -308,5 +309,7 @@ bool isOrchestrionPlaced(CCharEntity* PChar);
 void updateMannequins(CCharEntity* PChar);
 
 bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize newSize);
+
+void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Charge_t* charge, timer::duration baseChargeTime, timer::duration recastTime);
 
 }; // namespace charutils
