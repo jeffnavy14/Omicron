@@ -1786,7 +1786,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             {
                 if (PAbility->getID() == ABILITY_ASSAULT)
                 {
-                    StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_INVISIBLE);
+                    charutils::RemoveInvisible(this);
                 }
                 // generic aggressive action
                 else
@@ -1798,7 +1798,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             else if (PAbility->getID() != ABILITY_TRICK_ATTACK)
             {
                 // remove invisible only
-                StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_INVISIBLE);
+                charutils::RemoveInvisible(this);
                 StatusEffectContainer->DelStatusEffect(EFFECT_ILLUSION);
             }
         }
@@ -1936,7 +1936,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
 
                 if (value < 0)
                 {
-                    actionTarget.messageID = ability::GetAbsorbMessage(actionTarget.messageID);
+                    actionTarget.messageID = ability::GetAbsorbMessage(static_cast<MSGBASIC_ID>(actionTarget.messageID));
                     actionTarget.param     = -actionTarget.param;
                 }
 
@@ -1979,7 +1979,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
 
             if (value < 0)
             {
-                actionTarget.messageID = ability::GetAbsorbMessage(actionTarget.messageID);
+                actionTarget.messageID = ability::GetAbsorbMessage(static_cast<MSGBASIC_ID>(actionTarget.messageID));
                 actionTarget.param     = -value;
             }
 
@@ -2349,7 +2349,6 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
         {
             // Camouflage up, and retained, but all other effects must be dropped
             StatusEffectContainer->DelStatusEffect(EFFECT_SNEAK);
-            StatusEffectContainer->DelStatusEffect(EFFECT_INVISIBLE);
             StatusEffectContainer->DelStatusEffect(EFFECT_DEODORIZE);
             StatusEffectContainer->DelStatusEffect(EFFECT_ILLUSION);
         }

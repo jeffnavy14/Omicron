@@ -1572,7 +1572,7 @@ INSERT INTO `item_usable` VALUES (5701,'nopales_salad',1,1,24,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5702,'nopales_salad_+1',1,1,24,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5703,'jug_of_uleguerand_milk',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5704,'anglers_cassoulet',1,1,24,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5705,'homemade_salisbury_steak',1,1,28,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5705,'homemade_salisbury_steak',1,1,28,0,0,0,0,1);
 INSERT INTO `item_usable` VALUES (5706,'dish_of_homemade_carbonara',1,1,25,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5707,'homemade_omelette',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5708,'mihgo_mithkabob',1,1,28,0,0,0,0,0);

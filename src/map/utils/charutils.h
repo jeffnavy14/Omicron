@@ -226,8 +226,6 @@ float AddExpBonus(CCharEntity* PChar, float exp);
 
 void RemoveAllEquipment(CCharEntity* PChar);
 
-uint16 AvatarPerpetuationReduction(CCharEntity* PChar, int16 perpetuation);
-
 void OpenSendBox(CCharEntity* PChar, uint8 action, uint8 boxtype);
 void OpenRecvBox(CCharEntity* PChar, uint8 action, uint8 boxtype);
 bool isSendBoxOpen(CCharEntity* PChar);
@@ -236,6 +234,7 @@ bool isAnyDeliveryBoxOpen(CCharEntity* PChar);
 
 auto CheckAbilityAddtype(CCharEntity* PChar, const CAbility* PAbility) -> bool;
 
+void RemoveInvisible(const CCharEntity* PChar);
 void RemoveStratagems(CCharEntity* PChar, CSpell* PSpell);
 
 void RemoveAllEquipMods(CCharEntity* PChar);
