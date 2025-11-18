@@ -35,6 +35,7 @@
 #include "common/utils.h"
 
 #include "ability.h"
+#include "action/action.h"
 #include "alliance.h"
 #include "aman.h"
 #include "battlefield.h"
@@ -98,7 +99,6 @@
 #include "items/item_furnishing.h"
 #include "items/item_linkshell.h"
 
-#include "packets/action.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/entity_update.h"
@@ -110,6 +110,7 @@
 #include "packets/s2c/0x01f_item_list.h"
 #include "packets/s2c/0x020_item_attr.h"
 #include "packets/s2c/0x027_talknumwork2.h"
+#include "packets/s2c/0x028_battle2.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "packets/s2c/0x02a_talknumwork.h"
 #include "packets/s2c/0x02d_battle_message2.h"
@@ -907,28 +908,33 @@ void CLuaBaseEntity::injectPacket(const std::string& filename)
  *  Notes   : Used for very special cases, like JoL or Plouton generating action packets that only play animations, and don't actually use abilities.
  *            There are no safeties, You can crash a client with malformed parameters. You have been warned.
  ************************************************************************/
-void CLuaBaseEntity::injectActionPacket(uint32 inTargetID, uint16 inCategory, uint16 inAnimationID, uint16 inSpecEffect, uint16 inReaction, uint16 inMessage, uint16 inActionParam, uint16 inParam)
+void CLuaBaseEntity::injectActionPacket(const uint32 inTargetID, uint16 inCategory, uint16 inAnimationID, uint16 inInfo, uint16 inReaction, uint16 inMessage, const uint16 inActionParam, const uint16 inParam) const
 {
-    SPECEFFECT speceffect = static_cast<SPECEFFECT>(inSpecEffect);
-    REACTION   reaction   = static_cast<REACTION>(inReaction);
-    ACTIONTYPE actiontype = static_cast<ACTIONTYPE>(inCategory);
+    auto info       = static_cast<ActionInfo>(inInfo);
+    auto reaction   = static_cast<ActionResolution>(inReaction);
+    auto actiontype = static_cast<ActionCategory>(inCategory);
 
-    action_t Action;
+    action_t Action{
+        .actorId    = m_PBaseEntity->id,
+        .actiontype = actiontype,
+        .actionid   = inActionParam,
+        .targets    = {
+            {
+                   .actorId = inTargetID,
+                   .results = {
+                    {
+                           .resolution = reaction,
+                           .animation  = static_cast<ActionAnimation>(inAnimationID),
+                           .info       = info,
+                           .param      = inParam,
+                           .messageID  = static_cast<MSGBASIC_ID>(inMessage),
+                    },
+                },
+            },
+        },
+    };
 
-    Action.id       = m_PBaseEntity->id;
-    Action.actionid = inActionParam;
-
-    Action.actiontype      = actiontype;
-    actionList_t& list     = Action.getNewActionList();
-    list.ActionTargetID    = inTargetID;
-    actionTarget_t& target = list.getNewActionTarget();
-    target.animation       = inAnimationID;
-    target.param           = inParam;
-    target.messageID       = inMessage;
-    target.speceffect      = speceffect;
-    target.reaction        = reaction;
-
-    m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(Action));
+    m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE2>(Action));
 }
 
 /************************************************************************
@@ -1734,7 +1740,7 @@ uint8 CLuaBaseEntity::getCurrentAction()
 
         if (PPetSkillState)
         {
-            action = PPetSkillState->GetPetSkill()->getSkillFinishCategory();
+            action = static_cast<uint8>(PPetSkillState->GetPetSkill()->getSkillFinishCategory());
         }
     }
     else
@@ -1915,7 +1921,7 @@ void CLuaBaseEntity::pathTo(float x, float y, float z, const sol::object& flags)
 
     if (m_PBaseEntity->PAI->PathFind)
     {
-        uint8 pathFlags = (flags != sol::lua_nil) ? flags.as<uint8>() : (PATHFLAG_RUN | PATHFLAG_WALLHACK | PATHFLAG_SCRIPT);
+        uint8 pathFlags = (flags != sol::lua_nil) ? flags.as<uint8>() : static_cast<uint8>(PATHFLAG_RUN | PATHFLAG_WALLHACK | PATHFLAG_SCRIPT);
 
         m_PBaseEntity->PAI->PathFind->PathTo(point, pathFlags);
     }
@@ -2627,7 +2633,7 @@ void CLuaBaseEntity::sendEmote(const CLuaBaseEntity* target, uint8 emID, uint8 e
 /************************************************************************
  *  Function: getWorldAngle()
  *  Purpose : Returns angle between two entities, relative to cardinal direction
- *  Example : player:worldAngle(target)
+ *  Example : player:getWorldAngle(target)
  *  Notes   : Target is... 0: east; 64: south; 128: west, 192: north
  *            Default angle is 255-based mob rotation value - NOT a 360 angle
  *            CAREFUL! If the entities are too close, this can return unexpected results.
@@ -18513,11 +18519,11 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
     {
         CBaseEntity* PTarget = PLuaBaseEntity->GetBaseEntity();
 
-        uint16 animationID  = 0;
-        int    messageParam = 0;
-        int    messageID    = 0;
-        int    addedHP      = 0;
-        int    addedMP      = 0;
+        ActionAnimation animationID  = ActionAnimation::None;
+        int             messageParam = 0;
+        MSGBASIC_ID     messageID    = MSGBASIC_NONE;
+        int             addedHP      = 0;
+        int             addedMP      = 0;
 
         if (PChar->animation != ANIMATION_DEATH)
         {
@@ -18528,26 +18534,34 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
             {
                 case 1:
                     messageParam = addedHP;
-                    messageID    = 587;
-                    animationID  = 772;
+                    messageID    = MSGBASIC_TARGET_REGAINS_HP;
+                    animationID  = ActionAnimation::RegainHP;
                     break;
                 case 2:
                     messageParam = addedMP;
-                    messageID    = 588;
-                    animationID  = 773;
+                    messageID    = MSGBASIC_TARGET_REGAINS_MP;
+                    animationID  = ActionAnimation::RegainMP;
                     break;
             }
 
-            action_t Action;
-            Action.id              = PTarget->id;
-            Action.actiontype      = ACTION_MOBABILITY_FINISH;
-            actionList_t& list     = Action.getNewActionList();
-            list.ActionTargetID    = PChar->id;
-            actionTarget_t& target = list.getNewActionTarget();
-            target.animation       = animationID;
-            target.messageID       = messageID;
-            target.param           = messageParam;
-            PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE, std::make_unique<CActionPacket>(Action));
+            auto Action = action_t{
+                .actorId    = PTarget->id,
+                .actiontype = ActionCategory::MobSkillFinish,
+                .targets    = {
+                    {
+                           .actorId = PChar->id,
+                           .results = {
+                            {
+                                   .animation = animationID,
+                                   .param     = messageParam,
+                                   .messageID = messageID,
+                            },
+                        },
+                    },
+                },
+            };
+
+            PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_BATTLE2>(Action));
         }
     }
 }

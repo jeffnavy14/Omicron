@@ -53,7 +53,6 @@
 
 #include "items/item_puppet.h"
 
-#include "packets/action.h"
 #include "packets/s2c/0x017_chat_std.h"
 #include "packets/s2c/0x05a_motionmes.h"
 #include "packets/s2c/0x0f9_res.h"
@@ -70,6 +69,7 @@
 #include "utils/zoneutils.h"
 
 #include "ability.h"
+#include "action/action.h"
 #include "battlefield.h"
 #include "conquest_system.h"
 #include "daily_system.h"
@@ -287,8 +287,6 @@ void init(IPP mapIPP, bool isRunningInCI)
     lua.set_function("VanadielRSERace", &luautils::VanadielRSERace);
     lua.set_function("VanadielRSELocation", &luautils::VanadielRSELocation);
     lua.set_function("SetTimeOffset", &luautils::SetTimeOffset);
-    lua.set_function("IsMoonNew", &luautils::IsMoonNew);
-    lua.set_function("IsMoonFull", &luautils::IsMoonFull);
     lua.set_function("RunElevator", &luautils::StartElevator);
     lua.set_function("GetElevatorState", &luautils::GetElevatorState);
     lua.set_function("GetServerVariable", &luautils::GetServerVariable);
@@ -1667,79 +1665,8 @@ uint8 VanadielRSELocation()
 void SetTimeOffset(const int32 offset)
 {
     TracyZoneScoped;
-
     earth_time::reset_offset();
     earth_time::add_offset(std::chrono::seconds(offset));
-}
-
-bool IsMoonNew()
-{
-    TracyZoneScoped;
-    // New moon occurs when:
-    // Waning (decreasing) from 10% to 0%,
-    // Waxing (increasing) from 0% to 5%.
-
-    vanadiel_time::time_point currentVanaTime = vanadiel_time::now();
-    auto                      phase           = vanadiel_time::moon::get_phase(currentVanaTime);
-
-    switch (vanadiel_time::moon::get_direction(currentVanaTime))
-    {
-        case 0: // None
-            if (phase == 0)
-            {
-                return true;
-            }
-            break;
-        case 1: // Waning (decending)
-            if (phase <= 10)
-            {
-                return true;
-            }
-            break;
-        case 2: // Waxing (increasing)
-            if (phase <= 5)
-            {
-                return true;
-            }
-            break;
-    }
-
-    return false;
-}
-
-bool IsMoonFull()
-{
-    TracyZoneScoped;
-    // Full moon occurs when:
-    // Waxing (increasing) from 90% to 100%,
-    // Waning (decending) from 100% to 95%.
-
-    vanadiel_time::time_point currentVanaTime = vanadiel_time::now();
-    auto                      phase           = vanadiel_time::moon::get_phase(currentVanaTime);
-
-    switch (vanadiel_time::moon::get_direction(currentVanaTime))
-    {
-        case 0: // None
-            if (phase == 100)
-            {
-                return true;
-            }
-            break;
-        case 1: // Waning (decending)
-            if (phase >= 95 && phase <= 100)
-            {
-                return true;
-            }
-            break;
-        case 2: // Waxing (increasing)
-            if (phase >= 90 && phase <= 100)
-            {
-                return true;
-            }
-            break;
-    }
-
-    return false;
 }
 
 /************************************************************************
@@ -2405,7 +2332,7 @@ void OnNpcSpawn(CBaseEntity* PNpc)
 }
 
 // Used by mobs
-void OnAdditionalEffect(CBattleEntity* PAttacker, CBattleEntity* PDefender, actionTarget_t* Action, int32 damage)
+void OnAdditionalEffect(CBattleEntity* PAttacker, CBattleEntity* PDefender, action_result_t* Action, int32 damage)
 {
     TracyZoneScoped;
 
@@ -2430,13 +2357,13 @@ void OnAdditionalEffect(CBattleEntity* PAttacker, CBattleEntity* PDefender, acti
         return;
     }
 
-    Action->additionalEffect = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
-    Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
+    Action->additionalEffect = result.get_type(0) == sol::type::number ? result.get<ActionProcAddEffect>(0) : ActionProcAddEffect::None;
+    Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<MSGBASIC_ID>(1) : MSGBASIC_NONE;
     Action->addEffectParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
 }
 
 // Used by mobs
-void OnSpikesDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, actionTarget_t* Action, int32 damage)
+void OnSpikesDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, action_result_t* Action, int32 damage)
 {
     TracyZoneScoped;
 
@@ -2457,13 +2384,13 @@ void OnSpikesDamage(CBattleEntity* PDefender, CBattleEntity* PAttacker, actionTa
         return;
     }
 
-    Action->spikesEffect  = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
-    Action->spikesMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
+    Action->spikesEffect  = result.get_type(0) == sol::type::number ? result.get<ActionReactKind>(0) : ActionReactKind::None;
+    Action->spikesMessage = result.get_type(1) == sol::type::number ? result.get<MSGBASIC_ID>(1) : MSGBASIC_NONE;
     Action->spikesParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
 }
 
 // Used by items
-int32 additionalEffectAttack(CBattleEntity* PAttacker, CBattleEntity* PDefender, CItemWeapon* PItem, actionTarget_t* Action, int32 baseAttackDamage)
+int32 additionalEffectAttack(CBattleEntity* PAttacker, CBattleEntity* PDefender, CItemWeapon* PItem, action_result_t* Action, int32 baseAttackDamage)
 {
     TracyZoneScoped;
 
@@ -2486,8 +2413,8 @@ int32 additionalEffectAttack(CBattleEntity* PAttacker, CBattleEntity* PDefender,
         return -1;
     }
 
-    Action->additionalEffect = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
-    Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
+    Action->additionalEffect = result.get_type(0) == sol::type::number ? result.get<ActionProcAddEffect>(0) : ActionProcAddEffect::None;
+    Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<MSGBASIC_ID>(1) : MSGBASIC_NONE;
     Action->addEffectParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
 
     return 0;
@@ -2495,7 +2422,7 @@ int32 additionalEffectAttack(CBattleEntity* PAttacker, CBattleEntity* PDefender,
 
 // NOTE: This is currently unused
 // future use: migrating items to scripts\globals\additional_effects.lua
-void additionalEffectSpikes(CBattleEntity* PDefender, CBattleEntity* PAttacker, CItemEquipment* PItem, actionTarget_t* Action, int32 baseAttackDamage)
+void additionalEffectSpikes(CBattleEntity* PDefender, CBattleEntity* PAttacker, CItemEquipment* PItem, action_result_t* Action, int32 baseAttackDamage)
 {
     TracyZoneScoped;
 
@@ -2513,9 +2440,9 @@ void additionalEffectSpikes(CBattleEntity* PDefender, CBattleEntity* PAttacker, 
         return;
     }
 
-    Action->additionalEffect = (SUBEFFECT)(result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0);
-    Action->addEffectMessage = result.get_type(1) == sol::type::number ? result.get<int32>(1) : 0;
-    Action->addEffectParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
+    Action->spikesEffect  = result.get_type(0) == sol::type::number ? result.get<ActionReactKind>(0) : ActionReactKind::None;
+    Action->spikesMessage = result.get_type(1) == sol::type::number ? result.get<MSGBASIC_ID>(1) : MSGBASIC_NONE;
+    Action->spikesParam   = result.get_type(2) == sol::type::number ? result.get<int32>(2) : 0;
 }
 
 void OnEffectGain(CBattleEntity* PEntity, CStatusEffect* PStatusEffect)

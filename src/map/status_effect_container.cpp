@@ -2207,15 +2207,14 @@ void CStatusEffectContainer::TickRegen(timer::time_point tick)
                 {
                     perpetuationCost = static_cast<int16>(perpetuationCost * 1.2);
                 }
-
-                // Astral Flow.
-                if (m_POwner->StatusEffectContainer->HasStatusEffect(EFFECT_ASTRAL_FLOW))
-                {
-                    perpetuationCost = 1;
-                }
             }
 
-            if (perpetuationCost < 1)
+            // Astral Flow.
+            if (m_POwner->StatusEffectContainer->HasStatusEffect(EFFECT_ASTRAL_FLOW))
+            {
+                perpetuationCost = 0;
+            }
+            else if (perpetuationCost < 1)
             {
                 perpetuationCost = 1;
             }

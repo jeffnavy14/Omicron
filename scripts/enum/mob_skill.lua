@@ -112,6 +112,9 @@ xi.mobSkill =
 
     SWEEP                    =  620,
 
+    HELLDIVE_1               =  622,
+    WING_CUTTER_1            =  623,
+
     VULTURE_3                =  626,
 
     FINAL_METEOR             =  634, -- Final Meteor Chlevnik
@@ -230,6 +233,9 @@ xi.mobSkill =
 
     SLIPSTREAM_1             = 1157,
     TURBULENCE_1             = 1158,
+    BROADSIDE_BARRAGE_1      = 1159,
+    BLIND_SIDE_BARRAGE_1     = 1160,
+    DAMNATION_DIVE_1         = 1161,
 
     INFERNO_3                = 1162, -- Confirmed usage: "Trial-Size Trial by Fire" bcnm. (Ifrit)
     EARTHEN_FURY_3           = 1163, -- Confirmed usage: "Trial-Size Trial by Earth" bcnm. (Titan)

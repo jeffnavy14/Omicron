@@ -55,6 +55,7 @@ global_objects=(
     fmt
     switch
     getVanaMidnight
+    getVanadielMoonCycle
     getMidnight
 
     Mission

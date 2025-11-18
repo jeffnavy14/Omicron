@@ -259,6 +259,9 @@ xi.mobskills.mobPhysicalMove = function(mob, target, skill, numHits, accMod, ftp
     returninfo.hitslanded = hitslanded
     returninfo.isCritical = hitCrit
 
+    skill:setAttackType(xi.attackType.PHYSICAL)
+    skill:setCritical(returninfo.isCritical)
+
     return returninfo
 end
 
