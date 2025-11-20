@@ -450,10 +450,10 @@ bool CBattleEntity::Rest(float rate)
     return didRest;
 }
 
-uint16 CBattleEntity::GetWeaponDelay(bool tp)
+uint32 CBattleEntity::GetWeaponDelay(bool tp)
 {
     TracyZoneScoped;
-    uint16 finalDelay = 8000; // 480 (base) * 1000 / 60 (milisecond conversion)
+    uint32 finalDelay = 8000; // 480 (base) * 1000 / 60 (milisecond conversion)
 
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]))
     {
@@ -524,7 +524,7 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
 
         // Store upper and lower values.
         uint16 minDelay = weaponDelay * 0.2;
-        uint16 maxDelay = weaponDelay * 2;
+        uint32 maxDelay = weaponDelay * 2;
 
         // Apply delay modifications.
         finalDelay = weaponDelay - martialArts;
@@ -533,7 +533,7 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
         finalDelay = finalDelay * delayModMultiplier;
 
         // Clamp
-        finalDelay = std::clamp<uint16>(finalDelay, minDelay, maxDelay);
+        finalDelay = std::clamp<uint32>(finalDelay, minDelay, maxDelay);
     }
 
     return finalDelay;
@@ -924,7 +924,7 @@ uint16 CBattleEntity::CHR()
 uint16 CBattleEntity::ATT(SLOTTYPE slot)
 {
     TracyZoneScoped;
-    // TODO: consider which weapon!
+
     int32 ATT           = 8 + m_modStat[Mod::ATT];
     auto  ATTP          = m_modStat[Mod::ATTP];
     auto* weapon        = dynamic_cast<CItemWeapon*>(m_Weapons[slot]);
@@ -999,7 +999,7 @@ uint16 CBattleEntity::ATT(SLOTTYPE slot)
     return std::max(1, ATT + (ATT * ATTP / 100) + std::min<int16>((ATT * m_modStat[Mod::FOOD_ATTP] / 100), m_modStat[Mod::FOOD_ATT_CAP]));
 }
 
-uint16 CBattleEntity::RATT(uint8 skill, uint16 bonusSkill)
+uint16 CBattleEntity::RATT(uint16 bonusAtt)
 {
     auto* PWeakness = StatusEffectContainer->GetStatusEffect(EFFECT_WEAKNESS);
     if (PWeakness && PWeakness->GetPower() >= 2)
@@ -1007,40 +1007,210 @@ uint16 CBattleEntity::RATT(uint8 skill, uint16 bonusSkill)
         return 0;
     }
 
-    // make sure to not use fishing skill
-    uint16 baseSkill = skill == SKILL_FISHING ? 0 : GetSkill(skill);
-    int32  RATT      = 8 + baseSkill + bonusSkill + m_modStat[Mod::RATT] + battleutils::GetRangedAttackBonuses(this) + STR();
+    uint16 skillLevel    = 0;
+    double strMultiplier = 0.5;
+
+    if (objtype == TYPE_PC)
+    {
+        strMultiplier = 1.0;
+        auto* weapon  = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]);
+
+        // Return 0 if ranged weapon but no ammo
+        if (weapon && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
+        {
+            return 0;
+        }
+
+        // try ammo
+        if (weapon == nullptr)
+        {
+            weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]);
+        }
+
+        if (weapon)
+        {
+            // non-damaging weapon
+            if (weapon->getDmgType() == DAMAGE_TYPE::NONE || weapon->getSkillType() == SKILL_NONE)
+            {
+                return 0;
+            }
+
+            if (weapon->getSkillType() != SKILL_FISHING)
+            {
+                skillLevel = GetSkill(weapon->getSkillType());
+                skillLevel += weapon->getILvlSkill();
+            }
+        }
+
+        if (!weapon)
+        {
+            return 0;
+        }
+    }
+    else if (objtype & TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AUTOMATON)
+    {
+        skillLevel = this->GetSkill(SKILL_AUTOMATON_RANGED);
+    }
+    else if (objtype & TYPE_TRUST)
+    {
+        strMultiplier = 0.75; // TODO: verify
+
+        auto archery_acc      = this->GetSkill(SKILL_ARCHERY);
+        auto marksmanship_acc = this->GetSkill(SKILL_MARKSMANSHIP);
+        auto throwing_acc     = this->GetSkill(SKILL_THROWING);
+
+        skillLevel = std::max({ archery_acc, marksmanship_acc, throwing_acc });
+    }
+    else // pets, mobs
+    {
+        skillLevel = m_modStat[Mod::RATT];
+    }
+
+    int32 RATT = 8 + skillLevel + bonusAtt + m_modStat[Mod::RATT] + battleutils::GetRangedAttackBonuses(this) + std::floor(STR() * strMultiplier);
     // use max to prevent any underflow
-    return std::max(1, RATT + (RATT * m_modStat[Mod::RATTP] / 100) + std::min<int16>((RATT * m_modStat[Mod::FOOD_RATTP] / 100), m_modStat[Mod::FOOD_RATT_CAP]));
+    return std::max<int16>(1, RATT + (RATT * m_modStat[Mod::RATTP] / 100.f) + std::min<int16>((RATT * m_modStat[Mod::FOOD_RATTP] / 100.f), m_modStat[Mod::FOOD_RATT_CAP]));
 }
 
-uint16 CBattleEntity::RACC(uint8 skill, uint16 bonusSkill)
+inline uint32 GetAccFromSkill(uint32 skill)
+{
+    uint32 accuracy = skill;
+
+    if (skill > 600)
+    {
+        accuracy = std::floor<uint32_t>(static_cast<float>(skill - 600) * 0.9f) + 540;
+    }
+    else if (skill > 400)
+    {
+        accuracy = std::floor(static_cast<float>(skill - 400) * 0.8f) + 380;
+    }
+    else if (skill > 200)
+    {
+        accuracy = std::floor(static_cast<float>(skill - 200) * 0.8f) + 380;
+    }
+
+    return accuracy;
+}
+
+uint16 CBattleEntity::RACC(uint16 bonusAcc)
 {
     TracyZoneScoped;
     auto* PWeakness = StatusEffectContainer->GetStatusEffect(EFFECT_WEAKNESS);
     if (PWeakness && PWeakness->GetPower() >= 2)
     {
-        return 0;
+        return 1;
     }
 
-    // make sure to not use fishing skill
-    uint16 baseSkill   = skill == SKILL_FISHING ? 0 : GetSkill(skill);
-    uint16 skill_level = baseSkill + bonusSkill;
-    int16  RACC        = skill_level;
-    if (skill_level > 200)
+    int32 RACC = 0;
+
+    if (objtype & TYPE_PC)
     {
-        RACC = (int16)(200 + (skill_level - 200) * 0.9);
+        auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]);
+
+        // Return 0 if ranged weapon but no ammo
+        if (weapon && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
+        {
+            return 0;
+        }
+
+        // try ammo
+        if (weapon == nullptr)
+        {
+            weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]);
+        }
+
+        uint16 skillLevel = 0;
+
+        if (weapon)
+        {
+            // non-damaging weapon
+            if (weapon->getDmgType() == DAMAGE_TYPE::NONE || weapon->getSkillType() == SKILL_NONE)
+            {
+                return 0;
+            }
+
+            if (weapon->getSkillType() != SKILL_FISHING)
+            {
+                skillLevel = GetSkill(weapon->getSkillType());
+                skillLevel += weapon->getILvlSkill();
+            }
+        }
+
+        if (!weapon)
+        {
+            return 0;
+        }
+
+        RACC = GetAccFromSkill(skillLevel);
+
+        RACC += getMod(Mod::RACC);
+        RACC += bonusAcc;
+        RACC += battleutils::GetRangedAccuracyBonuses(this);
+        RACC += std::floor(AGI() * 3 / 4);
     }
-    RACC += getMod(Mod::RACC);
-    RACC += battleutils::GetRangedAccuracyBonuses(this);
-    RACC += (AGI() * 3) / 4;
+    else if (objtype & TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AUTOMATON)
+    {
+        uint16 skillLevel = this->GetSkill(SKILL_AUTOMATON_RANGED);
+
+        RACC = GetAccFromSkill(skillLevel);
+        RACC += std::floor(AGI() * 0.5);
+        RACC += m_modStat[Mod::ACC] + bonusAcc;
+
+        // Tandem Strike is listed here in ACC call but no clue if it works for automatons or RACC in general
+    }
+    else if (objtype & TYPE_TRUST)
+    {
+        auto archery_acc      = this->GetSkill(SKILL_ARCHERY);
+        auto marksmanship_acc = this->GetSkill(SKILL_MARKSMANSHIP);
+        auto throwing_acc     = this->GetSkill(SKILL_THROWING);
+
+        RACC = GetAccFromSkill(std::max({ archery_acc, marksmanship_acc, throwing_acc }));
+        RACC += std::floor(AGI() * 0.75); // 0.75 needs verification
+        RACC += m_modStat[Mod::RACC] + bonusAcc;
+    }
+    else // pets, mobs
+    {
+        RACC = m_modStat[Mod::RACC] + bonusAcc;
+
+        // TODO: does this work for ranged accuracy?
+        if (petutils::IsTandemActive(this))
+        {
+            if (this->PMaster && this->PMaster->objtype == TYPE_PC)
+            {
+                RACC += this->PMaster->getMod(Mod::TANDEM_STRIKE_POWER);
+            }
+        }
+
+        // TODO: does this work for ranged accuracy?
+        if (this->objtype == TYPE_PET)
+        {
+            auto getEcoStrBonusFunc = lua["utils"]["getEcosystemStrengthBonus"];
+
+            if (getEcoStrBonusFunc.valid())
+            {
+                CBattleEntity* thisTarget = nullptr;
+                if (this->PAI->IsEngaged())
+                {
+                    thisTarget = this->GetBattleTarget();
+                }
+
+                if (thisTarget != nullptr && (int8)getEcoStrBonusFunc(this->m_EcoSystem, thisTarget->m_EcoSystem) > 0)
+                {
+                    RACC += this->getMod(Mod::ENHANCES_MONSTER_CORRELATION);
+                }
+            }
+        }
+
+        RACC = RACC + std::floor(AGI() / 2);
+    }
     // use max to prevent underflow
-    return std::max(0, RACC + std::min<int16>(((100 + getMod(Mod::FOOD_RACCP) * RACC) / 100), getMod(Mod::FOOD_RACC_CAP)));
+    return std::max(1, RACC + std::min<int16>(((100 + getMod(Mod::FOOD_RACCP) * RACC) / 100), getMod(Mod::FOOD_RACC_CAP)));
 }
 
 uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
 {
     TracyZoneScoped;
+
+    int32 ACC = 0;
 
     if (this->objtype & TYPE_PC)
     {
@@ -1089,17 +1259,19 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             }
             skill = SKILL_HAND_TO_HAND;
         }
-        int32 ACC           = GetSkill(skill) + iLvlSkill;
-        ACC                 = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
+
+        uint32_t skillLevel = GetSkill(skill) + iLvlSkill;
+        ACC                 = GetAccFromSkill(skillLevel);
+
         float dexMultiplier = settings::get<bool>("main.USE_PRE_2013_DEX_MULTIPLIER") ? 0.50f : 0.75f;
         if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]); weapon && weapon->isTwoHanded())
         {
-            ACC += (int16)(DEX() * dexMultiplier);
+            ACC += std::floor(DEX() * dexMultiplier);
             ACC += m_modStat[Mod::TWOHAND_ACC];
         }
         else
         {
-            ACC += (int16)(DEX() * dexMultiplier);
+            ACC += std::floor(DEX() * dexMultiplier);
         }
         ACC = (ACC + m_modStat[Mod::ACC] + offsetAccuracy);
 
@@ -1119,14 +1291,15 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             ACC += PChar->PMeritPoints->GetMeritValue(MERIT_ACCURACY, PChar);
         }
 
-        ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]);
+        ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100.f), m_modStat[Mod::FOOD_ACC_CAP]);
         return std::max<int16>(0, ACC);
     }
     else if (this->objtype == TYPE_PET && ((CPetEntity*)this)->getPetType() == PET_TYPE::AUTOMATON)
     {
-        int32 ACC = this->GetSkill(SKILL_AUTOMATON_MELEE);
-        ACC       = (ACC > 200 ? (int16)(((ACC - 200) * 0.9) + 200) : ACC);
-        ACC += (int16)(DEX() * 0.5);
+        int32 skillLevel = this->GetSkill(SKILL_AUTOMATON_MELEE);
+
+        ACC = GetAccFromSkill(skillLevel);
+        ACC += std::floor(DEX() * 0.5);
         ACC += m_modStat[Mod::ACC] + offsetAccuracy;
 
         if (this->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
@@ -1141,13 +1314,10 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
                 ACC += this->PMaster->getMod(Mod::TANDEM_STRIKE_POWER);
             }
         }
-
-        ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]);
-        return std::max<int16>(0, ACC);
     }
     else
     {
-        int32 ACC = m_modStat[Mod::ACC] + offsetAccuracy;
+        ACC = m_modStat[Mod::ACC] + offsetAccuracy;
 
         if (this->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
         {
@@ -1179,9 +1349,10 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
                 }
             }
         }
-        ACC = ACC + std::min<int16>((ACC * m_modStat[Mod::FOOD_ACCP] / 100), m_modStat[Mod::FOOD_ACC_CAP]) + DEX() / 2; // Account for food mods here for Snatch Morsel
-        return std::max<int16>(0, ACC);
+        ACC = ACC + std::floor(DEX() / 2);
     }
+
+    return std::max(1, ACC + std::min<int16>(((100 + getMod(Mod::FOOD_ACCP) * ACC) / 100), getMod(Mod::FOOD_ACC_CAP)));
 }
 
 uint16 CBattleEntity::DEF()

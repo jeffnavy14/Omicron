@@ -57,6 +57,13 @@ xi.mobSkill =
     FLYING_HIP_PRESS         =  360,
     EARTH_SHOCK              =  361,
 
+    TAIL_ROLL                =  382,
+    TUSK                     =  383,
+    SCUTUM                   =  384,
+    BONE_CRUNCH              =  385,
+    AWFUL_EYE                =  386,
+    HEAVY_BELLOW             =  387,
+
     SONIC_BOOM_1             =  393,
     JET_STREAM_1             =  395,
 
@@ -301,6 +308,8 @@ xi.mobSkill =
     SPINE_LASH               = 1355,
     TIDAL_DIVE               = 1357,
     PLASMA_CHARGE            = 1358,
+
+    HUNGRY_CRUNCH            = 1363,
 
     SINUATE_RUSH             = 1367,
 

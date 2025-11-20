@@ -1611,7 +1611,7 @@ uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool 
 
         if (PItem != nullptr && PItem->isType(ITEM_WEAPON))
         {
-            acc = PChar->RACC(PItem->getSkillType());
+            acc = PChar->RACC();
         }
 
         // Check For Ambush Merit - Ranged
@@ -1622,15 +1622,11 @@ uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool 
     }
     else if (PAttacker->objtype == TYPE_PET && ((CPetEntity*)PAttacker)->getPetType() == PET_TYPE::AUTOMATON)
     {
-        acc = PAttacker->RACC(SKILL_AUTOMATON_RANGED);
+        acc = PAttacker->RACC();
     }
     else if (PAttacker->objtype == TYPE_TRUST)
     {
-        auto archery_acc      = PAttacker->RACC(SKILL_ARCHERY);
-        auto marksmanship_acc = PAttacker->RACC(SKILL_MARKSMANSHIP);
-        auto throwing_acc     = PAttacker->RACC(SKILL_THROWING);
-
-        acc = std::max({ archery_acc, marksmanship_acc, throwing_acc });
+        acc = PAttacker->RACC();
     }
     // Check for Yonin evasion bonus while in front of target
     if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_YONIN) && infront(PDefender->loc.p, PAttacker->loc.p, 64))
@@ -2105,9 +2101,35 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
 
         damage = damage * formlessMod / 100;
 
-        // TODO: chance to 'resist'
-        // breath damage, not magic damage
-        damage = BreathDmgTaken(PDefender, damage);
+        float resist = 1.0f + PDefender->getMod(Mod::UDMGBREATH) / 10000.0f;
+        resist       = std::max(resist, 0.0f);
+        damage       = (int32)(damage * resist);
+
+        resist = 1.0f + PDefender->getMod(Mod::DMGBREATH) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
+        resist = std::clamp(resist, 0.5f, 1.5f); // assuming if its floored at .5f its capped at 1.5f but who's stacking +dmgtaken equip anyway???
+        damage = (int32)(damage * resist);
+
+        // TODO: Breaths can have elements. Where are those handled for absorption and nullification.
+
+        // Handle damage absorption.
+        if (xirand::GetRandomNumber(100) < PDefender->getMod(Mod::ABSORB_DMG_CHANCE)) // All damage.
+        {
+            damage = -damage;
+        }
+
+        // Handle damage nullification.
+        else if (xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_DAMAGE) ||      // All damage.
+                 xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_BREATH_DAMAGE)) // Breath damage.
+        {
+            damage = 0;
+        }
+
+        else
+        {
+            damage = HandleSevereDamage(PDefender, damage, false);
+        }
+
+        damage = CheckAndApplyDamageCap(damage, PDefender);
     }
     else
     {
@@ -4871,41 +4893,6 @@ int32 CheckAndApplyDamageCap(int32 damage, CBattleEntity* PDefender)
     return std::clamp(damage, damageCap - damageVariant, damageCap);
 }
 
-int32 BreathDmgTaken(CBattleEntity* PDefender, int32 damage)
-{
-    float resist = 1.0f + PDefender->getMod(Mod::UDMGBREATH) / 10000.0f;
-    resist       = std::max(resist, 0.0f);
-    damage       = (int32)(damage * resist);
-
-    resist = 1.0f + PDefender->getMod(Mod::DMGBREATH) / 10000.0f + PDefender->getMod(Mod::DMG) / 10000.0f;
-    resist = std::clamp(resist, 0.5f, 1.5f); // assuming if its floored at .5f its capped at 1.5f but who's stacking +dmgtaken equip anyway???
-    damage = (int32)(damage * resist);
-
-    // TODO: Breaths can have elements. Where are those handled for absorption and nullification.
-
-    // Handle damage absorption.
-    if (xirand::GetRandomNumber(100) < PDefender->getMod(Mod::ABSORB_DMG_CHANCE)) // All damage.
-    {
-        damage = -damage;
-    }
-
-    // Handle damage nullification.
-    else if (xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_DAMAGE) ||      // All damage.
-             xirand::GetRandomNumber(100) < PDefender->getMod(Mod::NULL_BREATH_DAMAGE)) // Breath damage.
-    {
-        damage = 0;
-    }
-
-    else
-    {
-        damage = HandleSevereDamage(PDefender, damage, false);
-    }
-
-    damage = CheckAndApplyDamageCap(damage, PDefender);
-
-    return damage;
-}
-
 // TODO: Study using lua functions.
 int32 MagicDmgTaken(CBattleEntity* PDefender, int32 damage, ELEMENT element)
 {
@@ -5905,7 +5892,7 @@ int32 GetRangedAttackBonuses(CBattleEntity* battleEntity)
 
     int32 bonus = 0;
 
-    // Reduction from velocity shot mod
+    // bonus from velocity shot mod
     if (battleEntity->StatusEffectContainer->HasStatusEffect(EFFECT_VELOCITY_SHOT))
     {
         bonus += battleEntity->getMod(Mod::VELOCITY_RATT_BONUS);

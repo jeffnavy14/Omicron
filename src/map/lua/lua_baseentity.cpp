@@ -14732,45 +14732,24 @@ uint16 CLuaBaseEntity::getStat(uint16 statId, sol::variadic_args va)
             value               = PEntity->ATT(weaponSlot);
         }
         break;
-        case Mod::RATT:
+        case Mod::ACC:
         {
-            SKILLTYPE skill = SKILL_NONE;
-
-            if (PEntity->objtype == TYPE_PET && static_cast<CPetEntity*>(PEntity)->getPetType() == PET_TYPE::AUTOMATON)
-            {
-                skill = SKILLTYPE::SKILL_AUTOMATON_RANGED;
-                value = PEntity->RATT(skill);
-            }
-            else
-            {
-                CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOTTYPE::SLOT_RANGED]);
-                if (PWeapon)
-                {
-                    value = PEntity->RATT(PWeapon->getSkillType());
-                }
-                else
-                {
-                    PWeapon = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOTTYPE::SLOT_AMMO]);
-                    if (PWeapon)
-                    {
-                        value = PEntity->RATT(PWeapon->getSkillType());
-                    }
-                    else
-                    {
-                        ShowError("CLuaBaseEntity::getStat(): Ranged attack with no ranged weapon or ammo, defaulting to marksmanship");
-                        value = PEntity->RATT(SKILL_MARKSMANSHIP); // TODO: does this edge case exist? will mobs or trusts hit this?
-                    }
-                }
-            }
+            uint8_t attackNumber = va[0].is<uint8>() ? va[0].as<uint8>() : 0;
+            value                = PEntity->ACC(attackNumber, 0);
         }
         break;
+        case Mod::RATT:
+            value = PEntity->RATT();
+            break;
+        case Mod::RACC:
+            value = PEntity->RACC();
+            break;
         case Mod::DEF:
             value = PEntity->DEF();
             break;
         case Mod::EVA:
             value = PEntity->EVA();
             break;
-        // TODO: support getStat for ACC/RACC/RATT
         default:
             // We should probably show a warning here
             break;
@@ -14822,8 +14801,7 @@ uint16 CLuaBaseEntity::getEVA()
  *  Function: getRACC()
  *  Purpose : Calculates and returns the Ranged Accuracy of a Weapon euipped in the Ranged slot
  *  Example : player:getRACC()
- *  Notes   : TODO: The calculation is already a public member of battleentity, shouldn't have two calculations, just call (CBattleEntity*)m_PBaseEntity)->RACC
- *            and return result
+ *  Notes   :
  ************************************************************************/
 
 int CLuaBaseEntity::getRACC()
@@ -14835,26 +14813,7 @@ int CLuaBaseEntity::getRACC()
         return 0;
     }
 
-    auto* weapon = dynamic_cast<CItemWeapon*>(PEntity->m_Weapons[SLOT_RANGED]);
-    if (weapon == nullptr)
-    {
-        ShowDebug("lua::getRACC weapon in ranged slot is nullptr!");
-        return 0;
-    }
-
-    int skill = PEntity->GetSkill(weapon->getSkillType());
-    int acc   = skill;
-
-    if (skill > 200)
-    {
-        acc = (int)(200 + (skill - 200) * 0.9);
-    }
-
-    acc += PEntity->getMod(Mod::RACC);
-    acc += PEntity->AGI() / 2;
-    acc = acc + std::min<int16>(((100 + PEntity->getMod(Mod::FOOD_RACCP)) * acc / 100), PEntity->getMod(Mod::FOOD_RACC_CAP));
-
-    return acc;
+    return PEntity->RACC(0);
 }
 
 /************************************************************************
@@ -14866,21 +14825,14 @@ int CLuaBaseEntity::getRACC()
 
 uint16 CLuaBaseEntity::getRATT()
 {
-    if (m_PBaseEntity->objtype == TYPE_NPC)
+    auto* PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PEntity)
     {
-        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        ShowError("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
         return 0;
     }
 
-    auto* weapon = dynamic_cast<CItemWeapon*>(static_cast<CBattleEntity*>(m_PBaseEntity)->m_Weapons[SLOT_RANGED]);
-
-    if (weapon == nullptr)
-    {
-        ShowDebug("lua::getRATT weapon in ranged slot is nullptr!");
-        return 0;
-    }
-
-    return static_cast<CBattleEntity*>(m_PBaseEntity)->RATT(weapon->getSkillType(), weapon->getILvlSkill());
+    return PEntity->RATT(0);
 }
 
 /************************************************************************
@@ -15019,24 +14971,6 @@ int32 CLuaBaseEntity::rangedDmgTaken(double damage, sol::variadic_args va)
     DAMAGE_TYPE damageType = va[0].is<uint32>() ? va[0].as<DAMAGE_TYPE>() : DAMAGE_TYPE::NONE;
 
     return battleutils::RangedDmgTaken(static_cast<CBattleEntity*>(m_PBaseEntity), static_cast<int32>(damage), damageType);
-}
-
-/************************************************************************
- *  Function: breathDmgTaken()
- *  Purpose : Returns the value of Breath Damage taken after calculation
- *  Example : local dmg = target:breathDmgTaken(dmg)
- *  Notes   : Passes argument to BreathDmgTaken member of battleutils
- ************************************************************************/
-
-int32 CLuaBaseEntity::breathDmgTaken(double damage)
-{
-    if (m_PBaseEntity->objtype == TYPE_NPC)
-    {
-        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
-        return 0;
-    }
-
-    return battleutils::BreathDmgTaken(static_cast<CBattleEntity*>(m_PBaseEntity), static_cast<int32>(damage));
 }
 
 /************************************************************************
@@ -20125,7 +20059,6 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("physicalDmgTaken", CLuaBaseEntity::physicalDmgTaken);
     SOL_REGISTER("rangedDmgTaken", CLuaBaseEntity::rangedDmgTaken);
-    SOL_REGISTER("breathDmgTaken", CLuaBaseEntity::breathDmgTaken);
     SOL_REGISTER("handleAfflatusMiseryDamage", CLuaBaseEntity::handleAfflatusMiseryDamage);
 
     SOL_REGISTER("isWeaponTwoHanded", CLuaBaseEntity::isWeaponTwoHanded);

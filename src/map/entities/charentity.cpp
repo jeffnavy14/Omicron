@@ -3168,7 +3168,7 @@ void CCharEntity::tryStartNextEvent()
         }
         else
         {
-            animation = ANIMATION_NONE;
+            animation = this->isDead() ? ANIMATION_DEATH : ANIMATION_NONE;
         }
 
         sendServerStatus_ = true;

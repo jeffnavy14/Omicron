@@ -3243,12 +3243,6 @@ end
 function CBaseEntity:rangedDmgTaken(damage, damageType)
 end
 
----@nodiscard
----@param damage number
----@return integer
-function CBaseEntity:breathDmgTaken(damage)
-end
-
 ---@param damage number
 ---@return nil
 function CBaseEntity:handleAfflatusMiseryDamage(damage)

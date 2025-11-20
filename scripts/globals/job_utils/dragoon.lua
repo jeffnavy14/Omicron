@@ -685,10 +685,11 @@ xi.job_utils.dragoon.useDamageBreath = function(wyvern, target, skill, action, d
     local element            = damageType - xi.damageType.ELEMENTAL
     local _, skillchainCount = xi.magicburst.formMagicBurst(element, target)
 
-    -- 'Breath accuracy is directly affected by a wyvern's current HP', but no data exists.
+    -- Breath accuracy is directly affected by a wyvern's current HP, but no data exists.
     local resist              = xi.combat.magicHitRate.calculateResistRate(wyvern, target, 0, 0, 0, element, 0, 0, bonusMacc)
     local sdt                 = xi.spells.damage.calculateSDT(target, element)
-    local nukeAbsorbOrNullify = xi.spells.damage.calculateNukeAbsorbOrNullify(target, element)
+    local absorb              = xi.spells.damage.calculateAbsorption(target, element, true)
+    local nullify             = xi.spells.damage.calculateNullification(target, element, true, true)
     local magicBurst          = 1
 
     if skillchainCount > 0 then
@@ -696,7 +697,7 @@ xi.job_utils.dragoon.useDamageBreath = function(wyvern, target, skill, action, d
     end
 
     -- It appears that MB breaths don't do more damage based on testing.
-    damage = damage * resist * sdt * nukeAbsorbOrNullify
+    damage = damage * resist * sdt * absorb * nullify
 
     if damage >= 0 then
         damage = xi.ability.adjustDamage(damage, wyvern, skill, target, xi.attackType.BREATH, damageType, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)

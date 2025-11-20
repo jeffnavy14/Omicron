@@ -166,7 +166,7 @@ jobs:
       - name: Configure CMake
         if: ${{ !inputs.optional_build || steps.check-changes.outputs.source_changes == 'true' }}
         run: |
-          cmake -G Ninja -S . -B build \
+          cmake -G Ninja -S . -B build --fresh \
             -DCMAKE_BUILD_TYPE=${{ inputs.build_type }} \
             -DENABLE_CLANG_TIDY=${{ inputs.clang_tidy && 'ON' || 'OFF' }} \
             -DTRACY_ENABLE=${{ inputs.tracy && 'ON' || 'OFF' }} \

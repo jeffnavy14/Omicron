@@ -2272,13 +2272,6 @@ int32 OnEventFinish(CCharEntity* PChar, uint16 eventID, uint32 result)
         return -1;
     }
 
-    if (PChar->currentEvent->scriptFile.find("/bcnms/") > 0 && PChar->health.hp <= 0)
-    { // for some reason the event doesnt enforce death afterwards
-        PChar->animation = ANIMATION_DEATH;
-        PChar->pushPacket<GP_SERV_COMMAND_RES>(PChar, GP_SERV_COMMAND_RES_TYPE::Homepoint);
-        PChar->updatemask |= UPDATE_HP;
-    }
-
     return 0;
 }
 

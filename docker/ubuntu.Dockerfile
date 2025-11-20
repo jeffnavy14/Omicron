@@ -160,7 +160,7 @@ if [[ $COMPILER == clang* || $ENABLE_CLANG_TIDY == ON ]]; then
     export LDFLAGS="-fuse-ld=lld"
 fi
 
-cmake -G Ninja -S /server -B /xiadmin/build \
+cmake -G Ninja -S /server -B /xiadmin/build --fresh \
     -DENABLE_CLANG_TIDY=$ENABLE_CLANG_TIDY \
     -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
     -DTRACY_ENABLE=$TRACY_ENABLE \

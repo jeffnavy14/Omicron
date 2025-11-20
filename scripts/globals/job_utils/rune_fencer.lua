@@ -524,8 +524,9 @@ local function getSwipeLungeDamageMultipliers(player, target, element, bonusMacc
     multipliers.resist              = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, 0, element, 0, 0, bonusMacc)
     multipliers.dayAndWeather       = xi.spells.damage.calculateDayAndWeather(player, element, false)
     multipliers.magicBonusDiff      = xi.spells.damage.calculateMagicBonusDiff(player, target, 0, 0, element)
-    multipliers.TMDA                = xi.spells.damage.calculateTMDA(target, element)
-    multipliers.nukeAbsorbOrNullify = xi.spells.damage.calculateNukeAbsorbOrNullify(target, element)
+    multipliers.TMDA                = xi.spells.damage.calculateDamageAdjustment(target, false, true, false, false)
+    multipliers.absorb              = xi.spells.damage.calculateAbsorption(target, element, true)
+    multipliers.nullify             = xi.spells.damage.calculateNullification(target, element, true, false)
     multipliers.magicBurst          = 1
     multipliers.magicBurstBonus     = 1
 
@@ -553,7 +554,8 @@ local function calculateSwipeLungeDamage(player, target, skillModifier, gearBonu
     damage = math.floor(damage * multipliers.dayAndWeather)
     damage = math.floor(damage * multipliers.magicBonusDiff)
     damage = math.floor(damage * multipliers.TMDA)
-    damage = math.floor(damage * multipliers.nukeAbsorbOrNullify)
+    damage = math.floor(damage * multipliers.absorb)
+    damage = math.floor(damage * multipliers.nullify)
 
     -- Handle Phalanx
     if damage > 0 then
@@ -609,7 +611,7 @@ xi.job_utils.rune_fencer.useSwipeLunge = function(player, target, ability, actio
             local damage      = calculateSwipeLungeDamage(player, target, skillModifier, gearBonus, runeStrength, multipliers)
 
             -- set absorb flag in case we end up dealing 0 damage cumulatively. For example using a wind swipe/lunge vs Puk with full hp will report it "absorbed" 0 HP.
-            if multipliers.nukeAbsorbOrNullify == -1 then
+            if multipliers.absorb == -1 then
                 absorbed = true
             end
 
