@@ -9,7 +9,7 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
 end
 
-entity.onMobWeaponSkillPrepare = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target)
     local tpMoves =
     {
         xi.mobSkill.AWFUL_EYE,

@@ -34,7 +34,6 @@
 #include "ai/states/inactive_state.h"
 #include "ai/states/magic_state.h"
 #include "ai/states/mobskill_state.h"
-#include "ai/states/raise_state.h"
 #include "ai/states/weaponskill_state.h"
 #include "attack.h"
 #include "attackround.h"
@@ -539,9 +538,9 @@ uint32 CBattleEntity::GetWeaponDelay(bool tp)
     return finalDelay;
 }
 
-float CBattleEntity::GetMeleeRange() const
+float CBattleEntity::GetMeleeRange(const CBattleEntity* target) const
 {
-    return m_ModelRadius + 3.0f;
+    return modelHitboxSize + 2.0f + target->modelHitboxSize;
 }
 
 int16 CBattleEntity::GetRangedWeaponDelay(bool forTPCalc)
@@ -2341,6 +2340,13 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         return;
     }
 
+    // Forced interrupt via status effect
+    if (StatusEffectContainer->HasPreventActionEffect(false))
+    {
+        ActionInterrupts::AbilityInterrupt(this);
+        return;
+    }
+
     if (auto* PMob = dynamic_cast<CMobEntity*>(this))
     {
         // store the skill used
@@ -2498,6 +2504,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         result.resolution = ActionResolution::Hit;
         result.animation  = PSkill->getAnimationID();
         result.messageID  = PSkill->getMsg();
+        result.knockback  = luautils::callGlobal<Knockback>("xi.mobskills.calculateKnockback", PTargetFound, this, PSkill, &action);
 
         // reset the skill's message back to default
         PSkill->setMsg(defaultMessage);
@@ -2561,6 +2568,9 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
             {
                 msg = MSGBASIC_TARGET_EVADES;
             }
+
+            // Evading negates knockback
+            result.knockback = Knockback::None;
         }
         else
         {
@@ -2569,11 +2579,6 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
         if (result.resolution != ActionResolution::Miss && result.resolution != ActionResolution::Parry)
         {
-            if (result.resolution == ActionResolution::Hit)
-            {
-                result.knockback = PSkill->getKnockback();
-            }
-
             if (first && PTargetFound->health.hp > 0 && PSkill->getPrimarySkillchain() != 0)
             {
                 const auto effect = battleutils::GetSkillChainEffect(PTargetFound, PSkill->getPrimarySkillchain(), PSkill->getSecondarySkillchain(), PSkill->getTertiarySkillchain());
@@ -2635,7 +2640,7 @@ bool CBattleEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPack
 
     bool  autoAttackEnabled  = PAI->GetController()->IsAutoAttackEnabled();
     float distanceFromTarget = distance(loc.p, PTarget->loc.p);
-    bool  tooFar             = (distanceFromTarget - PTarget->m_ModelRadius) > GetMeleeRange();
+    bool  tooFar             = distanceFromTarget > GetMeleeRange(PTarget);
 
     return !tooFar && autoAttackEnabled;
 }
@@ -3080,8 +3085,7 @@ void CBattleEntity::Tick(timer::time_point /*unused*/)
 void CBattleEntity::PostTick()
 {
     TracyZoneScoped;
-    if (health.hp == 0 && PAI->IsSpawned() && !PAI->IsCurrentState<CDeathState>() && !PAI->IsCurrentState<CRaiseState>() &&
-        !PAI->IsCurrentState<CDespawnState>())
+    if (health.hp <= 0 && PAI->IsSpawned() && !PAI->IsCurrentState<CDeathState>() && !PAI->IsCurrentState<CDespawnState>())
     {
         Die();
     }

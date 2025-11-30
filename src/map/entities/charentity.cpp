@@ -1272,7 +1272,7 @@ bool CCharEntity::CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket
         errMsg = std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(this, PTarget, 0, 0, MSGBASIC_UNABLE_TO_SEE_TARG);
         return false;
     }
-    else if ((dist - PTarget->m_ModelRadius) > GetMeleeRange())
+    else if (dist > GetMeleeRange(PTarget))
     {
         errMsg = std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(this, PTarget, 0, 0, MSGBASIC_TARG_OUT_OF_RANGE);
         return false;
@@ -1307,6 +1307,9 @@ void CCharEntity::OnCastFinished(CMagicState& state, action_t& action)
     {
         taChar = battleutils::getAvailableTrickAttackChar(this, PTarget);
     }
+
+    auto* controller{ static_cast<CPlayerController*>(PAI->GetController()) };
+    controller->setLastSpellFinishedTime(timer::now());
 
     CBattleEntity::OnCastFinished(state, action);
 
@@ -1484,7 +1487,7 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
 
     SLOTTYPE damslot = SLOT_MAIN;
 
-    if (distance(loc.p, PBattleTarget->loc.p) - PBattleTarget->m_ModelRadius <= PWeaponSkill->getRange())
+    if (distance(loc.p, PBattleTarget->loc.p) <= (PWeaponSkill->getRange() + this->modelHitboxSize + PBattleTarget->modelHitboxSize))
     {
         if (PWeaponSkill->getID() >= 192 && PWeaponSkill->getID() <= 221)
         {
@@ -1495,7 +1498,7 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
         // TODO: revise parameters
         if (PWeaponSkill->isAoE())
         {
-            PAI->TargetFind->findWithinArea(PBattleTarget, AOE_RADIUS::TARGET, 10, FINDFLAGS_NONE, TARGET_NONE);
+            PAI->TargetFind->findWithinArea(PBattleTarget, AOE_RADIUS::TARGET, PWeaponSkill->getRadius(), FINDFLAGS_NONE, TARGET_NONE);
         }
         else
         {
@@ -1635,7 +1638,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
     std::unique_ptr<CBasicPacket> errMsg;
     if (IsValidTarget(PTarget->targid, PAbility->getValidTarget(), errMsg))
     {
-        if (this != PTarget && distance(this->loc.p, PTarget->loc.p) > PAbility->getRange())
+        if (this != PTarget && distance(this->loc.p, PTarget->loc.p) > (PAbility->getRange() + this->modelHitboxSize + PTarget->modelHitboxSize))
         {
             // TODO: Is this relevant? Out of range is a BATTLE_MESSAGE, not an interrupt...
             return;
@@ -1898,21 +1901,21 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
 
             if (value < 0)
             {
-                actionResult.messageID = ability::GetAbsorbMessage(static_cast<MSGBASIC_ID>(actionResult.messageID));
+                actionResult.messageID = ability::GetAbsorbMessage(actionResult.messageID);
                 actionResult.param     = -value;
             }
 
             state.ApplyEnmity();
+        }
 
-            // Some mobs respond to abilities (ex. Absolute Virtue / Ob)
-            for (CBattleEntity* PBattleEntity : *PNotorietyContainer)
+        // Some mobs respond to abilities (ex. Absolute Virtue / Ob)
+        for (CBattleEntity* PBattleEntity : *PNotorietyContainer)
+        {
+            if (auto* PMob = dynamic_cast<CMobEntity*>(PBattleEntity))
             {
-                if (CMobEntity* PMob = dynamic_cast<CMobEntity*>(PBattleEntity))
+                if (PMob->getMobMod(MOBMOD_ABILITY_RESPONSE) && PMob->getZone() == this->getZone())
                 {
-                    if (PMob->getMobMod(MOBMOD_ABILITY_RESPONSE) && PMob->getZone() == this->getZone())
-                    {
-                        luautils::OnPlayerAbilityUse(PMob, this, PAbility);
-                    }
+                    luautils::OnPlayerAbilityUse(PMob, this, PAbility);
                 }
             }
         }
@@ -1921,13 +1924,6 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
         StatusEffectContainer->DelStatusEffect(PAbility->getPostActionEffectCleanup());
 
         charutils::ApplyAbilityRecast(this, PAbility, charge, baseChargeTime, action.recast);
-
-        // TODO: refactor
-        //  if (this->getMijinGakure())
-        //{
-        //     m_ActionType = ACTION_FALL;
-        //     ActionFall();
-        // }
     }
     else if (errMsg)
     {
@@ -2175,7 +2171,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
         int16 retainChance     = 40; // Estimate base ~40% chance to keep Camouflage on a ranged attack
         uint8 rotAllowance     = 25; // Allow for some slight variance in direction faced to be "behind" or "beside" the mob
         float distanceToTarget = distance(this->loc.p, PTarget->loc.p);
-        float meleeRange       = PTarget->GetMeleeRange();
+        float meleeRange       = PTarget->GetMeleeRange(PTarget);
 
         if (isBarrage)
         {
@@ -2647,7 +2643,9 @@ void CCharEntity::Raise()
 {
     TracyZoneScoped;
 
-    PAI->Internal_Raise();
+    OnRaise();
+    PAI->Accept_Raise();
+
     SetDeathTime(timer::time_point::min());
 }
 
