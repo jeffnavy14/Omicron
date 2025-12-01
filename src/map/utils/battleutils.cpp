@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -1577,74 +1577,17 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, action_re
 
 uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isBarrage, int16 accBonus)
 {
-    int  acc                   = 0;
-    int  hitrate               = 75;
-    auto rangedPenaltyFunction = lua["xi"]["combat"]["ranged"]["accuracyDistancePenalty"];
-    auto distancePenaltyResult = rangedPenaltyFunction(PAttacker, PDefender);
-    int  distancePenalty       = 0;
-
     // Check to see if distance is greater than 25 and force hitrate to be 0
     if (distance(PAttacker->loc.p, PDefender->loc.p) > 25)
     {
         return 0;
     }
 
-    if (!distancePenaltyResult.valid())
-    {
-        sol::error err = distancePenaltyResult;
-        ShowError("battleutils::GetRangedHitRate: %s", err.what());
-    }
-    else
-    {
-        distancePenalty = distancePenaltyResult.get_type() == sol::type::number ? distancePenaltyResult.get<int16>(0) : 0;
-    }
+    double luaHitRate = luautils::callGlobal<double>("xi.combat.physicalHitRate.getRangedHitRate", PAttacker, PDefender, accBonus, false);
 
-    if (PAttacker->objtype == TYPE_PC)
-    {
-        CCharEntity* PChar = (CCharEntity*)PAttacker;
-        CItemWeapon* PItem = (CItemWeapon*)PChar->getEquip(SLOT_RANGED);
+    uint8 hitrate = std::floor<uint8>(luaHitRate * 100.0);
 
-        if (PItem == nullptr || !PItem->isType(ITEM_WEAPON))
-        {
-            // try throwing weapon
-            PItem = (CItemWeapon*)PChar->getEquip(SLOT_AMMO);
-        }
-
-        if (PItem != nullptr && PItem->isType(ITEM_WEAPON))
-        {
-            acc = PChar->RACC();
-        }
-
-        // Check For Ambush Merit - Ranged
-        if ((charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && behind(PAttacker->loc.p, PDefender->loc.p, 64))
-        {
-            acc += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
-        }
-    }
-    else if (PAttacker->objtype == TYPE_PET && ((CPetEntity*)PAttacker)->getPetType() == PET_TYPE::AUTOMATON)
-    {
-        acc = PAttacker->RACC();
-    }
-    else if (PAttacker->objtype == TYPE_TRUST)
-    {
-        acc = PAttacker->RACC();
-    }
-    // Check for Yonin evasion bonus while in front of target
-    if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_YONIN) && infront(PDefender->loc.p, PAttacker->loc.p, 64))
-    {
-        acc -= PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_YONIN)->GetPower();
-    }
-
-    // Add any specific accuracy bonus, e.g. Daken RAcc +100
-    acc += accBonus;
-
-    acc -= distancePenalty;
-
-    int eva = PDefender->EVA();
-    hitrate = hitrate + (acc - eva) / 2 + (PAttacker->GetMLevel() - PDefender->GetMLevel()) * 2;
-
-    uint8 finalhitrate = std::clamp(hitrate, 20, 95);
-    return finalhitrate;
+    return hitrate;
 }
 
 uint8 GetRangedHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool isBarrage)
@@ -2732,7 +2675,7 @@ uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 att
     {
         double luaHitRate = luautils::callGlobal<double>("xi.combat.physicalHitRate.getPhysicalHitRate", PAttacker, PDefender, offsetAccuracy, attackNumber, false);
 
-        hitrate = std::floor<uint8>(std::clamp<double>(luaHitRate * 100.0, 20.0, 99.0));
+        hitrate = std::floor<uint8>(luaHitRate * 100);
     }
     return static_cast<uint8>(hitrate);
 }

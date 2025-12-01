@@ -18230,6 +18230,18 @@ void CLuaBaseEntity::usePetAbility(uint16 skillId, const sol::object& target) co
 {
     CBattleEntity* PTarget{ nullptr };
 
+    // Don't queue an ability if we're not in auto attack state or no state
+    if (!m_PBaseEntity->PAI->IsCurrentState<CAttackState>() && !m_PBaseEntity->PAI->IsStateStackEmpty())
+    {
+        return;
+    }
+
+    // Don't queue an ability if we are unable to act
+    if (auto PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity); PBattleEntity && PBattleEntity->StatusEffectContainer->HasPreventActionEffect())
+    {
+        return;
+    }
+
     if (!battleutils::GetPetSkill(skillId))
     {
         return;
