@@ -613,10 +613,10 @@ INSERT INTO `mob_skills` VALUES (595,881,'heat_wave',1,0.0,10.0,2000,1500,4,0,0,
 INSERT INTO `mob_skills` VALUES (596,882,'hellstorm',4,0.0,10.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (597,883,'self-destruct_bomb_big',1,0.0,20.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (598,1598,'berserk',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (599,885,'arctic_impact',1,0.0,15.0,2000,2000,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (600,886,'cold_wave',1,0.0,15.0,2000,2000,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (601,887,'hiemal_storm',1,0.0,15.0,2000,2000,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (602,346,'hypothermal_combustion',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (599,885,'arctic_impact',1,0.0,15.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (600,886,'cold_wave',1,0.0,15.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (601,887,'hiemal_storm',1,0.0,15.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (602,888,'hypothermal_combustion_tzar',1,0.0,20.0,2000,5000,4,0,0,0,0,0,0); -- Snoll Tzar specific skill
 -- INSERT INTO `mob_skills` VALUES (603,432,'lateral_slash',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (604,433,'throat_stab',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (605,349,'aerial_wheel',0,0.0,15.0,2000,1500,4,0,0,0,0,0,0);

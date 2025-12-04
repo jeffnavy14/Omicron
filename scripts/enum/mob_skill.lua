@@ -172,6 +172,11 @@ xi.mobSkill =
     HELLSTORM                =  596, -- Big Bomb / Friars Lantern
     SELF_DESTRUCT_BOMB_BIG   =  597, -- Big Bomb / Friars Lantern
 
+    ARCTIC_IMPACT            =  599, -- Snoll Tzar
+    COLD_WAVE_2              =  600, -- Snoll Tzar
+    HIEMAL_STORM             =  601, -- Snoll Tzar
+    HYPOTHERMAL_COMBUSTION_2 =  602, -- Snoll Tzar
+
     SWEEP                    =  620,
 
     HELLDIVE_1               =  622,

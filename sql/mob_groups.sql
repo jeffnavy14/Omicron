@@ -11387,8 +11387,8 @@ INSERT INTO `mob_groups` VALUES (9,784,159,'Cook_Fulberry',0,128,0,0,0,75,75,0);
 INSERT INTO `mob_groups` VALUES (10,3971,159,'Tonberrys_Elemental',0,128,0,0,0,43,55,0);
 INSERT INTO `mob_groups` VALUES (11,3970,159,'Tonberrys_Avatar',0,128,0,0,0,43,55,0);
 INSERT INTO `mob_groups` VALUES (12,3872,159,'Temple_Guardian',300,0,3332,0,0,65,65,0);
-INSERT INTO `mob_groups` VALUES (13,2888,159,'Nio-A',0,128,0,8000,0,70,70,0);
-INSERT INTO `mob_groups` VALUES (14,2889,159,'Nio-Hum',0,128,0,8000,0,70,70,0);
+INSERT INTO `mob_groups` VALUES (13,2888,159,'Nio-A',0,128,0,6700,0,72,72,0);
+INSERT INTO `mob_groups` VALUES (14,2889,159,'Nio-Hum',0,128,0,6700,0,72,72,0);
 INSERT INTO `mob_groups` VALUES (15,2664,159,'Mimic',0,128,1681,0,0,65,65,0);
 INSERT INTO `mob_groups` VALUES (16,5142,159,'Wespe',960,0,2642,0,0,52,55,0);
 INSERT INTO `mob_groups` VALUES (17,3874,159,'Temple_Opo-opo',960,0,2389,0,0,51,54,0);
@@ -13771,8 +13771,8 @@ INSERT INTO `mob_groups` VALUES (6,4645,207,'Ifrit_Prime_HTBF',0,128,0,0,0,99,99
 -- Quicksand_Caves (Zone 208)
 -- ------------------------------------------------------------
 
-INSERT INTO `mob_groups` VALUES (1,4126,208,'Valor',0,128,0,4500,0,65,65,0);
-INSERT INTO `mob_groups` VALUES (2,1987,208,'Honor',0,128,0,6000,0,70,70,0);
+INSERT INTO `mob_groups` VALUES (1,4126,208,'Valor',0,128,0,6400,0,65,65,0);
+INSERT INTO `mob_groups` VALUES (2,1987,208,'Honor',0,128,0,5400,0,70,70,0);
 INSERT INTO `mob_groups` VALUES (3,672,208,'Centurio_IV-VII',0,128,0,0,0,70,70,0);
 INSERT INTO `mob_groups` VALUES (4,3999,208,'Triarius_IV-XIV',0,128,0,0,0,70,70,0);
 INSERT INTO `mob_groups` VALUES (5,3193,208,'Princeps_IV-XLV',0,128,0,0,0,70,70,0);
