@@ -10663,7 +10663,7 @@ INSERT INTO `mob_groups` VALUES (22,1363,144,'Flayer_Franz',0,128,0,0,0,45,45,0)
 INSERT INTO `mob_groups` VALUES (23,2975,144,'Flesh_Eater',0,128,0,0,0,38,40,0);
 INSERT INTO `mob_groups` VALUES (24,3282,144,'Queen_Jelly',0,128,0,0,4800,41,41,0);
 INSERT INTO `mob_groups` VALUES (25,3196,144,'Princess_Jelly',0,128,0,600,1500,35,35,0);
-INSERT INTO `mob_groups` VALUES (26,3920,144,'Time_Bomb',0,128,0,9999,0,50,50,0);
+INSERT INTO `mob_groups` VALUES (26,3920,144,'Time_Bomb',0,128,0,9999,0,55,55,0);
 INSERT INTO `mob_groups` VALUES (27,4479,144,'YoBhu_Hideousmask',0,128,0,0,0,62,64,0);
 INSERT INTO `mob_groups` VALUES (28,4521,144,'ZoDhu_Legslicer',0,128,0,0,0,62,64,0);
 INSERT INTO `mob_groups` VALUES (29,2200,144,'KaNha_Jabbertongue',0,128,0,0,0,62,64,0);
@@ -10785,7 +10785,7 @@ INSERT INTO `mob_groups` VALUES (33,15,146,'Aa_Nawu_the_Thunderblade',0,128,0,0,
 INSERT INTO `mob_groups` VALUES (34,4474,146,'Yoo_Mihi_the_Haze',0,128,0,0,0,60,60,0);
 INSERT INTO `mob_groups` VALUES (35,4385,146,'Wyrm',0,128,0,45000,15000,80,80,0);
 INSERT INTO `mob_groups` VALUES (36,1121,146,'Dromiceiomimus',0,128,0,0,0,50,50,0);
-INSERT INTO `mob_groups` VALUES (37,2467,146,'Macan_Gadangan',0,128,0,0,0,60,60,0);
+INSERT INTO `mob_groups` VALUES (37,2467,146,'Macan_Gadangan',0,128,0,8000,8000,62,62,0);
 INSERT INTO `mob_groups` VALUES (38,1602,146,'Gilagoge_Tlugvi',0,128,0,9600,5000,76,76,0);
 INSERT INTO `mob_groups` VALUES (39,1747,146,'Goga_Tlugvi',0,128,0,8250,0,76,76,0);
 INSERT INTO `mob_groups` VALUES (40,4077,146,'Ulagohvsdi_Tlugvi',0,128,0,8000,0,75,75,0);
@@ -13696,8 +13696,8 @@ INSERT INTO `mob_groups` VALUES (16,629,206,'Capelthwaite',0,128,0,1300,0,31,31,
 INSERT INTO `mob_groups` VALUES (17,1424,206,'Freybug',0,128,0,1350,0,32,32,0);
 INSERT INTO `mob_groups` VALUES (18,3390,206,'Rongeur_Dos',0,128,0,1300,0,31,31,0);
 INSERT INTO `mob_groups` VALUES (19,1854,206,'Guytrash',0,128,0,1350,0,32,32,0);
-INSERT INTO `mob_groups` VALUES (20,1076,206,'Doll_Factory',0,128,0,0,0,40,40,0);
-INSERT INTO `mob_groups` VALUES (21,1497,206,'Generic_Doll',0,128,0,0,0,40,40,0);
+INSERT INTO `mob_groups` VALUES (20,1076,206,'Doll_Factory',0,128,0,500,0,40,40,0);
+INSERT INTO `mob_groups` VALUES (21,1497,206,'Generic_Doll',0,128,0,2200,2200,40,40,0);
 INSERT INTO `mob_groups` VALUES (22,1519,206,'Ghul-I-Beaban_DRK',0,128,0,0,0,40,40,0);
 INSERT INTO `mob_groups` VALUES (23,6069,206,'Ghul-I-Beaban_BLM',0,128,0,0,0,40,40,0);
 INSERT INTO `mob_groups` VALUES (24,1342,206,'Fire_Golem',0,128,0,0,0,50,50,0);
@@ -13739,8 +13739,8 @@ INSERT INTO `mob_groups` VALUES (59,3533,206,'Seed_Quadav',0,128,0,0,0,50,50,0);
 INSERT INTO `mob_groups` VALUES (60,3535,206,'Seed_Yagudo',0,128,0,0,0,50,50,0);
 INSERT INTO `mob_groups` VALUES (61,3530,206,'Seed_Goblin',0,128,0,0,0,50,50,0);
 INSERT INTO `mob_groups` VALUES (62,6642,206,'Atori-Tutori_qm',0,128,0,27000,0,102,102,0);
-INSERT INTO `mob_groups` VALUES (63,1076,206,'Doll_Factory',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (64,1497,206,'Generic_Doll',0,128,0,0,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (63,1076,206,'Doll_Factory',0,128,0,500,0,40,40,0);
+INSERT INTO `mob_groups` VALUES (64,1497,206,'Generic_Doll',0,128,0,2200,2200,40,40,0);
 INSERT INTO `mob_groups` VALUES (65,2831,206,'Nephiyl_Rampartbreacher',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (66,2828,206,'Nephiyl_Keepcollapser',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (67,2829,206,'Nephiyl_Moatfiller',0,128,0,0,0,0,0,0);
@@ -13752,8 +13752,8 @@ INSERT INTO `mob_groups` VALUES (72,2147,206,'Jeumouque_B_DAurphe',0,128,0,0,0,0
 INSERT INTO `mob_groups` VALUES (73,0,206,'Ullegore',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (74,0,206,'Mumor',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (75,4006,206,'Trion',0,128,0,1500,0,75,75,1); -- ally
-INSERT INTO `mob_groups` VALUES (76,7292,206,'Generic_Doll',0,128,0,0,0,40,40,0);
-INSERT INTO `mob_groups` VALUES (77,7293,206,'Generic_Doll',0,128,0,0,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (76,7292,206,'Generic_Doll',0,128,0,2200,2200,40,40,0);
+INSERT INTO `mob_groups` VALUES (77,7293,206,'Generic_Doll',0,128,0,2200,2200,40,40,0);
 
 -- ------------------------------------------------------------
 -- Cloister_of_Flames (Zone 207)
