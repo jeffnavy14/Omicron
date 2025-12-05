@@ -3,6 +3,23 @@ xi = xi or {}
 ---@enum xi.mobSkill
 xi.mobSkill =
 {
+    SHADOWSTITCH                  =   18,
+
+    DANCING_EDGE                  =   23,
+    SHARK_BITE                    =   24,
+    EVISCERATION                  =   25,
+
+    VORPAL_SCYTHE                 =  101,
+    GUILLOTINE_1                  =  102,
+
+    SPIRAL_HELL                   =  104,
+
+    PENTA_THRUST                  =  116,
+
+    SKEWER                        =  118,
+    WHEELING_THRUST               =  119,
+    IMPULSE_DRIVE                 =  120,
+
     BARBED_CRESCENT_1             =  245,
 
     FOOT_KICK_1                   =  257,
@@ -214,6 +231,8 @@ xi.mobSkill =
 
     CHARM                         =  710,
 
+    JUMP_1                        =  718,
+
     MEIKYO_SHISUI_1               =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1                =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
     CALL_WYVERN                   =  732,
@@ -264,6 +283,10 @@ xi.mobSkill =
 
     JUDGMENT_BOLT_1               =  893, -- Confirmed usage: "Trial by Lightning" bcnm. Regular avatar-type mobs (Ramuh).
 
+    HEALING_BREATH_III            =  896,
+    REMOVE_POISON                 =  897,
+    REMOVE_BLINDNESS              =  898,
+    REMOVE_PARALYSIS              =  899,
     PET_FLAME_BREATH              =  900,
     PET_FROST_BREATH              =  901,
     PET_GUST_BREATH               =  902,
