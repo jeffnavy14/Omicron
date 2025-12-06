@@ -24,12 +24,12 @@
 #                    This must be made AFTER FULL overrides.
 #
 # Database overrides here:
-#omicronxi/Domain/SQL
+omicronxi/Domain/SQL
 #omicronxi/Custom_Sql
 #
 # Core overrides here:
 omicronxi/Domain/CPP/
-omicronxi/Custom CPP/
+#omicronxi/Custom CPP/
 #
 # Lua BASE updates here:
 omicronxi/Domain/enum
@@ -44,7 +44,7 @@ omicronxi/Domain/additive_override/
 omicronxi/Custom Gaes Fete
 #omicronxi/af_reforged
 #omicronxi/Bastion
-omicronxi/besieged
+#omicronxi/besieged
 omicronxi/commands
 #omicronxi/contrib
 omicronxi/global
@@ -52,7 +52,7 @@ omicronxi/Custom NPCs
 omicronxi/Custom_HNMs
 omicronxi/Descent
 #omicronxi/Domain Invasion
-#omicronxi/mimic
+omicronxi/mimic
 omicronxi/Sky2.0
 omicronxi/the_arena
 #omicronxi/75only
