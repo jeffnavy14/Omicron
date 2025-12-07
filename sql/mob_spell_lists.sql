@@ -2251,7 +2251,7 @@ INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,166,66,74);  -- thunde
 INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,167,75,91);  -- thunder_iv (75~91)
 INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,168,92,255); -- thunder_v (92~255)
 INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,212,56,255); -- burst (56~255)
-INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,239,16,50);  -- shock (16~50)
+INSERT INTO `mob_spell_lists` VALUES ('ThunderSpirit',208,239,16,255);  -- shock (16~255)
 
 -- WaterSpirit (209)
 INSERT INTO `mob_spell_lists` VALUES ('WaterSpirit',209,169,5,29);   -- water (5~29)
