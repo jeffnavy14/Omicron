@@ -14882,31 +14882,6 @@ uint16 CLuaBaseEntity::getILvlParry()
 }
 
 /************************************************************************
- *  Function: isSpellAoE()
- *  Purpose : Returns true if a specified spell is AoE
- *  Example : if caster:isSpellAoE(spell:getID()) then
- *  Notes   : Only found in scripts/globals/magic.lua
- ************************************************************************/
-
-bool CLuaBaseEntity::isSpellAoE(uint16 spellId)
-{
-    auto* PBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
-    if (!PBattle)
-    {
-        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
-        return false;
-    }
-
-    CSpell* PSpell = spell::GetSpell(static_cast<SpellID>(spellId));
-    if (PSpell != nullptr)
-    {
-        return battleutils::GetSpellAoEType(PBattle, PSpell) > 0;
-    }
-
-    return false;
-}
-
-/************************************************************************
  *  Function: physicalDmgTaken()
  *  Purpose : Returns the value of Physical Damage taken after calculation
  *  Example : dmg = target:physicalDmgTaken(dmg, damageType)
@@ -16988,7 +16963,63 @@ uint8 CLuaBaseEntity::getModelSize()
         return 0;
     }
 
-    return PEntity->m_ModelRadius;
+    return PEntity->modelSize;
+}
+
+/************************************************************************
+ *  Function: setModelSize()
+ *  Purpose : sets the Model Size (visual) of the entity
+ *  Example : mob:setModelSize(2)
+ *  Notes   :
+ ************************************************************************/
+
+void CLuaBaseEntity::setModelSize(uint8 newSize)
+{
+    auto* PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PEntity)
+    {
+        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return;
+    }
+
+    PEntity->modelSize = std::clamp<uint8>(newSize, 0, 3);
+}
+
+/************************************************************************
+ *  Function: getHitboxSize()
+ *  Purpose : Returns the hitbox size of the entity
+ *  Example : local size = mob:getHitboxSize()
+ *  Notes   :
+ ************************************************************************/
+
+float CLuaBaseEntity::getHitboxSize()
+{
+    auto* PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PEntity)
+    {
+        return 0;
+    }
+
+    return PEntity->modelHitboxSize;
+}
+
+/************************************************************************
+ *  Function: setHitboxSize()
+ *  Purpose : sets the hitbox size of the entity
+ *  Example : mob:setHitboxSize(1.1)
+ *  Notes   :
+ ************************************************************************/
+
+void CLuaBaseEntity::setHitboxSize(const float newSize)
+{
+    auto* PEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PEntity)
+    {
+        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return;
+    }
+
+    PEntity->modelHitboxSize = newSize;
 }
 
 /************************************************************************
@@ -20021,8 +20052,6 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getILvlSkill", CLuaBaseEntity::getILvlSkill);
     SOL_REGISTER("getILvlParry", CLuaBaseEntity::getILvlParry);
 
-    SOL_REGISTER("isSpellAoE", CLuaBaseEntity::isSpellAoE);
-
     SOL_REGISTER("physicalDmgTaken", CLuaBaseEntity::physicalDmgTaken);
     SOL_REGISTER("rangedDmgTaken", CLuaBaseEntity::rangedDmgTaken);
     SOL_REGISTER("handleAfflatusMiseryDamage", CLuaBaseEntity::handleAfflatusMiseryDamage);
@@ -20126,6 +20155,9 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("isNM", CLuaBaseEntity::isNM);
 
     SOL_REGISTER("getModelSize", CLuaBaseEntity::getModelSize);
+    SOL_REGISTER("setModelSize", CLuaBaseEntity::setModelSize);
+    SOL_REGISTER("getHitboxSize", CLuaBaseEntity::getHitboxSize);
+    SOL_REGISTER("setHitboxSize", CLuaBaseEntity::setHitboxSize);
     SOL_REGISTER("getMeleeRange", CLuaBaseEntity::getMeleeRange);
     SOL_REGISTER("setMobFlags", CLuaBaseEntity::setMobFlags);
     SOL_REGISTER("getMobFlags", CLuaBaseEntity::getMobFlags);

@@ -217,6 +217,13 @@ xi.mobSkill =
     CURSED_SPHERE_1               =  659,
     VENOM_1                       =  660,
 
+    KICK_BACK                     =  668,
+    IMPLOSION                     =  669,
+
+    UMBRA_SMASH                   =  671,
+    GIGA_SLASH                    =  672,
+    DARK_NOVA                     =  673,
+
     CRYSTAL_RAIN                  =  678,
     CRYSTAL_WEAPON_FIRE           =  679, -- Zipacna Weapon Start
 

@@ -177,14 +177,12 @@ xi.job_utils.geomancer.geoOnConcentricPulseAbilityCheck = function(player, targe
     end
 
     -- player out of range of luopan
-    -- TODO: Luopan hitbox + player hitbox
-    if player:checkDistance(pet) > ability:getRange() then
+    if player:checkDistance(pet) > ability:getRange() + player:getHitboxSize() + pet:getHitboxSize() then
         return xi.msg.basic.TARG_OUT_OF_RANGE_2, 0
     end
 
     -- target out of range of luopan
-    -- TODO: Luopan hitbox + target hitbox
-    if target:checkDistance(pet) > ability:getRange() then
+    if target:checkDistance(pet) > ability:getRange() + target:getHitboxSize() + pet:getHitboxSize() then
         return xi.msg.basic.TARG_OUT_OF_RANGE_2, pet:getTargID()
     end
 
@@ -213,6 +211,14 @@ xi.job_utils.geomancer.geoOnEclipticAttritionCheck = function(player, target, ab
     if luopan:getLocalVar('eclipticAttrition') ~= 0 then
         -- This message is guessed
         return xi.msg.basic.UNABLE_TO_USE_JA, 0
+    end
+
+    return 0, 0
+end
+
+xi.job_utils.geomancer.geoOnTheurgicFocusCheck = function(player, target, ability)
+    if player:hasStatusEffect(xi.effect.THEURGIC_FOCUS) then
+        return xi.msg.basic.EFFECT_ALREADY_ACTIVE, 0
     end
 
     return 0, 0
@@ -406,6 +412,9 @@ xi.job_utils.geomancer.dematerialize = function(player, target, ability, action)
 end
 
 xi.job_utils.geomancer.theurgicFocus = function(player, target, ability)
+    player:addStatusEffect(xi.effect.THEURGIC_FOCUS, 1, 0, 60)
+
+    return xi.effect.THEURGIC_FOCUS
 end
 
 xi.job_utils.geomancer.widenedCompass = function(player, target, ability)

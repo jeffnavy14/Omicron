@@ -58574,12 +58574,12 @@ INSERT INTO `mob_spawn_points` VALUES (17449376,0,'Laidly_Laurence','Laidly Laur
 -- ------------------------------------------------------------
 
 -- The Shadow Lord Battle (Mission 5-2)
-INSERT INTO `mob_spawn_points` VALUES (17453057,0,'Shadow_Lord','Shadow Lord',1,-464.812,-167.200,-239.941,0); -- stage 1
-INSERT INTO `mob_spawn_points` VALUES (17453058,0,'Shadow_Lord','Shadow Lord',1,-784.761,-407.200,-479.932,0);
-INSERT INTO `mob_spawn_points` VALUES (17453059,0,'Shadow_Lord','Shadow Lord',1,-1104.599,-647.200,-719.917,0);
-INSERT INTO `mob_spawn_points` VALUES (17453060,0,'Shadow_Lord','Shadow Lord',2,-464.812,-167.200,-239.941,0); -- stage 2
-INSERT INTO `mob_spawn_points` VALUES (17453061,0,'Shadow_Lord','Shadow Lord',2,-784.761,-407.200,-479.932,0);
-INSERT INTO `mob_spawn_points` VALUES (17453062,0,'Shadow_Lord','Shadow Lord',2,-1104.599,-647.200,-719.917,0);
+INSERT INTO `mob_spawn_points` VALUES (17453057,0,'Shadow_Lord_Phase_1','Shadow Lord',1,-464.527,-167.200,-240.076,0); -- stage 1
+INSERT INTO `mob_spawn_points` VALUES (17453058,0,'Shadow_Lord_Phase_1','Shadow Lord',1,-784.761,-407.200,-479.932,0);
+INSERT INTO `mob_spawn_points` VALUES (17453059,0,'Shadow_Lord_Phase_1','Shadow Lord',1,-1104.599,-647.200,-719.917,0);
+INSERT INTO `mob_spawn_points` VALUES (17453060,0,'Shadow_Lord_Phase_2','Shadow Lord',2,-464.812,-167.200,-239.941,0); -- stage 2
+INSERT INTO `mob_spawn_points` VALUES (17453061,0,'Shadow_Lord_Phase_2','Shadow Lord',2,-784.761,-407.200,-479.932,0);
+INSERT INTO `mob_spawn_points` VALUES (17453062,0,'Shadow_Lord_Phase_2','Shadow Lord',2,-1104.599,-647.200,-719.917,0);
 
 -- Where Two Paths Converge (Basty 9-2)
 INSERT INTO `mob_spawn_points` VALUES (17453063,0,'Zeid','Zeid',3,-465.000,-167.000,-240.000,0);
@@ -70155,18 +70155,18 @@ INSERT INTO `mob_spawn_points` VALUES (17621149,0,'Nephiyl_Moatfiller','Nephiyl 
 INSERT INTO `mob_spawn_points` VALUES (17621150,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,410.028,199.000,-406.677,178);
 
 -- Brothers D'Aurphe (BS60)
-INSERT INTO `mob_spawn_points` VALUES (17621152,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,-393.000,-201.000,399.000,185);
-INSERT INTO `mob_spawn_points` VALUES (17621153,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,-397.000,-201.000,395.000,185);
-INSERT INTO `mob_spawn_points` VALUES (17621154,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,-404.000,-201.000,399.000,195);
-INSERT INTO `mob_spawn_points` VALUES (17621155,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,-402.000,-201.000,395.000,195);
-INSERT INTO `mob_spawn_points` VALUES (17621157,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,7.073,-1.000,-0.901,185);
-INSERT INTO `mob_spawn_points` VALUES (17621158,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,3.073,-1.000,-4.901,185);
-INSERT INTO `mob_spawn_points` VALUES (17621159,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,-3.927,-1.000,-0.901,195);
-INSERT INTO `mob_spawn_points` VALUES (17621160,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,-1.927,-1.000,-4.901,195);
-INSERT INTO `mob_spawn_points` VALUES (17621162,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,407.028,199.000,-400.677,185);
-INSERT INTO `mob_spawn_points` VALUES (17621163,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,403.028,199.000,-404.677,185);
-INSERT INTO `mob_spawn_points` VALUES (17621164,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,396.028,199.000,-400.677,195);
-INSERT INTO `mob_spawn_points` VALUES (17621165,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,398.028,199.000,-404.677,195);
+INSERT INTO `mob_spawn_points` VALUES (17621152,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,-401.366,-202.107,400.448,203);
+INSERT INTO `mob_spawn_points` VALUES (17621153,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,-404.071,-202.125,400.831,211);
+INSERT INTO `mob_spawn_points` VALUES (17621154,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,-398.439,-202.076,401.298,193);
+INSERT INTO `mob_spawn_points` VALUES (17621155,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,-395.501,-202.125,400.001,192);
+INSERT INTO `mob_spawn_points` VALUES (17621157,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,-1.413,-2.107,0.571,203);
+INSERT INTO `mob_spawn_points` VALUES (17621158,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,-4.118,-2.125,0.954,211);
+INSERT INTO `mob_spawn_points` VALUES (17621159,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,1.514,-2.076,1.421,193);
+INSERT INTO `mob_spawn_points` VALUES (17621160,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,4.452,-2.125,0.124,192);
+INSERT INTO `mob_spawn_points` VALUES (17621162,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,398.635,197.893,-399.715,203);
+INSERT INTO `mob_spawn_points` VALUES (17621163,0,'Maldaramet_B_DAurphe','Maldaramet B D\'Aurphe',33,395.930,197.875,-399.332,211);
+INSERT INTO `mob_spawn_points` VALUES (17621164,0,'Disfaurit_B_DAurphe','Disfaurit B D\'Aurphe',34,401.562,197.924,-398.865,193);
+INSERT INTO `mob_spawn_points` VALUES (17621165,0,'Jeumouque_B_DAurphe','Jeumouque B D\'Aurphe',35,404.500,197.875,-400.162,192);
 
 -- An Awful Autopsy (BS50)
 INSERT INTO `mob_spawn_points` VALUES (17621167,0,'Chahnameeds_Stomach','Chahnameed\'s Stomach',36,-393.000,-201.000,399.000,185);
