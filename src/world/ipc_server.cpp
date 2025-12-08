@@ -26,26 +26,24 @@
 #include "character_cache.h"
 #include "colonization_system.h"
 #include "conquest_system.h"
-#include "world_server.h"
 
 #include <concurrentqueue.h>
 #include <memory>
-#include <queue>
-#include <set>
 
 #include "common/database.h"
 #include "common/logging.h"
-#include "common/regional_event.h"
 
 namespace
 {
-    auto getZMQEndpointString() -> std::string
-    {
-        return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
-    }
+
+auto getZMQEndpointString() -> std::string
+{
+    return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
+}
+
 } // namespace
 
-IPCServer::IPCServer(WorldServer& worldServer)
+IPCServer::IPCServer(WorldEngine& worldServer)
 : worldServer_(worldServer)
 , zmqRouterWrapper_(getZMQEndpointString())
 {
@@ -229,6 +227,13 @@ auto IPCServer::getIPPsForYellZones() -> std::vector<IPP>
     return zoneSettings_.yellMapEndpoints_;
 }
 
+auto IPCServer::getIPPsForAssistZones() -> std::vector<IPP>
+{
+    TracyZoneScoped;
+
+    return zoneSettings_.assistMapEndpoints_;
+}
+
 auto IPCServer::getIPPsForAllZones() -> std::vector<IPP>
 {
     TracyZoneScoped;
@@ -334,6 +339,17 @@ void IPCServer::rerouteMessageToYellZones(const auto& message)
     }
 }
 
+void IPCServer::rerouteMessageToAssistZones(const auto& message)
+{
+    TracyZoneScoped;
+
+    for (const auto& ipp : getIPPsForAssistZones())
+    {
+        DebugIPCFmt("Message: -> rerouting to assist zone on {}", ipp.toString());
+        sendMessage(ipp, message);
+    }
+}
+
 void IPCServer::rerouteMessageToAllZones(const auto& message)
 {
     TracyZoneScoped;
@@ -369,13 +385,17 @@ void IPCServer::handleMessage_EmptyStruct(const IPP& ipp, const ipc::EmptyStruct
     ShowWarningFmt("Received EmptyStruct message from {} - this is probably a bug", ipp.toString());
 }
 
-void IPCServer::handleMessage_CharLogin(const IPP& ipp, const ipc::CharLogin& message)
+void IPCServer::handleMessage_AccountLogin(const IPP& ipp, const ipc::AccountLogin& message)
 {
     TracyZoneScoped;
 
-    DebugIPCFmt("Received CharLogin message from {} for account {} char {}", ipp.toString(), message.accountId, message.charId);
+    DebugIPCFmt("Received AccountLogin message from {} for account {}", ipp.toString(), message.accountId);
 
-    // NOTE: Originally a NO-OP
+    for (const auto& zoneIIP : getIPPsForAllZones())
+    {
+        DebugIPCFmt("Message: -> rerouting to all zones on {}", ipp.toString());
+        sendMessage(zoneIIP, message);
+    }
 }
 
 void IPCServer::handleMessage_CharZone(const IPP& ipp, const ipc::CharZone& message)
@@ -408,7 +428,17 @@ void IPCServer::handleMessage_ChatMessageTell(const IPP& ipp, const ipc::ChatMes
 {
     TracyZoneScoped;
 
-    rerouteMessageToCharName(message.recipientName, message);
+    const auto charIPP = getIPPForCharName(message.recipientName);
+    if (!charIPP)
+    {
+        sendMessage(ipp, ipc::MessageStandard{
+                             .recipientId = message.senderId,
+                             .message     = MsgStd::TellNotReceivedOffline,
+                         });
+        return;
+    }
+
+    sendMessage(charIPP.value(), message);
 }
 
 void IPCServer::handleMessage_ChatMessageParty(const IPP& ipp, const ipc::ChatMessageParty& message)
@@ -444,6 +474,13 @@ void IPCServer::handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMes
     TracyZoneScoped;
 
     rerouteMessageToYellZones(message);
+}
+
+void IPCServer::handleMessage_ChatMessageAssist(const IPP& ipp, const ipc::ChatMessageAssist& message)
+{
+    TracyZoneScoped;
+
+    rerouteMessageToAssistZones(message);
 }
 
 void IPCServer::handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc::ChatMessageServerMessage& message)
@@ -666,6 +703,13 @@ void IPCServer::handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::Se
     TracyZoneScoped;
 
     rerouteMessageToCharId(message.targetId, message);
+}
+
+void IPCServer::handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::AssistChannelEvent& message)
+{
+    TracyZoneScoped;
+
+    rerouteMessageToCharId(message.receiverId, message);
 }
 
 void IPCServer::handleUnknownMessage(const IPP& ipp, const std::span<uint8_t> message)

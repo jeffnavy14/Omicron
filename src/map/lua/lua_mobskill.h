@@ -42,6 +42,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const CLuaMobSkill& mobskill);
 
     float  getTP();
+    auto   getMobHP() const -> int32;
     uint8  getMobHPP();
     uint16 getID();
     int16  getParam();
@@ -54,6 +55,13 @@ public:
     auto   getTargets() -> sol::table;
     uint16 getTotalTargets();
     uint32 getPrimaryTargetID();
+    void   setFinalAnimationSub(uint8 newAnimationSub);
+    void   setAnimationTime(uint32 newAnimationTime);
+    auto   getAttackType() const -> ATTACK_TYPE;
+    void   setAttackType(ATTACK_TYPE attackType);
+    auto   isCritical() -> bool;
+    void   setCritical(bool isCritical);
+    auto   getKnockback() const -> Knockback;
 
     bool operator==(const CLuaMobSkill& other) const
     {

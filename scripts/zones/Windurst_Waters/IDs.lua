@@ -8,6 +8,7 @@ zones[xi.zone.WINDURST_WATERS] =
     text =
     {
         CONQUEST_BASE                 = 0,     -- Tallying conquest results...
+        ASSIST_CHANNEL                = 6539,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED       = 6544,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         ITEM_OBTAINED                 = 6550,  -- Obtained: <item>.
         GIL_OBTAINED                  = 6551,  -- Obtained <number> gil.
@@ -61,6 +62,7 @@ zones[xi.zone.WINDURST_WATERS] =
         EGG_HUNT_OFFSET               = 10215, -- Egg-cellent! Here's your prize, kupo! Now if only somebody would bring me a super combo... Oh, egg-scuse me! Forget I said that, kupo!
         PRESTAPIQ_CLOSED_DIALOG       = 10698, -- Goodebyongo! Wingdorsht tooo fhar awayz fhrum mai hormtowne! Dropt arll goodhys whylle ahn trripp!
         PRESTAPIQ_OPEN_DIALOG         = 10699, -- Helgohelgo! Me's bhrink goodhys arll ja wayz fhrum hormtowne ovf Morvalporlis!
+        CHEF_IN_TRAINING              = 10700, -- I'm a chef-in-training, don'taru you know? One day I'll be as famous-wamous as that Rycharde character in Mhaura.
         NESSRUGETOMALL_SHOP_DIALOG    = 11503, -- Welcome to the Rarab Tail Hostelry.
         DIABOLOS_UNLOCKED             = 11932, -- You are now able to summon Diabolos!
     },

@@ -26,6 +26,17 @@
 #include "status_effect_container.h"
 #include "trade_container.h"
 
+auto PacketValidator::isNotResting(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_HEALING) ||
+        PChar->animation == ANIMATION_HEALING)
+    {
+        result_.addError("Character is resting.");
+    }
+
+    return *this;
+}
+
 auto PacketValidator::isNotCrafting(const CCharEntity* PChar) -> PacketValidator&
 {
     if (PChar->animation == ANIMATION_SYNTH ||
@@ -135,6 +146,59 @@ auto PacketValidator::hasLinkshellRank(const CCharEntity* PChar, const uint8_t s
     if (!matchingRank)
     {
         result_.addError("Invalid linkshell rank.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::hasZoneMiscFlag(const CCharEntity* PChar, const ZONEMISC flag) -> PacketValidator&
+{
+    if (PChar->m_GMlevel == 0 && !PChar->loc.zone->CanUseMisc(flag))
+    {
+        result_.addError(std::format("Zone {} does not allow misc flag {}.", PChar->loc.zone->getName(), static_cast<uint16_t>(flag)));
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isPartyLeader(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (!PChar->PParty)
+    {
+        result_.addError("Not in a party.");
+    }
+    else if (PChar->PParty->GetLeader() != PChar)
+    {
+        result_.addError("Not the party leader.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (!PChar->PParty)
+    {
+        result_.addError("Not in a party.");
+    }
+    else if (!PChar->PParty->m_PAlliance)
+    {
+        result_.addError("Not in an alliance.");
+    }
+    else if (PChar->PParty->m_PAlliance->getMainParty()->GetLeader() != PChar)
+    {
+        result_.addError("Not the alliance leader.");
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isNotFishing(const CCharEntity* PChar) -> PacketValidator&
+{
+    if ((PChar->animation >= ANIMATION_FISHING_FISH && PChar->animation <= ANIMATION_FISHING_STOP) ||
+        PChar->animation == ANIMATION_FISHING_START_OLD || PChar->animation == ANIMATION_FISHING_START)
+    {
+        result_.addError("Character is fishing.");
     }
 
     return *this;

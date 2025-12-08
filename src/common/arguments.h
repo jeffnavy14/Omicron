@@ -26,17 +26,32 @@
 
 #include <argparse/argparse.hpp>
 
+enum class ArgumentType : uint8_t
+{
+    Simple,
+    Flag,
+    Multiple,
+};
+
+struct ApplicationConfig;
+struct ArgumentDefinition
+{
+    std::string  name;
+    std::string  description;
+    ArgumentType type{ ArgumentType::Simple };
+};
+
 //
 // A thin wrapper around argparse, since argparse throws exceptions on missing arguments.
 //
 class Arguments final
 {
 public:
-    Arguments(std::string const& serverName, int argc, char** argv);
+    Arguments(const ApplicationConfig& config, int argc, char** argv);
     ~Arguments() = default;
 
     template <typename T = std::string>
-    auto present(std::string_view arg_name) const -> std::optional<T>
+    auto present(const std::string_view arg_name) const -> std::optional<T>
     {
         try
         {
@@ -51,7 +66,7 @@ public:
     }
 
     template <typename T = std::string>
-    T get(std::string_view arg_name) const
+    T get(const std::string_view arg_name) const
     {
         try
         {
@@ -66,5 +81,7 @@ public:
     }
 
 private:
+    int                                       argc_;
+    char**                                    argv_;
     std::unique_ptr<argparse::ArgumentParser> args_;
 };

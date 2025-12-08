@@ -37,6 +37,7 @@ zones[xi.zone.BALGAS_DAIS] =
         TAKE_THAT_YOU_WHIPPERSNAPPER  = 7655, -- Take that, you whippersnapper!
         NOW_THAT_IM_WARMED_UP         = 7656, -- Now that I'm warmed up...
         THAT_LL_HURT_IN_THE_MORNING   = 7657, -- Ungh... That'll hurt in the morning...
+        WILD_WILD_WHISKERS_OFFSET     = 7675, -- Whiskers twitch...
         SOUL_GEM_REACTS               = 7680, -- The <keyitem> reacts to the <keyitem>, sending a jolt of energy through your veins!
         PROMISE_ME_YOU_WONT_GO_DOWN   = 7695, -- Promise you won't go down too easy, okay?
         IM_JUST_GETTING_WARMED_UP     = 7696, -- Haha! I'm just getting warmed up!
@@ -49,10 +50,13 @@ zones[xi.zone.BALGAS_DAIS] =
     mob =
     {
         ATORI_TUTORI            = GetFirstID('Atori-Tutori_qm'),
-        BLACK_DRAGON            = GetFirstID('Black_Dragon'),
         BUU_XOLO_THE_BLOODFACED = GetFirstID('Buu_Xolo_the_Bloodfaced'),
         DVOROVOI                = GetFirstID('Dvorovoi'),
         GILAGOGE_TLUGVI         = GetFirstID('Gilagoge_Tlugvi'),
+        KING_OF_BATONS          = GetFirstID('King_of_Batons'),
+        KING_OF_COINS           = GetFirstID('King_of_Coins'),
+        KING_OF_CUPS            = GetFirstID('King_of_Cups'),
+        KING_OF_SWORDS          = GetFirstID('King_of_Swords'),
         MAAT                    = GetFirstID('Maat'),
         VOO_TOLU_THE_GHOSTFIST  = GetFirstID('Voo_Tolu_the_Ghostfist'),
     },

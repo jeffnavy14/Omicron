@@ -8,6 +8,7 @@ zones[xi.zone.UPPER_JEUNO] =
     text =
     {
         CONQUEST_BASE                    = 0,     -- Tallying conquest results...
+        ASSIST_CHANNEL                   = 6539,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED          = 6544,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         ITEM_OBTAINED                    = 6550,  -- Obtained: <item>.
         GIL_OBTAINED                     = 6551,  -- Obtained <number> gil.
@@ -31,6 +32,8 @@ zones[xi.zone.UPPER_JEUNO] =
         IT_READS_STAFF_ONLY              = 7003,  -- It reads, Staff Only.
         LEILLAINE_SHOP_DIALOG            = 7026,  -- Hello. Are you feeling all right?
         YOU_CAN_NOW_BECOME_A_BEASTMASTER = 7206,  -- You can now become a beastmaster.
+        NO_ONES_HOME                     = 7209,  -- Looks like no one's home.
+        WASTING_YOUR_TIME                = 7448,  -- Hah! You're wasting your time!
         YOU_ARE_GIVEN_THREE_SPRIGS       = 7733,  -- You are given three sprigs of <item>.
         CONQUEST                         = 7762,  -- You've earned conquest points!
         ITEM_DELIVERY_DIALOG             = 8095,  -- Delivering goods to residences everywhere!

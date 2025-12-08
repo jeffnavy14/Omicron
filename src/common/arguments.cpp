@@ -21,23 +21,29 @@
 
 #include "arguments.h"
 
+#include "application.h"
 #include "logging.h"
 #include "version.h"
 
-Arguments::Arguments(std::string const& serverName, int argc, char** argv)
-: args_(std::make_unique<argparse::ArgumentParser>(argv[0], version::GetVersionString()))
+Arguments::Arguments(const ApplicationConfig& config, const int argc, char** argv)
+: argc_(argc)
+, argv_(argv)
+, args_(std::make_unique<argparse::ArgumentParser>(argv[0], version::GetVersionString()))
 {
     //
     // Defaults
     //
 
-    const auto description = fmt::format("xi_{}: part of LandSandBoat - a server emulator for Final Fantasy XI\n\nBranch: {}",
-                                         serverName, version::GetVersionString());
+    const auto description = fmt::format(
+        "xi_{}: part of LandSandBoat - a server emulator for Final Fantasy XI\n\nBranch: {}",
+        config.serverName,
+        version::GetVersionString());
 
     args_->add_description(description);
 
+    // Common arguments
     args_->add_argument("--log")
-        .help(fmt::format("Specify the log file to write to, relative to the executable (default: log/{}-server.log)", serverName));
+        .help(fmt::format("Specify the log file to write to, relative to the executable (default: log/{}-server.log)", config.serverName));
 
     args_->add_argument("--append-date", "--append_date")
         .help("Flag: Append the current date to the log file name")
@@ -47,28 +53,33 @@ Arguments::Arguments(std::string const& serverName, int argc, char** argv)
         .help("Flag: Enable CI-only logic")
         .flag();
 
-    args_->add_epilog("This is free and open-source software. You may use, modify, and distribute it under the terms of the GNU GPL v3.");
-
-    //
-    // MapServer specific args (TODO: Move these into MapServer)
-    //
-
-    if (serverName == "map")
+    // Specialized arguments
+    for (const auto& argument : config.arguments)
     {
-        args_->add_argument("--ip")
-            .help("Specify the IP address to bind to");
-
-        args_->add_argument("--port")
-            .help("Specify the port to bind to");
+        switch (argument.type)
+        {
+            case ArgumentType::Simple:
+                args_->add_argument(argument.name)
+                    .help(argument.description);
+                break;
+            case ArgumentType::Flag:
+                args_->add_argument(argument.name)
+                    .flag()
+                    .help(argument.description);
+                break;
+            case ArgumentType::Multiple:
+                args_->add_argument(argument.name)
+                    .append()
+                    .help(argument.description);
+                break;
+        }
     }
 
-    //
-    // Parse
-    //
+    args_->add_epilog("This is free and open-source software. You may use, modify, and distribute it under the terms of the GNU GPL v3.");
 
     try
     {
-        args_->parse_args(argc, argv);
+        args_->parse_args(argc_, argv_);
     }
     catch (const std::runtime_error& err)
     {

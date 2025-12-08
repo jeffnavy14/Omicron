@@ -30,7 +30,7 @@ chocobo.color =
 }
 
 commandObj.onTrigger = function(player, arg, arg2, arg3, arg4)
-    local color = tonumber(arg) or chocobo.color[arg] or xi.chocobo.YELLOW
+    local color = chocobo.color[arg] or xi.chocobo.color.YELLOW
     local traits =
     {
         largeBeak   = false,

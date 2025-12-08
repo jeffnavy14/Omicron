@@ -6,23 +6,15 @@
  * It will only send this message if the seller is online.
  ************************************************************************/
 
-#include "map/utils/moduleutils.h"
-
 #include "common/database.h"
-#include "common/timer.h"
-
-#include "map/packet_system.h"
-#include "map/packets/auction_house.h"
-#include "map/packets/basic.h"
-#include "map/packets/chat_message.h"
-#include "map/packets/inventory_finish.h"
-#include "map/utils/charutils.h"
-#include "map/utils/itemutils.h"
 
 #include "map/ipc_client.h"
-#include "map/item_container.h"
 #include "map/map_session.h"
-#include "map/zone.h"
+#include "map/packet_system.h"
+#include "map/packets/basic.h"
+#include "map/utils/itemutils.h"
+#include "map/utils/moduleutils.h"
+#include "packets/c2s/0x04e_auc.h"
 #include "utils/auctionutils.h"
 
 #include <functional>
@@ -55,9 +47,14 @@ class AHAnnouncementModule : public CPPModule
                 CItem* PItem = itemutils::GetItemPointer(itemid);
                 if (PItem)
                 {
-                    if (auctionutils::PurchasingItems(PChar, action, price, itemid, quantity))
+                    const GP_AUC_PARAM_BID payload{
+                        .BidPrice   = price,
+                        .ItemNo     = itemid,
+                        .ItemStacks = quantity,
+                    };
+
+                    if (auctionutils::PurchasingItems(PChar, payload))
                     {
-                        // clang-format off
                         const auto sellerId = [&]() -> uint32
                         {
                             uint32 sellerId = 0;
@@ -69,7 +66,10 @@ class AHAnnouncementModule : public CPPModule
                                                                "itemid = ? AND "
                                                                "stack = ? "
                                                                "ORDER BY sell_date DESC LIMIT 1",
-                                                               PChar->getName(), price, itemid, quantity == 0);
+                                                               PChar->getName(),
+                                                               price,
+                                                               itemid,
+                                                               quantity == 0);
 
                             FOR_DB_SINGLE_RESULT(rset)
                             {
@@ -85,11 +85,16 @@ class AHAnnouncementModule : public CPPModule
                             std::string name  = PItem->getName();
                             auto        parts = split(name, "_");
                             name              = "";
-                            name += std::accumulate(std::begin(parts), std::end(parts), std::string(),
-                            [](std::string const& ss, std::string const& s)
-                            {
-                                return ss.empty() ? s : ss + " " + s;
-                            });
+                            name += std::accumulate(
+                                std::begin(parts),
+                                std::end(parts),
+                                std::string(),
+                                [](const std::string& ss, const std::string& s)
+                                {
+                                    return ss.empty() ? s : ss + " " + s;
+                                });
+
+                            // Capitalize first letter
                             name[0] = std::toupper(name[0]);
 
                             // Send message to seller!
@@ -99,7 +104,6 @@ class AHAnnouncementModule : public CPPModule
                                 .message     = fmt::format("Your '{}' has sold to {} for {} gil!", name, PChar->getName(), price),
                                 .messageType = MESSAGE_SYSTEM_3,
                             });
-                            // clang-format on
                         }
                     }
                 }

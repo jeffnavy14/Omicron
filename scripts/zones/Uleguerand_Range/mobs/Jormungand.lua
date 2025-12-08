@@ -5,7 +5,7 @@
 ---@type TMobEntity
 local entity = {}
 
-local spawnPoints =
+entity.spawnPoints =
 {
     { x = -237.096, y = -176.729, z = 66.510  },
     { x = -240.915, y = -176.729, z = 71.196  },
@@ -70,7 +70,7 @@ end
 entity.onMobInitialize = function(mob)
     mob:setCarefulPathing(true)
 
-    xi.mob.updateNMSpawnPoint(mob, spawnPoints)
+    xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(144, 240) * 1800) -- 3 to 5 days in 30 minute windows
 end
 
@@ -132,7 +132,7 @@ entity.onMobFight = function(mob, target)
     -- Animation (Ground or flight mode) logic.
     if
         not mob:hasStatusEffect(xi.effect.BLOOD_WEAPON) and
-        mob:actionQueueEmpty()
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         local flightTime  = mob:getLocalVar('flightTime')
         local twohourTime = mob:getLocalVar('twohourTime')
@@ -204,7 +204,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobWeaponSkillPrepare = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target)
     if mob:getAnimationSub() == 1 then
         mob:setLocalVar('skill_tp', mob:getTP())
     end
@@ -264,7 +264,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.updateNMSpawnPoint(mob, spawnPoints)
+    xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(144, 240) * 1800) -- 3 to 5 days in 30 minute windows
 end
 

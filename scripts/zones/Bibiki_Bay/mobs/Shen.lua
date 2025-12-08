@@ -80,23 +80,6 @@ entity.onMobFight = function(mob, target)
     local petOne = GetMobByID(mobId + 1)
     local petTwo = GetMobByID(mobId + 2)
     local petCooldown = mob:getLocalVar('petCooldown')
-    local mobAction = mob:getCurrentAction()
-    local mobIsBusy = false
-
-    -- TODO: Potentialy create a global function for this type of isBusy logic (for use in many mobs)
-    if
-        mobAction == xi.act.MOBABILITY_START or
-        mobAction == xi.act.MOBABILITY_USING or
-        mobAction == xi.act.MOBABILITY_INTERRUPT or
-        mobAction == xi.act.MOBABILITY_FINISH or
-        mobAction == xi.act.MAGIC_START or
-        mobAction == xi.act.MAGIC_CASTING or
-        mobAction == xi.act.MAGIC_INTERRUPT or
-        mobAction == xi.act.MAGIC_FINISH or
-        not mob:actionQueueEmpty()
-    then
-        mobIsBusy = true
-    end
 
     -- Shen instant casts Flood to spawn a pet
     if
@@ -104,7 +87,7 @@ entity.onMobFight = function(mob, target)
         petOne and
         petTwo and
         (not petOne:isSpawned() or not petTwo:isSpawned()) and
-        not mobIsBusy
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         mob:setMagicCastingEnabled(false)
         mob:addStatusEffectEx(xi.effect.CHAINSPELL, xi.effect.CHAINSPELL, 1, 0, 3, true)

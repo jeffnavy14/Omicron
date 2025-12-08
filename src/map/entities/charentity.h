@@ -22,11 +22,11 @@
 #ifndef _CHARENTITY_H
 #define _CHARENTITY_H
 
+#include "aman.h"
 #include "event_info.h"
 #include "item_container.h"
 #include "map_session.h"
 #include "monstrosity.h"
-#include "treasure_pool.h"
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
@@ -40,6 +40,7 @@
 
 #include "automatonentity.h"
 #include "battleentity.h"
+#include "packets/s2c/base.h"
 #include "petentity.h"
 
 #include "utils/fishingutils.h"
@@ -292,6 +293,7 @@ public:
 
     uint8 visibleGmLevel;        // See GmLevel of flags0_t
     bool  wallhackEnabled;       // GM walk through walls
+    bool  isFrozenFlagged;       // Player Freeze flag.
     bool  isSettingBazaarPrices; // Is setting bazaar prices (temporarily hide bazaar)
     bool  isLinkDead;            // Player is d/cing
 
@@ -303,7 +305,6 @@ public:
     bool isSeekingParty() const;       // is seeking party or not
     bool isAnon() const;               // is /anon
     bool isAway() const;               // is /away (tells will not go through)
-    bool isMentor() const;             // If player is a mentor or not.
     bool hasAutoTargetEnabled() const; // has autotarget enabled
 
     profile_t       profile{};
@@ -387,7 +388,7 @@ public:
     std::vector<CTrustEntity*> PTrusts; // Active trusts
 
     template <typename F, typename... Args>
-    void ForPartyWithTrusts(F const& func, Args&&... args)
+    void ForPartyWithTrusts(const F& func, Args&&... args)
     {
         if (PParty)
         {
@@ -442,7 +443,8 @@ public:
     void pushPacket(Args&&... args)
     {
         // TODO: This could hook into pooling of packet objects, etc.
-        pushPacket(std::make_unique<T>(std::forward<Args>(args)...));
+        auto packet = std::make_unique<T>(std::forward<Args>(args)...);
+        pushPacket(std::move(packet));
     }
 
     void   pushPacket(std::unique_ptr<CBasicPacket>&&);                                   // Push packet to packet list
@@ -454,6 +456,7 @@ public:
     bool   isPacketFiltered(std::unique_ptr<CBasicPacket>& packet);
 
     bool pendingPositionUpdate;
+    bool sendServerStatus_ = false;
 
     virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
 
@@ -515,15 +518,18 @@ public:
 
     location_t m_previousLocation{};
 
+    uint32 m_PrevZonelineID; // The ID of the previous zoneline the player went through.
+
     timer::duration   m_PlayTime;
     timer::time_point m_SaveTime;
 
     timer::time_point m_LeaderCreatedPartyTime{}; // Time that a party member joined and this player was leader.
 
+    auto aman() -> CAMANContainer&;
+
     uint8 m_GMlevel;    // Level of the GM flag assigned to this character
     bool  m_isGMHidden; // GM Hidden flag to prevent player updates from being processed.
 
-    bool   m_mentorUnlocked;
     bool   m_jobMasterDisplay; // Job Master Stars display
     uint32 m_moghouseID;
     uint16 m_moghancementID;
@@ -642,14 +648,14 @@ public:
 
     virtual void OnItemFinish(CItemState&, action_t&);
 
-    auto getCharVar(std::string const& varName) const -> int32;
-    auto getCharVarsWithPrefix(std::string const& prefix) -> std::vector<std::pair<std::string, int32>>;
-    void setCharVar(std::string const& varName, int32 value, uint32 expiry = 0);
-    void setVolatileCharVar(std::string const& varName, int32 value, uint32 expiry = 0);
-    void updateCharVarCache(std::string const& varName, int32 value, uint32 expiry = 0);
-    void removeFromCharVarCache(std::string const& varName);
+    auto getCharVar(const std::string& varName) const -> int32;
+    auto getCharVarsWithPrefix(const std::string& prefix) -> std::vector<std::pair<std::string, int32>>;
+    void setCharVar(const std::string& varName, int32 value, uint32 expiry = 0);
+    void setVolatileCharVar(const std::string& varName, int32 value, uint32 expiry = 0);
+    void updateCharVarCache(const std::string& varName, int32 value, uint32 expiry = 0);
+    void removeFromCharVarCache(const std::string& varName);
 
-    void clearCharVarsWithPrefix(std::string const& prefix);
+    void clearCharVarsWithPrefix(const std::string& prefix);
 
     bool m_Locked{}; // Is the player locked in a cutscene
 
@@ -664,6 +670,9 @@ protected:
     void TrackArrowUsageForScavenge(CItemWeapon* PAmmo);
 
 private:
+    // Lazily initialized AMAN data
+    xi::optional<CAMANContainer> m_AMAN;
+
     std::unique_ptr<CItemContainer> m_Inventory;
     std::unique_ptr<CItemContainer> m_Mogsafe;
     std::unique_ptr<CItemContainer> m_Storage;

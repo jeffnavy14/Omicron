@@ -51,9 +51,9 @@ void CLuaSpell::setMsg(uint16 messageID)
     m_PLuaSpell->setMessage(messageID);
 }
 
-void CLuaSpell::setModifier(uint8 modifier)
+void CLuaSpell::setModifier(const ActionModifier modifier) const
 {
-    m_PLuaSpell->setModifier(static_cast<MODIFIER>(modifier));
+    m_PLuaSpell->setModifier(modifier);
 }
 
 void CLuaSpell::setAoE(uint8 aoe)
@@ -121,6 +121,11 @@ uint8 CLuaSpell::isAoE()
     return m_PLuaSpell->getAOE();
 }
 
+float CLuaSpell::getRadius()
+{
+    return m_PLuaSpell->getRadius();
+}
+
 bool CLuaSpell::tookEffect()
 {
     return m_PLuaSpell->tookEffect();
@@ -156,6 +161,11 @@ uint8 CLuaSpell::getFlag()
     return m_PLuaSpell->getFlag();
 }
 
+uint8 CLuaSpell::getLevel(JOBTYPE jobId)
+{
+    return m_PLuaSpell->getJob(jobId);
+}
+
 //======================================================//
 
 void CLuaSpell::Register()
@@ -170,6 +180,7 @@ void CLuaSpell::Register()
     SOL_REGISTER("setCastTime", CLuaSpell::setCastTime);
     SOL_REGISTER("setMPCost", CLuaSpell::setMPCost);
     SOL_REGISTER("isAoE", CLuaSpell::isAoE);
+    SOL_REGISTER("getRadius", CLuaSpell::getRadius);
     SOL_REGISTER("tookEffect", CLuaSpell::tookEffect);
     SOL_REGISTER("getMagicBurstMessage", CLuaSpell::getMagicBurstMessage);
     SOL_REGISTER("getElement", CLuaSpell::getElement);
@@ -180,6 +191,7 @@ void CLuaSpell::Register()
     SOL_REGISTER("getSpellGroup", CLuaSpell::getSpellGroup);
     SOL_REGISTER("getSpellFamily", CLuaSpell::getSpellFamily);
     SOL_REGISTER("getFlag", CLuaSpell::getFlag);
+    SOL_REGISTER("getLevel", CLuaSpell::getLevel);
     SOL_REGISTER("getCastTime", CLuaSpell::getCastTime);
     SOL_REGISTER("getPrimaryTargetID", CLuaSpell::getPrimaryTargetID);
 }

@@ -22,6 +22,9 @@
 #pragma once
 
 #include "magic_enum/magic_enum.hpp"
+#include "zone.h"
+#include <format>
+#include <set>
 
 enum LSTYPE : std::uint8_t;
 class CCharEntity;
@@ -114,7 +117,10 @@ public:
         if (val < minVal || val > maxVal)
         {
             result_.addError(std::format("{} out of range: {} not in [{}, {}]",
-                                         fieldName, val, minVal, maxVal));
+                                         fieldName,
+                                         val,
+                                         minVal,
+                                         maxVal));
         }
 
         return *this;
@@ -153,6 +159,7 @@ public:
     }
 
     // Value must be contained in the enum class
+    // This handles comparing base types to enum values
     template <typename E>
     auto oneOf(const std::underlying_type_t<E> value) -> PacketValidator&
     {
@@ -167,6 +174,25 @@ public:
         return *this;
     }
 
+    // Value must be contained in the enum class
+    // This handles comparing enum values to enum values
+    template <typename E>
+    auto oneOf(const E value) -> PacketValidator&
+    {
+        static_assert(std::is_enum_v<E>, "Template parameter E must be an enum");
+
+        if (!magic_enum::enum_contains<E>(value))
+        {
+            constexpr std::string_view enumTypeName    = magic_enum::enum_type_name<E>();
+            auto                       underlyingValue = static_cast<std::underlying_type_t<E>>(value);
+            result_.addError(std::format("{} not a valid {} value.", underlyingValue, enumTypeName));
+        }
+
+        return *this;
+    }
+
+    // Character must not be resting
+    auto isNotResting(const CCharEntity* PChar) -> PacketValidator&;
     // Character must not be crafting
     auto isNotCrafting(const CCharEntity* PChar) -> PacketValidator&;
     // Character current status must be NORMAL
@@ -179,6 +205,14 @@ public:
     auto isInEvent(const CCharEntity* PChar, std::optional<uint16_t> eventId = std::nullopt) -> PacketValidator&;
     // Character must have necessary rank in the linkshell in the given slot
     auto hasLinkshellRank(const CCharEntity* PChar, uint8_t slot, LSTYPE rank) -> PacketValidator&;
+    // Character zone must allow specified flag. GMs can bypass this check.
+    auto hasZoneMiscFlag(const CCharEntity* PChar, ZONEMISC flag) -> PacketValidator&;
+    // Character must be the party leader
+    auto isPartyLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be the alliance leader
+    auto isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be fishing
+    auto isNotFishing(const CCharEntity* PChar) -> PacketValidator&;
 
     // Custom validation function
     template <typename Func>

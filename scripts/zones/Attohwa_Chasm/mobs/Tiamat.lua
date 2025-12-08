@@ -5,7 +5,7 @@
 ---@type TMobEntity
 local entity = {}
 
-local spawnPoints =
+entity.spawnPoints =
 {
     { x = -509.612, y = -7.883,  z = -57.162 },
     { x = -511.114, y = -8.854,  z = -61.300 },
@@ -70,7 +70,7 @@ end
 entity.onMobInitialize = function(mob)
     mob:setCarefulPathing(true) -- Used for drawin
 
-    xi.mob.updateNMSpawnPoint(mob, spawnPoints)
+    xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(144, 240) * 1800) -- 3 to 5 days in 30 minute windows
 end
 
@@ -163,17 +163,17 @@ entity.onMobFight = function(mob, target)
 
     -- Gains a delay reduction (from 210 to 160) when health is under 10%
     if hpp <= 10 and mob:getLocalVar('appliedDelayReduction') == 0 then
-        mob:addMod(xi.mod.DELAY, 833)
+        mob:addMod(xi.mod.DELAY, -833)
         mob:setLocalVar('appliedDelayReduction', 1)
     elseif hpp > 10 and mob:getLocalVar('appliedDelayReduction') == 1 then
-        mob:delMod(xi.mod.DELAY, 833)
+        mob:delMod(xi.mod.DELAY, -833)
         mob:setLocalVar('appliedDelayReduction', 0)
     end
 
     -- Animation (Ground or flight mode) logic.
     if
         not mob:hasStatusEffect(xi.effect.MIGHTY_STRIKES) and
-        mob:actionQueueEmpty()
+        not xi.combat.behavior.isEntityBusy(mob)
     then
         local flightTime  = mob:getLocalVar('flightTime')
         local twohourTime = mob:getLocalVar('twohourTime')
@@ -225,7 +225,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobWeaponSkillPrepare = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target)
     if mob:getAnimationSub() == 1 then
         mob:setLocalVar('skill_tp', mob:getTP())
     end
@@ -264,7 +264,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.updateNMSpawnPoint(mob, spawnPoints)
+    xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(144, 240) * 1800) -- 3 to 5 days in 30 minute windows
 end
 
