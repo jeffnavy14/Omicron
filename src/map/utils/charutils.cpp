@@ -1419,7 +1419,7 @@ void SendRecordsOfEminenceLog(CCharEntity* PChar)
         if (PChar->m_eminenceCache.notifyTimedRecord)
         {
             PChar->m_eminenceCache.notifyTimedRecord = false;
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, roeutils::GetActiveTimedRecord(), 0, MSGBASIC_ROE_TIMED);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, roeutils::GetActiveTimedRecord(), 0, MsgBasic::ROE_TIMED);
         }
 
         // 4-part Eminence Completion bitmap
@@ -3134,7 +3134,7 @@ void EquipItem(CCharEntity* PChar, uint8 slotID, uint8 equipSlotID, uint8 contai
         auto PMainItem   = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_MAIN));
         if (PItemWeapon && PItemWeapon->getSkillType() == SKILL_NONE && (!PMainItem || !PMainItem->isTwoHanded()))
         {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(0x200));
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::REQUIRES_2H_FOR_GRIP);
             return;
         }
 
@@ -4043,7 +4043,7 @@ void TrySkillUP(CCharEntity* PChar, SKILLTYPE SkillID, uint8 lvl, bool forceSkil
             }
 
             PChar->RealSkills.skill[SkillID] += SkillAmount;
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, SkillAmount, static_cast<MSGBASIC_ID>(38));
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, SkillAmount, MsgBasic::SKILL_GAIN);
 
             if ((CurSkill / 10) < (CurSkill + SkillAmount) / 10) // if gone up a level
             {
@@ -4062,7 +4062,7 @@ void TrySkillUP(CCharEntity* PChar, SKILLTYPE SkillID, uint8 lvl, bool forceSkil
                     PChar->WorkingSkills.skill[SkillID] += 1;
                 }
                 PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, (CurSkill + SkillAmount) / 10, static_cast<MSGBASIC_ID>(53));
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, SkillID, (CurSkill + SkillAmount) / 10, MsgBasic::SKILL_LEVEL_UP);
 
                 CheckWeaponSkill(PChar, SkillID);
                 /* ignoring this for now
@@ -4105,7 +4105,7 @@ void CheckWeaponSkill(CCharEntity* PChar, uint8 skill)
         if (curSkill == PSkill->getSkillLevel() && (battleutils::CanUseWeaponskill(PChar, PSkill)))
         {
             addWeaponSkill(PChar, PSkill->getID());
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, PSkill->getID(), PSkill->getID(), static_cast<MSGBASIC_ID>(45));
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, PSkill->getID(), PSkill->getID(), MsgBasic::LEARNS_ABILITY);
             PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         }
     }
@@ -4636,14 +4636,14 @@ void DistributeGil(CCharEntity* PChar, CMobEntity* PMob)
             for (auto PMember : members)
             {
                 UpdateItem(PMember, LOC_INVENTORY, 0, gilPerPerson);
-                PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, gilPerPerson, 0, static_cast<MSGBASIC_ID>(565));
+                PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, gilPerPerson, 0, MsgBasic::OBTAINS);
             }
         }
     }
     else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.0f))
     {
         UpdateItem(PChar, LOC_INVENTORY, 0, static_cast<int32>(gil));
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, static_cast<int32>(gil), 0, static_cast<MSGBASIC_ID>(565));
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, static_cast<int32>(gil), 0, MsgBasic::OBTAINS);
     }
 }
 
@@ -4749,7 +4749,7 @@ void DistributeExperiencePoints(CCharEntity* PChar, CMobEntity* PMob)
                         {
                             if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(PMember))
                             {
-                                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(545));
+                                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LEVEL_SYNC_NO_EXP);
                             }
                         }
                     });
@@ -5114,7 +5114,7 @@ void DistributeExperiencePoints(CCharEntity* PChar, CMobEntity* PMob)
                     // pet or companion exp penalty needs to be added here
                     if (distance(PMember->loc.p, PMob->loc.p) > 100)
                     {
-                        PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, 0, 0, static_cast<MSGBASIC_ID>(37));
+                        PMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PMember, PMember, 0, 0, MsgBasic::TOO_FAR_FOR_EXP);
                         return;
                     }
 
@@ -6900,7 +6900,7 @@ void ReloadParty(CCharEntity* PChar)
             PSyncTarget->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC) &&
             PSyncTarget->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC)->GetDuration() == 0s)
         {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, PSyncTarget->GetMLevel(), static_cast<MSGBASIC_ID>(540));
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, PSyncTarget->GetMLevel(), MsgBasic::LEVEL_SYNC_ACTIVATED);
             PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_LEVEL_SYNC, EFFECT_LEVEL_SYNC, PSyncTarget->GetMLevel(), 0s, 0s), EffectNotice::Silent);
             PChar->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE);
         }
@@ -7128,7 +7128,7 @@ void SendToZone(CCharEntity* PChar, uint16 zoneId)
                      "moghouse = ?, boundary = ? "
                      "WHERE charid = ?",
                      PChar->loc.destination,
-                     (PChar->m_moghouseID || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(),
+                     (PChar->inMogHouse() || PChar->loc.destination == PChar->getZone()) ? PChar->loc.prevzone : PChar->getZone(),
                      PChar->loc.p.rotation,
                      PChar->loc.p.x,
                      PChar->loc.p.y,
