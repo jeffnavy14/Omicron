@@ -220,7 +220,7 @@ end
 
 xi.teleport.toLeader = function(player)
     local leader = player:getPartyLeader()
-    if leader ~= nil and not leader:isInMogHouse() then
+    if leader ~= nil and not leader:inMogHouse() then
         player:gotoPlayer(leader:getName())
     end
 end

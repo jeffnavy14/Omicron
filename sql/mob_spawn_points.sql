@@ -58595,7 +58595,6 @@ INSERT INTO `mob_spawn_points` VALUES (17453072,0,'Zeid_2','Zeid',4,-1104.787,-6
 INSERT INTO `mob_spawn_points` VALUES (17453073,0,'Shadow_of_Rage','Shadow of Rage',5,-638.787,-479.000,-478.976,0);
 INSERT INTO `mob_spawn_points` VALUES (17453074,0,'Shadow_of_Rage','Shadow of Rage',5,-638.787,-479.000,-478.976,0);
 
--- TODO: Verify exact positions for battlefield instances 2 and 3
 -- Kindred Spirits (BS60)
 INSERT INTO `mob_spawn_points` VALUES (17453075,0,'Grand_Marquis_Chomiel','Grand Marquis Chomiel',6,-464.527,-167.58,-241.576,0);
 INSERT INTO `mob_spawn_points` VALUES (17453076,0,'Duke_Amduscias','Duke Amduscias',7,-464.527,-167.5,-244.576,0);
@@ -70141,18 +70140,18 @@ INSERT INTO `mob_spawn_points` VALUES (17621134,0,'Wind_Golem','Wind Golem',26,3
 INSERT INTO `mob_spawn_points` VALUES (17621135,0,'Earth_Golem','Earth Golem',27,398.028,199.000,-404.677,195);
 
 -- Demolition Squad (BS60)
-INSERT INTO `mob_spawn_points` VALUES (17621137,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,-390.000,-201.000,405.000,178);
-INSERT INTO `mob_spawn_points` VALUES (17621138,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29,-410.000,-201.000,405.000,210);
-INSERT INTO `mob_spawn_points` VALUES (17621139,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30,-410.000,-201.000,393.000,200);
-INSERT INTO `mob_spawn_points` VALUES (17621140,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,-390.000,-201.000,393.000,178);
-INSERT INTO `mob_spawn_points` VALUES (17621142,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,10.073,-1.000,5.099,178);
-INSERT INTO `mob_spawn_points` VALUES (17621143,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29,-9.927,-1.000,5.099,210);
-INSERT INTO `mob_spawn_points` VALUES (17621144,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30,-9.927,-1.000,-6.901,200);
-INSERT INTO `mob_spawn_points` VALUES (17621145,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,10.073,-1.000,-6.901,178);
-INSERT INTO `mob_spawn_points` VALUES (17621147,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,410.028,199.000,-394.677,178);
-INSERT INTO `mob_spawn_points` VALUES (17621148,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29,390.028,199.000,-394.677,210);
-INSERT INTO `mob_spawn_points` VALUES (17621149,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30,390.028,199.000,-406.677,200);
-INSERT INTO `mob_spawn_points` VALUES (17621150,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,410.028,199.000,-406.677,178);
+INSERT INTO `mob_spawn_points` VALUES (17621137,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,-405.001,-202.125,400.001,192);
+INSERT INTO `mob_spawn_points` VALUES (17621138,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29,-395.001,-202.125,400.001,192);
+INSERT INTO `mob_spawn_points` VALUES (17621139,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30,-400.001,-202.125,400.001,192);
+INSERT INTO `mob_spawn_points` VALUES (17621140,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,-400.001,-202.125,395.001,192);
+INSERT INTO `mob_spawn_points` VALUES (17621142,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,-3.940,-1.625,-0.900,192);
+INSERT INTO `mob_spawn_points` VALUES (17621143,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29, 6.060,-1.625,-0.900,192);
+INSERT INTO `mob_spawn_points` VALUES (17621144,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30, 1.060,-1.625,-0.900,192);
+INSERT INTO `mob_spawn_points` VALUES (17621145,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31, 1.060,-1.625,-5.900,192);
+INSERT INTO `mob_spawn_points` VALUES (17621147,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,395.000,199.000,-400.677,192);
+INSERT INTO `mob_spawn_points` VALUES (17621148,0,'Nephiyl_Keepcollapser','Nephiyl Keepcollapser',29,405.000,199.000,-400.677,192);
+INSERT INTO `mob_spawn_points` VALUES (17621149,0,'Nephiyl_Moatfiller','Nephiyl Moatfiller',30,400.000,199.000,-400.677,192);
+INSERT INTO `mob_spawn_points` VALUES (17621150,0,'Nephiyl_Pinnacletosser','Nephiyl Pinnacletosser',31,400.000,199.000,-405.677,192);
 
 -- Brothers D'Aurphe (BS60)
 INSERT INTO `mob_spawn_points` VALUES (17621152,0,'Vaicoliaux_B_DAurphe','Vaicoliaux B D\'Aurphe',32,-401.366,-202.107,400.448,203);
