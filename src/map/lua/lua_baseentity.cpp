@@ -456,12 +456,12 @@ void CLuaBaseEntity::messageBasic(uint16 messageID, const sol::object& p0, const
 
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
-        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PTarget, param0, param1, static_cast<MSGBASIC_ID>(messageID));
+        static_cast<CCharEntity*>(m_PBaseEntity)->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PTarget, param0, param1, static_cast<MsgBasic>(messageID));
     }
     else
     {
         // Broadcast in range
-        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PTarget, param0, param1, static_cast<MSGBASIC_ID>(messageID)));
+        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PTarget, param0, param1, static_cast<MsgBasic>(messageID)));
     }
 }
 
@@ -508,7 +508,7 @@ void CLuaBaseEntity::messagePublic(uint16 messageID, const CLuaBaseEntity* PEnti
 
     if (PEntity != nullptr)
     {
-        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PEntity->GetBaseEntity(), param0, param1, static_cast<MSGBASIC_ID>(messageID)));
+        m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(m_PBaseEntity, PEntity->GetBaseEntity(), param0, param1, static_cast<MsgBasic>(messageID)));
     }
 }
 
@@ -926,7 +926,7 @@ void CLuaBaseEntity::injectActionPacket(const uint32 inTargetID, uint16 inCatego
                            .animation  = static_cast<ActionAnimation>(inAnimationID),
                            .info       = info,
                            .param      = inParam,
-                           .messageID  = static_cast<MSGBASIC_ID>(inMessage),
+                           .messageID  = static_cast<MsgBasic>(inMessage),
                     },
                 },
             },
@@ -2904,13 +2904,13 @@ uint8 CLuaBaseEntity::getContinentID()
 }
 
 /************************************************************************
- *  Function: isInMogHouse()
+ *  Function: inMogHouse()
  *  Purpose : Returns true if a PC is in their Mog House
- *  Example : if player:isInMogHouse() then -- watch Netflix and chill
+ *  Example : if player:inMogHouse() then -- watch Netflix and chill
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isInMogHouse()
+bool CLuaBaseEntity::inMogHouse()
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -2918,7 +2918,7 @@ bool CLuaBaseEntity::isInMogHouse()
         return false;
     }
 
-    return static_cast<CCharEntity*>(m_PBaseEntity)->m_moghouseID;
+    return static_cast<CCharEntity*>(m_PBaseEntity)->inMogHouse();
 }
 
 /************************************************************************
@@ -7162,7 +7162,7 @@ uint8 CLuaBaseEntity::levelRestriction(const sol::object& level)
                                 resetRecast(RECAST_ABILITY, 205);
                             }
 
-                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MSGBASIC_AUTO_EXCEEDS_CAPACITY);
+                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::AUTO_EXCEEDS_CAPACITY);
                             petutils::DespawnPet(PChar);
                             return PChar->m_LevelRestriction;
                         }
@@ -8391,8 +8391,8 @@ bool CLuaBaseEntity::setEminenceProgress(uint16 recordID, uint32 progress, const
 
     if (total && progressNotify)
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, recordID, 0, MSGBASIC_ROE_RECORD);
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, progress, total, MSGBASIC_ROE_PROGRESS);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, recordID, 0, MsgBasic::ROE_RECORD);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, progress, total, MsgBasic::ROE_PROGRESS);
     }
 
     return result;
@@ -10758,7 +10758,7 @@ void CLuaBaseEntity::addLearnedAbility(uint16 abilityID)
         charutils::addAbility(PChar, abilityID);
         charutils::SaveLearnedAbilities(PChar);
         PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(442));
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LEARNS_NEW_ABILITY);
     }
 }
 
@@ -10880,7 +10880,7 @@ void CLuaBaseEntity::addSpell(uint16 spellID, const sol::optional<sol::table>& p
         // Send a chat update "Player learns a new spell!"
         if (!silentLog)
         {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, static_cast<MSGBASIC_ID>(23));
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LEARNS_NEW_SPELL);
         }
 
         if (saveToDB)
@@ -18453,7 +18453,7 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
 
         ActionAnimation animationID  = ActionAnimation::None;
         int             messageParam = 0;
-        MSGBASIC_ID     messageID    = MSGBASIC_NONE;
+        MsgBasic        messageID    = MsgBasic::NONE;
         int             addedHP      = 0;
         int             addedMP      = 0;
 
@@ -18466,12 +18466,12 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
             {
                 case 1:
                     messageParam = addedHP;
-                    messageID    = MSGBASIC_TARGET_REGAINS_HP;
+                    messageID    = MsgBasic::TARGET_REGAINS_HP;
                     animationID  = ActionAnimation::RegainHP;
                     break;
                 case 2:
                     messageParam = addedMP;
-                    messageID    = MSGBASIC_TARGET_REGAINS_MP;
+                    messageID    = MsgBasic::TARGET_REGAINS_MP;
                     animationID  = ActionAnimation::RegainMP;
                     break;
             }
@@ -19529,7 +19529,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getPreviousZoneLineID", CLuaBaseEntity::getPreviousZoneLineID);
     SOL_REGISTER("getCurrentRegion", CLuaBaseEntity::getCurrentRegion);
     SOL_REGISTER("getContinentID", CLuaBaseEntity::getContinentID);
-    SOL_REGISTER("isInMogHouse", CLuaBaseEntity::isInMogHouse);
+    SOL_REGISTER("inMogHouse", CLuaBaseEntity::inMogHouse);
 
     SOL_REGISTER("getPos", CLuaBaseEntity::getPos);
     SOL_REGISTER("showPosition", CLuaBaseEntity::showPosition);

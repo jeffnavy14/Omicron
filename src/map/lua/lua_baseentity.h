@@ -196,7 +196,7 @@ public:
     uint32 getPreviousZoneLineID();
     uint8  getCurrentRegion();
     uint8  getContinentID();
-    bool   isInMogHouse();
+    bool   inMogHouse();
 
     bool isPlayerInTriggerArea(uint32 triggerAreaId);
     void onPlayerTriggerAreaEnter(uint32 triggerAreaId);

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -19,27 +19,21 @@
 ===========================================================================
 */
 
-#include "0x11d_jump.h"
+#include "messageutils.h"
 
-#include "entities/charentity.h"
-#include "packets/s2c/0x029_battle_message.h"
-#include "packets/s2c/0x11e_jump.h"
-#include "utils/jailutils.h"
+#include "enums/msg_basic.h"
 
-auto GP_CLI_COMMAND_JUMP::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+namespace messageutils
 {
-    return PacketValidator()
-        .mustEqual(UniqueNo, PChar->id, "Character ID mismatch")
-        .mustEqual(ActIndex, PChar->targid, "Target ID mismatch");
+auto GetAoEVariant(const MsgBasic primary) -> MsgBasic
+{
+    const auto it = aoeVariants.find(primary);
+    return it != aoeVariants.end() ? it->second : primary;
 }
 
-void GP_CLI_COMMAND_JUMP::process(MapSession* PSession, CCharEntity* PChar) const
+auto GetAbsorbVariant(const MsgBasic primary) -> MsgBasic
 {
-    if (jailutils::InPrison(PChar))
-    {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CANNOT_USE_IN_AREA);
-        return;
-    }
-
-    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_JUMP>(PChar, ActIndex));
+    const auto it = absorbVariants.find(primary);
+    return it != absorbVariants.end() ? it->second : primary;
 }
+} // namespace messageutils
