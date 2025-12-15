@@ -57921,24 +57921,24 @@ INSERT INTO `mob_spawn_points` VALUES (17444878,0,'Tonberrys_Elemental','Tonberr
 INSERT INTO `mob_spawn_points` VALUES (17444879,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,278.577,31.999,-277.401,32);
 
 -- Jungle Boogymen
-INSERT INTO `mob_spawn_points` VALUES (17444880,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,-278.368,-32.000,328.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444881,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,-281.368,-32.000,325.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444882,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,-284.368,-32.000,322.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444883,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,-287.368,-32.000,319.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444885,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,-285.368,-32.000,319.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444886,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,-286.368,-32.000,319.647,25);
-INSERT INTO `mob_spawn_points` VALUES (17444887,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,1.646,0.000,48.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444888,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,-1.354,0.000,45.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444889,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,-4.354,0.000,42.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444890,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,-7.354,0.000,39.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444892,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,-5.354,0.000,39.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444893,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,-6.354,0.000,39.679,25);
-INSERT INTO `mob_spawn_points` VALUES (17444894,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,281.709,31.999,-271.754,25);
-INSERT INTO `mob_spawn_points` VALUES (17444895,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,278.709,31.999,-274.754,25);
-INSERT INTO `mob_spawn_points` VALUES (17444896,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,275.709,31.999,-277.754,25);
-INSERT INTO `mob_spawn_points` VALUES (17444897,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,272.709,31.999,-280.754,25);
-INSERT INTO `mob_spawn_points` VALUES (17444899,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,274.709,31.999,-280.754,25);
-INSERT INTO `mob_spawn_points` VALUES (17444900,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,273.709,31.999,-280.754,25);
+INSERT INTO `mob_spawn_points` VALUES (17444880,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,-280.878,-32.5,326.971,32);
+INSERT INTO `mob_spawn_points` VALUES (17444881,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,-282.99,-32.5,325.069,32);
+INSERT INTO `mob_spawn_points` VALUES (17444882,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,-285.101,-32.488,323.167,32);
+INSERT INTO `mob_spawn_points` VALUES (17444883,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,-287.213,-32.5,321.266,32);
+INSERT INTO `mob_spawn_points` VALUES (17444885,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,-287.212,-32.5,321.266,32);
+INSERT INTO `mob_spawn_points` VALUES (17444886,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,-286.368,-32.000,319.647,32);
+INSERT INTO `mob_spawn_points` VALUES (17444887,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,-1.0935,-0.5000,47.6074,32);
+INSERT INTO `mob_spawn_points` VALUES (17444888,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,-3.2055,-0.5000,45.7054,32);
+INSERT INTO `mob_spawn_points` VALUES (17444889,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,-5.3165,-0.4880,43.8034,32);
+INSERT INTO `mob_spawn_points` VALUES (17444890,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,-7.4285,-0.5000,41.9024,32);
+INSERT INTO `mob_spawn_points` VALUES (17444892,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,-7.4275,-0.5000,41.9024,32);
+INSERT INTO `mob_spawn_points` VALUES (17444893,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,-6.5835, 0.0000,39.2836,32);
+INSERT INTO `mob_spawn_points` VALUES (17444894,0,'Sable-tongued_Gonberry','Sable-tongued Gonberry',6,281.1295,31.5000,-273.2244,32);
+INSERT INTO `mob_spawn_points` VALUES (17444895,0,'Virid-faced_Shanberry','Virid-faced Shanberry',7,279.0175,31.5000,-275.1264,32);
+INSERT INTO `mob_spawn_points` VALUES (17444896,0,'Cyaneous-toed_Yallberry','Cyaneous-toed Yallberry',8,276.9065,31.5120,-277.0284,32);
+INSERT INTO `mob_spawn_points` VALUES (17444897,0,'Vermilion-eared_Noberry','Vermilion-eared Noberry',9,274.7945,31.5000,-278.9294,32);
+INSERT INTO `mob_spawn_points` VALUES (17444899,0,'Tonberrys_Elemental','Tonberry\'s Elemental',4,274.7955,31.5000,-278.9294,32);
+INSERT INTO `mob_spawn_points` VALUES (17444900,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,275.6395,32.0000,-281.5485,32);
 
 -- Amphibian Assault
 INSERT INTO `mob_spawn_points` VALUES (17444901,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,-278.000,-32.000,318.000,25);

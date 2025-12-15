@@ -1231,7 +1231,7 @@ INSERT INTO `mob_groups` VALUES (16,1160,31,'Earth_Elemental',0,128,733,0,0,99,9
 -- Sealions_Den (Zone 32)
 -- ------------------------------------------------------------
 
-INSERT INTO `mob_groups` VALUES (1,2500,32,'Mammet-22_Zeta',0,128,1585,4000,0,60,60,0);
+INSERT INTO `mob_groups` VALUES (1,2500,32,'Mammet-22_Zeta',0,128,1585,4000,0,55,56,0);
 INSERT INTO `mob_groups` VALUES (2,2973,32,'Omega',0,128,0,14000,0,63,64,0);
 INSERT INTO `mob_groups` VALUES (3,4083,32,'Ultima',0,128,0,15000,0,63,64,0);
 INSERT INTO `mob_groups` VALUES (4,3875,32,'Tenzen',0,128,0,15000,0,75,75,0);
@@ -5548,8 +5548,8 @@ INSERT INTO `mob_groups` VALUES (3709,1349,86,'Five_Moons',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (3710,1545,86,'Giddy_Bomb',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (3711,1706,86,'Goblin_Reaver',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (3712,2103,86,'Iron_Ram_Knight',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (3713,2254,86,'King_Arthro',0,128,1448,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (3714,2271,86,'Knight_Crab',0,128,0,0,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (3713,2254,86,'King_Arthro',0,128,1448,0,0,82,82,0);
+INSERT INTO `mob_groups` VALUES (3714,2271,86,'Knight_Crab',0,128,0,0,0,70,72,0);
 INSERT INTO `mob_groups` VALUES (3715,2322,86,'Lambton_Worm',0,128,1481,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (3716,2837,86,'Nickel_Quadav',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (3717,2839,86,'Nicolaus',0,128,0,0,0,0,0,0);
@@ -11590,12 +11590,12 @@ INSERT INTO `mob_groups` VALUES (45,932,162,'Deadly_Iris',960,0,580,0,0,55,56,0)
 INSERT INTO `mob_groups` VALUES (1,1798,163,'Graviton',0,128,0,5200,0,65,65,0);
 INSERT INTO `mob_groups` VALUES (2,2729,163,'Molybiton',0,128,0,4700,0,63,63,0);
 INSERT INTO `mob_groups` VALUES (3,4052,163,'Tungsiton',0,128,0,4500,0,63,63,0);
-INSERT INTO `mob_groups` VALUES (4,4674,163,'Tonberrys_Elemental',0,128,0,2400,0,57,58,0);
-INSERT INTO `mob_groups` VALUES (5,3970,163,'Tonberrys_Avatar',0,128,0,2400,0,57,58,0);
-INSERT INTO `mob_groups` VALUES (6,3425,163,'Sable-tongued_Gonberry',0,128,0,4000,0,65,65,0);
-INSERT INTO `mob_groups` VALUES (7,4235,163,'Virid-faced_Shanberry',0,128,0,4000,0,65,65,0);
-INSERT INTO `mob_groups` VALUES (8,877,163,'Cyaneous-toed_Yallberry',0,128,0,4000,0,65,65,0);
-INSERT INTO `mob_groups` VALUES (9,4224,163,'Vermilion-eared_Noberry',0,128,0,4000,0,65,65,0);
+INSERT INTO `mob_groups` VALUES (4,4674,163,'Tonberrys_Elemental',0,128,0,0,0,60,60,0);
+INSERT INTO `mob_groups` VALUES (5,3970,163,'Tonberrys_Avatar',0,128,0,0,0,60,60,0);
+INSERT INTO `mob_groups` VALUES (6,3425,163,'Sable-tongued_Gonberry',0,128,0,3000,3000,63,63,0);
+INSERT INTO `mob_groups` VALUES (7,4235,163,'Virid-faced_Shanberry',0,128,0,3000,0,64,64,0);
+INSERT INTO `mob_groups` VALUES (8,877,163,'Cyaneous-toed_Yallberry',0,128,0,3500,0,63,63,0);
+INSERT INTO `mob_groups` VALUES (9,4224,163,'Vermilion-eared_Noberry',0,128,0,3000,3000,64,64,0);
 INSERT INTO `mob_groups` VALUES (10,3290,163,'Qull_the_Fallstopper',0,128,0,0,0,60,60,0);
 INSERT INTO `mob_groups` VALUES (11,3328,163,'Rauu_the_Whaleswooner',0,128,0,0,0,60,60,0);
 INSERT INTO `mob_groups` VALUES (12,2038,163,'Hyohh_the_Conchblower',0,128,0,0,0,60,60,0);

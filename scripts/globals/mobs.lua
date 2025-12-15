@@ -30,7 +30,7 @@ local function lotteryPrimed(phList)
     return false
 end
 
-local getMobLuaPathObject = function(mob)
+local function getMobLuaPathObject(mob)
     if not mob then
         return nil
     end

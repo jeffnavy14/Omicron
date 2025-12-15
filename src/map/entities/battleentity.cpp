@@ -595,12 +595,43 @@ uint16 CBattleEntity::GetMainWeaponDmg()
 {
     TracyZoneScoped;
 
-    if (objtype == TYPE_MOB ||
-        (objtype == TYPE_PET &&
-         static_cast<CPetEntity*>(this)->getPetType() != PET_TYPE::AUTOMATON))
+    if (objtype == TYPE_MOB)
     {
         auto* PMob = static_cast<CMobEntity*>(this);
         return mobutils::GetWeaponDamage(PMob, SLOT_MAIN);
+    }
+    else if (objtype == TYPE_PET)
+    {
+        auto* PPetEntity = static_cast<CPetEntity*>(this);
+
+        if (PPetEntity->getPetType() == PET_TYPE::AUTOMATON)
+        {
+            // Unsure of the accuracy of this, but it's what we have in petutils
+            return std::floor(GetSkill(SKILL_AUTOMATON_MELEE) / 9 * 2) + 3 + getMod(Mod::MAIN_DMG_RATING);
+        }
+        else if (PPetEntity->getPetType() == PET_TYPE::WYVERN)
+        {
+            // Accurate for lvl 75 circa 2006~2008ish
+            // Unknown if this ever changed
+            return std::floor(GetMLevel() / 2) + 3 + getMod(Mod::MAIN_DMG_RATING);
+        }
+        else if (PPetEntity->getPetType() == PET_TYPE::AVATAR)
+        {
+            // In a 2014 update SE updated Avatar base damage
+            // Based on testing this value appears to be Level now instead of Level * 0.74f
+            uint16 weaponDamage = 1 + GetMLevel();
+            if (PPetEntity->m_PetID == PETID_CARBUNCLE || PPetEntity->m_PetID == PETID_CAIT_SITH)
+            {
+                weaponDamage = static_cast<uint16>(floor(GetMLevel() * 0.9f));
+            }
+
+            return weaponDamage + getMod(Mod::MAIN_DMG_RATING);
+        }
+        else // jugs
+        {
+            // Formula looks fake...
+            return petutils::GetJugWeaponDamage(PPetEntity) + getMod(Mod::MAIN_DMG_RATING);
+        }
     }
 
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]))
@@ -658,12 +689,43 @@ uint16 CBattleEntity::GetRangedWeaponDmg()
     TracyZoneScoped;
     uint16 dmg = 0;
 
-    if (objtype == TYPE_MOB ||
-        (objtype == TYPE_PET &&
-         static_cast<CPetEntity*>(this)->getPetType() != PET_TYPE::AUTOMATON))
+    if (objtype == TYPE_MOB)
     {
         auto* PMob = static_cast<CMobEntity*>(this);
         return mobutils::GetWeaponDamage(PMob, SLOT_RANGED);
+    }
+    else if (objtype == TYPE_PET)
+    {
+        auto* PPetEntity = static_cast<CPetEntity*>(this);
+
+        if (PPetEntity->getPetType() == PET_TYPE::AUTOMATON)
+        {
+            // Unsure of the accuracy of this, but it's what we have in petutils
+            return std::floor(GetSkill(SKILL_AUTOMATON_RANGED) / 9 * 2) + 3 + getMod(Mod::RANGED_DMG_RATING);
+        }
+        else if (PPetEntity->getPetType() == PET_TYPE::WYVERN)
+        {
+            // Accurate for lvl 75 circa 2006~2008ish
+            // Unknown if this ever changed
+            return std::floor(GetMLevel() / 2) + 3 + getMod(Mod::RANGED_DMG_RATING);
+        }
+        else if (PPetEntity->getPetType() == PET_TYPE::AVATAR)
+        {
+            // In a 2014 update SE updated Avatar base damage
+            // Based on testing this value appears to be Level now instead of Level * 0.74f
+            uint16 weaponDamage = 1 + GetMLevel();
+            if (PPetEntity->m_PetID == PETID_CARBUNCLE || PPetEntity->m_PetID == PETID_CAIT_SITH)
+            {
+                weaponDamage = static_cast<uint16>(floor(GetMLevel() * 0.9f));
+            }
+
+            return weaponDamage + getMod(Mod::RANGED_DMG_RATING);
+        }
+        else // jugs
+        {
+            // Formula looks fake...
+            return petutils::GetJugWeaponDamage(PPetEntity) + getMod(Mod::RANGED_DMG_RATING);
+        }
     }
 
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]))
@@ -1016,7 +1078,7 @@ uint16 CBattleEntity::RATT(uint16 bonusAtt)
         auto* weapon  = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]);
 
         // Return 0 if ranged weapon but no ammo
-        if (weapon && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
+        if (weapon && weapon->getSkillType() != SKILL_THROWING && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
         {
             return 0;
         }
@@ -1061,10 +1123,7 @@ uint16 CBattleEntity::RATT(uint16 bonusAtt)
 
         skillLevel = std::max({ archery_acc, marksmanship_acc, throwing_acc });
     }
-    else // pets, mobs
-    {
-        skillLevel = m_modStat[Mod::RATT];
-    }
+    // mobs and pets don't have "skill level" -- it's baked into m_modStat[Mod::RATT]
 
     int32 RATT = 8 + skillLevel + bonusAtt + m_modStat[Mod::RATT] + battleutils::GetRangedAttackBonuses(this) + std::floor(STR() * strMultiplier);
     // use max to prevent any underflow
@@ -1077,15 +1136,15 @@ inline uint32 GetAccFromSkill(uint32 skill)
 
     if (skill > 600)
     {
-        accuracy = std::floor<uint32_t>(static_cast<float>(skill - 600) * 0.9f) + 540;
+        accuracy = std::floor<uint32_t>(static_cast<float>(skill - 600.f) * 0.9f) + 540;
     }
     else if (skill > 400)
     {
-        accuracy = std::floor(static_cast<float>(skill - 400) * 0.8f) + 380;
+        accuracy = std::floor(static_cast<float>(skill - 400.f) * 0.8f) + 380;
     }
     else if (skill > 200)
     {
-        accuracy = std::floor(static_cast<float>(skill - 200) * 0.8f) + 380;
+        accuracy = std::floor(static_cast<float>(skill - 200.f) * 0.9f) + 200;
     }
 
     return accuracy;
@@ -1107,7 +1166,7 @@ uint16 CBattleEntity::RACC(uint16 bonusAcc)
         auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]);
 
         // Return 0 if ranged weapon but no ammo
-        if (weapon && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
+        if (weapon && weapon->getSkillType() != SKILL_THROWING && dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_AMMO]) == nullptr)
         {
             return 0;
         }

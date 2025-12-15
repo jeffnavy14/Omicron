@@ -401,6 +401,14 @@ xi.mobSkill =
     MATERIAL_FEND                 = 1233,
     CAROUSEL_1                    = 1234,
 
+    PILE_PITCH                    = 1235,
+    GUIDED_MISSILE                = 1236,
+    HYPER_PULSE                   = 1237,
+    TARGET_ANALYSIS               = 1238,
+    DISCHARGER                    = 1239,
+    ION_EFFLUX                    = 1240,
+    REAR_LASERS                   = 1241,
+
     NEGATIVE_WHIRL_1              = 1243,
     STYGIAN_VAPOR                 = 1244,
     WINDS_OF_PROMYVION_1          = 1245,
@@ -412,6 +420,19 @@ xi.mobSkill =
     BINARY_TAP                    = 1250,
     TRINARY_TAP                   = 1251,
     SHADOW_SPREAD                 = 1252,
+
+    WIRE_CUTTER                   = 1259,
+    ANTIMATTER                    = 1260,
+    EQUALIZER                     = 1261,
+    FLAME_THROWER                 = 1262,
+    CRYO_JET                      = 1263,
+    TURBOFAN                      = 1264,
+    SMOKE_DISCHARGER              = 1265,
+    HIGH_TENSION_DISCHARGER       = 1266,
+    HYDRO_CANON                   = 1267,
+    NUCLEAR_WASTE                 = 1268,
+    CHEMICAL_BOMB                 = 1269,
+    PARTICLE_SHIELD               = 1270,
 
     EMPTY_CUTTER                  = 1271,
 

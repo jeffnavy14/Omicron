@@ -8857,15 +8857,14 @@ void CLuaBaseEntity::addKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::addKeyItem() - Attempting to add invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::addKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::addKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     if (table == 6)
     {
@@ -8911,15 +8910,14 @@ void CLuaBaseEntity::delKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::delKeyItem() - Attempting to delete invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::delKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::delKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     charutils::SaveKeyItems(PChar);
 }
@@ -8935,7 +8933,7 @@ bool CLuaBaseEntity::seenKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        ShowWarning("CLuaBaseEntity::seenKeyItem() - Invalid entity type calling function (%s).", m_PBaseEntity->getName());
         return false;
     }
 
@@ -8960,15 +8958,14 @@ void CLuaBaseEntity::unseenKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::unseenKeyItem() - Attempting to unsee invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::unseenKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::unseenKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     charutils::SaveKeyItems(PChar);
 }
