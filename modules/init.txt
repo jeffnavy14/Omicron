@@ -56,4 +56,5 @@ omicronxi/mimic
 omicronxi/Sky2.0
 omicronxi/the_arena
 #omicronxi/75only
+omicronxi/trusts
 custom/lua/new_player_linkshell.lua
