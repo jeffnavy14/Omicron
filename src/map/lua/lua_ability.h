@@ -45,7 +45,9 @@ public:
     auto   getMsg() -> MsgBasic;
     uint16 getRecast();
     uint16 getRecastID();
-    uint16 getRange();
+    auto   getRange() -> uint16;
+    auto   getRadius() const -> uint8;
+    auto   getAOE() const -> uint8;
     auto   getName() -> const std::string&;
     auto   getAnimation() -> ActionAnimation;
     uint16 getAddType(); // see map/ability.h for definitions. These can tell if the ability is a Merit ability, Astral Flow only ability, etc

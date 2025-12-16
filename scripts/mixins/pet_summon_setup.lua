@@ -26,7 +26,7 @@ g_mixins.pet_summon_setup = function(mob)
         -- Apply resistance ranks
         for element = xi.element.FIRE, xi.element.DARK do
             local resistanceRankMod   = xi.data.element.getElementalResistanceRankModifier(element)
-            local resistanceRankValue = xi.pets.summon.resistanceRanks(element)
+            local resistanceRankValue = xi.pets.summon.resistanceRanks[chosenSummon][element]
             mobArg:setMod(resistanceRankMod, resistanceRankValue)
         end
     end)

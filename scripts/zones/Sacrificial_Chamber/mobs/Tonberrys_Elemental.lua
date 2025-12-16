@@ -7,7 +7,7 @@ mixins = { require('scripts/mixins/pet_summon_setup') }
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobInitialize = function(mob)
+entity.onMobSpawn = function(mob)
     local possibleSummons =
     {
         xi.pets.summon.type.FIRE_SPIRIT,
@@ -17,7 +17,7 @@ entity.onMobInitialize = function(mob)
 
     local summonBitmask = 0
     for _, entry in ipairs(possibleSummons) do
-        utils.mask.setBit(summonBitmask, entry, true)
+        summonBitmask = utils.mask.setBit(summonBitmask, entry, true)
     end
 
     mob:setLocalVar('[Summon]mask', summonBitmask)

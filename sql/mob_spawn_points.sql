@@ -57941,21 +57941,21 @@ INSERT INTO `mob_spawn_points` VALUES (17444899,0,'Tonberrys_Elemental','Tonberr
 INSERT INTO `mob_spawn_points` VALUES (17444900,0,'Tonberrys_Avatar','Tonberry\'s Avatar',5,275.6395,32.0000,-281.5485,32);
 
 -- Amphibian Assault
-INSERT INTO `mob_spawn_points` VALUES (17444901,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,-278.000,-32.000,318.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444902,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,-276.000,-32.000,318.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444903,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,-278.000,-32.000,316.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444904,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,-276.000,-32.000,316.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444906,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,-277.000,-32.000,317.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444907,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,2.000,0.000,38.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444908,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,4.000,0.000,38.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444909,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,2.000,0.000,36.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444910,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,4.000,0.000,36.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444912,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,3.000,0.000,37.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444913,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,280.000,32.000,-282.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444914,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,282.000,32.000,-282.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444915,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,280.000,32.000,-284.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444916,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,282.000,32.000,-284.000,25);
-INSERT INTO `mob_spawn_points` VALUES (17444918,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,281.000,32.000,-283.000,25);
+INSERT INTO `mob_spawn_points` VALUES (17444901,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,-280.878,-32.5,326.971,32);
+INSERT INTO `mob_spawn_points` VALUES (17444902,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,-282.990,-32.5,325.069,32);
+INSERT INTO `mob_spawn_points` VALUES (17444903,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,-285.101,-32.488,323.167,32);
+INSERT INTO `mob_spawn_points` VALUES (17444904,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,-287.213,-32.5,321.266,32);
+INSERT INTO `mob_spawn_points` VALUES (17444906,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,-287.212,-32.5,321.266,32);
+INSERT INTO `mob_spawn_points` VALUES (17444907,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,-1.0935,-0.5,47.6074,32);
+INSERT INTO `mob_spawn_points` VALUES (17444908,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,-3.2055,-0.5,45.7054,32);
+INSERT INTO `mob_spawn_points` VALUES (17444909,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,-5.3165,-0.488,43.8034,32);
+INSERT INTO `mob_spawn_points` VALUES (17444910,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,-7.4285,-0.5,41.9024,32);
+INSERT INTO `mob_spawn_points` VALUES (17444912,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,-7.4275,-0.5,41.9024,32);
+INSERT INTO `mob_spawn_points` VALUES (17444913,0,'Qull_the_Fallstopper','Qull the Fallstopper',10,281.1295,31.5,-273.2244,32);
+INSERT INTO `mob_spawn_points` VALUES (17444914,0,'Rauu_the_Whaleswooner','Rauu the Whaleswooner',11,279.0175,31.5,-275.1264,32);
+INSERT INTO `mob_spawn_points` VALUES (17444915,0,'Hyohh_the_Conchblower','Hyohh the Conchblower',12,276.9065,31.512,-277.0284,32);
+INSERT INTO `mob_spawn_points` VALUES (17444916,0,'Pevv_the_Riverleaper','Pevv the Riverleaper',13,274.7945,31.5,-278.9294,32);
+INSERT INTO `mob_spawn_points` VALUES (17444918,0,'Sahagins_Wyvern','Sahagin\'s Wyvern',14,274.7955,31.5,-278.9294,32);
 
 -- Project: Shantottofication (ASA13)
 INSERT INTO `mob_spawn_points` VALUES (17444919,0,'Shantotto','Shantotto',15,0.000,0.000,0.000,0);
