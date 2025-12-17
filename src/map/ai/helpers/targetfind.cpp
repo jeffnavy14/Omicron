@@ -489,15 +489,7 @@ bool CTargetFind::validEntity(CBattleEntity* PTarget)
     // short-circuit allegiance checks for aoe skills/abilities/spells that can hit players and mobs simultaneously
     if (m_targetFlags & TARGET_ANY_ALLEGIANCE)
     {
-        if (m_targetFlags & TARGET_SELF)
-        {
-            if (m_PBattleEntity->allegiance == PTarget->allegiance)
-            {
-                // TARGET_ANY_ALLEGIANCE with TARGET_SELF means it should behave like TARGET_ENEMY
-                return false;
-            }
-        }
-        else if (m_PBattleEntity == PTarget)
+        if (m_PBattleEntity == PTarget)
         {
             // Don't erroneously include self when using TARGET_ANY_ALLEGIANCE
             return false;

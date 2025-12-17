@@ -1030,10 +1030,19 @@ void CMobController::DoRoamTick(timer::time_point tick)
         PMob->m_OwnerID.clean();
     }
 
-    if (PFollowTarget != nullptr && m_followType == FollowType::Roam && distance(PMob->loc.p, PFollowTarget->loc.p) > FollowRoamDistance)
+    if (PFollowTarget != nullptr && m_followType == FollowType::Roam)
     {
-        PMob->PAI->PathFind->PathAround(PFollowTarget->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
-        PMob->PAI->PathFind->FollowPath(m_Tick);
+        // Only path to leader if they're moving
+        if (distance(PMob->loc.p, PFollowTarget->loc.p) > FollowRoamDistance &&
+            PFollowTarget->PAI->PathFind->IsFollowingPath())
+        {
+            PMob->PAI->PathFind->PathAround(PFollowTarget->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
+        }
+
+        if (!PMob->PAI->PathFind->IsFollowingPath())
+        {
+            return;
+        }
     }
 
     if (m_Tick >= m_mobHealTime + 10s && PMob->getMobMod(MOBMOD_NO_REST) == 0 && PMob->CanRest())

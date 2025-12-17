@@ -42,6 +42,7 @@ enum SKILLFLAG
     SKILLFLAG_NO_FINISH_MSG  = 0x020, // Doesn't emit finish message when mobskill state completes
     SKILLFLAG_BLOODPACT_RAGE = 0x040,
     SKILLFLAG_BLOODPACT_WARD = 0x080,
+    SKILLFLAG_ALWAYS_ANIMATE = 0x100, // Animation completes even if no targets in range
 };
 
 enum AOE_TYPE
@@ -72,7 +73,7 @@ public:
     auto            getAnimationID() const -> ActionAnimation;
     uint8           getAoe() const;
     float           getDistance() const;
-    uint8           getFlag() const;
+    auto            getFlag() const -> uint16;
     timer::duration getAnimationTime() const;
     timer::duration getActivationTime() const;
     auto            getMsg() const -> MsgBasic;
@@ -101,7 +102,7 @@ public:
     void setAoe(uint8 aoe);
     void setAoeRadius(float aoeRadius);
     void setDistance(float distance);
-    void setFlag(uint8 flag);
+    void setFlag(uint16 flag);
     void setAnimationTime(timer::duration AnimationTime);
     void setActivationTime(timer::duration ActivationTime);
     void setMsg(MsgBasic msg);
@@ -133,7 +134,7 @@ private:
     uint8           m_Aoe;       // Defines the type of AOE
     float           m_AoeRadius; // Radius of any aoe skill
     float           m_Distance;  // Distance at which the skill will be triggered
-    uint8           m_Flag;
+    uint16          m_Flag;
     uint16          m_ValidTarget;
     timer::duration m_AnimationTime;  // how long the tp animation lasts for in ms
     timer::duration m_ActivationTime; // how long the mob prepares the tp move for

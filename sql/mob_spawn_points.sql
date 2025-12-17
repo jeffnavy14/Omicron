@@ -59236,18 +59236,18 @@ INSERT INTO `mob_spawn_points` VALUES (17465364,0,'Maat','Maat',6,-0.945,-100.00
 INSERT INTO `mob_spawn_points` VALUES (17465365,0,'Maats_Wyvern','Maat\'s Wyvern',7,-0.945,-100.000,240.335,68);
 
 -- Legion XI Comitatensis (BS60)
-INSERT INTO `mob_spawn_points` VALUES (17465366,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-2.000,100.000,-235.000,50);
-INSERT INTO `mob_spawn_points` VALUES (17465367,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,2.000,100.000,-235.000,50);
-INSERT INTO `mob_spawn_points` VALUES (17465368,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,-4.000,100.000,-239.000,50);
-INSERT INTO `mob_spawn_points` VALUES (17465369,0,'Centurio_XI-I','Centurio XI-I',11,4.000,100.000,-239.000,50);
-INSERT INTO `mob_spawn_points` VALUES (17465371,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-1.975,0.000,5.081,50);
-INSERT INTO `mob_spawn_points` VALUES (17465372,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,2.025,0.000,5.081,50);
-INSERT INTO `mob_spawn_points` VALUES (17465373,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,-3.975,0.000,1.081,50);
-INSERT INTO `mob_spawn_points` VALUES (17465374,0,'Centurio_XI-I','Centurio XI-I',11,4.025,0.000,1.081,50);
-INSERT INTO `mob_spawn_points` VALUES (17465376,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-1.945,-100.000,245.335,50);
-INSERT INTO `mob_spawn_points` VALUES (17465377,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,2.055,-100.000,245.335,50);
-INSERT INTO `mob_spawn_points` VALUES (17465378,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,-3.945,-100.000,241.335,50);
-INSERT INTO `mob_spawn_points` VALUES (17465379,0,'Centurio_XI-I','Centurio XI-I',11,4.055,-100.000,241.335,50);
+INSERT INTO `mob_spawn_points` VALUES (17465366,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-2,100.325,-240,64);
+INSERT INTO `mob_spawn_points` VALUES (17465367,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,6,100.182,-240,64);
+INSERT INTO `mob_spawn_points` VALUES (17465368,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,2,100.325,-240,64);
+INSERT INTO `mob_spawn_points` VALUES (17465369,0,'Centurio_XI-I','Centurio XI-I',11,-6,100.182,-240,64);
+INSERT INTO `mob_spawn_points` VALUES (17465371,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-2.000,0.325,0.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465372,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,6.000,0.182,0.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465373,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,2.000,0.325,0.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465374,0,'Centurio_XI-I','Centurio XI-I',11,-6.000,0.182,0.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465376,0,'Secutor_XI-XXXII','Secutor XI-XXXII',8,-2.000,-100.325,240.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465377,0,'Retiarius_XI-XIX','Retiarius XI-XIX',9,6.000,-100.182,240.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465378,0,'Hoplomachus_XI-XXVI','Hoplomachus XI-XXVI',10,2.000,-100.325,240.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17465379,0,'Centurio_XI-I','Centurio XI-I',11,-6.000,-100.182,240.000,64);
 
 -- Cactuar Suave (KS30)
 INSERT INTO `mob_spawn_points` VALUES (17465381,0,'Sabotender_Campeon','Sabotender Campeon',12,0,100.325,-240,64);

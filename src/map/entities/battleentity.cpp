@@ -2448,7 +2448,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
     // Self-centered AoEs (mob_skill_aoe = 1) don't have a "primary target" concept
     // They should find targets around the mob regardless of where any specific entity is
-    bool isSelfCenteredAoE = PSkill->getAoe() == static_cast<uint8>(AOE_RADIUS::ATTACKER);
+    const bool isSelfCenteredAoE = PSkill->getAoe() == static_cast<uint8>(AOE_RADIUS::ATTACKER);
 
     // For non-self-centered skills, check if the primary target is within range
     if (!isSelfCenteredAoE && !PAI->TargetFind->isWithinRange(&PTarget->loc.p, distance))
@@ -2460,7 +2460,18 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
     // Find targets based on skill type
     if (PSkill->isAoE())
     {
-        PAI->TargetFind->findWithinArea(PTarget, static_cast<AOE_RADIUS>(PSkill->getAoe()), PSkill->getRadius(), findFlags, PSkill->getValidTargets());
+        // For self-centered AoE damaging moves (TARGET_ENEMY), use battle target for allegiance
+        // For self-centered AoE buffs (TARGET_SELF), use self/state target
+        CBattleEntity* PFindTarget = PTarget;
+        if (isSelfCenteredAoE && (PSkill->getValidTargets() & TARGET_ENEMY))
+        {
+            PFindTarget = GetBattleTarget();
+            if (!PFindTarget)
+            {
+                PFindTarget = PTarget;
+            }
+        }
+        PAI->TargetFind->findWithinArea(PFindTarget, static_cast<AOE_RADIUS>(PSkill->getAoe()), PSkill->getRadius(), findFlags, PSkill->getValidTargets());
     }
     else if (PSkill->isConal())
     {
@@ -2481,35 +2492,20 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
         PAI->TargetFind->findSingleTarget(PTarget, findFlags, PSkill->getValidTargets());
     }
 
-    uint16 targets  = static_cast<uint16>(PAI->TargetFind->m_targets.size());
-    auto   skipSelf = false;
-
-    if ((PSkill->getValidTargets() & TARGET_ANY_ALLEGIANCE) && (PSkill->getValidTargets() & TARGET_SELF))
-    {
-        // This ability targets self for aoe skills (such as Frozen Mist)
-        // Should be impossible for self to not be in target list, but just in case
-        if (targets > 0)
-        {
-            targets -= 1;
-        }
-        skipSelf = true;
-    }
+    uint16 targets = static_cast<uint16>(PAI->TargetFind->m_targets.size());
 
     // No targets, perhaps something like Super Jump or otherwise untargetable
     if (targets == 0)
     {
-        action_target_t& actionTarget = action.addTarget(id);
-        action_result_t& actionResult = actionTarget.addResult();
-        actionResult.messageID        = MsgBasic::NONE;
-
-        if (skipSelf)
+        if (PSkill->getFlag() & SKILLFLAG_ALWAYS_ANIMATE)
         {
-            // This ability targets self for aoe skills (such as Frozen Mist)
-            // And it found no valid targets in range, the skill and animation should still trigger
-            // action.actiontype unchanged
-            actionResult.animation  = PSkill->getAnimationID();
-            actionResult.resolution = ActionResolution::Miss;
-            actionResult.info       = ActionInfo::UnknownAoE;
+            // Animation completes even if no targets in range
+            action_target_t& actionTarget = action.addTarget(id);
+            action_result_t& actionResult = actionTarget.addResult();
+            actionResult.messageID        = MsgBasic::NONE;
+            actionResult.animation        = PSkill->getAnimationID();
+            actionResult.resolution       = ActionResolution::Miss;
+            actionResult.info             = ActionInfo::UnknownAoE;
 
             // TODO: This is supposed to emit an extra 'spte'!
         }
@@ -2548,13 +2544,6 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
     // Lambda to process a target
     auto processTarget = [&](CBattleEntity* PTargetFound)
     {
-        if (PTarget == PTargetFound && skipSelf)
-        {
-            // This ability targets self for aoe skills (such as Frozen Mist)
-            // Ignore self completely
-            return;
-        }
-
         action_target_t& target = action.addTarget(PTargetFound->id);
         action_result_t& result = target.addResult();
 

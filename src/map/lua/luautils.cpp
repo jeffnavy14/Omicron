@@ -3879,6 +3879,26 @@ CBattleEntity* OnMobSkillTarget(CBattleEntity* PTarget, CBaseEntity* PMob, CMobS
     return PTarget;
 }
 
+// onMobSkillFinalize always executes once per uninterrupted mobskill use, independently of any target being found.
+void OnMobSkillFinalize(CBaseEntity* PMob, CMobSkill* PMobSkill)
+{
+    TracyZoneScoped;
+
+    auto name = PMobSkill->getName();
+
+    auto onMobSkillFinalize = lua["xi"]["actions"]["mobskills"][name]["onMobSkillFinalize"];
+    if (!onMobSkillFinalize.valid())
+    {
+        return;
+    }
+
+    if (const auto result = onMobSkillFinalize(PMob, PMobSkill); !result.valid())
+    {
+        const sol::error err = result;
+        ShowError("luautils::onMobSkillFinalize: %s", err.what());
+    }
+}
+
 int32 OnAutomatonAbilityCheck(CBaseEntity* PTarget, CAutomatonEntity* PAutomaton, CMobSkill* PMobSkill)
 {
     TracyZoneScoped;

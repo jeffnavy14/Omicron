@@ -72,6 +72,7 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
     mob:setMod(xi.mod.LIGHT_SLEEP_RES_RANK, 4)
     mob:setMod(xi.mod.LIGHT_RES_RANK, 4)
+    mob:setMobMod(xi.mobMod.SUPERLINK, 1)
 end
 
 entity.onMobSpellChoose = function(mob, target, spellId)
@@ -106,6 +107,8 @@ entity.onMobSpellChoose = function(mob, target, spellId)
 
     -- Check for missing buffs on self and allies
     for i = 1, #buffTable do
+        local buffTargets = {}
+
         for j = 1, #groupTable do
             local allyEntity = GetMobByID(baseMobId + groupTable[j])
             if
@@ -113,8 +116,17 @@ entity.onMobSpellChoose = function(mob, target, spellId)
                 allyEntity:isAlive() and
                 not allyEntity:hasStatusEffect(buffTable[i][2])
             then
-                table.insert(spellList, { buffTable[i][1], allyEntity })
+                table.insert(buffTargets, allyEntity)
             end
+        end
+
+        -- Adds each missing buff to the spell list one time with a random target that is missing it
+        if #buffTargets > 0 then
+            table.insert(spellList,
+            {
+                buffTable[i][1],
+                buffTargets[math.random(#buffTargets)],
+            })
         end
     end
 

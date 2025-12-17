@@ -190,8 +190,7 @@ entity.onMobFight = function(mob, target)
         -- Flight mode.
         elseif
             animation == 1 and
-            (GetSystemTime() > flightTime and mob:getHP() < changeHP) and
-            mob:checkDistance(target) <= 6 -- This 2 checks are a hack until we can handle skills targeting a position and not an entity.
+            (GetSystemTime() > flightTime and mob:getHP() < changeHP)
         then
             mob:useMobAbility(1282) -- This ability also handles animation change to 2.
             mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.NO_TURN))

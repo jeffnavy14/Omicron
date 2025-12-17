@@ -221,8 +221,13 @@ void LoadMobSkillsList()
         PMobSkill->setDistance(rset->get<float>("mob_skill_distance"));
         PMobSkill->setAnimationTime(std::chrono::milliseconds(rset->get<uint32>("mob_anim_time")));
         PMobSkill->setActivationTime(std::chrono::milliseconds(rset->get<uint32>("mob_prepare_time")));
-        PMobSkill->setValidTargets(rset->get<uint16>("mob_valid_targets"));
-        PMobSkill->setFlag(rset->get<uint8>("mob_skill_flag"));
+        auto validTargets = rset->get<uint16>("mob_valid_targets");
+        if ((validTargets & TARGET_SELF) && (validTargets & TARGET_ENEMY))
+        {
+            ShowWarningFmt("Mob skill {} ({}) has both TARGET_SELF and TARGET_ENEMY set", PMobSkill->getName(), PMobSkill->getID());
+        }
+        PMobSkill->setValidTargets(validTargets);
+        PMobSkill->setFlag(rset->get<uint16>("mob_skill_flag"));
         PMobSkill->setParam(rset->get<int16>("mob_skill_param"));
         PMobSkill->setKnockback(rset->get<Knockback>("knockback"));
         PMobSkill->setPrimarySkillchain(rset->get<uint8>("primary_sc"));
