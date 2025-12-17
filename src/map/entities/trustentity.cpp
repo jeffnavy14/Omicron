@@ -153,10 +153,7 @@ void CTrustEntity::OnAbility(CAbilityState& state, action_t& action)
         if (PAbility->isAoE())
         {
             PAI->TargetFind->reset();
-
-            float distance = PAbility->getRange();
-
-            PAI->TargetFind->findWithinArea(this, AOE_RADIUS::ATTACKER, distance, FINDFLAGS_NONE, PAbility->getValidTarget());
+            PAI->TargetFind->findWithinArea(this, AOE_RADIUS::ATTACKER, PAbility->getRadius(), FINDFLAGS_NONE, PAbility->getValidTarget());
 
             auto prevMsg = MsgBasic::NONE;
             for (auto&& PTargetFound : PAI->TargetFind->m_targets)

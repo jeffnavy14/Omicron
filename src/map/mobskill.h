@@ -34,10 +34,10 @@ class CBattleEntity;
 
 enum SKILLFLAG
 {
-    SKILLFLAG_NONE           = 0x000,
-    SKILLFLAG_ASTRAL_FLOW    = 0x002, // Player's Avatar Astral Flow blood pacts. TODO: give player pet skills their own separate enum, move avatar stuff there.
-    SKILLFLAG_NO_TP_COST     = 0x004, // Don't auto deduct TP
-    SKILLFLAG_HIT_ALL        = 0x008, // Strike players even if not in party/alliance
+    SKILLFLAG_NONE        = 0x000,
+    SKILLFLAG_ASTRAL_FLOW = 0x002, // Player's Avatar Astral Flow blood pacts. TODO: give player pet skills their own separate enum, move avatar stuff there.
+    SKILLFLAG_NO_TP_COST  = 0x004, // Don't auto deduct TP
+    // 0x008 is available
     SKILLFLAG_NO_START_MSG   = 0x010, // Doesn't emit "<mob> readies <skill>"
     SKILLFLAG_NO_FINISH_MSG  = 0x020, // Doesn't emit finish message when mobskill state completes
     SKILLFLAG_BLOODPACT_RAGE = 0x040,

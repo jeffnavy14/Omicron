@@ -999,20 +999,23 @@ uint16 CBattleEntity::ATT(SLOTTYPE slot)
     }
     else if (weapon && weapon->isTwoHanded()) // 2-handed weapon
     {
-        strMultiplier = 1.0;
+        strMultiplier = settings::get<float>("main.TWO_HANDED_STR_ATTACK_MULTIPLIER");
     }
     else if (weapon && weapon->isHandToHand()) // H2H Weapon
     {
-        strMultiplier = 0.75;
+        strMultiplier = settings::get<float>("main.HAND_TO_HAND_STR_ATTACK_MULTIPLIER");
     }
-    else if (slot == SLOT_MAIN || slot == SLOT_RANGED || slot == SLOT_AMMO) // 1-handed weapon in main slot, Ranged or ammo weapon.
+    else if (slot == SLOT_MAIN)
     {
-        strMultiplier = 1.0;
+        strMultiplier = settings::get<float>("main.ONE_HAND_MAIN_HAND_STR_ATTACK_MULTIPLIER");
     }
-
-    if (settings::get<bool>("main.USE_PRE_2013_STR_MULTIPLIER"))
+    else if (slot == SLOT_SUB)
     {
-        strMultiplier = 0.5;
+        strMultiplier = settings::get<float>("main.ONE_HAND_OFF_HAND_STR_ATTACK_MULTIPLIER");
+    }
+    else if (slot == SLOT_RANGED || slot == SLOT_AMMO) // 1-handed weapon in main slot, Ranged or ammo weapon.
+    {
+        strMultiplier = settings::get<float>("main.RANGED_STR_ATTACK_MULTIPLIER");
     }
 
     ATT += STR() * strMultiplier;
@@ -1074,7 +1077,7 @@ uint16 CBattleEntity::RATT(uint16 bonusAtt)
 
     if (objtype == TYPE_PC)
     {
-        strMultiplier = 1.0;
+        strMultiplier = settings::get<float>("main.RANGED_STR_ATTACK_MULTIPLIER");
         auto* weapon  = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_RANGED]);
 
         // Return 0 if ranged weapon but no ammo
@@ -1204,7 +1207,7 @@ uint16 CBattleEntity::RACC(uint16 bonusAcc)
         RACC += getMod(Mod::RACC);
         RACC += bonusAcc;
         RACC += battleutils::GetRangedAccuracyBonuses(this);
-        RACC += std::floor(AGI() * 3 / 4);
+        RACC += std::floor(AGI() * settings::get<float>("main.RANGED_AGI_ACCURACY_MULTIPLIER"));
     }
     else if (objtype & TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AUTOMATON)
     {
@@ -1273,19 +1276,23 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
 
     if (this->objtype & TYPE_PC)
     {
-        uint8  skill       = 0;
-        uint16 iLvlSkill   = 0;
-        auto   PMainWeapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]);
+        float  dexMultiplier = 0.5f;
+        uint8  skill         = 0;
+        uint16 iLvlSkill     = 0;
+        auto*  PMainWeapon   = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]);
 
         if (attackNumber == 0)
         {
+            dexMultiplier = settings::get<float>("main.ONE_HAND_MAIN_HAND_DEX_ACCURACY_MULTIPLIER");
+
             if (PMainWeapon)
             {
                 skill     = PMainWeapon->getSkillType();
                 iLvlSkill = PMainWeapon->getILvlSkill();
-                if (skill == SKILL_NONE && GetSkill(SKILL_HAND_TO_HAND) > 0)
+                if ((skill == SKILL_NONE && GetSkill(SKILL_HAND_TO_HAND) > 0) || PMainWeapon->isHandToHand())
                 {
-                    skill = SKILL_HAND_TO_HAND;
+                    skill         = SKILL_HAND_TO_HAND;
+                    dexMultiplier = settings::get<float>("main.HAND_TO_HAND_DEX_ACCURACY_MULTIPLIER");
                 }
             }
         }
@@ -1293,21 +1300,25 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
         {
             if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_SUB]))
             {
-                skill     = weapon->getSkillType();
-                iLvlSkill = weapon->getILvlSkill();
+                dexMultiplier = settings::get<float>("main.ONE_HAND_OFF_HAND_DEX_ACCURACY_MULTIPLIER");
+                skill         = weapon->getSkillType();
+                iLvlSkill     = weapon->getILvlSkill();
+
                 if (skill == SKILL_NONE && GetSkill(SKILL_HAND_TO_HAND) > 0)
                 {
                     auto* main_weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]);
                     if (main_weapon && (main_weapon->getSkillType() == SKILL_NONE || main_weapon->getSkillType() == SKILL_HAND_TO_HAND))
                     {
-                        skill = SKILL_HAND_TO_HAND;
+                        skill         = SKILL_HAND_TO_HAND;
+                        dexMultiplier = settings::get<float>("main.HAND_TO_HAND_DEX_ACCURACY_MULTIPLIER");
                     }
                 }
             }
             else if (PMainWeapon && PMainWeapon->isHandToHand())
             {
-                iLvlSkill = PMainWeapon->getILvlSkill();
-                skill     = SKILL_HAND_TO_HAND;
+                iLvlSkill     = PMainWeapon->getILvlSkill();
+                skill         = SKILL_HAND_TO_HAND;
+                dexMultiplier = settings::get<float>("main.HAND_TO_HAND_DEX_ACCURACY_MULTIPLIER");
             }
         }
         else if (attackNumber == 2)
@@ -1316,15 +1327,17 @@ uint16 CBattleEntity::ACC(uint8 attackNumber, uint16 offsetAccuracy)
             {
                 iLvlSkill = weapon->getILvlSkill();
             }
-            skill = SKILL_HAND_TO_HAND;
+            skill         = SKILL_HAND_TO_HAND;
+            dexMultiplier = settings::get<float>("main.HAND_TO_HAND_DEX_ACCURACY_MULTIPLIER");
         }
 
         uint32_t skillLevel = GetSkill(skill) + iLvlSkill;
         ACC                 = GetAccFromSkill(skillLevel);
 
-        float dexMultiplier = settings::get<bool>("main.USE_PRE_2013_DEX_MULTIPLIER") ? 0.50f : 0.75f;
         if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]); weapon && weapon->isTwoHanded())
         {
+            dexMultiplier = settings::get<float>("main.TWO_HANDED_DEX_ACCURACY_MULTIPLIER");
+
             ACC += std::floor(DEX() * dexMultiplier);
             ACC += m_modStat[Mod::TWOHAND_ACC];
         }
@@ -1421,8 +1434,8 @@ uint16 CBattleEntity::DEF()
     // https://wiki.ffo.jp/html/313.html
     // https://wiki.ffo.jp/html/35712.html
     // https://forum.square-enix.com/ffxi/threads/51154-Aug.-3-2016-%28JST%29-Version-Update?p=583669&viewfull=1#post583669
-    int32 DEF       = 8 + m_modStat[Mod::DEF];
-    float vitFactor = 1.5f;
+    int32 DEF       = 8;
+    float vitFactor = settings::get<float>("main.PLAYER_ALLIES_VIT_DEF_MULTIPLIER");
 
     if (this->objtype == TYPE_MOB)
     {
@@ -1431,10 +1444,40 @@ uint16 CBattleEntity::DEF()
 
     DEF = DEF + std::floor(VIT() * vitFactor);
 
+    auto level = GetMLevel();
+
+    // Level DEF factor
+    // https://www.bg-wiki.com/ffxi/Defense
+    // TODO: era setting? Was this always like this?
+    // mobs & pets have this pre-calculated elsewhere (mobutils/petutils) and stored in m_modStat[Mod::DEF]
+    if (this->objtype == TYPE_PC)
+    {
+        if (level < 51)
+        {
+            DEF += level;
+        }
+        else if (level < 61)
+        {
+            DEF += 2 * level - 42;
+        }
+        else if (level < 91)
+        {
+            DEF += level + 18;
+        }
+        else
+        {
+            DEF += level + 18 + std::floor((level - 89) / 2);
+        }
+    }
+
+    DEF += m_modStat[Mod::DEF];
+
+    // TODO: support old style counterstance
     if (this->StatusEffectContainer->HasStatusEffect(EFFECT_COUNTERSTANCE, 0))
     {
         return DEF / 2;
     }
+
     // use max to prevent underflow
     return std::max(1, DEF + (DEF * m_modStat[Mod::DEFP] / 100) + std::min<int16>((DEF * m_modStat[Mod::FOOD_DEFP] / 100), m_modStat[Mod::FOOD_DEF_CAP]));
 }
@@ -1518,9 +1561,8 @@ void CBattleEntity::SetSJob(uint8 sjob)
 void CBattleEntity::SetMLevel(uint8 mlvl)
 {
     TracyZoneScoped;
-    m_modStat[Mod::DEF] -= m_mlvl + std::clamp(m_mlvl - 50, 0, 10);
+
     m_mlvl = (mlvl == 0 ? 1 : mlvl);
-    m_modStat[Mod::DEF] += m_mlvl + std::clamp(m_mlvl - 50, 0, 10);
 
     if (this->objtype & TYPE_PC)
     {
@@ -2161,10 +2203,6 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
     {
         flags |= FINDFLAGS_DEAD;
     }
-    if (PSpell->getFlag() & SPELLFLAG_HIT_ALL)
-    {
-        flags |= FINDFLAGS_HIT_ALL;
-    }
 
     const auto     result    = luautils::callGlobal<sol::table>("xi.combat.magicAoE.calculateTypeAndRadius", this, PSpell);
     const SPELLAOE aoeType   = result.get_or(1, SPELLAOE_NONE);
@@ -2415,10 +2453,6 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
     float distance  = PSkill->getDistance();
     uint8 findFlags = 0;
-    if (PSkill->getFlag() & SKILLFLAG_HIT_ALL)
-    {
-        findFlags |= FINDFLAGS_HIT_ALL;
-    }
 
     // Mob buff abilities also hit monster's pets
     if (PSkill->getValidTargets() == TARGET_SELF)
