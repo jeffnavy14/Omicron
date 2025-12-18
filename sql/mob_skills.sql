@@ -2029,7 +2029,7 @@ INSERT INTO `mob_skills` VALUES (2001,364,'happobarai',0,0.0,7.0,2000,1500,4,0,0
 INSERT INTO `mob_skills` VALUES (2002,354,'rinpyotosha',0,0.0,7.0,2000,1500,1,0,0,0,0,0,0);     -- need correct animation & timings
 INSERT INTO `mob_skills` VALUES (2003,1181,'grating_tantara',1,0.0,10.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (2004,1182,'stifling_tantara',1,0.0,10.0,2000,1500,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (2005,1157,'reward',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (2005,1157,'reward',0,0.0,30.0,100,0,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2006,1750,'azure_lore',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2007,1751,'wild_card',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2008,1752,'overdrive',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);

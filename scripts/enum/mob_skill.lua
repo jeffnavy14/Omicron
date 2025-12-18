@@ -535,6 +535,8 @@ xi.mobSkill =
 
     BOREAS_MANTLE                 = 1980, -- Unique entry.
 
+    REWARD                        = 2005,
+
     NOCTURNAL_SERVITUDE           = 2112,
     HELLSNAP                      = 2113,
     HELLCLAP                      = 2114,

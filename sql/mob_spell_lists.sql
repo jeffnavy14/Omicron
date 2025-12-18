@@ -1166,10 +1166,7 @@ INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,189,1,255); -- stoneg
 INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,357,1,255); -- slowga (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,358,1,255); -- hastega (1~255)
 
--- Dvorovoi (69)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,214,1,255); -- flood (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,356,1,255); -- paralyga (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,361,1,255); -- blindga (1~255)
+-- Free (69)
 
 -- Helltail_Harry (70)
 INSERT INTO `mob_spell_lists` VALUES ('Helltail_Harry',70,150,1,255); -- blizzard_ii (1~255)
