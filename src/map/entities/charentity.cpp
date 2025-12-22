@@ -66,6 +66,7 @@
 #include "blue_spell.h"
 #include "conquest_system.h"
 #include "enums/key_items.h"
+#include "enums/recast.h"
 #include "ipc_client.h"
 #include "item_container.h"
 #include "items/item_furnishing.h"
@@ -75,6 +76,7 @@
 #include "latent_effect_container.h"
 #include "linkshell.h"
 #include "mob_modifier.h"
+#include "mobskill.h"
 #include "modifier.h"
 #include "notoriety_container.h"
 #include "packets/s2c/0x028_battle2.h"
@@ -1653,7 +1655,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             recastReduction = std::chrono::seconds(PMeritPoints->GetMeritValue((MERIT_TYPE)PAbility->getMeritModID(), this));
         }
 
-        auto* charge         = ability::GetCharge(this, PAbility->getRecastId());
+        auto* charge         = ability::GetCharge(this, static_cast<uint16>(PAbility->getRecastId()));
         auto  baseChargeTime = 0ns; // this can be reduced with merits/job point gifts. NOT the same as Recast- gear (so far...)
 
         if (charge && PAbility->getID() != ABILITY_SIC)
@@ -1661,11 +1663,11 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             auto chargesUsed = timer::count_seconds(PAbility->getRecastTime()); // charge cost is stored in the recast...
 
             //  Can't assign merits via ability ID for Sic/Ready due to shenanigans
-            if (PAbility->getRecastId() == 102) // Sic/Ready recast ID
+            if (PAbility->getRecastId() == Recast::Sic) // Sic/Ready recast ID
             {
                 recastReduction = std::chrono::seconds(PMeritPoints->GetMeritValue(MERIT_SIC_RECAST, this));
             }
-            else if (PAbility->getRecastId() == 231) // Stratagems recast ID
+            else if (PAbility->getRecastId() == Recast::Strategems)
             {
                 recastReduction += std::chrono::seconds(this->getMod(Mod::STRATAGEM_RECAST));
             }
@@ -1679,7 +1681,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             action.recast = PAbility->getRecastTime() - recastReduction;
         }
 
-        if (PAbility->getID() == ABILITY_LIGHT_ARTS || PAbility->getID() == ABILITY_DARK_ARTS || PAbility->getRecastId() == 231) // stratagems
+        if (PAbility->getID() == ABILITY_LIGHT_ARTS || PAbility->getID() == ABILITY_DARK_ARTS || PAbility->getRecastId() == Recast::Strategems)
         {
             if (this->StatusEffectContainer->HasStatusEffect(EFFECT_TABULA_RASA))
             {
@@ -1687,7 +1689,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
                 baseChargeTime = 0s;
             }
         }
-        else if (PAbility->getRecastId() == 173 || PAbility->getRecastId() == 174) // BP rage, BP ward
+        else if (PAbility->getRecastId() == Recast::BloodPactRage || PAbility->getRecastId() == Recast::BloodPactWard)
         {
             uint16 favorReduction          = 0;
             uint16 bloodPact_I_Reduction   = std::min<int16>(getMod(Mod::BP_DELAY), 15);
@@ -1713,8 +1715,9 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
         // Check paralysis and consume recast for non-SP abilities
         if (battleutils::IsParalyzed(this))
         {
-            // SP abilities (recastId == 0) don't consume recast when paralyzed
-            if (PAbility->getRecastId() != 0)
+            // SP abilities don't consume recast when paralyzed
+            const auto recastId = PAbility->getRecastId();
+            if (recastId != Recast::Special && recastId != Recast::Special2)
             {
                 charutils::ApplyAbilityRecast(this, PAbility, charge, baseChargeTime, action.recast);
             }
@@ -1766,31 +1769,10 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
         action.actiontype = PAbility->getActionType();
         action.actionid   = PAbility->getID();
 
-        // Normal AoE check,
-        // Special cases go here
-        auto isAbilityAoE = [&]() -> bool
-        {
-            if (this->PParty != nullptr)
-            {
-                if (PAbility->isAoE())
-                {
-                    return true;
-                }
-                else if (PAbility->getID() == ABILITY_LIEMENT && getMod(Mod::LIEMENT_EXTENDS_TO_AREA) > 0)
-                {
-                    return true;
-                }
-                else if (PAbility->getID() == ABILITY_HEALING_WALTZ && StatusEffectContainer->HasStatusEffect(EFFECT_CONTRADANCE))
-                {
-                    // 10.1 = 10' in game. Unsure why 10' means 9.9' works but 10' doesn't... Epsilon check gone wrong?
-                    PAbility->setRange(10.1); // This is playing double duty as both target range and AoE range --
-                                              // by the time this lambda is called the target range has already been checked and can be used normally
-                    return true;
-                }
-            }
-
-            return false;
-        };
+        // Calculate ability AoE type and radius via Lua
+        const auto  aoeResult = luautils::callGlobal<sol::table>("xi.combat.abilityAoE.calculateTypeAndRadius", this, PAbility);
+        const auto  aoeType   = static_cast<AOE_TYPE>(aoeResult.get_or(1, 0));
+        const float aoeRadius = aoeResult.get_or(2, 0.0f);
 
         // TODO: get rid of this to script, too
         if (PAbility->isPetAbility())
@@ -1829,10 +1811,10 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
             }
         }
         // TODO: make this generic enough to not require an if
-        else if (isAbilityAoE())
+        else if (aoeType != AOE_TYPE::NONE)
         {
             PAI->TargetFind->reset();
-            PAI->TargetFind->findWithinArea(this, AOE_RADIUS::ATTACKER, PAbility->getRadius(), findFlags, PAbility->getValidTarget());
+            PAI->TargetFind->findWithinArea(this, AOE_RADIUS::ATTACKER, aoeRadius, findFlags, PAbility->getValidTarget());
 
             auto prevMsg = MsgBasic::NONE;
             for (auto&& PTargetFound : PAI->TargetFind->m_targets)
@@ -2498,7 +2480,7 @@ void CCharEntity::OnItemFinish(CItemState& state, action_t& action)
         if (PItem->getCurrentCharges() != 0)
         {
             // add recast timer to Recast List from any bag
-            this->PRecastContainer->Add(RECAST_ITEM, PItem->getSlotID() << 8 | PItem->getLocationID(), PItem->getReuseTime());
+            this->PRecastContainer->Add(RECAST_ITEM, static_cast<Recast>(PItem->getSlotID() << 8 | PItem->getLocationID()), PItem->getReuseTime());
         }
     }
     else // unlock all items except equipment
@@ -2791,17 +2773,17 @@ void CCharEntity::UpdateMoghancement()
         uint8 currentTable = m_moghancementID >> 9;
         if (newTable == currentTable)
         {
-            pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(newTable));
+            pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, newTable);
         }
         else
         {
             if (newTable != 0)
             {
-                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(newTable));
+                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, newTable);
             }
             if (currentTable != 0)
             {
-                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, static_cast<KEYS_TABLE>(currentTable));
+                pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(this, currentTable);
             }
         }
         charutils::SaveKeyItems(this);

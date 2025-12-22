@@ -34,7 +34,7 @@ LOCK TABLES `mob_spell_lists` WRITE;
 /*!40000 ALTER TABLE `mob_spell_lists` DISABLE KEYS */;
 
 -- DEFAULT (1) Used for mobs with their cast logic defined in lua.
-INSERT INTO `mob_spell_lists` VALUES ('DEFAULT',1,144,0,255);  -- Fire (0 ~ 255) -- Placeholder entry.
+INSERT INTO `mob_spell_lists` VALUES ('DEFAULT',1,368,0,255);  -- Foe Requiem (0 ~ 255) -- Placeholder entry.
 
 -- Beastmen_BLM (2)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_BLM',2,144,13,22);  -- fire (13~22)
@@ -1161,20 +1161,11 @@ INSERT INTO `mob_spell_lists` VALUES ('Sobbing_Eyes',66,365,1,255); -- breakga (
 INSERT INTO `mob_spell_lists` VALUES ('Compound_Eyes',67,145,1,255); -- fire_ii (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Compound_Eyes',67,245,1,255); -- drain (1~255)
 
--- Opo-opo_Monarch (68)
-INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,189,1,255); -- stonega (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,357,1,255); -- slowga (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Opo-opo_Monarch',68,358,1,255); -- hastega (1~255)
+-- Free (68)
 
--- Dvorovoi (69)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,214,1,255); -- flood (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,356,1,255); -- paralyga (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Dvorovoi',69,361,1,255); -- blindga (1~255)
+-- Free (69)
 
--- Helltail_Harry (70)
-INSERT INTO `mob_spell_lists` VALUES ('Helltail_Harry',70,150,1,255); -- blizzard_ii (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Helltail_Harry',70,357,1,255); -- slowga (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Helltail_Harry',70,358,1,255); -- hastega (1~255)
+-- Free (70)
 
 -- Orcish_Onager (71)
 INSERT INTO `mob_spell_lists` VALUES ('Orcish_Onager',71,362,1,255); -- bindga (1~255)

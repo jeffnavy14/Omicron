@@ -138,7 +138,12 @@ xi.mobSkill =
 
     CHARGED_WHISKER               =  483,
 
+    WHIP_TONGUE                   =  486,
     TRANSMOGRIFICATION            =  487, -- Mammet-800
+
+    STINKING_GAS                  =  489,
+
+    ABYSS_BLAST                   =  492,
 
     TRICLIP_1                     =  498,
     BACK_SWISH_1                  =  499,
@@ -401,6 +406,14 @@ xi.mobSkill =
     MATERIAL_FEND                 = 1233,
     CAROUSEL_1                    = 1234,
 
+    PILE_PITCH                    = 1235,
+    GUIDED_MISSILE                = 1236,
+    HYPER_PULSE                   = 1237,
+    TARGET_ANALYSIS               = 1238,
+    DISCHARGER                    = 1239,
+    ION_EFFLUX                    = 1240,
+    REAR_LASERS                   = 1241,
+
     NEGATIVE_WHIRL_1              = 1243,
     STYGIAN_VAPOR                 = 1244,
     WINDS_OF_PROMYVION_1          = 1245,
@@ -413,11 +426,26 @@ xi.mobSkill =
     TRINARY_TAP                   = 1251,
     SHADOW_SPREAD                 = 1252,
 
+    WIRE_CUTTER                   = 1259,
+    ANTIMATTER                    = 1260,
+    EQUALIZER                     = 1261,
+    FLAME_THROWER                 = 1262,
+    CRYO_JET                      = 1263,
+    TURBOFAN                      = 1264,
+    SMOKE_DISCHARGER              = 1265,
+    HIGH_TENSION_DISCHARGER       = 1266,
+    HYDRO_CANON                   = 1267,
+    NUCLEAR_WASTE                 = 1268,
+    CHEMICAL_BOMB                 = 1269,
+    PARTICLE_SHIELD               = 1270,
+
     EMPTY_CUTTER                  = 1271,
 
     IMPALEMENT                    = 1274,
     EMPTY_THRASH                  = 1275,
     PROMYVION_BRUME_2             = 1276,
+
+    GERJIS_GRIP                   = 1322,
 
     HOOF_VOLLEY                   = 1330,
 
@@ -426,10 +454,11 @@ xi.mobSkill =
     CONTAGION_TRANSFER            = 1333,
     CONTAMINATION                 = 1334,
     TOXIC_PICK                    = 1335,
-
     FRENZIED_RAGE_1               = 1336,
     CHARM_2                       = 1337,
+    INFERNAL_PESTILENCE           = 1338,
 
+    CROSSTHRASH_1                 = 1340,
     KNIFE_EDGE_CIRCLE             = 1341,
     TRAIN_FALL                    = 1342,
 
@@ -465,6 +494,8 @@ xi.mobSkill =
     RICEBALL_TENZEN               = 1399,
     RANGED_ATTACK_TENZEN_2        = 1400, -- Tenzen Bow Low
     SOUL_ACCRETION                = 1401,
+
+    DEADALUS_WING_COP_PRISHE      = 1487, -- Dwing COP 8-4 Dawn
 
     HOWLING_MOON_3                = 1520, -- Unknown usage.
 
@@ -513,6 +544,8 @@ xi.mobSkill =
     DEATHGNASH                    = 1977, -- Unique entry.
 
     BOREAS_MANTLE                 = 1980, -- Unique entry.
+
+    REWARD                        = 2005,
 
     NOCTURNAL_SERVITUDE           = 2112,
     HELLSNAP                      = 2113,

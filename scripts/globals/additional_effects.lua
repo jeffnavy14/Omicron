@@ -160,7 +160,7 @@ xi.additionalEffect.procFunctions[xi.additionalEffect.procType.DEBUFF] = functio
     -- Validate parameters.
     local effectId      = utils.defaultIfNil(params.addStatus, 0)
     local subEffect     = utils.defaultIfNil(params.subEffect, 0)
-    local actionElement = xi.data.statusEffect.getAssociatedElement(effectId, xi.element.NONE)
+    local actionElement = params.element > 0 and params.element or xi.data.statusEffect.getAssociatedElement(effectId, xi.element.NONE)
 
     -- Early return: No effect to apply.
     if effectId == 0 then

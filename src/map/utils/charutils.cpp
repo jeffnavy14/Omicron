@@ -833,7 +833,7 @@ auto LoadChar(const uint32 charId) -> std::unique_ptr<CCharEntity>
             }
             if (now < cast_time + recast)
             {
-                PChar->PRecastContainer->Load(RECAST_ABILITY, rset->get<uint32>("id"), (cast_time + recast - now), chargeTime, maxCharges);
+                PChar->PRecastContainer->Load(RECAST_ABILITY, rset->get<Recast>("id"), (cast_time + recast - now), chargeTime, maxCharges);
             }
         }
     }
@@ -1438,9 +1438,9 @@ void SendRecordsOfEminenceLog(CCharEntity* PChar)
 
 void SendKeyItems(CCharEntity* PChar)
 {
-    for (uint8 table = 0; table < MAX_KEYS_TABLE; table++)
+    for (uint8 table = 0; table < PChar->keys.tables.size(); table++)
     {
-        PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+        PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
     }
 }
 
@@ -2141,7 +2141,7 @@ void UnequipItem(CCharEntity* PChar, uint8 equipSlotID, bool update)
 
         if (PItem->isSubType(ITEM_CHARGED))
         {
-            PChar->PRecastContainer->Del(RECAST_ITEM, PItem->getSlotID() << 8 | PItem->getLocationID()); // Also remove item from the Recast List no matter what bag its in
+            PChar->PRecastContainer->Del(RECAST_ITEM, static_cast<Recast>(PItem->getSlotID() << 8 | PItem->getLocationID())); // Also remove item from the Recast List no matter what bag its in
         }
         PItem->setSubType(ITEM_UNLOCKED);
 
@@ -3174,7 +3174,7 @@ void EquipItem(CCharEntity* PChar, uint8 slotID, uint8 equipSlotID, uint8 contai
                 {
                     PItem->setAssignTime(timer::now());
                     // add recast timer to Recast List from any bag
-                    PChar->PRecastContainer->Add(RECAST_ITEM, slotID << 8 | containerID, PItem->getReuseTime());
+                    PChar->PRecastContainer->Add(RECAST_ITEM, static_cast<Recast>(slotID << 8 | containerID), PItem->getReuseTime());
 
                     // Do not forget to update the timer when equipping the subject
 
@@ -3511,7 +3511,7 @@ void BuildingCharAbilityTable(CCharEntity* PChar)
             if (PAbility->getID() < ABILITY_HEALING_RUBY && PAbility->getID() != ABILITY_PET_COMMANDS && CheckAbilityAddtype(PChar, PAbility))
             {
                 addAbility(PChar, PAbility->getID());
-                Charge_t*       charge     = ability::GetCharge(PChar, PAbility->getRecastId());
+                Charge_t*       charge     = ability::GetCharge(PChar, static_cast<uint16>(PAbility->getRecastId()));
                 timer::duration chargeTime = 0s;
                 auto            maxCharges = 0;
                 if (charge)
@@ -3551,7 +3551,7 @@ void BuildingCharAbilityTable(CCharEntity* PChar)
                 if (PAbility->getID() != ABILITY_PET_COMMANDS && CheckAbilityAddtype(PChar, PAbility) && !(PAbility->getAddType() & ADDTYPE_MAIN_ONLY))
                 {
                     addAbility(PChar, PAbility->getID());
-                    Charge_t*       charge     = ability::GetCharge(PChar, PAbility->getRecastId());
+                    Charge_t*       charge     = ability::GetCharge(PChar, static_cast<uint16>(PAbility->getRecastId()));
                     timer::duration chargeTime = 0s;
                     auto            maxCharges = 0;
                     if (charge)
@@ -4122,9 +4122,9 @@ auto hasKeyItem(const CCharEntity* PChar, const KeyItem keyItemId) -> bool
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to check for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::hasKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return false;
     }
 
@@ -4136,9 +4136,9 @@ auto seenKeyItem(CCharEntity* PChar, KeyItem keyItemId) -> bool
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to see for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::seenKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return false;
     }
 
@@ -4150,9 +4150,9 @@ void markSeenKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to mark keyItem in table out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::markSeenKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return;
     }
 
@@ -4164,9 +4164,9 @@ void unseenKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to unsee for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::unseenKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return;
     }
 
@@ -4178,9 +4178,9 @@ void addKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to add for keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::addKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return;
     }
 
@@ -4192,9 +4192,9 @@ void delKeyItem(CCharEntity* PChar, KeyItem keyItemId)
     const auto keyItemTable = static_cast<uint16_t>(keyItemId) / 512;
     const auto keyItemIndex = static_cast<uint16_t>(keyItemId) % 512;
 
-    if (keyItemTable >= MAX_KEYS_TABLE)
+    if (keyItemTable >= PChar->keys.tables.size())
     {
-        ShowWarning("Attempt to delete keyItem out of range (%d)!", static_cast<uint16_t>(keyItemId));
+        ShowErrorFmt("charutils::delKeyItem() - Index {} exceeds key items table capacity.", keyItemTable);
         return;
     }
 
@@ -8068,10 +8068,10 @@ void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Char
         PChar->PRecastContainer->Add(RECAST_ABILITY, PAbility->getRecastId(), recastTime);
     }
 
-    const uint16 recastId = PAbility->getRecastId();
-    if (settings::get<bool>("map.BLOOD_PACT_SHARED_TIMER") && (recastId == 173 || recastId == 174))
+    const auto recastId = PAbility->getRecastId();
+    if (settings::get<bool>("map.BLOOD_PACT_SHARED_TIMER") && (recastId == Recast::BloodPactRage || recastId == Recast::BloodPactWard))
     {
-        PChar->PRecastContainer->Add(RECAST_ABILITY, (recastId == 173 ? 174 : 173), recastTime);
+        PChar->PRecastContainer->Add(RECAST_ABILITY, (recastId == Recast::BloodPactRage ? Recast::BloodPactWard : Recast::BloodPactRage), recastTime);
     }
 
     PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);

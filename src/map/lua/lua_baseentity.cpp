@@ -85,6 +85,7 @@
 #include "ai/controllers/trust_controller.h"
 
 #include "ai/helpers/gambits_container.h"
+#include "ai/helpers/targetfind.h"
 
 #include "entities/automatonentity.h"
 #include "entities/charentity.h"
@@ -8857,15 +8858,14 @@ void CLuaBaseEntity::addKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::addKeyItem() - Attempting to add invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::addKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::addKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     if (table == 6)
     {
@@ -8911,15 +8911,14 @@ void CLuaBaseEntity::delKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::delKeyItem() - Attempting to delete invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::delKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::delKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     charutils::SaveKeyItems(PChar);
 }
@@ -8935,7 +8934,7 @@ bool CLuaBaseEntity::seenKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        ShowWarning("CLuaBaseEntity::seenKeyItem() - Invalid entity type calling function (%s).", m_PBaseEntity->getName());
         return false;
     }
 
@@ -8960,15 +8959,14 @@ void CLuaBaseEntity::unseenKeyItem(const KeyItem keyItemID) const
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
     uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
-    if (table >= MAX_KEYS_TABLE)
+    if (table >= PChar->keys.tables.size())
     {
-        // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::unseenKeyItem() - Attempting to unsee invalid key item: %d", static_cast<uint16_t>(keyItemID));
+        ShowErrorFmt("CLuaBaseEntity::unseenKeyItem() - Index {} exceeds key items table capacity.", table);
         return;
     }
 
     charutils::unseenKeyItem(PChar, keyItemID);
-    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, static_cast<KEYS_TABLE>(table));
+    PChar->pushPacket<GP_SERV_COMMAND_SCENARIOITEM>(PChar, table);
 
     charutils::SaveKeyItems(PChar);
 }
@@ -12537,7 +12535,7 @@ void CLuaBaseEntity::addRecast(uint8 recastCont, uint16 recastID, uint32 duratio
     {
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(recastCont);
 
-        PBattleEntity->PRecastContainer->Add(recastContainer, recastID, std::chrono::seconds(duration));
+        PBattleEntity->PRecastContainer->Add(recastContainer, static_cast<Recast>(recastID), std::chrono::seconds(duration));
         if (PBattleEntity->objtype == TYPE_PC)
         {
             CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
@@ -12564,7 +12562,7 @@ bool CLuaBaseEntity::hasRecast(uint8 rType, uint16 recastID, const sol::object& 
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(rType);
         auto       recast          = (arg2 != sol::lua_nil) ? std::chrono::seconds(arg2.as<uint32>()) : 0s;
 
-        hasRecast = PBattleEntity->PRecastContainer->HasRecast(recastContainer, recastID, recast);
+        hasRecast = PBattleEntity->PRecastContainer->HasRecast(recastContainer, static_cast<Recast>(recastID), recast);
     }
 
     return hasRecast;
@@ -12586,10 +12584,10 @@ void CLuaBaseEntity::resetRecast(uint8 rType, uint16 recastID)
         auto*      PChar           = static_cast<CCharEntity*>(m_PBaseEntity);
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(rType);
 
-        if (PChar->PRecastContainer->Has(recastContainer, recastID))
+        if (PChar->PRecastContainer->Has(recastContainer, static_cast<Recast>(recastID)))
         {
-            PChar->PRecastContainer->Del(recastContainer, recastID);
-            PChar->PRecastContainer->Add(recastContainer, recastID, 0s);
+            PChar->PRecastContainer->Del(recastContainer, static_cast<Recast>(recastID));
+            PChar->PRecastContainer->Add(recastContainer, static_cast<Recast>(recastID), 0s);
         }
 
         PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
@@ -18083,7 +18081,7 @@ void CLuaBaseEntity::castSpell(const sol::object& spell, const sol::object& enti
             // Always delete recast of spell if mob
             if (PMobEntity)
             {
-                PMobEntity->PRecastContainer->Del(RECAST_MAGIC, static_cast<uint16>(spellid));
+                PMobEntity->PRecastContainer->Del(RECAST_MAGIC, static_cast<Recast>(spellid));
             }
 
             if (targid)
@@ -18227,7 +18225,12 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
         // does not have a specified target so default to current battle target
         else if (mobObj)
         {
-            if (PMobSkill->getValidTargets() & TARGET_ENEMY)
+            // Self-centered AoE uses self as target
+            if (PMobSkill->getAoe() == static_cast<uint8>(AOE_RADIUS::ATTACKER))
+            {
+                PEntity->PAI->MobSkill(PEntity->targid, skillid, castTimeOverride);
+            }
+            else if (PMobSkill->getValidTargets() & TARGET_ENEMY)
             {
                 auto defaultTarget = mobObj->GetBattleTarget();
                 if (defaultTarget)

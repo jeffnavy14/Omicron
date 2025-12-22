@@ -2825,7 +2825,7 @@ void OnSpellInterrupted(CBattleEntity* PCaster, CSpell* PSpell)
     }
 }
 
-std::optional<SpellID> OnMobSpellChoose(CBattleEntity* PCaster, CBattleEntity* PTarget, std::optional<SpellID> startingSpellId)
+std::tuple<std::optional<SpellID>, std::optional<CBattleEntity*>> OnMobSpellChoose(CBattleEntity* PCaster, CBattleEntity* PTarget, std::optional<SpellID> startingSpellId)
 {
     TracyZoneScoped;
 
@@ -2855,13 +2855,35 @@ std::optional<SpellID> OnMobSpellChoose(CBattleEntity* PCaster, CBattleEntity* P
         return {};
     }
 
-    uint32 retVal = result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0;
-    if (retVal > 0)
+    CBattleEntity* newTarget = nullptr;
+    // change target
+    if (result.get_type(1) == sol::type::userdata)
     {
-        return static_cast<SpellID>(retVal);
+        CLuaBaseEntity* PLuaBaseEntity = result.get<CLuaBaseEntity*>(1);
+        if (PLuaBaseEntity)
+        {
+            if (auto* PBattle = dynamic_cast<CBattleEntity*>(PLuaBaseEntity->GetBaseEntity()); PBattle)
+            {
+                newTarget = PBattle;
+            }
+        }
     }
 
-    return {};
+    uint32 newSpellId = result.get_type(0) == sol::type::number ? result.get<int32>(0) : 0;
+
+    std::tuple<std::optional<SpellID>, std::optional<CBattleEntity*>> retVal = {};
+
+    if (newSpellId > 0)
+    {
+        std::get<0>(retVal) = static_cast<SpellID>(newSpellId);
+    }
+
+    if (newTarget)
+    {
+        std::get<1>(retVal) = newTarget;
+    }
+
+    return retVal;
 }
 
 // Called when mob is targeted by a spell.
@@ -3855,6 +3877,26 @@ CBattleEntity* OnMobSkillTarget(CBattleEntity* PTarget, CBaseEntity* PMob, CMobS
     }
 
     return PTarget;
+}
+
+// onMobSkillFinalize always executes once per uninterrupted mobskill use, independently of any target being found.
+void OnMobSkillFinalize(CBaseEntity* PMob, CMobSkill* PMobSkill)
+{
+    TracyZoneScoped;
+
+    auto name = PMobSkill->getName();
+
+    auto onMobSkillFinalize = lua["xi"]["actions"]["mobskills"][name]["onMobSkillFinalize"];
+    if (!onMobSkillFinalize.valid())
+    {
+        return;
+    }
+
+    if (const auto result = onMobSkillFinalize(PMob, PMobSkill); !result.valid())
+    {
+        const sol::error err = result;
+        ShowError("luautils::onMobSkillFinalize: %s", err.what());
+    }
 }
 
 int32 OnAutomatonAbilityCheck(CBaseEntity* PTarget, CAutomatonEntity* PAutomaton, CMobSkill* PMobSkill)
