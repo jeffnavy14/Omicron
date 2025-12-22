@@ -48,7 +48,7 @@ local prizes =
             17006, -- Drill Calamary
             17007, -- Dwarf Pugil
             6413,  -- Astral Cube
-            -- 9891,  -- Zinnia Orb
+         -- 9891,  -- Zinnia Orb
             10112, -- Cipher: Zeid
             10113, -- Cipher: Lion
             10118, -- Cipher: Naja
@@ -70,7 +70,7 @@ local prizes =
             10136, -- Cipher: Uka
             10141, -- Cipher: Kuyin
             10144, -- Cipher: Abenzio
-            10145, -- Cipher: Rughadjeen
+         -- 10145, -- Cipher: Rughadjeen
             10150, -- Cipher: Lhe
             10151, -- Cipher: Mayakov
             10155, -- Cipher: Brygid
