@@ -495,6 +495,13 @@ xi.mobSkill =
     RANGED_ATTACK_TENZEN_2        = 1400, -- Tenzen Bow Low
     SOUL_ACCRETION                = 1401,
 
+    ACTINIC_BURST                 = 1441,
+
+    HEXIDISCS                     = 1443,
+    VORPAL_BLADE_GHRAH            = 1444,
+    DAMNATION_DIVE_GHRAH          = 1445,
+    SICKLE_SLASH                  = 1446,
+
     DEADALUS_WING_COP_PRISHE      = 1487, -- Dwing COP 8-4 Dawn
 
     HOWLING_MOON_3                = 1520, -- Unknown usage.

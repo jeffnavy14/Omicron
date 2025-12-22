@@ -30,60 +30,60 @@ content.groups =
         mobIds =
         {
             {
-                waughroonID.mob.FLAYER_FRANZ,
-                waughroonID.mob.FLAYER_FRANZ + 1,
-                waughroonID.mob.FLAYER_FRANZ + 2,
-                waughroonID.mob.FLAYER_FRANZ + 3,
-                waughroonID.mob.FLAYER_FRANZ + 4,
-                waughroonID.mob.FLAYER_FRANZ + 5,
-                waughroonID.mob.FLAYER_FRANZ + 6,
-                waughroonID.mob.FLAYER_FRANZ + 7,
-                waughroonID.mob.FLAYER_FRANZ + 8,
-                waughroonID.mob.FLAYER_FRANZ + 9,
-                waughroonID.mob.FLAYER_FRANZ + 10,
-                waughroonID.mob.FLAYER_FRANZ + 11,
-                waughroonID.mob.FLAYER_FRANZ + 12,
-                waughroonID.mob.FLAYER_FRANZ + 13,
-                waughroonID.mob.FLAYER_FRANZ + 14,
-                waughroonID.mob.FLAYER_FRANZ + 15,
+                waughroonID.mob.FLAYER_FRANZ,      -- Flayer Franz
+                waughroonID.mob.FLAYER_FRANZ + 1,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 2,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 3,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 4,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 5,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 6,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 7,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 8,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 9,  -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 10, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 11, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 12, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 13, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 14, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 15, -- Flesh Eater
             },
 
             {
-                waughroonID.mob.FLAYER_FRANZ + 17,
-                waughroonID.mob.FLAYER_FRANZ + 18,
-                waughroonID.mob.FLAYER_FRANZ + 19,
-                waughroonID.mob.FLAYER_FRANZ + 20,
-                waughroonID.mob.FLAYER_FRANZ + 21,
-                waughroonID.mob.FLAYER_FRANZ + 22,
-                waughroonID.mob.FLAYER_FRANZ + 23,
-                waughroonID.mob.FLAYER_FRANZ + 24,
-                waughroonID.mob.FLAYER_FRANZ + 25,
-                waughroonID.mob.FLAYER_FRANZ + 26,
-                waughroonID.mob.FLAYER_FRANZ + 27,
-                waughroonID.mob.FLAYER_FRANZ + 28,
-                waughroonID.mob.FLAYER_FRANZ + 29,
-                waughroonID.mob.FLAYER_FRANZ + 30,
-                waughroonID.mob.FLAYER_FRANZ + 31,
-                waughroonID.mob.FLAYER_FRANZ + 32,
+                waughroonID.mob.FLAYER_FRANZ + 17, -- Flayer Franz
+                waughroonID.mob.FLAYER_FRANZ + 18, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 19, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 20, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 21, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 22, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 23, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 24, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 25, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 26, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 27, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 28, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 29, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 30, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 31, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 32, -- Flesh Eater
             },
 
             {
-                waughroonID.mob.FLAYER_FRANZ + 34,
-                waughroonID.mob.FLAYER_FRANZ + 35,
-                waughroonID.mob.FLAYER_FRANZ + 36,
-                waughroonID.mob.FLAYER_FRANZ + 37,
-                waughroonID.mob.FLAYER_FRANZ + 38,
-                waughroonID.mob.FLAYER_FRANZ + 39,
-                waughroonID.mob.FLAYER_FRANZ + 40,
-                waughroonID.mob.FLAYER_FRANZ + 41,
-                waughroonID.mob.FLAYER_FRANZ + 42,
-                waughroonID.mob.FLAYER_FRANZ + 43,
-                waughroonID.mob.FLAYER_FRANZ + 44,
-                waughroonID.mob.FLAYER_FRANZ + 45,
-                waughroonID.mob.FLAYER_FRANZ + 46,
-                waughroonID.mob.FLAYER_FRANZ + 47,
-                waughroonID.mob.FLAYER_FRANZ + 48,
-                waughroonID.mob.FLAYER_FRANZ + 49,
+                waughroonID.mob.FLAYER_FRANZ + 34, -- Flayer Franz
+                waughroonID.mob.FLAYER_FRANZ + 35, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 36, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 37, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 38, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 39, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 40, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 41, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 42, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 43, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 44, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 45, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 46, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 47, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 48, -- Flesh Eater
+                waughroonID.mob.FLAYER_FRANZ + 49, -- Flesh Eater
             },
         },
 
