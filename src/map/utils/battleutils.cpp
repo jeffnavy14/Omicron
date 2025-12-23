@@ -5515,73 +5515,27 @@ void DrawIn(CBattleEntity* PTarget, const position_t pos, const float offset, co
  *                                                                       *
  ************************************************************************/
 
-void DoWildCardToEntity(CCharEntity* PCaster, CCharEntity* PTarget, uint8 roll)
+void DoWildCardToEntity(CCharEntity* PCaster, CCharEntity* PTarget, const uint8 roll)
 {
-    auto TotalRecasts = PTarget->PRecastContainer->GetRecastList(RECAST_ABILITY)->size();
-
-    // Don't count the 2hr.
-    if (PTarget->PRecastContainer->Has(RECAST_ABILITY, 0))
-    {
-        TotalRecasts -= 1;
-    }
-
-    // Restore some abilities (Randomly select some abilities?)
-    auto RecastsToDelete = xirand::GetRandomNumber(TotalRecasts == 0 ? 1 : TotalRecasts);
-
-    // Restore at least 1 ability (unless none are on recast)
-    RecastsToDelete = TotalRecasts == 0 ? 0 : RecastsToDelete == 0 ? 1
-                                                                   : RecastsToDelete;
+    // No matter the roll, all basic abilities are reset
+    PTarget->PRecastContainer->ResetAbilities();
 
     switch (roll)
     {
-        case 1:
-            // Restores some Job Abilities (does not restore One Hour Abilities)
-            for (auto i = RecastsToDelete; i > 0; --i)
-            {
-                if (PTarget->PRecastContainer->GetRecastList(RECAST_ABILITY)->at(i - 1).ID != 0)
-                {
-                    PTarget->PRecastContainer->DeleteByIndex(RECAST_ABILITY, (uint8)(i - 1));
-                }
-            }
-            break;
-
-        case 2:
-            // Restores all Job Abilities (does not restore One Hour Abilities)
-            PTarget->PRecastContainer->ResetAbilities();
-            break;
-
-        case 3:
-            // Restores some Job Abilities (does not restore One Hour Abilities), 100% TP Restore
-            for (auto i = RecastsToDelete; i > 0; --i)
-            {
-                if (PTarget->PRecastContainer->GetRecastList(RECAST_ABILITY)->at(i - 1).ID != 0)
-                {
-                    PTarget->PRecastContainer->DeleteByIndex(RECAST_ABILITY, (uint8)(i - 1));
-                }
-            }
+        case 3: // 3 grants 1000 TP
             PTarget->health.tp = 1000;
             break;
 
-        case 4:
-            // Restores all Job Abilities (does not restore One Hour Abilities), 300% TP Restore
-            PTarget->PRecastContainer->ResetAbilities();
+        case 4: // 4 grants 3000 TP
             PTarget->health.tp = 3000;
             break;
 
-        case 5:
-            // Restores some Job Abilities and One Hour Abilities (Not Wild Card though), 50% MP Restore
-            for (auto i = RecastsToDelete; i > 0; --i)
-            {
-                if (PTarget->PRecastContainer->GetRecastList(RECAST_ABILITY)->at(i - 1).ID != 0)
-                {
-                    PTarget->PRecastContainer->DeleteByIndex(RECAST_ABILITY, (uint8)(i - 1));
-                }
-            }
-
-            // Restore 2hr except for Wildcard.
+        case 5: // Resets Lv1 1HRs and restores 50% MP
+            // Wild Card is excluded.
+            // TODO: COR Job Points allow Wild Card to reset itself 1-20% of the time
             if (PTarget->GetMJob() != JOB_COR)
             {
-                PTarget->PRecastContainer->Del(RECAST_ABILITY, 0);
+                PTarget->PRecastContainer->Del(RECAST_ABILITY, Recast::Special);
             }
 
             if (PTarget->health.maxmp > 0 && (PTarget->health.mp < (PTarget->health.maxmp / 2)))
@@ -5590,19 +5544,22 @@ void DoWildCardToEntity(CCharEntity* PCaster, CCharEntity* PTarget, uint8 roll)
             }
             break;
 
-        case 6:
-            // Restores all Job Abilities and One Hour Abilities (Not Wild Card though), 100% MP Restore
-            if (PTarget->GetMJob() == JOB_COR)
+        case 6: // Resets Lv1/Lv96 1HRs and restores 100% MP
+            PTarget->PRecastContainer->Del(RECAST_ABILITY, Recast::Special2);
+            // Wild Card is excluded.
+            // TODO: COR Job Points allow Wild Card to reset itself 1-20% of the time
+            if (PTarget->GetMJob() != JOB_COR)
             {
-                PTarget->PRecastContainer->ResetAbilities();
+                PTarget->PRecastContainer->Del(RECAST_ABILITY, Recast::Special);
             }
-            else
-            {
-                PTarget->PRecastContainer->Del(RECAST_ABILITY);
-            }
+
             PTarget->addMP(PTarget->health.maxmp);
             break;
+        default:
+            break;
     }
+
+    PTarget->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PTarget);
 }
 
 /************************************************************************
@@ -5628,8 +5585,8 @@ bool DoRandomDealToEntity(CCharEntity* PChar, CBattleEntity* PTarget)
     {
         Recast_t* recast = &recastList->at(i);
 
-        // Do not reset 2hrs or Random Deal
-        if (recast->ID != 0 && recast->ID != 196)
+        // Do not reset 1hrs or Random Deal
+        if (recast->ID != Recast::Special && recast->ID != Recast::Special2 && recast->ID != Recast::RandomDeal)
         {
             resetCandidateList.push_back(i);
             if (recast->RecastTime > 0s)

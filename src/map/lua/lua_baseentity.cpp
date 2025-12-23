@@ -12535,7 +12535,7 @@ void CLuaBaseEntity::addRecast(uint8 recastCont, uint16 recastID, uint32 duratio
     {
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(recastCont);
 
-        PBattleEntity->PRecastContainer->Add(recastContainer, recastID, std::chrono::seconds(duration));
+        PBattleEntity->PRecastContainer->Add(recastContainer, static_cast<Recast>(recastID), std::chrono::seconds(duration));
         if (PBattleEntity->objtype == TYPE_PC)
         {
             CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
@@ -12562,7 +12562,7 @@ bool CLuaBaseEntity::hasRecast(uint8 rType, uint16 recastID, const sol::object& 
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(rType);
         auto       recast          = (arg2 != sol::lua_nil) ? std::chrono::seconds(arg2.as<uint32>()) : 0s;
 
-        hasRecast = PBattleEntity->PRecastContainer->HasRecast(recastContainer, recastID, recast);
+        hasRecast = PBattleEntity->PRecastContainer->HasRecast(recastContainer, static_cast<Recast>(recastID), recast);
     }
 
     return hasRecast;
@@ -12584,10 +12584,10 @@ void CLuaBaseEntity::resetRecast(uint8 rType, uint16 recastID)
         auto*      PChar           = static_cast<CCharEntity*>(m_PBaseEntity);
         RECASTTYPE recastContainer = static_cast<RECASTTYPE>(rType);
 
-        if (PChar->PRecastContainer->Has(recastContainer, recastID))
+        if (PChar->PRecastContainer->Has(recastContainer, static_cast<Recast>(recastID)))
         {
-            PChar->PRecastContainer->Del(recastContainer, recastID);
-            PChar->PRecastContainer->Add(recastContainer, recastID, 0s);
+            PChar->PRecastContainer->Del(recastContainer, static_cast<Recast>(recastID));
+            PChar->PRecastContainer->Add(recastContainer, static_cast<Recast>(recastID), 0s);
         }
 
         PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
@@ -18081,7 +18081,7 @@ void CLuaBaseEntity::castSpell(const sol::object& spell, const sol::object& enti
             // Always delete recast of spell if mob
             if (PMobEntity)
             {
-                PMobEntity->PRecastContainer->Del(RECAST_MAGIC, static_cast<uint16>(spellid));
+                PMobEntity->PRecastContainer->Del(RECAST_MAGIC, static_cast<Recast>(spellid));
             }
 
             if (targid)

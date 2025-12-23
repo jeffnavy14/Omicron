@@ -1,8 +1,7 @@
 -----------------------------------
---  Claw Cyclone
---  Description: Deals 200% base damage to enemies in a fan shaped area.
---  Type: Physical
---  Range : 15'
+--  Crossthrash
+--  Description: Damages enemies in a fan shaped area. Additional effect: Knockback
+--  Range : 14'
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}

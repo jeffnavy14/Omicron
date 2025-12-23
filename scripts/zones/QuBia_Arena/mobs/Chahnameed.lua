@@ -1,7 +1,8 @@
 -----------------------------------
 -- Area: Qu'Bia Arena
---  Mob: Chahnameed's Stomach
+--  Mob: Chahnameed
 -- BCNM: An Awful Autopsy
+-- Note: This mob is an enrage mechanic and isn't meant to be defeated.
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
@@ -9,7 +10,10 @@ local entity = {}
 entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
-    mob:addMod(xi.mod.REGAIN, 100)
+    mob:addMod(xi.mod.REGAIN, 300)
+    mob:addMod(xi.mod.UDMGPHYS, 9000)
+    mob:setMod(xi.mod.UDMGMAGIC, 9000)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 200)
 end
 
 entity.onMobMobskillChoose = function(mob, target)

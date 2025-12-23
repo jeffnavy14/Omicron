@@ -138,7 +138,12 @@ xi.mobSkill =
 
     CHARGED_WHISKER               =  483,
 
+    WHIP_TONGUE                   =  486,
     TRANSMOGRIFICATION            =  487, -- Mammet-800
+
+    STINKING_GAS                  =  489,
+
+    ABYSS_BLAST                   =  492,
 
     TRICLIP_1                     =  498,
     BACK_SWISH_1                  =  499,
@@ -440,6 +445,8 @@ xi.mobSkill =
     EMPTY_THRASH                  = 1275,
     PROMYVION_BRUME_2             = 1276,
 
+    GERJIS_GRIP                   = 1322,
+
     HOOF_VOLLEY                   = 1330,
 
     COUNTERSTANCE                 = 1331, -- The Waughroon Kid
@@ -447,10 +454,11 @@ xi.mobSkill =
     CONTAGION_TRANSFER            = 1333,
     CONTAMINATION                 = 1334,
     TOXIC_PICK                    = 1335,
-
     FRENZIED_RAGE_1               = 1336,
     CHARM_2                       = 1337,
+    INFERNAL_PESTILENCE           = 1338,
 
+    CROSSTHRASH_1                 = 1340,
     KNIFE_EDGE_CIRCLE             = 1341,
     TRAIN_FALL                    = 1342,
 
@@ -486,6 +494,15 @@ xi.mobSkill =
     RICEBALL_TENZEN               = 1399,
     RANGED_ATTACK_TENZEN_2        = 1400, -- Tenzen Bow Low
     SOUL_ACCRETION                = 1401,
+
+    ACTINIC_BURST                 = 1441,
+
+    HEXIDISCS                     = 1443,
+    VORPAL_BLADE_GHRAH            = 1444,
+    DAMNATION_DIVE_GHRAH          = 1445,
+    SICKLE_SLASH                  = 1446,
+
+    DEADALUS_WING_COP_PRISHE      = 1487, -- Dwing COP 8-4 Dawn
 
     HOWLING_MOON_3                = 1520, -- Unknown usage.
 

@@ -4998,7 +4998,7 @@ INSERT INTO `mob_droplist` VALUES (533,4,0,1000,940,0);          -- Revival Tree
 -- ZoneID: 195 - Dark Stalker War
 -- ZoneID: 195 - Dark Stalker Blm
 -- ZoneID: 195 - Dark Stalker Rng
-INSERT INTO `mob_droplist` VALUES (554,2,0,1000,1098,@RARE);  -- Tavnazia Bell (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (554,0,0,1000,1098,@RARE);  -- Tavnazia Bell (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (554,0,0,1000,4876,@VRARE); -- Scroll Of Absorb-Vit (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (554,0,0,1000,4877,@VRARE); -- Scroll Of Absorb-Agi (Very Rare, 1%)
 INSERT INTO `mob_droplist` VALUES (554,0,0,1000,4878,@RARE);  -- Scroll Of Absorb-Int (Rare, 5%)
@@ -5137,7 +5137,7 @@ INSERT INTO `mob_droplist` VALUES (569,0,0,1000,17316,@UNCOMMON); -- Bomb Arm (U
 INSERT INTO `mob_droplist` VALUES (569,4,0,1000,928,0);           -- Pinch Of Bomb Ash (Despoil)
 
 -- ZoneID: 195 - Dark Stalker Thf
-INSERT INTO `mob_droplist` VALUES (570,2,0,1000,1098,@RARE); -- Tavnazia Bell (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (570,0,0,1000,1098,@RARE); -- Tavnazia Bell (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (570,0,0,1000,940,@VRARE); -- Revival Tree Root (Very Rare, 1%)
 
 -- ZoneID:  30 - Hawker

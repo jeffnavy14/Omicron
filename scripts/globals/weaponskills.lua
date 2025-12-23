@@ -821,10 +821,26 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
         ['wsID']            = wsID,
     }
 
+    if
+        wsParams.skill == xi.skill.MARKSMANSHIP or
+        wsParams.skill == xi.skill.ARCHERY
+    then
+        attack.slot = xi.slot.RANGED
+    end
+
+    local dStat   = wsParams.dStat and wsParams.dStat or xi.mod.INT
     local gearFTP = xi.combat.physical.calculateFTPBonus(attacker)
     local gearAcc = math.ceil(gearFTP * 100) + attacker:getMod(xi.mod.WSACC) -- TODO: Separate gear fTP and acc bonuses
-    local fint    = utils.clamp(8 + attacker:getStat(xi.mod.INT) - target:getStat(xi.mod.INT), -32, 32)
+    local fint    = 0
     local dmg     = 0
+
+    -- TODO: ranged magic WS are universal in it's (AGI-INT)*2
+    -- But other magic WS vary. Some don't even have a component, the general case is dINT/2 + 8
+    if attack.slot == xi.slot.RANGED then
+        fint = utils.clamp((attacker:getStat(dStat) - target:getStat(xi.mod.INT)) * 2, -32, 32)
+    else
+        fint = math.floor(utils.clamp(8 + (attacker:getStat(dStat) - target:getStat(xi.mod.INT)) / 2, -32, 32))
+    end
 
     -- Magic-based WSes never miss, so we don't need to worry about calculating a miss, only if a shadow absorbed it.
     if not shadowAbsorb(target) then

@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Qu'Bia Arena
---  Mob: Chahnameed's Stomach
+--  Mob: Chahnameed's Intenstine
 -- BCNM: An Awful Autopsy
 -----------------------------------
 ---@type TMobEntity
@@ -9,7 +9,6 @@ local entity = {}
 entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
-    mob:addMod(xi.mod.REGAIN, 100)
 end
 
 entity.onMobMobskillChoose = function(mob, target)
