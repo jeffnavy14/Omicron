@@ -57,4 +57,5 @@ omicronxi/Sky2.0
 omicronxi/the_arena
 #omicronxi/75only
 omicronxi/vnm_unity
+omicronxi/kills_CPP
 custom/lua/new_player_linkshell.lua
