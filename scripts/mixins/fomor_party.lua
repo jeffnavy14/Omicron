@@ -15,10 +15,57 @@ xi.mix.fomorParty = xi.mix.fomorParty or {}
 -----------------------------------
 -- Party Definitions by Zone
 -----------------------------------
-local phomiunaID = zones[xi.zone.PHOMIUNA_AQUEDUCTS]
+local lufaiseID   = zones[xi.zone.LUFAISE_MEADOWS]
+local misareauxID = zones[xi.zone.MISAREAUX_COAST]
+local phomiunaID  = zones[xi.zone.PHOMIUNA_AQUEDUCTS]
+local sacrariumID = zones[xi.zone.SACRARIUM]
 
 local zoneParties =
 {
+    [xi.zone.LUFAISE_MEADOWS] =
+    {
+        patrol =
+        {
+            { leader = lufaiseID.mob.FOMOR_NINJA[1], followers = 1 },
+        },
+
+        guard =
+        {
+            -- Bluefell Falls Guards (Only one group spawns at a time)
+            { members = { lufaiseID.mob.FOMOR_PALADIN[1],     lufaiseID.mob.FOMOR_DRAGOON[1],  lufaiseID.mob.FOMOR_DARK_KNIGHT[1], lufaiseID.mob.FOMOR_BLACK_MAGE[1] } },
+            { members = { lufaiseID.mob.FOMOR_BARD[1],        lufaiseID.mob.FOMOR_RANGER[1],   lufaiseID.mob.FOMOR_DARK_KNIGHT[2], lufaiseID.mob.FOMOR_SUMMONER[1] } },
+            { members = { lufaiseID.mob.FOMOR_BEASTMASTER[1], lufaiseID.mob.FOMOR_SAMURAI[2],  lufaiseID.mob.FOMOR_DARK_KNIGHT[3], lufaiseID.mob.FOMOR_MONK[1] } },
+            -- Campfire Guards
+            { members = { lufaiseID.mob.FOMOR_SAMURAI[3],     lufaiseID.mob.FOMOR_THIEF[2],    lufaiseID.mob.FOMOR_MONK[3],        lufaiseID.mob.FOMOR_NINJA[2] } },
+            -- Outpost Guards
+            { members = { lufaiseID.mob.FOMOR_THIEF[1],       lufaiseID.mob.FOMOR_RANGER[2],   lufaiseID.mob.FOMOR_RANGER[3] } },
+            { members = { lufaiseID.mob.FOMOR_WARRIOR[1],     lufaiseID.mob.FOMOR_SUMMONER[2], lufaiseID.mob.FOMOR_BEASTMASTER[2] } },
+        }
+    },
+
+    [xi.zone.MISAREAUX_COAST] =
+    {
+        patrol =
+        {
+            { leader = misareauxID.mob.FOMOR_RED_MAGE[1],    followers = 1 },
+            { leader = misareauxID.mob.FOMOR_DRAGOON[1],     followers = 3 },
+            { leader = misareauxID.mob.FOMOR_MONK[2],        followers = 1 },
+            { leader = misareauxID.mob.FOMOR_RANGER[1],      followers = 1 },
+            { leader = misareauxID.mob.FOMOR_DARK_KNIGHT[1], followers = 1 },
+            { leader = misareauxID.mob.FOMOR_PALADIN[1],     followers = 1 },
+        },
+
+        guard =
+        {
+            -- Outpost Guards
+            { members = { misareauxID.mob.FOMOR_MONK[1],        misareauxID.mob.FOMOR_SAMURAI[1],     misareauxID.mob.FOMOR_WARRIOR[1], misareauxID.mob.FOMOR_THIEF[1] } },
+            -- Campfire Guards (Only one group spawns at a time)
+            { members = { misareauxID.mob.FOMOR_PALADIN[2],     misareauxID.mob.FOMOR_DARK_KNIGHT[2], misareauxID.mob.FOMOR_THIEF[2],   misareauxID.mob.FOMOR_RANGER[3] } },
+            { members = { misareauxID.mob.FOMOR_PALADIN[3],     misareauxID.mob.FOMOR_SUMMONER[1],    misareauxID.mob.FOMOR_MONK[3] } },
+            { members = { misareauxID.mob.FOMOR_PALADIN[4],     misareauxID.mob.FOMOR_NINJA[2] } },
+        }
+    },
+
     [xi.zone.PHOMIUNA_AQUEDUCTS] =
     {
         patrol =
@@ -57,8 +104,25 @@ local zoneParties =
             { members = { phomiunaID.mob.FOMOR_PALADIN[2], phomiunaID.mob.FOMOR_SAMURAI[2], phomiunaID.mob.FOMOR_RED_MAGE[1] } },
             -- C-8 Ladder
             { members = { phomiunaID.mob.FOMOR_BLACK_MAGE[2], phomiunaID.mob.FOMOR_WARRIOR[2], phomiunaID.mob.FOMOR_DARK_KNIGHT[3] } },
-        },
+        }
     },
+
+    [xi.zone.SACRARIUM] =
+    {
+        patrol =
+        {
+            { leader = sacrariumID.mob.FOMOR_WARRIOR[5], followers = 1 },
+            { leader = sacrariumID.mob.FOMOR_BARD[6],    followers = 3 },
+        },
+
+        guard =
+        {
+            -- H-11 Classroom
+            { members = { sacrariumID.mob.FOMOR_BARD[5] } },
+            { members = { sacrariumID.mob.FOMOR_MONK[4],       sacrariumID.mob.FOMOR_SAMURAI[4], sacrariumID.mob.FOMOR_NINJA[4] } },
+            { members = { sacrariumID.mob.FOMOR_BLACK_MAGE[4], sacrariumID.mob.FOMOR_RANGER[7],  sacrariumID.mob.FOMOR_RED_MAGE[4] } },
+        }
+    }
 }
 
 -----------------------------------
