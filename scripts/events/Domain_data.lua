@@ -9,12 +9,17 @@ local prizes =
         ["items"] =
         {
             8930, --snowslit_stone
-            8939, --snowtip_stone
-            8948, --snowdim_stone 
-            8957, --snoworb_stone 
-			4033, --verdigris_stone 
-			3951, --wailing_stone
-			9893, --wyrm Ash
+            8933, --snowtip_stone
+            8936, --snowdim_stone 
+            8939, --snoworb_stone 
+			8942, --verdigris_stone 
+			8945, --wailing_stone
+			8948, --wyrm Ash
+            8951, --snowslit_stone
+            8954, --snowtip_stone
+            8957, --snowdim_stone 
+            8960, --snoworb_stone 
+			8963, --verdigris_stone 
         },
     },
 
@@ -24,11 +29,17 @@ local prizes =
         ["items"] =
         {
             8931, --snowslit_stone_+1
-            8940, --snowtip_stone_+1
-            8949, --snowdim_stone_+1
+            8934, --snowtip_stone_+1
+            8937, --snowdim_stone_+1
+            8940, --snoworb_stone_+1
+			8943, --verdigris_stone_+1
+			8946, --wailing_stone_+1
+            8949, --snowslit_stone_+1
+            8952, --snowtip_stone_+1
+            8955, --snowdim_stone_+1
             8958, --snoworb_stone_+1
-			4034, --verdigris_stone_+1
-			3952, --wailing_stone_+1
+			8961, --verdigris_stone_+1
+			8964, --wailing_stone_+1
         },
     },
 
@@ -38,12 +49,17 @@ local prizes =
         ["items"] =
         {
             8932, --snowslit_stone_+2
-            8941, --snowtip_stone_+2
-            8950, --snowdim_stone_+2
-            8959, --snoworb_stone_+2
-			4035, --verdigris_stone_+2
-			3953, --wailing_stone_+2
-			22293, --hauksbok-arrow
+            8935, --snowtip_stone_+2
+            8938, --snowdim_stone_+2
+            8941, --snoworb_stone_+2
+			8944, --verdigris_stone_+2
+			8947, --wailing_stone_+2
+			8950, --hauksbok-arrow
+            8953, --snowslit_stone_+2
+            8956, --snowtip_stone_+2
+            8959, --snowdim_stone_+2
+            8962, --snoworb_stone_+2
+			8965, --verdigris_stone_+2
         },
     },
 
