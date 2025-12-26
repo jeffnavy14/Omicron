@@ -1919,57 +1919,6 @@ float GetBlockRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
     return blockRate;
 }
 
-uint8 GetParryRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
-{
-    CItemWeapon* PWeapon = GetEntityWeapon(PDefender, SLOT_MAIN);
-    if ((PWeapon != nullptr && PWeapon->getID() != 0 && PWeapon->getID() != 65535 && PWeapon->getSkillType() != SKILL_HAND_TO_HAND) &&
-        PDefender->PAI->IsEngaged())
-    {
-        // http://wiki.ffxiclopedia.org/wiki/Talk:Parrying_Skill
-        // {(Parry Skill x .125) + ([Player Agi - Enemy Dex] x .125)} x Diff
-
-        float skill = (float)(PDefender->GetSkill(SKILL_PARRY) + PDefender->getMod(Mod::PARRY) + PWeapon->getILvlParry());
-
-        float diff = 1.0f + (((float)PDefender->GetMLevel() - PAttacker->GetMLevel()) / 15.0f);
-
-        if (PWeapon->isTwoHanded())
-        {
-            // two handed weapons get a bonus
-            diff += 0.1f;
-        }
-
-        if (diff < 0.4f)
-        {
-            diff = 0.4f;
-        }
-        if (diff > 1.4f)
-        {
-            diff = 1.4f;
-        }
-
-        float dex = PAttacker->DEX();
-        float agi = PDefender->AGI();
-
-        auto parryRate = std::clamp<uint8>((uint8)((skill * 0.1f + (agi - dex) * 0.125f + 10.0f) * diff), 5, 25);
-
-        // Issekigan grants parry rate bonus. From best available data, if you already capped out at 25% parry it grants another 25% bonus for ~50%
-        // parry rate
-        if ((PDefender->objtype == TYPE_PC || PDefender->objtype == TYPE_TRUST) && PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_ISSEKIGAN))
-        {
-            int16 issekiganBonus = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_ISSEKIGAN)->GetPower();
-            parryRate += issekiganBonus;
-        }
-
-        // Inquartata grants a flat parry rate bonus.
-        int16 inquartataBonus = PDefender->getMod(Mod::INQUARTATA);
-        parryRate += inquartataBonus;
-
-        return parryRate;
-    }
-
-    return 0;
-}
-
 uint8 GetGuardRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 {
     CItemWeapon* PWeapon = GetEntityWeapon(PDefender, SLOT_MAIN);
