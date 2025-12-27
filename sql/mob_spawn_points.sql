@@ -51800,9 +51800,9 @@ INSERT INTO `mob_spawn_points` VALUES (17367238,0,'The_Waughroon_Kid','The Waugh
 INSERT INTO `mob_spawn_points` VALUES (17367240,0,'The_Waughroon_Kid','The Waughroon Kid',34,222.5,-60.000,137.946,128);
 
 -- Up in Arms
-INSERT INTO `mob_spawn_points` VALUES (17367242,0,'Fee','Fe\'e',35,-175.000,60.000,-142.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367244,0,'Fee','Fe\'e',35,25.274,0.000,17.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367246,0,'Fee','Fe\'e',35,225.224,-60.000,137.946,124);
+INSERT INTO `mob_spawn_points` VALUES (17367242,0,'Fee','Fe\'e',35,-177.354,59.696,-142,128);
+INSERT INTO `mob_spawn_points` VALUES (17367244,0,'Fee','Fe\'e',35,22.5,0.000,17.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367246,0,'Fee','Fe\'e',35,222.5,-60.000,137.946,128);
 
 -- Copycat
 INSERT INTO `mob_spawn_points` VALUES (17367248,0,'Osschaart','Osschaart',36,-177.358,60.188,-141.977,124);

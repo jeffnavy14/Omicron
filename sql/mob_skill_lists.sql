@@ -2311,7 +2311,7 @@ INSERT INTO `mob_skill_lists` VALUES ('Cactrot_Rapido',703,321);
 INSERT INTO `mob_skill_lists` VALUES ('Cactrot_Rapido',703,322);
 INSERT INTO `mob_skill_lists` VALUES ('Cactrot_Rapido',703,324);
 INSERT INTO `mob_skill_lists` VALUES ('Cactrot_Rapido',703,1120);
-INSERT INTO `mob_skill_lists` VALUES ('Fee_special_attack',704,1671); -- ink_jet_alt
+INSERT INTO `mob_skill_lists` VALUES ('Fee_special_attack',704,1328); -- Fee Ink Jet Attack
 INSERT INTO `mob_skill_lists` VALUES ('Effigy_Shield',705,1075);
 INSERT INTO `mob_skill_lists` VALUES ('Effigy_Shield',705,1076);
 INSERT INTO `mob_skill_lists` VALUES ('Effigy_Shield',705,1077);

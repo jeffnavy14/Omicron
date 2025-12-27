@@ -10672,7 +10672,7 @@ INSERT INTO `mob_groups` VALUES (31,2305,144,'KuTya_Hotblood',0,128,0,0,0,62,64,
 INSERT INTO `mob_groups` VALUES (32,1167,144,'EaTho_Cruelheart',0,128,0,0,0,62,64,0);
 INSERT INTO `mob_groups` VALUES (33,3847,144,'Tartaruga_Gigante',0,128,0,35000,0,85,85,0);
 INSERT INTO `mob_groups` VALUES (34,3894,144,'The_Waughroon_Kid',0,128,0,3200,0,53,53,0);
-INSERT INTO `mob_groups` VALUES (35,1330,144,'Fee',0,128,0,7500,0,62,62,0);
+INSERT INTO `mob_groups` VALUES (35,1330,144,'Fee',0,128,0,7000,0,62,62,0);
 INSERT INTO `mob_groups` VALUES (36,3064,144,'Osschaart',0,128,0,14000,14000,79,79,0);
 INSERT INTO `mob_groups` VALUES (37,3067,144,'Osschaarts_Bat',0,128,0,1400,0,71,71,0);
 INSERT INTO `mob_groups` VALUES (38,3068,144,'Osschaarts_Wyvern',0,128,0,1400,0,71,71,0);

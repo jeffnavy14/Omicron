@@ -3027,7 +3027,7 @@ void CLuaBaseEntity::updateToEntireZone(uint8 statusID, uint8 animation, const s
 // Sends an arbitrary entity update to a specific player only
 void CLuaBaseEntity::sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, uint8 entityUpdate, uint8 updateMask)
 {
-    if (m_PBaseEntity->objtype == TYPE_PC && entityToUpdate->GetBaseEntity())
+    if (m_PBaseEntity->objtype == TYPE_PC && entityToUpdate && entityToUpdate->GetBaseEntity())
     {
         CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
@@ -3038,7 +3038,7 @@ void CLuaBaseEntity::sendEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate, ui
 // Seems to be needed for Chocobo Racing
 void CLuaBaseEntity::sendEmptyEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate)
 {
-    if (m_PBaseEntity->objtype == TYPE_PC && entityToUpdate->GetBaseEntity())
+    if (m_PBaseEntity->objtype == TYPE_PC && entityToUpdate && entityToUpdate->GetBaseEntity())
     {
         auto packet = std::make_unique<CBasicPacket>();
         packet->setType(0x0E);
@@ -8293,6 +8293,28 @@ uint32 CLuaBaseEntity::getMissionStatus(MissionLog logId, const sol::object& mis
 
     ShowError("Lua::getMissionStatus: missionLogID %i is invalid", static_cast<uint8_t>(logId));
     return 0;
+}
+/************************************************************************
+ *  Function: sendPartialMissionLog()
+ *  Purpose : Sends the packet for mission log
+ *  Example : player:sendPartialMissionLog(player:getNation())
+ *  Notes   : getMissionStatus(log id[,index 0-7])
+ ************************************************************************/
+
+void CLuaBaseEntity::sendPartialMissionLog(MissionLog logId, bool completed) const
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        return;
+    }
+
+    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    if (static_cast<uint8_t>(logId) < MAX_MISSIONAREA)
+    {
+        charutils::SendPartialMissionLog(PChar, logId, completed);
+    }
 }
 
 /************************************************************************
@@ -19737,6 +19759,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("completeMission", CLuaBaseEntity::completeMission);
     SOL_REGISTER("setMissionStatus", CLuaBaseEntity::setMissionStatus);
     SOL_REGISTER("getMissionStatus", CLuaBaseEntity::getMissionStatus);
+    SOL_REGISTER("sendPartialMissionLog", CLuaBaseEntity::sendPartialMissionLog);
     SOL_REGISTER("getEminenceCompleted", CLuaBaseEntity::getEminenceCompleted);
     SOL_REGISTER("getNumEminenceCompleted", CLuaBaseEntity::getNumEminenceCompleted);
     SOL_REGISTER("setEminenceCompleted", CLuaBaseEntity::setEminenceCompleted);

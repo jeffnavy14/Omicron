@@ -2868,9 +2868,24 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                             }
                         }
 
-                        if (skilltype == SKILLTYPE::SKILL_HAND_TO_HAND || (PTarget->objtype == TYPE_MOB && PTarget->GetMJob() == JOB_MNK))
+                        float mobH2HPenalty = 1.0f;
+
+                        if (PTarget->objtype == TYPE_PC && skilltype == SKILLTYPE::SKILL_HAND_TO_HAND)
                         {
                             naturalh2hDMG = (int16)((PTarget->GetSkill(SKILL_HAND_TO_HAND) * 0.11f) + 3);
+                        }
+                        else if (PTarget->objtype == TYPE_MOB && targ_weapon && targ_weapon->getSkillType() == SKILLTYPE::SKILL_HAND_TO_HAND) // This is how Attack Round checks for h2h penalty
+                        {
+                            REGION_TYPE regionID = PTarget->loc.zone->GetRegionID();
+
+                            if (regionID <= REGION_TYPE::LIMBUS) // Pre TOAU zones
+                            {
+                                mobH2HPenalty = 0.425f; // Vanilla - COP
+                            }
+                            else
+                            {
+                                mobH2HPenalty = 0.650f; // TOAU onward
+                            }
                         }
 
                         // Calculate attack bonus for Counterstance Effect Job Points
@@ -2888,7 +2903,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
 
                         float DamageRatio     = battleutils::GetDamageRatio(PTarget, this, attack.IsCritical(), attBonus, skilltype, SLOT_MAIN, false);
                         int16 extraCounterDMG = (int16)(PTarget->getMod(Mod::COUNTER_DAMAGE));
-                        auto  damage          = (int32)((PTarget->GetMainWeaponDmg() + naturalh2hDMG + extraCounterDMG + battleutils::GetFSTR(PTarget, this, SLOT_MAIN)) * DamageRatio);
+                        auto  damage          = (int32)((PTarget->GetMainWeaponDmg() + naturalh2hDMG + extraCounterDMG + battleutils::GetFSTR(PTarget, this, SLOT_MAIN)) * mobH2HPenalty * DamageRatio);
 
                         actionResult.spikesParam =
                             battleutils::TakePhysicalDamage(PTarget, this, attack.GetAttackType(), damage, false, SLOT_MAIN, 1, nullptr, true, false, true);
@@ -2940,7 +2955,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 }
 
                 // Guarded. TODO: Stuff guards that shouldn't.
-                if (attack.IsGuarded())
+                if (attack.CheckGuarded())
                 {
                     actionResult.resolution = ActionResolution::Guard;
                     battleutils::HandleTacticalGuard(PTarget);
@@ -2988,14 +3003,6 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
 
             if (PTarget->objtype == TYPE_PC)
             {
-                if (attack.IsGuarded() || !settings::get<bool>("map.GUARD_OLD_SKILLUP_STYLE"))
-                {
-                    if (battleutils::GetGuardRate(this, PTarget) > 0)
-                    {
-                        charutils::TrySkillUP((CCharEntity*)PTarget, SKILL_GUARD, GetMLevel());
-                    }
-                }
-
                 if (attack.IsBlocked() || !settings::get<bool>("map.BLOCK_OLD_SKILLUP_STYLE"))
                 {
                     if (battleutils::GetBlockRate(this, PTarget) > 0)
