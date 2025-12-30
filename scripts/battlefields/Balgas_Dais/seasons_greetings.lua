@@ -21,8 +21,6 @@ local content = Battlefield:new({
         balgasID.mob.GILAGOGE_TLUGVI + 9,
         balgasID.mob.GILAGOGE_TLUGVI + 14,
     },
-
-    experimental     = true,
 })
 
 content.groups =

@@ -15,6 +15,7 @@ end
     -- Set Modifiers
 entity.onMobSpawn = function(mob)
     mob:setMagicCastingEnabled(false) -- Does not cast spells.
+    mob:setTP(3000)
     mob:setMod(xi.mod.DOUBLE_ATTACK, 40)
     mob:setMod(xi.mod.REGAIN, 50)
     mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)

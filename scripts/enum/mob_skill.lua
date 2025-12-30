@@ -217,6 +217,10 @@ xi.mobSkill =
 
     FINAL_METEOR                  =  634, -- Final Meteor Chlevnik
 
+    VOIDSONG_1                    =  649,
+    THORNSONG_1                   =  650,
+    LODESONG_1                    =  651,
+
     CHAOTIC_EYE_1                 =  653,
 
     CURSED_SPHERE_1               =  659,
@@ -379,6 +383,8 @@ xi.mobSkill =
     AERIAL_BLAST_3                = 1165, -- Confirmed usage: "Trial-Size Trial by Wind" bcnm. (Garuda)
     DIAMOND_DUST_3                = 1166, -- Confirmed usage: "Trial-Size Trial by Ice" bcnm. (Shiva)
     JUDGMENT_BOLT_3               = 1167, -- Confirmed usage: "Trial-Size Trial by Lightning" bcnm. (Ramuh)
+
+    THORNSONG_2                   = 1176, -- Extremely powerful version of Thornsong
 
     RANGED_ATTACK_4               = 1202,
     RANGED_ATTACK_5               = 1203,
@@ -593,6 +599,9 @@ xi.mobSkill =
     OPPRESSIVE_GLARE              = 2392,
 
     ROAR_3                        = 2406,
+
+    REAVING_WIND                  = 2431,
+    REAVING_WIND_KNOCKBACK        = 2434,
 
     AQUA_BLAST                    = 2437,
 
