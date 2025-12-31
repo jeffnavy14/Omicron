@@ -38,10 +38,9 @@ entity.onMobSpellChoose = function(mob, target, spellId)
 
     local groupTable =
     {
-        [1] = -1, -- Qull the Fallstopper
-        [2] =  0, -- Rauu the Whaleswooner
-        [3] =  1, -- Hyohh the Conchblower
-        [4] =  2, -- Pevv the Riverleaper
+        GetMobByID(mob:getID() - 1), -- Qull the Fallstopper
+        GetMobByID(mob:getID() + 1), -- Hyohh the Conchblower
+        GetMobByID(mob:getID() + 2), -- Pevv the Riverleaper
     }
 
     return xi.combat.behavior.chooseAction(mob, target, groupTable, spellList)

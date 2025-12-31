@@ -91,19 +91,14 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
 
                 -- Check allies.
                 if actionAllowAllies and optionalTargets then
-                    local actorId = actor:getID()
-                    for i = 1, #optionalTargets do
-                        local value = optionalTargets[i]
-                        if value ~= 0 then
-                            local allyEntity = GetMobByID(actorId + value)
-                            if
-                                allyEntity and
-                                allyEntity:isAlive() and
-                                allyEntity:checkDistance(actor) <= 8 and
-                                allyEntity:getHPP() <= actionCondition
-                            then
-                                table.insert(actionList, { actionId, allyEntity, actionWeight })
-                            end
+                    for _, allyEntity in pairs(optionalTargets) do
+                        if
+                            allyEntity and
+                            allyEntity:isAlive() and
+                            allyEntity:checkDistance(actor) <= 8 and
+                            allyEntity:getHPP() <= actionCondition
+                        then
+                            table.insert(actionList, { actionId, allyEntity, actionWeight })
                         end
                     end
                 end
@@ -118,20 +113,15 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
                 -- Check allies.
                 else
                     if actionAllowAllies and optionalTargets then
-                        local actorId = actor:getID()
-                        for i = 1, #optionalTargets do
-                            local value = optionalTargets[i]
-                            if value ~= 0 then
-                                local allyEntity = GetMobByID(actorId + value)
-                                if
-                                    allyEntity and
-                                    allyEntity:isAlive() and
-                                    allyEntity:checkDistance(actor) <= 8 and
-                                    allyEntity:getHPP() <= actionCondition
-                                then
-                                    table.insert(actionList, { actionId, actor, actionWeight })
-                                    break
-                                end
+                        for _, allyEntity in pairs(optionalTargets) do
+                            if
+                                allyEntity and
+                                allyEntity:isAlive() and
+                                allyEntity:checkDistance(actor) <= 8 and
+                                allyEntity:getHPP() <= actionCondition
+                            then
+                                table.insert(actionList, { actionId, actor, actionWeight })
+                                break
                             end
                         end
                     end
@@ -146,19 +136,14 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
 
                 -- Check allies.
                 if actionAllowAllies and optionalTargets then
-                    local actorId = actor:getID()
-                    for i = 1, #optionalTargets do
-                        local value = optionalTargets[i]
-                        if value ~= 0 then
-                            local allyEntity = GetMobByID(actorId + value)
-                            if
-                                allyEntity and
-                                allyEntity:isAlive() and
-                                allyEntity:checkDistance(actor) <= 8 and
-                                allyEntity:hasStatusEffect(actionCondition)
-                            then
-                                table.insert(actionList, { actionId, allyEntity, actionWeight })
-                            end
+                    for _, allyEntity in pairs(optionalTargets) do
+                        if
+                            allyEntity and
+                            allyEntity:isAlive() and
+                            allyEntity:checkDistance(actor) <= 8 and
+                            allyEntity:hasStatusEffect(actionCondition)
+                        then
+                            table.insert(actionList, { actionId, allyEntity, actionWeight })
                         end
                     end
                 end
@@ -172,19 +157,14 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
 
                 -- Check allies.
                 if actionAllowAllies and optionalTargets then
-                    local actorId = actor:getID()
-                    for i = 1, #optionalTargets do
-                        local value = optionalTargets[i]
-                        if value ~= 0 then
-                            local allyEntity = GetMobByID(actorId + value)
-                            if
-                                allyEntity and
-                                allyEntity:isAlive() and
-                                allyEntity:checkDistance(actor) <= 8 and
-                                not allyEntity:hasStatusEffect(actionCondition)
-                            then
-                                table.insert(actionList, { actionId, allyEntity, actionWeight })
-                            end
+                    for _, allyEntity in pairs(optionalTargets) do
+                        if
+                            allyEntity and
+                            allyEntity:isAlive() and
+                            allyEntity:checkDistance(actor) <= 8 and
+                            not allyEntity:hasStatusEffect(actionCondition)
+                        then
+                            table.insert(actionList, { actionId, allyEntity, actionWeight })
                         end
                     end
                 end
@@ -199,20 +179,15 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
                 -- Check allies.
                 else
                     if actionAllowAllies and optionalTargets then
-                        local actorId = actor:getID()
-                        for i = 1, #optionalTargets do
-                            local value = optionalTargets[i]
-                            if value ~= 0 then
-                                local allyEntity = GetMobByID(actorId + value)
-                                if
-                                    allyEntity and
-                                    allyEntity:isAlive() and
-                                    allyEntity:checkDistance(actor) <= 8 and
-                                    not allyEntity:hasStatusEffect(actionCondition)
-                                then
-                                    table.insert(actionList, { actionId, actor, actionWeight })
-                                    break
-                                end
+                        for _, allyEntity in pairs(optionalTargets) do
+                            if
+                                allyEntity and
+                                allyEntity:isAlive() and
+                                allyEntity:checkDistance(actor) <= 8 and
+                                not allyEntity:hasStatusEffect(actionCondition)
+                            then
+                                table.insert(actionList, { actionId, actor, actionWeight })
+                                break
                             end
                         end
                     end

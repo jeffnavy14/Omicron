@@ -28,7 +28,6 @@ zones[xi.zone.ARRAPAGO_REMNANTS] =
         PARTY_FALLEN                  = 7465, -- ll party members have fallen in battle. Mission failure in <number> [minute/minutes].
         DOOR_IS_SEALED                = 7476, -- The door is sealed...
         DOOR_IS_SEALED_MYSTERIOUS     = 7479, -- The door is sealed by some mysterious force...
-        PILE_OF_DISCARDED_MATERIALS   = 8429, -- There is a pile of discarded materials here.
     },
     mob =
     {

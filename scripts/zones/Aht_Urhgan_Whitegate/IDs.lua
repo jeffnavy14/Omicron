@@ -92,7 +92,7 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         SINGLE_TALLY                  = 13185, -- A single tally seal is proof positive of your prowess as an adventurer. You shan't be requiring another.
         MASTER_FORBID                 = 13186, -- Ah, please forgive me. My master, Sanraku, whom I respect and revere, has forbidden me from engaging in conversation, as it will disrupt my attunement with nature.
         RETRIEVE_DIALOG_ID            = 13557, -- You retrieve <item> from the porter moogle's care.
-        COMMON_SENSE_SURVIVAL         = 14348, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        COMMON_SENSE_SURVIVAL         = 14349, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
