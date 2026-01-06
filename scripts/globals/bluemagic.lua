@@ -630,14 +630,16 @@ end
 -- Perform an enfeebling Blue Magic spell
 xi.spells.blue.useEnfeeblingSpell = function(caster, target, spell, params)
     local spellElement = spell:getElement()
+    local effect       = params.effect
+    local tier         = params.tier or 0
 
     -- Early return: Out of cone.
     if
         params.isConal and
-        not target:isInfront(caster, 64)
+        not target:isInfront(caster, 32)
     then
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
-        return params.effect
+        return effect
     end
 
     -- Early return: Out of gaze.
@@ -646,36 +648,36 @@ xi.spells.blue.useEnfeeblingSpell = function(caster, target, spell, params)
         (not target:isFacing(caster) or not caster:isFacing(target))
     then
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
-        return params.effect
+        return effect
     end
 
     -- Early return: Target is immune.
-    if xi.data.statusEffect.isTargetImmune(target, params.effect, spellElement) then
+    if xi.data.statusEffect.isTargetImmune(target, effect, spellElement) then
         spell:setMsg(xi.msg.basic.MAGIC_COMPLETE_RESIST)
-        return params.effect
+        return effect
     end
 
     -- Early return: Trait nullification trigger.
-    if xi.data.statusEffect.isTargetResistant(caster, target, params.effect) then
+    if xi.data.statusEffect.isTargetResistant(caster, target, effect) then
         spell:setModifier(xi.msg.actionModifier.RESIST)
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
-        return params.effect
+        return effect
     end
 
     -- Early return: Target already has an status effect that nullifies current.
-    if xi.data.statusEffect.isEffectNullified(target, params.effect) then
+    if xi.data.statusEffect.isEffectNullified(target, effect, tier) then
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
-        return params.effect
+        return effect
     end
 
     -- Early return: Regular resist.
     local resist = xi.combat.magicHitRate.calculateResistRate(caster, target, 0, xi.skill.BLUE_MAGIC, 0, spellElement, xi.mod.INT, 0, 0)
     if resist < params.resistThreshold then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
-        return params.effect
+        return effect
     end
 
-    if target:addStatusEffect(params.effect, params.power, params.tick, math.floor(params.duration * resist)) then
+    if target:addStatusEffect(effect, params.power, params.tick, math.floor(params.duration * resist)) then
         -- Add "Magic Burst!" message
         local _, skillchainCount = xi.magicburst.formMagicBurst(spellElement, target) -- External function. Not present in magic.lua.
 
@@ -689,7 +691,7 @@ xi.spells.blue.useEnfeeblingSpell = function(caster, target, spell, params)
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
     end
 
-    return params.effect
+    return effect
 end
 
 -- Perform a curative Blue Magic spell
@@ -748,7 +750,7 @@ xi.spells.blue.applyBlueAdditionalEffect = function(caster, target, params, effe
         if
             not xi.data.statusEffect.isTargetImmune(target, effect, element) and   -- Target isn't immune.
             not xi.data.statusEffect.isTargetResistant(caster, target, effect) and -- Target didn't trigger a job trait resistance.
-            not xi.data.statusEffect.isEffectNullified(target, effect)             -- Target doesn't have an status effect that nullifies current.
+            not xi.data.statusEffect.isEffectNullified(target, effect, 0)          -- Target doesn't have an status effect that nullifies current. TODO: Tier.
         then
             target:addStatusEffect(effect, power, tick, math.floor(duration * resist))
         end

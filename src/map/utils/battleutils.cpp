@@ -2461,7 +2461,7 @@ uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 att
     bool hasValidSneakAttack = hasSneakAttack && isBehind;
     bool hasValidTrickAttack = hasTrickAttack && hasAssassin;
 
-    if ((hasValidSneakAttack || hasValidTrickAttack) && getAvailableTrickAttackChar(PAttacker, PDefender))
+    if (hasValidSneakAttack || (hasValidTrickAttack && getAvailableTrickAttackChar(PAttacker, PDefender)))
     {
         hitrate = 100; // Attack with SA active or TA/Assassin cannot miss
     }
@@ -6015,14 +6015,27 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
 
     recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f));
 
-    if (PSpell->getSkillType() == SKILLTYPE::SKILL_ELEMENTAL_MAGIC)
+    int32 recastMod = 0;
+    switch (PSpell->getSkillType())
     {
-        recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + PEntity->getMod(Mod::ELEMENTAL_MAGIC_RECAST)) / 100.0f));
+        case SKILLTYPE::SKILL_ELEMENTAL_MAGIC:
+            recastMod = PEntity->getMod(Mod::ELEMENTAL_MAGIC_RECAST);
+            break;
+        case SKILLTYPE::SKILL_BLUE_MAGIC:
+            recastMod = PEntity->getMod(Mod::BLUE_MAGIC_RECAST);
+            break;
+        case SKILLTYPE::SKILL_HEALING_MAGIC:
+            recastMod = PEntity->getMod(Mod::HEALING_MAGIC_RECAST);
+            break;
+        case SKILLTYPE::SKILL_ENFEEBLING_MAGIC:
+            recastMod = PEntity->getMod(Mod::ENFEEBLING_MAGIC_RECAST);
+            break;
+        case SKILLTYPE::SKILL_ENHANCING_MAGIC:
+            recastMod = PEntity->getMod(Mod::ENHANCING_MAGIC_RECAST);
+            break;
     }
-    if (PSpell->getSkillType() == SKILLTYPE::SKILL_BLUE_MAGIC)
-    {
-        recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + PEntity->getMod(Mod::BLUE_MAGIC_RECAST)) / 100.0f));
-    }
+
+    recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + recastMod) / 100.0f));
 
     // Light/Dark arts recast bonus/penalties applies after other bonuses
     if (PSpell->getSpellGroup() == SPELLGROUP_BLACK)

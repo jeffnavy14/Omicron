@@ -345,7 +345,7 @@ public:
     uint16 RATT(uint16 bonusAtt = 0);
     uint16 RACC(uint16 bonusAcc = 0);
 
-    bool isDead();
+    auto isDead() const -> bool;
     bool isAlive();
     bool isFullyHealed();
     bool isInAdoulin();
@@ -355,7 +355,7 @@ public:
     bool inMogHouse();
     bool hasImmunity(uint32 imID);
     bool isAsleep();
-    bool isMounted();
+    auto isMounted() const -> bool;
     bool isSitting();
 
     JOBTYPE GetMJob() const;

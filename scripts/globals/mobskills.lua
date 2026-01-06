@@ -777,7 +777,7 @@ xi.mobskills.mobStatusEffectMove = function(mob, target, typeEffect, power, tick
             return xi.msg.basic.SKILL_MISS                  -- <user> uses <skill>, but misses <target>.
 
         -- Check effect incompatibilities.
-        elseif xi.data.statusEffect.isEffectNullified(target, typeEffect) then
+        elseif xi.data.statusEffect.isEffectNullified(target, typeEffect, 0) then
             return xi.msg.basic.SKILL_MISS -- <user> uses <skill>, but misses <target>.
         end
 

@@ -308,17 +308,20 @@ enum class Mod
     MOVE_SPEED_BOLTERS_ROLL   = 1086, // Additive modifier. Applied after multipliers.
     MOVE_SPEED_OVERRIDE       = 169,  // Modifier used to overide regular speed caps. (GM speed and Feast of Swords)
 
-    FASTCAST                = 170, // Increases Spell Cast Time (TRAIT)
-    UFASTCAST               = 407, // uncapped fast cast
-    CURE_CAST_TIME          = 519, // cure cast time reduction
-    ELEMENTAL_CELERITY      = 901, // Quickens Elemental Magic Casting
-    DELAY                   = 171, // Increase/Decrease Delay
-    RANGED_DELAY            = 172, // Increase/Decrease Ranged Delay
-    MARTIAL_ARTS            = 173, // The integer amount of delay to reduce from H2H weapons' base delay. (TRAIT)
-    SKILLCHAINBONUS         = 174, // Damage bonus applied to skill chain damage.  Modifier from effects/traits
-    SKILLCHAINDMG           = 175, // Damage bonus applied to skill chain damage.  Modifier from gear (multiplicative after effect/traits)
-    MAX_SWINGS              = 978, // Max swings for "Occasionally attacks X times"
-    ADDITIONAL_SWING_CHANCE = 979, // Chance that allows for an additional swing despite of multiple hits, mostly for Amood weapons
+    FASTCAST                = 170,  // Increases Spell Cast Time (TRAIT)
+    UFASTCAST               = 407,  // uncapped fast cast
+    CURE_CAST_TIME          = 519,  // cure cast time reduction
+    ELEMENTAL_CELERITY      = 901,  // Quickens Elemental Magic Casting
+    HEALING_MAGIC_RECAST    = 1183, // Recast delay (percent, usually negative)
+    ENFEEBLING_MAGIC_RECAST = 1184, // Recast delay (percent, usually negative)
+    ENHANCING_MAGIC_RECAST  = 1185, // Recast delay (percent, usually negative)
+    DELAY                   = 171,  // Increase/Decrease Delay
+    RANGED_DELAY            = 172,  // Increase/Decrease Ranged Delay
+    MARTIAL_ARTS            = 173,  // The integer amount of delay to reduce from H2H weapons' base delay. (TRAIT)
+    SKILLCHAINBONUS         = 174,  // Damage bonus applied to skill chain damage.  Modifier from effects/traits
+    SKILLCHAINDMG           = 175,  // Damage bonus applied to skill chain damage.  Modifier from gear (multiplicative after effect/traits)
+    MAX_SWINGS              = 978,  // Max swings for "Occasionally attacks X times"
+    ADDITIONAL_SWING_CHANCE = 979,  // Chance that allows for an additional swing despite of multiple hits, mostly for Amood weapons
 
     MAGIC_DAMAGE = 311, // Magic damage added directly to the spell's base damage
 
@@ -1136,7 +1139,7 @@ enum class Mod
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE IDs: 1183 and onward
+    // SPARE IDs: 1186 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it

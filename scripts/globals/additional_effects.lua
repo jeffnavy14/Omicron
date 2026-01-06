@@ -266,7 +266,7 @@ xi.additionalEffect.procFunctions[xi.additionalEffect.procType.DEBUFF] = functio
     end
 
     -- Early return: Incompatible effect in place.
-    if xi.data.statusEffect.isEffectNullified(target, effectId) then
+    if xi.data.statusEffect.isEffectNullified(target, effectId, 0) then
         return 0, 0, 0
     end
 

@@ -208,16 +208,6 @@ xi.mob.phOnDespawn = function(ph, phNmId, chance, cooldown, params)
 end
 
 -----------------------------------
--- Mob skills
------------------------------------
-xi.mob.skills =
-{
-    RECOIL_DIVE = 641,
-    CYTOKINESIS = 2514,
-    DISSOLVE = 2550,
-}
-
------------------------------------
 -- mob additional melee effects
 -----------------------------------
 

@@ -104,7 +104,7 @@ CBattleEntity::~CBattleEntity()
     TracyZoneScoped;
 }
 
-bool CBattleEntity::isDead()
+auto CBattleEntity::isDead() const -> bool
 {
     return (health.hp <= 0 || status == STATUS_TYPE::DISAPPEAR || PAI->IsCurrentState<CDeathState>() || PAI->IsCurrentState<CDespawnState>());
 }
@@ -197,7 +197,7 @@ bool CBattleEntity::isAsleep()
     return PAI->IsCurrentState<CInactiveState>();
 }
 
-bool CBattleEntity::isMounted()
+auto CBattleEntity::isMounted() const -> bool
 {
     return (animation == ANIMATION_CHOCOBO || animation == ANIMATION_MOUNT);
 }

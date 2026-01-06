@@ -219,6 +219,8 @@ xi.mobSkill =
 
     FINAL_METEOR                  =  634, -- Final Meteor Chlevnik
 
+    RECOIL_DIVE_1                 =  641,
+
     VOIDSONG_1                    =  649,
     THORNSONG_1                   =  650,
     LODESONG_1                    =  651,
@@ -634,6 +636,10 @@ xi.mobSkill =
     DIAMOND_DUST_4                = 2483, -- Unknown usage.
     JUDGMENT_BOLT_4               = 2484, -- Unknown usage.
     AERIAL_BLAST_4                = 2485, -- Unknown usage.
+
+    CYTOKINESIS                   = 2514,
+
+    DISSOLVE                      = 2550,
 
     BOOMING_BOMBINATION           = 2770,
 
