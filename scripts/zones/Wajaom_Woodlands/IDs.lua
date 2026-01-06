@@ -14,6 +14,7 @@ zones[xi.zone.WAJAOM_WOODLANDS] =
         KEYITEM_OBTAINED              = 6394, -- Obtained key item: <keyitem>.
         WARHORSE_HOOFPRINT            = 6401, -- You find the hoofprint of a gigantic warhorse...
         ITEM_RETURNED                 = 6403, -- The <item> is returned to you.
+        NOTHING_OUT_OF_ORDINARY       = 6405, -- There is nothing out of the ordinary here.
         FELLOW_MESSAGE_OFFSET         = 6420, -- I'm ready. I suppose.
         CARRIED_OVER_POINTS           = 7002, -- You have carried over <number> login point[/s].
         LOGIN_CAMPAIGN_UNDERWAY       = 7003, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!

@@ -283,7 +283,13 @@ xi.mobSkill =
     THUNDER_BREATH                =  820,
     RADIANT_BREATH                =  821,
     CHAOS_BREATH                  =  822,
-
+    FIRE_BLADE_1                  =  823,
+    FROST_BLADE_1                 =  824,
+    WIND_BLADE_1                  =  825,
+    EARTH_BLADE_1                 =  826,
+    LIGHTNING_BLADE_1             =  827,
+    WATER_BLADE_1                 =  828,
+    GREAT_WHEEL_1                 =  829,
     LIGHT_BLADE_1                 =  830,
 
     HOWLING_MOON_1                =  838, -- Unknown usage.
@@ -350,6 +356,9 @@ xi.mobSkill =
     AJIDO_WARP_OUT                =  977, -- Windurst 9-2 Ajido teleport
     AJIDO_WARP_IN                 =  978, -- Windurst 9-2 Ajido teleport
 
+    STELLAR_BURST_1               =  986,
+    VORTEX_1                      =  987,
+
     PHASE_SHIFT_1_EXOPLATES       =  993,
 
     PHASE_SHIFT_2_EXOPLATES       =  997,
@@ -357,6 +366,7 @@ xi.mobSkill =
     PHASE_SHIFT_3_EXOPLATES       = 1001,
     ZEID_SUMMON_SHADOWS_1         = 1002, -- TODO: Investigate why was this in sql, where it came from and why wasnt it actually used in an scripted way.
 
+    OMEGA_JAVELIN_1               = 1006,
     ZEID_SUMMON_SHADOWS_2         = 1007, -- Captured. Bastok mission 9-2 BCNM, phase 2. No actual name in log.
 
     CALL_BEAST                    = 1017, -- "Tango with a Tracker" Shikaree X
@@ -493,11 +503,12 @@ xi.mobSkill =
 
     AMATSU_TORIMAI                = 1390,
     AMATSU_KAZAKIRI               = 1391,
-
+    AMATSU_YUKIARASHI             = 1392,
+    AMATSU_TSUKIOBORO             = 1393,
     AMATSU_HANAIKUSA              = 1394,
     AMATSU_TSUKIKAGE              = 1395,
     COSMIC_ELUCIDATION            = 1396,
-
+    OISOYA                        = 1397,
     RANGED_ATTACK_TENZEN_1        = 1398, -- Tenzen Bow High
     RICEBALL_TENZEN               = 1399,
     RANGED_ATTACK_TENZEN_2        = 1400, -- Tenzen Bow Low
@@ -509,6 +520,14 @@ xi.mobSkill =
     VORPAL_BLADE_GHRAH            = 1444,
     DAMNATION_DIVE_GHRAH          = 1445,
     SICKLE_SLASH                  = 1446,
+
+    REACTOR_COOL                  = 1463,
+    OPTIC_INDURATION_CHARGE       = 1464,
+    OPTIC_INDURATION              = 1465,
+    STATIC_FILAMENT               = 1466,
+    DECAYED_FILAMENT              = 1467,
+    REACTOR_OVERHEAT              = 1468,
+    REACTOR_OVERLOAD              = 1469,
 
     DEADALUS_WING_COP_PRISHE      = 1487, -- Dwing COP 8-4 Dawn
 

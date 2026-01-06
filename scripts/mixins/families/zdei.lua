@@ -45,6 +45,33 @@ g_mixins.families.zdei = function(zdeiMob)
         mob:setLocalVar('changeTime', GetSystemTime() + math.random(15, 30))
     end)
 
+    zdeiMob:addListener('WEAPONSKILL_STATE_EXIT', 'ZDEI_WS_EXIT', function(mob, skillID)
+        if skillID == xi.mobSkill.OPTIC_INDURATION_CHARGE then
+            local chargeCount = mob:getLocalVar('chargeCount')
+            local chargeTotal = mob:getLocalVar('chargeTotal')
+
+            if chargeTotal > 0 and chargeCount == chargeTotal then
+                mob:useMobAbility(xi.mobSkill.OPTIC_INDURATION, mob:getTarget())
+            else
+                if chargeCount == 0 then
+                    mob:setAutoAttackEnabled(false)
+                    mob:setMagicCastingEnabled(false)
+                    mob:setLocalVar('chargeTotal', math.random(3, 5))
+                end
+
+                chargeCount = chargeCount + 1
+                mob:setLocalVar('chargeCount', chargeCount)
+                mob:useMobAbility(xi.mobSkill.OPTIC_INDURATION_CHARGE)
+            end
+
+        elseif skillID == xi.mobSkill.OPTIC_INDURATION then
+            mob:setAutoAttackEnabled(true)
+            mob:setMagicCastingEnabled(true)
+            mob:setLocalVar('chargeCount', 0)
+            mob:setLocalVar('chargeTotal', 0)
+        end
+    end)
+
     zdeiMob:addListener('DISENGAGE', 'ZDEI_DISENGAGE', function(mob)
         mob:setAnimationSub(0)
         mob:setLocalVar('changeTime', 0)
