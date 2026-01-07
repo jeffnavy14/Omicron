@@ -1046,32 +1046,29 @@ xi.spells.damage.calculateIfMagicBurstBonus = function(caster, target, spellId, 
 end
 
 -- Consecutive Elemental Damage Penalty. Most commonly known as "Nuke Wall".
-xi.spells.damage.calculateNukeWallFactor = function(target, spellElement, finalDamage)
+local function calculateNukeWallFactor(target, spellElement, finalDamage)
     local nukeWallFactor = 1
 
     -- Initial check.
     if
         not target:isNM() or               -- Target is not an NM.
         spellElement <= xi.element.NONE or -- Action isn't elemental.
-        finalDamage < 0                    -- Action hals target.
+        finalDamage < 0                    -- Action heals target.
     then
         return nukeWallFactor
     end
 
     -- Calculate current effect potency and apply it to nukeWallFactor.
     local potency = 0
+    local effect  = target:getStatusEffect(xi.effect.NUKE_WALL)
 
-    if target:hasStatusEffect(xi.effect.NUKE_WALL) then
-        local effect = target:getStatusEffect(xi.effect.NUKE_WALL)
-
+    if effect then
         -- Current nuke wall effect.
-        if spellElement == effect:getSubPower() then
-            potency = effect:getPower()
+        potency = effect:getPower()
 
-            -- Effect potency is reduced by 20% after 1 second and remains stable for the remaining time, unless refreshed.
-            if effect:getTimeRemaining() <= 4000 then
-                potency = utils.clamp(potency - 2000, 0, 4000) -- Potency is reduced by 2000 (20%) after first second has happened. Can't go below 0.
-            end
+        -- Effect potency is reduced by 20% after 1 second and remains stable for the remaining time, unless refreshed.
+        if effect:getTimeRemaining() <= 4000 then
+            potency = utils.clamp(potency - 2000, 0, 4000) -- Potency is reduced by 2000 (20%) after first second has happened. Can't go below 0.
         end
 
         -- Rayke effect.
@@ -1223,10 +1220,8 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * magicBurstBonus)
 
     -- Handle "Nuke Wall". It must be handled after all previous calculations, but before clamp.
-    if absorb > 0 then
-        local nukeWallFactor = xi.spells.damage.calculateNukeWallFactor(target, spellElement, finalDamage)
-        finalDamage          = math.floor(finalDamage * nukeWallFactor)
-    end
+    local nukeWallFactor = calculateNukeWallFactor(target, spellElement, finalDamage)
+    finalDamage          = math.floor(finalDamage * nukeWallFactor)
 
     -- Handle Magic Absorb message and HP recovery.
     if finalDamage < 0 then

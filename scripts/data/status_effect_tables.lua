@@ -61,6 +61,7 @@ xi.data.statusEffect.dataTable =
     [xi.effect.SLEEP_I      ] = { 0,               0,               0,                  xi.element.DARK,    xi.immunity.DARK_SLEEP, xi.mod.SLEEPRES,    xi.mod.DARK_SLEEP_RES_RANK, xi.mod.SLEEP_MEVA,    xi.mod.SLEEP_IMMUNOBREAK    },
     [xi.effect.SLOW         ] = { 0,               xi.effect.HASTE, 0,                  xi.element.EARTH,   xi.immunity.SLOW,       xi.mod.SLOWRES,     xi.mod.SLOW_RES_RANK,       xi.mod.SLOW_MEVA,     xi.mod.SLOW_IMMUNOBREAK     },
     [xi.effect.STUN         ] = { 0,               0,               0,                  xi.element.THUNDER, xi.immunity.STUN,       xi.mod.STUNRES,     0,                          xi.mod.STUN_MEVA,     0                           },
+    [xi.effect.TERROR       ] = { 0,               0,               0,                  0,                  xi.immunity.TERROR,     0,                  0,                          0,                    0                           }, -- TODO: implement Resist Terror https://www.bg-wiki.com/ffxi/Resist_Terror, TODO: sometimes Terror has an element, but sometimes it does not. It seems it may only be player based effects?
     [xi.effect.WEIGHT       ] = { 0,               0,               0,                  xi.element.WIND,    xi.immunity.GRAVITY,    xi.mod.GRAVITYRES,  0,                          xi.mod.GRAVITY_MEVA,  xi.mod.GRAVITY_IMMUNOBREAK  },
 }
 
