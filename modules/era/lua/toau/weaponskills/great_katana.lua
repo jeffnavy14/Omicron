@@ -1,10 +1,10 @@
 -----------------------------------
-require('modules/module_utils')
------------------------------------
 -- Date : 2007-11-19 (One day prior to WoTG release)
 -----------------------------------
-local m = Module:new('toau_great_katana')
+require('modules/module_utils')
 -----------------------------------
+
+local m = Module:new('toau_great_katana')
 
 -----------------------------------
 -- Tachi: Enpi
@@ -201,7 +201,7 @@ m:addOverride('xi.actions.weaponskills.tachi_rana.onUseWeaponSkill', function(pl
     params.numHits   = 3
     params.ftpMod    = { 1.00, 1.00, 1.00 }
     params.str_wsc   = 0.35
-    params.accVaries = { 1.00, 1.25, 1.50 }
+    params.accVaries = { 0, 30, 60 } -- TODO: verify exact number
 
     -- Apply aftermath
     xi.aftermath.addStatusEffect(player, tp, xi.slot.MAIN, xi.aftermath.type.MYTHIC)

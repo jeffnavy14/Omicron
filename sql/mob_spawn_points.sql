@@ -51822,24 +51822,24 @@ INSERT INTO `mob_spawn_points` VALUES (17367264,0,'Osschaarts_Avatar','Osschaart
 INSERT INTO `mob_spawn_points` VALUES (17367265,0,'Osschaarts_Automaton','Osschaart\'s Automaton',40,-177.358,60.188,-141.977,124);
 
 -- Operation Desert Swarm
-INSERT INTO `mob_spawn_points` VALUES (17367266,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.000,60.000,-142.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367267,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.000,60.000,-139.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367268,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.000,60.000,-145.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367269,0,'Platoon_Scorpion','Platoon Scorpion',41,-172.000,59.000,-145.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367270,0,'Platoon_Scorpion','Platoon Scorpion',41,-172.000,60.000,-141.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367271,0,'Platoon_Scorpion','Platoon Scorpion',41,-171.000,59.000,-139.000,124);
-INSERT INTO `mob_spawn_points` VALUES (17367273,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,0.000,17.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367274,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,0.000,20.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367275,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,0.000,14.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367276,0,'Platoon_Scorpion','Platoon Scorpion',41,28.274,-1.000,14.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367277,0,'Platoon_Scorpion','Platoon Scorpion',41,28.274,0.000,18.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367278,0,'Platoon_Scorpion','Platoon Scorpion',41,29.274,-1.000,20.964,124);
-INSERT INTO `mob_spawn_points` VALUES (17367280,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.000,137.946,124);
-INSERT INTO `mob_spawn_points` VALUES (17367281,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.000,140.946,124);
-INSERT INTO `mob_spawn_points` VALUES (17367282,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.000,134.946,124);
-INSERT INTO `mob_spawn_points` VALUES (17367283,0,'Platoon_Scorpion','Platoon Scorpion',41,228.224,-61.000,134.946,124);
-INSERT INTO `mob_spawn_points` VALUES (17367284,0,'Platoon_Scorpion','Platoon Scorpion',41,228.224,-60.000,138.946,124);
-INSERT INTO `mob_spawn_points` VALUES (17367285,0,'Platoon_Scorpion','Platoon Scorpion',41,229.224,-61.000,140.946,124);
+INSERT INTO `mob_spawn_points` VALUES (17367266,0,'Platoon_Scorpion','Platoon Scorpion',41,-179.358,59.695,-142.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367267,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.358,59.797,-145.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367268,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.358,59.797,-139.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367269,0,'Platoon_Scorpion','Platoon Scorpion',41,-175.358,59.695,-142.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367270,0,'Platoon_Scorpion','Platoon Scorpion',41,-179.358,59.797,-139.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367271,0,'Platoon_Scorpion','Platoon Scorpion',41,-179.358,59.797,-145.018,128);
+INSERT INTO `mob_spawn_points` VALUES (17367273,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,-0.305,17.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367274,0,'Platoon_Scorpion','Platoon Scorpion',41,29.274,-0.203,14.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367275,0,'Platoon_Scorpion','Platoon Scorpion',41,29.274,-0.203,20.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367276,0,'Platoon_Scorpion','Platoon Scorpion',41,29.274,-0.305,17.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367277,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,-0.203,20.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367278,0,'Platoon_Scorpion','Platoon Scorpion',41,25.274,-0.203,14.964,128);
+INSERT INTO `mob_spawn_points` VALUES (17367280,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.305,137.946,128);
+INSERT INTO `mob_spawn_points` VALUES (17367281,0,'Platoon_Scorpion','Platoon Scorpion',41,229.224,-60.203,134.946,128);
+INSERT INTO `mob_spawn_points` VALUES (17367282,0,'Platoon_Scorpion','Platoon Scorpion',41,229.224,-60.203,140.946,128);
+INSERT INTO `mob_spawn_points` VALUES (17367283,0,'Platoon_Scorpion','Platoon Scorpion',41,229.224,-60.305,137.946,128);
+INSERT INTO `mob_spawn_points` VALUES (17367284,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.203,140.946,128);
+INSERT INTO `mob_spawn_points` VALUES (17367285,0,'Platoon_Scorpion','Platoon Scorpion',41,225.224,-60.203,134.946,128);
 
 -- Prehistoric Pigeons
 INSERT INTO `mob_spawn_points` VALUES (17367287,0,'Titanis_Max','Titanis Max',42,-179.358,59.778,-140.518,128);
@@ -71595,7 +71595,7 @@ INSERT INTO `mob_spawn_points` VALUES (17649791,0,'Goblin_Bouncer','Goblin Bounc
 INSERT INTO `mob_spawn_points` VALUES (17649792,0,'Goblin_Hunter','Goblin Hunter',12,63.429,10.982,59.969,122);
 INSERT INTO `mob_spawn_points` VALUES (17649793,0,'Goblin_Hunter','Goblin Hunter',12,67.934,11.652,57.001,117);
 INSERT INTO `mob_spawn_points` VALUES (17649794,0,'Goblin_Miner','Goblin Miner',10,92.244,12.611,51.699,0);
-INSERT INTO `mob_spawn_points` VALUES (17649795,0,'Hellion','Hellion',22,129.000,15.000,215.000,49);
+INSERT INTO `mob_spawn_points` VALUES (17649795,0,'Hellion','Hellion',22,97.454,14.882,58.474,49);
 INSERT INTO `mob_spawn_points` VALUES (17649796,0,'Flying_Manta','Flying Manta',15,121.000,14.000,59.000,91);
 INSERT INTO `mob_spawn_points` VALUES (17649797,0,'Tainted_Flesh','Tainted Flesh',23,136.566,14.708,70.077,127);
 INSERT INTO `mob_spawn_points` VALUES (17649798,0,'Goblin_Bouncer','Goblin Bouncer',11,106.777,14.600,106.716,168);
@@ -71660,7 +71660,7 @@ INSERT INTO `mob_spawn_points` VALUES (17649856,0,'Boribaba','Boribaba',32,22.00
 INSERT INTO `mob_spawn_points` VALUES (17649857,0,'Boribaba','Boribaba',32,4.000,5.000,287.000,127);
 INSERT INTO `mob_spawn_points` VALUES (17649858,0,'Air_Elemental','Air Elemental',5,20.325,4.091,233.179,127);
 INSERT INTO `mob_spawn_points` VALUES (17649859,0,'Water_Elemental','Water Elemental',18,15.764,5.079,268.452,127);
-INSERT INTO `mob_spawn_points` VALUES (17649860,0,'Ubume','Ubume',33,-176.000,10.000,-59.000,25);
+INSERT INTO `mob_spawn_points` VALUES (17649860,0,'Ubume','Ubume',33,-180.802,9.323,-57.534,25);
 INSERT INTO `mob_spawn_points` VALUES (17649861,0,'Megapod_Megalops','Megapod Megalops',34,115.000,14.680,164.100,92);
 INSERT INTO `mob_spawn_points` VALUES (17649862,0,'Voso','Voso',35,-124.003,-0.189,126.307,56);
 INSERT INTO `mob_spawn_points` VALUES (17649863,0,'Voso','Voso',35,-29.863,4.967,55.237,78);

@@ -21,10 +21,18 @@ zoneObject.onZoneIn = function(player, prevZone)
         player:setPos(position, -2.100, 3.250, 64)
     end
 
+    -- Enagakure pop mechanics.
+    local engakure = GetMobByID(ID.mob.ENAGAKURE)
+    local hour     = VanadielHour()
+
     if
+        engakure and
+        not engakure:isSpawned() and
+        VanadielUniqueDay() > engakure:getLocalVar('despawnDay') and
+        hour < 4 and
+        hour >= 20 and
         player:hasKeyItem(xi.ki.SEANCE_STAFF) and
-        player:getCharVar('Enagakure_Killed') == 0 and
-        not GetMobByID(ID.mob.ENAGAKURE):isSpawned()
+        player:getCharVar('Enagakure_Killed') == 0
     then
         SpawnMob(ID.mob.ENAGAKURE)
     end
@@ -42,6 +50,38 @@ end
 zoneObject.onEventFinish = function(player, csid, option, npc)
     if csid == 255 then
         player:setPos(0, 0, 0, 0, xi.zone.SELBINA)
+    end
+end
+
+zoneObject.onGameHour = function(zone)
+    -- Enagakure pop mechanics.
+    local engakure = GetMobByID(ID.mob.ENAGAKURE)
+    local hour     = VanadielHour()
+
+    if engakure then
+        if engakure:isSpawned() then
+            if
+                hour >= 4 and hour < 20 and -- Not night-time.
+                not engakure:isEngaged()    -- Not engaged.
+            then
+                DespawnMob(ID.mob.ENAGAKURE)
+            end
+        else
+            if
+                hour < 4 and hour >= 20 and                              -- Night-time.
+                VanadielUniqueDay() > engakure:getLocalVar('despawnDay') -- Can spawn today.
+            then
+                for _, player in pairs(zone:getPlayers()) do
+                    if
+                        player:hasKeyItem(xi.ki.SEANCE_STAFF) and
+                        player:getCharVar('Enagakure_Killed') == 0
+                    then
+                        SpawnMob(ID.mob.ENAGAKURE)
+                        break
+                    end
+                end
+            end
+        end
     end
 end
 

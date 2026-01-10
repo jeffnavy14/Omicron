@@ -17,12 +17,12 @@ end
 -----------------------------------
 
 -- is a lottery NM already spawned or primed to pop?
-local function lotteryPrimed(phList)
+local function lotteryPrimed(phList, nmId)
     local nm
 
     for k, v in pairs(phList) do
         nm = GetMobByID(v)
-        if nm ~= nil and (nm:isSpawned() or nm:getRespawnTime() ~= 0) then
+        if v == nmId and nm ~= nil and (nm:isSpawned() or nm:getRespawnTime() ~= 0) then
             return true
         end
     end
@@ -150,7 +150,7 @@ xi.mob.phOnDespawn = function(ph, phNmId, chance, cooldown, params)
 
     if
         GetSystemTime() <= pop or
-        lotteryPrimed(phList) or
+        lotteryPrimed(phList, nmId) or
         math.random(1, 1000) > chance
     then
         return false

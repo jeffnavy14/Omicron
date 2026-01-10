@@ -99,7 +99,7 @@ enum BEHAVIOR : uint16
     BEHAVIOR_NO_DESPAWN   = 0x001, // mob does not despawn on death
     BEHAVIOR_STANDBACK    = 0x002, // mob will standback forever
     BEHAVIOR_RAISABLE     = 0x004, // mob can be raised via Raise spells
-    BEHAVIOR_NOHELP       = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
+    BEHAVIOR_NO_ASSIST    = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
     BEHAVIOR_AGGRO_AMBUSH = 0x200, // mob aggroes by ambush
     BEHAVIOR_NO_TURN      = 0x400  // mob does not turn to face target
 };

@@ -78,6 +78,9 @@ xi.mobSkill =
 
     VELOCIOUS_BLADE               =  347, -- Mammet-800
 
+    WILD_RAGE                     =  354,
+    EARTH_POUNDER                 =  355,
+
     HEAVY_BLOW                    =  357,
     HEAVY_WHISK                   =  358,
     BIONIC_BOOST                  =  359,
@@ -131,6 +134,10 @@ xi.mobSkill =
     PERCUSSIVE_FOIN               =  447, -- Mammet-800
 
     GRAVITY_WHEEL                 =  457, -- Mammet-800
+
+    CROSS_ATTACK_1                =  460,
+
+    MAELSTROM_1                   =  462,
 
     PSYCHOMANCY                   =  464, -- Mammet-800
 
@@ -531,7 +538,32 @@ xi.mobSkill =
     REACTOR_OVERHEAT              = 1468,
     REACTOR_OVERLOAD              = 1469,
 
-    DEADALUS_WING_COP_PRISHE      = 1487, -- Dwing COP 8-4 Dawn
+    HUNDRED_FISTS_PRISHE          = 1485,
+    BENEDICTION_PRISHE            = 1486,
+    ITEM_1_PRISHE                 = 1487,
+    ITEM_2_PRISHE                 = 1488,
+    NULLIFYING_DROPKICK_1         = 1489,
+    AURORAL_UPPERCUT_1            = 1490,
+    CHAINS_OF_APATHY              = 1491,
+    CHAINS_OF_ARROGANCE           = 1492,
+    CHAINS_OF_COWARDICE           = 1493,
+    CHAINS_OF_RAGE                = 1494,
+    CHAINS_OF_ENVY                = 1495,
+    MALEVOLENT_BLESSING_1         = 1496,
+    PESTILENT_PENANCE_1           = 1497,
+    EMPTY_SALVATION_1             = 1498,
+    INFERNAL_DELIVERANCE_1        = 1499,
+    MALEVOLENT_BLESSING_2         = 1500,
+    PESTILENT_PENANCE_2           = 1501,
+    EMPTY_SALVATION_2             = 1502,
+    INFERNAL_DELIVERANCE_2        = 1503,
+    WHEEL_OF_IMPREGNABILITY       = 1504,
+    BASTION_OF_TWILIGHT           = 1505,
+    WINDS_OF_OBLIVION             = 1506,
+    SEAL_OF_QUIESCENCE            = 1507,
+    LUMINOUS_LANCE_1              = 1508,
+    REJUVENATION_1                = 1509,
+    REVELATION_1                  = 1510,
 
     HOWLING_MOON_3                = 1520, -- Unknown usage.
 

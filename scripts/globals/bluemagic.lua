@@ -153,6 +153,70 @@ local function calculateCorrelation(spellEcosystem, monsterEcosystem, merits)
     return effect
 end
 
+-- Consecutive Elemental Damage Penalty. Most commonly known as "Nuke Wall".
+-- NOTE: Duplicate of the same function in damage_spell.lua, until Blue magic gets rewritten.
+local function calculateNukeWallFactor(target, spellElement, finalDamage)
+    -- Initial check.
+    if
+        not target:isNM() or               -- Target is not an NM.
+        spellElement <= xi.element.NONE or -- Action isn't elemental.
+        finalDamage < 0                    -- Action heals target.
+    then
+        return 1
+    end
+
+    -----------------------------------
+    -- Fetch current wall potency and math based on time and Ruake
+    -----------------------------------
+    local potency = 0
+    local effect  = target:getStatusEffect(xi.effect.NUKE_WALL)
+
+    if effect then
+        -- Current nuke wall effect.
+        potency = effect:getPower()
+
+        -- Effect potency is reduced by 20% after 1 second and remains stable for the remaining time, unless refreshed.
+        if effect:getTimeRemaining() <= 4000 then
+            potency = utils.clamp(potency - 2000, 0, 4000) -- Potency is reduced by 2000 (20%) after first second has happened. Can't go below 0.
+        end
+
+        -- Rayke effect.
+        if target:hasStatusEffect(xi.effect.RAYKE) then
+            local raykeSubpower = target:getStatusEffect(xi.effect.RAYKE):getSubPower()
+
+            -- current bit size of subPower is 16 bits, 4*4 = 16
+            -- Step from 0 to 16 in increments of 4...
+            for i = 0, 16, 4 do
+                -- If element is bitpacked into rayke subeffect...
+                if bit.band(bit.rshift(raykeSubpower, i), 0xF) == spellElement then
+                    potency = math.floor(potency / 2)
+
+                    break
+                end
+            end
+        end
+
+        target:delStatusEffectSilent(xi.effect.NUKE_WALL)
+    end
+
+    -----------------------------------
+    -- Calculate new potency after this nuke and renew effect.
+    -----------------------------------
+    -- Calculate damage needed to reach the potency cap (4000). The lower the level, the easier to hit potency cap.
+    local damageCap = target:getMainLvl() * 21 + 500
+
+    -- Calculate new potency, based on existing potency and damage dealt (compared to mob level).
+    local finalPotency = utils.clamp(math.floor(4000 * finalDamage / damageCap) + potency, 0, 4000)
+
+    -- Renew status effect without messages.
+    target:addStatusEffectEx(xi.effect.NUKE_WALL, 0, finalPotency, 0, 5, 0, spellElement)
+
+    -----------------------------------
+    -- We return JUST the factor based on previous nuke. This nuke only affects the next one.
+    -----------------------------------
+    return 1 - potency / 10000
+end
+
 -----------------------------------
 -- Global functions
 -----------------------------------
@@ -511,6 +575,8 @@ xi.spells.blue.useBreathSpell = function(caster, target, spell, params)
 
     dmg = math.floor(dmg * correlationMultiplier)
     dmg = math.floor(dmg * breathSDT)
+    dmg = math.floor(dmg * absorb)
+    dmg = math.floor(dmg * nullify)
     dmg = math.floor(dmg * targetMagicDamageAdjustment)
     dmg = math.floor(dmg * elementalStaffBonus)
     dmg = math.floor(dmg * elementalAffinityBonus)
@@ -524,12 +590,7 @@ xi.spells.blue.useBreathSpell = function(caster, target, spell, params)
     dmg = math.floor(dmg * ninjutsuMultiplier)
     dmg = math.floor(dmg * scarletDeliriumMultiplier)
     dmg = math.floor(dmg * areaOfEffectResistance)
-
-    -- Handle "Nuke Wall". It must be handled after all previous calculations, but before clamp.
-    if absorb ~= 1 and nullify ~= 1 then
-        local nukeWallFactor = xi.spells.damage.calculateNukeWallFactor(target, spellElement, dmg)
-        dmg          = math.floor(dmg * nukeWallFactor)
-    end
+    dmg = math.floor(dmg * calculateNukeWallFactor(target, spellElement, dmg))
 
     -- Handle Magic Absorb message and HP recovery.
     if dmg < 0 then
@@ -554,7 +615,7 @@ xi.spells.blue.useBreathSpell = function(caster, target, spell, params)
 
     -- Handle TP
     local tpHits        = params.tphitslanded or 0
-    local extraTPGained = xi.combat.tp.calculateTPGainOnMagicalDamage(dmg, caster, target) * math.max(tpHits - 1, 0) -- Calculate extra TP gained from multihits. takeSpellDamage accounts for one already.
+    local extraTPGained = xi.combat.tp.calculateTPGainOnMagicalDamage(caster, target, dmg) * math.max(tpHits - 1, 0) -- Calculate extra TP gained from multihits. takeSpellDamage accounts for one already.
     target:addTP(extraTPGained)
 
     -- Handle Afflatus Misery.
@@ -572,7 +633,7 @@ xi.spells.blue.applySpellDamage = function(caster, target, spell, dmg, params, t
     local attackType    = params.attackType or xi.attackType.NONE
     local damageType    = params.damageType or xi.damageType.NONE
     local tpHits        = params.tphitslanded or 0
-    local extraTPGained = xi.combat.tp.calculateTPGainOnMagicalDamage(dmg, caster, target) * math.max(tpHits - 1, 0) -- Calculate extra TP gained from multihits. takeSpellDamage accounts for one already.
+    local extraTPGained = xi.combat.tp.calculateTPGainOnMagicalDamage(caster, target, dmg) * math.max(tpHits - 1, 0) -- Calculate extra TP gained from multihits. takeSpellDamage accounts for one already.
 
     -- handle MDT, One For All, Liement
     if attackType == xi.attackType.MAGICAL then
