@@ -432,27 +432,27 @@ bool CMobEntity::CanBeNeutral() const
     return !(m_Type & MOBTYPE_NOTORIOUS);
 }
 
-uint16 CMobEntity::TPUseChance()
+bool CMobEntity::shouldUseTPMove(uint16 tpThreshold)
 {
     const auto& MobSkillList = battleutils::GetMobSkillList(getMobMod(MOBMOD_SKILL_LIST));
 
     if (health.tp < 1000 || MobSkillList.empty() || !static_cast<CMobController*>(PAI->GetController())->IsWeaponSkillEnabled())
     {
-        return 0;
+        return false;
     }
 
-    if (health.tp == 3000 || (GetHPP() <= 25 && health.tp >= 1000))
+    if (health.tp == 3000 || (GetHPP() < 25 && health.tp >= 1000))
     {
-        return 10000;
+        return true;
     }
 
     // mobs use three mob skills in a row under Meikyo Shisui
     if (StatusEffectContainer->HasStatusEffect(EFFECT_MEIKYO_SHISUI) && GetLocalVar("[MeikyoShisui]MobSkillCount") > 0)
     {
-        return 10000;
+        return true;
     }
 
-    return (uint16)getMobMod(MOBMOD_TP_USE_CHANCE);
+    return health.tp >= tpThreshold;
 }
 
 void CMobEntity::setMobMod(uint16 type, int16 value)

@@ -125,7 +125,7 @@ public:
     bool IsFarFromHome();      // check if mob is too far from spawn
     bool CanBeNeutral() const; // check if mob can have killing pause
 
-    uint16 TPUseChance(); // return % chance to use TP move per 400ms tick
+    bool shouldUseTPMove(uint16 tpThreshold); // return true to use a TP move, checked on on 400ms tick interval
 
     bool              CanDeaggro() const;
     timer::time_point GetDespawnTime();

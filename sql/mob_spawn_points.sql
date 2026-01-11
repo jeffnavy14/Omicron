@@ -57339,7 +57339,7 @@ INSERT INTO `mob_spawn_points` VALUES (17432999,0,'Tonberry_Beleaguerer','Tonber
 INSERT INTO `mob_spawn_points` VALUES (17433000,0,'Tonberrys_Elemental','Tonberry\'s Elemental',15,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17433001,0,'Tonberry_Tracker','Tonberry Tracker',34,-167.336,15.851,-120.259,100);
 INSERT INTO `mob_spawn_points` VALUES (17433002,0,'Tonberry_Decapitator','Tonberry Decapitator',33,-165.510,15.833,-116.849,124);
-INSERT INTO `mob_spawn_points` VALUES (17433003,0,'Tonberry_Pontifex','Tonberry Pontifex',35,-209.505,11.943,-95.768,19);
+INSERT INTO `mob_spawn_points` VALUES (17433003,0,'Tonberry_Pontifex','Tonberry Pontifex',35,-164.725,16.416,-116.191,19);
 INSERT INTO `mob_spawn_points` VALUES (17433004,0,'Tonberry_Tracker','Tonberry Tracker',34,-188.621,15.588,-100.234,127);
 INSERT INTO `mob_spawn_points` VALUES (17433005,0,'Hakutaku','Hakutaku',36,24.000,25.000,-306.000,121);
 INSERT INTO `mob_spawn_points` VALUES (17433006,0,'Mokumokuren','Mokumokuren',37,118.000,36.000,-283.000,127);
@@ -71045,9 +71045,9 @@ INSERT INTO `mob_spawn_points` VALUES (17629635,0,'Antican_Aedilis','Antican Aed
 INSERT INTO `mob_spawn_points` VALUES (17629636,0,'Antican_Triarius','Antican Triarius',21,-293.644,1.500,357.930,127);
 INSERT INTO `mob_spawn_points` VALUES (17629637,0,'Antican_Antesignanus','Antican Antesignanus',22,-270.000,2.000,364.000,41);
 INSERT INTO `mob_spawn_points` VALUES (17629638,0,'Antican_Aedilis','Antican Aedilis',24,-271.000,1.692,351.000,127);
-INSERT INTO `mob_spawn_points` VALUES (17629639,0,'Antican_Praetor','Antican Praetor',32,-289.386,1.183,344.079,127);
-INSERT INTO `mob_spawn_points` VALUES (17629640,0,'Antican_Legatus','Antican Legatus',33,-293.956,1.475,349.329,47);
-INSERT INTO `mob_spawn_points` VALUES (17629641,0,'Antican_Consul','Antican Consul',34,-292.788,1.005,364.436,127);
+INSERT INTO `mob_spawn_points` VALUES (17629639,0,'Antican_Praetor','Antican Praetor',32,-298.904,-2.441,377.605,127);
+INSERT INTO `mob_spawn_points` VALUES (17629640,0,'Antican_Legatus','Antican Legatus',33,-297.699,-2.414,384.209,47);
+INSERT INTO `mob_spawn_points` VALUES (17629641,0,'Antican_Consul','Antican Consul',34,-304.720,-2.634,380.664,127);
 INSERT INTO `mob_spawn_points` VALUES (17629642,0,'Ancient_Vessel','Ancient Vessel',35,-500.000,19.000,-422.000,185);
 INSERT INTO `mob_spawn_points` VALUES (17629643,0,'Tribunus_VII-I','Tribunus VII-I',36,-47.410,-0.312,-139.298,127);
 INSERT INTO `mob_spawn_points` VALUES (17629644,0,'Proconsul_XII','Proconsul XII',37,-392.671,-0.181,692.656,127);
