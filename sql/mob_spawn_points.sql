@@ -73872,7 +73872,7 @@ INSERT INTO `mob_spawn_points` VALUES (17707022,0,'Crossbones','Crossbones',11,-
 INSERT INTO `mob_spawn_points` VALUES (17707023,0,'Crossbones','Crossbones',11,7.177,-7.309,17.648,54);
 INSERT INTO `mob_spawn_points` VALUES (17707024,0,'Ship_Wight','Ship Wight',12,-0.725,-7.312,23.111,60);
 INSERT INTO `mob_spawn_points` VALUES (17707025,0,'Blackbeard','Blackbeard',13,-6.387,-11.662,-13.986,56);
-INSERT INTO `mob_spawn_points` VALUES (17707026,0,'Enagakure','Enagakure',14,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17707026,0,'Enagakure','Enagakure',14,1.000,-7.000,13.000,60);
 
 -- ------------------------------------------------------------
 -- Ship Bound for Mhaura Pirates (Zone 228)
