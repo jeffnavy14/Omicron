@@ -53,7 +53,9 @@ m:addOverride('xi.actions.weaponskills.brainshaker.onUseWeaponSkill', function(p
     local effectId      = xi.effect.STUN
     local actionElement = xi.element.THUNDER
     local power         = 1
-    local duration      = math.floor(tp / 500 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.CLUB
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(tp / 500 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
@@ -90,7 +92,7 @@ m:addOverride('xi.actions.weaponskills.skullbreaker.onUseWeaponSkill', function(
     local params   = {}
     params.numHits = 1
     params.ftpMod  = { 1.00, 1.00, 1.00 }
-    params.str_wsc = 0.3
+    params.str_wsc = 0.35
 
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
 
@@ -98,7 +100,9 @@ m:addOverride('xi.actions.weaponskills.skullbreaker.onUseWeaponSkill', function(
     local effectId      = xi.effect.INT_DOWN
     local actionElement = xi.element.FIRE
     local power         = 10
-    local duration      = math.floor(140 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.CLUB
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(140 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
     return tpHits, extraHits, criticalHit, damage
 end)
@@ -181,7 +185,9 @@ m:addOverride('xi.actions.weaponskills.randgrith.onUseWeaponSkill', function(pla
     local effectId      = xi.effect.EVASION_DOWN
     local actionElement = xi.element.ICE
     local power         = 32
-    local duration      = math.floor(120 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.CLUB
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(120 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage

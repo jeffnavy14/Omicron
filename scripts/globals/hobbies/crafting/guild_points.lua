@@ -20,8 +20,8 @@ xi.crafting.hqCrystals =
     [4] = { id = xi.item.TERRA_CRYSTAL,    cost =  200 },
     [5] = { id = xi.item.PLASMA_CRYSTAL,   cost =  200 },
     [6] = { id = xi.item.TORRENT_CRYSTAL,  cost =  200 },
-    [7] = { id = xi.item.AURORA_CRYSTAL,   cost =  500 },
-    [8] = { id = xi.item.TWILIGHT_CRYSTAL, cost =  500 },
+    [7] = { id = xi.item.AURORA_CRYSTAL,   cost =  200 },
+    [8] = { id = xi.item.TWILIGHT_CRYSTAL, cost =  200 },
 }
 
 xi.crafting.guildKeyItemTable =

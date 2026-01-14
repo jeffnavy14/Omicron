@@ -69,7 +69,9 @@ m:addOverride('xi.actions.weaponskills.nightmare_scythe.onUseWeaponSkill', funct
     local effectId      = xi.effect.BLINDNESS
     local actionElement = xi.element.DARK
     local power         = 20
-    local duration      = math.floor((6 * tp / 100) * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.SCYTHE
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor((6 * tp / 100) * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
@@ -120,7 +122,9 @@ m:addOverride('xi.actions.weaponskills.guillotine.onUseWeaponSkill', function(pl
     local effectId      = xi.effect.SILENCE
     local actionElement = xi.element.WIND
     local power         = 1
-    local duration      = math.floor((30 + 3 * tp / 100) * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.SCYTHE
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor((30 + 3 * tp / 100) * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage

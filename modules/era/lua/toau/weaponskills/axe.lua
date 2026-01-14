@@ -34,7 +34,9 @@ m:addOverride('xi.actions.weaponskills.smash_axe.onUseWeaponSkill', function(pla
     local effectId      = xi.effect.STUN
     local actionElement = xi.element.THUNDER
     local power         = 1
-    local duration      = math.floor(tp / 500 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.AXE
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(tp / 500 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
@@ -55,7 +57,9 @@ m:addOverride('xi.actions.weaponskills.gale_axe.onUseWeaponSkill', function(play
     local effectId      = xi.effect.CHOKE
     local actionElement = xi.element.WIND
     local power         = 5
-    local duration      = math.floor(90 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.AXE
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(90 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
@@ -159,7 +163,9 @@ m:addOverride('xi.actions.weaponskills.onslaught.onUseWeaponSkill', function(pla
     local effectId      = xi.effect.ACCURACY_DOWN
     local actionElement = xi.element.EARTH
     local power         = 30
-    local duration      = math.floor(120 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.AXE
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(120 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage

@@ -34,7 +34,9 @@ m:addOverride('xi.actions.weaponskills.shoulder_tackle.onUseWeaponSkill', functi
     local effectId      = xi.effect.STUN
     local actionElement = xi.element.THUNDER
     local power         = 1
-    local duration      = math.floor(tp / 500 * applyResistanceAddEffect(player, target, actionElement, 0))
+    local skillType     = xi.skill.HAND_TO_HAND
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(tp / 500 * resist)
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
@@ -60,7 +62,7 @@ end)
 m:addOverride('xi.actions.weaponskills.backhand_blow.onUseWeaponSkill', function(player, target, wsID, tp, primary, action, taChar)
     local params      = {}
     params.numHits    = 2
-    params.ftpMod     = { 1.00, 1.50, 2.00 }
+    params.ftpMod     = { 1.00, 1.00, 1.00 }
     params.str_wsc    = 0.3
     params.dex_wsc    = 0.3
     params.critVaries = { 0.40, 0.60, 0.80 }

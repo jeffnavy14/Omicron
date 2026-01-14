@@ -30,7 +30,7 @@ enum class MsgBasic : uint16_t;
 class CMobSpellContainer;
 class CMobSpellList;
 class CEnmityContainer;
-class spawnGroup;
+class SpawnSlot;
 
 enum SPAWNTYPE
 {
@@ -130,10 +130,14 @@ public:
     bool              CanDeaggro() const;
     timer::time_point GetDespawnTime();
     void              SetDespawnTime(timer::duration _duration);
-    uint32            GetRandomGil();   // returns a random amount of gil
-    bool              CanRoamHome();    // is it possible for me to walk back?
-    bool              CanRoam();        // check if mob can walk around
-    void              TapDeaggroTime(); // call CMobController->TapDeaggroTime if PAI->GetController() is a CMobController, otherwise do nothing.
+    void              SetSpawnSlot(SpawnSlot* sharedSpawn);
+    SpawnSlot*        GetSpawnSlot();
+    bool              TrySpawn();
+
+    uint32 GetRandomGil();   // returns a random amount of gil
+    bool   CanRoamHome();    // is it possible for me to walk back?
+    bool   CanRoam();        // check if mob can walk around
+    void   TapDeaggroTime(); // call CMobController->TapDeaggroTime if PAI->GetController() is a CMobController, otherwise do nothing.
 
     bool CanLink(position_t* pos, int16 superLink = 0);
     bool ShouldForceLink();
@@ -184,12 +188,12 @@ public:
 
     virtual void OnDespawn(CDespawnState&) override;
 
-    bool         CanSpawnFromGroup();
     virtual void Spawn() override;
     virtual void FadeOut() override;
     virtual bool isWideScannable() override;
 
-    bool            m_AllowRespawn; // if true, allow respawn
+    bool            m_AllowRespawn; // If true, this mob or another mob in the same slot is allowed to spawn
+    bool            m_CanSpawn;     // If true, it can currently spawn (usually based on time of day or weather)
     timer::duration m_RespawnTime;  // respawn time
     timer::duration m_DropItemTime; // time until monster death animation
 
@@ -259,8 +263,6 @@ public:
     uint32 m_flags;       // includes the CFH flag and whether the HP bar should be shown or not (e.g. Yilgeban doesnt)
     uint8  m_name_prefix; // The ding bats VS Ding bats
 
-    spawnGroup* m_spawnGroup; // spawn group this mob Belongs to
-
     uint8 m_unk0; // possibly campaign related (entity 0x24)
     uint8 m_unk1; // (entity_update 0x25)
     uint8 m_unk2; // (entity_update 0x26)
@@ -286,6 +288,7 @@ private:
     std::unordered_map<int, int16> m_mobModStat;
     std::unordered_map<int, int16> m_mobModStatSave;
     static constexpr float         roam_home_distance{ 60.f };
+    SpawnSlot*                     spawnSlot = nullptr;
 };
 
 #endif

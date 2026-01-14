@@ -66,11 +66,13 @@ m:addOverride('xi.actions.weaponskills.flat_blade.onUseWeaponSkill', function(pl
     local damage, criticalHit, tpHits, extraHits = xi.weaponskills.doPhysicalWeaponskill(player, target, wsID, params, tp, action, primary, taChar)
 
     -- Handle status effect
-    if math.random(1, 100) <= tp / 30 * applyResistanceAddEffect(player, target, xi.element.THUNDER, 0) then
-        local effectId      = xi.effect.STUN
-        local actionElement = xi.element.THUNDER
+    local effectId      = xi.effect.STUN
+    local actionElement = xi.element.THUNDER
+    local skillType     = xi.skill.SWORD
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    if math.random(1, 100) <= tp / 30 * resist then
         local power         = 1
-        local duration      = math.floor(4 * applyResistanceAddEffect(player, target, actionElement, 0))
+        local duration      = math.floor(4 * resist)
         xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
     end
 
@@ -346,7 +348,9 @@ m:addOverride('xi.actions.weaponskills.death_blossom.onUseWeaponSkill', function
     local effectId      = xi.effect.MAGIC_EVASION_DOWN
     local actionElement = xi.element.THUNDER
     local power         = 10
-    local duration      = math.floor(60 * applyResistanceAddEffect(player, target, actionElement, 0)) -- TODO: Chance to apply varies with TP.
+    local skillType     = xi.skill.SWORD
+    local resist        = xi.combat.magicHitRate.calculateResistRate(player, target, 0, skillType, 0, actionElement, 0, effectId, 0)
+    local duration      = math.floor(60 * resist) -- TODO: Chance to apply varies with TP.
     xi.weaponskills.handleWeaponskillEffect(player, target, effectId, actionElement, damage, power, duration)
 
     return tpHits, extraHits, criticalHit, damage
