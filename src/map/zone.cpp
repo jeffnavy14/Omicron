@@ -212,6 +212,19 @@ void CZone::SetBackgroundMusicNight(uint16 music)
     m_zoneMusic.m_songNight = music;
 }
 
+// Add SetPreventSleep implementation here
+void CZone::SetPreventSleep(bool value)
+{
+    m_preventSleep = value;
+
+    // If we are forcing it awake, and the timer isn't running yet... START IT!
+    if (m_preventSleep && !ZoneTimer)
+    {
+        createZoneTimers();
+        ShowInfoFmt("Zone {} ({}) forced awake by SetPreventSleep.", GetID(), getName());
+    }
+}
+
 /**
  * Queries for entities (mobs or npcs) which name match the given pattern.
  *
@@ -826,12 +839,13 @@ void CZone::ZoneServer(timer::time_point tick)
 
     m_zoneEntities->ZoneServer(tick);
 
-    if (m_BattlefieldHandler != nullptr)
+if (m_BattlefieldHandler != nullptr)
     {
         m_BattlefieldHandler->HandleBattlefields(tick);
     }
 
-    if (ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
+    // Updated check to include !m_preventSleep
+    if (!m_preventSleep && ZoneTimer && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
     {
         ZoneTimer->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimer         = nullptr;

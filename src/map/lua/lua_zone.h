@@ -68,7 +68,7 @@ public:
     auto getPartyBattleMusic();
     auto getBackgroundMusicDay();
     auto getBackgroundMusicNight();
-
+    void setPreventSleep(bool value);
     void setSoloBattleMusic(uint16 musicId);
     void setPartyBattleMusic(uint16 musicId);
     void setBackgroundMusicDay(uint16 musicId);
