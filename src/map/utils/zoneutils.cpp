@@ -37,6 +37,7 @@
 #include "mob_modifier.h"
 #include "mob_spell_list.h"
 #include "mobutils.h"
+#include "spawn_handler.h"
 #include "spawn_slot.h"
 #include "zone_instance.h"
 
@@ -706,7 +707,7 @@ void LoadMOBList(const std::vector<uint16>& zoneIds)
 
             // Spawn mobs after they've all been initialized. Spawning some mobs will spawn other mobs that may not yet be initialized.
             PZone->ForEachMob(
-                [](CMobEntity* PMob)
+                [&PZone](CMobEntity* PMob)
                 {
                     // PMob->m_AllowRespawn initializes as false, so if it's true then mob:setRespawnTime was executed in OnMobInitialize
                     // This makes mob:setRespawnTime(X) behave consistently, making the mob spawn X seconds in the future
@@ -722,7 +723,8 @@ void LoadMOBList(const std::vector<uint16>& zoneIds)
                         {
                             PMob->m_AllowRespawn = true;
                         }
-                        PMob->PAI->Internal_Respawn(PMob->m_RespawnTime);
+
+                        PZone->spawnHandler()->registerForRespawn(PMob);
                     }
                 });
         });
