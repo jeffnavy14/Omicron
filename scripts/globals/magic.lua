@@ -111,7 +111,7 @@ function addBonusesAbility(caster, ele, target, dmg, params)
     local affinityBonus = xi.spells.damage.calculateElementalStaffBonus(caster, ele)
     dmg = math.floor(dmg * affinityBonus)
 
-    local magicDefense = xi.spells.damage.calculateSDT(target, ele)
+    local magicDefense = xi.combat.damage.magicalElementSDT(target, ele)
     dmg = math.floor(dmg * magicDefense)
 
     local dayWeatherBonus = xi.spells.damage.calculateDayAndWeather(caster, ele, false)

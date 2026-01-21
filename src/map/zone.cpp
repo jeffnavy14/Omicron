@@ -95,6 +95,13 @@ CZone::CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, ui
     LoadZoneLines();
     LoadZoneWeather();
 
+    SpawnHandlerTimer = CTaskManager::getInstance()->AddTask(m_zoneName + "_SpawnHandler", timer::now(), this, CTaskManager::TASK_INTERVAL, kSpawnHandlerInterval, [](const timer::time_point tick, const CTaskManager::CTask* PTask)
+                                                             {
+                                                                 const auto* PZone = std::any_cast<CZone*>(PTask->m_data);
+                                                                 PZone->spawnHandler()->Tick(tick);
+                                                                 return 0;
+                                                             });
+
     // NOTE: Heavy resources like Navmesh are now loaded outside of the constructor in zoneutils::LoadZoneList
 }
 
@@ -860,12 +867,6 @@ if (m_BattlefieldHandler != nullptr)
 
         ZoneTimerTriggerAreas->m_type = CTaskManager::TASK_REMOVE;
         ZoneTimerTriggerAreas         = nullptr;
-
-        if (SpawnHandlerTimer)
-        {
-            SpawnHandlerTimer->m_type = CTaskManager::TASK_REMOVE;
-            SpawnHandlerTimer         = nullptr;
-        }
     }
 }
 
@@ -973,15 +974,6 @@ void CZone::createZoneTimers()
         PZone->CheckTriggerAreas();
         return 0;
     });
-
-    SpawnHandlerTimer = CTaskManager::getInstance()->AddTask(m_zoneName + "_SpawnHandler", timer::now(), this, CTaskManager::TASK_INTERVAL, kSpawnHandlerInterval,
-    [](const timer::time_point tick, const CTaskManager::CTask* PTask)
-    {
-        const auto*  PZone = std::any_cast<CZone*>(PTask->m_data);
-        PZone->spawnHandler()->Tick(tick);
-        return 0;
-    });
-    // clang-format on
 }
 
 void CZone::CharZoneIn(CCharEntity* PChar)

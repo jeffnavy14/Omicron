@@ -58,6 +58,21 @@ void SpawnHandler::registerForRespawn(CMobEntity* PMob, const std::optional<time
     }
 }
 
+auto SpawnHandler::isRegistered(CMobEntity* PMob) const -> bool
+{
+    if (!PMob)
+    {
+        return false;
+    }
+
+    if (SpawnSlot* slot = PMob->GetSpawnSlot())
+    {
+        return pendingSlotRespawns_.contains(slot);
+    }
+
+    return pendingRespawns_.contains(PMob->id);
+}
+
 // Every 30 seconds, attempt to spawn any mob pending respawn.
 // Mobs are respawned if:
 // - Their respawn timer is due within the next 15s (half interval)

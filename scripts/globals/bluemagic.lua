@@ -419,7 +419,7 @@ xi.spells.blue.useMagicalSpell = function(caster, target, spell, params)
 
     finalDamage = math.floor(finalDamage * xi.combat.magicHitRate.calculateResistRate(caster, target, spellGroup, skillType, 0, spellElement, params.attribute, 0, 0))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateElementalStaffBonus(caster, spellElement))
-    finalDamage = math.floor(finalDamage * xi.spells.damage.calculateSDT(target, spellElement))
+    finalDamage = math.floor(finalDamage * xi.combat.damage.magicalElementSDT(target, spellElement))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateDayAndWeather(caster, spellElement, false))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement))
 
@@ -476,7 +476,7 @@ xi.spells.blue.useDrainSpell = function(caster, target, spell, params, damageCap
 
     finalDamage = math.floor(finalDamage * xi.combat.magicHitRate.calculateResistRate(caster, target, spellGroup, skillType, 0, spellElement, params.attribute, 0, 0))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateElementalStaffBonus(caster, spellElement))
-    finalDamage = math.floor(finalDamage * xi.spells.damage.calculateSDT(target, spellElement))
+    finalDamage = math.floor(finalDamage * xi.combat.damage.magicalElementSDT(target, spellElement))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateDayAndWeather(caster, spellElement, false))
     finalDamage = math.floor(finalDamage * xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement))
 
@@ -564,7 +564,7 @@ xi.spells.blue.useBreathSpell = function(caster, target, spell, params)
     local elementalAffinityBonus      = xi.spells.damage.calculateElementalAffinityBonus(caster, spellElement)
     local resistTier                  = xi.combat.magicHitRate.calculateResistRate(caster, target, spellFamily, xi.skill.BLUE_MAGIC, 0, spellElement, 0, 0, 0)
     local additionalResistTier        = xi.spells.damage.calculateAdditionalResistTier(caster, target, spellElement)
-    local elementalSDT                = xi.spells.damage.calculateSDT(target, spellElement)
+    local elementalSDT                = xi.combat.damage.magicalElementSDT(target, spellElement)
     local dayAndWeather               = xi.spells.damage.calculateDayAndWeather(caster, spellElement, false)
     local magicBonusDiff              = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, xi.skill.BLUE_MAGIC, spellElement)
     local skillTypeMultiplier         = xi.spells.damage.calculateSkillTypeMultiplier(xi.skill.BLUE_MAGIC)

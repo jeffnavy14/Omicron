@@ -370,7 +370,7 @@ xi.mobskills.mobMagicalMove = function(actor, target, action, baseDamage, action
     end
 
     -- Multipliers.
-    local sdt            = xi.spells.damage.calculateSDT(target, actionElement)
+    local sdt            = xi.combat.damage.magicalElementSDT(target, actionElement)
     local resistRate     = xi.combat.magicHitRate.calculateResistRate(actor, target, 0, 0, 0, actionElement, xi.mod.INT, 0, petAccBonus)
     local dayAndWeather  = xi.spells.damage.calculateDayAndWeather(actor, actionElement, false)
     local magicBonusDiff = xi.spells.damage.calculateMagicBonusDiff(actor, target, 0, 0, actionElement)
@@ -440,7 +440,7 @@ xi.mobskills.mobBreathMove = function(mob, target, skill, skillParams)
     mAccuracyBonus = xi.combat.physical.calculateTPfactor(skill:getTP(), mAccuracyBonusfTP)
 
     local systemBonus     = 1 + utils.getEcosystemStrengthBonus(mob:getEcosystem(), target:getEcosystem()) / 4
-    local elementalSDT    = xi.spells.damage.calculateSDT(target, actionElement)
+    local elementalSDT    = xi.combat.damage.magicalElementSDT(target, actionElement)
     local resistRate      = xi.combat.magicHitRate.calculateResistRate(mob, target, 0, 0, xi.skillRank.A_PLUS, actionElement, resistStat, 0, mAccuracyBonus)
     local dayAndWeather   = xi.spells.damage.calculateDayAndWeather(mob, actionElement, false)
     local absorb          = xi.spells.damage.calculateAbsorption(target, actionElement, true)

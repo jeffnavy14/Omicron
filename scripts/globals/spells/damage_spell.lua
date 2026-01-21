@@ -495,35 +495,11 @@ xi.spells.damage.calculateElementalAffinityBonus = function(caster, spellElement
     return affinityFactor
 end
 
--- Elemental Specific Damage Taken (Elemental SDT)
--- SDT (Species/Specific Damage Taken) is a stat/mod present in mobs and players that applies a % to specific damage types.
--- Each of the 8 elements has an SDT modifier (Modifiers 54 to 61. Check script(globals/status.lua)
--- Mob elemental modifiers are populated by the values set in "mob_resistances.sql" (The database). SDT columns.
--- The value of the modifiers are base 10000. Positive numbers mean less damage taken. Negative mean more damage taken.
--- Examples:
--- A value of 5000 -> 50% MORE damage taken.
--- A value of -5000 -> 50% LESS damage taken.
--- A word on SDT as understood in some wikis, even if they are refering to resistance and not actual SDT
--- SDT under 50% applies a flat 1/2 *, which was for a long time confused with an additional resist tier, which, in reality, its an independent multiplier.
--- This is understandable, because in a way, it is effectively a whole tier, but recent testing with skillchains/magic bursts after resist was removed from them, proved this.
--- SDT affects magic burst damage, but never in a "negative" way.
--- https://www.bg-wiki.com/ffxi/Resist for some SDT info.
--- *perhaps this simply means there is a cap/clamp limiting it there.
-xi.spells.damage.calculateSDT = function(target, spellElement)
-    local sdt = 1 -- The variable we want to calculate
-
-    if spellElement > xi.element.NONE then
-        sdt = 1 + target:getMod(xi.data.element.getElementalSDTModifier(spellElement)) / 10000
-    end
-
-    return utils.clamp(sdt, 0, 3)
-end
-
 xi.spells.damage.calculateAdditionalResistTier = function(caster, target, spellElement)
     local additionalResistTier = 1
 
     if
-        not caster:hasStatusEffect(xi.effect.SUBTLE_SORCERY) and                               -- Subtle sorcery bypasses this tier.
+        not caster:hasStatusEffect(xi.effect.SUBTLE_SORCERY) and                             -- Subtle sorcery bypasses this tier.
         target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement)) >= 4 -- Forced only at and after rank 4 (50% EEM).
     then
         additionalResistTier = additionalResistTier / 2
@@ -1177,7 +1153,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     local elementalStaffBonus       = xi.spells.damage.calculateElementalStaffBonus(caster, spellElement)
     local elementalAffinityBonus    = xi.spells.damage.calculateElementalAffinityBonus(caster, spellElement)
     local additionalResistTier      = xi.spells.damage.calculateAdditionalResistTier(caster, target, spellElement)
-    local sdt                       = xi.spells.damage.calculateSDT(target, spellElement)
+    local sdt                       = xi.combat.damage.magicalElementSDT(target, spellElement)
     local dayAndWeather             = xi.spells.damage.calculateDayAndWeather(caster, spellElement, forceDayWeatherBonus)
     local magicBonusDiff            = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement)
     local criticalDamageMultiplier  = xi.spells.damage.calculateMagicCriticalMultiplier(caster)
