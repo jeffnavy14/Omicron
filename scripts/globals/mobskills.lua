@@ -567,7 +567,7 @@ xi.mobskills.mobFinalAdjustments = function(damage, mob, skill, target, attackTy
         damage = target:physicalDmgTaken(damage, damageType)
     elseif attackType == xi.attackType.MAGICAL then
         local element = utils.clamp(damageType - 5, xi.element.NONE, xi.element.DARK) -- Transform damage type to element
-        damage = math.floor(damage * xi.spells.damage.calculateDamageAdjustment(target, false, true, false, false))
+        damage = math.floor(damage * xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false))
         damage = math.floor(damage * xi.spells.damage.calculateAbsorption(target, element, true))
         damage = math.floor(damage * xi.spells.damage.calculateNullification(target, element, true, false))
         damage = math.floor(target:handleSevereDamage(damage, false))

@@ -53,7 +53,7 @@ entity.onAdditionalEffect = function(mob, target, damage)
     return xi.combat.action.executeAdditionalDispel(mob, target, pTable)
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     return xi.mobSkill.ENTANGLE
 end
 

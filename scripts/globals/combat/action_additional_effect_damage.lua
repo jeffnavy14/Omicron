@@ -76,7 +76,7 @@ xi.combat.action.executeAdditionalDamage = function(actor, target, fedData)
     -- Calculate mandatory multipliers.
     local multiplierAbsorption         = xi.spells.damage.calculateAbsorption(target, params.magicalElement, params.isMagical)
     local multiplierNullification      = xi.spells.damage.calculateNullification(target, params.magicalElement, isMagical, isBreath)
-    local multiplierDamageTypeSDT      = xi.spells.damage.calculateDamageAdjustment(target, isPhysical, isMagical, isRanged, isBreath)
+    local multiplierDamageTypeSDT      = xi.combat.damage.calculateDamageAdjustment(target, isPhysical, isMagical, isRanged, isBreath)
     local multiplierPhysicalElementSDT = xi.combat.damage.physicalElementSDT(target, params.physicalElement)
     local multiplierMagicalElementSDT  = xi.combat.damage.magicalElementSDT(target, params.magicalElement)
     local multiplierElementalStaff     = xi.spells.damage.calculateElementalStaffBonus(actor, params.magicalElement)

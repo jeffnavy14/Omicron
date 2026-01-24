@@ -156,7 +156,7 @@ end
 -----------------------------------
 -- TP Moves - If in shell, use Venom Shell, otherwise, select from other skills
 -----------------------------------
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     if mob:getAnimationSub() == 1 then
         return xi.mobSkill.VENOM_SHELL_1
     end

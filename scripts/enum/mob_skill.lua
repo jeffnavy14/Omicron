@@ -180,7 +180,7 @@ xi.mobSkill =
     BLITZSTRAHL                   =  535,
     PANZERFAUST                   =  536,
     BERSERK_DOLL                  =  537,
-
+    PANZERSCHRECK                 =  538,
     TYPHOON                       =  539,
 
     TREMOROUS_TREAD               =  540, -- Mammet-800
@@ -267,6 +267,7 @@ xi.mobSkill =
 
     JUMP_1                        =  718,
 
+    DEATH_TRAP                    =  729, -- Lockpicked coffer mimics only
     MEIKYO_SHISUI_1               =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1                =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
     CALL_WYVERN                   =  732,

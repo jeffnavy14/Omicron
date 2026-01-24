@@ -753,7 +753,7 @@ INSERT INTO `mob_skills` VALUES (725,60,'impale',0,0.0,7.0,2000,1500,4,0,0,0,0,0
 INSERT INTO `mob_skills` VALUES (726,61,'drain_whip',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (727,63,'bad_breath',1,0.0,40.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (728,64,'sweet_breath',1,0.0,40.0,2000,1500,4,0,0,0,0,0,0);
--- INSERT INTO `mob_skills` VALUES (729,473,'death_trap',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (729,398,'death_trap',1,0.0,30.0,2000,0,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (730,438,'meikyo_shisui',0,0.0,7.0,2000,0,1,2,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (731,18,'mijin_gakure',1,0.0,20.0,2000,0,4,2,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (732,438,'call_wyvern',0,0.0,7.0,2000,0,1,2,0,0,0,0,0);
