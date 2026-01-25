@@ -974,15 +974,15 @@ INSERT INTO `mob_skills` VALUES (946,648,'tachi_yukikaze',0,0.0,7.0,2000,0,4,0,0
 INSERT INTO `mob_skills` VALUES (947,649,'tachi_gekko',0,0.0,7.0,2000,0,4,0,0,0,10,5,0);
 INSERT INTO `mob_skills` VALUES (948,650,'tachi_kasha',0,0.0,7.0,2000,0,4,0,0,0,11,2,0);
 -- INSERT INTO `mob_skills` VALUES (949,693,'flame_blast',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (950,652,'flame_blast_alt',0,0.0,18.0,2000,0,4,4,0,0,0,0,0); -- KS99_Wyrm regular airborne attack
-INSERT INTO `mob_skills` VALUES (951,653,'hurricane_wing',1,0.0,30.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (950,652,'flame_blast_alt',0,0.0,20.0,2000,0,4,4,0,0,0,0,0); -- KS99_Wyrm regular airborne attack
+INSERT INTO `mob_skills` VALUES (951,653,'hurricane_wing',1,0.0,30.0,2000,1400,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (952,654,'spike_flail',2,30.0,30.0,2000,2000,4,0,0,4,0,0,0); -- Alliance only targeting version of spike flail
-INSERT INTO `mob_skills` VALUES (953,655,'dragon_breath',4,0.0,18.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (953,655,'dragon_breath',4,0.0,18.0,2000,2000,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (954,656,'touchdown',1,0.0,30.0,2000,0,4,@SKILLFLAG_ALWAYS_ANIMATE,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (955,657,'flame_blast',1,0.0,30.0,2000,1500,4,0,0,0,0,0,0); -- KS99_Wyrm airborne fire AoE
-INSERT INTO `mob_skills` VALUES (956,658,'hurricane_wing_flying',1,0.0,30.0,2000,1500,4,0,0,0,0,0,0); -- KS99_Wyrm airborne Hurricane Wing
-INSERT INTO `mob_skills` VALUES (957,659,'absolute_terror',0,0.0,18.0,4000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (958,660,'horrid_roar_1',0,0.0,18.0,4000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (955,657,'flame_blast',1,0.0,30.0,2000,1600,4,0,0,0,0,0,0); -- KS99_Wyrm airborne fire AoE
+INSERT INTO `mob_skills` VALUES (956,658,'hurricane_wing_flying',1,0.0,30.0,2000,1400,4,0,0,0,0,0,0); -- KS99_Wyrm airborne Hurricane Wing
+INSERT INTO `mob_skills` VALUES (957,659,'absolute_terror',0,0.0,18.0,4000,800,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (958,660,'horrid_roar_1',0,0.0,18.0,4000,800,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (959,703,'sickle_slash',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (960,704,'acid_spray',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (961,705,'spider_web',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);

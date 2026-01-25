@@ -360,6 +360,16 @@ xi.mobSkill =
     TACHI_GEKKO                   =  947, -- Ark Angel GK
     TACHI_KASHA                   =  948, -- Ark Angel GK
 
+    FLAME_BLAST_ATTACK            =  950,
+    HURRICANE_WING_1              =  951,
+    SPIKE_FLAIL_1                 =  952,
+    DRAGON_BREATH_1               =  953,
+    TOUCHDOWN_1                   =  954,
+    FLAME_BLAST_1                 =  955,
+    HURRICANE_WING_FLYING         =  956,
+    ABSOLUTE_TERROR_1             =  957,
+    HORRID_ROAR_1                 =  958,
+
     ARKANGEL_TT_WARP_IN           =  962, -- Ark Angel TT Warp In
 
     TRION_RED_LOTUS_BLADE         =  968, -- Trion Red Lotus Blade
