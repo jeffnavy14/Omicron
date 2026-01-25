@@ -100,7 +100,7 @@ local encodeToVars = function(player)
     end
 
     for i, v in ipairs(stored) do
-        pZone:setLocalVar('commServPlayer' .. i, v)
+        pZone:setLocalVar('commServicePlayer' .. i, v)
     end
 end
 
@@ -109,7 +109,7 @@ local decodeFromVars = function(zone)
     local chars = {}
 
     for chunk = 1, 4 do
-        local v = zone:getLocalVar('commServPlayer' .. chunk)
+        local v = zone:getLocalVar('commServicePlayer' .. chunk)
         if v == 0 then
             break
         end
@@ -144,7 +144,7 @@ xi.quest.communityServiceCleanup = function(zone)
     zone:setLocalVar('allLightsLit', 0)
 
     for i = 1, 4 do
-        zone:setLocalVar('commServPlayer' .. i, 0)
+        zone:setLocalVar('commServicePlayer' .. i, 0)
     end
 
     -- Turn lights off.

@@ -16028,6 +16028,28 @@ bool CLuaBaseEntity::isAvatar()
 }
 
 /************************************************************************
+ *  Function: isJugPet()
+ *  Purpose : Returns true if entity is a BST jug pet.
+ *  Example : local isJugPet = pet:isJugPet()
+ *  Notes   :
+ ************************************************************************/
+
+auto CLuaBaseEntity::isJugPet() -> bool
+{
+    if (m_PBaseEntity->objtype == TYPE_PET)
+    {
+        uint32 petID = static_cast<CPetEntity*>(m_PBaseEntity)->m_PetID;
+        if ((petID >= PETID_SHEEP_FAMILIAR && petID <= PETID_TURBID_TOLOI) ||
+            (petID >= PETID_SWEET_CAROLINE && petID <= PETID_ENERGIZED_SEFINA))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/************************************************************************
  *  Function: getPetElement()
  *  Purpose : Returns the elemental affinity of a pet entity
  *  Example : pet:getPetElement()
@@ -20160,6 +20182,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getPetID", CLuaBaseEntity::getPetID);
     SOL_REGISTER("isAutomaton", CLuaBaseEntity::isAutomaton);
     SOL_REGISTER("isAvatar", CLuaBaseEntity::isAvatar);
+    SOL_REGISTER("isJugPet", CLuaBaseEntity::isJugPet);
     SOL_REGISTER("getPetElement", CLuaBaseEntity::getPetElement);
     SOL_REGISTER("setPet", CLuaBaseEntity::setPet);
     SOL_REGISTER("getMinimumPetLevel", CLuaBaseEntity::getMinimumPetLevel);

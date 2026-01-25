@@ -23,6 +23,7 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.SILENCE)
     mob:addImmunity(xi.immunity.TERROR)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 40)
+    mob:setRespawnTime(math.random(5400, 7200))
 end
 
 entity.onMobSpawn = function(mob)

@@ -24,6 +24,8 @@ entity.spawnPoints =
 }
 
 entity.onMobInitialize = function(mob)
+    xi.mob.updateNMSpawnPoint(mob)
+
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     mob:addImmunity(xi.immunity.BIND)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
@@ -52,6 +54,10 @@ end
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 328)
+end
+
+entity.onMobDespawn = function(mob)
+    xi.mob.updateNMSpawnPoint(mob)
 end
 
 return entity
