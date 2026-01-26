@@ -9059,7 +9059,7 @@ INSERT INTO `mob_groups` VALUES (37,1267,120,'Evil_Weapon',300,0,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (38,5730,120,'Blighting_Brand',0,32,2994,4900,4900,0,'WOTG');
 INSERT INTO `mob_groups` VALUES (39,1266,120,'Evil_Spirit',300,1,264,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (40,6658,120,'Goblin_Digger',300,0,1040,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (41,3376,120,'Roc',0,128,2112,42000,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (41,3376,120,'Roc',0,128,2112,28500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (42,741,120,'Climbpix_Highrise',0,128,478,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (43,3745,120,'Sprite',0,128,2001,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (44,328,120,'Balam-Agab',0,128,0,0,0,0,NULL);
@@ -13856,7 +13856,7 @@ INSERT INTO `mob_groups` VALUES (2,1701,212,'Goblin_Poacher',300,0,1139,0,0,0,NU
 INSERT INTO `mob_groups` VALUES (3,1709,212,'Goblin_Robber',300,0,1147,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (4,2311,212,'Labyrinth_Lizard',300,0,221,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (5,2310,212,'Labyrinth_Leech',300,0,174,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (6,584,212,'Bune',0,128,389,13300,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (6,584,212,'Bune',0,128,389,13000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (7,1924,212,'Hell_Bat',300,0,234,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (8,1705,212,'Goblin_Reaper',300,0,1141,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (9,1901,212,'Hawker',300,0,571,0,0,0,NULL);
