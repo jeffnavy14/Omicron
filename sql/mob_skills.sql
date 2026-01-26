@@ -741,14 +741,14 @@ INSERT INTO `mob_skills` VALUES (710,438,'charm',0,0.0,18.0,2000,0,4,4,0,0,0,0,0
 -- INSERT INTO `mob_skills` VALUES (714,458,'camouflage',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (715,459,'barrage',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (716,460,'shadowbind',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (717,92,'venom_breath',4,0.0,20.0,2000,1500,4,0,0,0,0,0,0); -- hnm only
+INSERT INTO `mob_skills` VALUES (717,92,'venom_breath',4,0.0,20.0,2000,2000,4,0,0,0,0,0,0); -- hnm only
 INSERT INTO `mob_skills` VALUES (718,204,'jump',0,0.0,9.5,2000,0,4,4,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (719,94,'critical_bite',0,0.0,7.0,2000,1500,4,0,0,5,0,0,0);
-INSERT INTO `mob_skills` VALUES (720,95,'venom_sting',0,0.0,10.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (721,97,'stasis',0,0.0,9.0,2000,1500,4,0,0,0,0,0,0); -- hnm only
-INSERT INTO `mob_skills` VALUES (722,98,'venom_storm',1,0.0,40.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (723,99,'earthbreaker',1,0.0,40.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (724,100,'evasion',0,0.0,9.0,2000,1500,1,0,0,0,0,0,0); -- hnm only
+INSERT INTO `mob_skills` VALUES (719,94,'critical_bite',0,0.0,7.0,2000,800,4,0,0,5,0,0,0);
+INSERT INTO `mob_skills` VALUES (720,95,'venom_sting',0,0.0,10.0,2000,800,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (721,97,'stasis',0,0.0,9.0,2000,1200,4,0,0,0,0,0,0); -- hnm only
+INSERT INTO `mob_skills` VALUES (722,98,'venom_storm',1,0.0,40.0,2000,800,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (723,99,'earthbreaker',1,0.0,40.0,2000,800,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (724,100,'evasion',0,0.0,9.0,2000,800,1,0,0,0,0,0,0); -- hnm only
 INSERT INTO `mob_skills` VALUES (725,60,'impale',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (726,61,'drain_whip',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (727,63,'bad_breath',1,0.0,40.0,2000,1500,4,0,0,0,0,0,0);

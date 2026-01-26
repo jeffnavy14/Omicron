@@ -265,7 +265,14 @@ xi.mobSkill =
 
     CHARM                         =  710,
 
+    VENOM_BREATH_1                =  717,
     JUMP_1                        =  718,
+    CRITICAL_BITE                 =  719,
+    VENOM_STING_1                 =  720,
+    STASIS                        =  721,
+    VENOM_STORM_1                 =  722,
+    EARTHBREAKER_1                =  723,
+    EVASION                       =  724,
 
     DEATH_TRAP                    =  729, -- Lockpicked coffer mimics only
     MEIKYO_SHISUI_1               =  730, -- Tenzen, etc...

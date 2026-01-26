@@ -548,6 +548,25 @@ INSERT INTO `mob_spawn_slots` VALUES (151,37,0);
 INSERT INTO `mob_spawn_slots` VALUES (151,38,0);
 INSERT INTO `mob_spawn_slots` VALUES (151,39,0);
 
+-- Dragons Aery
+INSERT INTO `mob_spawn_slots` VALUES (154,1,0);
+
+-- Den of Rancor
+INSERT INTO `mob_spawn_slots` VALUES (160,1,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,2,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,3,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,4,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,5,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,6,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,7,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,8,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,9,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,10,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,11,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,12,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,13,0);
+INSERT INTO `mob_spawn_slots` VALUES (160,14,0);
+
 -- Ranguemont Pass
 INSERT INTO `mob_spawn_slots` VALUES (166,1,0);
 INSERT INTO `mob_spawn_slots` VALUES (166,2,0);
