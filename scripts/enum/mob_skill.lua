@@ -9,6 +9,14 @@ xi.mobSkill =
     SHARK_BITE                    =   24,
     EVISCERATION                  =   25,
 
+    HARD_SLASH_1                  =   48,
+    POWER_SLASH_1                 =   49,
+    FROSTBITE_1                   =   50,
+    FREEZEBITE_1                  =   51,
+    SHOCKWAVE_1                   =   52,
+    CRESCENT_MOON_1               =   53,
+    SICKLE_MOON_1                 =   54,
+
     VORPAL_SCYTHE                 =  101,
     GUILLOTINE_1                  =  102,
 

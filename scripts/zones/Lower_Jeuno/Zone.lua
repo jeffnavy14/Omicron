@@ -46,7 +46,7 @@ zoneObject.onGameHour = function(zone)
     -- she starts near Zauko and paths all the way to the Rolanberry exit.
     -- xi.path.flag.WALLHACK because she gets stuck on some terrain otherwise.
     if vanadielHour == 1 then
-        if xi.quest.communityServiceVhana(zone) then
+        if xi.quest.communityServiceStartVhana(zone) then
             local vhana = GetNPCByID(ID.npc.VHANA_EHGAKLYWHA)
             if not vhana then
                 return
