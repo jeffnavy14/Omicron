@@ -534,16 +534,27 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
 
     -- Calculate bonuses.
     if applyBonuses then
+        local singleWeather = xi.data.element.getAssociatedSingleWeather(spellElement)
+        local doubleWeather = xi.data.element.getAssociatedDoubleWeather(spellElement)
         -- Strong weathers.
-        if weather == xi.data.element.getAssociatedSingleWeather(spellElement) then
+        if weather == singleWeather then
             dayAndWeather = dayAndWeather + 0.1 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
-        elseif weather == xi.data.element.getAssociatedDoubleWeather(spellElement) then
+        elseif weather == doubleWeather then
             dayAndWeather = dayAndWeather + 0.25 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
         end
 
         -- Strong day.
         if dayElement == spellElement then
             dayAndWeather = dayAndWeather + 0.1
+        end
+
+        -- Twilight cape.
+        if
+            weather == singleWeather or
+            weather == doubleWeather or
+            dayElement == spellElement
+        then
+            dayAndWeather = dayAndWeather + caster:getMod(xi.mod.DAY_WEATHER_PROC_BONUS) / 100
         end
     end
 
@@ -571,7 +582,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     end
 
     -- Cap bonuses.
-    dayAndWeather = utils.clamp(dayAndWeather, 0, 2)
+    dayAndWeather = utils.clamp(dayAndWeather, 0, 1.4)
 
     return dayAndWeather
 end

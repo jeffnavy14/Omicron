@@ -72,33 +72,35 @@ local eventTable =
     { time = 180, text = ID.text.WHAT_CAN_I_DO + 5 },
 }
 
-local function tryHumeText(spawner, elapsedTime, timerTable)
-    if not timerTable then
+local function tryHumeText(spawner, elapsedTime, timerTable, phase)
+    if
+        not timerTable or
+        not phase or
+        phase > #timerTable
+    then
         return
     end
 
     local npcHume = GetNPCByID(ID.npc.BRIGAND_CHART_HUME)
     local qm1 = GetNPCByID(ID.npc.BRIGAND_CHART_QM)
-    local event = timerTable[1]
+    local event = timerTable[phase]
 
     if not (qm1 and npcHume and event) then
         return
     end
 
     if elapsedTime < event.time then
-        return timerTable
+        return phase
     end
 
     if event.text then
         spawner:showText(qm1, event.text)
     end
 
-    table.remove(timerTable, 1)
-
-    return timerTable
+    return phase + 1
 end
 
-local function emoteChecking(npc, spawner, timeRemaining, timeOfLastCheck, endTime, timerTable)
+local function emoteChecking(npc, spawner, timeRemaining, timeOfLastCheck, endTime, timerTable, phase)
     -- Event continues if player leaves zone
     -- https://www.youtube.com/watch?v=_opqVW-HIu0
     -- https://discord.com/channels/443544205206355968/446401624102010901/650072608922009660
@@ -108,11 +110,11 @@ local function emoteChecking(npc, spawner, timeRemaining, timeOfLastCheck, endTi
     timeRemaining = timeRemaining - timeElapsedThisCheck
     local totalTimeElapsed = 180 - timeRemaining
 
-    timerTable = tryHumeText(spawner, totalTimeElapsed, timerTable)
+    phase = tryHumeText(spawner, totalTimeElapsed, timerTable, phase)
 
     if timeRemaining > 0 then
         npc:timer(1000, function(npcArg)
-            emoteChecking(npcArg, spawner, timeRemaining, timeOfCurrentCheck, endTime, timerTable)
+            emoteChecking(npcArg, spawner, timeRemaining, timeOfCurrentCheck, endTime, timerTable, phase)
         end)
     else
         resetEvent()
@@ -162,18 +164,18 @@ xi.brigandsChart.onEventFinish = function(player, csid, option, npc)
         npcHume:setStatus(xi.status.NORMAL)
         npcHume:setAnimation(xi.animation.NONE)
         npc:setStatus(xi.status.DISAPPEAR)
+        shimmering:setStatus(xi.status.NORMAL)
+
+        -- Appearing packet needs time to finish before another packet can be sent successfully
+        shimmering:timer(2000, function(shimmerArg)
+            shimmerArg:entityAnimationPacket(xi.animationString.SHIMMER)
+        end)
 
         player:showText(npc, ID.text.MY_ITEM, xi.item.PENGUIN_RING)
 
-        shimmering:setStatus(xi.status.NORMAL)
-        -- Appearing packet needs time to finish before another packet can be sent successfully
-        npc:timer(2000, function()
-            shimmering:entityAnimationPacket(xi.animationString.SHIMMER)
-        end)
-
         -- Events will occur for the next 180 seconds according to eventTable
         local endTime = GetSystemTime() + 180
-        emoteChecking(npc, player, 180, GetSystemTime(), endTime, eventTable)
+        emoteChecking(npc, player, 180, GetSystemTime(), endTime, eventTable, 1)
         -- TODO: add fishing hook to catch chests & monster specific to event
     end
 end
