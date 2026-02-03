@@ -63,7 +63,7 @@ local burstMultipliersByTier =
 
 local function calculateMobMagicBurst(caster, ele, target)
     local burstMultiplier = 1.0
-    local skillchainTier, skillchainCount = xi.magicburst.formMagicBurst(ele, target)
+    local skillchainTier, skillchainCount = xi.magicburst.formMagicBurst(target, ele)
 
     if skillchainTier > 0 then
         burstMultiplier = burstMultipliersByTier[skillchainCount]
@@ -120,7 +120,7 @@ local function handleSinglePhysicalHit(mob, target, hitdamage, hitslanded, final
         params.canCrit or
         params.tpEffect == xi.mobskills.physicalTpBonus.CRIT_VARIES
     then
-        local critRate = xi.combat.physical.calculateSwingCriticalRate(mob, target, mob:getTP(), nil)
+        local critRate = xi.combat.physical.calculateSwingCriticalRate(mob, target, mob:getTP(), xi.slot.MAIN)
         isCritical = math.random(1, 1000) <= critRate * 1000
     end
 
@@ -360,7 +360,7 @@ xi.mobskills.mobMagicalMove = function(actor, target, action, baseDamage, action
             petAccBonus = utils.clamp(master:getSkillLevel(xi.skill.SUMMONING_MAGIC) - master:getMaxSkillLevel(actor:getMainLvl(), xi.job.SMN, xi.skill.SUMMONING_MAGIC), 0, 200)
         end
 
-        local skillchainTier, _ = xi.magicburst.formMagicBurst(actionElement, target)
+        local skillchainTier, _ = xi.magicburst.formMagicBurst(target, actionElement)
         if
             actor:getPetID() > 0 and
             skillchainTier > 0

@@ -54259,8 +54259,8 @@ INSERT INTO `mob_spawn_points` VALUES (17387961,0,'Orcish_Dragoon','Orcish Drago
 INSERT INTO `mob_spawn_points` VALUES (17387962,0,'Orcish_Dreadnought','Orcish Dreadnought',33,63,67,180.656,-0.210,-213.239,30);
 INSERT INTO `mob_spawn_points` VALUES (17387963,0,'Orcish_Warchief','Orcish Warchief',32,55,59,176.161,0.104,-218.530,127);
 INSERT INTO `mob_spawn_points` VALUES (17387964,0,'Orcish_Warchief','Orcish Warchief',32,55,59,173.099,-0.295,-213.957,127);
-INSERT INTO `mob_spawn_points` VALUES (17387965,0,'Gavotvut','Gavotvut',43,45,45,290.000,3.000,-215.000,199);
-INSERT INTO `mob_spawn_points` VALUES (17387966,0,'Barakbok','Barakbok',44,43,43,292.000,3.000,-215.000,199);
+INSERT INTO `mob_spawn_points` VALUES (17387965,0,'Gavotvut','Gavotvut',43,45,45,293.542,3.519,-216.794,199);
+INSERT INTO `mob_spawn_points` VALUES (17387966,0,'Barakbok','Barakbok',44,43,43,289.378,4.142,-214.877,199);
 INSERT INTO `mob_spawn_points` VALUES (17387967,0,'Bilopdop','Bilopdop',45,55,55,-122.838,3.765,-44.842,220);
 INSERT INTO `mob_spawn_points` VALUES (17387968,0,'Deloknok','Deloknok',46,53,53,-125.649,4.000,-40.612,220);
 INSERT INTO `mob_spawn_points` VALUES (17387969,0,'Purpleflash_Brukdok','Purpleflash Brukdok',47,45,45,-135.469,-0.091,-184.703,127);
@@ -57342,7 +57342,7 @@ INSERT INTO `mob_spawn_points` VALUES (17433001,0,'Tonberry_Tracker','Tonberry T
 INSERT INTO `mob_spawn_points` VALUES (17433002,0,'Tonberry_Decapitator','Tonberry Decapitator',33,72,74,-165.510,15.833,-116.849,124);
 INSERT INTO `mob_spawn_points` VALUES (17433003,0,'Tonberry_Pontifex','Tonberry Pontifex',35,75,75,-164.725,16.416,-116.191,19);
 INSERT INTO `mob_spawn_points` VALUES (17433004,0,'Tonberry_Tracker','Tonberry Tracker',34,72,74,-188.621,15.588,-100.234,127);
-INSERT INTO `mob_spawn_points` VALUES (17433005,0,'Hakutaku','Hakutaku',36,85,85,24.000,25.000,-306.000,121);
+INSERT INTO `mob_spawn_points` VALUES (17433005,0,'Hakutaku','Hakutaku',36,84,85,24.000,25.000,-306.000,121);
 INSERT INTO `mob_spawn_points` VALUES (17433006,0,'Mokumokuren','Mokumokuren',37,80,82,118.000,36.000,-283.000,127);
 INSERT INTO `mob_spawn_points` VALUES (17433007,0,'Azrael','Azrael',39,0,0,37.509,35.500,-85.849,80);
 INSERT INTO `mob_spawn_points` VALUES (17433008,0,'Azrael','Azrael',39,0,0,25.897,36.303,-196.186,253);
