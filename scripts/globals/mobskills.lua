@@ -530,13 +530,14 @@ xi.mobskills.mobFinalAdjustments = function(damage, mob, skill, target, attackTy
         end
 
         -- Remove shadows
-        damage = utils.takeShadows(target, damage, shadowsToRemove)
+        local shadowsUsed = 0
+        damage, shadowsUsed = utils.takeShadows(target, damage, shadowsToRemove)
 
         -- Dealt zero damage, so shadows took all hits.
         if damage == 0 then
             skill:setMsg(xi.msg.basic.SHADOW_ABSORB)
 
-            return 0
+            return shadowsUsed
         end
 
     elseif shadowsToRemove == xi.mobskills.shadowBehavior.WIPE_SHADOWS then -- Remove all shadows
