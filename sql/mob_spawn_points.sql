@@ -69230,11 +69230,11 @@ INSERT INTO `mob_spawn_points` VALUES (17604610,0,'Ramuh_Prime_TBL','Ramuh Prime
 INSERT INTO `mob_spawn_points` VALUES (17604611,0,'Ramuh_Prime_TBL','Ramuh Prime',1,60,60,-377.066,-79.002,513.045,105);
 
 -- Carbuncle Debacle
-INSERT INTO `mob_spawn_points` VALUES (17604612,0,'Lightning_Gremlin','Lightning Gremlin',2,65,65,503.000,41.000,-367.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17604613,0,'Thunder_Gremlin','Thunder Gremlin',3,62,62,502.000,41.000,-366.000,100);
-INSERT INTO `mob_spawn_points` VALUES (17604614,0,'Lightning_Gremlin','Lightning Gremlin',2,65,65,23.048,-19.001,33.005,105);
+INSERT INTO `mob_spawn_points` VALUES (17604612,0,'Lightning_Gremlin','Lightning Gremlin',2,62,62,501.000,41.805,-369.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17604613,0,'Thunder_Gremlin','Thunder Gremlin',3,62,62,502.725,41.725,-371.575,100);
+INSERT INTO `mob_spawn_points` VALUES (17604614,0,'Lightning_Gremlin','Lightning Gremlin',2,62,62,23.048,-19.001,33.005,105);
 INSERT INTO `mob_spawn_points` VALUES (17604615,0,'Thunder_Gremlin','Thunder Gremlin',3,62,62,22.048,-19.001,34.005,100);
-INSERT INTO `mob_spawn_points` VALUES (17604616,0,'Lightning_Gremlin','Lightning Gremlin',2,65,65,-377.066,-79.002,513.045,105);
+INSERT INTO `mob_spawn_points` VALUES (17604616,0,'Lightning_Gremlin','Lightning Gremlin',2,62,62,-377.066,-79.002,513.045,105);
 INSERT INTO `mob_spawn_points` VALUES (17604617,0,'Thunder_Gremlin','Thunder Gremlin',3,62,62,-378.066,-79.002,514.045,100);
 
 -- Trial-size Trial by Lightning
@@ -69291,24 +69291,24 @@ INSERT INTO `mob_spawn_points` VALUES (17608706,0,'Shiva_Prime_TBI','Shiva Prime
 INSERT INTO `mob_spawn_points` VALUES (17608707,0,'Shiva_Prime_TBI','Shiva Prime',1,60,60,-377.091,-78.999,512.996,105);
 
 -- Class Reunion
-INSERT INTO `mob_spawn_points` VALUES (17608708,0,'Dryad','Dryad',2,50,50,503.000,41.000,-367.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608709,0,'Dryad','Dryad',2,50,50,504.000,41.000,-367.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608710,0,'Dryad','Dryad',2,50,50,503.000,41.000,-366.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608711,0,'Dryad','Dryad',2,50,50,504.000,41.000,-366.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608712,0,'Dryad','Dryad',2,50,50,502.000,41.000,-368.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608713,0,'Dryad','Dryad',2,50,50,503.000,41.000,-368.000,105);
-INSERT INTO `mob_spawn_points` VALUES (17608714,0,'Dryad','Dryad',2,50,50,23.070,-18.991,32.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608715,0,'Dryad','Dryad',2,50,50,24.070,-18.991,32.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608716,0,'Dryad','Dryad',2,50,50,23.070,-18.991,33.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608717,0,'Dryad','Dryad',2,50,50,24.070,-18.991,33.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608718,0,'Dryad','Dryad',2,50,50,22.070,-18.991,31.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608719,0,'Dryad','Dryad',2,50,50,23.070,-18.991,31.860,105);
-INSERT INTO `mob_spawn_points` VALUES (17608720,0,'Dryad','Dryad',2,50,50,-377.091,-78.999,512.996,105);
-INSERT INTO `mob_spawn_points` VALUES (17608721,0,'Dryad','Dryad',2,50,50,-376.091,-78.999,512.996,105);
-INSERT INTO `mob_spawn_points` VALUES (17608722,0,'Dryad','Dryad',2,50,50,-377.091,-78.999,513.996,105);
-INSERT INTO `mob_spawn_points` VALUES (17608723,0,'Dryad','Dryad',2,50,50,-376.091,-78.999,513.996,105);
-INSERT INTO `mob_spawn_points` VALUES (17608724,0,'Dryad','Dryad',2,50,50,-378.091,-78.999,511.996,105);
-INSERT INTO `mob_spawn_points` VALUES (17608725,0,'Dryad','Dryad',2,50,50,-377.091,-78.999,511.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608708,0,'Dryad','Dryad',2,48,48,503.000,41.000,-367.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608709,0,'Dryad','Dryad',2,48,48,504.000,41.000,-367.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608710,0,'Dryad','Dryad',2,48,48,503.000,41.000,-366.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608711,0,'Dryad','Dryad',2,48,48,504.000,41.000,-366.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608712,0,'Dryad','Dryad',2,48,48,502.000,41.000,-368.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608713,0,'Dryad','Dryad',2,48,48,503.000,41.000,-368.000,105);
+INSERT INTO `mob_spawn_points` VALUES (17608714,0,'Dryad','Dryad',2,48,48,23.070,-18.991,32.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608715,0,'Dryad','Dryad',2,48,48,24.070,-18.991,32.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608716,0,'Dryad','Dryad',2,48,48,23.070,-18.991,33.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608717,0,'Dryad','Dryad',2,48,48,24.070,-18.991,33.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608718,0,'Dryad','Dryad',2,48,48,22.070,-18.991,31.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608719,0,'Dryad','Dryad',2,48,48,23.070,-18.991,31.860,105);
+INSERT INTO `mob_spawn_points` VALUES (17608720,0,'Dryad','Dryad',2,48,48,-377.091,-78.999,512.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608721,0,'Dryad','Dryad',2,48,48,-376.091,-78.999,512.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608722,0,'Dryad','Dryad',2,48,48,-377.091,-78.999,513.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608723,0,'Dryad','Dryad',2,48,48,-376.091,-78.999,513.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608724,0,'Dryad','Dryad',2,48,48,-378.091,-78.999,511.996,105);
+INSERT INTO `mob_spawn_points` VALUES (17608725,0,'Dryad','Dryad',2,48,48,-377.091,-78.999,511.996,105);
 
 -- Trial-size Trial by Ice
 INSERT INTO `mob_spawn_points` VALUES (17608726,0,'Shiva_Prime_TSTBI','Shiva Prime',3,20,20,503.000,41.000,-367.000,105);

@@ -120,7 +120,13 @@ void CWeaponSkillState::SpendCost()
 
 bool CWeaponSkillState::Update(timer::time_point tick)
 {
-    if (m_PEntity && m_PEntity->isAlive() && !IsCompleted())
+    if (!m_PEntity)
+    {
+        ShowError("CWeaponSkillState: m_Pentity is nullptr");
+        return false;
+    }
+
+    if (m_PEntity->isAlive() && !IsCompleted())
     {
         CBattleEntity* PTarget = dynamic_cast<CBattleEntity*>(GetTarget());
         action_t       action;

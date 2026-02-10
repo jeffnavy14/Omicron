@@ -2108,7 +2108,7 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
             auto* sub_weapon = dynamic_cast<CItemWeapon*>(PAttacker->m_Weapons[SLOT_SUB]);
 
             if (sub_weapon && sub_weapon->getDmgType() > DAMAGE_TYPE::NONE && sub_weapon->getDmgType() < DAMAGE_TYPE::HTH &&
-                weapon->getSkillType() != SKILL_HAND_TO_HAND)
+                weapon && weapon->getSkillType() != SKILL_HAND_TO_HAND)
             {
                 delay = delay / 2;
             }
@@ -3465,6 +3465,11 @@ auto GetSkillChainEffect(const CBattleEntity* PDefender, uint8 primary, uint8 se
             resonanceProperties.emplace_back(static_cast<SKILLCHAIN_ELEMENT>(PSCEffect->GetPower()));
             skillchain = FormSkillchain(resonanceProperties, skillProperties);
         }
+    }
+
+    if (!PSCEffect)
+    {
+        return ActionProcSkillChain::None;
     }
 
     Mod resistanceRankMods[] = { Mod::FIRE_RES_RANK, Mod::ICE_RES_RANK, Mod::WIND_RES_RANK, Mod::EARTH_RES_RANK, Mod::THUNDER_RES_RANK, Mod::ICE_RES_RANK, Mod::LIGHT_RES_RANK, Mod::DARK_RES_RANK };
@@ -4913,7 +4918,7 @@ float HandleTranquilHeart(CBattleEntity* PEntity)
     if (PEntity->objtype == TYPE_PC && charutils::hasTrait((CCharEntity*)PEntity, TRAIT_TRANQUIL_HEART))
     {
         int16 healingSkill = PEntity->GetSkill(SKILL_HEALING_MAGIC);
-        reductionPercent   = ((healingSkill / 10) * .5f);
+        reductionPercent   = ((healingSkill / 10.0f) * 0.5f);
 
         // Reduction Percent Caps at 25%
         if (reductionPercent > 25)
