@@ -270,8 +270,8 @@ INSERT INTO `mob_groups` VALUES (2,384,6,'Bearclaw_Rabbit',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (3,383,6,'Bearclaw_Leveret',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (4,7100,6,'Snow_Devil_war',0,128,0,2000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (9,7099,6,'Snow_Devil_blm',0,128,0,2000,4000,0,NULL);
-INSERT INTO `mob_groups` VALUES (5,1190,6,'Eldertaur',0,128,0,4500,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (6,2668,6,'Mindertaur',0,128,0,4500,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (5,1190,6,'Eldertaur',0,128,0,5000,10000,0,NULL);
+INSERT INTO `mob_groups` VALUES (6,2668,6,'Mindertaur',0,128,0,4500,10000,0,NULL);
 INSERT INTO `mob_groups` VALUES (7,196,6,'Apis',0,128,0,13000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (8,0,6,'Predataur',0,128,0,0,0,0,NULL);
 
@@ -1212,7 +1212,7 @@ INSERT INTO `mob_groups` VALUES (21,7286,30,'Ouryu',0,128,1962,50000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (1,2499,31,'Mammet-19_Epsilon',0,128,1585,4000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (2,3070,31,'Ouryu',0,128,0,10500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (3,1885,31,'Hamadryad',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (4,3333,31,'Razon',0,128,0,1000,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (4,3333,31,'Razon',0,128,0,2100,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (5,4304,31,'Watch_Hippogryph',0,128,0,5000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (6,1834,31,'Guard_Hippogryph',0,128,0,1000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (7,1992,31,'Hotupuku',0,128,0,0,0,0,NULL);
@@ -10938,8 +10938,8 @@ INSERT INTO `mob_groups` VALUES (44,340,149,'Barakbok',0,128,0,4075,2000,0,NULL)
 INSERT INTO `mob_groups` VALUES (45,419,149,'Bilopdop',0,128,0,10800,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (46,964,149,'Deloknok',0,128,0,6000,3000,0,NULL);
 INSERT INTO `mob_groups` VALUES (47,3233,149,'Purpleflash_Brukdok',600,0,2044,7900,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (48,2980,149,'One-eyed_Gwajboj',0,128,1859,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (49,6678,149,'Three-eyed_Prozpuz',0,128,307,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (48,2980,149,'One-eyed_Gwajboj',0,128,1859,11000,6000,0,NULL);
+INSERT INTO `mob_groups` VALUES (49,6678,149,'Three-eyed_Prozpuz',0,128,307,10000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (50,1930,149,'Hematic_Cyst',0,128,0,2400,0,0,NULL);
 
 -- ------------------------------------------------------------
@@ -13333,9 +13333,9 @@ INSERT INTO `mob_groups` VALUES (47,5414,195,'Spriggan_rng',960,0,2311,0,0,0,NUL
 INSERT INTO `mob_groups` VALUES (48,4484,195,'Yum_Kimil',0,128,0,7800,7800,0,NULL);
 INSERT INTO `mob_groups` VALUES (49,1075,195,'Dog_Guardian',0,128,0,5500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (50,3081,195,'Owl_Guardian',0,128,0,5500,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (51,3799,195,'Sturm',0,128,0,12500,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (52,3834,195,'Taifun',0,128,0,3000,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (53,4038,195,'Trombe',0,128,0,3000,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (51,3799,195,'Sturm',0,128,0,14200,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (52,3834,195,'Taifun',0,128,0,3250,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (53,4038,195,'Trombe',0,128,0,3250,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (54,2664,195,'Mimic',0,128,1688,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (55,5535,195,'Ice_Elemental',0,128,1347,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (56,2802,195,'Namorodo',0,128,0,0,0,0,NULL);
@@ -13624,7 +13624,7 @@ INSERT INTO `mob_groups` VALUES (34,4323,204,'Western_Shadow',0,32,2645,3750,0,0
 INSERT INTO `mob_groups` VALUES (35,2907,204,'Northern_Shadow',0,32,1823,3500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (36,1164,204,'Eastern_Shadow',0,32,738,3400,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (37,3709,204,'Southern_Shadow',0,32,2296,3550,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (38,888,204,'Dabotzs_Ghost',0,128,0,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (38,888,204,'Dabotzs_Ghost',0,128,0,5400,5400,0,NULL);
 INSERT INTO `mob_groups` VALUES (39,630,204,'Capricious_Cassie',0,128,411,43000,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (40,6892,204,'Orientalis_Shadow',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (41,6893,204,'Borealis_Shadow',0,128,0,0,0,0,NULL);

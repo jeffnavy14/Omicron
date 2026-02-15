@@ -1220,12 +1220,12 @@ INSERT INTO `mob_spawn_points` VALUES (16801838,0,'Snow_Devil_blm','Snow Devil',
 INSERT INTO `mob_spawn_points` VALUES (16801839,0,'Snow_Devil_blm','Snow Devil',9,78,78,-615.000,0.000,219.000,64);
 
 -- Brothers
-INSERT INTO `mob_spawn_points` VALUES (16801841,0,'Eldertaur','Eldertaur',5,75,75,-464.000,0.602,902.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16801842,0,'Mindertaur','Mindertaur',6,75,75,-456.000,0.453,902.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16801844,0,'Eldertaur','Eldertaur',5,75,75,-224.000,0.602,502.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16801845,0,'Mindertaur','Mindertaur',6,75,75,-216.000,0.453,502.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16801847,0,'Eldertaur','Eldertaur',5,75,75,-624.000,0.602,222.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16801848,0,'Mindertaur','Mindertaur',6,75,75,-616.000,0.453,222.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801841,0,'Eldertaur','Eldertaur',5,80,80,-464.000,0.602,902.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801842,0,'Mindertaur','Mindertaur',6,80,80,-456.000,0.453,902.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801844,0,'Eldertaur','Eldertaur',5,80,80,-224.000,0.602,502.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801845,0,'Mindertaur','Mindertaur',6,80,80,-216.000,0.453,502.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801847,0,'Eldertaur','Eldertaur',5,80,80,-624.000,0.602,222.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16801848,0,'Mindertaur','Mindertaur',6,80,80,-616.000,0.453,222.000,64);
 
 -- Holy Cow
 INSERT INTO `mob_spawn_points` VALUES (16801850,0,'Apis','Apis',7,81,81,-460.403,0.423,902.468,62);
@@ -54264,8 +54264,8 @@ INSERT INTO `mob_spawn_points` VALUES (17387966,0,'Barakbok','Barakbok',44,43,43
 INSERT INTO `mob_spawn_points` VALUES (17387967,0,'Bilopdop','Bilopdop',45,55,55,-122.838,3.765,-44.842,220);
 INSERT INTO `mob_spawn_points` VALUES (17387968,0,'Deloknok','Deloknok',46,53,53,-125.649,4.000,-40.612,220);
 INSERT INTO `mob_spawn_points` VALUES (17387969,0,'Purpleflash_Brukdok','Purpleflash Brukdok',47,45,45,-135.469,-0.091,-184.703,127);
-INSERT INTO `mob_spawn_points` VALUES (17387970,0,'One-eyed_Gwajboj','One-eyed Gwajboj',48,62,62,-36.000,3.000,-211.000,57);
-INSERT INTO `mob_spawn_points` VALUES (17387971,0,'Three-eyed_Prozpuz','Three-eyed Prozpuz',49,60,60,-32.000,4.000,-212.000,71);
+INSERT INTO `mob_spawn_points` VALUES (17387970,0,'One-eyed_Gwajboj','One-eyed Gwajboj',48,62,62,-35.357,4.250,-216.834,57);
+INSERT INTO `mob_spawn_points` VALUES (17387971,0,'Three-eyed_Prozpuz','Three-eyed Prozpuz',49,60,60,-29.598,4.137,-216.639,71);
 INSERT INTO `mob_spawn_points` VALUES (17387972,0,'Hematic_Cyst','Hematic Cyst',50,40,40,177.000,3.676,-372.524,199);
 
 -- ------------------------------------------------------------
@@ -69685,7 +69685,7 @@ INSERT INTO `mob_spawn_points` VALUES (17613124,0,'Droma','Droma',21,54,56,-172.
 INSERT INTO `mob_spawn_points` VALUES (17613125,0,'Droma','Droma',21,54,56,-187.700,-16.110,7.022,61);
 INSERT INTO `mob_spawn_points` VALUES (17613126,0,'Underworld_Bats','Underworld Bats',19,50,52,-218.200,-16.110,77.000,6);
 INSERT INTO `mob_spawn_points` VALUES (17613127,0,'Underworld_Bats','Underworld Bats',19,50,52,-218.100,-16.050,59.667,57);
-INSERT INTO `mob_spawn_points` VALUES (17613128,0,'Dabotzs_Ghost','Dabotz\'s Ghost',38,53,53,-169.600,-1.340,247.677,31);
+INSERT INTO `mob_spawn_points` VALUES (17613128,0,'Dabotzs_Ghost','Dabotz\'s Ghost',38,53,53,-169.991,3.060,249.480,31);
 INSERT INTO `mob_spawn_points` VALUES (17613129,0,'Capricious_Cassie','Capricious Cassie',39,70,70,-77.430,0.462,164.529,145);
 INSERT INTO `mob_spawn_points` VALUES (17613130,0,'Orientalis_Shadow','Orientalis Shadow',40,128,128,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17613131,0,'Borealis_Shadow','Borealis Shadow',41,128,128,0.000,0.000,0.000,0);
