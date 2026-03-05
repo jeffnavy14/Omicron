@@ -308,8 +308,8 @@ xi.mod =
     DELAY                           = 171,
     RANGED_DELAY                    = 172,
     MARTIAL_ARTS                    = 173,
-    SKILLCHAINBONUS                 = 174,
-    SKILLCHAINDMG                   = 175,
+    SKILLCHAINBONUS                 = 174, -- Damage bonus applied to skill chain damage (/100).  Modifier from effects/traits
+    SKILLCHAINDMG                   = 175, -- Damage bonus applied to skill chain damage (/10000).  Modifier from gear (multiplicative after effect/traits)
     MAX_SWINGS                      = 978,
     ADDITIONAL_SWING_CHANCE         = 979,
     FOOD_HPP                        = 176,
@@ -479,6 +479,8 @@ xi.mod =
     SPIKES                          = 342,
     ENSPELL_DMG                     = 343,
     ENSPELL_CHANCE                  = 856,
+    ENSPELL_DMG_BONUS               = 432, -- Adds to the base damage of the enspell before bonuses and reductions
+    ENSPELL_DMG_PCT                 = 1195, -- Adds to the multiplier applied to enspell damage after base damage is calculated, before day and weather bonuses and reductions
     SPIKES_DMG                      = 344,
     TP_BONUS                        = 345,
     SPIKES_DMG_BONUS                = 1079, -- Increases Blaze/Ice/Shock spikes damage by percentage (e.g. mod value 50 = +50% spikes damage)
@@ -569,6 +571,7 @@ xi.mod =
 
     -- Dragoon
     WYVERN_LVL_BONUS                = 1043, -- Wyvern: Lv.+ (Increases wyvern's base level above 99)
+    WYVERN_SHOW_READYING            = 1195, -- Pet shows readying animation instead of suppressing it (e.g., wyvern breath)
 
     -- Summoner
     AVATAR_LVL_BONUS                = 1040, -- Avatar: Lv. ###/+ (Increases all avatar's base level above 99)
@@ -758,8 +761,6 @@ xi.mod =
     QUICK_DRAW_MACC                 = 191, -- Quick draw magic accuracy
     QUAD_ATTACK                     = 430, -- Quadruple attack chance.
 
-    ENSPELL_DMG_BONUS               = 432,
-
     ABSORB_DMG_TO_MP                = 516, -- Unlike PLD gear mod, works on all damage types (Ethereal Earring)
 
     WARCRY_DURATION                 = 483, -- Warcy duration bonus from gear
@@ -856,7 +857,7 @@ xi.mod =
     BP_DELAY_II                     = 541,  -- Blood Pact Delay Reduction II
     JOB_BONUS_CHANCE                = 542,  -- Chance to apply job bonus to COR roll without having the job in the party.
     DAY_NUKE_BONUS                  = 565,  -- Bonus damage from "Elemental magic affected by day" (Sorc. Tonban)
-    DAY_WEATHER_PROC_BONUS          = 1787, -- Bonus damage from Twilight cape which works with both day OR weather procs.
+    DAY_WEATHER_PROC_BONUS          = 1194, -- Bonus damage from Twilight cape which works with both day OR weather procs.
     IRIDESCENCE                     = 566,  -- Iridescence trait (additional weather damage/penalty)
     BARSPELL_AMOUNT                 = 567,  -- Additional elemental resistance granted by bar- spells
     RANDOM_DEAL_BONUS               = 220,  -- % chance to reset 2 abilities
