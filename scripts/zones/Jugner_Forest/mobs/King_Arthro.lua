@@ -60,15 +60,20 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    local pTable =
-    {
-        chance   = 25,
-        effectId = xi.effect.PARALYSIS,
-        power    = 20,
-        duration = 60,
-    }
+    -- TODO: All en-spells overwrite innate additional effects. The check should probably be contained in this functions already.
+    if mob:hasStatusEffect(xi.effect.ENWATER) then
+        return 0, 0, 0
+    else
+        local pTable =
+        {
+            chance   = 25,
+            effectId = xi.effect.PARALYSIS,
+            power    = 20,
+            duration = 60,
+        }
 
-    return xi.combat.action.executeAddEffectEnfeeblement(mob, target, pTable)
+        return xi.combat.action.executeAddEffectEnfeeblement(mob, target, pTable)
+    end
 end
 
 entity.onMobDespawn = function(mob)

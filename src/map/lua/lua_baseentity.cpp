@@ -570,7 +570,7 @@ void CLuaBaseEntity::messageSystem(MsgStd messageID, const sol::object& p0, cons
  *  Example : master:messageCombat(mob, offset + id, 0, 711)
  *  Notes   :
  ************************************************************************/
-void CLuaBaseEntity::messageCombat(const sol::object& speaker, int32 p0, int32 p1, MsgBasic message) const
+void CLuaBaseEntity::messageCombat(const sol::object& speaker, int32 p0, int32 p1, int16 message)
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -583,8 +583,8 @@ void CLuaBaseEntity::messageCombat(const sol::object& speaker, int32 p0, int32 p
     CBaseEntity* PSpeaker = nullptr;
     if (speaker != sol::lua_nil)
     {
-        const auto* PLuaBaseEntity = speaker.as<CLuaBaseEntity*>();
-        PSpeaker                   = PLuaBaseEntity->m_PBaseEntity;
+        CLuaBaseEntity* PLuaBaseEntity = speaker.as<CLuaBaseEntity*>();
+        PSpeaker                       = PLuaBaseEntity->m_PBaseEntity;
     }
     else
     {
@@ -4345,7 +4345,7 @@ bool CLuaBaseEntity::delItem(uint16 itemID, int32 quantity, const sol::object& c
     if (SlotID != ERROR_SLOTID)
     {
         charutils::UpdateItem(PChar, location, SlotID, -quantity);
-        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
 
         return true;
     }
@@ -4377,7 +4377,7 @@ bool CLuaBaseEntity::delItemAt(const uint16 itemID, const int32 quantity, uint8 
     if (const auto* PItem = PChar->getStorage(containerId)->GetItem(slotId); PItem && PItem->getID() == itemID)
     {
         charutils::UpdateItem(PChar, containerId, slotId, -quantity);
-        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
 
         return true;
     }
@@ -4435,7 +4435,7 @@ bool CLuaBaseEntity::delContainerItems(const sol::object& containerID)
         }
     }
 
-    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
     return true;
 }
 
@@ -4891,7 +4891,7 @@ bool CLuaBaseEntity::addLinkpearl(const std::string& lsname, bool equip)
                     charutils::SaveCharEquip(PChar);
                     PChar->pushPacket<GP_SERV_COMMAND_GROUP_COMLINK>(PChar, PItemLinkPearl->GetLSID());
                     PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItemLinkPearl, LOC_INVENTORY, PItemLinkPearl->getSlotID());
-                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                     charutils::LoadInventory(PChar);
                 }
                 return true;
@@ -4919,7 +4919,7 @@ auto CLuaBaseEntity::addSoulPlate(const std::string& name, uint32 interestData, 
         // Deduct Blank Plate
         battleutils::RemoveAmmo(PChar);
 
-        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
 
         // Used Soul Plate
         CItem* PItem = itemutils::GetItem(ITEMID::SOUL_PLATE);
@@ -5052,7 +5052,7 @@ void CLuaBaseEntity::confirmTrade() const
         }
     }
     PChar->TradeContainer->Clean();
-    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
 }
 
 /************************************************************************
@@ -5092,7 +5092,7 @@ void CLuaBaseEntity::tradeComplete() const
         }
     }
     PChar->TradeContainer->Clean();
-    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
 }
 
 auto CLuaBaseEntity::getTrade() -> CTradeContainer*
@@ -5843,34 +5843,6 @@ void CLuaBaseEntity::setLook(const sol::table& look)
     }
 
     ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
-}
-
-/************************************************************************
- *  Function: getEquipmentModelIds()
- *  Purpose : Returns the player's visible equipment model IDs
- *  Example : local equip = player:getEquipmentModelIds()
- *  Note    : Returns table with keys: head, body, hands, main, sub
- ************************************************************************/
-auto CLuaBaseEntity::getEquipmentModelIds() -> sol::table
-{
-    auto table = lua.create_table();
-    if (m_PBaseEntity->objtype != TYPE_PC)
-    {
-        ShowWarning("getEquipmentModelIds: caller is not a player (%s).", m_PBaseEntity->getName());
-        table["head"]  = 0;
-        table["body"]  = 0;
-        table["hands"] = 0;
-        table["main"]  = 0;
-        table["sub"]   = 0;
-        return table;
-    }
-    auto* PChar    = static_cast<CCharEntity*>(m_PBaseEntity);
-    table["head"]  = PChar->look.head;
-    table["body"]  = PChar->look.body;
-    table["hands"] = PChar->look.hands;
-    table["main"]  = PChar->look.main;
-    table["sub"]   = PChar->look.sub;
-    return table;
 }
 
 /************************************************************************
@@ -7257,7 +7229,7 @@ uint8 CLuaBaseEntity::levelRestriction(const sol::object& level)
                                 resetRecast(RECAST_ABILITY, 205);
                             }
 
-                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::AutoExceedsCapacity);
+                            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::AUTO_EXCEEDS_CAPACITY);
                             petutils::DespawnPet(PChar);
                             return PChar->m_LevelRestriction;
                         }
@@ -8508,8 +8480,8 @@ bool CLuaBaseEntity::setEminenceProgress(uint16 recordID, uint32 progress, const
 
     if (total && progressNotify)
     {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, recordID, 0, MsgBasic::ROERecord);
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, progress, total, MsgBasic::ROEProgress);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, recordID, 0, MsgBasic::ROE_RECORD);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, progress, total, MsgBasic::ROE_PROGRESS);
     }
 
     return result;
@@ -10872,7 +10844,7 @@ void CLuaBaseEntity::addLearnedAbility(uint16 abilityID)
         charutils::addAbility(PChar, abilityID);
         charutils::SaveLearnedAbilities(PChar);
         PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LearnsNewAbility);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LEARNS_NEW_ABILITY);
     }
 }
 
@@ -10994,7 +10966,7 @@ void CLuaBaseEntity::addSpell(uint16 spellID, const sol::optional<sol::table>& p
         // Send a chat update "Player learns a new spell!"
         if (!silentLog)
         {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LearnsNewSpell);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::LEARNS_NEW_SPELL);
         }
 
         if (saveToDB)
@@ -13659,17 +13631,13 @@ void CLuaBaseEntity::clearEnmityForEntity(CLuaBaseEntity* PEntity)
 }
 
 /************************************************************************
- *  Function: addStatusEffect(effectId, params)
- *  Purpose : Adds a Status Effect
- *  Example : target:addStatusEffect(xi.effect.ACCURACY_DOWN, {
- *                power    = 20,
- *                tick     = 3,
- *                duration = 60,
- *                origin   = caster,
- *            })
+ *  Function: addStatusEffect(effect, power, tick, duration, subtype, subpower, tier, sourceType, sourceTypeParam, originID)
+ *  Purpose : Adds a specified Status Effect to the Entity
+ *  Example : target:addStatusEffect(xi.effect.ACCURACY_DOWN, 20, 3, 60)
  *  Notes   :
  ************************************************************************/
-auto CLuaBaseEntity::addStatusEffect(const EFFECT effectId, sol::table params) const -> bool
+
+bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
 {
     auto* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
     if (!PBattleEntity)
@@ -13677,91 +13645,127 @@ auto CLuaBaseEntity::addStatusEffect(const EFFECT effectId, sol::table params) c
         return false;
     }
 
-    // Required parameters
-    auto originEntity = params["origin"].get<CLuaBaseEntity>();
+    if (va[0].is<CLuaStatusEffect>())
+    {
+        auto PStatusEffect = va[0].as<CLuaStatusEffect>();
+        return PBattleEntity->StatusEffectContainer->AddStatusEffect(new CStatusEffect(*PStatusEffect.GetStatusEffect()));
+    }
+    else
+    {
+        if (va.size() < 4)
+        {
+            return false;
+        }
 
-    // Optional parameters
-    const auto duration        = params["duration"].get_or(0.0);
-    const auto power           = static_cast<uint16>(params["power"].get_or(0.0));
-    const auto tick            = static_cast<uint32>(params["tick"].get_or(0.0));
-    const auto icon            = params["icon"].get_or(static_cast<uint16>(effectId));
-    const auto subType         = params["subType"].get_or(0u);
-    const auto subPower        = static_cast<uint16>(params["subPower"].get_or(0.0));
-    const auto tier            = params["tier"].get_or<uint16>(0);
-    const auto flag            = params["flag"].get_or(0u);
-    const auto sourceType      = params["sourceType"].get_or<uint16>(0);
-    const auto sourceTypeParam = params["sourceTypeParam"].get_or(0u);
-    const auto silent          = params["silent"].get_or(false);
+        // Mandatory
+        auto effectID   = va[0].as<EFFECT>();                      // The same
+        auto effectIcon = va[0].as<uint16>();                      // The same
+        auto power      = static_cast<uint16>(va[1].as<double>()); // Can come in as a lua_number, capture as double and truncate
+        auto tick       = static_cast<uint32>(va[2].as<double>());
+        auto duration   = va[3].as<double>();
 
-    auto* PEffect = new CStatusEffect(
-        effectId,
-        icon,
-        power,
-        std::chrono::seconds(tick),
-        std::chrono::milliseconds(static_cast<uint64>(duration * 1000)),
-        subType,
-        subPower,
-        tier,
-        flag);
+        // Optional
+        auto subType         = va[4].is<uint32>() ? va[4].as<uint32>() : 0;
+        auto subPower        = va[5].is<double>() ? static_cast<uint16>(va[5].as<double>()) : 0;
+        auto tier            = va[6].is<uint16>() ? va[6].as<uint16>() : 0;
+        auto sourceType      = va[7].is<uint16>() ? va[7].as<uint16>() : 0;
+        auto sourceTypeParam = va[8].is<uint32>() ? va[8].as<uint32>() : 0;
+        auto originID        = va[9].is<uint32>() ? va[9].as<uint32>() : 0;
+
+        CStatusEffect* PEffect = new CStatusEffect(effectID,
+                                                   effectIcon,
+                                                   power,
+                                                   std::chrono::seconds(tick),
+                                                   std::chrono::milliseconds(static_cast<uint64_t>(duration * 1000)),
+                                                   subType,
+                                                   subPower,
+                                                   tier);
+
+        if (sourceType != EffectSourceType::SOURCE_NONE && sourceTypeParam > 0)
+        {
+            PEffect->SetSource(sourceType, sourceTypeParam);
+        }
+
+        // Set the originID. This is the original source of the effect(Usually an entity)
+        PEffect->SetOriginID(originID);
+
+        if (PEffect->GetStatusID() == EFFECT_FOOD)
+        {
+            int16 durationModifier = PBattleEntity->getMod(Mod::FOOD_DURATION);
+            if (durationModifier)
+            {
+                PEffect->SetDuration(PEffect->GetDuration() + std::chrono::floor<std::chrono::milliseconds>(PEffect->GetDuration() * (durationModifier / 100.0f)));
+            }
+        }
+
+        return PBattleEntity->StatusEffectContainer->AddStatusEffect(PEffect);
+    }
+}
+
+/************************************************************************
+ *  Function: addStatusEffectEx()
+ *  Purpose : Adds an instance (or 'battle') Status Effect to the Entity
+ *  Example : target:addStatusEffectEx(xi.effect.MOUNTED, xi.effect.MOUNTED, 0, 0, 900, true)
+ *  Notes   : For instance, Chocobo status, Fireflights, Teleport
+ ************************************************************************/
+
+auto CLuaBaseEntity::addStatusEffectEx(sol::variadic_args va) -> bool
+{
+    auto* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PBattleEntity)
+    {
+        return false;
+    }
+
+    if (va.size() < 5)
+    {
+        return false;
+    }
+
+    bool silent = false;
+    if (va[va.size() - 1].is<bool>()) // Is last argument a bool?
+    {
+        silent = va[va.size() - 1].as<bool>();
+    }
+
+    // Mandatory
+    auto effectID   = va[0].as<EFFECT>();
+    auto effectIcon = va[1].as<uint16>();
+    auto power      = static_cast<uint16>(va[2].as<double>()); // Can come in as a lua_number, capture as double and truncate
+    auto tick       = static_cast<uint32>(va[3].as<double>());
+    auto duration   = va[4].as<double>();
+
+    // Optional
+    auto subType         = va[5].is<uint32>() ? va[5].as<uint32>() : 0;
+    auto subPower        = va[6].is<double>() ? static_cast<uint16>(va[6].as<double>()) : 0;
+    auto tier            = va[7].is<uint16>() ? va[7].as<uint16>() : 0;
+    auto effectFlag      = va[8].is<uint32>() ? va[8].as<uint32>() : 0;
+    auto sourceType      = va[9].is<uint16>() ? va[9].as<uint16>() : 0;
+    auto sourceTypeParam = va[10].is<uint32>() ? va[10].as<uint32>() : 0;
+    auto originID        = va[11].is<uint32>() ? va[11].as<uint32>() : 0;
+
+    CStatusEffect* PEffect =
+        new CStatusEffect(effectID,
+                          effectIcon,
+                          power,
+                          std::chrono::seconds(tick),
+                          std::chrono::milliseconds(static_cast<uint64_t>(duration * 1000)),
+                          subType,
+                          subPower,
+                          tier,
+                          effectFlag); // Effect Flag (i.e in lua xi.effectFlag.AURA will make this an aura effect)
+
+    auto addNotice = silent ? EffectNotice::Silent : EffectNotice::ShowMessage;
 
     if (sourceType != EffectSourceType::SOURCE_NONE && sourceTypeParam > 0)
     {
         PEffect->SetSource(sourceType, sourceTypeParam);
     }
 
-    PEffect->SetOriginID(originEntity.getID());
+    // Set the originID. This is the original source of the effect(Usually an entity)
+    PEffect->SetOriginID(originID);
 
-    if (effectId == EFFECT_FOOD)
-    {
-        if (const auto durationModifier = PBattleEntity->getMod(Mod::FOOD_DURATION))
-        {
-            PEffect->SetDuration(PEffect->GetDuration() + std::chrono::floor<std::chrono::milliseconds>(PEffect->GetDuration() * (durationModifier / 100.0f)));
-        }
-    }
-
-    return PBattleEntity->StatusEffectContainer->AddStatusEffect(PEffect, silent ? EffectNotice::Silent : EffectNotice::ShowMessage);
-}
-
-/************************************************************************
- *  Function: copyStatusEffect(effect)
- *  Purpose : Copies a Status Effect to this entity
- *  Example : target:getPet():copyStatusEffect(effect)
- *  Notes   :
- ************************************************************************/
-auto CLuaBaseEntity::copyStatusEffect(const CLuaStatusEffect* PStatusEffect) const -> bool
-{
-    auto* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
-    if (!PBattleEntity || !PStatusEffect)
-    {
-        return false;
-    }
-
-    auto* POriginal = PStatusEffect->GetStatusEffect();
-
-    // Calculate remaining duration
-    auto remainingDuration = 0s;
-    if (POriginal->GetDuration() > 0s)
-    {
-        const auto duration = POriginal->GetStartTime() - timer::now() + POriginal->GetDuration();
-        remainingDuration   = std::chrono::duration_cast<std::chrono::seconds>(duration);
-        remainingDuration   = std::max(remainingDuration, 0s);
-    }
-
-    auto* PNewEffect = new CStatusEffect(
-        POriginal->GetStatusID(),
-        POriginal->GetIcon(),
-        POriginal->GetPower(),
-        POriginal->GetTickTime(),
-        remainingDuration,
-        POriginal->GetSubID(),
-        POriginal->GetSubPower(),
-        POriginal->GetTier(),
-        POriginal->GetEffectFlags(),
-        POriginal->GetSourceType(),
-        POriginal->GetSourceTypeParam(),
-        POriginal->GetOriginID());
-
-    return PBattleEntity->StatusEffectContainer->AddStatusEffect(PNewEffect);
+    return ((CBattleEntity*)m_PBaseEntity)->StatusEffectContainer->AddStatusEffect(PEffect, addNotice);
 }
 
 /************************************************************************
@@ -15791,7 +15795,7 @@ uint32 CLuaBaseEntity::getTrustID()
  *  Example : mob:trustPartyMessage(message_id)
  ************************************************************************/
 
-void CLuaBaseEntity::trustPartyMessage(uint32 message_id) const
+void CLuaBaseEntity::trustPartyMessage(uint32 message_id)
 {
     if (m_PBaseEntity->objtype != TYPE_TRUST)
     {
@@ -15806,7 +15810,7 @@ void CLuaBaseEntity::trustPartyMessage(uint32 message_id) const
         PMaster->ForParty([&](CBattleEntity* PMember)
         {
             auto* PCharMember = static_cast<CCharEntity*>(PMember);
-            PCharMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PTrust, PMember, message_id, 0, MsgBasic::TrustPartyMessage);
+            PCharMember->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE2>(PTrust, PMember, message_id, 0, 711);
         });
         // clang-format on
     }
@@ -18709,7 +18713,7 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
 
         ActionAnimation animationID  = ActionAnimation::None;
         int             messageParam = 0;
-        MsgBasic        messageID    = MsgBasic::None;
+        MsgBasic        messageID    = MsgBasic::NONE;
         int             addedHP      = 0;
         int             addedMP      = 0;
 
@@ -18722,12 +18726,12 @@ void CLuaBaseEntity::restoreFromChest(CLuaBaseEntity* PLuaBaseEntity, uint32 res
             {
                 case 1:
                     messageParam = addedHP;
-                    messageID    = MsgBasic::TargetRegainsHP;
+                    messageID    = MsgBasic::TARGET_REGAINS_HP;
                     animationID  = ActionAnimation::RegainHP;
                     break;
                 case 2:
                     messageParam = addedMP;
-                    messageID    = MsgBasic::TargetRegainsMP;
+                    messageID    = MsgBasic::TARGET_REGAINS_MP;
                     animationID  = ActionAnimation::RegainMP;
                     break;
             }
@@ -19884,7 +19888,6 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getModelId", CLuaBaseEntity::getModelId);
     SOL_REGISTER("setModelId", CLuaBaseEntity::setModelId);
     SOL_REGISTER("setLook", CLuaBaseEntity::setLook);
-    SOL_REGISTER("getEquipmentModelIds", CLuaBaseEntity::getEquipmentModelIds);
     SOL_REGISTER("getCostume", CLuaBaseEntity::getCostume);
     SOL_REGISTER("setCostume", CLuaBaseEntity::setCostume);
     SOL_REGISTER("getCostume2", CLuaBaseEntity::getCostume2);
@@ -20252,7 +20255,7 @@ void CLuaBaseEntity::Register()
 
     // Status Effects
     SOL_REGISTER("addStatusEffect", CLuaBaseEntity::addStatusEffect);
-    SOL_REGISTER("copyStatusEffect", CLuaBaseEntity::copyStatusEffect);
+    SOL_REGISTER("addStatusEffectEx", CLuaBaseEntity::addStatusEffectEx);
     SOL_REGISTER("getStatusEffect", CLuaBaseEntity::getStatusEffect);
     SOL_REGISTER("getStatusEffectBySource", CLuaBaseEntity::getStatusEffectBySource);
     SOL_REGISTER("getStatusEffects", CLuaBaseEntity::getStatusEffects);

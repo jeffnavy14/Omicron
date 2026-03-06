@@ -68,7 +68,7 @@ public:
     void messagePublic(uint16 messageID, const CLuaBaseEntity* PEntity, const sol::object& arg2, const sol::object& arg3);
     void messageSpecial(uint16 messageID, sol::variadic_args va);
     void messageSystem(MsgStd messageID, const sol::object& p0, const sol::object& p1);
-    void messageCombat(const sol::object& speaker, int32 p0, int32 p1, MsgBasic message) const;
+    void messageCombat(const sol::object& speaker, int32 p0, int32 p1, int16 message);
     void messageStandard(uint16 messageID);
 
     void customMenu(const sol::object& obj);
@@ -306,7 +306,6 @@ public:
     uint16 getModelId();
     void   setModelId(uint16 modelId, const sol::object& slotObj);
     void   setLook(const sol::table& look);
-    auto   getEquipmentModelIds() -> sol::table;
     uint16 getCostume();
     void   setCostume(uint16 costume);
     uint16 getCostume2();
@@ -678,8 +677,8 @@ public:
     void  clearEnmityForEntity(CLuaBaseEntity* PEntity);
 
     // Status Effects
-    auto  addStatusEffect(EFFECT effectId, sol::table params) const -> bool;
-    auto  copyStatusEffect(const CLuaStatusEffect* PStatusEffect) const -> bool;
+    bool  addStatusEffect(sol::variadic_args va);
+    auto  addStatusEffectEx(sol::variadic_args va) -> bool;
     auto  getStatusEffect(uint16 StatusID, const sol::object& SubType, const sol::object& SourceType, const sol::object& SourceTypeParam) -> CStatusEffect*;
     auto  getStatusEffectBySource(uint16 StatusID, EffectSourceType SourceType, uint16 SourceTypeParam) -> CStatusEffect*;
     auto  getStatusEffects() -> sol::table;
@@ -778,7 +777,7 @@ public:
     auto   spawnTrust(uint16 trustId) -> CBaseEntity*;
     void   clearTrusts();
     uint32 getTrustID();
-    void   trustPartyMessage(uint32 message_id) const;
+    void   trustPartyMessage(uint32 message_id);
     auto   addGambit(uint16 targ, const sol::table& predicates, const sol::table& reactions, const sol::object& retry) -> std::string;
     void   removeGambit(const std::string& id);
     void   removeAllGambits();

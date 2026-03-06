@@ -90,7 +90,7 @@ entity.onMobFight = function(mob, target)
         not xi.combat.behavior.isEntityBusy(mob)
     then
         mob:setMagicCastingEnabled(false)
-        mob:addStatusEffect(xi.effect.CHAINSPELL, { power = 1, duration = 3, origin = mob, silent = true })
+        mob:addStatusEffectEx(xi.effect.CHAINSPELL, xi.effect.CHAINSPELL, 1, 0, 3, true)
         mob:castSpell(xi.magic.spell.FLOOD, target)
         mob:setLocalVar('petCooldown', GetSystemTime() + 20)
     end

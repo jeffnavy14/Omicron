@@ -78,6 +78,8 @@ class ZMQRouterWrapper final
         {
             while (!requestExit_)
             {
+                TracyZoneScoped;
+
                 // Since we are a zmq::socket_type::router, we expect a multipart message:
                 // [routing id (IPP), message]
                 std::array<zmq::message_t, 2> msgs;
@@ -138,7 +140,7 @@ public:
     , thread_(
           [this, endpoint]()
           {
-              TracySetThreadName("ZMQ Router");
+              TracySetThreadName("Message Server (ZMQ)");
               ZMQWorker worker(requestExit_, incomingQueue_, outgoingQueue_, endpoint);
           })
     {

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2022 LandSandBoat Dev Teams
@@ -23,9 +23,7 @@
 
 #include "arguments.h"
 #include "common/engine.h"
-#include "common/scheduler.h"
-
-#include <asio.hpp> // for signal_set
+#include <asio.hpp>
 
 #include <memory>
 #include <string>
@@ -95,12 +93,12 @@ public:
     // Member accessors
     //
 
-    auto scheduler() -> Scheduler&;
+    auto ioContext() -> asio::io_context&;
     auto args() const -> Arguments&;
     auto console() const -> ConsoleService&;
 
 protected:
-    Scheduler        scheduler_;
+    asio::io_context io_context_;
     asio::signal_set signals_;
 
     std::string serverName_;

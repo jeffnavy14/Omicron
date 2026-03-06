@@ -44,26 +44,25 @@ constexpr auto kSessionCleanTime = 15min;
 
 } // namespace
 
-ConnectEngine::ConnectEngine(Scheduler& scheduler)
-: scheduler_(scheduler)
-, zmqDealerWrapper_(getZMQEndpointString(), getZMQRoutingId())
-, m_authHandler(scheduler_, settings::get<uint32>("network.LOGIN_AUTH_PORT"), zmqDealerWrapper_)
-, m_dataHandler(scheduler_, settings::get<uint32>("network.LOGIN_DATA_PORT"), zmqDealerWrapper_)
-, m_viewHandler(scheduler_, settings::get<uint32>("network.LOGIN_VIEW_PORT"), zmqDealerWrapper_)
+ConnectEngine::ConnectEngine(asio::io_context& io_context)
+: zmqDealerWrapper_(getZMQEndpointString(), getZMQRoutingId())
+, m_authHandler(io_context, settings::get<uint32>("network.LOGIN_AUTH_PORT"), zmqDealerWrapper_)
+, m_dataHandler(io_context, settings::get<uint32>("network.LOGIN_DATA_PORT"), zmqDealerWrapper_)
+, m_viewHandler(io_context, settings::get<uint32>("network.LOGIN_VIEW_PORT"), zmqDealerWrapper_)
+, m_sessionCleanupTimer(io_context, kSessionCleanTime)
 {
-    scheduler.postToMainThread(periodicCleanup());
+    m_sessionCleanupTimer.async_wait(std::bind(&ConnectEngine::periodicCleanup, this, std::placeholders::_1));
 }
 
 ConnectEngine::~ConnectEngine()
 {
-}
+    m_sessionCleanupTimer.cancel();
+};
 
-auto ConnectEngine::periodicCleanup() -> Task<void>
+void ConnectEngine::periodicCleanup(const asio::error_code& error)
 {
-    while (!scheduler_.closeRequested())
+    if (!error)
     {
-        co_await scheduler_.yieldFor(kSessionCleanTime);
-
         auto& sessions       = loginHelpers::getAuthenticatedSessions();
         auto  ipAddrIterator = sessions.begin();
         while (ipAddrIterator != sessions.end())
@@ -96,5 +95,8 @@ auto ConnectEngine::periodicCleanup() -> Task<void>
                 ++ipAddrIterator;
             }
         }
+
+        m_sessionCleanupTimer.expires_at(m_sessionCleanupTimer.expiry() + kSessionCleanTime);
+        m_sessionCleanupTimer.async_wait(std::bind(&ConnectEngine::periodicCleanup, this, std::placeholders::_1));
     }
 }

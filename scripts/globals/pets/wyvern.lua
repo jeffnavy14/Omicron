@@ -186,7 +186,7 @@ xi.pets.wyvern.onMobSpawn = function(mob)
     end)
 end
 
-xi.pets.wyvern.removeWyvernLevels = function(mob)
+local function removeWyvernLevels(mob)
     local master  = mob:getMaster()
     local numLvls = mob:getLocalVar('level_Ups')
 
@@ -205,7 +205,7 @@ xi.pets.wyvern.removeWyvernLevels = function(mob)
 end
 
 xi.pets.wyvern.onMobDeath = function(mob, player)
-    xi.pets.wyvern.removeWyvernLevels(mob)
+    removeWyvernLevels(mob)
 
     local master  = mob:getMaster()
     master:removeListener('PET_WYVERN_WS')
@@ -216,7 +216,7 @@ xi.pets.wyvern.onMobDeath = function(mob, player)
 end
 
 xi.pets.wyvern.onPetLevelRestriction = function(pet)
-    xi.pets.wyvern.removeWyvernLevels(pet)
+    removeWyvernLevels(pet)
     pet:setLocalVar('wyvern_exp', 0)
     pet:setLocalVar('level_Ups', 0)
 end

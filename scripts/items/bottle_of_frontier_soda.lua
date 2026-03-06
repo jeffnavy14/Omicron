@@ -10,9 +10,9 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     if not target:hasStatusEffect(xi.effect.REGAIN) then
-        target:addStatusEffect(xi.effect.REGAIN, { power = 1, duration = 60, origin = user, tick = 3 })
+        target:addStatusEffect(xi.effect.REGAIN, 1, 3, 60)
     else
         target:messageBasic(xi.msg.basic.NO_EFFECT)
     end

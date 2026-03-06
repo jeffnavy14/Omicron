@@ -74,7 +74,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
         -- HP/MP/TP Stat Downs
         xi.effect.MAX_TP_DOWN,
         xi.effect.MAX_MP_DOWN,
-        xi.effect.MAX_HP_DOWN,
+        xi.effect.MAX_HP_DOWN
     }
 
     -- Check which effects the mob actually has from our list
@@ -84,16 +84,23 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
         end
     end
 
-    -- Transfer only 1 random effect from mob to target
+    -- Transfer only 1 random effect
     if #availableEffects > 0 then
         -- Shuffle and pick the first one
         availableEffects = utils.shuffle(availableEffects)
         local effectId = availableEffects[1]
-        local effect = mob:getStatusEffect(effectId)
+        local effect = target:getStatusEffect(effectId)
 
-        if effect then
-            target:copyStatusEffect(effect)
-            mob:delStatusEffect(effectId)
+        if effect and target:delStatusEffect(effectId) then
+            target:addStatusEffect(
+                effectId,
+                effect:getPower(),
+                effect:getTick(),
+                math.ceil(effect:getTimeRemaining() / 1000), -- Gets the remaining time and converts milliseconds to seconds
+                effect:getSubType(),
+                effect:getSubPower(),
+                effect:getTier()
+            )
             numEffectsTransferred = 1
         end
     end

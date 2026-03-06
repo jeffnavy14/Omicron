@@ -142,7 +142,7 @@ bool CSpell::isBuff() const
 
 bool CSpell::tookEffect() const
 {
-    return !(m_message == MsgBasic::MagicNoEffect || m_message == MsgBasic::MagicResistedTarget || m_message == MsgBasic::TargetNoEffect || m_message == MsgBasic::MagicResisted);
+    return !(m_message == MsgBasic::MAGIC_NO_EFFECT || m_message == MsgBasic::MAGIC_RESISTED_TARGET || m_message == MsgBasic::TARGET_NO_EFFECT || m_message == MsgBasic::MAGIC_RESISTED);
 }
 
 bool CSpell::hasMPCost()
@@ -191,7 +191,7 @@ bool CSpell::canHitShadow()
 bool CSpell::dealsDamage() const
 {
     // damage or drain hp
-    return m_message == MsgBasic::MagicDamage || m_message == MsgBasic::MagicDrainsHP || m_message == MsgBasic::MagicBurstDamage || m_message == MsgBasic::MagicBurstDrainsHP;
+    return m_message == MsgBasic::MAGIC_DAMAGE || m_message == MsgBasic::MAGIC_DRAINS_HP || m_message == MsgBasic::MAGIC_BURST_DAMAGE || m_message == MsgBasic::MAGIC_BURST_DRAINS_HP;
 }
 
 float CSpell::getRadius() const

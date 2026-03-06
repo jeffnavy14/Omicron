@@ -16,10 +16,10 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return result
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     -- May need a retail capture to verify actual position
     -- https://ffxiclopedia.fandom.com/wiki/Shadow_Lord_Shirt states teleports next to HP#1
-    target:addStatusEffect(xi.effect.TELEPORT, { power = xi.teleport.id.ZVAHL_KEEP, duration = 4, origin = user, icon = 0 })
+    target:addStatusEffectEx(xi.effect.TELEPORT, 0, xi.teleport.id.ZVAHL_KEEP, 0, 4)
 end
 
 return itemObject

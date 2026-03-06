@@ -76,8 +76,6 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/instance.h
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.h
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/items.h

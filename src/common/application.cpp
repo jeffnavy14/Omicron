@@ -39,7 +39,6 @@
 #endif
 
 #include <csignal>
-#include <thread>
 
 namespace
 {
@@ -85,8 +84,7 @@ unsigned long prevQuickEditMode;
 } // namespace
 
 Application::Application(const ApplicationConfig& appConfig, int argc, char** argv)
-: scheduler_()
-, signals_(scheduler_.mainContext())
+: signals_(io_context_)
 , serverName_(appConfig.serverName)
 , args_(std::make_unique<Arguments>(appConfig, argc, argv))
 {
@@ -272,11 +270,11 @@ void Application::run()
 
     try
     {
-        // NOTE: scheduler_.run() takes over and blocks this thread. Anything after this point will only fire
-        // if scheduler_ finishes!
+        // NOTE: io_context_.run() takes over and blocks this thread. Anything after this point will only fire
+        // if io_context_ finishes!
         //
-        // This busy loop looks nasty, however:
-        // https://think-async.com/asio/asio-1.24.0/doc/asio/reference/io_service.html
+        // This busy loop looks nasty, however --
+        // https://think-async.com/Asio/asio-1.24.0/doc/asio/reference/io_service.html
         //
         // If an exception is thrown from a handler, the exception is allowed to propagate through the throwing thread's invocation of
         // run(), run_one(), run_for(), run_until(), poll() or poll_one(). No other threads that are calling any of these functions are affected.
@@ -286,11 +284,12 @@ void Application::run()
         {
             try
             {
-                scheduler_.run();
+                io_context_.run();
                 break;
             }
             catch (std::exception& e)
             {
+                // TODO: make a list of "allowed exceptions", the rest can/should cause shutdown.
                 ShowErrorFmt("Inner fatal: {}", e.what());
             }
         }
@@ -301,9 +300,9 @@ void Application::run()
     }
 }
 
-auto Application::scheduler() -> Scheduler&
+auto Application::ioContext() -> asio::io_context&
 {
-    return scheduler_;
+    return io_context_;
 }
 
 auto Application::args() const -> Arguments&

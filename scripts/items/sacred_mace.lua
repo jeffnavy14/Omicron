@@ -5,7 +5,7 @@
 -- Duration: 3 minutes
 -----------------------------------
 local itemObject = {}
-itemObject.onItemCheck = function(target, user)
+itemObject.onItemCheck = function(target)
     if target:getStatusEffectBySource(xi.effect.ENLIGHT, xi.effectSourceType.EQUIPPED_ITEM, xi.item.SACRED_MACE) ~= nil then
         target:delStatusEffect(xi.effect.ENLIGHT, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.SACRED_MACE)
     end
@@ -13,7 +13,7 @@ itemObject.onItemCheck = function(target, user)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     if target:hasEquipped(xi.item.SACRED_MACE) then
         local effect = xi.effect.ENLIGHT
         local magicskill = target:getSkillLevel(xi.skill.ENHANCING_MAGIC)
@@ -27,7 +27,7 @@ itemObject.onItemUse = function(target, user)
 
         potency = utils.clamp(potency, 3, 25)
 
-        target:addStatusEffect(effect, { power = potency, duration = 180, origin = user, sourceType = xi.effectSourceType.EQUIPPED_ITEM, sourceTypeParam = xi.item.SACRED_MACE })
+        target:addStatusEffect(effect, potency, 0, 180, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.SACRED_MACE)
     end
 end
 

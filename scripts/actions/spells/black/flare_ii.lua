@@ -9,7 +9,7 @@ spellObject.onMagicCastingCheck = function(caster, target, spell)
 end
 
 spellObject.onSpellCast = function(caster, target, spell)
-    target:addStatusEffect(xi.effect.NINJUTSU_ELE_DEBUFF, { power = 30, duration = 10, origin = caster, icon = 0, subPower = xi.mod.WATER_MEVA })
+    target:addStatusEffectEx(xi.effect.NINJUTSU_ELE_DEBUFF, 0, 30, 0, 10, 0, xi.mod.WATER_MEVA, 0)
 
     return xi.spells.damage.useDamageSpell(caster, target, spell)
 end

@@ -655,8 +655,8 @@ xi.quest.id =
         THREE_MEN_AND_A_CLOSET           = 31, -- + Converted
         FIVE_SECONDS_OF_FAME             = 32,
         -- JP ENTRIES OR INVALID
-        THE_BEAST_WITHIN                 = 40, -- + Converted
-        BREAKING_THE_BONDS_OF_FATE       = 41, -- + Converted
+        THE_BEAST_WITHIN                 = 40,
+        BREAKING_THE_BONDS_OF_FATE       = 41,
         -- JP ENTRIES OR INVALID
         SAGA_OF_THE_SKYSERPENT           = 43, -- + Converted
         ODE_TO_THE_SERPENTS              = 44, -- + Converted
@@ -994,8 +994,8 @@ xi.quest.id =
         DEATH_AND_REBIRTH               = 181, -- + Converted
         EMISSARIES_OF_GOD               = 182, -- + Converted
         BENEATH_A_BLOOD_RED_SKY         = 183, -- + Converted
-        THE_WYRM_GOD                    = 184, -- + Converted
-        MEANWHILE_BACK_ON_ABYSSEA       = 185, -- + Converted
+        THE_WYRM_GOD                    = 184,
+        MEANWHILE_BACK_ON_ABYSSEA       = 185,
         A_MOONLIGHT_REQUITE             = 186,
         DOMINION_OP_10_GRAUBERG         = 187, -- + Converted
         DOMINION_OP_11_GRAUBERG         = 188, -- + Converted

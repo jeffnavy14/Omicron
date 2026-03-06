@@ -6,7 +6,7 @@ local effectObject = {}
 
 effectObject.onEffectGain = function(target, effect)
     if target:getPet() then
-        target:getPet():copyStatusEffect(effect)
+        target:getPet():addStatusEffect(effect)
     end
 end
 

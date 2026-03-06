@@ -57,7 +57,7 @@ effectObject.onEffectTick = function(target, effect)
 
     if complete then
         target:delStatusEffectSilent(xi.effect.SUBLIMATION_ACTIVATED)
-        target:addStatusEffect(xi.effect.SUBLIMATION_COMPLETE, { power = store, duration = 7200, origin = target })
+        target:addStatusEffect(xi.effect.SUBLIMATION_COMPLETE, store, 0, 7200)
     else
         effect:setPower(store)
     end

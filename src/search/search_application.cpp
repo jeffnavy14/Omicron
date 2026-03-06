@@ -46,7 +46,7 @@ SearchApplication::~SearchApplication() = default;
 
 auto SearchApplication::createEngine() -> std::unique_ptr<Engine>
 {
-    return std::make_unique<SearchEngine>(scheduler_);
+    return std::make_unique<SearchEngine>(ioContext());
 }
 
 void SearchApplication::registerCommands(ConsoleService& console)
@@ -66,5 +66,5 @@ void SearchApplication::registerCommands(ConsoleService& console)
 void SearchApplication::requestExit()
 {
     Application::requestExit();
-    scheduler_.stop();
+    io_context_.stop();
 }

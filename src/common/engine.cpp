@@ -26,6 +26,8 @@
 
 Engine::Engine()
 {
+    srand(earth_time::timestamp());
+    xirand::seed();
 }
 
 Engine::~Engine()

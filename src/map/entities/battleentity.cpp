@@ -2277,7 +2277,7 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
     action.recast     = state.GetRecast();
     action.spellgroup = PSpell->getSpellGroup();
 
-    MsgBasic msg = MsgBasic::None;
+    MsgBasic msg = MsgBasic::NONE;
 
     for (auto* PTarget : PAI->TargetFind->m_targets)
     {
@@ -2305,7 +2305,7 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
         if (PSpell->canHitShadow() && aoeType == SPELLAOE_NONE && !(PSpell->getFlag() & SPELLFLAG_IGNORE_SHADOWS) && battleutils::IsAbsorbByShadow(PTarget, this))
         {
             // take shadow
-            msg                = MsgBasic::ShadowAbsorb;
+            msg                = MsgBasic::SHADOW_ABSORB;
             actionResult.param = 1;
             ve                 = 0;
             ce                 = 0;
@@ -2320,7 +2320,7 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
                 StatusEffectContainer->DelStatusEffect(EFFECT_SABOTEUR);
             }
 
-            if (msg == MsgBasic::None)
+            if (msg == MsgBasic::NONE)
             {
                 msg = PSpell->getMessage();
             }
@@ -2344,7 +2344,7 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
 
         if (actionResult.animation == ActionAnimation::Teleport)
         { // Teleport spells don't target unqualified members
-            if (PSpell->getMessage() == MsgBasic::None)
+            if (PSpell->getMessage() == MsgBasic::NONE)
             {
                 actionResult.animation = ActionAnimation::None; // stop target from going invisible
                 if (PTarget != PActionTarget)
@@ -2353,13 +2353,13 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
                 }
                 else
                 { // set this message in anticipation of nobody having the gate crystal
-                    actionResult.messageID = MsgBasic::MagicNoEffect;
+                    actionResult.messageID = MsgBasic::MAGIC_NO_EFFECT;
                 }
                 continue;
             }
-            if (msg == MsgBasic::MagicTeleport && PTarget != PActionTarget)
+            if (msg == MsgBasic::MAGIC_TELEPORT && PTarget != PActionTarget)
             { // reset the no effect message above if somebody has gate crystal
-                action.targets[0].results[0].messageID = MsgBasic::None;
+                action.targets[0].results[0].messageID = MsgBasic::NONE;
             }
         }
 
@@ -2375,7 +2375,7 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
         }
 
         if (PTarget->objtype == TYPE_MOB &&
-            msg != MsgBasic::ShadowAbsorb) // If message isn't the shadow loss message, because I had to move this outside of the above check for it.
+            msg != MsgBasic::SHADOW_ABSORB) // If message isn't the shadow loss message, because I had to move this outside of the above check for it.
         {
             luautils::OnMagicHit(this, PTarget, PSpell);
         }
@@ -2424,25 +2424,9 @@ void CBattleEntity::OnCastFinished(CMagicState& state, action_t& action)
             battleutils::handleSecondaryTargetEnmity(this, PActionTarget);
         }
     }
-
     if ((!(PSpell->isHeal()) || PSpell->tookEffect()) && PActionTarget->isAlive())
     {
-        // Current logic for magic claiming:
-        // Spell is not a heal.
-        // spell took effect (i.e. it wasn't fully resisted).
-        // The target is alive after the spell damage/effects are applied.
-        // Target must be a MOB.
-        // Allegiance must be different from the caster.
-        // Must NOT be Summoning Magic (Atomos and Odin are cast on a mob).
-        // If the caster is a PET, it must NOT be an AUTOMATON.
-        // No mobs should claim with magic not even charmed mobs.
-
-        bool isTargetValidMob = (PActionTarget->objtype == TYPE_MOB && PActionTarget->allegiance != this->allegiance);
-        bool isNotSummoning   = (PSpell->getSkillType() != SKILL_SUMMONING_MAGIC);
-        bool isAutomaton      = (this->objtype == TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AUTOMATON);
-        bool isMob            = (this->objtype == TYPE_MOB);
-
-        if (isTargetValidMob && !isMob && isNotSummoning && !isAutomaton)
+        if (objtype != TYPE_PET)
         {
             battleutils::ClaimMob(PActionTarget, this);
         }
@@ -2599,7 +2583,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
             // Animation completes even if no targets in range
             action_target_t& actionTarget = action.addTarget(id);
             action_result_t& actionResult = actionTarget.addResult();
-            actionResult.messageID        = MsgBasic::None;
+            actionResult.messageID        = MsgBasic::NONE;
             actionResult.animation        = PSkill->getAnimationID();
             actionResult.resolution       = ActionResolution::Miss;
             actionResult.info             = ActionInfo::UnknownAoE;
@@ -2621,7 +2605,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
     PSkill->setHP(health.hp);
     PSkill->setHPP(GetHPP());
 
-    auto msg            = MsgBasic::None;
+    auto msg            = MsgBasic::NONE;
     auto defaultMessage = PSkill->getMsg();
 
     bool first{ true };
@@ -2673,7 +2657,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
             PTargetFound->PAI->EventHandler.triggerListener("WEAPONSKILL_TAKE", this, PTargetFound, PSkill->getID(), state.GetSpentTP(), &action);
         }
 
-        if (msg == MsgBasic::None)
+        if (msg == MsgBasic::NONE)
         {
             msg = PSkill->getMsg();
         }
@@ -2684,7 +2668,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
         if (damage < 0)
         {
-            msg          = MsgBasic::SkillRecoversHP; // TODO: verify this message does/does not vary depending on mob/avatar/automaton use
+            msg          = MsgBasic::SKILL_RECOVERS_HP; // TODO: verify this message does/does not vary depending on mob/avatar/automaton use
             result.param = std::clamp(-damage, 0, PTargetFound->GetMaxHP() - PTargetFound->health.hp);
         }
         else
@@ -2710,7 +2694,7 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
             result.param      = 0;
             if (msg == messageutils::GetAoEVariant(PSkill->getMsg()))
             {
-                msg = MsgBasic::TargetEvades;
+                msg = MsgBasic::TARGET_EVADES;
             }
 
             // Evading negates knockback
@@ -2776,15 +2760,9 @@ void CBattleEntity::OnMobSkillFinished(CMobSkillState& state, action_t& action)
 
     if (PTarget)
     {
-        if (PTarget->objtype == TYPE_MOB && this->allegiance == ALLEGIANCE_TYPE::PLAYER)
+        if (PTarget->objtype == TYPE_MOB && (PTarget->isDead() || (objtype == TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AVATAR)))
         {
-            bool isAvatar   = (this->objtype == TYPE_PET && static_cast<CPetEntity*>(this)->getPetType() == PET_TYPE::AVATAR); // this is here to prevent other pet types from calling ClaimMob.
-            bool isKillShot = PTarget->isDead();
-
-            if (isAvatar || isKillShot)
-            {
-                battleutils::ClaimMob(PTarget, this);
-            }
+            battleutils::ClaimMob(PTarget, this);
         }
         battleutils::DirtyExp(PTarget, this);
     }
@@ -2883,12 +2861,12 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
 
         if (PTarget->StatusEffectContainer->HasStatusEffect(EFFECT_PERFECT_DODGE, 0))
         {
-            actionResult.messageID  = MsgBasic::TargetDodges;
+            actionResult.messageID  = MsgBasic::TARGET_DODGES;
             actionResult.resolution = ActionResolution::Miss;
         }
         else if (attack.IsDeflected())
         {
-            actionResult.messageID  = MsgBasic::AttackHits;
+            actionResult.messageID  = MsgBasic::ATTACK_HITS;
             actionResult.resolution = ActionResolution::Parry;
         }
         else if ((xirand::GetRandomNumber(100) < attack.GetHitRate() || attackRound.GetSATAOccured()) &&
@@ -2897,7 +2875,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
             // Check parry.
             if (attack.CheckParried())
             {
-                actionResult.messageID  = MsgBasic::TargetParries;
+                actionResult.messageID  = MsgBasic::TARGET_PARRIES;
                 actionResult.resolution = ActionResolution::Parry;
                 battleutils::HandleTacticalParry(PTarget);
                 battleutils::HandleIssekiganEnmityBonus(PTarget, this);
@@ -2905,7 +2883,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
             // attack hit, try to be absorbed by shadow unless it is a SATA attack round
             else if (!(attackRound.GetSATAOccured()) && battleutils::IsAbsorbByShadow(PTarget, this))
             {
-                actionResult.messageID  = MsgBasic::ShadowAbsorb;
+                actionResult.messageID  = MsgBasic::SHADOW_ABSORB;
                 actionResult.param      = 1;
                 actionResult.resolution = ActionResolution::Miss;
                 attack.SetEvaded(true);
@@ -2914,7 +2892,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
             {
                 if (attack.IsAnticipated())
                 {
-                    actionResult.messageID  = MsgBasic::TargetAnticipates;
+                    actionResult.messageID  = MsgBasic::TARGET_ANTICIPATES;
                     actionResult.resolution = ActionResolution::Miss;
                 }
 
@@ -2925,8 +2903,8 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                     if (battleutils::IsAbsorbByShadow(this, PTarget))
                     {
                         actionResult.spikesParam   = 1;
-                        actionResult.spikesMessage = MsgBasic::CounterAbsByShadow;
-                        actionResult.messageID     = MsgBasic::None;
+                        actionResult.spikesMessage = MsgBasic::COUNTER_ABS_BY_SHADOW;
+                        actionResult.messageID     = MsgBasic::NONE;
                         actionResult.param         = 0;
                     }
                     else
@@ -2988,7 +2966,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
 
                         actionResult.spikesParam =
                             battleutils::TakePhysicalDamage(PTarget, this, attack.GetAttackType(), damage, false, SLOT_MAIN, 1, nullptr, true, false, true);
-                        actionResult.spikesMessage = MsgBasic::AttackCounteredDamage;
+                        actionResult.spikesMessage = MsgBasic::ATTACK_COUNTERED_DAMAGE;
                         if (PTarget->objtype == TYPE_PC)
                         {
                             charutils::TrySkillUP((CCharEntity*)PTarget, skilltype, GetMLevel());
@@ -3018,7 +2996,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 {
                     // TODO: Use withPhysicalDamage
                     actionResult.info |= ActionInfo::CriticalHit;
-                    actionResult.messageID = attack.GetAttackType() == PHYSICAL_ATTACK_TYPE::DAKEN ? MsgBasic::RangedAttackCrit : MsgBasic::AttackCrit;
+                    actionResult.messageID = attack.GetAttackType() == PHYSICAL_ATTACK_TYPE::DAKEN ? MsgBasic::RANGED_ATTACK_CRIT : MsgBasic::ATTACK_CRIT;
 
                     if (PTarget->objtype == TYPE_MOB)
                     {
@@ -3032,7 +3010,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 // Not critical hit.
                 else
                 {
-                    actionResult.messageID = attack.GetAttackType() == PHYSICAL_ATTACK_TYPE::DAKEN ? MsgBasic::RangedAttackHit : MsgBasic::AttackHits;
+                    actionResult.messageID = attack.GetAttackType() == PHYSICAL_ATTACK_TYPE::DAKEN ? MsgBasic::RANGED_ATTACK_HIT : MsgBasic::ATTACK_HITS;
                 }
 
                 // Guarded. TODO: Stuff guards that shouldn't.
@@ -3068,7 +3046,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
                 if (damage < 0)
                 {
                     actionResult.param     = -damage;
-                    actionResult.messageID = MsgBasic::SpikesEffectRecover;
+                    actionResult.messageID = MsgBasic::SPIKES_EFFECT_RECOVER;
                 }
                 else
                 {
@@ -3094,7 +3072,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         {
             // misses the target
             actionResult.resolution = ActionResolution::Miss;
-            actionResult.messageID  = MsgBasic::AttackMisses;
+            actionResult.messageID  = MsgBasic::ATTACK_MISSES;
             attack.SetEvaded(true);
 
             // Check & Handle Afflatus Misery Accuracy Bonus
@@ -3110,7 +3088,7 @@ bool CBattleEntity::OnAttack(CAttackState& state, action_t& action)
         }
 
         // If we didn't hit at all, set param to 0 if we didn't blink any shadows.
-        if (actionResult.resolution == ActionResolution::Miss && actionResult.messageID != MsgBasic::ShadowAbsorb)
+        if (actionResult.resolution == ActionResolution::Miss && actionResult.messageID != MsgBasic::SHADOW_ABSORB)
         {
             actionResult.param = 0;
         }

@@ -885,7 +885,7 @@ function Battlefield:onEntryEventUpdate(player, csid, option, npc)
                 not member:hasStatusEffect(xi.effect.BATTLEFIELD) and
                 not member:getBattlefield()
             then
-                member:copyStatusEffect(effect)
+                member:addStatusEffect(effect)
                 member:registerBattlefield(self.battlefieldId, area, player:getID(), self)
             end
         end

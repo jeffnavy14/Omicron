@@ -17,7 +17,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
     end
 
     if not target:hasStatusEffect(xi.effect.MAGIC_DEF_BOOST) then
-        target:addStatusEffect(xi.effect.MAGIC_DEF_BOOST, { power = 10, duration = 60, origin = mob })
+        target:addStatusEffect(xi.effect.MAGIC_DEF_BOOST, 10, 0, 60)
     end
 
     return xi.effect.MAGIC_DEF_BOOST

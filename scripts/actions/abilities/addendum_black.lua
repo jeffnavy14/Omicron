@@ -36,7 +36,7 @@ abilityObject.onUseAbility = function(player, target, ability)
         helixbonus = math.floor(player:getMainLvl() / 4)
     end
 
-    player:addStatusEffect(xi.effect.ADDENDUM_BLACK, { power = effectbonus, duration = 7200, origin = player, subPower = helixbonus, silent = true })
+    player:addStatusEffectEx(xi.effect.ADDENDUM_BLACK, xi.effect.ADDENDUM_BLACK, effectbonus, 0, 7200, 0, helixbonus, true)
 
     return xi.effect.ADDENDUM_BLACK
 end

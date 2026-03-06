@@ -29,16 +29,14 @@
 #include "data_session.h"
 #include "view_session.h"
 
-#include "common/scheduler.h"
 #include "common/zmq_dealer_wrapper.h"
 
 template <typename T>
 class handler
 {
 public:
-    handler(Scheduler& scheduler, unsigned int port, ZMQDealerWrapper& zmqDealerWrapper)
-    : scheduler_(scheduler)
-    , acceptor_(scheduler_.mainContext(), asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+    handler(asio::io_context& io_context, unsigned int port, ZMQDealerWrapper& zmqDealerWrapper)
+    : acceptor_(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
     , sslContext_(asio::ssl::context::tls_server)
     , zmqDealerWrapper_(zmqDealerWrapper)
     {
@@ -49,33 +47,42 @@ public:
         sslContext_.use_rsa_private_key_file("login.key", asio::ssl::context::file_format::pem);
         sslContext_.use_certificate_chain_file("login.cert");
 
-        scheduler_.postToMainThread(accept_loop());
+        do_accept();
     }
 
 private:
-    auto accept_loop() -> Task<void>
+    void do_accept()
     {
-        while (!scheduler_.closeRequested())
-        {
-            auto [ec, socket] = co_await acceptor_.async_accept(asio::as_tuple(asio::use_awaitable));
-
-            if (!ec)
+        acceptor_.async_accept(
+            [this](std::error_code ec, asio::ip::tcp::socket socket)
             {
-                const auto sessionHandler = std::make_shared<T>(asio::ssl::stream<asio::ip::tcp::socket>(std::move(socket), sslContext_), zmqDealerWrapper_);
-                scheduler_.postToWorkerThread(
-                    [sessionHandler]
+                if (!ec)
+                {
+                    if constexpr (std::is_same_v<T, auth_session>)
                     {
-                        sessionHandler->start();
-                    });
-            }
-            else
-            {
-                ShowError(ec.message());
-            }
-        }
+                        const auto auth_handler = std::make_shared<T>(asio::ssl::stream<asio::ip::tcp::socket>(std::move(socket), sslContext_), zmqDealerWrapper_);
+                        auth_handler->start();
+                    }
+                    else if constexpr (std::is_same_v<T, view_session>)
+                    {
+                        const auto view_handler = std::make_shared<T>(asio::ssl::stream<asio::ip::tcp::socket>(std::move(socket), sslContext_));
+                        view_handler->start();
+                    }
+                    else if constexpr (std::is_same_v<T, data_session>)
+                    {
+                        const auto data_handler = std::make_shared<T>(asio::ssl::stream<asio::ip::tcp::socket>(std::move(socket), sslContext_), zmqDealerWrapper_);
+                        data_handler->start();
+                    }
+                }
+                else
+                {
+                    ShowError(ec.message());
+                }
+
+                do_accept();
+            });
     }
 
-    Scheduler&              scheduler_;
     asio::ip::tcp::acceptor acceptor_;
     asio::ssl::context      sslContext_;
 

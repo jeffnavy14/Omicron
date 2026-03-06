@@ -5,10 +5,6 @@
 local effectObject = {}
 
 effectObject.onEffectGain = function(target, effect)
-    if target:getObjType() == xi.objType.PC then
-        target:messageBasic(xi.msg.basic.UNABLE_TO_ACCESS_SJ)
-    end
-
     target:recalculateStats()
 end
 

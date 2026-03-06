@@ -36,7 +36,7 @@ abilityObject.onUseAbility = function(player, target, ability)
         regenbonus = 3 * math.floor((player:getMainLvl() - 10) / 10)
     end
 
-    player:addStatusEffect(xi.effect.ADDENDUM_WHITE, { power = effectbonus, duration = 7200, origin = player, subPower = regenbonus, silent = true })
+    player:addStatusEffectEx(xi.effect.ADDENDUM_WHITE, xi.effect.ADDENDUM_WHITE, effectbonus, 0, 7200, 0, regenbonus, true)
 
     return xi.effect.ADDENDUM_WHITE
 end

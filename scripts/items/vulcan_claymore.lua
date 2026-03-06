@@ -7,7 +7,7 @@
 ---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target, user)
+itemObject.onItemCheck = function(target)
     if target:getStatusEffectBySource(xi.effect.ENFIRE, xi.effectSourceType.EQUIPPED_ITEM, xi.item.VULCAN_CLAYMORE) ~= nil then
         target:delStatusEffect(xi.effect.ENFIRE, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.VULCAN_CLAYMORE)
     end
@@ -15,7 +15,7 @@ itemObject.onItemCheck = function(target, user)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     if target:hasEquipped(xi.item.VULCAN_CLAYMORE) then
         local effect = xi.effect.ENFIRE
         local magicskill = target:getSkillLevel(xi.skill.ENHANCING_MAGIC)
@@ -29,7 +29,7 @@ itemObject.onItemUse = function(target, user)
 
         potency = utils.clamp(potency, 3, 25)
 
-        target:addStatusEffect(effect, { power = potency, duration = 180, origin = user, sourceType = xi.effectSourceType.EQUIPPED_ITEM, sourceTypeParam = xi.item.VULCAN_CLAYMORE })
+        target:addStatusEffect(effect, potency, 0, 180, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.VULCAN_CLAYMORE)
     end
 end
 

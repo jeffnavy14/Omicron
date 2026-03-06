@@ -23,11 +23,12 @@
 
 #include "common/logging.h"
 
-MapSocket::MapSocket(Scheduler& scheduler, const uint16 port, ReceiveFn onReceiveFn)
-: scheduler_(scheduler)
-, port_(port)
-, socket_(scheduler_.mainContext())
+MapSocket::MapSocket(asio::io_context& io_context, const uint16 port, ReceiveFn onReceiveFn)
+: port_(port)
+, io_context_(io_context)
+, socket_(io_context)
 , buffer_{}
+, isRunning(true)
 , onReceiveFn_(std::move(onReceiveFn))
 {
     TracyZoneScoped;
@@ -70,7 +71,7 @@ void MapSocket::startReceive()
 
             onReceiveFn_(ec, buffer, ipp);
 
-            if (!scheduler_.closeRequested() && socket_.is_open())
+            if (!io_context_.stopped() && socket_.is_open())
             {
                 startReceive(); // Queue up more work
             }
@@ -82,14 +83,14 @@ void MapSocket::recvFor(timer::duration duration)
     TracyZoneScoped;
 
     // Blocks until the duration is up
-    scheduler_.mainContext().run_for(duration);
+    io_context_.run_for(duration);
 
     // Once run_for() or run() return the io_context enters a stopped state,
     // even if there are still pending asynchronous operations. You need to
     // call restart() to clear that state before you can run it again.
-    if (isRunning_)
+    if (isRunning)
     {
-        scheduler_.mainContext().restart();
+        io_context_.restart();
     }
 }
 
@@ -121,6 +122,6 @@ void MapSocket::send(const IPP& ipp, std::span<uint8> buffer)
 
 void MapSocket::requestExit()
 {
-    isRunning_ = false;
-    scheduler_.stop();
+    isRunning = false;
+    io_context_.stop();
 }

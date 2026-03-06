@@ -21,9 +21,8 @@
 
 #pragma once
 
-#include <common/application.h>
-#include <common/scheduler.h>
-#include <common/utils.h>
+#include "common/application.h"
+#include "common/utils.h"
 
 #include <unordered_set>
 
@@ -32,12 +31,12 @@
 #endif
 
 // search specific stuff
-#include "search_listener.h"
+#include "handler.h"
 
 class SearchEngine final : public Engine
 {
 public:
-    SearchEngine(Scheduler& scheduler);
+    SearchEngine(asio::io_context& io_context);
     ~SearchEngine() override;
 
     void onInitialize() override;
@@ -48,11 +47,11 @@ public:
     void expireAH(std::optional<uint16> days) const;
 
 private:
-    auto periodicCleanup() -> Task<void>;
+    handler            m_searchHandler;
+    asio::steady_timer m_periodicCleanupTimer;
 
-    Scheduler&     scheduler_;
-    SearchListener searchListener_;
+    void periodicCleanup(const asio::error_code& error);
 
     // NOTE: We're only using the read-lock for this
-    SynchronizedShared<std::unordered_set<std::string>> ipWhitelist_;
+    SynchronizedShared<std::unordered_set<std::string>> m_ipWhitelist;
 };

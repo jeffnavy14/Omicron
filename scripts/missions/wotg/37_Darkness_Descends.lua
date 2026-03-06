@@ -44,8 +44,7 @@ mission.sections =
 
                 [10] = function(player, csid, option, npc)
                     if option == 5 then
-                        local equip = player:getEquipmentModelIds()
-                        player:updateEvent(156, player:getFace(), equip.head, equip.body, equip.hands, equip.main, equip.sub, 0)
+                        player:updateEvent(156, 10, 305, 183, 320, 847, 450, 0)
                     end
                 end,
             },

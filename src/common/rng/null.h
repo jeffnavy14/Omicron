@@ -21,9 +21,16 @@
 
 #pragma once
 
-#include <cstdint>
-#include <limits>
+#include "common/logging.h"
+
+#include <array>
 #include <random>
+
+//
+// Forward declare sysrandom which is built in the xirand.h/cpp compilation unit
+//
+
+extern size_t sysrandom(void* dst, size_t dstlen);
 
 class NullRandomEngine
 {
@@ -48,9 +55,43 @@ public:
     void seed(result_type)
     {
     }
+};
 
-    template <class Sseq>
-    void seed(Sseq&)
+class xirand
+{
+public:
+    static NullRandomEngine& rng()
     {
+        static thread_local NullRandomEngine e{};
+        return e;
     }
+
+    static void seed()
+    {
+        ShowInfo("Seeding Null Random Engine (does nothing)");
+
+        rng().seed(42);
+    }
+
+    //
+    // Declarations for RNG methods implemented in xirand.h.
+    //
+
+    template <typename T>
+    static inline typename std::enable_if<std::is_integral<T>::value, T>::type GetRandomNumber(T min, T max);
+
+    template <typename T>
+    static inline typename std::enable_if<std::is_floating_point<T>::value, T>::type GetRandomNumber(T min, T max);
+
+    template <typename T>
+    static inline T GetRandomNumber(T max);
+
+    template <typename T>
+    static inline typename T::value_type GetRandomElement(T* container);
+
+    template <typename T>
+    static inline typename T::value_type GetRandomElement(T& container);
+
+    template <typename T>
+    static inline T GetRandomElement(std::initializer_list<T> list);
 };

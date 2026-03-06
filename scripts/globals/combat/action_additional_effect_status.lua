@@ -70,44 +70,11 @@ local function validateParameters(actor, target, fedData)
     return params
 end
 
-local function hasEnspell(actor)
-    local enspellTable =
-    {
-        [ 1] = xi.effect.ENFIRE,
-        [ 2] = xi.effect.ENFIRE_II,
-        [ 3] = xi.effect.ENBLIZZARD,
-        [ 4] = xi.effect.ENBLIZZARD_II,
-        [ 5] = xi.effect.ENAERO,
-        [ 6] = xi.effect.ENAERO_II,
-        [ 7] = xi.effect.ENSTONE,
-        [ 8] = xi.effect.ENSTONE_II,
-        [ 9] = xi.effect.ENTHUNDER,
-        [10] = xi.effect.ENTHUNDER_II,
-        [11] = xi.effect.ENWATER,
-        [12] = xi.effect.ENWATER_II,
-        [13] = xi.effect.ENLIGHT,
-        [14] = xi.effect.ENDARK,
-    }
-
-    for i = 1, #enspellTable do
-        if actor:hasStatusEffect(enspellTable[i]) then
-            return true
-        end
-    end
-
-    return false
-end
-
 -----------------------------------
 -- Global functions called from "emtity.onAdditionalEffect()"
 -----------------------------------
 xi.combat.action.executeAddEffectEnhancement = function(actor, target, fedData)
     local params = validateParameters(actor, target, fedData)
-
-    -- Early return: En-spell overrides innate/weapon additional effects.
-    if hasEnspell(actor) then
-        return 0, 0, 0
-    end
 
     -- Early return: Incorrect effect ID.
     if params.effectId == xi.effect.NONE then
@@ -125,7 +92,7 @@ xi.combat.action.executeAddEffectEnhancement = function(actor, target, fedData)
     end
 
     -- Apply effect.
-    if params.aeTarget:addStatusEffect(params.effectId, { power = params.power, duration = params.duration, origin = actor, tick = params.tick, subType = params.subType, subPower = params.subPower, tier = params.tier }) then
+    if params.aeTarget:addStatusEffect(params.effectId, params.power, params.tick, params.duration, params.subType, params.subPower, params.tier) then
         return params.animation, params.message, params.effectId
     end
 
@@ -134,11 +101,6 @@ end
 
 xi.combat.action.executeAddEffectEnfeeblement = function(actor, target, fedData)
     local params = validateParameters(actor, target, fedData)
-
-    -- Early return: En-spell overrides innate/weapon additional effects.
-    if hasEnspell(actor) then
-        return 0, 0, 0
-    end
 
     -- Early return: Incorrect effect ID.
     if params.effectId == xi.effect.NONE then
@@ -175,7 +137,7 @@ xi.combat.action.executeAddEffectEnfeeblement = function(actor, target, fedData)
     local totalDuration = math.floor(params.duration * resistanceRate)
 
     -- Apply effect.
-    if params.aeTarget:addStatusEffect(params.effectId, { power = params.power, duration = totalDuration, origin = actor, tick = params.tick, subType = params.subType, subPower = params.subPower, tier = params.tier }) then
+    if params.aeTarget:addStatusEffect(params.effectId, params.power, params.tick, totalDuration, params.subType, params.subPower, params.tier) then
         return params.animation, params.message, params.effectId
     end
 
@@ -184,11 +146,6 @@ end
 
 xi.combat.action.executeAddEffectDispel = function(actor, target, fedData)
     local params = validateParameters(actor, target, fedData)
-
-    -- Early return: En-spell overrides innate/weapon additional effects.
-    if hasEnspell(actor) then
-        return 0, 0, 0
-    end
 
     -- Early return: Incorrect effect ID.
     if params.effectId ~= xi.effect.NONE then

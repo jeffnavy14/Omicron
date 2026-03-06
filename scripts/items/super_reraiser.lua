@@ -10,10 +10,10 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     local duration = 3600
     target:delStatusEffect(xi.effect.RERAISE)
-    target:addStatusEffect(xi.effect.RERAISE, { power = 3, duration = duration, origin = user })
+    target:addStatusEffect(xi.effect.RERAISE, 3, 0, duration)
 end
 
 return itemObject

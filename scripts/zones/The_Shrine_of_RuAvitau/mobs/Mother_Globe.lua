@@ -193,7 +193,7 @@ end
 
 entity.onMobSpawn = function(mob)
     mob:setLocalVar('nextSlaveSpawnTime', GetSystemTime() + 30) -- spawn first 30s from now
-    mob:addStatusEffect(xi.effect.SHOCK_SPIKES, { power = 60, duration = 3600, origin = mob, silent = true })
+    mob:addStatusEffectEx(xi.effect.SHOCK_SPIKES, xi.effect.SHOCK_SPIKES, 60, 0, 3600, true)
 
     -- Silently reapply shock spikes immediately
     mob:addListener('EFFECT_LOSE', 'MG_SPIKES', function(mobArg, effect)
@@ -201,7 +201,7 @@ entity.onMobSpawn = function(mob)
             mobArg:isAlive() and
             effect:getEffectType() == xi.effect.SHOCK_SPIKES
         then
-            mobArg:addStatusEffect(xi.effect.SHOCK_SPIKES, { power = 60, duration = 3600, origin = mob, silent = true })
+            mobArg:addStatusEffectEx(xi.effect.SHOCK_SPIKES, xi.effect.SHOCK_SPIKES, 60, 0, 3600, true)
         end
     end)
 end

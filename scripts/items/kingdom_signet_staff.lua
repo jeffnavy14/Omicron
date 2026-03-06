@@ -29,9 +29,9 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     target:delStatusEffectsByFlag(xi.effectFlag.INFLUENCE, true)
-    target:addStatusEffect(xi.effect.SIGNET, { duration = 18000, origin = user })
+    target:addStatusEffect(xi.effect.SIGNET, 0, 0, 18000)
 end
 
 return itemObject

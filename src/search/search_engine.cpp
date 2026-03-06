@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -23,15 +23,15 @@
 #include "common/lua.h"
 #include "data_loader.h"
 
-SearchEngine::SearchEngine(Scheduler& scheduler)
-: scheduler_(scheduler)
-, searchListener_(scheduler_, settings::get<uint32>("network.SEARCH_PORT"), ipWhitelist_)
+SearchEngine::SearchEngine(asio::io_context& io_context)
+: m_searchHandler(io_context, settings::get<uint32>("network.SEARCH_PORT"), m_ipWhitelist)
+, m_periodicCleanupTimer(io_context, std::chrono::seconds(settings::get<uint32>("search.EXPIRE_INTERVAL")))
 {
     const auto accessWhitelist = lua["xi"]["settings"]["search"]["ACCESS_WHITELIST"].get_or_create<sol::table>();
     for (const auto& [_, value] : accessWhitelist)
     {
         auto str = value.as<std::string>();
-        ipWhitelist_.write(
+        m_ipWhitelist.write(
             [str](auto& ipWhitelist)
             {
                 ipWhitelist.insert(str);
@@ -40,25 +40,21 @@ SearchEngine::SearchEngine(Scheduler& scheduler)
 
     if (settings::get<bool>("search.EXPIRE_AUCTIONS"))
     {
-        scheduler_.postToMainThread(periodicCleanup());
+        m_periodicCleanupTimer.async_wait(std::bind(&SearchEngine::periodicCleanup, this, std::placeholders::_1));
     }
 }
 
 SearchEngine::~SearchEngine()
 {
-}
+    m_periodicCleanupTimer.cancel();
+};
 
 void SearchEngine::onInitialize()
 {
     if (settings::get<bool>("search.EXPIRE_AUCTIONS"))
     {
         ShowInfoFmt("AH task to return items older than {} days is running", settings::get<uint16>("search.EXPIRE_DAYS"));
-
-        scheduler_.postToWorkerThread(
-            [this, days = settings::get<uint16>("search.EXPIRE_DAYS")]
-            {
-                expireAH(days);
-            });
+        expireAH(settings::get<uint16>("search.EXPIRE_DAYS"));
     }
 }
 
@@ -78,15 +74,14 @@ void SearchEngine::expireAH(const std::optional<uint16> days) const
     data.ExpireAHItems(days.value_or(0));
 }
 
-auto SearchEngine::periodicCleanup() -> Task<void>
+void SearchEngine::periodicCleanup(const asio::error_code& error)
 {
-    while (!scheduler_.closeRequested())
+    if (!error)
     {
-        co_await scheduler_.yieldFor(std::chrono::seconds(settings::get<uint32>("search.EXPIRE_INTERVAL")));
+        expireAH(settings::get<uint16>("search.EXPIRE_DAYS"));
 
-        if (!scheduler_.closeRequested())
-        {
-            expireAH(settings::get<uint16>("search.EXPIRE_DAYS"));
-        }
+        // reset timer
+        m_periodicCleanupTimer.expires_at(m_periodicCleanupTimer.expiry() + std::chrono::seconds(settings::get<uint32>("search.EXPIRE_INTERVAL")));
+        m_periodicCleanupTimer.async_wait(std::bind(&SearchEngine::periodicCleanup, this, std::placeholders::_1));
     }
 }

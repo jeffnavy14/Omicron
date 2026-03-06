@@ -41,46 +41,52 @@ constexpr auto kPumpQueuesTime         = 250ms;
 
 } // namespace
 
-WorldEngine::WorldEngine(Scheduler& scheduler)
-: scheduler_(scheduler)
-, ipcServer_(std::make_unique<IPCServer>(*this))
+WorldEngine::WorldEngine(asio::io_context& io_context)
+: ipcServer_(std::make_unique<IPCServer>(*this))
 , partySystem_(std::make_unique<PartySystem>(*this))
 , conquestSystem_(std::make_unique<ConquestSystem>(*this))
 , besiegedSystem_(std::make_unique<BesiegedSystem>(*this))
 , campaignSystem_(std::make_unique<CampaignSystem>(*this))
 , colonizationSystem_(std::make_unique<ColonizationSystem>(*this))
 , httpServer_(std::make_unique<HTTPServer>())
+, m_timeServerTimer(io_context, kTimeServerTickInterval)
+, m_queuePumpTimer(io_context, kPumpQueuesTime)
 {
-    scheduler_.postToMainThread(timeServer());
-
+    m_timeServerTimer.async_wait(std::bind(&WorldEngine::timeServer, this, std::placeholders::_1));
     // TODO: Bind ZMQ socket FD to ASIO directly
-    scheduler_.postToMainThread(pumpQueues());
+    m_queuePumpTimer.async_wait(std::bind(&WorldEngine::pumpQueues, this, std::placeholders::_1));
 }
 
-WorldEngine::~WorldEngine() = default;
-
-auto WorldEngine::timeServer() -> Task<void>
+WorldEngine::~WorldEngine()
 {
-    while (!scheduler_.closeRequested())
-    {
-        co_await scheduler_.yieldFor(kTimeServerTickInterval);
+    m_timeServerTimer.cancel();
+    m_queuePumpTimer.cancel();
+};
 
-        if (!scheduler_.closeRequested())
-        {
-            time_server(this);
-        }
+void WorldEngine::timeServer(const asio::error_code ec)
+{
+    TracyZoneScoped;
+
+    if (!ec)
+    {
+        time_server(this);
+
+        // Reschedule
+        m_timeServerTimer.expires_at(m_timeServerTimer.expiry() + kPumpQueuesTime);
+        m_timeServerTimer.async_wait(std::bind(&WorldEngine::timeServer, this, std::placeholders::_1));
     }
 }
 
-auto WorldEngine::pumpQueues() -> Task<void>
+void WorldEngine::pumpQueues(const asio::error_code ec)
 {
-    while (!scheduler_.closeRequested())
-    {
-        co_await scheduler_.yieldFor(kPumpQueuesTime);
+    TracyZoneScoped;
 
-        if (!scheduler_.closeRequested())
-        {
-            ipcServer_->handleIncomingMessages();
-        }
+    if (!ec)
+    {
+        ipcServer_->handleIncomingMessages();
+
+        // Reschedule
+        m_queuePumpTimer.expires_at(m_queuePumpTimer.expiry() + kPumpQueuesTime);
+        m_queuePumpTimer.async_wait(std::bind(&WorldEngine::pumpQueues, this, std::placeholders::_1));
     }
 }

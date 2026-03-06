@@ -10,9 +10,9 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     target:delStatusEffect(xi.effect.BLAZE_SPIKES)
-    target:addStatusEffect(xi.effect.BLAZE_SPIKES, { power = 15, duration = 180, origin = user })
+    target:addStatusEffect(xi.effect.BLAZE_SPIKES, 15, 0, 180)
 end
 
 return itemObject

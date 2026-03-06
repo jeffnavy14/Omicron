@@ -50,7 +50,7 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
         target:delStatusEffectSilent(xi.effect.ENCUMBRANCE_I)
     end
 
-    target:addStatusEffect(xi.effect.ENCUMBRANCE_I, { power = power, duration = 60, origin = mob })
+    target:addStatusEffectEx(xi.effect.ENCUMBRANCE_I, xi.effect.ENCUMBRANCE_I, power, 0, 60)
     skill:setMsg(xi.msg.basic.USES)
 end
 

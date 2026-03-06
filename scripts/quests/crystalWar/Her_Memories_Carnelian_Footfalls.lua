@@ -80,9 +80,8 @@ quest.sections =
             onEventFinish =
             {
                 [172] = function(player, csid, option, npc)
-                    if quest:complete(player) then
-                        xi.wotg.helpers.checkMemoryFragments(player)
-                    end
+                    xi.wotg.helpers.checkMemoryFragments(player)
+                    quest:complete(player)
                 end,
             },
         },

@@ -10,9 +10,9 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target, user)
+itemObject.onItemUse = function(target)
     target:delStatusEffect(xi.effect.FLEE)
-    target:addStatusEffect(xi.effect.FLEE, { power = 10000, duration = 30, origin = user })
+    target:addStatusEffect(xi.effect.FLEE, 10000, 0, 30)
 end
 
 return itemObject

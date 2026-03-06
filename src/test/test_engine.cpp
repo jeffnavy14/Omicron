@@ -39,9 +39,8 @@
 #include <utility>
 #include <vector>
 
-TestEngine::TestEngine(Scheduler& scheduler, TestConfig testConfig)
-: scheduler_(scheduler)
-, worldEngine_(std::make_unique<WorldEngine>(scheduler_))
+TestEngine::TestEngine(asio::io_context& io_context, TestConfig testConfig)
+: worldEngine_(std::make_unique<WorldEngine>(io_context))
 , mockManager_(std::make_unique<MockManager>())
 , testConfig_(std::move(testConfig))
 , reporters_(testConfig_.verbose, testConfig_.output)
@@ -63,7 +62,7 @@ TestEngine::TestEngine(Scheduler& scheduler, TestConfig testConfig)
         .controlledWeather = true,
     };
 
-    mapEngine_ = std::make_unique<MapEngine>(scheduler, mapConfig);
+    mapEngine_ = std::make_unique<MapEngine>(io_context, mapConfig);
 
     worldEngine_->onInitialize();
     mapEngine_->onInitialize();

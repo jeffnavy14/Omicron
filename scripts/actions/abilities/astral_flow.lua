@@ -15,7 +15,7 @@ abilityObject.onAbilityCheck = function(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)
-    player:addStatusEffect(xi.effect.ASTRAL_FLOW, { power = 1, duration = 180, origin = player })
+    player:addStatusEffect(xi.effect.ASTRAL_FLOW, 1, 0, 180)
 
     return xi.effect.ASTRAL_FLOW
 end
