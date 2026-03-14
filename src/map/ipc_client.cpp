@@ -45,6 +45,7 @@
 #include "packets/s2c/0x0cc_linkshell_message.h"
 #include "packets/s2c/0x0dc_group_solicit_req.h"
 
+#include "gmcall_container.h"
 #include "items/item_linkshell.h"
 #include "packets/c2s/0x0b7_assist_channel.h"
 
@@ -299,7 +300,7 @@ void IPCClient::handleMessage_ChatMessageAlliance(const IPP& ipp, const ipc::Cha
     {
         PZone->ForEachChar([allianceid, &PAlliance](CCharEntity* PChar)
         {
-            if (PChar->PParty && PChar->PParty && PChar->PParty->m_PAlliance && PChar->PParty->m_PAlliance->m_AllianceID == allianceid)
+            if (PChar->PParty && PChar->PParty->m_PAlliance && PChar->PParty->m_PAlliance->m_AllianceID == allianceid)
             {
                 PAlliance = PChar->PParty->m_PAlliance;
                 return;
@@ -966,6 +967,21 @@ void IPCClient::handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::Assi
         case GP_CLI_COMMAND_ASSIST_CHANNEL_KIND::IssueWarning:
             PChar->aman().addThumbsDown(message.senderId);
             break;
+    }
+}
+
+void IPCClient::handleMessage_GMCallRequest(const IPP& ipp, const ipc::GMCallRequest& message)
+{
+    TracyZoneScoped;
+}
+
+void IPCClient::handleMessage_GMCallResponse(const IPP& ipp, const ipc::GMCallResponse& message)
+{
+    TracyZoneScoped;
+
+    if (CCharEntity* PChar = zoneutils::GetChar(message.charId))
+    {
+        PChar->gmCallContainer().sendPendingResponse(PChar);
     }
 }
 

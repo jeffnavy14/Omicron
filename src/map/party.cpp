@@ -630,7 +630,7 @@ void CParty::AddMember(CBattleEntity* PEntity)
     {
         CCharEntity* PChar = dynamic_cast<CCharEntity*>(PEntity);
 
-        if (!PEntity)
+        if (!PChar)
         {
             ShowWarning("Non-Player passed into function (%s).", PEntity->getName());
             return;
@@ -1318,6 +1318,12 @@ void CParty::RefreshSync()
         else
         {
             NewMLevel = member->jobs.job[member->GetMJob()];
+        }
+
+        CStatusEffect* syncEffect = member->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
+        if (syncEffect != nullptr)
+        {
+            syncEffect->SetPower(syncLevel);
         }
 
         if (member->GetMLevel() != NewMLevel)

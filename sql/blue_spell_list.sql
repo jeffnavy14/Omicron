@@ -31,7 +31,7 @@ INSERT INTO `blue_spell_list` VALUES (529,683,2,7,1,3,0,0); -- Bludgeon
 INSERT INTO `blue_spell_list` VALUES (530,569,4,0,1,0,0,0); -- Refueling
 INSERT INTO `blue_spell_list` VALUES (531,676,3,13,1,0,0,0); -- Ice Break
 INSERT INTO `blue_spell_list` VALUES (532,535,4,0,1,0,0,0); -- Blitzstrahl
-INSERT INTO `blue_spell_list` VALUES (533,511,3,14,2,0,0,0); -- Self-Destruct
+INSERT INTO `blue_spell_list` VALUES (533,509,3,14,2,0,0,0); -- Self-Destruct
 INSERT INTO `blue_spell_list` VALUES (534,523,4,10,1,0,0,0); -- Mysterious Light
 INSERT INTO `blue_spell_list` VALUES (535,1646,1,14,1,0,0,0); -- Cold Wave
 INSERT INTO `blue_spell_list` VALUES (536,466,1,4,1,0,0,0); -- Poison Breath
@@ -105,7 +105,7 @@ INSERT INTO `blue_spell_list` VALUES (626,591,3,0,1,0,0,0); -- Bomb Toss
 INSERT INTO `blue_spell_list` VALUES (628,1081,3,15,1,8,0,0); -- Frypan
 INSERT INTO `blue_spell_list` VALUES (629,360,3,15,1,0,0,0); -- Flying Hip Press
 INSERT INTO `blue_spell_list` VALUES (631,777,3,9,1,5,0,0); -- Hydro Shot
-INSERT INTO `blue_spell_list` VALUES (632,1744,3,0,1,0,0,0); -- Diamondhide
+INSERT INTO `blue_spell_list` VALUES (632,1897,3,0,1,0,0,0); -- Diamondhide
 INSERT INTO `blue_spell_list` VALUES (633,1745,5,21,1,0,0,0); -- Enervation
 INSERT INTO `blue_spell_list` VALUES (634,785,5,14,2,0,0,0); -- Light of Penance
 INSERT INTO `blue_spell_list` VALUES (636,1734,4,4,1,0,0,0); -- Warm-Up

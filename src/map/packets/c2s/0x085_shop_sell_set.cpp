@@ -58,7 +58,7 @@ auto GP_CLI_COMMAND_SHOP_SELL_SET::validate(MapSession* PSession, const CCharEnt
 {
     return PacketValidator()
         .isNotCrafting(PChar)
-        .mustEqual(SellFlag, 1, "SellFlag not 1");
+        .mustEqual(this->SellFlag, 1, "SellFlag not 1");
 }
 
 void GP_CLI_COMMAND_SHOP_SELL_SET::process(MapSession* PSession, CCharEntity* PChar) const
@@ -111,14 +111,18 @@ void GP_CLI_COMMAND_SHOP_SELL_SET::process(MapSession* PSession, CCharEntity* PC
         return;
     }
 
-    const auto cost = quantity * PItem->getBasePrice();
-
-    auditSale(PChar, itemId, quantity, PItem->getBasePrice());
+    const auto basePrice = PItem->getBasePrice();
+    const auto cost      = quantity * basePrice;
+    if (charutils::UpdateItem(PChar, LOC_INVENTORY, slotId, -static_cast<int32>(quantity)) == 0)
+    {
+        ShowWarningFmt("GP_CLI_COMMAND_SHOP_SELL_SET: Player {} failed to remove item ID {} from inventory!", PChar->getName(), PItem->getID());
+        return;
+    }
 
     charutils::UpdateItem(PChar, LOC_INVENTORY, 0, cost);
-    charutils::UpdateItem(PChar, LOC_INVENTORY, slotId, -static_cast<int32>(quantity));
+    auditSale(PChar, itemId, quantity, basePrice);
     ShowInfo("GP_CLI_COMMAND_SHOP_SELL_SET: Player '%s' sold %u of itemID %u (Total: %u gil) [to VENDOR] ", PChar->getName(), quantity, itemId, cost);
     PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, itemId, quantity, MsgStd::Sell);
-    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
-    PChar->Container->setItem(PChar->Container->getSize() - 1, 0, -1, 0);
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+    PChar->Container->setItem(PChar->Container->getExSize(), 0, -1, 0);
 }

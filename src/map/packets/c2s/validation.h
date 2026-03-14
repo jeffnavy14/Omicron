@@ -27,6 +27,7 @@
 #include <set>
 
 enum LSTYPE : std::uint8_t;
+enum class KeyItem : uint16_t;
 class CCharEntity;
 class PacketValidationResult
 {
@@ -213,6 +214,24 @@ public:
     auto isAllianceLeader(const CCharEntity* PChar) -> PacketValidator&;
     // Character must not be fishing
     auto isNotFishing(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be sitting
+    auto isNotSitting(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be charmed
+    auto isNotCharmed(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be mounted
+    auto isNotMounted(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be engaged in combat
+    auto isEngaged(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be engaged in combat
+    auto isNotEngaged(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be in an event
+    auto isNotInEvent(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must not be jailed
+    auto isNotJailed(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must be in Mog House
+    auto isInMogHouse(const CCharEntity* PChar) -> PacketValidator&;
+    // Character must have a specific key item
+    auto hasKeyItem(const CCharEntity* PChar, KeyItem keyItemId) -> PacketValidator&;
 
     // Custom validation function
     template <typename Func>

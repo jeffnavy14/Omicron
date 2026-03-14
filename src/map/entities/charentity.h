@@ -24,6 +24,8 @@
 
 #include "aman.h"
 #include "event_info.h"
+#include "gmcall_container.h"
+#include "inventory_sync_state.h"
 #include "item_container.h"
 #include "map_session.h"
 #include "monstrosity.h"
@@ -35,6 +37,7 @@
 #include <bitset>
 #include <deque>
 #include <map>
+#include <set>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -306,6 +309,8 @@ public:
     bool isAnon() const;               // is /anon
     bool isAway() const;               // is /away (tells will not go through)
     bool hasAutoTargetEnabled() const; // has autotarget enabled
+    auto isCrafting() const -> bool;   // is currently synthesizing
+    auto isFishing() const -> bool;    // is currently fishing
 
     profile_t       profile{};
     capacityChain_t capacityChain{};
@@ -365,19 +370,19 @@ public:
     };
     automatonInfo_t automatonInfo{};
 
-    uint8 getAutomatonAttachment(uint8 slot);
-    bool  hasAutomatonAttachment(uint8 attachment);
+    auto getAutomatonAttachment(uint8 slotid) const -> uint8;
+    auto hasAutomatonAttachment(uint8 attachment) const -> bool;
 
-    uint8 getAutomatonElementMax(uint8 element);
-    uint8 getAutomatonElementCapacity(uint8 element);
+    auto getAutomatonElementMax(uint8 element) const -> uint8;
+    auto getAutomatonElementCapacity(uint8 element) const -> uint8;
 
-    AUTOFRAMETYPE getAutomatonFrame() const;
-    AUTOHEADTYPE  getAutomatonHead() const;
+    auto getAutomatonFrame() const -> AutomatonFrame;
+    auto getAutomatonHead() const -> AutomatonHead;
 
-    void setAutomatonFrame(AUTOFRAMETYPE frame);
-    void setAutomatonHead(AUTOHEADTYPE head);
+    void setAutomatonFrame(AutomatonFrame frame);
+    void setAutomatonHead(AutomatonHead head);
 
-    void setAutomatonAttachment(uint8 slot, uint8 id);
+    void setAutomatonAttachment(uint8 slotid, uint8 id);
 
     void setAutomatonElementMax(uint8 element, uint8 max);
     void addAutomatonElementCapacity(uint8 element, int8 value);
@@ -455,8 +460,9 @@ public:
     void   erasePackets(uint8 num); // Erase num elements from front of packet list
     bool   isPacketFiltered(std::unique_ptr<CBasicPacket>& packet);
 
-    bool pendingPositionUpdate;
-    bool sendServerStatus_ = false;
+    bool                 pendingPositionUpdate;
+    bool                 sendServerStatus_ = false;
+    std::optional<int32> servmesLastOffset_; // Last /servmes fragment offset we responded to
 
     virtual void HandleErrorMessage(std::unique_ptr<CBasicPacket>&) override;
 
@@ -537,6 +543,8 @@ public:
     // The character is in ANY Mog House (their own or someone else's)
     auto inMogHouse() const -> bool;
 
+    auto gmCallContainer() -> GMCallContainer&;
+
     CharHistory_t m_charHistory{};
 
     int8  getShieldSize();
@@ -548,13 +556,12 @@ public:
     bool getBlockingAid() const;
     void setBlockingAid(bool isBlockingAid);
 
-    // Send updates about dirty containers in post tick
-    std::map<CONTAINER_ID, bool> dirtyInventoryContainers;
-
-    bool              m_EquipSwap; // true if equipment was recently changed
     bool              m_EffectsChanged;
     timer::time_point m_LastSynthTime{};
     timer::time_point m_LastRangedAttackTime{};
+
+    void flushEquipChanges();
+    auto inventorySyncState() -> InventorySyncState&;
 
     CHAR_SUBSTATE m_Substate;
 
@@ -649,7 +656,7 @@ public:
     virtual void           OnDeathTimer() override;
     virtual void           OnRaise() override;
 
-    virtual void OnItemFinish(CItemState&, action_t&);
+    virtual auto OnItemFinish(CItemState&, action_t&) -> bool;
 
     auto getCharVar(const std::string& varName) const -> int32;
     auto getCharVarsWithPrefix(const std::string& prefix) -> std::vector<std::pair<std::string, int32>>;
@@ -675,6 +682,7 @@ protected:
 private:
     // Lazily initialized AMAN data
     xi::optional<CAMANContainer> m_AMAN;
+    GMCallContainer              gmCallContainer_;
 
     std::unique_ptr<CItemContainer> m_Inventory;
     std::unique_ptr<CItemContainer> m_Mogsafe;
@@ -698,6 +706,8 @@ private:
     bool m_isStyleLocked;
     bool m_isBlockingAid;
     bool m_reloadParty;
+
+    InventorySyncState inventorySyncState_;
 
     mutable std::unordered_map<std::string, std::pair<int32, uint32>> charVarCache;
     std::unordered_set<std::string>                                   charVarChanges;

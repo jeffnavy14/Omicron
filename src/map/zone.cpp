@@ -51,6 +51,7 @@ constexpr std::uint16_t WeatherCycle = 2160;
 #include "navmesh.h"
 #include "party.h"
 #include "recast_container.h"
+#include "spawn_handler.h"
 #include "status_effect_container.h"
 #include "treasure_pool.h"
 #include "zone_entities.h"
@@ -79,18 +80,27 @@ CZone::CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, ui
 
     ZoneTimer             = nullptr;
     ZoneTimerTriggerAreas = nullptr;
+    SpawnHandlerTimer     = nullptr;
 
     m_TreasurePool       = nullptr;
     m_BattlefieldHandler = nullptr;
     m_Weather            = Weather::None;
     m_zoneEntities       = new CZoneEntities(this);
     m_CampaignHandler    = new CCampaignHandler(this);
+    m_spawnHandler       = std::make_unique<SpawnHandler>(this);
 
     // settings should load first
     LoadZoneSettings();
 
     LoadZoneLines();
     LoadZoneWeather();
+
+    SpawnHandlerTimer = CTaskManager::getInstance()->AddTask(m_zoneName + "_SpawnHandler", timer::now(), this, CTaskManager::TASK_INTERVAL, kSpawnHandlerInterval, [](const timer::time_point tick, const CTaskManager::CTask* PTask)
+                                                             {
+                                                                 const auto* PZone = std::any_cast<CZone*>(PTask->m_data);
+                                                                 PZone->spawnHandler()->Tick(tick);
+                                                                 return 0;
+                                                             });
 
     // NOTE: Heavy resources like Navmesh are now loaded outside of the constructor in zoneutils::LoadZoneList
 }
@@ -165,6 +175,11 @@ auto CZone::GetWeather() const -> Weather
 auto CZone::GetWeatherChangeTime() const -> uint32
 {
     return m_WeatherChangeTime;
+}
+
+auto CZone::spawnHandler() const -> SpawnHandler*
+{
+    return m_spawnHandler.get();
 }
 
 const std::string& CZone::getName()
@@ -265,6 +280,11 @@ uint32 CZone::GetLocalVar(const char* var)
     return m_LocalVars[var];
 }
 
+std::unordered_map<std::string, uint32>& CZone::GetLocalVars()
+{
+    return m_LocalVars;
+}
+
 void CZone::SetLocalVar(const char* var, uint32 val)
 {
     m_LocalVars[var] = val;
@@ -289,7 +309,7 @@ zoneLine_t* CZone::GetZoneLine(uint32 zoneLineID)
 {
     for (const auto& zoneLine : m_zoneLineList)
     {
-        if (zoneLine->m_zoneLineID == zoneLineID)
+        if (zoneLine->zoneLineId == zoneLineID)
         {
             return zoneLine;
         }
@@ -297,24 +317,51 @@ zoneLine_t* CZone::GetZoneLine(uint32 zoneLineID)
     return nullptr;
 }
 
+// Spawns players across 8 fixed slots along the target zoneline area.
+// Spacing is calculated from the documented invisible box representing the zoneline
+auto zoneLine_t::nextSpawnPosition() -> position_t
+{
+    const float scale    = std::max(destinationScaleX, destinationScaleZ); // Spawn area length
+    const float spacing  = (scale - 1.0f) / 8.0f;                          // Distance between slots
+    const float offset   = (m_spawnSlot - 4) * spacing;                    // Offset from center (slot 4)
+    const float rotation = rotationToRadian(destinationPos.rotation);      // Direction to apply offset
+
+    m_spawnSlot = (m_spawnSlot + 1) % 8;
+
+    return {
+        destinationPos.x + offset * std::sin(rotation),
+        destinationPos.y,
+        destinationPos.z + offset * std::cos(rotation),
+        0,
+        destinationPos.rotation,
+    };
+}
+
 void CZone::LoadZoneLines()
 {
     TracyZoneScoped;
 
-    const auto rset = db::preparedStmt("SELECT zoneline, tozone, tox, toy, toz, rotation "
+    const auto rset = db::preparedStmt("SELECT zonelineid, from_zone, from_pos_x, from_pos_y, from_pos_z, "
+                                       "to_zone, to_pos_x, to_pos_y, to_pos_z, to_scale_x, to_scale_z, to_rotation "
                                        "FROM zonelines "
-                                       "WHERE fromzone = ?",
+                                       "WHERE from_zone = ?",
                                        m_zoneID);
     FOR_DB_MULTIPLE_RESULTS(rset)
     {
         auto* zl = new zoneLine_t;
 
-        zl->m_zoneLineID     = rset->get<uint32>("zoneline");
-        zl->m_toZone         = rset->get<uint16>("tozone");
-        zl->m_toPos.x        = rset->get<float>("tox");
-        zl->m_toPos.y        = rset->get<float>("toy");
-        zl->m_toPos.z        = rset->get<float>("toz");
-        zl->m_toPos.rotation = rset->get<uint8>("rotation");
+        zl->zoneLineId              = rset->get<uint32>("zonelineid");
+        zl->originZoneId            = rset->get<ZONEID>("from_zone");
+        zl->originPos.x             = rset->get<float>("from_pos_x");
+        zl->originPos.y             = rset->get<float>("from_pos_y");
+        zl->originPos.z             = rset->get<float>("from_pos_z");
+        zl->destinationZoneId       = rset->get<ZONEID>("to_zone");
+        zl->destinationPos.x        = rset->get<float>("to_pos_x");
+        zl->destinationPos.y        = rset->get<float>("to_pos_y");
+        zl->destinationPos.z        = rset->get<float>("to_pos_z");
+        zl->destinationPos.rotation = radianToRotation(rset->get<float>("to_rotation"));
+        zl->destinationScaleX       = rset->get<float>("to_scale_x");
+        zl->destinationScaleZ       = rset->get<float>("to_scale_z");
 
         m_zoneLineList.emplace_back(zl);
     }
@@ -945,7 +992,6 @@ void CZone::createZoneTimers()
         PZone->CheckTriggerAreas();
         return 0;
     });
-    // clang-format on
 }
 
 void CZone::CharZoneIn(CCharEntity* PChar)

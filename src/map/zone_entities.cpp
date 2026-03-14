@@ -27,6 +27,7 @@
 #include "mob_modifier.h"
 #include "party.h"
 #include "recast_container.h"
+#include "spawn_handler.h"
 #include "status_effect_container.h"
 #include "trade_container.h"
 #include "treasure_pool.h"
@@ -285,6 +286,7 @@ void CZoneEntities::InsertPET(CBaseEntity* PPet)
     if (PPet == nullptr)
     {
         ShowError("CZone::InsertPET: entity is null");
+        return;
     }
 
     if (PPet->PInstance)
@@ -416,41 +418,13 @@ void CZoneEntities::WeatherChange(Weather weather)
     {
         PCurrentMob->PAI->EventHandler.triggerListener("WEATHER_CHANGE", CLuaBaseEntity(PCurrentMob), static_cast<int>(weather), element);
 
-        // can't detect by scent in this weather
         if (PCurrentMob->getMobMod(MOBMOD_DETECTION) & DETECT_SCENT)
         {
             PCurrentMob->m_disableScent = (weather == Weather::Rain || weather == Weather::Squall || weather == Weather::Blizzards);
         }
-
-        if (PCurrentMob->m_EcoSystem == ECOSYSTEM::ELEMENTAL && PCurrentMob->PMaster == nullptr && PCurrentMob->m_SpawnType & SPAWNTYPE_WEATHER)
-        {
-            if (PCurrentMob->m_Element == element)
-            {
-                PCurrentMob->SetDespawnTime(0s);
-                PCurrentMob->m_AllowRespawn = true;
-                PCurrentMob->Spawn();
-            }
-            else
-            {
-                PCurrentMob->SetDespawnTime(1s);
-                PCurrentMob->m_AllowRespawn = false;
-            }
-        }
-        else if (PCurrentMob->m_SpawnType & SPAWNTYPE_FOG)
-        {
-            if (weather == Weather::Fog)
-            {
-                PCurrentMob->SetDespawnTime(0s);
-                PCurrentMob->m_AllowRespawn = true;
-                PCurrentMob->Spawn();
-            }
-            else
-            {
-                PCurrentMob->SetDespawnTime(1s);
-                PCurrentMob->m_AllowRespawn = false;
-            }
-        }
     }
+
+    m_zone->spawnHandler()->onWeatherChange(weather);
 
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PCurrentChar, m_charList)
     {
@@ -788,13 +762,13 @@ void CZoneEntities::SpawnMOBs(CCharEntity* PChar)
         const auto tapAggro = [&]()
         {
             // Check to skip aggro routine
-            if (PChar->isDead() || PChar->visibleGmLevel >= 3 || PCurrentMob->PMaster)
+            if (PCurrentMob->isDead() || PChar->isDead() || PChar->visibleGmLevel >= 3 || PCurrentMob->PMaster)
             {
                 return;
             }
 
             // checking monsters night/daytime sleep is already taken into account in the CurrentAction check, because monsters don't move in their sleep
-            const EMobDifficulty mobCheck = charutils::CheckMob(PChar->GetMLevel(), PCurrentMob->GetMLevel());
+            const EMobDifficulty mobCheck = charutils::CheckMob(PChar->GetMLevel(), PCurrentMob);
 
             CMobController* PController = static_cast<CMobController*>(PCurrentMob->PAI->GetController());
 
@@ -1336,86 +1310,24 @@ void CZoneEntities::TOTDChange(vanadiel_time::TOTD TOTD)
 {
     TracyZoneScoped;
 
+    m_zone->spawnHandler()->onTOTDChange(TOTD);
+
     SCRIPTTYPE ScriptType = SCRIPT_NONE;
 
     switch (TOTD)
     {
-        case vanadiel_time::TOTD::MIDNIGHT:
-        {
-        }
-        break;
-        case vanadiel_time::TOTD::NEWDAY:
-        {
-            FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PMob, m_mobList)
-            {
-                if (PMob->m_SpawnType & SPAWNTYPE_ATNIGHT)
-                {
-                    PMob->SetDespawnTime(1ms);
-                    PMob->m_AllowRespawn = false;
-                }
-            }
-        }
-        break;
         case vanadiel_time::TOTD::DAWN:
-        {
             ScriptType = SCRIPT_TIME_DAWN;
-
-            FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PMob, m_mobList)
-            {
-                if (PMob->m_SpawnType & SPAWNTYPE_ATEVENING)
-                {
-                    PMob->SetDespawnTime(1ms);
-                    PMob->m_AllowRespawn = false;
-                }
-            }
-        }
-        break;
+            break;
         case vanadiel_time::TOTD::DAY:
-        {
             ScriptType = SCRIPT_TIME_DAY;
-        }
-        break;
+            break;
         case vanadiel_time::TOTD::DUSK:
-        {
             ScriptType = SCRIPT_TIME_DUSK;
-        }
-        break;
+            break;
         case vanadiel_time::TOTD::EVENING:
-        {
             ScriptType = SCRIPT_TIME_EVENING;
-
-            FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PMob, m_mobList)
-            {
-                if (PMob->m_SpawnType & SPAWNTYPE_ATEVENING)
-                {
-                    PMob->SetDespawnTime(0s);
-                    PMob->m_AllowRespawn = true;
-
-                    if ((PMob->m_spawnGroup && PMob->CanSpawnFromGroup()) || !PMob->m_spawnGroup)
-                    {
-                        PMob->Spawn();
-                    }
-                }
-            }
-        }
-        break;
-        case vanadiel_time::TOTD::NIGHT:
-        {
-            FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PMob, m_mobList)
-            {
-                if (PMob->m_SpawnType & SPAWNTYPE_ATNIGHT)
-                {
-                    PMob->SetDespawnTime(0s);
-                    PMob->m_AllowRespawn = true;
-
-                    if ((PMob->m_spawnGroup && PMob->CanSpawnFromGroup()) || !PMob->m_spawnGroup)
-                    {
-                        PMob->Spawn();
-                    }
-                }
-            }
-        }
-        break;
+            break;
         default:
             break;
     }

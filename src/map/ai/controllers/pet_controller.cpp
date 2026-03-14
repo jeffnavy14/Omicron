@@ -34,6 +34,7 @@ const std::set immobilePets = {
     PETID_LUOPAN,
     PETID_ALEXANDER,
     PETID_ODIN,
+    PETID_ATOMOS,
 };
 
 }
@@ -120,26 +121,30 @@ void CPetController::DoRoamTick(timer::time_point tick)
         }
     }
 
+    if (!PPet->PMaster)
+    {
+        return;
+    }
+
     float currentDistance = distance(PPet->loc.p, PPet->PMaster->loc.p);
 
     if (currentDistance > PetRoamDistance)
     {
-        if (currentDistance < 35.0f)
+        if (!PPet->PAI->PathFind->IsFollowingPath() ||
+            distance(PPet->PAI->PathFind->GetDestination(), PPet->PMaster->loc.p) > 2.0f) // recalculate path only if owner moves more than X yalms
         {
-            if (!PPet->PAI->PathFind->IsFollowingPath() ||
-                distance(PPet->PAI->PathFind->GetDestination(), PPet->PMaster->loc.p) > 2.0f) // recalculate path only if owner moves more than X yalms
+            if (!PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
             {
-                if (!PPet->PAI->PathFind->PathAround(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+                if (!PPet->PAI->PathFind->PathInRange(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
                 {
-                    PPet->PAI->PathFind->PathInRange(PPet->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
+                    // If we got here, the pet isn't able to path to master
+                    // But it cant, so maybe we teleported or dropped down a hole
+                    PPet->PAI->PathFind->WarpTo(PPet->PMaster->loc.p, PetRoamDistance);
                 }
             }
-            PPet->PAI->PathFind->FollowPath(m_Tick);
         }
-        else if (PPet->GetSpeed() > 0)
-        {
-            PPet->PAI->PathFind->WarpTo(PPet->PMaster->loc.p, PetRoamDistance);
-        }
+
+        PPet->PAI->PathFind->FollowPath(m_Tick);
     }
 }
 

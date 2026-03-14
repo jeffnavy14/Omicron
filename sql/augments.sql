@@ -67,7 +67,7 @@ INSERT INTO `augments` VALUES (38,0,31,-1,0,0); -- Mag.Evasion-1
 INSERT INTO `augments` VALUES (39,0,27,1,0,0); -- Enmity+1
 INSERT INTO `augments` VALUES (40,0,27,-1,0,0); -- Enmity-1
 INSERT INTO `augments` VALUES (41,0,165,1,0,0); -- Crit.hit rate+1%
-INSERT INTO `augments` VALUES (42,0,166,-1,0,0); -- Enemy crit. hit rate-1%
+INSERT INTO `augments` VALUES (42,0,166,1,0,0); -- Enemy crit. hit rate-1%
 INSERT INTO `augments` VALUES (43,0,391,1,0,0); -- Charm+1 Could not determine retail AUGMENT effect. Duration? Chance to land charm? Just set as chance for now.
 INSERT INTO `augments` VALUES (44,0,73,1,0,0); -- Store TP+1 Subtle Blow+1
 INSERT INTO `augments` VALUES (44,0,289,1,0,0); -- Cont.
@@ -431,15 +431,15 @@ INSERT INTO `augments` VALUES (345,0,0,0,0,0);
 INSERT INTO `augments` VALUES (346,0,0,0,0,0);
 -- End unused block
 
-INSERT INTO `augments` VALUES (347,0,0,0,0,0); -- Healing Magic Recast Delay -1
-INSERT INTO `augments` VALUES (348,0,0,0,0,0); -- Elemental Magic Recast Delay -1
-INSERT INTO `augments` VALUES (349,0,0,0,0,0); -- Enfeebling Magic Recast Delay -1
+INSERT INTO `augments` VALUES (347,0,1183,-1,0,0); -- Healing Magic Recast Delay -1%
+INSERT INTO `augments` VALUES (348,0,1146,-1,0,0); -- Elemental Magic Recast Delay -1%
+INSERT INTO `augments` VALUES (349,0,1184,-1,0,0); -- Enfeebling Magic Recast Delay -1%
 INSERT INTO `augments` VALUES (350,0,0,0,0,0); -- Occ. maximizes magic accuracy+1%
 INSERT INTO `augments` VALUES (351,0,909,1,0,0); -- Occ. quickens spellcasting+1%
 INSERT INTO `augments` VALUES (352,0,0,0,0,0); -- Occ. grants dmg. bonus based on TP+1%
 INSERT INTO `augments` VALUES (353,0,345,50,0,0); -- TP Bonus +50
 INSERT INTO `augments` VALUES (354,0,430,1,0,0);  -- Quadruple Attack+1%
-INSERT INTO `augments` VALUES (355,0,0,0,0,0); -- Enhancing Magic Recast Delay -1
+INSERT INTO `augments` VALUES (355,0,1185,-1,0,0); -- Enhancing Magic Recast Delay -1%
 INSERT INTO `augments` VALUES (356,0,375,1,0,0); -- Potency of Cure received+1%
 
 -- 354 to 362 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
@@ -456,7 +456,7 @@ INSERT INTO `augments` VALUES (364,0,0,0,0,0); -- 364 currently unused. Leave at
 INSERT INTO `augments` VALUES (365,0,0,0,0,0); -- 365 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
 INSERT INTO `augments` VALUES (366,0,0,0,0,0); -- Blood Pact Ability Delay II: (modId is 541 but no idea what the value of the augment is so leaving zero until the value is determined)
 INSERT INTO `augments` VALUES (367,0,0,0,0,0); -- 367 currently unused. Leave at zero. Edit+move or remove this note as new augments get discovered.
-INSERT INTO `augments` VALUES (368,0,301,1,0,0); -- Phalanx+1
+INSERT INTO `augments` VALUES (368,0,1182,1,0,0); -- Phalanx Received+1
 INSERT INTO `augments` VALUES (369,0,126,1,1,1); -- Avatar: Blood Pact Dmg+1
 INSERT INTO `augments` VALUES (370,0,836,1,0,0); -- Reverse Flourish+1
 INSERT INTO `augments` VALUES (371,0,989,1,0,0); -- Regen Potency+1
@@ -1100,7 +1100,7 @@ INSERT INTO `augments` VALUES (895,0,0,0,0,0);
 INSERT INTO `augments` VALUES (896,0,432,1,0,0); -- Sword Enhancement Spell Damage +1
 INSERT INTO `augments` VALUES (897,0,96,1,0,0); -- Enhances Souleater Effect +1%
 INSERT INTO `augments` VALUES (898,0,0,0,0,0);
-INSERT INTO `augments` VALUES (899,0,0,0,0,0); --  Sword Enhancement spell damage +1% (Percent Damage)
+INSERT INTO `augments` VALUES (899,0,1195,1,0,0); --  Sword Enhancement spell damage +1% (Percent Damage)
 INSERT INTO `augments` VALUES (900,0,0,0,0,0);
 INSERT INTO `augments` VALUES (901,0,0,0,0,0);
 INSERT INTO `augments` VALUES (902,0,0,0,0,0);

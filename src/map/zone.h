@@ -35,7 +35,7 @@
 #include "campaign_handler.h"
 #include "common/logging.h"
 #include "packets/basic.h"
-#include "spawn_group.h"
+#include "spawn_slot.h"
 #include "trigger_area.h"
 
 //
@@ -44,6 +44,7 @@
 
 enum class Weather : uint16_t;
 class CNavMesh;
+class SpawnHandler;
 class ZoneLos;
 
 enum ZONEID : uint16
@@ -522,9 +523,21 @@ struct zoneWeather_t
 
 struct zoneLine_t
 {
-    uint32     m_zoneLineID;
-    uint16     m_toZone;
-    position_t m_toPos;
+    uint32 zoneLineId; // 4 characters name such as 'z7b0'.
+
+    // Where you zone from
+    ZONEID     originZoneId;
+    position_t originPos; // Center of the zoneline box.
+
+    // Where you end up at
+    ZONEID     destinationZoneId;
+    position_t destinationPos;    // Center of the zoneline box
+    float      destinationScaleX; // Box dimensions
+    float      destinationScaleZ; // Box dimensions
+
+    // Spawn slot cycling (0-7)
+    uint8 m_spawnSlot = 0;
+    auto  nextSpawnPosition() -> position_t;
 };
 
 class CBasicPacket;
@@ -580,9 +593,10 @@ public:
 
     auto queryEntitiesByName(const std::string& pattern) -> const QueryByNameResult_t&;
 
-    uint32 GetLocalVar(const char* var);
-    void   SetLocalVar(const char* var, uint32 val);
-    void   ResetLocalVars();
+    uint32                                   GetLocalVar(const char* var);
+    std::unordered_map<std::string, uint32>& GetLocalVars();
+    void                                     SetLocalVar(const char* var, uint32 val);
+    void                                     ResetLocalVars();
 
     virtual CCharEntity* GetCharByName(const std::string& name);
     virtual CCharEntity* GetCharByID(uint32 id);
@@ -652,12 +666,16 @@ public:
     CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
     virtual ~CZone();
 
-    CBattlefieldHandler* m_BattlefieldHandler; // BCNM Instances in this zone
-    CCampaignHandler*    m_CampaignHandler;    // WOTG campaign information for this zone
+    CBattlefieldHandler*          m_BattlefieldHandler; // BCNM Instances in this zone
+    CCampaignHandler*             m_CampaignHandler;    // WOTG campaign information for this zone
+    std::unique_ptr<SpawnHandler> m_spawnHandler;       // Handles mob respawns
 
-    std::unique_ptr<CNavMesh>                       m_navMesh;
-    std::unique_ptr<ZoneLos>                        lineOfSight;
-    std::map<uint32_t, std::unique_ptr<spawnGroup>> m_spawnGroups;
+    auto spawnHandler() const -> SpawnHandler*;
+
+    std::unique_ptr<CNavMesh> m_navMesh;
+    std::unique_ptr<ZoneLos>  lineOfSight;
+
+    std::map<uint32_t, std::unique_ptr<SpawnSlot>> m_spawnSlots; // add unique slots to zone
 
     timer::time_point m_LoadedAt; // The time the zone was loaded
 
@@ -700,8 +718,9 @@ private:
     std::unordered_map<std::string, QueryByNameResult_t> m_queryByNameResults;
 
 protected:
-    CTaskManager::CTask* ZoneTimer; // The pointer to the created timer is Zoneserver.necessary for the possibility of stopping it
+    CTaskManager::CTask* ZoneTimer; // The pointer to the created timer is necessary for the possibility of stopping it
     CTaskManager::CTask* ZoneTimerTriggerAreas;
+    CTaskManager::CTask* SpawnHandlerTimer;
 
     triggerAreaList_t m_triggerAreaList;
 

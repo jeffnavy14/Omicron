@@ -55,13 +55,16 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
-    -- Chages forms after 30-60 seconds randomly
+    -- Changes forms after 25-60 seconds randomly
     local timeTracker = mob:getLocalVar('formTimeTracker')
     local currentTime = GetSystemTime()
     -- NOTE: Yellow Liquid applies xi.effect.FOOD to the Mammets
     local cannotChangeForm = mob:hasStatusEffect(xi.effect.FOOD)
 
-    if currentTime >= timeTracker and not cannotChangeForm then
+    if
+        currentTime >= timeTracker and
+        not cannotChangeForm
+    then
         -- Pick a new form --
         local rand = math.random(0, 3)
         mob:setAnimationSub(rand)
@@ -96,7 +99,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     local form  = mob:getAnimationSub()
     local moves = tpMoves[form]
 

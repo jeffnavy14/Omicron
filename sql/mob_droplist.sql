@@ -1041,6 +1041,7 @@ INSERT INTO `mob_droplist` VALUES (118,0,0,1000,1118,@ALWAYS);  -- Antican Pauld
 INSERT INTO `mob_droplist` VALUES (118,0,0,1000,645,@ALWAYS);   -- Chunk Of Darksteel Ore (Always, 100%)
 INSERT INTO `mob_droplist` VALUES (118,0,0,1000,1426,@VCOMMON); -- Warriors Testimony (Very Common, 24%)
 INSERT INTO `mob_droplist` VALUES (118,0,0,1000,1118,@VRARE);   -- Antican Pauldron (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (118,2,0,1000,751,0);         -- Platinum Beastcoin (Steal)
 
 -- ZoneID: 114 - Antican Decurio
 -- ZoneID: 125 - Antican Eques
@@ -1800,7 +1801,7 @@ INSERT INTO `mob_droplist` VALUES (192,0,0,1000,914,@UNCOMMON); -- Vial Of Mercu
 INSERT INTO `mob_droplist` VALUES (193,0,0,1000,954,@UNCOMMON);  -- Magic Pot Shard (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (193,0,0,1000,1430,@UNCOMMON); -- Red Mages Testimony (Uncommon, 10%)
 INSERT INTO `mob_droplist` VALUES (193,0,0,1000,914,@RARE);      -- Vial Of Mercury (Rare, 5%)
-INSERT INTO `mob_droplist` VALUES (193,0,0,1000,1195,@VRARE);    -- Flask Of Romaeve Spring Water (Very Rare, 1%)
+INSERT INTO `mob_droplist` VALUES (193,0,0,1000,1195,@RARE);     -- Flask Of Romaeve Spring Water (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (193,1,1,@VRARE,4774,350);     -- Scroll Of Thunder Iii (Group 1, Very Rare, 1% - 35%)
 INSERT INTO `mob_droplist` VALUES (193,1,1,@VRARE,4775,150);     -- Scroll Of Thunder Iv (Group 1, Very Rare, 1% - 15%)
 INSERT INTO `mob_droplist` VALUES (193,1,1,@VRARE,4804,200);     -- Scroll Of Thundaga Iii (Group 1, Very Rare, 1% - 20%)
@@ -13244,6 +13245,7 @@ INSERT INTO `mob_droplist` VALUES (1616,0,0,1000,940,@RARE);    -- Revival Tree 
 -- ZoneID:  51 - Grand Marid
 -- ZoneID:  51 - Marid
 -- ZoneID:  52 - Grand Marid
+-- ZoneID:  52 - Marid
 INSERT INTO `mob_droplist` VALUES (1617,0,0,1000,2151,@COMMON); -- Marid Hide (Common, 15%)
 INSERT INTO `mob_droplist` VALUES (1617,0,0,1000,2166,@RARE);   -- Lock Of Marid Hair (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (1617,2,0,1000,2155,0);       -- Lesser Chigoe (Steal)
@@ -19542,7 +19544,8 @@ INSERT INTO `mob_droplist` VALUES (2443,0,0,1000,4808,@UNCOMMON); -- Scroll Of W
 INSERT INTO `mob_droplist` VALUES (2443,0,0,1000,4779,@COMMON);   -- Scroll Of Water Iii (Common, 15%)
 INSERT INTO `mob_droplist` VALUES (2443,0,0,1000,4822,@RARE);     -- Scroll Of Flood (Rare, 5%)
 INSERT INTO `mob_droplist` VALUES (2443,0,0,1000,751,@VCOMMON);   -- Platinum Beastcoin (Very Common, 24)
-INSERT INTO `mob_droplist` VALUES (2440,0,0,1000,1443,@RARE);     -- Pinch Of Dried Mugwort (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (2443,0,0,1000,1443,@RARE);     -- Pinch Of Dried Mugwort (Rare, 5%)
+INSERT INTO `mob_droplist` VALUES (2443,2,0,1000,751,0);          -- Platinum Beastcoin (Steal)
 
 -- ZoneID: 159 - Tonberry Pursuer
 INSERT INTO `mob_droplist` VALUES (2444,0,0,1000,1119,@COMMON);   -- Tonberry Coat (Common, 15%)

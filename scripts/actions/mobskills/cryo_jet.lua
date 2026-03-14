@@ -1,8 +1,9 @@
 -----------------------------------
---  Cryo_Jet
---  Description:
---  Type: Magical
+-- Cryo Jet
+-- Family: Ultima
+-- Description: Deals Ice breath damage to targets in front of mob. Additional Effect: Paralysis
 --  additional effect : Paralyze
+-- TODO: Figure out damage values for Ultima/Omega Master Trial
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,32 +12,32 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local params = {}
 
-    params.percentMultipier  = 0.05
+    params.percentMultipier  = 0.05 -- TODO: Capture HP multiplier/threshhold.
     params.element           = xi.element.ICE
-    params.damageCap         = 490
+    params.damageCap         = mob:getMainLvl() < 65 and 490 or 750
     params.bonusDamage       = 0
     params.mAccuracyBonus    = { 0, 0, 0 }
     params.resistStat        = xi.mod.INT
+    params.resistStat        = xi.mod.INT
 
-    local damage = xi.mobskills.mobBreathMove(mob, target, skill, params)
-    damage = xi.mobskills.mobFinalAdjustments(damage, mob, skill, target, xi.attackType.BREATH, xi.damageType.ICE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS, 1)
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
 
-    if not xi.mobskills.hasMissMessage(mob, target, skill, damage) then
-        target:takeDamage(damage, mob, xi.attackType.BREATH, xi.damageType.ICE)
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PARALYSIS, 15, 3, 120)
+
+        if target:hasStatusEffect(xi.effect.ELEMENTALRES_DOWN) then
+            target:delStatusEffectSilent(xi.effect.ELEMENTALRES_DOWN)
+        end
     end
 
-    xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.PARALYSIS, 15, 3, 120)
+    mob:setLocalVar('nuclearWaste', 0) -- TODO: Migrate logic to mob script.
 
-    if target:hasStatusEffect(xi.effect.ELEMENTALRES_DOWN) then
-        target:delStatusEffectSilent(xi.effect.ELEMENTALRES_DOWN)
-    end
-
-    mob:setLocalVar('nuclearWaste', 0)
-
-    return damage
+    return info.damage
 end
 
 return mobskillObject

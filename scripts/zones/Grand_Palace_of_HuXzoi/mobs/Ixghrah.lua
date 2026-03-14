@@ -77,12 +77,12 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobMobskillChoose = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     -- Only uses Actinic Burst when using TP normally
     return xi.mobSkill.ACTINIC_BURST
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local currentForm = mob:getAnimationSub()
 
     if skill:getID() == formConfig[currentForm][1] then

@@ -43,7 +43,7 @@ describe('TargetFind', function()
         -- Force Flail to always hit
         local m = stub('xi.mobskills.mobPhysicalMove',
             {
-                dmg        = 100,
+                damage     = 100,
                 hitslanded = 3,
                 isCritical = false,
             })
@@ -56,6 +56,11 @@ describe('TargetFind', function()
         fafnir:spawn()
         fafnir.assert:isAlive()
         fafnir:updateClaim(p1)
+
+        -- move wyverns to their masters
+        wyv1:setPos(p1:getPos())
+        wyv2:setPos(p2:getPos())
+        wyv3:setPos(p3:getPos())
 
         -- Use Spike Flail
         fafnir:setTP(3000)
@@ -80,7 +85,7 @@ describe('TargetFind', function()
         -- Force Flail to always hit
         local m = stub('xi.mobskills.mobPhysicalMove',
             {
-                dmg        = 100,
+                damage     = 100,
                 hitslanded = 3,
                 isCritical = false,
             })
@@ -89,6 +94,11 @@ describe('TargetFind', function()
         p1.entities:moveTo('Nidhogg')
         p2.entities:moveTo('Nidhogg')
         local nidhogg = p3.entities:moveTo('Nidhogg')
+
+        -- move wyverns to their masters
+        wyv1:setPos(p1:getPos())
+        wyv2:setPos(p2:getPos())
+        wyv3:setPos(p3:getPos())
 
         -- Spawn Nidhogg and claim it to the party
         nidhogg:spawn()
