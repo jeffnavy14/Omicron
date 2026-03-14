@@ -16,6 +16,8 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.DARK_SLEEP_RES_RANK, 8)
     mob:setMod(xi.mod.LIGHT_SLEEP_RES_RANK, 8)
     mob:setMod(xi.mod.BIND_RES_RANK, 8)
+    -- TODO: Needs gravity res rank
+
     mob:setMod(xi.mod.REGAIN, 55)
     mob:setMobAbilityEnabled(false)
     xi.mob.callPets(mob, mob:getID() + 2, { inactiveTime = 3000 })
@@ -62,6 +64,7 @@ entity.onMobFight = function(mob, target)
         not GetMobByID(mob:getID() + 2):isSpawned()
     then
         xi.mob.callPets(mob, mob:getID() + 2, { inactiveTime = 3000 })
+        mob:messageText(mob, ID.text.DINNER_TIME_ADVENTURER_STEAK)
     end
 end
 
@@ -77,7 +80,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
     return tpMoves[math.random(1, #tpMoves)]
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local skillID     = skill:getID()
     local battlefield = mob:getBattlefield()
 
@@ -125,6 +128,23 @@ entity.onMobWeaponSkill = function(target, mob, skill)
             end
         end
     end
+end
+
+entity.onMobSpellChoose = function(mob, target, spellId)
+    local spellList =
+    {
+        [1] = { xi.magic.spell.DOTON_ICHI,    target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [2] = { xi.magic.spell.KATON_ICHI,    target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [3] = { xi.magic.spell.HYOTON_ICHI,   target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [4] = { xi.magic.spell.HUTON_ICHI,    target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [5] = { xi.magic.spell.RAITON_ICHI,   target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [6] = { xi.magic.spell.SUITON_ICHI,   target, false, xi.action.type.DAMAGE_TARGET,     nil,                  0, 100 },
+        [7] = { xi.magic.spell.HOJO_ICHI,     target, false, xi.action.type.ENFEEBLING_TARGET, xi.effect.SLOW,       3, 100 },
+        [8] = { xi.magic.spell.KURAYAMI_ICHI, target, false, xi.action.type.ENFEEBLING_TARGET, xi.effect.BLINDNESS,  0, 100 },
+        [9] = { xi.magic.spell.UTSUSEMI_ICHI, mob,    false, xi.action.type.ENHANCING_TARGET,  xi.effect.COPY_IMAGE, 0, 100 },
+    }
+
+    return xi.combat.behavior.chooseAction(mob, target, nil, spellList)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

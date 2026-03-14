@@ -193,11 +193,14 @@ xi.mobSkill =
 
     TREMOROUS_TREAD               =  540, -- Mammet-800
     GRAVITY_FIELD                 =  541,
+    EMPTY_SEED                    =  542,
 
     CAMISADO_1                    =  544,
-
+    SOMNOLENCE_1                  =  545,
     NOCTOSHIELD_1                 =  546,
     ULTIMATE_TERROR_1             =  547,
+
+    DREAM_SHROUD_1                =  556,
 
     NIGHTMARE_1                   =  558,
 
@@ -216,6 +219,7 @@ xi.mobSkill =
     CHOKE_BREATH_1                =  579,
     FANTOD_1                      =  580,
     BLOW                          =  581,
+    CACODEMONIA_1                 =  582,
 
     BLANK_GAZE                    =  586,
 
@@ -231,6 +235,10 @@ xi.mobSkill =
     COLD_WAVE_2                   =  600, -- Snoll Tzar
     HIEMAL_STORM                  =  601, -- Snoll Tzar
     HYPOTHERMAL_COMBUSTION_2      =  602, -- Snoll Tzar
+
+    NETHER_BLAST_1                =  610,
+
+    RUINOUS_OMEN_1                =  616,
 
     SWEEP                         =  620,
 
@@ -613,6 +621,8 @@ xi.mobSkill =
     REVELATION_1                  = 1510,
 
     HOWLING_MOON_3                = 1520, -- Unknown usage.
+
+    CAMISADO_2                    = 1554,
 
     FOOT_KICK_2                   = 1567,
     DUST_CLOUD_2                  = 1568,

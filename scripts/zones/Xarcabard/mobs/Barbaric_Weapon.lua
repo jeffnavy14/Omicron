@@ -30,7 +30,7 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.STORETP, 80)
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     -- Gains Dread Spikes effect when using Whirl of Rage TP move
     if skill:getID() == 514 then
         mob:addStatusEffectEx(xi.effect.DREAD_SPIKES, 0, 10, 0, 180, 0, 310, 1, 0, true)

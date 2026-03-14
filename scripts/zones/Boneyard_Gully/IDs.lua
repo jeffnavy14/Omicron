@@ -47,16 +47,20 @@ zones[xi.zone.BONEYARD_GULLY] =
         EVEN_AT_MY_BEST               = 7821, -- Even at my best...
         SHIKAREE_X_2HR                = 7822, -- Time to end the hunt! Go for the jugular!
         DINNER_TIME_ADVENTURER_STEAK  = 7823, -- Dinner time! Tonight we're having Adventurer Steak!
+        SHIKAREE_ROS_ENGAGE           = 7824, -- "Justice" is the diamond that shines even after being shattered!
+        SHIKAREE_PARTY_WIPE           = 7827, -- Have you been slacking off since you saved the world, sweetheart? Looks like your sense of "justice" needs a little dusting off.
     },
 
     mob =
     {
-        PARATA         = GetFirstID('Parata'),
-        SHIKAREE_Z_HW  = GetFirstID('Shikaree_Z_HW'),
-        SHIKAREE_Y_HW  = GetFirstID('Shikaree_Y_HW'),
-        SHIKAREE_X_HW  = GetFirstID('Shikaree_X_HW'),
-        SHIKAREE_Z_ROS = GetFirstID('Shikaree_Z_ROS'),
-        TUCHULCHA      = GetFirstID('Tuchulcha'),
+        PARATA             = GetFirstID('Parata'),
+        SHIKAREE_Z_HW      = GetFirstID('Shikaree_Z_HW'),
+        SHIKAREE_Y_HW      = GetFirstID('Shikaree_Y_HW'),
+        SHIKAREE_X_HW      = GetFirstID('Shikaree_X_HW'),
+        SHIKAREE_Z_ROS     = GetFirstID('Shikaree_Z_ROS'),
+        SHIKAREE_Y_ROS_TWT = GetFirstID('Shikaree_Y_ROS_TWT'),
+        SHIKAREE_X_ROS_TWT = GetFirstID('Shikaree_X_ROS_TWT'),
+        TUCHULCHA          = GetFirstID('Tuchulcha'),
     },
 
     npc =

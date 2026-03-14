@@ -23,7 +23,7 @@ m:addOverride('xi.job_utils.warrior.useWarriorsCharge', function(player, target,
     local recastReduction = player:getMerit(xi.merit.WARRIORS_CHARGE) - 150
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.WARRIORS_CHARGE, 1, 0, 60)
+    player:addStatusEffect(xi.effect.WARRIORS_CHARGE, { power = 1, duration = 60, origin = player })
 
     return xi.effect.WARRIORS_CHARGE
 end)
@@ -80,7 +80,7 @@ m:addOverride('xi.job_utils.thief.useAssassinsCharge', function(player, target, 
     local recastReduction = player:getMerit(xi.merit.ASSASSINS_CHARGE) - 150
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.ASSASSINS_CHARGE, 1, 0, 60)
+    player:addStatusEffect(xi.effect.ASSASSINS_CHARGE, { power = 1, duration = 60, origin = player })
 
     return xi.effect.ASSASSINS_CHARGE
 end)
@@ -90,7 +90,7 @@ m:addOverride('xi.job_utils.thief.useFeint', function(player, target, ability, a
     local recastReduction = player:getMerit(xi.merit.FEINT) - 120
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.FEINT, 150, 0, 60)
+    player:addStatusEffect(xi.effect.FEINT, { power = 150, duration = 60, origin = player })
 end)
 
 -----------------------------------
@@ -121,7 +121,7 @@ end)
 
 -- Last Resort: Revert duration from 3 minutes to 30 seconds
 m:addOverride('xi.job_utils.dark_knight.useLastResort', function(player, target, ability)
-    player:addStatusEffect(xi.effect.LAST_RESORT, 0, 0, 30)
+    player:addStatusEffect(xi.effect.LAST_RESORT, { duration = 30, origin = player })
 
     return xi.effect.LAST_RESORT
 end)
@@ -139,7 +139,7 @@ m:addOverride('xi.job_utils.dark_knight.useDarkSeal', function(player, target, a
     local recastReduction = player:getMerit(xi.merit.DARK_SEAL) - 150
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.DARK_SEAL, 1, 0, 60)
+    player:addStatusEffect(xi.effect.DARK_SEAL, { power = 1, duration = 60, origin = player })
 
     return xi.effect.DARK_SEAL
 end)
@@ -149,7 +149,7 @@ m:addOverride('xi.job_utils.dark_knight.useDiabolicEye', function(player, target
     local recastReduction = player:getMerit(xi.merit.DIABOLIC_EYE) - 150
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.DIABOLIC_EYE, 20, 0, 180)
+    player:addStatusEffect(xi.effect.DIABOLIC_EYE, { power = 20, duration = 180, origin = player })
 
     return xi.effect.DIABOLIC_EYE
 end)
@@ -183,7 +183,7 @@ m:addOverride('xi.job_utils.beastmaster.useFeralHowl', function(player, target, 
         local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.B_MINUS, xi.element.DARK, xi.mod.CHR, xi.effect.TERROR)
 
         if xi.data.statusEffect.isResistRateSuccessfull(xi.effect.TERROR, resistanceRate, 0) then
-            target:addStatusEffect(xi.effect.TERROR, 1, 0, 10 * resistanceRate)
+            target:addStatusEffect(xi.effect.TERROR, { power = 1, duration = 10 * resistanceRate, origin = player })
         end
     end
 
@@ -200,7 +200,7 @@ m:addOverride('xi.job_utils.beastmaster.useKillerInstinct', function(player, tar
     local petEcosystem = pet:getEcosystem()
     local power        = 10
 
-    target:addStatusEffect(xi.effect.KILLER_INSTINCT, power, 0, 60, 0, petEcosystem)
+    target:addStatusEffect(xi.effect.KILLER_INSTINCT, { power = power, duration = 60, origin = player, subPower = petEcosystem })
 
     return xi.effect.KILLER_INSTINCT
 end)
@@ -252,7 +252,7 @@ m:addOverride('xi.job_utils.samurai.useBladeBash', function(player, target, abil
     then
         local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.A_PLUS, xi.element.THUNDER, xi.mod.INT, xi.effect.STUN, 0)
         if xi.data.statusEffect.isResistRateSuccessfull(xi.effect.STUN, resistanceRate, 0) then
-            target:addStatusEffect(xi.effect.STUN, 1, 0, 6 * resistanceRate)
+            target:addStatusEffect(xi.effect.STUN, { power = 1, duration = 6 * resistanceRate, origin = player })
         end
     end
 
@@ -264,7 +264,7 @@ m:addOverride('xi.job_utils.samurai.useBladeBash', function(player, target, abil
     then
         local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.A_PLUS, xi.element.FIRE, xi.mod.INT, xi.effect.PLAGUE, 0)
         if xi.data.statusEffect.isResistRateSuccessfull(xi.effect.PLAGUE, resistanceRate, 0) then
-            target:addStatusEffect(xi.effect.PLAGUE, 5, 0, 15 * resistanceRate)
+            target:addStatusEffect(xi.effect.PLAGUE, { power = 5, duration = 15 * resistanceRate, origin = player })
         end
     end
 
@@ -325,7 +325,7 @@ m:addOverride('xi.job_utils.ranger.useFlashyShot', function(player, target, abil
     local recastReduction = player:getMerit(xi.merit.FLASHY_SHOT) - 150
     action:setRecast(action:getRecast() - recastReduction)
 
-    player:addStatusEffect(xi.effect.FLASHY_SHOT, 1, 0, 60)
+    player:addStatusEffect(xi.effect.FLASHY_SHOT, { power = 1, duration = 60, origin = player })
 
     return xi.effect.FLASHY_SHOT
 end)

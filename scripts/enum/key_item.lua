@@ -3235,6 +3235,7 @@ xi.keyItem =
     -- NULL ENTRY                            = 3358,
     PERMANENT_LEVEL_75_CAP                   = 3359, -- Permanent level 75 hardcore cap
     SHEET_OF_DIVINE_TUNES                    = 3360,
+    CIPHER_BRACELET                          = 3361,
 }
 
 ---@alias xi.ki xi.keyItem
