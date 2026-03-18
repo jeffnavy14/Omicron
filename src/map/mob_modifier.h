@@ -38,7 +38,7 @@ enum MOBMODIFIER : int
     MOBMOD_GA_CHANCE              = 7,  // % chance to use -ga spell
     MOBMOD_HEAL_CHANCE            = 8,  // % chance to use heal
     MOBMOD_HP_HEAL_CHANCE         = 9,  // can cast cures below this HP %
-    MOBMOD_SUBLINK                = 10, // sub link group
+    MOBMOD_SUBLINK                = 10, // Sub link group. Enables mobs from different families to link if they share a SUBLINK value.
     MOBMOD_LINK_RADIUS            = 11, // link radius
     MOBMOD_SEES_THROUGH_ILLUSION  = 12, // Mob can see through the Illusion effect that grants effects similar to Sneak & Invisible without this mod and allows aggro (see Viscious Liquid in mamook)
     MOBMOD_SEVERE_SPELL_CHANCE    = 13, // % chance to use a severe spell like death or impact
@@ -48,7 +48,7 @@ enum MOBMODIFIER : int
     MOBMOD_NO_DESPAWN             = 17, // do not despawn when too far from spawn. Gob Diggers have this.
     MOBMOD_VAR                    = 18, // temp var for whatever. Gets cleared on spawn
     MOBMOD_CAN_SHIELD_BLOCK       = 19, // toggle shield use for mobs without physical shields (trusts)
-    MOBMOD_TP_USE_CHANCE          = 20, // % chance to use tp
+    MOBMOD_NO_H2H_PENALTY         = 20, // Disables H2H penalty in base damage calculation when set to non-zero
     MOBMOD_PET_SPELL_LIST         = 21, // set pet spell list
     MOBMOD_NA_CHANCE              = 22, // % chance to cast -na
     MOBMOD_IMMUNITY               = 23, // immune to set status effects. This only works from the db, not scripts
@@ -112,6 +112,15 @@ enum MOBMODIFIER : int
     MOBMOD_ABILITY_RESPONSE       = 81, // Mob can respond to player ability use with onPlayerAbilityUse()
     MOBMOD_RUN_SPEED_MULT         = 82, // Multiplier for the speed of a mob while running (generally when the target is out of range) 100 = 1.00x
     MOBMOD_CLAIM_TYPE             = 83, // Changes the claim behavior of the mob. See ClaimType enum.
+    MOBMOD_NO_SPELL_COST          = 84, // Mob does not use MP when casting spells
+    MOBMOD_ASTRAL_PET_OFFSET      = 85, // If non-zero, defines the offset from main mob's ID for astral flow (if zero, will assume offset of 2)
+    MOBMOD_BASE_DAMAGE_MULTIPLIER = 86, // Multiplies the mob's base damage. Example: 150 = x1.5
+    MOBMOD_DAMAGE_OFFSET          = 87, // Adds or subtracts the mob's base damage offset.
+    MOBMOD_RANGED_DAMAGE_OFFSET   = 88, // Adds or subtracts the mob's ranged base damage offset.
+    MOBMOD_AVATAR_PETID           = 89, // A value from xi.petId to select model/ability from when owner uses astral flow
+    MOBMOD_AVATAR_ASTRAL_DELAY    = 90, // Number of milliseconds to delay AF after avatar spawn
+    MOBMOD_H2H_SINGLE_SWING       = 91, // Mob will have only one swing per attack even as MNK with H2H skill
+    MOBMOD_AOE_HIT_ALL            = 92, // Mob AoE can hit any player regardless of enmity
 };
 
 #endif

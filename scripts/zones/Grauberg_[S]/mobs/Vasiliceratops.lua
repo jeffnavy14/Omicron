@@ -16,8 +16,7 @@ entity.spawnPoints =
 entity.phList =
 {
     [ID.mob.VASILICERATOPS - 3] = ID.mob.VASILICERATOPS,
-    -- [ID.mob.VASILICERATOPS - 67] = ID.mob.VASILICERATOPS,
-    -- TODO: Add shared spawning for the PH. Only one PH is alive at a time. Spawns in either spot.
+    [ID.mob.VASILICERATOPS - 67] = ID.mob.VASILICERATOPS,
 }
 
 entity.onMobInitialize = function(mob)
@@ -31,7 +30,7 @@ entity.onMobInitialize = function(mob)
     mob:setBaseSpeed(100)
 end
 
-entity.onMobWeaponSkillPrepare = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     return 2099 -- Batterhorn is only TP move
 end
 

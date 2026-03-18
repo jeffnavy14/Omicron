@@ -19,17 +19,16 @@ abilityObject.onPetAbility = function(target, pet, petskill, summoner, action)
         bonus = bonus + xi.summon.getSummoningSkillOverCap(pet)
     end
 
-    local resist = applyResistanceAbility(pet, target, ele, xi.skill.ENFEEBLING_MAGIC, bonus)
-
+    local resist = xi.combat.magicHitRate.calculateResistRate(pet, target, 0, xi.skill.ENFEEBLING_MAGIC, 0, ele, 0, 0, bonus)
     -- https://wikiwiki.jp/ffxi/%E5%8F%AC%E5%96%9A%E9%AD%94%E6%B3%95
     -- TL;DR base 30s silence and 10s amnesia (also amnesia is fire element)
     if resist >= 0.5 then --Do it!
-        if target:addStatusEffect(xi.effect.SILENCE, 1, 0, duration * resist) then
+        if target:addStatusEffect(xi.effect.SILENCE, { power = 1, duration = duration * resist, origin = pet }) then
             petskill:setMsg(xi.msg.basic.JA_GAIN_EFFECT)
-            local resist2 = applyResistanceAbility(pet, target, xi.element.FIRE, xi.skill.ENFEEBLING_MAGIC, bonus)
+            local resist2 = xi.combat.magicHitRate.calculateResistRate(pet, target, 0, xi.skill.ENFEEBLING_MAGIC, 0, xi.element.FIRE, 0, 0, bonus)
             if
                 resist2 >= 0.5 and
-                target:addStatusEffect(xi.effect.AMNESIA, 1, 0, duration * resist2 / 3)
+                target:addStatusEffect(xi.effect.AMNESIA, { power = 1, duration = duration * resist2 / 3, origin = pet })
             then
                 returnEffect = xi.effect.AMNESIA
             else

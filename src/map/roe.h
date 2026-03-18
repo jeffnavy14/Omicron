@@ -19,18 +19,14 @@
 ===========================================================================
 */
 
-#ifndef SRC_MAP_ROE_H_
-#define SRC_MAP_ROE_H_
+#pragma once
 
 #include <array>
-#include <bitset>
-#include <utility>
 #include <variant>
 #include <vector>
 
 #include "ai/helpers/event_handler.h"
 #include "common/cbasetypes.h"
-#include "packets/weather.h"
 
 class CItemContainer;
 
@@ -112,17 +108,17 @@ struct RoeDatagram
     std::string        luaKey;
     RoeDatagramPayload data;
 
-    RoeDatagram(std::string const& param, uint32 payload)
+    RoeDatagram(const std::string& param, uint32 payload)
     : luaKey{ param }
     , data{ payload }
     {
     }
-    RoeDatagram(std::string const& param, CMobEntity* payload)
+    RoeDatagram(const std::string& param, CMobEntity* payload)
     : luaKey{ param }
     , data{ payload }
     {
     }
-    RoeDatagram(std::string const& param, std::string const& payload)
+    RoeDatagram(const std::string& param, const std::string& payload)
     : luaKey{ param }
     , data{ payload }
     {
@@ -133,40 +129,45 @@ typedef std::vector<RoeDatagram> RoeDatagramList;
 
 namespace roeutils
 {
-    extern RoeSystemData RoeSystem;
 
-    void init();
-    void ParseRecords(sol::table const& records_table);
-    void ParseTimedSchedule(sol::table const& schedule_table);
+extern RoeSystemData RoeSystem;
 
-    bool event(ROE_EVENT eventID, CCharEntity* PChar, const RoeDatagramList& payload);
-    bool event(ROE_EVENT eventID, CCharEntity* PChar, const RoeDatagram& payload);
+void init();
+void ParseRecords(const sol::table& records_table);
+void ParseTimedSchedule(const sol::table& schedule_table);
 
-    void   SetEminenceRecordCompletion(CCharEntity* PChar, uint16 recordID, bool newStatus);
-    bool   GetEminenceRecordCompletion(const CCharEntity* PChar, uint16 recordID);
-    uint16 GetNumEminenceCompleted(CCharEntity* PChar);
-    bool   AddEminenceRecord(CCharEntity* PChar, uint16 recordID);
-    bool   DelEminenceRecord(CCharEntity* PChar, uint16 recordID);
-    bool   HasEminenceRecord(CCharEntity* PChar, uint16 recordID);
-    bool   SetEminenceRecordProgress(CCharEntity* PChar, uint16 recordID, uint32 progress);
-    uint32 GetEminenceRecordProgress(CCharEntity* PChar, uint16 recordID);
+auto event(ROE_EVENT eventID, CCharEntity* PChar, const RoeDatagramList& payload) -> bool;
+auto event(ROE_EVENT eventID, CCharEntity* PChar, const RoeDatagram& payload) -> bool;
 
-    void onCharLoad(CCharEntity* PChar);
-    bool onRecordClaim(CCharEntity* PChar, uint16 recordID);
-    void onRecordTake(CCharEntity* PChar, uint16 recordID);
+void SetEminenceRecordCompletion(CCharEntity* PChar, uint16 recordID, bool newStatus);
+auto GetEminenceRecordCompletion(const CCharEntity* PChar, uint16 recordID) -> bool;
+auto GetNumEminenceCompleted(const CCharEntity* PChar) -> uint16;
+auto AddEminenceRecord(CCharEntity* PChar, uint16 recordID) -> bool;
+auto DelEminenceRecord(CCharEntity* PChar, uint16 recordID) -> bool;
+auto HasEminenceRecord(const CCharEntity* PChar, uint16 recordID) -> bool;
+auto SetEminenceRecordProgress(CCharEntity* PChar, uint16 recordID, uint32 progress) -> bool;
+auto GetEminenceRecordProgress(const CCharEntity* PChar, uint16 recordID) -> uint32;
 
-    void ClearDailyRecords(CCharEntity* PChar);
-    void CycleDailyRecords();
-    void ClearWeeklyRecords(CCharEntity* PChar);
-    void CycleWeeklyRecords();
-    void CycleUnityRankings();
-    void UpdateUnityRankings();
-    void UpdateUnityTrust(CCharEntity* PChar, bool sendUpdate = false);
+void onCharLoad(CCharEntity* PChar);
+auto onRecordClaim(CCharEntity* PChar, uint16 recordID) -> bool;
+void onRecordTake(CCharEntity* PChar, uint16 recordID);
 
-    uint16 GetActiveTimedRecord();
-    void   AddActiveTimedRecord(CCharEntity* PChar);
-    void   CycleTimedRecords();
+void ClearDailyRecords(CCharEntity* PChar);
+void CycleDailyRecords();
+void ClearWeeklyRecords(CCharEntity* PChar);
+void CycleWeeklyRecords();
+void CycleUnityRankings();
+void UpdateUnityRankings();
+void UpdateUnityTrust(CCharEntity* PChar, bool sendUpdate = false);
+
+auto GetActiveTimedRecord() -> uint16;
+void AddActiveTimedRecord(CCharEntity* PChar);
+void CycleTimedRecords();
+
+auto GetCurrentUnitySharedDay() -> uint8;
+auto IsUnitySharedRecordAvailable(uint16 recordID) -> bool;
+
+auto GetCurrentUnityLeaderWeek() -> uint8;
+auto IsUnityLeaderRecordAvailable(uint16 recordID, uint8 playerUnityLeader) -> bool;
 
 } // namespace roeutils
-
-#endif /* SRC_MAP_ROE_H_ */

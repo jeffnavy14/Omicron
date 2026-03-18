@@ -68,10 +68,6 @@ zoneObject.onInitialize = function(zone)
     if qmFaith then
         qmFaith:setPos(unpack(gardenGlobal.qmPosFaithTable[math.random(1, 5)]))
     end
-
-    -- Give Ix'DRG a random placeholder by picking one of the four groups at random, then adding a random number of 0-2 for the specific mob.
-    local groups = ID.mob.AWAERN_DRG_GROUPS
-    SetServerVariable('[SEA]IxAernDRG_PH', groups[math.random(1, #groups)] + math.random(0, 2))
 end
 
 zoneObject.afterZoneIn = function(player)
@@ -196,7 +192,7 @@ zoneObject.onTriggerAreaEnter = function(player, triggerArea)
                 player:startEvent(183)
             end
         elseif teleportEventsByArea[areaId] then
-            player:startOptionalCutscene(teleportEventsByArea[areaId])
+            player:startOptionalCutscene(teleportEventsByArea[areaId]) -- Confirmed to wipe enmity.
         end
     end
 end

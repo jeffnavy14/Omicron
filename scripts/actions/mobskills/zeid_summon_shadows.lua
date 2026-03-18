@@ -8,7 +8,7 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 1
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local zeidId = mob:getID()
     local shadowOne = GetMobByID(zeidId + 1)
     local shadowTwo = GetMobByID(zeidId + 2)
@@ -25,8 +25,8 @@ mobskillObject.onMobWeaponSkill = function(target, mob, skill)
 
         shadowOne:spawn()
         shadowTwo:spawn()
-        shadowOne:setPos(xPos, yPos, zPos)
-        shadowTwo:setPos(xPos, yPos, zPos)
+        shadowOne:setPos(xPos + math.random(-2, 2), yPos, zPos + math.random(-2, 2))
+        shadowTwo:setPos(xPos + math.random(-2, 2), yPos, zPos + math.random(-2, 2))
         shadowOne:updateEnmity(target)
         shadowTwo:updateEnmity(target)
     end

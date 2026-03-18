@@ -1,7 +1,7 @@
 -----------------------------------
---  Vapor Spray
---  Description: Deals Water breath damage to enemies within a fan-shaped area originating from the caster.
---  Type: Magical (Water)
+-- Vapor Spray
+-- Family: Phuabo
+-- Description: Deals Water breath damage to enemies within a fan-shaped area originating from the caster.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,12 +10,26 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.3, 0.75, xi.element.WATER, 600)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.WATER, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.WATER)
-    return dmg
+    params.percentMultipier = 0.10
+    params.damageCap        = 500
+    params.bonusDamage      = 1
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.WATER
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.WATER
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
+
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

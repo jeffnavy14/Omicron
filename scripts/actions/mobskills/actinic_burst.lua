@@ -13,11 +13,8 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local power    = 200
-    local duration = 20
-
-    skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.FLASH, power, 0, duration))
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.FLASH, 0, 0, 15)) -- Handled in status effect
 
     return xi.effect.FLASH
 end

@@ -12,19 +12,20 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SLOW, 1250, 0, 120)
-
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SLOW, 128, 0, 120)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local currentHP = target:getHP()
-    -- remove all by 5%
     local stab = currentHP * .95
+    local info =
+    {
+        damage = stab
+    }
 
-    local dmg = xi.mobskills.mobFinalAdjustments(stab, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    local dmg = xi.mobskills.mobFinalAdjustments(info, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
 
     target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.PIERCING)
 
     mob:resetEnmity(target)
+
     return dmg
 end
 

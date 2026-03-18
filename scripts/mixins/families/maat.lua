@@ -1,8 +1,9 @@
 require('scripts/globals/mixins')
 
 g_mixins = g_mixins or {}
+g_mixins.families = g_mixins.families or {}
 
-g_mixins.maat = function(maatMob)
+g_mixins.families.maat = function(maatMob)
     maatMob:addListener('SPAWN', 'JOB_SPECIAL_SPAWN', function(mob)
         if mob:getMainJob() == xi.job.NIN then
             mob:setLocalVar('specialThreshold', 40)
@@ -95,21 +96,21 @@ g_mixins.maat = function(maatMob)
         mob:messageText(mob, ID.text.YOUVE_COME_A_LONG_WAY)
     end)
 
-    maatMob:addListener('WEAPONSKILL_TAKE', 'MAAT_WEAPONSKILL_TAKE', function(target, user, wsid, tp, action)
-        local ID = zones[target:getZoneID()]
-        target:messageText(target, ID.text.THAT_LL_HURT_IN_THE_MORNING)
+    maatMob:addListener('WEAPONSKILL_TAKE', 'MAAT_WEAPONSKILL_TAKE', function(user, target, skill, tp, action)
+        target:messageText(target, zones[target:getZoneID()].text.THAT_LL_HURT_IN_THE_MORNING)
     end)
 
-    maatMob:addListener('WEAPONSKILL_USE', 'MAAT_WEAPONSKILL_USE', function(mob, target, wsid, tp, action)
-        local ID = zones[mob:getZoneID()]
-        if wsid == 1028 then -- Tackle
+    maatMob:addListener('WEAPONSKILL_USE', 'MAAT_WEAPONSKILL_USE', function(mob, target, skill, tp, action, damage)
+        local ID       = zones[mob:getZoneID()]
+        local actionId = skill:getID()
+        if actionId == 1028 then -- Tackle
             mob:messageText(mob, ID.text.TAKE_THAT_YOU_WHIPPERSNAPPER)
-        elseif wsid == 1033 then -- Dragon Kick
+        elseif actionId == 1033 then -- Dragon Kick
             mob:messageText(mob, ID.text.TEACH_YOU_TO_RESPECT_ELDERS)
-        elseif wsid == 1034 then -- Asuran Fists
+        elseif actionId == 1034 then -- Asuran Fists
             mob:messageText(mob, ID.text.LOOKS_LIKE_YOU_WERENT_READY)
         end
     end)
 end
 
-return g_mixins.maat
+return g_mixins.families.maat

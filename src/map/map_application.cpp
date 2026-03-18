@@ -34,24 +34,31 @@
 
 namespace
 {
-    auto appConfig() -> ApplicationConfig
-    {
-        const std::vector arguments = {
-            ArgumentDefinition{
-                .name        = "--ip",
-                .description = "Specify the IP address to bind to",
-            },
-            ArgumentDefinition{
-                .name        = "--port",
-                .description = "Specify the port to bind to",
-            },
-        };
 
-        return ApplicationConfig{
-            .serverName = "map",
-            .arguments  = arguments,
-        };
-    }
+auto appConfig() -> ApplicationConfig
+{
+    const std::vector arguments = {
+        ArgumentDefinition{
+            .name        = "--ip",
+            .description = "Specify the IP address to bind to",
+        },
+        ArgumentDefinition{
+            .name        = "--port",
+            .description = "Specify the port to bind to",
+        },
+        ArgumentDefinition{
+            .name        = "--lazy",
+            .description = "Load zones on demand. For development only.",
+            .type        = ArgumentType::Flag,
+        },
+    };
+
+    return ApplicationConfig{
+        .serverName = "map",
+        .arguments  = arguments,
+    };
+}
+
 } // namespace
 
 MapApplication::MapApplication(const int argc, char** argv)
@@ -70,8 +77,9 @@ MapApplication::MapApplication(const int argc, char** argv)
         port = std::stoi(*maybePort);
     }
 
-    engineConfig_.inCI = Application::isRunningInCI();
-    engineConfig_.ipp  = IPP(ip, port);
+    engineConfig_.lazyZones = args().get<bool>("--lazy");
+    engineConfig_.inCI      = Application::isRunningInCI();
+    engineConfig_.ipp       = IPP(ip, port);
 }
 
 MapApplication::~MapApplication()
@@ -80,7 +88,7 @@ MapApplication::~MapApplication()
 
 auto MapApplication::createEngine() -> std::unique_ptr<Engine>
 {
-    return std::make_unique<MapEngine>(ioContext(), engineConfig_);
+    return std::make_unique<MapEngine>(scheduler_, engineConfig_);
 }
 
 void MapApplication::registerCommands(ConsoleService& console)
@@ -91,6 +99,12 @@ void MapApplication::registerCommands(ConsoleService& console)
     console.registerCommand("reload_recipes", "Reload crafting recipes", std::bind(&MapEngine::onReloadRecipes, mapEngine, std::placeholders::_1));
     console.registerCommand("stats", "Print runtime stats", std::bind(&MapEngine::onStats, mapEngine, std::placeholders::_1));
     console.registerCommand("backtrace", "Print backtrace", std::bind(&MapEngine::onBacktrace, mapEngine, std::placeholders::_1));
+}
+
+void MapApplication::requestExit()
+{
+    Application::requestExit();
+    scheduler_.stop();
 }
 
 void MapApplication::run()
@@ -114,7 +128,7 @@ void MapApplication::run()
 
     // MapEngine destructor must occur before Application destructor
     engine_.reset();
-    io_context_.stop();
+    scheduler_.stop();
 
     const auto taskManager = CTaskManager::getInstance();
     while (!taskManager->getTaskList().empty())

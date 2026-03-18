@@ -48,7 +48,7 @@ local pondOnTrigger = function(player, npc)
     then
         quest:setLocalVar(player, 'npcOffset', npcOffset)
         player:messageSpecial(davoiID.text.ORB_QUEST_OFFSET)
-        return quest:progressEvent(50 + npcOffset, 0, numPonds, player:getRace())
+        return quest:progressCutscene(50 + npcOffset, 0, numPonds, player:getRace())
     else
         return quest:messageSpecial(davoiID.text.COLOR_OF_BLOOD)
     end
@@ -65,7 +65,7 @@ local pondEventFinish = function(player, csid, option, npc)
     player:addKeyItem(xi.ki.WHITE_ORB + numPonds + 1)
 
     if numPonds == 3 then
-        player:addStatusEffect(xi.effect.CURSE_I, 50, 0, 900)
+        player:addStatusEffect(xi.effect.CURSE_I, { power = 50, duration = 900, origin = player })
         player:messageSpecial(davoiID.text.ORB_QUEST_OFFSET + 5)
         quest:setVar(player, 'Prog', 3)
     end
@@ -126,7 +126,7 @@ quest.sections =
                     elseif questProgress == 2 then
                         return quest:progressEvent(21)
                     elseif questProgress == 3 then
-                        return quest:progressEvent(25, 0, 0, 0, 136)
+                        return quest:progressCutscene(25, 0, 0, 0, 136)
                     end
                 end,
             },

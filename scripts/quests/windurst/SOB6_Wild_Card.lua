@@ -1,6 +1,6 @@
 -----------------------------------
 -- Wild Card
---
+-- Log ID: 2, Quest ID: 77
 -- Honoi-Gumoi: !pos -195 -11 -120 238
 -----------------------------------
 
@@ -64,6 +64,24 @@ quest.sections =
                 [545] = function(player, csid, option, npc)
                     if quest:getVar(player, 'Prog') == 0 then
                         quest:setVar(player, 'Prog', 1)
+                    end
+                end,
+            },
+        },
+
+        [xi.zone.TORAIMARAI_CANAL] =
+        {
+            ['Treasure_Coffer'] =
+            {
+                onTrade = function(player, npc, trade)
+                    local questProgress = quest:getVar(player, 'Prog')
+                    if
+                        not player:hasKeyItem(xi.keyItem.JOKER_CARD) and
+                        (questProgress == 2 or questProgress == 3)
+                    then
+                        xi.treasure.onTrade(player, npc, trade, 2, xi.keyItem.JOKER_CARD)
+
+                        return quest:noAction()
                     end
                 end,
             },

@@ -1,6 +1,7 @@
 -----------------------------------
---  Voiceless Storm
---  Description: AOE Damage, Silence, strips Utsusemi (xi.mobskills.shadowBehavior.WIPE_SHADOWS)
+-- Voiceless Storm
+-- Family: Phuabo
+-- Description: Deals Wind damage to targets in range of mob. Additional Effect: Silence
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -9,17 +10,26 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local numhits = 1
-    local accmod = 1
-    local ftp    = 1
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, xi.mobskills.physicalTpBonus.NO_EFFECT)
-    local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.NONE, xi.mobskills.shadowBehavior.WIPE_SHADOWS)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.SILENCE, 1, 0, 60)
+    params.baseDamage      = mob:getMainLvl() + 2
+    params.fTP             = { 1.00, 1.00, 1.00 }
+    params.element         = xi.element.WIND
+    params.attackType      = xi.attackType.MAGICAL
+    params.damageType      = xi.damageType.WIND
+    params.shadowBehavior  = xi.mobskills.shadowBehavior.WIPE_SHADOWS
+    params.dStatMultiplier = 1
 
-    target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.NONE)
-    return dmg
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.SILENCE, 1, 0, 120)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

@@ -11,18 +11,17 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target)
+itemObject.onItemUse = function(target, user)
     if not target:hasStatusEffect(xi.effect.ENCHANTMENT) then
-        target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 3600, 17592)
+        target:addStatusEffect(xi.effect.ENCHANTMENT, { duration = 3600, origin = user, subType = 17592 })
     end
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.SUBTLE_BLOW, 20)
+    effect:addMod(xi.mod.SUBTLE_BLOW, 20)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.SUBTLE_BLOW, 20)
 end
 
 return itemObject

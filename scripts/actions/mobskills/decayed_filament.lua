@@ -1,30 +1,34 @@
 -----------------------------------
 --  Decayed Filament
---  Zedi, while in Animation form 2 (Bars)
---  Blinkable 1-2 hit, addtional effect poison on hit.
+--  Family: Zedi, while in Animation form 2 (Bars)
+--  Description: Deals Water damage to targets in range. Additional Effect: Poison
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getAnimationSub() ~= 2 then
-        return 1
-    end
-
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local numhits = 2
-    local accmod = 1
-    local ftp    = 1
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, 0, 1, 2, 3)
-    local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, info.hitslanded)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.POISON, 18, 3, 60)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 1.0, 1.5, 2.0 }
+    params.element        = xi.element.WATER
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.WATER
+    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_2 -- TODO: Capture shadowBehavior
 
-    target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.PIERCING)
-    return dmg
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.POISON, 18, 3, 180)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

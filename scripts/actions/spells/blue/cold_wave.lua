@@ -28,7 +28,7 @@ spellObject.onSpellCast = function(caster, target, spell)
     local tick = 3
     local duration = 60
     local resistThreshold = 0.5
-    local resist = applyResistanceEffect(caster, target, spell, params)
+    local resist = xi.combat.magicHitRate.calculateResistRate(caster, target, spell:getSpellGroup(), xi.skill.BLUE_MAGIC, 0, spell:getElement(), xi.mod.INT, xi.effect.FROST, 0)
 
     -- Cannot apply if target has Burn
     if target:getStatusEffect(xi.effect.BURN) ~= nil then
@@ -45,7 +45,7 @@ spellObject.onSpellCast = function(caster, target, spell)
         local dot = utils.clamp(math.floor((agiDown - 3) / 2), 0, 23)
         spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT)
 
-        if target:addStatusEffect(params.effect, dot, tick, duration * resist) then
+        if target:addStatusEffect(params.effect, { power = dot, duration = duration * resist, origin = caster, tick = tick }) then
             spell:setMsg(xi.msg.basic.MAGIC_ENFEEB_IS)
         end
     else

@@ -9,20 +9,10 @@
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getFamily() == 91 then
-        local mobSkin = mob:getModelId()
-
-        if mobSkin == 1680 then
-            return 0
-        else
-            return 1
-        end
-    end
-
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local power = 100
     local duration = 60
 

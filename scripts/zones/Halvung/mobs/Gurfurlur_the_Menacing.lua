@@ -16,42 +16,42 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
-    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
-        if not GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 1):isSpawned() then
-            GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 1):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GURFURLUR_THE_MENACING + 1):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 2):isSpawned() then
-            GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 2):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GURFURLUR_THE_MENACING + 2):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 3):isSpawned() then
-            GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 3):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GURFURLUR_THE_MENACING + 3):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 4):isSpawned() then
-            GetMobByID(ID.mob.GURFURLUR_THE_MENACING + 4):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GURFURLUR_THE_MENACING + 4):updateEnmity(target)
-        end
-    end
-
     for i = ID.mob.GURFURLUR_THE_MENACING + 1, ID.mob.GURFURLUR_THE_MENACING + 4 do
         local pet = GetMobByID(i)
 
-        if pet and pet:getCurrentAction() == xi.act.ROAMING then
+        if pet and pet:getCurrentAction() == xi.action.category.ROAMING then
             pet:updateEnmity(target)
+        end
+    end
+
+    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
+        for i = ID.mob.GURFURLUR_THE_MENACING + 1, ID.mob.GURFURLUR_THE_MENACING + 4 do
+            local bodyguard = GetMobByID(i)
+            if bodyguard and not bodyguard:isSpawned() then
+                bodyguard:setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
+                SpawnMob(i):updateEnmity(target)
+                break
+            end
         end
     end
 end
 
 entity.onMobDisengage = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.GURFURLUR_THE_MENACING + i) end
+    for i = ID.mob.GURFURLUR_THE_MENACING + 1, ID.mob.GURFURLUR_THE_MENACING + 4 do
+        DespawnMob(i)
+    end
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:addTitle(xi.title.TROLL_SUBJUGATOR)
-    for i = 1, 4 do DespawnMob(ID.mob.GURFURLUR_THE_MENACING + i) end
-end
+    if player then
+        player:addTitle(xi.title.TROLL_SUBJUGATOR)
+    end
 
-entity.onMobDespawn = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.GURFURLUR_THE_MENACING + i) end
+    if optParams.isKiller or optParams.noKiller then
+        for i = ID.mob.GURFURLUR_THE_MENACING + 1, ID.mob.GURFURLUR_THE_MENACING + 4 do
+            DespawnMob(i)
+        end
+    end
 end
 
 return entity

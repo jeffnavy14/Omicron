@@ -1,8 +1,7 @@
 -----------------------------------
---  Flame Breath
---
---  Description: Deals Flame breath damage to enemies within a fan-shaped area originating from the caster.
---  Type: Magical (Flame)
+-- Flame Breath
+-- Family: Pet Wyverns
+-- Description: Deals Fire breath damage to enemies within a fan-shaped area originating from the caster.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,12 +10,26 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.3, 0.75, xi.element.FIRE, 460)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.FIRE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.FIRE)
-    return dmg
+    params.percentMultipier = 0.13
+    params.damageCap        = 400 -- TODO: Capture cap
+    params.bonusDamage      = 0
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.FIRE
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.FIRE
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
+
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

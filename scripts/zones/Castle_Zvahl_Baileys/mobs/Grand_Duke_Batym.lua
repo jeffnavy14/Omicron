@@ -62,8 +62,13 @@ entity.spawnPoints =
 }
 
 entity.onMobInitialize = function(mob)
+    xi.pet.setMobPet(mob, 1, 'Demons_Elemental')
     xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(900, 10800))
+end
+
+entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
 end
 
 entity.onMobDespawn = function(mob)

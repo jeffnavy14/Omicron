@@ -118,7 +118,7 @@ xi.player.charCreate = function(player)
     -- increase starting inventory
     if xi.settings.main.START_INVENTORY > 30 then
         player:changeContainerSize(xi.inv.INVENTORY, xi.settings.main.START_INVENTORY - 30)
-        player:changeContainerSize(xi.inv.MOGSATCHEL, xi.settings.main.START_INVENTORY - 30)
+        player:changeContainerSize(xi.inv.MOGSATCHEL, xi.settings.main.START_INVENTORY) -- Default satchel size is zero, so just set it to the setting size.
     end
 
     --[[
@@ -194,18 +194,18 @@ xi.player.onGameIn = function(player, firstLogin, zoning)
 
     -- god mode
     if player:getCharVar('GodMode') == 1 then
-        player:addStatusEffect(xi.effect.MAX_HP_BOOST, 1000, 0, 0)
-        player:addStatusEffect(xi.effect.MAX_MP_BOOST, 1000, 0, 0)
-        player:addStatusEffect(xi.effect.MIGHTY_STRIKES, 1, 0, 0)
-        player:addStatusEffect(xi.effect.HUNDRED_FISTS, 1, 0, 0)
-        player:addStatusEffect(xi.effect.CHAINSPELL, 1, 0, 0)
-        player:addStatusEffect(xi.effect.PERFECT_DODGE, 1, 0, 0)
-        player:addStatusEffect(xi.effect.INVINCIBLE, 1, 0, 0)
-        player:addStatusEffect(xi.effect.ELEMENTAL_SFORZO, 1, 0, 0)
-        player:addStatusEffect(xi.effect.MANAFONT, 1, 0, 0)
-        player:addStatusEffect(xi.effect.REGAIN, 300, 0, 0)
-        player:addStatusEffect(xi.effect.REFRESH, 99, 0, 0)
-        player:addStatusEffect(xi.effect.REGEN, 99, 0, 0)
+        player:addStatusEffect(xi.effect.MAX_HP_BOOST, { power = 1000, origin = player })
+        player:addStatusEffect(xi.effect.MAX_MP_BOOST, { power = 1000, origin = player })
+        player:addStatusEffect(xi.effect.MIGHTY_STRIKES, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.HUNDRED_FISTS, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.CHAINSPELL, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.PERFECT_DODGE, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.INVINCIBLE, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.ELEMENTAL_SFORZO, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.MANAFONT, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.REGAIN, { power = 300, origin = player })
+        player:addStatusEffect(xi.effect.REFRESH, { power = 99, origin = player })
+        player:addStatusEffect(xi.effect.REGEN, { power = 99, origin = player })
         player:addMod(xi.mod.RACC, 2500)
         player:addMod(xi.mod.RATT, 2500)
         player:addMod(xi.mod.ACC, 2500)

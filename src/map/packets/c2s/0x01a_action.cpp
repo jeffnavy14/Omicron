@@ -26,13 +26,15 @@
 #include "enmity_container.h"
 #include "entities/charentity.h"
 #include "entities/trustentity.h"
+#include "enums/msg_std.h"
 #include "items.h"
 #include "latent_effect_container.h"
-#include "packets/char_recast.h"
-#include "packets/chocobo_digging.h"
-#include "packets/inventory_finish.h"
-#include "packets/message_system.h"
-#include "packets/release.h"
+#include "packets/s2c/0x01d_item_same.h"
+#include "packets/s2c/0x029_battle_message.h"
+#include "packets/s2c/0x02f_dig.h"
+#include "packets/s2c/0x052_eventucoff.h"
+#include "packets/s2c/0x053_systemmes.h"
+#include "packets/s2c/0x119_abil_recast.h"
 #include "recast_container.h"
 #include "status_effect.h"
 #include "status_effect_container.h"
@@ -41,16 +43,120 @@
 
 namespace
 {
-    const auto actionToStr = [](const GP_CLI_COMMAND_ACTION_ACTIONID actionIn)
-    {
-        return magic_enum::enum_name(actionIn);
-    };
+
+const auto actionToStr = [](const GP_CLI_COMMAND_ACTION_ACTIONID actionIn)
+{
+    return magic_enum::enum_name(actionIn);
+};
+
 } // namespace
 
 auto GP_CLI_COMMAND_ACTION::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID);
+        .oneOf<GP_CLI_COMMAND_ACTION_ACTIONID>(this->ActionID)
+        .custom([&](PacketValidator& pv)
+                {
+                    switch (this->ActionID)
+                    {
+                        // Assist, /blockaid and /help are almost never blocked.
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Assist:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Blockaid:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Help:
+                        {
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Talk:
+                        {
+                            // Talking to NPC has several blocked states checked a little later as they send a release packet.
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::AttackOff:
+                        {
+                            // You can disengage while slept.
+                            pv.isEngaged(PChar)
+                                .isNotCharmed(PChar);
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::ChangeTarget:
+                        {
+                            pv.isEngaged(PChar)
+                                .isNotPreventedAction(PChar);
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::HomepointMenu:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::RaiseMenu:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::TractorMenu:
+                        {
+                            pv.mustEqual(PChar->isDead(), true, "Character is not dead.");
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Attack:
+                        {
+                            pv.isNotResting(PChar)
+                                .isNotSitting(PChar)
+                                .isNotCrafting(PChar)
+                                .isNotFishing(PChar) // Note: It is possible to attack while fishing on retail and is disabled here on purpose.
+                                .isNotPreventedAction(PChar);
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::CastMagic:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::JobAbility:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Shoot:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Weaponskill:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::MonsterSkill: // MonsterSkill is entirely assumed
+                        {
+                            pv.isNotResting(PChar)
+                                .isNotCrafting(PChar)
+                                .isNotFishing(PChar)
+                                .isNotPreventedAction(PChar)
+                                .isNotMounted(PChar)
+                                .mustEqual(PChar->animation == ANIMATION_NONE || PChar->animation == ANIMATION_ATTACK, true, "Character in invalid animation state.");
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Fish:
+                        {
+                            pv.isNotResting(PChar)
+                                .isNotSitting(PChar)
+                                .isNotCrafting(PChar)
+                                .isNotFishing(PChar)
+                                .isNotPreventedAction(PChar)
+                                .isNotMounted(PChar);
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
+                        {
+                            pv.isNotResting(PChar)
+                                .isNotSitting(PChar)
+                                .isNotCrafting(PChar)
+                                .isNotFishing(PChar);
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
+                        {
+                            pv.isNotPreventedAction(PChar)
+                                .mustEqual(PChar->isMounted(), true, "Character is not mounted.");
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::ChocoboDig:
+                        {
+                            pv.isNotPreventedAction(PChar)
+                                .mustEqual(PChar->isMounted(), true, "Character is not mounted.");
+                            break;
+                        }
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::SendResRdy:
+                        {
+                            break;
+                        }
+                        // Unimplemented Ballista actions
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Quarry:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Sprint:
+                        case GP_CLI_COMMAND_ACTION_ACTIONID::Scout:
+                        {
+                            break;
+                        }
+                    }
+                });
 }
 
 void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) const
@@ -72,7 +178,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         PChar->retriggerLatents = false; // reset as we have retriggered the latents somewhere
     }
 
-    switch (static_cast<GP_CLI_COMMAND_ACTION_ACTIONID>(ActionID))
+    switch (this->ActionID)
     {
         case GP_CLI_COMMAND_ACTION_ACTIONID::Talk:
         {
@@ -83,18 +189,38 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
+            // Talking to an NPC cancels /heal
+            PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_HEALING);
+
+            // Talking to an NPC force disengages
+            if (PChar->PAI->IsEngaged())
+            {
+                PChar->PAI->Disengage();
+            }
+
+            // Blocked states send release packet
+            if (PChar->m_Costume != 0 ||
+                PChar->isCrafting() ||
+                PChar->isMounted() ||
+                PChar->isDead() ||
+                PChar->isFishing())
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Standard);
+                return;
+            }
+
+            CBaseEntity* PNpc = PChar->GetEntity(this->ActIndex, TYPE_NPC | TYPE_MOB | TYPE_TRUST);
+            if (!PNpc)
             {
                 return;
             }
 
-            if (PChar->m_Costume != 0 || PChar->animation == ANIMATION_SYNTH || (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
+            // Releasing a trust
+            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PNpc))
             {
-                PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::STANDARD);
+                PChar->RemoveTrust(PTrust);
                 return;
             }
-
-            const CBaseEntity* PNpc = PChar->GetEntity(ActIndex, TYPE_NPC | TYPE_MOB);
 
             // MONs are allowed to use doors, but nothing else
             if (PChar->m_PMonstrosity != nullptr &&
@@ -102,27 +228,21 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 PChar->getZone() != ZONEID::ZONE_FERETORY &&
                 !settings::get<bool>("main.MONSTROSITY_TRIGGER_NPCS"))
             {
-                PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::STANDARD);
+                PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Standard);
                 return;
             }
 
             // NOTE: Moogles inside of mog houses are the exception for not requiring Spawned or Status checks.
-            if (PNpc != nullptr && distance(PNpc->loc.p, PChar->loc.p) <= 6.0f && ((PNpc->PAI->IsSpawned() && PNpc->status == STATUS_TYPE::NORMAL) || PChar->m_moghouseID != 0))
+            if (distance(PNpc->loc.p, PChar->loc.p) <= 6.0f && ((PNpc->PAI->IsSpawned() && PNpc->status == STATUS_TYPE::NORMAL) || PChar->inMogHouse()))
             {
                 PNpc->PAI->Trigger(PChar);
                 PChar->m_charHistory.npcInteractions++;
             }
 
-            // Releasing a trust
-            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PChar->GetEntity(ActIndex, TYPE_TRUST)))
-            {
-                PChar->RemoveTrust(PTrust);
-            }
-
             if (!PChar->isNpcLocked())
             {
                 PChar->eventPreparation->reset();
-                PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::STANDARD);
+                PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Standard);
             }
         }
         break;
@@ -133,7 +253,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_MOUNTED);
             }
 
-            PChar->PAI->Engage(ActIndex);
+            PChar->PAI->Engage(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::CastMagic:
@@ -143,16 +263,16 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             // clang-format off
             const position_t actionOffset =
             {
-                std::clamp(CastMagic.PosX, -19.0f, 19.0f),
-                std::clamp(CastMagic.PosZ, -19.0f, 19.0f),
-                std::clamp(CastMagic.PosY, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosX, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosZ, -19.0f, 19.0f),
+                std::clamp(this->CastMagic.PosY, -19.0f, 19.0f),
                 0, // moving (packet only contains x/y/z)
                 0, // rotation (packet only contains x/y/z)
             };
             // clang-format on
 
-            const auto spellId = static_cast<SpellID>(CastMagic.SpellId);
-            PChar->PAI->Cast(ActIndex, spellId);
+            const auto spellId = static_cast<SpellID>(this->CastMagic.SpellId);
+            PChar->PAI->Cast(this->ActIndex, spellId);
 
             // target offset used only for luopan placement as of now
             if (spellId >= SpellID::Geo_Regen && spellId <= SpellID::Geo_Gravity)
@@ -162,7 +282,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
 
                 // Need to set the target position plus offset for positioning correctly
 
-                if (const auto* PTarget = dynamic_cast<CBattleEntity*>(PChar->GetEntity(ActIndex)); PTarget != nullptr)
+                if (const auto* PTarget = dynamic_cast<CBattleEntity*>(PChar->GetEntity(this->ActIndex)); PTarget != nullptr)
                 {
                     PChar->m_ActionOffsetPos = {
                         PTarget->loc.p.x + actionOffset.x,
@@ -177,84 +297,66 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::AttackOff:
         {
-            if (!PChar->StatusEffectContainer->HasStatusEffect({ EFFECT_CHARM, EFFECT_CHARM_II }))
-            {
-                PChar->PAI->Disengage();
-            }
+            PChar->PAI->Disengage();
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Help:
         {
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
-            {
-                return;
-            }
-
+            // TODO: C4H applies to ALL claimed enemies on which you (personally) have enmity. This does NOT require you to be engaged.
             if (auto* PMob = dynamic_cast<CMobEntity*>(PChar->GetBattleTarget()))
             {
                 if (!PMob->GetCallForHelpFlag() && PMob->PEnmityContainer->HasID(PChar->id) && !PMob->m_CallForHelpBlocked)
                 {
                     PMob->SetCallForHelpFlag(true);
-                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CFH));
+                    PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CallForHelp));
                     return;
                 }
             }
 
-            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_CFH);
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotCallForHelp);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Weaponskill:
         {
             if (!PChar->PAI->IsEngaged() && settings::get<bool>("map.PREVENT_UNENGAGED_WS")) // Prevent Weaponskill usage if player isn't engaged.
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_UNABLE_TO_USE_WS);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseWeaponskill);
                 return;
             }
 
-            PChar->PAI->WeaponSkill(ActIndex, Weaponskill.SkillId);
+            PChar->PAI->WeaponSkill(this->ActIndex, this->Weaponskill.SkillId);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::JobAbility:
         {
-            if (PChar->animation != ANIMATION_NONE && PChar->animation != ANIMATION_ATTACK)
-            {
-                ShowWarning("GP_CLI_COMMAND_ACTION: Player %s trying to use a Job Ability from invalid state", PChar->getName());
-                return;
-            }
-
             // Don't allow BST to use ready before level 25
             if (PChar->PPet != nullptr && (!charutils::hasAbility(PChar, ABILITY_READY) || !PChar->PPet->PAI->IsEngaged()))
             {
-                if (JobAbility.SkillId >= ABILITY_FOOT_KICK && JobAbility.SkillId <= ABILITY_PENTAPECK) // Is this a BST ability?
+                if (this->JobAbility.SkillId >= ABILITY_FOOT_KICK && this->JobAbility.SkillId <= ABILITY_PENTAPECK) // Is this a BST ability?
                 {
-                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_UNABLE_TO_USE_JA2);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseJobAbility2);
                     return;
                 }
             }
 
-            PChar->PAI->Ability(ActIndex, JobAbility.SkillId);
+            PChar->PAI->Ability(this->ActIndex, this->JobAbility.SkillId);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::HomepointMenu:
         {
-            if (!PChar->isDead())
-            {
-                return;
-            }
-
             if (PChar->m_PMonstrosity)
             {
-                monstrosity::HandleDeathMenu(PChar, HomepointMenu.StatusId);
+                monstrosity::HandleDeathMenu(PChar, this->HomepointMenu.StatusId);
                 return;
             }
 
             PChar->setCharVar("expLost", 0);
-            charutils::HomePoint(PChar, true);
+            PChar->requestedWarp = true;
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Assist:
         {
-            battleutils::assistTarget(PChar, ActIndex);
+            battleutils::assistTarget(PChar, this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::RaiseMenu:
@@ -264,7 +366,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (HomepointMenu.StatusId == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::Accept)
+            if (this->HomepointMenu.StatusId == GP_CLI_COMMAND_ACTION_HOMEPOINTMENU::Accept)
             {
                 PChar->Raise();
             }
@@ -276,15 +378,10 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Fish:
         {
-            if (PChar->m_moghouseID != 0)
+            if (PChar->inMogHouse())
             {
                 ShowWarningFmt("GP_CLI_COMMAND_ACTION: Player {} trying to fish in Mog House", PChar->getName());
-                PChar->pushPacket<CReleasePacket>(PChar, RELEASE_TYPE::FISHING);
-                return;
-            }
-
-            if (PChar->StatusEffectContainer->HasPreventActionEffect())
-            {
+                PChar->pushPacket<GP_SERV_COMMAND_EVENTUCOFF>(PChar, GP_SERV_COMMAND_EVENTUCOFF_MODE::Fishing);
                 return;
             }
 
@@ -293,25 +390,18 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::ChangeTarget:
         {
-            PChar->PAI->ChangeTarget(ActIndex);
+            PChar->PAI->ChangeTarget(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Shoot:
         {
-            if (PChar->animation != ANIMATION_NONE && PChar->animation != ANIMATION_ATTACK)
-            {
-                ShowWarning("GP_CLI_COMMAND_ACTION: Player %s trying to Ranged Attack from invalid state", PChar->getName());
-                return;
-            }
-
-            PChar->PAI->RangedAttack(ActIndex);
+            PChar->PAI->RangedAttack(this->ActIndex);
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::ChocoboDig:
         {
-            // Mounted Check.
             // Only rented and personal chocobos can dig.
-            if (!PChar->isMounted() || PChar->m_mountId != MOUNT_CHOCOBO)
+            if (PChar->m_mountId != MOUNT_CHOCOBO)
             {
                 return;
             }
@@ -319,7 +409,21 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             const uint8 slotID = PChar->getStorage(LOC_INVENTORY)->SearchItem(GYSAHL_GREENS);
             if (slotID == ERROR_SLOTID)
             {
-                PChar->pushPacket<CMessageSystemPacket>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                return;
+            }
+
+            const auto* PGysahl = PChar->getStorage(LOC_INVENTORY)->GetItem(slotID);
+            if (!PGysahl)
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                return;
+            }
+
+            if (PGysahl->isSubType(ITEM_LOCKED) || PGysahl->getReserve() > 0)
+            {
+                ShowWarningFmt("GP_CLI_COMMAND_ACTION: {} trying to use invalid gysahl greens (locked/reserved)", PChar->getName());
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
                 return;
             }
 
@@ -327,18 +431,13 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             if (luautils::OnChocoboDig(PChar))
             {
                 charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -1);
-                PChar->pushPacket<CInventoryFinishPacket>();
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChocoboDiggingPacket>(PChar));
+                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_DIG>(PChar));
             }
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
         {
-            if (PChar->StatusEffectContainer->HasPreventActionEffect() || !PChar->isMounted())
-            {
-                return;
-            }
-
             PChar->animation = ANIMATION_NONE;
             PChar->updatemask |= UPDATE_HP;
             PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_MOUNTED);
@@ -346,14 +445,15 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::TractorMenu:
         {
-            if (TractorMenu.StatusId == GP_CLI_COMMAND_ACTION_TRACTORMENU::Accept && PChar->m_hasTractor != 0)
+            if (this->TractorMenu.StatusId == GP_CLI_COMMAND_ACTION_TRACTORMENU::Accept && PChar->m_hasTractor != 0)
             {
                 PChar->loc.p           = PChar->m_StartActionPos;
                 PChar->loc.destination = PChar->getZone();
                 PChar->status          = STATUS_TYPE::DISAPPEAR;
                 PChar->loc.boundary    = 0;
                 PChar->clearPacketList();
-                charutils::SendToZone(PChar, PChar->loc.destination);
+
+                PChar->requestedZoneChange = true;
             }
 
             PChar->m_hasTractor = 0;
@@ -361,7 +461,7 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::SendResRdy:
         {
-            if (PChar->m_moghouseID != 0) // TODO: For now this is only in the moghouse
+            if (PChar->inMogHouse()) // TODO: For now this is only in the moghouse
             {
                 PChar->loc.zone->SpawnConditionalNPCs(PChar);
             }
@@ -382,25 +482,25 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         {
             if (!PChar->StatusEffectContainer->HasStatusEffect(EFFECT_ALLIED_TAGS))
             {
-                if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Disable && PChar->getBlockingAid())
+                if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Disable && PChar->getBlockingAid())
                 {
-                    PChar->pushPacket<CMessageSystemPacket>(0, 0, MsgStd::BlockaidCanceled);
+                    PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::BlockaidCanceled);
                     PChar->setBlockingAid(false);
                 }
-                else if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Enable && !PChar->getBlockingAid())
+                else if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Enable && !PChar->getBlockingAid())
                 {
-                    PChar->pushPacket<CMessageSystemPacket>(0, 0, MsgStd::BlockaidActivated);
+                    PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::BlockaidActivated);
                     PChar->setBlockingAid(true);
                 }
-                else if (BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Toggle)
+                else if (this->BlockAid.StatusId == GP_CLI_COMMAND_ACTION_BLOCKAID::Toggle)
                 {
                     PChar->setBlockingAid(!PChar->getBlockingAid());
-                    PChar->pushPacket<CMessageSystemPacket>(0, 0, PChar->getBlockingAid() ? MsgStd::BlockaidCurrentlyActive : MsgStd::BlockaidCurrentlyInactive);
+                    PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, PChar->getBlockingAid() ? MsgStd::BlockaidCurrentlyActive : MsgStd::BlockaidCurrentlyInactive);
                 }
             }
             else
             {
-                PChar->pushPacket<CMessageSystemPacket>(0, 0, MsgStd::CannotUseCommandAtTheMoment);
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::CannotUseCommandAtTheMoment);
             }
         }
         break;
@@ -411,50 +511,50 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
         {
-            const auto mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + Mount.MountId);
+            const auto mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + this->Mount.MountId);
 
-            if (PChar->animation != ANIMATION_NONE)
+            if (PChar->animation != ANIMATION_NONE || PChar->StatusEffectContainer->HasPreventActionEffect())
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_PERFORM_ACTION);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotPerformAction);
             }
             else if (!PChar->loc.zone->CanUseMisc(MISC_MOUNT))
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseInArea);
             }
             else if (PChar->GetMLevel() < 20)
             {
-                PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 20, 0, MSGBASIC_MOUNT_REQUIRED_LEVEL);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 20, 0, MsgBasic::MountRequiredLevel);
             }
             else if (charutils::hasKeyItem(PChar, mountKeyItem))
             {
-                if (PChar->PRecastContainer->HasRecast(RECAST_ABILITY, 256, 60s))
+                if (PChar->PRecastContainer->HasRecast(RECAST_ABILITY, Recast::Mount, 60s))
                 {
-                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_WAIT_LONGER);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WaitLonger);
 
                     // add recast timer
-                    // PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 202);
+                    // PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, 202);
                     return;
                 }
 
                 if (PChar->hasEnmityEXPENSIVE())
                 {
-                    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_YOUR_MOUNT_REFUSES);
+                    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::YourMountRefuses);
                     return;
                 }
 
-                PChar->m_mountId = Mount.MountId ? Mount.MountId + 1 : 0;
+                PChar->m_mountId = this->Mount.MountId ? this->Mount.MountId + 1 : 0;
                 PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(
                                                                   EFFECT_MOUNTED,
                                                                   EFFECT_MOUNTED,
-                                                                  Mount.MountId ? Mount.MountId + 1 : 0,
+                                                                  this->Mount.MountId ? this->Mount.MountId + 1 : 0,
                                                                   0s,
                                                                   30min,
                                                                   0,
                                                                   0x40), // previously known as nameflag "FLAG_CHOCOBO"
                                                               EffectNotice::Silent);
 
-                PChar->PRecastContainer->Add(RECAST_ABILITY, 256, 60s);
-                PChar->pushPacket<CCharRecastPacket>(PChar);
+                PChar->PRecastContainer->Add(RECAST_ABILITY, Recast::Mount, 60s);
+                PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
 
                 luautils::OnPlayerMount(PChar);
             }

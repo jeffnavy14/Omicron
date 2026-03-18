@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.25)
+
+# https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_DEBUG_INFORMATION_FORMAT.html
+cmake_policy(SET CMP0141 NEW)
+set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
+
 project(server C CXX)
 
 # https://cmake.org/cmake/help/latest/policy/CMP0069.html
@@ -44,6 +49,16 @@ elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "RELEASE")
     message(STATUS "CMAKE_CXX_FLAGS_RELEASE: ${CMAKE_CXX_FLAGS_RELEASE}")
 elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "RELWITHDEBINFO")
     message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO: ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "ASAN")
+    message(STATUS "CMAKE_CXX_FLAGS_ASAN: ${CMAKE_CXX_FLAGS_ASAN}")
+elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "UBSAN")
+    message(STATUS "CMAKE_CXX_FLAGS_UBSAN: ${CMAKE_CXX_FLAGS_UBSAN}")
+elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "TSAN")
+    message(STATUS "CMAKE_CXX_FLAGS_TSAN: ${CMAKE_CXX_FLAGS_TSAN}")
+elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "MSAN")
+    message(STATUS "CMAKE_CXX_FLAGS_MSAN: ${CMAKE_CXX_FLAGS_MSAN}")
+elseif ("${CMAKE_BUILD_TYPE_UPPER}" STREQUAL "LSAN")
+    message(STATUS "CMAKE_CXX_FLAGS_LSAN: ${CMAKE_CXX_FLAGS_LSAN}")
 else()
     message(FATAL_ERROR "Did not recognise CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} to print out compiler flags.")
 endif()

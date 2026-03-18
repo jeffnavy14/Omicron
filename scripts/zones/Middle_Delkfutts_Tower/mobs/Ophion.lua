@@ -2,7 +2,7 @@
 -- Area: Middle Delkfutt's Tower
 --   NM: Ophion
 -----------------------------------
-mixins = { require('scripts/mixins/job_special') }
+mixins = { require('scripts/mixins/families/gigas_bst_nm') }
 -----------------------------------
 local ID = zones[xi.zone.MIDDLE_DELKFUTTS_TOWER]
 -----------------------------------
@@ -20,6 +20,14 @@ entity.phList =
     [ID.mob.OPHION - 11] = ID.mob.OPHION, -- -409.937 -95.772 48.785
     [ID.mob.OPHION - 2]  = ID.mob.OPHION, -- -384 -95.529 14
 }
+
+entity.onMobInitialize = function(mob)
+    xi.pet.setMobPet(mob, 1, 'Gigass_Bats')
+    mob:addImmunity(xi.immunity.SILENCE)
+    mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:addImmunity(xi.immunity.LIGHT_SLEEP)
+    mob:addImmunity(xi.immunity.TERROR)
+end
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 337)

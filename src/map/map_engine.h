@@ -35,7 +35,6 @@
 //
 
 class IPP;
-class SqlConnection;
 class MapNetworking;
 class MapStatistics;
 class CZone;
@@ -53,13 +52,12 @@ struct MapConfig final
 // Exposed globals
 //
 
-extern std::unique_ptr<SqlConnection> _sql;
-extern std::map<uint16, CZone*>       g_PZoneList; // Global array of pointers for zones
+extern std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 
 class MapEngine final : public Engine
 {
 public:
-    MapEngine(asio::io_context& io_context, MapConfig& config);
+    MapEngine(Scheduler& scheduler, MapConfig& config);
     ~MapEngine() override;
 
     void gameLoop();
@@ -101,7 +99,7 @@ public:
     void requestExit();
 
 private:
-    asio::io_context&              ioContext_; // this is also shared with networking_
+    Scheduler&                     scheduler_;
     std::unique_ptr<MapStatistics> mapStatistics_;
     std::unique_ptr<MapNetworking> networking_;
     std::unique_ptr<Watchdog>      watchdog_;

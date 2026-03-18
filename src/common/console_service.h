@@ -30,7 +30,7 @@
 #include <thread>
 #include <unordered_map>
 
-#include <nonstd/jthread.hpp>
+#include <common/scheduler.h>
 
 class Application;
 
@@ -52,18 +52,15 @@ public:
 
     // NOTE: If you capture things in this function, make sure they're protected (locked or atomic)!
     // NOTE: If you're going to print, use fmt::print, rather than ShowInfo etc.
-    void registerCommand(std::string const& name, std::string const& description, std::function<void(std::vector<std::string>&)> func);
+    void registerCommand(const std::string& name, const std::string& description, std::function<void(std::vector<std::string>&)> func);
 
 private:
     void registerDefaultCommands();
     void run();
+    auto consoleLoop() -> Task<void>;
 
     Application& application_;
 
-    std::mutex              m_consoleInputBottleneck;
-    std::atomic<bool>       m_consoleThreadRun;
-    nonstd::jthread         m_consoleInputThread;
-    std::condition_variable m_consoleStopCondition;
-
+    std::mutex                                      m_consoleInputBottleneck;
     std::unordered_map<std::string, ConsoleCommand> m_commands;
 };

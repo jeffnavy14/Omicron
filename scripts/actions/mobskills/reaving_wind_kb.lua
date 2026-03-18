@@ -1,16 +1,19 @@
 -----------------------------------
---  Reaving Wind (Knockback)
---    Mob Ability: 2426
---  Description: Does no damage, knockback only.
---  Type: Physical
---  Utsusemi/Blink absorb: 2-3 shadows
---  Notes: Zirnitra uses multiple times while reaving wind aura is active.
+-- Reaving Wind (Knockback)
+-- Family: Amphipteres
+-- Description: Does no damage, knockback only.
+-- Notes: Zirnitra uses multiple times while reaving wind aura is active.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     skill:setMsg(xi.msg.basic.NONE)
+
+    -- > 24% movement speed reduction in gear negates knockback
+    if target:getMod(xi.mod.MOVE_SPEED_STACKABLE) < -10 then
+        action:knockback(target:getID(), xi.action.knockback.NONE)
+    end
 end
 
 return mobskillObject

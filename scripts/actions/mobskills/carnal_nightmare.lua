@@ -10,11 +10,15 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local reset = 0
     if target:getTP() == 0 then
         skill:setMsg(xi.msg.basic.SKILL_NO_EFFECT) -- no effect
     else
+        if target:isPet() then
+            reset = target:getTP() / 2
+        end
+
         target:setTP(reset)
         skill:setMsg(xi.msg.basic.TP_REDUCED)
     end

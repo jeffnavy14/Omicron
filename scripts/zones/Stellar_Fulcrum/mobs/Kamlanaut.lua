@@ -20,6 +20,8 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.SILENCE)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:addImmunity(xi.immunity.PETRIFY)
+    mob:addImmunity(xi.immunity.TERROR)
 end
 
 entity.onMobEngage = function(mob, target)
@@ -35,7 +37,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local skillId  = skill:getID()
     local absorbId = skillToAbsorb[skillId]
 

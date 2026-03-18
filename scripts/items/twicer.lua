@@ -15,18 +15,17 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target)
+itemObject.onItemUse = function(target, user)
     if target:hasEquipped(xi.item.TWICER) then
-        target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 30, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TWICER)
+        target:addStatusEffect(xi.effect.ENCHANTMENT, { duration = 30, origin = user, sourceType = xi.effectSourceType.EQUIPPED_ITEM, sourceTypeParam = xi.item.TWICER })
     end
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.DOUBLE_ATTACK, 100)
+    effect:addMod(xi.mod.DOUBLE_ATTACK, 100)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.DOUBLE_ATTACK, 100)
 end
 
 return itemObject

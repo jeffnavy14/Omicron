@@ -15,9 +15,9 @@ local entity = {}
 local function notBusy(mob)
     local action = mob:getCurrentAction()
     if
-        action == xi.act.MOBABILITY_START or
-        action == xi.act.MOBABILITY_USING or
-        action == xi.act.MOBABILITY_FINISH
+        action == xi.action.category.MOBABILITY_START or
+        action == xi.action.category.MOBABILITY_USING or
+        action == xi.action.category.MOBABILITY_FINISH
     then
         return false
     end
@@ -34,7 +34,7 @@ entity.onMobSpawn = function(mob)
     mob:setLocalVar('gohSequence', 0)
 end
 
-entity.onMobWeaponSkillPrepare = function(mob, target)
+entity.onMobMobskillChoose = function(mob, target, skillId)
     local gohSequence = mob:getLocalVar('gohSequence')
 
     if gohSequence == 1 then
@@ -52,7 +52,7 @@ entity.onMobWeaponSkillPrepare = function(mob, target)
     end
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local gohSequence = mob:getLocalVar('gohSequence')
     if gohSequence ~= 0 then
         if gohSequence > 1 and skill:getID() == xi.mobSkill.LAVA_SPIT then

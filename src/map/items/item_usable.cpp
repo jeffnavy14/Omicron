@@ -23,6 +23,7 @@
 
 #include "common/utils.h"
 #include "common/vana_time.h"
+#include "enums/action/animation.h"
 
 CItemUsable::CItemUsable(uint16 id)
 : CItem(id)
@@ -36,8 +37,8 @@ CItemUsable::CItemUsable(uint16 id)
     m_MaxCharges  = 0;
     m_Animation   = 0;
     m_ValidTarget = 0;
-    m_AssignTime  = timer::time_point::min();
-    m_LastUseTime = timer::time_point::min();
+    m_AssignTime  = timer::time_point{};
+    m_LastUseTime = timer::time_point{};
     m_AoE         = 0;
 }
 
@@ -104,9 +105,9 @@ void CItemUsable::setAnimationID(uint16 Animation)
     m_Animation = Animation;
 }
 
-uint16 CItemUsable::getAnimationID() const
+auto CItemUsable::getAnimationID() const -> ActionAnimation
 {
-    return m_Animation;
+    return static_cast<ActionAnimation>(m_Animation);
 }
 
 void CItemUsable::setAnimationTime(timer::duration AnimationTime)

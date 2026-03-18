@@ -42,6 +42,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const CLuaZone& zone);
 
     auto getLocalVar(const char* key);
+    auto getLocalVars() -> sol::table;
     void setLocalVar(const char* key, uint32 value);
     void resetLocalVars();
 
@@ -58,7 +59,7 @@ public:
     REGION_TYPE getRegionID();
     ZONE_TYPE   getTypeMask();
     auto        getBattlefieldByInitiator(uint32 charID) -> CBattlefield*;
-    WEATHER     getWeather();
+    auto        getWeather() const -> Weather;
     uint32      getUptime();
     void        reloadNavmesh();
     bool        isNavigablePoint(const sol::table& position);
@@ -74,7 +75,7 @@ public:
     void setBackgroundMusicDay(uint16 musicId);
     void setBackgroundMusicNight(uint16 musicId);
 
-    sol::table queryEntitiesByName(std::string const& name);
+    sol::table queryEntitiesByName(const std::string& name);
 
     bool operator==(const CLuaZone& other) const
     {

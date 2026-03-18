@@ -1,30 +1,35 @@
 -----------------------------------
---  Static Filament
---  Zedi, while in Animation form 2 (Bars)
---  Blinkable 1-2 hit, addtional effect stun on hit.
+-- Static Filament
+-- Family: Zdei
+-- Description: Deals Thunder damage in a forward cone. Additional Effect: Stun
+-- Notes: Zdei, while in Animation form 2 (Bars)
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getAnimationSub() ~= 2 then
-        return 1
-    end
-
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local numhits = 2
-    local accmod = 1
-    local ftp    = 1
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, 0, 1, 2, 3)
-    local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.NONE, info.hitslanded)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.STUN, 1, 0, 4)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 1.0, 1.5, 2.0 }
+    params.element        = xi.element.THUNDER
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.THUNDER
+    params.shadowBehavior = xi.mobskills.shadowBehavior.IGNORE_SHADOWS -- TODO: Capture shadowBehavior
 
-    target:takeDamage(dmg, mob, xi.attackType.PHYSICAL, xi.damageType.NONE)
-    return dmg
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.STUN, 1, 0, 4)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

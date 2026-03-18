@@ -22,13 +22,14 @@
 #include "0x0bf_job_points_spend.h"
 
 #include "entities/charentity.h"
-#include "packets/jobpoint_update.h"
-#include "packets/menu_jobpoints.h"
+#include "packets/s2c/0x029_battle_message.h"
+#include "packets/s2c/0x063_miscdata_job_points.h"
+#include "packets/s2c/0x08d_job_points.h"
 
 auto GP_CLI_COMMAND_JOB_POINTS_SPEND::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .mustNotEqual(PChar->m_moghouseID, 0, "Character not in a mog house.") // Has been verified to work in ANY Mog House.
+        .mustEqual(PChar->inMogHouse(), true, "Character not in a mog house.") // Has been verified to work in ANY Mog House.
         .mustEqual(PChar->PJobPoints && PChar->PJobPoints->IsJobPointExist(static_cast<JOBPOINT_TYPE>(Index)), true, "Job point does not exist.");
 }
 
@@ -38,7 +39,7 @@ void GP_CLI_COMMAND_JOB_POINTS_SPEND::process(MapSession* PSession, CCharEntity*
     PChar->PJobPoints->RaiseJobPoint(jpType);
     auto newLevel = PChar->PJobPoints->GetJobPointType(jpType)->value;
 
-    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
-    PChar->pushPacket<CJobPointUpdatePacket>(PChar, jpType);
-    PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, Index, newLevel, MSGBASIC_JOB_POINTS_INCREASE);
+    PChar->pushPacket<GP_SERV_COMMAND_MISCDATA::JOB_POINTS>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_JOB_POINTS>(PChar, jpType);
+    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, Index, newLevel, MsgBasic::JobPointsIncrease);
 }

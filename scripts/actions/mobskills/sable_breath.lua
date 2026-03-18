@@ -1,11 +1,8 @@
 -----------------------------------
---  Sable Breath
---
---  Description: Deals darkness damage to enemies within a fan-shaped area.
---  Type: Breath
---  Utsusemi/Blink absorb: Ignores shadows
---  Range: Unknown cone
---  Notes: Used only by Vrtra and Azdaja
+-- Sable Breath
+-- Family: Wyrms
+-- Description: Deals Dark damage to enemies within a fan-shaped area.
+-- Notes: Used by Vrtra and Azdaja
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -20,14 +17,28 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.2, 1.25, xi.element.DARK, 1400)
-    dmgmod = utils.conalDamageAdjustment(mob, target, skill, dmgmod, 0.2)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.DARK, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    params.percentMultipier = 0.20
+    params.damageCap        = 1400
+    params.bonusDamage      = 0
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.DARK
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.DARK
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.DARK)
-    return dmg
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    info.damage = utils.conalDamageAdjustment(mob, target, skill, info.damage, 0.2)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

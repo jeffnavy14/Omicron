@@ -2,8 +2,6 @@
 -- Abyssea Atma Global
 -----------------------------------
 require('scripts/globals/abyssea')
-require('scripts/globals/utils')
------------------------------------
 xi = xi or {}
 xi.atma = xi.atma or {}
 
@@ -373,7 +371,7 @@ local function addAtma(player, selectedAtma)
         availableAtmaSlot > 0 and
         not hasDuplicateAtmaEffect(player, atmaValue)
     then
-        player:addStatusEffectEx(xi.effect.ATMA, xi.effect.ATMA, atmaValue, 0, 0, availableAtmaSlot)
+        player:addStatusEffect(xi.effect.ATMA, { power = atmaValue, origin = player, subType = availableAtmaSlot })
 
         local atmaEffect = player:getStatusEffect(xi.effect.ATMA, availableAtmaSlot)
         atmaEffect:addEffectFlag(xi.effectFlag.ON_ZONE)

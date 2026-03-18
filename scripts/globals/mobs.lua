@@ -1,10 +1,9 @@
 -----------------------------------
 -- Global version of onMobDeath
 -----------------------------------
+require('scripts/globals/magic')
 require('scripts/globals/missions')
 require('scripts/globals/quests')
-require('scripts/globals/magic')
-require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
 xi.mob = xi.mob or {}
@@ -18,12 +17,12 @@ end
 -----------------------------------
 
 -- is a lottery NM already spawned or primed to pop?
-local function lotteryPrimed(phList)
+local function lotteryPrimed(phList, nmId)
     local nm
 
     for k, v in pairs(phList) do
         nm = GetMobByID(v)
-        if nm ~= nil and (nm:isSpawned() or nm:getRespawnTime() ~= 0) then
+        if v == nmId and nm ~= nil and (nm:isSpawned() or nm:getRespawnTime() ~= 0) then
             return true
         end
     end
@@ -31,7 +30,7 @@ local function lotteryPrimed(phList)
     return false
 end
 
-local getMobLuaPathObject = function(mob)
+local function getMobLuaPathObject(mob)
     if not mob then
         return nil
     end
@@ -151,7 +150,7 @@ xi.mob.phOnDespawn = function(ph, phNmId, chance, cooldown, params)
 
     if
         GetSystemTime() <= pop or
-        lotteryPrimed(phList) or
+        lotteryPrimed(phList, nmId) or
         math.random(1, 1000) > chance
     then
         return false
@@ -192,7 +191,10 @@ xi.mob.phOnDespawn = function(ph, phNmId, chance, cooldown, params)
         DisallowRespawn(nmId, true)
         if not params.doNotEnablePhSpawn then
             DisallowRespawn(phId, false)
-            GetMobByID(phId):setRespawnTime(GetMobRespawnTime(phId))
+            local phMob = GetMobByID(phId)
+            if phMob then
+                phMob:setRespawnTime(GetMobRespawnTime(phId))
+            end
         end
 
         if m:getLocalVar('doNotInvokeCooldown') == 0 then
@@ -206,173 +208,31 @@ xi.mob.phOnDespawn = function(ph, phNmId, chance, cooldown, params)
 end
 
 -----------------------------------
--- Mob skills
------------------------------------
-xi.mob.skills =
-{
-    RECOIL_DIVE = 641,
-    CYTOKINESIS = 2514,
-    DISSOLVE = 2550,
-}
-
------------------------------------
 -- mob additional melee effects
 -----------------------------------
 
-xi.mob.additionalEffect =
+xi.mob.ae =
 {
-    BLIND      = 0,
-    CURSE      = 1,
-    ENAERO     = 2,
-    ENBLIZZARD = 3,
-    ENDARK     = 4,
-    ENFIRE     = 5,
-    ENLIGHT    = 6,
-    ENSTONE    = 7,
-    ENTHUNDER  = 8,
-    ENWATER    = 9,
-    EVA_DOWN   = 10,
-    HP_DRAIN   = 11,
-    MP_DRAIN   = 12,
-    PARALYZE   = 13,
-    PETRIFY    = 14,
-    PLAGUE     = 15,
-    POISON     = 16,
-    SILENCE    = 17,
-    SLOW       = 18,
-    STUN       = 19,
-    TERROR     = 20,
-    TP_DRAIN   = 21,
-    WEIGHT     = 22,
-    ENAMNESIA  = 23,
-    DISPEL     = 24,
+    HP_DRAIN     = 11,
+    MP_DRAIN     = 12,
+    PETRIFY      = 14,
+    PLAGUE       = 15,
+    POISON       = 16,
+    SILENCE      = 17,
+    SLOW         = 18,
+    STUN         = 19,
+    TERROR       = 20,
+    TP_DRAIN     = 21,
+    WEIGHT       = 22,
+    ENAMNESIA    = 23,
+    BIND         = 25,
+    SLEEP        = 26,
+    DEFENSE_DOWN = 27,
+    ATTACK_DOWN  = 28,
 }
-xi.mob.ae = xi.mob.additionalEffect
 
 local additionalEffects =
 {
-    [xi.mob.ae.BLIND] =
-    {
-        chance = 25,
-        ele         = xi.element.DARK,
-        sub         = xi.subEffect.BLIND,
-        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
-        applyEffect = true,
-        eff         = xi.effect.BLINDNESS,
-        power       = 20,
-        duration    = 30,
-        minDuration = 1,
-        maxDuration = 45,
-    },
-
-    [xi.mob.ae.CURSE] =
-    {
-        chance      = 20,
-        ele         = xi.element.DARK,
-        sub         = xi.subEffect.CURSE,
-        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
-        applyEffect = true,
-        eff         = xi.effect.CURSE_I,
-        power       = 50,
-        duration    = 300,
-        minDuration = 1,
-        maxDuration = 300,
-    },
-
-    [xi.mob.ae.ENAERO] =
-    {
-        ele                = xi.element.WIND,
-        sub                = xi.subEffect.WIND_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENBLIZZARD] =
-    {
-        ele                = xi.element.ICE,
-        sub                = xi.subEffect.ICE_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENDARK] =
-    {
-        ele                = xi.element.DARK,
-        sub                = xi.subEffect.DARKNESS_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENFIRE] =
-    {
-        ele                = xi.element.FIRE,
-        sub                = xi.subEffect.FIRE_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENLIGHT] =
-    {
-        ele                = xi.element.LIGHT,
-        sub                = xi.subEffect.LIGHT_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENSTONE] =
-    {
-        ele                = xi.element.EARTH,
-        sub                = xi.subEffect.EARTH_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENTHUNDER] =
-    {
-        ele                = xi.element.THUNDER,
-        sub                = xi.subEffect.LIGHTNING_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.ENWATER] =
-    {
-        ele                = xi.element.WATER,
-        sub                = xi.subEffect.WATER_DAMAGE,
-        msg                = xi.msg.basic.ADD_EFFECT_DMG,
-        negMsg             = xi.msg.basic.ADD_EFFECT_HEAL,
-        mod                = xi.mod.INT,
-        bonusAbilityParams = { bonusmab = 0, includemab = false },
-    },
-
-    [xi.mob.ae.EVA_DOWN] =
-    {
-        chance      = 25,
-        ele         = xi.element.ICE,
-        sub         = xi.subEffect.EVASION_DOWN,
-        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
-        applyEffect = true,
-        eff         = xi.effect.EVASION_DOWN,
-        power       = 25,
-        duration    = 30,
-        minDuration = 1,
-        maxDuration = 60,
-    },
-
     [xi.mob.ae.HP_DRAIN] =
     {
         chance             = 10,
@@ -399,20 +259,6 @@ local additionalEffects =
             target:delMP(mp)
             mob:addMP(mp)
         end,
-    },
-
-    [xi.mob.ae.PARALYZE] =
-    {
-        chance      = 25,
-        ele         = xi.element.ICE,
-        sub         = xi.subEffect.PARALYSIS,
-        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
-        applyEffect = true,
-        eff         = xi.effect.PARALYSIS,
-        power       = 20,
-        duration    = 30,
-        minDuration = 1,
-        maxDuration = 60,
     },
 
     [xi.mob.ae.PETRIFY] =
@@ -486,6 +332,20 @@ local additionalEffects =
         maxDuration = 30,
     },
 
+    [xi.mob.ae.SLEEP] =
+    {
+        chance      = 25,
+        ele         = xi.element.DARK,
+        sub         = xi.subEffect.SLEEP,
+        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff         = xi.effect.SLEEP_I,
+        power       = 20,
+        duration    = 30,
+        minDuration = 1,
+        maxDuration = 45,
+    },
+
     [xi.mob.ae.SLOW] =
     {
         chance      = 25,
@@ -543,7 +403,7 @@ local additionalEffects =
     {
         chance      = 25,
         ele         = xi.element.WIND,
-        sub         = xi.subEffect.BLIND, -- TODO
+        sub         = xi.subEffect.ATTACK_DOWN,
         msg         = xi.msg.basic.ADD_EFFECT_STATUS,
         applyEffect = true,
         eff         = xi.effect.WEIGHT,
@@ -553,14 +413,46 @@ local additionalEffects =
         maxDuration = 45,
     },
 
-    [xi.mob.ae.DISPEL] =
+    [xi.mob.ae.BIND] =
     {
-        chance      = 25,
-        ele         = xi.element.DARK,
-        sub         = xi.subEffect.DISPEL,
-        msg         = xi.msg.basic.ADD_EFFECT_DISPEL,
-        applyEffect = false,
+        chance      = 10,
+        ele         = xi.element.ICE,
+        sub         = xi.subEffect.DARKNESS_DAMAGE,
+        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff         = xi.effect.BIND,
         power       = 1,
+        duration    = 30,
+        minDuration = 1,
+        maxDuration = 90,
+    },
+
+    [xi.mob.ae.DEFENSE_DOWN] =
+    {
+        chance      = 20,
+        ele         = xi.element.WIND,
+        sub         = xi.subEffect.DEFENSE_DOWN,
+        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff         = xi.effect.DEFENSE_DOWN,
+        power       = 25,
+        duration    = 30,
+        minDuration = 1,
+        maxDuration = 60,
+    },
+
+    [xi.mob.ae.ATTACK_DOWN] =
+    {
+        chance      = 20,
+        ele         = xi.element.WATER,
+        sub         = xi.subEffect.ATTACK_DOWN,
+        msg         = xi.msg.basic.ADD_EFFECT_STATUS,
+        applyEffect = true,
+        eff         = xi.effect.ATTACK_DOWN,
+        power       = 25,
+        duration    = 30,
+        minDuration = 1,
+        maxDuration = 60,
     },
 }
 
@@ -581,7 +473,7 @@ local addEffectStatus = function(mob, target, ae, params)
 
         duration = utils.clamp(duration, ae.minDuration, ae.maxDuration) * resist
 
-        target:addStatusEffect(ae.eff, power, tick, duration)
+        target:addStatusEffect(ae.eff, { power = power, duration = duration, origin = mob, tick = tick })
 
         if params.code then
             params.code(mob, target, power)
@@ -593,19 +485,6 @@ local addEffectStatus = function(mob, target, ae, params)
     end
 
     return 0, 0, 0
-end
-
---[[
-    Helper function for xi.mob.onAddEffect that dispels an effect.
---]]
-local addEffectDispel = function(target, ae)
-    local dispelledEffect = target:dispelStatusEffect(xi.effectFlag.DISPELABLE)
-
-    if dispelledEffect == xi.effect.NONE then
-        return 0, 0, 0
-    end
-
-    return ae.sub, ae.msg, dispelledEffect
 end
 
 --[[
@@ -636,7 +515,8 @@ local addEffectImmediate = function(mob, target, damage, ae, params)
 
     power = addBonusesAbility(mob, ae.ele, target, power, ae.bonusAbilityParams)
     power = power * applyResistanceAddEffect(mob, target, ae.ele, 0)
-    power = power * xi.spells.damage.calculateNukeAbsorbOrNullify(target, ae.ele)
+    power = power * xi.spells.damage.calculateAbsorption(target, ae.ele, true)
+    power = power * xi.spells.damage.calculateNullification(target, ae.ele, true, false)
 
     if ae.sub ~= xi.subEffect.TP_DRAIN and ae.sub ~= xi.subEffect.MP_DRAIN then
         power = finalMagicNonSpellAdjustments(mob, target, ae.ele, power)
@@ -701,20 +581,6 @@ xi.mob.onAddEffect = function(mob, target, damage, effect, params)
             if ae.applyEffect then
                 return addEffectStatus(mob, target, ae, params)
 
-            -- DISPEL
-            elseif effect == xi.mob.ae.DISPEL and target then
-                return addEffectDispel(target, ae)
-
-            -- DISPEL
-            elseif effect == xi.mob.ae.DISPEL and target then
-                local dispelledEffect = target:dispelStatusEffect(xi.effectFlag.DISPELABLE)
-
-                if dispelledEffect == xi.effect.NONE then
-                    return 0, 0, 0
-                end
-
-                return ae.sub, ae.msg, dispelledEffect
-
             -- IMMEDIATE EFFECT
             else
                 return addEffectImmediate(mob, target, damage, ae, params)
@@ -728,19 +594,266 @@ xi.mob.onAddEffect = function(mob, target, damage, effect, params)
 end
 
 -----------------------------------
--- mob difficulty enums for checkDifficulty()
+-- Centralized function for calling one or more mob "pets"
+-- It may be helpful to think of mobs with multiple as having "helpers" rather than explicitly pets
+-- Since this is a looser definition than an explicit `->PMaster` and `->PPet` relationship that exists:
+-- - these "pets" can have real pets of their own
+-- - mobs can have multiple "pets"
+-- - if the petId maps to the mob's actual pet (or petIds is nil and the mob has a pet mapped),
+--      then no ROAM listener is installed on the pet, but the animations can still be consistently managed in one place
 -----------------------------------
 
-xi.mob.difficulty =
-{
-    TOO_WEAK             = 0,
-    INCREDIBLY_EASY_PREY = 1,
-    EASY_PREY            = 2,
-    DECENT_CHALLENGE     = 3,
-    EVEN_MATCH           = 4,
-    TOUGH                = 5,
-    VERY_TOUGH           = 6,
-    INCREDIBLY_TOUGH     = 7,
-    MAX                  = 8,
-}
-xi.mob.diff = xi.mob.difficulty
+xi.mob.callPets = function(mob, petIds, params)
+    params = params or {}
+    -- params table:
+    --      params.dieWithOwner:   will kill pets immediately if owner dies
+    --      params.persistOnDeath: pets persist when owner dies/disengages (default: false)
+    --      params.superLink:      mob will assist pet (pet will always assist mob)
+    --      params.maxSpawns:      stop if this many pets get spawned
+    --      params.ignoreBusy:     allow pets to get summoned even if owner is busy, interupting any action it was performing
+    --      params.noAnimation:    no animation packet from owner when calling pet
+    --      params.inactiveTime:   how long for the call pet to take (owner will be inactive during period)
+    --      params.ignoreInactive: summoner does not become inactive while summoning a pet
+    --          this implies using summoner start/stop entity animation packet (which most mobs use when calling either pets or additional helpers)
+    -- if inactiveTime is zero, the following will determine an action packet to signal the mob is calling a pet
+    --      params.callPetJob will map to a particular mobskill action packet
+    --      if not, the function will use a generic 2-hour action packet
+    --          optionally you can override particular action packet params with params.action.X (see that code below)
+    -- NOTE these are not arbitrary choices, but multiple options to emulate retail behavior for any particular owner of pets/helpers
+    if xi.combat.behavior.isEntityBusy(mob) and not params.ignoreBusy then
+        return false
+    end
+
+    -- make sure at least one pet is available to summon
+    if type(petIds) == 'number' then
+        petIds = { petIds }
+    elseif petIds == nil then
+        -- ensure petIds is always a table so ipairs doesn't fail below
+        petIds = mob:getPet() and { mob:getPet():getID() } or {}
+    end
+
+    local canSummonPets = false
+    for _, petId in ipairs(petIds) do
+        local petToSummon = GetMobByID(petId)
+        if
+            petToSummon and
+            not petToSummon:isSpawned()
+        then
+            canSummonPets = true
+        end
+    end
+
+    if not canSummonPets then
+        return false
+    end
+
+    -- don't allow times so short the animations will bug out
+    if params.inactiveTime == nil or params.inactiveTime < 1000 then
+        params.inactiveTime = 0
+    end
+
+    local actionParams = nil
+    if params.inactiveTime == 0 and not params.action then
+        -- job based action packet
+        switch (params.callPetJob) : caseof
+        {
+            [xi.job.BST] = function(x)
+                -- inject "<mob> uses Call Beast"
+                actionParams =
+                {
+                    finishCategory = xi.action.category.MOBABILITY_FINISH,
+                    animationID = 718,
+                    actionID = xi.mobSkill.CALL_BEAST,
+                    messageID = xi.msg.basic.USES,
+                    param = 0,
+                }
+            end,
+
+            [xi.job.DRG] = function(x)
+                -- inject "<mob> uses Call Wyvern"
+                actionParams =
+                {
+                    finishCategory = xi.action.category.MOBABILITY_FINISH,
+                    animationID = 438,
+                    actionID = xi.mobSkill.CALL_WYVERN,
+                    messageID = xi.msg.basic.USES,
+                    param = 0,
+                }
+            end,
+
+            [xi.job.PUP] = function(x)
+                -- inject "<mob> uses Activate"
+                -- The mobskill has no action message, so we use the job ability
+                actionParams =
+                {
+                    finishCategory = xi.action.category.JOBABILITY_FINISH,
+                    animationID = 83,
+                    actionID = xi.jobAbility.ACTIVATE,
+                    messageID = xi.msg.basic.USES_JA,
+                    param = 0,
+                }
+            end,
+        }
+    end
+
+    params.action = params.action or {}
+    if not actionParams then
+    -- Generic 2-hour animation with no message or options from params table
+        actionParams =
+        {
+            finishCategory = params.action.finishCategory or 11,
+            actionID = params.action.messageID or 307,
+            animationID = params.action.animationID or 439,
+            messageID = params.action.messageID or 0,
+            param = params.action.param or 0,
+        }
+    end
+
+    -- function to execute when pets are actually called (there may be an inactiveTime)
+    local callPetFinish = function(mobArg)
+        if mobArg:isDead() then
+            return
+        end
+
+        -- inject action packet to indicate mob is summoning a pet
+        if not params.noAnimation then
+            if params.inactiveTime > 0 then
+                mobArg:entityAnimationPacket(xi.animationString.CAST_SUMMONER_STOP)
+            else
+                if actionParams then
+                    -- Generic 2-hour animation with no message
+                    mobArg:injectActionPacket(mobArg:getID(), actionParams.finishCategory, actionParams.animationID, 0, 0x18, actionParams.messageID, actionParams.actionID, actionParams.param)
+                end
+            end
+        end
+
+        local spawnPos = mobArg:getSpawnPos()
+        local pos = mobArg:getPos()
+        params.maxSpawns = params.maxSpawns or #petIds
+        local spawnedCount = 0
+        for _, petId in ipairs(petIds) do
+            local petToSummon = GetMobByID(petId)
+            if
+                spawnedCount < params.maxSpawns and
+                petToSummon and
+                not petToSummon:isSpawned()
+            then
+                spawnedCount = spawnedCount + 1
+                -- spawn pet around owner
+                petToSummon:setSpawn(pos.x + math.random(-2, 2), pos.y, pos.z + math.random(-2, 2), pos.rot)
+                petToSummon:spawn()
+                -- set home to be the owner's home position
+                petToSummon:setSpawn(spawnPos.x, spawnPos.y, spawnPos.z, spawnPos.rot)
+
+                local ownerRoamListenerName = fmt('OWNER_ASSIST_{}', petId)
+                if params.superLink then
+                    mobArg:addListener('ROAM_TICK', ownerRoamListenerName, function(owner)
+                        local petToAssist = GetMobByID(petId)
+                        local assistTarg  = petToAssist and petToAssist:getTarget() or nil
+                        if assistTarg then
+                            owner:updateEnmity(assistTarg)
+                        end
+                    end)
+                end
+
+                -- so they die at the same time
+                -- even without this parameter, if the owner is dead and the pet is roaming, it will die
+                if params.dieWithOwner then
+                    local listenerName = fmt('OWNER_DEATH_{}', petId)
+                    mobArg:addListener('DEATH', listenerName, function(owner)
+                        local petToKill = GetMobByID(petId)
+                        if petToKill and petToKill:isSpawned() then
+                            petToKill:setHP(0)
+                        end
+
+                        owner:removeListener(listenerName)
+                    end)
+                end
+
+                -- make pet assist with a slight delay to allow spawn to complete so animations don't get bugged
+                local ownerID = mobArg:getID()
+                petToSummon:stun(500)
+                if petToSummon ~= mobArg:getPet() then
+                    local persistOnDeath = params.persistOnDeath or false
+                    if persistOnDeath then
+                        petToSummon:addListener('ROAM_TICK', 'ASSIST_OWNER', function(petArg)
+                            local owner = GetMobByID(ownerID)
+                            if not owner then
+                                return
+                            end
+
+                            local newTarget = owner:getTarget() or nil
+                            if newTarget then
+                                petArg:updateEnmity(newTarget)
+                                return
+                            end
+
+                            if owner:isAlive() and not petArg:hasFollowTarget() then
+                                petArg:follow(owner, xi.followType.ROAM)
+                                return
+                            end
+                        end)
+                    else
+                        petToSummon:addListener('ROAM_TICK', 'ASSIST_OWNER', function(petArg)
+                            local owner = GetMobByID(ownerID)
+                            if not owner then
+                                return
+                            end
+
+                            local newTarget = owner:getTarget() or nil
+                            if newTarget then
+                                petArg:updateEnmity(newTarget)
+                                return
+                            end
+
+                            if owner:isDead() then
+                                petArg:setHP(0)
+                                return
+                            end
+
+                            if not petArg:hasFollowTarget() then
+                                petArg:follow(owner, xi.followType.ROAM)
+                                return
+                            end
+                        end)
+                    end
+
+                    -- so we don't wait for the next roam tick (pet assists as soon as :stun is complete)
+                    petToSummon:queue(0, function(petArg)
+                        petArg:triggerListener('ROAM_TICK', petArg)
+                    end)
+                end
+
+                -- cleanup any listeners related to this pet when it dies
+                -- (:removeListener quietly exits if the listener doesn't exist)
+                petToSummon:addListener('DESPAWN', 'PET_LISTENER_CLEANUP', function(petArg)
+                    local owner = GetMobByID(ownerID)
+                    if owner then
+                        owner:removeListener(ownerRoamListenerName)
+                    end
+
+                    petArg:removeListener('ASSIST_OWNER')
+                    petArg:removeListener('PET_LISTENER_CLEANUP')
+                end)
+            end
+        end
+    end
+
+    if params.inactiveTime > 0 then
+        if not params.ignoreInactive then
+            -- put owner into inactive state until the timer fires
+            mob:stun(params.inactiveTime)
+        end
+
+        -- start call pet animation
+        if not params.noAnimation then
+            mob:entityAnimationPacket(xi.animationString.CAST_SUMMONER_START)
+        end
+    end
+
+    -- regardless, call the anonymous function from above in params.inactiveTime ms (possibly zero)
+    -- note that timers cause xi.combat.behavior.isEntityBusy to return true, and so does mob:stun(X)
+    mob:timer(params.inactiveTime, callPetFinish)
+
+    return true
+end

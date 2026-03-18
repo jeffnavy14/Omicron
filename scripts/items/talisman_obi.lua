@@ -6,7 +6,7 @@
 ---@type TItem
 local itemObject = {}
 
-itemObject.onItemCheck = function(target)
+itemObject.onItemCheck = function(target, user)
     if target:getStatusEffectBySource(xi.effect.ENCHANTMENT, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TALISMAN_OBI) ~= nil then
         target:delStatusEffect(xi.effect.ENCHANTMENT, nil, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TALISMAN_OBI)
     end
@@ -14,20 +14,18 @@ itemObject.onItemCheck = function(target)
     return 0
 end
 
-itemObject.onItemUse = function(target)
+itemObject.onItemUse = function(target, user)
     if target:hasEquipped(xi.item.TALISMAN_OBI) then
-        target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 1800, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.TALISMAN_OBI)
+        target:addStatusEffect(xi.effect.ENCHANTMENT, { duration = 1800, origin = user, sourceType = xi.effectSourceType.EQUIPPED_ITEM, sourceTypeParam = xi.item.TALISMAN_OBI })
     end
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.MP, 12)
-    target:addMod(xi.mod.ENMITY, -2)
+    effect:addMod(xi.mod.MP, 12)
+    effect:addMod(xi.mod.ENMITY, -2)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.MP, 12)
-    target:delMod(xi.mod.ENMITY, -2)
 end
 
 return itemObject

@@ -1,13 +1,10 @@
 -----------------------------------
 -- Garrison
 -----------------------------------
-require('scripts/globals/common')
-require('scripts/globals/npc_util')
 require('scripts/globals/garrison_data')
 require('scripts/globals/mobs')
 require('scripts/globals/npc_util')
 require('scripts/globals/pathfind')
-require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
 xi.garrison = xi.garrison or {}
@@ -95,7 +92,7 @@ xi.garrison.addLevelCap = function(entity, definedCap)
     end
 
     -- Note the level restriction does not wear on death.
-    entity:addStatusEffectEx(xi.effect.LEVEL_RESTRICTION, xi.effect.LEVEL_RESTRICTION, cap, 0, 0, 0, 0, 0, xi.effectFlag.ON_ZONE + xi.effectFlag.CONFRONTATION)
+    entity:addStatusEffect(xi.effect.LEVEL_RESTRICTION, { power = cap, origin = entity, flag = xi.effectFlag.ON_ZONE + xi.effectFlag.CONFRONTATION })
 end
 
 -----------------------------------
@@ -106,12 +103,15 @@ xi.garrison.getAllyInfo = function(zoneID, zoneData, nationID)
     -- Get zone garrison data
     local allyName    = xi.garrison.allyNames[zoneData.levelCap][nationID]
     local allyLooks   = xi.garrison.allyLooks[zoneData.levelCap][nationID]
-    local allyGroupId = xi.garrison.allyGroupIds[zoneData.levelCap]
+    local allyGroupId = xi.garrison.allyGroupInfo[zoneData.levelCap][1] -- Defaulted to 1 inside GM_HOME
+    local allyMinLvl  = xi.garrison.allyGroupInfo[zoneData.levelCap][2]
+    local allyMaxLvl  = xi.garrison.allyGroupInfo[zoneData.levelCap][3]
     local pos         = xi.garrison.zoneData[zoneID].pos
 
     if
         allyName == nil or
-        allyGroupId == nil or
+        allyMinLvl == nil or
+        allyMaxLvl == nil or
         allyLooks == nil or
         #allyLooks == 0 or
         pos == nil
@@ -122,10 +122,12 @@ xi.garrison.getAllyInfo = function(zoneID, zoneData, nationID)
     end
 
     return {
-        name    = allyName,
-        looks   = allyLooks,
-        groupId = allyGroupId,
-        pos     = pos,
+        name     = allyName,
+        looks    = allyLooks,
+        groupId  = allyGroupId, -- Defaults to groupID 1. This group ID is defaulted inside GM_HOME
+        minLevel = allyMinLvl,
+        maxLevel = allyMaxLvl,
+        pos      = pos,
     }
 end
 
@@ -163,7 +165,7 @@ xi.garrison.rollNPCs = function(zone, allyInfo, quantity)
 end
 
 -- Spawns and npc for the given zone and with the given name, look, pose. Uses dynamic entities
-xi.garrison.spawnNPC = function(zone, zoneData, pos, name, groupId, look)
+xi.garrison.spawnNPC = function(zone, zoneData, pos, name, groupId, look, minLevel, maxLevel)
     local mob = zone:insertDynamicEntity({
         objtype               = xi.objType.MOB,
         allegiance            = xi.allegiance.PLAYER,
@@ -174,6 +176,8 @@ xi.garrison.spawnNPC = function(zone, zoneData, pos, name, groupId, look)
         rotation              = pos[4],
         look                  = look,
         groupId               = groupId,
+        minLevel              = minLevel,
+        maxLevel              = maxLevel,
         groupZoneId           = xi.zone.GM_HOME,
         releaseIdOnDisappear  = true,
         specialSpawnAnimation = true,
@@ -230,7 +234,7 @@ xi.garrison.spawnNPCs = function(zone, zoneData)
     end
 
     for _, npcData in pairs(npcs) do
-        local mob = xi.garrison.spawnNPC(zone, zoneData, npcData.pos, npcData.name, allyInfo.groupId, npcData.look)
+        local mob = xi.garrison.spawnNPC(zone, zoneData, npcData.pos, npcData.name, allyInfo.groupId, npcData.look, allyInfo.minLevel, allyInfo.maxLevel)
         -- Note: This does change the mob level because ally npcs are of type mob, and
         -- level_restriction is only applied to PCs. However, we need the status to validate that the
         -- npcs are part of the garrison.
@@ -325,31 +329,16 @@ end
 
 -- Distributes loot amongst all players
 xi.garrison.handleLootRolls = function(levelCap, players)
-    local lootTable = xi.garrison.loot[levelCap]
-    local max       = 0
+    local lootGroup = xi.garrison.loot[levelCap]
+    local firstPlayer = players[1]
 
-    for _, entry in ipairs(lootTable) do
-        max = max + entry.droprate
-    end
-
-    local roll = math.random(max)
-
-    for _, entry in pairs(lootTable) do
-        max = max - entry.droprate
-
-        if roll > max then
-            if entry.itemid ~= 0 then
-                for _, player in ipairs(players) do
-                    if player ~= nil then
-                        player:addTreasure(entry.itemid)
-
-                        return
-                    end
-                end
-            end
-
-            break
-        end
+    -- completion of garrison gives a random item from the pool per player
+    lootGroup.quantity = #players
+    local lootTable = { lootGroup }
+    local selectedLoot = utils.selectFromLootGroups(firstPlayer, lootTable)
+    for _, entry in ipairs(selectedLoot) do
+        -- garrison completion loot has no gil
+        firstPlayer:addTreasure(entry.itemId) -- nil npc parameter for addTreasure gives no message, on purpose
     end
 end
 
@@ -700,7 +689,7 @@ xi.garrison.validateEntry = function(zoneData, player, npc, guardNation)
     end
 
     local membersLevelRestricted = utils.any(membersInZone, function(_, v)
-        return v:isLevelSync()
+        return v:hasStatusEffect(xi.effect.LEVEL_RESTRICTION) or v:hasStatusEffect(xi.effect.LEVEL_SYNC)
     end)
 
     if membersLevelRestricted then
@@ -869,9 +858,8 @@ xi.garrison.start = function(player, npc)
     -- Adds level cap / registers lockout for the player / zone
     for _, member in pairs(player:getAlliance()) do
         if member:getZoneID() == player:getZoneID() then
-            xi.garrison.addLevelCap(member, zoneData.levelCap)
-
             table.insert(zoneData.players, member:getID())
+            xi.garrison.addLevelCap(member, zoneData.levelCap)
         end
     end
 
@@ -890,7 +878,10 @@ xi.garrison.stop = function(zone)
     -- Save lockout based off of garrison end time.
     saveZoneLockout(zone)
 
-    for _, entityId in pairs(zoneData.players or {}) do
+    local playerIDs  = { unpack(zoneData.players) } -- make a copy
+    zoneData.players = {} -- players table must be empty before level restriction status wears off for latent effects
+
+    for _, entityId in pairs(playerIDs or {}) do
         local entity = GetPlayerByID(entityId)
 
         if entity ~= nil then
@@ -906,7 +897,6 @@ xi.garrison.stop = function(zone)
         DespawnMob(entityId, zone)
     end
 
-    zoneData.players       = {}
     zoneData.spawnSchedule = {}
     zoneData.npcs          = {}
     zoneData.mobs          = {}
@@ -916,4 +906,19 @@ end
 xi.garrison.win = function(zone)
     local zoneData = xi.garrison.zoneData[zone:getID()]
     zoneData.state = xi.garrison.state.GRANT_LOOT
+end
+
+xi.garrison.isInGarrison = function(player)
+    local zoneID = player:getZoneID()
+    if not zoneID then
+        return false
+    end
+
+    local zoneData = xi.garrison.zoneData[zoneID]
+    if not zoneData then
+        return false
+    end
+
+    local players = zoneData.players or {}
+    return utils.contains(player:getID(), players)
 end

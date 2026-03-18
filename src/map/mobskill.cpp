@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -20,6 +20,11 @@
 */
 
 #include "mobskill.h"
+
+#include "entities/mobentity.h"
+#include "enums/action/animation.h"
+#include "enums/action/knockback.h"
+
 #include <cstring>
 
 CMobSkill::CMobSkill(uint16 id)
@@ -35,11 +40,11 @@ CMobSkill::CMobSkill(uint16 id)
 , m_ValidTarget(0)
 , m_AnimationTime(0s)
 , m_ActivationTime(0s)
-, m_Message(0)
+, m_Message(MsgBasic::None)
 , m_TP(0)
 , m_HP(0)
 , m_HPP(0)
-, m_knockback(0)
+, m_knockback(Knockback::None)
 , m_primarySkillchain(0)
 , m_secondarySkillchain(0)
 , m_tertiarySkillchain(0)
@@ -48,7 +53,12 @@ CMobSkill::CMobSkill(uint16 id)
 
 bool CMobSkill::hasMissMsg() const
 {
-    return m_Message == 158 || m_Message == 188 || m_Message == 31 || m_Message == 30;
+    return m_Message == MsgBasic::AbilityMisses ||
+           m_Message == MsgBasic::UsesSkillMisses ||
+           m_Message == MsgBasic::UsesSkillNoEffect ||
+           m_Message == MsgBasic::ShadowAbsorb ||
+           m_Message == MsgBasic::TargetAnticipates ||
+           m_Message == MsgBasic::RangedAttackMiss;
 }
 
 bool CMobSkill::isAoE() const
@@ -99,7 +109,7 @@ void CMobSkill::setID(uint16 id)
     m_ID = id;
 }
 
-void CMobSkill::setMsg(uint16 msg)
+void CMobSkill::setMsg(MsgBasic msg)
 {
     m_Message = msg;
 }
@@ -149,7 +159,7 @@ void CMobSkill::setDistance(float distance)
     m_Distance = distance;
 }
 
-void CMobSkill::setFlag(uint8 flag)
+void CMobSkill::setFlag(uint16 flag)
 {
     m_Flag = flag;
 }
@@ -191,9 +201,9 @@ uint16 CMobSkill::getID() const
     return m_ID;
 }
 
-uint16 CMobSkill::getAnimationID() const
+auto CMobSkill::getAnimationID() const -> ActionAnimation
 {
-    return m_AnimID;
+    return static_cast<ActionAnimation>(m_AnimID);
 }
 
 int16 CMobSkill::getTP() const
@@ -228,7 +238,17 @@ uint32 CMobSkill::getPrimaryTargetID() const
     return m_primaryTargetID;
 }
 
-uint16 CMobSkill::getMsg() const
+void CMobSkill::setFinalAnimationSub(uint8 newAnimationSub)
+{
+    m_FinalAnimationSub = newAnimationSub;
+}
+
+std::optional<uint8> CMobSkill::getFinalAnimationSub()
+{
+    return m_FinalAnimationSub;
+}
+
+auto CMobSkill::getMsg() const -> MsgBasic
 {
     return m_Message;
 }
@@ -238,50 +258,7 @@ uint16 CMobSkill::getMsgForAction() const
     return getID();
 }
 
-uint16 CMobSkill::getAoEMsg() const
-{
-    switch (m_Message)
-    {
-        case 185:
-            return 264;
-        case 186:
-            return 266;
-        case 187:
-            return 281;
-        case 188:
-            return 282;
-        case 189:
-            return 283;
-        case 225:
-            return 366;
-        case 226:
-            return 226; // no message for this... I guess there is no aoe TP drain move
-        case 103:       // recover hp
-        case 102:       // recover hp
-        case 238:       // recover hp
-        case 306:       // recover hp
-        case 318:       // recover hp
-            return 24;
-        case 242:
-            return 277;
-        case 243:
-            return 278;
-        case 284:
-            return 284; // already the aoe message
-        case 370:
-            return 404;
-        case 362:
-            return 363;
-        case 378:
-            return 343;
-        case 224: // recovers mp
-            return 276;
-        default:
-            return m_Message;
-    }
-}
-
-uint8 CMobSkill::getFlag() const
+auto CMobSkill::getFlag() const -> uint16
 {
     return m_Flag;
 }
@@ -319,14 +296,20 @@ int16 CMobSkill::getParam() const
     return m_Param;
 }
 
-uint8 CMobSkill::getKnockback() const
+auto CMobSkill::getKnockback() const -> Knockback
 {
     return m_knockback;
 }
 
 bool CMobSkill::isDamageMsg() const
 {
-    return m_Message == 110 || m_Message == 185 || m_Message == 197 || m_Message == 264 || m_Message == 187 || m_Message == 225 || m_Message == 226;
+    return m_Message == MsgBasic::UsesAbilityTakesDamage ||
+           m_Message == MsgBasic::UsesSkillTakesDamage ||
+           m_Message == MsgBasic::UsesSkillHPDrained ||
+           m_Message == MsgBasic::UsesAbilityResistsDamage ||
+           m_Message == MsgBasic::UsesSkillMPDrained ||
+           m_Message == MsgBasic::UsesSkillTPDrained ||
+           m_Message == MsgBasic::TargetTakesDamage;
 }
 
 void CMobSkill::setParam(int16 value)
@@ -334,7 +317,7 @@ void CMobSkill::setParam(int16 value)
     m_Param = value;
 }
 
-void CMobSkill::setKnockback(uint8 knockback)
+void CMobSkill::setKnockback(const Knockback knockback)
 {
     m_knockback = knockback;
 }
@@ -382,4 +365,24 @@ void CMobSkill::setSecondarySkillchain(uint8 skillchain)
 void CMobSkill::setTertiarySkillchain(uint8 skillchain)
 {
     m_tertiarySkillchain = skillchain;
+}
+
+auto CMobSkill::getAttackType() const -> ATTACK_TYPE
+{
+    return m_attackType;
+}
+
+void CMobSkill::setAttackType(const ATTACK_TYPE attackType)
+{
+    m_attackType = attackType;
+}
+
+auto CMobSkill::isCritical() const -> bool
+{
+    return m_isCritical;
+}
+
+void CMobSkill::setCritical(const bool isCritical)
+{
+    m_isCritical = isCritical;
 }

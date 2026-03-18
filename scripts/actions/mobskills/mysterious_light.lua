@@ -1,7 +1,7 @@
 -----------------------------------
---  Mysterious Light
---  Description: Deals wind damage to enemies within range. Additional effect: Weight.
---  Type: Magical (Wind)
+-- Mysterious Light
+-- Family: Magic Pots
+-- Description: Deals Wind damage to enemies within range. Additional Effect: Weight
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,16 +10,25 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local damage = math.floor(mob:getWeaponDmg() * 3.5)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    damage = xi.mobskills.mobMagicalMove(mob, target, skill, damage, xi.element.WIND, 1, xi.mobskills.magicalTpBonus.NO_EFFECT)
-    damage = xi.mobskills.mobFinalAdjustments(damage, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.WIND, xi.mobskills.shadowBehavior.WIPE_SHADOWS)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 2.5, 2.5, 2.5 } -- TODO: Jimmayus spreadsheet says the scales with TP. Need captures.
+    params.element        = xi.element.WIND
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.WIND
+    params.shadowBehavior = xi.mobskills.shadowBehavior.WIPE_SHADOWS
 
-    target:takeDamage(damage, mob, xi.attackType.MAGICAL, xi.damageType.WIND)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.WEIGHT, 50, 0, 60)
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
 
-    return damage
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.WEIGHT, 75, 0, 120)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

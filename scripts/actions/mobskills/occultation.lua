@@ -11,10 +11,14 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local base = math.random(10, 25)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local base = 10
 
-    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.BLINK, base, 0, 120))
+    if mob:isNM() then
+        base = math.random(10, 25)
+    end
+
+    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.COPY_IMAGE, 1, 0, 300, 0, base))
     return xi.effect.BLINK
 end
 

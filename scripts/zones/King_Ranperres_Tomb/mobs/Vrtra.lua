@@ -5,6 +5,24 @@
 ---@type TMobEntity
 local entity = {}
 
+local ID = zones[xi.zone.KING_RANPERRES_TOMB]
+
+local pets =
+{
+    ID.mob.VRTRA + 1,
+    ID.mob.VRTRA + 2,
+    ID.mob.VRTRA + 3,
+    ID.mob.VRTRA + 4,
+    ID.mob.VRTRA + 5,
+    ID.mob.VRTRA + 6,
+}
+
+local callPetParams =
+{
+    inactiveTime = 3000,
+    maxSpawns = 1,
+}
+
 entity.spawnPoints =
 {
     { x = 228.000, y = 7.134, z = -311.000 },
@@ -59,29 +77,18 @@ entity.spawnPoints =
     { x = 213.200, y = 8.350, z = -316.937 },
 }
 
-local spawnUndead = function(vrtra, undead, vrtraPos)
-    vrtra:entityAnimationPacket(xi.animationString.CAST_SUMMONER_START)
-    vrtra:setAutoAttackEnabled(false)
-    vrtra:setMagicCastingEnabled(false)
-    vrtra:setMobAbilityEnabled(false)
-    vrtra:setMobMod(xi.mobMod.NO_MOVE, 1)
-    vrtra:timer(3000, function(vrtraArg)
-        vrtraArg:entityAnimationPacket(xi.animationString.CAST_SUMMONER_STOP)
-        vrtraArg:setAutoAttackEnabled(true)
-        vrtraArg:setMagicCastingEnabled(true)
-        vrtraArg:setMobAbilityEnabled(true)
-        vrtraArg:setMobMod(xi.mobMod.NO_MOVE, 0)
-        undead:setSpawn(vrtraPos.x, vrtraPos.y, vrtraPos.z, vrtraPos.rot)
-        undead:spawn()
-        if vrtraArg:isEngaged() then
-            undead:updateEnmity(vrtraArg:getTarget())
-        end
-    end)
-end
-
 entity.onMobInitialize = function(mob)
-    mob:setCarefulPathing(true)
     xi.mob.updateNMSpawnPoint(mob)
+
+    mob:addImmunity(xi.immunity.BIND)
+    mob:addImmunity(xi.immunity.BLIND)
+    mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:addImmunity(xi.immunity.PLAGUE)
+    mob:addImmunity(xi.immunity.PETRIFY)
+    mob:addImmunity(xi.immunity.TERROR)
+    mob:setMobMod(xi.mobMod.AOE_HIT_ALL, 1)
+
+    mob:setCarefulPathing(true)
     mob:setRespawnTime(math.random(144, 240) * 1800) -- 3 to 5 days in 30 minute windows
 end
 
@@ -104,12 +111,6 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.ROAM_DISTANCE, 5)
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 30)
     mob:setMobMod(xi.mobMod.WEAPON_BONUS, 148) -- 245 total weapon damage
-    mob:addImmunity(xi.immunity.BIND)
-    mob:addImmunity(xi.immunity.BLIND)
-    mob:addImmunity(xi.immunity.DARK_SLEEP)
-    mob:addImmunity(xi.immunity.PLAGUE)
-    mob:addImmunity(xi.immunity.PETRIFY)
-    mob:addImmunity(xi.immunity.TERROR)
 end
 
 entity.onMobRoam = function(mob)
@@ -144,29 +145,14 @@ entity.onMobFight = function(mob, target)
         mob:useMobAbility(710)
         mob:setLocalVar('skill_tp', mob:getTP()) -- 2 hr shouldn't wipe TP
         mob:setLocalVar('twohourTime', fifteenBlock + math.random(4, 6))
-    elseif fifteenBlock > spawnTime then
-        local mobId     = mob:getID()
-        local chosenPet = utils.shuffle({ 1, 2, 3, 4, 5, 6 })
 
-        for _, offset in ipairs(chosenPet) do
-            local pet = GetMobByID(mobId + offset)
-
-            if pet and not pet:isSpawned() then
-                spawnUndead(mob, pet, mob:getPos())
-                break
-            end
-        end
-
+        -- call the first pet that is not spawned, will wait for actions to finish
+    elseif
+        fifteenBlock > spawnTime and
+        xi.mob.callPets(mob, utils.shuffle(pets), callPetParams)
+    then
         spawnTime = math.random(3, 5)
         mob:setLocalVar('spawnTime', fifteenBlock + spawnTime)
-    end
-
-    -- Keep pets linked
-    for i = 1, 6 do
-        local pet = GetMobByID(mob:getID() + i)
-        if pet and pet:getCurrentAction() == xi.act.ROAMING then
-            pet:updateEnmity(target)
-        end
     end
 
     -- Vrtra draws in if you attempt to leave the room
@@ -187,7 +173,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     -- Don't lose TP from charm 2hr
     if skill:getID() == 710 then
         mob:addTP(mob:getLocalVar('skill_tp'))
@@ -196,18 +182,29 @@ entity.onMobWeaponSkill = function(target, mob, skill)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.ENDARK, { power = math.random(55, 90), chance = 25 })
+    local pTable =
+    {
+        chance         = 25,
+        attackType     = xi.attackType.MAGICAL,
+        magicalElement = xi.element.DARK,
+        basePower      = math.floor(damage / 2),
+        actorStat      = xi.mod.INT,
+    }
+
+    return xi.combat.action.executeAddEffectDamage(mob, target, pTable)
 end
 
 entity.onMobDisengage = function(mob)
     -- Despawn undead on disgengage
-    for i = 1, 6 do
-        DespawnMob(mob:getID() + i)
+    for _, petId in ipairs(pets) do
+        DespawnMob(petId)
     end
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:addTitle(xi.title.VRTRA_VANQUISHER)
+    if player then
+        player:addTitle(xi.title.VRTRA_VANQUISHER)
+    end
 end
 
 entity.onMobDespawn = function(mob)

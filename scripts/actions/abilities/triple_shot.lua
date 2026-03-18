@@ -13,7 +13,9 @@ abilityObject.onAbilityCheck = function(player, target, ability)
 end
 
 abilityObject.onUseAbility = function(player, target, ability)
-    player:addStatusEffect(xi.effect.TRIPLE_SHOT, 40, 0, 90)
+    player:addStatusEffect(xi.effect.TRIPLE_SHOT, { power = 40, duration = 90, origin = player })
+
+    return xi.effect.TRIPLE_SHOT
 end
 
 return abilityObject

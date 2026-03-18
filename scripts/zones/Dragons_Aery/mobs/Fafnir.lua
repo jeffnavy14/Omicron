@@ -68,6 +68,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.NO_MOVE, 0)
     mob:setMobMod(xi.mobMod.WEAPON_BONUS, 48) -- 140 total weapon damage
     mob:setMod(xi.mod.ATT, 435)
+    mob:setMod(xi.mod.REGEN, 20) -- 1% every 90s
 
     -- Despawn the ???
     GetNPCByID(ID.npc.FAFNIR_QM):setStatus(xi.status.DISAPPEAR)
@@ -97,7 +98,9 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:addTitle(xi.title.FAFNIR_SLAYER)
+    if player then
+        player:addTitle(xi.title.FAFNIR_SLAYER)
+    end
 end
 
 entity.onMobDespawn = function(mob)

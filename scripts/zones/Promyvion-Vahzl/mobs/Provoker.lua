@@ -5,45 +5,62 @@
 ---@type TMobEntity
 local entity = {}
 
+local eleAbsorbActionID   = { 603, 604, 624, 404, 625, 626, 627, 307 }
+local eleAbsorbAnimations = { 432, 433, 434, 435, 436, 437, 438, 439 }
+
 entity.onMobInitialize = function(mob)
     mob:addMod(xi.mod.ACC, 50)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
 end
 
+entity.onMobSpawn = function(mob)
+    -- Pick a random element to absorb after engaging
+    local currentAbsorb = math.random(xi.element.FIRE, xi.element.DARK)
+
+    mob:setLocalVar('currentAbsorb', currentAbsorb)
+    mob:setLocalVar('element', currentAbsorb)
+    mob:setMod(xi.data.element.getElementalAbsorptionModifier(currentAbsorb), 100)
+    mob:setMod(xi.mod.DOUBLE_ATTACK, 35)
+end
+
+entity.onMobEngage = function(mob, target)
+    mob:setLocalVar('elementAbsorb', GetSystemTime() + math.random(30, 40))
+end
+
 entity.onMobFight = function(mob, target)
-    local changeTime = mob:getLocalVar('changeTime')
-    local element    = mob:getLocalVar('element')
+    if GetSystemTime() > mob:getLocalVar('elementAbsorb') then
 
-    if changeTime == 0 then
-        mob:setLocalVar('changeTime', math.random(2, 3) * 15)
-        return
-    end
+        local previousAbsorb = mob:getLocalVar('currentAbsorb')
+        mob:setLocalVar('elementAbsorb', GetSystemTime() + math.random(30, 40))
 
-    if mob:getBattleTime() >= changeTime then
-        local newElement = element
-        while newElement == element do
-            newElement = math.random(xi.element.FIRE, xi.element.DARK)
+        -- remove previous absorb mod, if set
+        if previousAbsorb > 0 then
+            mob:setMod(xi.data.element.getElementalAbsorptionModifier(previousAbsorb), 0)
         end
 
-        if element ~= 0 then
-            mob:delMod(xi.combat.element.getElementalAbsorptionModifier(element), 100)
-        end
+        -- add new absorb mod
+        local currentAbsorb = math.random(xi.element.FIRE, xi.element.DARK)
+        mob:setLocalVar('currentAbsorb', currentAbsorb)
+        mob:setLocalVar('element', currentAbsorb)
+        mob:setMod(xi.data.element.getElementalAbsorptionModifier(currentAbsorb), 100)
 
-        mob:useMobAbility(624)
-        mob:addMod(xi.combat.element.getElementalAbsorptionModifier(newElement), 100)
-        mob:setLocalVar('changeTime', mob:getBattleTime() + math.random(2, 3) * 15)
-        mob:setLocalVar('element', newElement)
+        -- Inject 2hr animation based on element
+        mob:injectActionPacket(mob:getID(), 11, eleAbsorbAnimations[currentAbsorb], 0x18, 0, 0, eleAbsorbActionID[currentAbsorb], 0)
     end
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    local element = mob:getLocalVar('element')
-    if element > 0 then
-        return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.ENFIRE + element - 1, { chance = 1000 })
-    else
-        return 0, 0, 0 -- Just in case its somehow not got a variable set
-    end
+    local pTable =
+    {
+        chance         = 100,
+        attackType     = xi.attackType.MAGICAL,
+        magicalElement = mob:getLocalVar('element'),
+        basePower      = damage / 2,
+        actorStat      = xi.mod.INT,
+    }
+
+    return xi.combat.action.executeAddEffectDamage(mob, target, pTable)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

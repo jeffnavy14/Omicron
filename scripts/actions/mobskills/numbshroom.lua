@@ -9,20 +9,21 @@
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getMobMod(xi.mobMod.VAR) == 1 then
+    if mob:getAnimationSub() == 1 then
         return 0
     end
 
     return 1
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    mob:setMobMod(xi.mobMod.VAR, 2)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    skill:setFinalAnimationSub(2)
     local numhits = 1
-    local accmod = 1
-    local ftp    = 1.5
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, xi.mobskills.physicalTpBonus.NO_EFFECT, 0, 0, 0)
-    local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, info.hitslanded)
+    local accmod  = 1
+    local ftp     = 1.5
+    local params  = { canCrit = true }
+    local info    = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, xi.mobskills.physicalTpBonus.NO_EFFECT, 0, 0, 0, params)
+    local dmg = xi.mobskills.mobFinalAdjustments(info, mob, skill, target, xi.attackType.PHYSICAL, xi.damageType.PIERCING, info.hitslanded)
 
     xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.PARALYSIS, 25, 0, 180)
 

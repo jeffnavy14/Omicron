@@ -1,3 +1,4 @@
+add_subdirectory(action)
 add_subdirectory(ai)
 add_subdirectory(entities)
 add_subdirectory(enums)
@@ -5,7 +6,6 @@ add_subdirectory(items)
 add_subdirectory(los)
 add_subdirectory(lua)
 add_subdirectory(packets)
-add_subdirectory(packets/c2s)
 add_subdirectory(utils)
 
 set(APP_SOURCES
@@ -14,6 +14,7 @@ set(APP_SOURCES
 
 set(SOURCES
     ${COMMON_SOURCES}
+    ${ACTION_SOURCES}
     ${AI_SOURCES}
     ${ENTITY_SOURCES}
     ${ENUMS_SOURCES}
@@ -21,7 +22,6 @@ set(SOURCES
     ${LOS_SOURCES}
     ${LUA_SOURCES}
     ${PACKET_SOURCES}
-    ${PACKET_C2S_SOURCES}
     ${UTIL_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ability.h
@@ -64,6 +64,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/event_info.h
     ${CMAKE_CURRENT_SOURCE_DIR}/fishingcontest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/fishingcontest.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/gmcall_container.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gmcall_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/grades.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/grades.h
     ${CMAKE_CURRENT_SOURCE_DIR}/guild.cpp
@@ -74,6 +76,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/instance.h
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_client.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/inventory_sync_state.h
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/item_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/items.h
@@ -134,6 +138,10 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect_container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_handler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_handler.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_slot.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/spawn_slot.h
     ${CMAKE_CURRENT_SOURCE_DIR}/time_server.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/time_server.h
     ${CMAKE_CURRENT_SOURCE_DIR}/timetriggers.cpp

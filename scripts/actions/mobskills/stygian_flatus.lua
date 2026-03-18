@@ -12,8 +12,14 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PARALYSIS, 30, 0, 120))
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local typeEffect = xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PARALYSIS, 20, 0, 90)
+
+    if typeEffect == nil then
+        typeEffect = xi.msg.basic.SKILL_NO_EFFECT
+    end
+
+    skill:setMsg(typeEffect)
 
     return xi.effect.PARALYSIS
 end

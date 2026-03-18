@@ -12,8 +12,8 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    skill:setMsg(xi.mobskills.mobGazeMove(mob, target, xi.effect.PARALYSIS, 25, 0, 120))
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    skill:setMsg(xi.mobskills.mobGazeMove(mob, target, xi.effect.PARALYSIS, 60, 0, 120))
 
     return xi.effect.PARALYSIS
 end

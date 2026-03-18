@@ -1,7 +1,6 @@
 -- Uses a mixture of mob and player WS formulas
 require('scripts/globals/weaponskills')
 require('scripts/globals/magicburst')
-require('scripts/globals/utils')
 require('scripts/globals/magic')
 
 -- TODO: Consolidate this with weaponskills
@@ -44,13 +43,14 @@ xi.autows.doAutoPhysicalWeaponskill = function(attacker, target, wsID, tp, prima
     calcParams.extraOffhandHit = false
     calcParams.hybridHit = false
     calcParams.flourishEffect = false
+    calcParams.criticalHit = false
     calcParams.alpha = 1
     calcParams.bonusWSmods = math.max(attacker:getMainLvl() - target:getMainLvl(), 0)
     calcParams.bonusTP = wsParams.bonusTP or 0
     calcParams.bonusfTP = flameHolderFTP or 0
     calcParams.bonusAcc = 0 + attacker:getMod(xi.mod.WSACC)
-    calcParams.firstHitRate = xi.weaponskills.getHitRate(attacker, target, calcParams.bonusAcc + 100) -- TODO: do automatons get first hit acc bonus?
-    calcParams.hitRate      = xi.weaponskills.getHitRate(attacker, target, calcParams.bonusAcc)
+    calcParams.firstHitRate = xi.combat.physicalHitRate.getPhysicalHitRate(attacker, target, calcParams.bonusAcc + 100, xi.attackAnimation.RIGHT_ATTACK, true) -- TODO: do automatons get first hit acc bonus?
+    calcParams.hitRate      = xi.combat.physicalHitRate.getPhysicalHitRate(attacker, target, calcParams.bonusAcc, xi.attackAnimation.RIGHT_ATTACK, true)
     calcParams.skillType = attack.weaponType
     calcParams.tpUsed = tp
 
@@ -86,6 +86,9 @@ xi.autows.doAutoPhysicalWeaponskill = function(attacker, target, wsID, tp, prima
     else
         skill:setMsg(xi.msg.basic.SKILL_MISS)
     end
+
+    skill:setAttackType(xi.attackType.PHYSICAL)
+    skill:setCritical(calcParams.criticalHit)
 
     return finaldmg, calcParams.criticalHit, calcParams.tpHitsLanded, calcParams.extraHitsLanded, calcParams.shadowsAbsorbed
 end
@@ -124,6 +127,7 @@ xi.autows.doAutoRangedWeaponskill = function(attacker, target, wsID, wsParams, t
         forcedFirstCrit = false,
         extraOffhandHit = false,
         flourishEffect = false,
+        criticalHit = false,
         alpha = 1,
         bonusWSmods = math.max(attacker:getMainLvl() - target:getMainLvl(), 0),
         bonusTP = wsParams.bonusTP or 0,
@@ -131,7 +135,7 @@ xi.autows.doAutoRangedWeaponskill = function(attacker, target, wsID, wsParams, t
         bonusAcc = 0 + attacker:getMod(xi.mod.WSACC),
         tpUsed = tp,
     }
-    calcParams.hitRate = xi.weaponskills.getRangedHitRate(attacker, target, calcParams.bonusAcc)
+    calcParams.hitRate = xi.weaponskills.getRangedHitRate(attacker, target, calcParams.bonusAcc) -- TODO: do automatons get ranged hit rate bonuses?
     calcParams.skillType = attack.weaponType
 
     -- Send our params off to calculate our raw WS damage, hits landed, and shadows absorbed
@@ -150,6 +154,9 @@ xi.autows.doAutoRangedWeaponskill = function(attacker, target, wsID, wsParams, t
     else
         skill:setMsg(xi.msg.basic.SKILL_MISS)
     end
+
+    skill:setAttackType(xi.attackType.RANGED)
+    skill:setCritical(calcParams.criticalHit)
 
     return finaldmg, calcParams.criticalHit, calcParams.tpHitsLanded, calcParams.extraHitsLanded, calcParams.shadowsAbsorbed
 end

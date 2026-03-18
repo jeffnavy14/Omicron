@@ -18,7 +18,7 @@ entity.onMobInitialize = function(mob)
     mob:setRespawnTime(math.random(3600, 4200)) -- When server restarts, reset timer
 
     mob:setMobMod(xi.mobMod.AUTO_SPIKES, 1)
-    mob:addStatusEffect(xi.effect.ICE_SPIKES, 50, 0, 0)
+    mob:addStatusEffect(xi.effect.ICE_SPIKES, { power = 50, origin = mob })
     mob:getStatusEffect(xi.effect.ICE_SPIKES):setEffectFlags(xi.effectFlag.DEATH)
 end
 
@@ -34,7 +34,8 @@ entity.onSpikesDamage = function(mob, target, damage)
     params.includemab = false
     dmg = addBonusesAbility(mob, xi.element.ICE, target, dmg, params)
     dmg = dmg * applyResistanceAddEffect(mob, target, xi.element.ICE, 0)
-    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, xi.element.ICE)
+    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.ICE, true))
+    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.ICE, true, false))
     dmg = finalMagicNonSpellAdjustments(mob, target, xi.element.ICE, dmg)
 
     if dmg < 0 then

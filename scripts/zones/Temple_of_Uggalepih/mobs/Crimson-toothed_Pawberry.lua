@@ -12,36 +12,23 @@ mixins =
 local entity = {}
 
 entity.onMobInitialize = function(mob)
+    mob:addImmunity(xi.immunity.SILENCE)
+    mob:addImmunity(xi.immunity.LIGHT_SLEEP)
+    mob:addImmunity(xi.immunity.DARK_SLEEP)
+    mob:addImmunity(xi.immunity.TERROR)
+    mob:addImmunity(xi.immunity.PETRIFY)
+
+    xi.pet.setMobPet(mob, 1, 'Tonberrys_Elemental')
+
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 300)
+
+    mob:setMobMod(xi.mobMod.GIL_MIN, 18000)
+    mob:setMobMod(xi.mobMod.GIL_MAX, 18000)
 end
 
 entity.onMobSpawn = function(mob)
-    local mobID = mob:getID()
-    local avatarID = mobID + 2
-    local avatarMob = GetMobByID(avatarID)
-    if avatarMob then
-        -- Remove the original listener set from mixins/families/avatar
-        avatarMob:removeListener('AVATAR_SPAWN')
-
-        -- Replace with a similar listener which is hardcoded to use Carbuncle
-        avatarMob:addListener('SPAWN', 'AVATAR_SPAWN', function(mobArg)
-            local modelId = 791 -- Carbuncle
-            mobArg:setModelId(modelId)
-            mobArg:hideName(false)
-            mobArg:setUntargetable(true)
-            mobArg:setUnkillable(true)
-            mobArg:setAutoAttackEnabled(false)
-            mobArg:setMagicCastingEnabled(false)
-
-            -- If something goes wrong, the avatar will clean itself up in 5s
-            mobArg:timer(5000, function(mobTimerArg)
-                if mobTimerArg:isAlive() then
-                    mobTimerArg:setUnkillable(false)
-                    mobTimerArg:setHP(0)
-                end
-            end)
-        end)
-    end
+    mob:useMobAbility(xi.jsa.ASTRAL_FLOW)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
 end
 
 entity.onMobDeath = function(mob, player, optParams)

@@ -83,9 +83,9 @@ public:
     CBasicPacket& operator=(const CBasicPacket& other)     = delete;
     CBasicPacket& operator=(CBasicPacket&& other) noexcept = delete;
 
-    auto copy() -> std::unique_ptr<std::remove_pointer_t<decltype(this)>>
+    virtual auto copy() const -> std::unique_ptr<CBasicPacket>
     {
-        return std::make_unique<std::remove_pointer_t<decltype(this)>>(*this);
+        return std::make_unique<CBasicPacket>(*this);
     }
 
     auto getType() -> uint16
@@ -104,7 +104,7 @@ public:
     }
 
     // Set the first 9 bits to the ID. The highest bit overflows into the second byte.
-    void setType(uint16 id)
+    void setType(const uint16 id)
     {
         ref<uint16>(0) &= ~0x1FF;
         ref<uint16>(0) |= id & 0x1FF;
@@ -112,7 +112,7 @@ public:
 
     // The length "byte" is actually just the highest 7 bits.
     // Need to preserve the lowest bit for the ID.
-    void setSize(std::size_t size)
+    void setSize(const std::size_t size)
     {
         ref<uint8>(1) &= 1;
         ref<uint8>(1) |= ((size + 3) & ~3) / 2;

@@ -22,8 +22,10 @@
 #include "0x096_combine_ask.h"
 
 #include "entities/charentity.h"
+#include "enums/msg_std.h"
 #include "items.h"
-#include "packets/trade_action.h"
+#include "packets/s2c/0x022_item_trade_res.h"
+#include "packets/s2c/0x029_battle_message.h"
 #include "trade_container.h"
 #include "universal_container.h"
 #include "utils/jailutils.h"
@@ -31,40 +33,42 @@
 
 namespace
 {
-    const std::set validCrystals = {
-        FIRE_CRYSTAL,
-        ICE_CRYSTAL,
-        WIND_CRYSTAL,
-        EARTH_CRYSTAL,
-        LIGHTNING_CRYSTAL,
-        WATER_CRYSTAL,
-        LIGHT_CRYSTAL,
-        DARK_CRYSTAL,
-        DARK_CLUSTER,
-        INFERNO_CRYSTAL,
-        GLACIER_CRYSTAL,
-        CYCLONE_CRYSTAL,
-        TERRA_CRYSTAL,
-        PLASMA_CRYSTAL,
-        TORRENT_CRYSTAL,
-        AURORA_CRYSTAL,
-        TWILIGHT_CRYSTAL,
-        PYRE_CRYSTAL,
-        FROST_CRYSTAL,
-        VORTEX_CRYSTAL,
-        GEO_CRYSTAL,
-        BOLT_CRYSTAL,
-        FLUID_CRYSTAL,
-        GLIMMER_CRYSTAL,
-        SHADOW_CRYSTAL,
-    };
+
+const std::set validCrystals = {
+    FIRE_CRYSTAL,
+    ICE_CRYSTAL,
+    WIND_CRYSTAL,
+    EARTH_CRYSTAL,
+    LIGHTNING_CRYSTAL,
+    WATER_CRYSTAL,
+    LIGHT_CRYSTAL,
+    DARK_CRYSTAL,
+    DARK_CLUSTER,
+    INFERNO_CRYSTAL,
+    GLACIER_CRYSTAL,
+    CYCLONE_CRYSTAL,
+    TERRA_CRYSTAL,
+    PLASMA_CRYSTAL,
+    TORRENT_CRYSTAL,
+    AURORA_CRYSTAL,
+    TWILIGHT_CRYSTAL,
+    PYRE_CRYSTAL,
+    FROST_CRYSTAL,
+    VORTEX_CRYSTAL,
+    GEO_CRYSTAL,
+    BOLT_CRYSTAL,
+    FLUID_CRYSTAL,
+    GLIMMER_CRYSTAL,
+    SHADOW_CRYSTAL,
+};
+
 }
 
 auto GP_CLI_COMMAND_COMBINE_ASK::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .oneOf("Crystal", static_cast<ITEMID>(Crystal), validCrystals)
-        .range("Items", Items, 1, 8)
+        .oneOf("Crystal", static_cast<ITEMID>(this->Crystal), validCrystals)
+        .range("Items", this->Items, 1, 8)
         .isNotMonstrosity(PChar)
         .isNotPreventedAction(PChar)
         .isNormalStatus(PChar)
@@ -76,7 +80,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     if (jailutils::InPrison(PChar))
     {
         // Prevent crafting in prison
-        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseInArea);
         return;
     }
 
@@ -86,7 +90,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     // See SYNTH_SPEED_XXX mods
     if (PChar->m_LastSynthTime + 15s > timer::now())
     {
-        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_WAIT_LONGER);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WaitLonger);
         return;
     }
 
@@ -108,15 +112,17 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
         if (PTarget)
         {
             ShowDebug("%s trade request with %s was canceled because %s tried to craft.",
-                      PChar->getName(), PTarget->getName(), PChar->getName());
+                      PChar->getName(),
+                      PTarget->getName(),
+                      PChar->getName());
 
             PTarget->TradePending.clean();
             PTarget->UContainer->Clean();
-            PTarget->pushPacket<CTradeActionPacket>(PChar, 0x01);
-            PChar->pushPacket<CTradeActionPacket>(PTarget, 0x01);
+            PTarget->pushPacket<GP_SERV_COMMAND_ITEM_TRADE_RES>(PChar, GP_ITEM_TRADE_RES_KIND::Cancell);
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_TRADE_RES>(PTarget, GP_ITEM_TRADE_RES_KIND::Cancell);
         }
 
-        PChar->pushPacket<CMessageStandardPacket>(MsgStd::CannotBeProcessed);
+        PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(MsgStd::CannotBeProcessed);
         PChar->TradePending.clean();
         PChar->UContainer->Clean();
         return;
@@ -125,33 +131,51 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
 
     PChar->CraftContainer->Clean();
 
-    const auto PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(CrystalIdx);
-    if (!PItem || Crystal != PItem->getID() || PItem->getQuantity() == 0)
+    const auto* PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(this->CrystalIdx);
+    if (!PItem ||
+        this->Crystal != PItem->getID() ||
+        PItem->getQuantity() == 0)
     {
         // Detect invalid crystal usage
         // Prevent crafting exploit to crash on container size > 8
-        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, MSGBASIC_CANNOT_USE_IN_AREA);
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseInArea);
         return;
     }
 
-    uint16 itemId    = Crystal;
-    uint8  invSlotId = CrystalIdx;
+    if (PItem->isSubType(ITEM_LOCKED) || PItem->getReserve() > 0)
+    {
+        ShowWarningFmt("GP_CLI_COMMAND_COMBINE_ASK: {} trying to use invalid crystal (locked/reserved)", PChar->getName());
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseInArea);
+        return;
+    }
+
+    uint16 itemId    = this->Crystal;
+    uint8  invSlotId = this->CrystalIdx;
     PChar->CraftContainer->setItem(0, itemId, invSlotId, 0);
 
     std::vector<uint8> slotQty(MAX_CONTAINER_SIZE);
-    for (int32 slotId = 0; slotId < Items; ++slotId)
+    for (int32 slotId = 0; slotId < this->Items; ++slotId)
     {
-        itemId    = ItemNo[slotId];
-        invSlotId = TableNo[slotId];
+        itemId    = this->ItemNo[slotId];
+        invSlotId = this->TableNo[slotId];
 
         slotQty[invSlotId]++;
 
         const auto* PSlotItem = PChar->getStorage(LOC_INVENTORY)->GetItem(invSlotId);
 
-        if (PSlotItem && PSlotItem->getID() == itemId && slotQty[invSlotId] <= (PSlotItem->getQuantity() - PSlotItem->getReserve()))
+        if (!PSlotItem || PSlotItem->getID() != itemId)
         {
-            PChar->CraftContainer->setItem(slotId + 1, itemId, invSlotId, 1);
+            continue;
         }
+
+        if (PSlotItem->isSubType(ITEM_LOCKED) ||
+            slotQty[invSlotId] > (PSlotItem->getQuantity() - PSlotItem->getReserve()))
+        {
+            ShowWarningFmt("GP_CLI_COMMAND_COMBINE_ASK: {} trying to use invalid ingredient (locked/reserved)", PChar->getName());
+            continue;
+        }
+
+        PChar->CraftContainer->setItem(slotId + 1, itemId, invSlotId, 1);
     }
 
     synthutils::startSynth(PChar);

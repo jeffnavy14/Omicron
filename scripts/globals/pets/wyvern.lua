@@ -66,7 +66,7 @@ local function doHealingBreath(player, divisor)
         player:getHP() <= math.floor(player:getMaxHP() / divisor) and
         inBreathRange(player)
     then
-        player:getPet():useJobAbility(healingbreath, player)
+        player:getPet():usePetAbility(healingbreath, player)
     elseif wyvernType == wyvernCapabilities.DEFENSIVE then
         local party = player:getPartyWithTrusts()
         for _, member in pairs(party) do
@@ -75,7 +75,7 @@ local function doHealingBreath(player, divisor)
                 inBreathRange(member) and
                 not member:isDead()
             then
-                player:getPet():useJobAbility(healingbreath, member)
+                player:getPet():usePetAbility(healingbreath, member)
                 break
             end
         end
@@ -108,7 +108,7 @@ local function doStatusBreath(target, player)
                     target:hasStatusEffect(effect) and
                     wyvern:checkDistance(target) <= breathRange
                 then
-                    wyvern:useJobAbility(ability, target)
+                    wyvern:usePetAbility(ability, target)
                     return true
                 end
             end
@@ -122,13 +122,13 @@ xi.pets.wyvern.onMobSpawn = function(mob)
     local master = mob:getMaster()
 
     if master:getMod(xi.mod.WYVERN_SUBJOB_TRAITS) > 0 then
-        mob:addJobTraits(master:getSubJob(), master:getSubLvl())
+        mob:addWyvernJobTraits(master:getSubJob(), master:getSubLvl())
     end
 
     local wyvernType = wyvernTypes[master:getSubJob()]
 
     if wyvernType == wyvernCapabilities.DEFENSIVE then
-        master:addListener('WEAPONSKILL_USE', 'PET_WYVERN_WS', function(player, target, skillid)
+        master:addListener('WEAPONSKILL_USE', 'PET_WYVERN_WS', function(player, target, skill, tp, action, damage)
             if not doStatusBreath(player, player) then
                 local party = player:getParty()
                 for _, member in pairs(party) do
@@ -152,7 +152,7 @@ xi.pets.wyvern.onMobSpawn = function(mob)
         wyvernType == wyvernCapabilities.OFFENSIVE or
         wyvernType == wyvernCapabilities.MULTI
     then
-        master:addListener('WEAPONSKILL_USE', 'PET_WYVERN_WS', function(player, target, skillid)
+        master:addListener('WEAPONSKILL_USE', 'PET_WYVERN_WS', function(player, target, skill, tp, action, damage)
             xi.job_utils.dragoon.pickAndUseDamageBreath(player, target)
         end)
     end
@@ -186,7 +186,7 @@ xi.pets.wyvern.onMobSpawn = function(mob)
     end)
 end
 
-local function removeWyvernLevels(mob)
+xi.pets.wyvern.removeWyvernLevels = function(mob)
     local master  = mob:getMaster()
     local numLvls = mob:getLocalVar('level_Ups')
 
@@ -205,7 +205,7 @@ local function removeWyvernLevels(mob)
 end
 
 xi.pets.wyvern.onMobDeath = function(mob, player)
-    removeWyvernLevels(mob)
+    xi.pets.wyvern.removeWyvernLevels(mob)
 
     local master  = mob:getMaster()
     master:removeListener('PET_WYVERN_WS')
@@ -216,7 +216,7 @@ xi.pets.wyvern.onMobDeath = function(mob, player)
 end
 
 xi.pets.wyvern.onPetLevelRestriction = function(pet)
-    removeWyvernLevels(pet)
+    xi.pets.wyvern.removeWyvernLevels(pet)
     pet:setLocalVar('wyvern_exp', 0)
     pet:setLocalVar('level_Ups', 0)
 end

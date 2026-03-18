@@ -26,7 +26,7 @@
 #include "lua_ability.h"
 SOL_BIND_DEF(CLuaAbility, CAbility);
 
-#include "packets/action.h"
+#include "action/action.h"
 #include "lua_action.h"
 SOL_BIND_DEF(CLuaAction, action_t);
 
@@ -101,6 +101,10 @@ SOL_BIND_DEF(CLuaMobSkill, CMobSkill);
 #include "petskill.h"
 #include "lua_petskill.h"
 SOL_BIND_DEF(CLuaPetSkill, CPetSkill);
+
+#include "weapon_skill.h"
+#include "lua_weaponskill.h"
+SOL_BIND_DEF(CLuaWeaponSkill, CWeaponSkill);
 
 #include "spell.h"
 #include "lua_spell.h"

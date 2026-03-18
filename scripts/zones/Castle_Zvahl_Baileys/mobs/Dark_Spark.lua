@@ -11,15 +11,22 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.IDLE_DESPAWN, 180)
 end
 
-entity.onMobDeath = function(mob, player, optParams)
-    if
-        player:getCharVar('BorghertzSparkKilled') == 0 and
-        player:hasKeyItem(xi.ki.OLD_GAUNTLETS) and
-        not player:hasKeyItem(xi.ki.SHADOW_FLAMES) and
-        player:getCharVar('BorghertzCS') >= 2
-    then
-        player:setCharVar('BorghertzSparkKilled', 1)
+entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
+    mob:setMobMod(xi.mobMod.MAGIC_DELAY, 0)
+end
+
+entity.onMobMobskillChoose = function(mob, target, skillId)
+    local skillList =
+    {
+        xi.mobSkill.BERSERK_BOMB,
+    }
+
+    if mob:getHPP() < 10 then
+        table.insert(skillList, xi.mobSkill.SELF_DESTRUCT_BOMB)
     end
+
+    return skillList[math.random(1, #skillList)]
 end
 
 return entity

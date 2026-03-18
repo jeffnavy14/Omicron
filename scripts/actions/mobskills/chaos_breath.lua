@@ -1,8 +1,7 @@
 -----------------------------------
---  Chaos Breath
---
---  Description: Deals dark damage to enemies within a fan-shaped area originating from the caster.
---  Type: Magical (dark)
+-- Chaos Breath
+-- Family: Wyverns
+-- Description: Deals Dark damage to enemies within a fan-shaped area originating from the caster.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,13 +10,26 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.5, 1, xi.element.DARK, 700)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.DARK, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    params.percentMultipier = 0.125
+    params.damageCap        = 700
+    params.bonusDamage      = math.floor((mob:getMainLvl() + 2) * 1.5)
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.DARK
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.DARK
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.DARK)
-    return dmg
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

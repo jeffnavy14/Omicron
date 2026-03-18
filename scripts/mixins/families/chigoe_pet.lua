@@ -8,12 +8,17 @@ g_mixins.families = g_mixins.families or {}
 g_mixins.families.chigoe_pet = function(hostMob)
     local ID = zones[hostMob:getZoneID()]
 
-    hostMob:addListener('WEAPONSKILL_USE', 'MOB_SPAWN_CHIGOE', function(mob, target)
+    hostMob:addListener('WEAPONSKILL_USE', 'MOB_SPAWN_CHIGOE', function(mob, target, skill, tp, action, damage)
         local mobName = mob:getName()
 
         -- Requires a Chigoe.lua with the chigoe mixin for this to work
         if ID.mob.CHIGOES[mobName] == nil then
             return
+        end
+
+        local numChigoesToSpawn = 1
+        if mob:getPool() == xi.mobPool.PEALLAIDH then
+            numChigoesToSpawn = 2
         end
 
         for _, mobID in pairs(ID.mob.CHIGOES[mobName]) do
@@ -31,7 +36,10 @@ g_mixins.families.chigoe_pet = function(hostMob)
                     mobArg:removeListener('CHIGOE_DISENGAGE')
                 end)
 
-                return
+                numChigoesToSpawn = numChigoesToSpawn - 1
+                if numChigoesToSpawn == 0 then
+                    return
+                end
             end
         end
     end)

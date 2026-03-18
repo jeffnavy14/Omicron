@@ -9,8 +9,7 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 1
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    mob:useMobAbility(mob:getMobMod(xi.mobMod.TELEPORT_END))
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     skill:setMsg(xi.msg.basic.NONE)
 
     return 0

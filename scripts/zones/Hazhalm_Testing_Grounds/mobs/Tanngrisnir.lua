@@ -17,9 +17,9 @@ local entity = {}
 local function notBusy(mob)
     local action = mob:getCurrentAction()
     if
-        action == xi.act.MOBABILITY_START or
-        action == xi.act.MOBABILITY_USING or
-        action == xi.act.MOBABILITY_FINISH
+        action == xi.action.category.MOBABILITY_START or
+        action == xi.action.category.MOBABILITY_USING or
+        action == xi.action.category.MOBABILITY_FINISH
     then
         return false
     end
@@ -31,7 +31,7 @@ entity.onMobInitialize = function(mob)
     xi.einherjar.onBossInitialize(mob)
 end
 
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local requeueCount = mob:getLocalVar('requeue')
     if requeueCount ~= 0 then -- continue the current sequence
         mob:setLocalVar('requeue', requeueCount - 1)

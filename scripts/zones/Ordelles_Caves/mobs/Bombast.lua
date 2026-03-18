@@ -7,7 +7,7 @@ local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.AUTO_SPIKES, 1)
-    mob:addStatusEffect(xi.effect.BLAZE_SPIKES, 15, 0, 0)
+    mob:addStatusEffect(xi.effect.BLAZE_SPIKES, { power = 15, origin = mob })
     mob:getStatusEffect(xi.effect.BLAZE_SPIKES):setEffectFlags(xi.effectFlag.DEATH)
 end
 
@@ -20,7 +20,8 @@ entity.onSpikesDamage = function(mob, target, damage)
     params.includemab = false
     dmg = addBonusesAbility(mob, xi.element.FIRE, target, dmg, params)
     dmg = dmg * applyResistanceAddEffect(mob, target, xi.element.FIRE, 0)
-    dmg = dmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, xi.element.FIRE)
+    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.FIRE, true))
+    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.FIRE, true, false))
     dmg = finalMagicNonSpellAdjustments(mob, target, xi.element.FIRE, dmg)
 
     if dmg < 0 then

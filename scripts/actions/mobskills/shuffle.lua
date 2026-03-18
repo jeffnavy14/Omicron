@@ -6,10 +6,14 @@
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
+    if not mob:isNM() then
+        return 1
+    end
+
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local effect = target:dispelStatusEffect()
 
     if effect == xi.effect.NONE then

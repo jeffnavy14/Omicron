@@ -224,9 +224,9 @@ xi.magian.trials =
             itemId = xi.item.ATHAME,
         },
 
-        textOffset  = 69,
-        mobFamily   = set{ 140, 141 },
-        numRequired = 300,
+        textOffset     = 69,
+        mobSuperFamily = set{ xi.mobSuperFamily.HIPPOGRYPH },
+        numRequired    = 300,
 
         rewardItem =
         {
@@ -511,7 +511,7 @@ xi.magian.trials =
         textOffset     = 99,
         dayWeather     = xi.magianElement.ANY,
         defeatMob      = true,
-        mobSuperFamily = set{ 56 },
+        mobSuperFamily = set{ xi.mobSuperFamily.SKELETON },
         numRequired    = 50,
 
         rewardItem =

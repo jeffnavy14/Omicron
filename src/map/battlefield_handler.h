@@ -53,6 +53,7 @@ class CBattlefieldHandler
 {
 public:
     CBattlefieldHandler(CZone* PZone);
+    ~CBattlefieldHandler();
     void          HandleBattlefields(timer::time_point tick);                                       // called every tick to handle win/lose conditions, locking the bcnm, etc
     uint8         LoadBattlefield(CCharEntity* PChar, const BattlefieldRegistration& registration); // attempts to load battlefield, returns BATTLEFIELD_RETURN_CODE
     CBattlefield* GetBattlefield(CBaseEntity* PEntity, bool checkRegistered = false);               // return pointer to battlefield if exists
@@ -66,10 +67,10 @@ public:
     void          addOrphanedPlayer(CCharEntity* PChar);
 
 private:
-    CZone*                       m_PZone;
-    uint8                        m_MaxBattlefields; // usually 3 except dynamis, einherjar, besieged, ...
-    std::map<int, CBattlefield*> m_Battlefields;    // area
-    std::map<uint32, uint8>      m_ReservedAreas;   // <charid, area>
+    CZone*                                       m_PZone;
+    uint8                                        m_MaxBattlefields; // usually 3 except dynamis, einherjar, besieged, ...
+    std::map<int, std::unique_ptr<CBattlefield>> m_Battlefields;    // area
+    std::map<uint32, uint8>                      m_ReservedAreas;   // <charid, area>
 
     // Players that need to be kicked from whatever battlefield they were in
     std::vector<std::pair<uint32, timer::time_point>> m_orphanedPlayers;

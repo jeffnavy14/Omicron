@@ -39,58 +39,54 @@
 #endif
 
 #include <csignal>
+#include <thread>
 
 namespace
 {
-    // Marked as true by markLoaded() when the
-    // application is fully loaded and the main
-    // loop has begun.
-    bool gIsRunning = false;
 
-    void handleSignal(const std::error_code& error, int signal)
+// Marked as true by markLoaded() when the
+// application is fully loaded and the main
+// loop has begun.
+bool gIsRunning = false;
+
+void handleSignal(const std::error_code& error, int signal)
+{
+    if (error)
     {
-        if (error)
-        {
-            return;
-        }
-
-        switch (signal)
-        {
-#ifdef _WIN32
-            case SIGBREAK:
-#endif // _WIN32
-            case SIGINT:
-            case SIGTERM:
-                gIsRunning = false;
-                std::exit(0);
-            case SIGABRT:
-#ifdef _WIN32
-            case SIGABRT_COMPAT:
-#endif // _WIN32
-            case SIGSEGV:
-            case SIGFPE:
-            case SIGILL:
-#ifdef _WIN32
-#ifdef _DEBUG
-                // Pass the signal to the system's default handler
-                std::signal(signal, SIG_DFL);
-                std::raise(signal);
-#endif // _DEBUG
-#endif // _WIN32
-                break;
-            default:
-                std::cerr << fmt::format("Unhandled signal: {}\n", signal);
-                break;
-        }
+        return;
     }
 
+    switch (signal)
+    {
 #ifdef _WIN32
-    unsigned long prevQuickEditMode;
+        case SIGBREAK:
 #endif // _WIN32
+        case SIGINT:
+        case SIGTERM:
+            gIsRunning = false;
+            std::exit(0);
+#ifndef _WIN32
+        case SIGABRT:
+        case SIGSEGV:
+        case SIGFPE:
+        case SIGILL:
+            break;
+#endif
+        default:
+            std::cerr << fmt::format("Unhandled signal: {}\n", signal);
+            break;
+    }
+}
+
+#ifdef _WIN32
+unsigned long prevQuickEditMode;
+#endif // _WIN32
+
 } // namespace
 
 Application::Application(const ApplicationConfig& appConfig, int argc, char** argv)
-: signals_(io_context_)
+: scheduler_()
+, signals_(scheduler_.mainContext())
 , serverName_(appConfig.serverName)
 , args_(std::make_unique<Arguments>(appConfig, argc, argv))
 {
@@ -102,7 +98,6 @@ Application::Application(const ApplicationConfig& appConfig, int argc, char** ar
     usercheck();
     tryIncreaseRLimits();
 
-    // TODO: How much of this interferes with the signal handler in here?
     debug::init();
 
     lua_init();
@@ -142,13 +137,10 @@ void Application::registerSignalHandlers()
 {
     signals_.add(SIGINT);
     signals_.add(SIGTERM);
-#if !defined(_DEBUG) && defined(_WIN32) // need unhandled exceptions to debug on Windows
+#ifdef _WIN32
     signals_.add(SIGBREAK);
-    signals_.add(SIGABRT);
-    signals_.add(SIGABRT_COMPAT);
-    signals_.add(SIGSEGV);
-    signals_.add(SIGFPE);
-    signals_.add(SIGILL);
+    // Don't register crash signals with ASIO on Windows - they need to reach SEH
+    // for WheatyExceptionReport to generate crash dumps
 #endif
 #ifndef _WIN32
     signals_.add(SIGXFSZ);
@@ -280,11 +272,11 @@ void Application::run()
 
     try
     {
-        // NOTE: io_context_.run() takes over and blocks this thread. Anything after this point will only fire
-        // if io_context_ finishes!
+        // NOTE: scheduler_.run() takes over and blocks this thread. Anything after this point will only fire
+        // if scheduler_ finishes!
         //
-        // This busy loop looks nasty, however --
-        // https://think-async.com/Asio/asio-1.24.0/doc/asio/reference/io_service.html
+        // This busy loop looks nasty, however:
+        // https://think-async.com/asio/asio-1.24.0/doc/asio/reference/io_service.html
         //
         // If an exception is thrown from a handler, the exception is allowed to propagate through the throwing thread's invocation of
         // run(), run_one(), run_for(), run_until(), poll() or poll_one(). No other threads that are calling any of these functions are affected.
@@ -294,12 +286,11 @@ void Application::run()
         {
             try
             {
-                io_context_.run();
+                scheduler_.run();
                 break;
             }
             catch (std::exception& e)
             {
-                // TODO: make a list of "allowed exceptions", the rest can/should cause shutdown.
                 ShowErrorFmt("Inner fatal: {}", e.what());
             }
         }
@@ -310,9 +301,9 @@ void Application::run()
     }
 }
 
-auto Application::ioContext() -> asio::io_context&
+auto Application::scheduler() -> Scheduler&
 {
-    return io_context_;
+    return scheduler_;
 }
 
 auto Application::args() const -> Arguments&

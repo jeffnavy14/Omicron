@@ -15,8 +15,10 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.DEFENSE_BOOST, 75, 0, 60))
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local power = 50 + 10 * math.floor((skill:getTP() - 1000) / 1000)
+
+    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.DEFENSE_BOOST, power, 0, 60))
 
     return xi.effect.DEFENSE_BOOST
 end

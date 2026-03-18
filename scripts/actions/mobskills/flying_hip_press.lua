@@ -1,11 +1,9 @@
 -----------------------------------
---  Flying Hip Press
---  Description: Deals Wind damage to enemies within area of effect.
---  Type: Magical
---  Utsusemi/Blink absorb: Ignores shadows
---  Range: 15' radial
+-- Flying Hip Press
+-- Family: Bugbears
+-- Description: Deals Wind damage to enemies within area of effect.
+-- Note: Mob version of this skill is NOT a HP based breath attack like the BLU spell is.
 -----------------------------------
-
 ---@type TMobSkill
 local mobskillObject = {}
 
@@ -13,19 +11,31 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local cap = 300
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    -- Bugbear Matman has stronger Flying Hip Press
-    if mob:getPool() == xi.mobPools.BUGBEAR_MATMAN then
-        cap = math.random(300, 700)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 2.0, 2.0, 2.0 }
+    params.element        = xi.element.WIND
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.WIND
+    params.shadowBehavior = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
+
+    if mob:getPool() == xi.mobPool.BUGBOY then
+        params.fTP = 7.0
     end
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.333, 1.2, xi.element.WIND, cap)
+    if mob:getPool() == xi.mobPool.BUGBEAR_MATMAN then
+        params.fTP = 10.0
+    end
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.WIND, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.WIND)
-    return dmg
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

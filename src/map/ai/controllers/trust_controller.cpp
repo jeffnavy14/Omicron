@@ -39,20 +39,22 @@
 
 namespace
 {
-    enum TRUST_MOVEMENT_TYPE : int8
-    {
-        // NOTE: If you need to add special movement types, add descending into the minus values.
-        //     : All of the positive values are taken for the ranged movement range.
-        // NOTE: You can use any positive value as a distance, and it will act as MID_RANGE or LONG_RANGE, but with the value you've provided.
-        //     : For example:
-        //     :     mob:setMobMod(xi.mobMod.TRUST_DISTANCE, 20)
-        //     : Will set the combat distance the trust tries to stick to to 20'
-        // NOTE: If a Trust doesn't immediately sprint to a certain distance at the start of battle, it's probably NO_MOVE or MELEE.
-        NO_MOVE    = -1, // Will stand still providing they're within casting distance of their master and target when the fight starts. Otherwise will reposition to be within 9.0' of both
-        MELEE      = 0,  // Default: will continually reposition to stay within melee range of the target
-        MID_RANGE  = 6,  // Will path at the start of battle to 6' away from the target, and try to stay at that distance
-        LONG_RANGE = 12, // Will path at the start of battle to 12' away from the target, and try to stay at that distance
-    };
+
+enum TRUST_MOVEMENT_TYPE : int8
+{
+    // NOTE: If you need to add special movement types, add descending into the minus values.
+    //     : All of the positive values are taken for the ranged movement range.
+    // NOTE: You can use any positive value as a distance, and it will act as MID_RANGE or LONG_RANGE, but with the value you've provided.
+    //     : For example:
+    //     :     mob:setMobMod(xi.mobMod.TRUST_DISTANCE, 20)
+    //     : Will set the combat distance the trust tries to stick to to 20'
+    // NOTE: If a Trust doesn't immediately sprint to a certain distance at the start of battle, it's probably NO_MOVE or MELEE.
+    NO_MOVE    = -1, // Will stand still providing they're within casting distance of their master and target when the fight starts. Otherwise will reposition to be within 9.0' of both
+    MELEE      = 0,  // Default: will continually reposition to stay within melee range of the target
+    MID_RANGE  = 6,  // Will path at the start of battle to 6' away from the target, and try to stay at that distance
+    LONG_RANGE = 12, // Will path at the start of battle to 12' away from the target, and try to stay at that distance
+};
+
 } // namespace
 
 CTrustController::CTrustController(CCharEntity* PChar, CTrustEntity* PTrust)
@@ -114,42 +116,63 @@ void CTrustController::DoCombatTick(timer::time_point tick)
 {
     TracyZoneScoped;
 
-    if (!POwner->PMaster->PAI->IsEngaged())
+    CTrustEntity* PTrust  = static_cast<CTrustEntity*>(POwner);
+    CCharEntity*  PMaster = static_cast<CCharEntity*>(POwner->PMaster);
+    CMobEntity*   PMob    = dynamic_cast<CMobEntity*>(PMaster->GetBattleTarget());
+    PTarget               = POwner->GetBattleTarget();
+
+    if (!PMaster->PAI->IsEngaged())
     {
-        POwner->PAI->Internal_Disengage();
+        PTrust->PAI->Internal_Disengage();
         m_LastTopEnmity = nullptr;
         m_CombatEndTime = m_Tick;
     }
 
-    if (POwner->PMaster->GetBattleTargetID() != POwner->GetBattleTargetID())
+    if (PMaster && PMob && PTrust->GetBattleTargetID() != PMaster->GetBattleTargetID())
     {
-        POwner->PAI->Internal_ChangeTarget(POwner->PMaster->GetBattleTargetID());
-        m_LastTopEnmity = nullptr;
+        auto  masterID   = PMaster->id;
+        auto* enmityList = PMob->PEnmityContainer->GetEnmityList();
+        bool  hasEnmity  = false;
+
+        if (auto it = enmityList->find(masterID); it != enmityList->end())
+        {
+            const EnmityObject_t& entry = it->second;
+            // Only treat as "has enmity" if:
+            // the entry is active,
+            // the CE+VE is positive,
+            // and the master is within enmity range (same checks used when adding enmity).
+            if (entry.active && (entry.CE + entry.VE) > 0)
+            {
+                hasEnmity = true;
+            }
+        }
+
+        if (hasEnmity)
+        {
+            PTrust->PAI->Internal_ChangeTarget(PMaster->GetBattleTargetID());
+            m_LastTopEnmity = nullptr;
+        }
     }
 
     // If busy, don't run around!
-    if (POwner->PAI->IsCurrentState<CMagicState>() || POwner->PAI->IsCurrentState<CRangeState>())
+    if (PTrust->PAI->IsCurrentState<CMagicState>() || PTrust->PAI->IsCurrentState<CRangeState>())
     {
         return;
     }
 
-    CTrustEntity* PTrust  = static_cast<CTrustEntity*>(POwner);
-    CCharEntity*  PMaster = static_cast<CCharEntity*>(POwner->PMaster);
-    PTarget               = POwner->GetBattleTarget();
-
     if (PTarget)
     {
-        if (POwner->PAI->CanFollowPath() && POwner->GetSpeed() > 0)
+        if (PTrust->PAI->CanFollowPath() && PTrust->GetSpeed() > 0)
         {
-            float currentDistanceToTarget = distance(POwner->loc.p, PTarget->loc.p);
-            float currentDistanceToMaster = distance(POwner->loc.p, PMaster->loc.p);
+            float currentDistanceToTarget = distance(PTrust->loc.p, PTarget->loc.p);
+            float currentDistanceToMaster = distance(PTrust->loc.p, PMaster->loc.p);
 
             if (currentDistanceToTarget > WarpDistance)
             {
-                POwner->PAI->PathFind->WarpTo(PTarget->loc.p);
+                PTrust->PAI->PathFind->WarpTo(PTarget->loc.p);
             }
 
-            POwner->PAI->PathFind->LookAt(PTarget->loc.p);
+            PTrust->PAI->PathFind->LookAt(PTarget->loc.p);
 
             int16 movementDistance = PTrust->getMobMod(MOBMOD_TRUST_DISTANCE);
 
@@ -170,18 +193,18 @@ void CTrustController::DoCombatTick(timer::time_point tick)
                 case TRUST_MOVEMENT_TYPE::MELEE:
                 {
                     std::unique_ptr<CBasicPacket> err;
-                    if (!POwner->CanAttack(PTarget, err) && POwner->GetSpeed() > 0)
+                    if (!PTrust->CanAttack(PTarget, err) && PTrust->GetSpeed() > 0)
                     {
                         if (currentDistanceToTarget > RoamDistance)
                         {
                             if (currentDistanceToTarget < RoamDistance * 3.0f &&
-                                POwner->PAI->PathFind->PathAround(PTarget->loc.p, RoamDistance, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+                                PTrust->PAI->PathFind->PathAround(PTarget->loc.p, RoamDistance, PATHFLAG_RUN | PATHFLAG_WALLHACK))
                             {
-                                POwner->PAI->PathFind->FollowPath(m_Tick);
+                                PTrust->PAI->PathFind->FollowPath(m_Tick);
                             }
-                            else if (POwner->GetSpeed() > 0)
+                            else if (PTrust->GetSpeed() > 0)
                             {
-                                POwner->PAI->PathFind->StepTo(PTarget->loc.p, true);
+                                PTrust->PAI->PathFind->StepTo(PTarget->loc.p, true);
                             }
                         }
                     }
@@ -198,7 +221,7 @@ void CTrustController::DoCombatTick(timer::time_point tick)
                 }
             }
 
-            if (!POwner->PAI->PathFind->IsFollowingPath())
+            if (!PTrust->PAI->PathFind->IsFollowingPath())
             {
                 Declump(PMaster, PTarget);
             }
@@ -206,12 +229,12 @@ void CTrustController::DoCombatTick(timer::time_point tick)
 
         if (!m_InTransit)
         {
-            POwner->PAI->PathFind->FollowPath(m_Tick);
+            PTrust->PAI->PathFind->FollowPath(m_Tick);
         }
 
         m_GambitsContainer->Tick(tick);
 
-        POwner->PAI->EventHandler.triggerListener("COMBAT_TICK", POwner, POwner->PMaster, PTarget);
+        PTrust->PAI->EventHandler.triggerListener("COMBAT_TICK", PTrust, PMaster, PTarget);
     }
 }
 
@@ -407,7 +430,7 @@ bool CTrustController::Ability(uint16 targid, uint16 abilityid)
 {
     TracyZoneScoped;
 
-    if (static_cast<CMobEntity*>(POwner)->PRecastContainer->HasRecast(RECAST_ABILITY, abilityid, 0s))
+    if (static_cast<CMobEntity*>(POwner)->PRecastContainer->HasRecast(RECAST_ABILITY, static_cast<Recast>(abilityid), 0s))
     {
         return false;
     }
@@ -448,7 +471,7 @@ bool CTrustController::Cast(uint16 targid, SpellID spellid)
 
     FaceTarget(targid);
 
-    if (static_cast<CMobEntity*>(POwner)->PRecastContainer->Has(RECAST_MAGIC, static_cast<uint16>(spellid)))
+    if (static_cast<CMobEntity*>(POwner)->PRecastContainer->Has(RECAST_MAGIC, static_cast<Recast>(spellid)))
     {
         return false;
     }

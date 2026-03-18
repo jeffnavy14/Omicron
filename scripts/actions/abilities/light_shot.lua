@@ -30,7 +30,7 @@ abilityObject.onUseAbility = function(player, target, ability, action)
     action:setRecast(math.max(0, action:getRecast() - player:getMod(xi.mod.QUICK_DRAW_RECAST)))
     local duration = 60
     local bonusAcc = player:getStat(xi.mod.AGI) / 2 + player:getMerit(xi.merit.QUICK_DRAW_ACCURACY) + player:getMod(xi.mod.QUICK_DRAW_MACC)
-    local resist   = applyResistanceAbility(player, target, xi.element.LIGHT, xi.skill.NONE, bonusAcc)
+    local resist   = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, 0, xi.element.LIGHT, 0, 0, bonusAcc)
 
     if resist < 0.5 then
         ability:setMsg(xi.msg.basic.JA_MISS_2) -- resist message
@@ -67,7 +67,7 @@ abilityObject.onUseAbility = function(player, target, ability, action)
         power    = power * 1.5
         subpower = subpower * 1.5
         target:delStatusEffectSilent(effectId)
-        target:addStatusEffect(effectId, power, tick, duration, subId, subpower, tier)
+        target:addStatusEffect(effectId, { power = power, duration = duration, origin = player, tick = tick, subType = subId, subPower = subpower, tier = tier })
 
         local newEffect = target:getStatusEffect(effectId)
         if newEffect then
@@ -75,7 +75,7 @@ abilityObject.onUseAbility = function(player, target, ability, action)
         end
     end
 
-    if target:addStatusEffect(xi.effect.SLEEP_I, 1, 0, duration) then
+    if target:addStatusEffect(xi.effect.SLEEP_I, { power = 1, duration = duration, origin = player }) then
         ability:setMsg(xi.msg.basic.JA_ENFEEB_IS)
     else
         ability:setMsg(xi.msg.basic.JA_NO_EFFECT_2)

@@ -19,11 +19,9 @@
 ===========================================================================
 */
 
-#ifndef _STATUSEFFECTCONTAINER_H
-#define _STATUSEFFECTCONTAINER_H
+#pragma once
 
 #include "common/cbasetypes.h"
-#include "common/task_manager.h"
 
 #include <set>
 
@@ -141,7 +139,7 @@ private:
     CBattleEntity* m_POwner = nullptr;
 
     // void ReplaceStatusEffect(EFFECT effect); //this needs to be implemented
-    void RemoveStatusEffect(CStatusEffect* PEffect, EffectNotice notice = EffectNotice::ShowMessage); // We remove the effect by its number in the container
+    void RemoveStatusEffect(CStatusEffect* PStatusEffect, EffectNotice notice = EffectNotice::ShowMessage); // We remove the effect by its number in the container
     void DeleteStatusEffects();
     auto SetEffectParams(CStatusEffect* StatusEffect) -> void; // We set the effect of the effect
     void HandleAura(CStatusEffect* PStatusEffect);
@@ -159,9 +157,9 @@ private:
 
 namespace effects
 {
-    void        LoadEffectsParameters();
-    uint16      GetEffectElement(uint16 effect);
-    std::string GetEffectName(uint16 effect);
-}; // namespace effects
 
-#endif
+void        LoadEffectsParameters();
+uint16      GetEffectElement(uint16 effect);
+std::string GetEffectName(uint16 effect);
+
+}; // namespace effects

@@ -23,41 +23,41 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
-    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
-        if not GetMobByID(ID.mob.GULOOL_JA_JA + 1):isSpawned() then
-            GetMobByID(ID.mob.GULOOL_JA_JA + 1):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GULOOL_JA_JA + 1):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GULOOL_JA_JA + 2):isSpawned() then
-            GetMobByID(ID.mob.GULOOL_JA_JA + 2):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GULOOL_JA_JA + 2):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GULOOL_JA_JA + 3):isSpawned() then
-            GetMobByID(ID.mob.GULOOL_JA_JA + 3):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GULOOL_JA_JA + 3):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.GULOOL_JA_JA + 4):isSpawned() then
-            GetMobByID(ID.mob.GULOOL_JA_JA + 4):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.GULOOL_JA_JA + 4):updateEnmity(target)
+    for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
+        local pet = GetMobByID(i)
+        if pet and pet:getCurrentAction() == xi.action.category.ROAMING then
+            pet:updateEnmity(target)
         end
     end
 
-    for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
-        local pet = GetMobByID(i)
-        if pet and pet:getCurrentAction() == xi.act.ROAMING then
-            pet:updateEnmity(target)
+    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
+        for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
+            local bodyguard = GetMobByID(i)
+            if bodyguard and not bodyguard:isSpawned() then
+                bodyguard:setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
+                SpawnMob(i):updateEnmity(target)
+                break
+            end
         end
     end
 end
 
 entity.onMobDisengage = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.GULOOL_JA_JA + i) end
+    for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
+        DespawnMob(i)
+    end
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:addTitle(xi.title.SHINING_SCALE_RIFLER)
-    for i = 1, 4 do DespawnMob(ID.mob.GULOOL_JA_JA + i) end
-end
+    if player then
+        player:addTitle(xi.title.SHINING_SCALE_RIFLER)
+    end
 
-entity.onMobDespawn = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.GULOOL_JA_JA + i) end
+    if optParams.isKiller or optParams.noKiller then
+        for i = ID.mob.GULOOL_JA_JA + 1, ID.mob.GULOOL_JA_JA + 4 do
+            DespawnMob(i)
+        end
+    end
 end
 
 return entity

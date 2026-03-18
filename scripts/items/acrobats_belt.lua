@@ -15,18 +15,17 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return 0
 end
 
-itemObject.onItemUse = function(target)
+itemObject.onItemUse = function(target, user)
     if target:hasEquipped(xi.item.ACROBATS_BELT) then
-        target:addStatusEffect(xi.effect.ENCHANTMENT, 0, 0, 60, 0, 0, 0, xi.effectSourceType.EQUIPPED_ITEM, xi.item.ACROBATS_BELT)
+        target:addStatusEffect(xi.effect.ENCHANTMENT, { duration = 60, origin = user, sourceType = xi.effectSourceType.EQUIPPED_ITEM, sourceTypeParam = xi.item.ACROBATS_BELT })
     end
 end
 
 itemObject.onEffectGain = function(target, effect)
-    target:addMod(xi.mod.AGI, 3)
+    effect:addMod(xi.mod.AGI, 3)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    target:delMod(xi.mod.AGI, 3)
 end
 
 return itemObject

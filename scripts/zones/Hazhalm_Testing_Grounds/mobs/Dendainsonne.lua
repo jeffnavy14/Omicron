@@ -23,12 +23,12 @@ local entity = {}
 local function notBusy(mob)
     local action = mob:getCurrentAction()
     if
-        action == xi.act.MOBABILITY_START or
-        action == xi.act.MOBABILITY_USING or
-        action == xi.act.MOBABILITY_FINISH or
-        action == xi.act.MAGIC_CASTING or
-        action == xi.act.MAGIC_START or
-        action == xi.act.MAGIC_FINISH
+        action == xi.action.category.MOBABILITY_START or
+        action == xi.action.category.MOBABILITY_USING or
+        action == xi.action.category.MOBABILITY_FINISH or
+        action == xi.action.category.MAGIC_CASTING or
+        action == xi.action.category.MAGIC_START or
+        action == xi.action.category.MAGIC_FINISH
     then
         return false
     end
@@ -123,7 +123,6 @@ end
 entity.onSpellPrecast = function(mob, spell)
     if spell:getID() == xi.magic.spell.METEOR then
         spell:setAoE(xi.magic.aoe.RADIAL)
-        spell:setFlag(xi.magic.spellFlag.HIT_ALL)
         spell:setRadius(30)
         spell:setAnimation(280)
         spell:setMPCost(0)

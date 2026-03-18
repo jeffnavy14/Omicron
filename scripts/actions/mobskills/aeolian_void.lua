@@ -1,9 +1,7 @@
 -----------------------------------
 -- Aeolian Void
---
--- Description: Fan AoE damage plus Silence and Blind
--- Type: Earth Damage/Enfeebling
--- Utsusemi/Blink absorb: Ignores shadows
+-- Family: Sandworm
+-- Description: Deals Wind damage to enemies in front of mob. Additional Effect: Blind, Silence
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -12,16 +10,26 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SILENCE, 1, 0, 60)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.BLINDNESS, 15, 0, 60)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.25, 2.5, xi.element.EARTH, 300)
-    local dmg    = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.EARTH, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 2.00, 2.00, 2.00 }
+    params.element        = xi.element.WIND
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.WIND
+    params.shadowBehavior = xi.mobskills.shadowBehavior.WIPE_SHADOWS
 
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.EARTH)
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
 
-    return dmg
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SILENCE, 1, 0, 180)
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.BLINDNESS, 50, 0, 180)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

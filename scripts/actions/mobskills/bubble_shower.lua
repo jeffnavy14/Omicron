@@ -1,6 +1,7 @@
 -----------------------------------
 -- Bubble Shower
--- Deals Water damage in an area of effect. Additional effect: STR Down
+-- Family: Crabs
+-- Description: Deals Water damage in an area of effect. Additional Effect: STR Down
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -9,14 +10,33 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STR_DOWN, 10, 3, 120)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.15, 5, xi.element.WATER, 200)
+    params.percentMultipier = 0.0625
+    params.damageCap        = 200
+    params.bonusDamage      = 0
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.WATER
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.WATER
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
+    -- TODO: Jug Pet differences
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.WATER, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.WATER)
-    return dmg
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        local power    = 10
+        local duration = 180
+        -- TODO: Dreamland Dynamis Power
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STR_DOWN, power, 9, duration)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

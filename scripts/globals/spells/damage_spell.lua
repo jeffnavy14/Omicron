@@ -2,11 +2,9 @@
 -- Damage Spell Utilities
 -- Used for spells that deal direct damage. (Black, White, Dark and Ninjutsu)
 -----------------------------------
-require('scripts/globals/combat/element_tables')
 require('scripts/globals/combat/magic_hit_rate')
 require('scripts/globals/jobpoints')
 require('scripts/globals/magicburst')
-require('scripts/globals/utils')
 -----------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
@@ -89,8 +87,29 @@ local pTable =
     [xi.magic.spell.WATER_VI      ] = { xi.mod.INT,    0, 1010,  1.5, 1010, 550,  6.5,  5.9,  4.9,  3.9, 2.95, 1.99,    1 }, -- I value Unknown. Guesstimate used.
     [xi.magic.spell.FLOOD         ] = { xi.mod.INT,    0,  552,    2,  700, 657,    2,    2,    2,    2,    2,    2,    2 },
     [xi.magic.spell.FLOOD_II      ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.COMET         ] = { xi.mod.INT,    0,  964,  2.3, 1000, 850,    4, 3.75,  3.5,    3,    2,    1,    1 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.IMPACT        ] = { xi.mod.INT,    0,  932,  2.3,  932, 525,    0,    0,    0,    0,    0,    0,    0 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.COMET         ] = { xi.mod.INT,    0,  552,    2,  700, 700,    2,    2,    2,    2,    2,    2,    2 }, -- I value unknown. Guesstimate used.
     [xi.magic.spell.DEATH         ] = {          0,    0,   32,    0,   32,   0,    0,    0,    0,    0,    0,    0,    0 },
+
+    -- Dia as nuke.
+    [xi.magic.spell.DIA           ] = { xi.mod.MND,    0,    1,    1,    1,   1,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_II        ] = { xi.mod.MND,    0,    4,    1,    4,   2,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_III       ] = { xi.mod.MND,    0,   16,    1,   16,   4,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_IV        ] = { xi.mod.MND,    0,   64,    1,   64,   8,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_V         ] = { xi.mod.MND,    0,  256,    1,  256,  16,    0,    0,    0,    0,    0,    0,    0 },
+
+    [xi.magic.spell.DIAGA         ] = { xi.mod.MND,    0,    2,    1,    2,   2,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_II      ] = { xi.mod.MND,    0,    8,    1,    8,   4,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_III     ] = { xi.mod.MND,    0,   32,    1,   32,   8,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_IV      ] = { xi.mod.MND,    0,  128,    1,  128,  16,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_V       ] = { xi.mod.MND,    0,  512,    1,  512,  32,    0,    0,    0,    0,    0,    0,    0 },
+
+    -- Bio as nuke.
+    [xi.magic.spell.BIO           ] = { xi.mod.INT,    0,   10,    1,   10,   5,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_II        ] = { xi.mod.INT,    0,   50,    1,   50,  10,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_III       ] = { xi.mod.INT,    0,  100,  1.5,  100,  21,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_IV        ] = { xi.mod.INT,    0,  125,  1.5,  125,  27,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_V         ] = { xi.mod.INT,    0,  150,    2,  150,  32,    0,    0,    0,    0,    0,    0,    0 },
 
     -- Helixes (Initial damage) https://www.bluegartr.com/threads/108196-Random-Facts-Thread-Magic?p=6817880&viewfull=1#post6817880
     [xi.magic.spell.GEOHELIX      ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
@@ -439,78 +458,51 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
 end
 
 -- Calculate: Multiple Target Damage Reduction (MTDR)
-xi.spells.damage.calculateMTDR = function(spell)
-    local multipleTargetReduction = 1 -- The variable we want to calculate.
-    local targets                 = spell:getTotalTargets()
-
-    if targets > 1 then
-        if targets > 1 and targets < 10 then
-            multipleTargetReduction = 0.9 - 0.05 * targets
-        else
-            multipleTargetReduction = 0.4
-        end
+xi.spells.damage.calculateMTDR = function(caster, spell)
+    -- Only players are subject to this penalty.
+    if not caster:isPC() then
+        return 1
     end
 
-    return multipleTargetReduction
+    -- Calculate MTDR penaly.
+    local targetAmount = spell:getTotalTargets()
+    if targetAmount == 1 then
+        return 1
+    end
+
+    return utils.clamp(0.9 - 0.05 * targetAmount, 0.4, 1)
 end
 
 -- Bonus elemental damage from Elemetal Staves.
 xi.spells.damage.calculateElementalStaffBonus = function(caster, spellElement)
-    local elementalStaffBonus = 1
-
-    if spellElement > xi.element.NONE then
-        elementalStaffBonus = 1 + caster:getMod(xi.combat.element.getElementalStaffModifier(spellElement)) * 5 / 100
+    if spellElement == xi.element.NONE then
+        return 1
     end
 
-    return elementalStaffBonus
+    return 1 + caster:getMod(xi.data.element.getElementalStaffModifier(spellElement)) * 5 / 100
 end
 
 -- Elemental "Magic Attack Bonus" from Magian trials staves, Atmas, etc...
 xi.spells.damage.calculateElementalAffinityBonus = function(caster, spellElement)
-    local affinityFactor = 1
-
-    if spellElement > xi.element.NONE then
-        affinityFactor = 1 + caster:getMod(xi.combat.element.getElementalMABModifier(spellElement)) / 100
+    if spellElement == xi.element.NONE then
+        return 1
     end
 
-    return affinityFactor
-end
-
--- Elemental Specific Damage Taken (Elemental SDT)
--- SDT (Species/Specific Damage Taken) is a stat/mod present in mobs and players that applies a % to specific damage types.
--- Each of the 8 elements has an SDT modifier (Modifiers 54 to 61. Check script(globals/status.lua)
--- Mob elemental modifiers are populated by the values set in "mob_resistances.sql" (The database). SDT columns.
--- The value of the modifiers are base 10000. Positive numbers mean less damage taken. Negative mean more damage taken.
--- Examples:
--- A value of 5000 -> 50% MORE damage taken.
--- A value of -5000 -> 50% LESS damage taken.
--- A word on SDT as understood in some wikis, even if they are refering to resistance and not actual SDT
--- SDT under 50% applies a flat 1/2 *, which was for a long time confused with an additional resist tier, which, in reality, its an independent multiplier.
--- This is understandable, because in a way, it is effectively a whole tier, but recent testing with skillchains/magic bursts after resist was removed from them, proved this.
--- SDT affects magic burst damage, but never in a "negative" way.
--- https://www.bg-wiki.com/ffxi/Resist for some SDT info.
--- *perhaps this simply means there is a cap/clamp limiting it there.
-xi.spells.damage.calculateSDT = function(target, spellElement)
-    local sdt = 1 -- The variable we want to calculate
-
-    if spellElement > xi.element.NONE then
-        sdt = 1 + target:getMod(xi.combat.element.getElementalSDTModifier(spellElement)) / 10000
-    end
-
-    return utils.clamp(sdt, 0, 3)
+    return 1 + caster:getMod(xi.data.element.getElementalMABModifier(spellElement)) / 100
 end
 
 xi.spells.damage.calculateAdditionalResistTier = function(caster, target, spellElement)
-    local additionalResistTier = 1
-
-    if
-        not caster:hasStatusEffect(xi.effect.SUBTLE_SORCERY) and                               -- Subtle sorcery bypasses this tier.
-        target:getMod(xi.combat.element.getElementalResistanceRankModifier(spellElement)) >= 4 -- Forced only at and after rank 4 (50% EEM).
-    then
-        additionalResistTier = additionalResistTier / 2
+    -- Subtle Sorcery bypasses this additional tier.
+    if caster:hasStatusEffect(xi.effect.SUBTLE_SORCERY) then
+        return 1
     end
 
-    return additionalResistTier
+    -- Forced only at and after rank 4 (50% EEM).
+    if target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement)) < 4 then
+        return 1
+    end
+
+    return 0.5
 end
 
 xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysApply)
@@ -532,7 +524,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     then
         applyBonuses   = true
         applyPenalties = true
-    elseif caster:getMod(xi.combat.element.getForcedDayOrWeatherBonusModifier(spellElement)) >= 1 then -- Elemental Obis only force bonuses, not penalties.
+    elseif caster:getMod(xi.data.element.getForcedDayOrWeatherBonusModifier(spellElement)) >= 1 then -- Elemental Obis only force bonuses, not penalties.
         applyBonuses = true
     end
 
@@ -542,10 +534,12 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
 
     -- Calculate bonuses.
     if applyBonuses then
+        local singleWeather = xi.data.element.getAssociatedSingleWeather(spellElement)
+        local doubleWeather = xi.data.element.getAssociatedDoubleWeather(spellElement)
         -- Strong weathers.
-        if weather == xi.combat.element.getAssociatedSingleWeather(spellElement) then
+        if weather == singleWeather then
             dayAndWeather = dayAndWeather + 0.1 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
-        elseif weather == xi.combat.element.getAssociatedDoubleWeather(spellElement) then
+        elseif weather == doubleWeather then
             dayAndWeather = dayAndWeather + 0.25 + caster:getMod(xi.mod.IRIDESCENCE) * 0.05
         end
 
@@ -553,19 +547,28 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
         if dayElement == spellElement then
             dayAndWeather = dayAndWeather + 0.1
         end
+
+        -- Twilight cape.
+        if
+            weather == singleWeather or
+            weather == doubleWeather or
+            dayElement == spellElement
+        then
+            dayAndWeather = dayAndWeather + caster:getMod(xi.mod.DAY_WEATHER_PROC_BONUS) / 100
+        end
     end
 
     -- Calculate penalties.
     if applyPenalties then
         -- Weak weathers.
-        if weather == xi.combat.element.getOppositeSingleWeather(spellElement) then
+        if weather == xi.data.element.getOppositeSingleWeather(spellElement) then
             dayAndWeather = dayAndWeather - 0.1 - caster:getMod(xi.mod.IRIDESCENCE) * 0.05
-        elseif weather == xi.combat.element.getOppositeDoubleWeather(spellElement) then
+        elseif weather == xi.data.element.getOppositeDoubleWeather(spellElement) then
             dayAndWeather = dayAndWeather - 0.25 - caster:getMod(xi.mod.IRIDESCENCE) * 0.05
         end
 
         -- Weak day.
-        if dayElement == xi.combat.element.getElementWeakness(spellElement) then
+        if dayElement == xi.data.element.getElementWeakness(spellElement) then
             dayAndWeather = dayAndWeather - 0.1
         end
     end
@@ -579,17 +582,17 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     end
 
     -- Cap bonuses.
-    dayAndWeather = utils.clamp(dayAndWeather, 0, 2)
+    dayAndWeather = utils.clamp(dayAndWeather, 0, 1.4)
 
     return dayAndWeather
 end
 
 -- Magic Attack Bonus VS Magic Defense Bonus
-xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, skillType, spellElement)
+xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, skillType, spellElement, bonusMATT)
     local magicBonusDiff = 1 -- The variable we want to calculate
     local casterJob      = caster:getMainJob()
-    local mab            = caster:getMod(xi.mod.MATT) + cardinalChantBonus(caster, target, xi.direction.EAST, spellId, skillType)
-    local mabCrit        = caster:getMod(xi.mod.MAGIC_CRITHITRATE) + cardinalChantBonus(caster, target, xi.direction.NORTH, spellId, skillType)
+    local mab            = caster:getMod(xi.mod.MATT) + cardinalChantBonus(caster, target, xi.direction.EAST, spellId, skillType) + bonusMATT
+    local mabCritChance  = caster:getMod(xi.mod.MAGIC_CRITHITRATE) + cardinalChantBonus(caster, target, xi.direction.NORTH, spellId, skillType)
     local mDefBarBonus   = 0
 
     -- Ninja spell bonuses
@@ -634,8 +637,8 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
         mab = mab + caster:getMod(xi.mod.NIN_NUKE_BONUS_GEAR)
     end
 
-    if math.random(1, 100) <= mabCrit then
-        mab = mab + 10 + caster:getMod(xi.mod.MAGIC_CRIT_DMG_INCREASE)
+    if math.random(1, 100) <= mabCritChance then
+        mab = mab + utils.clamp(10 + caster:getMod(xi.mod.MAGIC_CRIT_DMG_INCREASE), 10, 40)
     end
 
     -- Bar Spells bonuses and BLM merits.
@@ -643,10 +646,10 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
         spellElement >= xi.element.FIRE and
         spellElement <= xi.element.WATER
     then
-        mab = mab + caster:getMerit(xi.combat.element.getElementalPotencyMerit(spellElement))
+        mab = mab + caster:getMerit(xi.data.element.getElementalPotencyMerit(spellElement))
 
-        if target:hasStatusEffect(xi.combat.element.getAssociatedBarspellEffect(spellElement)) then -- bar- spell magic defense bonus
-            mDefBarBonus = target:getStatusEffect(xi.combat.element.getAssociatedBarspellEffect(spellElement)):getSubPower()
+        if target:hasStatusEffect(xi.data.element.getAssociatedBarspellEffect(spellElement)) then -- bar- spell magic defense bonus
+            mDefBarBonus = target:getStatusEffect(xi.data.element.getAssociatedBarspellEffect(spellElement)):getSubPower()
         end
     end
 
@@ -674,110 +677,108 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
     return magicBonusDiff
 end
 
--- Calculate: Target Magic Damage Adjustment (TMDA)
--- SDT follow-up. This time for specific modifiers.
--- Referred to on item as "Magic Damage Taken -%", "Damage Taken -%" (Ex. Defending Ring) and "Magic Damage Taken II -%" (Aegis)
-xi.spells.damage.calculateTMDA = function(target, spellElement)
-    local targetMagicDamageAdjustment = 1
+xi.spells.damage.calculateMagicCriticalMultiplier = function(caster)
+    -- Also known as "Magic Critical Hit II"
+    -- https://www.bg-wiki.com/ffxi/Magic_Critical_Hit
+    -- https://www.bg-wiki.com/ffxi/Sroda_Tathlum
+    local criticalChance = caster:getMod(xi.mod.MAGIC_CRITHITRATE_II)
+    if math.random(1, 100) <= criticalChance then
+        return 1.25
+    end
 
-    -- The values set for this modifiers are base 10000.
-    -- -2500 in item_mods.sql means -25% damage recived.
-    -- 2500 would mean 25% ADDITIONAL damage taken.
-    -- The effects of the "Shell" spells are also included in this step.
-
-    local globalDamageTaken   = target:getMod(xi.mod.DMG) / 10000         -- Mod is base 10000
-    local magicDamageTaken    = target:getMod(xi.mod.DMGMAGIC) / 10000    -- Mod is base 10000
-    local magicDamageTakenII  = target:getMod(xi.mod.DMGMAGIC_II) / 10000 -- Mod is base 10000
-    local uMagicDamageTaken   = target:getMod(xi.mod.UDMGMAGIC) / 10000   -- Mod is base 10000.
-    local combinedDamageTaken = utils.clamp(magicDamageTaken + globalDamageTaken, -0.5, 0.5) -- The combination of regular "Damage Taken" and "Magic Damage Taken" caps at 50% both ways.
-
-    targetMagicDamageAdjustment = utils.clamp(targetMagicDamageAdjustment + combinedDamageTaken + magicDamageTakenII, 0.125, 1.875) -- "Magic Damage Taken II" bypasses the regular cap, but combined cap is 87.5% both ways.
-    targetMagicDamageAdjustment = utils.clamp(targetMagicDamageAdjustment + uMagicDamageTaken, 0, 2) -- Uncapped magic damage modifier. Cap is 100% both ways.
-
-    return targetMagicDamageAdjustment
+    return 1
 end
 
 -- Divine seal applies its own multiplier to healing spells when used against undead.
--- NOTE: If we have reached this far with a heling spell, the target is confirmed to be undead.
-xi.spells.damage.calculateDivineSealMultiplier = function(caster, skillType)
-    local divineSealMultiplier = 1
-
-    if
-        caster:hasStatusEffect(xi.effect.DIVINE_SEAL) and
-        skillType == xi.skill.HEALING_MAGIC
-    then
-        divineSealMultiplier = 2
-        caster:delStatusEffect(xi.effect.DIVINE_SEAL)
+xi.spells.damage.calculateDivineSealMultiplier = function(caster, target, skillType)
+    if not caster:hasStatusEffect(xi.effect.DIVINE_SEAL) then
+        return 1
     end
 
-    return divineSealMultiplier
+    if not target:isUndead() then
+        return 1
+    end
+
+    if skillType ~= xi.skill.HEALING_MAGIC then
+        return 1
+    end
+
+    caster:delStatusEffect(xi.effect.DIVINE_SEAL)
+
+    return 2
 end
 
 -- Divine Emblem applies its own damage multiplier to divine spells.
 xi.spells.damage.calculateDivineEmblemMultiplier = function(caster, skillType)
-    local divineEmblemMultiplier = 1
-
-    if
-        caster:hasStatusEffect(xi.effect.DIVINE_EMBLEM) and
-        skillType == xi.skill.DIVINE_MAGIC
-    then
-        divineEmblemMultiplier = 1 + caster:getSkillLevel(xi.skill.DIVINE_MAGIC) / 100
-        caster:delStatusEffect(xi.effect.DIVINE_EMBLEM)
+    if not caster:hasStatusEffect(xi.effect.DIVINE_EMBLEM) then
+        return 1
     end
 
-    return divineEmblemMultiplier
+    if skillType ~= xi.skill.DIVINE_MAGIC then
+        return 1
+    end
+
+    caster:delStatusEffect(xi.effect.DIVINE_EMBLEM)
+
+    return 1 + caster:getSkillLevel(xi.skill.DIVINE_MAGIC) / 100
 end
 
 -- Elemental seal applies its own multiplier to spells when Laevateinn is equipped,
 -- or some other source of ENHANCES_ELEMENTAL_SEAL is available to the caster.
 xi.spells.damage.calculateEnhancedElementalSealMultiplier = function(caster, skillType, spellElement)
-    local eleSealMultiplier = 1
-
-    if
-        caster:hasStatusEffect(xi.effect.ELEMENTAL_SEAL) and
-        spellElement >= xi.element.FIRE and -- TODO: Test impact and meteor.
-        skillType == xi.skill.ELEMENTAL_MAGIC
-    then
-        eleSealMultiplier = 1 + caster:getMod(xi.mod.ENHANCES_ELEMENTAL_SEAL) / 100
+    if not caster:hasStatusEffect(xi.effect.ELEMENTAL_SEAL) then
+        return 1
     end
 
-    return eleSealMultiplier
+    if skillType ~= xi.skill.ELEMENTAL_MAGIC then
+        return 1
+    end
+
+    if spellElement <= xi.element.NONE then
+        return 1
+    end
+
+    return 1 + caster:getMod(xi.mod.ENHANCES_ELEMENTAL_SEAL) / 100
 end
 
 -- Ebullience applies an entirely separate multiplier to Black Magic.
 xi.spells.damage.calculateEbullienceMultiplier = function(caster, spellGroup)
-    local ebullienceMultiplier = 1
-
-    if
-        caster:hasStatusEffect(xi.effect.EBULLIENCE) and
-        spellGroup == xi.magic.spellGroup.BLACK
-    then
-        ebullienceMultiplier = 1.2 + caster:getMod(xi.mod.EBULLIENCE_AMOUNT) / 100
-        caster:delStatusEffectSilent(xi.effect.EBULLIENCE)
+    if not caster:hasStatusEffect(xi.effect.EBULLIENCE) then
+        return 1
     end
 
-    return ebullienceMultiplier
+    if spellGroup ~= xi.magic.spellGroup.BLACK then
+        return 1
+    end
+
+    caster:delStatusEffectSilent(xi.effect.EBULLIENCE)
+
+    return 1.2 + caster:getMod(xi.mod.EBULLIENCE_AMOUNT) / 100
 end
 
 -- CUSTOM function supported in settings.
 xi.spells.damage.calculateSkillTypeMultiplier = function(skillType)
-    local skillTypeMultiplier = 1
-
     if skillType == xi.skill.ELEMENTAL_MAGIC then
-        skillTypeMultiplier = xi.settings.main.ELEMENTAL_POWER
+        return xi.settings.main.ELEMENTAL_POWER
     elseif skillType == xi.skill.DARK_MAGIC then
-        skillTypeMultiplier = xi.settings.main.DARK_POWER
+        return xi.settings.main.DARK_POWER
     elseif skillType == xi.skill.NINJUTSU then
-        skillTypeMultiplier = xi.settings.main.NINJUTSU_POWER
+        return xi.settings.main.NINJUTSU_POWER
     elseif skillType == xi.skill.DIVINE_MAGIC then
-        skillTypeMultiplier = xi.settings.main.DIVINE_POWER
+        return xi.settings.main.DIVINE_POWER
     end
 
-    return skillTypeMultiplier
+    return 1
 end
 
 xi.spells.damage.calculateNinSkillBonus = function(caster, spellId, skillType)
-    local ninSkillBonus = 1
+    if caster:getMainJob() ~= xi.job.NIN then
+        return 1
+    end
+
+    if skillType ~= xi.skill.NINJUTSU then
+        return 1
+    end
 
     local skillCaps =
     {
@@ -787,61 +788,61 @@ xi.spells.damage.calculateNinSkillBonus = function(caster, spellId, skillType)
         [3] = { 275, 500 },
     }
 
-    if skillType == xi.skill.NINJUTSU and caster:getMainJob() == xi.job.NIN then
-        -- Get spell tier.
-        local spellTier = 3
+    -- Get spell tier.
+    local spellTier = 3
 
-        if spellId % 3 == 2 then     -- Ichi nuke spell ids are 320, 323, 326, 329, 332, and 335
-            spellTier = 1
-        elseif spellId % 3 == 0 then -- Ni nuke spell ids are 1 more than their corresponding Ichi spell
-            spellTier = 2
-        end
-
-        -- Get skill bonus.
-        local skillLevel = utils.clamp(caster:getSkillLevel(xi.skill.NINJUTSU), skillCaps[spellTier][1], skillCaps[spellTier][2])
-        ninSkillBonus    = 1 + (skillLevel - skillCaps[spellTier][1]) / 200
+    if spellId % 3 == 2 then     -- Ichi nuke spell ids are 320, 323, 326, 329, 332, and 335
+        spellTier = 1
+    elseif spellId % 3 == 0 then -- Ni nuke spell ids are 1 more than their corresponding Ichi spell
+        spellTier = 2
     end
 
-    return ninSkillBonus
+    -- Get skill bonus.
+    local skillLevel = utils.clamp(caster:getSkillLevel(xi.skill.NINJUTSU), skillCaps[spellTier][1], skillCaps[spellTier][2])
+
+    return 1 + (skillLevel - skillCaps[spellTier][1]) / 200
 end
 
 xi.spells.damage.calculateNinFutaeBonus = function(caster, skillType)
-    local ninFutaeBonus = 1
-
-    if
-        skillType == xi.skill.NINJUTSU and
-        caster:hasStatusEffect(xi.effect.FUTAE)
-    then
-        ninFutaeBonus = 1.5 + caster:getJobPointLevel(xi.jp.FUTAE_EFFECT) / 20 + caster:getMod(xi.mod.ENHANCES_FUTAE) / 100
-        caster:delStatusEffect(xi.effect.FUTAE)
+    if not caster:hasStatusEffect(xi.effect.FUTAE) then
+        return 1
     end
 
-    return ninFutaeBonus
+    if skillType ~= xi.skill.NINJUTSU then
+        return 1
+    end
+
+    caster:delStatusEffect(xi.effect.FUTAE)
+
+    return 1.5 + caster:getMod(xi.mod.ENHANCES_FUTAE) / 100 + caster:getJobPointLevel(xi.jp.FUTAE_EFFECT) / 20
 end
 
 xi.spells.damage.calculateNinjutsuMultiplier = function(caster, target, skillType)
-    local ninjutsuMultiplier = 1
-
-    -- Ninjutsu damage multiplier from Innin.
-    if
-        skillType == xi.skill.NINJUTSU and
-        caster:hasStatusEffect(xi.effect.INNIN) and
-        caster:isBehind(target)
-    then
-        ninjutsuMultiplier = 1 + caster:getMod(xi.mod.NIN_NUKE_BONUS_INNIN) / 100
+    if not caster:hasStatusEffect(xi.effect.INNIN) then
+        return 1
     end
 
-    return ninjutsuMultiplier
+    if not caster:isBehind(target) then
+        return 1
+    end
+
+    if skillType ~= xi.skill.NINJUTSU then
+        return 1
+    end
+
+    return 1 + caster:getMod(xi.mod.NIN_NUKE_BONUS_INNIN) / 100
 end
 
 xi.spells.damage.calculateUndeadDivinePenalty = function(target, skillType)
-    local undeadDivinePenalty = 1
-
-    if target:isUndead() and skillType == xi.skill.DIVINE_MAGIC then
-        undeadDivinePenalty = 1.5
+    if not target:isUndead() then
+        return 1
     end
 
-    return undeadDivinePenalty
+    if skillType ~= xi.skill.DIVINE_MAGIC then
+        return 1
+    end
+
+    return 1.5
 end
 
 xi.spells.damage.calculateHelixMeritMultiplier = function(caster, spellId)
@@ -867,52 +868,81 @@ xi.spells.damage.calculateAreaOfEffectResistance = function(target, spell)
     return areaOfEffectMultiplier
 end
 
-xi.spells.damage.calculateNukeAbsorbOrNullify = function(target, spellElement)
-    local nukeAbsorbOrNullify = 1
-    local liementFactor       = target:checkLiementAbsorb(xi.damageType.ELEMENTAL + spellElement) -- Check for Liement.
+xi.spells.damage.calculateSpellActionTypeMultiplier = function(caster)
+    return 1 + caster:getMod(xi.mod.POWER_MULTIPLIER_SPELL) / 100
+end
 
+xi.spells.damage.calculateAbsorption = function(target, element, isMagic)
     -- Absobtion by liement.
+    local liementFactor = target:checkLiementAbsorb(xi.damageType.ELEMENTAL + element) -- Check for Liement.
     if liementFactor < 0 then
         return liementFactor
     end
 
-    -- Elemental damage.
-    local absorbElementModValue  = 0
-    local nullifyElementModValue = 0
-
-    if spellElement > xi.element.NONE then
-        absorbElementModValue  = target:getMod(xi.combat.element.getElementalAbsorptionModifier(spellElement))
-        nullifyElementModValue = target:getMod(xi.combat.element.getElementalNullificationModifier(spellElement))
+    -- Absorb: All damage.
+    if math.random(1, 100) <= target:getMod(xi.mod.ABSORB_DMG_CHANCE) then
+        return -1
     end
 
-    -- Calculate chance for spell absorption.
-    local absorbChance = math.random(1, 100)
+    -- Absorb: Magic damage.
     if
-        absorbChance <= target:getMod(xi.mod.ABSORB_DMG_CHANCE) or -- All damage.
-        absorbChance <= target:getMod(xi.mod.MAGIC_ABSORB) or      -- Magical damage.
-        absorbChance <= absorbElementModValue                      -- Element damage.
+        isMagic and
+        math.random(1, 100) <= target:getMod(xi.mod.MAGIC_ABSORB)
     then
-        nukeAbsorbOrNullify = -1
+        return -1
     end
 
-    -- Calculate chance for spell nullification.
-    local nullifyChance = math.random(1, 100)
+    -- Absorb: Element damage.
     if
-        nullifyChance <= target:getMod(xi.mod.NULL_DAMAGE) or         -- All damage.
-        nullifyChance <= target:getMod(xi.mod.NULL_MAGICAL_DAMAGE) or -- Magical damage.
-        nullifyChance <= nullifyElementModValue                       -- Element damage.
+        element > 0 and
+        math.random(1, 100) <= target:getMod(xi.data.element.getElementalAbsorptionModifier(element))
     then
-        nukeAbsorbOrNullify = 0
+        return -1
     end
 
-    return nukeAbsorbOrNullify
+    -- No absorption.
+    return 1
+end
+
+xi.spells.damage.calculateNullification = function(target, element, isMagic, isBreath)
+    -- Nullify: All damage.
+    if math.random(1, 100) <= target:getMod(xi.mod.NULL_DAMAGE) then
+        return 0
+    end
+
+    -- Nullify: Magic damage.
+    if
+        isMagic and
+        math.random(1, 100) <= target:getMod(xi.mod.NULL_MAGICAL_DAMAGE)
+    then
+        return 0
+    end
+
+    -- Nullify: Breath damage.
+    if
+        isBreath and
+        math.random(1, 100) <= target:getMod(xi.mod.NULL_BREATH_DAMAGE)
+    then
+        return 0
+    end
+
+    -- Nullify: Element damage.
+    if
+        element > 0 and
+        math.random(1, 100) <= target:getMod(xi.data.element.getElementalNullificationModifier(element))
+    then
+        return 0
+    end
+
+    -- No nullification.
+    return 1
 end
 
 xi.spells.damage.calculateIfMagicBurst = function(target, spellElement, skillchainCount)
     local magicBurst = 1 -- The variable we want to calculate
 
     if spellElement > xi.element.NONE then
-        local resistRank = target:getMod(xi.combat.element.getElementalResistanceRankModifier(spellElement))
+        local resistRank = target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement))
         local rankTable  = { 1.15, 0.85, 0.6, 0.5, 0.4, 0.15, 0.05 }
         local rankBonus  = 0
 
@@ -967,32 +997,29 @@ xi.spells.damage.calculateIfMagicBurstBonus = function(caster, target, spellId, 
 end
 
 -- Consecutive Elemental Damage Penalty. Most commonly known as "Nuke Wall".
-xi.spells.damage.calculateNukeWallFactor = function(target, spellElement, finalDamage)
-    local nukeWallFactor = 1
-
+local function calculateNukeWallFactor(target, spellElement, finalDamage)
     -- Initial check.
     if
         not target:isNM() or               -- Target is not an NM.
         spellElement <= xi.element.NONE or -- Action isn't elemental.
-        finalDamage < 0                    -- Action hals target.
+        finalDamage < 0                    -- Action heals target.
     then
-        return nukeWallFactor
+        return 1
     end
 
-    -- Calculate current effect potency and apply it to nukeWallFactor.
+    -----------------------------------
+    -- Fetch current wall potency and math based on time and Ruake
+    -----------------------------------
     local potency = 0
+    local effect  = target:getStatusEffect(xi.effect.NUKE_WALL)
 
-    if target:hasStatusEffect(xi.effect.NUKE_WALL) then
-        local effect = target:getStatusEffect(xi.effect.NUKE_WALL)
-
+    if effect then
         -- Current nuke wall effect.
-        if spellElement == effect:getSubPower() then
-            potency = effect:getPower()
+        potency = effect:getPower()
 
-            -- Effect potency is reduced by 20% after 1 second and remains stable for the remaining time, unless refreshed.
-            if effect:getTimeRemaining() <= 4000 then
-                potency = utils.clamp(potency - 2000, 0, 4000) -- Potency is reduced by 2000 (20%) after first second has happened. Can't go below 0.
-            end
+        -- Effect potency is reduced by 20% after 1 second and remains stable for the remaining time, unless refreshed.
+        if effect:getTimeRemaining() <= 4000 then
+            potency = utils.clamp(potency - 2000, 0, 4000) -- Potency is reduced by 2000 (20%) after first second has happened. Can't go below 0.
         end
 
         -- Rayke effect.
@@ -1014,18 +1041,22 @@ xi.spells.damage.calculateNukeWallFactor = function(target, spellElement, finalD
         target:delStatusEffectSilent(xi.effect.NUKE_WALL)
     end
 
-    nukeWallFactor = 1 - potency / 10000
-
+    -----------------------------------
+    -- Calculate new potency after this nuke and renew effect.
+    -----------------------------------
     -- Calculate damage needed to reach the potency cap (4000). The lower the level, the easier to hit potency cap.
     local damageCap = target:getMainLvl() * 21 + 500
 
-    -- Calculate final effect potency, dependant on damage dealt.
+    -- Calculate new potency, based on existing potency and damage dealt (compared to mob level).
     local finalPotency = utils.clamp(math.floor(4000 * finalDamage / damageCap) + potency, 0, 4000)
 
-    -- Renew status effect.
-    target:addStatusEffectEx(xi.effect.NUKE_WALL, 0, finalPotency, 0, 5, 0, spellElement)
+    -- Renew status effect without messages.
+    target:addStatusEffect(xi.effect.NUKE_WALL, { power = finalPotency, duration = 5, origin = target, icon = 0, subPower = spellElement })
 
-    return nukeWallFactor
+    -----------------------------------
+    -- We return JUST the factor based on previous nuke. This nuke only affects the next one.
+    -----------------------------------
+    return 1 - potency / 10000
 end
 
 -----------------------------------
@@ -1042,25 +1073,23 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     local statUsed     = pTable[spellId][column.STAT_USED]
     local bonusMacc    = pTable[spellId][column.BONUS_MACC] + cardinalChantBonus(caster, target, xi.direction.SOUTH, spellId, skillType)
 
-    -- Calculate damage absobtion or nullification.
-    local nukeAbsorbOrNullify = xi.spells.damage.calculateNukeAbsorbOrNullify(target, spellElement)
-
     -- Skip everything if we nullify the spell.
-    if nukeAbsorbOrNullify == 0 then
+    if xi.spells.damage.calculateNullification(target, spellElement, true, false) == 0 then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
 
         return 0
     end
 
     -- Skip resistances, magic damage adjustment (TMDA), magic burst and nuke-wall if we absorb the spell.
+    local absorb                      = xi.spells.damage.calculateAbsorption(target, spellElement, true)
     local resistTier                  = 1
     local targetMagicDamageAdjustment = 1
     local magicBurst                  = 1
     local magicBurstBonus             = 1
 
-    if nukeAbsorbOrNullify > 0 then
+    if absorb > 0 then
         resistTier                  = xi.combat.magicHitRate.calculateResistRate(caster, target, spellGroup, skillType, 0, spellElement, statUsed, 0, bonusMacc)
-        targetMagicDamageAdjustment = xi.spells.damage.calculateTMDA(target, spellElement)
+        targetMagicDamageAdjustment = xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false)
 
         -- If spell is NOT blue magic OR (if its blue magic AND has status effect)
         if
@@ -1069,7 +1098,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
             (caster:hasStatusEffect(xi.effect.BURST_AFFINITY) or
             caster:hasStatusEffect(xi.effect.AZURE_LORE)))
         then
-            local _, skillchainCount = xi.magicburst.formMagicBurst(spellElement, target) -- External function. Not present in magic.lua.
+            local _, skillchainCount = xi.magicburst.formMagicBurst(target, spellElement) -- External function. Not present in magic.lua.
 
             if skillchainCount > 0 then
                 magicBurst      = xi.spells.damage.calculateIfMagicBurst(target, spellElement, skillchainCount)
@@ -1095,14 +1124,15 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
 
     -- Calculate base damage and the rest of damage multipliers.
     local spellDamage               = xi.spells.damage.calculateBaseDamage(caster, target, spellId, spellGroup, skillType, statUsed)
-    local multipleTargetReduction   = xi.spells.damage.calculateMTDR(spell)
+    local multipleTargetReduction   = xi.spells.damage.calculateMTDR(caster, spell)
     local elementalStaffBonus       = xi.spells.damage.calculateElementalStaffBonus(caster, spellElement)
     local elementalAffinityBonus    = xi.spells.damage.calculateElementalAffinityBonus(caster, spellElement)
     local additionalResistTier      = xi.spells.damage.calculateAdditionalResistTier(caster, target, spellElement)
-    local sdt                       = xi.spells.damage.calculateSDT(target, spellElement)
+    local sdt                       = xi.combat.damage.magicalElementSDT(target, spellElement)
     local dayAndWeather             = xi.spells.damage.calculateDayAndWeather(caster, spellElement, forceDayWeatherBonus)
-    local magicBonusDiff            = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement)
-    local divineSealMultiplier      = xi.spells.damage.calculateDivineSealMultiplier(caster, skillType)
+    local magicBonusDiff            = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement, 0)
+    local criticalDamageMultiplier  = xi.spells.damage.calculateMagicCriticalMultiplier(caster)
+    local divineSealMultiplier      = xi.spells.damage.calculateDivineSealMultiplier(caster, target, skillType)
     local divineEmblemMultiplier    = xi.spells.damage.calculateDivineEmblemMultiplier(caster, skillType)
     local eleSealMultiplier         = xi.spells.damage.calculateEnhancedElementalSealMultiplier(caster, skillType, spellElement)
     local ebullienceMultiplier      = xi.spells.damage.calculateEbullienceMultiplier(caster, spellGroup)
@@ -1114,6 +1144,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     local scarletDeliriumMultiplier = xi.combat.damage.scarletDeliriumMultiplier(caster)
     local helixMeritMultiplier      = xi.spells.damage.calculateHelixMeritMultiplier(caster, spellId)
     local areaOfEffectResistance    = xi.spells.damage.calculateAreaOfEffectResistance(target, spell)
+    local actionTypeMultiplier      = xi.spells.damage.calculateSpellActionTypeMultiplier(caster)
 
     -- Calculate finalDamage. It MUST be floored after EACH multiplication.
     finalDamage = math.floor(spellDamage * multipleTargetReduction)
@@ -1124,6 +1155,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * additionalResistTier)
     finalDamage = math.floor(finalDamage * dayAndWeather)
     finalDamage = math.floor(finalDamage * magicBonusDiff)
+    finalDamage = math.floor(finalDamage * criticalDamageMultiplier)
     finalDamage = math.floor(finalDamage * targetMagicDamageAdjustment)
     finalDamage = math.floor(finalDamage * divineSealMultiplier)
     finalDamage = math.floor(finalDamage * divineEmblemMultiplier)
@@ -1137,15 +1169,14 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * scarletDeliriumMultiplier)
     finalDamage = math.floor(finalDamage * helixMeritMultiplier)
     finalDamage = math.floor(finalDamage * areaOfEffectResistance)
-    finalDamage = math.floor(finalDamage * nukeAbsorbOrNullify)
+    finalDamage = math.floor(finalDamage * actionTypeMultiplier)
+    finalDamage = math.floor(finalDamage * absorb)
     finalDamage = math.floor(finalDamage * magicBurst)
     finalDamage = math.floor(finalDamage * magicBurstBonus)
 
     -- Handle "Nuke Wall". It must be handled after all previous calculations, but before clamp.
-    if nukeAbsorbOrNullify > 0 then
-        local nukeWallFactor = xi.spells.damage.calculateNukeWallFactor(target, spellElement, finalDamage)
-        finalDamage          = math.floor(finalDamage * nukeWallFactor)
-    end
+    local nukeWallFactor = calculateNukeWallFactor(target, spellElement, finalDamage)
+    finalDamage          = math.floor(finalDamage * nukeWallFactor)
 
     -- Handle Magic Absorb message and HP recovery.
     if finalDamage < 0 then
@@ -1156,9 +1187,9 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     end
 
     -- Handle Phalanx, One for All, Stoneskin.
-    finalDamage = utils.clamp(finalDamage - target:getMod(xi.mod.PHALANX), 0, 99999)
-    finalDamage = utils.clamp(utils.oneforall(target, finalDamage), 0, 99999)
-    finalDamage = utils.clamp(utils.stoneskin(target, finalDamage), -99999, 99999)
+    finalDamage = utils.clamp(utils.handlePhalanx(target, finalDamage), 0, 99999)
+    finalDamage = utils.clamp(utils.handleOneForAll(target, finalDamage), 0, 99999)
+    finalDamage = utils.clamp(utils.handleStoneskin(target, finalDamage), -99999, 99999)
 
     -- Handle final adjustments. Most are located in core. TODO: Decide if we want core handling this.
     -- Check if the mob has a damage cap

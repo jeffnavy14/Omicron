@@ -1,7 +1,7 @@
 -----------------------------------
---  Cold Wave
---  Description: Deals ice damage that lowers Agility and gradually reduces HP of enemies within range.
---  Type: Magical (Ice)
+-- Cold Wave
+-- Family: Bombs (Snolls)
+-- Description: Inflicts Frost effect that lowers Agility and gradually reduces HP of enemies within range.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,17 +10,14 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local damage = mob:getWeaponDmg() * 2.8
-    local power  = mob:getMainLvl() / 5 * 0.6 + 6
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    -- TODO: Capture possible scaling
+    -- Jimmayus spreadsheet states 14-15HP/tick. Might scale with level.
+    -- local power  = mob:getMainLvl() / 5 * 0.6 + 6
 
-    damage = xi.mobskills.mobMagicalMove(mob, target, skill, damage, xi.element.ICE, 1, xi.mobskills.magicalTpBonus.NO_EFFECT)
-    damage = xi.mobskills.mobFinalAdjustments(damage, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.ICE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    skill:setMsg(xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.FROST, 14, 3, 60))
 
-    target:takeDamage(damage, mob, xi.attackType.MAGICAL, xi.damageType.ICE)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.FROST, power, 3, 60)
-
-    return damage
+    return xi.effect.FROST
 end
 
 return mobskillObject

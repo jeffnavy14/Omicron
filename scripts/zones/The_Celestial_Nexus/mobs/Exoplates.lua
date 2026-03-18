@@ -16,13 +16,14 @@ end
 entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.REGAIN, 100)                -- When left alone, still uses TP moves.
     mob:setMod(xi.mod.DESPAWN_TIME_REDUCTION, 15) -- Fast despawn.
+    mob:setMod(xi.mod.MDEF, 50)
+    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 40)
     mob:setMobMod(xi.mobMod.SKILL_LIST, 2057)     -- Default skill list.
     mob:setAnimationSub(0)
     mob:setAutoAttackEnabled(false)
     mob:setUnkillable(true) -- Death is scripted.
 end
 
--- TODO: HP shield similar to !immortal, but for HP values different than 1.
 entity.onMobFight = function(mob, target)
     -- Early return: Entity can't act.
     if
@@ -46,7 +47,7 @@ entity.onMobFight = function(mob, target)
 end
 
 -- Note: This mobskills aren't in any skill list, and shouldn't be. Their use is 100% scripted.
-entity.onMobWeaponSkill = function(target, mob, skill)
+entity.onMobWeaponSkill = function(mob, target, skill, action)
     local skillId = skill:getID()
 
     -- First phase end.

@@ -58,9 +58,18 @@ local function handleZoneIn(player, prevZone)
         local zone    = player:getZone(true)
         local weather = zone:getWeather()
 
+        -- Exception: Handle Sunshine weather as weather ID 0 (NONE) for the time being.
+        if weather == xi.weather.SUNSHINE then
+            weather = xi.weather.NONE
+        end
+
+        -- Store weather in a local var just in case weather changes in this few seconds.
+        player:setLocalVar('Weather', weather)
+
+        -- Fetch weather element if it's a valid element.
         if validWeatherTable[weather] then
             local lightBitMask = quest:getVar(player, 'Light')
-            local element      = xi.combat.element.getWeatherElement(weather)
+            local element      = xi.data.element.getWeatherElement(weather)
             if not utils.mask.getBit(lightBitMask, element) then
                 return zoneEventTable[zone:getID()][1]
             end
@@ -69,7 +78,7 @@ local function handleZoneIn(player, prevZone)
 end
 
 local function handleEventUpdate(player, csid, option, npc)
-    local weather      = player:getZone():getWeather()
+    local weather      = player:getLocalVar('Weather')
     local lightBitMask = quest:getVar(player, 'Light')
     local lightCounter = 0
 
@@ -79,8 +88,9 @@ local function handleEventUpdate(player, csid, option, npc)
         end
     end
 
-    -- If this is the last one.
-    if lightCounter >= 6 then
+    -- Note: You will only count 6 by triggering the 7th (last) light.
+    -- The client expects a 6 in event update when triggering the last light.
+    if lightCounter == 6 then
         quest:setVar(player, 'Prog', 1)
     end
 
@@ -88,11 +98,11 @@ local function handleEventUpdate(player, csid, option, npc)
 end
 
 local function handleEventFinish(player, csid, option, npc)
-    local weather      = player:getZone():getWeather()
-    local lightBitMask = quest:getVar(player, 'Light')
-    local element      = xi.combat.element.getWeatherElement(weather)
+    local weather      = player:getLocalVar('Weather')
+    local element      = xi.data.element.getWeatherElement(weather)
+    local lightBitMask = utils.mask.setBit(quest:getVar(player, 'Light'), element, true)
 
-    quest:setVar(player, 'Light', utils.mask.setBit(lightBitMask, element, true))
+    quest:setVar(player, 'Light', lightBitMask)
 end
 
 quest.reward =

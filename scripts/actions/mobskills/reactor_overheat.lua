@@ -1,30 +1,34 @@
 -----------------------------------
---  Reactor Overheat
---  Zedi, while in Animation form 3 (Rings)
---  Blinkable 1-3 hit, addtional effect Plague on hit.
+-- Reactor Overheat
+-- Family: Zedi, while in Animation form 3 (Rings)
+-- Description: Deals Fire damage to targets in front of mob. Addtional Effect: Plague
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    if mob:getAnimationSub() ~= 3 then
-        return 1
-    end
-
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local numhits = 2
-    local accmod = 1
-    local ftp    = 1
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, numhits, accmod, ftp, 0, 1, 2, 3)
-    local dmg = xi.mobskills.mobFinalAdjustments(info.dmg, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.FIRE, info.hitslanded)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    xi.mobskills.mobPhysicalStatusEffectMove(mob, target, skill, xi.effect.PLAGUE, 1, 0, 60)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 1.0, 1.5, 2.0 }
+    params.element        = xi.element.FIRE
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.FIRE
+    params.shadowBehavior = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    target:takeDamage(dmg, mob, xi.attackType.MAGICAL, xi.damageType.FIRE)
-    return dmg
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PLAGUE, 5, 3, math.random(30, 60))
+    end
+
+    return info.damage
 end
 
 return mobskillObject

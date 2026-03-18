@@ -26,13 +26,15 @@
 
 namespace
 {
-    auto appConfig() -> ApplicationConfig
-    {
-        return ApplicationConfig{
-            .serverName = "search",
-            .arguments  = {},
-        };
-    }
+
+auto appConfig() -> ApplicationConfig
+{
+    return ApplicationConfig{
+        .serverName = "search",
+        .arguments  = {},
+    };
+}
+
 } // namespace
 
 SearchApplication::SearchApplication(const int argc, char** argv)
@@ -44,7 +46,7 @@ SearchApplication::~SearchApplication() = default;
 
 auto SearchApplication::createEngine() -> std::unique_ptr<Engine>
 {
-    return std::make_unique<SearchEngine>(ioContext());
+    return std::make_unique<SearchEngine>(scheduler_);
 }
 
 void SearchApplication::registerCommands(ConsoleService& console)
@@ -64,5 +66,5 @@ void SearchApplication::registerCommands(ConsoleService& console)
 void SearchApplication::requestExit()
 {
     Application::requestExit();
-    io_context_.stop();
+    scheduler_.stop();
 }

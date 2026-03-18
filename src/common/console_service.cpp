@@ -108,27 +108,20 @@ bool getLine(std::string& line)
 
 ConsoleService::ConsoleService(Application& application)
 : application_(application)
-, m_consoleThreadRun(true)
 {
     registerDefaultCommands();
 
-    if (application_.isRunningInCI())
+    if (!application_.isRunningInCI())
     {
-        return;
+        run();
     }
-
-    run();
 }
 
-ConsoleService::~ConsoleService()
-{
-    m_consoleThreadRun = false;
-    m_consoleStopCondition.notify_all();
-}
+ConsoleService::~ConsoleService() = default;
 
 // NOTE: If you capture things in this function, make sure they're protected (locked or atomic)!
 // NOTE: If you're going to print, use fmt::print, rather than ShowInfo etc.
-void ConsoleService::registerCommand(std::string const& name, std::string const& description, std::function<void(std::vector<std::string>&)> func)
+void ConsoleService::registerCommand(const std::string& name, const std::string& description, std::function<void(std::vector<std::string>&)> func)
 {
     std::lock_guard<std::mutex> lock(m_consoleInputBottleneck);
 
@@ -137,146 +130,171 @@ void ConsoleService::registerCommand(std::string const& name, std::string const&
 
 void ConsoleService::registerDefaultCommands()
 {
-    // clang-format off
-    registerCommand("help", "Print a list of available console commands",
-    [this](std::vector<std::string>& inputs)
-    {
-        fmt::print("> Available commands:\n");
-        for (auto& [name, command] : m_commands)
+    registerCommand(
+        "help", "Print a list of available console commands", [this](std::vector<std::string>& inputs)
         {
-            fmt::print("> {} : {}\n", command.name, command.description);
-        }
-    });
+            fmt::print("> Available commands:\n");
+            for (auto& [name, command] : m_commands)
+            {
+                fmt::print("> {} : {}\n", command.name, command.description);
+            }
+        });
 
-    registerCommand("version", "Print the application version",
-    [](std::vector<std::string>& inputs)
-    {
-        fmt::print("> Application branch: {}\n", version::GetVersionString());
-    });
-
-    registerCommand("tasks", "Show the current amount of tasks registered to the application task manager",
-    [](std::vector<std::string>& inputs)
-    {
-        fmt::print("> tasks registered to the application task manager: {}\n", CTaskManager::getInstance()->getTaskList().size());
-    });
-
-    registerCommand("reload_settings", "Reload settings files",
-    [](std::vector<std::string>& inputs)
-    {
-        fmt::print("Reloading settings files\n");
-        settings::init();
-    });
-
-    registerCommand("log_level", "Set the maximum log level to be displayed (available: 0: trace, 1: debug, 2: info, 3: warn)",
-    [](std::vector<std::string>& inputs)
-    {
-        if (inputs.size() >= 2)
+    registerCommand(
+        "version", "Print the application version", [](std::vector<std::string>& inputs)
         {
-            std::vector<std::string> names = { "trace", "debug", "info", "warn" };
-            auto level = std::clamp<uint8>(stoi(inputs[1]), 0, 3);
-            spdlog::set_level(static_cast<spdlog::level::level_enum>(level));
-            fmt::print("> Log level set to: {} ({})\n", level, names[level]);
-        }
-        else
+            fmt::print("> Application branch: {}\n", version::GetVersionString());
+        });
+
+    registerCommand(
+        "tasks", "Show the current amount of tasks registered to the application task manager", [](std::vector<std::string>& inputs)
         {
-            fmt::print("> Invalid inputs.\n");
-        }
-    });
+            fmt::print("> tasks registered to the application task manager: {}\n", CTaskManager::getInstance()->getTaskList().size());
+        });
 
-    registerCommand("lua", "Provides a Lua REPL",
-    [](std::vector<std::string>& inputs)
-    {
-        if (inputs.size() >= 2)
+    registerCommand(
+        "reload_settings", "Reload settings files", [](std::vector<std::string>& inputs)
         {
-            // Remove "lua" from the front of the inputs
-            inputs = std::vector<std::string>(inputs.begin() + 1, inputs.end());
+            fmt::print("Reloading settings files\n");
+            settings::init();
+        });
 
-            auto input = fmt::format("local var = {}; if type(var) ~= \"nil\" then print(var) end", fmt::join(inputs, " "));
+    registerCommand(
+        "log_level", "Set the maximum log level to be displayed (available: 0: trace, 1: debug, 2: info, 3: warn)", [](std::vector<std::string>& inputs)
+        {
+            if (inputs.size() >= 2)
+            {
+                std::vector<std::string> names = { "trace", "debug", "info", "warn" };
+                auto                     level = std::clamp<uint8>(stoi(inputs[1]), 0, 3);
+                spdlog::set_level(static_cast<spdlog::level::level_enum>(level));
+                fmt::print("> Log level set to: {} ({})\n", level, names[level]);
+            }
+            else
+            {
+                fmt::print("> Invalid inputs.\n");
+            }
+        });
 
-            // TODO: Make sure to execute on the main thread
-            lua.safe_script(input);
-        }
-    });
+    registerCommand(
+        "lua", "Provides a Lua REPL", [](std::vector<std::string>& inputs)
+        {
+            if (inputs.size() >= 2)
+            {
+                // Remove "lua" from the front of the inputs
+                inputs = std::vector<std::string>(inputs.begin() + 1, inputs.end());
 
-    registerCommand("crash", "Crash the process",
-    [](std::vector<std::string>& inputs)
-    {
-        // TODO: Make sure to execute on the main thread
-        crash();
-    });
+                auto input = fmt::format("local var = {}; if type(var) ~= \"nil\" then print(var) end", fmt::join(inputs, " "));
 
-    registerCommand("throw", "Throw an exception",
-    [](std::vector<std::string>& inputs)
-    {
-        // TODO: Make sure to execute on the main thread
-        throw std::runtime_error("Exception thrown from console command");
-    });
+                lua.safe_script(input);
+            }
+        });
 
-    registerCommand("exit", "Request application exit",
-    [&](std::vector<std::string>& inputs)
-    {
-        application_.requestExit();
-        fmt::print("> Goodbye!");
-    });
-    // clang-format on
+    registerCommand(
+        "crash", "Crash the process (main thread)", [](std::vector<std::string>& inputs)
+        {
+            crash();
+        });
+
+    registerCommand(
+        "crash_worker", "Crash the process (worker thread)", [&](std::vector<std::string>& inputs)
+        {
+            application_.scheduler().postToWorkerThread(
+                []
+                {
+                    crash();
+                });
+        });
+
+    registerCommand(
+        "throw", "Throw an exception", [](std::vector<std::string>& inputs)
+        {
+            throw std::runtime_error("Exception thrown from console command (on main thread)");
+        });
+
+    registerCommand(
+        "exit", "Request application exit", [&](std::vector<std::string>& inputs)
+        {
+            application_.requestExit();
+            fmt::print("> Goodbye!");
+        });
 }
 
 void ConsoleService::run()
 {
-    // clang-format off
-    bool attached = isatty(0);
-    if (attached)
+    if (isatty(0))
     {
-        m_consoleInputThread = nonstd::jthread([&]()
+        application_.scheduler().postToWorkerThread(consoleLoop());
+    }
+}
+
+auto ConsoleService::consoleLoop() -> Task<void>
+{
+    auto& scheduler = application_.scheduler();
+
+    std::string line;
+
+    while (!scheduler.closeRequested())
+    {
+        // If there is data, process as much as possible before yielding.
+        // This removes the 50ms delay between every single keystroke.
+        bool hasLine = false;
+        while (stdinHasData())
         {
-            std::string line;
-
-            const auto predicate = [&]{ return !m_consoleThreadRun; };
-
-            while (!predicate())
+            if (getLine(line))
             {
-                std::unique_lock<std::mutex> lock(m_consoleInputBottleneck);
+                hasLine = true;
+                break; // We have a full command to process
+            }
+        }
 
-                // https://en.cppreference.com/w/cpp/thread/condition_variable/wait_for
-                if (!m_consoleStopCondition.wait_for(lock, 50ms, predicate))
+        if (hasLine)
+        {
+            std::istringstream       stream(line);
+            std::string              part;
+            std::vector<std::string> inputs;
+
+            while (stream >> part)
+            {
+                for (auto& s : split(part))
                 {
-                    if (!getLine(line))
-                    {
-                        continue;
-                    }
-
-                    std::istringstream stream(line);
-                    std::string        input;
-
-                    std::vector<std::string> inputs;
-                    while (stream >> input)
-                    {
-                        for (auto& part : split(input))
-                        {
-                            inputs.emplace_back(part);
-                        }
-                    }
-
-                    if (!inputs.empty())
-                    {
-                        TracyZoneScoped;
-
-                        auto entry = m_commands.find(inputs[0]);
-                        if (entry != m_commands.end())
-                        {
-                            // TODO: Execute this on the main thread, not the worker thread
-                            entry->second.func(inputs);
-                        }
-                        else
-                        {
-                            fmt::print(fmt::runtime("> Unknown command: {}\n"), inputs[0]);
-                        }
-                    }
-
-                    line = std::string();
+                    inputs.emplace_back(s);
                 }
             }
-        });
+
+            if (!inputs.empty())
+            {
+                TracyZoneScoped;
+
+                auto it = m_commands.find(inputs[0]);
+                if (it != m_commands.end())
+                {
+                    // Dispatch to main thread
+                    scheduler.postToMainThread(
+                        [cmd = it->second.func, args = std::move(inputs)]() mutable
+                        {
+                            try
+                            {
+                                cmd(args);
+                            }
+                            catch (const std::exception& e)
+                            {
+                                fmt::print(stderr, "> Command error: {}\n", e.what());
+                            }
+                        });
+                }
+                else
+                {
+                    fmt::print("> Unknown command: {}\n", inputs[0]);
+                }
+            }
+            line.clear();
+
+            // Immediately check for more input without yielding
+            // if we just processed a line.
+            continue;
+        }
+
+        // Yield only when there is no data to process.
+        co_await scheduler.yieldFor(100ms);
     }
-    // clang-format on
 }

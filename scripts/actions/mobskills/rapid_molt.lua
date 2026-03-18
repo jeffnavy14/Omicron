@@ -20,10 +20,15 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 1
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     mob:eraseAllStatusEffect()
 
-    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.REGEN, 10, 3, 180))
+    skill:setMsg(xi.mobskills.mobBuffMove(mob, xi.effect.REGEN, 40, 3, 30))
+
+    local effect = mob:getStatusEffect(xi.effect.REGEN)
+    if effect then
+        effect:delEffectFlag(xi.effectFlag.DISPELABLE)
+    end
 
     return xi.effect.REGEN
 end

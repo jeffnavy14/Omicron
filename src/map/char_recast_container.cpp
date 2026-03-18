@@ -22,8 +22,8 @@
 #include "char_recast_container.h"
 #include "entities/charentity.h"
 #include "item_container.h"
-#include "packets/inventory_finish.h"
-#include "packets/inventory_item.h"
+#include "packets/s2c/0x01d_item_same.h"
+#include "packets/s2c/0x020_item_attr.h"
 
 /************************************************************************
  *                                                                       *
@@ -47,14 +47,17 @@ CCharRecastContainer::CCharRecastContainer(CCharEntity* PChar)
  *                                                                       *
  ************************************************************************/
 
-void CCharRecastContainer::Add(RECASTTYPE type, uint16 id, timer::duration duration, timer::duration chargeTime, uint8 maxCharges)
+void CCharRecastContainer::Add(RECASTTYPE type, const Recast id, timer::duration duration, timer::duration chargeTime, uint8 maxCharges)
 {
     Recast_t* recast = Load(type, id, duration, chargeTime, maxCharges);
 
     if (type == RECAST_ABILITY)
     {
         db::preparedStmt("REPLACE INTO char_recast VALUES (?, ?, ?, ?)",
-                         m_PChar->id, recast->ID, earth_time::timestamp(timer::to_utc(recast->TimeStamp)), static_cast<uint32>(timer::count_seconds(recast->RecastTime)));
+                         m_PChar->id,
+                         recast->ID,
+                         earth_time::timestamp(timer::to_utc(recast->TimeStamp)),
+                         static_cast<uint32>(timer::count_seconds(recast->RecastTime)));
     }
 }
 
@@ -79,7 +82,7 @@ void CCharRecastContainer::Del(RECASTTYPE type)
  *                                                                       *
  ************************************************************************/
 
-void CCharRecastContainer::Del(RECASTTYPE type, uint16 id)
+void CCharRecastContainer::Del(RECASTTYPE type, Recast id)
 {
     CRecastContainer::Del(type, id);
     db::preparedStmt("DELETE FROM char_recast WHERE charid = ? AND id = ?", m_PChar->id, id);
@@ -131,7 +134,7 @@ void CCharRecastContainer::ChangeJob()
     PRecastList->erase(std::remove_if(PRecastList->begin(), PRecastList->end(),
     [](auto& recast)
     {
-        return recast.ID != 0;
+        return recast.ID != Recast::Special && recast.ID != Recast::Special2;
     }), PRecastList->end());
     // clang-format on
 
@@ -170,13 +173,13 @@ void CCharRecastContainer::Check()
             {
                 if (type == RECAST_ITEM)
                 {
-                    auto   id          = recast->ID;
+                    auto   id          = static_cast<uint16_t>(recast->ID);
                     uint8  slotID      = (id >> 8) & 0xFF;
                     uint8  containerID = id & 0xFF;
                     CItem* PItem       = m_PChar->getStorage(containerID)->GetItem(slotID);
 
-                    m_PChar->pushPacket<CInventoryItemPacket>(PItem, containerID, slotID);
-                    m_PChar->pushPacket<CInventoryFinishPacket>();
+                    m_PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(containerID), slotID);
+                    m_PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(m_PChar);
                 }
                 if (type == RECAST_ITEM || type == RECAST_MAGIC || type == RECAST_LOOT)
                 {

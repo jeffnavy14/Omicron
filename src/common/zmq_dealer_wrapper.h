@@ -26,9 +26,9 @@
 
 #include <atomic>
 #include <memory>
+#include <thread>
 
 #include <concurrentqueue.h>
-#include <nonstd/jthread.hpp>
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
 
@@ -74,8 +74,6 @@ class ZMQDealerWrapper final
         {
             while (!requestExit_)
             {
-                TracyZoneScoped;
-
                 zmq::message_t msg;
                 try
                 {
@@ -121,6 +119,7 @@ public:
     , thread_(
           [this, endpoint, routingId]()
           {
+              TracySetThreadName("ZMQ Dealer");
               ZMQWorker worker(requestExit_, incomingQueue_, outgoingQueue_, endpoint, routingId);
           })
     {
@@ -137,5 +136,5 @@ public:
 
 private:
     std::atomic<bool> requestExit_;
-    nonstd::jthread   thread_;
+    std::jthread      thread_;
 };

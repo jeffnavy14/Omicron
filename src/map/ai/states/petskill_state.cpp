@@ -20,13 +20,16 @@
 */
 
 #include "petskill_state.h"
+#include "action/action.h"
+#include "action/interrupts.h"
 #include "ai/ai_container.h"
 #include "enmity_container.h"
 #include "entities/petentity.h"
-#include "packets/action.h"
+#include "packets/s2c/0x028_battle2.h"
 #include "petskill.h"
 #include "status_effect_container.h"
 #include "utils/battleutils.h"
+#include "utils/petutils.h"
 
 CPetSkillState::CPetSkillState(CPetEntity* PEntity, uint16 targid, uint16 wsid)
 : CState(PEntity, targid)
@@ -64,31 +67,31 @@ CPetSkillState::CPetSkillState(CPetEntity* PEntity, uint16 targid, uint16 wsid)
 
     if (m_castTime > 0s)
     {
-        action_t action;
-        action.id         = m_PEntity->id;
-        action.actiontype = ACTION_WEAPONSKILL_START;
+        action_t action{
+            .actorId    = m_PEntity->id,
+            .actiontype = ActionCategory::SkillStart,
+            .actionid   = static_cast<uint32_t>(FourCC::SkillUse),
+            .targets    = {
+                {
+                       .actorId = PTarget->id,
+                       .results = {
+                        {
+                               .param     = m_PSkill->getMobSkillID() > 0 ? m_PSkill->getMobSkillID() : m_PSkill->getID(),
+                               .messageID = m_PSkill->getMobSkillID() > 0 ? MsgBasic::ReadiesWeaponskill : MsgBasic::ReadiesSkill,
+                        },
+                    },
+                },
+            },
+        };
 
-        actionList_t& actionList  = action.getNewActionList();
-        actionList.ActionTargetID = PTarget->id;
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_BATTLE2>(action));
 
-        actionTarget_t& actionTarget = actionList.getNewActionTarget();
-
-        actionTarget.reaction   = REACTION::NONE;
-        actionTarget.speceffect = SPECEFFECT::NONE;
-        if (m_PSkill->getMobSkillID() > 0)
+        // Wyverns immediately emit a skill interrupt packet.
+        // This looks like a hack but is retail accurate.
+        if (PEntity->m_PetID == PETID_WYVERN && PEntity->getMod(Mod::WYVERN_SHOW_READYING) == 0)
         {
-            actionTarget.animation = 94;
-            actionTarget.param     = m_PSkill->getMobSkillID();
-            actionTarget.messageID = 43; // Seems hardcoded for all jug pet skills that finish as a mob skill
+            ActionInterrupts::WyvernSkillReady(PEntity);
         }
-        else
-        {
-            actionTarget.animation = 0;
-            actionTarget.param     = m_PSkill->getID();
-            actionTarget.messageID = 326; // Seems hardcoded? TODO: Verify on more pet actions. Tested on Wyvern and SMN BPs.
-        }
-
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE, std::make_unique<CActionPacket>(action));
     }
     m_PEntity->PAI->EventHandler.triggerListener("WEAPONSKILL_STATE_ENTER", m_PEntity, m_PSkill->getID());
     SpendCost();
@@ -110,22 +113,39 @@ void CPetSkillState::SpendCost()
 
 bool CPetSkillState::Update(timer::time_point tick)
 {
+    // Reset the state for the current skill attempt
+    m_skillSuccess = false;
+
     if (m_PEntity && m_PEntity->isAlive() && (tick > GetEntryTime() + m_castTime && !IsCompleted()))
     {
-        action_t action;
+        action_t action{};
         m_PEntity->OnPetSkillFinished(*this, action);
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<CActionPacket>(action));
+        // Only send packet if action was populated (e.g. interrupts return early)
+        if (!action.targets.empty())
+        {
+            m_skillSuccess = true;
+            m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE2>(action));
+        }
         m_finishTime = tick + m_PSkill->getAnimationTime();
         Complete();
     }
+
+    if (!m_PEntity)
+    {
+        ShowError("CPetSkillState: m_Pentity is nullptr");
+        return false;
+    }
+
     if (IsCompleted() && tick > m_finishTime)
     {
         auto* PTarget = GetTarget();
-        if (PTarget && PTarget->objtype == TYPE_MOB && PTarget != m_PEntity && m_PEntity->allegiance == ALLEGIANCE_TYPE::PLAYER)
+        if (m_skillSuccess && PTarget && PTarget->objtype == TYPE_MOB && PTarget != m_PEntity && m_PEntity->allegiance != PTarget->allegiance)
         {
-            static_cast<CMobEntity*>(PTarget)->PEnmityContainer->UpdateEnmity(m_PEntity, 0, 0);
+            // This generates enmity for the master when using a pet skill, excluding Automatons.
+            // All player pets will generate base enmity for the master, which is retail accurate.
+            bool withMaster = m_PEntity->objtype == TYPE_PET;
+            static_cast<CMobEntity*>(PTarget)->PEnmityContainer->UpdateEnmity(m_PEntity, 0, 0, withMaster);
         }
-        m_PEntity->PAI->EventHandler.triggerListener("WEAPONSKILL_STATE_EXIT", m_PEntity, m_PSkill->getID());
 
         if (m_PEntity->objtype == TYPE_PET && m_PEntity->PMaster && m_PEntity->PMaster->objtype == TYPE_PC && (m_PSkill->isBloodPactRage() || m_PSkill->isBloodPactWard()))
         {
@@ -138,6 +158,19 @@ bool CPetSkillState::Update(timer::time_point tick)
                 power += levelGained;
                 PSummoner->StatusEffectContainer->GetStatusEffect(EFFECT_AVATARS_FAVOR)->SetPower(power > 11 ? power : 11);
             }
+
+            if (PTarget && m_PEntity->getPetType() == PET_TYPE::AVATAR && (m_PEntity->m_PetID != PETID_ALEXANDER && m_PEntity->m_PetID != PETID_ATOMOS))
+            {
+                auto* PBattleTarget = dynamic_cast<CBattleEntity*>(PTarget);
+                if (PBattleTarget &&
+                    PBattleTarget->isAlive() &&
+                    PBattleTarget->objtype == TYPE_MOB &&
+                    PBattleTarget->allegiance != m_PEntity->allegiance)
+                {
+                    // Re-engage the target after blood pact
+                    m_PEntity->PAI->Engage(PTarget->targid);
+                }
+            }
         }
         return true;
     }
@@ -146,20 +179,32 @@ bool CPetSkillState::Update(timer::time_point tick)
 
 void CPetSkillState::Cleanup(timer::time_point tick)
 {
-    if (m_PEntity && m_PEntity->isAlive() && !IsCompleted())
+    if (!m_PEntity)
     {
-        action_t action;
-        action.id         = m_PEntity->id;
-        action.actiontype = ACTION_MOBABILITY_INTERRUPT;
-        action.actionid   = 28787;
+        return;
+    }
 
-        actionList_t& actionList  = action.getNewActionList();
-        actionList.ActionTargetID = m_PEntity->id;
+    // Interrupted.
+    if (!IsCompleted())
+    {
+        ActionInterrupts::AbilityInterrupt(m_PEntity);
+    }
 
-        actionTarget_t& actionTarget = actionList.getNewActionTarget();
-        actionTarget.animation       = 0x1FC; // Not perfectly accurate, this animation ID can change from time to time for unknown reasons.
-        actionTarget.reaction        = REACTION::HIT;
+    // Not interrupted.
+    else
+    {
+        if (m_PEntity->isAlive() && m_PSkill->getFinalAnimationSub().has_value())
+        {
+            m_PEntity->animationsub = m_PSkill->getFinalAnimationSub().value();
+            m_PEntity->updatemask |= UPDATE_COMBAT;
+        }
 
-        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE, std::make_unique<CActionPacket>(action));
+        // luautils::OnMobSkillFinalize(m_PEntity, m_PSkill.get());
+    }
+
+    // Call listener. Feed skill result.
+    if (m_PEntity->isAlive())
+    {
+        m_PEntity->PAI->EventHandler.triggerListener("WEAPONSKILL_STATE_EXIT", m_PEntity, m_PSkill->getID(), IsCompleted());
     }
 }

@@ -26,9 +26,9 @@
 
 #include <atomic>
 #include <memory>
+#include <thread>
 
 #include <concurrentqueue.h>
-#include <nonstd/jthread.hpp>
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
 
@@ -78,8 +78,6 @@ class ZMQRouterWrapper final
         {
             while (!requestExit_)
             {
-                TracyZoneScoped;
-
                 // Since we are a zmq::socket_type::router, we expect a multipart message:
                 // [routing id (IPP), message]
                 std::array<zmq::message_t, 2> msgs;
@@ -140,7 +138,7 @@ public:
     , thread_(
           [this, endpoint]()
           {
-              TracySetThreadName("Message Server (ZMQ)");
+              TracySetThreadName("ZMQ Router");
               ZMQWorker worker(requestExit_, incomingQueue_, outgoingQueue_, endpoint);
           })
     {
@@ -157,5 +155,5 @@ public:
 
 private:
     std::atomic<bool> requestExit_;
-    nonstd::jthread   thread_;
+    std::jthread      thread_;
 };

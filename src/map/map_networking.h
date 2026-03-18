@@ -24,6 +24,7 @@
 #include "common/blowfish.h"
 #include "common/cbasetypes.h"
 #include "common/ipp.h"
+#include "common/scheduler.h"
 
 #include "map_constants.h"
 #include "map_session.h"
@@ -34,12 +35,13 @@
 #include <map>
 #include <span>
 
+class CBasicPacket;
 struct MapConfig;
 class MapEngine;
 class MapNetworking
 {
 public:
-    MapNetworking(MapStatistics& mapStatistics, const MapConfig& mapConfig, asio::io_context& io_context);
+    MapNetworking(Scheduler& scheduler, MapStatistics& mapStatistics, const MapConfig& mapConfig);
 
     //
     // Networking
@@ -57,6 +59,8 @@ public:
     int32 parse(uint8*, size_t*, MapSession*);                           // main function parsing the packets
     int32 send_parse(uint8*, size_t*, MapSession*, bool);                // main function is building big packet
 
+    int32 sendSinglePacketNoPchar(uint8*, size_t*, MapSession*, bool, CBasicPacket*); // used to resend 0x00B if client didn't receive it (dropped packet)
+
     //
     // Accessors
     //
@@ -66,6 +70,7 @@ public:
     auto socket() -> MapSocket&;
 
 private:
+    Scheduler&                 scheduler_;
     MapStatistics&             mapStatistics_;
     IPP                        mapIPP_;
     MapSessionContainer        mapSessions_;

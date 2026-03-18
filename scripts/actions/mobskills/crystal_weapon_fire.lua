@@ -1,11 +1,7 @@
 -----------------------------------
---  Crystal Weapon
---
---  Description: Invokes the power of a crystal to deal magical damage of a random element to a single target.
---  Type: Magical
---  Utsusemi/Blink absorb: Ignores shadows
---  Range: Unknown
---  Notes: Can be Fire, Earth, Wind, or Water element.  Functions even at a distance (outside of melee range).
+-- Crystal Weapon (Fire)
+-- Family: Golems
+-- Description: Invokes the power of a crystal to deal Fire damage to a single target.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -14,15 +10,25 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local damage = mob:getWeaponDmg() * 3
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    damage = xi.mobskills.mobMagicalMove(mob, target, skill, damage, xi.element.FIRE, 1, xi.mobskills.magicalTpBonus.MAB_BONUS, 1)
-    damage = xi.mobskills.mobFinalAdjustments(damage, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.FIRE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    params.baseDamage     = mob:getMainLvl() + 2
+    params.fTP            = { 2, 2, 2 }
+    params.element        = xi.element.FIRE
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.FIRE
+    params.shadowBehavior = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    target:takeDamage(damage, mob, xi.attackType.MAGICAL, xi.damageType.FIRE)
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
 
-    return damage
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        -- TODO: Dynamis NM: Suttung applies Plague debuff.
+    end
+
+    return info.damage
 end
 
 return mobskillObject

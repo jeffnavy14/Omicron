@@ -93,7 +93,11 @@ function xi.jeuno.helpers.GobbiebagQuest:new(params)
                     [73] = function(player, csid, option, npc)
                         if quest:complete(player) then
                             player:changeContainerSize(xi.inv.INVENTORY, bagIncrease)
-                            player:changeContainerSize(xi.inv.MOGSATCHEL, bagIncrease)
+
+                            if player:getContainerSize(xi.inv.MOGSATCHEL) > 0 then
+                                player:changeContainerSize(xi.inv.MOGSATCHEL, bagIncrease)
+                            end
+
                             player:messageSpecial(params.message)
                             player:confirmTrade()
                         end
@@ -336,6 +340,317 @@ function xi.jeuno.helpers.UnlockingAMyth:new(jobId)
                             player:addLearnedWeaponskill(weaponData.wsUnlockId)
                             -- player keeps vigil weapon
                         end
+                    end,
+                },
+            },
+        },
+    }
+
+    self.__index = self
+    setmetatable(quest, self)
+    return quest
+end
+
+-- Base class for use by the Gobbiebag questline to reduce redundant code.
+-- The quests differ slightly in requested items, inventory size key, text, etc.
+-- The params parameter stores the tunable information needed to perform the proper quest in the chain.
+xi.jeuno.helpers.BorghertzQuests = {}
+
+setmetatable(xi.jeuno.helpers.BorghertzQuests, { __index = Quest })
+xi.jeuno.helpers.BorghertzQuests.__index = xi.jeuno.helpers.BorghertzQuests
+
+function xi.jeuno.helpers.BorghertzQuests:new(params)
+    local quest = Quest:new(xi.questLog.JEUNO, params.questId)
+
+    local borghertzQuests =
+    {
+        xi.quest.id.jeuno.BORGHERTZS_WARRING_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_STRIKING_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_HEALING_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_SORCEROUS_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_VERMILLION_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_SNEAKY_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_STALWART_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_SHADOWY_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_WILD_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_HARMONIOUS_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_CHASING_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_LOYAL_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_LURKING_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_DRAGON_HANDS,
+        xi.quest.id.jeuno.BORGHERTZS_CALLING_HANDS,
+    }
+
+    local function canStartQuest(player)
+        -- Previous quest check.
+        if player:getQuestStatus(params.requiredLogId, params.requiredQuestId) == xi.questStatus.QUEST_AVAILABLE then
+            return false
+        end
+
+        -- Job check.
+        if player:getMainJob() ~= params.requiredJobId then
+            return false
+        end
+
+        -- Level check.
+        if player:getMainLvl() < 50 then
+            return false
+        end
+
+        -- Any other Borghertz quest check.
+        for i = 1, #borghertzQuests do
+            if player:getQuestStatus(xi.questLog.JEUNO, borghertzQuests[i]) == xi.questStatus.QUEST_ACCEPTED then
+                return false
+            end
+        end
+
+        return true
+    end
+
+    local function isFirstBorghertzQuest(player)
+        for i = 1, #borghertzQuests do
+            if player:getQuestStatus(xi.questLog.JEUNO, borghertzQuests[i]) == xi.questStatus.QUEST_COMPLETED then
+                return false
+            end
+        end
+
+        return true
+    end
+
+    quest.reward =
+    {
+        item = params.handAFId,
+    }
+
+    quest.sections =
+    {
+        {
+            check = function(player, status, vars)
+                return status == xi.questStatus.QUEST_AVAILABLE
+            end,
+
+            [xi.zone.UPPER_JEUNO] =
+            {
+                ['Guslam'] =
+                {
+                    onTrigger = function(player, npc)
+                        if canStartQuest(player) then
+                            quest:setVar(player, 'Option', player:getMainJob())
+                            return quest:progressEvent(155)
+                        end
+                    end,
+                },
+
+                onEventFinish =
+                {
+                    [155] = function(player, csid, option, npc)
+                        if quest:getVar(player, 'Option') == player:getMainJob() then
+                            quest:begin(player)
+                        end
+                    end,
+                },
+            },
+        },
+
+        {
+            check = function(player, status, vars)
+                return status == xi.questStatus.QUEST_ACCEPTED and
+                    not player:hasKeyItem(xi.keyItem.OLD_GAUNTLETS)
+            end,
+
+            [xi.zone.UPPER_JEUNO] =
+            {
+                ['Guslam'] = quest:event(43),
+            },
+
+            -- Old gauntlets coffer logic.
+            [params.oldGauntletZoneId] =
+            {
+                ['Treasure_Coffer'] =
+                {
+                    onTrade = function(player, npc, trade)
+                        xi.treasure.onTrade(player, npc, trade, 2, xi.keyItem.OLD_GAUNTLETS)
+
+                        return quest:noAction()
+                    end,
+                },
+            },
+        },
+
+        {
+            check = function(player, status, vars)
+                return status == xi.questStatus.QUEST_ACCEPTED and
+                    player:hasKeyItem(xi.keyItem.OLD_GAUNTLETS)
+            end,
+
+            [xi.zone.CASTLE_ZVAHL_BAILEYS] =
+            {
+                ['Dark_Spark'] =
+                {
+                    onMobDeath = function(mob, player, optParams)
+                        if quest:getVar(player, 'Prog') == 4 then
+                            quest:setVar(player, 'Prog', 5)
+                        end
+                    end,
+                },
+
+                ['Torch'] =
+                {
+                    onTrigger = function(player, npc)
+                        local questProgress = quest:getVar(player, 'Prog')
+
+                        if
+                            questProgress == 4 and
+                            npcUtil.popFromQM(player, npc, zones[xi.zone.CASTLE_ZVAHL_BAILEYS].mob.DARK_SPARK, { claim = true, hide = 0 })
+                        then
+                            return quest:messageSpecial(zones[xi.zone.CASTLE_ZVAHL_BAILEYS].text.SENSE_OF_FOREBODING)
+                        elseif
+                            questProgress == 5 and
+                            not player:hasKeyItem(xi.keyItem.SHADOW_FLAMES)
+                        then
+                            npcUtil.giveKeyItem(player, xi.keyItem.SHADOW_FLAMES)
+                            return quest:noAction()
+                        end
+                    end,
+                },
+            },
+
+            [xi.zone.LOWER_JEUNO] =
+            {
+                ['Yin_Pocanakhu'] =
+                {
+                    onTrigger = function(player, npc)
+                        local questProgress = quest:getVar(player, 'Prog')
+                        if questProgress == 2 then
+                            return quest:progressEvent(220)
+                        elseif questProgress == 3 or questProgress == 4 then
+                            return quest:event(221)
+                        end
+                    end,
+                },
+
+                onEventUpdate =
+                {
+                    [220] = function(player, csid, option, npc)
+                        if player:getGil() >= 1000 then
+                            player:delGil(1000)
+                            quest:setVar(player, 'Prog', 3) -- Spoken with Yin Pocanakhu.
+                            player:updateEvent(1, 1, 0, 0)
+                        else
+                            player:messageText(npc, zones[xi.zone.LOWER_JEUNO].text.YIN_POCANAKHU_GET_LOST)
+                            player:updateEvent(0, 1, 0, 0)
+                        end
+                    end,
+                },
+            },
+
+            [xi.zone.PORT_JEUNO] =
+            {
+                ['qm1'] =
+                {
+                    onTrigger = function(player, npc)
+                        local questProgress = quest:getVar(player, 'Prog')
+
+                        if questProgress == 3 then
+                            return quest:progressEvent(20)
+                        elseif questProgress >= 4 and not player:hasKeyItem(xi.keyItem.SHADOW_FLAMES) then
+                            return quest:event(49)
+                        elseif questProgress == 5 and player:hasKeyItem(xi.keyItem.SHADOW_FLAMES) then
+                            return quest:progressEvent(48)
+                        end
+                    end,
+                },
+
+                onEventFinish =
+                {
+                    [20] = function(player, csid, option, npc)
+                        if option == 1 then
+                            quest:setVar(player, 'Prog', 4) -- Spoken with Borghertz. Requested "Shadow Flames".
+                        end
+                    end,
+
+                    [48] = function(player, csid, option, npc)
+                        if quest:complete(player) then
+                            player:delKeyItem(xi.keyItem.OLD_GAUNTLETS)
+                            player:delKeyItem(xi.keyItem.SHADOW_FLAMES)
+                        end
+                    end,
+                },
+            },
+
+            [xi.zone.UPPER_JEUNO] =
+            {
+                ['Deadly_Minnow'] =
+                {
+                    onTrigger = function(player, npc)
+                        if quest:getVar(player, 'Prog') == 1 then
+                            return quest:progressEvent(24)
+                        end
+                    end,
+                },
+
+                ['Guslam'] = quest:progressEvent(26),
+
+                onEventFinish =
+                {
+                    [24] = function(player, csid, option, npc)
+                        quest:setVar(player, 'Prog', 2) -- Spoken with deadly Minnow.
+                    end,
+
+                    [26] = function(player, csid, option, npc)
+                        if quest:getVar(player, 'Prog') == 0 then
+                            if isFirstBorghertzQuest(player) then
+                                quest:setVar(player, 'Prog', 1) -- Need to speak with Deadly Minnow and Yin Pocanakhu.
+                            else
+                                quest:setVar(player, 'Prog', 3) -- Skip intermediaries.
+                            end
+                        end
+                    end,
+                },
+            },
+        },
+
+        {
+            check = function(player, status, vars)
+                return status ~= xi.questStatus.QUEST_AVAILABLE and -- Quest must be already started or completed.
+                    player:getMainJob() == params.requiredJobId and -- Player must be on the appropiate job.
+                    not utils.mask.getBit(player:getCharVar('[AF]ZilartCoffer'), params.requiredJobId * 2 - 1)
+            end,
+
+            [params.optionalZoneId1] =
+            {
+                ['Treasure_Coffer'] =
+                {
+                    onTrade = function(player, npc, trade)
+                        local result = xi.treasure.onTrade(player, npc, trade, 1, params.optionalArtifact1)
+                        if result == params.optionalArtifact1 then
+                            player:incrementCharVar('[AF]ZilartCoffer', bit.lshift(1, params.requiredJobId * 2 - 1))
+                        end
+
+                        return quest:noAction()
+                    end,
+                },
+            },
+        },
+
+        {
+            check = function(player, status, vars)
+                return status ~= xi.questStatus.QUEST_AVAILABLE and
+                    player:getMainJob() == params.requiredJobId and
+                    not utils.mask.getBit(player:getCharVar('[AF]ZilartCoffer'), params.requiredJobId * 2)
+            end,
+
+            [params.optionalZoneId2] =
+            {
+                ['Treasure_Coffer'] =
+                {
+                    onTrade = function(player, npc, trade)
+                        local result = xi.treasure.onTrade(player, npc, trade, 1, params.optionalArtifact2)
+                        if result == params.optionalArtifact2 then
+                            player:incrementCharVar('[AF]ZilartCoffer', bit.lshift(1, params.requiredJobId * 2))
+                        end
+
+                        return quest:noAction()
                     end,
                 },
             },

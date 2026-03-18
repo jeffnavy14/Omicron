@@ -25,11 +25,11 @@
 #include "common/ipc.h"
 #include "common/lua.h"
 #include "common/mmo.h"
-
-#include "common/sql.h"
 #include "common/zmq_dealer_wrapper.h"
 
-#include <nonstd/jthread.hpp>
+#include <atomic>
+#include <thread>
+
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
 
@@ -87,6 +87,8 @@ public:
     void handleMessage_EntityInformationResponse(const IPP& ipp, const ipc::EntityInformationResponse& message);
     void handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::SendPlayerToLocation& message);
     void handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::AssistChannelEvent& message) const;
+    void handleMessage_GMCallRequest(const IPP& ipp, const ipc::GMCallRequest& message);
+    void handleMessage_GMCallResponse(const IPP& ipp, const ipc::GMCallResponse& message);
 
     void handleUnknownMessage(const IPP& ipp, const std::span<uint8_t> message);
 
@@ -121,13 +123,15 @@ extern std::unique_ptr<IPCClient> ipcClient_;
 
 namespace message
 {
-    void init(MapNetworking& networking);
 
-    template <typename T>
-    void send(const T& message)
-    {
-        ipcClient_->sendMessage(message);
-    }
+void init(MapNetworking& networking);
 
-    void handle_incoming();
+template <typename T>
+void send(const T& message)
+{
+    ipcClient_->sendMessage(message);
+}
+
+void handle_incoming();
+
 } // namespace message

@@ -28,45 +28,45 @@ entity.onMobEngage = function(mob, target)
 end
 
 entity.onMobFight = function(mob, target)
-    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
-        if not GetMobByID(ID.mob.MEDUSA + 1):isSpawned() then
-            GetMobByID(ID.mob.MEDUSA + 1):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.MEDUSA + 1):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.MEDUSA + 2):isSpawned() then
-            GetMobByID(ID.mob.MEDUSA + 2):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.MEDUSA + 2):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.MEDUSA + 3):isSpawned() then
-            GetMobByID(ID.mob.MEDUSA + 3):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.MEDUSA + 3):updateEnmity(target)
-        elseif not GetMobByID(ID.mob.MEDUSA + 4):isSpawned() then
-            GetMobByID(ID.mob.MEDUSA + 4):setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
-            SpawnMob(ID.mob.MEDUSA + 4):updateEnmity(target)
-        end
-    end
-
     for i = ID.mob.MEDUSA + 1, ID.mob.MEDUSA + 4 do
         local pet = GetMobByID(i)
         if
             pet and
-            pet:getCurrentAction() == xi.act.ROAMING
+            pet:getCurrentAction() == xi.action.category.ROAMING
         then
             pet:updateEnmity(target)
+        end
+    end
+
+    if mob:getBattleTime() % 60 < 2 and mob:getBattleTime() > 10 then
+        for i = ID.mob.MEDUSA + 1, ID.mob.MEDUSA + 4 do
+            local bodyguard = GetMobByID(ID.mob.MEDUSA + 1)
+            if bodyguard and not bodyguard:isSpawned() then
+                bodyguard:setSpawn(mob:getXPos() + math.random(1, 5), mob:getYPos(), mob:getZPos() + math.random(1, 5))
+                SpawnMob(i):updateEnmity(target)
+                break
+            end
         end
     end
 end
 
 entity.onMobDisengage = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.MEDUSA + i) end
+    for i = ID.mob.MEDUSA + 1, ID.mob.MEDUSA + 4 do
+        DespawnMob(i)
+    end
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    player:showText(mob, ID.text.MEDUSA_DEATH)
-    player:addTitle(xi.title.GORGONSTONE_SUNDERER)
-    for i = 1, 4 do DespawnMob(ID.mob.MEDUSA + i) end
-end
+    if player then
+        player:addTitle(xi.title.GORGONSTONE_SUNDERER)
+        player:showText(mob, ID.text.MEDUSA_DEATH)
+    end
 
-entity.onMobDespawn = function(mob)
-    for i = 1, 4 do DespawnMob(ID.mob.MEDUSA + i) end
+    if optParams.isKiller or optParams.noKiller then
+        for i = ID.mob.MEDUSA + 1, ID.mob.MEDUSA + 4 do
+            DespawnMob(i)
+        end
+    end
 end
 
 return entity

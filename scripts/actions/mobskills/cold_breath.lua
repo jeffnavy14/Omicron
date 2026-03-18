@@ -1,8 +1,7 @@
 -----------------------------------
---  Cold Breath
---
---  Description: Deals ice damage to enemies within a fan-shaped area originating from the caster. Additional effect: Bind.
---  Type: Magical Ice (Element)
+-- Cold Breath
+-- Family: Scorpions
+-- Description: Deals Ice damage to enemies within a fan-shaped area originating from the caster. Additional Effect: Bind.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,14 +10,28 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.BIND, 1, 0, 20)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.2, 0.75, xi.element.ICE, 600)
+    params.percentMultipier = 0.125
+    params.damageCap        = 600
+    params.bonusDamage      = 0
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.ICE
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.ICE
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.ICE, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.ICE, { breakBind = false })
-    return dmg
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType, { breakBind = false })
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.BIND, 1, 0, 60)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

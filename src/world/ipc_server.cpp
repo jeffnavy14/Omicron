@@ -35,10 +35,12 @@
 
 namespace
 {
-    auto getZMQEndpointString() -> std::string
-    {
-        return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
-    }
+
+auto getZMQEndpointString() -> std::string
+{
+    return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
+}
+
 } // namespace
 
 IPCServer::IPCServer(WorldEngine& worldServer)
@@ -426,7 +428,17 @@ void IPCServer::handleMessage_ChatMessageTell(const IPP& ipp, const ipc::ChatMes
 {
     TracyZoneScoped;
 
-    rerouteMessageToCharName(message.recipientName, message);
+    const auto charIPP = getIPPForCharName(message.recipientName);
+    if (!charIPP)
+    {
+        sendMessage(ipp, ipc::MessageStandard{
+                             .recipientId = message.senderId,
+                             .message     = MsgStd::TellNotReceivedOffline,
+                         });
+        return;
+    }
+
+    sendMessage(charIPP.value(), message);
 }
 
 void IPCServer::handleMessage_ChatMessageParty(const IPP& ipp, const ipc::ChatMessageParty& message)
@@ -698,6 +710,41 @@ void IPCServer::handleMessage_AssistChannelEvent(const IPP& ipp, const ipc::Assi
     TracyZoneScoped;
 
     rerouteMessageToCharId(message.receiverId, message);
+}
+
+void IPCServer::handleMessage_GMCallRequest(const IPP& ipp, const ipc::GMCallRequest& message)
+{
+    TracyZoneScoped;
+
+    ShowInfoFmt("GM Call #{} from {} (charId: {}, accId: {}, zone: {}): {}",
+                message.callId,
+                message.charName,
+                message.charId,
+                message.accId,
+                message.zoneId,
+                message.message);
+
+    // TODO: Route this to external clients
+}
+
+void IPCServer::handleMessage_GMCallResponse(const IPP& ipp, const ipc::GMCallResponse& message)
+{
+    TracyZoneScoped;
+
+    // Client can only read up to 1024 characters, drop any extra characters now.
+    auto truncatedMessage    = message;
+    truncatedMessage.message = truncatedMessage.message.substr(0, 1024);
+
+    db::preparedStmt("UPDATE help_desk "
+                     "SET response = ?, responded_at = NOW() "
+                     "WHERE id = ?",
+                     truncatedMessage.message,
+                     truncatedMessage.callId);
+
+    if (const auto maybeCharIPP = getIPPForCharId(truncatedMessage.charId))
+    {
+        sendMessage(*maybeCharIPP, truncatedMessage);
+    }
 }
 
 void IPCServer::handleUnknownMessage(const IPP& ipp, const std::span<uint8_t> message)

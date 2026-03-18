@@ -17,14 +17,14 @@ entity.onMobFight = function(mob, target)
     if mob:getHPP() <= 50 and mob:getLocalVar('powerup') == 0 then
         target:showText(mob, ID.text.KARABABA_ENOUGH)
         target:showText(mob, ID.text.KARABABA_ROUGH)
-        mob:addStatusEffect(xi.effect.MAGIC_ATK_BOOST, 15, 0, 1800)
+        mob:addStatusEffect(xi.effect.MAGIC_ATK_BOOST, { power = 15, duration = 1800, origin = mob })
         mob:setLocalVar('powerup', 1)
     elseif mob:getHPP() <= 20 and warp == 0 then
         mob:setLocalVar('warp', 1)
     end
 end
 
-entity.onMobMagicPrepare = function(mob, target, spellId)
+entity.onMobSpellChoose = function(mob, target, spellId)
     local powerup = mob:getLocalVar('powerup')
     local rnd = math.random(1, 6)
     local warp = mob:getLocalVar('warp')
@@ -33,25 +33,25 @@ entity.onMobMagicPrepare = function(mob, target, spellId)
         mob:showText(mob, ID.text.KARABABA_QUIT)
         mob:setLocalVar('warp', 2)
         mob:setLocalVar('wait', GetSystemTime() + 8)
-        return 261
+        return xi.magic.spell.WARP
     elseif rnd == 1 then
         mob:showText(mob, ID.text.KARABARA_FIRE)
-        return 205 - powerup
+        return xi.magic.spell.FLARE_II - powerup
     elseif rnd == 2 then
         mob:showText(mob, ID.text.KARABARA_ICE)
-        return 207 - powerup
+        return xi.magic.spell.FREEZE_II - powerup
     elseif rnd == 3 then
         mob:showText(mob, ID.text.KARABARA_WIND)
-        return 209 - powerup
+        return xi.magic.spell.TORNADO_II - powerup
     elseif rnd == 4 then
         mob:showText(mob, ID.text.KARABARA_EARTH)
-        return 211 - powerup
+        return xi.magic.spell.QUAKE_II - powerup
     elseif rnd == 5 then
         mob:showText(mob, ID.text.KARABARA_LIGHTNING)
-        return 213 - powerup
+        return xi.magic.spell.BURST_II - powerup
     elseif rnd == 6 then
         mob:showText(mob, ID.text.KARABARA_WATER)
-        return 215 - powerup
+        return xi.magic.spell.FLOOD_II - powerup
     end
 end
 

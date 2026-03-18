@@ -41,7 +41,7 @@ entity.onMobFight = function(mob, target)
                 pet:updateEnmity(target)
             end
 
-            if pet:getCurrentAction() == xi.act.ROAMING then
+            if pet:getCurrentAction() == xi.action.category.ROAMING then
                 pet:updateEnmity(target)
             end
         end
@@ -49,9 +49,12 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    xi.dynamis.megaBossOnDeath(mob, player, optParams)
-    player:addTitle(xi.title.LIFTER_OF_SHADOWS)
-    if optParams.isKiller then
+    if player then
+        player:addTitle(xi.title.LIFTER_OF_SHADOWS)
+        xi.dynamis.megaBossOnDeath(mob, player, optParams)
+    end
+
+    if optParams.isKiller or optParams.noKiller then
         DespawnMob(ID.mob.YING)
         DespawnMob(ID.mob.YING + 1)
     end

@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _CZONE_H
-#define _CZONE_H
+#pragma once
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
@@ -34,14 +33,18 @@
 
 #include "battlefield_handler.h"
 #include "campaign_handler.h"
-#include "packets/weather.h"
+#include "common/logging.h"
+#include "packets/basic.h"
+#include "spawn_slot.h"
 #include "trigger_area.h"
 
 //
 // Forward Declarations
 //
 
+enum class Weather : uint16_t;
 class CNavMesh;
+class SpawnHandler;
 class ZoneLos;
 
 enum ZONEID : uint16
@@ -504,7 +507,9 @@ struct zoneWeather_t
     zoneWeather_t(uint8 _normal, uint8 _common, uint8 _rare)
     : normal(_normal)
     , common(_common)
-    , rare(_rare){};
+    , rare(_rare)
+    {
+    }
 };
 
 /************************************************************************
@@ -518,9 +523,21 @@ struct zoneWeather_t
 
 struct zoneLine_t
 {
-    uint32     m_zoneLineID;
-    uint16     m_toZone;
-    position_t m_toPos;
+    uint32 zoneLineId; // 4 characters name such as 'z7b0'.
+
+    // Where you zone from
+    ZONEID     originZoneId;
+    position_t originPos; // Center of the zoneline box.
+
+    // Where you end up at
+    ZONEID     destinationZoneId;
+    position_t destinationPos;    // Center of the zoneline box
+    float      destinationScaleX; // Box dimensions
+    float      destinationScaleZ; // Box dimensions
+
+    // Spawn slot cycling (0-7)
+    uint8 m_spawnSlot = 0;
+    auto  nextSpawnPosition() -> position_t;
 };
 
 class CBasicPacket;
@@ -559,8 +576,8 @@ public:
     uint32             GetIP() const;
     uint16             GetPort() const;
     uint16             GetTax() const;
-    WEATHER            GetWeather();
-    uint32             GetWeatherChangeTime() const;
+    auto               GetWeather() const -> Weather;
+    auto               GetWeatherChangeTime() const -> uint32;
     const std::string& getName();
     zoneLine_t*        GetZoneLine(uint32 zoneLineID);
 
@@ -574,13 +591,14 @@ public:
     void SetBackgroundMusicDay(uint16 music);
     void SetBackgroundMusicNight(uint16 music);
 
-    auto queryEntitiesByName(std::string const& pattern) -> QueryByNameResult_t const&;
+    auto queryEntitiesByName(const std::string& pattern) -> const QueryByNameResult_t&;
 
-    uint32 GetLocalVar(const char* var);
-    void   SetLocalVar(const char* var, uint32 val);
-    void   ResetLocalVars();
+    uint32                                   GetLocalVar(const char* var);
+    std::unordered_map<std::string, uint32>& GetLocalVars();
+    void                                     SetLocalVar(const char* var, uint32 val);
+    void                                     ResetLocalVars();
 
-    virtual CCharEntity* GetCharByName(std::string const& name);
+    virtual CCharEntity* GetCharByName(const std::string& name);
     virtual CCharEntity* GetCharByID(uint32 id);
 
     // Gets an entity - ignores instances (use CBaseEntity->GetEntity if possible)
@@ -588,7 +606,7 @@ public:
 
     bool IsWeatherStatic() const;
     bool CanUseMisc(uint16 misc) const;
-    void SetWeather(WEATHER weatherCondition);
+    void SetWeather(Weather weather);
     void UpdateWeather();
     bool CheckMobsPathedBack();
 
@@ -612,7 +630,9 @@ public:
     virtual void InsertTRUST(CBaseEntity* PTrust);
 
     virtual void FindPartyForMob(CBaseEntity* PEntity);
-    virtual void TransportDepart(uint16 boundary, uint16 zone);  // Collect passengers if ship/boat is departing
+
+    virtual void TransportDepart(uint16 boundary, uint16 prevZoneId, uint16 transportId); // Collect passengers if ship/boat is departing
+
     virtual void updateCharLevelRestriction(CCharEntity* PChar); // Removes the character's level restriction. If the zone has a level restriction, it is applied after it is removed.
 
     void InsertTriggerArea(std::unique_ptr<ITriggerArea>&& triggerArea); // Add an active area to the zone
@@ -630,27 +650,32 @@ public:
     virtual void ZoneServer(timer::time_point tick);
     virtual void CheckTriggerAreas();
 
-    virtual void ForEachChar(std::function<void(CCharEntity*)> const& func);
-    virtual void ForEachCharInstance(CBaseEntity* PEntity, std::function<void(CCharEntity*)> const& func);
-    virtual void ForEachMob(std::function<void(CMobEntity*)> const& func);
-    virtual void ForEachMobInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
-    virtual void ForEachNpc(std::function<void(CNpcEntity*)> const& func);
-    virtual void ForEachNpcInstance(CBaseEntity* PEntity, std::function<void(CNpcEntity*)> const& func);
-    virtual void ForEachTrust(std::function<void(CTrustEntity*)> const& func);
-    virtual void ForEachTrustInstance(CBaseEntity* PEntity, std::function<void(CTrustEntity*)> const& func);
-    virtual void ForEachPet(std::function<void(CPetEntity*)> const& func);
-    virtual void ForEachPetInstance(CBaseEntity* PEntity, std::function<void(CPetEntity*)> const& func);
-    virtual void ForEachAlly(std::function<void(CMobEntity*)> const& func);
-    virtual void ForEachAllyInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> const& func);
+    virtual void ForEachChar(const std::function<void(CCharEntity*)>& func);
+    virtual void ForEachCharInstance(CBaseEntity* PEntity, const std::function<void(CCharEntity*)>& func);
+    virtual void ForEachMob(const std::function<void(CMobEntity*)>& func);
+    virtual void ForEachMobInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func);
+    virtual void ForEachNpc(const std::function<void(CNpcEntity*)>& func);
+    virtual void ForEachNpcInstance(CBaseEntity* PEntity, const std::function<void(CNpcEntity*)>& func);
+    virtual void ForEachTrust(const std::function<void(CTrustEntity*)>& func);
+    virtual void ForEachTrustInstance(CBaseEntity* PEntity, const std::function<void(CTrustEntity*)>& func);
+    virtual void ForEachPet(const std::function<void(CPetEntity*)>& func);
+    virtual void ForEachPetInstance(CBaseEntity* PEntity, const std::function<void(CPetEntity*)>& func);
+    virtual void ForEachAlly(const std::function<void(CMobEntity*)>& func);
+    virtual void ForEachAllyInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func);
 
     CZone(ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
     virtual ~CZone();
 
-    CBattlefieldHandler* m_BattlefieldHandler; // BCNM Instances in this zone
-    CCampaignHandler*    m_CampaignHandler;    // WOTG campaign information for this zone
+    CBattlefieldHandler*          m_BattlefieldHandler; // BCNM Instances in this zone
+    CCampaignHandler*             m_CampaignHandler;    // WOTG campaign information for this zone
+    std::unique_ptr<SpawnHandler> m_spawnHandler;       // Handles mob respawns
+
+    auto spawnHandler() const -> SpawnHandler*;
 
     std::unique_ptr<CNavMesh> m_navMesh;
     std::unique_ptr<ZoneLos>  lineOfSight;
+
+    std::map<uint32_t, std::unique_ptr<SpawnSlot>> m_spawnSlots; // add unique slots to zone
 
     timer::time_point m_LoadedAt; // The time the zone was loaded
 
@@ -668,7 +693,7 @@ private:
     uint32         m_zoneIP{};
     bool           m_useNavMesh;
 
-    WEATHER m_Weather;
+    Weather m_Weather;
     uint32  m_WeatherChangeTime;
 
     CZoneEntities* m_zoneEntities;
@@ -693,8 +718,9 @@ private:
     std::unordered_map<std::string, QueryByNameResult_t> m_queryByNameResults;
 
 protected:
-    CTaskManager::CTask* ZoneTimer; // The pointer to the created timer is Zoneserver.necessary for the possibility of stopping it
+    CTaskManager::CTask* ZoneTimer; // The pointer to the created timer is necessary for the possibility of stopping it
     CTaskManager::CTask* ZoneTimerTriggerAreas;
+    CTaskManager::CTask* SpawnHandlerTimer;
 
     triggerAreaList_t m_triggerAreaList;
 
@@ -704,5 +730,3 @@ protected:
 
     std::unordered_map<std::string, uint32> m_localVars;
 };
-
-#endif

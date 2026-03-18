@@ -1,9 +1,7 @@
 -----------------------------------
---  Great Whirlwind
---  Description: Deals Wind damage to targets in front. Additional effect: Choke
---  Type: Magical
---  Utsusemi/Blink absorb: Ignores shadows
---  Range: Unknown cone
+-- Great Whirlwind
+-- Family: Manticores
+-- Description: Deals Wind damage to targets in front. Additional Effect: Choke
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -12,17 +10,25 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local damage = mob:getWeaponDmg() * 4
-    local power  = math.floor(mob:getMainLvl() * 0.15) + 4
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    damage = xi.mobskills.mobMagicalMove(mob, target, skill, damage, xi.element.WIND, 1, xi.mobskills.magicalTpBonus.NO_EFFECT)
-    damage = xi.mobskills.mobFinalAdjustments(damage, mob, skill, target, xi.attackType.MAGICAL, xi.damageType.WIND, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
+    params.baseDamage     = mob:getMainLvl()
+    params.fTP            = { 4, 4, 4 }
+    params.element        = xi.element.WIND
+    params.attackType     = xi.attackType.MAGICAL
+    params.damageType     = xi.damageType.WIND
+    params.shadowBehavior = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    target:takeDamage(damage, mob, xi.attackType.MAGICAL, xi.damageType.WIND)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.CHOKE, power, 3, 60)
+    local info = xi.mobskills.mobMagicalMove(mob, target, skill, action, params)
 
-    return damage
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.CHOKE, 3, 3, 90)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

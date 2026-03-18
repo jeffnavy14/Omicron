@@ -24,18 +24,20 @@
 #include "common/async.h"
 #include "common/settings.h"
 #include "entities/charentity.h"
-#include "packets/inventory_finish.h"
-#include "packets/message_standard.h"
+#include "enums/msg_std.h"
+#include "packets/s2c/0x009_message.h"
+#include "packets/s2c/0x01d_item_same.h"
 #include "trade_container.h"
 #include "utils/charutils.h"
 
 namespace
 {
-    const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t quantity, uint32_t basePrice)
+
+const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t quantity, uint32_t basePrice)
+{
+    if (settings::get<bool>("map.AUDIT_PLAYER_VENDOR"))
     {
-        if (settings::get<bool>("map.AUDIT_PLAYER_VENDOR"))
-        {
-            // clang-format off
+        // clang-format off
             Async::getInstance()->submit([itemId, quantity, seller = PChar->id, sellerName = PChar->getName(), basePrice]()
             {
                 auto totalPrice = quantity * basePrice;
@@ -46,16 +48,17 @@ namespace
                     ShowErrorFmt("Failed to log vendor sale (item: {}, quantity: {}, seller: {}, totalprice: {})", itemId, quantity, seller, totalPrice);
                 }
             });
-            // clang-format on
-        }
-    };
+        // clang-format on
+    }
+};
+
 } // namespace
 
 auto GP_CLI_COMMAND_SHOP_SELL_SET::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .isNotCrafting(PChar)
-        .mustEqual(SellFlag, 1, "SellFlag not 1");
+        .mustEqual(this->SellFlag, 1, "SellFlag not 1");
 }
 
 void GP_CLI_COMMAND_SHOP_SELL_SET::process(MapSession* PSession, CCharEntity* PChar) const
@@ -108,14 +111,18 @@ void GP_CLI_COMMAND_SHOP_SELL_SET::process(MapSession* PSession, CCharEntity* PC
         return;
     }
 
-    const auto cost = quantity * PItem->getBasePrice();
-
-    auditSale(PChar, itemId, quantity, PItem->getBasePrice());
+    const auto basePrice = PItem->getBasePrice();
+    const auto cost      = quantity * basePrice;
+    if (charutils::UpdateItem(PChar, LOC_INVENTORY, slotId, -static_cast<int32>(quantity)) == 0)
+    {
+        ShowWarningFmt("GP_CLI_COMMAND_SHOP_SELL_SET: Player {} failed to remove item ID {} from inventory!", PChar->getName(), PItem->getID());
+        return;
+    }
 
     charutils::UpdateItem(PChar, LOC_INVENTORY, 0, cost);
-    charutils::UpdateItem(PChar, LOC_INVENTORY, slotId, -static_cast<int32>(quantity));
+    auditSale(PChar, itemId, quantity, basePrice);
     ShowInfo("GP_CLI_COMMAND_SHOP_SELL_SET: Player '%s' sold %u of itemID %u (Total: %u gil) [to VENDOR] ", PChar->getName(), quantity, itemId, cost);
-    PChar->pushPacket<CMessageStandardPacket>(nullptr, itemId, quantity, MsgStd::Sell);
-    PChar->pushPacket<CInventoryFinishPacket>();
-    PChar->Container->setItem(PChar->Container->getSize() - 1, 0, -1, 0);
+    PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, itemId, quantity, MsgStd::Sell);
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+    PChar->Container->setItem(PChar->Container->getExSize(), 0, -1, 0);
 }

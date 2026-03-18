@@ -1,7 +1,7 @@
 -----------------------------------
 -- Seaspray
--- Description: Deals Water damage to targets in a fan-shaped area of effect. Additional effect: Slow
--- Type: Breath
+-- Family: Orobon
+-- Description: Deals Water breath damage to targets in a fan-shaped area of effect. Additional Effect: Slow
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,15 +10,29 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
     return 0
 end
 
-mobskillObject.onMobWeaponSkill = function(target, mob, skill)
-    local duration = xi.mobskills.calculateDuration(skill:getTP(), 30, 60)
-    xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SLOW, 3500, 0, duration)
+mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    local params = {}
 
-    local dmgmod = xi.mobskills.mobBreathMove(mob, target, skill, 0.125, 1, xi.element.WATER, 500)
-    local dmg = xi.mobskills.mobFinalAdjustments(dmgmod, mob, skill, target, xi.attackType.BREATH, xi.damageType.WATER, xi.mobskills.shadowBehavior.IGNORE_SHADOWS)
-    target:takeDamage(dmg, mob, xi.attackType.BREATH, xi.damageType.WATER)
+    params.percentMultipier = 0.125
+    params.damageCap        = 500
+    params.bonusDamage      = 0
+    params.mAccuracyBonus   = { 0, 0, 0 }
+    params.resistStat       = xi.mod.INT
+    params.element          = xi.element.WATER
+    params.attackType       = xi.attackType.BREATH
+    params.damageType       = xi.damageType.WATER
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.IGNORE_SHADOWS
 
-    return dmg
+    local info = xi.mobskills.mobBreathMove(mob, target, skill, action, params)
+
+    if xi.mobskills.processDamage(mob, target, skill, action, info) then
+        target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        local duration = math.random(30, 60)
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.SLOW, 3500, 0, duration)
+    end
+
+    return info.damage
 end
 
 return mobskillObject

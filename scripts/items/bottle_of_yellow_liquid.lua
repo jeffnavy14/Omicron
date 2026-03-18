@@ -10,8 +10,8 @@ itemObject.onItemCheck = function(target, item, param, caster)
     return xi.itemUtils.foodOnItemCheck(target, xi.foodType.BASIC)
 end
 
-itemObject.onItemUse = function(target, user, item)
-    target:addStatusEffect(xi.effect.FOOD, 0, 0, 30, 0, 0, 0, xi.effectSourceType.FOOD, item:getID(), user:getID())
+itemObject.onItemUse = function(target, user, item, action)
+    target:addStatusEffect(xi.effect.FOOD, { duration = 30, origin = user, sourceType = xi.effectSourceType.FOOD, sourceTypeParam = item:getID() })
 end
 
 return itemObject

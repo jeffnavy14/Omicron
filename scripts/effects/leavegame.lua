@@ -19,7 +19,7 @@ local messages =
 effectObject.onEffectGain = function(target, effect)
     -- If you're a GM or in a MH, you get disconnected immediately.
     if
-        target:isInMogHouse() or
+        target:inMogHouse() or
         target:getGMLevel() > 0
     then
         target:leaveGame()
@@ -27,7 +27,9 @@ effectObject.onEffectGain = function(target, effect)
     end
 
     -- addStatusEffect (non-Ex) forces the icon to the effect ID...
-    target:addStatusEffectEx(xi.effect.HEALING, 0, 0, xi.settings.map.HEALING_TICK_DELAY, 0, true)
+    if not target:hasStatusEffect(xi.effect.HEALING) then
+        target:addStatusEffect(xi.effect.HEALING, { origin = target, tick = xi.settings.map.HEALING_TICK_DELAY, icon = 0, silent = true })
+    end
 
     -- Note: Power stores the kind.
     target:messageSystem(messages[effect:getPower()], 30)

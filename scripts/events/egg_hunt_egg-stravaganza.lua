@@ -570,7 +570,7 @@ local regionControl = function(player, npc, trade)
             -- Beastmen controlled
             if owner == 3 then
                 local costume = beastCostumes[math.random(#beastCostumes)]
-                player:addStatusEffect(xi.effect.COSTUME, costume, 0, utils.minutes(60))
+                player:addStatusEffect(xi.effect.COSTUME, { power = costume, duration = utils.minutes(60), origin = player })
                 player:confirmTrade()
 
                 return
@@ -884,7 +884,7 @@ xi.events.eggHunt.onTrade = function(player, npc, trade)
                 if type(v.message) == 'number' then
                     player:messageText(npc, zones[zoneID].text.EGG_HUNT_OFFSET + v.message)
                 else
-                    player:printToPlayer(string.format('Moogle : %s', v.message), xi.msg.channel.NS_SAY, 'Moogle')
+                    player:printToPlayer(v.message, xi.msg.channel.SAY, 'Moogle')
                 end
             end
 
