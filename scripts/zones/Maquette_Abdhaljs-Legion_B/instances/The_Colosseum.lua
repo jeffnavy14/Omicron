@@ -8,15 +8,15 @@ require("modules/omicronXI/global/colosseum")
 local instanceObject = {}
 
 instanceObject.onInstanceCreated = function(instance, player)
-omicron.colosseum_util.onInstanceCreated(instance, player)
+    omicron.colosseum_util.onInstanceCreated(instance, player)
 end
 
 instanceObject.onInstanceCreatedCallback = function(player, instance)
-omicron.colosseum_util.onInstanceCreatedCallback(player, instance)
+    omicron.colosseum_util.onInstanceCreatedCallback(player, instance)
 end
 
-instanceObject.afterInstanceRegister = function(player)
-    omicron.colosseum_util.afterInstanceRegister(player)
+instanceObject.afterInstanceRegister = function(player, instance)
+    omicron.colosseum_util.afterInstanceRegister(player, instance)
 end
 
 instanceObject.onInstanceTimeUpdate = function(instance, elapsed)
@@ -35,6 +35,7 @@ instanceObject.onInstanceComplete = function(instance)
 end
 
 instanceObject.onEventUpdate = function(player, csid, option, npc)
+    omicron.colosseum_util.onEventUpdate(player, csid, option, npc)
 end
 
 instanceObject.onEventFinish = function(player, csid, option, npc)

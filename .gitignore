@@ -136,7 +136,6 @@ UpgradeLog*.XML
 /xi_connect*
 /xi_map*
 /xi_search*
-/xi_test*
 /xi_world*
 
 # Generated files, mostly autotools-related
@@ -163,8 +162,8 @@ src/common/stamp-h1
 
 navmeshes/*.nav
 tags
-log/**
-!log/.gitkeep
+log/xi.leaks
+log/leaks.txt
 
 # Lua Developement Tools project files
 .metadata/**
@@ -236,9 +235,9 @@ modules/init.txt
 # Doxygen
 doxygen/
 
-# Docker
-*docker-compose*
-!dev.docker-compose.yml
+# Docker (not supported)
+Dockerfile
+docker-compose*
 
 # dSYM folders for Mac OS debugging
 xi_map.dSYM
@@ -248,21 +247,7 @@ xi_search.dSYM
 # Keys and Certs
 **/*.key
 **/*.cert
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Test artifacts
-*.ctrf.json
-__pycache__
-
-sanity_checks_summary.md
-changed-files.txt
-clang_tidy_summary.md
-modules/omicronxi/
+modules/contrib/
+modules/omicronXI/
+/modules
+settings/default/network.lua

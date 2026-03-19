@@ -9194,7 +9194,7 @@ uint16 CLuaBaseEntity::getSpentJobPoints()
     {
         CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
-        if (PChar->GetMLevel() < 99) // account for Level Sync
+        if (PChar->GetMLevel() < 75) // account for Level Sync
         {
             return 0;
         }
