@@ -3233,7 +3233,7 @@ xi.keyItem =
     ORB_OF_RADIANCE_PHANTOM_GEM              = 3356,
     RAKAZNAR_PLATE_FRAGMENT                  = 3357,
     -- NULL ENTRY                            = 3358,
-    PERMANENT_LEVEL_75_CAP                   = 3359, -- Permanent level 75 hardcore cap
+    -- NULL ENTRY                            = 3359,
     SHEET_OF_DIVINE_TUNES                    = 3360,
     CIPHER_BRACELET                          = 3361,
 }

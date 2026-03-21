@@ -9,14 +9,14 @@ require('scripts/quests/full_speed_ahead')
 
 local startingRaceInfo =
 {
-	[xi.race.HUME_M]   = {gear = {head = 11811, body = 10293, hand = 12754, leg = 12883, feet = 13005}, homeNation = xi.nation.BASTOK},
-    [xi.race.HUME_F]   = {gear = {head = 11811, body = 10293, hand = 12760, leg = 12884, feet = 13010}, homeNation = xi.nation.BASTOK},
-    [xi.race.ELVAAN_M] = {gear = {head = 11811, body = 10293, hand = 12755, leg = 12885, feet = 13006}, homeNation = xi.nation.SANDORIA},
-    [xi.race.ELVAAN_F] = {gear = {head = 11811, body = 10293, hand = 12759, leg = 12889, feet = 13011}, homeNation = xi.nation.SANDORIA},
-    [xi.race.TARU_M]   = {gear = {head = 11811, body = 10293, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
-    [xi.race.TARU_F]   = {gear = {head = 11811, body = 10293, hand = 12756, leg = 12886, feet = 13007}, homeNation = xi.nation.WINDURST},
-    [xi.race.MITHRA]   = {gear = {head = 11811, body = 10293, hand = 12757, leg = 12887, feet = 13008}, homeNation = xi.nation.WINDURST},
-    [xi.race.GALKA]    = {gear = {head = 11811, body = 10293, hand = 12758, leg = 12888, feet = 13009}, homeNation = xi.nation.BASTOK},
+    [xi.race.HUME_M  ] = { gear = { body = xi.item.HUME_TUNIC,        hand = xi.item.HUME_M_GLOVES,     leg = xi.item.HUME_SLACKS,       feet = xi.item.HUME_M_BOOTS       }, homeNation = xi.nation.BASTOK   },
+    [xi.race.HUME_F  ] = { gear = { body = xi.item.HUME_VEST,         hand = xi.item.HUME_F_GLOVES,     leg = xi.item.HUME_PANTS,        feet = xi.item.HUME_F_BOOTS       }, homeNation = xi.nation.BASTOK   },
+    [xi.race.ELVAAN_M] = { gear = { body = xi.item.ELVAAN_JERKIN,     hand = xi.item.ELVAAN_GLOVES,     leg = xi.item.ELVAAN_M_CHAUSSES, feet = xi.item.ELVAAN_M_LEDELSENS }, homeNation = xi.nation.SANDORIA },
+    [xi.race.ELVAAN_F] = { gear = { body = xi.item.ELVAAN_BODICE,     hand = xi.item.ELVAAN_GAUNTLETS,  leg = xi.item.ELVAAN_F_CHAUSSES, feet = xi.item.ELVAAN_F_LEDELSENS }, homeNation = xi.nation.SANDORIA },
+    [xi.race.TARU_M  ] = { gear = { body = xi.item.TARUTARU_KAFTAN,   hand = xi.item.TARUTARU_MITTS,    leg = xi.item.TARUTARU_BRACCAE,  feet = xi.item.TARUTARU_CLOMPS    }, homeNation = xi.nation.WINDURST },
+    [xi.race.TARU_F  ] = { gear = { body = xi.item.TARUTARU_KAFTAN,   hand = xi.item.TARUTARU_MITTS,    leg = xi.item.TARUTARU_BRACCAE,  feet = xi.item.TARUTARU_CLOMPS    }, homeNation = xi.nation.WINDURST },
+    [xi.race.MITHRA  ] = { gear = { body = xi.item.MITHRAN_SEPARATES, hand = xi.item.MITHRAN_GAUNTLETS, leg = xi.item.MITHRAN_LOINCLOTH, feet = xi.item.MITHRAN_GAITERS    }, homeNation = xi.nation.WINDURST },
+    [xi.race.GALKA   ] = { gear = { body = xi.item.GALKAN_SURCOAT,    hand = xi.item.GALKAN_BRACERS,    leg = xi.item.GALKAN_BRAGUETTE,  feet = xi.item.GALKAN_SANDALS     }, homeNation = xi.nation.BASTOK   },
 }
 
 local startingNationInfo =
@@ -144,17 +144,12 @@ xi.player.charCreate = function(player)
     player:setCharVar('spokePyropox', 1)                -- Pyropox introduction
     player:setCharVar('TutorialProgress', 1)            -- Has not started tutorial
     player:setCharVar('EinherjarIntro', 1)              -- Has not seen Einherjar intro
-    player:setNewPlayer(false)                           -- apply new player flag
-	player:addLinkpearl("Omicron", true)                -- Give player Global LS
+    player:setNewPlayer(true)                           -- apply new player flag
 end
 
 -- called by core after a player logs into the server or zones
 xi.player.onGameIn = function(player, firstLogin, zoning)
     if not zoning then
-        -- Send a system message when players come online.
-    	if player:getCharVar("NoOnlineNotification") ~= 1 then
-    	    player:printToArea(string.format("%s has come online!", player:getName()), xi.msg.area.SYSTEM_2)
-    	end
         -- things checked ONLY during logon go here
         if firstLogin then
             xi.player.charCreate(player)
@@ -195,18 +190,18 @@ xi.player.onGameIn = function(player, firstLogin, zoning)
 
     -- god mode
     if player:getCharVar('GodMode') == 1 then
-        player:addStatusEffect(xi.effect.MAX_HP_BOOST, 1000, 0, 0)
-        player:addStatusEffect(xi.effect.MAX_MP_BOOST, 1000, 0, 0)
-        player:addStatusEffect(xi.effect.MIGHTY_STRIKES, 1, 0, 0)
-        player:addStatusEffect(xi.effect.HUNDRED_FISTS, 1, 0, 0)
-        player:addStatusEffect(xi.effect.CHAINSPELL, 1, 0, 0)
-        player:addStatusEffect(xi.effect.PERFECT_DODGE, 1, 0, 0)
-        player:addStatusEffect(xi.effect.INVINCIBLE, 1, 0, 0)
-        player:addStatusEffect(xi.effect.ELEMENTAL_SFORZO, 1, 0, 0)
-        player:addStatusEffect(xi.effect.MANAFONT, 1, 0, 0)
-        player:addStatusEffect(xi.effect.REGAIN, 300, 0, 0)
-        player:addStatusEffect(xi.effect.REFRESH, 99, 0, 0)
-        player:addStatusEffect(xi.effect.REGEN, 99, 0, 0)
+        player:addStatusEffect(xi.effect.MAX_HP_BOOST, { power = 1000, origin = player })
+        player:addStatusEffect(xi.effect.MAX_MP_BOOST, { power = 1000, origin = player })
+        player:addStatusEffect(xi.effect.MIGHTY_STRIKES, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.HUNDRED_FISTS, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.CHAINSPELL, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.PERFECT_DODGE, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.INVINCIBLE, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.ELEMENTAL_SFORZO, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.MANAFONT, { power = 1, origin = player })
+        player:addStatusEffect(xi.effect.REGAIN, { power = 300, origin = player })
+        player:addStatusEffect(xi.effect.REFRESH, { power = 99, origin = player })
+        player:addStatusEffect(xi.effect.REGEN, { power = 99, origin = player })
         player:addMod(xi.mod.RACC, 2500)
         player:addMod(xi.mod.RATT, 2500)
         player:addMod(xi.mod.ACC, 2500)

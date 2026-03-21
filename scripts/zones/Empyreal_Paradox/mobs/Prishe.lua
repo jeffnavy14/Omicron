@@ -49,7 +49,7 @@ local itemActions =
         end,
 
         action = function(mob)
-            mob:addStatusEffect(xi.effect.FOOD, 0, 0, 150, 0, 0, 0, xi.effectSourceType.FOOD, 4511, mob:getID())
+            mob:addStatusEffect(xi.effect.FOOD, { duration = 150, origin = mob, sourceType = xi.effectSourceType.FOOD, sourceTypeParam = 4511 })
             mob:messageText(mob, ID.text.PRISHE_TEXT + 8, false)
             mob:useMobAbility(xi.mobSkill.ITEM_1_PRISHE)
         end,
@@ -62,7 +62,7 @@ local itemActions =
         end,
 
         action = function(mob)
-            mob:addStatusEffect(xi.effect.PHYSICAL_SHIELD, 1, 0, 30)
+            mob:addStatusEffect(xi.effect.PHYSICAL_SHIELD, { power = 1, duration = 30, origin = mob })
             mob:messageText(mob, ID.text.PRISHE_TEXT + 10, false)
             mob:useMobAbility(xi.mobSkill.ITEM_2_PRISHE)
         end,
@@ -75,7 +75,7 @@ local itemActions =
         end,
 
         action = function(mob)
-            mob:addStatusEffect(xi.effect.MAGIC_SHIELD, 1, 0, 30)
+            mob:addStatusEffect(xi.effect.MAGIC_SHIELD, { power = 1, duration = 30, origin = mob })
             mob:messageText(mob, ID.text.PRISHE_TEXT + 11, false)
             mob:useMobAbility(xi.mobSkill.ITEM_2_PRISHE)
         end,

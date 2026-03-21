@@ -163,8 +163,9 @@ local entryInfo =
         beatKI   = xi.ki.DYNAMIS_TAVNAZIA_SLIVER,
         enterPos = { 0.1, -7, -21, 190, 42 },
         reqs     = function(player)
-            return player:hasKeyItem(xi.ki.DYNAMIS_BUBURIMU_SLIVER) or
-                xi.settings.main.FREE_COP_DYNAMIS == 1
+            return player:hasKeyItem(xi.ki.DYNAMIS_BUBURIMU_SLIVER) and
+                player:hasKeyItem(xi.ki.DYNAMIS_QUFIM_SLIVER) and
+                player:hasKeyItem(xi.ki.DYNAMIS_VALKURM_SLIVER)
         end,
     },
 }
@@ -460,14 +461,10 @@ xi.dynamis.zoneOnZoneIn = function(player, prevZone)
 
     if player:getCharVar('Dynamis_Entry') == 1 or player:getGMLevel() > 0 then
         if player:getCharVar('Dynamis_subjob') == 1 then
-            player:timer(5000, function(playerArg)
-                playerArg:messageBasic(xi.msg.basic.UNABLE_TO_ACCESS_SJ)
-            end)
-
-            player:addStatusEffect(xi.effect.SJ_RESTRICTION, 0, 0, 0, 0, 0)
+            player:addStatusEffect(xi.effect.SJ_RESTRICTION, { origin = player })
         end
 
-        player:addStatusEffectEx(xi.effect.DYNAMIS, 0, 0, 3, 3600)
+        player:addStatusEffect(xi.effect.DYNAMIS, { duration = 3600, origin = player, tick = 3, icon = 0 })
         player:timer(5500, function(playerArg)
             playerArg:messageSpecial(ID.text.DYNAMIS_TIME_BEGIN, 60, xi.ki.PRISMATIC_HOURGLASS)
         end)
@@ -826,19 +823,19 @@ xi.dynamis.procMonster = function(mob, player)
                 math.random(1, 100) == 1
             then
                 mob:setLocalVar('dynamis_proc', 4)
-                mob:addStatusEffect(xi.effect.TERROR, 0, 0, 30)
+                mob:addStatusEffect(xi.effect.TERROR, { duration = 30, origin = player })
                 mob:weaknessTrigger(3)
             elseif extensions == 5 then
                 mob:setLocalVar('dynamis_proc', 3)
-                mob:addStatusEffect(xi.effect.TERROR, 0, 0, 30)
+                mob:addStatusEffect(xi.effect.TERROR, { duration = 30, origin = player })
                 mob:weaknessTrigger(2)
             elseif extensions == 4 then
                 mob:setLocalVar('dynamis_proc', 2)
-                mob:addStatusEffect(xi.effect.TERROR, 0, 0, 30)
+                mob:addStatusEffect(xi.effect.TERROR, { duration = 30, origin = player })
                 mob:weaknessTrigger(1)
             elseif extensions == 3 then
                 mob:setLocalVar('dynamis_proc', 1)
-                mob:addStatusEffect(xi.effect.TERROR, 0, 0, 30)
+                mob:addStatusEffect(xi.effect.TERROR, { duration = 30, origin = player })
                 mob:weaknessTrigger(0)
             end
         end

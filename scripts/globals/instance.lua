@@ -277,7 +277,7 @@ xi.instance.lookup =
 
     [xi.zone.DYNAMIS_BASTOK_D] =
     {
-    
+
     },
 
     [xi.zone.DYNAMIS_WINDURST_D] =
@@ -288,10 +288,6 @@ xi.instance.lookup =
     [xi.zone.DYNAMIS_JEUNO_D] =
     {
 
-    },
-	[xi.zone.THE_COLOSSEUM] =
-    {
-    
     },
 }
 

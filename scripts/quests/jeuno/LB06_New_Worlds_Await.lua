@@ -28,7 +28,7 @@ quest.sections =
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_AVAILABLE and
                 player:getLevelCap() == 75
-            end,
+        end,
 
         [xi.zone.RULUDE_GARDENS] =
         {
@@ -37,14 +37,12 @@ quest.sections =
                 onTrigger = function(player, npc)
                     local playerLevel     = player:getMainLvl()
                     local limitBreaker    = player:hasKeyItem(xi.ki.LIMIT_BREAKER) and 1 or 2
-                    local levelLimit      = player:hasKeyItem(xi.ki.VIAL_OF_CHAOSS_BLOOD) and 1 or 2
                     local lastQuestNumber = 0
                     local lastQuestStage  = 0
                     if
                         xi.settings.main.MAX_LEVEL > 75 and -- Can we level over 75?
                         playerLevel == 75 and               -- Are we at limit level?
-                        limitBreaker == 1 and               -- Do we have limit breaker KI? (Pre-requisite)
-                        levelLimit == 2                     -- Do we have the level limit KI? (1=No 2=Yes)
+                        limitBreaker == 1                   -- Do we have limit breaker KI? (Pre-requisite)
                     then
                         lastQuestNumber = 1
                     end

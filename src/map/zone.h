@@ -523,9 +523,21 @@ struct zoneWeather_t
 
 struct zoneLine_t
 {
-    uint32     m_zoneLineID;
-    uint16     m_toZone;
-    position_t m_toPos;
+    uint32 zoneLineId; // 4 characters name such as 'z7b0'.
+
+    // Where you zone from
+    ZONEID     originZoneId;
+    position_t originPos; // Center of the zoneline box.
+
+    // Where you end up at
+    ZONEID     destinationZoneId;
+    position_t destinationPos;    // Center of the zoneline box
+    float      destinationScaleX; // Box dimensions
+    float      destinationScaleZ; // Box dimensions
+
+    // Spawn slot cycling (0-7)
+    uint8 m_spawnSlot = 0;
+    auto  nextSpawnPosition() -> position_t;
 };
 
 class CBasicPacket;
@@ -579,9 +591,6 @@ public:
     void SetBackgroundMusicDay(uint16 music);
     void SetBackgroundMusicNight(uint16 music);
 
-    // Add SetPreventSleep here
-    void SetPreventSleep(bool value); 
-
     auto queryEntitiesByName(const std::string& pattern) -> const QueryByNameResult_t&;
 
     uint32                                   GetLocalVar(const char* var);
@@ -600,6 +609,7 @@ public:
     void SetWeather(Weather weather);
     void UpdateWeather();
     bool CheckMobsPathedBack();
+
     virtual void SpawnPCs(CCharEntity* PChar);
     virtual void SpawnMOBs(CCharEntity* PChar);
     virtual void SpawnPETs(CCharEntity* PChar);
@@ -682,8 +692,6 @@ private:
     uint16         m_zonePort{};
     uint32         m_zoneIP{};
     bool           m_useNavMesh;
-	// ADD THIS LINE HERE:
-    bool           m_preventSleep{false}; 
 
     Weather m_Weather;
     uint32  m_WeatherChangeTime;
