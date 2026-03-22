@@ -50,16 +50,16 @@ local prizes =
             xi.item.DWARF_PUGIL, -- Dwarf Pugil
             xi.item.ASTRAL_CUBE,  -- Astral Cube
             -- 9891,  -- Zinnia Orb
-            -- 10112, -- Cipher: Zeid
-            -- 10113, -- Cipher: Lion
+             10112, -- Cipher: Zeid
+             10113, -- Cipher: Lion
             xi.item.CIPHER_OF_NAJAS_ALTER_EGO, -- Cipher: Naja
             xi.item.CIPHER_OF_LEHKOS_ALTER_EGO, -- Cipher: Lehko
-            -- 10124, -- Cipher: Luzaf
-            -- 10125, -- Cipher: Najelith
-            -- 10129, -- Cipher: Domina
-            -- 10134, -- Cipher: S. Sibyl
-            -- 10142, -- Cipher: Karaha
-            -- 10149, -- Cipher: Areuhat
+             10124, -- Cipher: Luzaf
+             10125, -- Cipher: Najelith
+             10129, -- Cipher: Domina
+             10134, -- Cipher: S. Sibyl
+             10142, -- Cipher: Karaha
+             10149, -- Cipher: Areuhat
         },
     },
 
@@ -68,19 +68,19 @@ local prizes =
         ['price'] = 100,
         ['items'] =
         {
-            -- 10136, -- Cipher: Uka
-            -- 10141, -- Cipher: Kuyin
-            -- 10144, -- Cipher: Abenzio
+             10136, -- Cipher: Uka
+             10141, -- Cipher: Kuyin
+             10144, -- Cipher: Abenzio
             -- 10145, -- Cipher: Rughadjeen
-            -- 10150, -- Cipher: Lhe
-            -- 10151, -- Cipher: Mayakov
-            -- 10155, -- Cipher: Brygid
-            -- 10156, -- Cipher: Mildaurion
-            -- 10161, -- Cipher: Rongelouts
-            -- 10166, -- Cipher: Robel-Akbel
-            -- 10178, -- Cipher: Ullegore
-            -- 10179, -- Cipher: Teodor
-            -- 10183, -- Cipher: Darrcuiln
+             10150, -- Cipher: Lhe
+             10151, -- Cipher: Mayakov
+             10155, -- Cipher: Brygid
+             10156, -- Cipher: Mildaurion
+             10161, -- Cipher: Rongelouts
+             10166, -- Cipher: Robel-Akbel
+             10178, -- Cipher: Ullegore
+             10179, -- Cipher: Teodor
+             10183, -- Cipher: Darrcuiln
             xi.item.EXCALIPOOR, -- Excalipoor
             xi.item.PIECE_OF_COPSE_CANDY,  -- Copse Candy
         },
@@ -107,11 +107,11 @@ local prizes =
             -- 5858,  -- Frayed Pouch (R)
             -- 5946,  -- Frayed Sack (D)
             -- 5947,  -- Frayed Sack (L)
-            -- 4064,  -- Rem's Tale Ch.1
-            -- 4065,  -- Rem's Tale Ch.2
-            -- 4066,  -- Rem's Tale Ch.3
-            -- 4067,  -- Rem's Tale Ch.4
-            -- 4068,  -- Rem's Tale Ch.5
+             4064,  -- Rem's Tale Ch.1
+             4065,  -- Rem's Tale Ch.2
+             4066,  -- Rem's Tale Ch.3
+             4067,  -- Rem's Tale Ch.4
+             4068,  -- Rem's Tale Ch.5
         },
     },
 
@@ -143,11 +143,11 @@ local prizes =
             -- 1873, -- Brigand's Chart
             -- 1874, -- Pirate's Chart
             -- 6381, -- Fisherman's Feast
-            -- 4069, -- Copy Of Rem's Tale, Chapter 6
-            -- 4070, -- Copy Of Rem's Tale, Chapter 7
-            -- 4071, -- Copy Of Rem's Tale, Chapter 8
-            -- 4072, -- Copy Of Rem's Tale, Chapter 9
-            -- 4073, -- Copy Of Rem's Tale, Chapter 10
+             4069, -- Copy Of Rem's Tale, Chapter 6
+             4070, -- Copy Of Rem's Tale, Chapter 7
+             4071, -- Copy Of Rem's Tale, Chapter 8
+             4072, -- Copy Of Rem's Tale, Chapter 9
+             4073, -- Copy Of Rem's Tale, Chapter 10
         },
     },
 

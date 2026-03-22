@@ -11,8 +11,8 @@ xi.events.loginCampaign = xi.events.loginCampaign or {}
 
 -- Change vars below to modify settings for current login campaign (ALL TIMES JST)
 local loginCampaignStart  = { year = 2025, month = 6, day = 11, hour = 17 }
-local loginCampaignEnd    = { year = 2025, month = 7, day = 2, hour = 23 }
-local loginCampaignRedeem = { year = 2025, month = 7, day = 10, hour = 0 }
+local loginCampaignEnd    = { year = 2028, month = 7, day = 2, hour = 23 }
+local loginCampaignRedeem = { year = 2028, month = 7, day = 10, hour = 0 }
 
 -- Checks if a Login Campaign is active.
 xi.events.loginCampaign.canEarnPoints = function()
