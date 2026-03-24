@@ -1180,24 +1180,24 @@ INSERT INTO `mob_spawn_points` VALUES (16801794,0,'Snoll_Tzar','Snoll Tzar',1,65
 INSERT INTO `mob_spawn_points` VALUES (16801795,0,'Snoll_Tzar','Snoll Tzar',1,65,66,-621.041,0.414,221.900,64);
 
 -- Follow the White Rabbit
-INSERT INTO `mob_spawn_points` VALUES (16801796,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-458.421,0.054,871.617,85);
-INSERT INTO `mob_spawn_points` VALUES (16801797,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-461.019,-0.120,849.945,200);
-INSERT INTO `mob_spawn_points` VALUES (16801798,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-461.576,-0.019,847.450,181);
-INSERT INTO `mob_spawn_points` VALUES (16801799,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-461.607,-0.048,848.282,201);
-INSERT INTO `mob_spawn_points` VALUES (16801800,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-461.963,-0.038,847.539,201);
-INSERT INTO `mob_spawn_points` VALUES (16801801,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-461.385,-0.073,848.442,200);
-INSERT INTO `mob_spawn_points` VALUES (16801803,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-217.539,-0.174,467.558,85);
-INSERT INTO `mob_spawn_points` VALUES (16801804,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-220.137,-0.348,445.886,200);
-INSERT INTO `mob_spawn_points` VALUES (16801805,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-220.694,-0.247,443.391,181);
-INSERT INTO `mob_spawn_points` VALUES (16801806,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-220.725,-0.276,444.223,201);
-INSERT INTO `mob_spawn_points` VALUES (16801807,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-221.081,-0.266,443.480,201);
-INSERT INTO `mob_spawn_points` VALUES (16801808,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-220.503,-0.301,444.383,200);
-INSERT INTO `mob_spawn_points` VALUES (16801810,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-617.871,-0.195,187.885,85);
-INSERT INTO `mob_spawn_points` VALUES (16801811,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-620.469,-0.369,166.213,200);
-INSERT INTO `mob_spawn_points` VALUES (16801812,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-621.026,-0.268,163.718,181);
-INSERT INTO `mob_spawn_points` VALUES (16801813,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-621.057,-0.297,164.550,201);
-INSERT INTO `mob_spawn_points` VALUES (16801814,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-621.413,-0.287,163.807,201);
-INSERT INTO `mob_spawn_points` VALUES (16801815,0,'Bearclaw_Leveret','Bearclaw Leveret',3,75,75,-620.835,-0.322,164.710,200);
+INSERT INTO `mob_spawn_points` VALUES (16801796,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-460,-0.097,902,64);
+INSERT INTO `mob_spawn_points` VALUES (16801797,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-459.494,0.085,899.878,64);
+INSERT INTO `mob_spawn_points` VALUES (16801798,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-458.452,0.106,899.559,64);
+INSERT INTO `mob_spawn_points` VALUES (16801799,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-460.131,0.073,900.111,64);
+INSERT INTO `mob_spawn_points` VALUES (16801800,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-458.905,0.093,899.814,64);
+INSERT INTO `mob_spawn_points` VALUES (16801801,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-458.34,0.104,899.561,64);
+INSERT INTO `mob_spawn_points` VALUES (16801803,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-220.327,-0.42,501.149,64);
+INSERT INTO `mob_spawn_points` VALUES (16801804,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-219.821,-0.238,499.027,64);
+INSERT INTO `mob_spawn_points` VALUES (16801805,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-218.779,-0.217,498.708,64);
+INSERT INTO `mob_spawn_points` VALUES (16801806,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-220.458,-0.250,499.260,64);
+INSERT INTO `mob_spawn_points` VALUES (16801807,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-219.232,-0.230,498.963,64);
+INSERT INTO `mob_spawn_points` VALUES (16801808,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-218.667,-0.219,498.710,64);
+INSERT INTO `mob_spawn_points` VALUES (16801810,0,'Bearclaw_Rabbit','Bearclaw Rabbit',2,75,75,-620.565,0.095,221.161,64);
+INSERT INTO `mob_spawn_points` VALUES (16801811,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-620.059,0.277,219.039,64);
+INSERT INTO `mob_spawn_points` VALUES (16801812,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-619.017,0.298,218.720,64);
+INSERT INTO `mob_spawn_points` VALUES (16801813,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-620.696,0.265,219.272,64);
+INSERT INTO `mob_spawn_points` VALUES (16801814,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-619.470,0.285,218.975,64);
+INSERT INTO `mob_spawn_points` VALUES (16801815,0,'Bearclaw_Leveret','Bearclaw Leveret',3,73,73,-618.905,0.296,218.722,64);
 
 -- When Hell Freezes Over
 INSERT INTO `mob_spawn_points` VALUES (16801818,0,'Snow_Devil_war','Snow Devil',4,78,78,-465.000,0.000,903.000,64);
