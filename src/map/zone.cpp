@@ -230,6 +230,18 @@ void CZone::SetBackgroundMusicNight(uint16 music)
     m_zoneMusic.m_songNight = music;
 }
 
+void CZone::SetPreventSleep(bool value)
+{
+    m_preventSleep = value;
+
+    // If we are forcing it awake, and the timer isn't running yet... START IT!
+    if (m_preventSleep && !zoneTimerToken_.has_value()) // <-- FIXED VARIABLE HERE
+    {
+        createZoneTimers();
+        ShowInfoFmt("Zone {} ({}) forced awake by SetPreventSleep.", GetID(), getName());
+    }
+}
+
 /**
  * Queries for entities (mobs or npcs) which name match the given pattern.
  *
@@ -872,12 +884,13 @@ auto CZone::ZoneServer(timer::time_point tick) -> Task<void>
 
     co_await m_zoneEntities->ZoneServer(tick);
 
-    if (m_BattlefieldHandler != nullptr)
+if (m_BattlefieldHandler != nullptr)
     {
         m_BattlefieldHandler->HandleBattlefields(tick);
     }
 
-    if (zoneTimerToken_.has_value() && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
+// Updated check to include !m_preventSleep
+    if (!m_preventSleep && zoneTimerToken_.has_value() && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
     {
         zoneTimerToken_.reset();
         zoneTimerTriggerAreasToken_.reset();

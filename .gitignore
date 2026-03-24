@@ -251,3 +251,4 @@ modules/contrib/
 modules/omicronXI/
 /modules
 settings/default/network.lua
+modules/init.txt

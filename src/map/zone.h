@@ -590,6 +590,9 @@ public:
     void SetBackgroundMusicDay(uint16 music);
     void SetBackgroundMusicNight(uint16 music);
 
+    // Add SetPreventSleep here
+    void SetPreventSleep(bool value); 
+
     auto queryEntitiesByName(const std::string& pattern) -> const QueryByNameResult_t&;
 
     uint32                                   GetLocalVar(const char* var);
@@ -608,7 +611,6 @@ public:
     void SetWeather(Weather weather);
     void UpdateWeather();
     bool CheckMobsPathedBack();
-
     virtual void SpawnPCs(CCharEntity* PChar);
     virtual void SpawnMOBs(CCharEntity* PChar);
     virtual void SpawnPETs(CCharEntity* PChar);
@@ -707,6 +709,8 @@ private:
     uint16         m_zonePort{};
     uint32         m_zoneIP{};
     bool           m_useNavMesh;
+	// ADD THIS LINE HERE:
+    bool           m_preventSleep{false}; 
 
     Weather m_Weather;
     uint32  m_WeatherChangeTime;

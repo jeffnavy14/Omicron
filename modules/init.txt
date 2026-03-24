@@ -30,6 +30,7 @@
 # Core overrides here:
 omicronxi/Domain/CPP/
 omicronxi/Custom CPP/
+omicronxi/contrib/CPP/
 #
 # Lua BASE updates here:
 omicronxi/Domain/enum
