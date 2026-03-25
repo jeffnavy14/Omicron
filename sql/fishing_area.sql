@@ -116,6 +116,7 @@ INSERT INTO `fishing_area` VALUES (101,1,'Whole Zone',0,0,0,NULL,0.000,0.000,0.0
 INSERT INTO `fishing_area` VALUES (102,1,'Whole Zone',0,0,0,NULL,0.000,0.000,0.000);
 -- Valkurm Dunes
 INSERT INTO `fishing_area` VALUES (103,1,'Whole Zone',0,0,0,NULL,0.000,0.000,0.000);
+INSERT INTO `fishing_area` VALUES (103,2,'Whole Zone',0,0,0,NULL,0.000,0.000,0.000);
 -- Jugner Forest
 INSERT INTO `fishing_area` VALUES (104,1,'Crystalwater Spring',1,20,20,'',300.000,1.000,-179.833);
 INSERT INTO `fishing_area` VALUES (104,2,'Lake Mechieume - Mouth',1,20,31,'',19.458,3.000,334.528);
