@@ -50,6 +50,7 @@ omicronxi/commands
 omicronxi/global
 omicronxi/Custom NPCs
 omicronxi/Custom_HNMs
+omicronxi/custom_instance
 omicronxi/Descent
 #omicronxi/Domain Invasion
 #omicronxi/mimic
