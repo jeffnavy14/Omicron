@@ -10,13 +10,14 @@ xi.mobSkill =
     EVISCERATION                  =   25,
 
     FAST_BLADE_1                  =   32,
-
+    BURNING_BLADE_1               =   33,
     RED_LOTUS_BLADE_1             =   34,
     FLAT_BLADE_1                  =   35,
-
+    SHINING_BLADE_1               =   36,
     SERAPH_BLADE_1                =   37,
-
+    CIRCLE_BLADE_1                =   38,
     SPIRITS_WITHIN_1              =   39,
+    VORPAL_BLADE_1                =   40,
 
     SAVAGE_BLADE_1                =   42,
 
@@ -28,6 +29,8 @@ xi.mobSkill =
     CRESCENT_MOON_1               =   53,
     SICKLE_MOON_1                 =   54,
 
+    DIMIDIATION_1                 =   61,
+
     VORPAL_SCYTHE                 =  101,
     GUILLOTINE_1                  =  102,
 
@@ -38,6 +41,8 @@ xi.mobSkill =
     SKEWER                        =  118,
     WHEELING_THRUST               =  119,
     IMPULSE_DRIVE                 =  120,
+
+    RANDGRITH_1                   =  170,
 
     BARBED_CRESCENT_1             =  245,
 
@@ -73,6 +78,8 @@ xi.mobSkill =
 
     ENTANGLE_DRAIN                =  299,
 
+    -- HUNDRED_FISTS                 =  303,
+
     SUBSTITUTE                    =  307,
     FROGKICK_1                    =  308,
     SPORE_1                       =  309,
@@ -88,6 +95,7 @@ xi.mobSkill =
     BAD_BREATH_1                  =  319,
 
     THOUSAND_NEEDLES_1            =  322,
+    WILD_CARROT_1                 =  323,
 
     DRILL_BRANCH                  =  328,
     PINECONE_BOMB                 =  329,
@@ -135,6 +143,7 @@ xi.mobSkill =
 
     BALEFUL_GAZE_COCKATRICE       =  411,
     RANGED_ATTACK_2               =  412,
+    -- EES_?                         =  413,
 
     SCISSION_THRUST               =  419, -- Mammet-800
 
@@ -175,6 +184,10 @@ xi.mobSkill =
     STINKING_GAS                  =  489,
 
     ABYSS_BLAST                   =  492,
+
+    SNORT_1                       =  495,
+    RABID_DANCE                   =  496,
+    LOWING                        =  497,
 
     TRICLIP_1                     =  498,
     BACK_SWISH_1                  =  499,
@@ -247,6 +260,7 @@ xi.mobSkill =
     COLD_WAVE_2                   =  600, -- Snoll Tzar
     HIEMAL_STORM                  =  601, -- Snoll Tzar
     HYPOTHERMAL_COMBUSTION_2      =  602, -- Snoll Tzar
+    COUNTERSTANCE_1               =  603, -- Geush Urvan
 
     NETHER_BLAST_1                =  610,
 
@@ -259,6 +273,12 @@ xi.mobSkill =
 
     VULTURE_3                     =  626,
 
+    WILD_HORN                     =  628,
+    THUNDERBOLT_BEHEMOTH          =  629,
+    KICK_OUT                      =  630,
+    SHOCK_WAVE_BEHEMOTH           =  631,
+    FLAME_ARMOR                   =  632,
+    HOWL_BEHEMOTH                 =  633,
     FINAL_METEOR                  =  634, -- Final Meteor Chlevnik
 
     RECOIL_DIVE_1                 =  641,
@@ -276,7 +296,6 @@ xi.mobSkill =
     GRAND_SLAM_1                  =  665,
 
     POWER_ATTACK_ARMED_1          =  667,
-
     KICK_BACK                     =  668,
     IMPLOSION                     =  669,
 
@@ -292,11 +311,16 @@ xi.mobSkill =
     MIGHTY_STRIKES_1              =  688,
     BENEDICTION_1                 =  689, -- Season's Greetings KSNM 30 (Gilagoge Tlugvi)
     HUNDRED_FISTS_1               =  690, -- Season's Greetings KSNM 30 (Goga Tlugvi)
-
+    MANAFONT_1                    =  691,
+    CHAINSPELL_1                  =  692,
+    PERFECT_DODGE_1               =  693,
+    INVINCIBLE_1                  =  694,
     BLOOD_WEAPON_1                =  695,
     SOUL_VOICE_1                  =  696,
 
     CHARM                         =  710,
+    -- EES_?                         =  711,
+    -- EES_?                         =  712,
 
     VENOM_BREATH_1                =  717,
     JUMP_1                        =  718,
@@ -310,10 +334,14 @@ xi.mobSkill =
     DEATH_TRAP                    =  729, -- Lockpicked coffer mimics only
     MEIKYO_SHISUI_1               =  730, -- Tenzen, etc...
     MIJIN_GAKURE_1                =  731, -- Season's Greetings KSNM 30 (Ulagohvsdi Tlugvi)
-    CALL_WYVERN                   =  732,
+    CALL_WYVERN_1                 =  732,
 
     ASTRAL_FLOW_1                 =  734,
-
+    EES_GOBLIN                    =  735,
+    EES_ANTICA                    =  736,
+    EES_ORC                       =  737,
+    EES_SHADE                     =  738,
+    EES_GIGAS                     =  739,
     FAMILIAR_1                    =  740, -- "Tango with a Tracker" Shikaree X
 
     QUADRATIC_CONTINUUM_2         =  742,
@@ -397,7 +425,9 @@ xi.mobSkill =
     PINECONE_BOMB_NM              =  928,
     LEAFSTORM_DISPEL              =  929,
     ENTANGLE_POISON               =  930,
+    CROSS_REAVER_1                =  931, -- Ark Angel HM
 
+    DOMINION_SLASH_1              =  933, -- Ark Angel EV
     SHIELD_STRIKE                 =  934, -- Ark Angel EV
 
     ARKANGEL_TT_WARP_OUT          =  936, -- Ark Angel TT Warp Out
@@ -441,20 +471,45 @@ xi.mobSkill =
 
     OMEGA_JAVELIN_1               = 1006,
     ZEID_SUMMON_SHADOWS_2         = 1007, -- Captured. Bastok mission 9-2 BCNM, phase 2. No actual name in log.
-
+    MIGHTY_STRIKES_MAAT           = 1008,
+    HUNDRED_FISTS_MAAT            = 1009,
+    BENEDICTION_MAAT              = 1010,
+    MANAFONT_MAAT                 = 1011,
+    CHAINSPELL_MAAT               = 1012,
+    PERFECT_DODGE_MAAT            = 1013,
+    INVINCIBLE_MAAT               = 1014,
+    BLOOD_WEAPON_MAAT             = 1015,
+    FAMILIAR_MAAT                 = 1016,
     CALL_BEAST                    = 1017, -- "Tango with a Tracker" Shikaree X
+    SOUL_VOICE_MAAT               = 1018,
+    EES_MAAT                      = 1019,
+    MEIKYO_SHISUI_MAAT            = 1020,
+    MIJIN_GAKURE_MAAT             = 1021,
+    CALL_WYVERN_MAAT              = 1022,
+    ASTRAL_FLOW_MAAT              = 1023,
+
+    DRAGON_BREATH_2               = 1041,
 
     HOWL                          = 1062,
 
+    -- EES_?                         = 1065,
+
     FRYPAN_1                      = 1081,
     SMOKEBOMB_1                   = 1082,
+
+    -- EES_?                         = 1091,
 
     GOBLIN_DICE_HEAL              = 1099,
 
     GOBLIN_DICE_RESET             = 1109,
 
-    RANGED_ATTACK_3               = 1154,
+    EES_YAGUDO                    = 1121,
+    EES_QUADAV                    = 1122,
 
+    EES_KINDRED                   = 1151,
+
+    -- EES_?                         = 1153,
+    RANGED_ATTACK_3               = 1154,
     SUBSONICS_1                   = 1155,
     MARROW_DRAIN_1                = 1156,
     SLIPSTREAM_1                  = 1157,
@@ -496,7 +551,6 @@ xi.mobSkill =
     MURK                          = 1232,
     MATERIAL_FEND                 = 1233,
     CAROUSEL_1                    = 1234,
-
     PILE_PITCH                    = 1235,
     GUIDED_MISSILE                = 1236,
     HYPER_PULSE                   = 1237,
@@ -508,7 +562,6 @@ xi.mobSkill =
     NEGATIVE_WHIRL_1              = 1243,
     STYGIAN_VAPOR                 = 1244,
     WINDS_OF_PROMYVION_1          = 1245,
-
     SPIRIT_ABSORPTION             = 1246,
     BINARY_ABSORPTION             = 1247,
     TRINARY_ABSORPTION            = 1248,
@@ -529,7 +582,6 @@ xi.mobSkill =
     NUCLEAR_WASTE                 = 1268,
     CHEMICAL_BOMB                 = 1269,
     PARTICLE_SHIELD               = 1270,
-
     EMPTY_CUTTER                  = 1271,
 
     IMPALEMENT                    = 1274,
@@ -538,9 +590,10 @@ xi.mobSkill =
 
     GERJIS_GRIP                   = 1322,
 
-    HOOF_VOLLEY                   = 1330,
+    -- EES_?                         = 1327,
 
-    COUNTERSTANCE                 = 1331, -- The Waughroon Kid
+    HOOF_VOLLEY                   = 1330,
+    COUNTERSTANCE_3               = 1331, -- The Waughroon Kid
     EXTREMELY_BAD_BREATH_1        = 1332,
     CONTAGION_TRANSFER            = 1333,
     CONTAMINATION                 = 1334,
@@ -564,6 +617,7 @@ xi.mobSkill =
     CHTHONIAN_RAY                 = 1359,
     APOCALYPTIC_RAY               = 1360,
 
+    WILD_GINSENG                  = 1362,
     HUNGRY_CRUNCH                 = 1363,
 
     SINUATE_RUSH                  = 1367,
@@ -576,6 +630,7 @@ xi.mobSkill =
 
     MEDUSA_JAVELIN                = 1386,
 
+    EES_AERN                      = 1389,
     AMATSU_TORIMAI                = 1390,
     AMATSU_KAZAKIRI               = 1391,
     AMATSU_YUKIARASHI             = 1392,
@@ -642,6 +697,8 @@ xi.mobSkill =
 
     CAMISADO_2                    = 1554,
 
+    -- EES_?                         = 1557,
+
     FOOT_KICK_2                   = 1567,
     DUST_CLOUD_2                  = 1568,
     WHIRL_CLAWS_2                 = 1569,
@@ -657,6 +714,8 @@ xi.mobSkill =
     SHEEP_BLEAT_2                 = 1633,
     SHEEP_SONG_2                  = 1634,
     SHEEP_CHARGE_3                = 1635,
+
+    -- EES_?                         = 1641,
 
     ROAR_2                        = 1677,
     RAZOR_FANG_2                  = 1678,
@@ -689,7 +748,16 @@ xi.mobSkill =
     VENOM_SPRAY_2                 = 1843,
     PIT_AMBUSH_2                  = 1844,
     MANDIBULAR_BITE_2             = 1845,
+
+    -- SPIRIT_SURGE                  = 1893,
+
     FIRESPIT_BLUE_MAMOOLJA        = 1923, -- Ignores shadows
+
+    EES_LAMIA                     = 1931,
+    EES_MERROW                    = 1932,
+    AZURE_LORE                    = 1933,
+    WILD_CARD                     = 1934,
+    OVERDRIVE                     = 1935,
 
     RANGED_ATTACK_15              = 1949,
 
@@ -704,6 +772,13 @@ xi.mobSkill =
     BOREAS_MANTLE                 = 1980, -- Unique entry.
 
     REWARD                        = 2005,
+    AZURE_LORE_RAUBAHN            = 2006,
+    -- WILD_CARD                     = 2007,
+    -- OVERDRIVE                     = 2008,
+
+    -- HUNDRED_FISTS                 = 2020,
+
+    -- MIJIN_GAKURE                  = 2105,
 
     NOCTURNAL_SERVITUDE           = 2112,
     HELLSNAP                      = 2113,
@@ -721,6 +796,7 @@ xi.mobSkill =
     GOSPEL_OF_THE_LOST            = 2145,
     VOID_OF_REPENTANCE            = 2146,
     DIVINE_JUDGMENT               = 2147,
+    -- EES_?                         = 2148,
 
     GRIM_GLOWER                   = 2156,
 
@@ -729,6 +805,27 @@ xi.mobSkill =
     HELL_SCISSORS                 = 2221,
 
     QUEASYSHROOM_2                = 2232,
+
+    -- MIGHTY_STRIKES                = 2242,
+    -- HUNDRED_FISTS                 = 2243,
+    -- BENEDICTION                   = 2244,
+    -- MANAFONT                      = 2245,
+    -- CHAINSPELL                    = 2246,
+    -- PERFECT_DODGE                 = 2247,
+    -- INVINCIBLE                    = 2248,
+    BLOOD_WEAPON_IXDRK            = 2249,
+    -- FAMILIAR                      = 2250,
+    -- SOUL_VOICE                    = 2251,
+    EES_TROLL                     = 2252,
+    -- MEIKYO_SHISUI                 = 2253,
+    -- MIJIN_GAKURE                  = 2254,
+    -- SPIRIT_SURGE                  = 2255,
+    -- ASTRAL_FLOW                   = 2256,
+    -- AZURE_LORE                    = 2257,
+    -- WILD_CARD                     = 2258,
+    -- OVERDRIVE                     = 2259,
+    TRANCE                        = 2260,
+    TABULA_RASA                   = 2261,
 
     DI_HORN_ATTACK                = 2329,
     DI_BITE_ATTACK                = 2330,
@@ -740,6 +837,12 @@ xi.mobSkill =
     ACHERON_KICK                  = 2336,
     DAMSEL_MEMENTO                = 2337,
     RAMPANT_STANCE                = 2338,
+
+    -- TABULA_RASA                   = 2358,
+
+    -- INVINCIBLE                    = 2379,
+
+    -- MIJIN_GAKURE                  = 2382,
 
     OPPRESSIVE_GLARE              = 2392,
 
@@ -763,9 +866,28 @@ xi.mobSkill =
 
     DISSOLVE                      = 2550,
 
+    -- TRANCE                        = 2710,
+
     BOOMING_BOMBINATION           = 2770,
 
+    -- BENEDICTION                   = 2777,
+
+    -- MIGHTY_STRIKES                = 2939,
+    -- INVINCIBLE                    = 2940,
+    -- EES_?                         = 2941,
+    -- CHAINSPELL                    = 2942,
+    -- BENEDICTION                   = 2943,
+    -- MANAFONT                      = 2944,
+
+    -- MEIKYO_SHISUI                 = 3175,
+
+    CROSS_REAVER_2                = 3174,
+
+    ARROGANCE_INCARNATE_1         = 3178,
+
     LIGHT_BLADE_2                 = 3214,
+
+    -- ELEMENTAL_SFORZO              = 3265,
 
     INFERNO_5                     = 3325, -- Unknown usage.
 
@@ -783,7 +905,24 @@ xi.mobSkill =
 
     SHEEP_SONG_3                  = 3433,
 
+    DRAGON_BREATH_3               = 3438, -- Areuhat Trust
+
+    TWIRLING_DERVISH              = 3469, -- Adelheid Trust
+
     LIGHT_BLADE_3                 = 3471,
+
+    -- ELEMENTAL_SFORZO              = 3479,
+
+    -- AZURE_LORE                    = 3481,
+    BOLSTER                       = 3482,
+
+    CROSS_REAVER_3                = 3706, -- Ark Angel HM Trust
+
+    ARROGANCE_INCARNATE_2         = 3710, -- Ark Angel EV Trust
+
+    DOMINION_SLASH_2              = 3712, -- Ark Angel EV Trust
+
+    ARROGANCE_INCARNATE_3         = 3728,
 
     FOOT_KICK_3                   = 3840,
     DUST_CLOUD_3                  = 3841,
@@ -810,4 +949,6 @@ xi.mobSkill =
     SANDPIT_3                     = 3883,
     VENOM_SPRAY_3                 = 3884,
     MANDIBULAR_BITE_3             = 3885,
+
+    MIX_FINAL_ELIXIR              = 4231, -- Monbereaux Trust
 }

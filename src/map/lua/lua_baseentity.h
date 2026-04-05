@@ -33,6 +33,7 @@ enum class QuestLog : uint8_t;
 enum class POSMODE : uint8;
 enum class MusicSlot : uint16_t;
 enum class ChocoboColor : uint8_t;
+enum class TerrainType : uint8;
 class CBaseEntity;
 class CCharEntity;
 class CLuaBattlefield;
@@ -76,6 +77,7 @@ public:
     // Variables
     int32  getCharVar(const std::string& varName);
     auto   getCharVarsWithPrefix(const std::string& prefix) -> sol::table;
+    auto   getCharVarsWithSuffix(const std::string& suffix) -> sol::table;
     void   setCharVar(const std::string& varname, int32 value, const sol::object& expiry);
     void   setCharVarExpiration(const std::string& varName, uint32 expiry); // Sets character variable expiration timestamp
     void   incrementCharVar(const std::string& varname, int32 value);       // Increments/decrements/sets a character variable
@@ -243,7 +245,7 @@ public:
     bool   hasEquipped(uint16 equipmentID); // Returns true if item is equipped in any slot
     bool   hasItem(uint16 itemID, const sol::object& location);
     uint32 getItemCount(uint16 itemID);
-    bool   addItem(sol::variadic_args va);
+    auto   addItem(sol::variadic_args va) const -> CItem*;
     bool   delItem(uint16 itemID, int32 quantity, const sol::object& containerID);
     bool   delItemAt(uint16 itemID, int32 quantity, uint8 containerId, uint8 slotId);
     bool   delContainerItems(const sol::object& containerID);
@@ -260,8 +262,6 @@ public:
     auto getCurrentGPItem(uint8 guildId) const -> std::tuple<uint16, uint16>;
     bool breakLinkshell(const std::string& lsname);
     bool addLinkpearl(const std::string& lsname, bool equip);
-
-    auto addSoulPlate(const std::string& name, uint32 interestData, uint8 zeni, uint16 skillIndex, uint8 fp) -> CItem*;
 
     // Trading
     uint8 getContainerSize(uint8 locationID);
@@ -424,12 +424,12 @@ public:
     bool   getEminenceCompleted(uint16 recordID);
     uint16 getNumEminenceCompleted();
     bool   setEminenceProgress(uint16 recordID, uint32 progress, const sol::object& arg2);
-    auto   getEminenceProgress(uint16 recordID) -> std::optional<uint32>;
+    auto   getEminenceProgress(uint16 recordID) -> Maybe<uint32>;
     bool   hasEminenceRecord(uint16 recordID);
     void   triggerRoeEvent(uint8 eventNum, const sol::object& reqTable);
     void   setUnityLeader(uint8 leaderID);
     uint8  getUnityLeader();
-    auto   getUnityRank(const sol::object& unityObj) -> std::optional<uint8>;
+    auto   getUnityRank(const sol::object& unityObj) -> Maybe<uint8>;
     auto   getClaimedDeedMask() -> sol::table;
     void   toggleReceivedDeedRewards();
     void   setClaimedDeed(uint16 deedBitNum);
@@ -811,9 +811,9 @@ public:
 
     auto hasAttachment(uint16 itemID) const -> bool;
     auto getAutomatonName() const -> std::string;
-    auto getAutomatonFrame() const -> std::optional<AutomatonFrame>;
+    auto getAutomatonFrame() const -> Maybe<AutomatonFrame>;
     void setAutomatonFrame(AutomatonFrame frame) const;
-    auto getAutomatonHead() const -> std::optional<AutomatonHead>;
+    auto getAutomatonHead() const -> Maybe<AutomatonHead>;
     void setAutomatonHead(AutomatonHead head) const;
     auto unlockAttachment(uint16 itemID) const -> bool;
     auto getActiveManeuverCount() const -> uint8;
@@ -961,9 +961,6 @@ public:
     auto   getContestRewardStatus() -> sol::table;
     auto   getContestRankHistory() -> sol::table;
     void   claimContestReward();
-
-    void addPacketMod(uint16 packetId, uint16 offset, uint8 value);
-    void clearPacketMods();
 
     bool operator==(const CLuaBaseEntity& other) const
     {

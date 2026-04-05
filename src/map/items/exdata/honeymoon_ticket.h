@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2023 LandSandBoat Dev Teams
+  Copyright (c) 2026 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,41 +21,19 @@
 
 #pragma once
 
-#include "singleton.h"
-#include "xi.h"
+#include "base.h"
 
-#include <atomic>
-#include <condition_variable>
-#include <functional>
-#include <mutex>
-#include <thread>
-
-namespace asio
+namespace Exdata
 {
-
-class thread_pool;
-
-}
-
-class Async : public Singleton<Async>
+#pragma pack(push, 1)
+struct HoneymoonTicket
 {
-public:
-    ~Async();
+    uint8_t Plan;
+    uint8_t padding00[11];
+    uint8_t Signature[12];
 
-    void submit(const xi::Fn<void()>& func);
-    void wait();
-    auto currentTaskCount() const -> std::size_t;
-
-    void setThreadpoolSize(std::size_t size);
-
-protected:
-    Async();
-
-private:
-    std::mutex                         mutex_;
-    std::condition_variable            cv_;
-    std::size_t                        threadPoolSize_{ 1U };
-    std::atomic<std::size_t>           taskCount_{ 0U };
-    std::unique_ptr<asio::thread_pool> threadPool_;
-    std::thread::id                    mainThreadId_;
+    void toTable(sol::table& table) const;
+    void fromTable(const sol::table& data);
 };
+#pragma pack(pop)
+} // namespace Exdata

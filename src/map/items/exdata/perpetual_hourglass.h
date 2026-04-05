@@ -1,7 +1,7 @@
 /*
 ===========================================================================
 
-  Copyright (c) 2022 LandSandBoat Dev Teams
+  Copyright (c) 2026 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,35 +21,24 @@
 
 #pragma once
 
-#include "cbasetypes.h"
-#include "timer.h"
+#include "base.h"
 
-#include <atomic>
-#include <chrono>
-#include <condition_variable>
-#include <functional>
-#include <mutex>
-#include <thread>
-
-class Watchdog final
+namespace Exdata
 {
-public:
-    Watchdog(timer::duration timeout, std::function<void()> callback);
-    ~Watchdog();
+#pragma pack(push, 1)
+struct PerpetualHourglass
+{
+    uint16_t padding00;
+    uint8_t  Flags : 3;
+    uint8_t  padding01 : 5;
+    uint8_t  padding02[5];
+    uint32_t StartTime;
+    uint32_t EndTime;
+    uint16_t ZoneId;
+    uint8_t  padding03[6];
 
-    void update();
-
-private:
-    void _innerFunc();
-
-    using voidFunc_t = std::function<void()>;
-
-    timer::duration   m_timeout;
-    voidFunc_t        m_callback;
-    timer::time_point m_lastUpdate;
-
-    std::jthread            m_watchdog;
-    std::atomic_bool        m_running;
-    std::mutex              m_bottleneck;
-    std::condition_variable m_stopCondition;
+    void toTable(sol::table& table) const;
+    void fromTable(const sol::table& data);
 };
+#pragma pack(pop)
+} // namespace Exdata
