@@ -44,7 +44,13 @@ xi.mobSkill =
 
     RANDGRITH_1                   =  170,
 
+    NETHERSPIKES_1                =  241,
+    CARNAL_NIGHTMARE_1            =  242,
+    AEGIS_SCHISM_1                =  243,
+    DANCING_CHAINS_1              =  244,
     BARBED_CRESCENT_1             =  245,
+
+    FOXFIRE                       =  247,
 
     FOOT_KICK_1                   =  257,
     DUST_CLOUD_1                  =  258,
@@ -185,6 +191,10 @@ xi.mobSkill =
 
     ABYSS_BLAST                   =  492,
 
+    SNORT_1                       =  495,
+    RABID_DANCE                   =  496,
+    LOWING                        =  497,
+
     TRICLIP_1                     =  498,
     BACK_SWISH_1                  =  499,
     MOW_1                         =  500,
@@ -256,6 +266,7 @@ xi.mobSkill =
     COLD_WAVE_2                   =  600, -- Snoll Tzar
     HIEMAL_STORM                  =  601, -- Snoll Tzar
     HYPOTHERMAL_COMBUSTION_2      =  602, -- Snoll Tzar
+    COUNTERSTANCE_1               =  603, -- Geush Urvan
 
     NETHER_BLAST_1                =  610,
 
@@ -268,6 +279,12 @@ xi.mobSkill =
 
     VULTURE_3                     =  626,
 
+    WILD_HORN                     =  628,
+    THUNDERBOLT_BEHEMOTH          =  629,
+    KICK_OUT                      =  630,
+    SHOCK_WAVE_BEHEMOTH           =  631,
+    FLAME_ARMOR                   =  632,
+    HOWL_BEHEMOTH                 =  633,
     FINAL_METEOR                  =  634, -- Final Meteor Chlevnik
 
     RECOIL_DIVE_1                 =  641,
@@ -285,7 +302,6 @@ xi.mobSkill =
     GRAND_SLAM_1                  =  665,
 
     POWER_ATTACK_ARMED_1          =  667,
-
     KICK_BACK                     =  668,
     IMPLOSION                     =  669,
 
@@ -500,7 +516,6 @@ xi.mobSkill =
 
     -- EES_?                         = 1153,
     RANGED_ATTACK_3               = 1154,
-
     SUBSONICS_1                   = 1155,
     MARROW_DRAIN_1                = 1156,
     SLIPSTREAM_1                  = 1157,
@@ -542,7 +557,6 @@ xi.mobSkill =
     MURK                          = 1232,
     MATERIAL_FEND                 = 1233,
     CAROUSEL_1                    = 1234,
-
     PILE_PITCH                    = 1235,
     GUIDED_MISSILE                = 1236,
     HYPER_PULSE                   = 1237,
@@ -554,7 +568,6 @@ xi.mobSkill =
     NEGATIVE_WHIRL_1              = 1243,
     STYGIAN_VAPOR                 = 1244,
     WINDS_OF_PROMYVION_1          = 1245,
-
     SPIRIT_ABSORPTION             = 1246,
     BINARY_ABSORPTION             = 1247,
     TRINARY_ABSORPTION            = 1248,
@@ -575,7 +588,6 @@ xi.mobSkill =
     NUCLEAR_WASTE                 = 1268,
     CHEMICAL_BOMB                 = 1269,
     PARTICLE_SHIELD               = 1270,
-
     EMPTY_CUTTER                  = 1271,
 
     IMPALEMENT                    = 1274,
@@ -587,8 +599,7 @@ xi.mobSkill =
     -- EES_?                         = 1327,
 
     HOOF_VOLLEY                   = 1330,
-
-    COUNTERSTANCE                 = 1331, -- The Waughroon Kid
+    COUNTERSTANCE_3               = 1331, -- The Waughroon Kid
     EXTREMELY_BAD_BREATH_1        = 1332,
     CONTAGION_TRANSFER            = 1333,
     CONTAMINATION                 = 1334,
@@ -600,6 +611,10 @@ xi.mobSkill =
     CROSSTHRASH_1                 = 1340,
     KNIFE_EDGE_CIRCLE             = 1341,
     TRAIN_FALL                    = 1342,
+    MOBLIN_EMOTE_1                = 1343,
+    MOBLIN_EMOTE_2                = 1344,
+    MOBLIN_EMOTE_3                = 1345,
+    MOBLIN_EMOTE_4                = 1346,
 
     MANTLE_PIERCE                 = 1349,
 
@@ -639,12 +654,20 @@ xi.mobSkill =
     RANGED_ATTACK_TENZEN_2        = 1400, -- Tenzen Bow Low
     SOUL_ACCRETION                = 1401,
 
+    MARIONETTE_DICE_2             = 1415,
+    MARIONETTE_DICE_3             = 1416,
+    MARIONETTE_DICE_4             = 1417,
+    MARIONETTE_DICE_5             = 1418,
+    MARIONETTE_DICE_6             = 1419,
+
     ACTINIC_BURST                 = 1441,
 
     HEXIDISCS                     = 1443,
     VORPAL_BLADE_GHRAH            = 1444,
     DAMNATION_DIVE_GHRAH          = 1445,
     SICKLE_SLASH                  = 1446,
+
+    MARIONETTE_DICE_15            = 1457,
 
     REACTOR_COOL                  = 1463,
     OPTIC_INDURATION_CHARGE       = 1464,

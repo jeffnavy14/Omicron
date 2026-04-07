@@ -359,7 +359,7 @@ public:
     bool isSitting();
 
     JOBTYPE GetMJob() const;
-    JOBTYPE GetSJob() const;
+    JOBTYPE GetSJob(bool ignoreRestriction = false) const;
     uint8   GetMLevel() const;
     uint8   GetSLevel() const;
 
@@ -507,9 +507,7 @@ public:
     virtual void OnMobSkillFinished(CMobSkillState& state, action_t& action);
     virtual void OnChangeTarget(CBattleEntity* PTarget);
 
-    virtual void OnAbility(CAbilityState&, action_t&)
-    {
-    }
+    virtual void OnAbility(CAbilityState&, action_t&);
     virtual void OnRangedAttack(CRangeState&, action_t&)
     {
     }
