@@ -196,8 +196,8 @@ INSERT INTO `item_furnishing` VALUES (275,'ark_angel_mr_statue',1,519,8,3);
 INSERT INTO `item_furnishing` VALUES (276,'ark_angel_gk_statue',1,519,8,3);
 INSERT INTO `item_furnishing` VALUES (277,'prishe_statue',1,538,1,3);
 INSERT INTO `item_furnishing` VALUES (278,'cardian_statue',1,514,3,3);
-INSERT INTO `item_furnishing` VALUES (279,'shadow_lord_statue_ii',4,519,3,3);
-INSERT INTO `item_furnishing` VALUES (280,'shadow_lord_statue_iii',4,519,3,3);
+INSERT INTO `item_furnishing` VALUES (279,'shadow_lord_statue_ii',4,519,8,3);
+INSERT INTO `item_furnishing` VALUES (280,'shadow_lord_statue_iii',4,519,8,3);
 INSERT INTO `item_furnishing` VALUES (281,'atomos_statue',4,519,8,3);
 INSERT INTO `item_furnishing` VALUES (282,'yovra_replica',4,523,3,3);
 INSERT INTO `item_furnishing` VALUES (284,'goobbue_statue',4,515,4,3);
@@ -294,9 +294,9 @@ INSERT INTO `item_furnishing` VALUES (390,'carmine_desk',1,533,1,5);
 INSERT INTO `item_furnishing` VALUES (391,'cerulean_desk',1,533,2,5);
 INSERT INTO `item_furnishing` VALUES (392,'myrtle_desk',1,533,5,5);
 INSERT INTO `item_furnishing` VALUES (393,'ecru_desk',1,533,7,5);
-INSERT INTO `item_furnishing` VALUES (394,'blue_tarutaru_desk',2,513,5,4);
-INSERT INTO `item_furnishing` VALUES (395,'green_tarutaru_desk',2,514,4,4);
-INSERT INTO `item_furnishing` VALUES (396,'yellow_tarutaru_desk',1,515,3,4);
+INSERT INTO `item_furnishing` VALUES (394,'blue_tarutaru_desk',2,513,2,4);
+INSERT INTO `item_furnishing` VALUES (395,'green_tarutaru_desk',2,514,3,4);
+INSERT INTO `item_furnishing` VALUES (396,'yellow_tarutaru_desk',2,515,4,4);
 INSERT INTO `item_furnishing` VALUES (397,'white_tarutaru_desk',2,518,7,4);
 INSERT INTO `item_furnishing` VALUES (398,'red_mahogany_bed',1,520,1,10);
 INSERT INTO `item_furnishing` VALUES (399,'blue_mahogany_bed',1,520,6,10);
@@ -306,9 +306,9 @@ INSERT INTO `item_furnishing` VALUES (402,'blue_nobles_bed',1,520,6,12);
 INSERT INTO `item_furnishing` VALUES (403,'green_nobles_bed',1,520,3,12);
 INSERT INTO `item_furnishing` VALUES (404,'yellow_nobles_bed',1,520,4,12);
 INSERT INTO `item_furnishing` VALUES (405,'white_nobles_bed',1,520,7,12);
-INSERT INTO `item_furnishing` VALUES (406,'blue_tarutaru_standing_screen',1,513,5,3);
-INSERT INTO `item_furnishing` VALUES (407,'green_tarutaru_standing_screen',1,514,4,3);
-INSERT INTO `item_furnishing` VALUES (408,'yellow_tarutaru_standing_screen',1,515,2,3);
+INSERT INTO `item_furnishing` VALUES (406,'blue_tarutaru_standing_screen',1,513,2,3);
+INSERT INTO `item_furnishing` VALUES (407,'green_tarutaru_standing_screen',1,514,3,3);
+INSERT INTO `item_furnishing` VALUES (408,'yellow_tarutaru_standing_screen',1,515,4,3);
 INSERT INTO `item_furnishing` VALUES (409,'white_tarutaru_standing_screen',1,518,7,3);
 INSERT INTO `item_furnishing` VALUES (410,'red_round_table',5,512,1,3);
 INSERT INTO `item_furnishing` VALUES (411,'blue_round_table',5,513,2,3);
@@ -318,13 +318,13 @@ INSERT INTO `item_furnishing` VALUES (414,'white_round_table',5,518,7,3);
 INSERT INTO `item_furnishing` VALUES (415,'aldebaran_horn',3,538,4,6);
 INSERT INTO `item_furnishing` VALUES (416,'tomeshelf',10,519,8,1);
 INSERT INTO `item_furnishing` VALUES (417,'storage_hutch',12,515,4,1);
-INSERT INTO `item_furnishing` VALUES (418,'tidings_board',4,515,2,4);
-INSERT INTO `item_furnishing` VALUES (419,'leisure_table',2,515,2,2);
-INSERT INTO `item_furnishing` VALUES (420,'pot_of_meadsweet',1,514,4,4);
-INSERT INTO `item_furnishing` VALUES (421,'vase_of_rulude_orchids',1,517,3,1);
+INSERT INTO `item_furnishing` VALUES (418,'tidings_board',4,515,4,4);
+INSERT INTO `item_furnishing` VALUES (419,'leisure_table',2,515,4,2);
+INSERT INTO `item_furnishing` VALUES (420,'pot_of_meadsweet',1,514,3,4);
+INSERT INTO `item_furnishing` VALUES (421,'vase_of_rulude_orchids',1,517,6,1);
 INSERT INTO `item_furnishing` VALUES (422,'elshimo_pachira',2,512,1,2);
-INSERT INTO `item_furnishing` VALUES (423,'tavern_bench',4,515,2,6);
-INSERT INTO `item_furnishing` VALUES (424,'feasting_table',7,515,2,1);
+INSERT INTO `item_furnishing` VALUES (423,'tavern_bench',4,515,4,6);
+INSERT INTO `item_furnishing` VALUES (424,'feasting_table',7,515,4,1);
 INSERT INTO `item_furnishing` VALUES (425,'girandola',3,512,1,6);
 INSERT INTO `item_furnishing` VALUES (426,'orchestrion',2,516,5,6);
 INSERT INTO `item_furnishing` VALUES (427,'rococo_table',10,517,6,3);
@@ -340,12 +340,12 @@ INSERT INTO `item_furnishing` VALUES (436,'jeunoan_armoire',30,520,5,10);
 INSERT INTO `item_furnishing` VALUES (437,'floral_nightstand',1,521,7,1);
 INSERT INTO `item_furnishing` VALUES (438,'orblight',1,512,1,1);
 INSERT INTO `item_furnishing` VALUES (439,'planus_table',5,521,7,3);
-INSERT INTO `item_furnishing` VALUES (440,'squat_desk',4,514,4,2);
-INSERT INTO `item_furnishing` VALUES (441,'taru_tot_toyset',2,514,4,3);
+INSERT INTO `item_furnishing` VALUES (440,'squat_desk',4,514,3,2);
+INSERT INTO `item_furnishing` VALUES (441,'taru_tot_toyset',2,514,3,3);
 INSERT INTO `item_furnishing` VALUES (442,'gilded_chest',20,519,8,5);
 INSERT INTO `item_furnishing` VALUES (443,'aureous_chest',8,519,8,2);
 INSERT INTO `item_furnishing` VALUES (444,'luxurious_chest',8,519,8,2);
-INSERT INTO `item_furnishing` VALUES (445,'vaisselier_royale',8,515,2,3);
+INSERT INTO `item_furnishing` VALUES (445,'vaisselier_royale',8,515,4,3);
 INSERT INTO `item_furnishing` VALUES (446,'gilded_shelf',40,512,1,5);
 INSERT INTO `item_furnishing` VALUES (447,'mensa_lunata',11,514,3,4);
 INSERT INTO `item_furnishing` VALUES (448,'gueridon',5,514,3,3);
@@ -360,7 +360,7 @@ INSERT INTO `item_furnishing` VALUES (456,'pepo_lantern',10,519,8,6);
 INSERT INTO `item_furnishing` VALUES (457,'cushaw_lantern',6,519,8,6);
 INSERT INTO `item_furnishing` VALUES (458,'calabazilla_lantern',2,519,8,6);
 INSERT INTO `item_furnishing` VALUES (459,'candle_holder',1,512,1,4);
-INSERT INTO `item_furnishing` VALUES (460,'bakery_platter',1,532,6,3);
+INSERT INTO `item_furnishing` VALUES (460,'bakery_platter',1,532,5,3);
 INSERT INTO `item_furnishing` VALUES (461,'buffalo_milk_case',4,533,7,1);
 INSERT INTO `item_furnishing` VALUES (3584,'panetiere',65,519,8,6);
 INSERT INTO `item_furnishing` VALUES (3585,'galley_kitchen',17,534,5,6);
@@ -502,13 +502,23 @@ INSERT INTO `item_furnishing` VALUES (3736,'well',80,517,6,8);
 INSERT INTO `item_furnishing` VALUES (3737,'doll_stand',2,2855,7,15);
 INSERT INTO `item_furnishing` VALUES (3738,'eastern_umbrella',1,521,6,2); -- Moghancement: Gardening - From https://ffxiclopedia.fandom.com/wiki/Eastern_Umbrella (BG doesn't show Moghancement)
 INSERT INTO `item_furnishing` VALUES (3739,'autumn_tree',1,515,4,5);
-INSERT INTO `item_furnishing` VALUES (3740,'model_synergy_furnace',8,0,8,11);  -- TODO: Moghancement: Synergy Skill Gains does not yet exist
-INSERT INTO `item_furnishing` VALUES (3742,'painting_of_a_mercenary',1,0,4,1); -- TODO: Moghancement: Mandragora Mania does not yet exist
+INSERT INTO `item_furnishing` VALUES (3740,'model_synergy_furnace',8,0,8,11);    -- TODO: Moghancement: Synergy Skill Gains does not yet exist
+INSERT INTO `item_furnishing` VALUES (3741,'model_synergy_furnace_ii',8,0,7,11); -- TODO: Moglification: Furnace Duration does not yet exist
+INSERT INTO `item_furnishing` VALUES (3742,'painting_of_a_mercenary',1,0,4,1);   -- TODO: Moghancement: Mandragora Mania does not yet exist
 INSERT INTO `item_furnishing` VALUES (3743,'moogle_bed',1,520,7,8);
 INSERT INTO `item_furnishing` VALUES (3744,'mandragora_pot',1,515,4,1);
 INSERT INTO `item_furnishing` VALUES (3745,'korrigan_pot',1,515,4,1);
 INSERT INTO `item_furnishing` VALUES (3746,'adenium_pot',1,515,4,1);
 INSERT INTO `item_furnishing` VALUES (3747,'citrullus_pot',1,515,4,1);
+INSERT INTO `item_furnishing` VALUES (3748,'leafkin_bed',1,520,7,8);
+INSERT INTO `item_furnishing` VALUES (3749,'chemistry_set',2,519,8,4);
+INSERT INTO `item_furnishing` VALUES (3750,'qiqirn_sack',8,540,7,6);
+INSERT INTO `item_furnishing` VALUES (3751,'besigiled_table',5,2852,8,3);
+INSERT INTO `item_furnishing` VALUES (3752,'colibri_bed',1,520,7,8);
+INSERT INTO `item_furnishing` VALUES (3753,'painting_of_blueblade_fell',1,533,7,3);
+INSERT INTO `item_furnishing` VALUES (3754,'kagami_mochi',8,540,7,6);
+INSERT INTO `item_furnishing` VALUES (3755,'prismatic_chest',1,0,8,1);  -- TODO: Moglification: A.M.A.N. Trove does not yet exist
+INSERT INTO `item_furnishing` VALUES (3756,'sachertorte',1,518,7,1);
 
 /*
   `itemid` smallint(5) unsigned NOT NULL,

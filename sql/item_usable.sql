@@ -20,7 +20,7 @@ CREATE TABLE `item_usable` (
   `itemid` smallint(5) unsigned NOT NULL,
   `name` text NOT NULL,
   `validTargets` smallint(3) unsigned NOT NULL DEFAULT '0',
-  `activation` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `activation` float unsigned NOT NULL DEFAULT '0',
   `animation` smallint(4) unsigned NOT NULL DEFAULT '0',
   `animationTime` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `maxCharges` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -468,9 +468,9 @@ INSERT INTO `item_usable` VALUES (4525,'pumpkin_pie_+1',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4526,'silkworm_egg',1,1,0,28,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4527,'jug_of_marys_milk',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4528,'crystal_bass',1,1,28,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (4529,'rolanberry_881_ce',1,1,26,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (4530,'rolanberry_874_ce',1,1,26,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (4531,'rolanberry_864_ce',1,1,26,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4529,'rolanberry_881_c.e.',1,1,26,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4530,'rolanberry_874_c.e.',1,1,26,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4531,'rolanberry_864_c.e.',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4532,'soft-boiled_egg',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4533,'bowl_of_delicious_puls',1,1,25,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4534,'bowl_of_medicinal_gruel',1,1,24,0,0,0,0,0);
@@ -814,8 +814,8 @@ INSERT INTO `item_usable` VALUES (4916,'scroll_of_fira',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4917,'scroll_of_fira_ii',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4918,'scroll_of_blizzara',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4919,'scroll_of_blizzara_ii',1,1,12,5,0,0,0,0);
-INSERT INTO `item_usable` VALUES (4920,'scroll_of_aerora',1,1,12,5,0,0,0,0);
-INSERT INTO `item_usable` VALUES (4921,'scroll_of_aerora_ii',1,1,12,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4920,'scroll_of_aera',1,1,12,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4921,'scroll_of_aera_ii',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4922,'scroll_of_stonera',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4923,'scroll_of_stonera_ii',1,1,12,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4924,'scroll_of_thundara',1,1,12,5,0,0,0,0);
@@ -1066,11 +1066,11 @@ INSERT INTO `item_usable` VALUES (5194,'bowl_of_pomodoro_sauce',1,1,28,0,0,0,0,0
 INSERT INTO `item_usable` VALUES (5195,'sprig_of_misareaux_parsley',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5196,'strip_of_buffalo_jerky',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5197,'dish_of_spaghetti_peperoncino_+1',1,1,28,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5198,'dish_of_spaghetti_vongole_rosso_+1',1,1,28,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5198,'dish_of_spag._vongole_rosso_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5199,'dish_of_spaghetti_carbonara_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5200,'dish_of_spaghetti_pescatora_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5201,'dish_of_spaghetti_boscaiola_+1',1,1,28,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5202,'dish_of_spaghetti_nero_di_seppia_+1',1,1,28,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5202,'dish_of_spag._nero_di_seppia_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5203,'piece_of_hume_mochi',1,1,0,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5204,'piece_of_elvaan_mochi',1,1,0,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5205,'piece_of_tarutaru_mochi',1,1,0,0,0,0,0,0);
@@ -1266,10 +1266,10 @@ INSERT INTO `item_usable` VALUES (5394,'bottle_of_gnostics_drink',1,1,34,0,0,0,0
 INSERT INTO `item_usable` VALUES (5395,'bottle_of_clerics_drink',1,1,34,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5396,'bottle_of_shepherds_drink',1,1,34,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5397,'bottle_of_sprinters_drink',1,1,34,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5398,'cage_of_z_remnants_fireflies',1,10,80,3,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5399,'cage_of_a_remnants_fireflies',1,10,80,3,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5400,'cage_of_b_remnants_fireflies',1,10,80,3,0,0,0,0);
-INSERT INTO `item_usable` VALUES (5401,'cage_of_s_remnants_fireflies',1,10,80,3,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5398,'cage_of_z._remnants_fireflies',1,10,80,3,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5399,'cage_of_a._remnants_fireflies',1,10,80,3,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5400,'cage_of_b._remnants_fireflies',1,10,80,3,0,0,0,0);
+INSERT INTO `item_usable` VALUES (5401,'cage_of_s._remnants_fireflies',1,10,80,3,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5402,'fire_card_case',1,1,0,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5403,'ice_card_case',1,1,0,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (5404,'wind_card_case',1,1,0,0,0,0,0,0);
@@ -1923,7 +1923,7 @@ INSERT INTO `item_usable` VALUES (6060,'animus_minuo_schema',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6061,'adloquium_schema',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6063,'fruit_parfait',1,1,26,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6064,'queens_crown',1,1,26,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (6065,'tiny_macaroon',1,1,0,0,0,0,0,0);          -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6065,'tiny_macaron',1,1,0,0,0,0,0,0);          -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6066,'tiny_rusk',1,1,0,0,0,0,0,0);              -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6067,'ontic_extremity',1,1,0,0,0,0,0,0);        -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6068,'slice_of_gabbrath_meat',1,1,0,0,0,0,0,0); -- TODO: Not implemented
@@ -2120,7 +2120,7 @@ INSERT INTO `item_usable` VALUES (6262,'piece_of_kusamochi',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6263,'piece_of_kusamochi_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6264,'frayed_sack_of_horror_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6265,'toolbag_ranka',1,1,55,0,0,0,0,0);
-INSERT INTO `item_usable` VALUES (6266,'toolbag_furu',1,1,55,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6266,'toolbag_furusumi',1,1,55,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6267,'aged_box_bayld',1,1,0,0,0,0,0,0); -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6268,'komanezumi',1,1,118,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6269,'eminent_quiver',1,1,0,0,0,0,0,0);       -- TODO: Not implemented
@@ -2185,7 +2185,7 @@ INSERT INTO `item_usable` VALUES (6327,'arkes_coffer',1,1,0,0,0,0,0,0);         
 INSERT INTO `item_usable` VALUES (6328,'largantuas_coffer',1,1,0,0,0,0,0,0);         -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6329,'beists_coffer',1,1,0,0,0,0,0,0);             -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6330,'jester_malatrixs_coffer',1,1,0,0,0,0,0,0);   -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6331,'catrot_velozs_coffer',1,1,0,0,0,0,0,0);      -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6331,'cactrot_velozs_coffer',1,1,0,0,0,0,0,0);      -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6332,'woodland_menders_coffer',1,1,0,0,0,0,0,0);   -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6333,'translucent_salpa',1,1,0,0,0,0,0,0);         -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6334,'rakaznar_shellfish',1,1,0,0,0,0,0,0);        -- TODO: Not implemented
@@ -2358,30 +2358,30 @@ INSERT INTO `item_usable` VALUES (6537,'pinch_of_pungent_powder_iii',1,1,0,0,0,0
 INSERT INTO `item_usable` VALUES (6538,'altanas_repast',1,1,28,0,0,0,0,1);
 INSERT INTO `item_usable` VALUES (6539,'altanas_repast_+1',1,1,28,0,0,0,0,1);
 INSERT INTO `item_usable` VALUES (6540,'altanas_repast_+2',1,1,28,0,0,0,0,1);
-INSERT INTO `item_usable` VALUES (6541,'worn_sack_of_snowslit_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6542,'worn_sack_of_snowslit_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6543,'worn_sack_of_leafslit_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6544,'worn_sack_of_leafslit_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6545,'worn_sack_of_duskslit_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6546,'worn_sack_of_duskslit_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6547,'worn_sack_of_snowtip_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6548,'worn_sack_of_snowtip_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6549,'worn_sack_of_leaftip_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6550,'worn_sack_of_leaftip_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6551,'worn_sack_of_dusktip_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6552,'worn_sack_of_dusktip_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6553,'worn_sack_of_snowdim_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6554,'worn_sack_of_snowdim_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6555,'worn_sack_of_leafdim_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6556,'worn_sack_of_leafdim_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6557,'worn_sack_of_duskdim_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6558,'worn_sack_of_duskdim_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6559,'worn_sack_of_snoworb_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6560,'worn_sack_of_snoworb_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6561,'worn_sack_of_leaforb_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6562,'worn_sack_of_leaforb_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6563,'worn_sack_of_duskorb_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
-INSERT INTO `item_usable` VALUES (6564,'worn_sack_of_duskorb_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6541,'worn_sack_of_ss_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6542,'worn_sack_of_ss_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6543,'worn_sack_of_ls_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6544,'worn_sack_of_ls_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6545,'worn_sack_of_ds_stones_+1',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6546,'worn_sack_of_ds_stones_+2',1,1,0,0,0,0,0,0); -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6547,'worn_sack_of_st_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6548,'worn_sack_of_st_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6549,'worn_sack_of_lt_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6550,'worn_sack_of_lt_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6551,'worn_sack_of_dt_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6552,'worn_sack_of_dt_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6553,'worn_sack_of_sd_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6554,'worn_sack_of_sd_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6555,'worn_sack_of_ld_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6556,'worn_sack_of_ld_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6557,'worn_sack_of_dd_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6558,'worn_sack_of_dd_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6559,'worn_sack_of_so_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6560,'worn_sack_of_so_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6561,'worn_sack_of_lo_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6562,'worn_sack_of_lo_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6563,'worn_sack_of_do_stones_+1',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
+INSERT INTO `item_usable` VALUES (6564,'worn_sack_of_do_stones_+2',1,1,0,0,0,0,0,0);  -- TODO: Not implemented
 INSERT INTO `item_usable` VALUES (6565,'per._snow_cone',1,1,28,1,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6566,'bonanza_biscuit',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6567,'tropical_crepe',1,1,28,1,0,0,0,0);
@@ -2430,12 +2430,113 @@ INSERT INTO `item_usable` VALUES (6609,'serving_of_popotoes_con_queso',1,1,28,0,
 INSERT INTO `item_usable` VALUES (6610,'serving_of_popotoes_con_queso_+1',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6611,'serving_of_seafood_gratin',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6612,'serving_of_seafood_gratin_+1',1,1,28,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6613,'hoptoad',1,1,0,0,0,0,0,0);             -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6614,'old_case',1,1,0,0,0,0,0,0);            -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6615,'old_case_+1',1,1,0,0,0,0,0,0);         -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6616,'old_case_+2',1,1,0,0,0,0,0,0);         -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6617,'???_earring_war',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6618,'???_earring_war_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6619,'???_earring_war_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6620,'???_earring_mnk',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6621,'???_earring_mnk_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6622,'???_earring_mnk_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6623,'???_earring_whm',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6624,'???_earring_whm_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6625,'???_earring_whm_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6626,'???_earring_blm',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6627,'???_earring_blm_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6628,'???_earring_blm_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6629,'???_earring_rdm',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6630,'???_earring_rdm_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6631,'???_earring_rdm_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6632,'???_earring_thf',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6633,'???_earring_thf_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6634,'???_earring_thf_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6635,'???_earring_pld',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6636,'???_earring_pld_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6637,'???_earring_pld_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6638,'???_earring_drk',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6639,'???_earring_drk_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6640,'???_earring_drk_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6641,'???_earring_bst',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6642,'???_earring_bst_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6643,'???_earring_bst_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6644,'???_earring_brd',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6645,'???_earring_brd_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6646,'???_earring_brd_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6647,'???_earring_rng',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6648,'???_earring_rng_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6649,'???_earring_rng_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6650,'???_earring_sam',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6651,'???_earring_sam_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6652,'???_earring_sam_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6653,'???_earring_nin',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6654,'???_earring_nin_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6655,'???_earring_nin_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6656,'???_earring_drg',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6657,'???_earring_drg_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6658,'???_earring_drg_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6659,'???_earring_smn',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6660,'???_earring_smn_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6661,'???_earring_smn_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6662,'???_earring_blu',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6663,'???_earring_blu_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6664,'???_earring_blu_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6665,'???_earring_cor',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6666,'???_earring_cor_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6667,'???_earring_cor_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6668,'???_earring_pup',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6669,'???_earring_pup_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6670,'???_earring_pup_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6671,'???_earring_dnc',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6672,'???_earring_dnc_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6673,'???_earring_dnc_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6674,'???_earring_sch',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6675,'???_earring_sch_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6676,'???_earring_sch_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6677,'???_earring_geo',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6678,'???_earring_geo_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6679,'???_earring_geo_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6680,'???_earring_run',1,1,0,0,0,0,0,0);     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6681,'???_earring_run_+1',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6682,'???_earring_run_+2',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6683,'porcelain_mine',1,1,0,0,0,0,0,0);      -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6684,'popper_ii',1,1,0,0,0,0,0,0);           -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6685,'obsidian_wing',1,1,0,0,0,0,0,0);       -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (6686,'gyudon',1,1,28,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6687,'gyudon_+1',1,1,28,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6688,'chacharoons_knapsack',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6689,'large_white_tail',1,1,0,0,0,0,0,0);      -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (6690,'sheet_of_starlight_tunes',1,1,117,0,0,0,0,0);
 INSERT INTO `item_usable` VALUES (6691,'sheet_of_mapitoto_tunes',1,1,117,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6692,'vial_of_experimental_fluid',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6693,'impish_box',1,1,0,0,0,0,0,0);                  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6694,'chocobo_chair_ii',1,1,0,0,0,0,0,0);            -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6695,'adenium_bench',1,1,0,0,0,0,0,0);               -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (6696,'sheet_of_near_east_tunes',1,1,117,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6697,'scroll_of_instant_reraise_iii',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6698,'aht_urhgan_whitegate_glyph',1,10,0,0,0,0,0,0);    -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6699,'bottle_of_evanessence',1,1,0,0,0,0,0,0);          -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6700,'moogle_memorandum',1,5,0,0,0,0,0,0);              -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6701,'pinch_of_lamia_powder',1,1,0,0,0,0,0,0);          -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6702,'peiste_concoction',1,1,0,0,0,0,0,0);              -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6703,'lungo-nangos_thesis',1,1,0,0,0,0,0,0);            -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (6704,'sheet_of_divine_tunes',1,1,117,0,0,0,0,0);
+INSERT INTO `item_usable` VALUES (6705,'magicked_flyer',1,1,0,0,0,0,0,0);                    -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6706,'piece_of_pom-pom_fruit',1,1,0,0,0,0,0,0);            -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6707,'sheet_of_fishing_tunes',1,1,0,0,0,0,0,0);            -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6708,'malignance_box',1,1,0,0,0,0,0,0);                    -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6709,'heroism_crystal_grand_coffer',1,1,0,0,0,0,0,0);      -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6710,'heroism_aggregate_grand_coffer',1,1,0,0,0,0,0,0);    -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6711,'swart_astral_detritus_gr._coffer',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6712,'murky_astral_detritus_gr._coffer',1,1,0,0,0,0,0,0);  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6713,'reisen_shrine_glory',1,1,0,0,0,0,0,0);               -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6714,'copy_of_ulthalams_chronicles',1,1,0,0,0,0,0,0);      -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6715,'book_of_deeds',1,1,0,0,0,0,0,0);                     -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6716,'trust_magic_primer',1,1,0,0,0,0,0,0);                -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6717,'trust_magic_tome',1,1,0,0,0,0,0,0);                  -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6718,'copy_of_marjorys_thesis',1,1,0,0,0,0,0,0);           -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (6719,'regines_fifth_eye',1,1,0,0,0,0,0,0);                 -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (10250,'moogle_suit',1,8,0,0,1,30,86400,0);
 INSERT INTO `item_usable` VALUES (10253,'decennial_coat_+1',1,8,0,0,1,30,86400,0);
 INSERT INTO `item_usable` VALUES (10254,'decennial_dress_+1',1,8,0,0,1,30,86400,0);
@@ -2809,15 +2910,18 @@ INSERT INTO `item_usable` VALUES (18945,'jet_sickle',1,3,0,0,100,30,600,0);
 INSERT INTO `item_usable` VALUES (19181,'moogles_largesse',1,12,0,0,9,10,259200,0);
 INSERT INTO `item_usable` VALUES (19204,'fiendtrapper',20,0,0,0,12,10,30,0);
 INSERT INTO `item_usable` VALUES (19246,'moggiebag',1,3,0,0,8,10,259200,0);
-INSERT INTO `item_usable` VALUES (21074,'kupo_rod',1,3,55,0,1,30,72000,0);
 -- INSERT INTO `item_usable` VALUES (20533,'worm_feelers_+1',1,1,55,0,1,30,86400,0); -- item's lua still needs made
 -- INSERT INTO `item_usable` VALUES (20568,'wind_knife_+1',4,1,0,0,1,30,600,0); -- untested
 INSERT INTO `item_usable` VALUES (20953,'escritorio',1,1,55,0,1,30,86400,0); -- Dispenses: Cone Calamary
+INSERT INTO `item_usable` VALUES (21074,'kupo_rod',1,3,55,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (21266,'gastraphetes',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21267,'annihilator',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21268,'death_penalty',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (21269,'armageddon',1,1,55,0,1,10,3600,0);
+INSERT INTO `item_usable` VALUES (21760,'dispatchers_axe',1,1,0,0,1,30,3600,0);     -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (21868,'sha_wujings_la._+1',1,55,0,0,1,30,72000,0); -- Dispenses: Distilled Water x 12
+INSERT INTO `item_usable` VALUES (21997,'magicians_rod_+1',1,3,0,0,1,30,1800,0);    -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (22003,'arthros_scepter',1,1,0,0,1,30,3600,0);     -- TODO: verify animation
 -- INSERT INTO `item_usable` VALUES (22018,'seika_uchiwa_+1',1,1,55,0,1,30,300,0);  -- Enchantment: Cool Breeze
 -- INSERT INTO `item_usable` VALUES (22020,'jingly_rod_+1',1,1,55,0,1,30,3600,0);   -- Costume: lamb or Chacharoon
 INSERT INTO `item_usable` VALUES (22115,'yoichinoyumi',1,1,55,0,1,10,3600,0);
@@ -2831,15 +2935,23 @@ INSERT INTO `item_usable` VALUES (22140,'annihilator',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (22141,'death_penalty',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (22142,'armageddon',1,1,55,0,1,10,3600,0);
 INSERT INTO `item_usable` VALUES (22143,'fomalhaut',1,1,55,0,1,10,3600,0);
+INSERT INTO `item_usable` VALUES (22168,'pandits_staff',1,1,0,0,1,10,72000,0);      -- TODO: verify animation
 -- INSERT INTO `item_usable` VALUES (22288,'mandragora_pouch',1,2,55,0,1,10,216000,0);  -- Enchantment: Tiny Allowance (Enchantment gives a random small amount of gil (<2,000))
+INSERT INTO `item_usable` VALUES (22310,'hoxne_ampulla',1,1,0,0,1,5,60,0);          -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (23870,'eyre_cap',1,2,0,0,1,10,3600,0);            -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (23871,'hebenus_gilet',1,2,0,0,1,30,86400,0);      -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (23873,'hebenus_top',1,2,0,0,1,30,86400,0);        -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (24271,'prishes_boots_+1',1,1,0,0,1,5,216000,0);   -- TODO: verify animation
+INSERT INTO `item_usable` VALUES (24273,'sobu_houou_kabuto',1,3,0,0,1,30,72000,0);  -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (25585,'black_chocobo_cap',1,8,79,0,1,30,72000,0);
 INSERT INTO `item_usable` VALUES (25658,'wyrmking_masque_+1',1,1,55,0,1,30,72000,0);
-INSERT INTO `item_usable` VALUES (25757,'wyrmking_suit_+1',1,8,79,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (25679,'white_rarab_cap_+1',1,8,33,0,1,30,72000,0);
+INSERT INTO `item_usable` VALUES (25757,'wyrmking_suit_+1',1,8,79,0,1,30,3600,0);
 INSERT INTO `item_usable` VALUES (25774,'fancy_gilet',1,2,55,0,1,30,86400,0); -- Dispense: persikos snow cone
 INSERT INTO `item_usable` VALUES (25775,'fancy_top',1,2,55,0,1,30,86400,0); -- Dispense: persikos snow cone
 INSERT INTO `item_usable` VALUES (26164,'caliber_ring',1,3,76,0,3,5,900,0);
 INSERT INTO `item_usable` VALUES (26165,'facility_ring',1,3,76,0,3,5,900,0);
+INSERT INTO `item_usable` VALUES (26235,'arrapago_ring',1,8,0,0,10,30,3600,0); -- TODO: verify animation
 INSERT INTO `item_usable` VALUES (26271,'hi-elixir_tank',1,2,55,0,3,30,60,0);
 INSERT INTO `item_usable` VALUES (26272,'super_reraiser_tank',1,2,55,0,5,30,60,0);
 INSERT INTO `item_usable` VALUES (26517,'shadow_lord_shirt',1,8,79,0,1,30,72000,0);
