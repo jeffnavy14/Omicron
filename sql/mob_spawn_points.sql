@@ -5330,7 +5330,7 @@ INSERT INTO `mob_spawn_points` VALUES (16879894,0,'Warder_Euphrosyne','Warder Eu
 INSERT INTO `mob_spawn_points` VALUES (16879895,0,'Warder_Thalia','Warder Thalia',54,62,63,260.834,9.525,-437.238,185);
 INSERT INTO `mob_spawn_points` VALUES (16879896,0,'Bloody_Coffin','Bloody Coffin',55,50,52,638.262,-0.608,-518.056,84);
 INSERT INTO `mob_spawn_points` VALUES (16879897,0,'Boggelmann','Boggelmann',56,70,70,-310.079,-32.877,181.822,163);
-INSERT INTO `mob_spawn_points` VALUES (16879898,0,'Alsha','Alsha',57,60,60,-155.804,-16.191,644.617,195);
+INSERT INTO `mob_spawn_points` VALUES (16879898,0,'Alsha','Alsha',57,55,55,-155.804,-16.191,644.617,195);
 INSERT INTO `mob_spawn_points` VALUES (16879899,0,'Gration','Gration',58,85,85,111.363,-17.000,30.344,141);
 INSERT INTO `mob_spawn_points` VALUES (16879900,0,'Ziphius','Ziphius',59,55,55,148.401,-16.018,520.438,224);
 INSERT INTO `mob_spawn_points` VALUES (16879901,0,'Tsui-Goab','Tsui-Goab',60,65,65,441.191,-16.321,126.181,250); -- VNM
@@ -6177,10 +6177,10 @@ INSERT INTO `mob_spawn_points` VALUES (16900308,0,'Atomic_Cluster','Atomic Clust
 INSERT INTO `mob_spawn_points` VALUES (16900309,0,'Atomic_Cluster','Atomic Cluster',10,45,48,-61.948,0.385,723.499,255);
 INSERT INTO `mob_spawn_points` VALUES (16900310,0,'Atomic_Cluster','Atomic Cluster',10,45,48,-71.947,0.316,695.067,112);
 INSERT INTO `mob_spawn_points` VALUES (16900311,0,'Atomic_Cluster','Atomic Cluster',10,45,48,-61.079,0.213,704.609,133);
-INSERT INTO `mob_spawn_points` VALUES (16900312,0,'Water_Elemental','Water Elemental',15,72,73,9.27,75.83,-721.02,0);
-INSERT INTO `mob_spawn_points` VALUES (16900313,0,'Earth_Elemental','Earth Elemental',16,72,73,-0.28,76.34,-737.49,41);
 
 -- Ouryu Cometh
+INSERT INTO `mob_spawn_points` VALUES (16900312,0,'Water_Elemental','Water Elemental',15,72,73,9.27,75.83,-721.02,0);
+INSERT INTO `mob_spawn_points` VALUES (16900313,0,'Earth_Elemental','Earth Elemental',16,72,73,-0.28,76.34,-737.49,41);
 INSERT INTO `mob_spawn_points` VALUES (16900314,0,'Ouryu','Ouryu',21,90,90,18.67,76.18,-740.65,224);
 INSERT INTO `mob_spawn_points` VALUES (16900315,0,'Ziryu','Ziryu',18,72,74,-8.300,75.828,-757.276,100);
 INSERT INTO `mob_spawn_points` VALUES (16900316,0,'Ziryu','Ziryu',18,72,74,0.680,76.098,-728.375,143);
@@ -10820,8 +10820,8 @@ INSERT INTO `mob_spawn_points` VALUES (16965634,0,'Passage_Crab','Passage Crab',
 INSERT INTO `mob_spawn_points` VALUES (16965635,0,'Gugru_Jagil','Gugru Jagil',2,34,37,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16965636,0,'Gugru_Jagil','Gugru Jagil',2,34,37,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16965637,0,'Blanched_Kraken','Blanched Kraken',3,45,45,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16965638,0,'Gugru_Orobon','Gugru Orobon',4,63,63,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16965639,0,'Northern_Piranu','Northern Piranu',5,78,80,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16965638,0,'Gugru_Orobon','Gugru Orobon',4,63,64,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16965639,0,'Northern_Piranu','Northern Piranu',5,81,81,1.000,1.000,1.000,0);
 
 INSERT INTO `mob_spawn_points` VALUES (16965640,0,'Gugru_Crab','Gugru Crab',6,33,35,-0.621,-7.228,19.369,159);
 INSERT INTO `mob_spawn_points` VALUES (16965641,0,'Gugru_Crab','Gugru Crab',6,33,35,5.393,-7.163,5.183,8);
@@ -10842,8 +10842,8 @@ INSERT INTO `mob_spawn_points` VALUES (16969730,0,'Passage_Crab','Passage Crab',
 INSERT INTO `mob_spawn_points` VALUES (16969731,0,'Gugru_Jagil','Gugru Jagil',2,34,37,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16969732,0,'Gugru_Jagil','Gugru Jagil',2,34,37,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16969733,0,'Blanched_Kraken','Blanched Kraken',3,45,45,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16969734,0,'Gugru_Orobon','Gugru Orobon',4,63,63,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16969735,0,'Southern_Piranu','Southern Piranu',5,78,80,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16969734,0,'Gugru_Orobon','Gugru Orobon',4,63,64,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16969735,0,'Southern_Piranu','Southern Piranu',5,81,81,1.000,1.000,1.000,0);
 
 INSERT INTO `mob_spawn_points` VALUES (16969736,0,'Gugru_Crab','Gugru Crab',6,33,35,-5.470,-7.160,14.980,188);
 INSERT INTO `mob_spawn_points` VALUES (16969737,0,'Gugru_Crab','Gugru Crab',6,33,35,-0.820,-7.230,19.420,157);
@@ -13165,7 +13165,7 @@ INSERT INTO `mob_spawn_points` VALUES (17014786,0,'Submarine_Nipper','Submarine 
 INSERT INTO `mob_spawn_points` VALUES (17014787,0,'Thalassic_Pugil','Thalassic Pugil',3,52,54,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17014788,0,'Abyssal_Pugil','Abyssal Pugil',4,54,55,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17014789,0,'Bathybic_Kulshedra','Bathybic Kulshedra',5,63,64,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17014790,0,'Orobon','Orobon',6,70,70,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17014790,0,'Orobon','Orobon',6,74,74,1.000,1.000,1.000,0);
 
 INSERT INTO `mob_spawn_points` VALUES (17014791,0,'Apkallu','Apkallu',7,54,56,-0.309,-7.163,5.317,106);
 INSERT INTO `mob_spawn_points` VALUES (17014792,0,'Apkallu','Apkallu',7,54,56,5.577,-7.163,11.407,220);
@@ -13189,7 +13189,7 @@ INSERT INTO `mob_spawn_points` VALUES (17018882,0,'Submarine_Nipper','Submarine 
 INSERT INTO `mob_spawn_points` VALUES (17018883,0,'Thalassic_Pugil','Thalassic Pugil',3,52,54,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17018884,0,'Abyssal_Pugil','Abyssal Pugil',4,54,55,1.000,1.000,1.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17018885,0,'Bathybic_Kulshedra','Bathybic Kulshedra',5,63,64,1.000,1.000,1.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17018886,0,'Orobon','Orobon',6,70,70,1.000,1.000,1.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17018886,0,'Orobon','Orobon',6,74,74,1.000,1.000,1.000,0);
 
 INSERT INTO `mob_spawn_points` VALUES (17018887,0,'Apkallu','Apkallu',7,54,56,-0.309,-7.163,5.317,106);
 INSERT INTO `mob_spawn_points` VALUES (17018888,0,'Apkallu','Apkallu',7,54,56,-0.460,-7.240,23.490,141);
@@ -13201,7 +13201,7 @@ INSERT INTO `mob_spawn_points` VALUES (17018893,0,'Utukku','Utukku',11,55,56,-1.
 INSERT INTO `mob_spawn_points` VALUES (17018894,0,'Imp','Imp',12,54,54,-2.010,-7.160,15.230,161);
 INSERT INTO `mob_spawn_points` VALUES (17018895,0,'Air_Elemental','Air Elemental',13,60,60,-1.900,-7.240,22.360,155);
 INSERT INTO `mob_spawn_points` VALUES (17018896,0,'Thunder_Elemental','Thunder Elemental',14,60,60,-2.320,-7.160,4.040,89);
-INSERT INTO `mob_spawn_points` VALUES (17018897,0,'Almighty_Apkallu','Almighty Apkallu',15,55,59,-1.720,-7.160,10.480,152);
+INSERT INTO `mob_spawn_points` VALUES (17018897,0,'Almighty_Apkallu','Almighty Apkallu',15,78,78,-1.720,-7.160,10.480,152);
 
 -- ------------------------------------------------------------
 -- The Ashu Talif (Zone 60)
