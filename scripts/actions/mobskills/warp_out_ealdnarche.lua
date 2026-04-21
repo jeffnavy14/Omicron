@@ -1,6 +1,5 @@
 -----------------------------------
--- Eald2 Warp In
--- Begin Eald'Narche ZM16 (phase 2) teleport
+-- Warp out (Eald'Narche)
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -10,7 +9,16 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
 end
 
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
-    mob:useMobAbility(mob:getMobMod(xi.mobMod.TELEPORT_END))
+    local battletarget = mob:getTarget()
+    if not battletarget then
+        return
+    end
+
+    local t = battletarget:getPos()
+    t.rot = battletarget:getRotPos()
+    local angle = math.random() * math.pi
+    local pos = NearLocation(t, 1.5, angle)
+    mob:teleport(pos, battletarget)
     skill:setMsg(xi.msg.basic.NONE)
     return 0
 end

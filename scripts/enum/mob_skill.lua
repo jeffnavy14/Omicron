@@ -69,6 +69,8 @@ xi.mobSkill =
 
     FOXFIRE                       =  247,
 
+    VULCAN_SHOT                   =  254,
+
     FOOT_KICK_1                   =  257,
     DUST_CLOUD_1                  =  258,
     WHIRL_CLAWS_1                 =  259,
@@ -462,7 +464,7 @@ xi.mobSkill =
     DOMINION_SLASH_1              =  933, -- Ark Angel EV
     SHIELD_STRIKE                 =  934, -- Ark Angel EV
 
-    ARKANGEL_TT_WARP_OUT          =  936, -- Ark Angel TT Warp Out
+    WARP_OUT_AATT                 =  936, -- Ark Angel TT Warp Out
 
     TACHI_YUKIKAZE                =  946, -- Ark Angel GK
     TACHI_GEKKO                   =  947, -- Ark Angel GK
@@ -478,7 +480,7 @@ xi.mobSkill =
     ABSOLUTE_TERROR_1             =  957,
     HORRID_ROAR_1                 =  958,
 
-    ARKANGEL_TT_WARP_IN           =  962, -- Ark Angel TT Warp In
+    WARP_IN_AATT                  =  962, -- Ark Angel TT Warp In
 
     TRION_RED_LOTUS_BLADE         =  968, -- Trion Red Lotus Blade
     TRION_FLAT_BLADE              =  969, -- Trion Flat Blade
@@ -488,8 +490,8 @@ xi.mobSkill =
     VOLKER_SPIRITS_WITHIN         =  974, -- Volker Spirits Within
     VOLKER_VORPAL_BLADE           =  975, -- Volker Vorpal Blade
 
-    AJIDO_WARP_OUT                =  977, -- Windurst 9-2 Ajido teleport
-    AJIDO_WARP_IN                 =  978, -- Windurst 9-2 Ajido teleport
+    WARP_OUT_AJIDO                =  977, -- Windurst 9-2 Ajido teleport
+    WARP_IN_AJIDO                 =  978, -- Windurst 9-2 Ajido teleport
 
     STELLAR_BURST_1               =  986,
     VORTEX_1                      =  987,
@@ -619,6 +621,33 @@ xi.mobSkill =
     IMPALEMENT                    = 1274,
     EMPTY_THRASH                  = 1275,
     PROMYVION_BRUME_2             = 1276,
+
+    INFERNO_BLAST_ATTACK          = 1278,
+    TEBBAD_WING_1                 = 1279,
+    SPIKE_FLAIL_3                 = 1280,
+    FIERY_BREATH_1                = 1281,
+    TOUCHDOWN_3                   = 1282,
+    INFERNO_BLAST                 = 1283,
+    TEBBAD_WING_2                 = 1284,
+    ABSOLUTE_TERROR_3             = 1285,
+    HORRID_ROAR_3                 = 1286,
+
+    SLEET_BLAST_ATTACK            = 1288,
+    GREGALE_WING_1                = 1289,
+    SPIKE_FLAIL_4                 = 1290,
+    GLACIAL_BREATH_1              = 1291,
+    TOUCHDOWN_4                   = 1292,
+    SLEET_BLAST                   = 1293,
+    GREGALE_WING_2                = 1294,
+    ABSOLUTE_TERROR_4             = 1295,
+    HORRID_ROAR_4                 = 1296,
+
+    CYCLONE_WING_1                = 1309,
+    SPIKE_FLAIL_6                 = 1310,
+    SABLE_BREATH_1                = 1311,
+
+    ABSOLUTE_TERROR_6             = 1315,
+    HORRID_ROAR_6                 = 1316,
 
     GERJIS_GRIP                   = 1322,
 
@@ -765,9 +794,10 @@ xi.mobSkill =
     IMPULSION                     = 1547,
     ABSOLUTE_TERROR_BAHAMUT       = 1548,
     HORRIBLE_ROAR_BAHAMUT         = 1549,
-
+    CALL_OF_THE_WYRMKING          = 1550,
     MEGAFLARE                     = 1551,
     GIGAFLARE                     = 1552,
+    TERAFLARE                     = 1553,
 
     CAMISADO_2                    = 1554,
 
@@ -833,6 +863,9 @@ xi.mobSkill =
     WILD_CARD                     = 1934,
     OVERDRIVE                     = 1935,
 
+    WARP_OUT_GESSHO               = 1938,
+    WARP_IN_GESSHO                = 1939,
+
     RANGED_ATTACK_15              = 1949,
 
     WATER_BOMB                    = 1959,
@@ -844,6 +877,12 @@ xi.mobSkill =
     DEATHGNASH                    = 1977, -- Unique entry.
 
     BOREAS_MANTLE                 = 1980, -- Unique entry.
+
+    HANE_FUBUKI                   = 1998,
+    HIDEN_SOKYAKU                 = 1999,
+    SHIKO_NO_MITATE               = 2000,
+    HAPPOBARAI                    = 2001,
+    RINPYOTOSHA                   = 2002,
 
     REWARD                        = 2005,
     AZURE_LORE_RAUBAHN            = 2006,
@@ -968,6 +1007,10 @@ xi.mobSkill =
     ARROGANCE_INCARNATE_1         = 3178,
 
     LIGHT_BLADE_2                 = 3214,
+
+    SHIBARAKU_TRUST               = 3257, -- Gessho Trust
+    SHIKO_NO_MITATE_TRUST         = 3258, -- Gessho Trust
+    RINPYOTOSHA_TRUST             = 3260, -- Gessho Trust
 
     -- ELEMENTAL_SFORZO              = 3265,
 

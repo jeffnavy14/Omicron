@@ -1,16 +1,16 @@
 -----------------------------------
--- Tarutaru Warp II
--- End Ark Angel TT teleport
+-- Warp in (Adjido Marujido)
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
 
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
-    return 1
+    return 0
 end
 
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     skill:setMsg(xi.msg.basic.NONE)
+
     return 0
 end
 
