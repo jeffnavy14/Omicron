@@ -109,9 +109,9 @@ local job2hr =
     [xi.job.DRG] = xi.mobSkill.CALL_WYVERN_1,
     [xi.job.SMN] = xi.mobSkill.ASTRAL_FLOW_1,
     [xi.job.BLU] = xi.mobSkill.AZURE_LORE,
+    [xi.job.COR] = xi.mobSkill.WILD_CARD,
 
 -- following abilities are not yet defined on xi.mobSkill:
---  [xi.job.COR] = xi.mobSkill.WILD_CARD,
 --  [xi.job.PUP] = xi.mobSkill.OVERDRIVE,
 --  [xi.job.DNC] = xi.mobSkill.TRANCE,
 --  [xi.job.SCH] = xi.mobSkill.TABULA_RASA,
@@ -136,11 +136,7 @@ local familyEES =
     [221] = xi.mobSkill.EES_SHADE,   -- Shadow
     [246] = xi.mobSkill.EES_TROLL,   -- Troll
     [270] = xi.mobSkill.EES_YAGUDO,  -- Yagudo
-    [327] = xi.mobSkill.EES_GOBLIN,  -- Goblin
-    [328] = xi.mobSkill.EES_GIGAS,   -- Gigas
     [335] = xi.mobSkill.EES_MAAT,    -- Maat
-    [358] = xi.mobSkill.EES_KINDRED, -- Kindred
-    [359] = xi.mobSkill.EES_SHADE,   -- Fomor
     [373] = xi.mobSkill.EES_GOBLIN,  -- Goblin_Armored
 }
 

@@ -159,6 +159,7 @@ enum class MsgBasic : uint16_t
     TargetRecoversHP2               = 263, // <target> recovers <amount> HP.
     TargetTakesDamage               = 264, // <target> takes <amount> points of damage.
     TargetGainsEffect               = 266, // <target> gains the effect of <status>.
+    TargetReceivesEffectAbility     = 267, // <target> receives the effect of <status>.
     TargetTeleport                  = 273, // <target> vanishes.
     MagicBurstDrainsHP              = 274, // <caster> casts <spell>. Magic Burst! <amount> HP drained from <target>.
     TargetRecoversMP                = 276, // <target> recovers <amount> MP.
@@ -179,6 +180,8 @@ enum class MsgBasic : uint16_t
     UsesJobAbilityTakeDamage        = 317, // The <player> uses .. <target> takes .. points of damage.
     UsesItemRecoversHPAreaOfEffect2 = 318, // <user> uses <item>. <target> recovers <amount> HP.
     UsesAbilityGainsEffect          = 319, // <user> uses <ability>. <target> gains the effect of <status>.
+    UsesAbilityReceivesEffect       = 320, // <user> uses <ability>. <target> receives the effect of <status>.
+    UsesAbilityNoEffect             = 323, // <user> uses <ability>. No effect on <target>.
     UsesButMisses                   = 324, // The <player> uses .. but misses <target>.
     ReadiesSkill                    = 326, // <entity> readies <skill>.
     StartsCastingTarget             = 327, // <entity> starts casting <spell> on <target>.

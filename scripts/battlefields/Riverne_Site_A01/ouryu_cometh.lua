@@ -18,21 +18,25 @@ local content = Battlefield:new({
 })
 
 local function healCharacter(player)
-    if player:isAlive() then
-        player:setHP(player:getMaxHP())
-        player:setMP(player:getMaxMP())
-        player:setTP(0)
+    -- Handle player.
+    if not player:isAlive() then
+        return
+    end
 
-        if player:getPet() ~= nil then
-            local pet = player:getPet()
-            pet:setHP(pet:getMaxHP())
-            pet:setMP(pet:getMaxMP())
-            pet:setTP(0)
-        end
+    player:setHP(player:getMaxHP())
+    player:setMP(player:getMaxMP())
+    player:setTP(0)
+
+    -- Handle player's pet.
+    local pet = player:getPet()
+    if pet then
+        pet:setHP(pet:getMaxHP())
+        pet:setMP(pet:getMaxMP())
+        pet:setTP(0)
     end
 end
 
--- players on healed on entry to the battlefield
+-- Players are healed when entering the battlefield
 function content:battlefieldEntry(player, battlefield)
     healCharacter(player)
 end
@@ -41,17 +45,11 @@ content.groups =
 {
     {
         mobs           = { 'Ouryu' },
-        superlinkGroup = 1,
     },
 
     {
-        mobs           = { 'Ziryu' },
-        superlinkGroup = 1,
-        spawned        = false,
-    },
-
-    {
-        mobs    = { 'Water_Elemental', 'Earth_Elemental' },
+        mobs    = { 'Water_Elemental', 'Earth_Elemental', 'Ziryu' },
+        spawned = false,
     }
 }
 

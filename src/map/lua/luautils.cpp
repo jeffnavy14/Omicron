@@ -1024,7 +1024,7 @@ void LoadExpDifficultyCurves(const sol::table& expToDifficultyTable, const uint8
             return a.first > b.first;
         });
 
-    std::pair<uint16, uint8> iep = { incrediblyEasyPreyMinExp, incrediblyEasyPreyLevel };
+    std::pair<uint16, uint8> iep = { incrediblyEasyPreyLevel, incrediblyEasyPreyMinExp };
 
     charutils::SetExpDifficultyCurve(expDifficultyTable, iep);
 }
@@ -2726,7 +2726,7 @@ int32 OnItemUse(CBaseEntity* PUser, CBaseEntity* PTarget, CItem* PItem, action_t
 }
 
 // Trigger Code on an item when it has been dropped
-void OnItemDrop(CBaseEntity* PUser, CItem* PItem)
+void OnItemDrop(CBaseEntity* PUser, CItem* PItem, IsRecycleBin recycleBin)
 {
     TracyZoneScoped;
 
@@ -2738,7 +2738,7 @@ void OnItemDrop(CBaseEntity* PUser, CItem* PItem)
         return;
     }
 
-    auto result = onItemDrop(PUser, PItem);
+    auto result = onItemDrop(PUser, PItem, static_cast<bool>(recycleBin));
     if (!result.valid())
     {
         sol::error err = result;

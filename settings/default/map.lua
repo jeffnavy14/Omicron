@@ -29,10 +29,6 @@ xi.settings.map =
     -- Game settings
     -- --------------------------------
 
-    -- PacketGuard will block and report any packets that aren't in the allow-list for a
-    -- player's current state.
-    PACKETGUARD_ENABLED = true,
-
     -- Minimal number of 0x3A packets which uses for detect lightluggage (set 0 for disable)
     LIGHTLUGGAGE_BLOCK = 4,
 
@@ -290,6 +286,9 @@ xi.settings.map =
     AUDIT_PLAYER_BAZAAR = false,
     AUDIT_PLAYER_DBOX   = false,
     AUDIT_PLAYER_VENDOR = false,
+
+    -- Maximum number of in-flight items (slots) allowed in a player's delivery box for PC-to-PC transfers.
+    DELIVERY_BOX_MAX_INFLIGHT = 128,
 
     -- Seconds between healing ticks. Default is 10
     HEALING_TICK_DELAY = 10,
