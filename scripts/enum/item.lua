@@ -7239,6 +7239,7 @@ xi.item =
     CHANOIXS_GORGET                     = 16270,
     LIEUTENANTS_GORGET                  = 16271,
     CHOCOBO_PULLUS_TORQUE               = 16273,
+    REPUBLICAN_SILVER_MEDAL             = 16276,
     PILE_CHAIN                          = 16279,
     HARALDRS_MUFFLER                    = 16280,
     CARACT_CHOKER                       = 16284,
