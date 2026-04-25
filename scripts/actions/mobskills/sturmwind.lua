@@ -1,7 +1,7 @@
 -----------------------------------
--- Fell Cleave
+-- Sturmwind
 -- Family: Humanoid Great Axe Weaponskill
--- Description: Delivers an area attack. Radius varies with TP.
+-- Description: Delivers a twofold attack. Damage varies with TP.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -13,13 +13,14 @@ end
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local params = {}
 
-    params.baseDamage     = mob:getWeaponDmg()
-    params.numHits        = 1
-    params.fTP            = { 2.0, 2.0, 2.0 }
-    -- params.str_wSC     = 0.6 -- TODO: Capture if mobskill weaponskills have wSC.
-    params.attackType     = xi.attackType.PHYSICAL
-    params.damageType     = xi.damageType.SLASHING
-    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_1
+    params.baseDamage       = mob:getWeaponDmg()
+    params.numHits          = 2
+    params.fTP              = { 1.0, 1.0, 1.0 }
+    -- params.str_wSC       = 0.3 -- TODO: Capture if mobskill weaponskills have wSC.
+    params.attackMultiplier = { 1.0, 2.0, 3.5 }
+    params.attackType       = xi.attackType.PHYSICAL
+    params.damageType       = xi.damageType.SLASHING
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_2
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
 

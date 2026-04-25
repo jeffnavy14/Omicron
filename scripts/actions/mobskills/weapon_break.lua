@@ -1,7 +1,7 @@
 -----------------------------------
--- Fell Cleave
+-- Weapon Break
 -- Family: Humanoid Great Axe Weaponskill
--- Description: Delivers an area attack. Radius varies with TP.
+-- Description: Lowers target's attack. Duration of effect varies with TP.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -15,8 +15,9 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     params.baseDamage     = mob:getWeaponDmg()
     params.numHits        = 1
-    params.fTP            = { 2.0, 2.0, 2.0 }
-    -- params.str_wSC     = 0.6 -- TODO: Capture if mobskill weaponskills have wSC.
+    params.fTP            = { 1.0, 1.0, 1.0 }
+    -- params.str_wSC     = 0.32 -- TODO: Capture if mobskill weaponskills have wSC.
+    -- params.vit_wSC     = 0.32 -- TODO: Capture if mobskill weaponskills have wSC.
     params.attackType     = xi.attackType.PHYSICAL
     params.damageType     = xi.damageType.SLASHING
     params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_1
@@ -25,6 +26,8 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.ATTACK_DOWN, 25, 0, math.floor(120 + 6 * skill:getTP() / 100))
     end
 
     return info.damage

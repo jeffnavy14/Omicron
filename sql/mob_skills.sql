@@ -120,21 +120,21 @@ INSERT INTO `mob_skills` VALUES (62,115,'fimbulvetr',0,0.0,10.0,2000,0,4,0,0,0,1
 -- INSERT INTO `mob_skills` VALUES (76,??,'cloudsplitter'
 -- INSERT INTO `mob_skills` VALUES (77,??,'ruinator'
 -- INSERT INTO `mob_skills` VALUES (78,??,'blitz'
--- INSERT INTO `mob_skills` VALUES (80,??,'shield_break'
--- INSERT INTO `mob_skills` VALUES (81,??,'iron_tempest'
--- INSERT INTO `mob_skills` VALUES (82,??,'sturmwind'
--- INSERT INTO `mob_skills` VALUES (83,??,'armor_break'
--- INSERT INTO `mob_skills` VALUES (84,??,'keen_edge'
--- INSERT INTO `mob_skills` VALUES (85,??,'weapon_break'
-INSERT INTO `mob_skills` VALUES (86,97,'raging_rush',0,0.0,7.0,2000,0,4,0,0,0,9,0,0);
--- INSERT INTO `mob_skills` VALUES (87,??,'full_break'
--- INSERT INTO `mob_skills` VALUES (88,??,'steel_cyclone'
--- INSERT INTO `mob_skills` VALUES (89,??,'metatron_torment'
--- INSERT INTO `mob_skills` VALUES (90,??,'kings_justice'
-INSERT INTO `mob_skills` VALUES (91,102,'fell_cleave',0,0.0,7.0,2000,0,4,0,0,0,9,0,0);
--- INSERT INTO `mob_skills` VALUES (92,??,'ukkos_fury'
--- INSERT INTO `mob_skills` VALUES (93,??,'upheaval'
--- INSERT INTO `mob_skills` VALUES (94,??,'disaster'
+INSERT INTO `mob_skills` VALUES (80,91,'shield_break',0,0.0,7.0,2000,0,4,0,0,0,8,0,0);
+INSERT INTO `mob_skills` VALUES (81,92,'iron_tempest',0,0.0,7.0,2000,0,4,0,0,0,4,0,0);
+INSERT INTO `mob_skills` VALUES (82,93,'sturmwind',0,0.0,7.0,2000,0,4,0,0,0,5,4,0);
+INSERT INTO `mob_skills` VALUES (83,94,'armor_break',0,0.0,7.0,2000,0,4,0,0,0,8,0,0);
+INSERT INTO `mob_skills` VALUES (84,95,'keen_edge',0,0.0,7.0,2000,0,4,0,0,0,2,0,0);
+INSERT INTO `mob_skills` VALUES (85,96,'weapon_break',0,0.0,7.0,2000,0,4,0,0,0,8,0,0);
+INSERT INTO `mob_skills` VALUES (86,97,'raging_rush',0,0.0,7.0,2000,0,4,0,0,0,7,5,0);
+INSERT INTO `mob_skills` VALUES (87,98,'full_break',0,0.0,7.0,2000,0,4,0,0,0,10,0,0);
+INSERT INTO `mob_skills` VALUES (88,99,'steel_cyclone',0,0.0,7.0,2000,0,4,0,0,0,10,6,0);
+INSERT INTO `mob_skills` VALUES (89,100,'metatron_torment',0,0.0,7.0,2000,0,4,0,0,0,13,11,0);
+INSERT INTO `mob_skills` VALUES (90,101,'kings_justice',0,0.0,7.0,2000,0,4,0,0,0,12,4,0);
+INSERT INTO `mob_skills` VALUES (91,102,'fell_cleave',2,4.0,7.0,2000,0,4,0,0,0,4,6,8);
+INSERT INTO `mob_skills` VALUES (92,103,'ukkos_fury',0,0.0,7.0,2000,0,4,0,0,0,13,12,0);
+INSERT INTO `mob_skills` VALUES (93,104,'upheaval',0,0.0,7.0,2000,0,4,0,0,0,11,2,0);
+INSERT INTO `mob_skills` VALUES (94,100,'disaster',0,0.0,7.0,2000,0,4,0,0,0,9,4,1);
 -- INSERT INTO `mob_skills` VALUES (96,??,'slice'
 -- INSERT INTO `mob_skills` VALUES (97,??,'dark_harvest'
 -- INSERT INTO `mob_skills` VALUES (98,??,'shadow_of_death'

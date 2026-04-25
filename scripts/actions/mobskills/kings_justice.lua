@@ -1,7 +1,7 @@
 -----------------------------------
--- Fell Cleave
+-- King's Justice
 -- Family: Humanoid Great Axe Weaponskill
--- Description: Delivers an area attack. Radius varies with TP.
+-- Description: Delivers a threefold attack. Damage varies with TP.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -13,13 +13,13 @@ end
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local params = {}
 
-    params.baseDamage     = mob:getWeaponDmg()
-    params.numHits        = 1
-    params.fTP            = { 2.0, 2.0, 2.0 }
-    -- params.str_wSC     = 0.6 -- TODO: Capture if mobskill weaponskills have wSC.
-    params.attackType     = xi.attackType.PHYSICAL
-    params.damageType     = xi.damageType.SLASHING
-    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_1
+    params.baseDamage        = mob:getWeaponDmg()
+    params.numHits           = 3
+    params.fTP               = { 1.0, 1.25, 1.5 }
+    -- params.str_wSC        = 0.5 -- TODO: Capture if mobskill weaponskills have wSC.
+    params.attackType        = xi.attackType.PHYSICAL
+    params.damageType        = xi.damageType.SLASHING
+    params.shadowBehavior    = xi.mobskills.shadowBehavior.NUMSHADOWS_3
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
 
