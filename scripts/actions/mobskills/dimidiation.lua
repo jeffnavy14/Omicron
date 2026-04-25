@@ -1,7 +1,7 @@
 -----------------------------------
--- Spinning Attack
--- Family: Humanoid Hand to Hand Weaponskill
--- Description: Delivers a twofold area attack. TODO : Radius varies with TP.
+-- Dimidiation
+-- Family: Humanoid Great Sword Weaponskill
+-- Description: Delivers a twofold attack. Damage varies with TP.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -13,13 +13,14 @@ end
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local params = {}
 
-    params.baseDamage     = mob:getWeaponDmg()
-    params.numHits        = 2
-    params.fTP            = { 1.0, 1.0, 1.0 }
-    --params.str_wSC      = 0.35 -- TODO: Capture if mobskill weaponskills have wSC.
-    params.attackType     = xi.attackType.PHYSICAL
-    params.damageType     = xi.damageType.HTH
-    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_2
+    params.baseDamage       = mob:getWeaponDmg()
+    params.numHits          = 2
+    params.fTP              = { 2.25, 4.5, 6.75 }
+    -- params.dex_wSC       = 0.8 -- TODO: Capture if mobskill weaponskills have wSC.
+    params.attackType       = xi.attackType.PHYSICAL
+    params.damageType       = xi.damageType.SLASHING
+    params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_2
+    params.attackMultiplier = { 1.25, 1.25, 1.25 }
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
 
