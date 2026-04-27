@@ -16,7 +16,7 @@ entity.spawnPoints =
 
 entity.phList =
 {
-    [ID.mob.YARR_THE_PEARLEYED - 2] = ID.mob.YARR_THE_PEARLEYED, -- 1.654 19.914 -113.913
+    [ID.mob.YARR_THE_PEARLEYED - 2] = ID.mob.YARR_THE_PEARLEYED, -- Confirmed on retail
 }
 
 entity.onMobInitialize = function(mob)
@@ -36,7 +36,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.jsa.BENEDICTION, hpp = math.random(1, 50) } -- "Uses Benediction at around 50% or as low as 1%"
+            { id = xi.mobSkill.BENEDICTION_1, hpp = math.random(1, 50) } -- "Uses Benediction at around 50% or as low as 1%"
         }
     })
 end

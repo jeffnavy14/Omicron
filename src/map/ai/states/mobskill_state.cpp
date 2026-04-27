@@ -34,7 +34,7 @@
 #include "status_effect_container.h"
 #include "utils/battleutils.h"
 
-CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsid, std::optional<timer::duration> castTimeOverride)
+CMobSkillState::CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsid, Maybe<timer::duration> castTimeOverride)
 : CState(PEntity, targid)
 , m_PEntity(PEntity)
 , m_spentTP(0)
@@ -171,8 +171,8 @@ bool CMobSkillState::Update(timer::time_point tick)
 
     if (m_PEntity && m_PEntity->isAlive() && (tick >= GetEntryTime() + m_castTime && !IsCompleted()))
     {
-        // Check for stun/sleep/etc at the moment of skill completion - Cleanup handles the interrupt
-        if (m_PEntity->StatusEffectContainer->HasPreventActionEffect())
+        // Check for stun/sleep/hysteria/etc at the moment of skill completion - Cleanup handles the interrupt
+        if (m_PEntity->StatusEffectContainer->HasPreventActionEffect() || m_PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_HYSTERIA))
         {
             return true;
         }

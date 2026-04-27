@@ -21,7 +21,6 @@
 
 #include "0x0ac_guild_sell.h"
 
-#include "common/async.h"
 #include "common/database.h"
 #include "common/settings.h"
 #include "entities/charentity.h"
@@ -33,12 +32,12 @@
 namespace
 {
 
-const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t basePrice, uint8_t quantity)
+const auto auditSale = [](Scheduler& scheduler, CCharEntity* PChar, uint32_t itemId, uint32_t basePrice, uint8_t quantity)
 {
     if (settings::get<bool>("map.AUDIT_PLAYER_VENDOR"))
     {
-        // clang-format off
-            Async::getInstance()->submit([itemId, quantity, seller = PChar->id, sellerName = PChar->getName(), basePrice]()
+        scheduler.postToWorkerThread(
+            [itemId, quantity, seller = PChar->id, sellerName = PChar->getName(), basePrice]()
             {
                 auto totalPrice = basePrice * quantity;
 
@@ -46,10 +45,13 @@ const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t basePric
                 if (!db::preparedStmt(query, itemId, quantity, seller, sellerName, basePrice, totalPrice))
                 {
                     ShowErrorFmt("Failed to log vendor sale (item: {}, quantity: {}, seller: {}, baseprice: {}, totalprice: {})",
-                                 itemId, quantity, seller, basePrice, totalPrice);
+                                 itemId,
+                                 quantity,
+                                 seller,
+                                 basePrice,
+                                 totalPrice);
                 }
             });
-        // clang-format on
     }
 };
 
@@ -57,16 +59,16 @@ const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t basePric
 
 auto GP_CLI_COMMAND_GUILD_SELL::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .isNotCrafting(PChar)
+    return PacketValidator(PChar)
+        .blockedBy({ BlockedState::InEvent, BlockedState::Crafting })
         .mustNotEqual(PChar->PGuildShop, nullptr, "Character does not have a guild shop")
-        .range("ItemNum", ItemNum, 1, 99);
+        .range("ItemNum", this->ItemNum, 1, 99);
 }
 
 void GP_CLI_COMMAND_GUILD_SELL::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    uint8       quantity   = ItemNum;
-    const uint8 shopSlotId = PChar->PGuildShop->SearchItem(ItemNo);
+    uint8       quantity   = this->ItemNum;
+    const uint8 shopSlotId = PChar->PGuildShop->SearchItem(this->ItemNo);
 
     if (shopSlotId == ERROR_SLOTID)
     {
@@ -74,7 +76,7 @@ void GP_CLI_COMMAND_GUILD_SELL::process(MapSession* PSession, CCharEntity* PChar
     }
 
     auto*        shopItem  = static_cast<CItemShop*>(PChar->PGuildShop->GetItem(shopSlotId));
-    const CItem* charItem  = PChar->getStorage(LOC_INVENTORY)->GetItem(PropertyItemIndex);
+    const CItem* charItem  = PChar->getStorage(LOC_INVENTORY)->GetItem(this->PropertyItemIndex);
     const uint32 basePrice = shopItem->getBasePrice();
 
     if (!charItem || charItem->getID() != shopItem->getID())
@@ -91,15 +93,16 @@ void GP_CLI_COMMAND_GUILD_SELL::process(MapSession* PSession, CCharEntity* PChar
     // TODO: add all sellable items to guild table
     if (quantity != 0 && charItem->getQuantity() >= quantity)
     {
-        if (charutils::UpdateItem(PChar, LOC_INVENTORY, PropertyItemIndex, -quantity) == ItemNo)
+        if (charutils::UpdateItem(PChar, LOC_INVENTORY, this->PropertyItemIndex, -quantity) == this->ItemNo)
         {
-            auditSale(PChar, charItem->getID(), basePrice, quantity);
+            // TODO: Don't pass around Scheduler& through PSession
+            auditSale(*PSession->scheduler, PChar, charItem->getID(), basePrice, quantity);
 
             charutils::UpdateItem(PChar, LOC_INVENTORY, 0, shopItem->getSellPrice() * quantity);
-            ShowInfo("GP_CLI_COMMAND_GUILD_SELL: Player '%s' sold %u of ItemNo %u [to GUILD] ", PChar->getName(), quantity, ItemNo);
+            ShowInfo("GP_CLI_COMMAND_GUILD_SELL: Player '%s' sold %u of ItemNo %u [to GUILD] ", PChar->getName(), quantity, this->ItemNo);
             PChar->PGuildShop->GetItem(shopSlotId)->setQuantity(PChar->PGuildShop->GetItem(shopSlotId)->getQuantity() + quantity);
             PChar->pushPacket<GP_SERV_COMMAND_GUILD_SELL>(
-                PChar, PChar->PGuildShop->GetItem(PChar->PGuildShop->SearchItem(ItemNo))->getQuantity(), ItemNo, quantity);
+                PChar, PChar->PGuildShop->GetItem(PChar->PGuildShop->SearchItem(this->ItemNo))->getQuantity(), this->ItemNo, quantity);
             PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
         }
     }

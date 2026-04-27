@@ -34,7 +34,7 @@ LOCK TABLES `mob_spell_lists` WRITE;
 /*!40000 ALTER TABLE `mob_spell_lists` DISABLE KEYS */;
 
 -- DEFAULT (1) Used for mobs with their cast logic defined in lua.
-INSERT INTO `mob_spell_lists` VALUES ('DEFAULT',1,368,0,255);  -- Foe Requiem (0 ~ 255) -- Placeholder entry.
+INSERT INTO `mob_spell_lists` VALUES ('DEFAULT',1,389,0,255);  -- Knight's Minne (0 ~ 255) -- Placeholder entry. Needs to be a buff.
 
 -- Beastmen_BLM (2)
 INSERT INTO `mob_spell_lists` VALUES ('Beastmen_BLM',2,144,13,22);  -- fire (13~22)
@@ -732,6 +732,7 @@ INSERT INTO `mob_spell_lists` VALUES ('Undead',28,199,19,27);  -- waterga (19~27
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,200,44,47);  -- waterga_ii (44~47)
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,206,50,255); -- freeze (50~255)
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,210,54,255); -- quake (54~255)
+INSERT INTO `mob_spell_lists` VALUES ('Undead',28,216,21,255); -- gravity (21~255)
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,220,3,25);   -- poison (3~25)
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,221,43,64);  -- poison_ii (43~64)
 INSERT INTO `mob_spell_lists` VALUES ('Undead',28,225,24,69);  -- poisonga (24~69)
@@ -1150,11 +1151,7 @@ INSERT INTO `mob_spell_lists` VALUES ('Orcish_Onager',71,362,1,255); -- bindga (
 
 -- Free (76)
 
--- Tartaruga_Gigante (77)
-INSERT INTO `mob_spell_lists` VALUES ('Tartaruga_Gigante',77,202,1,255); -- waterga_iv (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Tartaruga_Gigante',77,214,1,255); -- flood (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Tartaruga_Gigante',77,357,1,255); -- slowga (1~255)
-INSERT INTO `mob_spell_lists` VALUES ('Tartaruga_Gigante',77,359,1,255); -- silencega (1~255)
+-- Free (77)
 
 -- Tiamat (78)
 INSERT INTO `mob_spell_lists` VALUES ('Tiamat',78,176,1,255); -- firaga_iii (1~255)
@@ -4104,6 +4101,7 @@ INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,3,30,255);   -- cure_iii 
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,4,55,255);   -- cure_iv (55~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,21,55,255);  -- holy (55~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,22,99,255);  -- holy_ii (99~255)
+INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,97,61,255);  -- reprisal (61~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,106,77,255); -- phalanx (77~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,112,37,255); -- flash (37~255)
 INSERT INTO `mob_spell_lists` VALUES ('TRUST_AAEV',406,310,85,255); -- enlight (85~255)

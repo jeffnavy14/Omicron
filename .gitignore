@@ -161,6 +161,7 @@ src/common/stamp-h1
 *.sw?
 
 navmeshes/*.nav
+ximeshes/*.ximesh
 tags
 log/xi.leaks
 log/leaks.txt

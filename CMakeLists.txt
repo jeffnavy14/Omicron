@@ -72,6 +72,22 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
+CPMAddPackage(
+    NAME ZLIB
+    GITHUB_REPOSITORY madler/zlib
+    GIT_TAG v1.3.1
+    OPTIONS "ZLIB_BUILD_EXAMPLES OFF"
+)
+if(ZLIB_ADDED)
+    add_library(ZLIB::ZLIB ALIAS zlibstatic)
+endif()
+
+CPMAddPackage(
+    NAME utfcpp
+    GITHUB_REPOSITORY nemtrif/utfcpp
+    GIT_TAG v4.0.8
+)
+
 # Find Python (defines ${Python_EXECUTABLE})
 find_package(Python REQUIRED)
 message(STATUS "Python_EXECUTABLE: ${Python_EXECUTABLE}")

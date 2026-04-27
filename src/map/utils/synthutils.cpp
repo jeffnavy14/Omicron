@@ -331,7 +331,7 @@ auto isRightRecipe(CCharEntity* PChar) -> bool
 
         // Check if recipe result is rare and player already owns a copy.
         const CItem* PItem = itemutils::GetItemPointer(recipe.Result);
-        if (PItem && PItem->getFlag() & ITEM_FLAG_RARE && charutils::HasItem(PChar, recipe.Result))
+        if (PItem && PItem->hasFlag(ItemFlag::Rare) && charutils::HasItem(PChar, recipe.Result))
         {
             PChar->pushPacket<GP_SERV_COMMAND_COMBINE_ANS>(PChar, SynthesisResult::CancelRareItem);
             return false;
@@ -579,9 +579,16 @@ auto calculateSynthResult(CCharEntity* PChar) -> uint8
         return SYNTHESIS_SUCCESS;
     }
 
+    // Early return: T0 cannot upgrade HQ.
+    if (finalHQTier <= 1)
+    {
+        return SYNTHESIS_HQ;
+    }
+
     // Calculate HQ2 and HQ3 upgrades.
-    uint8 upgradeHQ = 0;
-    for (uint8 tries = 0; tries < 2; ++tries)
+    uint8 allowedUpgrades = (finalHQTier == 2 ? 1 : 2);
+    uint8 upgradeHQ       = 0;
+    for (uint8 tries = 0; tries < allowedUpgrades; ++tries)
     {
         if (xirand::GetRandomNumber(0.0f, 100.f) <= 25.0f) // 25% Chance to upgrade HQ
         {
@@ -858,12 +865,9 @@ void handleSynthSuccess(CCharEntity* PChar)
 
     if (PItem != nullptr)
     {
-        if ((PItem->getFlag() & ITEM_FLAG_INSCRIBABLE) && (PChar->CraftContainer->getItemID(0) > 0x1080))
+        if (PItem->hasFlag(ItemFlag::Inscribable) && (PChar->CraftContainer->getItemID(0) > 0x1080))
         {
-            char encodedSignature[SignatureStringLength];
-
-            std::memset(&encodedSignature, 0, sizeof(encodedSignature));
-            PItem->setSignature(EncodeStringSignature(PChar->name.c_str(), encodedSignature));
+            PItem->setSignature(PChar->name);
 
             db::preparedStmt("UPDATE char_inventory SET signature = ? WHERE charid = ? AND location = 0 AND slot = ? LIMIT 1",
                              PChar->name,
@@ -985,10 +989,12 @@ void doSynthSkillUp(CCharEntity* PChar)
             continue; // Break current loop iteration.
         }
 
-        int16 baseDiff = PChar->CraftContainer->getQuantity(skillID - 40) - charSkill / 10; // the 5 lvl difference rule for breaks does NOT consider the effects of image support/gear
-
-        // We don't Skill Up if over 10 levels above synth skill. (Or at AND above synth skill in era)
-        if ((settings::get<bool>("map.CRAFT_MODERN_SYSTEM") && (baseDiff <= -11)) || (!settings::get<bool>("map.CRAFT_MODERN_SYSTEM") && baseDiff <= 0))
+        // We don't Skill Up if the recipe isn't difficult enough.
+        // Era -> Char lvl must be bellow recipe level. Retail -> Char level myst be bellow recipe level + 10.
+        // Char level does NOT count the effects of image support/gear.
+        int16 baseDiff = PChar->CraftContainer->getQuantity(skillID - 40) - charSkill / 10;
+        int8  minDiff  = settings::get<bool>("map.CRAFT_MODERN_SYSTEM") ? -11 : 0;
+        if (baseDiff <= minDiff)
         {
             continue; // Break current loop iteration.
         }
@@ -1056,47 +1062,41 @@ void doSynthSkillUp(CCharEntity* PChar)
         //------------------------------
         // Section 4: Calculate Skill Up Amount
         //------------------------------
-        uint8 skillUpAmount = 1;
-
+        uint8 maxAllowedAmount = 1;
         if (charSkill < 600) // No skill ups over 0.1 happen over level 60.
         {
-            uint8  satier = 0; // Maximum ammount of skill-up quantity value.
-            double chance = 0.0f;
-
-            // Set satier initial rank
-            if (baseDiff >= 10)
+            if (baseDiff >= 12)
             {
-                satier = 5;
+                maxAllowedAmount = 4;
             }
-            else if (baseDiff >= 8)
+            else if (baseDiff >= 6)
             {
-                satier = 4;
-            }
-            else if (baseDiff >= 5)
-            {
-                satier = 3;
+                maxAllowedAmount = 3;
             }
             else if (baseDiff >= 3)
             {
-                satier = 2;
+                maxAllowedAmount = 2;
             }
-            else if (baseDiff >= 1)
-            {
-                satier = 1;
-            }
+        }
 
-            for (uint8 i = 0; i < 4; i++) // cicle up to 4 times until cap (0.5) or break. The lower the satier, the more likely it will break
-            {
-                chance = satier * 0.15f;
-                random = xirand::GetRandomNumber(1.);
+        // TODO: More info needed for rates. This is using what was already here since the dark ages.
+        uint8 skillUpAmount = 1;
+        if (maxAllowedAmount > 1)
+        {
+            uint8  cicles = maxAllowedAmount - 1;
+            double chance = 0.0f;
 
-                if (chance < random)
+            for (uint8 i = 1; i <= cicles; i++) // Cicle up to 3 times until cap (0.4 skill-up value) or break. The lower the maxAllowedAmount, the more likely it will break.
+            {
+                chance = maxAllowedAmount * 0.1f;
+
+                if (chance < xirand::GetRandomNumber(1.))
                 {
                     break;
                 }
 
                 skillUpAmount++;
-                satier--;
+                maxAllowedAmount--;
             }
         }
 

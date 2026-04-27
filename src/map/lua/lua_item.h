@@ -43,8 +43,8 @@ public:
     uint16 getID();    // get the item's id
     uint16 getSubID(); // get the item's subid
 
-    uint16 getFlag();  // get the item flag
-    uint8  getAHCat(); // get the ah category
+    auto  getFlag() const -> ItemFlag; // get the item flag
+    uint8 getAHCat();                  // get the ah category
 
     uint32 getQuantity(); // get the quantity of item
 
@@ -92,11 +92,10 @@ public:
 
     bool isInstalled();
 
-    void setSoulPlateData(const std::string& name, uint32 interestData, uint8 zeni, uint16 skillIndex, uint8 fp);
-    auto getSoulPlateData() -> sol::table;
-
-    auto getExData() -> sol::table;            // NOTE: This is 0-indexed, to be in line with the underlying C++ data
-    void setExData(const sol::table& newData); // NOTE: This is 0-indexed, to be in line with the underlying C++ data
+    auto getExData() const -> sol::table;
+    void setExData(const sol::table& data) const;
+    auto getExDataRaw() const -> sol::table;         // NOTE: 0-indexed, to be in line with the underlying C++ data
+    void setExDataRaw(const sol::table& data) const; // NOTE: 0-indexed, to be in line with the underlying C++ data
 
     bool operator==(const CLuaItem& other) const
     {

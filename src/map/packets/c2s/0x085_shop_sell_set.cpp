@@ -21,10 +21,10 @@
 
 #include "0x085_shop_sell_set.h"
 
-#include "common/async.h"
 #include "common/settings.h"
 #include "entities/charentity.h"
 #include "enums/msg_std.h"
+#include "enums/packet_c2s.h"
 #include "packets/s2c/0x009_message.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "trade_container.h"
@@ -33,12 +33,12 @@
 namespace
 {
 
-const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t quantity, uint32_t basePrice)
+const auto auditSale = [](Scheduler& scheduler, CCharEntity* PChar, uint32_t itemId, uint32_t quantity, uint32_t basePrice)
 {
     if (settings::get<bool>("map.AUDIT_PLAYER_VENDOR"))
     {
-        // clang-format off
-            Async::getInstance()->submit([itemId, quantity, seller = PChar->id, sellerName = PChar->getName(), basePrice]()
+        scheduler.postToWorkerThread(
+            [itemId, quantity, seller = PChar->id, sellerName = PChar->getName(), basePrice]()
             {
                 auto totalPrice = quantity * basePrice;
 
@@ -48,7 +48,6 @@ const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t quantity
                     ShowErrorFmt("Failed to log vendor sale (item: {}, quantity: {}, seller: {}, totalprice: {})", itemId, quantity, seller, totalPrice);
                 }
             });
-        // clang-format on
     }
 };
 
@@ -56,8 +55,9 @@ const auto auditSale = [](CCharEntity* PChar, uint32_t itemId, uint32_t quantity
 
 auto GP_CLI_COMMAND_SHOP_SELL_SET::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .isNotCrafting(PChar)
+    return PacketValidator(PChar)
+        .blockedBy({ BlockedState::InEvent, BlockedState::Crafting })
+        .requiresPriorPacket(PacketC2S::GP_CLI_COMMAND_SHOP_SELL_REQ)
         .mustEqual(this->SellFlag, 1, "SellFlag not 1");
 }
 
@@ -120,7 +120,8 @@ void GP_CLI_COMMAND_SHOP_SELL_SET::process(MapSession* PSession, CCharEntity* PC
     }
 
     charutils::UpdateItem(PChar, LOC_INVENTORY, 0, cost);
-    auditSale(PChar, itemId, quantity, basePrice);
+    // TODO: Don't pass around Scheduler& through PSession
+    auditSale(*PSession->scheduler, PChar, itemId, quantity, basePrice);
     ShowInfo("GP_CLI_COMMAND_SHOP_SELL_SET: Player '%s' sold %u of itemID %u (Total: %u gil) [to VENDOR] ", PChar->getName(), quantity, itemId, cost);
     PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(nullptr, itemId, quantity, MsgStd::Sell);
     PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);

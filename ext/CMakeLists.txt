@@ -262,6 +262,7 @@ set(SHARED_EXTERNAL_LIBS
     asio
     alpaca
     magic_enum
+    utf8cpp
 )
 
 if(WIN32)
@@ -295,6 +296,7 @@ set(MAP_ONLY_EXTERNAL_LIBS
     RecastNavigation::Recast
     RecastNavigation::Detour
     fast_obj
+    zlibstatic
 )
 
 set(SEARCH_ONLY_EXTERNAL_LIBS

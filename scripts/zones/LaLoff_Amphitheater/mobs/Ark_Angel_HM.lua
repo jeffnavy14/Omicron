@@ -21,12 +21,14 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
+
     xi.mix.jobSpecial.config(mob, {
         between = 30,
         specials =
         {
-            { id = xi.jsa.MIGHTY_STRIKES },
-            { id = xi.jsa.MIJIN_GAKURE },
+            { id = xi.mobSkill.MIGHTY_STRIKES_1 },
+            { id = xi.mobSkill.MIJIN_GAKURE_1   },
         },
     })
 end

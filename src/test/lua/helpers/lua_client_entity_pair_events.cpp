@@ -23,12 +23,12 @@
 
 #include "common/logging.h"
 #include "common/lua.h"
-#include "enums/packet_c2s.h"
 #include "lua/helpers/lua_client_entity_pair_packets.h"
 #include "lua/lua_client_entity_pair.h"
 #include "lua/lua_simulation.h"
 #include "lua/sol_bindings.h"
 #include "map/entities/charentity.h"
+#include "map/map_engine.h"
 #include "map/packets/c2s/0x05b_eventend.h"
 #include "packets/basic.h"
 #include "test_char.h"
@@ -65,7 +65,7 @@ void CLuaClientEntityPairEvents::sendEventPacket(sol::optional<uint16> eventId, 
         return;
     }
 
-    const auto packet      = parent_->packets().createPacket(PacketC2S::GP_CLI_COMMAND_EVENTEND);
+    const auto packet      = parent_->packets().createPacket<GP_CLI_COMMAND_EVENTEND>();
     auto*      eventPacket = packet->as<GP_CLI_COMMAND_EVENTEND>();
 
     eventPacket->EndPara   = option.value_or(0);

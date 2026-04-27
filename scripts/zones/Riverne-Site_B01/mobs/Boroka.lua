@@ -9,12 +9,15 @@ local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.BIND)
+    mob:addImmunity(xi.immunity.GRAVITY)
+    mob:addImmunity(xi.immunity.TERROR)
+    mob:addImmunity(xi.immunity.PLAGUE)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 25)
 end
 
 entity.onMobSpawn = function(mob)
-    xi.mix.jobSpecial.config(mob, { specials = { { id = xi.jsa.SOUL_VOICE, hpp = 99, cooldown = 300 } } })
+    xi.mix.jobSpecial.config(mob, { specials = { { id = xi.mobSkill.SOUL_VOICE_1, hpp = 99, cooldown = 300 } } })
 end
 
 entity.onMobFight = function(mob, target)

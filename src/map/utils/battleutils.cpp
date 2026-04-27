@@ -603,7 +603,16 @@ int32 CalculateEnspellDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender,
     {
         // see https://www.ffxiah.com/forum/topic/56613/rune-enhancement-damage-formula-testing/ for data and comments
         double       runeDPS = 0.0;
-        CItemWeapon* PWeapon = static_cast<CItemWeapon*>(static_cast<CCharEntity*>(PAttacker)->getEquip(SLOT_MAIN));
+        CItemWeapon* PWeapon = nullptr;
+
+        // Prefer player equip if attacker is a player
+        if (auto* PChar = dynamic_cast<CCharEntity*>(PAttacker))
+        {
+            if (auto* equip = PChar->getEquip(SLOT_MAIN))
+            {
+                PWeapon = dynamic_cast<CItemWeapon*>(equip);
+            }
+        }
 
         // If no player equip, try the entity's internal weapon slot (used by mobs/trusts)
         if (PWeapon == nullptr)
@@ -1761,34 +1770,17 @@ float GetRangedDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, b
     return pDIF;
 }
 
-int16 CalculateBaseTP(int32 delay)
+int16 CalculateBaseTP(CBattleEntity* PEntity, int32 delay)
 {
-    int16 x = 1;
-    if (delay <= 180)
+    int16 baseTPReturn = 0;
+
+    auto calculateBaseTPGainFunc = lua["xi"]["combat"]["tp"]["calculateTPReturn"];
+    if (calculateBaseTPGainFunc.valid())
     {
-        x = (int16)(61 + ((delay - 180) * 63.0f) / 360);
+        baseTPReturn = calculateBaseTPGainFunc(PEntity, delay);
     }
-    else if (delay <= 540)
-    {
-        x = (int16)(61 + ((delay - 180) * 88.0f) / 360);
-    }
-    else if (delay <= 630)
-    {
-        x = (int16)(149 + ((delay - 540) * 20.0f) / 360);
-    }
-    else if (delay <= 720)
-    {
-        x = (int16)(154 + ((delay - 630) * 28.0f) / 360);
-    }
-    else if (delay <= 900)
-    {
-        x = (int16)(161 + ((delay - 720) * 24.0f) / 360);
-    }
-    else
-    {
-        x = (int16)(173 + ((delay - 900) * 28.0f) / 360);
-    }
-    return x;
+
+    return baseTPReturn;
 }
 
 bool TryInterruptSpell(CBattleEntity* PAttacker, CBattleEntity* PDefender, CSpell* PSpell)
@@ -2170,7 +2162,7 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
         {
             int32 delay = PAttacker->GetRangedWeaponDelay(true);
 
-            baseTp = CalculateBaseTP(delay * 120 / 1000);
+            baseTp = CalculateBaseTP(PAttacker, delay * 120 / 1000);
         }
         else
         {
@@ -2190,7 +2182,7 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
                 ratio = 2.0f;
             }
 
-            baseTp = CalculateBaseTP(delay * 60.0f / 1000.0f / ratio);
+            baseTp = CalculateBaseTP(PAttacker, delay * 60.0f / 1000.0f / ratio);
         }
 
         if (giveTPtoAttacker)
@@ -2358,7 +2350,7 @@ int32 TakeWeaponskillDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, 
         if (isRanged)
         {
             int32 delay = PAttacker->GetRangedWeaponDelay(true);
-            baseTp      = CalculateBaseTP((delay * 120) / 1000);
+            baseTp      = CalculateBaseTP(PAttacker, (delay * 120) / 1000);
         }
         else
         {
@@ -2379,7 +2371,7 @@ int32 TakeWeaponskillDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, 
                 ratio = 2.0f;
             }
 
-            baseTp = CalculateBaseTP(delay * 60 / 1000 / ratio);
+            baseTp = CalculateBaseTP(PAttacker, delay * 60 / 1000 / ratio);
         }
 
         // add tp to attacker
@@ -2785,105 +2777,24 @@ float GetDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool is
  *                                                                       *
  ************************************************************************/
 
-int32 GetFSTR(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 SlotID)
+auto GetFSTR(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 SlotID) -> int32
 {
-    int32 rank = 0;
-    int32 fstr = 0;
-    float dif  = (float)(PAttacker->STR() - PDefender->VIT());
-
-    // does mob FSTR2 for ranged attack apply here?
-    if (PAttacker->objtype == TYPE_MOB || PAttacker->objtype == TYPE_PET)
-    {
-        fstr = (PAttacker->STR() - PDefender->VIT() + 4) / 4;
-
-        // Level -1 mobs are coded as level 1, but they have an fSTR of 1 always
-        if (PAttacker->objtype == TYPE_MOB && PAttacker->GetMLevel() == 1)
-        {
-            return 1;
-        }
-
-        return std::clamp(fstr, -20, 24);
-    }
-
-    if (dif >= 12)
-    {
-        fstr = static_cast<int32>((dif + 4) / 2);
-    }
-    else if (dif >= 6)
-    {
-        fstr = static_cast<int32>((dif + 6) / 2);
-    }
-    else if (dif >= 1)
-    {
-        fstr = static_cast<int32>((dif + 7) / 2);
-    }
-    else if (dif >= -2)
-    {
-        fstr = static_cast<int32>((dif + 8) / 2);
-    }
-    else if (dif >= -7)
-    {
-        fstr = static_cast<int32>((dif + 9) / 2);
-    }
-    else if (dif >= -15)
-    {
-        fstr = static_cast<int32>((dif + 10) / 2);
-    }
-    else if (dif >= -21)
-    {
-        fstr = static_cast<int32>((dif + 12) / 2);
-    }
-    else
-    {
-        fstr = static_cast<int32>((dif + 13) / 2);
-    }
+    int32 fSTR = 0;
 
     if (SlotID == SLOT_RANGED || SlotID == SLOT_AMMO)
     {
-        rank = PAttacker->GetRangedWeaponRank();
-        // Different caps than melee weapons
-        if (fstr <= (-rank * 2))
-        {
-            return (-rank * 2);
-        }
-
-        if ((fstr > (-rank * 2)) && (fstr <= (2 * (rank + 8))))
-        {
-            return fstr;
-        }
-        else
-        {
-            return 2 * (rank + 8);
-        }
+        fSTR = luautils::callGlobal<int32>("xi.combat.physical.calculateRangedStatFactor", PAttacker, PDefender);
+    }
+    else if (SlotID == SLOT_MAIN || SlotID == SLOT_SUB)
+    {
+        fSTR = luautils::callGlobal<int32>("xi.combat.physical.calculateMeleeStatFactor", PAttacker, PDefender);
     }
     else
     {
-        fstr /= 2;
-
-        if (SlotID == SLOT_MAIN)
-        {
-            rank = PAttacker->GetMainWeaponRank();
-        }
-        else if (SlotID == SLOT_SUB)
-        {
-            rank = PAttacker->GetSubWeaponRank();
-        }
-
-        // Everything else
-        if (fstr <= (-rank))
-        {
-            return (-rank);
-        }
-
-        if ((fstr > (-rank)) && (fstr <= rank + 8))
-        {
-            return fstr;
-        }
-        else
-        {
-            return rank + 8;
-        }
+        ShowError("battleutils::GetFSTR() failed to run lua calls");
     }
+
+    return fSTR;
 }
 
 /************************************************************************
@@ -3776,7 +3687,7 @@ Mod GetResistanceRankModFromElement(ELEMENT& element)
         { ELEMENT_WATER, Mod::WATER_RES_RANK },
         { ELEMENT_WIND, Mod::WIND_RES_RANK },
         { ELEMENT_EARTH, Mod::EARTH_RES_RANK },
-        { ELEMENT_THUNDER, Mod::EARTH_RES_RANK },
+        { ELEMENT_THUNDER, Mod::THUNDER_RES_RANK },
         { ELEMENT_ICE, Mod::ICE_RES_RANK },
         { ELEMENT_LIGHT, Mod::LIGHT_RES_RANK },
         { ELEMENT_DARK, Mod::DARK_RES_RANK },
@@ -4925,7 +4836,8 @@ void HandleIssekiganEnmityBonus(CBattleEntity* PDefender, CBattleEntity* PAttack
     {
         // Issekigan is Known to Grant 300 CE per parry, but unknown how it effects VE (per bgwiki). So VE is left alone for now.
         // JP is known to give 10 VE per point
-        uint16 jpBonus = static_cast<CCharEntity*>(PDefender)->PJobPoints->GetJobPointValue(JP_ISSEKIGAN_EFFECT) * 10;
+        // Only give jpBonus if the defender is a player, as mobs don't have job points.
+        uint16 jpBonus = PDefender->objtype == TYPE_PC ? static_cast<CCharEntity*>(PDefender)->PJobPoints->GetJobPointValue(JP_ISSEKIGAN_EFFECT) * 10 : 0;
         static_cast<CMobEntity*>(PAttacker)->PEnmityContainer->UpdateEnmity(PDefender, 300, 0 + jpBonus, false, false);
     }
 }

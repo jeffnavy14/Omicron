@@ -25,10 +25,12 @@
 
 #include <common/md52.h>
 #include <common/mmo.h>
+#include <common/types/maybe.h>
 #include <common/utils.h>
 #include <common/xirand.h>
 
 #include "login_errors.h"
+#include "login_packets.h"
 #include "nlohmann/json.hpp"
 #include "session.h"
 
@@ -96,7 +98,7 @@ uint16 generateFeatureBitmask();
 
 int32 saveCharacter(uint32 accid, uint32 charid, char_mini* createchar);
 
-int32 createCharacter(session_t& session, uint8* buf);
+int32 createCharacter(session_t& session, uint8* buf, lpkt_chr_info_sub2& charInfo);
 
 std::string getHashFromPacket(const std::string& ip_str, uint8* data);
 
@@ -111,7 +113,7 @@ template <typename T>
 inline constexpr bool always_false_v = always_false<T>::value;
 
 template <typename T>
-inline std::optional<T> jsonGet(const json& jsonInput, std::string key)
+inline Maybe<T> jsonGet(const json& jsonInput, std::string key)
 {
     if (!jsonInput.contains(key))
     {
@@ -164,7 +166,7 @@ inline std::optional<T> jsonGet(const json& jsonInput, std::string key)
 
 // Supposedly, there is template magic to do this inside the template above, but VC++ doesn't support it yet?
 template <typename T, uint32_t size>
-inline typename std::optional<std::array<T, size>> jsonGet(const json& jsonInput, std::string key)
+inline Maybe<std::array<T, size>> jsonGet(const json& jsonInput, std::string key)
 {
     if (!jsonInput.contains(key))
     {

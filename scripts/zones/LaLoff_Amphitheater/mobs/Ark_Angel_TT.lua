@@ -14,12 +14,12 @@ local teleportConfig =
     {
         positions =
         {
-            { x = -4.3049,  y = -18.7165, z = 8.0389 },
-            { x = -14.0846, y = -18.7165, z = 2.5141 },
-            { x = -23.9627, y = -18.7166, z = 8.3264 },
+            { x =  -4.3049, y = -18.7165, z =  8.0389 },
+            { x = -14.0846, y = -18.7165, z =  2.5141 },
+            { x = -23.9627, y = -18.7166, z =  8.3264 },
             { x = -23.9330, y = -18.7166, z = 19.7055 },
             { x = -13.9459, y = -18.7165, z = 25.3625 },
-            { x = -4.0575,  y = -18.7165, z = 19.4814 },
+            { x =  -4.0575, y = -18.7165, z = 19.4814 },
         },
     },
     [2] =
@@ -63,19 +63,21 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
+
     xi.mix.jobSpecial.config(mob,
         {
             between = 30,
             specials =
             {
-                { id = xi.jsa.BLOOD_WEAPON },
-                { id = xi.jsa.MANAFONT },
+                { id = xi.mobSkill.BLOOD_WEAPON_1 },
+                { id = xi.mobSkill.MANAFONT_1     },
             },
         })
 
     -- Set up warp behavior listeners
     mob:addListener('WEAPONSKILL_STATE_EXIT', 'WARP_OUT_COMPLETE', function(ttMob, skillId, wasExecuted)
-        if skillId == xi.mobSkill.ARKANGEL_TT_WARP_OUT then
+        if skillId == xi.mobSkill.WARP_OUT_AATT then
             local config = teleportConfig[ttMob:getBattlefield():getArea()]
             if config then
                 local currentX = ttMob:getXPos()
@@ -90,11 +92,11 @@ entity.onMobSpawn = function(mob)
                 if targetPosition then
                     ttMob:setPos(targetPosition.x, targetPosition.y, targetPosition.z, ttMob:getRotPos())
                     ttMob:queue(0, function(mobArg)
-                        mobArg:useMobAbility(xi.mobSkill.ARKANGEL_TT_WARP_IN, nil, 0)
+                        mobArg:useMobAbility(xi.mobSkill.WARP_IN_AATT, nil, 0)
                     end)
                 end
             end
-        elseif skillId == xi.mobSkill.ARKANGEL_TT_WARP_IN then
+        elseif skillId == xi.mobSkill.WARP_IN_AATT then
             mob:setMagicCastingEnabled(true)
         end
     end)
@@ -122,7 +124,7 @@ end
 
 entity.onMobFight = function(mob, target)
     local hasBloodWeapon = mob:hasStatusEffect(xi.effect.BLOOD_WEAPON)
-    local hasStandback = bit.band(mob:getBehavior(), xi.behavior.STANDBACK) > 0
+    local hasStandback   = bit.band(mob:getBehavior(), xi.behavior.STANDBACK) > 0
 
     -- Allow TT to move during Blood Weapon
     if hasBloodWeapon and hasStandback then
@@ -148,7 +150,7 @@ entity.onMobFight = function(mob, target)
                     end
 
                     mob:setLocalVar('spellCastSinceWarp', 0)
-                    mob:useMobAbility(xi.mobSkill.ARKANGEL_TT_WARP_OUT, nil, 0)
+                    mob:useMobAbility(xi.mobSkill.WARP_OUT_AATT, nil, 0)
                     mob:setMagicCastingEnabled(false)
                 end
             end

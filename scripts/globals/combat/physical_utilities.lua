@@ -49,25 +49,25 @@ local wsElementalProperties =
 xi.combat.physical.pDifWeaponCapTable =
 {
     -- [Skill/weapon type used] = { pre-cRatio caps, pre-randomizer pDIF cap }, Values from: https://www.bg-wiki.com/ffxi/PDIF
-    [xi.skill.NONE            ] = { 3,      3    }, -- We will use this for mobs.
-    [xi.skill.HAND_TO_HAND    ] = { 3.875,  3.5  },
-    [xi.skill.DAGGER          ] = { 3.625,  3.25 },
-    [xi.skill.SWORD           ] = { 3.625,  3.25 },
-    [xi.skill.GREAT_SWORD     ] = { 4.125,  3.75 },
-    [xi.skill.AXE             ] = { 3.625,  3.25 },
-    [xi.skill.GREAT_AXE       ] = { 4.125,  3.75 },
-    [xi.skill.SCYTHE          ] = { 4.375,  4    },
-    [xi.skill.POLEARM         ] = { 4.125,  3.75 },
-    [xi.skill.KATANA          ] = { 3.625,  3.25 },
-    [xi.skill.GREAT_KATANA    ] = { 3.875,  3.5  },
-    [xi.skill.CLUB            ] = { 3.625,  3.25 },
-    [xi.skill.STAFF           ] = { 4.125,  3.75 },
-    [xi.skill.AUTOMATON_MELEE ] = { 3,      3    }, -- Unknown value. Copy of value below.
-    [xi.skill.AUTOMATON_RANGED] = { 3,      3    }, -- Unknown value. Reference found in an old post: https://forum.square-enix.com/ffxi/archive/index.php/t-52778.html?s=d906df07788334a185a902b0a6ae6a99
-    [xi.skill.AUTOMATON_MAGIC ] = { 3,      3    }, -- Unknown value. Here for completion sake.
-    [xi.skill.ARCHERY         ] = { 3.2375, 3.25 },
-    [xi.skill.MARKSMANSHIP    ] = { 3.475,  3.5  },
-    [xi.skill.THROWING        ] = { 3.2375, 3.25 },
+    [xi.skill.NONE            ] = 3, -- Fallback, not intentionally used. Mobs are calculated in pdif functions.
+    [xi.skill.HAND_TO_HAND    ] = 3.5,
+    [xi.skill.DAGGER          ] = 3.25,
+    [xi.skill.SWORD           ] = 3.25,
+    [xi.skill.GREAT_SWORD     ] = 3.75,
+    [xi.skill.AXE             ] = 3.25,
+    [xi.skill.GREAT_AXE       ] = 3.75,
+    [xi.skill.SCYTHE          ] = 4,
+    [xi.skill.POLEARM         ] = 3.75,
+    [xi.skill.KATANA          ] = 3.25,
+    [xi.skill.GREAT_KATANA    ] = 3.5,
+    [xi.skill.CLUB            ] = 3.25,
+    [xi.skill.STAFF           ] = 3.75,
+    [xi.skill.AUTOMATON_MELEE ] = 3,    -- Unknown value. Copy of value below.
+    [xi.skill.AUTOMATON_RANGED] = 3,    -- Unknown value. Reference found in an old post: https://forum.square-enix.com/ffxi/archive/index.php/t-52778.html?s=d906df07788334a185a902b0a6ae6a99
+    [xi.skill.AUTOMATON_MAGIC ] = 3,    -- Unknown value. Here for completion sake.
+    [xi.skill.ARCHERY         ] = 3.25,
+    [xi.skill.MARKSMANSHIP    ] = 3.5,
+    [xi.skill.THROWING        ] = 3.25,
 }
 
 local shieldSizeToBlockRateTable =
@@ -323,7 +323,7 @@ xi.combat.physical.calculateRangedStatFactor = function(actor, target)
     end
 
     -- Players and Trusts
-    local weaponRank   = actor:getWeaponDmgRank()
+    local weaponRank   = actor:getRangedDmgRank()
     local statLowerCap = (7 + weaponRank * 2) * -2
     local statUpperCap = (14 + weaponRank * 2) * 2
 
@@ -477,7 +477,7 @@ xi.combat.physical.wRatioCapPC = function(wRatio, pDifFinalCap)
     elseif wRatio < 2.44 then
         pDifLowerCap = wRatio * 1176 / 1024 - 775 / 1024
     else
-        pDifLowerCap = wRatio - 0.375
+        pDifLowerCap = math.min(wRatio - 0.375, pDifFinalCap)
     end
 
     return pDifLowerCap, pDifUpperCap
@@ -512,10 +512,41 @@ xi.combat.physical.wRatioCapOthers = function(wRatio, pDifFinalCap)
     elseif wRatio <= 1.60 then
         pDifLowerCap = 1
     else
-        pDifLowerCap = 1 + (1120 / 1024) * (wRatio - 1.59)
+        pDifLowerCap = math.min(1 + (1120 / 1024) * (wRatio - 1.59), pDifFinalCap)
     end
 
     return pDifLowerCap, pDifUpperCap
+end
+
+---@param isPC boolean
+---@param wRatio number
+---@return number
+local function getSpikeRatio(isPC, wRatio)
+    if isPC then
+        -- https://www.bg-wiki.com/ffxi/PDIF#Average_Melee_pDIF(qRatio)
+        -- This is also known as "pDIF spike"
+        if wRatio > 0.5 and wRatio < 1.5 then -- 0.5 and 1.5 are 0% chance
+            local sRatio = (0.5 - math.abs(wRatio - 1)) * 1.2
+
+            return utils.clamp(sRatio, 0, 1 / 3) -- 1/3 (one-third), not 0.33
+        end
+    else
+        -- https://www.ffxiah.com/forum/topic/58479/monster-pdif-curves-and-other-info/#3751498
+        -- This is also known as "pDIF spike"
+        local sRatio = 0
+
+        if wRatio > 0.0 and wRatio < 0.75 then
+            sRatio = -5 / 9 + (10 / 9) * wRatio
+        elseif wRatio <= 1.3 then
+            sRatio = 0.3
+        else
+            sRatio = 5 / 3 - (270 / 256) * wRatio
+        end
+
+        return utils.clamp(sRatio, 0, 0.3)
+    end
+
+    return 0
 end
 
 -- WARNING: This function is used in src/utils/battleutils.cpp "GetDamageRatio" function.
@@ -541,7 +572,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     local actorAttack   = 0
     local targetDefense = math.max(1, target:getStat(xi.mod.DEF))
     local flourishBonus = 1
-    local firstCap      = xi.combat.physical.pDifWeaponCapTable[weaponType][1]
+
     -- Actor Weaponskill Specific Attack modifiers.
     if isWeaponskill then
         local flourishEffect = actor:getStatusEffect(xi.effect.BUILDING_FLOURISH)
@@ -573,14 +604,14 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         baseRatio = actorAttack / targetDefense
     end
 
-    -- Apply cap to baseRatio.
-    baseRatio = utils.clamp(baseRatio, 0, firstCap)
-
     ----------------------------------------
     -- Step 2: cRatio (Level correction, corrected ratio) Zone based!
     ----------------------------------------
     local levelDifFactor = 0
 
+    -- https://forum.square-enix.com/ffxi/threads/31310-March-27-2013-(JST)-Version-Update
+    -- TODO: There is some weirdness with needing 2 levels to start level correction in retail
+    -- It is not currently implemented.
     if applyLevelCorrection then
         levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 3 / 64 -- 3/64 from JP model which fits better
     end
@@ -609,36 +640,27 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     local pDifLowerCap       = 0
     local damageLimitPlus    = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
     local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
-    local pDifFinalCap       = (xi.combat.physical.pDifWeaponCapTable[weaponType][2] + damageLimitPlus) * damageLimitPercent + (isCritical and 1 or 0)
+    local pDifFinalCap       = 0
 
     if actor:isPC() then
-        -- https://www.bg-wiki.com/ffxi/PDIF#Average_Melee_pDIF(qRatio)
-        -- This is also known as "pDIF spike"
-        if wRatio > 0.5 and wRatio < 1.5 then -- 0.5 and 1.5 are 0% chance
-            local sRatio = (0.5 - math.abs(wRatio - 1)) * 1.2
+        pDifFinalCap = (xi.combat.physical.pDifWeaponCapTable[weaponType] + damageLimitPlus) * damageLimitPercent + (isCritical and 1 or 0)
 
-            sRatio = utils.clamp(sRatio, 0, 1 / 3) -- 1/3 (one-third), not 0.33
+        local sRatio = getSpikeRatio(true, wRatio)
 
-            if math.random(1, 10000) / 10000 <= sRatio then
-                return 1.0
-            end
+        if math.random(1, 10000) / 10000 <= sRatio then
+            return 1.0
         end
 
         pDifLowerCap, pDifUpperCap = xi.combat.physical.wRatioCapPC(wRatio, pDifFinalCap)
-    else -- Mobs and pets, unconfirmed if pets use this same formula
-        -- https://www.ffxiah.com/forum/topic/58479/monster-pdif-curves-and-other-info/#3751498
-        -- This is also known as "pDIF spike"
-        local sRatio = 0
+    else
+        -- Mobs and pets, unconfirmed if pets use this same formula
+        -- corrected mobs have 2.0 pdif + 1.0 for crits, with level correction added after the fact
+        -- non-corrected mobs have 4.0 pdif cap, but there is some indication that ilvl may go up to 8.0
+        local basePDIF  = applyLevelCorrection and 2 or 4
+        local critBonus = (applyLevelCorrection and isCritical) and 1 or 0
+        pDifFinalCap    = (basePDIF + damageLimitPlus) * damageLimitPercent + critBonus
 
-        if wRatio > 0.0 and wRatio < 0.75 then
-            sRatio = -5 / 9 + (10 / 9) * wRatio
-        elseif wRatio <= 1.3 then
-            sRatio = 0.3
-        else
-            sRatio = 5 / 3 - (270 / 256) * wRatio
-        end
-
-        sRatio = utils.clamp(sRatio, 0, 0.3)
+        local sRatio = getSpikeRatio(false, wRatio)
 
         if math.random(1, 10000) / 10000 <= sRatio then
             return 1.0
@@ -649,18 +671,21 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
 
     -- Apply level correction to UL/LL
     -- https://www.ffxiah.com/forum/topic/57989/post-2016-level-correction-testing/
-    pDifLowerCap = pDifLowerCap + levelDifFactor
-    pDifUpperCap = pDifUpperCap + levelDifFactor
+    -- Dice roll the 50/50 chance to select two different bounds. Mote has not yet implemented the spike by the time of this post so his ratio is not 50/50 rate.
+    -- His model at the time and implemented spike, so the (0.0, 0.5) bounds also looks different
+    -- https://www.bluegartr.com/threads/108161-pDif-and-damage?p=5007487&viewfull=1#post5007487
+    local upperMax   = math.random(0, 1) == 0 and 0.5 or 0
+    local upperBound = math.max(pDifUpperCap + levelDifFactor, upperMax)
+    local lowerbound = math.max(pDifLowerCap + levelDifFactor, 0)
 
-    pDif = math.random(pDifLowerCap * 1000, pDifUpperCap * 1000) / 1000
+    if upperBound == 0 then
+        return 0
+    end
+
+    pDif = math.random(lowerbound * 1000, upperBound * 1000) / 1000
 
     ----------------------------------------
-    -- Step 4: Apply weapon type caps.
-    ----------------------------------------
-    pDif = utils.clamp(pDif, 0, pDifFinalCap)
-
-    ----------------------------------------
-    -- Step 5: Melee random factor.
+    -- Step 4: Melee random factor.
     ----------------------------------------
     local meleeRandom = 1 + math.random(0, 5) * 0.01 -- 5 distinct values
 
@@ -695,7 +720,6 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     local actorAttack     = 0
     local targetDefense   = math.max(1, target:getStat(xi.mod.DEF))
     local flourishBonus   = 1
-    local firstCap        = xi.combat.physical.pDifWeaponCapTable[weaponType][1]
     local distancePenalty = 0
 
     if not actor:isMob() then
@@ -722,16 +746,13 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
 
     if tpIgnoresDefense then
         ignoreDefenseFactor = 1 - tpFactor
-    end
 
-    targetDefense = math.floor(targetDefense * ignoreDefenseFactor)
+        targetDefense = math.max(1, math.floor(targetDefense * ignoreDefenseFactor))
+    end
 
     if targetDefense ~= 0 then
         baseRatio = actorAttack / targetDefense
     end
-
-    -- Apply cap to baseRatio.
-    baseRatio = utils.clamp(baseRatio, 0, firstCap)
 
     ----------------------------------------
     -- Step 2: cRatio (Level correction, corrected ratio) Zone based!
@@ -743,8 +764,11 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
         applyLevelCorrection = false
     end
 
+    -- https://forum.square-enix.com/ffxi/threads/31310-March-27-2013-(JST)-Version-Update
+    -- TODO: There is some weirdness with needing 2 levels to start level correction in retail
+    -- It is not currently implemented.
     if applyLevelCorrection then
-        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.025
+        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * (3 / 128) -- half the melee correction
     end
 
     -- Only players suffer from negative level difference.
@@ -763,15 +787,29 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
         levelDifFactor = 0
     end
 
-    local cRatio = utils.clamp(baseRatio + levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
+    local cRatio = utils.clamp(baseRatio, 0, 10) -- Clamp for the lower limit, mainly.
 
     -- TODO: Presumably, pets get a Cap here if the target checks as 'Too Weak'. More info needed.
 
     ----------------------------------------
     -- Step 3: pDif Caps (Ranged)
     ----------------------------------------
-    local pDifUpperCap = 0
-    local pDifLowerCap = 0
+    local pDifUpperCap       = 0
+    local pDifLowerCap       = 0
+    local damageLimitPlus    = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
+    local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
+    local pDifFinalCap       = 0
+
+    if actor:isPC() then
+        pDifFinalCap = (xi.combat.physical.pDifWeaponCapTable[weaponType] + damageLimitPlus) * damageLimitPercent -- Added damage limit bonuses
+    else
+        -- 4.0 is guessed. there is some indication that mob pdif can go to 8.0 in ilvl content
+        -- 3.0 with level correction matches player ranged pdif cap for 2013 and may need verification
+        local basePDIF = applyLevelCorrection and 3 or 4
+        pDifFinalCap   = (basePDIF + damageLimitPlus) * damageLimitPercent
+    end
+
+    pDif = utils.clamp(pDif, 0, pDifFinalCap)
 
     -- pDIF upper and lower caps.
     if cRatio < 0.9 then
@@ -781,30 +819,27 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
         pDifUpperCap = 1
         pDifLowerCap = 1
     else
-        pDifUpperCap = cRatio
-        pDifLowerCap = cRatio * 20 / 19 - 3 / 19
+        pDifUpperCap = math.min(cRatio, pDifFinalCap)
+        pDifLowerCap = math.min(cRatio * 20 / 19 - 3 / 19, pDifFinalCap)
     end
+
+    -- Add in level correction
+    pDifUpperCap = pDifUpperCap + levelDifFactor
+    pDifLowerCap = pDifLowerCap + levelDifFactor
 
     pDif = math.random(pDifLowerCap * 1000, pDifUpperCap * 1000) / 1000
 
-    ----------------------------------------
-    -- Step 4: Apply weapon type caps.
-    ----------------------------------------
-    local damageLimitPlus    = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
-    local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
-    local pDifFinalCap       = (xi.combat.physical.pDifWeaponCapTable[weaponType][2] + damageLimitPlus) * damageLimitPercent -- Added damage limit bonuses
-
-    pDif = utils.clamp(pDif, 0, pDifFinalCap)
+    -- do not go negative, rolls below zero (proportionally) need to be rolled
+    pDif = math.max(pDif, 0)
 
     ----------------------------------------
-    -- Step 5: Ranged critical factor. Bypasses caps.
+    -- Step 4: Ranged critical factor. Bypasses caps.
     ----------------------------------------
     if isCritical then
         pDif = pDif * 1.25
     end
 
-    -- Step 6: Distance correction and True Shot.
-    -- TODO: Implement distance correction and True shot...
+    -- Step 5: TODO: True Shot.
 
     -- Crit damage bonus is a final modifier
     if isCritical then
@@ -837,6 +872,17 @@ xi.combat.physical.criticalRateFromStatDiff = function(actor, target)
     elseif dDex >= 7 then
         statBonus = 0.01
     end
+
+    return statBonus
+end
+
+-- dStat: Ranged critical hit rate bonus from AGI vs AGI difference.
+xi.combat.physical.criticalRateFromAGIDiff = function(actor, target)
+    local statBonus = 0
+
+    local dAgi = math.max(0, actor:getStat(xi.mod.AGI) - target:getStat(xi.mod.AGI))
+    statBonus = math.floor(dAgi / 10)
+    statBonus = statBonus / 100
 
     return statBonus
 end
@@ -916,6 +962,38 @@ xi.combat.physical.calculateSwingCriticalRate = function(actor, target, actorTP,
     local finalCriticalRate     = 0
     local baseCriticalRate      = 0.05
     local statBonus             = xi.combat.physical.criticalRateFromStatDiff(actor, target)
+    local inninBonus            = xi.combat.physical.criticalRateFromInnin(actor, target)
+    local fencerBonus           = xi.combat.physical.criticalRateFromFencer(actor)
+    local buildingFlourishBonus = xi.combat.physical.criticalRateFromFlourish(actor)
+    local weaponSlotBonus       = xi.combat.physical.criticalRateFromWeaponSlot(actor, slot)
+    local modifierBonus         = actor:getMod(xi.mod.CRITHITRATE) / 100
+    local meritBonus            = actor:getMerit(xi.merit.CRIT_HIT_RATE) / 100
+    local targetCriticalEvasion = target:getMod(xi.mod.CRITICAL_HIT_EVASION) / 100
+    local targetMeritPenalty    = target:getMerit(xi.merit.ENEMY_CRIT_RATE) / 100
+    local tpFactor              = 0
+
+    -- For weaponskills.
+    if optCritModTable then
+        tpFactor = xi.combat.physical.calculateTPfactor(actorTP, optCritModTable)
+    end
+
+    -- Add all different bonuses and clamp.
+    finalCriticalRate = baseCriticalRate + statBonus + inninBonus + fencerBonus + buildingFlourishBonus + weaponSlotBonus + modifierBonus + meritBonus - targetCriticalEvasion - targetMeritPenalty + tpFactor
+
+    return utils.clamp(finalCriticalRate, 0.05, 1) -- TODO: Need confirmation of no upper cap.
+end
+
+---@param actor CBaseEntity
+---@param target CBaseEntity
+---@param actorTP number
+---@param slot xi.slot
+---@param optCritModTable table?
+---@return integer
+xi.combat.physical.calculateRangedCriticalRate = function(actor, target, actorTP, slot, optCritModTable)
+    -- See reference at https://www.bg-wiki.com/ffxi/Critical_Hit_Rate
+    local finalCriticalRate     = 0
+    local baseCriticalRate      = 0.05
+    local statBonus             = xi.combat.physical.criticalRateFromAGIDiff(actor, target)
     local inninBonus            = xi.combat.physical.criticalRateFromInnin(actor, target)
     local fencerBonus           = xi.combat.physical.criticalRateFromFencer(actor)
     local buildingFlourishBonus = xi.combat.physical.criticalRateFromFlourish(actor)

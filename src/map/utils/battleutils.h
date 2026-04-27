@@ -144,7 +144,7 @@ bool IsParalyzed(CBattleEntity* PAttacker);
 bool IsAbsorbByShadow(CBattleEntity* PDefender, CBattleEntity* PAttacker);
 bool IsIntimidated(CBattleEntity* PAttacker, CBattleEntity* PDefender);
 
-int32 GetFSTR(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 SlotID);
+auto  GetFSTR(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 SlotID) -> int32;
 uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber, int16 offsetAccuracy);
 uint8 GetHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender);
 uint8 GetHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber);
@@ -177,7 +177,7 @@ int32 GetEnmityModDamage(int16 level);
 int32 GetEnmityModCure(int16 level);
 bool  isValidSelfTargetWeaponskill(int wsid);
 bool  CanUseWeaponskill(CCharEntity* PChar, CWeaponSkill* PSkill);
-int16 CalculateBaseTP(int32 delay);
+int16 CalculateBaseTP(CBattleEntity* PEntity, int32 delay);
 void  GenerateCureEnmity(CBattleEntity* PSource, CBattleEntity* PTarget, int32 amount, int32 fixedCE = 0, int32 fixedVE = 0);
 void  GenerateInRangeEnmity(CBattleEntity* PSource, int32 CE, int32 VE);
 void  handleKillshotEnmity(CBattleEntity* PAttacker, CBattleEntity* PTarget);

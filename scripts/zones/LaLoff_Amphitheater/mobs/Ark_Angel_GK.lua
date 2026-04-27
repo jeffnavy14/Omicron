@@ -52,13 +52,15 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
+
     xi.mix.jobSpecial.config(mob,
     {
         specials =
         {
             -- "Meikyo Shisui is used very frequently."
             {
-                id       = xi.jsa.MEIKYO_SHISUI,
+                id       = xi.mobSkill.MEIKYO_SHISUI_1,
                 hpp      = math.random(90, 95),
                 cooldown = 90,
 

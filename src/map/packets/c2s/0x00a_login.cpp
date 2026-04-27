@@ -36,8 +36,8 @@
 
 auto GP_CLI_COMMAND_LOGIN::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .mustEqual(PChar->id, UniqueNo, "Player ID mismatch")
+    return PacketValidator(PChar)
+        .mustEqual(PChar->id, this->UniqueNo, "Player ID mismatch")
         .mustNotEqual(PSession->blowfish.status == BLOWFISH_ACCEPTED && PChar->status == STATUS_TYPE::NORMAL, true, "Player already logged in.");
 }
 
@@ -108,7 +108,6 @@ void GP_CLI_COMMAND_LOGIN::process(MapSession* PSession, CCharEntity* PChar) con
 
         charutils::updateSession(PSession, PChar, currentZone);
         charutils::loadDeathTimestamp(PChar);
-        charutils::loadZoningFlag(PChar);
         charutils::SaveCharPosition(PChar);
         charutils::SaveZonesVisited(PChar);
         charutils::SavePlayTime(PChar);

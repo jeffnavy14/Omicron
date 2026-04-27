@@ -11,14 +11,15 @@ mixins = { require('scripts/mixins/job_special') }
 local entity = {}
 
 entity.onMobSpawn = function(mob)
+    xi.dynamis.mobInfo(mob)
     xi.mix.jobSpecial.config(mob, {
         between = 60,
         specials =
         {
-            { id = xi.jsa.HUNDRED_FISTS,  hpp = 95 },
-            { id = xi.jsa.MIGHTY_STRIKES, hpp = 95 },
-            { id = xi.jsa.BLOOD_WEAPON,   hpp = 95 },
-            { id = xi.jsa.CHAINSPELL,     hpp = 95 },
+            { id = xi.mobSkill.HUNDRED_FISTS_1,  hpp = 95 },
+            { id = xi.mobSkill.MIGHTY_STRIKES_1, hpp = 95 },
+            { id = xi.mobSkill.BLOOD_WEAPON_1,   hpp = 95 },
+            { id = xi.mobSkill.CHAINSPELL_1,     hpp = 95 },
         },
     })
 end

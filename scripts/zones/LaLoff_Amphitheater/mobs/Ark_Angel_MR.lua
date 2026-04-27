@@ -51,11 +51,13 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
+
     xi.mix.jobSpecial.config(mob,
     {
         specials =
         {
-            { id = xi.jsa.PERFECT_DODGE },
+            { id = xi.mobSkill.PERFECT_DODGE_1 },
         },
     })
 end
