@@ -164,6 +164,7 @@ xi.chocoboRaising.initChocoState = function(player)
 
     for idx = 1, reportLength do
         local possibleCarePlanEvent = possibleCarePlanFuture[idx] or xi.chocoboRaising.carePlans.BASIC_CARE
+
         local age          = chocoState.report.day_start + idx - 1
         local currentStage = xi.chocoboRaising.ageToStage(age)
 
