@@ -128,6 +128,8 @@ xi.mobSkill =
     LEAFSTORM                     =  331,
     ENTANGLE                      =  332,
 
+    VULCANIAN_IMPACT_1            =  342, -- COP Bombs
+
     VELOCIOUS_BLADE               =  347, -- Mammet-800
 
     DEATH_SCISSORS                =  353,
@@ -229,9 +231,15 @@ xi.mobSkill =
     SELF_DESTRUCT_BOMB            =  509,
     BERSERK_BOMB                  =  510,
     SELF_DESTRUCT_BOMB_321        =  511,
+    HEAT_WAVE_1                   =  512, -- COP Bombs
 
     SMITE_OF_RAGE                 =  513,
     WHIRL_OF_RAGE                 =  514,
+
+    BERSERK_SNOLL                 =  526, -- Snoll
+    FREEZE_RUSH_1                 =  527, -- Snoll
+    COLD_WAVE_1                   =  528, -- Snoll
+    HYPOTHERMAL_COMBUSTION_1      =  529, -- Snoll
 
     DANSE_MACABRE                 =  533,
     KARTSTRAHL                    =  534,
@@ -276,8 +284,8 @@ xi.mobSkill =
     BOMB_TOSS_1                   =  591,
 
     BERSERK_BOMB_BIG              =  593, -- Big Bomb / Friars Lantern
-    VULCANIAN_IMPACT              =  594, -- Big Bomb / Friars Lantern
-    HEAT_WAVE                     =  595, -- Big Bomb / Friars Lantern
+    VULCANIAN_IMPACT_2            =  594, -- Big Bomb / Friars Lantern
+    HEAT_WAVE_2                   =  595, -- Big Bomb / Friars Lantern
     HELLSTORM                     =  596, -- Big Bomb / Friars Lantern
     SELF_DESTRUCT_BOMB_BIG        =  597, -- Big Bomb / Friars Lantern
 
@@ -331,14 +339,17 @@ xi.mobSkill =
     GIGA_SLASH                    =  672,
     DARK_NOVA                     =  673,
 
-    CRYSTAL_RAIN                  =  678,
-    CRYSTAL_WEAPON_FIRE           =  679, -- Zipacna Weapon Start
-
-    CRYSTAL_WEAPON_WATER          =  682, -- Zipacna Weapon End
+    ICE_BREAK_1                   =  676,
+    THUNDER_BREAK_1               =  677,
+    CRYSTAL_RAIN_1                =  678,
+    CRYSTAL_WEAPON_FIRE_1         =  679,
+    CRYSTAL_WEAPON_STONE_1        =  680,
+    CRYSTAL_WEAPON_WATER_1        =  681,
+    CRYSTAL_WEAPON_WIND_1         =  682,
 
     MIGHTY_STRIKES_1              =  688,
-    BENEDICTION_1                 =  689, -- Season's Greetings KSNM 30 (Gilagoge Tlugvi)
-    HUNDRED_FISTS_1               =  690, -- Season's Greetings KSNM 30 (Goga Tlugvi)
+    BENEDICTION_1                 =  689,
+    HUNDRED_FISTS_1               =  690,
     MANAFONT_1                    =  691,
     CHAINSPELL_1                  =  692,
     PERFECT_DODGE_1               =  693,

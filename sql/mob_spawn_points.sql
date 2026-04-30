@@ -70409,18 +70409,18 @@ INSERT INTO `mob_spawn_points` VALUES (17621117,0,'Ghul-I-Beaban_BLM','Ghul-I-Be
 INSERT INTO `mob_spawn_points` VALUES (17621119,0,'Ghul-I-Beaban_DRK','Ghul-I-Beaban',22,40,40,400,199.000,-400.677,192);
 INSERT INTO `mob_spawn_points` VALUES (17621120,0,'Ghul-I-Beaban_BLM','Ghul-I-Beaban',23,40,40,400,199.000,-400.677,192);
 -- Idol Thoughts (BS50)
-INSERT INTO `mob_spawn_points` VALUES (17621122,0,'Fire_Golem','Fire Golem',24,50,50,-393.000,-201.000,399.000,185);
-INSERT INTO `mob_spawn_points` VALUES (17621123,0,'Water_Golem','Water Golem',25,50,50,-397.000,-201.000,395.000,185);
-INSERT INTO `mob_spawn_points` VALUES (17621124,0,'Wind_Golem','Wind Golem',26,50,50,-404.000,-201.000,399.000,195);
-INSERT INTO `mob_spawn_points` VALUES (17621125,0,'Earth_Golem','Earth Golem',27,50,50,-402.000,-201.000,395.000,195);
-INSERT INTO `mob_spawn_points` VALUES (17621127,0,'Fire_Golem','Fire Golem',24,50,50,7.073,-1.000,-0.901,185);
-INSERT INTO `mob_spawn_points` VALUES (17621128,0,'Water_Golem','Water Golem',25,50,50,3.073,-1.000,-4.901,185);
-INSERT INTO `mob_spawn_points` VALUES (17621129,0,'Wind_Golem','Wind Golem',26,50,50,-3.927,-1.000,-0.901,195);
-INSERT INTO `mob_spawn_points` VALUES (17621130,0,'Earth_Golem','Earth Golem',27,50,50,-1.927,-1.000,-4.901,195);
-INSERT INTO `mob_spawn_points` VALUES (17621132,0,'Fire_Golem','Fire Golem',24,50,50,407.028,199.000,-400.677,185);
-INSERT INTO `mob_spawn_points` VALUES (17621133,0,'Water_Golem','Water Golem',25,50,50,403.028,199.000,-404.677,185);
-INSERT INTO `mob_spawn_points` VALUES (17621134,0,'Wind_Golem','Wind Golem',26,50,50,396.028,199.000,-400.677,195);
-INSERT INTO `mob_spawn_points` VALUES (17621135,0,'Earth_Golem','Earth Golem',27,50,50,398.028,199.000,-404.677,195);
+INSERT INTO `mob_spawn_points` VALUES (17621122,0,'Fire_Golem','Fire Golem',24,50,50,-400,-202.125,396,192);
+INSERT INTO `mob_spawn_points` VALUES (17621123,0,'Water_Golem','Water Golem',25,50,50,-396,-202.125,400,192);
+INSERT INTO `mob_spawn_points` VALUES (17621124,0,'Wind_Golem','Wind Golem',26,50,50,-400,-202.125,404,192);
+INSERT INTO `mob_spawn_points` VALUES (17621125,0,'Earth_Golem','Earth Golem',27,50,50,-404,-202.125,400,192);
+INSERT INTO `mob_spawn_points` VALUES (17621127,0,'Fire_Golem','Fire Golem',24,50,50,-0.020,-1.625,-3.990,192);
+INSERT INTO `mob_spawn_points` VALUES (17621128,0,'Water_Golem','Water Golem',25,50,50,3.980,-1.625,0.010,192);
+INSERT INTO `mob_spawn_points` VALUES (17621129,0,'Wind_Golem','Wind Golem',26,50,50,-0.020,-1.625,4.010,192);
+INSERT INTO `mob_spawn_points` VALUES (17621130,0,'Earth_Golem','Earth Golem',27,50,50,-4.020,-1.625,0.010,192);
+INSERT INTO `mob_spawn_points` VALUES (17621132,0,'Fire_Golem','Fire Golem',24,50,50,399.920,198.375,-403.874,192);
+INSERT INTO `mob_spawn_points` VALUES (17621133,0,'Water_Golem','Water Golem',25,50,50,403.920,198.375,-399.874,192);
+INSERT INTO `mob_spawn_points` VALUES (17621134,0,'Wind_Golem','Wind Golem',26,50,50,399.920,198.375,-395.874,192);
+INSERT INTO `mob_spawn_points` VALUES (17621135,0,'Earth_Golem','Earth Golem',27,50,50,395.920,198.375,-399.874,192);
 
 -- Demolition Squad (BS60)
 INSERT INTO `mob_spawn_points` VALUES (17621137,0,'Nephiyl_Rampartbreacher','Nephiyl Rampartbreacher',28,64,64,-405.001,-202.125,400.001,192);
