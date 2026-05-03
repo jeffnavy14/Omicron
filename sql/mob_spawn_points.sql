@@ -59166,7 +59166,7 @@ INSERT INTO `mob_spawn_points` VALUES (17457232,0,'Hecteyes','Hecteyes',18,31,34
 INSERT INTO `mob_spawn_points` VALUES (17457233,0,'Hecteyes','Hecteyes',18,31,34,166.758,3.504,-56.162,146);
 INSERT INTO `mob_spawn_points` VALUES (17457234,0,'Stirge','Stirge',12,30,33,98.000,24.000,-184.000,8);
 INSERT INTO `mob_spawn_points` VALUES (17457235,0,'Stirge','Stirge',12,30,33,78.999,23.490,-182.105,127);
-INSERT INTO `mob_spawn_points` VALUES (17457236,0,'Hyakume','Hyakume',31,0,0,144.098,2.525,-63.542,3);
+INSERT INTO `mob_spawn_points` VALUES (17457236,0,'Hyakume','Hyakume',31,43,43,144.098,2.525,-63.542,3);
 INSERT INTO `mob_spawn_points` VALUES (17457237,0,'Seeker_Bats','Seeker Bats',9,25,28,150.930,24.106,-194.463,69);
 INSERT INTO `mob_spawn_points` VALUES (17457238,0,'Seeker_Bats','Seeker Bats',9,25,28,158.639,23.630,-206.317,127);
 INSERT INTO `mob_spawn_points` VALUES (17457239,0,'Seeker_Bats','Seeker Bats',9,25,28,160.597,23.678,-195.648,121);
