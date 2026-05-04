@@ -887,6 +887,10 @@ xi.mobSkill =
     WARP_IN_GESSHO                = 1939,
 
     SLAPSTICK                     = 1943,
+    SHIELD_BASH_AUTOMATON         = 1944, -- Used by the trust Mnejing but may also be used by mobs.
+    PROVOKE_AUTOMATON             = 1945, -- Used by the trust Mnejing but may also be used by mobs.
+    FLASHBULB_AUTOMATON           = 1947, -- Used by the trust Mnejing but may also be used by mobs.
+    DISRUPTOR_AUTOMATON           = 2747, -- Used by the trust Mnejing but may also be used by mobs.
 
     RANGED_ATTACK_15              = 1949,
 
