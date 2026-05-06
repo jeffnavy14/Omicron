@@ -8,7 +8,7 @@ mixins = { require('scripts/mixins/rage') }
 local entity = {}
 
 local useMeikyoShisui = function(mob)
-    mob:useMobAbility(xi.mobSkill.MEIKYO_SHISUI_1)
+    mob:useMobAbility(xi.jsa.MEIKYO_SHISUI)
 end
 
 local mercurialEffects =

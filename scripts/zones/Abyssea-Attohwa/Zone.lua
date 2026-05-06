@@ -53,4 +53,15 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
     xi.abyssea.onEventFinish(player, csid, option, npc)
 end
 
+zoneObject.onGameHour = function(zone)
+    if VanadielHour() == 15 then
+        local yaaneiId = zones[xi.zone.ABYSSEA_ATTOHWA].mob.YAANEI
+        local yaanei = GetMobByID(yaaneiId)
+        if yaanei and not yaanei:isSpawned() then
+            SpawnMob(yaaneiId)
+        end
+    end
+end
+
+
 return zoneObject

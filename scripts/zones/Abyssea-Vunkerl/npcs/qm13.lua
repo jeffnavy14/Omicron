@@ -1,18 +1,15 @@
 -----------------------------------
 -- Zone: Abyssea-Vunkerl
 --  NPC: qm13 (???)
--- Spawns Bukhis
--- !pos -202 -40 -280 217
 -----------------------------------
+local ID = zones[xi.zone.ABYSSEA_VUNKERL]
+-----------------------------------
+
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    -- xi.abyssea.qmOnTrigger(player, npc)
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.BUKHIS_OFFSET, { xi.ki.INGROWN_TAURUS_NAIL, xi.ki.OSSIFIED_GARGOUILLE_HAND, xi.ki.IMBRUED_VAMPYR_FANG })
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)

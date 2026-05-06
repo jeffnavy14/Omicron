@@ -4,6 +4,8 @@
 -- Spawns Isgebind
 -- !pos 145 -117 471 253
 -----------------------------------
+local ID = zones[xi.zone.ABYSSEA_ULEGUERAND]
+-----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
@@ -12,7 +14,7 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    -- xi.abyssea.qmOnTrigger(player, npc)
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.ISGEBIND_OFFSET, { xi.ki.BEGRIMED_DRAGON_HIDE })
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)

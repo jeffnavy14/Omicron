@@ -88,6 +88,7 @@ zones[xi.zone.ABYSSEA_ATTOHWA] =
         TITLACAUAN_OFFSET  = GetFirstID('Titlacauan'),
         ULHUADSHI_OFFSET   = GetFirstID('Ulhuadshi'),
         ITZPAPALOTL_OFFSET = GetFirstID('Itzpapalotl'),
+        YAANEI             = GetFirstID('Yaanei'), 
     },
     npc =
     {
