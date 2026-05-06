@@ -1,7 +1,7 @@
 -----------------------------------
--- String Clipper
--- Family: Automaton
--- Description: Delivers a twofold attack.
+-- Shield Bash
+-- Family: Humanoid / Animated Weapon
+-- Description:  Delivers a physical attack to a single target. Additional Effect: Stun
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,20 +11,23 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
 end
 
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    action:setCategory(xi.action.category.WEAPONSKILL_FINISH)
+
     local params = {}
 
-    params.baseDamage       = mob:getWeaponDmg()
-    params.numHits          = 2
-    params.fTP              = { 2.0, 2.0, 2.0 }
-    params.attackMultiplier = { 1.25, 1.25, 1.25 }
-    params.attackType       = xi.attackType.PHYSICAL
-    params.damageType       = xi.damageType.SLASHING
-    params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_2
+    params.baseDamage     = mob:getWeaponDmg()
+    params.numHits        = 1
+    params.fTP            = { 1.0, 1.0, 1.0 }
+    params.attackType     = xi.attackType.PHYSICAL
+    params.damageType     = xi.damageType.BLUNT
+    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_1
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
 
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STUN, 1, 0, 7)
     end
 
     return info.damage

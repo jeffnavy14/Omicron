@@ -6708,16 +6708,16 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
 
         // Change weapon type based on new job
         CItemWeapon* PWeapon = std::make_unique<CItemWeapon>(0).release();
-        PWeapon->setDelay(4000);
-        PWeapon->setBaseDelay(4000);
+        PWeapon->setDelay(240);
+        PWeapon->setBaseDelay(240);
 
         switch (newJob)
         {
             case JOB_MNK:
             case JOB_PUP:
                 PWeapon->setSkillType(SKILL_HAND_TO_HAND);
-                PWeapon->setBaseDelay(8000);
-                PWeapon->setDelay(8000);
+                PWeapon->setBaseDelay(480);
+                PWeapon->setDelay(480);
                 break;
             case JOB_THF:
             case JOB_BRD:
@@ -6732,8 +6732,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_RUN:
                 PWeapon->setSkillType(SKILL_GREAT_SWORD);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WAR:
             case JOB_BST:
@@ -6741,21 +6741,21 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_DRK:
                 PWeapon->setSkillType(SKILL_SCYTHE);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_DRG:
                 PWeapon->setSkillType(SKILL_POLEARM);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_NIN:
                 PWeapon->setSkillType(SKILL_KATANA);
                 break;
             case JOB_SAM:
                 PWeapon->setSkillType(SKILL_GREAT_KATANA);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WHM:
             case JOB_BLM:
@@ -6764,8 +6764,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_SMN:
                 PWeapon->setSkillType(SKILL_STAFF);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             default:
                 break;
@@ -17717,7 +17717,7 @@ bool CLuaBaseEntity::isAggroable()
 /************************************************************************
  *  Function: setDelay()
  *  Purpose : Override default delay settings for a Mob
- *  Example : mob:setDelay(2400)
+ *  Example : mob:setDelay(240) -- 240 raw game delay units
  ************************************************************************/
 
 void CLuaBaseEntity::setDelay(uint16 delay)

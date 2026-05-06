@@ -1,9 +1,7 @@
 -----------------------------------
--- Barrage
+-- Ability: Counterstance
 -- Family : Humanoid Job Ability
--- Description : Allows the next ranged attack to fire multiple shots at once.
--- Number of shots fired is determined by the power of the effect.
--- 4 shots at Lv. 30, 5 shots at Lv. 60, 6 shots at Lv. 75 and 7 shots at Lv. 90.
+-- Description : Increases chance to counter but lowers defense.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -15,11 +13,11 @@ end
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     action:setCategory(xi.action.category.JOBABILITY_FINISH)
 
-    mob:addStatusEffect(xi.effect.BARRAGE, { duration = 60, origin = mob })
+    xi.mobskills.mobBuffMove(mob, xi.effect.COUNTERSTANCE, 45, 0, 300)
 
-    skill:setMsg(xi.msg.basic.USES)
+    skill:setMsg(xi.msg.basic.NONE)
 
-    return xi.effect.BARRAGE
+    return xi.effect.COUNTERSTANCE
 end
 
 return mobskillObject

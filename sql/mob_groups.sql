@@ -566,11 +566,11 @@ INSERT INTO `mob_groups` VALUES (7,2707,13,'Moblin_Wisewoman',0,128,0,0,0,0,NULL
 INSERT INTO `mob_groups` VALUES (8,2688,13,'Moblin_Clergyman',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (9,569,13,'Bugboy',0,128,0,19500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (10,2693,13,'Moblin_Fantocciniman',0,128,0,3800,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (11,1296,13,'Fantoccini',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (12,1299,13,'Fantoccini_Monster',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (13,1300,13,'Fantoccini_Wyvern',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (14,1298,13,'Fantoccini_Avatar',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (15,1297,13,'Fantoccini_Automaton',0,128,0,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (11,1296,13,'Fantoccini',0,128,0,8000,8000,0,NULL);
+INSERT INTO `mob_groups` VALUES (12,1299,13,'Fantoccini_Monster',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (13,1300,13,'Fantoccini_Wyvern',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (14,1298,13,'Fantoccini_Avatar',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (15,1297,13,'Fantoccini_Automaton',0,128,0,750,8000,0,NULL);
 INSERT INTO `mob_groups` VALUES (16,2006,13,'Hume_Automaton',0,128,0,3000,3000,0,NULL);
 INSERT INTO `mob_groups` VALUES (17,1206,13,'Elvaan_Automaton',0,128,0,3000,3000,0,NULL);
 INSERT INTO `mob_groups` VALUES (18,3850,13,'Tarutaru_Automaton',0,128,0,2000,2000,0,NULL);
@@ -3418,7 +3418,7 @@ INSERT INTO `mob_groups` VALUES (100,5872,63,'Qiqirn_Mine',0,128,0,0,0,1,NULL); 
 -- ------------------------------------------------------------
 
 INSERT INTO `mob_groups` VALUES (1,4307,64,'Watch_Wamoura',0,128,0,7200,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (2,4058,64,'Two-faced_Flan',0,128,0,13500,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (2,4058,64,'Two-faced_Flan',0,128,0,18500,20000,0,NULL);
 INSERT INTO `mob_groups` VALUES (3,3219,64,'Pudding_Master',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (4,2063,64,'Immortal_Flan',0,128,0,4200,4200,0,NULL);
 INSERT INTO `mob_groups` VALUES (5,3582,64,'Shamarhaan',0,128,0,1900,0,0,NULL);

@@ -1,7 +1,7 @@
 -----------------------------------
--- String Clipper
--- Family: Automaton
--- Description: Delivers a twofold attack.
+-- Jump
+-- Family: Humanoid Job Ability
+-- Description: Delivers a short jumping attack on a targeted enemy.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -11,15 +11,18 @@ mobskillObject.onMobSkillCheck = function(target, mob, skill)
 end
 
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
+    action:setCategory(xi.action.category.JOBABILITY_FINISH)
+
     local params = {}
 
-    params.baseDamage       = mob:getWeaponDmg()
-    params.numHits          = 2
-    params.fTP              = { 2.0, 2.0, 2.0 }
-    params.attackMultiplier = { 1.25, 1.25, 1.25 }
-    params.attackType       = xi.attackType.PHYSICAL
-    params.damageType       = xi.damageType.SLASHING
-    params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_2
+    local fTP = 1 + mob:getStat(xi.mod.VIT) / 256
+
+    params.baseDamage     = mob:getWeaponDmg()
+    params.numHits        = 1
+    params.fTP            = { fTP, fTP, fTP }
+    params.attackType     = xi.attackType.PHYSICAL
+    params.damageType     = xi.damageType.PIERCING
+    params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_1
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
 

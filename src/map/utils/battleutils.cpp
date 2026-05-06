@@ -1815,7 +1815,7 @@ auto GetBaseDelay(CBattleEntity* PEntity) -> uint16
         CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PMobEntity->m_Weapons[SLOT_MAIN]);
         if (PWeapon)
         {
-            baseDelay = std::round(PWeapon->getBaseDelay() * 60.0 / 1000.0); // there is some precision loss that results in delays of 319.98 instead of 320, etc, so round to nearest.
+            baseDelay = PWeapon->getBaseDelay(); // there is some precision loss that results in delays of 319.98 instead of 320, etc, so round to nearest.
         }
     }
 
@@ -1855,7 +1855,7 @@ auto GetBaseRangedDelay(CBattleEntity* PEntity) -> uint16
         CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PMobEntity->m_Weapons[SLOT_MAIN]);
         if (PWeapon)
         {
-            baseDelay = std::round(PWeapon->getBaseDelay() * 60.0 / 1000.0); // there is some precision loss that results in delays of 319.98 instead of 320, etc, so round to nearest.
+            baseDelay = PWeapon->getBaseDelay(); // there is some precision loss that results in delays of 319.98 instead of 320, etc, so round to nearest.
         }
     }
 

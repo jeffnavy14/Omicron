@@ -454,7 +454,7 @@ bool CBattleEntity::Rest(float rate)
 uint32 CBattleEntity::GetWeaponDelay(bool tp)
 {
     TracyZoneScoped;
-    uint32 finalDelay = 8000; // 480 (base) * 1000 / 60 (milisecond conversion)
+    uint32 finalDelay = 8000; // 480 (base) * 1000 / 60 (millisecond conversion)
 
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_Weapons[SLOT_MAIN]))
     {

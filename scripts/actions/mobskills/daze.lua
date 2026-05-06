@@ -1,7 +1,7 @@
 -----------------------------------
--- Chimera Ripper
+-- Daze
 -- Family: Automaton
--- Description: Delivers a single attack. Damage varies with TP.
+-- Description: Delivers a single ranged attack. Damage varies with TP. Additional Effect: Stun.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -15,16 +15,21 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     params.baseDamage       = mob:getWeaponDmg()
     params.numHits          = 1
-    params.fTP              = { 1.5, 2.0, 3.0 }
-    params.accuracyModifier = { 100, 100, 100 }
-    params.attackType       = xi.attackType.PHYSICAL
-    params.damageType       = xi.damageType.SLASHING
+    params.fTP              = { 5.0, 5.5, 6.0 }
+    params.accuracyModifier = { 150, 150, 150 }
+    params.attackType       = xi.attackType.RANGED
+    params.damageType       = xi.damageType.PIERCING
     params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_1
+    params.skipParry        = true
+    params.skipGuard        = true
+    params.skipBlock        = true
 
-    local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
+    local info = xi.mobskills.mobRangedMove(mob, target, skill, action, params)
 
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
+
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STUN, 1, 0, 4)
     end
 
     return info.damage
