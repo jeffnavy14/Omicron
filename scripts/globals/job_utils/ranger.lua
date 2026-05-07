@@ -78,6 +78,13 @@ xi.job_utils.ranger.checkCamouflage = function(player, target, ability)
 end
 
 xi.job_utils.ranger.checkBarrage = function(player, target, ability)
+    -- Artemis's Bow +2: each prior weapon skill reduces Barrage recast by 1s
+    local bonus = player:getLocalVar('ARTEMISS_BOW_P2_BARRAGE_BONUS')
+    if bonus > 0 then
+        ability:setRecast(math.max(0, ability:getRecast() - bonus))
+        player:setLocalVar('ARTEMISS_BOW_P2_BARRAGE_BONUS', 0)
+    end
+
     return 0, 0
 end
 

@@ -54,6 +54,15 @@ xi.spells.enhancing.calculateNinjutsuPower = function(caster, target, spell, spe
             power = power - 1
         end
 
+        -- Yagyu Darkblade: party-member recipients receive 2 fewer shadows,
+        -- and Hattori/Andartia UTSUSEMI_BONUS does not carry to them.
+        if
+            caster:getID() ~= target:getID() and
+            caster:getMod(xi.mod.UTSUSEMI_AOE) ~= 0
+        then
+            power = power - target:getMod(xi.mod.UTSUSEMI_BONUS) - 2
+        end
+
         if power > 3 then
             subPower = subPower + 1
         end
@@ -125,6 +134,23 @@ xi.spells.enhancing.useEnhancingNinjutsu = function(caster, target, spell)
             spell:setMsg(xi.msg.basic.MAGIC_GAIN_EFFECT)
         else
             spell:setMsg(xi.msg.basic.MAGIC_NO_EFFECT) -- No effect.
+        end
+    end
+
+    -- Yagyu Darkblade: per-recipient enmity on each party member's battle target.
+    -- Fires for every AoE recipient other than the caster, regardless of whether
+    -- shadows were actually applied (matches retail: enmity still generates even
+    -- when the recipient already has higher-tier Utsusemi up). This naturally
+    -- scales total enmity by the number of recipients, and registers the caster
+    -- on any mob a party member is fighting that the caster had no claim on.
+    if
+        spellEffect == xi.effect.COPY_IMAGE and
+        caster:getID() ~= target:getID() and
+        caster:getMod(xi.mod.UTSUSEMI_AOE) ~= 0
+    then
+        local enmityTarget = target:getTarget() or caster:getTarget()
+        if enmityTarget ~= nil then
+            caster:addEnmity(enmityTarget, 0, 160) -- matches utsusemi base VE from spell_list
         end
     end
 

@@ -9,6 +9,13 @@
 local abilityObject = {}
 
 abilityObject.onAbilityCheck = function(player, target, ability)
+    -- Premium Heart: each counter reduces next Chakra recast by 1s
+    local bonus = player:getLocalVar('PREMIUM_HEART_CHAKRA_BONUS')
+    if bonus > 0 then
+        ability:setRecast(math.max(0, ability:getRecast() - bonus))
+        player:setLocalVar('PREMIUM_HEART_CHAKRA_BONUS', 0)
+    end
+
     return 0, 0
 end
 

@@ -13,7 +13,11 @@ effectObject.onEffectGain = function(target, effect)
 
     effect:addMod(xi.mod.ATTP, power)
     effect:addMod(xi.mod.RATTP, power)
-    effect:addMod(xi.mod.DEFP, -25) -- TODO: This is supposed to mirror power in most cases
+
+    -- Drastic Axe negates the DEF penalty from Berserk
+    if target:getEquipID(xi.slot.MAIN) ~= xi.item.DRASTIC_AXE then
+        effect:addMod(xi.mod.DEFP, -25) -- TODO: This is supposed to mirror power in most cases
+    end
 
     -- Job Point Bonuses
     effect:addMod(xi.mod.ATT, jpEffect)

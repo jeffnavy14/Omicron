@@ -642,6 +642,12 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
     local pDifFinalCap       = 0
 
+    -- Brave Blade III: PDL scales with total enmity (CE + VE), up to +20%
+    if actor:isPC() and actor:getEquipID(xi.slot.MAIN) == xi.item.BRAVE_BLADE_III then
+        local enmityPDL = math.floor(math.min(20, (target:getCE(actor) + target:getVE(actor)) / 1000))
+        damageLimitPercent = damageLimitPercent + (enmityPDL / 100)
+    end
+
     if actor:isPC() then
         pDifFinalCap = (xi.combat.physical.pDifWeaponCapTable[weaponType] + damageLimitPlus) * damageLimitPercent + (isCritical and 1 or 0)
 
