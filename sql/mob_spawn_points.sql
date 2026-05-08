@@ -2338,9 +2338,9 @@ INSERT INTO `mob_spawn_points` VALUES (16822309,0,'Earth_Elemental','Earth Eleme
 INSERT INTO `mob_spawn_points` VALUES (16822310,0,'Goblin_Leadman','Goblin Leadman',10,33,36,-213.530,7.400,20.417,0);
 INSERT INTO `mob_spawn_points` VALUES (16822311,0,'Goblins_Bat','Goblin\'s Bat',11,28,30,-215.861,7.489,21.573,12);
 INSERT INTO `mob_spawn_points` VALUES (16822312,0,'Goblin_Hammerman','Goblin Hammerman',13,33,36,-219.467,11.500,34.864,5);
-INSERT INTO `mob_spawn_points` VALUES (16822313,0,'Bugbear_Servingman','Bugbear Servingman',16,32,35,-209.952,11.424,27.895,10);
+INSERT INTO `mob_spawn_points` VALUES (16822313,0,'Bugbear_Servingman','Bugbear Servingman',43,32,35,-209.952,11.424,27.895,10);
 INSERT INTO `mob_spawn_points` VALUES (16822314,0,'Moblin_Chapman','Moblin Chapman',15,33,36,-218.059,11.500,34.901,7);
-INSERT INTO `mob_spawn_points` VALUES (16822315,0,'Bugbear_Servingman','Bugbear Servingman',16,32,35,-216.634,11.400,34.897,11);
+INSERT INTO `mob_spawn_points` VALUES (16822315,0,'Bugbear_Servingman','Bugbear Servingman',43,32,35,-216.634,11.400,34.897,11);
 INSERT INTO `mob_spawn_points` VALUES (16822316,0,'Goblin_Gutterman','Goblin Gutterman',8,33,36,-216.933,7.397,-9.241,41);
 INSERT INTO `mob_spawn_points` VALUES (16822317,0,'Goblin_Craftsman','Goblin Craftsman',7,33,36,-229.335,7.393,-22.834,76);
 INSERT INTO `mob_spawn_points` VALUES (16822318,0,'Moblin_Ragman','Moblin Ragman',14,33,36,-228.946,7.472,-25.505,78);
@@ -2636,15 +2636,15 @@ INSERT INTO `mob_spawn_points` VALUES (16826504,0,'Moblin_Engineman','Moblin Eng
 INSERT INTO `mob_spawn_points` VALUES (16826505,0,'Nightmare_Bats','Nightmare Bats',18,72,74,38.445,15.525,-19.241,2);
 INSERT INTO `mob_spawn_points` VALUES (16826506,0,'Nightmare_Bats','Nightmare Bats',18,72,74,46.246,15.525,-18.975,124);
 INSERT INTO `mob_spawn_points` VALUES (16826507,0,'Goblin_Swordsman','Goblin Swordsman',28,78,78,92.145,15.500,66.595,140);
-INSERT INTO `mob_spawn_points` VALUES (16826508,0,'Moblin_Aidman','Moblin Aidman',20,75,79,94.866,15.500,66.412,220);
-INSERT INTO `mob_spawn_points` VALUES (16826509,0,'Moblin_Engineman','Moblin Engineman',25,75,79,100.779,15.500,57.094,181);
+INSERT INTO `mob_spawn_points` VALUES (16826508,0,'Moblin_Aidman','Moblin Aidman',39,75,79,94.866,15.500,66.412,220);
+INSERT INTO `mob_spawn_points` VALUES (16826509,0,'Moblin_Engineman','Moblin Engineman',40,75,79,100.779,15.500,57.094,181);
 INSERT INTO `mob_spawn_points` VALUES (16826510,0,'Swashstox_Beadblinker','Swashstox Beadblinker',29,80,80,49.850,15.850,-20.750,0);
 INSERT INTO `mob_spawn_points` VALUES (16826511,0,'Moblin_Aidman','Moblin Aidman',37,75,79,51.850,15.850,-22.750,0);
-INSERT INTO `mob_spawn_points` VALUES (16826512,0,'Moblin_Engineman','Moblin Engineman',38,75,79,47.850,15.850,-18.750,0);
+INSERT INTO `mob_spawn_points` VALUES (16826512,0,'Moblin_Engineman','Moblin Engineman',40,75,79,47.850,15.850,-18.750,0);
 INSERT INTO `mob_spawn_points` VALUES (16826513,0,'Moblin_Groundman','Moblin Groundman',30,77,77,98.959,15.417,42.552,66);
 INSERT INTO `mob_spawn_points` VALUES (16826514,0,'Goblin_Swordsman','Goblin Swordsman',28,78,78,117.092,15.398,-20.675,128);
-INSERT INTO `mob_spawn_points` VALUES (16826515,0,'Moblin_Aidman','Moblin Aidman',20,75,79,118.597,15.395,-21.537,0);
-INSERT INTO `mob_spawn_points` VALUES (16826516,0,'Moblin_Engineman','Moblin Engineman',25,75,79,117.594,15.396,-21.707,1);
+INSERT INTO `mob_spawn_points` VALUES (16826515,0,'Moblin_Aidman','Moblin Aidman',39,75,79,118.597,15.395,-21.537,0);
+INSERT INTO `mob_spawn_points` VALUES (16826516,0,'Moblin_Engineman','Moblin Engineman',40,75,79,117.594,15.396,-21.707,1);
 INSERT INTO `mob_spawn_points` VALUES (16826517,0,'Swashstox_Beadblinker','Swashstox Beadblinker',29,80,80,110.552,15.510,-21.166,0);
 INSERT INTO `mob_spawn_points` VALUES (16826518,0,'Moblin_Aidman','Moblin Aidman',37,75,79,109.450,15.528,-22.401,6);
 INSERT INTO `mob_spawn_points` VALUES (16826519,0,'Moblin_Engineman','Moblin Engineman',38,75,79,108.622,15.668,-21.742,15);
@@ -2676,8 +2676,8 @@ INSERT INTO `mob_spawn_points` VALUES (16826544,0,'Moblin_Roadman','Moblin Roadm
 INSERT INTO `mob_spawn_points` VALUES (16826545,0,'Goblin_Marksman','Goblin Marksman',24,75,79,131.992,19.339,-9.007,95);
 INSERT INTO `mob_spawn_points` VALUES (16826546,0,'Moblin_Engineman','Moblin Engineman',25,75,79,148.745,19.370,-13.787,6);
 INSERT INTO `mob_spawn_points` VALUES (16826547,0,'Goblin_Swordsman','Goblin Swordsman',28,78,78,216.039,19.250,-18.223,9);
-INSERT INTO `mob_spawn_points` VALUES (16826548,0,'Moblin_Aidman','Moblin Aidman',20,75,79,216.266,19.256,-17.251,39);
-INSERT INTO `mob_spawn_points` VALUES (16826549,0,'Moblin_Topsman','Moblin Topsman',22,75,79,216.644,19.259,-16.210,98);
+INSERT INTO `mob_spawn_points` VALUES (16826548,0,'Moblin_Aidman','Moblin Aidman',39,75,79,216.266,19.256,-17.251,39);
+INSERT INTO `mob_spawn_points` VALUES (16826549,0,'Moblin_Topsman','Moblin Topsman',41,75,79,216.644,19.259,-16.210,98);
 INSERT INTO `mob_spawn_points` VALUES (16826550,0,'Moblin_Aidman','Moblin Aidman',20,75,79,259.569,15.525,-40.677,63);
 INSERT INTO `mob_spawn_points` VALUES (16826551,0,'Moblin_Roadman','Moblin Roadman',26,75,79,261.950,18.665,-53.484,161);
 INSERT INTO `mob_spawn_points` VALUES (16826552,0,'Moblin_Roadman','Moblin Roadman',26,75,79,262.525,18.732,-53.888,160);
@@ -2750,24 +2750,24 @@ INSERT INTO `mob_spawn_points` VALUES (16830503,0,'Bugboy','Bugboy',9,80,80,20.1
 INSERT INTO `mob_spawn_points` VALUES (16830505,0,'Bugboy','Bugboy',9,80,80,500.362,-118.468,16.365,64);
 
 -- Pulling the Strings
-INSERT INTO `mob_spawn_points` VALUES (16830507,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,-460.744,121.500,9.581,64);
-INSERT INTO `mob_spawn_points` VALUES (16830509,0,'Fantoccini','Fantoccini',11,55,55,-460.877,120.524,3.321,40);
-INSERT INTO `mob_spawn_points` VALUES (16830510,0,'Fantoccini_Monster','Fantoccini Monster',12,49,49,-458.769,121.532,19.387,39);
-INSERT INTO `mob_spawn_points` VALUES (16830511,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,49,49,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16830512,0,'Fantoccini_Avatar','Fantoccini Avatar',14,49,49,-461.058,119.431,-14.295,192);
-INSERT INTO `mob_spawn_points` VALUES (16830513,0,'Fantoccini_Automaton','Fantoccini Automaton',15,49,49,-461.140,121.491,8.490,63);
-INSERT INTO `mob_spawn_points` VALUES (16830514,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,16.000,1.704,26.000,64);
-INSERT INTO `mob_spawn_points` VALUES (16830516,0,'Fantoccini','Fantoccini',11,55,55,20.000,1.532,20.000,40);
-INSERT INTO `mob_spawn_points` VALUES (16830517,0,'Fantoccini_Monster','Fantoccini Monster',12,49,49,21.213,1.532,19.324,39);
-INSERT INTO `mob_spawn_points` VALUES (16830518,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,49,49,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16830519,0,'Fantoccini_Avatar','Fantoccini Avatar',14,49,49,18.924,-0.569,-14.358,192);
-INSERT INTO `mob_spawn_points` VALUES (16830520,0,'Fantoccini_Automaton','Fantoccini Automaton',15,49,49,20.773,1.532,18.013,63);
-INSERT INTO `mob_spawn_points` VALUES (16830521,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,500.144,-119.946,1.794,64);
-INSERT INTO `mob_spawn_points` VALUES (16830523,0,'Fantoccini','Fantoccini',11,55,55,500.503,-120.500,-3.613,40);
-INSERT INTO `mob_spawn_points` VALUES (16830524,0,'Fantoccini_Monster','Fantoccini Monster',12,49,49,501.182,-118.468,19.328,39);
-INSERT INTO `mob_spawn_points` VALUES (16830525,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,49,49,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (16830526,0,'Fantoccini_Avatar','Fantoccini Avatar',14,49,49,498.893,-120.569,-14.354,192);
-INSERT INTO `mob_spawn_points` VALUES (16830527,0,'Fantoccini_Automaton','Fantoccini Automaton',15,49,49,501.054,-118.864,5.299,63);
+INSERT INTO `mob_spawn_points` VALUES (16830507,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,-464,121.704,26,64);
+INSERT INTO `mob_spawn_points` VALUES (16830509,0,'Fantoccini','Fantoccini',11,60,60,-460,121.532,20,64);
+INSERT INTO `mob_spawn_points` VALUES (16830510,0,'Fantoccini_Monster','Fantoccini Monster',12,57,57,-460,121.532,20,64);
+INSERT INTO `mob_spawn_points` VALUES (16830511,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,57,57,-460,121.532,20,64);
+INSERT INTO `mob_spawn_points` VALUES (16830512,0,'Fantoccini_Avatar','Fantoccini Avatar',14,57,57,-460,121.532,20,64);
+INSERT INTO `mob_spawn_points` VALUES (16830513,0,'Fantoccini_Automaton','Fantoccini Automaton',15,57,57,-460,121.532,20,64);
+INSERT INTO `mob_spawn_points` VALUES (16830514,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,16.000,2.204,26.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830516,0,'Fantoccini','Fantoccini',11,60,60,20.000,2.032,20.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830517,0,'Fantoccini_Monster','Fantoccini Monster',12,57,57,20.000,2.032,20.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830518,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,57,57,20.000,2.032,20.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830519,0,'Fantoccini_Avatar','Fantoccini Avatar',14,57,57,20.000,2.032,20.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830520,0,'Fantoccini_Automaton','Fantoccini Automaton',15,57,57,20.000,2.032,20.000,64);
+INSERT INTO `mob_spawn_points` VALUES (16830521,0,'Moblin_Fantocciniman','Moblin Fantocciniman',10,62,62,496.191,-117.796,26.297,64);
+INSERT INTO `mob_spawn_points` VALUES (16830523,0,'Fantoccini','Fantoccini',11,60,60,500.191,-117.968,20.297,64);
+INSERT INTO `mob_spawn_points` VALUES (16830524,0,'Fantoccini_Monster','Fantoccini Monster',12,57,57,500.191,-117.968,20.297,64);
+INSERT INTO `mob_spawn_points` VALUES (16830525,0,'Fantoccini_Wyvern','Fantoccini Wyvern',13,57,57,500.191,-117.968,20.297,64);
+INSERT INTO `mob_spawn_points` VALUES (16830526,0,'Fantoccini_Avatar','Fantoccini Avatar',14,57,57,500.191,-117.968,20.297,64);
+INSERT INTO `mob_spawn_points` VALUES (16830527,0,'Fantoccini_Automaton','Fantoccini Automaton',15,57,57,500.191,-117.968,20.297,64);
 
 -- Automaton Assault
 INSERT INTO `mob_spawn_points` VALUES (16830529,0,'Hume_Automaton','Hume Automaton',16,62,62,-466,121.704,26,64);

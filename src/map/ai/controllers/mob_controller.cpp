@@ -1070,11 +1070,23 @@ auto CMobController::DoRoamTick(timer::time_point tick) -> Task<void>
 
     if (PFollowTarget != nullptr && m_followType == FollowType::Roam)
     {
+        float followRoamDistance = 4.0f;
+
+        if (PMob->getMobMod(MOBMOD_FOLLOW_LEASH_RANGE) > 0)
+        {
+            followRoamDistance = PMob->getMobMod(MOBMOD_FOLLOW_LEASH_RANGE);
+        }
         // Only path to leader if they're moving
-        if (distance(PMob->loc.p, PFollowTarget->loc.p) > FollowRoamDistance &&
+        if (distance(PMob->loc.p, PFollowTarget->loc.p) > followRoamDistance &&
             PFollowTarget->PAI->PathFind->IsFollowingPath())
         {
-            PMob->PAI->PathFind->PathAround(PFollowTarget->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK);
+            float followStopRange = 2.0f;
+
+            if (PMob->getMobMod(MOBMOD_FOLLOW_STOP_RANGE) > 0)
+            {
+                followStopRange = PMob->getMobMod(MOBMOD_FOLLOW_STOP_RANGE);
+            }
+            PMob->PAI->PathFind->PathAround(PFollowTarget->loc.p, followStopRange, PATHFLAG_RUN | PATHFLAG_WALLHACK);
         }
 
         if (!PMob->PAI->PathFind->IsFollowingPath())
