@@ -499,6 +499,11 @@ INSERT INTO `mob_groups` VALUES (40,1114,11,'Dread_Dealing_Dredodak',0,128,0,0,0
 INSERT INTO `mob_groups` VALUES (41,564,11,'Bugbear_Porterman',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (42,7321,11,'Goblins_Bat',0,128,0,0,0,0,NULL);
 
+-- Followers only respawn when their leader respawns.
+INSERT INTO `mob_groups` VALUES (43,565,11,'Bugbear_Servingman',0,128,377,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (44,2689,11,'Moblin_Coalman',0,128,1706,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (45,2694,11,'Moblin_Gasman',0,128,1706,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (46,2699,11,'Moblin_Pikeman',0,128,1706,0,0,0,NULL);
 -- ------------------------------------------------------------
 -- Newton_Movalpolos (Zone 12)
 -- ------------------------------------------------------------
@@ -542,6 +547,11 @@ INSERT INTO `mob_groups` VALUES (36,6718,12,'Sword_Sorcerer_Solisoq',3600,0,3224
 INSERT INTO `mob_groups` VALUES (37,2684,12,'Moblin_Aidman',0,128,1703,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (38,2692,12,'Moblin_Engineman',0,128,1708,0,0,0,NULL);
 
+-- Followers only respawn when their leader respawns.
+INSERT INTO `mob_groups` VALUES (39,2684,12,'Moblin_Aidman',0,128,1703,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (40,2692,12,'Moblin_Engineman',0,128,1708,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (41,2706,12,'Moblin_Topsman',0,128,1717,0,0,0,NULL);
+
 -- ------------------------------------------------------------
 -- Mine_Shaft_2716 (Zone 13)
 -- ------------------------------------------------------------
@@ -551,16 +561,16 @@ INSERT INTO `mob_groups` VALUES (2,707,13,'Chekochuk',0,128,0,2200,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (3,4005,13,'Trikotrak',0,128,0,2300,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (4,3828,13,'Swipostik',0,128,0,2400,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (5,559,13,'Bugbby',0,128,0,9000,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (6,4057,13,'Twilotak',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (7,2707,13,'Moblin_Wisewoman',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (8,2688,13,'Moblin_Clergyman',0,128,0,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (6,4057,13,'Twilotak',0,128,0,5000,3500,0,NULL);
+INSERT INTO `mob_groups` VALUES (7,2707,13,'Moblin_Wisewoman',0,128,0,2100,2500,0,NULL);
+INSERT INTO `mob_groups` VALUES (8,2688,13,'Moblin_Clergyman',0,128,0,2100,2500,0,NULL);
 INSERT INTO `mob_groups` VALUES (9,569,13,'Bugboy',0,128,0,19500,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (10,2693,13,'Moblin_Fantocciniman',0,128,0,3800,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (11,1296,13,'Fantoccini',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (12,1299,13,'Fantoccini_Monster',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (13,1300,13,'Fantoccini_Wyvern',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (14,1298,13,'Fantoccini_Avatar',0,128,0,0,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (15,1297,13,'Fantoccini_Automaton',0,128,0,0,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (11,1296,13,'Fantoccini',0,128,0,8000,8000,0,NULL);
+INSERT INTO `mob_groups` VALUES (12,1299,13,'Fantoccini_Monster',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (13,1300,13,'Fantoccini_Wyvern',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (14,1298,13,'Fantoccini_Avatar',0,128,0,750,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (15,1297,13,'Fantoccini_Automaton',0,128,0,750,8000,0,NULL);
 INSERT INTO `mob_groups` VALUES (16,2006,13,'Hume_Automaton',0,128,0,3000,3000,0,NULL);
 INSERT INTO `mob_groups` VALUES (17,1206,13,'Elvaan_Automaton',0,128,0,3000,3000,0,NULL);
 INSERT INTO `mob_groups` VALUES (18,3850,13,'Tarutaru_Automaton',0,128,0,2000,2000,0,NULL);
@@ -3168,7 +3178,7 @@ INSERT INTO `mob_groups` VALUES (5,2426,57,'Llamhigyn_Y_Dwr',0,128,1528,0,0,0,NU
 INSERT INTO `mob_groups` VALUES (6,1534,57,'Giant_Orobon',0,128,969,0,0,0,NULL);
 
 INSERT INTO `mob_groups` VALUES (7,2071,57,'Imp_Bandsman',0,128,0,8000,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (8,139,57,'Angler_Orobon',0,128,0,14000,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (8,139,57,'Angler_Orobon',0,128,0,12800,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (9,4123,57,'Valkeng',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (10,3292,57,'Qultada',0,128,0,1925,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (11,1506,57,'Gessho',0,128,0,0,0,0,NULL);
@@ -3408,7 +3418,7 @@ INSERT INTO `mob_groups` VALUES (100,5872,63,'Qiqirn_Mine',0,128,0,0,0,1,NULL); 
 -- ------------------------------------------------------------
 
 INSERT INTO `mob_groups` VALUES (1,4307,64,'Watch_Wamoura',0,128,0,7200,0,0,NULL);
-INSERT INTO `mob_groups` VALUES (2,4058,64,'Two-faced_Flan',0,128,0,13500,0,0,NULL);
+INSERT INTO `mob_groups` VALUES (2,4058,64,'Two-faced_Flan',0,128,0,18500,20000,0,NULL);
 INSERT INTO `mob_groups` VALUES (3,3219,64,'Pudding_Master',0,128,0,0,0,0,NULL);
 INSERT INTO `mob_groups` VALUES (4,2063,64,'Immortal_Flan',0,128,0,4200,4200,0,NULL);
 INSERT INTO `mob_groups` VALUES (5,3582,64,'Shamarhaan',0,128,0,1900,0,0,NULL);

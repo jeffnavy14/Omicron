@@ -494,8 +494,8 @@ auto LoadMOBList(Scheduler& scheduler, const std::vector<uint16>& zoneIds) -> Ta
 
                                     PMob->m_dmgMult = rset->get<uint16>("cmbDmgMult");
 
-                                    mainWeapon->setDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
-                                    mainWeapon->setBaseDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
+                                    mainWeapon->setDelay(rset->get<uint16>("cmbDelay"));
+                                    mainWeapon->setBaseDelay(rset->get<uint16>("cmbDelay"));
 
                                     PMob->m_Behavior  = rset->get<uint16>("behavior");
                                     PMob->m_Link      = rset->get<uint32>("links");

@@ -1734,6 +1734,7 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
     }
 
     PLatentEffectContainer->CheckLatentsWS(false);
+    this->processActionEffectFlags(action);
 }
 
 void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
@@ -2029,6 +2030,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
         StatusEffectContainer->DelStatusEffect(PAbility->getPostActionEffectCleanup());
 
         charutils::ApplyAbilityRecast(this, PAbility, charge, baseChargeTime, action.recast);
+        this->processActionEffectFlags(action);
     }
     else if (errMsg)
     {
@@ -2101,13 +2103,13 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
             hitCount = PAmmo->getQuantity();
         }
     }
-    else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_DOUBLE_SHOT) && xirand::GetRandomNumber(100) < (40 + this->getMod(Mod::DOUBLE_SHOT_RATE)))
-    {
-        hitCount = 2;
-    }
-    else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_TRIPLE_SHOT) && xirand::GetRandomNumber(100) < (40 + this->getMod(Mod::TRIPLE_SHOT_RATE)))
+    else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_TRIPLE_SHOT) && xirand::GetRandomNumber(100) < this->getMod(Mod::TRIPLE_SHOT_RATE))
     {
         hitCount = 3;
+    }
+    else if (this->StatusEffectContainer->HasStatusEffect(EFFECT_DOUBLE_SHOT) && xirand::GetRandomNumber(100) < this->getMod(Mod::DOUBLE_SHOT_RATE))
+    {
+        hitCount = 2;
     }
 
     // loop for barrage hits, if a miss occurs, the loop will end
@@ -2392,6 +2394,7 @@ void CCharEntity::OnRangedAttack(CRangeState& state, action_t& action)
         // Camouflage not up, so remove all detectable status effects
         StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DETECTABLE);
     }
+    this->processActionEffectFlags(action);
 }
 
 bool CCharEntity::IsMobOwner(CBattleEntity* PBattleTarget)
@@ -2593,6 +2596,8 @@ auto CCharEntity::OnItemFinish(CItemState& state, action_t& action) -> bool
         actionResult.resolution       = ActionResolution::Hit;
         actionResult.animation        = PItem->getAnimationID();
 
+        // TODO: guard charutils::UpdateItem against InTransaction items so a
+        // Lua delItem inside OnItemUse can't decrement out-of-tx.
         int32 value = luautils::OnItemUse(this, PTargetFound, PItem, action);
 
         actionResult.param = value;
@@ -2646,11 +2651,9 @@ auto CCharEntity::OnItemFinish(CItemState& state, action_t& action) -> bool
         return false;
     }
 
-    // Consumable items
-    PItem->setSubType(ITEM_UNLOCKED);
-    const bool willBeDestroyed = PItem->getQuantity() == 1;
-    charutils::UpdateItem(this, PItem->getLocationID(), PItem->getSlotID(), -1, true);
-    return willBeDestroyed;
+    // Consumable items: signal CItemState::FinishItem to commit the ItemUseTransaction
+    // TODO: Some non-equipment items should not be consumed on use
+    return true;
 }
 
 CBattleEntity* CCharEntity::IsValidTarget(uint16 targid, uint16 validTargetFlags, std::unique_ptr<CBasicPacket>& errMsg)

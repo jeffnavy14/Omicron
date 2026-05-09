@@ -161,7 +161,7 @@ INSERT INTO `mob_family_system` VALUES (107,'Eruca',63,'Crawler',19,'Vermin',40,
 INSERT INTO `mob_family_system` VALUES (109,'Euvhi',64,'Euvhi',14,'Luminian',40,100,140,1,3,4,4,1,5,4,1,3,1,3,0.0,2,0);
 INSERT INTO `mob_family_system` VALUES (110,'Evil_Weapon',6,'Evil_Weapon',3,'Arcana',40,105,120,1,3,4,3,3,3,4,1,5,1,3,3.0,34,0);
 INSERT INTO `mob_family_system` VALUES (111,'Toad',112,'frog-toad',2,'Aquan',40,70,140,5,5,5,1,1,6,3,1,3,1,3,6.0,2,0);
-INSERT INTO `mob_family_system` VALUES (112,'Flan',65,'Flan',1,'Amorph',40,70,140,5,4,4,4,3,5,3,1,3,1,3,6.0,193,0);
+INSERT INTO `mob_family_system` VALUES (112,'Flan',65,'Flan',1,'Amorph',32,70,140,5,4,4,4,3,5,3,1,3,1,3,6.0,193,0);
 INSERT INTO `mob_family_system` VALUES (113,'Fly',66,'Fly',19,'Vermin',40,92,90,5,4,4,3,4,4,4,1,3,1,3,3.0,2,1);
 INSERT INTO `mob_family_system` VALUES (114,'Flytrap',67,'Flytrap',16,'Plantoid',40,90,90,4,4,4,4,4,4,4,1,3,1,3,3.0,2,1);
 INSERT INTO `mob_family_system` VALUES (115,'Fomor',68,'Shadow',18,'Undead',40,105,90,2,5,4,4,2,3,4,1,3,1,3,8.0,6,0);
@@ -241,7 +241,7 @@ INSERT INTO `mob_family_system` VALUES (187,'Murex',104,'Murex',20,'Voragean',40
 INSERT INTO `mob_family_system` VALUES (188,'Opo-opo',105,'Opo-opo',5,'Beast',40,110,90,5,2,5,2,6,6,2,1,3,1,3,5.0,257,1);
 INSERT INTO `mob_family_system` VALUES (189,'Orc',106,'Orc',6,'Beastmen',40,108,100,2,3,4,4,7,4,3,1,3,1,3,1.0,257,0);
 INSERT INTO `mob_family_system` VALUES (190,'Orc-Warmachine',106,'Orc',6,'Beastmen',40,123,100,4,6,4,3,5,1,3,1,2,1,3,1.0,257,0);
-INSERT INTO `mob_family_system` VALUES (191,'Orobon',107,'Orobon',2,'Aquan',40,90,90,1,4,2,4,4,4,4,1,3,1,3,6.0,2,0);
+INSERT INTO `mob_family_system` VALUES (191,'Orobon',107,'Orobon',2,'Aquan',32,90,90,1,4,2,4,4,4,4,1,3,1,3,6.0,2,0);
 INSERT INTO `mob_family_system` VALUES (192,'Peiste',108,'Peiste',13,'Lizard',40,90,90,1,3,4,3,6,6,5,1,3,1,3,6.0,1,0);
 INSERT INTO `mob_family_system` VALUES (193,'Wyvern-Pet',109,'Wyvern',9,'Dragon',40,70,90,4,2,3,4,6,3,3,1,3,1,3,0.0,1,0);
 INSERT INTO `mob_family_system` VALUES (194,'Phuabo',110,'Phuabo',14,'Luminian',70,90,140,1,3,4,1,1,5,4,1,3,1,3,0.0,2,0);

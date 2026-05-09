@@ -225,6 +225,11 @@ end
 
 -- Enhancing Song Duration function. (2/2)
 xi.spells.enhancing.calculateSongDuration = function(caster, target, spell, instrumentBoost, soulVoicePower)
+    -- Miracle Cheer: fixed 15-minute (900s) song duration
+    if caster:isPC() and caster:getEquipID(xi.slot.RANGED) == xi.item.MIRACLE_CHEER then
+        return 900
+    end
+
     local duration = 120 -- The variable we want to calculate.
 
     -- Additional duration from "Song Bonus" (from instruments) and "Duration Bonus" Modifier

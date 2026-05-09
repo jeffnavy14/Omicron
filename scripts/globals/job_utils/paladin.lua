@@ -78,7 +78,22 @@ xi.job_utils.paladin.useCover = function(player, target, ability)
 
     player:addStatusEffect(xi.effect.COVER, { power = player:getMod(xi.mod.COVER_TO_MP), duration = duration, origin = player })
     player:setLocalVar('COVER_ABILITY_TARGET', target:getID())
+
+    -- Save the Queen III: each Cover use reduces next Sentinel recast by 1s
+    if player:getEquipID(xi.slot.MAIN) == xi.item.SAVE_THE_QUEEN_III then
+        player:setLocalVar('STQ3_SENTINEL_BONUS', player:getLocalVar('STQ3_SENTINEL_BONUS') + 1)
+    end
+
     ability:setMsg(xi.msg.basic.COVER_SUCCESS)
+end
+
+xi.job_utils.paladin.checkSentinel = function(player, target, ability)
+    local bonus = player:getLocalVar('STQ3_SENTINEL_BONUS')
+    if bonus > 0 then
+        ability:setRecast(math.max(0, ability:getRecast() - bonus))
+        player:setLocalVar('STQ3_SENTINEL_BONUS', 0)
+    end
+    return 0, 0
 end
 
 xi.job_utils.paladin.useDivineEmblem = function(player, target, ability)

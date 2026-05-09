@@ -331,7 +331,10 @@ end
 
 xi.instance.onTrigger = function(player, npc, instanceZoneID)
     local zoneLookup = xi.instance.lookup[instanceZoneID]
-
+    if zoneLookup == nil then
+        print(string.format("ERROR: No instance lookup entry found for Zone ID %d", instanceZoneID))
+        return false
+    end
     -- Clear up after possible failed loads
     player:setLocalVar('INSTANCE_REQUESTED', 0)
     local existingInstance = player:getInstance()

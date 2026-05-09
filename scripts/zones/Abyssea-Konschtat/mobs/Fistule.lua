@@ -27,7 +27,7 @@ local getNearestMob = function(fistule, mobs)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setUntargetable(true)
+    mob:setUntargetable(false)
 end
 
 entity.onMobRoam = function(mob)
@@ -57,6 +57,18 @@ entity.onMobDeath = function(mob, player, isKiller)
     if player then
         player:addTitle(xi.title.FISTULE_DRAINER)
     end
+    local ID = zones[player:getZoneID()]
+    local party = player:getParty()
+     for _, member in pairs(party) do 
+        if member:getFreeSlotsCount() == 0 then
+            member:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, 2931)
+        else
+            local obtained = member:addItem(2931, 1)
+            if obtained then
+               member:messageSpecial(ID.text.ITEM_OBTAINED, 2931)
+            end
+        end
+     end
 end
 
 return entity

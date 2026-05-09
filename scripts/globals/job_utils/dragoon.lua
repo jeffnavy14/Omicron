@@ -66,7 +66,15 @@ local function performWSJump(player, target, action, params, abilityID)
             action:info(target:getID(), 4) -- Special info flag for these abilities.
         end
 
-        -- TODO: process additional effects such as Delphinius, Pteroslaver Mail +2/3, Hebo's Spear, enspells, other weapon built-in add effects
+        -- Hebo's Spear: recover wyvern HP on each jump hit
+        if player:getEquipID(xi.slot.MAIN) == xi.item.HEBOS_SPEAR then
+            local wyvern = getWyvern(player)
+            if wyvern then
+                wyvern:addHP(100)
+            end
+        end
+
+        -- TODO: process additional effects such as Delphinius, Pteroslaver Mail +2/3, enspells, other weapon built-in add effects
 
         action:recordDamage(target, xi.attackType.PHYSICAL, damage, criticalHit)
         action:messageID(target:getID(), xi.msg.basic.USES_JA_TAKE_DAMAGE)
@@ -210,6 +218,13 @@ end
 
 xi.job_utils.dragoon.useCallWyvern = function(player, target, ability)
     xi.pet.spawnPet(player, xi.petId.WYVERN)
+    -- Hebo's Spear: wyvern gains Regen when Call Wyvern is used
+    if player:getEquipID(xi.slot.MAIN) == xi.item.HEBOS_SPEAR then
+        local wyvern = getWyvern(player)
+        if wyvern then
+            wyvern:addStatusEffect(xi.effect.REGEN, { power = 5, duration = 3600, origin = player })
+        end
+    end
 end
 
 xi.job_utils.dragoon.useAncientCircle = function(player, target, ability)

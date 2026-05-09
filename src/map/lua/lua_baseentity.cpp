@@ -24,6 +24,7 @@
 #include "lua_battlefield.h"
 #include "lua_instance.h"
 #include "lua_item.h"
+#include "lua_item_puppet.h"
 
 #include "items/exdata/worn_item.h"
 #include "lua_spell.h"
@@ -104,6 +105,7 @@
 #include "items/exdata.h"
 #include "items/item_furnishing.h"
 #include "items/item_linkshell.h"
+#include "items/item_puppet.h"
 
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
@@ -6706,16 +6708,16 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
 
         // Change weapon type based on new job
         CItemWeapon* PWeapon = std::make_unique<CItemWeapon>(0).release();
-        PWeapon->setDelay(4000);
-        PWeapon->setBaseDelay(4000);
+        PWeapon->setDelay(240);
+        PWeapon->setBaseDelay(240);
 
         switch (newJob)
         {
             case JOB_MNK:
             case JOB_PUP:
                 PWeapon->setSkillType(SKILL_HAND_TO_HAND);
-                PWeapon->setBaseDelay(8000);
-                PWeapon->setDelay(8000);
+                PWeapon->setBaseDelay(480);
+                PWeapon->setDelay(480);
                 break;
             case JOB_THF:
             case JOB_BRD:
@@ -6730,8 +6732,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_RUN:
                 PWeapon->setSkillType(SKILL_GREAT_SWORD);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WAR:
             case JOB_BST:
@@ -6739,21 +6741,21 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_DRK:
                 PWeapon->setSkillType(SKILL_SCYTHE);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_DRG:
                 PWeapon->setSkillType(SKILL_POLEARM);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_NIN:
                 PWeapon->setSkillType(SKILL_KATANA);
                 break;
             case JOB_SAM:
                 PWeapon->setSkillType(SKILL_GREAT_KATANA);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WHM:
             case JOB_BLM:
@@ -6762,8 +6764,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_SMN:
                 PWeapon->setSkillType(SKILL_STAFF);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             default:
                 break;
@@ -16734,7 +16736,7 @@ auto CLuaBaseEntity::getAttachments() const -> sol::table
 
         if (attachmentItemId != 0)
         {
-            attachmentTable[attachmentSlot] = CLuaItem(xi::items::lookup(0x2100 + attachmentItemId));
+            attachmentTable[attachmentSlot] = CLuaItemPuppet(xi::items::lookup<CItemPuppet>(0x2100 + attachmentItemId));
         }
     }
 
@@ -17715,7 +17717,7 @@ bool CLuaBaseEntity::isAggroable()
 /************************************************************************
  *  Function: setDelay()
  *  Purpose : Override default delay settings for a Mob
- *  Example : mob:setDelay(2400)
+ *  Example : mob:setDelay(240) -- 240 raw game delay units
  ************************************************************************/
 
 void CLuaBaseEntity::setDelay(uint16 delay)
@@ -17825,6 +17827,41 @@ void CLuaBaseEntity::setAutoAttackEnabled(bool state)
     }
 
     m_PBaseEntity->PAI->GetController()->SetAutoAttackEnabled(state);
+}
+
+/************************************************************************
+ *  Function: setRangedAttackEnabled()
+ *  Purpose : Enables/disables ranged auto-attacks for a Mob
+ *  Example : mob:setRangedAttackEnabled(true)
+ *  Notes   : Used for mobs that should fire ranged attacks instead of ranged special skills
+ ************************************************************************/
+
+void CLuaBaseEntity::setRangedAttackEnabled(bool state)
+{
+    if (m_PBaseEntity->objtype & TYPE_NPC || m_PBaseEntity->objtype & TYPE_PC)
+    {
+        ShowError("function call on invalid entity! (name: %s type: %d)", m_PBaseEntity->name, m_PBaseEntity->objtype);
+        return;
+    }
+
+    m_PBaseEntity->PAI->GetController()->SetRangedAttackEnabled(state);
+}
+
+/************************************************************************
+ *  Function: isRangedAttackEnabled()
+ *  Purpose : Returns whether ranged auto-attacks are enabled for a Mob
+ *  Example : mob:isRangedAttackEnabled()
+ ************************************************************************/
+
+bool CLuaBaseEntity::isRangedAttackEnabled()
+{
+    if (m_PBaseEntity->objtype & TYPE_NPC || m_PBaseEntity->objtype & TYPE_PC)
+    {
+        ShowError("function call on invalid entity! (name: %s type: %d)", m_PBaseEntity->name, m_PBaseEntity->objtype);
+        return false;
+    }
+
+    return m_PBaseEntity->PAI->GetController()->IsRangedAttackEnabled();
 }
 
 /************************************************************************
@@ -20384,6 +20421,8 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasSpellList", CLuaBaseEntity::hasSpellList);
     SOL_REGISTER("setSpellList", CLuaBaseEntity::setSpellList);
     SOL_REGISTER("setAutoAttackEnabled", CLuaBaseEntity::setAutoAttackEnabled);
+    SOL_REGISTER("setRangedAttackEnabled", CLuaBaseEntity::setRangedAttackEnabled);
+    SOL_REGISTER("isRangedAttackEnabled", CLuaBaseEntity::isRangedAttackEnabled);
     SOL_REGISTER("setMagicCastingEnabled", CLuaBaseEntity::setMagicCastingEnabled);
     SOL_REGISTER("setMobAbilityEnabled", CLuaBaseEntity::setMobAbilityEnabled);
     SOL_REGISTER("setMobSkillAttack", CLuaBaseEntity::setMobSkillAttack);

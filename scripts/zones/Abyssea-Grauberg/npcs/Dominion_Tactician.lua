@@ -12,6 +12,16 @@ local itemType =
     ITEM        = 1,
     TEMP        = 2,
     AUGMENTED   = 3,
+    ESCHELON    = 4,
+}
+
+local itemTypeSub =
+{
+    FIFTH       = 1,
+    FOURTH      = 2,
+    THIRD       = 3,
+    SECOND      = 4,
+    FIRST       = 5,
 }
 
 local tacticianItems =
@@ -48,6 +58,70 @@ local tacticianItems =
         [1] = { xi.item.YATAGHAN,   2500, { { 45, 1,  8 }, { 328, 2, 6 }, { 187, 2, 6 }, { 787, 3, 8 }, { 1028, 2, 6 } } }, -- TODO: Should Aug 45 (DMG+) also apply Sub DMG?
         [2] = { xi.item.DOOM_TABAR, 2500, { { 45, 4, 12 }, { 786, 3, 7 }, { 512, 3, 8 }, { 250, 3, 6 }, { 1040, 2, 8 } } },
         [3] = { xi.item.YUKITSUGU,  2500, { { 45, 5, 14 }, { 177, 3, 6 }, { 332, 2, 6 }, { 788, 3, 7 }, { 1060, 2, 8 } } },
+    },
+
+    [itemType.ESCHELON] =
+    {
+        [itemTypeSub.FIFTH] =
+            {
+                [1] = { xi.item.BELLICUS_SABATONS,   1, { { 33, 23 }, { 512,  1 }, {  25, 1 } } }, -- def, str, att
+                [2] = { xi.item.BESTIA_GREAVES,      1, { { 33, 22 }, { 513,  1 }, {  25, 1 } } }, -- def dex att
+                [3] = { xi.item.PARAGON_SOLLERETS,   1, { { 33, 26 }, { 514,  1 }, {  25, 1 } } }, -- def vit att
+                [4] = { xi.item.SKOPOS_SOCKS,        1, { { 33, 18 }, { 515,  1 }, {  27, 1 } } }, -- def agi racc
+                [5] = { xi.item.KOKUGETSU_SUNE_ATE,  1, { { 33, 21 }, { 512,  1 }, {  23, 1 } } }, -- def str acc
+                [6] = { xi.item.SPRY_GAITERS,        1, { { 33, 20 }, { 513,  1 }, {  23, 1 } } }, -- def dex acc
+                [7] = { xi.item.MEDERI_BROGUES,      1, { { 33, 17 }, { 517,  1 }, { 518, 1 }, { 35, 0 } } }, -- def mnd chr macc
+                [8] = { xi.item.LITERAE_SABOTS,      1, { { 33, 15 }, { 516,  1 }, { 120, 0 } } }, -- def int matt
+                [9] = { xi.item.FACIO_GALOSHES,      1, { { 33, 15 }, {   9,  9 }, {  40, 1 } } }, -- def mp enm -
+            },
+        [itemTypeSub.FOURTH] =
+            {
+                [1] = { xi.item.BELLICUS_DASTANAS,   1, { { 33, 29 }, { 512,  1 }, {  25, 1 } } }, -- def, str, att
+                [2] = { xi.item.BESTIA_MUFFLERS,     1, { { 33, 26 }, { 513,  1 }, {  25, 1 } } }, -- def dex att
+                [3] = { xi.item.PARAGON_MOUFLES,     1, { { 33, 30 }, { 514,  1 }, {  25, 1 } } }, -- def vit att
+                [4] = { xi.item.SKOPOS_BRACERS,      1, { { 33, 22 }, { 515,  1 }, {  27, 1 } } }, -- def agi racc
+                [5] = { xi.item.KOKUGETSU_KOTE,      1, { { 33, 24 }, { 512,  1 }, {  23, 1 } } }, -- def str acc
+                [6] = { xi.item.SPRY_WRISTBANDS,     1, { { 33, 23 }, { 513,  1 }, {  23, 1 } } }, -- def dex acc
+                [7] = { xi.item.MEDERI_GANTS,        1, { { 33, 22 }, { 517,  1 }, { 518, 1 }, { 35, 0 } } }, -- def mnd chr macc
+                [8] = { xi.item.LITERAE_CUFFS,       1, { { 33, 20 }, { 516,  1 }, { 120, 0 } } }, -- def int matt
+                [9] = { xi.item.FACIO_GAGES,         1, { { 33, 19 }, {   9,  9 }, {  40, 1 } } }, -- def mp enm -
+            },
+        [itemTypeSub.THIRD] =
+            {
+                [1] = { xi.item.BELLICUS_CUISSES,    1, { { 33, 49 }, { 512,  2 }, {  25, 2 } } }, -- def, str, att
+                [2] = { xi.item.BESTIA_BREECHES,     1, { { 33, 48 }, { 513,  2 }, {  25, 2 } } }, -- def dex att
+                [3] = { xi.item.PARAGON_BRAYETTES,   1, { { 33, 54 }, { 514,  2 }, {  25, 2 } } }, -- def vit att
+                [4] = { xi.item.SKOPOS_BRACCAE,      1, { { 33, 44 }, { 515,  2 }, {  27, 2 } } }, -- def agi racc
+                [5] = { xi.item.KOKUGETSU_HAIDATE,   1, { { 33, 45 }, { 512,  2 }, {  23, 2 } } }, -- def str acc
+                [6] = { xi.item.SPRY_TIGHTS,         1, { { 33, 45 }, { 513,  2 }, {  23, 2 } } }, -- def dex acc
+                [7] = { xi.item.MEDERI_SLACKS,       1, { { 33, 41 }, { 517,  2 }, { 518, 2 }, { 35, 1 } } }, -- def mnd chr macc
+                [8] = { xi.item.LITERAE_PANTS,       1, { { 33, 37 }, { 516,  2 }, { 120, 1 } } }, -- def int matt
+                [9] = { xi.item.FACIO_SPATS,         1, { { 33, 37 }, {   9, 14 }, {  40, 2 } } }, -- def mp enm -
+            },
+        [itemTypeSub.SECOND] =
+            {
+                [1] = { xi.item.BELLICUS_CELATA,     1, { { 33, 36 }, { 512,  2 }, {  25, 1 } } }, -- def, str, att
+                [2] = { xi.item.BESTIA_HELM,         1, { { 33, 35 }, { 513,  2 }, {  25, 2 } } }, -- def dex att
+                [3] = { xi.item.PARAGON_GALEA,       1, { { 33, 39 }, { 514,  2 }, {  25, 2 } } }, -- def vit att
+                [4] = { xi.item.SKOPOS_VISOR,        1, { { 33, 32 }, { 515,  2 }, {  27, 2 } } }, -- def agi racc
+                [5] = { xi.item.KOKUGETSU_HATSUBURI, 1, { { 33, 33 }, { 512,  2 }, {  23, 2 } } }, -- def str acc
+                [6] = { xi.item.SPRY_HEADGEAR,       1, { { 33, 32 }, { 513,  2 }, {  23, 2 } } }, -- def dex acc
+                [7] = { xi.item.MEDERI_TAM,          1, { { 33, 31 }, { 517,  2 }, { 518, 2 }, { 35, 1 } } }, -- def mnd chr macc
+                [8] = { xi.item.LITERAE_HAT,         1, { { 33, 28 }, { 516,  2 }, { 120, 1 } } }, -- def int matt
+                [9] = { xi.item.FACIO_CAUBEEN,       1, { { 33, 27 }, {   9, 14 }, {  40, 2 } } }, -- def mp enm -
+            },
+        [itemTypeSub.FIRST] =
+            {
+                [1] = { xi.item.BELLICUS_CUIRASS,    1, { { 33, 65 }, { 512,  3 }, {  25, 3 } } }, -- def, str, att
+                [2] = { xi.item.BESTIA_MAIL,         1, { { 33, 63 }, { 513,  3 }, {  25, 3 } } }, -- def dex att
+                [3] = { xi.item.PARAGON_HAUBERT,     1, { { 33, 72 }, { 514,  3 }, {  25, 3 } } }, -- def vit att
+                [4] = { xi.item.SKOPOS_JERKIN,       1, { { 33, 58 }, { 515,  3 }, {  27, 3 } } }, -- def agi racc
+                [5] = { xi.item.KOKUGETSU_TOGI,      1, { { 33, 59 }, { 512,  3 }, {  23, 3 } } }, -- def str acc
+                [6] = { xi.item.SPRY_VEST,           1, { { 33, 58 }, { 513,  3 }, {  23, 3 } } }, -- def dex acc
+                [7] = { xi.item.MEDERI_TALAR,        1, { { 33, 51 }, { 517,  3 }, { 518, 3 }, { 35, 2 } } }, -- def mnd chr macc
+                [8] = { xi.item.LITERAE_COAT,        1, { { 33, 47 }, { 516,  3 }, { 120, 2 } } }, -- def int matt
+                [9] = { xi.item.FACIO_BLIAUT,        1, { { 33, 46 }, {   9, 19 }, {  40, 3 } } }, -- def mp enm -
+            },
     },
 }
 
@@ -90,15 +164,27 @@ local function giveAugmentedItem(player, itemID, augmentList, maxAugments)
 
     if player:addItem(unpack(itemParams)) then
         player:messageSpecial(ID.text.ITEM_OBTAINED, itemID)
+        return true
     else
         player:messageSpecial(ID.text.ITEM_CANNOT_BE_OBTAINED, itemID)
+        return false
     end
 end
 
 entity.onTrigger = function(player, npc)
     local dominionNotes = player:getCurrency('dominion_note')
+    local firstEchelonTrophy  = player:getCurrency('first_echelon_trophy') *1048576
+    local secondEchelonTrophy = player:getCurrency('second_echelon_trophy') * 32768
+    local thirdEchelonTrophy  = player:getCurrency('third_echelon_trophy') * 1024
+    local fourthEchelonTrophy = player:getCurrency('fourth_echelon_trophy') * 32
+    local fifthEchelonTrophy  = player:getCurrency('fifth_echelon_trophy') * 1
     local trophyMask = 0 -- 5 bits per trophy, cap at 30ea (31 can be displayed, but non-retail), 5th echelon is least sig
-
+    local mask = {firstEchelonTrophy,secondEchelonTrophy,thirdEchelonTrophy,fourthEchelonTrophy,fifthEchelonTrophy}
+        if trophyMask == 0 then
+           for k, v in pairs(mask) do 
+               trophyMask = trophyMask + v
+           end
+        end
     player:startEvent(120, dominionNotes, 0, 0, 0, 0, trophyMask)
 end
 
@@ -113,9 +199,17 @@ entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
+
+    local guerdonSubCatagory = bit.rshift(option, 16)
+    local guerdonItemChosen = bit.band(bit.rshift(option,8), 0xFF)
     local itemCategory = bit.band(option, 0xF)
     local itemSelected = bit.rshift(option, 8)
-    local dominionNotes = player:getCurrency('dominion_note')
+    local dominionNotes       = player:getCurrency('dominion_note')
+    local firstEchelonTrophy  = player:getCurrency('first_echelon_trophy')
+    local secondEchelonTrophy = player:getCurrency('second_echelon_trophy')
+    local thirdEchelonTrophy  = player:getCurrency('third_echelon_trophy')
+    local fourthEchelonTrophy = player:getCurrency('fourth_echelon_trophy')
+    local fifthEchelonTrophy  = player:getCurrency('fifth_echelon_trophy')
 
     if
         itemCategory >= 1 and
@@ -133,10 +227,70 @@ entity.onEventFinish = function(player, csid, option, npc)
                 player:delCurrency('dominion_note', itemData[2])
             end
         elseif itemCategory == itemType.AUGMENTED then
-            if giveAugmentedItem(player, itemData[1], itemData[3], 2) then
+            if giveAugmentedItem(player, itemData[1], itemData[3], 2) == true then
                 player:delCurrency('dominion_note', itemData[2])
             end
         end
+    elseif itemCategory == 4 then
+        local itemData = tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen]
+      if itemCategory == itemType.ESCHELON then 
+         if guerdonSubCatagory == itemTypeSub.FIFTH and
+            fifthEchelonTrophy >= tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen][2] then
+            if giveTrophyAugmentedItem(player, itemData[1], itemData[3], 1) == true then
+               player:delCurrency('fifth_echelon_trophy', 1)
+            end
+         elseif guerdonSubCatagory == itemTypeSub.FOURTH and
+                fourthEchelonTrophy >= tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen][2] then
+            if giveTrophyAugmentedItem(player, itemData[1], itemData[3], 1) == true then
+               player:delCurrency('fourth_echelon_trophy', itemData[2])
+            end
+         elseif guerdonSubCatagory == itemTypeSub.THIRD and
+                thirdEchelonTrophy >= tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen][2] then
+            if giveTrophyAugmentedItem(player, itemData[1], itemData[3], 1) == true then
+               player:delCurrency('third_echelon_trophy', itemData[2])
+            end
+         elseif guerdonSubCatagory == itemTypeSub.SECOND and
+                secondEchelonTrophy >= tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen][2] then
+            if giveTrophyAugmentedItem(player, itemData[1], itemData[3], 1) == true then
+               player:delCurrency('second_echelon_trophy', itemData[2])
+            end
+         elseif guerdonSubCatagory == itemTypeSub.FIRST and
+                firstEchelonTrophy >= tacticianItems[itemCategory][guerdonSubCatagory][guerdonItemChosen][2] then
+            if giveTrophyAugmentedItem(player, itemData[1], itemData[3], 1) == true then
+               player:delCurrency('first_echelon_trophy', itemData[2])
+            end
+         end
+      end
+    elseif itemCategory == 5 then
+           local trophyList = {
+                                    [5] = {'first_echelon_trophy' },
+                                    [4] = {'second_echelon_trophy'},
+                                    [3] = {'third_echelon_trophy' },
+                                    [2] = {'fourth_echelon_trophy'},
+                                    [1] = {'fifth_echelon_trophy' },
+                              }
+           local itemTraded   = bit.band(bit.rshift(option, 8), 0xF) 
+           local amountTraded = bit.band(bit.rshift(option, 24), 0xFF)
+           local itemReceived = bit.band(bit.rshift(option,16), 0xF) -- 1 = top option double reward / 2 == bottom option half reward
+           local offset       = 0
+           local rewardQty    = 0  
+              for _, trophy in pairs(trophyList) do
+                  if _ == itemTraded then
+                     if itemReceived == 1 then
+                        offset = offset + itemTraded - 1
+                        rewardQty = amountTraded * 2
+                        local reward = trophyList[offset][1]
+                              player:addCurrency(reward, rewardQty)
+                              player:delCurrency(trophyList[itemTraded][1], amountTraded)
+                     elseif itemReceived == 2 then
+                        offset = offset + itemTraded + 1
+                        rewardQty = amountTraded / 2
+                        local reward = trophyList[offset][1]
+                              player:addCurrency(reward, rewardQty)
+                              player:delCurrency(trophyList[itemTraded][1], amountTraded)
+                     end
+                  end
+              end
     end
 end
 

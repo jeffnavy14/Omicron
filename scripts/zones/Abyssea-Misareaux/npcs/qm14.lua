@@ -4,15 +4,14 @@
 -- Spawns Amhuluk
 -- !pos 0 -16 -50 216
 -----------------------------------
+local ID = zones[xi.zone.ABYSSEA_MISAREAUX]
+-----------------------------------
+
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    -- xi.abyssea.qmOnTrigger(player, npc)
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.AMHULUK_OFFSET, { xi.ki.JAGGED_APKALLU_BEAK, xi.ki.CLIPPED_BIRD_WING, xi.ki.BLOODIED_BAT_FUR })
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)

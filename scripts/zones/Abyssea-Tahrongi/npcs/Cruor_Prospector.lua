@@ -8,8 +8,8 @@
 local entity = {}
 
 local itemType = xi.abyssea.itemType
-
-local localProspectorItems =
+---@type TProspectorItems
+local prospectorItems =
 {
     [itemType.ITEM] = xi.abyssea.visionsCruorProspectorItems,
 
@@ -22,7 +22,7 @@ local localProspectorItems =
         [2] = { xi.ki.IVORY_ABYSSITE_OF_SOJOURN,    6000 },
         [3] = { xi.ki.IVORY_ABYSSITE_OF_CONFLUENCE, 4800 },
         [4] = { xi.ki.IVORY_ABYSSITE_OF_EXPERTISE,  4800 },
-        [5] = { xi.ki.CLEAR_DEMILUNE_ABYSSITE,       300 },
+        [7] = { xi.ki.CLEAR_DEMILUNE_ABYSSITE,       300 },
     },
 
     [itemType.ENHANCEMENT] = xi.abyssea.visionsCruorProspectorBuffs,
@@ -33,7 +33,7 @@ entity.onTrigger = function(player, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    xi.abyssea.visionsCruorProspectorOnEventFinish(player, csid, option, localProspectorItems)
+    xi.abyssea.visionsCruorProspectorOnEventFinish(player, csid, option, prospectorItems)
 end
 
 return entity
