@@ -31,6 +31,7 @@
 #include "entities/npcentity.h"
 #include "enums/weather.h"
 #include "items/item_weapon.h"
+#include "itemutils.h"
 #include "lua/luautils.h"
 #include "map_networking.h"
 #include "mob_modifier.h"
@@ -469,6 +470,12 @@ auto LoadMOBList(Scheduler& scheduler, const std::vector<uint16>& zoneIds) -> Ta
                                     PMob->m_SpawnType   = rset->get<SPAWNTYPE>("spawntype");
                                     PMob->m_DropID      = rset->get<uint32>("dropid");
 
+                                    // Check if the drop list is valid
+                                    if (PMob->m_DropID != 0 && itemutils::GetDropList(PMob->m_DropID) == nullptr)
+                                    {
+                                        ShowErrorFmt("LoadMOBList: Drop list {} on mob {} (zone id {}) set but has no entries!", PMob->m_DropID, PMob->name, zoneId);
+                                    }
+
                                     PMob->HPmodifier = rset->get<uint32>("HP");
                                     PMob->MPmodifier = rset->get<uint32>("MP");
 
@@ -749,8 +756,6 @@ auto CreateZone(Scheduler& scheduler, MapConfig config, uint16 ZoneID) -> CZone*
 
 auto LoadZones(Scheduler& scheduler, MapConfig config, const std::vector<uint16>& zoneIds) -> Task<void>
 {
-    TracyZoneScoped;
-
     std::vector<uint16> zonesIdsToLoad;
 
     for (const auto zoneId : zoneIds)
@@ -781,18 +786,13 @@ auto LoadZones(Scheduler& scheduler, MapConfig config, const std::vector<uint16>
         g_PZoneList[0] = CreateZone(scheduler, config, 0);
     }
 
+    // Phase 1: Load zone meshes and LOS data (navmesh build depends on zone mesh)
     co_await Scheduler::TaskGroup(
-        zoneIds.size() * 3,
+        zonesIdsToLoad.size() * 2,
         [&](auto& add)
         {
             for (const auto zoneId : zonesIdsToLoad)
             {
-                add(scheduler.spawnOnWorkerThread(
-                    [zoneId]()
-                    {
-                        g_PZoneList[zoneId]->LoadNavMesh();
-                    }));
-
                 add(scheduler.spawnOnWorkerThread(
                     [zoneId]()
                     {
@@ -806,6 +806,13 @@ auto LoadZones(Scheduler& scheduler, MapConfig config, const std::vector<uint16>
                     }));
             }
         });
+
+    // Phase 2: Load/build navmeshes (requires zone mesh; processed serially because
+    // each zone's build is a coroutine that dispatches tile work to workers)
+    for (const auto zoneId : zonesIdsToLoad)
+    {
+        co_await g_PZoneList[zoneId]->LoadNavMesh();
+    }
 
     // IDs attached to xi.zone[name] need to be populated before NPCs and Mobs are loaded
     for (const auto zoneId : zonesIdsToLoad)
