@@ -1262,7 +1262,6 @@ xi.mobskills.mobMagicalMove = function(mob, target, skill, action, skillParams)
         damage = utils.handleStoneskin(target, damage)
     end
 
-    target:updateEnmityFromDamage(mob, damage)
     target:handleAfflatusMiseryDamage(damage)
 
     -- Calculate TP return of the mob skill.
@@ -1451,7 +1450,6 @@ xi.mobskills.mobBreathMove = function(mob, target, skill, action, skillParams)
         damage = utils.handleStoneskin(target, damage)
     end
 
-    target:updateEnmityFromDamage(mob, damage)
     target:handleAfflatusMiseryDamage(damage)
 
     -- Calculate TP return of the mob skill.
@@ -1516,6 +1514,8 @@ end
 -- Used as a conditional filter for target:takeDamage so the target doesn't take chip damage through shadows.
 xi.mobskills.processDamage = function(actor, target, skill, action, info)
     if info.hitsLanded > 0 then
+        target:updateEnmityFromDamage(actor, info.damage)
+
         return true
     end
 
@@ -1691,15 +1691,6 @@ xi.mobskills.unequipRandomSlots = function(target, numberToUnequip)
         local index = math.random(#slots)
         target:unequipItem(table.remove(slots, index))
     end
-end
-
----@param target CBaseEntity
----@param attacker CBaseEntity
----@param skill CMobSkill
----@param action CAction
----@return xi.action.knockback
-xi.mobskills.calculateKnockback = function(target, attacker, skill, action)
-    return utils.clamp(skill:getKnockback() - target:getMod(xi.mod.KNOCKBACK_REDUCTION), xi.action.knockback.NONE, xi.action.knockback.LEVEL7)
 end
 
 ---@param target CBaseEntity

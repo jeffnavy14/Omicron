@@ -124,6 +124,8 @@ xi.mobSkill =
 
     DETONATOR_1                   =  215,
 
+    URIEL_BLADE_1                 =  238,
+
     NETHERSPIKES_1                =  241,
     CARNAL_NIGHTMARE_1            =  242,
     AEGIS_SCHISM_1                =  243,
@@ -214,6 +216,12 @@ xi.mobSkill =
     INFRASONICS_1                 =  372,
     SECRETION_1                   =  373,
 
+    FOUL_BREATH_1                 =  376,
+    FROST_BREATH_1                =  377,
+    THUNDERBOLT_RAPTOR            =  378,
+
+    SCYTHE_TAIL_1                 =  380,
+
     TAIL_ROLL                     =  382,
     TUSK                          =  383,
     SCUTUM                        =  384,
@@ -233,7 +241,7 @@ xi.mobSkill =
 
     BALEFUL_GAZE_COCKATRICE       =  411,
     RANGED_ATTACK_2               =  412,
-    -- EES_?                         =  413,
+    EAGLE_EYE_SHOT_HUMANOID       =  413,
 
     SCISSION_THRUST               =  419, -- Mammet-800
 

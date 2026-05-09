@@ -23,6 +23,7 @@
 
 #include "common/database.h"
 #include "common/logging.h"
+#include "common/settings.h"
 #include "common/timer.h"
 #include "common/utils.h"
 
@@ -57,12 +58,11 @@
 #include "items.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
-#include "los/zone_los.h"
+#include "map/navmesh/navmesh.h"
 #include "map_engine.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "modifier.h"
-#include "navmesh.h"
 #include "notoriety_container.h"
 #include "packets/pet_sync.h"
 #include "packets/s2c/0x029_battle_message.h"
@@ -79,6 +79,8 @@
 #include "utils/petutils.h"
 #include "weapon_skill.h"
 #include "zoneutils.h"
+
+#include <map/ximesh/ximesh.h>
 
 /************************************************************************
  *                                                                       *
@@ -629,7 +631,7 @@ int32 CalculateEnspellDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender,
             runeDPS = PWeapon->getDPS();
         }
 
-        if (PAttacker->m_dualWield)
+        if (PAttacker->IsDualWielding())
         {
             runeDPS /= 2; // DPS is divided evenly between hands derived from mainhand only
         }
@@ -5262,24 +5264,19 @@ void DrawIn(CBattleEntity* PTarget, const position_t pos, const float offset, co
         return;
     }
 
-    // Make sure we can raycast to that position
-    // from the position's "eyeline" to the ground where we want to draw players in to
-    if (PTarget->loc.zone->lineOfSight)
+    // If geometry blocks the path from the source eyeline to the draw-in point, abort the
+    // draw-in - navmesh snapToValidPosition below will handle snapping to a valid position.
+    constexpr float ENTITY_HEIGHT = 2.0f;
+
+    const auto src = Vector3{ pos.x, pos.y - ENTITY_HEIGHT, pos.z };
+    const auto dst = Vector3{ nearEntity.x, nearEntity.y, nearEntity.z };
+    if (PTarget->loc.zone->xiMesh()->rayIntersect(src, dst))
     {
-        const auto entityHeight = 2.0f;
-        const auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
-        if (const auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
-        {
-            auto hit   = *optHit;
-            nearEntity = { hit.x, hit.y, hit.z, 0, 0 };
-        }
+        return;
     }
 
     // Snap nearEntity to a guaranteed valid position
-    if (PTarget->loc.zone->m_navMesh)
-    {
-        PTarget->loc.zone->m_navMesh->snapToValidPosition(nearEntity);
-    }
+    PTarget->loc.zone->navMesh()->snapToValidPosition(nearEntity);
 
     // Move the target a little higher, just in case
     nearEntity.y -= 1.0f;
@@ -5968,6 +5965,14 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
     auto base   = PSpell->getRecastTime();
     auto recast = base;
 
+    const auto recastReductionCap                 = settings::get<float>("map.SPELL_RECAST_REDUCTION_CAP");
+    const auto alacrityCelerityRecastReductionCap = recastReductionCap + 10.0f;
+
+    const auto recastCapFloor = [base](float reductionCap)
+    {
+        return std::chrono::floor<std::chrono::milliseconds>(base * (1.0f - (reductionCap / 100.0f)));
+    };
+
     // get Fast Cast reduction, caps at 80%/2 = 40% reduction in recast -- https://www.bg-wiki.com/ffxi/Fast_Cast
     float fastCastReduction = std::clamp(static_cast<float>(PEntity->getMod(Mod::FASTCAST)) / 2.0f, 0.0f, 40.0f);
     // no known cap (limited by Inspiration merits + Futhark Trousers augment for a total retail cap value of 60%/2 = 30%)
@@ -6017,7 +6022,7 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
         recast = std::chrono::floor<std::chrono::milliseconds>(recast * 1.5f);
     }
 
-    recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f));
+    recast = std::max<timer::duration>(recast, recastCapFloor(recastReductionCap));
 
     int32 recastMod = 0;
     switch (PSpell->getSkillType())
@@ -6065,13 +6070,13 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
             recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + PEntity->getMod(Mod::BLACK_MAGIC_RECAST)) / 100.0f));
         }
 
-        recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f)); // recap to 80%
+        recast = std::max<timer::duration>(recast, recastCapFloor(recastReductionCap));
 
         // https://www.bg-wiki.com/ffxi/Alacrity
         if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_ALACRITY))
         {
-            recast = std::chrono::floor<std::chrono::milliseconds>(recast * 0.60);                                  // 40% reduction from Alacrity alone
-            recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f)); // recap to 80%
+            recast = std::chrono::floor<std::chrono::milliseconds>(recast * 0.60); // 40% reduction from Alacrity alone
+            recast = std::max<timer::duration>(recast, recastCapFloor(alacrityCelerityRecastReductionCap));
 
             // Only apply bonus mod if the spell element matches the weather, this is allowed to go over the 80% cap to a 90% cap.
             if (battleutils::WeatherMatchesElement(battleutils::GetWeather(PEntity, false), static_cast<uint8>(PSpell->getElement())))
@@ -6079,7 +6084,7 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
                 uint16 bonus = PEntity->getMod(Mod::ALACRITY_CELERITY_EFFECT);
 
                 recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100 - bonus) / 100.0f));
-                recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.1f)); // cap to 90% reduction
+                recast = std::max<timer::duration>(recast, recastCapFloor(alacrityCelerityRecastReductionCap));
             }
         }
     }
@@ -6107,21 +6112,21 @@ timer::duration CalculateSpellRecastTime(CBattleEntity* PEntity, CSpell* PSpell)
             recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100.0f + PEntity->getMod(Mod::WHITE_MAGIC_RECAST)) / 100.0f));
         }
 
-        recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f)); // recap to 80%
+        recast = std::max<timer::duration>(recast, recastCapFloor(recastReductionCap));
 
         // https://www.bg-wiki.com/ffxi/Celerity
         if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_CELERITY))
         {
-            recast = std::chrono::floor<std::chrono::milliseconds>(recast * 0.60);                                  // 40% reduction from Celerity alone
-            recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.2f)); // recap to 80%
+            recast = std::chrono::floor<std::chrono::milliseconds>(recast * 0.60); // 40% reduction from Celerity alone
+            recast = std::max<timer::duration>(recast, recastCapFloor(alacrityCelerityRecastReductionCap));
 
-            // Only apply bonus mod if the spell element matches the weather, this is allowed to go over the 80% cap to a 90% cap.
+            // Only apply bonus mod if the spell element matches the weather.
             if (battleutils::WeatherMatchesElement(battleutils::GetWeather(PEntity, false), static_cast<uint8>(PSpell->getElement())))
             {
                 uint16 bonus = PEntity->getMod(Mod::ALACRITY_CELERITY_EFFECT);
 
                 recast = std::chrono::floor<std::chrono::milliseconds>(recast * ((100 - bonus) / 100.0f));
-                recast = std::max<timer::duration>(recast, std::chrono::floor<std::chrono::milliseconds>(base * 0.1f)); // cap to 90% reduction
+                recast = std::max<timer::duration>(recast, recastCapFloor(alacrityCelerityRecastReductionCap));
             }
         }
     }
