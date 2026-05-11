@@ -79,6 +79,7 @@
 #include "items/item_furnishing.h"
 #include "items/item_usable.h"
 #include "items/item_weapon.h"
+#include "items/transactions/synth.h"
 #include "job_points.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
@@ -130,7 +131,6 @@ CCharEntity::CCharEntity()
     TradeContainer = new CTradeContainer();
     Container      = new CTradeContainer();
     UContainer     = new CUContainer();
-    CraftContainer = new CTradeContainer();
 
     m_Inventory  = std::make_unique<CItemContainer>(LOC_INVENTORY);
     m_Mogsafe    = std::make_unique<CItemContainer>(LOC_MOGSAFE);
@@ -370,10 +370,11 @@ CCharEntity::~CCharEntity()
 
     charutils::WriteHistory(this);
 
+    this->clearTransactions();
+
     destroy(TradeContainer);
     destroy(Container);
     destroy(UContainer);
-    destroy(CraftContainer);
     destroy(PLatentEffectContainer);
 
     PGuildShop = nullptr;
@@ -560,7 +561,7 @@ bool CCharEntity::hasAutoTargetEnabled() const
 
 auto CCharEntity::isCrafting() const -> bool
 {
-    return animation == ANIMATION_SYNTH || (CraftContainer && CraftContainer->getItemsCount() > 0);
+    return animation == ANIMATION_SYNTH || this->activeTransaction<SynthTransaction>();
 }
 
 auto CCharEntity::isFishing() const -> bool

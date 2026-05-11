@@ -48,6 +48,7 @@
 
 #include "battlefield.h"
 #include "enums/weather.h"
+#include "items/transactions/synth.h"
 #include "packets/s2c/0x05f_music.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
@@ -564,14 +565,13 @@ void CZoneEntities::DecreaseZoneCounter(CCharEntity* PChar)
     }
 
     // Duplicated from charUtils, it is theoretically possible through d/c magic to hit this block and not sendToZone
-    if (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0)
+    if (PChar->activeTransaction<SynthTransaction>())
     {
         charutils::forceSynthCritFail("DecreaseZoneCounter", PChar);
     }
 
     if (PChar->animation == ANIMATION_SYNTH)
     {
-        PChar->CraftContainer->setQuantity(0, synthutils::SYNTHESIS_FAIL);
         synthutils::sendSynthDone(PChar);
     }
 

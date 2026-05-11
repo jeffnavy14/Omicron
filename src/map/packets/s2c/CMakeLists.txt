@@ -92,6 +92,7 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x047_translate.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x049_itemsearch.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x049_itemsearch.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x04b_pbx_result.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x04b_pbx_result.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x04c_auc.h

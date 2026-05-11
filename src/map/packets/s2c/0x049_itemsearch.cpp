@@ -1,7 +1,7 @@
 /*
 ===========================================================================
 
-  Copyright (c) 2025 LandSandBoat Dev Teams
+  Copyright (c) 2026 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,22 +19,14 @@
 ===========================================================================
 */
 
-#pragma once
+#include "0x049_itemsearch.h"
 
-#include "base.h"
-
-// https://github.com/atom0s/XiPackets/tree/main/world/server/0x0049
-// This packet is sent by the server to respond to a client `/itemsearch` request.
-class GP_SERV_COMMAND_ITEMSEARCH final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_ITEMSEARCH, GP_SERV_COMMAND_ITEMSEARCH>
+GP_SERV_COMMAND_ITEMSEARCH::GP_SERV_COMMAND_ITEMSEARCH(uint16 itemId, const std::string& name)
 {
-public:
-    struct PacketData
-    {
-        uint16_t ItemNo;       // PS2: ItemNo
-        uint8_t  Flag;         // PS2: Flag
-        uint8_t  padding07;    // PS2: (New; did not exist.)
-        uint8_t  ItemName[64]; // PS2: ItemName
-    };
+    auto& packet = this->data();
 
-    GP_SERV_COMMAND_ITEMSEARCH(uint16 itemId, const std::string& name);
-};
+    packet.ItemNo = itemId;
+    packet.Flag   = 0;
+
+    std::memcpy(packet.ItemName, name.data(), std::min(name.size(), sizeof(packet.ItemName)));
+}

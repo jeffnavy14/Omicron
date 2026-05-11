@@ -88,6 +88,7 @@
 #include "blueutils.h"
 #include "charutils.h"
 #include "enums/item_lockflg.h"
+#include "items/transactions/synth.h"
 #include "itemutils.h"
 #include "job_points.h"
 #include "map_engine.h"
@@ -1928,6 +1929,17 @@ uint32 UpdateItem(CCharEntity* PChar, uint8 LocationID, uint8 slotID, int32 quan
         }
     }
 
+    if (PItem->isBusy() && !force)
+    {
+        ShowWarningFmt("UpdateItem: refusing to mutate busy item {} in state {} (loc={}, slot={}, char={})",
+                       ItemID,
+                       magic_enum::enum_name(PItem->state()),
+                       LocationID,
+                       slotID,
+                       PChar->getName());
+        return 0;
+    }
+
     uint32 newQuantity = PItem->getQuantity() + quantity;
 
     if (newQuantity > PItem->getStackSize())
@@ -2916,6 +2928,15 @@ void AddItemToRecycleBin(CCharEntity* PChar, uint32 container, uint8 slotID, uin
     auto* PSrcItem = OtherContainer->GetItem(slotID);
     if (PSrcItem == nullptr)
     {
+        return;
+    }
+
+    if (PSrcItem->isBusy())
+    {
+        ShowWarningFmt("AddItemToRecycleBin: refusing to move busy item {} (state={}, char={})",
+                       PSrcItem->getID(),
+                       magic_enum::enum_name(PSrcItem->state()),
+                       PChar->getName());
         return;
     }
 
@@ -7326,7 +7347,7 @@ void SendToZone(CCharEntity* PChar, uint16 zoneId)
     }
 
     // If player somehow gets zoned, force crit fail their synth
-    if (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0)
+    if (PChar->activeTransaction<SynthTransaction>())
     {
         charutils::forceSynthCritFail("SendToZone", PChar);
     }
@@ -7993,11 +8014,6 @@ void forceSynthCritFail(const std::string& sourceFunction, CCharEntity* PChar)
 
     ShowWarning("%s: Force crit-failing %s synthesis!", sourceFunction, PChar->getName());
     synthutils::doSynthCriticalFail(PChar);
-
-    PChar->CraftContainer->Clean(); // Clean to reset m_ItemCount to 0
-    PChar->animation = ANIMATION_NONE;
-    PChar->updatemask |= UPDATE_HP;
-    PChar->pushPacket<CCharStatusPacket>(PChar);
 }
 
 void removeCharFromZone(CCharEntity* PChar)

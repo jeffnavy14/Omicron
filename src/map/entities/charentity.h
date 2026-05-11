@@ -27,6 +27,8 @@
 #include "gmcall_container.h"
 #include "inventory_sync_state.h"
 #include "item_container.h"
+#include "items/craft_state.h"
+#include "items/transaction.h"
 #include "map_session.h"
 #include "monstrosity.h"
 
@@ -38,6 +40,7 @@
 #include <bitset>
 #include <deque>
 #include <map>
+#include <memory>
 #include <optional>
 #include <set>
 #include <unordered_map>
@@ -497,7 +500,69 @@ public:
     CTradeContainer* TradeContainer; // Container used specifically for trading.
     CTradeContainer* Container;      // Universal container for exchange, synthesis, store, etc.
     CUContainer*     UContainer;     // Container used for universal actions -- used for trading at least despite the dedicated trading container above
-    CTradeContainer* CraftContainer; // Container used for crafting actions.
+
+    auto craftState() -> CCraftState&
+    {
+        return craftState_;
+    }
+
+    auto craftState() const -> const CCraftState&
+    {
+        return craftState_;
+    }
+
+    template <typename T>
+    auto activeTransaction() const -> T*
+    {
+        for (const auto& transaction : transactions_)
+        {
+            if (auto* typed = dynamic_cast<T*>(transaction.get()); typed != nullptr && typed->isOpen())
+            {
+                return typed;
+            }
+        }
+        return nullptr;
+    }
+
+    // Only one transaction of each type may be active at a time. Aborts
+    // on null input or duplicate type.
+    template <typename T>
+    auto addTransaction(std::unique_ptr<T> transaction) -> T*
+    {
+        if (!transaction)
+        {
+            ShowErrorFmt("CCharEntity::addTransaction: null transaction of type {}", typeid(T).name());
+            std::abort();
+        }
+
+        if (this->activeTransaction<T>())
+        {
+            ShowErrorFmt("CCharEntity::addTransaction: a transaction of type {} is already active", typeid(T).name());
+            std::abort();
+        }
+
+        this->transactions_.push_back(std::move(transaction));
+        return static_cast<T*>(this->transactions_.back().get());
+    }
+
+    void removeTransaction(Transaction* transaction)
+    {
+        if (!transaction)
+        {
+            return;
+        }
+
+        std::erase_if(transactions_,
+                      [transaction](const auto& slot)
+                      {
+                          return slot.get() == transaction;
+                      });
+    }
+
+    void clearTransactions()
+    {
+        transactions_.clear();
+    }
 
     // TODO: All member instances of EntityID_t should be Maybe<EntityID_t> to allow for them not to be set,
     //     : instead of checking for entityId.id != 0, etc.
@@ -694,6 +759,9 @@ protected:
     void TrackArrowUsageForScavenge(CItemWeapon* PAmmo);
 
 private:
+    CCraftState                               craftState_{};
+    std::vector<std::unique_ptr<Transaction>> transactions_;
+
     std::array<CItem*, EquipSlotCount> equipped_{};
 
     // Lazily initialized AMAN data
