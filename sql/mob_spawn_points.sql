@@ -51938,15 +51938,15 @@ INSERT INTO `mob_spawn_points` VALUES (17367084,0,'Maat','Maat',14,70,70,223.224
 INSERT INTO `mob_spawn_points` VALUES (17367085,0,'Maats_Pet','Maat\'s Pet',15,56,56,401.224,-119.000,280.946,130);
 
 -- Crustacean Conundrum
-INSERT INTO `mob_spawn_points` VALUES (17367086,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,-177.000,60.000,-141.000,125);
-INSERT INTO `mob_spawn_points` VALUES (17367087,0,'Metal_Crab','Metal Crab',17,19,19,-177.000,60.000,-137.000,120);
-INSERT INTO `mob_spawn_points` VALUES (17367088,0,'Metal_Crab','Metal Crab',17,19,19,-177.000,60.000,-145.000,130);
-INSERT INTO `mob_spawn_points` VALUES (17367090,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,23.274,0.000,18.964,125);
-INSERT INTO `mob_spawn_points` VALUES (17367091,0,'Metal_Crab','Metal Crab',17,19,19,23.274,0.000,22.964,120);
-INSERT INTO `mob_spawn_points` VALUES (17367092,0,'Metal_Crab','Metal Crab',17,19,19,23.274,0.000,14.964,130);
-INSERT INTO `mob_spawn_points` VALUES (17367094,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,223.224,-60.000,138.946,125);
-INSERT INTO `mob_spawn_points` VALUES (17367095,0,'Metal_Crab','Metal Crab',17,19,19,223.224,-60.000,142.946,120);
-INSERT INTO `mob_spawn_points` VALUES (17367096,0,'Metal_Crab','Metal Crab',17,19,19,223.224,-60.000,134.946,130);
+INSERT INTO `mob_spawn_points` VALUES (17367086,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,-177.354,59.696,-142.000,125);
+INSERT INTO `mob_spawn_points` VALUES (17367087,0,'Metal_Crab','Metal Crab',17,19,19,-177.354,59.696,-138.000,120);
+INSERT INTO `mob_spawn_points` VALUES (17367088,0,'Metal_Crab','Metal Crab',17,19,19,-177.354,59.696,-146.000,130);
+INSERT INTO `mob_spawn_points` VALUES (17367090,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,22.500,0.000,17.964,125);
+INSERT INTO `mob_spawn_points` VALUES (17367091,0,'Metal_Crab','Metal Crab',17,19,19,22.500,0.000,21.964,120);
+INSERT INTO `mob_spawn_points` VALUES (17367092,0,'Metal_Crab','Metal Crab',17,19,19,22.500,0.000,13.964,130);
+INSERT INTO `mob_spawn_points` VALUES (17367094,0,'Heavy_Metal_Crab','Heavy Metal Crab',16,22,22,222.500,-60.000,137.946,125);
+INSERT INTO `mob_spawn_points` VALUES (17367095,0,'Metal_Crab','Metal Crab',17,19,19,222.500,-60.000,141.946,120);
+INSERT INTO `mob_spawn_points` VALUES (17367096,0,'Metal_Crab','Metal Crab',17,19,19,222.500,-60.000,133.946,130);
 
 -- Birds of a Feather
 INSERT INTO `mob_spawn_points` VALUES (17367098,0,'Macha','Macha',18,32,32,-177.354,59.696,-142.000,128);
