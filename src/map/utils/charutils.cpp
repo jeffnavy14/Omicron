@@ -8268,16 +8268,17 @@ void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Char
 
 uint8 GetAverageItemLevel(CCharEntity* PChar)
 {
-    constexpr std::array<SLOTTYPE, 7> slots = {
-        SLOT_MAIN, SLOT_SUB, SLOT_HEAD, SLOT_BODY, SLOT_HANDS, SLOT_LEGS, SLOT_FEET
+    constexpr std::array<SLOTTYPE, 7> slots =
+    {
+        SLOT_MAIN, SLOT_SUB, SLOT_HEAD, SLOT_BODY, SLOT_HANDS, SLOT_LEGS, SLOT_FEET,
     };
 
     uint32 total = 0;
     for (auto slot : slots)
     {
-        if (const auto* item = PChar->getEquip(slot))
+        if (CItemEquipment* PItem = PChar->getEquip(slot))
         {
-            total += item->getILvl();
+            total += PItem->getILvl();
         }
     }
 
