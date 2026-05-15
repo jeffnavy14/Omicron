@@ -407,16 +407,17 @@ xi.trust.spawn = function(caster, spell)
 end
 
 -- Exponent curves for xi.trust.modGrowthValMax
--- Curve | lvl for val > 0 | lvl for 1/2 full value | lvl for full value
--- 2.0     30                71                       99
--- 1.5     20                63                       99
--- 1.2     13                56                       99
--- 1.0     10                50                       99
--- NOTE: This does take into account iLevel, iLevel is different and trust get much more of an aggressive curve.
+-- Curve | lvl for val > 0 | lvl for 1/2 full value | lvl for full value (iLv 119)
+-- 2.0     30                83                       119
+-- 1.5     20                74                       119
+-- 1.2     13                66                       119
+-- 1.0     10                60                       119
+-- At effective level 99 (no iLvl gear) with curve 1.5: ~79% of maxVal.
+-- Full maxVal requires iLv 119 gear, matching retail trust scaling.
 xi.trust.modGrowthValMax = function(mob, maxVal)
     local lvl   = math.max(mob:getMainLvl(), 1) -- Ensure lvl is at least 1
-    local curve = 1.5 -- Gentle curve: starts increasing around lvl 20, this needs testing more, but seems to work well at this value.
-    local progress = (lvl - 1) / 98 -- Normalize level to 0.0 - 1.0 range (98 is the span between 1 and 99)
+    local curve = 1.5
+    local progress = (lvl - 1) / 118 -- Normalize level to 0.0 - 1.0 range (118 is the span between 1 and 119)
     local exponentGrowth = math.pow(progress, curve)
 
     return math.floor(maxVal * exponentGrowth)
