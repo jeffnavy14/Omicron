@@ -8266,4 +8266,22 @@ void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Char
     PChar->pushPacket<GP_SERV_COMMAND_ABIL_RECAST>(PChar);
 }
 
+uint8 GetAverageItemLevel(CCharEntity* PChar)
+{
+    constexpr std::array<SLOTTYPE, 7> slots = {
+        SLOT_MAIN, SLOT_SUB, SLOT_HEAD, SLOT_BODY, SLOT_HANDS, SLOT_LEGS, SLOT_FEET
+    };
+
+    uint32 total = 0;
+    for (auto slot : slots)
+    {
+        if (const auto* item = PChar->getEquip(slot))
+        {
+            total += item->getILvl();
+        }
+    }
+
+    return static_cast<uint8>(total / 7);
+}
+
 }; // namespace charutils
