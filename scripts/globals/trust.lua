@@ -412,15 +412,16 @@ end
 -- 1.5     20                74                       119
 -- 1.2     13                66                       119
 -- 1.0     10                60                       119
--- At effective level 99 (no iLvl gear) with curve 1.5: ~76% of maxVal.
--- Full maxVal requires iLv 119 gear, matching retail trust scaling.
+-- Exponent curves with curve 1.2: at effective level 99 (no iLvl gear) ~83% of base ceiling.
+-- iLv bonus: +0-20% above the base ceiling for levels 100-119, so full iLv 119 gear yields 1.2x maxVal.
 xi.trust.modGrowthValMax = function(mob, maxVal)
     local lvl   = math.max(mob:getMainLvl(), 1) -- Ensure lvl is at least 1
-    local curve = 1.5
+    local curve = 1.2
     local progress = (lvl - 1) / 118 -- Normalize level to 0.0 - 1.0 range (118 is the span between 1 and 119)
     local exponentGrowth = math.pow(progress, curve)
+    local iLvBonus = math.max(0, (lvl - 99) / 20.0) * 0.2 -- up to +20% at iLv 119, 0 at level 99 and below
 
-    return math.floor(maxVal * exponentGrowth)
+    return math.floor(maxVal * exponentGrowth * (1.0 + iLvBonus))
 end
 
 -- pageOffset is: (summon_message_id - 1) / 100
