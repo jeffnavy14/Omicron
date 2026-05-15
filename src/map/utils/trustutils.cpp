@@ -375,9 +375,9 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     // effective level = avg iLvl of 7 gear slots, floored at job level (QoL: naked players keep job-level trusts)
     // TODO: verify gain rate for iLvl 100-119 against retail captures
     const uint8 avgILevel      = charutils::GetAverageItemLevel(PMaster);
-    const uint8 effectiveLevel = std::clamp(std::max(PMaster->GetMLevel(), avgILevel), uint8(1), uint8(119));
+    const uint8 effectiveLevel = std::clamp<uint8>(std::max<uint8>(PMaster->GetMLevel(), avgILevel), 1, 119);
     PTrust->SetMLevel(effectiveLevel);
-    PTrust->SetSLevel(static_cast<uint8>(std::floor(effectiveLevel / 2)));
+    PTrust->SetSLevel(static_cast<uint8>(effectiveLevel / 2));
 
     LoadTrustStatsAndSkills(PTrust);
 
