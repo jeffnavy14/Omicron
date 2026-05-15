@@ -412,7 +412,7 @@ end
 -- 1.5     20                74                       119
 -- 1.2     13                66                       119
 -- 1.0     10                60                       119
--- At effective level 99 (no iLvl gear) with curve 1.5: ~79% of maxVal.
+-- At effective level 99 (no iLvl gear) with curve 1.5: ~76% of maxVal.
 -- Full maxVal requires iLv 119 gear, matching retail trust scaling.
 xi.trust.modGrowthValMax = function(mob, maxVal)
     local lvl   = math.max(mob:getMainLvl(), 1) -- Ensure lvl is at least 1
