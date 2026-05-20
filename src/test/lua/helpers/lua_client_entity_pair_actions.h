@@ -37,6 +37,7 @@ public:
 
     void move(float x, float y, float z, sol::optional<uint8_t> rot) const;
     void useSpell(CLuaBaseEntity* target, SpellID spellId) const;
+    void setBlueSpells(const sol::table& spellIds) const;
     void useWeaponskill(CLuaBaseEntity* target, uint16 wsId) const;
     void useAbility(CLuaBaseEntity* target, ABILITY abilityId) const;
     void changeTarget(CLuaBaseEntity* target) const;
@@ -47,6 +48,12 @@ public:
     void formAlliance(CLuaBaseEntity* player) const;
     void acceptPartyInvite() const;
     void tradeNpc(const sol::object& npcQuery, const sol::table& items, sol::optional<sol::table> expectedEvent) const;
+    void tradeRequest(CLuaBaseEntity* target) const;
+    void tradeAccept() const;
+    void tradeOffer(uint8 tradeIndex, uint8 invSlot, uint16 itemId, uint32 quantity) const;
+    void tradeClearSlot(uint8 tradeIndex) const;
+    void tradeMake() const;
+    void tradeCancel() const;
     void acceptRaise() const;
     void engage(CLuaBaseEntity* mob) const;
     void skillchain(CLuaBaseEntity* target, sol::variadic_args weaponskillIds) const;
@@ -55,6 +62,7 @@ public:
     void sortContainer(uint8 container) const;
     void dropItem(uint8 container, uint8 slot, uint32 quantity) const;
     void setLockstyle(uint8 mode, sol::optional<sol::table> items) const;
+    void craft(uint16 crystalItemId, const sol::table& ingredients) const;
 
     static void Register();
 

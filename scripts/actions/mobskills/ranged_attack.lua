@@ -28,10 +28,6 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     -- Note: Normal mob ranged attacks that call this script can not critical hit.
     --       Normal mobskill style ranged attacks do not display sweet spot messaging.
-
-    -- TODO: Fomor type mobs that should use the player style ranged attacks are currently use this script.
-    --       Their ranged attacks can crit.
-
     local info = xi.mobskills.mobRangedMove(mob, target, skill, action, params)
 
     if xi.mobskills.processDamage(mob, target, skill, action, info) then

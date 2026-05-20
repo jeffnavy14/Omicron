@@ -57,11 +57,14 @@ local astralFlowPets = function()
             -- There is confirmation of aerial collision
             -- Picking annoying abilities for now...
             pet:timer(1500, function(petArg)
-                if petArg:getFamily() == 269 then -- xzomit
+                if
+                    petArg:getSpecies() == xi.mobSpecies.XZOMIT or -- xzomit
+                    petArg:getSpecies() == xi.mobSpecies.XZOMIT_CHILD    -- xzomit child
+                then
                     petArg:useMobAbility(xi.mobskill.MANTLE_PIERCE)
-                elseif petArg:getFamily() == 144 then -- hpemde
+                elseif petArg:getSpecies() == xi.mobSpecies.HPEMDE then -- hpemde
                     petArg:useMobAbility(xi.mobskill.SINUATE_RUSH)
-                elseif petArg:getFamily() == 194 then -- shark
+                elseif petArg:getSpecies() == xi.mobSpecies.PHUABO then -- Phuabo
                     petArg:useMobAbility(xi.mobskill.AERIAL_COLLISION)
                 end
             end)

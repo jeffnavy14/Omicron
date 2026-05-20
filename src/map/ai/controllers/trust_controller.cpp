@@ -167,7 +167,7 @@ auto CTrustController::DoCombatTick(timer::time_point tick) -> Task<void>
             float currentDistanceToTarget = distance(PTrust->loc.p, PTarget->loc.p);
             float currentDistanceToMaster = distance(PTrust->loc.p, PMaster->loc.p);
 
-            if (currentDistanceToTarget > WarpDistance)
+            if (!PMaster->PAI->IsEngaged() && currentDistanceToTarget > WarpDistance)
             {
                 PTrust->PAI->PathFind->WarpTo(PTarget->loc.p);
             }
@@ -405,7 +405,9 @@ void CTrustController::PathOutToDistance(CBattleEntity* PTarget, float amount)
         for (auto& potential_position : positions)
         {
             // Validate position
-            if (!position_found && POwner->PAI->PathFind->ValidPosition(potential_position) && POwner->CanSeeTarget(potential_position, true))
+            if (!position_found &&
+                POwner->PAI->PathFind->ValidPosition(potential_position) &&
+                POwner->CanSeeTarget(potential_position))
             {
                 position_found  = true;
                 target_position = potential_position;

@@ -140,8 +140,8 @@ CMobEntity::CMobEntity()
 , m_GilfinderLevel(0)
 , m_ItemStolen(false)
 , m_ItemDespoiled(false)
+, m_Species(0)
 , m_Family(0)
-, m_SuperFamily(0)
 , m_MobSkillList(0)
 , m_Pool(0)
 , m_flags(0)
@@ -405,8 +405,8 @@ bool CMobEntity::CanLink(position_t* pos, int16 superLink)
         return false;
     }
 
-    // Link if can see mob
-    if (getMobMod(MOBMOD_DETECTION) & DETECT_SIGHT && !facing(loc.p, *pos, 64))
+    // If a mob detects by both sight and hearing it only needs to meet one check.
+    if ((getMobMod(MOBMOD_DETECTION) & DETECT_SIGHT) && !(getMobMod(MOBMOD_DETECTION) & DETECT_HEARING) && !facing(loc.p, *pos, 64))
     {
         return false;
     }
@@ -610,6 +610,14 @@ float CMobEntity::GetRoamDistance()
 float CMobEntity::GetRoamRate()
 {
     return (float)getMobMod(MOBMOD_ROAM_RATE) / 10.0f;
+}
+
+float CMobEntity::GetRangedAttackRange()
+{
+    // Defaulted range is 14 as observed on all retail fomor.
+    // In the case this changes for other ranger/ninja types use mobmod
+    const int16 rangedAttackRange = getMobMod(MOBMOD_RANGED_ATTACK_RANGE);
+    return rangedAttackRange > 0 ? static_cast<float>(rangedAttackRange) : 14.0f;
 }
 
 bool CMobEntity::ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags)

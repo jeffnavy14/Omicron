@@ -36,6 +36,7 @@
 #include "lua_battlefield.h"
 #include "lua_instance.h"
 #include "lua_item.h"
+#include "lua_item_puppet.h"
 #include "lua_loot.h"
 #include "lua_mobskill.h"
 #include "lua_petskill.h"
@@ -79,11 +80,11 @@
 #include "instance.h"
 #include "ipc_client.h"
 #include "items/item_furnishing.h"
+#include "map/navmesh/navmesh.h"
 #include "map_engine.h"
 #include "mob_modifier.h"
 #include "mobskill.h"
 #include "monstrosity.h"
-#include "navmesh.h"
 #include "packets/s2c/0x039_mapschedulor.h"
 #include "petskill.h"
 #include "roe.h"
@@ -360,6 +361,7 @@ void init(IPP mapIPP, bool isRunningInCI)
         CLuaTreasurePool::Register();
         CLuaZone::Register();
         CLuaItem::Register();
+        CLuaItemPuppet::Register();
 
         // Load global enums
         for (auto const& entry : sorted_directory_iterator<std::filesystem::directory_iterator>("./scripts/enum"))
@@ -1987,6 +1989,8 @@ void OnZoneIn(CCharEntity* PChar)
         return;
     }
 
+    PChar->m_zoneInCutscene = false;
+
     CZone*      prevZone    = zoneutils::GetZone(PChar->loc.prevzone);
     std::string prevZoneStr = "Unknown";
     if (prevZone)
@@ -2022,6 +2026,14 @@ void OnZoneIn(CCharEntity* PChar)
     else if (result.get_type() == sol::type::number)
     {
         PChar->currentEvent->eventId = result.get<int32>();
+    }
+
+    // On zone-in events
+    if (PChar->currentEvent->eventId >= 0)
+    {
+        PChar->currentEvent->type = CUTSCENE;
+        PChar->m_zoneInCutscene   = true;
+        PChar->setLocked(true);
     }
 }
 
@@ -2574,7 +2586,7 @@ void OnAttachmentEquip(CBattleEntity* PEntity, const CItemPuppet* attachment)
         return;
     }
 
-    auto result = onEquip(PEntity, attachment);
+    auto result = onEquip(PEntity, CLuaItemPuppet(attachment));
     if (!result.valid())
     {
         sol::error err = result;
@@ -2594,7 +2606,7 @@ void OnAttachmentUnequip(CBattleEntity* PEntity, const CItemPuppet* attachment)
         return;
     }
 
-    auto result = onUnequip(PEntity, attachment);
+    auto result = onUnequip(PEntity, CLuaItemPuppet(attachment));
     if (!result.valid())
     {
         sol::error err = result;
@@ -2614,7 +2626,7 @@ void OnManeuverGain(CBattleEntity* PEntity, const CItemPuppet* attachment, uint8
         return;
     }
 
-    auto result = onManeuverGain(PEntity, attachment, maneuvers);
+    auto result = onManeuverGain(PEntity, CLuaItemPuppet(attachment), maneuvers);
     if (!result.valid())
     {
         sol::error err = result;
@@ -2634,7 +2646,7 @@ void OnManeuverLose(CBattleEntity* PEntity, const CItemPuppet* attachment, uint8
         return;
     }
 
-    auto result = onManeuverLose(PEntity, attachment, maneuvers);
+    auto result = onManeuverLose(PEntity, CLuaItemPuppet(attachment), maneuvers);
     if (!result.valid())
     {
         sol::error err = result;
@@ -2654,7 +2666,7 @@ void OnUpdateAttachment(CBattleEntity* PEntity, const CItemPuppet* attachment, u
         return;
     }
 
-    auto result = onUpdate(PEntity, attachment, maneuvers);
+    auto result = onUpdate(PEntity, CLuaItemPuppet(attachment), maneuvers);
     if (!result.valid())
     {
         sol::error err = result;
@@ -5106,7 +5118,7 @@ sol::table GetFurthestValidPosition(CLuaBaseEntity* fromTarget, float distance, 
     position_t   pos    = nearPosition(entity->loc.p, distance, theta);
 
     float validPos[3];
-    bool  success = entity->loc.zone->m_navMesh->findFurthestValidPoint(entity->loc.p, pos, validPos);
+    bool  success = entity->loc.zone->navMesh()->findFurthestValidPoint(entity->loc.p, pos, validPos);
     if (!success)
     {
         return sol::lua_nil;

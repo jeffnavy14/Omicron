@@ -555,6 +555,17 @@ end
 function CBaseEntity:setCarefulPathing(careful)
 end
 
+---@nodiscard
+---@param target CBaseEntity
+---@return boolean
+function CBaseEntity:canSee(target)
+end
+
+---@nodiscard
+---@return boolean
+function CBaseEntity:inWater()
+end
+
 ---@param seconds integer?
 ---@return nil
 function CBaseEntity:openDoor(seconds)
@@ -895,6 +906,28 @@ end
 
 ---@return nil
 function CBaseEntity:setHomePoint()
+end
+
+---@param voucherId integer
+---@return nil
+function CBaseEntity:learnMazeVoucher(voucherId)
+end
+
+---@nodiscard
+---@param voucherId integer
+---@return boolean
+function CBaseEntity:hasMazeVoucher(voucherId)
+end
+
+---@param runeId integer
+---@return nil
+function CBaseEntity:learnMazeRune(runeId)
+end
+
+---@nodiscard
+---@param runeId integer
+---@return boolean
+function CBaseEntity:hasMazeRune(runeId)
 end
 
 ---@param charName string
@@ -3627,18 +3660,30 @@ function CBaseEntity:setMobLevel(level, recover)
 end
 
 ---@nodiscard
+---@param statType integer
+---@return integer
+function CBaseEntity:getStatRank(statType)
+end
+
+---@param statType integer
+---@param rank integer
+---@return nil
+function CBaseEntity:setStatRank(statType, rank)
+end
+
+---@nodiscard
 ---@return integer
 function CBaseEntity:getEcosystem()
 end
 
 ---@nodiscard
 ---@return integer
-function CBaseEntity:getSuperFamily()
+function CBaseEntity:getFamily()
 end
 
 ---@nodiscard
 ---@return integer
-function CBaseEntity:getFamily()
+function CBaseEntity:getSpecies()
 end
 
 ---@nodiscard
@@ -3823,6 +3868,16 @@ end
 ---@param state boolean
 ---@return nil
 function CBaseEntity:setAutoAttackEnabled(state)
+end
+
+---@param state boolean
+---@return nil
+function CBaseEntity:setRangedAttackEnabled(state)
+end
+
+---@nodiscard
+---@return boolean
+function CBaseEntity:isRangedAttackEnabled()
 end
 
 ---@param state boolean

@@ -283,8 +283,7 @@ void CLinkshell::RemoveMemberByName(const std::string& MemberName, uint8 request
                 linkshell::DelOnlineMember(PMember, PItemLinkshell);
 
                 PItemLinkshell->setSubType(ITEM_UNLOCKED);
-
-                PMember->equip[slot] = 0;
+                PMember->clearEquip(slot);
                 if (slot == SLOT_LINK1)
                 {
                     PMember->updatemask |= UPDATE_HP;

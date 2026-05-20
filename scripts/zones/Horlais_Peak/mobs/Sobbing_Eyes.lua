@@ -14,7 +14,7 @@ end
 entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.NO_STANDBACK, 1)
     mob:setMobMod(xi.mobMod.MAGIC_DELAY, 10)
-    mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
+    mob:setMobMod(xi.mobMod.MAGIC_COOL, 27)
     mob:setMod(xi.mod.REGAIN, 50)
     mob:setMod(xi.mod.SILENCE_RES_RANK, 9)
 end
@@ -52,13 +52,15 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
 end
 
 entity.onMobSpellChoose = function(mob, target, spellId)
-    local spellList =
-    {
-        xi.magic.spell.FIRAGA,
-        xi.magic.spell.BINDGA,
-        xi.magic.spell.BREAKGA,
-        xi.magic.spell.STUN,
-    }
+    local spellList = {}
+
+    if mob:checkDistance(target) > 4 then
+        table.insert(spellList, xi.magic.spell.BINDGA)
+        table.insert(spellList, xi.magic.spell.BREAKGA)
+    else
+        table.insert(spellList, xi.magic.spell.FIRAGA)
+        table.insert(spellList, xi.magic.spell.STUN)
+    end
 
     return spellList[math.random(1, #spellList)]
 end

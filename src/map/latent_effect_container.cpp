@@ -731,8 +731,8 @@ void CLatentEffectContainer::CheckLatentsTargetChange()
             {
                 case LATENT::SIGNET_BONUS:
                 case LATENT::VS_ECOSYSTEM:
+                case LATENT::VS_SPECIES:
                 case LATENT::VS_FAMILY:
-                case LATENT::VS_SUPERFAMILY:
                     return ProcessLatentEffect(latentEffect);
                 default:
                     break;
@@ -1128,11 +1128,11 @@ bool CLatentEffectContainer::ProcessLatentEffect(CLatentEffect& latentEffect, bo
             break;
         case LATENT::MP_UNDER_VISIBLE_GEAR:
             // TODO: figure out if this is actually right
-            // CItemEquipment* head = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_HEAD]));
-            // CItemEquipment* body = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_BODY]));
-            // CItemEquipment* hands = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_HANDS]));
-            // CItemEquipment* legs = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_LEGS]));
-            // CItemEquipment* feet = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_FEET]));
+            // CItemEquipment* head = (CItemEquipment*)(m_POwner->getEquip(SLOT_HEAD));
+            // CItemEquipment* body = (CItemEquipment*)(m_POwner->getEquip(SLOT_BODY));
+            // CItemEquipment* hands = (CItemEquipment*)(m_POwner->getEquip(SLOT_HANDS));
+            // CItemEquipment* legs = (CItemEquipment*)(m_POwner->getEquip(SLOT_LEGS));
+            // CItemEquipment* feet = (CItemEquipment*)(m_POwner->getEquip(SLOT_FEET));
 
             // int32 visibleMp = 0;
             // visibleMp += (head ? head->getModifier(Mod::MP) : 0);
@@ -1154,11 +1154,11 @@ bool CLatentEffectContainer::ProcessLatentEffect(CLatentEffect& latentEffect, bo
             break;
         case LATENT::HP_OVER_VISIBLE_GEAR:
             // TODO: figure out if this is actually right
-            // CItemEquipment* head = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_HEAD]));
-            // CItemEquipment* body = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_BODY]));
-            // CItemEquipment* hands = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_HANDS]));
-            // CItemEquipment* legs = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_LEGS]));
-            // CItemEquipment* feet = (CItemEquipment*)(m_POwner->getStorage(LOC_INVENTORY)->GetItem(m_POwner->equip[SLOT_FEET]));
+            // CItemEquipment* head = (CItemEquipment*)(m_POwner->getEquip(SLOT_HEAD));
+            // CItemEquipment* body = (CItemEquipment*)(m_POwner->getEquip(SLOT_BODY));
+            // CItemEquipment* hands = (CItemEquipment*)(m_POwner->getEquip(SLOT_HANDS));
+            // CItemEquipment* legs = (CItemEquipment*)(m_POwner->getEquip(SLOT_LEGS));
+            // CItemEquipment* feet = (CItemEquipment*)(m_POwner->getEquip(SLOT_FEET));
 
             // int32 visibleHp = 0;
             // visibleHp += (head ? head->getModifier(Mod::HP) : 0);
@@ -1285,6 +1285,16 @@ bool CLatentEffectContainer::ProcessLatentEffect(CLatentEffect& latentEffect, bo
                 expression = static_cast<uint16>(PTarget->m_EcoSystem) == latentEffect.GetConditionsValue();
             }
             break;
+        case LATENT::VS_SPECIES:
+            if (CBattleEntity* PTarget = m_POwner->GetBattleTarget())
+            {
+                CMobEntity* PMob = dynamic_cast<CMobEntity*>(PTarget);
+                if (PMob)
+                {
+                    expression = PMob->m_Species == latentEffect.GetConditionsValue();
+                }
+            }
+            break;
         case LATENT::VS_FAMILY:
             if (CBattleEntity* PTarget = m_POwner->GetBattleTarget())
             {
@@ -1292,16 +1302,6 @@ bool CLatentEffectContainer::ProcessLatentEffect(CLatentEffect& latentEffect, bo
                 if (PMob)
                 {
                     expression = PMob->m_Family == latentEffect.GetConditionsValue();
-                }
-            }
-            break;
-        case LATENT::VS_SUPERFAMILY:
-            if (CBattleEntity* PTarget = m_POwner->GetBattleTarget())
-            {
-                CMobEntity* PMob = dynamic_cast<CMobEntity*>(PTarget);
-                if (PMob)
-                {
-                    expression = PMob->m_SuperFamily == latentEffect.GetConditionsValue();
                 }
             }
             break;

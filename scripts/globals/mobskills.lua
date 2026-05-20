@@ -136,6 +136,7 @@ end
 --- @field skipParry           boolean
 --- @field skipGuard           boolean
 --- @field skipBlock           boolean
+--- @field terminateOnMiss     boolean
 --- @field primaryMessage      xi.msg.basic
 
 --- Table of default skill params shared by physical/ranged mobskills.
@@ -171,6 +172,7 @@ local function normalizePhysicalSkillParams(skillParams)
         skipParry             = false,
         skipGuard             = false,
         skipBlock             = false,
+        terminateOnMiss       = false,
         primaryMessage        = xi.msg.basic.DAMAGE,
     }
 
@@ -179,6 +181,8 @@ local function normalizePhysicalSkillParams(skillParams)
     for paramName, defaultValue in pairs(defaults) do
         result[paramName] = utils.defaultIfNil(skillParams[paramName], defaultValue)
     end
+
+    result.baseDamage = skillParams.baseDamage
 
     return result
 end
@@ -640,6 +644,7 @@ xi.mobskills.mobRangedMove = function(mob, target, skill, action, skillParams)
         local hitAbsorbed       = false
         local attackAnticipated = false
         local attackYaegasumi   = false
+        local attackMissed      = false
 
         ----------------------------------
         -- Handle Utsusemi and Blink
@@ -691,6 +696,7 @@ xi.mobskills.mobRangedMove = function(mob, target, skill, action, skillParams)
             else
                 hitInfo          = defaultHitInfo(hitNumber)
                 hitInfo.missType = 'Evaded / Missed'
+                attackMissed     = true
             end
         end
 
@@ -707,7 +713,8 @@ xi.mobskills.mobRangedMove = function(mob, target, skill, action, skillParams)
         if
             hitAbsorbed or
             attackAnticipated or
-            attackYaegasumi
+            attackYaegasumi or
+            (params.terminateOnMiss and attackMissed)
         then
             break
         end
@@ -1257,7 +1264,6 @@ xi.mobskills.mobMagicalMove = function(mob, target, skill, action, skillParams)
         damage = utils.handleStoneskin(target, damage)
     end
 
-    target:updateEnmityFromDamage(mob, damage)
     target:handleAfflatusMiseryDamage(damage)
 
     -- Calculate TP return of the mob skill.
@@ -1446,7 +1452,6 @@ xi.mobskills.mobBreathMove = function(mob, target, skill, action, skillParams)
         damage = utils.handleStoneskin(target, damage)
     end
 
-    target:updateEnmityFromDamage(mob, damage)
     target:handleAfflatusMiseryDamage(damage)
 
     -- Calculate TP return of the mob skill.
@@ -1511,6 +1516,8 @@ end
 -- Used as a conditional filter for target:takeDamage so the target doesn't take chip damage through shadows.
 xi.mobskills.processDamage = function(actor, target, skill, action, info)
     if info.hitsLanded > 0 then
+        target:updateEnmityFromDamage(actor, info.damage)
+
         return true
     end
 
@@ -1686,15 +1693,6 @@ xi.mobskills.unequipRandomSlots = function(target, numberToUnequip)
         local index = math.random(#slots)
         target:unequipItem(table.remove(slots, index))
     end
-end
-
----@param target CBaseEntity
----@param attacker CBaseEntity
----@param skill CMobSkill
----@param action CAction
----@return xi.action.knockback
-xi.mobskills.calculateKnockback = function(target, attacker, skill, action)
-    return utils.clamp(skill:getKnockback() - target:getMod(xi.mod.KNOCKBACK_REDUCTION), xi.action.knockback.NONE, xi.action.knockback.LEVEL7)
 end
 
 ---@param target CBaseEntity

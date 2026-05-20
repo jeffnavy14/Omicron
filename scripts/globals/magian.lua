@@ -894,12 +894,12 @@ local trialConditions =
         return not trialData.mobEcosystem or mob:getEcosystem() == trialData.mobEcosystem
     end,
 
-    ['mobFamily'] = function(trialData, player, mob, paramTable)
-        return not trialData.mobFamily or trialData.mobFamily[mob:getFamily()]
+    ['mobSpecies'] = function(trialData, player, mob, paramTable)
+        return not trialData.mobSpecies or trialData.mobSpecies[mob:getSpecies()]
     end,
 
-    ['mobSuperFamily'] = function(trialData, player, mob, paramTable)
-        return not trialData.mobSuperFamily or trialData.mobSuperFamily[mob:getSuperFamily()]
+    ['mobFamily'] = function(trialData, player, mob, paramTable)
+        return not trialData.mobFamily or trialData.mobFamily[mob:getFamily()]
     end,
 
     ['useWeaponskill'] = function(trialData, player, mob, paramTable)
@@ -1006,6 +1006,14 @@ end
 
 xi.magian.onMobDeath = function(mob, player, optParams, trialTable)
     local relevantTrials = {}
+
+    if not player then
+        return
+    end
+
+    if not trialTable then
+        return
+    end
 
     for equipSlot = xi.slot.MAIN, xi.slot.FEET do
         local itemObj = player:getEquippedItem(equipSlot)

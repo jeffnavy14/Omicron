@@ -24,6 +24,7 @@
 #include "lua_battlefield.h"
 #include "lua_instance.h"
 #include "lua_item.h"
+#include "lua_item_puppet.h"
 
 #include "items/exdata/worn_item.h"
 #include "lua_spell.h"
@@ -69,7 +70,6 @@
 #include "treasure_pool.h"
 #include "weapon_skill.h"
 #include "zone.h"
-#include "zone_mesh.h"
 
 #include "ai/ai_container.h"
 
@@ -104,6 +104,7 @@
 #include "items/exdata.h"
 #include "items/item_furnishing.h"
 #include "items/item_linkshell.h"
+#include "items/item_puppet.h"
 
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
@@ -2230,6 +2231,37 @@ void CLuaBaseEntity::setCarefulPathing(bool careful)
 }
 
 /************************************************************************
+ *  Function: canSee(...)
+ *  Purpose : Execute a raycast between ENTITY_HEIGHT and the found at target's feet
+ *  Example : player:canSee(mob)
+ ************************************************************************/
+
+bool CLuaBaseEntity::canSee(const CLuaBaseEntity* PTarget)
+{
+    if (!PTarget)
+    {
+        ShowWarning("Attempting to see invalid entity (from %s).", m_PBaseEntity->getName());
+        return false;
+    }
+
+    return m_PBaseEntity->CanSeeTarget(PTarget->GetBaseEntity());
+}
+
+/************************************************************************
+ *  Function: inWater()
+ *  Purpose : Execute an ximesh cell search downwards to check if entity is in water
+ *  Example : if player:inWater() then ...
+ ************************************************************************/
+
+bool CLuaBaseEntity::inWater()
+{
+    // NOTE: Same logic as in PathFind::InWater
+    const auto& pos     = m_PBaseEntity->loc.p;
+    const auto  terrain = m_PBaseEntity->loc.zone->xiMesh()->getTerrainAt(pos.x, pos.y, pos.z);
+    return terrain == TerrainType::ShallowWater || terrain == TerrainType::DeepWater;
+}
+
+/************************************************************************
  *  Function: openDoor()
  *  Purpose : Opens a door for 7 seconds; different time can be specified
  *  Example : npc:openDoor(30) -- Open for 30 sec; npc:openDoor() -- 7 sec
@@ -3893,6 +3925,82 @@ void CLuaBaseEntity::setHomePoint()
 }
 
 /************************************************************************
+ *  Function: learnMazeVoucher(uint8)
+ *  Purpose : Marks a Moblin Maze Mongers voucher as learned, persists it,
+ *            and refreshes the client's voucher/rune list.
+ *  Example : player:learnMazeVoucher(xi.maze.voucher.SANITIZATION_TEAM_ALPHA)
+ ************************************************************************/
+
+void CLuaBaseEntity::learnMazeVoucher(uint8 voucherId)
+{
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+    if (!PChar)
+    {
+        ShowWarningFmt("CLuaBaseEntity::learnMazeVoucher called on non-PC entity ({}).", m_PBaseEntity->getName());
+        return;
+    }
+
+    PChar->maze().learnVoucher(voucherId);
+    charutils::SaveMazeUnlocks(PChar);
+}
+
+/************************************************************************
+ *  Function: hasMazeVoucher(uint8)
+ *  Purpose : Returns true if the player has learned the given voucher.
+ *  Example : player:hasMazeVoucher(xi.maze.voucher.SANITIZATION_TEAM_ALPHA)
+ ************************************************************************/
+
+auto CLuaBaseEntity::hasMazeVoucher(uint8 voucherId) -> bool
+{
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+    if (!PChar)
+    {
+        ShowWarningFmt("CLuaBaseEntity::hasMazeVoucher called on non-PC entity ({}).", m_PBaseEntity->getName());
+        return false;
+    }
+
+    return PChar->maze().hasVoucher(voucherId);
+}
+
+/************************************************************************
+ *  Function: learnMazeRune(uint8)
+ *  Purpose : Marks a Moblin Maze Mongers rune as learned, persists it,
+ *            and refreshes the client's voucher/rune list.
+ *  Example : player:learnMazeRune(xi.maze.rune.GUIDANCE_CONTRACT)
+ ************************************************************************/
+
+void CLuaBaseEntity::learnMazeRune(uint16 runeId)
+{
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+    if (!PChar)
+    {
+        ShowWarningFmt("CLuaBaseEntity::learnMazeRune called on non-PC entity ({}).", m_PBaseEntity->getName());
+        return;
+    }
+
+    PChar->maze().learnRune(runeId);
+    charutils::SaveMazeUnlocks(PChar);
+}
+
+/************************************************************************
+ *  Function: hasMazeRune(uint16)
+ *  Purpose : Returns true if the player has learned the given rune.
+ *  Example : player:hasMazeRune(xi.maze.rune.GUIDANCE_CONTRACT)
+ ************************************************************************/
+
+auto CLuaBaseEntity::hasMazeRune(uint16 runeId) -> bool
+{
+    auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
+    if (!PChar)
+    {
+        ShowWarningFmt("CLuaBaseEntity::hasMazeRune called on non-PC entity ({}).", m_PBaseEntity->getName());
+        return false;
+    }
+
+    return PChar->maze().hasRune(runeId);
+}
+
+/************************************************************************
  *  Function: resetPlayer()
  *  Purpose : Delete player's account session and send them to Lower Jeuno
  *  Example : player:resetPlayer()
@@ -4404,7 +4512,8 @@ bool CLuaBaseEntity::delContainerItems(const sol::object& containerID)
     // ensure we unequip equipped items before deletion
     for (uint8 equipmentSlot = 0; equipmentSlot <= 15; equipmentSlot++)
     {
-        if (PChar->equipLoc[equipmentSlot] == location)
+        auto eloc = PChar->equipLocation(equipmentSlot);
+        if (eloc && static_cast<uint8>(eloc->Container) == location)
         {
             // UnequipItem doesn't consider SLOT_MAIN removing SLOT_SUB, so we say to Equip nothing in this equipment slot
             // this is the same thing that equipset_set packet does to remove a slot
@@ -4860,8 +4969,13 @@ bool CLuaBaseEntity::addLinkpearl(const std::string& lsname, bool equip)
         auto* PInserted = static_cast<CItemLinkshell*>(PChar->getStorage(LOC_INVENTORY)->GetItem(slotID));
         linkshell::AddOnlineMember(PChar, PInserted, 2);
         PInserted->setSubType(ITEM_LOCKED);
-        PChar->equip[SLOT_LINK2]    = PInserted->getSlotID();
-        PChar->equipLoc[SLOT_LINK2] = LOC_INVENTORY;
+        if (!PChar->bindEquip(SLOT_LINK2, PInserted))
+        {
+            linkshell::DelOnlineMember(PChar, PInserted);
+            PInserted->setSubType(ITEM_UNLOCKED);
+            return false;
+        }
+
         PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PInserted, ItemLockFlg::Linkshell);
         charutils::SaveCharEquip(PChar);
         PChar->pushPacket<GP_SERV_COMMAND_GROUP_COMLINK>(PChar, PInserted->GetLSID());
@@ -5243,19 +5357,26 @@ bool CLuaBaseEntity::hasSlotEquipped(uint8 slot)
 
 int8 CLuaBaseEntity::getShieldSize()
 {
-    // TODO: Why is TYPE_PET being checked below, when we only act on TYPE_PC?
-    if (m_PBaseEntity->objtype != TYPE_PC && m_PBaseEntity->objtype != TYPE_PET)
+    int8 shieldSize = 0;
+
+    switch (m_PBaseEntity->objtype)
     {
-        ShowWarning("Entity is not a Player or Pet type (%s).", m_PBaseEntity->getName());
-        return 0;
+        case TYPE_PC:
+        {
+            return static_cast<CCharEntity*>(m_PBaseEntity)->getShieldSize();
+        }
+        case TYPE_TRUST:
+        {
+            return static_cast<CTrustEntity*>(m_PBaseEntity)->getShieldSize();
+        }
+        default:
+        {
+            ShowWarning("Entity is not a Player or Trust (%s).", m_PBaseEntity->getName());
+            shieldSize = 0;
+        }
     }
 
-    if (m_PBaseEntity->objtype == TYPE_PC)
-    {
-        return static_cast<CCharEntity*>(m_PBaseEntity)->getShieldSize();
-    }
-
-    return 0;
+    return shieldSize;
 }
 
 /************************************************************************
@@ -6700,16 +6821,16 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
 
         // Change weapon type based on new job
         CItemWeapon* PWeapon = std::make_unique<CItemWeapon>(0).release();
-        PWeapon->setDelay(4000);
-        PWeapon->setBaseDelay(4000);
+        PWeapon->setDelay(240);
+        PWeapon->setBaseDelay(240);
 
         switch (newJob)
         {
             case JOB_MNK:
             case JOB_PUP:
                 PWeapon->setSkillType(SKILL_HAND_TO_HAND);
-                PWeapon->setBaseDelay(8000);
-                PWeapon->setDelay(8000);
+                PWeapon->setBaseDelay(480);
+                PWeapon->setDelay(480);
                 break;
             case JOB_THF:
             case JOB_BRD:
@@ -6724,8 +6845,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_RUN:
                 PWeapon->setSkillType(SKILL_GREAT_SWORD);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WAR:
             case JOB_BST:
@@ -6733,21 +6854,21 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_DRK:
                 PWeapon->setSkillType(SKILL_SCYTHE);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_DRG:
                 PWeapon->setSkillType(SKILL_POLEARM);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_NIN:
                 PWeapon->setSkillType(SKILL_KATANA);
                 break;
             case JOB_SAM:
                 PWeapon->setSkillType(SKILL_GREAT_KATANA);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             case JOB_WHM:
             case JOB_BLM:
@@ -6756,8 +6877,8 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
                 break;
             case JOB_SMN:
                 PWeapon->setSkillType(SKILL_STAFF);
-                PWeapon->setDelay(8000);
-                PWeapon->setBaseDelay(8000);
+                PWeapon->setDelay(480);
+                PWeapon->setBaseDelay(480);
                 break;
             default:
                 break;
@@ -9033,7 +9154,7 @@ void CLuaBaseEntity::addExp(uint32 exp)
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
-    charutils::AddExperiencePoints(false, PChar, m_PBaseEntity, exp);
+    charutils::AddExperiencePoints(false, false, true, PChar, m_PBaseEntity, exp);
 }
 
 /************************************************************************
@@ -12949,7 +13070,7 @@ bool CLuaBaseEntity::isDualWielding()
     CBattleEntity* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
     if (PBattleEntity)
     {
-        return PBattleEntity->m_dualWield;
+        return PBattleEntity->IsDualWielding();
     }
     else
     {
@@ -16728,7 +16849,7 @@ auto CLuaBaseEntity::getAttachments() const -> sol::table
 
         if (attachmentItemId != 0)
         {
-            attachmentTable[attachmentSlot] = CLuaItem(xi::items::lookup(0x2100 + attachmentItemId));
+            attachmentTable[attachmentSlot] = CLuaItemPuppet(xi::items::lookup<CItemPuppet>(0x2100 + attachmentItemId));
         }
     }
 
@@ -16986,9 +17107,150 @@ void CLuaBaseEntity::setMobLevel(uint8 level, sol::optional<bool> recover)
 }
 
 /************************************************************************
+ *  Function: getStatRank()
+ *  Purpose : Returns a Mob's rank value for a base stat
+ *  Example : local strRank = mob:getStatRank(xi.stat.STR)
+ *  Notes   : Primary stats (STR-CHR) use ranks A-G (1-7).
+ *            ATT/DEF/ACC use ranks A-E (1-5).
+ ************************************************************************/
+
+uint8 CLuaBaseEntity::getStatRank(uint8 statType)
+{
+    if (m_PBaseEntity->objtype != TYPE_MOB)
+    {
+        ShowWarning("getStatRank: invalid entity type (%s).", m_PBaseEntity->getName());
+        return 0;
+    }
+
+    auto* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
+
+    switch (statType)
+    {
+        case 1:
+            return PMob->strRank; // STR
+        case 2:
+            return PMob->dexRank; // DEX
+        case 3:
+            return PMob->vitRank; // VIT
+        case 4:
+            return PMob->agiRank; // AGI
+        case 5:
+            return PMob->intRank; // INT
+        case 6:
+            return PMob->mndRank; // MND
+        case 7:
+            return PMob->chrRank; // CHR
+        case 8:
+            return PMob->attRank; // ATT
+        case 9:
+            return PMob->defRank; // DEF
+        case 10:
+            return PMob->accRank; // ACC
+        default:
+            ShowWarning("getStatRank: unsupported stat type (%d) for mob (%s).", statType, m_PBaseEntity->getName());
+            return 0;
+    }
+}
+
+/************************************************************************
+ *  Function: setStatRank()
+ *  Purpose : Updates a Mob's rank value for a base stat
+ *  Example : mob:setStatRank(xi.stat.STR, xi.rank.A)
+ *  Notes   : Must be called in onMobInitialize, before CalculateMobStats runs on spawn.
+ *            If you call this onMobSpawn or while the mob is alive the changes will take effect on the NEXT spawn.
+ *            Primary stats go to Rank G (7)
+ *            ATT/DEF/ACC only go to Rank E (5)
+ ************************************************************************/
+
+void CLuaBaseEntity::setStatRank(uint8 statType, uint8 rank)
+{
+    // Only allow stat ranks to be set on mobs for now
+    if (m_PBaseEntity->objtype != TYPE_MOB)
+    {
+        ShowWarning("setStatRank: invalid entity type (%s).", m_PBaseEntity->getName());
+        return;
+    }
+
+    // Only allow stat ranks to be changed while the mob is not actively spawned (dead or unspawned).
+    // CalculateMobStats runs on each Spawn(), so changes made while isDead() take effect on the next spawn.
+    auto* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
+    if (!PMob->isDead())
+    {
+        ShowWarning("setStatRank: called on a live mob (id: %d, name: %s). Stat changes will take effect on the next spawn.", m_PBaseEntity->id, m_PBaseEntity->getName());
+    }
+
+    // Allow us to set ATT/DEF/ACC as well.
+    // Primary stats go to Rank G (7)
+    // ATT/DEF/ACC only go to Rank E (5)
+    uint8 maxRank = 0;
+
+    switch (statType)
+    {
+        case 1: // STR
+        case 2: // DEX
+        case 3: // VIT
+        case 4: // AGI
+        case 5: // INT
+        case 6: // MND
+        case 7: // CHR
+            maxRank = 7;
+            break;
+        case 8:  // ATT
+        case 9:  // DEF
+        case 10: // ACC
+            maxRank = 5;
+            break;
+        default:
+            ShowWarning(
+                "setStatRank: unsupported stat type (%d) for mob (%s).", statType, m_PBaseEntity->getName());
+            return;
+    }
+
+    if (rank == 0 || rank > maxRank)
+    {
+        ShowWarning("setStatRank: invalid rank (%d) for stat type (%d) on mob (%s). Valid range is 1-%d.", rank, statType, m_PBaseEntity->getName(), maxRank);
+        return;
+    }
+
+    switch (statType)
+    {
+        case 1:
+            PMob->strRank = rank; // STR
+            break;
+        case 2:
+            PMob->dexRank = rank; // DEX
+            break;
+        case 3:
+            PMob->vitRank = rank; // VIT
+            break;
+        case 4:
+            PMob->agiRank = rank; // AGI
+            break;
+        case 5:
+            PMob->intRank = rank; // INT
+            break;
+        case 6:
+            PMob->mndRank = rank; // MND
+            break;
+        case 7:
+            PMob->chrRank = rank; // CHR
+            break;
+        case 8:
+            PMob->attRank = rank; // ATT
+            break;
+        case 9:
+            PMob->defRank = rank; // DEF
+            break;
+        case 10:
+            PMob->accRank = rank; // ACC
+            break;
+    }
+}
+
+/************************************************************************
  *  Function: getEcosystem()
  *  Purpose : Returns integer value of system associated with an Entity
- *  Example : if pet:getEcosystem() ~= xi.ecosystem.AVATAR then -- Not an avatar
+ *  Example : if pet:getEcosystem() ~= xi.ecosystem.ELEMENTAL then -- Not an elemental
  *  Notes   :
  ************************************************************************/
 
@@ -17002,26 +17264,6 @@ uint8 CLuaBaseEntity::getEcosystem()
 
     auto* PBattle = static_cast<CBattleEntity*>(m_PBaseEntity);
     return static_cast<uint8>(PBattle->m_EcoSystem);
-}
-
-/************************************************************************
- *  Function: getSuperFamily()
- *  Purpose : Returns the integer value of the associated Mob SuperFamily
- *  Example : if mob:getSuperFamily() == 123 then
- *  Notes   : To Do: Enumerate Mob Families in global script
- ************************************************************************/
-
-uint16 CLuaBaseEntity::getSuperFamily()
-{
-    auto* entity = dynamic_cast<CMobEntity*>(m_PBaseEntity);
-
-    if (!entity)
-    {
-        ShowWarning("CLuaBaseEntity::getSuperFamily() -  m_pBaseEntity is not a Mob.");
-        return 0;
-    }
-
-    return entity->m_SuperFamily;
 }
 
 /************************************************************************
@@ -17042,6 +17284,26 @@ uint16 CLuaBaseEntity::getFamily()
     }
 
     return entity->m_Family;
+}
+
+/************************************************************************
+ *  Function: getSpecies()
+ *  Purpose : Returns the integer value of the associated Mob Species
+ *  Example : if mob:getSpecies() == 123 then
+ *  Notes   : To Do: Enumerate Mob Species in global script
+ ************************************************************************/
+
+uint16 CLuaBaseEntity::getSpecies()
+{
+    auto* entity = dynamic_cast<CMobEntity*>(m_PBaseEntity);
+
+    if (!entity)
+    {
+        ShowWarning("CLuaBaseEntity::getSpecies() -  m_pBaseEntity is not a Mob.");
+        return 0;
+    }
+
+    return entity->m_Species;
 }
 
 /************************************************************************
@@ -17709,7 +17971,7 @@ bool CLuaBaseEntity::isAggroable()
 /************************************************************************
  *  Function: setDelay()
  *  Purpose : Override default delay settings for a Mob
- *  Example : mob:setDelay(2400)
+ *  Example : mob:setDelay(240) -- 240 raw game delay units
  ************************************************************************/
 
 void CLuaBaseEntity::setDelay(uint16 delay)
@@ -17819,6 +18081,41 @@ void CLuaBaseEntity::setAutoAttackEnabled(bool state)
     }
 
     m_PBaseEntity->PAI->GetController()->SetAutoAttackEnabled(state);
+}
+
+/************************************************************************
+ *  Function: setRangedAttackEnabled()
+ *  Purpose : Enables/disables ranged auto-attacks for a Mob
+ *  Example : mob:setRangedAttackEnabled(true)
+ *  Notes   : Used for mobs that should fire ranged attacks instead of ranged special skills
+ ************************************************************************/
+
+void CLuaBaseEntity::setRangedAttackEnabled(bool state)
+{
+    if (m_PBaseEntity->objtype & TYPE_NPC || m_PBaseEntity->objtype & TYPE_PC)
+    {
+        ShowError("function call on invalid entity! (name: %s type: %d)", m_PBaseEntity->name, m_PBaseEntity->objtype);
+        return;
+    }
+
+    m_PBaseEntity->PAI->GetController()->SetRangedAttackEnabled(state);
+}
+
+/************************************************************************
+ *  Function: isRangedAttackEnabled()
+ *  Purpose : Returns whether ranged auto-attacks are enabled for a Mob
+ *  Example : mob:isRangedAttackEnabled()
+ ************************************************************************/
+
+bool CLuaBaseEntity::isRangedAttackEnabled()
+{
+    if (m_PBaseEntity->objtype & TYPE_NPC || m_PBaseEntity->objtype & TYPE_PC)
+    {
+        ShowError("function call on invalid entity! (name: %s type: %d)", m_PBaseEntity->name, m_PBaseEntity->objtype);
+        return false;
+    }
+
+    return m_PBaseEntity->PAI->GetController()->IsRangedAttackEnabled();
 }
 
 /************************************************************************
@@ -18504,17 +18801,17 @@ bool CLuaBaseEntity::hasTPMoves()
         return false;
     }
 
-    uint16 familyID = 0;
+    uint16 speciesID = 0;
 
     if (m_PBaseEntity->objtype & TYPE_PET)
     {
-        familyID = static_cast<CPetEntity*>(m_PBaseEntity)->m_Family;
+        speciesID = static_cast<CPetEntity*>(m_PBaseEntity)->m_Species;
     }
     else if (m_PBaseEntity->objtype & TYPE_MOB)
     {
-        familyID = static_cast<CMobEntity*>(m_PBaseEntity)->m_Family;
+        speciesID = static_cast<CMobEntity*>(m_PBaseEntity)->m_Species;
     }
-    const std::vector<uint16>& MobSkills = battleutils::GetMobSkillList(familyID);
+    const std::vector<uint16>& MobSkills = battleutils::GetMobSkillList(speciesID);
 
     return !MobSkills.empty();
 }
@@ -19193,8 +19490,9 @@ auto CLuaBaseEntity::getChocoboRaisingInfo() -> sol::table
                             "stage, "
                             "location, "
                             "color, "
-                            "dominant_gene, "
-                            "recessive_gene, "
+                            "allele1, "
+                            "allele2, "
+                            "allele3, "
                             "strength, "
                             "endurance, "
                             "discernment, "
@@ -19239,8 +19537,9 @@ auto CLuaBaseEntity::getChocoboRaisingInfo() -> sol::table
             table["location"]        = rset->get<uint32>("location");
             table["color"]           = rset->get<uint32>("color");
 
-            table["dominant_gene"]  = rset->get<uint32>("dominant_gene");
-            table["recessive_gene"] = rset->get<uint32>("recessive_gene");
+            table["allele1"] = rset->get<uint32>("allele1");
+            table["allele2"] = rset->get<uint32>("allele2");
+            table["allele3"] = rset->get<uint32>("allele3");
 
             table["strength"]    = rset->get<uint32>("strength");
             table["endurance"]   = rset->get<uint32>("endurance");
@@ -19277,7 +19576,7 @@ bool CLuaBaseEntity::setChocoboRaisingInfo(const sol::table& table)
         return false;
     }
 
-    const char* Query = "REPLACE INTO char_chocobos SET "
+    const char* Query = "INSERT INTO char_chocobos SET "
                         "charid = ?, "
                         "first_name = ?, "
                         "last_name = ?, "
@@ -19287,8 +19586,9 @@ bool CLuaBaseEntity::setChocoboRaisingInfo(const sol::table& table)
                         "stage = ?, "
                         "location = ?, "
                         "color = ?, "
-                        "dominant_gene = ?, "
-                        "recessive_gene = ?, "
+                        "allele1 = ?, "
+                        "allele2 = ?, "
+                        "allele3 = ?, "
                         "strength = ?, "
                         "endurance = ?, "
                         "discernment = ?, "
@@ -19303,39 +19603,68 @@ bool CLuaBaseEntity::setChocoboRaisingInfo(const sol::table& table)
                         "weather_preference = ?, "
                         "hunger = ?, "
                         "care_plan = ?, "
-                        "held_item = ? ";
+                        "held_item = ? "
+                        "ON DUPLICATE KEY UPDATE "
+                        "first_name = VALUES(first_name), "
+                        "last_name = VALUES(last_name), "
+                        "sex = VALUES(sex), "
+                        "created = VALUES(created), "
+                        "last_update_age = VALUES(last_update_age), "
+                        "stage = VALUES(stage), "
+                        "location = VALUES(location), "
+                        "color = VALUES(color), "
+                        "allele1 = VALUES(allele1), "
+                        "allele2 = VALUES(allele2), "
+                        "allele3 = VALUES(allele3), "
+                        "strength = VALUES(strength), "
+                        "endurance = VALUES(endurance), "
+                        "discernment = VALUES(discernment), "
+                        "receptivity = VALUES(receptivity), "
+                        "affection = VALUES(affection), "
+                        "energy = VALUES(energy), "
+                        "satisfaction = VALUES(satisfaction), "
+                        "conditions = VALUES(conditions), "
+                        "ability1 = VALUES(ability1), "
+                        "ability2 = VALUES(ability2), "
+                        "personality = VALUES(personality), "
+                        "weather_preference = VALUES(weather_preference), "
+                        "hunger = VALUES(hunger), "
+                        "care_plan = VALUES(care_plan), "
+                        "held_item = VALUES(held_item);";
 
-    const auto rset = db::preparedStmt(Query,
-                                       m_PBaseEntity->id,
-                                       table.get_or<std::string>("first_name", "Chocobo"),
-                                       table.get_or<std::string>("last_name", "Chocobo"),
-                                       table.get_or<uint32>("sex", 0),
-                                       table.get_or<uint32>("created", 0),
-                                       table.get_or<uint32>("last_update_age", 0),
-                                       table.get_or<uint32>("stage", 1),
-                                       table.get_or<uint32>("location", 0),
-                                       table.get_or<uint32>("color", 0),
-                                       table.get_or<uint32>("dominant_gene", 0),
-                                       table.get_or<uint32>("recessive_gene", 0),
-                                       table.get_or<uint32>("strength", 0),
-                                       table.get_or<uint32>("endurance", 0),
-                                       table.get_or<uint32>("discernment", 0),
-                                       table.get_or<uint32>("receptivity", 0),
-                                       table.get_or<uint32>("affection", 0),
-                                       table.get_or<uint32>("energy", 0),
-                                       table.get_or<uint32>("satisfaction", 0),
-                                       table.get_or<uint32>("conditions", 0),
-                                       table.get_or<uint32>("ability1", 0),
-                                       table.get_or<uint32>("ability2", 0),
-                                       table.get_or<uint32>("personality", 0),
-                                       table.get_or<uint32>("weather_preference", 0),
-                                       table.get_or<uint32>("hunger", 0),
-                                       table.get_or<uint32>("care_plan", 0),
-                                       table.get_or<uint32>("held_item", 0));
+    const auto rset = db::preparedStmt(
+        Query,
+        m_PBaseEntity->id,
+        table.get_or<std::string>("first_name", "Chocobo"),
+        table.get_or<std::string>("last_name", "Chocobo"),
+        table.get_or<uint32>("sex", 0),
+        table.get_or<uint32>("created", 0),
+        table.get_or<uint32>("last_update_age", 0),
+        table.get_or<uint32>("stage", 1),
+        table.get_or<uint32>("location", 0),
+        table.get_or<uint32>("color", 0),
+        table.get_or<uint32>("allele1", 0),
+        table.get_or<uint32>("allele2", 0),
+        table.get_or<uint32>("allele3", 0),
+        table.get_or<uint32>("strength", 0),
+        table.get_or<uint32>("endurance", 0),
+        table.get_or<uint32>("discernment", 0),
+        table.get_or<uint32>("receptivity", 0),
+        table.get_or<uint32>("affection", 0),
+        table.get_or<uint32>("energy", 0),
+        table.get_or<uint32>("satisfaction", 0),
+        table.get_or<uint32>("conditions", 0),
+        table.get_or<uint32>("ability1", 0),
+        table.get_or<uint32>("ability2", 0),
+        table.get_or<uint32>("personality", 0),
+        table.get_or<uint32>("weather_preference", 0),
+        table.get_or<uint32>("hunger", 0),
+        table.get_or<uint32>("care_plan", 0),
+        table.get_or<uint32>("held_item", 0));
 
     if (!rset)
     {
-        ShowDebug("REPLACE Query failed");
+        ShowDebug("UPSERT Query failed");
         return false;
     }
 
@@ -19641,6 +19970,8 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasFollowTarget", CLuaBaseEntity::hasFollowTarget);
     SOL_REGISTER("unfollow", CLuaBaseEntity::unfollow);
     SOL_REGISTER("setCarefulPathing", CLuaBaseEntity::setCarefulPathing);
+    SOL_REGISTER("canSee", CLuaBaseEntity::canSee);
+    SOL_REGISTER("inWater", CLuaBaseEntity::inWater);
 
     SOL_REGISTER("openDoor", CLuaBaseEntity::openDoor);
     SOL_REGISTER("closeDoor", CLuaBaseEntity::closeDoor);
@@ -19701,6 +20032,10 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("setTeleportMenu", CLuaBaseEntity::setTeleportMenu);
     SOL_REGISTER("getTeleportMenu", CLuaBaseEntity::getTeleportMenu);
     SOL_REGISTER("setHomePoint", CLuaBaseEntity::setHomePoint);
+    SOL_REGISTER("learnMazeVoucher", CLuaBaseEntity::learnMazeVoucher);
+    SOL_REGISTER("hasMazeVoucher", CLuaBaseEntity::hasMazeVoucher);
+    SOL_REGISTER("learnMazeRune", CLuaBaseEntity::learnMazeRune);
+    SOL_REGISTER("hasMazeRune", CLuaBaseEntity::hasMazeRune);
     SOL_REGISTER("resetPlayer", CLuaBaseEntity::resetPlayer);
 
     SOL_REGISTER("gotoEntity", CLuaBaseEntity::gotoEntity);
@@ -20302,9 +20637,11 @@ void CLuaBaseEntity::Register()
 
     // Mob Entity-Specific
     SOL_REGISTER("setMobLevel", CLuaBaseEntity::setMobLevel);
+    SOL_REGISTER("getStatRank", CLuaBaseEntity::getStatRank);
+    SOL_REGISTER("setStatRank", CLuaBaseEntity::setStatRank);
     SOL_REGISTER("getEcosystem", CLuaBaseEntity::getEcosystem);
-    SOL_REGISTER("getSuperFamily", CLuaBaseEntity::getSuperFamily);
     SOL_REGISTER("getFamily", CLuaBaseEntity::getFamily);
+    SOL_REGISTER("getSpecies", CLuaBaseEntity::getSpecies);
     SOL_REGISTER("isMobType", CLuaBaseEntity::isMobType);
     SOL_REGISTER("isUndead", CLuaBaseEntity::isUndead);
     SOL_REGISTER("isNM", CLuaBaseEntity::isNM);
@@ -20346,6 +20683,8 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasSpellList", CLuaBaseEntity::hasSpellList);
     SOL_REGISTER("setSpellList", CLuaBaseEntity::setSpellList);
     SOL_REGISTER("setAutoAttackEnabled", CLuaBaseEntity::setAutoAttackEnabled);
+    SOL_REGISTER("setRangedAttackEnabled", CLuaBaseEntity::setRangedAttackEnabled);
+    SOL_REGISTER("isRangedAttackEnabled", CLuaBaseEntity::isRangedAttackEnabled);
     SOL_REGISTER("setMagicCastingEnabled", CLuaBaseEntity::setMagicCastingEnabled);
     SOL_REGISTER("setMobAbilityEnabled", CLuaBaseEntity::setMobAbilityEnabled);
     SOL_REGISTER("setMobSkillAttack", CLuaBaseEntity::setMobSkillAttack);

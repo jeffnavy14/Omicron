@@ -142,8 +142,13 @@ const auto equipLinkshell = [](CCharEntity* PChar, CItemLinkshell* PItemLinkshel
     // Now equip the new linkshell
     linkshell::AddOnlineMember(PChar, PItemLinkshell, data.LinkshellId);
     PItemLinkshell->setSubType(ITEM_LOCKED);
-    PChar->equip[SLOT_BACK + data.LinkshellId]    = data.ItemIndex;
-    PChar->equipLoc[SLOT_BACK + data.LinkshellId] = data.Category;
+    if (!PChar->bindEquip(SLOT_BACK + data.LinkshellId, PItemLinkshell))
+    {
+        linkshell::DelOnlineMember(PChar, PItemLinkshell);
+        PItemLinkshell->setSubType(ITEM_UNLOCKED);
+        return;
+    }
+
     if (data.LinkshellId == 1)
     {
         PChar->updatemask |= UPDATE_HP;
@@ -161,8 +166,7 @@ const auto unequipLinkshell = [](CCharEntity* PChar, CItemLinkshell* PItemLinksh
 {
     linkshell::DelOnlineMember(PChar, PItemLinkshell);
     PItemLinkshell->setSubType(ITEM_UNLOCKED);
-    PChar->equip[SLOT_BACK + data.LinkshellId]    = 0;
-    PChar->equipLoc[SLOT_BACK + data.LinkshellId] = 0;
+    PChar->clearEquip(SLOT_BACK + data.LinkshellId);
     if (data.LinkshellId == 1)
     {
         PChar->updatemask |= UPDATE_HP;

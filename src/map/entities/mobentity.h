@@ -177,10 +177,11 @@ public:
     virtual void OnMobSkillFinished(CMobSkillState&, action_t&) override;
     virtual void OnEngage(CAttackState&) override;
 
-    virtual bool OnAttack(CAttackState&, action_t&) override;
-    virtual bool CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg) override;
-    virtual void OnCastFinished(CMagicState&, action_t&) override;
-    virtual void OnCastInterrupted(CMagicState&, action_t&, MsgBasic msg, bool blockedCast) override;
+    virtual float GetRangedAttackRange() override;
+    virtual bool  OnAttack(CAttackState&, action_t&) override;
+    virtual bool  CanAttack(CBattleEntity* PTarget, std::unique_ptr<CBasicPacket>& errMsg) override;
+    virtual void  OnCastFinished(CMagicState&, action_t&) override;
+    virtual void  OnCastInterrupted(CMagicState&, action_t&, MsgBasic msg, bool blockedCast) override;
 
     virtual void OnDisengage(CAttackState&) override;
     virtual void OnDeathTimer() override;
@@ -251,8 +252,8 @@ public:
     int16  m_GilfinderLevel; // Highest Level of Gilfinderthat apply to drops
     bool   m_ItemStolen;     // if true, mob has already been robbed. reset on respawn. also used for thf maat fight
     bool   m_ItemDespoiled;  // if true, mob has already been despoiled. reset on respawn.
+    uint16 m_Species;
     uint16 m_Family;
-    uint16 m_SuperFamily;
     uint16 m_MobSkillList; // Mob skill list defined from mob_pools
     uint32 m_Pool;         // pool the mob came from
 
