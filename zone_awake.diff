@@ -1,0 +1,94 @@
+diff --git a/src/map/lua/lua_zone.cpp b/src/map/lua/lua_zone.cpp
+index 1780fc9e4ec..cd3340bbbf5 100644
+--- a/src/map/lua/lua_zone.cpp
++++ b/src/map/lua/lua_zone.cpp
+@@ -1,4 +1,4 @@
+-﻿/*
++/*
+ ===========================================================================
+ 
+   Copyright (c) 2010-2015 Darkstar Dev Teams
+@@ -258,6 +258,11 @@ auto CLuaZone::insertDynamicEntity(sol::table table) -> CBaseEntity*
+     return luautils::GenerateDynamicEntity(m_pLuaZone, nullptr, std::move(table));
+ }
+ 
++void CLuaZone::setPreventSleep(bool value)
++{
++    m_pLuaZone->SetPreventSleep(value);
++}
++
+ /************************************************************************
+  *  Function: SetSoloBattleMusic(253)
+  *  Purpose : Set Solo Battle music for zone
+@@ -395,7 +400,7 @@ void CLuaZone::Register()
+     SOL_REGISTER("isNavigablePoint", CLuaZone::isNavigablePoint);
+     SOL_REGISTER("getTerrainType", CLuaZone::getTerrainType);
+     SOL_REGISTER("getFloorId", CLuaZone::getFloorId);
+-    SOL_REGISTER("insertDynamicEntity", CLuaZone::insertDynamicEntity);
++    SOL_REGISTER("insertDynamicEntity", CLuaZone::insertDynamicEntity);`n    SOL_REGISTER("preventSleep", CLuaZone::setPreventSleep);
+ 
+     SOL_REGISTER("getSoloBattleMusic", CLuaZone::getSoloBattleMusic);
+     SOL_REGISTER("getPartyBattleMusic", CLuaZone::getPartyBattleMusic);
+diff --git a/src/map/lua/lua_zone.h b/src/map/lua/lua_zone.h
+index 8468ccb38d4..2e6a71bb52b 100644
+--- a/src/map/lua/lua_zone.h
++++ b/src/map/lua/lua_zone.h
+@@ -1,4 +1,4 @@
+-﻿/*
++/*
+ ===========================================================================
+ 
+   Copyright (c) 2010-2015 Darkstar Dev Teams
+@@ -68,6 +68,7 @@ class CLuaZone
+     auto        getTerrainType(const sol::table& position) -> TerrainType;
+     auto        getFloorId(const sol::table& position) -> uint8;
+     auto        insertDynamicEntity(sol::table table) -> CBaseEntity*;
++    void        setPreventSleep(bool value);
+ 
+     auto getSoloBattleMusic();
+     auto getPartyBattleMusic();
+diff --git a/src/map/zone.cpp b/src/map/zone.cpp
+index 118f2bce5cc..c5ede477e0c 100644
+--- a/src/map/zone.cpp
++++ b/src/map/zone.cpp
+@@ -1,4 +1,4 @@
+-﻿/*
++/*
+ ===========================================================================
+ 
+   Copyright (c) 2010-2015 Darkstar Dev Teams
+@@ -232,6 +232,17 @@ void CZone::SetBackgroundMusicNight(uint16 music)
+     m_zoneMusic.m_songNight = music;
+ }
+ 
++void CZone::SetPreventSleep(bool value)
++{
++    m_preventSleep = value;
++
++    if (m_preventSleep && !zoneTimerToken_.has_value())
++    {
++        createZoneTimers();
++        ShowInfoFmt("Zone {} ({}) forced awake by SetPreventSleep.", GetID(), getName());
++    }
++}
++
+ /**
+  * Queries for entities (mobs or npcs) which name match the given pattern.
+  *
+@@ -954,7 +965,7 @@ auto CZone::ZoneServer(timer::time_point tick) -> Task<void>
+         m_BattlefieldHandler->HandleBattlefields(tick);
+     }
+ 
+-    if (zoneTimerToken_.has_value() && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
++    if (!m_preventSleep && zoneTimerToken_.has_value() && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
+     {
+         zoneTimerToken_.reset();
+         zoneTimerTriggerAreasToken_.reset();
+diff --git a/src/map/zone.h b/src/map/zone.h
+index 41e5de58528..fe4be7713b3 100644
+--- a/src/map/zone.h
++++ b/src/map/zone.h
+@@ -1,4 +1,4 @@
+-﻿/*
++/*
+ ===========================================================================
