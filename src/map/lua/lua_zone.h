@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -68,6 +68,7 @@ public:
     auto        getTerrainType(const sol::table& position) -> TerrainType;
     auto        getFloorId(const sol::table& position) -> uint8;
     auto        insertDynamicEntity(sol::table table) -> CBaseEntity*;
+    void        setPreventSleep(bool value);
 
     auto getSoloBattleMusic();
     auto getPartyBattleMusic();
