@@ -595,7 +595,7 @@ public:
     void SetPartyBattleMusic(uint16 music);
     void SetBackgroundMusicDay(uint16 music);
     void SetBackgroundMusicNight(uint16 music);
-    void SetPreventSleep(bool value); // <--- ADD THIS LINE
+
     auto queryEntitiesByName(const std::string& pattern) -> const QueryByNameResult_t&;
 
     uint32                                   GetLocalVar(const char* var);
@@ -717,11 +717,10 @@ private:
     std::string    m_zoneName;
     uint16         m_zonePort{};
     uint32         m_zoneIP{};
-    bool           m_preventSleep{false};
 
     Weather m_Weather;
     uint32  m_WeatherChangeTime;
-    bool m_preventSleep{false}; // <--- ADD THIS LINE
+
     CZoneEntities* m_zoneEntities;
 
     uint16 m_tax{};
