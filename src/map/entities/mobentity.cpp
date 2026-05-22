@@ -141,7 +141,7 @@ CMobEntity::CMobEntity()
 , m_ItemStolen(false)
 , m_ItemDespoiled(false)
 , m_Species(0)
-, m_SuperFamily(0)
+, m_Family(0)
 , m_MobSkillList(0)
 , m_Pool(0)
 , m_flags(0)
@@ -405,8 +405,8 @@ bool CMobEntity::CanLink(position_t* pos, int16 superLink)
         return false;
     }
 
-    // Link if can see mob
-    if (getMobMod(MOBMOD_DETECTION) & DETECT_SIGHT && !facing(loc.p, *pos, 64))
+    // If a mob detects by both sight and hearing it only needs to meet one check.
+    if ((getMobMod(MOBMOD_DETECTION) & DETECT_SIGHT) && !(getMobMod(MOBMOD_DETECTION) & DETECT_HEARING) && !facing(loc.p, *pos, 64))
     {
         return false;
     }
