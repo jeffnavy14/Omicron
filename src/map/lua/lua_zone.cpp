@@ -262,6 +262,7 @@ void CLuaZone::setPreventSleep(bool value)
 {
     m_pLuaZone->SetPreventSleep(value);
 }
+
 /************************************************************************
  *  Function: SetSoloBattleMusic(253)
  *  Purpose : Set Solo Battle music for zone
@@ -401,6 +402,7 @@ void CLuaZone::Register()
     SOL_REGISTER("getFloorId", CLuaZone::getFloorId);
     SOL_REGISTER("insertDynamicEntity", CLuaZone::insertDynamicEntity);
     SOL_REGISTER("preventSleep", CLuaZone::setPreventSleep);
+
     SOL_REGISTER("getSoloBattleMusic", CLuaZone::getSoloBattleMusic);
     SOL_REGISTER("getPartyBattleMusic", CLuaZone::getPartyBattleMusic);
     SOL_REGISTER("getBackgroundMusicDay", CLuaZone::getBackgroundMusicDay);

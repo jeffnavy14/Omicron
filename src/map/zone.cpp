@@ -236,8 +236,7 @@ void CZone::SetPreventSleep(bool value)
 {
     m_preventSleep = value;
 
-    // If we are forcing it awake, and the timer isn't running yet... START IT!
-    if (m_preventSleep && !zoneTimerToken_.has_value()) // <-- FIXED VARIABLE HERE
+    if (m_preventSleep && !zoneTimerToken_.has_value())
     {
         createZoneTimers();
         ShowInfoFmt("Zone {} ({}) forced awake by SetPreventSleep.", GetID(), getName());
@@ -961,12 +960,11 @@ auto CZone::ZoneServer(timer::time_point tick) -> Task<void>
 
     co_await m_zoneEntities->ZoneServer(tick);
 
-if (m_BattlefieldHandler != nullptr)
+    if (m_BattlefieldHandler != nullptr)
     {
         m_BattlefieldHandler->HandleBattlefields(tick);
     }
 
-// Updated check to include !m_preventSleep
     if (!m_preventSleep && zoneTimerToken_.has_value() && m_zoneEntities->CharListEmpty() && m_timeZoneEmpty + 5s < timer::now() && CheckMobsPathedBack())
     {
         zoneTimerToken_.reset();

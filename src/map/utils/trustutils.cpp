@@ -372,12 +372,9 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     PTrust->SetMJob(trustData->mJob);
     PTrust->SetSJob(trustData->sJob);
 
-    // effective level = avg iLvl of 7 gear slots, floored at job level (QoL: naked players keep job-level trusts)
-    // TODO: verify gain rate for iLvl 100-119 against retail captures
-    const uint8 avgILevel      = charutils::GetAverageItemLevel(PMaster);
-    const uint8 effectiveLevel = std::clamp<uint8>(std::max<uint8>(PMaster->GetMLevel(), avgILevel), 1, 119);
-    PTrust->SetMLevel(effectiveLevel);
-    PTrust->SetSLevel(static_cast<uint8>(effectiveLevel / 2));
+    // assume level matches master
+    PTrust->SetMLevel(PMaster->GetMLevel());
+    PTrust->SetSLevel(std::floor(PMaster->GetMLevel() / 2));
 
     LoadTrustStatsAndSkills(PTrust);
 
@@ -663,7 +660,7 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
     // Skills =======================
     for (int i = SKILL_DIVINE_MAGIC; i <= SKILL_BLUE_MAGIC; i++)
     {
-        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, mJob, std::min<uint8>(mLvl, 99));
+        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, mJob, mLvl > 99 ? 99 : mLvl);
         if (maxSkill != 0)
         {
             PTrust->WorkingSkills.skill[i] = static_cast<uint16>(maxSkill * settings::get<float>("map.ALTER_EGO_SKILL_MULTIPLIER"));
@@ -671,7 +668,7 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
         else // if the mob is WAR/BLM and can cast spell
         {
             // set skill as high as main level, so their spells won't get resisted
-            uint16 maxSubSkill = battleutils::GetMaxSkill((SKILLTYPE)i, sJob, std::min<uint8>(mLvl, 99));
+            uint16 maxSubSkill = battleutils::GetMaxSkill((SKILLTYPE)i, sJob, mLvl > 99 ? 99 : mLvl);
 
             if (maxSubSkill != 0)
             {
@@ -682,7 +679,7 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
 
     for (int i = SKILL_HAND_TO_HAND; i <= SKILL_STAFF; i++)
     {
-        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, std::min<uint8>(mLvl, 99));
+        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, mLvl > 99 ? 99 : mLvl);
         if (maxSkill != 0)
         {
             PTrust->WorkingSkills.skill[i] = static_cast<uint16>(maxSkill * settings::get<float>("map.ALTER_EGO_SKILL_MULTIPLIER"));

@@ -316,6 +316,4 @@ bool raceChange(CCharEntity* PChar, CharRace newRace, CharFace newFace, CharSize
 
 void ApplyAbilityRecast(CCharEntity* PChar, const CAbility* PAbility, const Charge_t* charge, timer::duration baseChargeTime, timer::duration recastTime);
 
-uint8 GetAverageItemLevel(CCharEntity* PChar);
-
 }; // namespace charutils

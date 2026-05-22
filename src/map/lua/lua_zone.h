@@ -68,12 +68,13 @@ public:
     auto        getTerrainType(const sol::table& position) -> TerrainType;
     auto        getFloorId(const sol::table& position) -> uint8;
     auto        insertDynamicEntity(sol::table table) -> CBaseEntity*;
+    void        setPreventSleep(bool value);
 
     auto getSoloBattleMusic();
     auto getPartyBattleMusic();
     auto getBackgroundMusicDay();
     auto getBackgroundMusicNight();
-    void setPreventSleep(bool value);
+
     void setSoloBattleMusic(uint16 musicId);
     void setPartyBattleMusic(uint16 musicId);
     void setBackgroundMusicDay(uint16 musicId);
