@@ -36303,6 +36303,8 @@ INSERT INTO `mob_spawn_points` VALUES (17207779,0,'Goblin_Bounty_Hunter','Goblin
 INSERT INTO `mob_spawn_points` VALUES (17207780,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',70,30,36,187.967,10.887,-534.624,219);
 INSERT INTO `mob_spawn_points` VALUES (17207781,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',70,30,36,191.223,12.130,-541.862,126);
 INSERT INTO `mob_spawn_points` VALUES (17207782,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',70,30,36,223.048,11.941,-594.665,77);
+INSERT INTO `mob_spawn_points` VALUES (17207786,0,'Macro_Test','Macro Test',72,1,1,430.000,7.737,-155.380,250);
+INSERT INTO `mob_spawn_points` VALUES (17207787,0,'Macro_Test','Macro Test',72,1,1,430.720,7.763,-159.580,250);
 
 -- ------------------------------------------------------------
 -- North Gustaberg (Zone 106)
@@ -39055,6 +39057,9 @@ INSERT INTO `mob_spawn_points` VALUES (17228305,0,'Hizamaru_Armor','Hizamaru Arm
 INSERT INTO `mob_spawn_points` VALUES (17228306,0,'Ubuginu_Armor','Ubuginu Armor',62,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17228307,0,'Hachiryu_Armor','Hachiryu Armor',63,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17228308,0,'Omodaka_Armor','Omodaka Armor',64,0,0,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17228309,0,'Macro_Test','Macro Test',66,1,1,221.589,23.516,463.339,184);
+INSERT INTO `mob_spawn_points` VALUES (17228310,0,'Macro_Test','Macro Test',66,1,1,225.399,24.354,464.200,184);
+INSERT INTO `mob_spawn_points` VALUES (17228311,0,'Macro_Test','Macro Test',66,1,1,230.000,24.573,465.149,184);
 
 -- ------------------------------------------------------------
 -- Beaucedine Glacier (Zone 111)
@@ -43547,6 +43552,9 @@ INSERT INTO `mob_spawn_points` VALUES (17269175,0,'Goblin_Bounty_Hunter','Goblin
 INSERT INTO `mob_spawn_points` VALUES (17269176,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',66,30,34,306.908,42.103,412.325,30);
 INSERT INTO `mob_spawn_points` VALUES (17269177,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',66,30,34,254.067,38.460,428.696,230);
 INSERT INTO `mob_spawn_points` VALUES (17269178,0,'Goblin_Bounty_Hunter','Goblin Bounty Hunter',66,30,34,241.937,39.829,451.606,255);
+INSERT INTO `mob_spawn_points` VALUES (17269179,0,'Macro_Test','Macro Test',69,1,1,-462.000,0.400,319.119,156);
+INSERT INTO `mob_spawn_points` VALUES (17269180,0,'Macro_Test','Macro Test',69,1,1,-459.399,0.469,322.200,156);
+INSERT INTO `mob_spawn_points` VALUES (17269181,0,'Macro_Test','Macro Test',69,1,1,-456.450,0.249,325.459,156);
 
 -- ------------------------------------------------------------
 -- The Sanctuary of Zi'Tah (Zone 121)
@@ -46130,8 +46138,8 @@ INSERT INTO `mob_spawn_points` VALUES (17297436,3,'Master_Coeurl','Master Coeurl
 INSERT INTO `mob_spawn_points` VALUES (17297437,3,'Bhuta','Bhuta',8,46,48,-24.568,-3.857,4.811,13);
 INSERT INTO `mob_spawn_points` VALUES (17297438,3,'Thunder_Elemental','Thunder Elemental',3,48,50,-44.195,-4.390,-8.444,45);
 INSERT INTO `mob_spawn_points` VALUES (17297439,3,'Light_Elemental','Light Elemental',4,48,50,-44.195,-4.390,-8.444,45);
-INSERT INTO `mob_spawn_points` VALUES (17297440,0,'Behemoth','Behemoth',9,70,70,-277.763,-20.309,72.189,127);
-INSERT INTO `mob_spawn_points` VALUES (17297441,0,'King_Behemoth','King Behemoth',10,85,85,-267.469,-19.831,73.674,127);
+INSERT INTO `mob_spawn_points` VALUES (17297440,0,'Behemoth','Behemoth',9,70,70,-269.350,-19.773,74.268,0);
+INSERT INTO `mob_spawn_points` VALUES (17297441,0,'King_Behemoth','King Behemoth',10,85,85,-269.350,-19.773,74.268,0);
 INSERT INTO `mob_spawn_points` VALUES (17297442,0,'Thunder_Elemental','Thunder Elemental',3,48,50,-226.728,-20.524,21.987,79);
 INSERT INTO `mob_spawn_points` VALUES (17297443,0,'Thunder_Elemental','Thunder Elemental',3,48,50,-270.475,-20.439,75.426,67);
 INSERT INTO `mob_spawn_points` VALUES (17297444,0,'Light_Elemental','Light Elemental',4,48,50,-209.248,-19.929,61.437,57);
@@ -46185,8 +46193,8 @@ INSERT INTO `mob_spawn_points` VALUES (17301533,0,'Valley_Manticore','Valley Man
 INSERT INTO `mob_spawn_points` VALUES (17301534,0,'Valley_Manticore','Valley Manticore',5,71,74,13.965,-0.189,-0.102,127);
 INSERT INTO `mob_spawn_points` VALUES (17301535,0,'Velociraptor','Velociraptor',1,66,69,-43.000,-0.357,40.000,127);
 INSERT INTO `mob_spawn_points` VALUES (17301536,0,'Peryton','Peryton',2,69,72,8.466,-0.336,-23.544,127);
-INSERT INTO `mob_spawn_points` VALUES (17301537,0,'Adamantoise','Adamantoise',6,70,70,3.000,-0.416,8.000,21);
-INSERT INTO `mob_spawn_points` VALUES (17301538,0,'Aspidochelone','Aspidochelone',7,85,85,19.000,0.089,14.000,117);
+INSERT INTO `mob_spawn_points` VALUES (17301537,0,'Adamantoise','Adamantoise',6,70,70,0.894,0.021,-35.588,91);
+INSERT INTO `mob_spawn_points` VALUES (17301538,0,'Aspidochelone','Aspidochelone',7,85,85,0.894,0.021,-35.588,0);
 INSERT INTO `mob_spawn_points` VALUES (17301539,0,'Skahnowa','Skahnowa',8,1,1,44.000,-0.500,40.000,160);
 INSERT INTO `mob_spawn_points` VALUES (17301540,0,'Tolba','Tolba',9,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17301541,0,'Tolba','Tolba',9,0,0,-126.849,-0.718,-42.619,32);
@@ -55782,8 +55790,8 @@ INSERT INTO `mob_spawn_points` VALUES (17408014,1,'Demonic_Rose','Demonic Rose',
 INSERT INTO `mob_spawn_points` VALUES (17408015,0,'Bark_Tarantula','Bark Tarantula',2,77,80,26.972,4.508,21.089,127);
 INSERT INTO `mob_spawn_points` VALUES (17408016,0,'Bark_Tarantula','Bark Tarantula',2,77,80,26.789,4.494,20.841,127);
 INSERT INTO `mob_spawn_points` VALUES (17408017,0,'Bark_Tarantula','Bark Tarantula',2,77,80,15.734,1.820,15.490,114);
-INSERT INTO `mob_spawn_points` VALUES (17408018,0,'Fafnir','Fafnir',5,90,90,78.000,6.000,39.000,127);
-INSERT INTO `mob_spawn_points` VALUES (17408019,0,'Nidhogg','Nidhogg',6,90,90,78.000,6.000,34.000,127);
+INSERT INTO `mob_spawn_points` VALUES (17408018,0,'Fafnir','Fafnir',5,90,90,82.325,6.876,42.041,0);
+INSERT INTO `mob_spawn_points` VALUES (17408019,0,'Nidhogg','Nidhogg',6,90,90,82.325,6.876,42.041,0);
 INSERT INTO `mob_spawn_points` VALUES (17408020,0,'Darter','Darter',3,76,79,89.269,6.694,37.407,112);
 INSERT INTO `mob_spawn_points` VALUES (17408021,0,'Darter','Darter',3,76,79,69.184,7.255,28.361,35);
 INSERT INTO `mob_spawn_points` VALUES (17408022,0,'Darter','Darter',3,76,79,66.712,5.428,50.071,126);
@@ -56347,7 +56355,7 @@ INSERT INTO `mob_spawn_points` VALUES (17412639,0,'Kaiser_Behemoth','Kaiser Behe
 INSERT INTO `mob_spawn_points` VALUES (17412640,0,'Ferreous_Coffin','Ferreous Coffin',159,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17412641,0,'Lewenhart','Lewenhart',160,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17412642,0,'Auroral_Alicorn','Auroral Alicorn',161,0,0,0.000,0.000,0.000,0);
-INSERT INTO `mob_spawn_points` VALUES (17412643,0,'Gargouille_Warden','Gargouille Warden',162,0,0,-384.256,-52.500,-95.782,31);
+INSERT INTO `mob_spawn_points` VALUES (17412643,0,'Gargouille_Warden','Gargouille Warden',162,80,80,-384.256,-52.500,-95.782,31);
 
 -- ------------------------------------------------------------
 -- Throne Room [S] (Zone 156)
