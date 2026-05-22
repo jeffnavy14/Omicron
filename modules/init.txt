@@ -42,12 +42,13 @@ omicronxi/Domain/complete_overrides/
 omicronxi/Domain/additive_override/
 #
 # Other Modules
+omicronxi/command_bot/
 omicronxi/Custom Gaes Fete
-#omicronxi/af_reforged
-#omicronxi/Bastion
-#omicronxi/besieged
-omicronxi/commands
-#omicronxi/contrib
+omicronxi/af_reforged
+omicronxi/Bastion
+omicronxi/besieged
+#omicronxi/commands
+omicronxi/contrib
 omicronxi/global
 omicronxi/Custom Bastok Quests
 omicronxi/Custom Windurst Quests
@@ -55,12 +56,12 @@ omicronxi/Custom NPCs
 omicronxi/Custom_HNMs
 omicronxi/custom_instance
 omicronxi/Descent
-#omicronxi/Domain Invasion
-#omicronxi/mimic
+omicronxi/Domain Invasion
+omicronxi/mimic
 omicronxi/Sky2.0
 omicronxi/the_arena
 omicronxi/Kupon_Weapons
-#omicronxi/vnm_unity
+omicronxi/vnm_unity
 omicronxi/kills_CPP
 omicronxi/yagyu_darkblade_module/
 custom/lua/new_player_linkshell.lua
