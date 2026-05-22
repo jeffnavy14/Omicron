@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -258,11 +258,6 @@ auto CLuaZone::insertDynamicEntity(sol::table table) -> CBaseEntity*
     return luautils::GenerateDynamicEntity(m_pLuaZone, nullptr, std::move(table));
 }
 
-void CLuaZone::setPreventSleep(bool value)
-{
-    m_pLuaZone->SetPreventSleep(value);
-}
-
 /************************************************************************
  *  Function: SetSoloBattleMusic(253)
  *  Purpose : Set Solo Battle music for zone
@@ -400,7 +395,7 @@ void CLuaZone::Register()
     SOL_REGISTER("isNavigablePoint", CLuaZone::isNavigablePoint);
     SOL_REGISTER("getTerrainType", CLuaZone::getTerrainType);
     SOL_REGISTER("getFloorId", CLuaZone::getFloorId);
-    SOL_REGISTER("insertDynamicEntity", CLuaZone::insertDynamicEntity);`n    SOL_REGISTER("preventSleep", CLuaZone::setPreventSleep);
+    SOL_REGISTER("insertDynamicEntity", CLuaZone::insertDynamicEntity);
 
     SOL_REGISTER("getSoloBattleMusic", CLuaZone::getSoloBattleMusic);
     SOL_REGISTER("getPartyBattleMusic", CLuaZone::getPartyBattleMusic);
