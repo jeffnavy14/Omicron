@@ -4906,13 +4906,14 @@ void CLuaBaseEntity::createShop(uint8 size, const sol::object& arg1)
 /************************************************************************
  *  Function: addShopItem()
  *  Purpose : Adds an item and established price to an existing shop
- *          : Optionally accepts a GuildID + Guild Rank requirement
- *  Example : addShopItem(512, 8000)                                                   --Regular item
- *          : addShopItem(512, 8000, xi.skill.CLOTHCRAFT, xi.craftRank.JOURNEYMAN)   --Guild-rank locked item
+ *          : Optionally accepts a job/level or guild/rank requirement
+ *  Example : addShopItem(512, 8000)                                                                   -- Regular item
+ *          : addShopItem(512, 8000, { job   = xi.job.PUP,          level = 80 })                      -- Job-locked item
+ *          : addShopItem(512, 8000, { guild = xi.skill.CLOTHCRAFT, rank  = xi.craftRank.JOURNEYMAN }) -- Guild-rank locked item
  *  Notes   : Use with createShop() - 16 Max Items in Shop
  ************************************************************************/
 
-void CLuaBaseEntity::addShopItem(uint16 itemID, double rawPrice, const sol::object& arg2, const sol::object& arg3)
+void CLuaBaseEntity::addShopItem(const uint16 itemID, const double rawPrice, sol::optional<sol::table> requirements) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -4920,9 +4921,9 @@ void CLuaBaseEntity::addShopItem(uint16 itemID, double rawPrice, const sol::obje
         return;
     }
 
-    CCharEntity* PChar  = static_cast<CCharEntity*>(m_PBaseEntity);
-    uint8        slotID = PChar->Container->getItemsCount();
-    uint32       price  = static_cast<uint32>(rawPrice);
+    const auto*  PChar  = static_cast<CCharEntity*>(m_PBaseEntity);
+    const uint8  slotID = PChar->Container->getItemsCount();
+    const uint32 price  = static_cast<uint32>(rawPrice);
 
     PChar->Container->setItem(slotID, itemID, 0, price);
 
@@ -4930,13 +4931,20 @@ void CLuaBaseEntity::addShopItem(uint16 itemID, double rawPrice, const sol::obje
     // so track the shop's number of items separately from the container's size.
     PChar->Container->setExSize(PChar->Container->getExSize() + 1);
 
-    if (arg2.is<int>() && arg3.is<int>())
+    if (requirements)
     {
-        uint8  guildID   = arg2.as<uint8>();
-        uint16 guildRank = arg3.as<uint16>();
-
-        static_cast<CCharEntity*>(m_PBaseEntity)->Container->setGuildID(slotID, guildID);
-        static_cast<CCharEntity*>(m_PBaseEntity)->Container->setGuildRank(slotID, guildRank);
+        if (auto job = requirements->get<sol::optional<uint8>>("job"))
+        {
+            // Job-locked: player cannot purchase unless they have the given job at the specified level.
+            const auto level = std::clamp<uint8>(requirements->get_or<uint8>("level", 1), 1, 99);
+            PChar->Container->setRestriction(slotID, JobRestriction{ *job, level });
+        }
+        else if (auto guild = requirements->get<sol::optional<uint8>>("guild"))
+        {
+            // Guild-locked: player cannot purchase unless they have the given guild rank.
+            const auto rank = requirements->get_or<uint16>("rank", 0);
+            PChar->Container->setRestriction(slotID, GuildRestriction{ *guild, rank });
+        }
     }
 }
 
@@ -13735,6 +13743,99 @@ sol::table CLuaBaseEntity::getNotorietyList()
 }
 
 /************************************************************************
+ *  Function: getMasterThreatMob(rangeOverride)
+ *  Purpose : Returns a mob in the master's notoriety list that threatens
+ *            the master's owner, preferring non-master-target mobs first.
+ *  Example : local target = entity:getMasterThreatMob(22)
+ *  Notes   : Intended for trust combat scripts that need efficient target
+ *            selection without Lua-side entity/enmity table iteration.
+ ************************************************************************/
+
+auto CLuaBaseEntity::getMasterThreatMob(const sol::object& rangeOverride) -> CBaseEntity*
+{
+    auto* PBattleEntity = dynamic_cast<CBattleEntity*>(m_PBaseEntity);
+    if (!PBattleEntity)
+    {
+        ShowWarning("Attempting to get master threat target for invalid entity type (%s).", m_PBaseEntity->getName());
+        return nullptr;
+    }
+
+    auto* PMaster = PBattleEntity->PMaster;
+
+    if (!PMaster)
+    {
+        return nullptr;
+    }
+
+    const auto maxDistance = rangeOverride.is<float>() ? rangeOverride.as<float>() : 22.0f;
+    auto*      PMastersTarget{ PMaster->GetEntity(PMaster->GetBattleTargetID()) };
+
+    auto isMasterTopEnmityOnMob = [PMaster](CMobEntity* PMob) -> bool
+    {
+        if (!PMob)
+        {
+            return false;
+        }
+
+        auto* enmityList = PMob->PEnmityContainer->GetEnmityList();
+        if (!enmityList)
+        {
+            return false;
+        }
+
+        CBattleEntity* PTopEntity = nullptr;
+        int32          topHate    = std::numeric_limits<int32>::min();
+
+        for (const auto& [_, enmityObject] : *enmityList)
+        {
+            if (!enmityObject.active || !enmityObject.PEnmityOwner || !enmityObject.PEnmityOwner->isAlive())
+            {
+                continue;
+            }
+
+            const auto totalHate = enmityObject.CE + enmityObject.VE;
+            if (totalHate > topHate)
+            {
+                topHate    = totalHate;
+                PTopEntity = enmityObject.PEnmityOwner;
+            }
+        }
+
+        return PTopEntity && PTopEntity->id == PMaster->id;
+    };
+
+    CMobEntity* threateningTarget = nullptr;
+
+    for (auto* entity : *PMaster->PNotorietyContainer)
+    {
+        auto* PMob = dynamic_cast<CMobEntity*>(entity);
+        if (!PMob || !PMob->isAlive() || distance(PMaster->loc.p, PMob->loc.p) > maxDistance)
+        {
+            continue;
+        }
+
+        auto* PTarget            = PMob->GetEntity(PMob->GetBattleTargetID());
+        bool  isTargetingMaster  = PTarget && PTarget->id == PMaster->id;
+        bool  masterHasTopEnmity = isMasterTopEnmityOnMob(PMob);
+
+        if (isTargetingMaster || masterHasTopEnmity)
+        {
+            if (!PMastersTarget || PMob->id != PMastersTarget->id)
+            {
+                return PMob;
+            }
+
+            if (!threateningTarget)
+            {
+                threateningTarget = PMob;
+            }
+        }
+    }
+
+    return threateningTarget;
+}
+
+/************************************************************************
  *  Function: clearEnmityForEntity(...)
  *  Purpose :
  *  Example : mob:clearEnmityForEntity(player)
@@ -16858,31 +16959,6 @@ void CLuaBaseEntity::removeAllManeuvers() const
 }
 
 /************************************************************************
- *  Function: getAttachment(slotId)
- *  Purpose : Gets the attachment of an automaton in the slot specified
- *  Example : pet:getAttachment(1)
- ************************************************************************/
-
-auto CLuaBaseEntity::getAttachment(const uint8 slotId) const -> const CItem*
-{
-    auto* PAutomaton = dynamic_cast<CAutomatonEntity*>(m_PBaseEntity);
-
-    if (PAutomaton == nullptr)
-    {
-        ShowWarning("Invalid Entity accessing function.");
-        return nullptr;
-    }
-
-    uint8 slotItem = PAutomaton->getAttachment(slotId);
-    if (slotItem != 0)
-    {
-        return xi::items::lookup(0x2100 + slotItem); // TODO: Stop storing by offset
-    }
-
-    return nullptr;
-}
-
-/************************************************************************
  *  Function: setAttachment(attachmentItemID, slotID)
  *  Purpose : Sets the attachment of an automaton in the slot specified
  *  Example : player:setAttachment(8465, 0)
@@ -16926,7 +17002,20 @@ auto CLuaBaseEntity::getAttachments() const -> sol::table
 
         if (attachmentItemId != 0)
         {
-            attachmentTable[attachmentSlot] = CLuaItemPuppet(xi::items::lookup<CItemPuppet>(0x2100 + attachmentItemId));
+            const auto PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + attachmentItemId);
+
+            if (PAttachment)
+            {
+                attachmentTable[attachmentSlot] = PAttachment->getName();
+            }
+            else
+            {
+                attachmentTable[attachmentSlot] = "";
+            }
+        }
+        else
+        {
+            attachmentTable[attachmentSlot] = "";
         }
     }
 
@@ -17634,6 +17723,27 @@ void CLuaBaseEntity::setNpcFlags(uint32 flags)
     {
         PNpc->setEntityFlags(flags);
         PNpc->updatemask |= UPDATE_HP;
+    }
+}
+
+/************************************************************************
+ *  Function: setNpcAlwaysRelevant()
+ *  Purpose : Set NPC such that it is always relevant to players regardless of distance
+ *  Example : npc:setNpcAlwaysRelevant(true)
+ *  Notes   :
+ ************************************************************************/
+void CLuaBaseEntity::setNpcAlwaysRelevant(bool alwaysRelevant)
+{
+    if (m_PBaseEntity->objtype != TYPE_NPC)
+    {
+        return;
+    }
+
+    auto* PNpc = dynamic_cast<CNpcEntity*>(m_PBaseEntity);
+
+    if (PNpc != nullptr)
+    {
+        PNpc->m_alwaysRelevant = alwaysRelevant;
     }
 }
 
@@ -18357,6 +18467,25 @@ auto CLuaBaseEntity::getCrystalElement() const -> ELEMENT
     }
 
     return static_cast<ELEMENT>(PMob->m_Element);
+}
+
+/************************************************************************
+ *  Function: setCrystalElement()
+ *  Purpose : Sets a mob crystal element
+ *  Example : mob:getCrystalElement(xi.element.FIRE)
+ *  Notes   :
+ ************************************************************************/
+void CLuaBaseEntity::setCrystalElement(ELEMENT crystalElement)
+{
+    auto* PMob = dynamic_cast<CMobEntity*>(m_PBaseEntity);
+
+    if (!PMob)
+    {
+        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return;
+    }
+
+    PMob->m_Element = crystalElement;
 }
 
 /************************************************************************
@@ -19317,40 +19446,39 @@ uint16 CLuaBaseEntity::getDespoilDebuff(uint16 itemID)
 
 /************************************************************************
  *  Function: itemStolen()
- *  Purpose : Flags a mob's item as stolen, returns true upon update
- *  Example : target:itemStolen()
- *  Notes   : Used in scripts/globals/job_utils/thief.lua
+ *  Purpose : Flags a mob's item as stolen or not
+ *  Example : target:itemStolen(true)
+ *  Notes   : Used in scripts/globals/job_utils/thief.lua and QM NM popping code
  ************************************************************************/
 
-bool CLuaBaseEntity::itemStolen()
+void CLuaBaseEntity::itemStolen(bool stolen)
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
         ShowWarning("Attempting to flag stolen item for invalid entity type (%s).", m_PBaseEntity->getName());
-        return false;
+        return;
     }
 
-    static_cast<CMobEntity*>(m_PBaseEntity)->m_ItemStolen = true;
-    return true;
+    static_cast<CMobEntity*>(m_PBaseEntity)->m_ItemStolen = stolen;
+    return;
 }
 
 /************************************************************************
  *  Function: itemDespoiled()
- *  Purpose : Flags a mob's item as despoiled, returns true upon update
+ *  Purpose : Flags a mob's item as despoiled or not
  *  Example : target:itemDespoiled()
- *  Notes   : Used in scripts/globals/job_utils/thief.lua
+ *  Notes   : Used in scripts/globals/job_utils/thief.lua and and QM NM popping code
  ************************************************************************/
 
-bool CLuaBaseEntity::itemDespoiled()
+void CLuaBaseEntity::itemDespoiled(bool despoiled)
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
         ShowWarning("Attempting to flag despoiled item for invalid entity type (%s).", m_PBaseEntity->getName());
-        return false;
+        return;
     }
 
-    static_cast<CMobEntity*>(m_PBaseEntity)->m_ItemDespoiled = true;
-    return true;
+    static_cast<CMobEntity*>(m_PBaseEntity)->m_ItemDespoiled = despoiled;
 }
 
 /************************************************************************
@@ -20551,6 +20679,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("hasClaim", CLuaBaseEntity::hasClaim);
     SOL_REGISTER("hasEnmity", CLuaBaseEntity::hasEnmity);
     SOL_REGISTER("getNotorietyList", CLuaBaseEntity::getNotorietyList);
+    SOL_REGISTER("getMasterThreatMob", CLuaBaseEntity::getMasterThreatMob);
     SOL_REGISTER("clearEnmityForEntity", CLuaBaseEntity::clearEnmityForEntity);
 
     // Status Effects
@@ -20689,7 +20818,6 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getActiveManeuverCount", CLuaBaseEntity::getActiveManeuverCount);
     SOL_REGISTER("removeOldestManeuver", CLuaBaseEntity::removeOldestManeuver);
     SOL_REGISTER("removeAllManeuvers", CLuaBaseEntity::removeAllManeuvers);
-    SOL_REGISTER("getAttachment", CLuaBaseEntity::getAttachment);
     SOL_REGISTER("setAttachment", CLuaBaseEntity::setAttachment);
     SOL_REGISTER("getAttachments", CLuaBaseEntity::getAttachments);
     SOL_REGISTER("updateAttachments", CLuaBaseEntity::updateAttachments);
@@ -20732,6 +20860,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("setMobFlags", CLuaBaseEntity::setMobFlags);
     SOL_REGISTER("getMobFlags", CLuaBaseEntity::getMobFlags);
     SOL_REGISTER("setNpcFlags", CLuaBaseEntity::setNpcFlags);
+    SOL_REGISTER("setNpcAlwaysRelevant", CLuaBaseEntity::setNpcAlwaysRelevant);
 
     SOL_REGISTER("spawn", CLuaBaseEntity::spawn);
     SOL_REGISTER("isSpawned", CLuaBaseEntity::isSpawned);
@@ -20774,6 +20903,7 @@ void CLuaBaseEntity::Register()
 
     SOL_REGISTER("getBattleTime", CLuaBaseEntity::getBattleTime);
     SOL_REGISTER("getCrystalElement", CLuaBaseEntity::getCrystalElement);
+    SOL_REGISTER("setCrystalElement", CLuaBaseEntity::setCrystalElement);
 
     SOL_REGISTER("getBehavior", CLuaBaseEntity::getBehavior);
     SOL_REGISTER("setBehavior", CLuaBaseEntity::setBehavior);

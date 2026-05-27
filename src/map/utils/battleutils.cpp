@@ -1769,7 +1769,7 @@ float GetRangedDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, b
         ShowError("battleutils::GetRangedDamageRatio() failed to run lua calls");
     }
 
-    return pDIF;
+    return std::max(pDIF, 0.f);
 }
 
 int16 CalculateBaseTP(CBattleEntity* PEntity, int32 delay)
@@ -2087,7 +2087,7 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
 
         if (isBlocked)
         {
-            uint8 absorb = 100;
+            uint8 absorb = 50; // TODO: get trust/pet/etc absorb percents
 
             // shield def bonus is a flat raw damage reduction that occurs before absorb
             // however do not reduce below 0 or if damage is negative
@@ -2096,52 +2096,22 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, PHY
                 damage = std::max(0, damage - PDefender->getMod(Mod::SHIELD_DEF_BONUS));
             }
 
+            // Shield Mastery
+            if (std::max(damage - PDefender->getMod(Mod::STONESKIN), 0) > 0 &&
+                PDefender->getMod(Mod::SHIELD_MASTERY_TP))
+            {
+                // If the attack was blocked and has shield mastery, add shield mastery TP bonus
+                // unblocked damage (before block but as if affected by phalanx) must be greater than zero
+                PDefender->addTP(PDefender->getMod(Mod::SHIELD_MASTERY_TP));
+            }
+
             if (const auto PChar = dynamic_cast<CCharEntity*>(PDefender))
             {
                 CItemEquipment* slotSub = PChar->getEquip(SLOT_SUB);
                 if (slotSub && slotSub->IsShield())
                 {
                     absorb = std::clamp(100 - slotSub->getShieldAbsorption(), 0, 100);
-
-                    // Shield Mastery
-                    if ((std::max(damage - (PDefender->getMod(Mod::PHALANX) + PDefender->getMod(Mod::STONESKIN)), 0) > 0) &&
-                        PDefender->getMod(Mod::SHIELD_MASTERY_TP))
-                    {
-                        // If the player blocked with a shield and has shield mastery, add shield mastery TP bonus
-                        // unblocked damage (before block but as if affected by stoneskin/phalanx) must be greater than zero
-                        PDefender->addTP(PDefender->getMod(Mod::SHIELD_MASTERY_TP));
-                    }
                 }
-            }
-            else if (PDefender->objtype == TYPE_PET)
-            {
-                absorb = 50;
-
-                // Shield Mastery
-                if ((std::max(damage - (PDefender->getMod(Mod::PHALANX) + PDefender->getMod(Mod::STONESKIN)), 0) > 0) &&
-                    (PDefender->getMod(Mod::SHIELD_MASTERY_TP)))
-                {
-                    // If the pet blocked with a shield and has shield mastery, add shield mastery TP bonus
-                    // unblocked damage (before block but as if affected by stoneskin/phalanx) must be greater than zero
-                    PDefender->addTP(PDefender->getMod(Mod::SHIELD_MASTERY_TP));
-                }
-            }
-            else if (PDefender->objtype == TYPE_TRUST)
-            {
-                absorb = 50;
-
-                // Shield Mastery
-                if ((std::max(damage - (PDefender->getMod(Mod::PHALANX) + PDefender->getMod(Mod::STONESKIN)), 0) > 0) &&
-                    (PDefender->getMod(Mod::SHIELD_MASTERY_TP)))
-                {
-                    // If the trust blocked with a shield and has shield mastery, add shield mastery TP bonus
-                    // unblocked damage (before block but as if affected by stoneskin/phalanx) must be greater than zero
-                    PDefender->addTP(PDefender->getMod(Mod::SHIELD_MASTERY_TP));
-                }
-            }
-            else
-            {
-                absorb = 50;
             }
 
             // Reprisal
@@ -2763,7 +2733,7 @@ float GetDamageRatio(CBattleEntity* PAttacker, CBattleEntity* PDefender, bool is
         ShowError("battleutils::GetDamageRatio() failed to run lua calls");
     }
 
-    return pDIF;
+    return std::max(pDIF, 0.f);
 }
 
 /************************************************************************
@@ -3992,6 +3962,7 @@ inline bool areInLine(uint8 firstEntityWorldAngle, CBattleEntity* anchorEntity, 
 CBattleEntity* getAvailableTrickAttackChar(CBattleEntity* taUser, CBattleEntity* PMob)
 {
     TracyZoneScoped;
+
     if (!taUser->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK))
     {
         return nullptr;
@@ -4201,8 +4172,8 @@ uint16 doSoulEaterEffect(CCharEntity* m_PChar, uint32 damage)
         // Souleater's HP consumed is 10% (base) + x% from gear (ONLY HIGHEST) + x% from gear augments.
         float souleaterBonus    = m_PChar->getMaxGearMod(Mod::SOULEATER_EFFECT) * 0.01;
         float souleaterBonusII  = m_PChar->getMod(Mod::SOULEATER_EFFECT_II) * 0.01;
-        float stalwartSoulBonus = 1 - static_cast<float>(m_PChar->getMod(Mod::STALWART_SOUL)) / 100;
-        float bonusDamage       = m_PChar->health.hp * (0.1f + souleaterBonus + souleaterBonusII);
+        float stalwartSoulBonus = 1.f - std::max(static_cast<float>(m_PChar->getMod(Mod::STALWART_SOUL)) / 100, 0.f);
+        float bonusDamage       = m_PChar->health.hp * (0.1f + std::max(souleaterBonus + souleaterBonusII, 0.f));
 
         if (bonusDamage >= 1)
         {
@@ -5920,6 +5891,13 @@ uint16 CalculateSpellCost(CBattleEntity* PEntity, CSpell* PSpell)
             cost += (int16)(base * (PEntity->getMod(Mod::WHITE_MAGIC_COST) / 100.0f));
         }
     }
+
+    const auto mpCostReduction = PEntity->getMod(Mod::MP_COST_REDUCTION);
+    if (mpCostReduction > 0)
+    {
+        cost = cost * (1.f - static_cast<float>(mpCostReduction) / 100.f);
+    }
+
     if (xirand::GetRandomNumber(100) < (PEntity->getMod(Mod::NO_SPELL_MP_DEPLETION)))
     {
         cost = 0;
