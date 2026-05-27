@@ -14340,6 +14340,13 @@ INSERT INTO `mob_spawn_points` VALUES (17023026,0,'Windjammer_Imp','Windjammer I
 INSERT INTO `mob_spawn_points` VALUES (17023027,0,'Windjammer_Imp','Windjammer Imp',0,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17023028,0,'Bubbly','Bubbly',0,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17023029,0,'Cutthroat_Kabsalah','Cutthroat Kabsalah',0,0,0,0.000,0.000,0.000,0);
+-- Peach Power
+INSERT INTO `mob_spawn_points` VALUES (17023032,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17023033,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17023034,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17023035,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17023036,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (17023037,0,'Flan_Princess','Flan Princess',2027,139,139,0.000,0.000,0.000,0);
 
 -- -----------------------------------------------------------
 -- Mount Zhayolm (Zone 61)
@@ -65055,6 +65062,43 @@ INSERT INTO `mob_spawn_points` VALUES (17518682,0,'Exoplates','Exoplates',6,0,0,
 INSERT INTO `mob_spawn_points` VALUES (17518683,0,'Ealdnarche','Eald\'narche',7,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17518684,0,'Orbital','Orbital',8,0,0,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (17518685,0,'Orbital','Orbital',8,0,0,0.000,0.000,0.000,0);
+-- ★Crystal Paradise★
+INSERT INTO `mob_spawn_points` VALUES (17518686,0,'Ealdnarche_CP','Eald\'narche',9,139,139,-34.000,-18.000,-21.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518687,0,'Orbital_CP','Orbital',10,139,139,-34.000,-18.000,-19.000,31);
+INSERT INTO `mob_spawn_points` VALUES (17518688,0,'Orbital_CP','Orbital',10,139,139,-34.000,-18.000,-19.000,32);
+INSERT INTO `mob_spawn_points` VALUES (17518689,0,'Kamlanaut_CP','Kam\'lanaut',11,139,139,-34.000,-18.000,-30.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518690,0,'Ark_Angel_HM_CP','Ark Angel HM',12,139,139,-35.000,-18.000,-25.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518691,0,'Ark_Angel_MR_CP','Ark Angel MR',13,139,139,-35.000,-18.000,-23.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518692,0,'Ark_Angels_Behemoth_CP','Ark Angel\'s Behemoth',14,139,139,-36.000,-19.000,-23.000,2);
+INSERT INTO `mob_spawn_points` VALUES (17518693,0,'Ark_Angels_Adamant_CP','Ark Angel\'s Adamantoise',15,139,139,-36.000,-19.000,-23.000,1);
+INSERT INTO `mob_spawn_points` VALUES (17518694,0,'Ark_Angel_EV_CP','Ark Angel EV',16,139,139,-33.000,-18.000,-24.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518695,0,'Ark_Angel_TT_CP','Ark Angel TT',17,139,139,-53.000,-19.000,-24.000,140);
+INSERT INTO `mob_spawn_points` VALUES (17518696,0,'Ark_Angel_GK_CP','Ark Angel GK',18,139,139,-33.000,-18.000,-26.000,128);
+INSERT INTO `mob_spawn_points` VALUES (17518697,0,'Ark_Angels_Wyvern_CP','Ark Angel\'s Wyvern',19,139,139,-35.000,-18.000,-23.000,1);
+INSERT INTO `mob_spawn_points` VALUES (17518698,0,'Ealdnarche_CP','Eald\'narche',9,139,139,454.286,-21.139,673.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518699,0,'Orbital_CP','Orbital',10,139,139,454.286,-21.139,675.512,31);
+INSERT INTO `mob_spawn_points` VALUES (17518700,0,'Orbital_CP','Orbital',10,139,139,454.286,-21.139,675.512,32);
+INSERT INTO `mob_spawn_points` VALUES (17518701,0,'Kamlanaut_CP','Kam\'lanaut',11,139,139,454.286,-21.139,664.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518702,0,'Ark_Angel_HM_CP','Ark Angel HM',12,139,139,453.286,-21.139,669.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518703,0,'Ark_Angel_MR_CP','Ark Angel MR',13,139,139,453.286,-21.139,671.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518704,0,'Ark_Angels_Behemoth_CP','Ark Angel\'s Behemoth',14,139,139,452.286,-22.139,671.512,2);
+INSERT INTO `mob_spawn_points` VALUES (17518705,0,'Ark_Angels_Adamant_CP','Ark Angel\'s Adamantoise',15,139,139,452.286,-22.139,671.512,1);
+INSERT INTO `mob_spawn_points` VALUES (17518706,0,'Ark_Angel_EV_CP','Ark Angel EV',16,139,139,455.286,-21.139,670.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518707,0,'Ark_Angel_TT_CP','Ark Angel TT',17,139,139,435.286,-22.139,670.512,140);
+INSERT INTO `mob_spawn_points` VALUES (17518708,0,'Ark_Angel_GK_CP','Ark Angel GK',18,139,139,455.286,-21.139,668.512,128);
+INSERT INTO `mob_spawn_points` VALUES (17518709,0,'Ark_Angels_Wyvern_CP','Ark Angel\'s Wyvern',19,139,139,453.286,-21.139,671.512,1);
+INSERT INTO `mob_spawn_points` VALUES (17518710,0,'Ealdnarche_CP','Eald\'narche',9,139,139,503.569,-4.093,-686.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518711,0,'Orbital_CP','Orbital',10,139,139,503.569,-4.093,-684.194,31);
+INSERT INTO `mob_spawn_points` VALUES (17518712,0,'Orbital_CP','Orbital',10,139,139,503.569,-4.093,-684.194,32);
+INSERT INTO `mob_spawn_points` VALUES (17518713,0,'Kamlanaut_CP','Kam\'lanaut',11,139,139,503.569,-4.093,-695.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518714,0,'Ark_Angel_HM_CP','Ark Angel HM',12,139,139,502.569,-4.093,-690.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518715,0,'Ark_Angel_MR_CP','Ark Angel MR',13,139,139,502.569,-4.093,-688.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518716,0,'Ark_Angels_Behemoth_CP','Ark Angel\'s Behemoth',14,139,139,501.569,-5.093,-688.194,2);
+INSERT INTO `mob_spawn_points` VALUES (17518717,0,'Ark_Angels_Adamant_CP','Ark Angel\'s Adamantoise',15,139,139,501.569,-5.093,-688.194,1);
+INSERT INTO `mob_spawn_points` VALUES (17518718,0,'Ark_Angel_EV_CP','Ark Angel EV',16,139,139,504.569,-4.093,-689.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518719,0,'Ark_Angel_TT_CP','Ark Angel TT',17,139,139,484.569,-5.093,-689.194,140);
+INSERT INTO `mob_spawn_points` VALUES (17518720,0,'Ark_Angel_GK_CP','Ark Angel GK',18,139,139,504.569,-4.093,-691.194,128);
+INSERT INTO `mob_spawn_points` VALUES (17518721,0,'Ark_Angels_Wyvern_CP','Ark Angel\'s Wyvern',19,139,139,502.569,-4.093,-688.194,1);
 
 -- ------------------------------------------------------------
 -- Walk of Echoes (Zone 182)
@@ -76262,6 +76306,10 @@ INSERT INTO `mob_spawn_points` VALUES (17818077,0,'Dark_Elemental','Dark Element
 INSERT INTO `mob_spawn_points` VALUES (17821697,0,'Shinryu','Shinryu',1,90,92,-477.491,-0.500,515.330,43);
 INSERT INTO `mob_spawn_points` VALUES (17821698,0,'Shinryu','Shinryu',1,90,92,519.000,-500.000,519.000,249);
 INSERT INTO `mob_spawn_points` VALUES (17821699,0,'Shinryu','Shinryu',1,90,92,-479.000,-1000.000,-471.000,65);
+-- The Wyrm God ★
+INSERT INTO `mob_spawn_points` VALUES (17821700,0,'Shinryu','Shinryu',2,139,139,-477.341,-0.500,510.673,63);
+INSERT INTO `mob_spawn_points` VALUES (17821701,0,'Shinryu','Shinryu',2,139,139,520.000,-500.500,520.000,64);
+INSERT INTO `mob_spawn_points` VALUES (17821702,0,'Shinryu','Shinryu',2,139,139,-477.922,-1000.500,-484.836,60);
 
 -- ------------------------------------------------------------
 -- Rala Waterways (Zone 258)
