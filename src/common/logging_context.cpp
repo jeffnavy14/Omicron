@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2026 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,35 +19,33 @@
 ===========================================================================
 */
 
-#pragma once
+#include "logging_context.h"
 
-#include <common/cbasetypes.h>
-#include <common/logging.h>
-#include <common/scheduler.h>
-
-#include <list>
-#include <string>
-
-//
-// Forward declarations
-//
-
-class CCharEntity;
-namespace sol
+namespace
 {
 
-class state;
-
+auto stack() -> std::vector<logging::Field>&
+{
+    thread_local std::vector<logging::Field> s;
+    return s;
 }
 
-enum class CommandResult : uint8
-{
-    Success,
-    Failure,
-};
+} // namespace
 
-class CCommandHandler
+logging::LogScope::LogScope(std::initializer_list<Field> fields)
+: pushedCount_(fields.size())
 {
-public:
-    static auto call(Scheduler& scheduler, sol::state& lua, CCharEntity* PChar, const std::string& commandline) -> CommandResult;
-};
+    auto& s = stack();
+    s.insert(s.end(), fields.begin(), fields.end());
+}
+
+logging::LogScope::~LogScope()
+{
+    auto& s = stack();
+    s.erase(s.end() - pushedCount_, s.end());
+}
+
+auto logging::currentContext() -> const std::vector<Field>&
+{
+    return stack();
+}
