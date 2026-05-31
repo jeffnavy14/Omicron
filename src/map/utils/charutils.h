@@ -131,7 +131,6 @@ uint8  MoveItem(CCharEntity* PChar, uint8 LocationID, uint8 SlotID, uint8 NewSlo
 uint32 UpdateItem(CCharEntity* PChar, uint8 LocationID, uint8 slotID, int32 quantity, bool force = false);
 void   DropItem(CCharEntity* PChar, uint8 container, uint8 slotID, int32 quantity, uint16 ItemID);
 void   CheckValidEquipment(CCharEntity* PChar);
-void   CheckEquipLogic(CCharEntity* PChar, SCRIPTTYPE ScriptType, uint32 param);
 void   SaveJobChangeGear(CCharEntity* PChar);
 void   LoadJobChangeGear(CCharEntity* PChar);
 void   EquipItem(CCharEntity* PChar, uint8 slotID, uint8 equipSlotID, uint8 containerID);
@@ -255,11 +254,11 @@ void  SetPoints(CCharEntity* PChar, const char* type, int32 amount);
 int32 GetPoints(CCharEntity* PChar, const char* type);
 void  SetUnityLeader(CCharEntity* PChar, uint8 leaderID);
 auto  GetConquestPointsName(CCharEntity* PChar) -> std::string;
-void  SendToZone(CCharEntity* PChar, uint16 zoneId);
+auto  SendToZone(CCharEntity* PChar, uint16 zoneId) -> bool;
 void  SendDisconnect(CCharEntity* PChar);
 void  ForceLogout(CCharEntity* PChar);
 void  ForceRezone(CCharEntity* PChar);
-void  HomePoint(CCharEntity* PChar, bool resetHPMP);
+auto  HomePoint(CCharEntity* PChar, bool resetHPMP) -> bool;
 bool  AddWeaponSkillPoints(CCharEntity*, SLOTTYPE, int);
 
 int32 GetCharVar(CCharEntity* PChar, const std::string& var);

@@ -90,7 +90,10 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x044_extended_job_pup.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x047_translate.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x047_translate.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge_header.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge_header.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge_record.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x048_link_concierge_record.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x049_itemsearch.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x049_itemsearch.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x04b_pbx_result.h
@@ -175,7 +178,9 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x077_entity_vis.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x077_entity_vis.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x078_switch_start.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x078_switch_start.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x079_switch_proc.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x079_switch_proc.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x082_guild_buy.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x082_guild_buy.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x083_guild_buylist.h

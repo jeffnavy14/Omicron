@@ -50,6 +50,7 @@
 #include "packets/s2c/0x04f_equip_clear.h"
 #include "packets/s2c/0x050_equip_list.h"
 #include "packets/s2c/0x051_grap_list.h"
+#include "packets/s2c/0x053_systemmes.h"
 #include "packets/s2c/0x055_scenarioitem.h"
 #include "packets/s2c/0x061_clistatus.h"
 #include "packets/s2c/0x062_clistatus2.h"
@@ -69,6 +70,7 @@
 #include "linkshell.h"
 #include "map_networking.h"
 #include "mob_modifier.h"
+#include "nominate_manager.h"
 #include "recast_container.h"
 #include "roe.h"
 #include "spell.h"
@@ -79,6 +81,7 @@
 #include "unitychat.h"
 #include "universal_container.h"
 #include "weapon_skill.h"
+#include "zone.h"
 
 #include "entities/automatonentity.h"
 #include "entities/charentity.h"
@@ -1031,6 +1034,28 @@ void LoadSpells(CCharEntity* PChar)
             {
                 PChar->m_SpellList.set(spellId);
             }
+        }
+    }
+
+    // Handle trust spells that are enabled via settings.
+    bool hasTrustPermit =
+        charutils::hasKeyItem(PChar, KeyItem::WINDURST_TRUST_PERMIT) ||
+        charutils::hasKeyItem(PChar, KeyItem::BASTOK_TRUST_PERMIT) ||
+        charutils::hasKeyItem(PChar, KeyItem::SAN_DORIA_TRUST_PERMIT);
+
+    if (hasTrustPermit)
+    {
+        static const std::unordered_map<uint8, uint16> trustSpells = {
+            { 1, 1002 }, // Cornelia
+            { 2, 1003 }, // Matsui-P
+        }; // This can be expanded if more trust spells are added as settings options.
+
+        uint8 trustSetting = settings::get<uint8>("main.ENABLE_LIMITED_TIME_TRUST");
+
+        auto it = trustSpells.find(trustSetting);
+        if (it != trustSpells.end())
+        {
+            PChar->m_SpellList.set(it->second);
         }
     }
 }
@@ -2162,12 +2187,6 @@ void UnequipItem(CCharEntity* PChar, uint8 equipSlotID, Recalculate recalculate)
                     }
                 }
             }
-        }
-
-        // Call the LUA event before actually "unequipping" the item so the script can do stuff with it first
-        if (((CItemEquipment*)PItem)->getScriptType() & SCRIPT_EQUIP || ((CItemEquipment*)PItem)->isType(ITEM_USABLE))
-        {
-            luautils::OnItemCheck(PChar, PItem, ITEMCHECK::UNEQUIP, nullptr);
         }
 
         // todo: issues as item 0 reference is being handled as a real equipment piece
@@ -3350,9 +3369,9 @@ void EquipItem(CCharEntity* PChar, uint8 slotID, uint8 equipSlotID, uint8 contai
             {
                 if (PItem->getScriptType() & SCRIPT_EQUIP)
                 {
-                    luautils::OnItemCheck(PChar, PItem, ITEMCHECK::EQUIP, nullptr);
                     PChar->m_EquipFlag |= PItem->getScriptType();
                 }
+
                 if (PItem->isType(ITEM_USABLE) && ((CItemUsable*)PItem)->getCurrentCharges() != 0)
                 {
                     PItem->setAssignTime(timer::now());
@@ -3363,6 +3382,7 @@ void EquipItem(CCharEntity* PChar, uint8 slotID, uint8 equipSlotID, uint8 contai
 
                     PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItem, static_cast<CONTAINER_ID>(containerID), slotID);
                 }
+
                 PItem->setSubType(ITEM_LOCKED);
 
                 if (equipSlotID == SLOT_SUB)
@@ -3486,37 +3506,6 @@ void RemoveAllEquipment(CCharEntity* PChar)
 
     BuildingCharWeaponSkills(PChar);
     PChar->RequestPersist(CHAR_PERSIST::EQUIP);
-}
-
-/************************************************************************
- *                                                                       *
- *  Check the logic of all character equipment                           *
- *                                                                       *
- ************************************************************************/
-
-// Later will need to make equipment in the structure,
-// where to add a bit field indicating in which cell is the equipment with the condition
-// To begin with, this field will save us from checking cells in characters without equipment with the condition
-
-void CheckEquipLogic(CCharEntity* PChar, SCRIPTTYPE ScriptType, uint32 param)
-{
-    if (!(PChar->m_EquipFlag & ScriptType))
-    {
-        return;
-    }
-
-    for (uint8 slotID = 0; slotID < 16; ++slotID)
-    {
-        CItem* PItem = PChar->getEquip((SLOTTYPE)slotID);
-
-        if ((PItem != nullptr) && PItem->isType(ITEM_EQUIPMENT))
-        {
-            if (((CItemEquipment*)PItem)->getScriptType() & ScriptType)
-            {
-                luautils::OnItemCheck(PChar, PItem, static_cast<ITEMCHECK>(param), nullptr);
-            }
-        }
-    }
 }
 
 /************************************************************************
@@ -7316,20 +7305,26 @@ std::string GetConquestPointsName(CCharEntity* PChar)
     }
 }
 
-void SendToZone(CCharEntity* PChar, uint16 zoneId)
+auto SendToZone(CCharEntity* PChar, uint16 zoneId) -> bool
 {
     TracyZoneScoped;
 
     if (PChar->PSession->blowfish.status == BLOWFISH_PENDING_ZONE)
     {
-        return;
+        return false;
     }
 
     auto ipp = IPP(zoneutils::GetZoneIPP(zoneId));
     if (ipp.getIP() == 0)
     {
         ShowErrorFmt("charutils::SendToZone : Invalid zoneId {}", zoneId);
-        return;
+        return false;
+    }
+
+    if (zoneutils::IsZoneAtPlayerCap(zoneId, PChar->m_GMlevel > 0))
+    {
+        ShowInfoFmt("charutils::SendToZone : zone {} at player cap, denying {} (gm={})", zoneId, PChar->name, PChar->m_GMlevel);
+        return false;
     }
 
     auto ip   = ipp.getIP();
@@ -7384,6 +7379,8 @@ void SendToZone(CCharEntity* PChar, uint16 zoneId)
     {
         PChar->setPetZoningInfo();
     }
+
+    return true;
 }
 
 void SendDisconnect(CCharEntity* PChar)
@@ -7429,9 +7426,16 @@ void ForceRezone(CCharEntity* PChar)
     }
 }
 
-void HomePoint(CCharEntity* PChar, bool resetHPMP)
+auto HomePoint(CCharEntity* PChar, bool resetHPMP) -> bool
 {
     TracyZoneScoped;
+
+    if (zoneutils::IsZoneAtPlayerCap(PChar->profile.home_point.destination, PChar->m_GMlevel > 0))
+    {
+        PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(0, 0, MsgStd::CouldNotEnter);
+        PChar->requestedWarp = false;
+        return false;
+    }
 
     // player initiated warp/warp 2 or otherwise
     if (resetHPMP)
@@ -7455,7 +7459,7 @@ void HomePoint(CCharEntity* PChar, bool resetHPMP)
     PChar->updatemask |= UPDATE_HP;
 
     PChar->clearPacketList();
-    SendToZone(PChar, PChar->loc.destination);
+    return SendToZone(PChar, PChar->loc.destination);
 }
 
 bool AddWeaponSkillPoints(CCharEntity* PChar, SLOTTYPE slotid, int wspoints)
@@ -8046,6 +8050,14 @@ void removeCharFromZone(CCharEntity* PChar)
     PChar->TradePending.clean();
     PChar->InvitePending.clean();
 
+    if (PChar->loc.zone != nullptr)
+    {
+        if (auto* manager = PChar->loc.zone->nominateManager())
+        {
+            manager->onCharLeavingZone(PChar);
+        }
+    }
+
     PChar->WideScanTarget = std::nullopt;
 
     if (PChar->animation == ANIMATION_ATTACK)
@@ -8111,7 +8123,6 @@ void removeCharFromZone(CCharEntity* PChar)
     {
         PChar->PSession->shuttingDown = 2;
         db::preparedStmt("UPDATE char_stats SET zoning = 1 WHERE charid = ?", PChar->id);
-        charutils::CheckEquipLogic(PChar, SCRIPT_CHANGEZONE, PChar->getZone());
     }
 
     if (PChar->loc.zone != nullptr)

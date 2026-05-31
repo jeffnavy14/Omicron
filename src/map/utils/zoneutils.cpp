@@ -78,6 +78,7 @@ void TOTDChange(const vanadiel_time::TOTD TOTD)
 void InitializeWeather()
 {
     TracyZoneScoped;
+
     for (const auto PZone : g_PZoneList | std::views::values)
     {
         if (!PZone->IsWeatherStatic())
@@ -267,6 +268,7 @@ auto IsZoneAssignedToThisProcess(const IPP mapIPP, const ZONEID zoneId) -> bool
 auto LoadNPCList(Scheduler& scheduler, const std::vector<uint16>& zoneIds) -> Task<void>
 {
     TracyZoneScoped;
+
     ShowInfo("Loading NPCs");
 
     co_await Scheduler::TaskGroup(
@@ -393,6 +395,7 @@ auto LoadNPCList(Scheduler& scheduler, const std::vector<uint16>& zoneIds) -> Ta
 auto LoadMOBList(Scheduler& scheduler, const std::vector<uint16>& zoneIds) -> Task<void>
 {
     TracyZoneScoped;
+
     ShowInfo("Loading Mobs");
 
     const auto normalLevelRangeMin = settings::get<uint8>("main.NORMAL_MOB_MAX_LEVEL_RANGE_MIN");
@@ -1338,6 +1341,40 @@ auto GetZoneIPP(uint16 zoneId) -> uint64
     }
 
     return ipp;
+}
+
+auto IsZoneAtPlayerCap(uint16 zoneId, bool isGM) -> bool
+{
+    const auto cap = settings::get<uint16>("map.ZONE_PLAYER_CAP");
+    if (cap == 0)
+    {
+        return false;
+    }
+
+    const auto reserved  = settings::get<uint16>("map.ZONE_PLAYER_GM_RESERVED");
+    const auto threshold = isGM ? cap : static_cast<uint16>(cap > reserved ? cap - reserved : 0);
+
+    const auto rset = db::preparedStmt(
+        "SELECT z.zonetype, "
+        "  (SELECT COUNT(*) FROM accounts_sessions s "
+        "    JOIN chars c ON c.charid = s.charid "
+        "    WHERE c.pos_zone = ?) AS pop "
+        "FROM zone_settings z WHERE z.zoneid = ? LIMIT 1",
+        zoneId,
+        zoneId);
+
+    FOR_DB_SINGLE_RESULT(rset)
+    {
+        const auto zoneType = rset->get<uint16>("zonetype");
+        if (zoneType & ZONE_TYPE::INSTANCED)
+        {
+            return false;
+        }
+
+        return rset->get<uint32>("pop") >= threshold;
+    }
+
+    return false;
 }
 
 /************************************************************************

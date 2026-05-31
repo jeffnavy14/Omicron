@@ -27,6 +27,18 @@ function GetItemByID(itemId)
 end
 
 ---@nodiscard
+---@param itemId xi.item
+---@return number
+function GetItemFlagsByID(itemId)
+end
+
+---@nodiscard
+---@param itemId xi.item
+---@return number
+function GetItemLevelRequirementsByID(itemId)
+end
+
+---@nodiscard
 ---@param npcid integer
 ---@param instanceObj CInstance?
 ---@return CBaseEntity?
@@ -156,6 +168,62 @@ end
 ---@nodiscard
 ---@return integer
 function GetSystemTime()
+end
+
+---@class LinkshellConciergeSlotRow
+---@field slotIndex integer
+---@field linkshellid integer
+---@field ownerCharId integer
+---@field groupKey integer
+---@field flag integer
+---@field lang integer
+---@field membersGoal integer
+---@field activeTier integer
+---@field characteristics integer
+---@field tz integer
+---@field days integer
+---@field times integer
+---@field postedDate integer
+---@field name string
+---@field color integer
+
+---@class LinkshellConciergeSlotData
+---@field linkshellid integer
+---@field ownerCharId integer
+---@field groupKey integer
+---@field flag integer
+---@field lang integer
+---@field membersGoal integer
+---@field activeTier integer
+---@field characteristics integer
+---@field tz integer
+---@field days integer
+---@field times integer
+---@field postedDate integer
+
+---@nodiscard
+---@param zoneId integer
+---@return LinkshellConciergeSlotRow[]
+function LoadLinkshellConciergeSlots(zoneId)
+end
+
+---@param zoneId integer
+---@param slotIndex integer
+---@param data LinkshellConciergeSlotData
+---@return nil
+function SetLinkshellConciergeSlot(zoneId, slotIndex, data)
+end
+
+---@param zoneId integer
+---@param slotIndex integer
+---@return nil
+function DeleteLinkshellConciergeSlot(zoneId, slotIndex)
+end
+
+---@param zoneId integer
+---@param linkshellid integer
+---@return nil
+function DecrementLinkshellConciergeMembersGoal(zoneId, linkshellid)
 end
 
 ---@nodiscard

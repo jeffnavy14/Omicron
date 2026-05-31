@@ -98,7 +98,11 @@ local attachmentModifiers =
     ['accelerator_ii']      = { { xi.mod.EVA,                         {    10,    15,    20,    25 }, true  }, },
     ['accelerator_iii']     = { { xi.mod.EVA,                         {    20,    30,    40,    50 }, true  }, },
     ['accelerator_iv']      = { { xi.mod.EVA,                         {    30,    45,    60,    80 }, true  }, },
-    ['analyzer']            = { { xi.mod.AUTO_ANALYZER,               {     1,     2,     4,     6 }, true  }, },
+    ['analyzer']            = { { xi.mod.AUTO_ANALYZER,               {     1,     2,     4,     6 }, false }, },
+    ['amplifier']           = { { xi.mod.MAGIC_BURST_BONUS_UNCAPPED,  {    10,    20,    35,    50 }, true  },
+                                { xi.mod.ELEMENTAL_CELERITY,          {    25,    25,    25,    25 }, true  }, },
+    ['amplifier_ii']        = { { xi.mod.MAGIC_BURST_BONUS_UNCAPPED,  {    20,    30,    50,    70 }, true  },
+                                { xi.mod.ELEMENTAL_CELERITY,          {    25,    25,    25,    25 }, true  }, },
     ['arcanic_cell']        = { { xi.mod.OCCULT_ACUMEN,               {    10,    20,    35,    50 }, true  }, },
     ['arcanic_cell_ii']     = { { xi.mod.OCCULT_ACUMEN,               {    20,    40,    70,   100 }, true  }, },
     ['arcanoclutch']        = { { xi.mod.MAGIC_DAMAGE,                {    20,    40,    60,    80 }, true  }, },
@@ -115,6 +119,10 @@ local attachmentModifiers =
                                 { xi.mod.REGEN,                       {   nil,   nil,   nil,   nil }, true  }, },
     ['auto-repair_kit_iv']  = { { xi.mod.HPP,                         {    20,    20,    20,    20 }, false },
                                 { xi.mod.REGEN,                       {   nil,   nil,   nil,   nil }, true  }, },
+    ['barrier_module']      = { { xi.mod.SHIELDBLOCKRATE,             {     0,     5,    10,    15 }, true  },
+                                { xi.mod.AUTO_SHIELD_BASH_DELAY,      {     0,     5,    10,    15 }, false }, },
+    ['barrier_module_ii']   = { { xi.mod.SHIELDBLOCKRATE,             {     0,    10,    20,    30 }, true  },
+                                { xi.mod.AUTO_SHIELD_BASH_DELAY,      {     0,     5,    10,    15 }, false }, },
     ['coiler']              = { { xi.mod.DOUBLE_ATTACK,               {     3,    10,    20,    30 }, true  }, },
     ['coiler_ii']           = { { xi.mod.DOUBLE_ATTACK,               {    10,    15,    25,    35 }, true  }, },
     ['damage_gauge']        = { { xi.mod.AUTO_HEALING_THRESHOLD,      {    50,    60,    70,    85 }, true  },
@@ -123,16 +131,15 @@ local attachmentModifiers =
     ['dynamo']              = { { xi.mod.CRITHITRATE,                 {     3,     5,     7,     9 }, true  }, },
     ['dynamo_ii']           = { { xi.mod.CRITHITRATE,                 {     5,    10,    15,    20 }, true  }, },
     ['dynamo_iii']          = { { xi.mod.CRITHITRATE,                 {    10,    15,    25,    35 }, true  }, },
-    ['flame_holder']        = { { xi.mod.WEAPONSKILL_DAMAGE_BASE,     {   125,   200,   275,   350 }, true  }, },
+    ['flame_holder']        = { { xi.mod.WEAPONSKILL_DAMAGE_BASE,     {   125,   200,   275,   350 }, false }, },
     ['equalizer']           = { { xi.mod.AUTO_EQUALIZER,              {    10,    25,    50,    75 }, true  }, },
     ['galvanizer']          = { { xi.mod.COUNTER,                     {    10,    20,    35,    50 }, true  }, },
     ['hammermill']          = { { xi.mod.SHIELD_BASH,                 {    15,    25,    50,   100 }, true  },
                                 { xi.mod.AUTO_SHIELD_BASH_SLOW,       {     0,    12,    19,    25 }, true  }, },
     ['heatsink']            = { { xi.mod.BURDEN_DECAY,                {     1,     3,     4,     5 }, true  }, },
-    ['inhibitor']           = { { xi.mod.STORETP,                     {     5,    15,    25,    40 }, true  },
-                                { xi.mod.AUTO_TP_EFFICIENCY,          {   900,   900,   900,   900 }, false }, },
-    ['inhibitor_ii']        = { { xi.mod.STORETP,                     {    10,    25,    40,    65 }, true  },
-                                { xi.mod.AUTO_TP_EFFICIENCY,          {   900,   900,   900,   900 }, false }, },
+    ['ice_maker']           = { { xi.mod.AUTO_MAB_COEFFICIENT,        {     0,    50,    75,   100 }, false }, },
+    ['inhibitor']           = { { xi.mod.STORETP,                     {     5,    15,    25,    40 }, true  }, },
+    ['inhibitor_ii']        = { { xi.mod.STORETP,                     {    10,    25,    40,    65 }, true  }, },
     ['loudspeaker']         = { { xi.mod.MATT,                        {     5,    10,    15,    20 }, true  }, },
     ['loudspeaker_ii']      = { { xi.mod.MATT,                        {    10,    15,    20,    25 }, true  }, },
     ['loudspeaker_iii']     = { { xi.mod.MATT,                        {    20,    30,    40 ,   50 }, true  }, },
@@ -159,17 +166,18 @@ local attachmentModifiers =
     ['optic_fiber']         = { { xi.mod.AUTO_PERFORMANCE_BOOST,      {    10,    20,    25,    30 }, false }, },
     ['optic_fiber_ii']      = { { xi.mod.AUTO_PERFORMANCE_BOOST,      {    15,    30,    37,    45 }, false }, },
     ['percolator']          = { { xi.mod.COMBAT_SKILLUP_RATE,         {     5,    10,    15,    20 }, true  }, },
+    ['power_cooler']        = { { xi.mod.MP_COST_REDUCTION,           {    10,    20,    35,    50 }, true  }, },
     ['repeater']            = { { xi.mod.DOUBLE_SHOT_RATE,            {    10,    15,    35,    65 }, true  }, },
+    ['resister']            = { { xi.mod.STATUSRES,                   {     5,    10,    20,    30 }, true  }, },
+    ['resister_ii']         = { { xi.mod.STATUSRES,                   {    10,    20,    40,    60 }, true  }, },
     ['scanner']             = { { xi.mod.AUTO_SCAN_RESISTS,           {     0,     1,     1,     1 }, false }, },
     ['schurzen']            = { { xi.mod.AUTO_SCHURZEN,               {     0,     1,     1,     1 }, false }, },
     ['scope']               = { { xi.mod.RACC,                        {    10,    20,    30,    40 }, true  }, },
     ['scope_ii']            = { { xi.mod.RACC,                        {    20,    30,    40,    50 }, true  }, },
     ['scope_iii']           = { { xi.mod.RACC,                        {    30,    40,    55,    70 }, true  }, },
     ['scope_iv']            = { { xi.mod.RACC,                        {    40,    50,    65,    80 }, true  }, },
-    ['speedloader']         = { { xi.mod.SKILLCHAINBONUS,             {    20,    30,    40,    60 }, true  },
-                                { xi.mod.AUTO_TP_EFFICIENCY,          {   900,   900,   900,   900 }, false }, },
-    ['speedloader_ii']      = { { xi.mod.SKILLCHAINBONUS,             {    35,    45,    60,    80 }, true  },
-                                { xi.mod.AUTO_TP_EFFICIENCY,          {   900,   900,   900,   900 }, false }, },
+    ['speedloader']         = { { xi.mod.SKILLCHAINBONUS,             {    20,    30,    40,    60 }, true  }, },
+    ['speedloader_ii']      = { { xi.mod.SKILLCHAINBONUS,             {    35,    45,    60,    80 }, true  }, },
     ['stabilizer']          = { { xi.mod.ACC,                         {     5,    10,    15,    20 }, true  }, },
     ['stabilizer_ii']       = { { xi.mod.ACC,                         {    10,    15,    20,    25 }, true  }, },
     ['stabilizer_iii']      = { { xi.mod.ACC,                         {    20,    30,    40,    50 }, true  }, },
@@ -232,10 +240,6 @@ local function getRefreshModValue(pet, attachmentName, numManeuvers)
     return regenRefreshFormulas[attachmentName][1][numManeuvers + 1] + petMaxMP * (regenRefreshFormulas[attachmentName][2][numManeuvers + 1] / 100)
 end
 
-xi.automaton.getRangedBaseDamage = function(automaton)
-    return automaton:getRangedDmg() * (1 + automaton:getMod(xi.mod.AUTO_RANGED_DAMAGEP) / 100)
-end
-
 local function isOpticFiber(attachmentName)
     if string.find(attachmentName, 'optic_fiber') ~= nil then
         return true
@@ -251,15 +255,43 @@ local function calculatePerformanceBoost(pet)
     local performanceBoost = 0
 
     local numLightManeuvers = master and master:countEffect(xi.effect.LIGHT_MANEUVER) or 0
-    for _, attachmentObj in ipairs(pet:getAttachments()) do
-        local attachmentName = attachmentObj:getName()
-
+    for _, attachmentName in pairs(pet:getAttachments()) do
         if isOpticFiber(attachmentName) then
             performanceBoost = performanceBoost + attachmentModifiers[attachmentName][1][2][numLightManeuvers + 1]
         end
     end
 
     return performanceBoost
+end
+
+-- Return the base damage of an Automaton Ranged Attack, factoring in the AUTO_RANGED_DAMAGEP modifier.
+xi.automaton.getRangedBaseDamage = function(automaton)
+    return automaton:getRangedDmg() * (1 + automaton:getMod(xi.mod.AUTO_RANGED_DAMAGEP) / 100)
+end
+
+-- Returns the number of extra hits granted by the DOUBLE_ATTACK modifier based on the base number of hits.
+xi.automaton.getExtraHits = function(automaton, numHits)
+    local doubleAttackRate = utils.clamp(automaton:getMod(xi.mod.DOUBLE_ATTACK), 0, 100)
+    local extraHits        = 0
+    if doubleAttackRate > 0 then
+        for _ = 1, numHits do
+            if math.random(1, 100) <= doubleAttackRate then
+                extraHits = extraHits + 1
+            end
+        end
+    end
+
+    return extraHits
+end
+
+-- Applies the FTP multiplier for an Automaton Weapon Skill, factoring in the WEAPONSKILL_DAMAGE_BASE modifier from Flame Holder.
+xi.automaton.applyFlameHolder = function(automaton, ftp)
+    local flameHolderFTP = automaton:getMod(xi.mod.WEAPONSKILL_DAMAGE_BASE) / 100
+    if flameHolderFTP > 0 then
+        ftp[1] = ftp[1] * flameHolderFTP
+        ftp[2] = ftp[2] * flameHolderFTP
+        ftp[3] = ftp[3] * flameHolderFTP
+    end
 end
 
 -- Global functions to handle attachment equip, unequip, maneuver and performance changes
@@ -329,13 +361,7 @@ xi.automaton.updateAttachmentModifier = function(pet, attachment, maneuvers)
                 pet:delMod(modList[1], previousMod)
             end
 
-            -- TP Efficiency shouldn't stack, and all values are the same.  This simplify logic to
-            -- always set the latest, since there's no difference.
-            if modList[1] == xi.mod.AUTO_TP_EFFICIENCY then
-                pet:setMod(modList[1], modValue)
-            else
-                pet:addMod(modList[1], modValue)
-            end
+            pet:addMod(modList[1], modValue)
 
             pet:setLocalVar(attachmentName .. attachmentModPos, math.abs(modValue))
 
@@ -443,4 +469,39 @@ xi.automaton.getModelId = function(player)
     end
 
     return frameTable[head] or defaultModelId
+end
+
+---@param actor CBaseEntity
+---@param target CBaseEntity
+---@return number
+xi.automaton.handleAttuner = function(actor, target)
+    if
+        actor:isAutomaton() and
+        actor:hasAttachmentSet(xi.item.ATTUNER_ATTACHMENT) and
+        actor:getMainLvl() < target:getMainLvl()
+    then
+        local master = actor:getMaster()
+
+        -- We have reason to believe BG wiki is wrong about the attuner values
+        -- so we are using these for the moment; JP wiki and dev posts imply that it's not as simple as level + 1 and higher gets massive def ignore.
+        if master then
+            local numFireManeuvers = math.min(master:countEffect(xi.effect.FIRE_MANEUVER), 3)
+
+            if numFireManeuvers > 0 and master:hasStatusEffect(xi.effect.OVERDRIVE) then
+                numFireManeuvers = 3
+            end
+
+            local attunerEffect    =
+            {
+                [0] = 0.05,
+                [1] = 0.10,
+                [2] = 0.15,
+                [3] = 0.20
+            }
+
+            return attunerEffect[numFireManeuvers] or 0
+        end
+    end
+
+    return 0
 end
