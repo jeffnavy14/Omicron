@@ -95,47 +95,47 @@ void CAutomatonController::setMagicCooldowns()
         case AutomatonHead::Harlequin:
         {
             m_magicCooldown    = 10s;
-            m_enfeebleCooldown = 10s;
-            m_healCooldown     = 15s;
+            m_enfeebleCooldown = 12s;
+            m_healCooldown     = 12s;
         }
         break;
         case AutomatonHead::Valoredge:
         {
-            m_magicCooldown = 20s;
+            m_magicCooldown = 10s;
             m_healCooldown  = 20s;
         }
         break;
         case AutomatonHead::Sharpshot:
         {
-            m_magicCooldown    = 12s;
+            m_magicCooldown    = 10s;
             m_enfeebleCooldown = 12s;
-            m_healCooldown     = 18s; // Guess
+            m_healCooldown     = 20s;
         }
         break;
         case AutomatonHead::Stormwaker:
         {
-            m_magicCooldown     = 10s;
-            m_enfeebleCooldown  = 12s;
-            m_healCooldown      = 15s; // Guess
-            m_elementalCooldown = 33s; // Guess
-            m_enhanceCooldown   = 10s; // Guess
+            m_magicCooldown     = 8s;
+            m_enfeebleCooldown  = 10s;
+            m_healCooldown      = 20s;
+            m_elementalCooldown = 25s;
+            m_enhanceCooldown   = 25s;
         }
         break;
         case AutomatonHead::Soulsoother:
         {
-            m_magicCooldown    = 4s;
-            m_enfeebleCooldown = 4s;
-            m_healCooldown     = 15s;
-            m_enhanceCooldown  = 15s;
-            m_statusCooldown   = 15s;
+            m_magicCooldown    = 8s;
+            m_enfeebleCooldown = 10s;
+            m_healCooldown     = 10s;
+            m_statusCooldown   = 10s;
+            m_enhanceCooldown  = 25s;
         }
         break;
         case AutomatonHead::Spiritreaver:
         {
-            m_magicCooldown     = 10s;
+            m_magicCooldown     = 8s;
             m_enfeebleCooldown  = 10s;
-            m_elementalCooldown = 33s;
-            m_enhanceCooldown   = 135s;
+            m_elementalCooldown = 30s;
+            m_enhanceCooldown   = 35s;
         }
     }
 }

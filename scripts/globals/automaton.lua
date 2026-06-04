@@ -31,6 +31,7 @@ xi.automaton.abilities =
     HEAT_CAPACITOR  = 2745,
     BARRAGE_TURBINE = 2746,
     DISRUPTOR       = 2747,
+    REGULATOR       = 3485,
 }
 
 -- [FRAME][HEAD] = Model ID
@@ -125,8 +126,10 @@ local attachmentModifiers =
                                 { xi.mod.AUTO_SHIELD_BASH_DELAY,      {     0,     5,    10,    15 }, false }, },
     ['coiler']              = { { xi.mod.DOUBLE_ATTACK,               {     3,    10,    20,    30 }, true  }, },
     ['coiler_ii']           = { { xi.mod.DOUBLE_ATTACK,               {    10,    15,    25,    35 }, true  }, },
-    ['damage_gauge']        = { { xi.mod.AUTO_HEALING_THRESHOLD,      {    50,    60,    70,    85 }, true  },
-                                { xi.mod.AUTO_HEALING_DELAY,          {     0,     3,     6,     9 }, false }, },
+    ['damage_gauge']        = { { xi.mod.AUTO_HEALING_THRESHOLD,      {    50,    60,    70,    80 }, false },
+                                { xi.mod.AUTO_HEALING_DELAY,          {     3,     3,     3,     3 }, false }, },
+    ['damage_gauge_ii']     = { { xi.mod.AUTO_HEALING_THRESHOLD,      {    60,    70,    80,    90 }, false },
+                                { xi.mod.AUTO_HEALING_DELAY,          {     3,     3,     3,     3 }, false }, },
     ['drum_magazine']       = { { xi.mod.AUTO_RANGED_DELAY,           {     3,     6,     9,    15 }, true  }, },
     ['dynamo']              = { { xi.mod.CRITHITRATE,                 {     3,     5,     7,     9 }, true  }, },
     ['dynamo_ii']           = { { xi.mod.CRITHITRATE,                 {     5,    10,    15,    20 }, true  }, },
@@ -178,6 +181,9 @@ local attachmentModifiers =
     ['scope_iv']            = { { xi.mod.RACC,                        {    40,    50,    65,    80 }, true  }, },
     ['speedloader']         = { { xi.mod.SKILLCHAINBONUS,             {    20,    30,    40,    60 }, true  }, },
     ['speedloader_ii']      = { { xi.mod.SKILLCHAINBONUS,             {    35,    45,    60,    80 }, true  }, },
+    ['smoke_screen']        = { { xi.mod.EVA,                         {    20,    40,    80,   160 }, true  },
+                                { xi.mod.ACC,                         {   -20,   -40,   -80,  -160 }, true  },
+                                { xi.mod.RACC,                        {   -20,   -40,   -80,  -160 }, true  }, },
     ['stabilizer']          = { { xi.mod.ACC,                         {     5,    10,    15,    20 }, true  }, },
     ['stabilizer_ii']       = { { xi.mod.ACC,                         {    10,    15,    20,    25 }, true  }, },
     ['stabilizer_iii']      = { { xi.mod.ACC,                         {    20,    30,    40,    50 }, true  }, },

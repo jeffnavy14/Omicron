@@ -1,7 +1,10 @@
 -----------------------------------
--- Attachment: Smoke Screen
--- Significantly raises evasion at the cost of accuracy. Bonus and penalty increases with Dark Maneuvers.
--- https://wiki.ffo.jp/html/8618.html
+-- Attachment: Damage Gauge II
+-- Raises the activation threshold of Regulator from 50% to 75%.
+-- Raises the threshold at which the automaton will prioritize healing players based off Light Maneuvers.
+-- Reduces the cooldown of healing magic by 3 seconds.
+-- Does not stack with and overrides the effects of Damage Gauge.
+-- https://wiki.ffo.jp/html/8624.html
 -----------------------------------
 ---@type TAttachment
 local attachmentObject = {}
