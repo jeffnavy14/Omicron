@@ -15652,7 +15652,7 @@ INSERT INTO `mob_spawn_points` VALUES (17043550,0,'Carriage_Lizard','Carriage Li
 INSERT INTO `mob_spawn_points` VALUES (17043551,0,'Carriage_Lizard','Carriage Lizard',14,70,72,20.902,1.731,-58.541,71);
 INSERT INTO `mob_spawn_points` VALUES (17043552,0,'Ziz','Ziz',15,76,78,118.859,14.166,-196.702,48);
 INSERT INTO `mob_spawn_points` VALUES (17043553,0,'Ziz','Ziz',15,76,78,115.616,14.335,-197.514,135);
-INSERT INTO `mob_spawn_points` VALUES (17043554,0,'Zizzy_Zillah','Zizzy Zillah',20,79,79,83.000,14.500,-222.000,60);
+INSERT INTO `mob_spawn_points` VALUES (17043554,0,'Zizzy_Zillah','Zizzy Zillah',20,83,83,83.000,14.500,-222.000,60);
 INSERT INTO `mob_spawn_points` VALUES (17043555,0,'Ziz','Ziz',15,76,78,121.454,14.157,-155.157,239);
 INSERT INTO `mob_spawn_points` VALUES (17043556,0,'Puk','Puk',18,70,72,125.460,14.294,-168.590,55);
 INSERT INTO `mob_spawn_points` VALUES (17043557,0,'Ziz','Ziz',15,76,78,84.828,14.170,-154.138,251);
