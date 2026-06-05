@@ -177,6 +177,11 @@ void CZoneEntities::TryAddToNearbySpawnLists(CBaseEntity* PEntity)
                             continue;
                         }
 
+                        if (PChar->getCharVar("[LevelRatio]Restriction") != PCurrentChar->getCharVar("[LevelRatio]Restriction"))
+                        {
+                            continue;
+                        } /* REMOVED: Mog Garden and Feretory solo zone visibility block */
+
                         if (PChar->m_isGMHidden)
                         {
                             continue;

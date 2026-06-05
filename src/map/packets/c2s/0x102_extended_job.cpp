@@ -197,7 +197,7 @@ void GP_CLI_COMMAND_EXTENDED_JOB::process(MapSession* PSession, CCharEntity* PCh
                 auto*      PSpell  = spell::GetSpell(spellId);
                 if (auto* PBlueSpell = dynamic_cast<CBlueSpell*>(PSpell))
                 {
-                    PChar->PRecastContainer->Add(RECAST_MAGIC, static_cast<Recast>(PBlueSpell->getID()), 60s);
+                    PChar->PRecastContainer->Add(RECAST_MAGIC, static_cast<Recast>(PBlueSpell->getID()), 10s); /* CUSTOM 10S RECAST */
                 }
             }
         }

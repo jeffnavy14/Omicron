@@ -1631,14 +1631,38 @@ void CBattleEntity::SetMLevel(uint8 mlvl)
 void CBattleEntity::SetSLevel(uint8 slvl)
 {
     TracyZoneScoped;
-
     if (!settings::get<bool>("map.INCLUDE_MOB_SJ") && this->objtype == TYPE_MOB && this->objtype != TYPE_PET)
     {
         m_slvl = m_mlvl; // All mobs have a 1:1 ratio of MainJob/Subjob
     }
     else
     {
+        // 1. Get the global server setting first
         auto ratio = settings::get<uint8>("map.SUBJOB_RATIO");
+
+        // 2. CHECK FOR PLAYER OVERRIDE
+        if (this->objtype == TYPE_PC)
+        {
+            // Cast this generic BattleEntity into a CharEntity so we can access player variables
+            auto* PChar = static_cast<CCharEntity*>(this);
+            
+            // First, look for the specialized bracket level ratio constraint
+            uint32 customRatio = charutils::GetCharVar(PChar, "[LevelRatio]Restriction");
+            
+            // Fallback: If the specialized bracket isn't set, check your standard "Ratio" variable
+            if (customRatio == 0)
+            {
+                customRatio = charutils::GetCharVar(PChar, "Ratio");
+            }
+            
+            // If any custom override ratio was found in the database, intercept the global map configuration
+            if (customRatio > 0)
+            {
+                ratio = customRatio;
+            }
+        }
+
+        // 3. Continue with the normal math based on the final ratio
         switch (ratio)
         {
             case 0: // no SJ
@@ -1663,7 +1687,7 @@ void CBattleEntity::SetSLevel(uint8 slvl)
     {
         db::preparedStmt("UPDATE char_stats SET slvl = ? WHERE charid = ? LIMIT 1", m_slvl, this->id);
     }
-}
+} /* CUSTOM DYNAMIC SUBJOB BRACKETS */
 
 void CBattleEntity::SetDeathType(uint8 type)
 {

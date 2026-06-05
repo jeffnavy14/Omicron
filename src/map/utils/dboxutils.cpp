@@ -144,6 +144,11 @@ void dboxutils::AddItemsToBeSent(CCharEntity* PChar, GP_CLI_COMMAND_PBX_BOXNO Bo
         const auto [recvCharid, recvAccid] = charutils::getCharIdAndAccountIdFromName(receiverName);
         if (recvCharid && recvAccid)
         {
+            // Custom Bracket Restriction Delivery Block Injected
+            if (PChar && PChar->getCharVar("[LevelRatio]Restriction") != charutils::FetchCharVar(recvCharid, "[LevelRatio]Restriction").first)
+            {
+                return;
+            } /* CUSTOM BRACKET DBOX RESTRICTION */
             if (PItem->hasFlag(ItemFlag::NoDelivery))
             {
                 if (!PItem->hasFlag(ItemFlag::CanSendAccount))

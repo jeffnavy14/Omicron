@@ -44,6 +44,13 @@ auto GP_CLI_COMMAND_BAZAAR_BUY::validate(MapSession* PSession, const CCharEntity
 
 void GP_CLI_COMMAND_BAZAAR_BUY::process(MapSession* PSession, CCharEntity* PChar) const
 {
+    auto* PBracketCheckEntity = PChar->GetEntity(PChar->BazaarID.targid, TYPE_PC);
+    if (PBracketCheckEntity && PChar) {
+        auto* PBracketCheckTarget = static_cast<CCharEntity*>(PBracketCheckEntity);
+        if (PChar->getCharVar("[LevelRatio]Restriction") != PBracketCheckTarget->getCharVar("[LevelRatio]Restriction")) {
+            return;
+        }
+    } /* CUSTOM BRACKET BAZAAR RESTRICTION */
     auto* PEntity = PChar->GetEntity(PChar->BazaarID.targid, TYPE_PC);
     if (!PEntity)
     {

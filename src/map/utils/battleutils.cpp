@@ -3848,7 +3848,7 @@ bool HasNinjaTool(CBattleEntity* PEntity, CSpell* PSpell, bool ConsumeTool)
 
         if (ERROR_SLOTID == (SlotID = PChar->getStorage(LOC_INVENTORY)->SearchItem(toolID)))
         {
-            if (PChar->GetMJob() == JOB_NIN)
+            if (PChar->GetMJob() == JOB_NIN || PChar->GetSJob() == JOB_NIN) /* CUSTOM NIN TOOL UTILITY */
             {
                 switch (toolID)
                 {

@@ -53,7 +53,7 @@ enum AOE_TYPE
     REAR_CONE = 8, // conal AoE behind the source
 };
 
-#define MAX_MOBSKILL_ID 4262
+#define MAX_MOBSKILL_ID 4386 /* CUSTOM MAX MOBSKILL */
 
 class CMobSkill
 {

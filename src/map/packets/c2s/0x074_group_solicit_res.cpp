@@ -41,6 +41,15 @@ void GP_CLI_COMMAND_GROUP_SOLICIT_RES::process(MapSession* PSession, CCharEntity
 {
     if (CCharEntity* PInviter = zoneutils::GetCharFromWorld(PChar->InvitePending.id, PChar->InvitePending.targid); PInviter != nullptr)
     {
+        if (PChar->getCharVar("[LevelRatio]Restriction") != PInviter->getCharVar("[LevelRatio]Restriction"))
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(PChar, 0, 0, MsgStd::CannotBeProcessed);
+            PChar->InvitePending.clean();
+            return;
+        }
+    } /* CUSTOM BRACKET INVITE RESTRICTION */
+    if (CCharEntity* PInviter = zoneutils::GetCharFromWorld(PChar->InvitePending.id, PChar->InvitePending.targid); PInviter != nullptr)
+    {
         // This switch statement only occurs when both the invitee and inviter are on the same process
         switch (static_cast<GP_CLI_COMMAND_GROUP_SOLICIT_RES_RES>(this->Res))
         {

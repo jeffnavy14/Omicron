@@ -2060,6 +2060,10 @@ void DropItem(CCharEntity* PChar, uint8 container, uint8 slotID, int32 quantity,
 
 bool CanTrade(CCharEntity* PChar, CCharEntity* PTarget)
 {
+    if (PChar && PTarget && PChar->getCharVar("[LevelRatio]Restriction") != PTarget->getCharVar("[LevelRatio]Restriction"))
+    {
+        return false;
+    } /* CUSTOM BRACKET TRADE RESTRICTION */
     if (PChar->m_PMonstrosity != nullptr || PTarget->m_PMonstrosity != nullptr)
     {
         return false;
