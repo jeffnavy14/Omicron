@@ -54364,15 +54364,15 @@ INSERT INTO `mob_spawn_points` VALUES (17346583,0,'Wolf_Clan_Warmachine','Wolf C
 INSERT INTO `mob_spawn_points` VALUES (17346584,0,'Orcs_Wyvern','Orc\'s Wyvern',8,54,54,81.591,-145.263,294.536,45);
 
 -- Shattering Stars
-INSERT INTO `mob_spawn_points` VALUES (17346585,0,'Maat','Maat',9,70,70,-396.000,94.000,-64.000,45); -- Maat (WAR arena 1)
-INSERT INTO `mob_spawn_points` VALUES (17346586,0,'Maat','Maat',9,70,70,-156.065,-26.009,115.970,45); -- Maat (WAR arena 2)
-INSERT INTO `mob_spawn_points` VALUES (17346587,0,'Maat','Maat',9,70,70,83.928,-146.026,295.804,45); -- Maat (WAR arena 3)
-INSERT INTO `mob_spawn_points` VALUES (17346588,0,'Maat','Maat',10,70,70,-396.000,94.000,-64.000,45); -- Maat (BLM arena 1)
-INSERT INTO `mob_spawn_points` VALUES (17346589,0,'Maat','Maat',10,70,70,-156.065,-26.009,115.970,45); -- Maat (BLM arena 2)
-INSERT INTO `mob_spawn_points` VALUES (17346590,0,'Maat','Maat',10,70,70,83.928,-146.026,295.804,45); -- Maat (BLM arena 3)
-INSERT INTO `mob_spawn_points` VALUES (17346591,0,'Maat','Maat',11,70,70,-396.000,94.000,-64.000,45); -- Maat (RNG arena 1)
-INSERT INTO `mob_spawn_points` VALUES (17346592,0,'Maat','Maat',11,70,70,-156.065,-26.009,115.970,45); -- Maat (RNG arena 2)
-INSERT INTO `mob_spawn_points` VALUES (17346593,0,'Maat','Maat',11,70,70,83.928,-146.026,295.804,45); -- Maat (RNG arena 3)
+INSERT INTO `mob_spawn_points` VALUES (17346585,0,'Maat_war','Maat',9,70,70,-396.000,94.000,-64.000,45); -- Maat (WAR arena 1)
+INSERT INTO `mob_spawn_points` VALUES (17346586,0,'Maat_war','Maat',9,70,70,-156.065,-26.009,115.970,45); -- Maat (WAR arena 2)
+INSERT INTO `mob_spawn_points` VALUES (17346587,0,'Maat_war','Maat',9,70,70,83.928,-146.026,295.804,45); -- Maat (WAR arena 3)
+INSERT INTO `mob_spawn_points` VALUES (17346588,0,'Maat_blm','Maat',10,70,70,-396.000,94.000,-64.000,45); -- Maat (BLM arena 1)
+INSERT INTO `mob_spawn_points` VALUES (17346589,0,'Maat_blm','Maat',10,70,70,-156.065,-26.009,115.970,45); -- Maat (BLM arena 2)
+INSERT INTO `mob_spawn_points` VALUES (17346590,0,'Maat_blm','Maat',10,70,70,83.928,-146.026,295.804,45); -- Maat (BLM arena 3)
+INSERT INTO `mob_spawn_points` VALUES (17346591,0,'Maat_rng','Maat',11,70,70,-396.000,94.000,-64.000,45); -- Maat (RNG arena 1)
+INSERT INTO `mob_spawn_points` VALUES (17346592,0,'Maat_rng','Maat',11,70,70,-156.065,-26.009,115.970,45); -- Maat (RNG arena 2)
+INSERT INTO `mob_spawn_points` VALUES (17346593,0,'Maat_rng','Maat',11,70,70,83.928,-146.026,295.804,45); -- Maat (RNG arena 3)
 
 -- Shooting Fish
 INSERT INTO `mob_spawn_points` VALUES (17346594,0,'Sniper_Pugil','Sniper Pugil',12,21,21,-396.000,94.000,-64.000,50);
