@@ -58,6 +58,7 @@ zones[xi.zone.MAZE_OF_SHAKHRAMI] =
         APPARATUS_ELEMENTAL = GetFirstID('Dark_Elemental'),
         AROMA_CRAWLER       = GetFirstID('Aroma_Crawler'),
         LOST_SOUL           = GetFirstID('Lost_Soul'),
+        VOIDWATCH           = GetTableOfIDs('Ogbunabali'),
     },
     npc =
     {

@@ -23,8 +23,9 @@ zones[xi.zone.VUNKERL_INLET_S] =
     },
     mob =
     {
-        BIG_BANG = GetFirstID('Big_Bang'),
-        PALLAS   = GetFirstID('Pallas'),
+        BIG_BANG  = GetFirstID('Big_Bang'),
+        PALLAS    = GetFirstID('Pallas'),
+        VOIDWATCH = GetTableOfIDs('Gaunab'),
     },
     npc =
     {

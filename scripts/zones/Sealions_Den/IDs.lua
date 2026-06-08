@@ -38,6 +38,12 @@ zones[xi.zone.SEALIONS_DEN] =
         MAKKI_CHEBUKKI = GetFirstID('Makki-Chebukki'),
         MAMMET_22_ZETA = GetFirstID('Mammet-22_Zeta'),
         TENZEN         = GetFirstID('Tenzen'),
+        TENZEN_HTBF          = GetFirstID('Tenzen_HTBF'),
+        CHERUKIKI_HTBF       = GetFirstID('Cherukiki_HTBF'),
+        KUKKI_CHEBUKKI_HTBF  = GetFirstID('Kukki-Chebukki_HTBF'),
+        MAKKI_CHEBUKKI_HTBF  = GetFirstID('Makki-Chebukki_HTBF'),
+        OMEGA_HTBF           = GetFirstID('Omega_HTBF'),
+        ULTIMA_HTBF          = GetFirstID('Ultima_HTBF'),
     },
     npc =
     {

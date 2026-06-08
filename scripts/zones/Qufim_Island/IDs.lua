@@ -53,6 +53,7 @@ zones[xi.zone.QUFIM_ISLAND] =
         OPHIOTAURUS       = GetFirstID('Ophiotaurus'),
         SLIPPERY_SUCKER   = GetFirstID('Slippery_Sucker'),
         TRICKSTER_KINETIX = GetFirstID('Trickster_Kinetix'),
+        VOIDWATCH         = GetTableOfIDs('Kaggen'),
     },
     npc =
     {

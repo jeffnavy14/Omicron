@@ -75,7 +75,8 @@ zones[xi.zone.TEMPLE_OF_UGGALEPIH] =
         TROMPE_LOEIL             = GetFirstID('Trompe_LOeil'),
         TEMPLE_GUARDIAN          = GetFirstID('Temple_Guardian'),
         TONBERRY_KINQ            = GetFirstID('Tonberry_Kinq'),
-        YALLERY_BROWN            = GetFirstID('Yallery_Brown')
+        YALLERY_BROWN            = GetFirstID('Yallery_Brown'),
+        VOIDWATCH                = GetTableOfIDs('Neith'),
     },
     npc =
     {

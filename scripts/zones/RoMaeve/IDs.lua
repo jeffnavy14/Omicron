@@ -39,6 +39,7 @@ zones[xi.zone.ROMAEVE] =
         ROGUE_RECEPTACLE = GetFirstID('Rogue_Receptacle'),
         ELDHRIMNIR       = GetFirstID('Eldhrimnir'),
         MOKKURKALFI      = GetFirstID('Mokkurkalfi'),
+        VOIDWATCH        = GetTableOfIDs('Mimic_King'),
     },
     npc =
     {

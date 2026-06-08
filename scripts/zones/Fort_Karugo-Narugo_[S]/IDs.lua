@@ -28,6 +28,7 @@ zones[xi.zone.FORT_KARUGO_NARUGO_S] =
         KIRTIMUKHA               = GetFirstID('Kirtimukha'),
         DEMOISELLE_DESOLEE       = GetFirstID('Demoiselle_Desolee'),
         TIGRESS_STRIKES_WAR_LYNX = GetFirstID('War_Lynx'),
+        VOIDWATCH                = GetTableOfIDs('Kalasutrax'),
     },
     npc =
     {

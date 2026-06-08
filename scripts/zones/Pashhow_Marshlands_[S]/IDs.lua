@@ -36,6 +36,7 @@ zones[xi.zone.PASHHOW_MARSHLANDS_S] =
         SUGAAR    = GetFirstID('Sugaar'),
         NOMMO     = GetFirstID('Nommo'),
         KINEPIKWA = GetFirstID('Kinepikwa'),
+        VOIDWATCH = GetTableOfIDs('Melancholic_Moira'),
 
         VOIDWALKER =
         {

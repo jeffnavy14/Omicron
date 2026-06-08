@@ -34,6 +34,7 @@ zones[xi.zone.MERIPHATAUD_MOUNTAINS_S] =
     {
         CENTIPEDAL_CENTRUROIDES = GetFirstID('Centipedal_Centruroides'),
         BLOODLAPPER             = GetFirstID('Bloodlapper'),
+        VOIDWATCH               = GetTableOfIDs('Akupara'),
 
         VOIDWALKER =
         {

@@ -59,6 +59,7 @@ zones[xi.zone.MOUNT_ZHAYOLM] =
         ANANTABOGA            = GetFirstID('Anantaboga'),
         KHROMASOUL_BHURBORLOR = GetFirstID('Khromasoul_Bhurborlor'),
         SARAMEYA              = GetFirstID('Sarameya'),
+        VOIDWATCH             = GetTableOfIDs('Vanasarvik'),
     },
     npc =
     {

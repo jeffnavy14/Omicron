@@ -67,6 +67,7 @@ zones[xi.zone.JUGNER_FOREST] =
         METEORMAULER       = GetFirstID('Meteormauler_Zhagtegg'),
         PANZER_PERCIVAL    = GetTableOfIDs('Panzer_Percival'), -- 2 NMs
         SUPPLESPINE_MUJWUJ = GetFirstID('Supplespine_Mujwuj'),
+        VOIDWATCH          = GetTableOfIDs('Belphoebe'),
 
         VOIDWALKER =
         {

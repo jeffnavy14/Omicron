@@ -36,6 +36,7 @@ zones[xi.zone.EAST_RONFAURE_S] =
         GOBLINTRAP = GetFirstID('Goblintrap'),
         SKOGS_FRU  = GetFirstID('Skogs_Fru'),
         MYRADROSH  = GetFirstID('Myradrosh'),
+        VOIDWATCH  = GetTableOfIDs('Cottus'),
 
         VOIDWALKER =
         {

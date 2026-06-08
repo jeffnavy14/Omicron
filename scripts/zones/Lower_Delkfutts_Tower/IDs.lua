@@ -38,6 +38,7 @@ zones[xi.zone.LOWER_DELKFUTTS_TOWER] =
         EPIALTES      = GetFirstID('Epialtes'),
         EURYMEDON     = GetFirstID('Eurymedon'),
         DISASTER_IDOL = GetFirstID('Disaster_Idol'),
+        VOIDWATCH     = GetTableOfIDs('Akvan'),
     },
     npc =
     {

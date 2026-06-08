@@ -71,6 +71,7 @@ zones[xi.zone.VALKURM_DUNES] =
         MARCHELUTE          = GetFirstID('Marchelute'),
         ONRYO               = GetFirstID('Onryo'),
         VALKURM_EMPEROR     = GetFirstID('Valkurm_Emperor'),
+        VOIDWATCH           = GetTableOfIDs('Ig-Alima'),
     },
 
     npc =

@@ -60,6 +60,7 @@ zones[xi.zone.ARRAPAGO_REEF] =
         VELIONIS              = GetFirstID('Velionis'),
         ZAREEHKL_THE_JUBILANT = GetFirstID('Zareehkl_the_Jubilant'),
         NUHN                  = GetFirstID('Nuhn'),
+        VOIDWATCH             = GetTableOfIDs('Dimgruzub'),
     },
     npc =
     {

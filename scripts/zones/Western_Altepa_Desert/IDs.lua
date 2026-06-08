@@ -58,6 +58,7 @@ zones[xi.zone.WESTERN_ALTEPA_DESERT] =
         PICOLATON            = GetFirstID('Picolaton'),
         SABOTENDER_ENAMORADO = GetFirstID('Sabotender_Enamorado'),
         WESTERN_SPHINX       = GetFirstID('Western_Sphinx'),
+        VOIDWATCH            = GetTableOfIDs('Sabotender_Campeador'),
     },
     npc =
     {

@@ -21,6 +21,7 @@ zones[xi.zone.GARLAIGE_CITADEL_S] =
     },
     mob =
     {
+        VOIDWATCH = GetTableOfIDs('Laidly_Laurence'),
     },
     npc =
     {

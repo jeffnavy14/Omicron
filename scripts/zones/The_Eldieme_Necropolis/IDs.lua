@@ -71,6 +71,7 @@ zones[xi.zone.THE_ELDIEME_NECROPOLIS] =
         MIMIC               = GetFirstID('Mimic'),
         APPARATUS_ELEMENTAL = 17576271,
         NAMORODO            = GetFirstID('Namorodo'),
+        VOIDWATCH           = GetTableOfIDs('Gasha'),
     },
 
     npc =

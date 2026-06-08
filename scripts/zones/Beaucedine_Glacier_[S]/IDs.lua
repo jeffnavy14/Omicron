@@ -58,18 +58,18 @@ zones[xi.zone.BEAUCEDINE_GLACIER_S] =
 
             [xi.keyItem.COLORFUL_ABYSSITE] =
             {
-                17334555, -- Erebus
-                17334556, -- Feuerunke
+                17334553, -- Erebus
+                17334552, -- Feuerunke
             },
 
             [xi.keyItem.PURPLE_ABYSSITE] =
             {
-                17334557  -- Lord Ruthven
+                17334551  -- Lord Ruthven
             },
 
             [xi.keyItem.BLACK_ABYSSITE] =
             {
-                17334558, -- Yilbegan
+                17334550, -- Yilbegan
             },
         }
     },

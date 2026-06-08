@@ -36,6 +36,7 @@ zones[xi.zone.NORTH_GUSTABERG_S] =
     {
         ANKABUT    = GetFirstID('Ankabut'),
         GLOOMANITA = GetFirstID('Gloomanita'),
+        VOIDWATCH  = GetTableOfIDs('Ushumgal'),
 
         VOIDWALKER =
         {

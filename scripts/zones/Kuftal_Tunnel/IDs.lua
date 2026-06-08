@@ -48,6 +48,7 @@ zones[xi.zone.KUFTAL_TUNNEL] =
         PHANTOM_WORM         = GetFirstID('Phantom_Worm'),
         GUIVRE               = GetFirstID('Guivre'),
         KETTENKAEFER         = GetFirstID('Kettenkaefer'),
+        VOIDWATCH            = GetTableOfIDs('Tangaroa'),
     },
     npc =
     {

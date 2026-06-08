@@ -26,6 +26,7 @@ zones[xi.zone.THE_ELDIEME_NECROPOLIS_S] =
     },
     mob =
     {
+        VOIDWATCH = GetTableOfIDs('Giltine'),
     },
     npc =
     {

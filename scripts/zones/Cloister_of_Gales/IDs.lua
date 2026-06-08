@@ -32,6 +32,7 @@ zones[xi.zone.CLOISTER_OF_GALES] =
     {
         GARUDA_PRIME_ASA   = GetFirstID('Garuda_Prime_ASA'),
         OGMIOS             = GetFirstID('Ogmios'),
+        GARUDA_PRIME_HTBF  = GetFirstID('Garuda_Prime_HTBF'),
     },
     npc =
     {

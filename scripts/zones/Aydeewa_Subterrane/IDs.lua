@@ -43,11 +43,11 @@ zones[xi.zone.AYDEEWA_SUBTERRANE] =
     {
         BLUESTREAK_GYUGYUROON = GetFirstID('Bluestreak_Gyugyuroon'),
         CHIGRE                = GetFirstID('Chigre'),
-        CRYSTAL_EATER         = GetFirstID('Crystal_Eater'),
         NOSFERATU             = GetFirstID('Nosferatu'),
         PANDEMONIUM_WARDEN    = GetFirstID('Pandemonium_Warden'),
         PANDEMONIUM_LAMPS     = GetTableOfIDs('Pandemonium_Lamp'),
         PANDEMONIUM_AVATARS   = GetTableOfIDs('Pandemonium_Lamp_Avatar'),
+        VOIDWATCH             = GetTableOfIDs('Morta'),
     },
     npc =
     {
