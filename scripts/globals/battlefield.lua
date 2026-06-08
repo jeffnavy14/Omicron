@@ -354,6 +354,34 @@ xi.battlefield.id =
     CENTRAL_TEMENOS_4TH_FLOOR                  = 1306, -- Converted
     CENTRAL_TEMENOS_4TH_FLOOR_II               = 1307, -- Converted
     PURPLE_THE_NEW_BLACK                       = 2721, -- Converted
+-----------------------
+-- LD added
+-----------------------
+    TRIAL_BY_FIRE_II                           =  548,
+    TRIAL_BY_WIND_II                           =  421,
+    TRIAL_BY_WATER_II                          =  612,
+    TRIAL_BY_EARTH_II                          =  581,
+    TRIAL_BY_ICE_II                            =  485,
+    TRIAL_BY_LIGHTNING_II                      =  453,       
+    SHADOW_LORD_BATTLE_II                      =  166,
+    RETURN_TO_DELKFUTTS_TOWER_II               =  263,
+    CELESTIAL_NEXUS_II                         =  321,
+    DIVINE_MIGHT_II                            =  299,
+    SAVAGE_II                                  =  968,
+    HEAD_WIND_II                               =  680,
+    ONE_TO_BE_FEARED_II                        =  995,
+    WARRIORS_PATH_II                           =  994,
+    DAWN_II                                    = 1059,
+    PUPPET_IN_PERIL_II                         = 1157,
+    LEGACY_OF_THE_LOST_II                      = 1093,                         
+    MOONLIT_PATH_II                            =  228,
+    WAKING_DREAMS_II                           =  707,
+    WAKING_THE_BEAST_FULLMOON_II               =  229,
+    ARK_ANGELS_HM_II                           =  294,
+    ARK_ANGELS_TT_II                           =  295,
+    ARK_ANGELS_MR_II                           =  296,
+    ARK_ANGELS_EV_II                           =  297,
+    ARK_ANGELS_GK_II                           =  298,
 }
 
 xi.battlefield.itemUses =
