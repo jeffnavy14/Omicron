@@ -40,6 +40,7 @@ zones[xi.zone.BATALLIA_DOWNS_S] =
         HABERGOASS         = GetFirstID('Habergoass'),
         LA_VELUE           = GetFirstID('La_Velue'),
         MENECHME           = GetFirstID('Menechme'),
+        VOIDWATCH          = GetTableOfIDs('Taweret'),
 
         VOIDWALKER =
         {

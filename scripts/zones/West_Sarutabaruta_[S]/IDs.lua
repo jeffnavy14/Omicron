@@ -33,8 +33,9 @@ zones[xi.zone.WEST_SARUTABARUTA_S] =
 
     mob =
     {
-        JEDUAH = GetFirstID('Jeduah'),
+        JEDUAH     = GetFirstID('Jeduah'),
         RAMPONNEAU = GetFirstID('Ramponneau'),
+        VOIDWATCH  = GetTableOfIDs('Pancimanci'),
         VOIDWALKER =
         {
             [xi.keyItem.CLEAR_ABYSSITE] =

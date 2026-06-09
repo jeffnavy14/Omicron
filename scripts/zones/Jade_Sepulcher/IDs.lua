@@ -43,9 +43,13 @@ zones[xi.zone.JADE_SEPULCHER] =
     },
     mob =
     {
-        LANCELORD_GAHEEL_JA  = GetFirstID('Lancelord_Gaheel_Ja'),
-        RAUBAHN              = GetFirstID('Raubahn'),
-        SHADOWHAND_KAJEEL_JA = GetFirstID('Shadowhand_Kajeel_Ja'),
+        LANCELORD_GAHEEL_JA = GetFirstID('Lancelord_Gaheel_Ja'),
+        LANCELORD_GAHEEL_JA_HTBF   = GetFirstID('Lancelord_Gaheel_HTBF'),
+        MAMOOL_JA_UNSEEN_HTBF      = GetFirstID('Mamool_Unseen_HTBF'),
+        MAMOOL_JA_FLAMEREARER_HTBF = GetFirstID('Mamool_Flamerearer_HTBF'),
+        MAMOOL_JA_ISANGOMA_HTBF    = GetFirstID('Mamool_Isangoma_HTBF'),
+        MAMOOL_JA_PROFLIGATE_HTBF  = GetFirstID('Mamool_Profligate_HTBF'),
+        MAMOOL_JA_POLEMICIST_HTBF  = GetFirstID('Mamool_Polemicist_HTBF'),
     },
     npc =
     {

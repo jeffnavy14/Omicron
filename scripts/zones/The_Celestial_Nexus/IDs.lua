@@ -26,6 +26,10 @@ zones[xi.zone.THE_CELESTIAL_NEXUS] =
     mob =
     {
         EALDNARCHE = GetFirstID('Ealdnarche'),
+        EALDNARCHE_HTBF = GetFirstID('Ealdnarche_HTBF'),
+        EALDNARCHE_2_HTBF = GetFirstID('Ealdnarche_2_HTBF'),
+        ORBITAL_HTBF = GetFirstID('Orbital_HTBF'),
+        EXOPLATES_HTBF = GetFirstID('Exoplates_HTBF'),
     },
     npc =
     {

@@ -38,15 +38,15 @@ zones[xi.zone.THE_BOYAHDA_TREE] =
     },
     mob =
     {
-        AGAS              = GetFirstID('Agas'),
-        AQUARIUS          = GetFirstID('Aquarius'),
-        BEET_LEAFHOPPER   = GetFirstID('Beet_Leafhopper'),
         ELLYLLON          = GetFirstID('Ellyllon'),
-        FAFNIR            = GetFirstID('Fafnir'),
-        LESHONKI          = GetFirstID('Leshonki'),
-        MIMIC             = GetFirstID('Mimic'),
+        AQUARIUS          = GetFirstID('Aquarius'),
         UNUT              = GetFirstID('Unut'),
+        LESHONKI          = GetFirstID('Leshonki'),
         VOLUPTUOUS_VIVIAN = GetFirstID('Voluptuous_Vivian'),
+        MIMIC             = GetFirstID('Mimic'),
+        AGAS              = GetFirstID('Agas'),
+        BEET_LEAFHOPPER   = GetFirstID('Beet_Leafhopper'),
+        VOIDWATCH         = GetTableOfIDs('Modron'),
     },
     npc =
     {

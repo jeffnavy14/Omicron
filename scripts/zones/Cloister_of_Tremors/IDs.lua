@@ -35,6 +35,7 @@ zones[xi.zone.CLOISTER_OF_TREMORS] =
     {
         GALGALIM          = GetFirstID('Galgalim'),
         TITAN_PRIME_ASA   = GetFirstID('Titan_Prime_ASA'),
+        TITAN_PRIME_HTBF  = GetFirstID('Titan_Prime_HTBF'),
     },
     npc =
     {

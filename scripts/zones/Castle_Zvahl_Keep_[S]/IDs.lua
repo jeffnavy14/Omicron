@@ -21,7 +21,6 @@ zones[xi.zone.CASTLE_ZVAHL_KEEP_S] =
     },
     mob =
     {
-        GARGOUILLE_WARDEN             = GetFirstID('Gargouille_Warden'),
     },
     npc =
     {

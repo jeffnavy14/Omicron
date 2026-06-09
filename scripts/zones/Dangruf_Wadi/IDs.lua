@@ -50,6 +50,7 @@ zones[xi.zone.DANGRUF_WADI] =
         GEYSER_LIZARD       = GetFirstID('Geyser_Lizard'),
         CHOCOBOLEECH        = GetFirstID('Chocoboleech'),
         APPARATUS_ELEMENTAL = GetFirstID('Fire_Elemental'),
+        VOIDWATCH           = GetTableOfIDs('Celaeno'),
     },
     npc =
     {

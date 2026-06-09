@@ -52,6 +52,7 @@ zones[xi.zone.IFRITS_CAULDRON] =
         BOMB_QUEEN       = GetFirstID('Bomb_Queen'),
         TARASQUE         = GetFirstID('Tarasque'),
         CAILLEACH_BHEUR  = GetFirstID('Cailleach_Bheur'),
+        VOIDWATCH        = GetTableOfIDs('Ildebrann'),
     },
     npc =
     {

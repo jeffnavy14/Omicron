@@ -70,6 +70,7 @@ zones[xi.zone.CAEDARVA_MIRE] =
         TYGER                 = GetFirstID('Tyger'),
         VERDELET              = GetFirstID('Verdelet'),
         ZIKKO                 = GetFirstID('Zikko'),
+        VOIDWATCH             = GetTableOfIDs('Brekekekex'),
     },
     npc =
     {

@@ -22,6 +22,7 @@ zones[xi.zone.CRAWLERS_NEST_S] =
     mob =
     {
         MORILLE_MORTELLE = GetFirstID('Morille_Mortelle'),
+        VOIDWATCH        = GetTableOfIDs('Nympha_Eunomia'),
     },
     npc =
     {

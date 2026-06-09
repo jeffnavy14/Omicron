@@ -63,6 +63,7 @@ zones[xi.zone.THE_SANCTUARY_OF_ZITAH] =
         DOOMED_PILGRIMS   = GetFirstID('Doomed_Pilgrims'),
         ISONADE           = GetFirstID('Isonade'),
         GREENMAN          = GetFirstID('Greenman'),
+        VOIDWATCH         = GetTableOfIDs('Cath_Palug'),
     },
     npc =
     {

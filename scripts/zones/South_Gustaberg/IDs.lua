@@ -43,9 +43,10 @@ zones[xi.zone.SOUTH_GUSTABERG] =
     },
     mob =
     {
-        CARNERO       = GetTableOfIDs('Carnero'),
+        CARNERO       = GetFirstID('Carnero'), -- TODO: Implement both NMs, there are 2 IDs
         LEAPING_LIZZY = GetTableOfIDs('Leaping_Lizzy'),
         BUBBLY_BERNIE = GetFirstID('Bubbly_Bernie'),
+        VOIDWATCH     = GetTableOfIDs('Bhishani'),
     },
     npc =
     {

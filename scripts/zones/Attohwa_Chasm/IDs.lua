@@ -37,6 +37,7 @@ zones[xi.zone.ATTOHWA_CHASM] =
         ALASTOR_ANTLION     = GetFirstID('Alastor_Antlion'),
         EXECUTIONER_ANTLION = GetTableOfIDs('Executioner_Antlion'),
         XOLOTL              = GetFirstID('Xolotl'),
+        VOIDWATCH           = GetTableOfIDs('Fjalar'),
     },
     npc =
     {

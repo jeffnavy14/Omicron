@@ -34,6 +34,7 @@ zones[xi.zone.CLOISTER_OF_STORMS] =
     {
         LIGHTNING_GREMLIN = GetFirstID('Lightning_Gremlin'),
         RAMUH_PRIME_ASA   = GetFirstID('Ramuh_Prime_ASA'),
+        RAMUH_PRIME_HTBF  = GetFirstID('Ramuh_Prime_HTBF'),
     },
     npc =
     {

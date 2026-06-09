@@ -36,6 +36,7 @@ zones[xi.zone.VELUGANNON_PALACE] =
         MIMIC            = GetFirstID('Mimic'),
         STEAM_CLEANER    = GetFirstID('Steam_Cleaner'),
         ZIPACNA          = GetFirstID('Zipacna'),
+        VOIDWATCH        = GetTableOfIDs('Uptala'),
     },
     npc =
     {

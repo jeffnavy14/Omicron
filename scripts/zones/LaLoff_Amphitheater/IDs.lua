@@ -35,6 +35,11 @@ zones[xi.zone.LALOFF_AMPHITHEATER] =
         ARK_ANGEL_HM = GetFirstID('Ark_Angel_HM'),
         ARK_ANGEL_MR = GetFirstID('Ark_Angel_MR'),
         ARK_ANGEL_TT = GetFirstID('Ark_Angel_TT'),
+        ARK_ANGEL_EV_HTBF = GetFirstID('Ark_Angel_EV_HTBF'),
+        ARK_ANGEL_GK_HTBF = GetFirstID('Ark_Angel_GK_HTBF'),
+        ARK_ANGEL_HM_HTBF = GetFirstID('Ark_Angel_HM_HTBF'),
+        ARK_ANGEL_MR_HTBF = GetFirstID('Ark_Angel_MR_HTBF'),
+        ARK_ANGEL_TT_HTBF = GetFirstID('Ark_Angel_TT_HTBF'),
     },
     npc =
     {

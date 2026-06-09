@@ -59,6 +59,7 @@ zones[xi.zone.SAUROMUGUE_CHAMPAIGN] =
         ROC                = GetFirstID('Roc'),
         CLIMBPIX_HIGHRISE  = GetFirstID('Climbpix_Highrise'),
         DRIBBLIX_GREASEMAW = GetFirstID('Dribblix_Greasemaw'),
+        VOIDWATCH          = GetTableOfIDs('Goji'),
 
         VOIDWALKER =
         {

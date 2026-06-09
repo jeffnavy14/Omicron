@@ -20,6 +20,14 @@ zones[xi.zone.PROVENANCE] =
     },
     mob =
     {
+        PROVENANCE_WATCHER                = GetFirstID('Provenance_Watcher'),
+        CRYSTAL_FETTER                    = GetFirstID('Crystal_Fetter'),
+        PIL                               = GetFirstID('Pil'),
+        ASB                               = GetFirstID('Asb'),
+        RUKH                              = GetFirstID('Rukh'),
+        SARBAZ                            = GetFirstID('Sarbaz'),
+        SHAH                              = GetFirstID('Shah'),
+        WAZIR                             = GetFirstID('Wazir'),
     },
     npc =
     {

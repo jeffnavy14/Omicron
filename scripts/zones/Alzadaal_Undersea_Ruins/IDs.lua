@@ -40,13 +40,13 @@ zones[xi.zone.ALZADAAL_UNDERSEA_RUINS] =
     },
     mob =
     {
-        ALEXANDER               = GetFirstID('Alexander'),
-        ARMED_GEARS             = GetFirstID('Armed_Gears'),
-        CHEESE_HOARDER_GIGIROON = GetFirstID('Cheese_Hoarder_Gigiroon'),
-        COOKIEDUSTER_LIPIROON   = GetFirstID('Cookieduster_Lipiroon'),
         NEPIONIC_SOULFLAYER     = GetFirstID('Nepionic_Soulflayer'),
+        COOKIEDUSTER_LIPIROON   = GetFirstID('Cookieduster_Lipiroon'),
         OB                      = GetFirstID('Ob'),
+        CHEESE_HOARDER_GIGIROON = GetFirstID('Cheese_Hoarder_Gigiroon'),
+        ARMED_GEARS             = GetFirstID('Armed_Gears'),
         WULGARU                 = GetFirstID('Wulgaru'),
+
     },
     npc =
     {

@@ -36,14 +36,13 @@ zones[xi.zone.RUAUN_GARDENS] =
 
     mob =
     {
-        BYAKKO        = GetFirstID('Byakko'),
-        DESPOT        = GetFirstID('Despot'),
-        GENBU         = GetFirstID('Genbu'),
-        KIRIN         = GetFirstID('Kirin'),
-        KIRINS_AVATAR = GetFirstID('Kirins_Avatar'),
-        MIMIC         = GetFirstID('Mimic'),
-        SEIRYU        = GetFirstID('Seiryu'),
-        SUZAKU        = GetFirstID('Suzaku'),
+        DESPOT    = GetFirstID('Despot'),
+        MIMIC     = GetFirstID('Mimic'),
+        GENBU     = GetFirstID('Genbu'),
+        SEIRYU    = GetFirstID('Seiryu'),
+        BYAKKO    = GetFirstID('Byakko'),
+        SUZAKU    = GetFirstID('Suzaku'),
+        VOIDWATCH = GetTableOfIDs('Aello'),
     },
 
     npc =

@@ -52,6 +52,7 @@ zones[xi.zone.ORDELLES_CAVES] =
         NECROPLASM          = GetFirstID('Necroplasm'),
         APPARATUS_ELEMENTAL = GetTableOfIDs('Air_Elemental')[2], -- Second elemental in the list
         AROMA_LEECH         = GetFirstID('Aroma_Leech'),
+        VOIDWATCH           = GetTableOfIDs('Krabimanjaro'),
     },
     npc =
     {

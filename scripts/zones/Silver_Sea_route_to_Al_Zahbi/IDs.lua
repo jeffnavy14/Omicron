@@ -24,7 +24,6 @@ zones[xi.zone.SILVER_SEA_ROUTE_TO_AL_ZAHBI] =
     },
     mob =
     {
-        ALMIGHTY_APKALLU = GetFirstID('Almighty_Apkallu'),
     },
     npc =
     {

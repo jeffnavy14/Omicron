@@ -30,10 +30,11 @@ zones[xi.zone.THE_SHRINE_OF_RUAVITAU] =
     },
     mob =
     {
-        ULLIKUMMI       = GetFirstID('Ullikummi'),
-        OLLAS_OFFSET    = GetFirstID('Olla_Pequena'),
-        KIRIN           = GetFirstID('Kirin'),
-        MOTHER_GLOBE    = GetFirstID('Mother_Globe'),
+        ULLIKUMMI     = GetFirstID('Ullikummi'),
+        OLLAS_OFFSET  = GetFirstID('Olla_Pequena'),
+        KIRIN         = GetFirstID('Kirin'),
+        MOTHER_GLOBE  = GetFirstID('Mother_Globe'),
+        VOIDWATCH     = GetTableOfIDs('Qilin'),
     },
     npc =
     {

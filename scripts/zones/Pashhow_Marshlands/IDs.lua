@@ -57,6 +57,7 @@ zones[xi.zone.PASHHOW_MARSHLANDS] =
         BLOODPOOL_VORAX    = GetFirstID('Bloodpool_Vorax'),
         BOWHO_WARMONGER    = GetFirstID('BoWho_Warmonger'),
         TOXIC_TAMLYN       = GetFirstID('Toxic_Tamlyn'),
+        VOIDWATCH          = GetTableOfIDs('Murk-veined_Baneberry'),
 
         VOIDWALKER  =
         {

@@ -48,6 +48,7 @@ zones[xi.zone.CRAWLERS_NEST] =
         DREADBUG            = GetFirstID('Dreadbug'),
         MIMIC               = GetFirstID('Mimic'),
         APPARATUS_ELEMENTAL = GetTableOfIDs('Water_Elemental')[9], -- 9th Water Elemental
+        VOIDWATCH           = GetTableOfIDs('Mellonia'),
     },
     npc =
     {

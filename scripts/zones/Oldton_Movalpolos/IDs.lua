@@ -32,17 +32,9 @@ zones[xi.zone.OLDTON_MOVALPOLOS] =
     },
     mob =
     {
-        BUGALLUG           = GetFirstID('Bugallug'),
-        BUGBEAR_BONDMAN    = GetTableOfIDs('Bugbear_Bondman'),
-        BUGBEAR_SERVINGMAN = GetTableOfIDs('Bugbear_Servingman'),
-        BUGBEAR_STRONGMAN  = GetTableOfIDs('Bugbear_Strongman'),
-        GOBLIN_FREELANCE   = GetTableOfIDs('Goblin_Freelance'),
-        GOBLIN_WOLFMAN     = GetFirstID('Goblin_Wolfman'),
-        GOBLIN_HAMMERMAN   = GetTableOfIDs('Goblin_Hammerman'),
-        MOBLIN_CHAPMAN     = GetTableOfIDs('Moblin_Chapman'),
-        MOBLIN_COALMAN     = GetTableOfIDs('Moblin_Coalman'),
-        MOBLIN_GASMAN      = GetTableOfIDs('Moblin_Gasman'),
-        MOBLIN_PIKEMAN     = GetTableOfIDs('Moblin_Pikeman'),
+        BUGALLUG          = GetFirstID('Bugallug'),
+        BUGBEAR_STRONGMAN = GetTableOfIDs('Bugbear_Strongman'),
+        GOBLIN_WOLFMAN    = GetFirstID('Goblin_Wolfman'),
     },
     npc =
     {

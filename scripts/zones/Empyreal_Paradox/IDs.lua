@@ -31,8 +31,10 @@ zones[xi.zone.EMPYREAL_PARADOX] =
     },
     mob =
     {
-        KAMLANAUT = GetFirstID('Kamlanaut'),
-        PROMATHIA = GetFirstID('Promathia'),
+        KAMLANAUT         = GetFirstID('Kamlanaut'),
+        PROMATHIA         = GetFirstID('Promathia'),
+        PROMATHIA_HTBF    = GetFirstID('Promathia_htbf'),
+        PROMATHIA_HTBF_2  = GetFirstID('Promathia_htbf_2'),
     },
     npc =
     {

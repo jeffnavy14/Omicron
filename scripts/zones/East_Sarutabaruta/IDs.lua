@@ -43,6 +43,7 @@ zones[xi.zone.EAST_SARUTABARUTA] =
         SHARP_EARED_ROPIPI = GetFirstID('Sharp-Eared_Ropipi'),
         SPINY_SPIPI        = GetFirstID('Spiny_Spipi'),
         DUKE_DECAPOD       = GetFirstID('Duke_Decapod'),
+        VOIDWATCH          = GetTableOfIDs('Rw_Nw_Prt_M_Hrw'),
     },
     npc =
     {
