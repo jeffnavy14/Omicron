@@ -29,15 +29,14 @@ zones[xi.zone.ULEGUERAND_RANGE] =
     },
     mob =
     {
-        BLACK_CONEY  = GetFirstID('Black_Coney'),
-        BONNACON     = GetFirstID('Bonnacon'),
-        FATHER_FROST = GetFirstID('Father_Frost'),
-        GEUSH_URVAN  = GetFirstID('Geush_Urvan'),
-        JORMUNGAND   = GetFirstID('Jormungand'),
-        MAGNOTAUR    = GetFirstID('Magnotaur'),
-        SKVADER      = GetFirstID('Skvader'),
-        SNOW_MAIDEN  = GetFirstID('Snow_Maiden'),
-        WHITE_CONEY  = GetFirstID('White_Coney'),
+        SKVADER     = GetFirstID('Skvader'),
+        MAGNOTAUR   = GetFirstID('Magnotaur'),
+        BONNACON    = GetFirstID('Bonnacon'),
+        JORMUNGAND  = GetFirstID('Jormungand'),
+        GEUSH_URVAN = GetFirstID('Geush_Urvan'),
+        WHITE_CONEY = GetFirstID('White_Coney'),
+        BLACK_CONEY = GetFirstID('Black_Coney'),
+        VOIDWATCH   = GetTableOfIDs('Isarukitsck'),
     },
     npc =
     {

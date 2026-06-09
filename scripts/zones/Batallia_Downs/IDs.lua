@@ -64,7 +64,6 @@ zones[xi.zone.BATALLIA_DOWNS] =
     {
         AHTU              = GetFirstID('Ahtu'),
         BADSHAH_OFFSET    = GetFirstID('Badshah'),
-        EYEGOURGER        = GetFirstID('Eyegouger'),
         PRANKSTER_MAVERIX = GetFirstID('Prankster_Maverix'),
         STURMTIGER        = GetFirstID('Sturmtiger'),
         SUPARNA           = GetFirstID('Suparna'),
