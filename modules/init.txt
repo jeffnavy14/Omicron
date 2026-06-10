@@ -29,7 +29,8 @@ LevelDown Custom Modules/content/LD Shattered Domain/enum/
 LevelDown Custom Modules/lua/globals/
 LevelDown Custom Modules/lua/items/
 LevelDown Custom Modules/lua/missions/
-#LevelDown Custom Modules/lua/zones/
+LevelDown Custom Modules/lua/zones/
+LevelDown Custom Modules/lua/zones/Port_Jeuno
 LevelDown Custom Modules/lua/actions/
 LevelDown Custom Modules/lua/effects/
 LevelDown Custom Modules/cpp/
