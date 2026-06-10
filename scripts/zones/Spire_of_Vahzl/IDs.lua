@@ -30,7 +30,9 @@ zones[xi.zone.SPIRE_OF_VAHZL] =
     },
     mob =
     {
-        AGONIZER = GetFirstID('Agonizer'),
+        AGONIZER                 = GetFirstID('Agonizer'),
+        MEMORY_RECEPTACLE_RED    = GetFirstID('Memory_Receptacle_Red'),
+        MEMORY_RECEPTACLE_SHIELD = GetFirstID('Memory_Receptacle_Shield'),
     },
     npc =
     {

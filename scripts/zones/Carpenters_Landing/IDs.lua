@@ -45,13 +45,14 @@ zones[xi.zone.CARPENTERS_LANDING] =
     },
     mob =
     {
-        ORCTRAP               = GetFirstID('Orctrap'),
-        TEMPEST_TIGON         = GetFirstID('Tempest_Tigon'),
-        OVERGROWN_IVY         = GetFirstID('Overgrown_Ivy'),
+        BULLHEADED_GROSVEZ    = GetFirstID('Bullheaded_Grosvez'),
         CRYPTONBERRY_EXECUTOR = GetFirstID('Cryptonberry_Executor'),
-        MYCOPHILE             = GetFirstID('Mycophile'),
         HERCULES_BEETLE       = GetFirstID('Hercules_Beetle'),
+        MYCOPHILE             = GetFirstID('Mycophile'),
+        ORCTRAP               = GetFirstID('Orctrap'),
+        OVERGROWN_IVY         = GetFirstID('Overgrown_Ivy'),
         PARA                  = GetFirstID('Para'),
+        TEMPEST_TIGON         = GetFirstID('Tempest_Tigon'),
     },
     npc =
     {
