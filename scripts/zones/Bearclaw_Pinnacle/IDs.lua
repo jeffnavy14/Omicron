@@ -34,7 +34,6 @@ zones[xi.zone.BEARCLAW_PINNACLE] =
     },
     mob =
     {
-        BEARCLAW_RABBIT   = GetFirstID('Bearclaw_Rabbit'),
         SNOW_DEVIL        = GetFirstID('Snow_Devil_war'),
         SNOLL_TZAR_OFFSET = GetFirstID('Snoll_Tzar'),
     },

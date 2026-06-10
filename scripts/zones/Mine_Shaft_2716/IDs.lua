@@ -36,15 +36,13 @@ zones[xi.zone.MINE_SHAFT_2716] =
     },
     mob =
     {
-        BUGBBY               = GetFirstID('Bugbby'),
-        BUGBOY               = GetFirstID('Bugboy'),
-        CHEKOCHUK            = GetFirstID('Chekochuk'),
-        HUME_AUTOMATON       = GetFirstID('Hume_Automaton'),
-        MOBLIN_FANTOCCINIMAN = GetFirstID('Moblin_Fantocciniman'),
-        MOVAMUQ              = GetFirstID('Movamuq'),
-        SWIPOSTIK            = GetFirstID('Swipostik'),
-        TRIKOTRAK            = GetFirstID('Trikotrak'),
-        TWILOTAK             = GetFirstID('Twilotak'),
+        BUGBBY         = GetFirstID('Bugbby'),
+        BUGBOY         = GetFirstID('Bugboy'),
+        CHEKOCHUK      = GetFirstID('Chekochuk'),
+        MOVAMUQ        = GetFirstID('Movamuq'),
+        SWIPOSTIK      = GetFirstID('Swipostik'),
+        TRIKOTRAK      = GetFirstID('Trikotrak'),
+        HUME_AUTOMATON = GetFirstID('Hume_Automaton'),
     },
     npc =
     {

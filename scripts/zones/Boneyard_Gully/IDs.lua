@@ -53,14 +53,12 @@ zones[xi.zone.BONEYARD_GULLY] =
 
     mob =
     {
-        PARATA             = GetFirstID('Parata'),
-        SHIKAREE_Z_HW      = GetFirstID('Shikaree_Z_HW'),
-        SHIKAREE_Y_HW      = GetFirstID('Shikaree_Y_HW'),
-        SHIKAREE_X_HW      = GetFirstID('Shikaree_X_HW'),
-        SHIKAREE_Z_ROS     = GetFirstID('Shikaree_Z_ROS'),
-        SHIKAREE_Y_ROS_TWT = GetFirstID('Shikaree_Y_ROS_TWT'),
-        SHIKAREE_X_ROS_TWT = GetFirstID('Shikaree_X_ROS_TWT'),
-        TUCHULCHA          = GetFirstID('Tuchulcha'),
+        PARATA         = GetFirstID('Parata'),
+        SHIKAREE_Z_HW  = GetFirstID('Shikaree_Z_HW'),
+        SHIKAREE_Y_HW  = GetFirstID('Shikaree_Y_HW'),
+        SHIKAREE_X_HW  = GetFirstID('Shikaree_X_HW'),
+        SHIKAREE_Z_ROS = GetFirstID('Shikaree_Z_ROS'),
+        TUCHULCHA      = GetFirstID('Tuchulcha'),
     },
 
     npc =
