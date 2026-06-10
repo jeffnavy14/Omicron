@@ -65,7 +65,7 @@ entity.spawnPoints =
 
 entity.phList =
 {
-    [ID.mob.CARNERO[1] - 1]  = { ID.mob.CARNERO[1], ID.mob.CARNERO[2] }
+    [ID.mob.CARNERO[1] - 1]  = { 17215613, 17215626 },
 }
 
 entity.onMobDeath = function(mob, player, optParams)

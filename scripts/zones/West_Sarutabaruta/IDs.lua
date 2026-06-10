@@ -67,7 +67,7 @@ zones[xi.zone.WEST_SARUTABARUTA] =
     mob =
     {
         NUNYENUNC   = GetFirstID('Nunyenunc'),
-        TOM_TIT_TAT = GetFirstID('Tom_Tit_Tat'),
+        TOM_TIT_TAT = { 17248468,17248486 },
         VOIDWATCH   = GetTableOfIDs('Virvatuli'),
         VOIDWALKER  =
         {

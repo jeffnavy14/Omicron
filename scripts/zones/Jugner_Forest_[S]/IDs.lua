@@ -50,6 +50,7 @@ zones[xi.zone.JUGNER_FOREST_S] =
         COBRACLAW_BUCHZVOTCH  = GetFirstID('Cobraclaw_Buchzvotch'),
         VULKODLAC             = GetFirstID('Vulkodlac'),
         VOIDWATCH             = GetTableOfIDs('Kholomodumo'),
+		VOIRLOUP              = GetFirstID('Voirloup'),
 
         VOIDWALKER =
         {

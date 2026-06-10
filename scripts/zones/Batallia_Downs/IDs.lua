@@ -71,6 +71,7 @@ zones[xi.zone.BATALLIA_DOWNS] =
         TOTTERING_TOBY    = GetFirstID('Tottering_Toby'),
         VEGNIX_GREENTHUMB = GetFirstID('Vegnix_Greenthumb'),
         VOIDWATCH         = GetTableOfIDs('Cherufe'),
+		EYEGOURGER         = GetFirstID('Eyegouger'),
 
         VOIDWALKER =
         {
