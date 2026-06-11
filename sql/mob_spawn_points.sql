@@ -79269,7 +79269,7 @@ INSERT INTO `mob_spawn_points` VALUES (17707021,0,'Crossbones','Crossbones',10,2
 INSERT INTO `mob_spawn_points` VALUES (17707022,0,'Crossbones','Crossbones',11,28,31,-7.737,-7.279,11.354,155);
 INSERT INTO `mob_spawn_points` VALUES (17707023,0,'Crossbones','Crossbones',11,28,31,7.177,-7.309,17.648,54);
 INSERT INTO `mob_spawn_points` VALUES (17707024,0,'Ship_Wight','Ship Wight',12,36,39,-0.725,-7.312,23.111,60);
-INSERT INTO `mob_spawn_points` VALUES (17707025,0,'Blackbeard','Blackbeard',13,67,68,-6.387,-11.662,-13.986,56);
+INSERT INTO `mob_spawn_points` VALUES (17707025,0,'Blackbeard','Blackbeard',13,67,68,-0.725,-7.312,23.111,60);
 INSERT INTO `mob_spawn_points` VALUES (17707026,0,'Enagakure','Enagakure',14,55,55,1.000,-7.000,13.000,60);
 
 -- ------------------------------------------------------------
@@ -79294,7 +79294,7 @@ INSERT INTO `mob_spawn_points` VALUES (17711117,0,'Crossbones','Crossbones',10,2
 INSERT INTO `mob_spawn_points` VALUES (17711118,0,'Crossbones','Crossbones',11,28,31,8.710,-7.560,13.220,176);
 INSERT INTO `mob_spawn_points` VALUES (17711119,0,'Crossbones','Crossbones',11,28,31,7.040,-7.510,11.060,107);
 INSERT INTO `mob_spawn_points` VALUES (17711120,0,'Ship_Wight','Ship Wight',12,36,39,7.770,-7.450,17.190,188);
-INSERT INTO `mob_spawn_points` VALUES (17711121,0,'Silverhook','Silverhook',13,68,70,-3.560,-7.290,2.430,13);
+INSERT INTO `mob_spawn_points` VALUES (17711121,0,'Silverhook','Silverhook',13,68,70,7.770,-7.450,17.190,188);
 
 -- ------------------------------------------------------------
 -- Throne Room [V] (Zone 229)
