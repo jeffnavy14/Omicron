@@ -8932,12 +8932,17 @@ INSERT INTO `mob_spawn_points` VALUES (16929555,0,'Ultimas_Zisurru','Ultima\'s Z
 INSERT INTO `mob_spawn_points` VALUES (16929556,0,'Ultimas_Zisurru','Ultima\'s Zisurru',55,150,150,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16929557,0,'Ultimas_Zisurru','Ultima\'s Zisurru',55,150,150,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16929558,0,'Ultimas_Zisurru','Ultima\'s Zisurru',55,150,150,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16929559,0,'Temenos_Hume_Echo','Temenos Hume Echo',58,150,150,-540.167,-5.597,-432.945,67);
+INSERT INTO `mob_spawn_points` VALUES (16929560,0,'Temenos_Elvaan_Echo','Temenos Elvaan Echo',59,150,150,-540.956,-0.500,-416.986,214);
+INSERT INTO `mob_spawn_points` VALUES (16929561,0,'Temenos_Tarutaru_Echo','Temenos Tarutaru Echo',60,150,150,-542.641,-0.500,-418.074,149);
+INSERT INTO `mob_spawn_points` VALUES (16929562,0,'Temenos_Mithra_Echo','Temenos Mithra Echo',61,150,150,-539.557,-2.538,-428.947,180);
+INSERT INTO `mob_spawn_points` VALUES (16929563,0,'Mithras_Avatar','Mithra\'s Avatar',62,150,150,-539.719,-0.500,-421.903,219);
+INSERT INTO `mob_spawn_points` VALUES (16929564,0,'Temenos_Galka_Echo','Temenos Galka Echo',63,150,150,-539.379,-4.891,-431.532,182);
 
 -- ------------------------------------------------------------
 -- Apollyon (Zone 38)
 -- ------------------------------------------------------------
 
--- Bootstrap from packet captures (see work/reports/apollyon-mob-bootstrap.md).
 INSERT INTO `mob_spawn_points` VALUES (16932865,0,'Apollyon_Wight','Apollyon Wight',1,150,150,-436.786,-0.470,32.436,11);
 INSERT INTO `mob_spawn_points` VALUES (16932866,0,'Apollyon_Wight','Apollyon Wight',1,150,150,-445.158,-0.499,53.412,153);
 INSERT INTO `mob_spawn_points` VALUES (16932867,0,'Apollyon_Wight','Apollyon Wight',1,150,150,-447.562,-0.483,-33.382,232);
@@ -9578,6 +9583,13 @@ INSERT INTO `mob_spawn_points` VALUES (16933501,0,'Omegas_Bit','Omega\'s Bit',67
 INSERT INTO `mob_spawn_points` VALUES (16933502,0,'Omegas_Bit','Omega\'s Bit',67,150,150,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16933503,0,'Omegas_Bit','Omega\'s Bit',67,150,150,0.000,0.000,0.000,0);
 INSERT INTO `mob_spawn_points` VALUES (16933504,0,'Omegas_Bit','Omega\'s Bit',67,150,150,0.000,0.000,0.000,0);
+INSERT INTO `mob_spawn_points` VALUES (16933505,0,'Apollyon_Hume_Shade','Apollyon Hume Shade',68,150,150,-14.915,-0.500,168.562,139);
+INSERT INTO `mob_spawn_points` VALUES (16933506,0,'Apollyon_Elvaan_Shade','Apollyon Elvaan Shade',69,150,150,0.940,-0.500,194.910,224);
+INSERT INTO `mob_spawn_points` VALUES (16933507,0,'Apollyon_Tarutaru_Shade','Apollyon Tarutaru Shade',70,150,150,9.291,-0.500,165.438,33);
+INSERT INTO `mob_spawn_points` VALUES (16933508,0,'Apollyon_Mithra_Shade','Apollyon Mithra Shade',71,150,150,11.389,-0.500,166.986,231);
+INSERT INTO `mob_spawn_points` VALUES (16933509,0,'Mithras_Korrigan','Mithra\'s Korrigan',72,150,150,-0.347,-0.251,163.335,36);
+INSERT INTO `mob_spawn_points` VALUES (16933510,0,'Apollyon_Galka_Shade','Apollyon Galka Shade',73,150,150,-4.230,-0.141,165.687,99);
+INSERT INTO `mob_spawn_points` VALUES (16933511,0,'Galkas_Wyvern','Galka\'s Wyvern',74,150,150,12.224,-0.157,176.654,40);
 
 -- ------------------------------------------------------------
 -- Dynamis - Valkurm (Zone 39)
