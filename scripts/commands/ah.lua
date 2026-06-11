@@ -12,6 +12,12 @@ commandObj.cmdprops =
 }
 
 commandObj.onTrigger = function(player)
+    -- LOCKOUT CHECK
+    if player:getCharVar("ratio") == 1 then
+        player:printToPlayer("Access Denied: You are currently locked out of this command.")
+        return
+    end
+
     player:sendMenu(xi.menuType.AUCTION)
 end
 
