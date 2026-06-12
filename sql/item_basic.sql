@@ -110,6 +110,7 @@ SET @USABLE_TYPE     = 5;
 SET @EQUIPMENT_TYPE  = 6;
 SET @WEAPON_TYPE     = 7;
 SET @CURRENCY_TYPE   = 8;
+SET @FLOWERPOT_TYPE  = 9;
 
 -- Item Flags
 SET @FLAG_AUG_SENDABLE   =      1; -- 0x00001
@@ -284,12 +285,12 @@ INSERT INTO `item_basic` VALUES (212,0,'water_lamp','water_lamp','ウォータ�
 INSERT INTO `item_basic` VALUES (213,0,'light_lamp','light_lamp','ライトランプ',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE,@FURNISHINGS,0);
 INSERT INTO `item_basic` VALUES (214,0,'dark_lamp','dark_lamp','ダークランプ',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE,@FURNISHINGS,0);
 INSERT INTO `item_basic` VALUES (215,0,'set_of_festival_dolls','festival_dolls','ヒナドールズ',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY,@NONE,0);
-INSERT INTO `item_basic` VALUES (216,0,'porcelain_flowerpot','porc._flowerpot','磁器の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
-INSERT INTO `item_basic` VALUES (217,0,'brass_flowerpot','brass_flowerpot','黄銅の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,200);
-INSERT INTO `item_basic` VALUES (218,0,'earthen_flowerpot','earthen_flowerpot','土師器の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
-INSERT INTO `item_basic` VALUES (219,0,'ceramic_flowerpot','ceramic_flowerpot','陶器の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
-INSERT INTO `item_basic` VALUES (220,0,'wooden_flowerpot','wooden_flowerpot','木の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,1428);
-INSERT INTO `item_basic` VALUES (221,0,'arcane_flowerpot','arcane_flowerpot','謎の植木鉢',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,3900);
+INSERT INTO `item_basic` VALUES (216,0,'porcelain_flowerpot','porc._flowerpot','磁器の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
+INSERT INTO `item_basic` VALUES (217,0,'brass_flowerpot','brass_flowerpot','黄銅の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,200);
+INSERT INTO `item_basic` VALUES (218,0,'earthen_flowerpot','earthen_flowerpot','土師器の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
+INSERT INTO `item_basic` VALUES (219,0,'ceramic_flowerpot','ceramic_flowerpot','陶器の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,194);
+INSERT INTO `item_basic` VALUES (220,0,'wooden_flowerpot','wooden_flowerpot','木の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,1428);
+INSERT INTO `item_basic` VALUES (221,0,'arcane_flowerpot','arcane_flowerpot','謎の植木鉢',@FLOWERPOT_TYPE,1,@FLAG_MYSTERY_BOX,@FURNISHINGS,3900);
 INSERT INTO `item_basic` VALUES (222,0,'fighting_fish_tank','fighting_fish_tank','闘魚鉢',@FURNISHING_TYPE,1,@FLAG_INSCRIBABLE,@FURNISHINGS,1662);
 INSERT INTO `item_basic` VALUES (223,0,'river_aquarium','river_aquarium','アクアリウム〔川〕',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE,@FURNISHINGS,2091);
 INSERT INTO `item_basic` VALUES (224,0,'bay_aquarium','bay_aquarium','アクアリウム〔湾〕',@FURNISHING_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE,@FURNISHINGS,3912);
@@ -3715,10 +3716,10 @@ INSERT INTO `item_basic` VALUES (3740,0,'model_synergy_furnace','model_synergy_f
 INSERT INTO `item_basic` VALUES (3741,0,'model_synergy_furnace_ii','model_syn._furn._ii','模倣錬成窯II',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
 INSERT INTO `item_basic` VALUES (3742,0,'painting_of_a_mercenary','merc._painting','ようじんぼうの絵画',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX | @FLAG_RARE,@NONE,0);
 INSERT INTO `item_basic` VALUES (3743,0,'moogle_bed','moogle_bed','モーグリベッド',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
-INSERT INTO `item_basic` VALUES (3744,0,'mandragora_pot','mandragora_pot','マンドラ植木鉢',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
-INSERT INTO `item_basic` VALUES (3745,0,'korrigan_pot','korrigan_pot','コリガン植木鉢',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
-INSERT INTO `item_basic` VALUES (3746,0,'adenium_pot','adenium_pot','アデニウム植木鉢',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
-INSERT INTO `item_basic` VALUES (3747,0,'citrullus_pot','citrullus_pot','キトルルス植木鉢',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
+INSERT INTO `item_basic` VALUES (3744,0,'mandragora_pot','mandragora_pot','マンドラ植木鉢',@FLOWERPOT_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
+INSERT INTO `item_basic` VALUES (3745,0,'korrigan_pot','korrigan_pot','コリガン植木鉢',@FLOWERPOT_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
+INSERT INTO `item_basic` VALUES (3746,0,'adenium_pot','adenium_pot','アデニウム植木鉢',@FLOWERPOT_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
+INSERT INTO `item_basic` VALUES (3747,0,'citrullus_pot','citrullus_pot','キトルルス植木鉢',@FLOWERPOT_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
 INSERT INTO `item_basic` VALUES (3748,0,'leafkin_bed','leafkin_bed','リフキンベッド',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
 INSERT INTO `item_basic` VALUES (3749,0,'chemistry_set','chemistry_set','試験薬セット',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX,@NONE,0);
 INSERT INTO `item_basic` VALUES (3750,0,'qiqirn_sack','qiqirn_sack','キキルンの願い箱',@FURNISHING_TYPE,1,@FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX | @FLAG_RARE,@NONE,0);
