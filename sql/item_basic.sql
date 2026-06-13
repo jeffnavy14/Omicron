@@ -686,9 +686,9 @@ INSERT INTO `item_basic` VALUES (668,0,'orichalcum_sheet','ocl._sheet','オリ�
 INSERT INTO `item_basic` VALUES (669,0,'molybdenum_sheet','mlbd._sheet','モリブデン板',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,8100);
 INSERT INTO `item_basic` VALUES (670,0,'aluminum_sheet','aluminum_sheet','アルミ板',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,822);
 INSERT INTO `item_basic` VALUES (671,0,'silver_sheet','silver_sheet','シルバー板',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,341);
-INSERT INTO `item_basic` VALUES (672,0,'handful_of_bronze_scales','bronze_scales','ブロンズの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,26);
+INSERT INTO `item_basic` VALUES (672,0,'handful_of_bronze_scales','bronze_scales','ブロンズの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,27);
 INSERT INTO `item_basic` VALUES (673,0,'handful_of_brass_scales','brass_scales','ブラスの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,71);
-INSERT INTO `item_basic` VALUES (674,0,'handful_of_iron_scales','iron_scales','アイアンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1071);
+INSERT INTO `item_basic` VALUES (674,0,'handful_of_iron_scales','iron_scales','アイアンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1050);
 INSERT INTO `item_basic` VALUES (675,0,'handful_of_adaman_scales','adaman_scales','アダマンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1512);
 INSERT INTO `item_basic` VALUES (676,0,'handful_of_steel_scales','steel_scales','スチールの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1400);
 INSERT INTO `item_basic` VALUES (677,0,'chunk_of_white_steel','white_steel','白鋼',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX | @FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY,@NONE,0);
@@ -1579,7 +1579,7 @@ INSERT INTO `item_basic` VALUES (1584,0,'mysterial_fragment','mysterial_frag.','
 INSERT INTO `item_basic` VALUES (1585,0,'ethereal_fragment','ethereal_fragment','名銃の欠片',@GENERAL_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CAN_SEND_ACCT | @FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY | @FLAG_EX | @FLAG_RARE,@NONE,0);
 INSERT INTO `item_basic` VALUES (1586,0,'titanictus_shell','titanictus_shell','甲冑魚の甲殻',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@BONECRAFT,350);
 INSERT INTO `item_basic` VALUES (1587,0,'handful_of_high-quality_pugil_scales','h.q._pugil_scls.','上質な魚の鱗',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@BONECRAFT,260);
-INSERT INTO `item_basic` VALUES (1588,0,'slab_of_tufa','tufa','凝灰岩',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,1982);
+INSERT INTO `item_basic` VALUES (1588,0,'slab_of_tufa','tufa','凝灰岩',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,3400);
 INSERT INTO `item_basic` VALUES (1589,0,'shard_of_necropsyche','necropsyche','プシュケー',@GENERAL_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CAN_SEND_ACCT | @FLAG_NOAUCTION | @FLAG_NODELIVERY | @FLAG_EX | @FLAG_RARE,@NONE,10600);
 INSERT INTO `item_basic` VALUES (1590,0,'sprig_of_holy_basil','holy_basil','ホーリーバジル',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@INGREDIENTS,271);
 INSERT INTO `item_basic` VALUES (1591,0,'high-quality_coeurl_hide','h.q._coeurl_hide','上質なクァール毛皮',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@LEATHERCRAFT,860);
