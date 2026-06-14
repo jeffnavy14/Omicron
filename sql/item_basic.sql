@@ -690,13 +690,13 @@ INSERT INTO `item_basic` VALUES (672,0,'handful_of_bronze_scales','bronze_scales
 INSERT INTO `item_basic` VALUES (673,0,'handful_of_brass_scales','brass_scales','ブラスの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,71);
 INSERT INTO `item_basic` VALUES (674,0,'handful_of_iron_scales','iron_scales','アイアンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1050);
 INSERT INTO `item_basic` VALUES (675,0,'handful_of_adaman_scales','adaman_scales','アダマンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1512);
-INSERT INTO `item_basic` VALUES (676,0,'handful_of_steel_scales','steel_scales','スチールの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1400);
+INSERT INTO `item_basic` VALUES (676,0,'handful_of_steel_scales','steel_scales','スチールの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,900);
 INSERT INTO `item_basic` VALUES (677,0,'chunk_of_white_steel','white_steel','白鋼',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX | @FLAG_NOAUCTION | @FLAG_NOSALE | @FLAG_NODELIVERY,@NONE,0);
 INSERT INTO `item_basic` VALUES (678,0,'chunk_of_aluminum_ore','aluminum_ore','軽銀鉱',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,204);
 INSERT INTO `item_basic` VALUES (679,0,'aluminum_ingot','aluminum_ingot','アルミインゴット',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,1000);
 INSERT INTO `item_basic` VALUES (680,0,'iron_chain','iron_chain','アイアンの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1050);
 INSERT INTO `item_basic` VALUES (681,0,'mythril_chain','mythril_chain','ミスリルの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,1750);
-INSERT INTO `item_basic` VALUES (682,0,'darksteel_chain','darksteel_chain','ダークの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,3391);
+INSERT INTO `item_basic` VALUES (682,0,'darksteel_chain','darksteel_chain','ダークの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,3325);
 INSERT INTO `item_basic` VALUES (683,0,'adaman_chain','adaman_chain','アダマンの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,7250);
 INSERT INTO `item_basic` VALUES (684,0,'aluminum_chain','aluminum_chain','アルミの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,953);
 INSERT INTO `item_basic` VALUES (685,0,'chunk_of_khroma_ore','khroma_ore','クロマ鉄鉱',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,725);
@@ -817,7 +817,7 @@ INSERT INTO `item_basic` VALUES (799,0,'onyx','onyx','オニキス',@GENERAL_TYP
 INSERT INTO `item_basic` VALUES (800,0,'amethyst','amethyst','アメジスト',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,207);
 INSERT INTO `item_basic` VALUES (801,0,'chrysoberyl','chrysoberyl','クリソベリル',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2460);
 INSERT INTO `item_basic` VALUES (802,0,'moonstone','moonstone','ムーンストーン',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2400);
-INSERT INTO `item_basic` VALUES (803,0,'sunstone','sunstone','サンストーン',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2454);
+INSERT INTO `item_basic` VALUES (803,0,'sunstone','sunstone','サンストーン',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2400);
 INSERT INTO `item_basic` VALUES (804,0,'spinel','spinel','スピネル',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,3800);
 INSERT INTO `item_basic` VALUES (805,0,'zircon','zircon','ジルコン',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2400);
 INSERT INTO `item_basic` VALUES (806,0,'tourmaline','tourmaline','トルマリン',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,207);
@@ -11168,7 +11168,7 @@ INSERT INTO `item_basic` VALUES (13443,0,'opal_ring','opal_ring','オパール�
 INSERT INTO `item_basic` VALUES (13444,0,'sardonyx_ring','sardonyx_ring','サードニクスリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,250);
 INSERT INTO `item_basic` VALUES (13445,0,'gold_ring','gold_ring','ゴールドリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,2767);
 INSERT INTO `item_basic` VALUES (13446,0,'mythril_ring','mythril_ring','ミスリルリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,733);
-INSERT INTO `item_basic` VALUES (13447,0,'platinum_ring','platinum_ring','プラチナリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,3689);
+INSERT INTO `item_basic` VALUES (13447,0,'platinum_ring','platinum_ring','プラチナリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,6200);
 INSERT INTO `item_basic` VALUES (13448,0,'emerald_ring','emerald_ring','エメラルドリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,8410);
 INSERT INTO `item_basic` VALUES (13449,0,'ruby_ring','ruby_ring','ルビーリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,8410);
 INSERT INTO `item_basic` VALUES (13450,0,'diamond_ring','diamond_ring','ダイアリング',@EQUIPMENT_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,8410);
@@ -12337,7 +12337,7 @@ INSERT INTO `item_basic` VALUES (14612,0,'serenity_ring_+1','serenity_ring_+1','
 INSERT INTO `item_basic` VALUES (14613,0,'vigor_ring_+1','vigor_ring_+1','元気の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,4150);
 INSERT INTO `item_basic` VALUES (14614,0,'mystic_ring_+1','mystic_ring_+1','魔力の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,4150);
 INSERT INTO `item_basic` VALUES (14615,0,'allure_ring_+1','allure_ring_+1','魅惑の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,4238);
-INSERT INTO `item_basic` VALUES (14616,0,'triton_ring','triton_ring','トリトンリング',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,3997);
+INSERT INTO `item_basic` VALUES (14616,0,'triton_ring','triton_ring','トリトンリング',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,31450);
 INSERT INTO `item_basic` VALUES (14617,0,'nimble_ring_+1','nimble_ring_+1','俊足の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,5533);
 INSERT INTO `item_basic` VALUES (14618,0,'triumph_ring_+1','triumph_ring_+1','凱旋の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,11592);
 INSERT INTO `item_basic` VALUES (14619,0,'omniscient_ring_+1','omn._ring_+1','全知の指輪+1',@EQUIPMENT_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@RINGS,5533);
@@ -14172,7 +14172,7 @@ INSERT INTO `item_basic` VALUES (16461,0,'adaman_kris','adaman_kris','アダマ�
 INSERT INTO `item_basic` VALUES (16463,0,'combat_casters_dagger','cmb.cst._dagger','連邦魔戦士制式短剣',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@DAGGER,2669);
 INSERT INTO `item_basic` VALUES (16465,0,'bronze_knife','bronze_knife','ブロンズナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,41);
 INSERT INTO `item_basic` VALUES (16466,0,'knife','knife','ナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,485);
-INSERT INTO `item_basic` VALUES (16467,0,'mythril_knife','mythril_knife','ミスリルナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,2069);
+INSERT INTO `item_basic` VALUES (16467,0,'mythril_knife','mythril_knife','ミスリルナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,2080);
 INSERT INTO `item_basic` VALUES (16468,0,'darksteel_knife','darksteel_knife','ダークナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,4810);
 INSERT INTO `item_basic` VALUES (16469,0,'cermet_knife','cermet_knife','サーメットナイフ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,5967);
 INSERT INTO `item_basic` VALUES (16470,0,'gully','gully','ガリィ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,2890);
@@ -14256,13 +14256,13 @@ INSERT INTO `item_basic` VALUES (16548,0,'coral_sword','coral_sword','珊瑚の�
 INSERT INTO `item_basic` VALUES (16549,0,'divine_sword','divine_sword','ディバインソード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,4928);
 INSERT INTO `item_basic` VALUES (16550,0,'hallowed_sword','hallowed_sword','ハロウェドソード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANTRADENPC | @FLAG_CANEQUIP,@SWORD,5327);
 INSERT INTO `item_basic` VALUES (16551,0,'sapara','sapara','サパラ',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,198);
-INSERT INTO `item_basic` VALUES (16552,0,'scimitar','scimitar','シミター',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,923);
+INSERT INTO `item_basic` VALUES (16552,0,'scimitar','scimitar','シミター',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,905);
 INSERT INTO `item_basic` VALUES (16553,0,'tulwar','tulwar','タルワール',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,4850);
 INSERT INTO `item_basic` VALUES (16554,0,'hanger','hanger','ハンガー',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,10185);
 INSERT INTO `item_basic` VALUES (16555,0,'ridill','ridill','リディル',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CAN_SEND_ACCT | @FLAG_INSCRIBABLE | @FLAG_NOAUCTION | @FLAG_CANEQUIP | @FLAG_NODELIVERY | @FLAG_EX | @FLAG_RARE,@NONE,18000);
 INSERT INTO `item_basic` VALUES (16556,0,'bloody_blade','bloody_blade','ブラッディブレード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,9675);
 INSERT INTO `item_basic` VALUES (16557,0,'musketeer_commanders_falchion','msk.cmd._falchion','銃士隊長制式曲刀',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@SWORD,10000);
-INSERT INTO `item_basic` VALUES (16558,0,'falchion','falchion','ファルシオン',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,6900);
+INSERT INTO `item_basic` VALUES (16558,0,'falchion','falchion','ファルシオン',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,6800);
 INSERT INTO `item_basic` VALUES (16559,0,'darksteel_falchion','darksteel_falchion','ダークファルシオン',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,9250);
 INSERT INTO `item_basic` VALUES (16560,0,'cutlass','cutlass','カトラス',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,12250);
 INSERT INTO `item_basic` VALUES (16562,0,'platinum_cutlass','platinum_cutlass','プラチナカトラス',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,9393);
@@ -14332,7 +14332,7 @@ INSERT INTO `item_basic` VALUES (16628,0,'longsword_+1','longsword_+1','ロン�
 INSERT INTO `item_basic` VALUES (16629,0,'small_sword','small_sword','スモールソード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@SWORD,1290);
 INSERT INTO `item_basic` VALUES (16630,0,'striker_sword','striker_sword','ストライカーソード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP | @FLAG_RARE,@SWORD,0);
 INSERT INTO `item_basic` VALUES (16631,0,'kaiser_sword','kaiser_sword','カイザーソード',@WEAPON_TYPE,1,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@SWORD,2185);
-INSERT INTO `item_basic` VALUES (16632,0,'bilbo_+1','bilbo_+1','ビルボ+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,873);
+INSERT INTO `item_basic` VALUES (16632,0,'bilbo_+1','bilbo_+1','ビルボ+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,793);
 INSERT INTO `item_basic` VALUES (16633,0,'degen_+1','degen_+1','デーゲン+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,3503);
 INSERT INTO `item_basic` VALUES (16634,0,'broadsword_+1','broadsword_+1','ブロードソード+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,5256); -- TODO: Verify BaseSell
 INSERT INTO `item_basic` VALUES (16635,0,'mythril_sword_+1','mythril_sword_+1','ミスリルソード+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@SWORD,5125);
@@ -14438,7 +14438,7 @@ INSERT INTO `item_basic` VALUES (16735,0,'axe_of_trials','axe_of_trials','トラ
 INSERT INTO `item_basic` VALUES (16736,0,'dagger_+1','dagger_+1','ダガー+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,484);
 INSERT INTO `item_basic` VALUES (16737,0,'baselard_+1','baselard_+1','バゼラード+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,1000);
 INSERT INTO `item_basic` VALUES (16738,0,'mythril_dagger_+1','mythril_dagger_+1','ミスリルダガー+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,1918);
-INSERT INTO `item_basic` VALUES (16739,0,'mythril_knife_+1','mythril_knife_+1','ミスリルナイフ+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,2586);
+INSERT INTO `item_basic` VALUES (16739,0,'mythril_knife_+1','mythril_knife_+1','ミスリルナイフ+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,2466);
 INSERT INTO `item_basic` VALUES (16740,0,'brass_dagger_+1','brass_dagger_+1','ブラスダガー+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,232);
 INSERT INTO `item_basic` VALUES (16741,0,'poison_dagger_+1','poison_dagger_+1','ポイズンダガー+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,1170);
 INSERT INTO `item_basic` VALUES (16742,0,'poison_knife_+1','poison_knife_+1','ポイズンナイフ+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@DAGGER,1500);
@@ -14990,7 +14990,7 @@ INSERT INTO `item_basic` VALUES (17294,0,'comet_tail','comet_tail','コメット
 INSERT INTO `item_basic` VALUES (17295,0,'rising_sun_+1','rising_sun_+1','ライジングサン+1',@WEAPON_TYPE,1,@FLAG_INSCRIBABLE | @FLAG_CANEQUIP,@BOW,4653);
 INSERT INTO `item_basic` VALUES (17296,0,'pebble','pebble','石つぶて',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,1);
 INSERT INTO `item_basic` VALUES (17297,0,'throwing_coin','throwing_coin','銭',@WEAPON_TYPE,12,@FLAG_CANEQUIP,@AMMUNITION,1);
-INSERT INTO `item_basic` VALUES (17298,0,'tathlum','tathlum','タスラム',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,40);
+INSERT INTO `item_basic` VALUES (17298,0,'tathlum','tathlum','タスラム',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,14);
 INSERT INTO `item_basic` VALUES (17299,0,'astragalos','astragalos','アストラガルス',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,42);
 INSERT INTO `item_basic` VALUES (17300,0,'platinum_bullet','platinum_bullet','プラチナブレット',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,37);
 INSERT INTO `item_basic` VALUES (17301,0,'shuriken','shuriken','手裏剣',@WEAPON_TYPE,99,@FLAG_MYSTERY_BOX | @FLAG_CANEQUIP,@AMMUNITION,10);
