@@ -43,8 +43,8 @@ INSERT INTO `mob_spawn_points` VALUES (16781323,0,'Ooze','Ooze',9,25,29,4.495,-3
 INSERT INTO `mob_spawn_points` VALUES (16781324,0,'Thunder_Elemental','Thunder Elemental',10,27,29,3.938,-3.101,14.569,254);
 INSERT INTO `mob_spawn_points` VALUES (16781325,0,'Water_Elemental','Water Elemental',11,27,29,-6.726,-3.017,10.120,69);
 INSERT INTO `mob_spawn_points` VALUES (16781326,0,'Vodyanoi','Vodyanoi',12,45,47,4.616,-2.636,4.485,59);
-INSERT INTO `mob_spawn_points` VALUES (16781327,0,'Stubborn_Dredvodd','Stubborn Dredvodd',13,37,38,-12.295,-2.500,0.140,0);
-INSERT INTO `mob_spawn_points` VALUES (16781328,0,'Orcs_Wyvern','Orc\'s Wyvern',14,32,32,-7.120,-2.500,-2.167,46);
+INSERT INTO `mob_spawn_points` VALUES (16781327,0,'Stubborn_Dredvodd','Stubborn Dredvodd',13,33,33,-12.295,-2.500,0.140,0);
+INSERT INTO `mob_spawn_points` VALUES (16781328,0,'Orcs_Wyvern','Orc\'s Wyvern',14,28,28,-7.120,-2.500,-2.167,46);
 
 -- ------------------------------------------------------------
 -- Carpenter's Landing (Zone 2)
@@ -1606,12 +1606,12 @@ INSERT INTO `mob_spawn_points` VALUES (16806238,0,'Cave_Antlion','Cave Antlion',
 INSERT INTO `mob_spawn_points` VALUES (16806239,0,'Cave_Antlion','Cave Antlion',48,77,79,-506.345,-4.300,-28.542,0);
 INSERT INTO `mob_spawn_points` VALUES (16806240,0,'Cave_Antlion','Cave Antlion',48,77,79,-538.828,-3.730,-5.722,0);
 INSERT INTO `mob_spawn_points` VALUES (16806241,0,'Cave_Antlion','Cave Antlion',48,77,79,-532.046,-13.000,-68.401,0);
-INSERT INTO `mob_spawn_points` VALUES (16806242,0,'Feeler_Antlion','Feeler Antlion',49,73,75,-402.574,3.999,-202.750,7);
-INSERT INTO `mob_spawn_points` VALUES (16806243,0,'Executioner_Antlion','Executioner Antlion',50,78,80,1.000,1.000,1.000,1);
-INSERT INTO `mob_spawn_points` VALUES (16806244,0,'Executioner_Antlion','Executioner Antlion',50,78,80,1.000,1.000,1.000,1);
-INSERT INTO `mob_spawn_points` VALUES (16806245,0,'Executioner_Antlion','Executioner Antlion',50,78,80,1.000,1.000,1.000,1);
-INSERT INTO `mob_spawn_points` VALUES (16806246,0,'Executioner_Antlion','Executioner Antlion',50,78,80,1.000,1.000,1.000,1);
-INSERT INTO `mob_spawn_points` VALUES (16806247,0,'Executioner_Antlion','Executioner Antlion',50,78,80,1.000,1.000,1.000,1);
+INSERT INTO `mob_spawn_points` VALUES (16806242,0,'Feeler_Antlion','Feeler Antlion',49,78,78,-402.574,4.000,-202.750,107);
+INSERT INTO `mob_spawn_points` VALUES (16806243,0,'Executioner_Antlion','Executioner Antlion',50,80,80,1.000,1.000,1.000,1);
+INSERT INTO `mob_spawn_points` VALUES (16806244,0,'Executioner_Antlion','Executioner Antlion',50,80,80,1.000,1.000,1.000,1);
+INSERT INTO `mob_spawn_points` VALUES (16806245,0,'Executioner_Antlion','Executioner Antlion',50,80,80,1.000,1.000,1.000,1);
+INSERT INTO `mob_spawn_points` VALUES (16806246,0,'Executioner_Antlion','Executioner Antlion',50,80,80,1.000,1.000,1.000,1);
+INSERT INTO `mob_spawn_points` VALUES (16806247,0,'Executioner_Antlion','Executioner Antlion',50,80,80,1.000,1.000,1.000,1);
 INSERT INTO `mob_spawn_points` VALUES (16806248,0,'Alastor_Antlion','Alastor Antlion',51,83,83,1.000,1.000,1.000,1);
 INSERT INTO `mob_spawn_points` VALUES (16806249,0,'Ambusher_Antlion','Ambusher Antlion',52,75,77,-490.195,-4.503,145.451,201);
 INSERT INTO `mob_spawn_points` VALUES (16806250,0,'Fjalar','Fjalar',55,0,0,39.190,-4.500,-116.280,5);
