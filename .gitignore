@@ -233,7 +233,8 @@ memcheck.out.*
 
 # Module init file
 modules/init.txt
-
+modules/omicronXI/
+modules/LevelDown Custom Modules/
 # Doxygen
 doxygen/
 
