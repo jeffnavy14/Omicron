@@ -858,35 +858,6 @@ INSERT INTO `guild_shops` VALUES (5272,13196,52284,52284,24,0,0);   -- silver_be
 -- INSERT INTO `guild_shops` VALUES (5272,13082,3631,15487,24,0,0);    -- chain_gorget TODO: missing min_price and max_price
 INSERT INTO `guild_shops` VALUES (5272,1588,20400,20400,240,3,180); -- slab_of_tufa
 
--- Yabby Tanmikey (Goldsmith Guild) Mhaura (S)
-INSERT INTO `guild_shops` VALUES (528,736,315,1260,200,48,100);  -- chunk_of_silver_ore
-INSERT INTO `guild_shops` VALUES (528,644,1500,9800,200,0,0);    -- chunk_of_mythril_ore
--- INSERT INTO `guild_shops` VALUES (528,737,1500,9200,200,0,0);    -- chunk_of_gold_ore TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (528,738,6000,58032,200,0,0);   -- chunk_of_platinum_ore TODO: verify min_price and max_price
--- INSERT INTO `guild_shops` VALUES (528,648,6000,58032,200,0,0);   -- copper_ingot TODO: missing min_price and max_price
--- INSERT INTO `guild_shops` VALUES (528,650,6000,58032,200,0,0);   -- brass_ingot TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (528,744,4095,9996,200,0,0);    -- silver_ingot
-INSERT INTO `guild_shops` VALUES (528,653,19900,36400,200,0,0);  -- mythril_ingot
--- INSERT INTO `guild_shops` VALUES (528,745,6000,58032,200,0,0);   -- gold_ingot TODO: missing min_price and max_price
--- INSERT INTO `guild_shops` VALUES (528,746,6000,58032,200,0,0);   -- platinum_ingot TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (528,661,1171,1171,200,0,0);    -- brass_sheet
-INSERT INTO `guild_shops` VALUES (528,663,20240,45600,200,0,0);  -- mythril_sheet
--- INSERT INTO `guild_shops` VALUES (528,752,20240,45600,200,0,0);  -- gold_sheet TODO: missing min_price and max_price
--- INSERT INTO `guild_shops` VALUES (528,754,20240,45600,200,0,0);  -- platinum_sheet TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (528,673,210,1388,200,0,0);     -- brass_scales
-INSERT INTO `guild_shops` VALUES (528,760,29172,74880,200,0,0);  -- silver_chain
-INSERT INTO `guild_shops` VALUES (528,681,10500,67760,200,0,0);  -- mythril_chain
--- INSERT INTO `guild_shops` VALUES (528,761,10500,30800,200,0,0);  -- gold_chain TODO: missing min_price and max_price
--- INSERT INTO `guild_shops` VALUES (528,762,10500,30800,200,0,0);  -- platinum_chain TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (528,769,1400,4200,60,33,5);    -- red_rock
-INSERT INTO `guild_shops` VALUES (528,770,1400,4200,60,33,5);    -- blue_rock
-INSERT INTO `guild_shops` VALUES (528,771,1400,4200,60,33,5);    -- yellow_rock
-INSERT INTO `guild_shops` VALUES (528,772,1400,4200,60,33,5);    -- green_rock
-INSERT INTO `guild_shops` VALUES (528,773,1400,4200,60,33,5);    -- translucent_rock
-INSERT INTO `guild_shops` VALUES (528,774,1400,4200,60,33,5);    -- purple_rock
-INSERT INTO `guild_shops` VALUES (528,775,1400,4200,60,33,5);    -- black_rock
-INSERT INTO `guild_shops` VALUES (528,776,1400,4200,60,33,5);    -- white_rock
-
 -- Kueh Igunahmori (Leathercraft Guild) Southern San d'Oria (S)
 INSERT INTO `guild_shops` VALUES (529,857,1290,4760,120,0,0);     -- dhalmel_hide
 INSERT INTO `guild_shops` VALUES (529,858,483,2967,120,33,18);    -- wolf_hide
@@ -1036,45 +1007,6 @@ INSERT INTO `guild_shops` VALUES (531,14245,52785,166096,60,0,0);  -- steel_cuis
 INSERT INTO `guild_shops` VALUES (531,13783,81084,162345,60,0,0);  -- iron_scale_mail
 -- INSERT INTO `guild_shops` VALUES (531,13785,20240,45600,60,0,0);   -- steel_scale_mail TODO: missing min_price and max_price
 -- INSERT INTO `guild_shops` VALUES (531,12306,20240,45600,60,0,0);   -- kite_shield TODO: missing min_price and max_price
-
--- Akamafula (Lower Jeuno) Tenshodo Merchent -- TODO: Audit and update Akamafula.lua. Converted from a guild merchant to a standard shop as of April 2018.
-INSERT INTO `guild_shops` VALUES (60417,16896,517,884,20,10,20);     -- kunai
-INSERT INTO `guild_shops` VALUES (60417,16900,1404,2160,20,7,15);    -- wakizashi
-INSERT INTO `guild_shops` VALUES (60417,16960,3121,3575,20,5,10);    -- uchigatana
--- INSERT INTO `guild_shops` VALUES (60417,16974,224510,697840,60,0,0); -- dotanuki TODO: missing min_price and max_price
-INSERT INTO `guild_shops` VALUES (60417,16975,11583,19800,20,5,10);  -- kanesada
-INSERT INTO `guild_shops` VALUES (60417,16966,1836,2103,20,10,20);   -- tachi
-INSERT INTO `guild_shops` VALUES (60417,16982,4752,15760,20,0,10);   -- nodachi
-INSERT INTO `guild_shops` VALUES (60417,16987,12253,14033,20,5,10);  -- okanehira
-INSERT INTO `guild_shops` VALUES (60417,17265,14428,35251,20,5,10);  -- tanegashima
-INSERT INTO `guild_shops` VALUES (60417,17301,29,87,2970,594,1188);  -- shuriken
-INSERT INTO `guild_shops` VALUES (60417,12456,552,858,20,10,20);     -- hachimaki
-INSERT INTO `guild_shops` VALUES (60417,12457,3272,5079,20,7,15);    -- cotton_hachimaki
-INSERT INTO `guild_shops` VALUES (60417,12458,8972,13927,20,5,10);   -- soil_hachimaki
-INSERT INTO `guild_shops` VALUES (60417,13111,20061,29942,20,5,10);  -- nodowa
-INSERT INTO `guild_shops` VALUES (60417,12584,833,1294,20,10,20);    -- kenpogi
-INSERT INTO `guild_shops` VALUES (60417,12585,4931,7654,20,7,15);    -- cotton_dogi
-INSERT INTO `guild_shops` VALUES (60417,12586,13266,17820,20,5,10);  -- soil_gi
-INSERT INTO `guild_shops` VALUES (60417,12712,458,712,20,10,20);     -- tekko
-INSERT INTO `guild_shops` VALUES (60417,12713,2713,4212,20,7,15);    -- cotton_tekko
-INSERT INTO `guild_shops` VALUES (60417,12714,2713,9979,20,5,10);    -- soil_tekko
-INSERT INTO `guild_shops` VALUES (60417,12840,666,1034,20,10,20);    -- sitabaki
-INSERT INTO `guild_shops` VALUES (60417,12841,2713,6133,20,7,15);    -- cotton_sitabaki
-INSERT INTO `guild_shops` VALUES (60417,12842,10805,14515,20,5,10);  -- soil_sitabaki
-INSERT INTO `guild_shops` VALUES (60417,12968,424,660,20,10,20);     -- kyahan
-INSERT INTO `guild_shops` VALUES (60417,12969,2528,3924,20,7,15);    -- cotton_kyahan
-INSERT INTO `guild_shops` VALUES (60417,12970,11071,12393,20,5,10);  -- soil_kyahan
-
--- Blabbivix (Port Bastok) / Gaudylox (Northern San dOria) / Scavnix (Windurst Walls) (Chip Vendors pseudo guild shop)
-INSERT INTO `guild_shops` VALUES (60418,474,21000,84000,200,50,150); -- Red Chip
-INSERT INTO `guild_shops` VALUES (60418,475,21000,84000,200,50,150); -- Blue Chip
-INSERT INTO `guild_shops` VALUES (60418,476,21000,84000,200,50,150); -- Yellow Chip
-INSERT INTO `guild_shops` VALUES (60418,477,21000,84000,200,50,150); -- Green Chip
-INSERT INTO `guild_shops` VALUES (60418,478,21000,84000,200,50,150); -- Clear Chip
-INSERT INTO `guild_shops` VALUES (60418,479,21000,84000,200,50,150); -- Purple Chip
-INSERT INTO `guild_shops` VALUES (60418,480,21000,84000,200,50,150); -- White Chip
-INSERT INTO `guild_shops` VALUES (60418,481,21000,84000,200,50,150); -- Black Chip
-
 -- Jabbar (Port Bastok) Tenshodo Merchant
 INSERT INTO `guild_shops` VALUES (60419,704,96,673,60,48,50);        -- bamboo_stick
 INSERT INTO `guild_shops` VALUES (60419,915,2700,16120,60,0,0);      -- jar_of_toad_oil

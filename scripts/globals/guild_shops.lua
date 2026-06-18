@@ -7,14 +7,9 @@ xi.guildShops = xi.guildShops or {}
 xi.guildShops.state = xi.guildShops.state or {} -- In-memory shop state, keyed by NPC name.
 
 --- Buy-curve divisor for an item.
-local priceFloorOf = function(shop, cfg)
-    local floorRatio = 3 / 4 -- By default the price floor occurs at 3 / 4 of max stock
-    if shop.priceFloor == xi.guildPriceFloor.TARGET_STOCK then
-        -- Some NPCs use target stock instead
-        return cfg.targetStock
-    end
-
-    return cfg.maxStock * floorRatio
+local priceFloorOf = function(cfg)
+    -- Buy-curve floor defaults to 3/4 of max stock; items can override per-item.
+    return cfg.priceFloor or (cfg.maxStock * 3 / 4)
 end
 
 --- Calculate buy price of an item at open
@@ -106,7 +101,7 @@ local rollShopDay = function(npc, shop)
         state.items[cfg.id] =
         {
             stock     = stock,
-            buyPrice  = calcBuyPrice(cfg.buyMax, priceFloorOf(shop, cfg), cfg.maxStock, stock),
+            buyPrice  = calcBuyPrice(cfg.buyMax, priceFloorOf(cfg), cfg.maxStock, stock),
             sellPrice = calcSellPrice(GetReadOnlyItem(cfg.id):getBasePrice(), cfg.maxStock, stock),
             offered   = stock > 0, -- locked: 0 at open => not sold today
         }
@@ -239,9 +234,9 @@ xi.guildShops.onPlayerSell = function(player, npc, itemId, quantity)
         return rejected(-4)
     end
 
-    -- Invalid item
+    -- Invalid item, or one the shop refuses to buy back
     local cfg = shopConfig(shop, itemId)
-    if cfg == nil then
+    if cfg == nil or cfg.noSell then
         return rejected(-4)
     end
 
@@ -293,20 +288,22 @@ xi.guildShops.onSellList = function(player, npc)
 
     local items = {}
     for _, cfg in ipairs(shop.stock) do
-        local item  = state.items[cfg.id]
-        local price = item.sellPrice
-        if cfg.hidden then
-            -- When MSB is set in packet, the client hides the item from the initial sell menu
-            price = bit.bor(price, 0x80000000)
-        end
+        if not cfg.noSell then
+            local item  = state.items[cfg.id]
+            local price = item.sellPrice
+            if cfg.hidden then
+                -- When MSB is set in packet, the client hides the item from the initial sell menu
+                price = bit.bor(price, 0x80000000)
+            end
 
-        items[#items + 1] =
-        {
-            id    = cfg.id,
-            count = item.stock,
-            price = price,
-            max   = cfg.maxStock,
-        }
+            items[#items + 1] =
+            {
+                id    = cfg.id,
+                count = item.stock,
+                price = price,
+                max   = cfg.maxStock,
+            }
+        end
     end
 
     return items

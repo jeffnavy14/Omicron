@@ -687,7 +687,7 @@ INSERT INTO `item_basic` VALUES (669,0,'molybdenum_sheet','mlbd._sheet','モリ�
 INSERT INTO `item_basic` VALUES (670,0,'aluminum_sheet','aluminum_sheet','アルミ板',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,822);
 INSERT INTO `item_basic` VALUES (671,0,'silver_sheet','silver_sheet','シルバー板',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,341);
 INSERT INTO `item_basic` VALUES (672,0,'handful_of_bronze_scales','bronze_scales','ブロンズの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,27);
-INSERT INTO `item_basic` VALUES (673,0,'handful_of_brass_scales','brass_scales','ブラスの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,71);
+INSERT INTO `item_basic` VALUES (673,0,'handful_of_brass_scales','brass_scales','ブラスの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,70);
 INSERT INTO `item_basic` VALUES (674,0,'handful_of_iron_scales','iron_scales','アイアンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1050);
 INSERT INTO `item_basic` VALUES (675,0,'handful_of_adaman_scales','adaman_scales','アダマンの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,1512);
 INSERT INTO `item_basic` VALUES (676,0,'handful_of_steel_scales','steel_scales','スチールの小札',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,900);
@@ -776,7 +776,7 @@ INSERT INTO `item_basic` VALUES (758,0,'durium_sheet','durium_sheet','ダリウ�
 INSERT INTO `item_basic` VALUES (759,0,'durium_chain','durium_chain','ダリウムの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@SMITHING,0);
 INSERT INTO `item_basic` VALUES (760,0,'silver_chain','silver_chain','シルバーの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,1560);
 INSERT INTO `item_basic` VALUES (761,0,'gold_chain','gold_chain','ゴールドの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,2127);
-INSERT INTO `item_basic` VALUES (762,0,'platinum_chain','platinum_chain','プラチナの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,1068);
+INSERT INTO `item_basic` VALUES (762,0,'platinum_chain','platinum_chain','プラチナの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,4650);
 INSERT INTO `item_basic` VALUES (763,0,'orichalcum_chain','ocl._chain','オリハルコンの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,13800);
 INSERT INTO `item_basic` VALUES (764,0,'brass_chain','brass_chain','ブラスの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,55);
 INSERT INTO `item_basic` VALUES (765,0,'palladian_brass_chain','p._brass_chain','パラスの鎖',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,0);
@@ -788,8 +788,8 @@ INSERT INTO `item_basic` VALUES (770,0,'blue_rock','blue_rock','藍石',@GENERAL
 INSERT INTO `item_basic` VALUES (771,0,'yellow_rock','yellow_rock','黄石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
 INSERT INTO `item_basic` VALUES (772,0,'green_rock','green_rock','翠石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
 INSERT INTO `item_basic` VALUES (773,0,'translucent_rock','translucent_rock','透石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
-INSERT INTO `item_basic` VALUES (774,0,'purple_rock','purple_rock','紫石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,201);
-INSERT INTO `item_basic` VALUES (775,0,'black_rock','black_rock','黒石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,202);
+INSERT INTO `item_basic` VALUES (774,0,'purple_rock','purple_rock','紫石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
+INSERT INTO `item_basic` VALUES (775,0,'black_rock','black_rock','黒石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
 INSERT INTO `item_basic` VALUES (776,0,'white_rock','white_rock','白石',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,200);
 INSERT INTO `item_basic` VALUES (777,0,'fulmenite','fulmenite','フルメナイト',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,0);
 INSERT INTO `item_basic` VALUES (778,0,'heliodor','heliodor','ヘリオドール',@GENERAL_TYPE,12,@FLAG_MYSTERY_BOX,@GOLDSMITHING,3000);
