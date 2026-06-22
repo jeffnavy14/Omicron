@@ -19,16 +19,16 @@
 ===========================================================================
 */
 
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_weapon.h"
 #include "latent_effect.h"
 #include "packets/s2c/0x0ac_command_data.h"
 #include "status_effect_container.h"
 #include "utils/charutils.h"
 
-CLatentEffect::CLatentEffect(CBattleEntity* owner, LATENT conditionsId, uint16 conditionsValue, uint8 slot, Mod modValue, int16 modPower)
+CLatentEffect::CLatentEffect(CBattleEntity* owner, xi::Latent conditionsId, uint16 conditionsValue, uint8 slot, Mod modValue, int16 modPower)
 : m_POwner(owner)
 , m_ConditionsID(conditionsId)
 , m_ConditionsValue(conditionsValue)
@@ -46,7 +46,7 @@ CLatentEffect::~CLatentEffect()
     }
 }
 
-LATENT CLatentEffect::GetConditionsID() const
+auto CLatentEffect::GetConditionsID() const -> xi::Latent
 {
     return m_ConditionsID;
 }
@@ -81,7 +81,7 @@ CBattleEntity* CLatentEffect::GetOwner() const
     return m_POwner;
 }
 
-void CLatentEffect::SetConditionsId(LATENT id)
+void CLatentEffect::SetConditionsId(xi::Latent id)
 {
     m_ConditionsID = id;
 }

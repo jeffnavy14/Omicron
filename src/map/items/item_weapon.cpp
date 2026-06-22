@@ -18,12 +18,13 @@
 
 ===========================================================================
 */
-#include "entities/battleentity.h"
+
+#include "item_weapon.h"
+
+#include "entities/battle_entity.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
-
-#include "item_weapon.h"
 
 /************************************************************************
  *                                                                       *
@@ -43,7 +44,7 @@ CItemWeapon::CItemWeapon(uint16 id)
     m_iLvlMacc       = 0;
     m_damage         = 0;
     m_effect         = 0;
-    m_dmgType        = DAMAGE_TYPE::NONE;
+    m_dmgType        = xi::DamageType::None;
     m_delay          = 8000;
     m_baseDelay      = 8000; // this should only be needed for mobs (specifically mnks)
     m_maxHit         = 0;
@@ -427,7 +428,7 @@ uint16 CItemWeapon::getDamage() const
  *                                                                       *
  ************************************************************************/
 
-void CItemWeapon::setDmgType(DAMAGE_TYPE dmgType)
+void CItemWeapon::setDmgType(xi::DamageType dmgType)
 {
     m_dmgType = dmgType;
 }
@@ -438,7 +439,7 @@ void CItemWeapon::setDmgType(DAMAGE_TYPE dmgType)
  *                                                                       *
  ************************************************************************/
 
-DAMAGE_TYPE CItemWeapon::getDmgType()
+auto CItemWeapon::getDmgType() -> xi::DamageType
 {
     return m_dmgType;
 }

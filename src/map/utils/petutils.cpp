@@ -28,8 +28,8 @@
 #include "battleutils.h"
 #include "charutils.h"
 #include "enmity_container.h"
-#include "entities/automatonentity.h"
-#include "entities/mobentity.h"
+#include "entities/automaton_entity.h"
+#include "entities/mob_entity.h"
 #include "grades.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
@@ -116,7 +116,7 @@ void LoadPetList()
         Pet->time            = std::chrono::seconds(rset->get<uint32>("time"));
         Pet->modelSize       = rset->getOrDefault<uint8>("modelSize", 0);
         Pet->modelHitboxSize = std::max<float>(0.0f, rset->getOrDefault<float>("modelHitboxSize", 0) / 10.f);
-        Pet->EcoSystem       = rset->get<ECOSYSTEM>("ecosystemID");
+        Pet->EcoSystem       = rset->get<xi::Ecosystem>("ecosystemID");
         Pet->m_Species       = rset->get<uint16>("speciesid");
         Pet->mJob            = rset->get<uint8>("mJob");
         Pet->sJob            = rset->get<uint8>("sJob");
@@ -181,7 +181,7 @@ void LoadPetList()
         Pet->cmbDelay       = rset->get<uint16>("cmbDelay");
         Pet->name_prefix    = rset->get<uint8>("name_prefix");
         Pet->m_MobSkillList = rset->get<uint16>("skill_list_id");
-        Pet->m_dmgType      = rset->get<DAMAGE_TYPE>("damageType");
+        Pet->m_dmgType      = rset->get<xi::DamageType>("damageType");
 
         g_PPetList.emplace_back(Pet);
     }
@@ -404,9 +404,9 @@ void LoadJugStats(CPetEntity* PMob, Pet_t* petStats)
 
 void LoadAutomatonStats(CCharEntity* PMaster, CPetEntity* PPet, Pet_t* petStats, uint8 mlvl)
 {
-    skills_t& tempSkills = PMaster->automatonInfo.automatonSkills;
-    stats_t&  tempStats  = PMaster->automatonInfo.automatonStats;
-    health_t& tempHealth = PMaster->automatonInfo.automatonHealth;
+    auto& tempSkills = PMaster->automatonInfo_.automatonSkills;
+    auto& tempStats  = PMaster->automatonInfo_.automatonStats;
+    auto& tempHealth = PMaster->automatonInfo_.automatonHealth;
 
     tempSkills.automaton_melee  = std::min(puppetutils::getSkillCap(PMaster, SKILL_AUTOMATON_MELEE, mlvl), PMaster->GetSkill(SKILL_AUTOMATON_MELEE));
     tempSkills.automaton_ranged = std::min(puppetutils::getSkillCap(PMaster, SKILL_AUTOMATON_RANGED, mlvl), PMaster->GetSkill(SKILL_AUTOMATON_RANGED));
@@ -665,10 +665,11 @@ void LoadAutomatonStats(CCharEntity* PMaster, CPetEntity* PPet, Pet_t* petStats,
         PPet->stats         = tempStats;
         PPet->health        = tempHealth;
 
-        PAutomaton->m_Equip = PMaster->automatonInfo.m_Equip;
-        PPet->look          = PMaster->automatonInfo.automatonLook;
-        PPet->name          = PMaster->automatonInfo.m_automatonName;
-        PPet->look.size     = MODEL_AUTOMATON;
+        PAutomaton->setEquip(PMaster->automatonInfo_.equip);
+
+        PPet->look      = PMaster->automatonInfo_.automatonLook;
+        PPet->name      = PMaster->automatonInfo_.automatonName;
+        PPet->look.size = MODEL_AUTOMATON;
 
         static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_MAIN])->setSkillType(SKILL_AUTOMATON_MELEE);
         static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_MAIN])->setDelay(petStats->cmbDelay); // every pet should use this eventually
@@ -677,12 +678,12 @@ void LoadAutomatonStats(CCharEntity* PMaster, CPetEntity* PPet, Pet_t* petStats,
 
         static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_RANGED])->setSkillType(SKILL_AUTOMATON_RANGED);
         static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_RANGED])->setDamage(static_cast<uint16>(std::floor((PPet->GetSkill(SKILL_AUTOMATON_RANGED) / 8.7f) * 2.0f + 3.0f)));
-        static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_RANGED])->setDmgType(DAMAGE_TYPE::PIERCING);
+        static_cast<CItemWeapon*>(PPet->m_Weapons[SLOT_RANGED])->setDmgType(xi::DamageType::Piercing);
 
         // Automatons are hard to interrupt
         PPet->addModifier(Mod::SPELLINTERRUPT, 85);
 
-        switch (PAutomaton->getFrame())
+        switch (PAutomaton->frame())
         {
             default: // case AutomatonFrame::Harlequin:
                 PPet->WorkingSkills.evasion = battleutils::GetMaxSkill(4, mlvl > 99 ? 99 : mlvl);
@@ -769,7 +770,7 @@ void LoadAvatarStats(CBattleEntity* PMaster, CPetEntity* PPet)
 
     // Bonus HP calculation
     bonusStat = (mainLevelOver10 + mainLevelOver50andUnder60) * 2;
-    if (PPet->m_PetID == PETID_ODIN || PPet->m_PetID == PETID_ALEXANDER)
+    if (PPet->petID() == PETID_ODIN || PPet->petID() == PETID_ALEXANDER)
     {
         bonusStat += 6800;
     }
@@ -850,7 +851,7 @@ void LoadAvatarStats(CBattleEntity* PMaster, CPetEntity* PPet)
 
 void CalculateAvatarStats(CBattleEntity* PMaster, CPetEntity* PPet)
 {
-    uint32 petID = PPet->m_PetID;
+    uint32 petID = PPet->petID();
 
     // clang-format off
         auto maybePetData = std::find_if(g_PPetList.begin(), g_PPetList.end(), [petID](Pet_t* t)
@@ -1057,7 +1058,7 @@ void CalculateWyvernStats(CBattleEntity* PMaster, CPetEntity* PPet)
 
 void CalculateJugPetStats(CBattleEntity* PMaster, CPetEntity* PPet)
 {
-    uint32 petID = PPet->m_PetID;
+    uint32 petID = PPet->petID();
 
     // clang-format off
         auto maybePetData = std::find_if(g_PPetList.begin(), g_PPetList.end(), [petID](Pet_t* t)
@@ -1112,7 +1113,7 @@ void CalculateAutomatonStats(CBattleEntity* PMaster, CBattleEntity* PPet)
         uint32 petID = 0;
         if (PAutomaton)
         {
-            petID = PAutomaton->m_PetID;
+            petID = PAutomaton->petID();
             // TEMP: should be MLevel when unsummoned, and PUP level when summoned
             PPet->SetMLevel(mainLevel);
             PPet->SetSLevel(mainLevel / 2); // Todo: SetSLevel() already reduces the level?
@@ -1220,7 +1221,7 @@ void SetupPetWithMaster(CBattleEntity* PMaster, CPetEntity* PPet)
     if (auto* PMasterChar = dynamic_cast<CCharEntity*>(PMaster))
     {
         charutils::BuildingCharAbilityTable(PMasterChar);
-        charutils::BuildingCharPetAbilityTable(PMasterChar, PPet, PPet->m_PetID);
+        charutils::BuildingCharPetAbilityTable(PMasterChar, PPet, PPet->petID());
 
         PMasterChar->pushPacket<CCharStatusPacket>(PMasterChar);
         PMasterChar->pushPacket<CPetSyncPacket>(PMasterChar);
@@ -1241,15 +1242,15 @@ void SetupPetWithMaster(CBattleEntity* PMaster, CPetEntity* PPet)
 
     if (PMaster->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Debilitation))
     {
-        PPet->StatusEffectContainer->AddStatusEffect(new CStatusEffect(xi::StatusEffect::Debilitation, static_cast<uint16>(xi::StatusEffect::Debilitation), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Debilitation)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Debilitation)->GetDuration()), EffectNotice::Silent);
+        PPet->StatusEffectContainer->AddStatusEffectSilent(xi::StatusEffect::Debilitation, static_cast<uint16>(xi::StatusEffect::Debilitation), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Debilitation)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Debilitation)->GetDuration());
     }
     if (PMaster->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Omerta))
     {
-        PPet->StatusEffectContainer->AddStatusEffect(new CStatusEffect(xi::StatusEffect::Omerta, static_cast<uint16>(xi::StatusEffect::Omerta), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Omerta)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Omerta)->GetDuration()), EffectNotice::Silent);
+        PPet->StatusEffectContainer->AddStatusEffectSilent(xi::StatusEffect::Omerta, static_cast<uint16>(xi::StatusEffect::Omerta), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Omerta)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Omerta)->GetDuration());
     }
     if (PMaster->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Impairment))
     {
-        PPet->StatusEffectContainer->AddStatusEffect(new CStatusEffect(xi::StatusEffect::Impairment, static_cast<uint16>(xi::StatusEffect::Impairment), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetDuration()), EffectNotice::Silent);
+        PPet->StatusEffectContainer->AddStatusEffectSilent(xi::StatusEffect::Impairment, static_cast<uint16>(xi::StatusEffect::Impairment), PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetPower(), 0s, PMaster->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetDuration());
     }
 }
 
@@ -1334,7 +1335,7 @@ void SpawnMobPet(CBattleEntity* PMaster, uint32 PetID)
         PMaster->StatusEffectContainer->CopyConfrontationEffect(PPet);
 
         // TODO: Lets not do this here.
-        if (PPet->m_EcoSystem == ECOSYSTEM::ELEMENTAL)
+        if (PPet->m_EcoSystem == xi::Ecosystem::Elemental)
         {
             // assuming elemental spawn
             PPet->setModifier(Mod::DMGPHYS, -5000); //-50% PDT
@@ -1866,11 +1867,11 @@ void LoadPet(CBattleEntity* PMaster, uint32 PetID, bool spawningFromZone)
     CPetEntity* PPet = nullptr;
     if (petType == PET_TYPE::AUTOMATON && PMaster->objtype == TYPE_PC)
     {
-        PPet = new CAutomatonEntity();
+        PPet = new CAutomatonEntity(PPetData->PetID);
     }
     else
     {
-        PPet = new CPetEntity(petType);
+        PPet = new CPetEntity(petType, PPetData->PetID);
         PPet->saveModifiers();
     }
 
@@ -1906,7 +1907,6 @@ void LoadPet(CBattleEntity* PMaster, uint32 PetID, bool spawningFromZone)
     PPet->m_MobSkillList = PPetData->m_MobSkillList;
     PPet->SetMJob(PPetData->mJob);
     PPet->m_Element = PPetData->m_Element;
-    PPet->m_PetID   = PPetData->PetID;
 
     if (PPet->getPetType() == PET_TYPE::AVATAR)
     {
@@ -1974,7 +1974,7 @@ bool CheckPetModType(CBattleEntity* PPet, PetModType petmod)
         }
         if (petmod >= PetModType::Automaton && petmod <= PetModType::Stormwaker && PPetEntity->getPetType() == PET_TYPE::AUTOMATON)
         {
-            if (petmod == PetModType::Automaton || (uint16)petmod + 28 == (uint16) static_cast<CAutomatonEntity*>(PPetEntity)->getFrame())
+            if (petmod == PetModType::Automaton || (uint16)petmod + 28 == (uint16) static_cast<CAutomatonEntity*>(PPetEntity)->frame())
             {
                 return true;
             }

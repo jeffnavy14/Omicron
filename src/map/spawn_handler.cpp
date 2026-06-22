@@ -25,7 +25,7 @@
 
 #include "common/timer.h"
 #include "common/vana_time.h"
-#include "entities/mobentity.h"
+#include "entities/mob_entity.h"
 #include "enums/weather.h"
 #include "lua/luautils.h"
 #include "spawn_slot.h"
@@ -35,6 +35,24 @@
 SpawnHandler::SpawnHandler(CZone* PZone)
 : zone_(PZone)
 {
+}
+
+SpawnHandler::~SpawnHandler() = default;
+
+auto SpawnHandler::getOrCreateSpawnSlot(uint32_t slotId) -> SpawnSlot*
+{
+    auto& spawnSlot = spawnSlots_[slotId];
+    if (!spawnSlot)
+    {
+        spawnSlot = std::make_unique<SpawnSlot>();
+    }
+    return spawnSlot.get();
+}
+
+auto SpawnHandler::getSpawnSlot(uint32_t slotId) const -> SpawnSlot*
+{
+    const auto it = spawnSlots_.find(slotId);
+    return it != spawnSlots_.end() ? it->second.get() : nullptr;
 }
 
 // Register a given mob for respawn at its default respawn timer.
@@ -223,7 +241,7 @@ void SpawnHandler::onWeatherChange(Weather weather) const
     zone_->ForEachMob(
         [weather, element](CMobEntity* PMob)
         {
-            if (PMob->m_EcoSystem == ECOSYSTEM::ELEMENTAL && PMob->PMaster == nullptr && PMob->m_SpawnType & SPAWNTYPE_WEATHER)
+            if (PMob->m_EcoSystem == xi::Ecosystem::Elemental && PMob->PMaster == nullptr && PMob->m_SpawnType & SPAWNTYPE_WEATHER)
             {
                 if (PMob->m_Element != element)
                 {
@@ -274,7 +292,7 @@ auto SpawnHandler::canSpawnNow(const CMobEntity* PMob) const -> bool
     // Weather-based spawn conditions
     if (PMob->m_SpawnType & SPAWNTYPE_FOG)
     {
-        if (zone_->GetWeather() != Weather::Fog)
+        if (zone_->weather().current() != Weather::Fog)
         {
             return false;
         }
@@ -283,9 +301,9 @@ auto SpawnHandler::canSpawnNow(const CMobEntity* PMob) const -> bool
     if (PMob->m_SpawnType & SPAWNTYPE_WEATHER)
     {
         // Only for elementals without a master
-        if (PMob->m_EcoSystem == ECOSYSTEM::ELEMENTAL && PMob->PMaster == nullptr)
+        if (PMob->m_EcoSystem == xi::Ecosystem::Elemental && PMob->PMaster == nullptr)
         {
-            if (PMob->m_Element != zoneutils::GetWeatherElement(zone_->GetWeather()))
+            if (PMob->m_Element != zoneutils::GetWeatherElement(zone_->weather().current()))
             {
                 return false;
             }

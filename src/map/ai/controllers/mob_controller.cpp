@@ -31,7 +31,7 @@
 #include "battlefield.h"
 #include "common/utils.h"
 #include "enmity_container.h"
-#include "entities/mobentity.h"
+#include "entities/mob_entity.h"
 #include "mob_modifier.h"
 #include "mob_spell_container.h"
 #include "mobskill.h"
@@ -219,9 +219,9 @@ void CMobController::TryLink()
         {
             const auto PPetEntity = static_cast<CPetEntity*>(PTarget->PPet);
             if (PPetEntity->getPetType() == PET_TYPE::AVATAR &&
-                PPetEntity->m_PetID != PETID_ALEXANDER &&
-                PPetEntity->m_PetID != PETID_ODIN &&
-                PPetEntity->m_PetID != PETID_ATOMOS)
+                PPetEntity->petID() != PETID_ALEXANDER &&
+                PPetEntity->petID() != PETID_ODIN &&
+                PPetEntity->petID() != PETID_ATOMOS)
             {
                 if (PTarget->objtype == TYPE_PC)
                 {
@@ -1178,7 +1178,7 @@ auto CMobController::DoRoamTick(timer::time_point tick) -> Task<void>
                 {
                     PMob->PAI->Despawn();
                     // Override respawn timer set by CDespawnState for deaggro (60s instead of default)
-                    PMob->loc.zone->spawnHandler()->registerForRespawn(PMob, 60s);
+                    PMob->loc.zone->spawnHandler().registerForRespawn(PMob, 60s);
                     co_return;
                 }
             }

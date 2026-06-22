@@ -24,9 +24,9 @@
 #include "instance_loader.h"
 #include "zone_instance.h"
 
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
-#include "entities/npcentity.h"
+#include "entities/char_entity.h"
+#include "entities/mob_entity.h"
+#include "entities/npc_entity.h"
 #include "instance.h"
 #include "items/item_weapon.h"
 #include "lua/luautils.h"
@@ -62,7 +62,7 @@ CInstanceLoader::~CInstanceLoader()
     TracyZoneScoped;
 }
 
-CInstance* CInstanceLoader::LoadInstance() const
+auto CInstanceLoader::LoadInstance() const -> CInstance*
 {
     TracyZoneScoped;
 
@@ -81,7 +81,7 @@ CInstance* CInstanceLoader::LoadInstance() const
                                  "paralyze_res_rank, bind_res_rank, silence_res_rank, slow_res_rank, poison_res_rank, light_sleep_res_rank, dark_sleep_res_rank, blind_res_rank, "
                                  "Element, mob_pools.speciesid, name_prefix, entityFlags, animationsub, "
                                  "(mob_species_system.HP / 100) AS hp_scale, (mob_species_system.MP / 100) AS mp_scale, hasSpellScript, spellList, mob_groups.poolid, "
-                                 "allegiance, namevis, aggro, mob_pools.skill_list_id, mob_pools.true_detection, detects, "
+                                 "allegiance, namevis, aggro, mob_pools.roamflag, mob_pools.skill_list_id, mob_pools.true_detection, detects, "
                                  "mob_species_system.charmable, mob_pools.modelSize, mob_pools.modelHitboxSize "
                                  "FROM instance_entities "
                                  "INNER JOIN mob_spawn_points ON instance_entities.id = mob_spawn_points.mobid "
@@ -139,7 +139,7 @@ CInstance* CInstanceLoader::LoadInstance() const
             PMob->m_Link      = rset->get<uint8>("links");
             PMob->m_Type      = rset->get<uint8>("mobType");
             PMob->m_Immunity  = rset->get<IMMUNITY>("immunity");
-            PMob->m_EcoSystem = rset->get<ECOSYSTEM>("ecosystemID");
+            PMob->m_EcoSystem = rset->get<xi::Ecosystem>("ecosystemID");
 
             PMob->baseSpeed      = rset->get<uint8>("speed"); // Overwrites baseentity.cpp's defined baseSpeed
             PMob->animationSpeed = rset->get<uint8>("speed"); // Overwrites baseentity.cpp's defined animationSpeed
@@ -211,6 +211,7 @@ CInstance* CInstanceLoader::LoadInstance() const
 
             PMob->allegiance      = rset->get<ALLEGIANCE_TYPE>("allegiance");
             PMob->namevis         = rset->get<uint8>("namevis");
+            PMob->m_roamFlags     = rset->get<uint16>("roamflag");
             PMob->modelHitboxSize = std::max<float>(0.0f, rset->getOrDefault<float>("modelHitboxSize", 0) / 10.f);
             PMob->modelSize       = rset->getOrDefault<uint8>("modelSize", 0);
             const auto aggro      = rset->get<uint32>("aggro");
@@ -283,7 +284,7 @@ CInstance* CInstanceLoader::LoadInstance() const
             PNpc->look = look_t(sqlModelID);
 
             PNpc->name_prefix = rset->get<uint8>("name_prefix");
-            PNpc->widescan    = rset->get<uint8>("widescan");
+            PNpc->setWidescan(rset->get<uint8>("widescan"));
 
             PNpc->PInstance = m_PInstance;
 

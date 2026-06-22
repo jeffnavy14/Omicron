@@ -21,7 +21,7 @@
 
 #include "0x100_myroom_job.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_weapon.h"
 #include "job_points.h"
 #include "latent_effect_container.h"
@@ -116,13 +116,13 @@ void GP_CLI_COMMAND_MYROOM_JOB::process(MapSession* PSession, CCharEntity* PChar
             blueutils::UnequipAllBlueSpells(PChar);
         }
 
-        DAMAGE_TYPE subType = DAMAGE_TYPE::NONE;
+        xi::DamageType subType = xi::DamageType::None;
         if (auto* weapon = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_SUB]))
         {
             subType = weapon->getDmgType();
         }
 
-        if (subType > DAMAGE_TYPE::NONE && subType < DAMAGE_TYPE::HTH)
+        if (subType > xi::DamageType::None && subType < xi::DamageType::HandToHand)
         {
             charutils::UnequipItem(PChar, SLOT_SUB);
         }
