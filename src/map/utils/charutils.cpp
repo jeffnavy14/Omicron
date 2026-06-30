@@ -7331,15 +7331,6 @@ auto SendToZone(CCharEntity* PChar, uint16 zoneId) -> bool
         return false;
     }
 
-    auto ip   = ipp.getIP();
-    auto port = ipp.getPort();
-    db::preparedStmt("UPDATE accounts_sessions "
-                     "SET server_addr = ?, server_port = ? "
-                     "WHERE charid = ?",
-                     ip,
-                     port,
-                     PChar->id);
-
     db::preparedStmt("UPDATE chars "
                      "SET pos_zone = ?, pos_prevzone = ?, pos_rot = ?,"
                      "pos_x = ?, pos_y = ?, pos_z = ?,"

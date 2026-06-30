@@ -217,7 +217,6 @@ public:
     void sendEmptyEntityUpdateToPlayer(CLuaBaseEntity* entityToUpdate);
 
     void forceRezone();
-    void forceLogout();
 
     auto  getPos() -> sol::table;
     void  showPosition();

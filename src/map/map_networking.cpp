@@ -357,6 +357,13 @@ int32 MapNetworking::recv_parse(uint8* buff, size_t* buffsize, MapSession* PSess
             }
         }
 
+        // This is when a real decrypt of the current key hits.
+        // We gate this variable to allow no longer allow incoming 0x00As to be handled
+        if (decryptCount == 0)
+        {
+            PSession->hasDecryptedPacket = true;
+        }
+
         // reading data size
         uint32 PacketDataSize = ref<uint32>(buff, *buffsize - sizeof(int32) - 16);
 
@@ -403,7 +410,7 @@ int32 MapNetworking::parse(uint8* buff, size_t* buffsize, MapSession* PSession)
     {
         // Update the time we last got a char sync packet
         // The client can spam some other packets when trying to zone, preventing timely session deletions
-        PSession->last_update = timer::now();
+        PSession->tapLastUpdate();
     }
 
     for (uint8* SmallPD_ptr = PacketData_Begin; SmallPD_ptr + (ref<uint8>(SmallPD_ptr, 1) & 0xFE) * 2 <= PacketData_End && (ref<uint8>(SmallPD_ptr, 1) & 0xFE);
@@ -538,8 +545,19 @@ int32 MapNetworking::send_parse(uint8* buff, size_t* buffsize, MapSession* PSess
 
                     incrementKeyAfterEncrypt = true;
 
-                    // Set client port to zero, indicating the client tried to zone out and no longer has a port until the next 0x00A
-                    db::preparedStmt("UPDATE accounts_sessions SET client_port = 0, last_zoneout_time = NOW() WHERE charid = ?", PSession->charID);
+                    if (PSession->zone_type != GP_GAME_LOGOUT_STATE::LOGOUT)
+                    {
+                        auto ip   = PSession->zone_ipp.getIP();
+                        auto port = PSession->zone_ipp.getPort();
+
+                        // Set client port to zero, indicating the client tried to zone out and no longer has a port until the next 0x00A
+                        db::preparedStmt("UPDATE accounts_sessions SET server_addr = ?, server_port = ?, client_port = 0, last_zoneout_time = NOW() WHERE charid = ?", ip, port, PSession->charID);
+                    }
+                    else
+                    {
+                        // This probably isn't necessary - the session should be deleted shortly.
+                        db::preparedStmt("UPDATE accounts_sessions SET client_port = 0, last_zoneout_time = NOW() WHERE charid = ?", PSession->charID);
+                    }
                 }
 
                 std::memcpy(buff + *buffsize, *PSmallPacket, PSmallPacket->getSize());

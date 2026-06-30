@@ -61,9 +61,9 @@ auto MapSessionContainer::createSession(IPP ipp) -> MapSession*
 
     auto map_session_data = std::make_unique<MapSession>();
 
-    map_session_data->scheduler   = &scheduler_;
-    map_session_data->last_update = timer::now();
-    map_session_data->client_ipp  = ipp;
+    map_session_data->scheduler  = &scheduler_;
+    map_session_data->client_ipp = ipp;
+    map_session_data->tapLastUpdate();
 
     sessions_[ipp] = std::move(map_session_data);
 
@@ -85,9 +85,9 @@ auto MapSessionContainer::createPendingSession(uint32 charId) -> MapSession*
 
     auto map_session_data = std::make_unique<MapSession>();
 
-    map_session_data->scheduler   = &scheduler_;
-    map_session_data->last_update = timer::now(); // This may need adjustment if sessions feel like they take too long to free
-    map_session_data->charID      = charId;
+    map_session_data->scheduler = &scheduler_;
+    map_session_data->charID    = charId;
+    map_session_data->tapLastUpdate();
 
     pending_sessions_[charId] = std::move(map_session_data);
 
@@ -209,7 +209,7 @@ void MapSessionContainer::cleanupSessions(IPP mapIPP)
         auto& map_session_data = it->second;
 
         auto* PChar = map_session_data->PChar.get();
-        auto  now   = timer::now();
+        auto  now   = earth_time::now();
 
         if (now > map_session_data->last_update + 5s)
         {
@@ -313,7 +313,7 @@ void MapSessionContainer::cleanupSessions(IPP mapIPP)
         {
             auto& map_session_data = pair.second;
 
-            auto now = timer::now();
+            auto now = earth_time::now();
 
             if (now > map_session_data->last_update + std::chrono::seconds(timeoutSetting))
             {

@@ -153,6 +153,8 @@ void IPCClient::handleMessage_AccountLogin(const IPP& ipp, const ipc::AccountLog
 
     if (auto session = networking_.sessions().getSessionByAccountId(message.accountId))
     {
+        session->forceLinkDead = true; // Don't accept any more updates for last packet received time
+
         // Extreme overkill but...
         // Scramble key so server rejects input
         for (uint32_t& i : session->blowfish.key)
@@ -210,7 +212,7 @@ void IPCClient::handleMessage_CharZone(const IPP& ipp, const ipc::CharZone& mess
 
     if (session) // Update in case of edge case
     {
-        session->last_update = timer::now();
+        session->tapLastUpdate();
     }
     else
     {

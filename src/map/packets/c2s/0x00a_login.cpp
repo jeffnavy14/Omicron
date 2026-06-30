@@ -38,7 +38,7 @@ auto GP_CLI_COMMAND_LOGIN::validate(MapSession* PSession, const CCharEntity* PCh
 {
     return PacketValidator(PChar)
         .mustEqual(PChar->id, this->UniqueNo, "Player ID mismatch")
-        .mustNotEqual(PSession->blowfish.status == BLOWFISH_ACCEPTED && PChar->status == STATUS_TYPE::NORMAL, true, "Player already logged in.");
+        .mustNotEqual(PSession->blowfish.status == BLOWFISH_ACCEPTED && PChar->status == STATUS_TYPE::NORMAL && PSession->hasDecryptedPacket, true, "Player already logged in.");
 }
 
 void GP_CLI_COMMAND_LOGIN::process(MapSession* PSession, CCharEntity* PChar) const

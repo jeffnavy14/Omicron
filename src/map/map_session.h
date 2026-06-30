@@ -46,12 +46,15 @@ struct MapSession
     uint16                       server_packet_id   = 0;  // id of the last packet sent by the server
     NetworkBuffer                server_packet_data = {}; // data of the packet, which was previously sent to the client
     size_t                       server_packet_size = 0;  // the size of the packet that was previously sent to the client
-    timer::time_point            last_update        = {}; // time of last packet recv
+    earth_time::time_point       last_update        = {}; // time of last packet recv
     blowfish_t                   blowfish           = {}; // unique decypher keys, these are the currently expected keys
     std::unique_ptr<CCharEntity> PChar;                   // game char
-    uint8                        shuttingDown = 0;        // prevents double session closing
-    uint32                       charID       = 0;
-    uint32                       accountID    = 0;
+    uint8                        shuttingDown       = 0;  // prevents double session closing
+    uint32                       charID             = 0;
+    uint32                       accountID          = 0;
+    uint32                       next_zone_id       = 0;
+    bool                         forceLinkDead      = false; // Don't allow last_update tap if forced to die
+    bool                         hasDecryptedPacket = false; // used to check if the client still needs an 0x00A
 
     // Store old blowfish data, when a player recieves 0x00B their key should increment
     // If it doesn't, and we can still successfully decrypt here, that means we need to resend 0x00B.
@@ -63,6 +66,7 @@ struct MapSession
 
     void incrementBlowfish();
     void initBlowfish();
+    void tapLastUpdate();
 
     auto toString() -> std::string;
 };
