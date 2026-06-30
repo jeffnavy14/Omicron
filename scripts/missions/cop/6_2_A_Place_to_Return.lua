@@ -74,7 +74,7 @@ mission.sections =
                 onTrigger = function(player, npc)
                     if mission:getVar(player, 'Status') == 1 then
                         if mission:getVar(player, 'Option') == 7 then
-                            return mission:progressEvent(10)
+                            return mission:progressCutscene(10)
                         elseif
                             not GetMobByID(misareauxID.mob.PM6_2_MOB_OFFSET + 0):isSpawned() and
                             not GetMobByID(misareauxID.mob.PM6_2_MOB_OFFSET + 1):isSpawned() and

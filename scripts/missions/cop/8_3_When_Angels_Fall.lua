@@ -104,7 +104,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if not player:hasKeyItem(xi.ki.BRAND_OF_DAWN) then
-                        return mission:progressEvent(110)
+                        return mission:progressOptionalCutscene(110, { cs_option = 0, canSkip = true })
                     end
                 end,
             },
@@ -113,7 +113,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if not player:hasKeyItem(xi.ki.BRAND_OF_TWILIGHT) then
-                        return mission:progressEvent(111)
+                        return mission:progressOptionalCutscene(111, { cs_option = 0, canSkip = true })
                     end
                 end,
             },

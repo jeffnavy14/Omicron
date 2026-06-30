@@ -14,10 +14,10 @@ xi.combat.damage.physicalElementSDT = function(target, physicalElement)
 
     local physicalElementSDTModifier =
     {
-        [xi.damageType.PIERCING] = xi.mod.PIERCE_SDT,
-        [xi.damageType.SLASHING] = xi.mod.SLASH_SDT,
-        [xi.damageType.BLUNT   ] = xi.mod.IMPACT_SDT,
-        [xi.damageType.HAND_TO_HAND     ] = xi.mod.HTH_SDT,
+        [xi.damageType.PIERCING    ] = xi.mod.PIERCE_SDT,
+        [xi.damageType.SLASHING    ] = xi.mod.SLASH_SDT,
+        [xi.damageType.BLUNT       ] = xi.mod.IMPACT_SDT,
+        [xi.damageType.HAND_TO_HAND] = xi.mod.HTH_SDT,
     }
 
     local sdt = 1 + target:getMod(physicalElementSDTModifier[physicalElement]) / 10000

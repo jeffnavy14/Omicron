@@ -356,12 +356,13 @@ xi.job_utils.beastmaster.checkSic = function(player, target, ability)
 
     if pet == nil then
         return xi.msg.basic.REQUIRES_A_PET, 0
-    elseif pet:getHP() == 0 then
+    elseif
+        pet:getHP() == 0 or
+        not pet:hasTPMoves()
+    then
         return xi.msg.basic.UNABLE_TO_USE_JA, 0
     elseif pet:getTarget() == nil then
         return xi.msg.basic.PET_CANNOT_DO_ACTION, 0
-    elseif not pet:hasTPMoves() then
-        return xi.msg.basic.UNABLE_TO_USE_JA, 0
     end
 
     return 0, 0

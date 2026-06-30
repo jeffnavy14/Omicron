@@ -79,6 +79,18 @@ auto CPetController::Tick(timer::time_point tick) -> Task<void>
     co_await CMobController::Tick(tick);
 }
 
+// Light Spirit is the only elemental spirit that is allowed to cast out of combat.
+auto CPetController::DoBuffTick() -> bool
+{
+    const auto* PPetEntity = dynamic_cast<CPetEntity*>(PPet);
+    if (!PPetEntity || PPetEntity->petID() != PETID_LIGHTSPIRIT)
+    {
+        return false;
+    }
+
+    return CMobController::DoBuffTick();
+}
+
 auto CPetController::DoRoamTick(timer::time_point tick) -> Task<void>
 {
     TracyZoneScoped;
@@ -109,23 +121,10 @@ auto CPetController::DoRoamTick(timer::time_point tick) -> Task<void>
         {
             const auto petType             = PPetEntity->getPetType();
             const auto isWyvernOrAutomaton = petType == PET_TYPE::WYVERN || petType == PET_TYPE::AUTOMATON;
-            const auto isLightSpirit       = PPetEntity->petID() == PETID_LIGHTSPIRIT;
 
             if (isWyvernOrAutomaton)
             {
                 if (PetIsHealing())
-                {
-                    co_return;
-                }
-
-                // TODO: Other logic?
-            }
-
-            // Only Light Spirit will cast on roam tick
-            if (isLightSpirit)
-            {
-                // This will respect the pet's mob casting cooldown properties via MOBMOD_MAGIC_COOL
-                if (CMobController::IsSpellReady(0, 0) && CMobController::TryCastSpell())
                 {
                     co_return;
                 }

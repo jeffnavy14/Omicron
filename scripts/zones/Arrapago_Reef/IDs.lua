@@ -43,6 +43,7 @@ zones[xi.zone.ARRAPAGO_REEF] =
         MEMBER_TOO_FAR                = 8489, -- One or more party members are too far away from the entrance. Unable to enter area.
         MEDUSA_ENGAGE                 = 8599, -- Foolish two-legs... Have you forgotten the terrible power of the gorgons you created? It is time you were reminded...
         MEDUSA_DEATH                  = 8600, -- No... I cannot leave my sisters...
+        FOREBODING                    = 8602, -- You feel an eerie sense of foreboding...
         GLITTERING_FRAGMENTS          = 8923, -- Minute glittering fragments are scattered all over...
         STIFLING_STENCH               = 8936, -- A stifling stench pervades the air...
         SLIMY_TOUCH                   = 8941, -- The ground here is slimy to the touch...
@@ -55,12 +56,17 @@ zones[xi.zone.ARRAPAGO_REEF] =
         APKALLU_NPC           = GetFirstID('Arrapago_Apkallu'),
         BLOODY_BONES          = GetFirstID('Bloody_Bones'),
         BUKKI                 = GetFirstID('Bukki'),
-        MEDUSA                = GetFirstID('Medusa'),
+        LAMIA_NO19            = GetFirstID('Lamia_No19'),
         LIL_APKALLU           = GetFirstID('Lil_Apkallu'),
+        MEDUSA                = GetFirstID('Medusa'),
+        NUHN                  = GetFirstID('Nuhn'),
         VELIONIS              = GetFirstID('Velionis'),
         ZAREEHKL_THE_JUBILANT = GetFirstID('Zareehkl_the_Jubilant'),
+<<<<<<< HEAD
         NUHN                  = GetFirstID('Nuhn'),
         VOIDWATCH             = GetTableOfIDs('Dimgruzub'),
+=======
+>>>>>>> upstream/base
     },
     npc =
     {

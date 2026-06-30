@@ -197,7 +197,7 @@ mission.sections =
             {
                 [1] = function(player, triggerArea)
                     if mission:getVar(player, 'Status') == 7 then
-                        return mission:progressEvent(116)
+                        return mission:progressCutscene(116)
                     end
                 end,
             },
@@ -320,7 +320,7 @@ mission.sections =
                     then
                         mission:setVar(player, 'coloredDropId', 0)
                     elseif mission:getVar(player, 'CProg') == 1 then
-                        return mission:progressEvent(43)
+                        return mission:progressCutscene(43)
                     end
                 end,
             },

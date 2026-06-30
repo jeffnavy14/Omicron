@@ -11,7 +11,7 @@ entity.onTrade = function(player, npc, trade)
         player:getCurrentMission(xi.mission.log_id.COP) >= xi.mission.id.cop.THREE_PATHS and
         npcUtil.tradeHas(trade, xi.item.SNOW_LILY)
     then
-        player:startEvent(32)
+        player:startCutscene(32)
     end
 end
 
@@ -19,7 +19,7 @@ entity.onTrigger = function(player, npc)
     if math.random(1, 100) <= 50 then -- TODO: this isn't retail at all.
         player:startEvent(30)
     else
-        player:startEvent(31)
+        player:startEvent(31, { canSkip = true })
     end
 end
 

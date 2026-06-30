@@ -54,7 +54,7 @@ end
 
 -- Register SoA reverts only before SoA content is enabled.
 if not xi.module.isContentEnabled('SOA') then
-    local scavengeData = require('modules/era/lua/globals/job_utils/scavenge_data')
+    local scavengeData = require('modules/era/lua/data/scavenge_data')
 
     -- Scavenge: Revert to pre-SoA zone-based item gathering and reduce duration with merits
     -- Source: https://ffxiclopedia.fandom.com/wiki/Scavenge/Items

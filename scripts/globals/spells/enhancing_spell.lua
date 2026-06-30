@@ -438,6 +438,13 @@ xi.spells.enhancing.calculateEnhancingDuration = function(caster, target, spell,
     -- Sneak
     elseif spellEffect == xi.effect.SNEAK then
         duration = duration + target:getMod(xi.mod.SNEAK_DURATION)
+
+    -- En- spells
+    elseif
+        (spellEffect >= xi.effect.ENFIRE and spellEffect <= xi.effect.ENWATER) or
+        (spellEffect >= xi.effect.ENFIRE_II and spellEffect <= xi.effect.ENWATER_II)
+    then
+        duration = duration + target:getMod(xi.mod.ENSPELL_DURATION)
     end
 
     --------------------

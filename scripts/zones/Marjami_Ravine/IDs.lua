@@ -28,6 +28,7 @@ zones[xi.zone.MARJAMI_RAVINE] =
         ARTIFACT_TERMINAL_VOLUME      = 7726, -- Your artifact has been charged to its terminal volume of kinetic units.
         SURPLUS_LOST_TO_AETHER        = 7727, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
         LEATHER_SCRAPS_STREWN         = 7749, -- Leather scraps are strewn about the ground.
+        SHARP_THORNS_PROTRUDE         = 7868, -- Sharp thorns protrude from the surface.
         HOMEPOINT_SET                 = 7892, -- Home point set!
         LEARNS_SPELL                  = 8193, -- <name> learns <spell>!
         UNCANNY_SENSATION             = 8195, -- You are assaulted by an uncanny sensation.
@@ -39,6 +40,7 @@ zones[xi.zone.MARJAMI_RAVINE] =
     npc =
     {
         REIVE_COLLISION_OFFSET = GetFirstID('_7e0'),
+        SCALABLE_AREA_OFFSET   = GetFirstID('Scalable_Area_0'),
     },
 }
 

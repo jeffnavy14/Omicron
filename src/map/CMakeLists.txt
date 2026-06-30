@@ -80,6 +80,8 @@ set(MAP_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/latent_effect.h
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/los_cache.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/los_cache.h
     ${CMAKE_CURRENT_SOURCE_DIR}/map_application.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map_application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/map_engine.cpp
@@ -130,6 +132,8 @@ set(MAP_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/roe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/roe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/socket.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/spatial_grid.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/spatial_grid.h
     ${CMAKE_CURRENT_SOURCE_DIR}/spell.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/spell.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effect_container.cpp

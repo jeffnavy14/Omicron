@@ -25,6 +25,7 @@
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
 #include "common/timer.h"
+#include "los_cache.h"
 #include "packets/basic.h"
 
 #include <map>
@@ -343,6 +344,8 @@ public:
 protected:
     std::map<std::string, uint32> localVars_;
     uint8                         speed; // speed of movement
+
+    LineOfSightCache losCache_;
 };
 
 #endif // _BASEENTITY_H

@@ -15,6 +15,8 @@ zones[xi.zone.SIH_GATES] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7006, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7007, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7027, -- Your party is unable to participate because certain members' levels are restricted.
+        RIVER_UNSUITABLE_FOR_SWIMMING = 7876, -- This river is not suitable for swimming.
+        SHARP_THORNS_PROTRUDE         = 7883, -- Sharp thorns protrude from the surface.
     },
     mob =
     {
@@ -22,7 +24,9 @@ zones[xi.zone.SIH_GATES] =
     },
     npc =
     {
+        CASTOFF_POINT_OFFSET   = GetFirstID('Castoff_Point'),
         REIVE_COLLISION_OFFSET = GetFirstID('_7g0'),
+        SCALABLE_AREA_OFFSET   = GetFirstID('Scalable_Area'),
     },
 }
 

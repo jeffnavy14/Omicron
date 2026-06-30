@@ -181,6 +181,8 @@ bool CBaseEntity::CanSeeTarget(CBaseEntity* target)
 
 bool CBaseEntity::CanSeeTarget(const position_t& targetPointBase)
 {
+    TracyZoneScoped;
+
     constexpr float ENTITY_HEIGHT = 2.0f;
 
     // TODO: Handle:
@@ -189,7 +191,17 @@ bool CBaseEntity::CanSeeTarget(const position_t& targetPointBase)
 
     const auto src = Vector3{ loc.p.x, loc.p.y - ENTITY_HEIGHT, loc.p.z };
     const auto dst = Vector3{ targetPointBase.x, targetPointBase.y - ENTITY_HEIGHT, targetPointBase.z };
-    return !this->loc.zone->xiMesh()->rayIntersect(src, dst);
+
+    const auto now    = timer::now();
+    const auto zoneId = static_cast<uint16>(this->loc.zone->GetID());
+    if (const auto cached = losCache_.get(src, dst, zoneId, now))
+    {
+        return *cached;
+    }
+
+    const bool canSee = !this->loc.zone->xiMesh()->rayIntersect(src, dst);
+    losCache_.put(src, dst, zoneId, canSee, now);
+    return canSee;
 }
 
 CBaseEntity* CBaseEntity::GetEntity(uint16 targid, uint8 filter) const

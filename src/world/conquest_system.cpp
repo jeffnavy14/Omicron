@@ -26,6 +26,8 @@
 #include "common/database.h"
 #include "common/ipp.h"
 
+#include "common/settings.h"
+
 ConquestSystem::ConquestSystem(WorldEngine& worldServer)
 : worldServer_(worldServer)
 {
@@ -122,25 +124,43 @@ bool ConquestSystem::updateInfluencePoints(int points, unsigned int nation, REGI
         rset->get<int>("beastmen_influence"),
     };
 
-    if (influences[nation] == 5000)
-    {
-        return false;
-    }
+    // Read from main settings. Protect against 0 or too high of number.
+    // Restricted by a factor of 100 because of packet lines in 0x05e_conquest.cpp
+    const int32 influenceCap = std::clamp<int32>(settings::get<int32>("main.CONQUEST_INFLUENCE_CAP"), 1, 20000000);
 
-    auto lost = 0;
-    for (auto i = 0u; i < 4; ++i)
+    int total = influences[0] + influences[1] + influences[2] + influences[3];
+    int room  = influenceCap - total;
+
+    if (points <= room) // Pool is not capped and there is space. Straight add.
     {
-        if (i == nation)
+        influences[nation] += points;
+    }
+    else // Pool is full. Gains come out of the other nations.
+    {
+        // Fill the remaining room first, then redistribute the overflow.
+        influences[nation] += room;
+        int overflow = points - room;
+
+        // Do not adjust anything if the nation is already at the pool maximum.
+        if (influences[nation] < influenceCap)
         {
-            continue;
+            auto lost = 0;
+            for (auto i = 0u; i < 4; ++i)
+            {
+                if (i == nation)
+                {
+                    continue;
+                }
+
+                const int64 share = static_cast<int64>(overflow) * influences[i] / (influenceCap - influences[nation]);
+                auto        loss  = std::min<int>(static_cast<int>(share), influences[i]);
+                influences[i] -= loss;
+                lost += loss;
+            }
+
+            influences[nation] += lost;
         }
-
-        auto loss = std::min<int>(points * influences[i] / (5000 - influences[nation]), influences[i]);
-        influences[i] -= loss;
-        lost += loss;
     }
-
-    influences[nation] += lost;
 
     const auto rset2 = db::preparedStmt(
         "UPDATE conquest_system SET sandoria_influence = ?, bastok_influence = ?, "
@@ -160,6 +180,9 @@ void ConquestSystem::updateWeekConquest()
 
     sendTallyStartMsg();
 
+    // Update the nation that controlled the region previously. Used in rare situations.
+    db::preparedStmt("UPDATE conquest_system SET region_control_prev = region_control");
+
     const auto query = "UPDATE conquest_system SET region_control = "
                        "IF(sandoria_influence > bastok_influence AND sandoria_influence > windurst_influence AND "
                        "sandoria_influence > beastmen_influence, 0, "
@@ -173,6 +196,17 @@ void ConquestSystem::updateWeekConquest()
     {
         ShowError("handleWeeklyUpdate() failed");
     }
+
+    // Reset influence for the new week.
+    const auto resetRset = db::preparedStmt("UPDATE conquest_system SET sandoria_influence = 0, bastok_influence = 0, "
+                                            "windurst_influence = 0, beastmen_influence = 0");
+    if (!resetRset)
+    {
+        ShowError("updateWeekConquest: Failed to reset influence");
+    }
+
+    // Push the zeroed influence out.
+    sendInfluencesMsg(ShouldUpdateZones::No);
 
     sendRegionControlsMsg(ConquestMessage::W2M_WeeklyUpdateEnd);
 }
@@ -197,10 +231,10 @@ auto ConquestSystem::getRegionalInfluences() -> std::vector<influence_t> const
         while (rset->next())
         {
             influence_t influence{};
-            influence.sandoria_influence = rset->get<uint16>("sandoria_influence");
-            influence.bastok_influence   = rset->get<uint16>("bastok_influence");
-            influence.windurst_influence = rset->get<uint16>("windurst_influence");
-            influence.beastmen_influence = rset->get<uint16>("beastmen_influence");
+            influence.sandoria_influence = rset->get<int32>("sandoria_influence");
+            influence.bastok_influence   = rset->get<int32>("bastok_influence");
+            influence.windurst_influence = rset->get<int32>("windurst_influence");
+            influence.beastmen_influence = rset->get<int32>("beastmen_influence");
             influences.emplace_back(influence);
         }
     }

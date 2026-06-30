@@ -15,6 +15,7 @@ zones[xi.zone.WOH_GATES] =
         LOGIN_CAMPAIGN_UNDERWAY       = 7006, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
         LOGIN_NUMBER                  = 7007, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
         MEMBERS_LEVELS_ARE_RESTRICTED = 7027, -- Your party is unable to participate because certain members' levels are restricted.
+        SHARP_THORNS_PROTRUDE         = 7699, -- Sharp thorns protrude from the surface.
     },
     mob =
     {
@@ -23,6 +24,7 @@ zones[xi.zone.WOH_GATES] =
     npc =
     {
         REIVE_COLLISION_OFFSET = GetFirstID('_7l0'),
+        SCALABLE_AREA_OFFSET   = GetFirstID('Scalable_Area'),
     },
 }
 

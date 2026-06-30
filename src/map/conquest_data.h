@@ -35,10 +35,10 @@ struct region_control_t
 
 struct influence_t
 {
-    uint16 sandoria_influence;
-    uint16 bastok_influence;
-    uint16 windurst_influence;
-    uint16 beastmen_influence;
+    int32 sandoria_influence;
+    int32 bastok_influence;
+    int32 windurst_influence;
+    int32 beastmen_influence;
 };
 
 //

@@ -13,6 +13,15 @@ local trialSizeBattles = set{
     xi.battlefield.id.TRIAL_SIZE_TRIAL_BY_WATER,
 }
 
+-- TODO: Determine if this is the correct way of calculating this.
+xi.summon.getSummoningSkillOverCap = function(avatar)
+    local summoner       = avatar:getMaster()
+    local summoningSkill = summoner:getSkillLevel(xi.skill.SUMMONING_MAGIC)
+    local maxSkill       = summoner:getMaxSkillLevel(avatar:getMainLvl(), xi.job.SMN, xi.skill.SUMMONING_MAGIC)
+
+    return math.max(summoningSkill - maxSkill, 0)
+end
+
 -- Checks if the summoner is in a Trial Size Avatar Mini Fight (only carbuncle is allowed)
 xi.summon.avatarMiniFightCheck = function(caster, spellID)
     local result = 0

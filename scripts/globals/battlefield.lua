@@ -1160,7 +1160,13 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
         end
     end
 
-    -- Handle mob initial spell casts (blaze spikes, protect, etc)
+    -- TODO: Test on retail to find out...
+    -- Do mobs buff inside of BCNMs with long cutscenes?
+    -- Do mobs buff when not engaged?
+    -- With a second player that has completed the mission as a "helper" to go inside skiping the
+    -- CS and watch if the mobs actually dont start casting until the initiator is out of the CS
+
+    --[[
     if player:getID() == initiatorId then
         local mobs = battlefield:getMobs(true, true)
         for _, mob in pairs(mobs) do
@@ -1177,6 +1183,7 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
             end
         end
     end
+    --]]
 
     local ID = zones[self.zoneId]
     player:messageSpecial(ID.text.ENTERING_THE_BATTLEFIELD_FOR, 0, self.index)

@@ -5778,7 +5778,31 @@ INSERT INTO `mob_spell_lists` VALUES ('Chemical_Cook_Chemachiq',565,57,1,255);  
 INSERT INTO `mob_spell_lists` VALUES ('Chemical_Cook_Chemachiq',565,59,1,255);  -- Silence (1~255)
 INSERT INTO `mob_spell_lists` VALUES ('Chemical_Cook_Chemachiq',565,112,1,255); -- Flash (1~255)
 
--- Next Available: 566
+-- Stormwalker_Frame (566)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,154,1,255); -- Aero (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,231,1,255); -- Bio II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,53,1,255);  -- Blink (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,149,1,255); -- Blizzard (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,24,1,255);  -- Dia II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,33,1,255);  -- Diaga (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,260,1,255); -- Dispel (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,105,1,255); -- Enwater (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,144,1,255); -- Fire (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,216,1,255); -- Gravity (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,44,1,255);  -- Protect II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,220,1,255); -- Poison (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,108,1,255); -- Regen (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,49,1,255);  -- Shell II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,160,1,255); -- Stone II (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,54,1,255);  -- Stoneskin (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,164,1,255); -- Thunder (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,169,1,255); -- Water (1~255)
+INSERT INTO `mob_spell_lists` VALUES ('Stormwalker_Frame',566,55,1,255);  -- Aquaveil (1~255)
+
+-- Harlequin_Frame (567)
+INSERT INTO `mob_spell_lists` VALUES ('Harlequin_Frame',567,23,1,255); -- Dia (1~255)
+
+-- Next Available: 568
 
 /*!40000 ALTER TABLE `mob_spell_lists` ENABLE KEYS */;
 UNLOCK TABLES;

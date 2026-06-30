@@ -7,11 +7,7 @@
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(36)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-    -- TODO: Verify that CS moves the player
+    player:startEvent(36, 0, 0, 0, 0, 0, 6)
 end
 
 return entity

@@ -42,10 +42,10 @@ ConquestData::ConquestData()
         regionControls[regionId] = regionControl;
 
         influence_t influence{};
-        influence.sandoria_influence = rset->get<uint16>("sandoria_influence");
-        influence.bastok_influence   = rset->get<uint16>("bastok_influence");
-        influence.windurst_influence = rset->get<uint16>("windurst_influence");
-        influence.beastmen_influence = rset->get<uint16>("beastmen_influence");
+        influence.sandoria_influence = rset->get<int32>("sandoria_influence");
+        influence.bastok_influence   = rset->get<int32>("bastok_influence");
+        influence.windurst_influence = rset->get<int32>("windurst_influence");
+        influence.beastmen_influence = rset->get<int32>("beastmen_influence");
         influences[regionId]         = influence;
     }
 }

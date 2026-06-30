@@ -138,6 +138,10 @@ UPDATE abilities SET recastTime = 900 WHERE name = 'killer_instinct';
 -- Killer Instinct merit: Revert value to 150 seconds per level
 UPDATE merits SET value = 150 WHERE name = 'killer_instinct';
 
+------------------------------------
+-- Bard
+------------------------------------
+
 -- Mazurka: Revert to town/field only
 -- Source: https://www.bg-wiki.com/ffxi/Version_Update_(09/08/2010)
 SET @TYPE_CITY     = 1;
@@ -246,3 +250,27 @@ UPDATE abilities SET recastTime = 900 WHERE name = 'deep_breathing';
 
 -- Deep Breathing merit: Revert value to 150 seconds per level
 UPDATE merits SET value = 150 WHERE name = 'deep_breathing';
+
+-----------------------------------
+-- Corsair
+-----------------------------------
+
+-- Double-Up: Revert recast from 5 to 7 seconds
+-- Source: https://www.bg-wiki.com/ffxi/Version_Update_(09/19/2011)
+UPDATE abilities SET recastTime = 7 WHERE name = 'double-up';
+
+-- Snake Eye: Revert recast from 5 to 15 minutes
+-- Source: https://www.bg-wiki.com/ffxi/Version_Update_(05/15/2012)
+UPDATE abilities SET recastTime = 900 WHERE name = 'snake_eye';
+
+-- Snake Eye merit: Revert value to 150 seconds per level
+UPDATE merits SET value = 150 WHERE name = 'snake_eye';
+
+-- Fold: Revert recast from 5 to 15 minutes
+UPDATE abilities SET recastTime = 900 WHERE name = 'fold';
+
+-- Fold merit: Revert value to 150 seconds per level
+UPDATE merits SET value = 150 WHERE name = 'fold';
+
+-- Quick Draw: Revert range from 22 to 15 yalms
+UPDATE abilities SET `range` = 15 WHERE name = 'quick_draw';

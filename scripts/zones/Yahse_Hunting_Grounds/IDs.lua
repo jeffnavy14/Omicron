@@ -28,6 +28,7 @@ zones[xi.zone.YAHSE_HUNTING_GROUNDS] =
         UNCANNY_SENSATION             = 7882, -- You are assaulted by an uncanny sensation.
         ENERGIES_COURSE               = 7883, -- The arcane energies begin to course within your veins.
         MYSTICAL_WARMTH               = 7884, -- You feel a mystical warmth welling up inside you!
+        RIVER_UNSUITABLE_FOR_SWIMMING = 7891, -- This river is not suitable for swimming.
     },
     mob =
     {
@@ -35,6 +36,7 @@ zones[xi.zone.YAHSE_HUNTING_GROUNDS] =
     },
     npc =
     {
+        CASTOFF_POINT_OFFSET   = GetFirstID('Castoff_Point'),
         REIVE_COLLISION_OFFSET = GetFirstID('_780'),
     },
 }

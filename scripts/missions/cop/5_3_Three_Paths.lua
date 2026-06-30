@@ -162,7 +162,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId, xi.mission.status.COP.LOUVERANCE) == 3 then
-                        return mission:progressEvent(33)
+                        return mission:progressCutscene(33)
                     end
                 end,
             },
@@ -295,7 +295,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 0 then
-                        return mission:event(203):importantEvent()
+                        return mission:event(203):importantEvent() -- TODO: Check if this is supposed to be a cutscene event
                     end
                 end,
             },
@@ -314,7 +314,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 2 then
-                        return mission:progressEvent(3)
+                        return mission:progressCutscene(3)
                     end
                 end,
             },
@@ -323,7 +323,7 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId, xi.mission.status.COP.TENZEN) == 11 then
-                        return mission:progressEvent(5)
+                        return mission:progressCutscene(5)
                     end
                 end,
             },
@@ -411,7 +411,7 @@ mission.sections =
                         if mission:getVar(player, 'Option') == 1 then
                             return mission:progressEvent(1)
                         else
-                            return mission:progressEvent(0)
+                            return mission:progressCutscene(0)
                         end
                     end
                 end,
@@ -448,7 +448,7 @@ mission.sections =
                         then
                             return mission:messageSpecial(lowerDelkfuttsID.text.SOMETHING_HUGE_BEARING_DOWN)
                         elseif mission:getLocalVar(player, 'hasKilled') == 1 then
-                            return mission:progressEvent(25)
+                            return mission:progressCutscene(25)
                         end
                     end
                 end,

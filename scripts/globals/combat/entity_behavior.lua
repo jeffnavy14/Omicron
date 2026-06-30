@@ -306,9 +306,9 @@ xi.combat.behavior.chooseAction = function(actor, mainTarget, optionalTargets, a
         }
     end
 
-    -- Something went wrong.
+    -- Something went wrong or nothing to cast right now.
     if #actionList == 0 then
-        return nil, nil
+        return 0, nil
     end
 
     -- Calculate total weight of the new list.

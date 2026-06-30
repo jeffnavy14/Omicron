@@ -36,7 +36,7 @@ mission.sections =
                         SpawnMob(huxoiID.mob.IXGHRAH):updateClaim(player)
                         return mission:messageSpecial(huxoiID.text.PRESENCE_HAS_DRAWN)
                     elseif missionStatus == 1 then
-                        return mission:progressEvent(3)
+                        return mission:progressCutscene(3)
                     end
                 end,
             },

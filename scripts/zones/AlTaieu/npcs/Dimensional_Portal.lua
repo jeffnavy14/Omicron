@@ -10,7 +10,7 @@ local entity = {}
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.DIMENSIONAL_PORTAL_OFFSET
     if offset >= 0 and offset <= 2 then
-        player:startEvent(151 + offset)
+        player:startOptionalCutscene(151 + offset, { cs_option = 0, canSkip = true })
     end
 end
 

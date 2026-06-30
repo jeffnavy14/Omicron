@@ -364,8 +364,14 @@ INSERT INTO `mob_skill_lists` VALUES ('Dragon',87,648); -- Petro Eyes
 INSERT INTO `mob_skill_lists` VALUES ('Dragon',87,649); -- Voidsong
 INSERT INTO `mob_skill_lists` VALUES ('Dragon',87,650); -- Thornsong
 INSERT INTO `mob_skill_lists` VALUES ('Dragon',87,651); -- Lodesong
--- 88: Bloody Bones
--- 89: Draugar
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',88,479); -- Horror Cloud
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',88,484); -- Black Cloud
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',88,485); -- Blood Saber
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',88,1795); -- Malediction
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',89,479); -- Horror Cloud
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',89,484); -- Black Cloud
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',89,485); -- Blood Saber
+INSERT INTO `mob_skill_lists` VALUES ('Bloody_Bones',89,1795); -- Malediction
 INSERT INTO `mob_skill_lists` VALUES ('Dvergr',90,2113);
 INSERT INTO `mob_skill_lists` VALUES ('Dvergr',90,2114);
 INSERT INTO `mob_skill_lists` VALUES ('Dvergr',90,2115);
@@ -2287,7 +2293,12 @@ INSERT INTO `mob_skill_lists` VALUES ('Bomb_COP',499,510); -- Berserk
 INSERT INTO `mob_skill_lists` VALUES ('Bomb_COP',499,342); -- Vulcanian Impact
 INSERT INTO `mob_skill_lists` VALUES ('Bomb_COP',499,512); -- Heat Wave
 INSERT INTO `mob_skill_lists` VALUES ('Bomb_COP',499,509); -- Self-destruct
--- 500 free
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,783); -- Words of Bane
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,784); -- Sigh
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,785); -- Light of Penance
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,786); -- Lateral Slash
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,787); -- Vertical Slash
+INSERT INTO `mob_skill_lists` VALUES ('Cryptonberry_COP',500,788); -- Throat Stab
 -- 501 free
 -- 502 free
 INSERT INTO `mob_skill_lists` VALUES ('Mammet',503,347);

@@ -1,7 +1,7 @@
 -----------------------------------
 -- Arcuballista
 -- Family: Automaton
--- Description: Delivers a single ranged attack. Damage varies with TP.
+-- Description: Delivers a ranged attack. Damage varies with TP.
 -----------------------------------
 ---@type TMobSkill
 local mobskillObject = {}
@@ -17,7 +17,6 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     params.numHits          = 1
     params.fTP              = { 2.5, 3.0, 4.0 }
     params.accuracyModifier = { 100, 100, 100 }
-    params.dex_wSC          = 0.5
     params.attackType       = xi.attackType.RANGED
     params.damageType       = xi.damageType.PIERCING
     params.shadowBehavior   = xi.mobskills.shadowBehavior.NUMSHADOWS_1

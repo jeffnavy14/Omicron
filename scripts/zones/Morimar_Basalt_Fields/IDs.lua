@@ -28,6 +28,8 @@ zones[xi.zone.MORIMAR_BASALT_FIELDS] =
         SURPLUS_LOST_TO_AETHER        = 7626, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
         LEARNS_SPELL                  = 7874, -- <name> learns <spell>!
         UNCANNY_SENSATION             = 7876, -- You are assaulted by an uncanny sensation.
+        RIVER_UNSUITABLE_FOR_SWIMMING = 7885, -- This river is not suitable for swimming.
+        SHARP_THORNS_PROTRUDE         = 8037, -- Sharp thorns protrude from the surface.
         HOMEPOINT_SET                 = 8190, -- Home point set!
     },
     mob =
@@ -36,7 +38,9 @@ zones[xi.zone.MORIMAR_BASALT_FIELDS] =
     },
     npc =
     {
+        CASTOFF_POINT_OFFSET   = GetFirstID('Castoff_Point'),
         REIVE_COLLISION_OFFSET = GetFirstID('_7d0'),
+        SCALABLE_AREA_OFFSET   = GetFirstID('Scalable_Area'),
     },
 }
 

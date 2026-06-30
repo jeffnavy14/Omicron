@@ -29,6 +29,7 @@ zones[xi.zone.FORET_DE_HENNETIEL] =
         SURPLUS_LOST_TO_AETHER        = 7710, -- A surplus of <number> kinetic unit[/s] has been lost to the aether.
         LEARNS_SPELL                  = 7947, -- <name> learns <spell>!
         UNCANNY_SENSATION             = 7949, -- You are assaulted by an uncanny sensation.
+        RIVER_UNSUITABLE_FOR_SWIMMING = 7958, -- This river is not suitable for swimming.
         HOMEPOINT_SET                 = 8021, -- Home point set!
     },
     mob =
@@ -37,6 +38,7 @@ zones[xi.zone.FORET_DE_HENNETIEL] =
     },
     npc =
     {
+        CASTOFF_POINT_OFFSET   = GetFirstID('Castoff_Point_0'),
         REIVE_COLLISION_OFFSET = GetFirstID('_7a0'),
     },
 }
