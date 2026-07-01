@@ -1434,8 +1434,9 @@ void CZoneEntities::UpdateEntityPacket(CBaseEntity* PEntity, ENTITYUPDATE type, 
     TracyZoneScoped;
 
     // Do not send packets that are updates of a hidden GM
-    if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
+    if (PEntity->objtype == TYPE_PC)
     {
+        auto* PChar = static_cast<CCharEntity*>(PEntity);
         if (PChar->m_isGMHidden && type != ENTITY_DESPAWN)
         {
             return;
@@ -1824,6 +1825,14 @@ auto CZoneEntities::petTick(CPetEntity* PPet, timer::time_point tick) -> Task<vo
             PCurrentMob->PEnmityContainer->Clear(PPet->id);
         }
 
+        FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PChar, m_charList)
+        {
+            if (PChar->SpawnPETList.find(PPet->id) != PChar->SpawnPETList.end())
+            {
+                PChar->SpawnPETList.erase(PPet->id);
+            }
+        }
+
         m_petsToDelete.emplace_back(PPet);
         co_return;
     }
@@ -1867,7 +1876,7 @@ auto CZoneEntities::trustTick(CTrustEntity* PTrust, timer::time_point tick) -> T
 
         FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PChar, m_charList)
         {
-            if (distance(PChar->loc.p, PTrust->loc.p) < ENTITY_RENDER_DISTANCE)
+            if (PChar->SpawnTRUSTList.find(PTrust->id) != PChar->SpawnTRUSTList.end())
             {
                 PChar->SpawnTRUSTList.erase(PTrust->id);
             }
