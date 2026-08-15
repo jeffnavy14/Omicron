@@ -13,7 +13,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.THE_SIRENS_TEAR)
 
 quest.reward =
 {
-    fame = 120,
+    fame = 10,
     fameArea = xi.fameArea.BASTOK,
     gil = 150,
     title = xi.title.TEARJERKER,
@@ -109,7 +109,7 @@ quest.sections =
             ['Wahid'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.SIRENS_TEAR) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.SIRENS_TEAR, 1 } }) then
                         return quest:progressEvent(82)
                     end
                 end,
@@ -122,7 +122,7 @@ quest.sections =
                     -- CLuaBaseEntity::completeQuest() will only actually complete the quest the
                     -- first time the player finishes this.
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                     end
                 end,
             },

@@ -25,26 +25,20 @@
 ---@type TNpcEntity
 local entity = {}
 
-local function getNumberOfCoinsToUpgradeSize(size)
-    if size == 30 then
-        return 4
-    elseif size == 40 then
-        return 2
-    elseif size == 50 then
-        return 3
-    elseif size == 60 then
-        return 5
-    elseif size == 70 then
-        return 10
-    elseif size == 80 then
-        return 0
-    end
-end
+local coinCost =
+{
+    [30] =  4,
+    [40] =  3,
+    [50] =  4,
+    [60] =  5,
+    [70] = 10,
+    [80] =  0,
+}
 
 entity.onTrade = function(player, npc, trade)
-    local numBronze = trade:getItemQty(xi.item.IMPERIAL_BRONZE_PIECE)
+    local numBronze  = trade:getItemQty(xi.item.IMPERIAL_BRONZE_PIECE)
     local numMythril = trade:getItemQty(xi.item.IMPERIAL_MYTHRIL_PIECE)
-    local numGold = trade:getItemQty(xi.item.IMPERIAL_GOLD_PIECE)
+    local numGold    = trade:getItemQty(xi.item.IMPERIAL_GOLD_PIECE)
     if player:getCurrentMission(xi.mission.log_id.TOAU) >= xi.mission.id.toau.PRESIDENT_SALAHEEM then
         if numBronze > 0 and numMythril == 0 and numGold == 0 then
             if xi.moghouse.addMogLockerExpiryTime(player, numBronze) then
@@ -83,17 +77,18 @@ end
 
 entity.onTrigger = function(player, npc)
     if player:getCurrentMission(xi.mission.log_id.TOAU) >= xi.mission.id.toau.PRESIDENT_SALAHEEM then
-        local accessType = xi.moghouse.getMogLockerAccessType(player)
+        local accessType               = xi.moghouse.getMogLockerAccessType(player)
         local mogLockerExpiryTimestamp = xi.moghouse.getMogLockerExpiryTimestamp(player)
 
         if mogLockerExpiryTimestamp == nil then
             -- a nil timestamp means they haven't unlocked it yet. We're going to unlock it by merely talking to this NPC.
             mogLockerExpiryTimestamp = xi.moghouse.unlockMogLocker(player)
-            accessType = xi.moghouse.setMogLockerAccessType(player, xi.moghouse.lockerAccessType.ALLAREAS)
+
+            accessType = xi.moghouse.setMogLockerAccessType(player, xi.moghouse.lockerAccessType.ALZAHBI)
         end
 
         player:startEvent(600, mogLockerExpiryTimestamp, accessType, xi.moghouse.MOGLOCKER_ALZAHBI_VALID_DAYS, player:getContainerSize(xi.inv.MOGLOCKER),
-            getNumberOfCoinsToUpgradeSize(player:getContainerSize(xi.inv.MOGLOCKER)), 2, 3, xi.moghouse.MOGLOCKER_ALLAREAS_VALID_DAYS)
+            coinCost[player:getContainerSize(xi.inv.MOGLOCKER)], 2, 3, xi.moghouse.MOGLOCKER_ALLAREAS_VALID_DAYS)
     else
         player:startEvent(600)
     end
@@ -101,16 +96,16 @@ end
 
 entity.onEventFinish = function(player, csid, option, npc)
     if csid == 600 and option == 3 then
-        local accessType = player:getCharVar(xi.moghouse.MOGLOCKER_PLAYERVAR_ACCESS_TYPE)
-        if accessType == xi.moghouse.lockerAccessType.ALLAREAS then
-            -- they want to restrict their access to alzahbi only
-            xi.moghouse.setMogLockerAccessType(player, xi.moghouse.lockerAccessType.ALZAHBI)
-        elseif accessType == xi.moghouse.lockerAccessType.ALZAHBI then
-            -- they want to expand their access to all areas.
-            xi.moghouse.setMogLockerAccessType(player, xi.moghouse.lockerAccessType.ALLAREAS)
-        else
-            print('Unknown mog locker access type: '..accessType)
-        end
+        local newAccessType = xi.moghouse.switchMogLockerAccessType(player)
+        local zoneText      = zones[xi.zone.AHT_URHGAN_WHITEGATE].text
+        local messageId     = newAccessType == xi.moghouse.lockerAccessType.ALLAREAS and zoneText.MOG_LOCKER_ACCESS_ALL_AREAS or zoneText.MOG_LOCKER_ACCESS_AL_ZAHBI
+
+        player:showText(npc, messageId,
+            xi.moghouse.getMogLockerExpiryTimestamp(player), -- Only this parameter is relevant
+            1,                                               -- Fixed on retail, unknown
+            7,                                               -- Fixed on retail, unknown
+            player:getContainerSize(xi.inv.MOGLOCKER)        -- Fixed on retail, assumed
+        )
     end
 end
 

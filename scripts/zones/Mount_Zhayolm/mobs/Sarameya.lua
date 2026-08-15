@@ -26,7 +26,27 @@ entity.onMobSpawn = function(mob)
     mob:setLocalVar('[rage]timer', 3600) -- 60 minutes
 end
 
-entity.onMobRoam = function(mob)
+entity.onMobMobskillChoose = function(mob, target, skillId)
+    local skillList =
+    {
+        xi.mobSkill.ULULATION,
+        xi.mobSkill.MAGMA_HOPLON,
+    }
+
+    if target:isInfront(mob, 128) then
+        table.insert(skillList, xi.mobSkill.LAVA_SPIT)
+        table.insert(skillList, xi.mobSkill.SULFUROUS_BREATH)
+    end
+
+    if target:isBehind(mob, 128) then
+        table.insert(skillList, xi.mobSkill.SCORCHING_LASH)
+    end
+
+    if mob:getHPP() < 25 then
+        table.insert(skillList, xi.mobSkill.GATES_OF_HADES)
+    end
+
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 entity.onMobFight = function(mob, target)
@@ -76,9 +96,6 @@ end
 
 entity.onAdditionalEffect = function(mob, target, damage)
     return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.POISON, { chance = 40, power = 50 })
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

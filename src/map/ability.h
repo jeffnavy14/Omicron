@@ -24,12 +24,13 @@
 
 #include "common/cbasetypes.h"
 
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 #include "enums/action/animation.h"
 #include "enums/recast.h"
 #include "status_effect.h"
 
 enum class ActionCategory : uint8_t;
+
 enum ADDTYPE
 {
     ADDTYPE_NORMAL      = 0,
@@ -329,7 +330,7 @@ enum ABILITY
     ABILITY_COMPANIONS_ROLL    = 304,
     ABILITY_AVENGERS_ROLL      = 305,
     ABILITY_COOLDOWN           = 309,
-    ABILITY_DEUX_EX_AUTOMATA   = 310,
+    ABILITY_DEUS_EX_AUTOMATA   = 310,
     ABILITY_CURING_WALTZ_V     = 311,
     ABILITY_FEATHER_STEP       = 312,
     ABILITY_STRIKING_FLOURISH  = 313,
@@ -679,7 +680,7 @@ enum ABILITY
 struct Charge_t
 {
     uint16          ID;         // recastId
-    JOBTYPE         job;        // job
+    xi::Job         job;        // job
     uint8           level;      // level
     uint8           maxCharges; // maximum number of stored charges
     timer::duration chargeTime; // time required to restore one charge
@@ -703,7 +704,7 @@ public:
 
     uint16          getID() const;
     uint16          getMobSkillID() const;
-    JOBTYPE         getJob();
+    auto            getJob() -> xi::Job;
     uint8           getLevel() const;
     auto            getAnimationID() const -> ActionAnimation;
     timer::duration getAnimationTime();
@@ -720,10 +721,10 @@ public:
     int32           getVE() const;
     uint16          getMeritModID() const;
     auto            getActionType() const -> ActionCategory;
-    EFFECT          getPostActionEffectCleanup();
+    auto            getPostActionEffectCleanup() -> xi::StatusEffect;
 
     void setID(uint16 id);
-    void setJob(JOBTYPE Job);
+    void setJob(xi::Job Job);
     void setLevel(uint8 level);
     void setAnimationID(uint16 animationID);
     void setAnimationTime(timer::duration time);
@@ -740,32 +741,32 @@ public:
     void setVE(int32 VE);
     void setMeritModID(uint16 value);
     void setActionType(ActionCategory type);
-    void setPostActionEffectCleanup(EFFECT effectToCleanup);
+    void setPostActionEffectCleanup(xi::StatusEffect effectToCleanup);
 
     const std::string& getName();
     void               setName(const std::string& name);
 
 private:
-    uint16          m_ID;
-    JOBTYPE         m_Job;
-    uint8           m_level;
-    uint16          m_animationID;
-    timer::duration m_animationTime{};
-    timer::duration m_castTime{};
-    float           m_range;
-    uint8           m_aoe;
-    uint8           m_radius{ 0 };
-    uint16          m_validTarget;
-    uint16          m_addType;
-    MsgBasic        m_message;
-    timer::duration m_recastTime{};
-    Recast          m_recastId;
-    int32           m_CE;
-    int32           m_VE;
-    uint16          m_meritModID;
-    std::string     m_name;
-    ActionCategory  m_actionType{};
-    EFFECT          m_cleanupEffect{};
+    uint16           m_ID;
+    xi::Job          m_Job;
+    uint8            m_level;
+    uint16           m_animationID;
+    timer::duration  m_animationTime{};
+    timer::duration  m_castTime{};
+    float            m_range;
+    uint8            m_aoe;
+    uint8            m_radius{ 0 };
+    uint16           m_validTarget;
+    uint16           m_addType;
+    MsgBasic         m_message;
+    timer::duration  m_recastTime{};
+    Recast           m_recastId;
+    int32            m_CE;
+    int32            m_VE;
+    uint16           m_meritModID;
+    std::string      m_name;
+    ActionCategory   m_actionType{};
+    xi::StatusEffect m_cleanupEffect{};
 };
 
 /************************************************************************
@@ -781,11 +782,11 @@ void LoadAbilitiesList();
 
 CAbility* GetAbility(uint16 AbilityID);
 
-CAbility* GetTwoHourAbility(JOBTYPE JobID);
+auto      GetTwoHourAbility(xi::Job JobID) -> CAbility*;
 bool      CanLearnAbility(CBattleEntity* PUser, uint16 AbilityID);
 Charge_t* GetCharge(CBattleEntity* PUser, uint16 chargeID);
 
-std::vector<CAbility*> GetAbilities(JOBTYPE JobID);
+auto GetAbilities(xi::Job JobID) -> std::vector<CAbility*>;
 
 }; // namespace ability
 

@@ -21,7 +21,7 @@
 
 #include "0x051_equipset_set.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "lua/luautils.h"
 #include "utils/charutils.h"
 
@@ -104,7 +104,6 @@ void GP_CLI_COMMAND_EQUIPSET_SET::process(MapSession* PSession, CCharEntity* PCh
         charutils::EquipItem(PChar, this->Equipment[i].ItemIndex, this->Equipment[i].EquipKind, this->Equipment[i].Category);
     }
 
-    PChar->RequestPersist(CHAR_PERSIST::EQUIP);
     luautils::CheckForGearSet(PChar); // check for gear set on gear change
     PChar->UpdateHealth();
     PChar->retriggerLatents = true; // retrigger all latents later because our gear has changed

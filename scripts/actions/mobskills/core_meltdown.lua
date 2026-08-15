@@ -9,11 +9,9 @@ local mobskillObject = {}
 mobskillObject.onMobSkillCheck = function(target, mob, skill)
     if mob:isMobType(xi.mobType.NOTORIOUS) then
         return 1
-    elseif mob:getAnimationSub() ~= 0 then -- Form check (Must be ball form)
-        return 1
     elseif mob:getHPP() > 30 then -- Can only be used under 30% HP
         return 1
-    elseif math.random(1, 100) >= 5 then -- Here's the 95% chance to not blow up
+    elseif math.randomInt(1, 100) >= 34 then -- Less of a chance to happen than other skills.
         return 1
     else
         return 0

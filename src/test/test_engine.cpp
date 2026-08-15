@@ -21,13 +21,11 @@
 
 #include "test_engine.h"
 #include "common/logging.h"
-#include "common/lua.h"
 #include "common/settings.h"
 #include "common/tracy.h"
 #include "enums/test_status.h"
 #include "in_memory_sink.h"
 #include "lua/lua_simulation.h"
-#include "map/utils/zoneutils.h"
 #include "reporters/reporter_container.h"
 #include "test_char.h"
 #include "test_suite.h"
@@ -35,9 +33,7 @@
 #include <chrono>
 #include <format>
 #include <sol/sol.hpp>
-#include <spdlog/spdlog.h>
 #include <utility>
-#include <vector>
 
 TestEngine::TestEngine(Application& application, TestConfig testConfig, std::unique_ptr<MapEngine> mapEngine, std::unique_ptr<WorldEngine> worldEngine)
 : application_(application)
@@ -258,12 +254,43 @@ auto TestEngine::executeTestCase(const TestCase& testCase, const HookContext& co
     // Notify reporters of test start
     reporters_.onTestStart(suite, testCase);
 
+    auto result = runTestCaseOnce(testCase, context, suite);
+
+    // Re-run failing tests up to retryCount times. A test that fails then passes is flaky.
+    std::vector<TestAttempt> attempts{ { result.status, result.duration, result.errorMessage } };
+
+    size_t retries = 0;
+    while (result.status == TestStatus::Failed && retries < testConfig_.retryCount)
+    {
+        retries++;
+        DebugTestFmt("  Retrying failed test '{}' (attempt {}/{})", testCase.name(), retries, testConfig_.retryCount);
+        result = runTestCaseOnce(testCase, context, suite);
+        attempts.push_back({ result.status, result.duration, result.errorMessage });
+    }
+
+    result.retries = retries;
+    result.flaky   = retries > 0 && result.status == TestStatus::Passed;
+    if (retries > 0)
+    {
+        result.retryAttempts = std::move(attempts);
+    }
+
+    reporters_.onTestEnd(result);
+    return result.status == TestStatus::Passed;
+}
+
+auto TestEngine::runTestCaseOnce(const TestCase& testCase, const HookContext& context, const TestSuite& suite) const -> TestResult
+{
+    TracyZoneScoped;
+    TracyZoneString(fmt::format("{} :: {}", suite.fullName(), testCase.name()));
+
     // Track timing
     auto startTime = std::chrono::steady_clock::now();
 
-    // Clean simulation state, reset PRNG seed and clear logs before each test
+    // Clean simulation state, reset PRNG seed and weather, and clear logs before each test
     DebugTestFmt("  Cleaning simulation state for test: {}", testCase.name());
     simulation_->seed();
+    simulation_->resetWeather();
     testConfig_.loggerSink->clear();
 
     auto                     status = TestStatus::Passed;
@@ -321,7 +348,7 @@ auto TestEngine::executeTestCase(const TestCase& testCase, const HookContext& co
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
 
     // Create test result
-    TestResult testResult{
+    return TestResult{
         .suiteName    = suite.fullName(),
         .testName     = testCase.name(),
         .status       = status,
@@ -330,9 +357,6 @@ auto TestEngine::executeTestCase(const TestCase& testCase, const HookContext& co
         .logs         = logs,
         .filePath     = suite.sourceFile()
     };
-
-    reporters_.onTestEnd(testResult);
-    return status == TestStatus::Passed;
 }
 
 auto TestEngine::runBeforeHooks(const HookContext& context, const std::string& testName) const -> Maybe<std::string>

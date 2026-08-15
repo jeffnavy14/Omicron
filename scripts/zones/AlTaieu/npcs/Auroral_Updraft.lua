@@ -10,9 +10,9 @@ local entity = {}
 entity.onTrigger = function(player, npc)
     local offset = npc:getID() - ID.npc.AURORAL_UPDRAFT_OFFSET
     if offset == 0 then
-        player:startEvent(150)
+        player:startOptionalCutscene(150, { cs_option = 0, canSkip = true })
     elseif offset >= 1 and offset <= 5 then
-        player:startEvent(155)
+        player:startOptionalCutscene(155, { cs_option = 0, canSkip = true })
     end
 end
 

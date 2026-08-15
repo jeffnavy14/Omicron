@@ -21,11 +21,10 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-
 #include "base.h"
 
 class CCharEntity;
+
 struct conquestregion_t
 {
     uint8_t InfluenceRankingWithBeastmen;

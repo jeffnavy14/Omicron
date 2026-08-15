@@ -6,39 +6,28 @@
 ---@type TMobEntity
 local entity = {}
 
-local stanceTable =
-{
--- [Stance] = { animationSub, canAutoAttack, canCastSpells, physicalShieldPower, magicalShieldPower }
-    [1] = { 1, false, true,  0, 1 }, -- Magical Stance
-    [2] = { 2, true,  false, 1, 0 }, -- Physical Stance
-}
-
 local function changeStance(mob, stance)
     -- Set behavior.
-    mob:setAnimationSub(stanceTable[stance][1])
-    mob:setAutoAttackEnabled(stanceTable[stance][2])
-    mob:setMagicCastingEnabled(stanceTable[stance][3])
+    mob:setAnimationSub(stance)
+    mob:setAutoAttackEnabled(stance == 2 and true or false)
+    mob:setMagicCastingEnabled(stance == 1 and true or false)
 
     -- Set effects.
-    local physicalShieldPower = stanceTable[stance][3]
-    local magicalShieldPower  = stanceTable[stance][4]
-
-    if physicalShieldPower > 0 then
-        mob:addStatusEffect(xi.effect.PHYSICAL_SHIELD, { power = physicalShieldPower, origin = mob, icon = 0 })
-        mob:addStatusEffect(xi.effect.ARROW_SHIELD, { power = physicalShieldPower, origin = mob, icon = 0 })
+    if stance == 2 then
+        mob:addStatusEffect(xi.effect.PHYSICAL_SHIELD, { power = 1, origin = mob, icon = 0 })
+        mob:addStatusEffect(xi.effect.ARROW_SHIELD, { power = 1, origin = mob, icon = 0 })
         mob:delStatusEffectSilent(xi.effect.MAGIC_SHIELD)
     else
         mob:delStatusEffectSilent(xi.effect.PHYSICAL_SHIELD)
         mob:delStatusEffectSilent(xi.effect.ARROW_SHIELD)
-        mob:addStatusEffect(xi.effect.MAGIC_SHIELD, { power = magicalShieldPower, origin = mob, icon = 0 })
+        mob:addStatusEffect(xi.effect.MAGIC_SHIELD, { power = 1, origin = mob, icon = 0 })
     end
 
     -- Set special modifiers for action delays.
-    mob:setMod(xi.mod.HASTE_GEAR, 0)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 8)
 
     -- Save data.
-    mob:setLocalVar('changeTime', mob:getBattleTime())
+    mob:setLocalVar('changeTime', GetSystemTime())
     mob:setLocalVar('changeHP', mob:getHP())
 end
 
@@ -46,6 +35,27 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.SILENCE)
+
+    -- Counter-attack with "Blind" spell when in magical stance.
+    mob:addListener('TAKE_DAMAGE', 'COUNTER_WITH_BLIND', function(mobArg, amount, attacker, attackType, damageType)
+        if not attacker then
+            return
+        end
+
+        if mobArg:getAnimationSub() ~= 1 then
+            return
+        end
+
+        if xi.combat.behavior.isEntityBusy(mobArg) then
+            return
+        end
+
+        if attacker:hasStatusEffect(xi.effect.BLINDNESS) then
+            return
+        end
+
+        mobArg:castSpell(xi.magic.spell.BLIND, attacker) -- Spell is casted on whoever attacked him. Ignores hate.
+    end)
 end
 
 entity.onMobSpawn = function(mob)
@@ -54,32 +64,20 @@ entity.onMobSpawn = function(mob)
     mob:setAutoAttackEnabled(true)
     mob:setMagicCastingEnabled(true)
     mob:delStatusEffectSilent(xi.effect.PHYSICAL_SHIELD)
+    mob:delStatusEffectSilent(xi.effect.ARROW_SHIELD)
     mob:delStatusEffectSilent(xi.effect.MAGIC_SHIELD)
-    mob:setMod(xi.mod.HASTE_GEAR, 0)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
+    mob:setMobMod(xi.mobMod.NO_SPELL_COST, 1)
     mob:setMod(xi.mod.DESPAWN_TIME_REDUCTION, 14)
-
-    -- Ensure counter-attack.
-    mob:addListener('TAKE_DAMAGE', 'COUNTER_WITH_BLIND', function(mobArg, amount, attacker, attackType, damageType)
-        local animationSub = mobArg:getAnimationSub()
-
-        if
-            animationSub == 1 and                             -- Shadow Lord in magical stance.
-            not xi.combat.behavior.isEntityBusy(mobArg) and   -- Shadow lord ain't busy.
-            not attacker:hasStatusEffect(xi.effect.BLINDNESS) -- Target not blind.
-        then
-            mobArg:castSpell(xi.magic.spell.BLIND, attacker) -- Spell is casted on whoever attacked him. Ignores hate.
-        end
-    end)
 end
 
 entity.onMobFight = function(mob, target)
     -- Once he's under 50% HP, start changing immunities and attack patterns
-    local animationSub = mob:getAnimationSub()
-    local changeTime   = mob:getLocalVar('changeTime')
-    local changeHP     = mob:getLocalVar('changeHP')
+    local currentTime = GetSystemTime()
+    local changeTime  = mob:getLocalVar('changeTime')
+    local changeHP    = mob:getLocalVar('changeHP')
 
-    switch (animationSub): caseof
+    switch (mob:getAnimationSub()): caseof
     {
         -- Initial phase.
         [0] = function()
@@ -92,7 +90,7 @@ entity.onMobFight = function(mob, target)
         [1] = function()
             if
                 mob:getHP() <= changeHP - 1000 or
-                mob:getBattleTime() - changeTime > 300
+                currentTime - changeTime > 300
             then
                 changeStance(mob, 2) -- Change to physical stance.
             end
@@ -102,7 +100,7 @@ entity.onMobFight = function(mob, target)
         [2] = function()
             if
                 mob:getHP() <= changeHP - 1000 or
-                mob:getBattleTime() - changeTime > 300
+                currentTime - changeTime > 300
             then
                 mob:useMobAbility(xi.mobSkill.DARK_NOVA)
                 changeStance(mob, 1) -- Change to magical stance.
@@ -120,7 +118,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         [4] = { xi.mobSkill.DARK_NOVA,   15 },
     }
 
-    local randomRoll = math.random(1, 100)
+    local randomRoll = math.randomInt(1, 100)
     local weightSum  = 0
     for i = 1, #mobskillTable do
         weightSum = weightSum + mobskillTable[i][2]
@@ -133,39 +131,20 @@ end
 entity.onMobSpellChoose = function(mob, target, spellId)
     local spellList =
     {
-        xi.magic.spell.AEROGA_II,
-        xi.magic.spell.BLIZZAGA_II,
-        xi.magic.spell.DRAIN,
-        xi.magic.spell.FIRAGA_II,
-        xi.magic.spell.STONEGA_II,
-        xi.magic.spell.WATERGA_II,
+        [1]  = { xi.magic.spell.AEROGA_II,   target, false, xi.action.type.DAMAGE_TARGET,        nil,                  0, 100 },
+        [2]  = { xi.magic.spell.BLIZZAGA_II, target, false, xi.action.type.DAMAGE_TARGET,        nil,                  0, 100 },
+        [3]  = { xi.magic.spell.FIRAGA_II,   target, false, xi.action.type.DAMAGE_TARGET,        nil,                  0, 100 },
+        [4]  = { xi.magic.spell.STONEGA_II,  target, false, xi.action.type.DAMAGE_TARGET,        nil,                  0, 100 },
+        [5]  = { xi.magic.spell.WATERGA_II,  target, false, xi.action.type.DAMAGE_TARGET,        nil,                  0, 100 },
+        [6]  = { xi.magic.spell.DRAIN,       target, false, xi.action.type.DRAIN_HP,             nil,                  0, 100 },
+        [7]  = { xi.magic.spell.BLIND,       target, false, xi.action.type.ENFEEBLING_TARGET,    xi.effect.BLINDNESS,  0, 100 },
+        [8]  = { xi.magic.spell.DROWN,       target, false, xi.action.type.ENFEEBLING_TARGET,    xi.effect.DROWN,      0, 100 },
+        [9]  = { xi.magic.spell.FROST,       target, false, xi.action.type.ENFEEBLING_TARGET,    xi.effect.FROST,      0, 100 },
+        [10] = { xi.magic.spell.RASP,        target, false, xi.action.type.ENFEEBLING_TARGET,    xi.effect.RASP,       0, 100 },
+        [11] = { xi.magic.spell.ICE_SPIKES,  mob,    false, xi.action.type.ENHANCING_FORCE_SELF, xi.effect.ICE_SPIKES, 0, 100 },
     }
 
-    if not mob:hasStatusEffect(xi.effect.ICE_SPIKES) then
-        table.insert(spellList, xi.magic.spell.ICE_SPIKES)
-    end
-
-    if not target:hasStatusEffect(xi.effect.BLINDNESS) then
-        table.insert(spellList, xi.magic.spell.BLIND)
-    end
-
-    if not target:hasStatusEffect(xi.effect.DROWN) then
-        table.insert(spellList, xi.magic.spell.DROWN)
-    end
-
-    if not target:hasStatusEffect(xi.effect.FROST) then
-        table.insert(spellList, xi.magic.spell.FROST)
-    end
-
-    if not target:hasStatusEffect(xi.effect.RASP) then
-        table.insert(spellList, xi.magic.spell.RASP)
-    end
-
-    return spellList[math.random(1, #spellList)]
-end
-
-entity.onMobDespawn = function(mob)
-    mob:removeListener('COUNTER_WITH_BLIND')
+    return xi.combat.behavior.chooseAction(mob, target, nil, spellList)
 end
 
 return entity

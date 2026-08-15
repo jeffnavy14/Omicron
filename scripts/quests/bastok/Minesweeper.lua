@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.MINESWEEPER)
 
 quest.reward =
 {
-    fame     = 8,
+    fame     = 10,
     fameArea = xi.fameArea.BASTOK,
     gil      = 150,
     title    = xi.title.ZERUHN_SWEEPER,
@@ -45,7 +45,7 @@ quest.sections =
             ['Gerbaum'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, { { xi.item.PINCH_OF_ZERUHN_SOOT, 3 } }) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.PINCH_OF_ZERUHN_SOOT, 3 } }) then
                         return quest:progressEvent(109)
                     end
                 end,
@@ -54,15 +54,9 @@ quest.sections =
             onEventFinish =
             {
                 [109] = function(player, csid, option, npc)
-                    player:confirmTrade()
-
-                    -- From previous implementation, award 75 fame (67 + 8) on first completion,
-                    -- and 8 fame for any subsequent trade.
-                    if player:getQuestStatus(quest.areaId, quest.questId) == xi.questStatus.QUEST_ACCEPTED then
-                        player:addFame(xi.fameArea.BASTOK, 67)
+                    if quest:complete(player) then
+                        player:tradeComplete()
                     end
-
-                    quest:complete(player)
                 end,
             },
         },

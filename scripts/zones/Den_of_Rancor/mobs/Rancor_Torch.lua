@@ -31,7 +31,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(skillList, xi.mobSkill.SELF_DESTRUCT_BOMB)
     end
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 -- Turns off all the lights once the NM despawns
@@ -40,7 +40,7 @@ entity.onMobDespawn = function(mob)
         local lantern = GetNPCByID(npcId)
 
         if lantern then
-            lantern:setAnimation(xi.anim.CLOSE_DOOR) -- Turn off the light
+            lantern:setAnimation(xi.animation.CLOSE_DOOR) -- Turn off the light
         end
     end
 end

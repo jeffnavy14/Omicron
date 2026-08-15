@@ -33,6 +33,11 @@ def main():
 
     function_names.append("skip_to_next")
 
+    # Module framework methods, defined in modules/module_utils.lua
+    function_names.append("addOverride")
+    function_names.append("addOverrideByEra")
+    function_names.append("setEnabled")
+
     # Add exceptions for interaction, battle frameworks, and other user Lua types
     function_names.append("new")
     function_names.append("event")
@@ -114,6 +119,12 @@ def main():
     function_names.append("find")
     function_names.append("sub")
     function_names.append("getStatusEffectBySource")
+    function_names.append("afterInstanceRegister")
+    function_names.append("onInstanceCreated")
+    function_names.append("onAssaultFail")
+    function_names.append("onInstanceProgressUpdate")
+    function_names.append("onInstanceComplete")
+    function_names.append("onLockboxOpen")
 
     # root_dir needs a trailing slash (i.e. /root/dir/)
     for filename in glob.iglob("./scripts/" + "**/*.lua", recursive=True):

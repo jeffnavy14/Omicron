@@ -18,12 +18,13 @@
 
 ===========================================================================
 */
-#include "entities/battleentity.h"
+
+#include "item_weapon.h"
+
+#include "entities/battle_entity.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
-
-#include "item_weapon.h"
 
 /************************************************************************
  *                                                                       *
@@ -36,16 +37,16 @@ CItemWeapon::CItemWeapon(uint16 id)
 {
     setType(ITEM_WEAPON);
 
-    m_skillType      = SKILL_NONE;
+    m_skillType      = xi::SkillType::None;
     m_subSkillType   = SUBSKILL_XBOW_SHORTBOW;
     m_iLvlSkill      = 0;
     m_iLvlParry      = 0;
     m_iLvlMacc       = 0;
     m_damage         = 0;
     m_effect         = 0;
-    m_dmgType        = DAMAGE_TYPE::NONE;
+    m_dmgType        = xi::DamageType::None;
     m_delay          = 8000;
-    m_baseDelay      = 8000; // this should only be needed for mobs (specifically mnks)
+    m_baseDelay      = 480; // this should only be needed for mobs (specifically mnks)
     m_maxHit         = 0;
     m_DPS            = 0.0;
     m_ranged         = false;
@@ -83,7 +84,7 @@ CItemWeapon::~CItemWeapon() = default;
 
 void CItemWeapon::resetDelay()
 {
-    m_delay = m_baseDelay;
+    setDelay(m_baseDelay);
 }
 
 /************************************************************************
@@ -104,7 +105,7 @@ bool CItemWeapon::isRanged() const
 
 bool CItemWeapon::isThrowing() const
 {
-    return isRanged() && getSkillType() == SKILL_THROWING;
+    return isRanged() && getSkillType() == xi::SkillType::Throwing;
 }
 
 /************************************************************************
@@ -137,7 +138,7 @@ bool CItemWeapon::isTwoHanded() const
 
 bool CItemWeapon::isHandToHand() const
 {
-    return getSkillType() == SKILL_HAND_TO_HAND;
+    return getSkillType() == xi::SkillType::HandToHand;
 }
 
 /************************************************************************
@@ -148,7 +149,7 @@ bool CItemWeapon::isHandToHand() const
 
 bool CItemWeapon::isUnlockable() const
 {
-    if (m_skillType == SKILL_NONE)
+    if (m_skillType == xi::SkillType::None)
     {
         return false;
     }
@@ -195,22 +196,24 @@ bool CItemWeapon::addWsPoints(uint16 points)
  *                                                                       *
  ************************************************************************/
 
-void CItemWeapon::setSkillType(uint8 skillType)
+void CItemWeapon::setSkillType(xi::SkillType skillType)
 {
     switch (skillType)
     {
-        case SKILL_GREAT_SWORD:
-        case SKILL_GREAT_AXE:
-        case SKILL_SCYTHE:
-        case SKILL_POLEARM:
-        case SKILL_GREAT_KATANA:
-        case SKILL_STAFF:
+        case xi::SkillType::GreatSword:
+        case xi::SkillType::GreatAxe:
+        case xi::SkillType::Scythe:
+        case xi::SkillType::Polearm:
+        case xi::SkillType::GreatKatana:
+        case xi::SkillType::Staff:
             m_twoHanded = true;
             break;
-        case SKILL_ARCHERY:
-        case SKILL_MARKSMANSHIP:
-        case SKILL_THROWING:
+        case xi::SkillType::Archery:
+        case xi::SkillType::Marksmanship:
+        case xi::SkillType::Throwing:
             m_ranged = true;
+            break;
+        default:
             break;
     }
     m_skillType = skillType;
@@ -222,7 +225,7 @@ void CItemWeapon::setSkillType(uint8 skillType)
  *                                                                      *
  ************************************************************************/
 
-uint8 CItemWeapon::getSkillType() const
+auto CItemWeapon::getSkillType() const -> xi::SkillType
 {
     return m_skillType;
 }
@@ -316,52 +319,28 @@ uint16 CItemWeapon::getILvlMacc() const
     return m_iLvlMacc;
 }
 
-/************************************************************************
- *                                                                      *
- * Set the weapon delay time. Value in raw game delay units.            *
- * Converts to milliseconds: delay * 1000 / 60.                         *
- *                                                                      *
- ************************************************************************/
-
+// set delay used for milliseconds calculations (such as auto attack delay)
 void CItemWeapon::setDelay(uint16 delay)
 {
     m_delay = uint16(delay * 1000.0f / 60.0f);
 }
 
-/************************************************************************
- *                                                                      *
- * Get the weapon delay time. Value in milliseconds.                    *
- * All math operations are performed with integers which is why         *
- * the order of operations is important                                 *
- *                                                                      *
- ************************************************************************/
-
+// get delay used for milliseconds calculations (such as auto attack delay)
 uint16 CItemWeapon::getDelay() const
 {
     return m_delay;
 }
 
-/************************************************************************
- *                                                                      *
- *  Set the un-adjusted delay of the weapon. Value in raw game units.  *
- *  Converts to milliseconds: delay * 1000 / 60.                       *
- *                                                                      *
- ************************************************************************/
-
+// set real delay used by real people
 void CItemWeapon::setBaseDelay(uint16 delay)
 {
-    m_baseDelay = uint16(delay * 1000.0f / 60.0f);
+    m_baseDelay = delay;
 }
 
-/************************************************************************
- *                                                                       *
- * Get the un-adjusted base delay of the weapon. Value in raw game units.*
- *                                                                       *
- ************************************************************************/
-
+// get real delay used by real people
 uint16 CItemWeapon::getBaseDelay() const
 {
-    return uint16(m_baseDelay * 60.0f / 1000.0f);
+    return m_baseDelay;
 }
 
 /************************************************************************
@@ -427,7 +406,7 @@ uint16 CItemWeapon::getDamage() const
  *                                                                       *
  ************************************************************************/
 
-void CItemWeapon::setDmgType(DAMAGE_TYPE dmgType)
+void CItemWeapon::setDmgType(xi::DamageType dmgType)
 {
     m_dmgType = dmgType;
 }
@@ -438,7 +417,7 @@ void CItemWeapon::setDmgType(DAMAGE_TYPE dmgType)
  *                                                                       *
  ************************************************************************/
 
-DAMAGE_TYPE CItemWeapon::getDmgType()
+auto CItemWeapon::getDmgType() -> xi::DamageType
 {
     return m_dmgType;
 }

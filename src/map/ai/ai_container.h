@@ -19,14 +19,14 @@
 ===========================================================================
 */
 
-#ifndef _AI_H
-#define _AI_H
+#pragma once
 
 #include <memory>
 #include <stack>
+#include <vector>
 
 #include "ai/controllers/controller.h"
-#include "entities/baseentity.h"
+#include "entities/base_entity.h"
 #include "helpers/action_queue.h"
 #include "helpers/event_handler.h"
 #include "helpers/pathfind.h"
@@ -49,78 +49,73 @@ public:
     CAIContainer(const CAIContainer&)            = delete;
     CAIContainer& operator=(const CAIContainer&) = delete;
 
-    bool Cast(uint16 targid, SpellID spellid);
-    bool Engage(uint16 targid);
-    bool ChangeTarget(uint16 targid);
-    bool Disengage();
-    bool WeaponSkill(uint16 targid, uint16 wsid);
-    bool MobSkill(uint16 targid, uint16 wsid, Maybe<timer::duration> castTimeOverride);
-    bool PetSkill(uint16 targid, uint16 wsid);
-    bool Ability(uint16 targid, uint16 abilityid);
-    bool RangedAttack(uint16 targid);
-    bool Trigger(CCharEntity* player);
-    bool UseItem(uint16 targid, uint8 loc, uint8 slotid);
-    bool Inactive(timer::duration _duration, bool canChangeState);
-    bool Untargetable(timer::duration _duration, bool canChangeState); // Used to make owner entity untargetable & inactionable in TargetFind for _duration
+    auto Cast(const EntityId& target, SpellID spellid) const -> bool;
+    auto Engage(const EntityId& target) const -> bool;
+    auto ChangeTarget(const EntityId& target) const -> bool;
+    auto Disengage() const -> bool;
+    auto WeaponSkill(const EntityId& target, uint16 wsid) const -> bool;
+    auto MobSkill(const EntityId& target, uint16 wsid, Maybe<timer::duration> castTimeOverride) const -> bool;
+    auto PetSkill(const EntityId& target, uint16 wsid) const -> bool;
+    auto Ability(const EntityId& target, uint16 abilityid) const -> bool;
+    auto RangedAttack(const EntityId& target) const -> bool;
+    auto Trigger(CCharEntity* player) -> bool;
+    auto UseItem(const EntityId& target, uint8 loc, uint8 slotid) const -> bool;
+    auto Inactive(timer::duration _duration, bool canChangeState) -> bool;
+    auto Untargetable(timer::duration _duration, bool canChangeState) -> bool; // Used to make owner entity untargetable & inactionable in TargetFind for _duration
 
-    /* Internal Controller functions */
-    bool Internal_Engage(uint16 targetid);
-    bool Internal_Cast(uint16 targetid, SpellID spellid);
-    bool Internal_ChangeTarget(uint16 targetid);
-    bool Internal_Disengage();
-    bool Internal_WeaponSkill(uint16 targid, uint16 wsid);
-    bool Internal_MobSkill(uint16 targid, uint16 wsid, Maybe<timer::duration> castTimeOverride);
-    bool Internal_PetSkill(uint16 targid, uint16 abilityid);
-    bool Internal_Ability(uint16 targetid, uint16 abilityid);
-    bool Internal_RangedAttack(uint16 targetid);
-    bool Internal_Die(timer::duration);
-    bool Internal_UseItem(uint16 targetid, uint8 loc, uint8 slotid);
-    bool Internal_Despawn(bool instantDespawn = false);
-    bool Internal_Synth(SKILLTYPE synthSkill);
-    bool Accept_Raise();
+    //
+    // Internal Controller functions
+    //
 
-    void    Reset();
-    auto    Tick(timer::time_point tick) -> Task<void>;
-    CState* GetCurrentState();
-    bool    IsStateStackEmpty();
-    void    ClearStateStack();
-    void    InterruptStates();
+    auto Internal_Engage(EntityId target) -> bool;
+    auto Internal_Cast(EntityId target, SpellID spellid) -> bool;
+    auto Internal_ChangeTarget(const EntityId& target) const -> bool;
+    auto Internal_Disengage() const -> bool;
+    auto Internal_WeaponSkill(const EntityId& target, uint16 wsid) -> bool;
+    auto Internal_MobSkill(const EntityId& target, uint16 wsid, Maybe<timer::duration> castTimeOverride) -> bool;
+    auto Internal_PetSkill(const EntityId& target, uint16 abilityid) -> bool;
+    auto Internal_Ability(const EntityId& target, uint16 abilityid) -> bool;
+    auto Internal_RangedAttack(const EntityId& target) -> bool;
+    auto Internal_Die(timer::duration) -> bool;
+    auto Internal_UseItem(const EntityId& target, uint8 loc, uint8 slotid) -> bool;
+    auto Internal_Despawn(bool instantDespawn = false) -> bool;
+    auto Internal_Synth(xi::SkillType synthSkill) -> bool;
+    auto Accept_Raise() -> bool;
+
+    void Reset();
+    auto Tick(timer::time_point tick) -> Task<void>;
+    auto GetCurrentState() const -> CState*;
+    auto IsStateStackEmpty() const -> bool;
+    void ClearStateStack();
+    void InterruptStates();
+
     // Pop the top state if it's the expected state
     template <typename State>
-    bool PopState()
-    {
-        if (IsCurrentState<State>())
-        {
-            m_stateStack.pop();
-            return true;
-        }
+    auto PopState() -> bool;
 
-        return false;
-    }
-    /* Or have each state return a static number/string that Lua can use as well, in case this is not sufficient */
+    // Or have each state return a static number/string that Lua can use as well, in case this is not sufficient
     template <typename State, typename = std::enable_if_t<std::is_base_of<CState, State>::value>>
-    bool IsCurrentState()
-    {
-        return dynamic_cast<State*>(GetCurrentState());
-    }
-    bool IsSpawned();
-    bool IsRoaming();
-    bool IsEngaged();
-    bool IsUntargetable();
+    auto IsCurrentState() -> bool;
+
+    auto IsSpawned() const -> bool;
+    auto IsRoaming() const -> bool;
+    auto IsEngaged() const -> bool;
+    auto IsUntargetable() const -> bool;
+
     // whether AI is currently able to change state from external means
-    bool CanChangeState();
-    bool CanFollowPath();
+    auto CanChangeState() const -> bool;
+    auto CanFollowPath() const -> bool;
 
-    void         SetController(std::unique_ptr<CController> controller);
-    CController* GetController();
+    void SetController(std::unique_ptr<CController> controller);
+    auto GetController() const -> CController*;
 
-    timer::time_point getTick();
-    timer::time_point getPrevTick();
+    auto getTick() const -> timer::time_point;
+    auto getPrevTick() const -> timer::time_point;
 
     void Despawn();
 
     void QueueAction(queueAction_t&&);
-    bool QueueEmpty();
+    auto QueueEmpty() const -> bool;
     void ClearActionQueue();
     void ClearTimerQueue();
     void checkQueueImmediately();
@@ -135,62 +130,99 @@ public:
 protected:
     // input controller
     std::unique_ptr<CController> Controller;
+
     // current synchronized server time (before AI loop execution)
     timer::time_point m_Tick;
     timer::time_point m_PrevTick;
+
     // entity who holds this AI
     CBaseEntity* PEntity;
 
     void CheckCompletedStates();
-    template <typename T, typename... Args>
-    bool ChangeState(Args&&... args)
-    {
-        if (m_stateStack.size() > 10)
-        {
-            ShowWarning("State Stack size exceeds maximum.");
-            return false;
-        }
 
-        if (CanChangeState())
-        {
-            try
-            {
-                CheckCompletedStates();
-                m_stateStack.emplace(std::make_unique<T>(std::forward<Args>(args)...));
-                return true;
-            }
-            catch (CStateInitException& e)
-            {
-                PEntity->HandleErrorMessage(e.packet);
-            }
-        }
-        return false;
-    }
     template <typename T, typename... Args>
-    bool ForceChangeState(Args&&... args)
-    {
-        if (m_stateStack.size() > 10)
-        {
-            ShowWarning("State Stack size exceeds maximum.");
-            return false;
-        }
+    auto ChangeState(Args&&... args) -> bool;
 
-        try
-        {
-            CheckCompletedStates();
-            m_stateStack.emplace(std::make_unique<T>(std::forward<Args>(args)...));
-            return true;
-        }
-        catch (CStateInitException& e)
-        {
-            PEntity->HandleErrorMessage(e.packet);
-        }
-        return false;
-    }
+    template <typename T, typename... Args>
+    auto ForceChangeState(Args&&... args) -> bool;
 
 private:
+    // Initialize `next`. If it accepts, suspend the current state beneath it and make
+    // `next` current. Returns true if the entity entered the state.
+    auto enterState(std::unique_ptr<CState> next) -> bool;
+
+    // Finish with the current state and resume the one suspended beneath it (or go idle).
+    void resumeNextState();
+
+    // swap in the state beneath before Cleanup, so anything Cleanup enters stacks on the resumed state instead of being popped right back off.
+    void finishCurrentState(timer::time_point tick);
+
+    // park a finished state until the end of the tick; its Update/Cleanup frame may still be live further up the call stack.
+    void retire(std::unique_ptr<CState> state);
+
+    auto stateCount() const -> size_t;
+
+    // The state the entity is currently in (null == idle). It lives here rather than on
+    // the stack so it can never be freed from underneath its own DoUpdate; m_stateStack
+    // holds the states suspended beneath it.
+    std::unique_ptr<CState>             m_currentState;
     std::stack<std::unique_ptr<CState>> m_stateStack;
-    CAIActionQueue                      ActionQueue;
+
+    // retired states, freed at the end of Tick().
+    std::vector<std::unique_ptr<CState>> m_retiredStates;
+
+    CAIActionQueue ActionQueue;
 };
 
-#endif
+//
+// Template impls
+//
+
+template <typename State>
+auto CAIContainer::PopState() -> bool
+{
+    if (IsCurrentState<State>())
+    {
+        resumeNextState();
+        return true;
+    }
+
+    return false;
+}
+
+template <typename State, typename>
+auto CAIContainer::IsCurrentState() -> bool
+{
+    return dynamic_cast<State*>(GetCurrentState());
+}
+
+template <typename T, typename... Args>
+auto CAIContainer::ChangeState(Args&&... args) -> bool
+{
+    if (stateCount() > 10)
+    {
+        ShowWarning("State Stack size exceeds maximum.");
+        return false;
+    }
+
+    if (CanChangeState())
+    {
+        CheckCompletedStates();
+        return enterState(CState::make<T>(std::forward<Args>(args)...));
+    }
+
+    return false;
+}
+
+template <typename T, typename... Args>
+auto CAIContainer::ForceChangeState(Args&&... args) -> bool
+{
+    if (stateCount() > 10)
+    {
+        ShowWarning("State Stack size exceeds maximum.");
+        return false;
+    }
+
+    CheckCompletedStates();
+    return enterState(CState::make<T>(std::forward<Args>(args)...));
+}

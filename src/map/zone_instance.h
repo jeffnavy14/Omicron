@@ -19,20 +19,28 @@
 ===========================================================================
 */
 
-#ifndef _CZONEINSTANCE_H
-#define _CZONEINSTANCE_H
+#pragma once
 
 #include "instance.h"
 #include "zone.h"
 
+#include <common/types/flat_hash_map.h>
+
 class CZoneInstance : public CZone
 {
 public:
+    CZoneInstance(Scheduler& scheduler, MapConfig config, xi::ZoneId ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
+    ~CZoneInstance() override;
+
     DISALLOW_COPY_AND_MOVE(CZoneInstance);
+
+    CInstance* CreateInstance(uint32 instanceid);
 
     virtual CCharEntity* GetCharByName(const std::string& name) override; // finds the player if exists in zone
     virtual CCharEntity* GetCharByID(uint32 id) override;
     virtual CBaseEntity* GetEntity(uint16 targid, uint8 filter = -1) override; // get a pointer to any entity in the zone
+
+    auto getInstanceByRunId(uint32 runId) const -> CInstance*;
 
     virtual void SpawnPCs(CCharEntity* PChar) override;
     virtual void SpawnMOBs(CCharEntity* PChar) override;
@@ -54,9 +62,7 @@ public:
 
     virtual void FindPartyForMob(CBaseEntity* PEntity) override; // looking for a party for the monster
 
-    virtual void TransportDepart(uint16 boundary, uint16 prevZoneId, uint16 transportId) override; // ship/boat is leaving, passengers need to be collected
-
-    virtual void TOTDChange(vanadiel_time::TOTD TOTD) override; // process the world's reactions to changing time of day
+    virtual void TransportDepart(uint16 boundary, xi::ZoneId prevZoneId, uint16 transportId) override; // ship/boat is leaving, passengers need to be collected
 
     virtual void PushPacket(CBaseEntity*, GLOBAL_MESSAGE_TYPE, const std::unique_ptr<CBasicPacket>&) override; // send a global package within the zone
 
@@ -65,28 +71,22 @@ public:
     virtual auto ZoneServer(timer::time_point tick) -> Task<void> override;
     virtual auto CheckTriggerAreas() -> Task<void> override;
 
-    void ForEachChar(const std::function<void(CCharEntity*)>& func) override;
-    void ForEachCharInstance(CBaseEntity* PEntity, const std::function<void(CCharEntity*)>& func) override;
-    void ForEachMob(const std::function<void(CMobEntity*)>& func) override;
-    void ForEachMobInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func) override;
-    void ForEachNpc(const std::function<void(CNpcEntity*)>& func) override;
-    void ForEachNpcInstance(CBaseEntity* PEntity, const std::function<void(CNpcEntity*)>& func) override;
-    void ForEachTrust(const std::function<void(CTrustEntity*)>& func) override;
-    void ForEachTrustInstance(CBaseEntity* PEntity, const std::function<void(CTrustEntity*)>& func) override;
-    void ForEachPet(const std::function<void(CPetEntity*)>& func) override;
-    void ForEachPetInstance(CBaseEntity* PEntity, const std::function<void(CPetEntity*)>& func) override;
-    void ForEachAlly(const std::function<void(CMobEntity*)>& func) override;
-    void ForEachAllyInstance(CBaseEntity* PEntity, const std::function<void(CMobEntity*)>& func) override;
-
-    CInstance* CreateInstance(uint32 instanceid);
-
-    CZoneInstance(Scheduler& scheduler, MapConfig config, ZONEID ZoneID, REGION_TYPE RegionID, CONTINENT_TYPE ContinentID, uint8 levelRestriction);
-    ~CZoneInstance() override;
+    void ForEachChar(FnRef<void(CCharEntity*)> func) override;
+    void ForEachCharInstance(CBaseEntity* PEntity, FnRef<void(CCharEntity*)> func) override;
+    void ForEachMob(FnRef<void(CMobEntity*)> func) override;
+    void ForEachMobInstance(CBaseEntity* PEntity, FnRef<void(CMobEntity*)> func) override;
+    void ForEachNpc(FnRef<void(CNpcEntity*)> func) override;
+    void ForEachNpcInstance(CBaseEntity* PEntity, FnRef<void(CNpcEntity*)> func) override;
+    void ForEachTrust(FnRef<void(CTrustEntity*)> func) override;
+    void ForEachTrustInstance(CBaseEntity* PEntity, FnRef<void(CTrustEntity*)> func) override;
+    void ForEachPet(FnRef<void(CPetEntity*)> func) override;
+    void ForEachPetInstance(CBaseEntity* PEntity, FnRef<void(CPetEntity*)> func) override;
+    void ForEachAlly(FnRef<void(CMobEntity*)> func) override;
+    void ForEachAllyInstance(CBaseEntity* PEntity, FnRef<void(CMobEntity*)> func) override;
 
 private:
     typedef std::vector<std::unique_ptr<CInstance>> instanceList_t;
 
-    instanceList_t m_InstanceList;
+    instanceList_t                  m_InstanceList;
+    FlatHashMap<uint32, CInstance*> instancesByRun_;
 };
-
-#endif // _CZONEINSTANCE_H

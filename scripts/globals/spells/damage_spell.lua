@@ -2,10 +2,6 @@
 -- Damage Spell Utilities
 -- Used for spells that deal direct damage. (Black, White, Dark and Ninjutsu)
 -----------------------------------
-require('scripts/globals/combat/magic_hit_rate')
-require('scripts/globals/jobpoints')
-require('scripts/globals/magicburst')
------------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
 xi.spells.damage = xi.spells.damage or {}
@@ -19,223 +15,225 @@ xi.spells.damage = xi.spells.damage or {}
 -----------------------------------
 local column =
 {
-    STAT_USED       =  1,
-    BONUS_MACC      =  2,
-    NPC_POWER       =  3,
-    NPC_MULTIPLIER  =  4,
-    PC_POWER        =  5,
-    INFLEXION_POINT =  6,
-    MULTIPLIER_0    =  7,
-    MULTIPLIER_50   =  8,
-    MULTIPLIER_100  =  9,
-    MULTIPLIER_200  = 10,
-    MULTIPLIER_300  = 11,
-    MULTIPLIER_400  = 12,
-    MULTIPLIER_500  = 13,
+    STAT_USED         =  1,
+    BONUS_MACC        =  2,
+    FORCE_DAY_WEATHER =  3,
+    NPC_POWER         =  4,
+    NPC_MULTIPLIER    =  5,
+    PC_POWER          =  6,
+    INFLEXION_POINT   =  7,
+    MULTIPLIER_0      =  8,
+    MULTIPLIER_50     =  9,
+    MULTIPLIER_100    = 10,
+    MULTIPLIER_200    = 11,
+    MULTIPLIER_300    = 12,
+    MULTIPLIER_400    = 13,
+    MULTIPLIER_500    = 14,
 }
 
-local pTable =
+xi.spells.damage.pTable =
 {
 -- Single target black magic spells:
---                                       1          2     3     4      5      6    7    8    9     10    11    12    13
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
-    [xi.magic.spell.AERO          ] = { xi.mod.INT,    0,   25,    1,   40,  35,  1.6,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.AERO_II       ] = { xi.mod.INT,   10,  113,    1,  140, 133,  2.6,  1.8,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.AERO_III      ] = { xi.mod.INT,   20,  265,  1.5,  260, 295,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
-    [xi.magic.spell.AERO_IV       ] = { xi.mod.INT,   20,  440,    2,  480, 472,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 },
-    [xi.magic.spell.AERO_V        ] = { xi.mod.INT,   25,  738,  2.3,  750, 550,  5.2,  4.5,  3.9, 2.98, 1.98,    1,    0 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.AERO_VI       ] = { xi.mod.INT,    0, 1070,  2.5, 1070, 600,    6,  5.8,  4.8,  3.8,  2.9, 1.98,    1 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.TORNADO       ] = { xi.mod.INT,    0,  552,    2,  700, 577,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.TORNADO_II    ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.BLIZZARD      ] = { xi.mod.INT,    0,   46,    1,   70,  60,  1.2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.BLIZZARD_II   ] = { xi.mod.INT,   10,  155,    1,  180, 178,  2.2,  1.6,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.BLIZZARD_III  ] = { xi.mod.INT,   20,  320,  1.5,  320, 345,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
-    [xi.magic.spell.BLIZZARD_IV   ] = { xi.mod.INT,   20,  506,    2,  560, 541,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 },
-    [xi.magic.spell.BLIZZARD_V    ] = { xi.mod.INT,   25,  829,  2.3,  850, 600,  4.4,    4,  3.8, 2.96, 1.96,    1,    0 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.BLIZZARD_VI   ] = { xi.mod.INT,    0, 1190,  2.5, 1190, 650,    5,  5.6,  4.6,  3.6,  2.8, 1.96,    1 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.FREEZE        ] = { xi.mod.INT,    0,  552,    2,  700, 552,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.FREEZE_II     ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.FIRE          ] = { xi.mod.INT,    0,   35,    1,   55,  46,  1.4,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.FIRE_II       ] = { xi.mod.INT,   10,  133,    1,  160, 155,  2.4,  1.7,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.FIRE_III      ] = { xi.mod.INT,   20,  295,  1.5,  290, 320,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
-    [xi.magic.spell.FIRE_IV       ] = { xi.mod.INT,   20,  472,    2,  520, 506,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 },
-    [xi.magic.spell.FIRE_V        ] = { xi.mod.INT,   25,  785,  2.3,  800, 550,  4.8, 4.24, 3.85, 2.97, 1.97,    1,    0 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.FIRE_VI       ] = { xi.mod.INT,    0, 1130,  2.5, 1130, 600,  5.5,  5.7,  4.7,  3.7, 2.85, 1.97,    1 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.FLARE         ] = { xi.mod.INT,    0,  552,    2,  700, 684,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.FLARE_II      ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.STONE         ] = { xi.mod.INT,    0,   10,    1,   10,  16,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.STONE_II      ] = { xi.mod.INT,   10,   78,    1,  100,  95,    3,    2,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.STONE_III     ] = { xi.mod.INT,   20,  210,  1.5,  200, 236,    4,    3,    2,    1,    0,    0,    0 },
-    [xi.magic.spell.STONE_IV      ] = { xi.mod.INT,   20,  381,    2,  400, 410,    5,    4,    3,    2,    1,    0,    0 },
-    [xi.magic.spell.STONE_V       ] = { xi.mod.INT,   25,  626,  2.3,  650, 500,    6,    5,    4,    3,    2,    1,    0 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.STONE_VI      ] = { xi.mod.INT,    0,  950,  2.5,  950, 550,    7,    6,    5,    4,    3,    2,    1 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.QUAKE         ] = { xi.mod.INT,    0,  552,    2,  700, 603,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.QUAKE_II      ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.THUNDER       ] = { xi.mod.INT,    0,   60,    1,   85,  78,    1,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.THUNDER_II    ] = { xi.mod.INT,   10,  178,    1,  200, 210,    2,  1.5,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.THUNDER_III   ] = { xi.mod.INT,   20,  345,  1.5,  350, 381,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
-    [xi.magic.spell.THUNDER_IV    ] = { xi.mod.INT,   20,  541,    2,  600, 626,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 },
-    [xi.magic.spell.THUNDER_V     ] = { xi.mod.INT,   25,  874,  2.3,  900, 700,    4, 3.74, 3.75, 2.95, 1.95,    1,    0 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.THUNDER_VI    ] = { xi.mod.INT,    0, 1250,  2.5, 1250, 750,  4.5,  5.5,  4.5,  3.5, 2.75, 1.95,    1 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.BURST         ] = { xi.mod.INT,    0,  552,    2,  700, 630,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.BURST_II      ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.WATER         ] = { xi.mod.INT,    0,   16,    1,   25,  25,  1.8,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.WATER_II      ] = { xi.mod.INT,   10,   95,    1,  120, 113,  2.8,  1.9,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.WATER_III     ] = { xi.mod.INT,   20,  236,  1.5,  230, 265,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
-    [xi.magic.spell.WATER_IV      ] = { xi.mod.INT,   20,  410,    2,  440, 440,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 },
-    [xi.magic.spell.WATER_V       ] = { xi.mod.INT,   25,  680,  2.3,  700, 500,  5.6, 4.74, 3.95, 2.99, 1.99,    1,    0 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.WATER_VI      ] = { xi.mod.INT,    0, 1010,  1.5, 1010, 550,  6.5,  5.9,  4.9,  3.9, 2.95, 1.99,    1 }, -- I value Unknown. Guesstimate used.
-    [xi.magic.spell.FLOOD         ] = { xi.mod.INT,    0,  552,    2,  700, 657,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.FLOOD_II      ] = { xi.mod.INT,   10,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
-    [xi.magic.spell.IMPACT        ] = { xi.mod.INT,    0,  932,  2.3,  932, 525,    0,    0,    0,    0,    0,    0,    0 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.COMET         ] = { xi.mod.INT,    0,  552,    2,  700, 700,    2,    2,    2,    2,    2,    2,    2 }, -- I value unknown. Guesstimate used.
-    [xi.magic.spell.DEATH         ] = {          0,    0,   32,    0,   32,   0,    0,    0,    0,    0,    0,    0,    0 },
+--                                       1          2     3      4     5      6      7    8    9    10    11    12    13    14
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
+    [xi.magic.spell.AERO          ] = { xi.mod.INT,    0, false,   25,    1,   40,  35,  1.6,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.AERO_II       ] = { xi.mod.INT,   10, false,  113,    1,  140, 133,  2.6,  1.8,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.AERO_III      ] = { xi.mod.INT,   20, false,  265,  1.5,  260, 295,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
+    [xi.magic.spell.AERO_IV       ] = { xi.mod.INT,   20, false,  440,    2,  480, 472,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 },
+    [xi.magic.spell.AERO_V        ] = { xi.mod.INT,   25, false,  738,  2.3,  750, 550,  5.2,  4.5,  3.9, 2.98, 1.98,    1,    0 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.AERO_VI       ] = { xi.mod.INT,    0, false, 1070,  2.5, 1070, 600,    6,  5.8,  4.8,  3.8,  2.9, 1.98,    1 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.TORNADO       ] = { xi.mod.INT,    0, false,  552,    2,  700, 577,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.TORNADO_II    ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.BLIZZARD      ] = { xi.mod.INT,    0, false,   46,    1,   70,  60,  1.2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BLIZZARD_II   ] = { xi.mod.INT,   10, false,  155,    1,  180, 178,  2.2,  1.6,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.BLIZZARD_III  ] = { xi.mod.INT,   20, false,  320,  1.5,  320, 345,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
+    [xi.magic.spell.BLIZZARD_IV   ] = { xi.mod.INT,   20, false,  506,    2,  560, 541,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 },
+    [xi.magic.spell.BLIZZARD_V    ] = { xi.mod.INT,   25, false,  829,  2.3,  850, 600,  4.4,    4,  3.8, 2.96, 1.96,    1,    0 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.BLIZZARD_VI   ] = { xi.mod.INT,    0, false, 1190,  2.5, 1190, 650,    5,  5.6,  4.6,  3.6,  2.8, 1.96,    1 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.FREEZE        ] = { xi.mod.INT,    0, false,  552,    2,  700, 552,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.FREEZE_II     ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.FIRE          ] = { xi.mod.INT,    0, false,   35,    1,   55,  46,  1.4,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.FIRE_II       ] = { xi.mod.INT,   10, false,  133,    1,  160, 155,  2.4,  1.7,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.FIRE_III      ] = { xi.mod.INT,   20, false,  295,  1.5,  290, 320,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
+    [xi.magic.spell.FIRE_IV       ] = { xi.mod.INT,   20, false,  472,    2,  520, 506,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 },
+    [xi.magic.spell.FIRE_V        ] = { xi.mod.INT,   25, false,  785,  2.3,  800, 550,  4.8, 4.24, 3.85, 2.97, 1.97,    1,    0 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.FIRE_VI       ] = { xi.mod.INT,    0, false, 1130,  2.5, 1130, 600,  5.5,  5.7,  4.7,  3.7, 2.85, 1.97,    1 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.FLARE         ] = { xi.mod.INT,    0, false,  552,    2,  700, 684,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.FLARE_II      ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.STONE         ] = { xi.mod.INT,    0, false,   10,    1,   10,  16,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.STONE_II      ] = { xi.mod.INT,   10, false,   78,    1,  100,  95,    3,    2,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.STONE_III     ] = { xi.mod.INT,   20, false,  210,  1.5,  200, 236,    4,    3,    2,    1,    0,    0,    0 },
+    [xi.magic.spell.STONE_IV      ] = { xi.mod.INT,   20, false,  381,    2,  400, 410,    5,    4,    3,    2,    1,    0,    0 },
+    [xi.magic.spell.STONE_V       ] = { xi.mod.INT,   25, false,  626,  2.3,  650, 500,    6,    5,    4,    3,    2,    1,    0 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.STONE_VI      ] = { xi.mod.INT,    0, false,  950,  2.5,  950, 550,    7,    6,    5,    4,    3,    2,    1 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.QUAKE         ] = { xi.mod.INT,    0, false,  552,    2,  700, 603,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.QUAKE_II      ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.THUNDER       ] = { xi.mod.INT,    0, false,   60,    1,   85,  78,    1,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.THUNDER_II    ] = { xi.mod.INT,   10, false,  178,    1,  200, 210,    2,  1.5,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.THUNDER_III   ] = { xi.mod.INT,   20, false,  345,  1.5,  350, 381,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
+    [xi.magic.spell.THUNDER_IV    ] = { xi.mod.INT,   20, false,  541,    2,  600, 626,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 },
+    [xi.magic.spell.THUNDER_V     ] = { xi.mod.INT,   25, false,  874,  2.3,  900, 700,    4, 3.74, 3.75, 2.95, 1.95,    1,    0 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.THUNDER_VI    ] = { xi.mod.INT,    0, false, 1250,  2.5, 1250, 750,  4.5,  5.5,  4.5,  3.5, 2.75, 1.95,    1 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.BURST         ] = { xi.mod.INT,    0, false,  552,    2,  700, 630,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.BURST_II      ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.WATER         ] = { xi.mod.INT,    0, false,   16,    1,   25,  25,  1.8,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.WATER_II      ] = { xi.mod.INT,   10, false,   95,    1,  120, 113,  2.8,  1.9,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.WATER_III     ] = { xi.mod.INT,   20, false,  236,  1.5,  230, 265,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
+    [xi.magic.spell.WATER_IV      ] = { xi.mod.INT,   20, false,  410,    2,  440, 440,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 },
+    [xi.magic.spell.WATER_V       ] = { xi.mod.INT,   25, false,  680,  2.3,  700, 500,  5.6, 4.74, 3.95, 2.99, 1.99,    1,    0 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.WATER_VI      ] = { xi.mod.INT,    0, false, 1010,  1.5, 1010, 550,  6.5,  5.9,  4.9,  3.9, 2.95, 1.99,    1 }, -- I value Unknown. Guesstimate used.
+    [xi.magic.spell.FLOOD         ] = { xi.mod.INT,    0, false,  552,    2,  700, 657,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.FLOOD_II      ] = { xi.mod.INT,   10, false,  710,    2,  800, 780,    2,    2,    2,    2,    2,    2,    2 },
+    [xi.magic.spell.IMPACT        ] = { xi.mod.INT,    0, false,  932,  2.3,  932, 525,    0,    0,    0,    0,    0,    0,    0 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.COMET         ] = { xi.mod.INT,    0, false,  552,    2,  700, 700,    2,    2,    2,    2,    2,    2,    2 }, -- I value unknown. Guesstimate used.
+    [xi.magic.spell.DEATH         ] = {          0,    0, false,   32,    0,   32,   0,    0,    0,    0,    0,    0,    0,    0 },
 
     -- Dia as nuke.
-    [xi.magic.spell.DIA           ] = { xi.mod.MND,    0,    1,    1,    1,   1,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIA_II        ] = { xi.mod.MND,    0,    4,    1,    4,   2,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIA_III       ] = { xi.mod.MND,    0,   16,    1,   16,   4,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIA_IV        ] = { xi.mod.MND,    0,   64,    1,   64,   8,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIA_V         ] = { xi.mod.MND,    0,  256,    1,  256,  16,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA           ] = { xi.mod.MND,    0, false,    1,    1,    1,   1,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_II        ] = { xi.mod.MND,    0, false,    4,    1,    4,   2,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_III       ] = { xi.mod.MND,    0, false,   16,    1,   16,   4,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_IV        ] = { xi.mod.MND,    0, false,   64,    1,   64,   8,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIA_V         ] = { xi.mod.MND,    0, false,  256,    1,  256,  16,    0,    0,    0,    0,    0,    0,    0 },
 
-    [xi.magic.spell.DIAGA         ] = { xi.mod.MND,    0,    2,    1,    2,   2,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIAGA_II      ] = { xi.mod.MND,    0,    8,    1,    8,   4,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIAGA_III     ] = { xi.mod.MND,    0,   32,    1,   32,   8,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIAGA_IV      ] = { xi.mod.MND,    0,  128,    1,  128,  16,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.DIAGA_V       ] = { xi.mod.MND,    0,  512,    1,  512,  32,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA         ] = { xi.mod.MND,    0, false,    2,    1,    2,   2,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_II      ] = { xi.mod.MND,    0, false,    8,    1,    8,   4,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_III     ] = { xi.mod.MND,    0, false,   32,    1,   32,   8,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_IV      ] = { xi.mod.MND,    0, false,  128,    1,  128,  16,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.DIAGA_V       ] = { xi.mod.MND,    0, false,  512,    1,  512,  32,    0,    0,    0,    0,    0,    0,    0 },
 
     -- Bio as nuke.
-    [xi.magic.spell.BIO           ] = { xi.mod.INT,    0,   10,    1,   10,   5,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.BIO_II        ] = { xi.mod.INT,    0,   50,    1,   50,  10,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.BIO_III       ] = { xi.mod.INT,    0,  100,  1.5,  100,  21,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.BIO_IV        ] = { xi.mod.INT,    0,  125,  1.5,  125,  27,    0,    0,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.BIO_V         ] = { xi.mod.INT,    0,  150,    2,  150,  32,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO           ] = { xi.mod.INT,    0, false,   10,    1,   10,   5,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_II        ] = { xi.mod.INT,    0, false,   50,    1,   50,  10,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_III       ] = { xi.mod.INT,    0, false,  100,  1.5,  100,  21,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_IV        ] = { xi.mod.INT,    0, false,  125,  1.5,  125,  27,    0,    0,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.BIO_V         ] = { xi.mod.INT,    0, false,  150,    2,  150,  32,    0,    0,    0,    0,    0,    0,    0 },
 
     -- Helixes (Initial damage) https://www.bluegartr.com/threads/108196-Random-Facts-Thread-Magic?p=6817880&viewfull=1#post6817880
-    [xi.magic.spell.GEOHELIX      ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.GEOHELIX_II   ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.HYDROHELIX    ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.HYDROHELIX_II ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.ANEMOHELIX    ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.ANEMOHELIX_II ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.PYROHELIX     ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.PYROHELIX_II  ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.CRYOHELIX     ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.CRYOHELIX_II  ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.IONOHELIX     ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.IONOHELIX_II  ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.NOCTOHELIX    ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.NOCTOHELIX_II ] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
-    [xi.magic.spell.LUMINOHELIX   ] = { xi.mod.INT,    0,   35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
-    [xi.magic.spell.LUMINOHELIX_II] = { xi.mod.INT,    0,   75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.GEOHELIX      ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.GEOHELIX_II   ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.HYDROHELIX    ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.HYDROHELIX_II ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.ANEMOHELIX    ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.ANEMOHELIX_II ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.PYROHELIX     ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.PYROHELIX_II  ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.CRYOHELIX     ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.CRYOHELIX_II  ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.IONOHELIX     ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.IONOHELIX_II  ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.NOCTOHELIX    ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.NOCTOHELIX_II ] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
+    [xi.magic.spell.LUMINOHELIX   ] = { xi.mod.INT,    0, true,    35,    1,   31, 100,    1,    1,  0.5,    0,    0,    0,    0 },
+    [xi.magic.spell.LUMINOHELIX_II] = { xi.mod.INT,    0, true,    75,    2,   75, 100,    2,    1,    0,    0,    0,    0,    0 },
 
 -- Multiple target spells:
---                                       1          2     3     4      5      6    7    8    9     10    11    12    13
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
-    [xi.magic.spell.AEROGA        ] = { xi.mod.INT,    0,   93,    1,  100, 120,  2.6,  1.8,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.AEROGA_II     ] = { xi.mod.INT,    0,  266,    1,  310, 312,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
-    [xi.magic.spell.AEROGA_III    ] = { xi.mod.INT,    0,  527,  1.5,  580, 642,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 },
-    [xi.magic.spell.AEROGA_IV     ] = { xi.mod.INT,    0,  738,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Aero V.
-    [xi.magic.spell.AEROGA_V      ] = { xi.mod.INT,    0, 1070,  2.3,    0, 750,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Aero VI.
-    [xi.magic.spell.AERA          ] = { xi.mod.INT,    0,  210,    1,  210, 250,  2.6,  1.8,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.AERA_II       ] = { xi.mod.INT,    0,  430,    1,  430, 600,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
-    [xi.magic.spell.AERA_III      ] = { xi.mod.INT,    0,  710,  1.5,  710, 700,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 }, -- No info found. Since Aera I and II N Values coincided with Aeroga 1 and II, used Values of Aeroga III.
-    [xi.magic.spell.AEROJA        ] = { xi.mod.INT,    0,  844,  2.3,  850, 800,  5.2,  4.5,  3.9,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-    [xi.magic.spell.BLIZZAGA      ] = { xi.mod.INT,    0,  145,    1,  160, 172,  2.2,  1.6,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.BLIZZAGA_II   ] = { xi.mod.INT,    0,  350,    1,  370, 392,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
-    [xi.magic.spell.BLIZZAGA_III  ] = { xi.mod.INT,    0,  642,  1.5,  660, 697,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 },
-    [xi.magic.spell.BLIZZAGA_IV   ] = { xi.mod.INT,    0,  829,    2,    0, 800,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Blizzard V.
-    [xi.magic.spell.BLIZZAGA_V    ] = { xi.mod.INT,    0, 1190,  2.3,    0, 950,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Blizzard VI.
-    [xi.magic.spell.BLIZZARA      ] = { xi.mod.INT,    0,  270,    1,  270, 300,  2.2,  1.6,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.BLIZZARA_II   ] = { xi.mod.INT,    0,  510,    1,  510, 550,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
-    [xi.magic.spell.BLIZZARA_III  ] = { xi.mod.INT,    0,  830,  1.5,  830, 850,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 }, -- No info found. Since Blizzara I and II N Values coincided with Blizzaga 1 and II, used Values of Blizzaga III.
-    [xi.magic.spell.BLIZZAJA      ] = { xi.mod.INT,    0,  953,  2.3,  950, 950,  4.4,    4,  3.8,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-    [xi.magic.spell.FIRAGA        ] = { xi.mod.INT,    0,  120,    1,  120, 145,  2.4,  1.7,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.FIRAGA_II     ] = { xi.mod.INT,    0,  312,    1,  340, 350,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
-    [xi.magic.spell.FIRAGA_III    ] = { xi.mod.INT,    0,  589,  1.5,  620, 642,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 },
-    [xi.magic.spell.FIRAGA_IV     ] = { xi.mod.INT,    0,  785,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Fire V.
-    [xi.magic.spell.FIRAGA_V      ] = { xi.mod.INT,    0, 1130,  2.3,    0, 800,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Fire VI.
-    [xi.magic.spell.FIRA          ] = { xi.mod.INT,    0,  240,    1,  240, 250,  2.4,  1.7,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.FIRA_II       ] = { xi.mod.INT,    0,  470,    1,  470, 500,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
-    [xi.magic.spell.FIRA_III      ] = { xi.mod.INT,    0,  760,  1.5,  760, 800,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 }, -- No info found. Since Fira I and II N Values coincided with Firaga 1 and II, used Values of Firaga III.
-    [xi.magic.spell.FIRAJA        ] = { xi.mod.INT,    0,  902,  2.3,  900, 950,  4.8, 4.25, 3.85,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-    [xi.magic.spell.STONEGA       ] = { xi.mod.INT,    0,   56,    1,   60,  74,    3,    2,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.STONEGA_II    ] = { xi.mod.INT,    0,  201,    1,  250, 232,    4,    3,    2,    1,    0,    0,    0 },
-    [xi.magic.spell.STONEGA_III   ] = { xi.mod.INT,    0,  434,  1.5,  500, 480,    5,    4,    3,    2,    1,    0,    0 },
-    [xi.magic.spell.STONEGA_IV    ] = { xi.mod.INT,    0,  626,    2,    0, 650,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Stone V.
-    [xi.magic.spell.STONEGA_V     ] = { xi.mod.INT,    0,  950,  2.3,    0, 950,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Stone VI.
-    [xi.magic.spell.STONERA       ] = { xi.mod.INT,    0,  150,    1,  150, 150,    3,    2,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.STONERA_II    ] = { xi.mod.INT,    0,  350,    1,  350, 350,    4,    3,    2,    1,    0,    0,    0 },
-    [xi.magic.spell.STONERA_III   ] = { xi.mod.INT,    0,  650,  1.5,  650, 650,    5,    4,    3,    2,    1,    0,    0 }, -- No info found. Since Stonera I and II N Values coincided with Stonega 1 and II, used Values of Stonega III.
-    [xi.magic.spell.STONEJA       ] = { xi.mod.INT,    0,  719,  2.3,  750, 750,    6,    5,    4,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-    [xi.magic.spell.THUNDAGA      ] = { xi.mod.INT,    0,  172,    1,  200, 201,    2,  1.5,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.THUNDAGA_II   ] = { xi.mod.INT,    0,  392,    1,  400, 434,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
-    [xi.magic.spell.THUNDAGA_III  ] = { xi.mod.INT,    0,  697,  1.5,  700, 719,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 },
-    [xi.magic.spell.THUNDAGA_IV   ] = { xi.mod.INT,    0,  874,    2,    0, 900,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Thunder V.
-    [xi.magic.spell.THUNDAGA_V    ] = { xi.mod.INT,    0, 1250,  2.3,    0, 999,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Thunder VI.
-    [xi.magic.spell.THUNDARA      ] = { xi.mod.INT,    0,  300,    1,  300, 300,    2,  1.5,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.THUNDARA_II   ] = { xi.mod.INT,    0,  550,    1,  550, 550,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
-    [xi.magic.spell.THUNDARA_III  ] = { xi.mod.INT,    0,  900,  1.5,  900, 900,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 }, -- No info found. Since Thundara I and II N Values coincided with Thundaga 1 and II, used Values of Thundaga III.
-    [xi.magic.spell.THUNDAJA      ] = { xi.mod.INT,    0, 1005,  2.3, 1000, 999,    4, 3.75, 3.75,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-    [xi.magic.spell.WATERGA       ] = { xi.mod.INT,    0,   74,    1,   80,  96,  2.8,  1.9,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.WATERGA_II    ] = { xi.mod.INT,    0,  232,    1,  280, 266,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
-    [xi.magic.spell.WATERGA_III   ] = { xi.mod.INT,    0,  480,  1.5,  540, 527,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 },
-    [xi.magic.spell.WATERGA_IV    ] = { xi.mod.INT,    0,  680,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Water V.
-    [xi.magic.spell.WATERGA_V     ] = { xi.mod.INT,    0, 1010,  2.3,    0, 900,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Water VI.
-    [xi.magic.spell.WATERA        ] = { xi.mod.INT,    0,  180,    1,  180, 200,  2.8,  1.9,    1,    0,    0,    0,    0 },
-    [xi.magic.spell.WATERA_II     ] = { xi.mod.INT,    0,  390,    1,  390, 400,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
-    [xi.magic.spell.WATERA_III    ] = { xi.mod.INT,    0,  660,  1.5,  660, 700,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 }, -- No info found. Since Watera I and II N Values coincided with Waterga 1 and II, used Values of Waterga III.
-    [xi.magic.spell.WATERJA       ] = { xi.mod.INT,    0,  782,  2.3,  800, 900,  5.6, 4.75, 3.95,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
-
--- Ninjutsu spells: https://www.ffxiah.com/forum/topic/56749/updated-ninjutsu-damage-formulae/
---                                       1          2     3        4   5      6  7
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC,    M,  vPC,   I, M0 },
-    [xi.magic.spell.DOTON_ICHI    ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.DOTON_NI      ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.DOTON_SAN     ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-    [xi.magic.spell.HUTON_ICHI    ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.HUTON_NI      ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.HUTON_SAN     ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-    [xi.magic.spell.HYOTON_ICHI   ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.HYOTON_NI     ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.HYOTON_SAN    ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-    [xi.magic.spell.KATON_ICHI    ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.KATON_NI      ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.KATON_SAN     ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-    [xi.magic.spell.RAITON_ICHI   ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.RAITON_NI     ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.RAITON_SAN    ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-    [xi.magic.spell.SUITON_ICHI   ] = { xi.mod.INT,    0,   16,    1,   16,  25, 0 },
-    [xi.magic.spell.SUITON_NI     ] = { xi.mod.INT,    0,   69,    1,   69, 113, 0 },
-    [xi.magic.spell.SUITON_SAN    ] = { xi.mod.INT,    0,  134,    2,  134, 118, 0 },
-
--- Divine spells: https://nw6yx36onohv5j6wmzoba3nllq-ac4c6men2g7xr2a-wiki-ffo-jp.translate.goog/html/1963.html
---                                       1          2     3        4   5      6  7
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC,    M,  vPC,   I, M0 },
-    [xi.magic.spell.BANISH        ] = { xi.mod.MND,    0,   14,    1,   14,  25, 0 },
-    [xi.magic.spell.BANISH_II     ] = { xi.mod.MND,    0,   85,    1,   85, 113, 0 },
-    [xi.magic.spell.BANISH_III    ] = { xi.mod.MND,    0,  198,  1.5,  198, 250, 0 },
-    [xi.magic.spell.BANISH_IV     ] = { xi.mod.MND,    0,  420,  1.5,  420, 400, 0 }, -- Enemy only. Stats unknown/unchecked.
-    [xi.magic.spell.BANISHGA      ] = { xi.mod.MND,    0,   50,    1,   50,  46, 0 },
-    [xi.magic.spell.BANISHGA_II   ] = { xi.mod.MND,    0,  180,    1,  180, 133, 0 },
-    [xi.magic.spell.BANISHGA_III  ] = { xi.mod.MND,    0,  480,  1.5,  480, 450, 0 }, -- Enemy only. Stats unknown.
-    [xi.magic.spell.BANISHGA_IV   ] = { xi.mod.MND,    0,  600,  1.5,  600, 600, 0 }, -- Enemy only. Stats unknown.
-    [xi.magic.spell.HOLY          ] = { xi.mod.MND,    0,  125,    1,  125, 150, 0 },
-    [xi.magic.spell.HOLY_II       ] = { xi.mod.MND,    0,  250,    2,  250, 300, 0 },
+--                                       1          2     3      4     5      6      7    8    9    10    11    12    13    14
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
+    [xi.magic.spell.AEROGA        ] = { xi.mod.INT,    0, false,   93,    1,  100, 120,  2.6,  1.8,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.AEROGA_II     ] = { xi.mod.INT,    0, false,  266,    1,  310, 312,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
+    [xi.magic.spell.AEROGA_III    ] = { xi.mod.INT,    0, false,  527,  1.5,  580, 642,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 },
+    [xi.magic.spell.AEROGA_IV     ] = { xi.mod.INT,    0, false,  738,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Aero V.
+    [xi.magic.spell.AEROGA_V      ] = { xi.mod.INT,    0, false, 1070,  2.3,    0, 750,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Aero VI.
+    [xi.magic.spell.AERA          ] = { xi.mod.INT,    0, false,  210,    1,  210, 250,  2.6,  1.8,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.AERA_II       ] = { xi.mod.INT,    0, false,  430,    1,  430, 600,  3.4,  2.8,  1.9,    1,    0,    0,    0 },
+    [xi.magic.spell.AERA_III      ] = { xi.mod.INT,    0, false,  710,  1.5,  710, 700,  4.4,  3.8,  2.9, 1.98,    1,    0,    0 }, -- No info found. Since Aera I and II N Values coincided with Aeroga 1 and II, used Values of Aeroga III.
+    [xi.magic.spell.AEROJA        ] = { xi.mod.INT,    0, false,  844,  2.3,  850, 800,  5.2,  4.5,  3.9,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
+    [xi.magic.spell.BLIZZAGA      ] = { xi.mod.INT,    0, false,  145,    1,  160, 172,  2.2,  1.6,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.BLIZZAGA_II   ] = { xi.mod.INT,    0, false,  350,    1,  370, 392,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
+    [xi.magic.spell.BLIZZAGA_III  ] = { xi.mod.INT,    0, false,  642,  1.5,  660, 697,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 },
+    [xi.magic.spell.BLIZZAGA_IV   ] = { xi.mod.INT,    0, false,  829,    2,    0, 800,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Blizzard V.
+    [xi.magic.spell.BLIZZAGA_V    ] = { xi.mod.INT,    0, false, 1190,  2.3,    0, 950,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Blizzard VI.
+    [xi.magic.spell.BLIZZARA      ] = { xi.mod.INT,    0, false,  270,    1,  270, 300,  2.2,  1.6,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.BLIZZARA_II   ] = { xi.mod.INT,    0, false,  510,    1,  510, 550,  2.8,  2.6,  1.8,    1,    0,    0,    0 },
+    [xi.magic.spell.BLIZZARA_III  ] = { xi.mod.INT,    0, false,  830,  1.5,  830, 850,  3.9,  3.6,  2.8, 1.96,    1,    0,    0 }, -- No info found. Since Blizzara I and II N Values coincided with Blizzaga 1 and II, used Values of Blizzaga III.
+    [xi.magic.spell.BLIZZAJA      ] = { xi.mod.INT,    0, false,  953,  2.3,  950, 950,  4.4,    4,  3.8,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
+    [xi.magic.spell.FIRAGA        ] = { xi.mod.INT,    0, false,  120,    1,  120, 145,  2.4,  1.7,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.FIRAGA_II     ] = { xi.mod.INT,    0, false,  312,    1,  340, 350,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
+    [xi.magic.spell.FIRAGA_III    ] = { xi.mod.INT,    0, false,  589,  1.5,  620, 642,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 },
+    [xi.magic.spell.FIRAGA_IV     ] = { xi.mod.INT,    0, false,  785,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Fire V.
+    [xi.magic.spell.FIRAGA_V      ] = { xi.mod.INT,    0, false, 1130,  2.3,    0, 800,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Fire VI.
+    [xi.magic.spell.FIRA          ] = { xi.mod.INT,    0, false,  240,    1,  240, 250,  2.4,  1.7,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.FIRA_II       ] = { xi.mod.INT,    0, false,  470,    1,  470, 500,  3.1,  2.7, 1.85,    1,    0,    0,    0 },
+    [xi.magic.spell.FIRA_III      ] = { xi.mod.INT,    0, false,  760,  1.5,  760, 800,  4.2,  3.7, 2.85, 1.97,    1,    0,    0 }, -- No info found. Since Fira I and II N Values coincided with Firaga 1 and II, used Values of Firaga III.
+    [xi.magic.spell.FIRAJA        ] = { xi.mod.INT,    0, false,  902,  2.3,  900, 950,  4.8, 4.25, 3.85,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
+    [xi.magic.spell.STONEGA       ] = { xi.mod.INT,    0, false,   56,    1,   60,  74,    3,    2,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.STONEGA_II    ] = { xi.mod.INT,    0, false,  201,    1,  250, 232,    4,    3,    2,    1,    0,    0,    0 },
+    [xi.magic.spell.STONEGA_III   ] = { xi.mod.INT,    0, false,  434,  1.5,  500, 480,    5,    4,    3,    2,    1,    0,    0 },
+    [xi.magic.spell.STONEGA_IV    ] = { xi.mod.INT,    0, false,  626,    2,    0, 650,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Stone V.
+    [xi.magic.spell.STONEGA_V     ] = { xi.mod.INT,    0, false,  950,  2.3,    0, 950,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Stone VI.
+    [xi.magic.spell.STONERA       ] = { xi.mod.INT,    0, false,  150,    1,  150, 150,    3,    2,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.STONERA_II    ] = { xi.mod.INT,    0, false,  350,    1,  350, 350,    4,    3,    2,    1,    0,    0,    0 },
+    [xi.magic.spell.STONERA_III   ] = { xi.mod.INT,    0, false,  650,  1.5,  650, 650,    5,    4,    3,    2,    1,    0,    0 }, -- No info found. Since Stonera I and II N Values coincided with Stonega 1 and II, used Values of Stonega III.
+    [xi.magic.spell.STONEJA       ] = { xi.mod.INT,    0, false,  719,  2.3,  750, 750,    6,    5,    4,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
+    [xi.magic.spell.THUNDAGA      ] = { xi.mod.INT,    0, false,  172,    1,  200, 201,    2,  1.5,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.THUNDAGA_II   ] = { xi.mod.INT,    0, false,  392,    1,  400, 434,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
+    [xi.magic.spell.THUNDAGA_III  ] = { xi.mod.INT,    0, false,  697,  1.5,  700, 719,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 },
+    [xi.magic.spell.THUNDAGA_IV   ] = { xi.mod.INT,    0, false,  874,    2,    0, 900,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Thunder V.
+    [xi.magic.spell.THUNDAGA_V    ] = { xi.mod.INT,    0, false, 1250,  2.3,    0, 999,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Thunder VI.
+    [xi.magic.spell.THUNDARA      ] = { xi.mod.INT,    0, false,  300,    1,  300, 300,    2,  1.5,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.THUNDARA_II   ] = { xi.mod.INT,    0, false,  550,    1,  550, 550,  2.5,  2.5, 1.75,    1,    0,    0,    0 },
+    [xi.magic.spell.THUNDARA_III  ] = { xi.mod.INT,    0, false,  900,  1.5,  900, 900,  3.6,  3.5, 2.75, 1.95,    1,    0,    0 }, -- No info found. Since Thundara I and II N Values coincided with Thundaga 1 and II, used Values of Thundaga III.
+    [xi.magic.spell.THUNDAJA      ] = { xi.mod.INT,    0, false, 1005,  2.3, 1000, 999,    4, 3.75, 3.75,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
+    [xi.magic.spell.WATERGA       ] = { xi.mod.INT,    0, false,   74,    1,   80,  96,  2.8,  1.9,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.WATERGA_II    ] = { xi.mod.INT,    0, false,  232,    1,  280, 266,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
+    [xi.magic.spell.WATERGA_III   ] = { xi.mod.INT,    0, false,  480,  1.5,  540, 527,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 },
+    [xi.magic.spell.WATERGA_IV    ] = { xi.mod.INT,    0, false,  680,    2,    0, 700,    1,    1,    1,    1,    1,    1,    0 }, -- Enemy only. No data found. Values taken from Water V.
+    [xi.magic.spell.WATERGA_V     ] = { xi.mod.INT,    0, false, 1010,  2.3,    0, 900,    1,    1,    1,    1,    1,    1,    1 }, -- Enemy only. No data found. Values taken from Water VI.
+    [xi.magic.spell.WATERA        ] = { xi.mod.INT,    0, false,  180,    1,  180, 200,  2.8,  1.9,    1,    0,    0,    0,    0 },
+    [xi.magic.spell.WATERA_II     ] = { xi.mod.INT,    0, false,  390,    1,  390, 400,  3.7,  2.9, 1.95,    1,    0,    0,    0 },
+    [xi.magic.spell.WATERA_III    ] = { xi.mod.INT,    0, false,  660,  1.5,  660, 700,  4.7,  3.9, 2.95, 1.99,    1,    0,    0 }, -- No info found. Since Watera I and II N Values coincided with Waterga 1 and II, used Values of Waterga III.
+    [xi.magic.spell.WATERJA       ] = { xi.mod.INT,    0, false,  782,  2.3,  800, 900,  5.6, 4.75, 3.95,    3,    2,    1,    0 }, -- Some values not found. Used guesstimates for M200 and M300.
 
 -- Dark spells.
---                                       1          2     3     4      5      6    7    8    9     10    11    12    13
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
-    [xi.magic.spell.KAUSTRA       ] = { xi.mod.INT,    0,    0, 0.67,    0, 300, 0.67, 0.67, 0.67, 0.67,    0,    0,    0 },
+--                                       1          2     3      4     5      6      7    8    9    10    11    12    13    14
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC, mNPC,  vPC,   I,   M0,  M50, M100, M200, M300, M400, M500 },
+    [xi.magic.spell.KAUSTRA       ] = { xi.mod.INT,    0, false,    0, 0.67,    0, 300, 0.67, 0.67, 0.67, 0.67,    0,    0,    0 },
+
+-- Ninjutsu spells: https://www.ffxiah.com/forum/topic/56749/updated-ninjutsu-damage-formulae/
+--                                       1          2     3      4        5   6      7  8
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC,    M,  vPC,   I, M0 },
+    [xi.magic.spell.DOTON_ICHI    ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.DOTON_NI      ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.DOTON_SAN     ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+    [xi.magic.spell.HUTON_ICHI    ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.HUTON_NI      ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.HUTON_SAN     ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+    [xi.magic.spell.HYOTON_ICHI   ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.HYOTON_NI     ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.HYOTON_SAN    ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+    [xi.magic.spell.KATON_ICHI    ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.KATON_NI      ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.KATON_SAN     ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+    [xi.magic.spell.RAITON_ICHI   ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.RAITON_NI     ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.RAITON_SAN    ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+    [xi.magic.spell.SUITON_ICHI   ] = { xi.mod.INT,    0, false,   16,    1,   16,  25, 0 },
+    [xi.magic.spell.SUITON_NI     ] = { xi.mod.INT,    0, false,   69,    1,   69, 113, 0 },
+    [xi.magic.spell.SUITON_SAN    ] = { xi.mod.INT,    0, false,  134,    2,  134, 118, 0 },
+
+-- Divine spells: https://nw6yx36onohv5j6wmzoba3nllq-ac4c6men2g7xr2a-wiki-ffo-jp.translate.goog/html/1963.html
+--                                       1          2     3      4        5   6      7  8
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC,    M,  vPC,   I, M0 },
+    [xi.magic.spell.BANISH        ] = { xi.mod.MND,    0, false,   14,    1,   14,  25, 0 },
+    [xi.magic.spell.BANISH_II     ] = { xi.mod.MND,    0, false,   85,    1,   85, 113, 0 },
+    [xi.magic.spell.BANISH_III    ] = { xi.mod.MND,    0, false,  198,  1.5,  198, 250, 0 },
+    [xi.magic.spell.BANISH_IV     ] = { xi.mod.MND,    0, false,  420,  1.5,  420, 400, 0 }, -- Enemy only. Stats unknown/unchecked.
+    [xi.magic.spell.BANISHGA      ] = { xi.mod.MND,    0, false,   50,    1,   50,  46, 0 },
+    [xi.magic.spell.BANISHGA_II   ] = { xi.mod.MND,    0, false,  180,    1,  180, 133, 0 },
+    [xi.magic.spell.BANISHGA_III  ] = { xi.mod.MND,    0, false,  480,  1.5,  480, 450, 0 }, -- Enemy only. Stats unknown.
+    [xi.magic.spell.BANISHGA_IV   ] = { xi.mod.MND,    0, false,  600,  1.5,  600, 600, 0 }, -- Enemy only. Stats unknown.
+    [xi.magic.spell.HOLY          ] = { xi.mod.MND,    0, false,  125,    1,  125, 150, 0 },
+    [xi.magic.spell.HOLY_II       ] = { xi.mod.MND,    0, false,  250,    2,  250, 300, 0 },
 
 -- Healing Spells when used against undead/zombie: https://wiki.ffo.jp/html/336.html
--- Structure:             [spellId] = {  Stat used, mAcc, vNPC,    M,  vPC,   I, M0 },
-    [xi.magic.spell.CURE          ] = { xi.mod.MND,    0,    7,    1,    7,  16, 0 },
-    [xi.magic.spell.CURE_II       ] = { xi.mod.MND,    0,   35,    1,   35,  60, 0 },
-    [xi.magic.spell.CURE_III      ] = { xi.mod.MND,    0,   70,    1,   70, 133, 0 },
-    [xi.magic.spell.CURE_IV       ] = { xi.mod.MND,    0,  140,  1.5,  140, 104, 0 }, -- Not a typo. Both Inflexion point and upper cap by extension are lower than Cure III.
-    [xi.magic.spell.CURE_V        ] = { xi.mod.MND,    0,  210,  1.5,  210, 159, 0 },
-    [xi.magic.spell.CURE_VI       ] = { xi.mod.MND,    0,  295,    2,  295, 212, 0 },
+--                                       1          2     3      4        5   6      7  8
+-- Structure:             [spellId] = {  Stat used, mAcc, d/w,   vNPC,    M,  vPC,   I, M0 },
+    [xi.magic.spell.CURE          ] = { xi.mod.MND,    0, false,    7,    1,    7,  16, 0 },
+    [xi.magic.spell.CURE_II       ] = { xi.mod.MND,    0, false,   35,    1,   35,  60, 0 },
+    [xi.magic.spell.CURE_III      ] = { xi.mod.MND,    0, false,   70,    1,   70, 133, 0 },
+    [xi.magic.spell.CURE_IV       ] = { xi.mod.MND,    0, false,  140,  1.5,  140, 104, 0 }, -- Not a typo. Both Inflexion point and upper cap by extension are lower than Cure III.
+    [xi.magic.spell.CURE_V        ] = { xi.mod.MND,    0, false,  210,  1.5,  210, 159, 0 },
+    [xi.magic.spell.CURE_VI       ] = { xi.mod.MND,    0, false,  295,    2,  295, 212, 0 },
 }
 
 local function cardinalChantBonus(actor, target, direction, spellId, skillType)
@@ -329,7 +327,7 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
 
     -- Choose system to use.
     if
-        pTable[spellId][column.MULTIPLIER_0] > 0 and -- We actually have new system values.
+        xi.spells.damage.pTable[spellId][column.MULTIPLIER_0] > 0 and -- We actually have new system values.
         caster:isPC() and                            -- Only players use new system.
         not xi.settings.main.USE_OLD_MAGIC_DAMAGE    -- New system is allowed in settings.
     then
@@ -339,10 +337,10 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
     -----------------------------------
     -- STEP 1: baseSpellDamage (V)
     -----------------------------------
-    local baseSpellDamage = pTable[spellId][column.NPC_POWER] -- (V) In Wiki.
+    local baseSpellDamage = xi.spells.damage.pTable[spellId][column.NPC_POWER] -- (V) In Wiki.
 
     if useNewSystem then
-        baseSpellDamage = pTable[spellId][column.PC_POWER] -- vPC
+        baseSpellDamage = xi.spells.damage.pTable[spellId][column.PC_POWER] -- vPC
     end
 
     -----------------------------------
@@ -365,13 +363,13 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
         }
 
         for i = 1, 7 do
-            statDiffBonus = statDiffBonus + math.floor(utils.clamp(statDiff - mTable[i][1], 0, mTable[i][2]) * pTable[spellId][column.INFLEXION_POINT + i])
+            statDiffBonus = statDiffBonus + math.floor(utils.clamp(statDiff - mTable[i][1], 0, mTable[i][2]) * xi.spells.damage.pTable[spellId][column.INFLEXION_POINT + i])
         end
 
     -- Old system
     else
-        local spellMultiplier = pTable[spellId][column.NPC_MULTIPLIER]  -- M
-        local inflexionPoint  = pTable[spellId][column.INFLEXION_POINT] -- I
+        local spellMultiplier = xi.spells.damage.pTable[spellId][column.NPC_MULTIPLIER]  -- M
+        local inflexionPoint  = xi.spells.damage.pTable[spellId][column.INFLEXION_POINT] -- I
 
         -- Cap stat difference. In the old system, in 99% of cases, the stat difference capped at 3 times the infexion point, from which point, stat would stop taking effect.
         local statCap = 3 * inflexionPoint
@@ -402,7 +400,6 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
         -- BLM Job Point: With Manawell mDMG +1
         if caster:hasStatusEffect(xi.effect.MANAWELL) then
             baseSpellDamageBonus = baseSpellDamageBonus + caster:getJobPointLevel(xi.jp.MANAWELL_EFFECT)
-            caster:delStatusEffectSilent(xi.effect.MANAWELL)
         end
 
         -- BLM Job Point: Magic Damage Bonus
@@ -426,6 +423,14 @@ xi.spells.damage.calculateBaseDamage = function(caster, target, spellId, spellGr
 
     -- Bonus to spell base damage from gear.
     baseSpellDamageBonus = baseSpellDamageBonus + caster:getMod(xi.mod.MAGIC_DAMAGE)
+
+    -- Bonus to spell base damage from Cascade effect.
+    if
+        skillType == xi.skill.ELEMENTAL_MAGIC and
+        caster:hasStatusEffect(xi.effect.CASCADE)
+    then
+        baseSpellDamageBonus = baseSpellDamageBonus + math.floor(caster:getTP() / 10)
+    end
 
     -----------------------------------
     -- STEP 4: Spell Damage
@@ -519,7 +524,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
 
     if
         alwaysApply or                                    -- Helixes and other actions always apply both bonuses and penalties.
-        math.random(1, 100) <= 33 or                      -- Random. Applies to both bonuses and penalties.
+        math.randomInt(1, 100) <= 33 or                      -- Random. Applies to both bonuses and penalties.
         caster:getMod(xi.mod.FORCE_DW_BONUS_PENALTY) >= 1 -- Hachirin-no-Obi forces both bonuses and penalties.
     then
         applyBonuses   = true
@@ -637,7 +642,7 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
         mab = mab + caster:getMod(xi.mod.NIN_NUKE_BONUS_GEAR)
     end
 
-    if math.random(1, 100) <= mabCritChance then
+    if math.randomInt(1, 100) <= mabCritChance then
         mab = mab + utils.clamp(10 + caster:getMod(xi.mod.MAGIC_CRIT_DMG_INCREASE), 10, 40)
     end
 
@@ -653,19 +658,29 @@ xi.spells.damage.calculateMagicBonusDiff = function(caster, target, spellId, ski
         end
     end
 
-    -- Job Point MAB
+    -- Job Point regular MAB
     if casterJob == xi.job.RDM then
         mab = mab + caster:getJobPointLevel(xi.jp.RDM_MAGIC_ATK_BONUS)
     elseif casterJob == xi.job.GEO then
         mab = mab + caster:getJobPointLevel(xi.jp.GEO_MAGIC_ATK_BONUS)
     end
 
-    -- Ancient Magic I and II MAB
+    -- Ancient Magic I and II specific MAB
     if
         spellId >= xi.magic.spell.FLARE and
         spellId <= xi.magic.spell.FLOOD_II
     then
         mab = mab + caster:getMerit(xi.merit.ANCIENT_MAGIC_ATK_BONUS)
+    end
+
+    -- "Theurgic focus" -ra specific MAB
+    if caster:hasStatusEffect(xi.effect.THEURGIC_FOCUS) then
+        if
+            (spellId >= xi.magic.spell.FIRA and spellId <= xi.magic.spell.WATERA_II) or
+            (spellId >= xi.magic.spell.FIRA_III and spellId <= xi.magic.spell.WATERA_III)
+        then
+            mab = mab + 50 + caster:getJobPointLevel(xi.jp.THEURGIC_FOCUS_EFFECT) * 3
+        end
     end
 
     -- Final operations
@@ -682,7 +697,7 @@ xi.spells.damage.calculateMagicCriticalMultiplier = function(caster)
     -- https://www.bg-wiki.com/ffxi/Magic_Critical_Hit
     -- https://www.bg-wiki.com/ffxi/Sroda_Tathlum
     local criticalChance = caster:getMod(xi.mod.MAGIC_CRITHITRATE_II)
-    if math.random(1, 100) <= criticalChance then
+    if math.randomInt(1, 100) <= criticalChance then
         return 1.25
     end
 
@@ -703,8 +718,6 @@ xi.spells.damage.calculateDivineSealMultiplier = function(caster, target, skillT
         return 1
     end
 
-    caster:delStatusEffect(xi.effect.DIVINE_SEAL)
-
     return 2
 end
 
@@ -717,8 +730,6 @@ xi.spells.damage.calculateDivineEmblemMultiplier = function(caster, skillType)
     if skillType ~= xi.skill.DIVINE_MAGIC then
         return 1
     end
-
-    caster:delStatusEffect(xi.effect.DIVINE_EMBLEM)
 
     return 1 + caster:getSkillLevel(xi.skill.DIVINE_MAGIC) / 100
 end
@@ -750,8 +761,6 @@ xi.spells.damage.calculateEbullienceMultiplier = function(caster, spellGroup)
     if spellGroup ~= xi.magic.spellGroup.BLACK then
         return 1
     end
-
-    caster:delStatusEffectSilent(xi.effect.EBULLIENCE)
 
     return 1.2 + caster:getMod(xi.mod.EBULLIENCE_AMOUNT) / 100
 end
@@ -872,7 +881,7 @@ xi.spells.damage.calculateSpellActionTypeMultiplier = function(caster)
     return 1 + caster:getMod(xi.mod.POWER_MULTIPLIER_SPELL) / 100
 end
 
-xi.spells.damage.calculateAbsorption = function(target, element, isMagic)
+xi.spells.damage.calculateAbsorption = function(target, element, isPhysical, isMagical, isRanged, isBreath)
     -- Absobtion by liement.
     local liementFactor = target:checkLiementAbsorb(xi.damageType.ELEMENTAL + element) -- Check for Liement.
     if liementFactor < 0 then
@@ -880,22 +889,33 @@ xi.spells.damage.calculateAbsorption = function(target, element, isMagic)
     end
 
     -- Absorb: All damage.
-    if math.random(1, 100) <= target:getMod(xi.mod.ABSORB_DMG_CHANCE) then
+    if math.randomInt(1, 100) <= target:getMod(xi.mod.ABSORB_DMG_CHANCE) then
         return -1
     end
 
-    -- Absorb: Magic damage.
+    -- Absorb: Physical or Ranged.
     if
-        isMagic and
-        math.random(1, 100) <= target:getMod(xi.mod.MAGIC_ABSORB)
+        (isPhysical or isRanged) and
+        math.randomInt(1, 100) <= target:getMod(xi.mod.PHYS_ABSORB)
     then
         return -1
     end
 
+    -- Absorb: Magic damage. TODO: Do breaths count as magical damage for this mod usage?
+    if
+        isMagical and
+        math.randomInt(1, 100) <= target:getMod(xi.mod.MAGIC_ABSORB)
+    then
+        return -1
+    end
+
+    -- Absorb: Breath
+    -- Modifier doesn't exist. But it case it ever does, place here.
+
     -- Absorb: Element damage.
     if
-        element > 0 and
-        math.random(1, 100) <= target:getMod(xi.data.element.getElementalAbsorptionModifier(element))
+        element > xi.element.NONE and
+        math.randomInt(1, 100) <= target:getMod(xi.data.element.getElementalAbsorptionModifier(element))
     then
         return -1
     end
@@ -904,16 +924,32 @@ xi.spells.damage.calculateAbsorption = function(target, element, isMagic)
     return 1
 end
 
-xi.spells.damage.calculateNullification = function(target, element, isMagic, isBreath)
+xi.spells.damage.calculateNullification = function(target, element, isPhysical, isMagical, isRanged, isBreath)
     -- Nullify: All damage.
-    if math.random(1, 100) <= target:getMod(xi.mod.NULL_DAMAGE) then
+    if math.randomInt(1, 100) <= target:getMod(xi.mod.NULL_DAMAGE) then
         return 0
     end
 
-    -- Nullify: Magic damage.
+    -- Nullify: Physical damage.
     if
-        isMagic and
-        math.random(1, 100) <= target:getMod(xi.mod.NULL_MAGICAL_DAMAGE)
+        isPhysical and
+        math.randomInt(1, 100) <= target:getMod(xi.mod.NULL_PHYSICAL_DAMAGE)
+    then
+        return 0
+    end
+
+    -- Nullify: Magical damage.
+    if
+        isMagical and
+        math.randomInt(1, 100) <= target:getMod(xi.mod.NULL_MAGICAL_DAMAGE)
+    then
+        return 0
+    end
+
+    -- Nullify: Ranged damage.
+    if
+        isRanged and
+        math.randomInt(1, 100) <= target:getMod(xi.mod.NULL_RANGED_DAMAGE)
     then
         return 0
     end
@@ -921,15 +957,15 @@ xi.spells.damage.calculateNullification = function(target, element, isMagic, isB
     -- Nullify: Breath damage.
     if
         isBreath and
-        math.random(1, 100) <= target:getMod(xi.mod.NULL_BREATH_DAMAGE)
+        math.randomInt(1, 100) <= target:getMod(xi.mod.NULL_BREATH_DAMAGE)
     then
         return 0
     end
 
-    -- Nullify: Element damage.
+    -- Nullify: Elemental damage.
     if
-        element > 0 and
-        math.random(1, 100) <= target:getMod(xi.data.element.getElementalNullificationModifier(element))
+        element > xi.element.NONE and
+        math.randomInt(1, 100) <= target:getMod(xi.data.element.getElementalNullificationModifier(element))
     then
         return 0
     end
@@ -938,30 +974,20 @@ xi.spells.damage.calculateNullification = function(target, element, isMagic, isB
     return 1
 end
 
-xi.spells.damage.calculateIfMagicBurst = function(target, spellElement, skillchainCount)
-    local magicBurst = 1 -- The variable we want to calculate
-
-    if spellElement > xi.element.NONE then
-        local resistRank = target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement))
-        local rankTable  = { 1.15, 0.85, 0.6, 0.5, 0.4, 0.15, 0.05 }
-        local rankBonus  = 0
-
-        if resistRank <= -3 then
-            rankBonus = 1.5
-        elseif resistRank >= 5 then
-            rankBonus = 0
-        else
-            rankBonus = rankTable[resistRank + 3]
-        end
-
-        magicBurst = 1.25 + rankBonus + skillchainCount / 10
+xi.spells.damage.calculateIfMagicBurst = function(caster, target, spellElement, magicBurstTier)
+    if spellElement <= xi.element.NONE then
+        return 1
     end
 
+    -- Multiplier for each resistance rank.
+    local rankTable  = { 1.5, 1.15, 0.85, 0.6, 0.5, 0.4, 0.15, 0.05, 0, 0, 0, 0, 0, 0, 0 }
+
+    local resistRank = utils.clamp(target:getMod(xi.data.element.getElementalResistanceRankModifier(spellElement)), -3, 11) + 4 -- We add 4 so the minimum value is 1, for table.
+    local countBonus = caster:isPC() and 0.1 or 0.05
+    local magicBurst = 1.25 + rankTable[resistRank] + countBonus * magicBurstTier
+
     -- Sengikori appears to add to base mb multiplier per JP wiki https://wiki.ffo.jp/html/20051.html
-    if
-        skillchainCount >= 1 and
-        target:getMod(xi.mod.SENGIKORI_MB_DMG_DEBUFF) > 0
-    then
+    if target:getMod(xi.mod.SENGIKORI_MB_DMG_DEBUFF) > 0 then
         magicBurst = magicBurst + target:getMod(xi.mod.SENGIKORI_MB_DMG_DEBUFF) / 100
         target:setMod(xi.mod.SENGIKORI_MB_DMG_DEBUFF, 0) -- Consume the "Effect" upon magic burst.
     end
@@ -1065,98 +1091,80 @@ end
 xi.spells.damage.useDamageSpell = function(caster, target, spell)
     local finalDamage = 0 -- The variable we want to calculate
 
-    -- Get Tabled Variables.
-    local spellId      = spell:getID()
-    local skillType    = spell:getSkillType()
-    local spellGroup   = spell:getSpellGroup()
+    -- Early return: Spell is nullified.
     local spellElement = spell:getElement()
-    local statUsed     = pTable[spellId][column.STAT_USED]
-    local bonusMacc    = pTable[spellId][column.BONUS_MACC] + cardinalChantBonus(caster, target, xi.direction.SOUTH, spellId, skillType)
-
-    -- Skip everything if we nullify the spell.
-    if xi.spells.damage.calculateNullification(target, spellElement, true, false) == 0 then
+    if xi.spells.damage.calculateNullification(target, spellElement, false, true, false, false) == 0 then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
 
         return 0
     end
 
-    -- Skip resistances, magic damage adjustment (TMDA), magic burst and nuke-wall if we absorb the spell.
-    local absorb                      = xi.spells.damage.calculateAbsorption(target, spellElement, true)
-    local resistTier                  = 1
-    local targetMagicDamageAdjustment = 1
-    local magicBurst                  = 1
-    local magicBurstBonus             = 1
+    -- Calculate absoprtion and magic burst.
+    local absorb         = xi.spells.damage.calculateAbsorption(target, spellElement, false, true, false, false) < 0
+    local magicBurstTier = xi.combat.magicBurst.getMagicBurstTier(target, spellElement)
+    local canMBurst      = not absorb and magicBurstTier > 0
 
-    if absorb > 0 then
-        resistTier                  = xi.combat.magicHitRate.calculateResistRate(caster, target, spellGroup, skillType, 0, spellElement, statUsed, 0, bonusMacc)
-        targetMagicDamageAdjustment = xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false)
+    -- Fetch tabled data.
+    local spellId         = spell:getID()
+    local skillType       = spell:getSkillType()
+    local spellGroup      = spell:getSpellGroup()
+    local statUsed        = xi.spells.damage.pTable[spellId][column.STAT_USED]
+    local forceDayWeather = xi.spells.damage.pTable[spellId][column.FORCE_DAY_WEATHER]
 
-        -- If spell is NOT blue magic OR (if its blue magic AND has status effect)
-        if
-            spellGroup ~= xi.magic.spellGroup.BLUE or
-            (spellGroup == xi.magic.spellGroup.BLUE and
-            (caster:hasStatusEffect(xi.effect.BURST_AFFINITY) or
-            caster:hasStatusEffect(xi.effect.AZURE_LORE)))
-        then
-            local _, skillchainCount = xi.magicburst.formMagicBurst(target, spellElement) -- External function. Not present in magic.lua.
-
-            if skillchainCount > 0 then
-                magicBurst      = xi.spells.damage.calculateIfMagicBurst(target, spellElement, skillchainCount)
-                magicBurstBonus = xi.spells.damage.calculateIfMagicBurstBonus(caster, target, spellId, skillType, spellElement)
-
-                if spellGroup == xi.magic.spellGroup.BLUE then
-                    caster:delStatusEffectSilent(xi.effect.BURST_AFFINITY)
-                end
-            end
-        end
-    end
-
-    -- Day and Weather bonus exception. (Helix)
-    local forceDayWeatherBonus = false
-
-    -- See if its a Helix type spell
-    if
-        (spellId >= xi.magic.spell.GEOHELIX and spellId <= xi.magic.spell.LUMINOHELIX) or
-        (spellId >= xi.magic.spell.GEOHELIX_II and spellId <= xi.magic.spell.LUMINOHELIX_II)
-    then
-        forceDayWeatherBonus = true
-    end
+    local maccParams =
+    {
+        magicBurstTier = canMBurst and magicBurstTier or 0,
+        magicalElement = spellElement,
+        actorStat      = statUsed,
+        skillType      = skillType,
+        spellGroup     = spellGroup,
+        bonusMacc      = xi.spells.damage.pTable[spellId][column.BONUS_MACC] + cardinalChantBonus(caster, target, xi.direction.SOUTH, spellId, skillType),
+    }
 
     -- Calculate base damage and the rest of damage multipliers.
-    local spellDamage               = xi.spells.damage.calculateBaseDamage(caster, target, spellId, spellGroup, skillType, statUsed)
-    local multipleTargetReduction   = xi.spells.damage.calculateMTDR(caster, spell)
-    local elementalStaffBonus       = xi.spells.damage.calculateElementalStaffBonus(caster, spellElement)
-    local elementalAffinityBonus    = xi.spells.damage.calculateElementalAffinityBonus(caster, spellElement)
-    local additionalResistTier      = xi.spells.damage.calculateAdditionalResistTier(caster, target, spellElement)
-    local sdt                       = xi.combat.damage.magicalElementSDT(target, spellElement)
-    local dayAndWeather             = xi.spells.damage.calculateDayAndWeather(caster, spellElement, forceDayWeatherBonus)
-    local magicBonusDiff            = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement, 0)
-    local criticalDamageMultiplier  = xi.spells.damage.calculateMagicCriticalMultiplier(caster)
-    local divineSealMultiplier      = xi.spells.damage.calculateDivineSealMultiplier(caster, target, skillType)
-    local divineEmblemMultiplier    = xi.spells.damage.calculateDivineEmblemMultiplier(caster, skillType)
-    local eleSealMultiplier         = xi.spells.damage.calculateEnhancedElementalSealMultiplier(caster, skillType, spellElement)
-    local ebullienceMultiplier      = xi.spells.damage.calculateEbullienceMultiplier(caster, spellGroup)
-    local skillTypeMultiplier       = xi.spells.damage.calculateSkillTypeMultiplier(skillType)
-    local ninSkillBonus             = xi.spells.damage.calculateNinSkillBonus(caster, spellId, skillType)
-    local ninFutaeBonus             = xi.spells.damage.calculateNinFutaeBonus(caster, skillType)
-    local ninjutsuMultiplier        = xi.spells.damage.calculateNinjutsuMultiplier(caster, target, skillType)
-    local undeadDivinePenalty       = xi.spells.damage.calculateUndeadDivinePenalty(target, skillType)
-    local scarletDeliriumMultiplier = xi.combat.damage.scarletDeliriumMultiplier(caster)
-    local helixMeritMultiplier      = xi.spells.damage.calculateHelixMeritMultiplier(caster, spellId)
-    local areaOfEffectResistance    = xi.spells.damage.calculateAreaOfEffectResistance(target, spell)
-    local actionTypeMultiplier      = xi.spells.damage.calculateSpellActionTypeMultiplier(caster)
+    local spellDamage                 = xi.spells.damage.calculateBaseDamage(caster, target, spellId, spellGroup, skillType, statUsed)
+    local multipleTargetReduction     = xi.spells.damage.calculateMTDR(caster, spell)
+    local elementalStaffBonus         = xi.spells.damage.calculateElementalStaffBonus(caster, spellElement)
+    local elementalAffinityBonus      = xi.spells.damage.calculateElementalAffinityBonus(caster, spellElement)
+    local resistTier                  = not absorb and xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams) or 1
+    local additionalResistTier        = not absorb and xi.spells.damage.calculateAdditionalResistTier(caster, target, spellElement) or 1
+    local magicBurst                  = canMBurst and xi.spells.damage.calculateIfMagicBurst(caster, target, spellElement, magicBurstTier) or 1
+    local magicBurstBonus             = canMBurst and xi.spells.damage.calculateIfMagicBurstBonus(caster, target, spellId, skillType, spellElement) or 1
+    local dayAndWeather               = xi.spells.damage.calculateDayAndWeather(caster, spellElement, forceDayWeather)
+    local magicBonusDiff              = xi.spells.damage.calculateMagicBonusDiff(caster, target, spellId, skillType, spellElement, 0)
+    local targetMagicDamageAdjustment = not absorb and xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false) or 1
+    local sdt                         = not absorb and xi.combat.damage.magicalElementSDT(target, spellElement) or 1
+    local ecosystemMultiplier         = xi.combat.damage.ecosystemMultiplier(caster, target, 0)
+    local criticalDamageMultiplier    = xi.spells.damage.calculateMagicCriticalMultiplier(caster)
+    local divineSealMultiplier        = xi.spells.damage.calculateDivineSealMultiplier(caster, target, skillType)
+    local divineEmblemMultiplier      = xi.spells.damage.calculateDivineEmblemMultiplier(caster, skillType)
+    local eleSealMultiplier           = xi.spells.damage.calculateEnhancedElementalSealMultiplier(caster, skillType, spellElement)
+    local ebullienceMultiplier        = xi.spells.damage.calculateEbullienceMultiplier(caster, spellGroup)
+    local skillTypeMultiplier         = xi.spells.damage.calculateSkillTypeMultiplier(skillType)
+    local ninSkillBonus               = xi.spells.damage.calculateNinSkillBonus(caster, spellId, skillType)
+    local ninFutaeBonus               = xi.spells.damage.calculateNinFutaeBonus(caster, skillType)
+    local ninjutsuMultiplier          = xi.spells.damage.calculateNinjutsuMultiplier(caster, target, skillType)
+    local undeadDivinePenalty         = xi.spells.damage.calculateUndeadDivinePenalty(target, skillType)
+    local scarletDeliriumMultiplier   = xi.combat.damage.scarletDeliriumMultiplier(caster)
+    local steamJacketMultiplier       = xi.combat.damage.steamJacketMultiplier(target, spellElement)
+    local helixMeritMultiplier        = xi.spells.damage.calculateHelixMeritMultiplier(caster, spellId)
+    local areaOfEffectResistance      = xi.spells.damage.calculateAreaOfEffectResistance(target, spell)
+    local actionTypeMultiplier        = xi.spells.damage.calculateSpellActionTypeMultiplier(caster)
 
     -- Calculate finalDamage. It MUST be floored after EACH multiplication.
     finalDamage = math.floor(spellDamage * multipleTargetReduction)
     finalDamage = math.floor(finalDamage * elementalStaffBonus)
     finalDamage = math.floor(finalDamage * elementalAffinityBonus)
-    finalDamage = math.floor(finalDamage * sdt)
     finalDamage = math.floor(finalDamage * resistTier)
     finalDamage = math.floor(finalDamage * additionalResistTier)
+    finalDamage = math.floor(finalDamage * magicBurst)
+    finalDamage = math.floor(finalDamage * magicBurstBonus)
     finalDamage = math.floor(finalDamage * dayAndWeather)
     finalDamage = math.floor(finalDamage * magicBonusDiff)
-    finalDamage = math.floor(finalDamage * criticalDamageMultiplier)
     finalDamage = math.floor(finalDamage * targetMagicDamageAdjustment)
+    finalDamage = math.floor(finalDamage * sdt)
+    finalDamage = math.floor(finalDamage * ecosystemMultiplier)
+    finalDamage = math.floor(finalDamage * criticalDamageMultiplier)
     finalDamage = math.floor(finalDamage * divineSealMultiplier)
     finalDamage = math.floor(finalDamage * divineEmblemMultiplier)
     finalDamage = math.floor(finalDamage * eleSealMultiplier)
@@ -1167,20 +1175,18 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * ninjutsuMultiplier)
     finalDamage = math.floor(finalDamage * undeadDivinePenalty)
     finalDamage = math.floor(finalDamage * scarletDeliriumMultiplier)
+    finalDamage = math.floor(finalDamage * steamJacketMultiplier)
     finalDamage = math.floor(finalDamage * helixMeritMultiplier)
     finalDamage = math.floor(finalDamage * areaOfEffectResistance)
     finalDamage = math.floor(finalDamage * actionTypeMultiplier)
-    finalDamage = math.floor(finalDamage * absorb)
-    finalDamage = math.floor(finalDamage * magicBurst)
-    finalDamage = math.floor(finalDamage * magicBurstBonus)
 
     -- Handle "Nuke Wall". It must be handled after all previous calculations, but before clamp.
-    local nukeWallFactor = calculateNukeWallFactor(target, spellElement, finalDamage)
+    local nukeWallFactor = not absorb and calculateNukeWallFactor(target, spellElement, finalDamage) or 1
     finalDamage          = math.floor(finalDamage * nukeWallFactor)
 
     -- Handle Magic Absorb message and HP recovery.
-    if finalDamage < 0 then
-        finalDamage = target:addHP(-finalDamage)
+    if absorb then
+        finalDamage = target:addHP(finalDamage)
         spell:setMsg(xi.msg.basic.MAGIC_RECOVERS_HP)
 
         return finalDamage
@@ -1189,7 +1195,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     -- Handle Phalanx, One for All, Stoneskin.
     finalDamage = utils.clamp(utils.handlePhalanx(target, finalDamage), 0, 99999)
     finalDamage = utils.clamp(utils.handleOneForAll(target, finalDamage), 0, 99999)
-    finalDamage = utils.clamp(utils.handleStoneskin(target, finalDamage), -99999, 99999)
+    finalDamage = utils.handleStoneskin(target, finalDamage, xi.attackType.MAGICAL)
 
     -- Handle final adjustments. Most are located in core. TODO: Decide if we want core handling this.
     -- Check if the mob has a damage cap
@@ -1205,7 +1211,7 @@ xi.spells.damage.useDamageSpell = function(caster, target, spell)
     target:updateEnmityFromDamage(caster, finalDamage)
 
     -- Add "Magic Burst!" message
-    if magicBurst > 1 then
+    if canMBurst then
         spell:setMsg(xi.msg.basic.MAGIC_BURST_DAMAGE)
         caster:triggerRoeEvent(xi.roeTrigger.MAGIC_BURST)
     end

@@ -202,7 +202,7 @@ xi.promyvion.setupInitialPortals = function(zone)
 
     for portalGroup = 1, #portalGroupTable[zoneId] do
         local groupTable = portalGroupTable[zoneId][portalGroup]  -- Fetch the whole group entry.
-        local newPortal  = GetNPCByID(groupTable[math.random(1, #groupTable)]) -- Fetch an NPC object from table, at random.
+        local newPortal  = GetNPCByID(groupTable[math.randomInt(1, #groupTable)]) -- Fetch an NPC object from table, at random.
 
         if newPortal then
             newPortal:setLocalVar('[Portal]Chosen', 1) -- Mark new portal.
@@ -212,8 +212,8 @@ end
 
 xi.promyvion.handlePortal = function(player, npcId, eventId)
     if
-        player:getAnimation() == xi.anim.NONE and
-        GetNPCByID(npcId):getAnimation() == xi.anim.OPEN_DOOR
+        player:getAnimation() == xi.animation.NONE and
+        GetNPCByID(npcId):getAnimation() == xi.animation.OPEN_DOOR
     then
         player:startOptionalCutscene(eventId, { cs_option = 0, canSkip = true })
     end
@@ -223,7 +223,7 @@ end
 -- Mob global functions (Element setup)
 -----------------------------------
 xi.promyvion.emptyOnMobSpawn = function(mob, mobType)
-    local element    = math.random(xi.element.FIRE, xi.element.DARK)
+    local element    = math.randomInt(xi.element.FIRE, xi.element.DARK)
     local opposite   = xi.data.element.getElementWeakness(element)
     local complement = xi.data.element.getElementStrength(element)
 
@@ -260,13 +260,13 @@ end
 
 xi.promyvion.receptacleOnMobSpawn = function(mob)
     -- Handle Stray pop cooldown.
-    mob:setLocalVar('[Stray]CooldownIdle', GetSystemTime() + 60 * math.random(2, 6))
+    mob:setLocalVar('[Stray]CooldownIdle', GetSystemTime() + 60 * math.randomInt(2, 6))
     mob:setLocalVar('[Stray]CooldownFight', 0)
 
     -- Handle decoration: Fade-in.
     local decoration = GetNPCByID(mob:getID() - 1)
     if decoration then
-        decoration:updateToEntireZone(xi.status.NORMAL, xi.anim.NONE)
+        decoration:updateToEntireZone(xi.status.NORMAL, xi.animation.NONE)
     end
 end
 
@@ -283,7 +283,7 @@ xi.promyvion.receptacleOnMobRoam = function(mob)
         end
 
         -- Handle cooldown.
-        mob:setLocalVar('[Stray]CooldownIdle', GetSystemTime() + 60 * math.random(2, 6))
+        mob:setLocalVar('[Stray]CooldownIdle', GetSystemTime() + 60 * math.randomInt(2, 6))
     end
 end
 
@@ -299,7 +299,7 @@ xi.promyvion.receptacleOnMobFight = function(mob, target)
 
     -- Handle initial cooldown.
     if strayCooldown == 0 then
-        strayCooldown = GetSystemTime() + 5 * math.random(2, 4)
+        strayCooldown = GetSystemTime() + 5 * math.randomInt(2, 4)
         mob:setLocalVar('[Stray]CooldownFight', strayCooldown)
     end
 
@@ -313,7 +313,7 @@ xi.promyvion.receptacleOnMobFight = function(mob, target)
         end
 
         -- Handle cooldown.
-        mob:setLocalVar('[Stray]CooldownFight', GetSystemTime() + 5 * math.random(2, 4))
+        mob:setLocalVar('[Stray]CooldownFight', GetSystemTime() + 5 * math.randomInt(2, 4))
     end
 
     -- Check for alive associated Strays and update enmity.
@@ -340,7 +340,7 @@ end
 
 xi.promyvion.receptacleOnMobWeaponSkill = function(mob)
     -- When left alone after hitting it, Memory Receptacle uses it's skill every 1-3 minutes (aprox).
-    mob:setMod(xi.mod.REGAIN, 50 * math.random(1, 3))
+    mob:setMod(xi.mod.REGAIN, 50 * math.randomInt(1, 3))
 end
 
 xi.promyvion.receptacleOnMobDespawn = function(mob)
@@ -357,7 +357,7 @@ xi.promyvion.receptacleOnMobDespawn = function(mob)
         -- Choose new portal.
         local mobGroup   = receptacleInfoTable[zoneId][mobId][1]               -- Fetch group ID the mob belongs to.
         local groupTable = portalGroupTable[zoneId][mobGroup]                  -- Fetch the whole group table.
-        local newPortal  = GetNPCByID(groupTable[math.random(1, #groupTable)]) -- Fetch NPC object from table, at random.
+        local newPortal  = GetNPCByID(groupTable[math.randomInt(1, #groupTable)]) -- Fetch NPC object from table, at random.
 
         if newPortal then
             newPortal:setLocalVar('[Portal]Chosen', 1) -- Mark new portal.
@@ -374,7 +374,7 @@ xi.promyvion.receptacleOnMobDespawn = function(mob)
     if decoration then
         decoration:entityAnimationPacket(xi.animationString.STATUS_DISAPPEAR)
         decoration:timer(2500, function(decorationArg)
-            decorationArg:updateToEntireZone(xi.status.CUTSCENE_ONLY, xi.anim.DESPAWN)
+            decorationArg:updateToEntireZone(xi.status.CUTSCENE_ONLY, xi.animation.DESPAWN)
             decorationArg:entityAnimationPacket(xi.animationString.STATUS_VISIBLE)
         end)
     end

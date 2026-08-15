@@ -58,7 +58,7 @@ end
 -----------------------------------
 -- Ability Use Functions
 -----------------------------------
-xi.job_utils.paladin.useChivalry = function(player, target, ability)
+xi.job_utils.paladin.useChivalry = function(player, target, ability, action)
     local merits = player:getMerit(xi.merit.CHIVALRY) - 5
     local tp     = target:getTP()
     local base   = 0.05 + (player:getMod(xi.mod.ENHANCES_CHIVALRY) / 100)
@@ -90,7 +90,7 @@ xi.job_utils.paladin.useDivineEmblem = function(player, target, ability)
     return xi.effect.DIVINE_EMBLEM
 end
 
-xi.job_utils.paladin.useFealty = function(player, target, ability)
+xi.job_utils.paladin.useFealty = function(player, target, ability, action)
     local merits    = player:getMerit(xi.merit.FEALTY) - 5
     local enhFealty = (player:getMerit(xi.merit.FEALTY) / 5) * player:getMod(xi.mod.ENHANCES_FEALTY)
     local duration  = 60 + merits + enhFealty
@@ -101,17 +101,10 @@ xi.job_utils.paladin.useFealty = function(player, target, ability)
 end
 
 xi.job_utils.paladin.useHolyCircle = function(player, target, ability)
-    -- TODO:
-    -- Create Bonus vs Ecosystem handling
-    -- https://www.bg-wiki.com/ffxi/Holy_Circle
     -- Main (PLD) job gives a unique 15% damage bonus against undead, 15% damage resistance from undead, and likely +15% Undead Killer.
     -- When subbed, gives 5% of these bonuses.
     local duration = 180 + player:getMod(xi.mod.HOLY_CIRCLE_DURATION)
-    local power    = 15
-
-    if player:getMainJob() ~= xi.job.PLD then
-        power = 5
-    end
+    local power    = player:getMainJob() == xi.job.PLD and 15 or 5
 
     power = power + player:getMod(xi.mod.HOLY_CIRCLE_POTENCY)
 
@@ -197,7 +190,6 @@ xi.job_utils.paladin.useShieldBash = function(player, target, ability)
     local shieldSize = player:getShieldSize()
     local jpValue    = player:getJobPointLevel(xi.jp.SHIELD_BASH_EFFECT)
     local damage     = math.floor(player:getMainLvl() * 0.273)
-    local chance     = 90
 
     if shieldSize == 2 then
         damage = 13 + damage
@@ -210,25 +202,37 @@ xi.job_utils.paladin.useShieldBash = function(player, target, ability)
     -- Main job factors
     if player:getMainJob() ~= xi.job.PLD then
         damage = math.floor(damage / 2.5)
-        chance = 60
     else
         damage = math.floor(damage)
     end
 
     damage = damage + player:getMod(xi.mod.SHIELD_BASH) + (jpValue * 10)
 
-    -- Calculate stun proc chance
-    chance = chance + (player:getMainLvl() - target:getMainLvl()) * 5
+    -- Apply stun effect
+    if
+        not xi.data.statusEffect.isTargetImmune(target, xi.effect.STUN, xi.element.THUNDER) and
+        not xi.data.statusEffect.isTargetResistant(player, target, xi.effect.STUN) and
+        not xi.data.statusEffect.isEffectNullified(target, xi.effect.STUN, 0)
+    then
+        local maccParams =
+        {
+            effectId       = xi.effect.STUN,
+            magicalElement = xi.element.THUNDER,
+            skillRank      = xi.skillRank.A_PLUS,
+            actorStat      = xi.mod.INT,
+        }
 
-    if math.random(1, 100) <= chance then
-        target:addStatusEffect(xi.effect.STUN, { power = 1, duration = 6, origin = player })
+        local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, maccParams)
+        if xi.data.statusEffect.isResistRateSuccessfull(xi.effect.STUN, resistanceRate, 0) then
+            target:addStatusEffect(xi.effect.STUN, { power = 1, duration = math.randomInt(2, 8) * resistanceRate, origin = player })
+        end
     end
 
     -- Randomize damage
-    local randomizer = 1 + (math.random(1, 5) / 100)
+    local randomizer = 1 + math.randomInt(1, 5) / 100
 
-    damage = damage * randomizer
-    damage = utils.handleStoneskin(target, damage)
+    damage = math.floor(damage * randomizer)
+    damage = utils.handleStoneskin(target, damage, xi.attackType.PHYSICAL)
 
     target:takeDamage(damage, player, xi.attackType.PHYSICAL, xi.damageType.BLUNT)
     target:updateEnmityFromDamage(player, damage)

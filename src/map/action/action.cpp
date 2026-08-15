@@ -20,6 +20,8 @@
 */
 
 #include "action.h"
+
+#include "enums/four_cc.h"
 #include "utils/battleutils.h"
 
 void action_result_t::recordSkillchain(const ActionProcSkillChain effect, const int16_t dmg)
@@ -51,9 +53,9 @@ auto action_result_t::recordDamage(const attack_outcome_t& outcome) -> action_re
 
     switch (outcome.atkType)
     {
-        case ATTACK_TYPE::SPECIAL:  // Assumed
-        case ATTACK_TYPE::PHYSICAL: // Confirmed
-        case ATTACK_TYPE::RANGED:   // Confirmed
+        case xi::AttackType::Special:  // Assumed
+        case xi::AttackType::Physical: // Confirmed
+        case xi::AttackType::Ranged:   // Confirmed
         {
             if (outcome.isCritical)
             {

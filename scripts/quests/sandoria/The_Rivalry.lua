@@ -10,10 +10,10 @@ local quest = Quest:new(xi.questLog.SANDORIA, xi.quest.id.sandoria.THE_RIVALRY)
 
 quest.reward =
 {
-    fame     = 30,
+    fame     = 10,
     fameArea = xi.fameArea.SANDORIA,
     item     = xi.item.LU_SHANGS_FISHING_ROD,
-    keyitem  = xi.ki.TESTIMONIAL,
+    keyItem  = xi.ki.TESTIMONIAL,
     title    = xi.title.CARP_DIEM,
 }
 
@@ -101,7 +101,7 @@ quest.sections =
                     player:tradeComplete()
                     player:setCharVar('carpsTraded', player:getLocalVar('FishTraded'))  -- As per captures this char var persists for the life of the character
                     npcUtil.giveCurrency(player, 'gil', player:getLocalVar('GilToReward')) -- Ensures that gil is rewarded after the CS
-                    player:addFame(xi.fameArea.SANDORIA, 30)
+                    player:addFame(xi.fameArea.SANDORIA, 10)
                 end,
 
                 [303] = function(player, csid, option, npc)
@@ -170,7 +170,7 @@ quest.sections =
                     player:tradeComplete()
                     player:setCharVar('carpsTraded', player:getLocalVar('FishTraded'))  -- As per captures this char var persists for the life of the character
                     npcUtil.giveCurrency(player, 'gil', player:getLocalVar('GilToReward'))
-                    player:addFame(xi.fameArea.SANDORIA, 30)
+                    player:addFame(xi.fameArea.SANDORIA, 10)
                 end,
             },
         },

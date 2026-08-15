@@ -21,18 +21,20 @@
 
 #pragma once
 
+#include "navmesh_config.h"
+
 #include "common/cbasetypes.h"
 #include "common/scheduler.h"
-#include "navmesh_config.h"
+
+#include <common/types/hash_map.h>
 
 #include <limits>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 struct rcConfig;
 
-class IXiMesh;
+class XiMesh;
 class dtNavMesh;
 
 constexpr auto FloatMax    = std::numeric_limits<float>::max();
@@ -63,20 +65,45 @@ struct TileResult
     int            ty{};
     unsigned char* data{};
     int            dataSize{};
+    int            offMeshCount{};
+};
+
+// Off-mesh links for one tile, in the SoA layout dtNavMeshCreateParams wants.
+struct TileOffMeshConnections
+{
+    std::vector<float>          verts; // 6 floats per link: start xyz, end xyz (Detour space)
+    std::vector<float>          rad;
+    std::vector<unsigned short> flags;
+    std::vector<unsigned char>  areas;
+    std::vector<unsigned char>  dir;
+    int                         count{};
+};
+
+struct OffMeshCandidate
+{
+    float start[3];
+    float end[3];
 };
 
 class NavMeshBuilder
 {
 public:
-    explicit NavMeshBuilder(const IXiMesh& xiMesh);
+    explicit NavMeshBuilder(const XiMesh& xiMesh);
 
     void getWorldBounds(float* bmin, float* bmax) const;
-    void gatherTrianglesInAABB(const float* bmin, const float* bmax, GatheredMesh& out) const;
+
+    void getFilteredWorldBounds(const NavMeshConfig& config, float* bmin, float* bmax) const;
+
+    void gatherTrianglesInAABB(const float* bmin, const float* bmax, GatheredMesh& out, const std::vector<float>& ySkipPlanes = {}, const std::vector<NavMeshSkipSphere>& skipSpheres = {}) const;
+
     auto buildAsync(Scheduler& scheduler, const std::string& zoneName, uint16 zoneID, const NavMeshConfig& config) -> Task<dtNavMesh*>;
 
 private:
     auto buildTile(int tx, int ty, const rcConfig& cfg, const NavMeshConfig& config, float tileWorldSize) const -> TileResult;
     auto worldToCell(float x, float z) const -> CellCoord;
+
+    static auto onYSkipPlane(float y0, float y1, float y2, const std::vector<float>& ySkipPlanes) -> bool;
+    static auto insideSkipSphere(const float* v0, const float* v1, const float* v2, const std::vector<NavMeshSkipSphere>& skipSpheres) -> bool;
 
     struct PreTransformedBlock
     {
@@ -84,11 +111,11 @@ private:
         bool               flipWinding{};
     };
 
-    const IXiMesh* xiMesh_{};
-    uint16         gridWidth_{};
-    uint16         gridHeight_{};
-    float          worldBmin_[3]{ FloatMax, FloatMax, FloatMax };
-    float          worldBmax_[3]{ FloatLowest, FloatLowest, FloatLowest };
+    const XiMesh* xiMesh_{};
+    uint16        gridWidth_{};
+    uint16        gridHeight_{};
+    float         worldBmin_[3]{ FloatMax, FloatMax, FloatMax };
+    float         worldBmax_[3]{ FloatLowest, FloatLowest, FloatLowest };
 
-    std::unordered_map<uint32, PreTransformedBlock> preTransformed_;
+    HashMap<uint32, PreTransformedBlock> preTransformed_;
 };

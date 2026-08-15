@@ -19,50 +19,43 @@
 ===========================================================================
 */
 
-#ifndef _CRANGE_STATE_H
-#define _CRANGE_STATE_H
+#pragma once
 
 #include "state.h"
-class CCharEntity;
+
+struct action_t;
 
 class CRangeState : public CState
 {
 public:
-    CRangeState(CBattleEntity* PEntity, uint16 targid);
+    CRangeState(xi::Badge<CState>, CBattleEntity* PEntity, const EntityId& target);
 
-    void SpendCost();
-    bool IsRapidShot()
-    {
-        return m_rapidShot;
-    }
-    bool IsOutOfRange()
-    {
-        return m_isOutOfRange;
-    }
+    auto init() -> StateErrorOr<void> override;
+
+    void SpendCost() const;
+    auto IsRapidShot() const -> bool;
+    auto IsOutOfRange() const -> bool;
 
 protected:
-    virtual bool CanChangeState() override;
-    virtual bool CanFollowPath() override
-    {
-        return false;
-    }
-    virtual bool CanInterrupt() override
-    {
-        return true;
-    }
-    virtual bool Update(timer::time_point tick) override;
-    virtual void Cleanup(timer::time_point tick) override;
-    bool         CanUseRangedAttack(CBattleEntity* PTarget, bool isEndOfAttack);
-    bool         HasMoved();
+    auto CanChangeState() -> bool override;
+    auto CanFollowPath() -> bool override;
+    auto CanInterrupt() -> bool override;
+    auto Update(timer::time_point tick) -> bool override;
+    void Cleanup(timer::time_point tick) override;
+    auto CanUseRangedAttack(CBattleEntity* PTarget, bool isEndOfAttack) -> bool;
+    void InterruptRangedAttack(action_t& action);
+    auto HasMoved() const -> bool;
 
+    // This will likely need to be re-adjusted when states tick more precisely. Changed in 2012. https://wiki.ffo.jp/html/1734.html
 private:
+    // Shadows CState::m_PEntity
     CBattleEntity* const m_PEntity;
-    timer::duration      m_aimTime{};                  // The calculated "phase 1" delay based on weapon and job trait reductions
-    timer::duration      m_returnWeaponDelay = 1000ms; // Phase 2: Putting the weapon back after a shot (time between shot and being able to move)
-    timer::duration      m_freePhaseTime     = 1100ms; // Phase 3: The cooldown after a ranged attack is executed. (time after being able to move befer you stop getting "you must wait longer" when attempting to Range Attack again)
-    bool                 m_rapidShot{ false };
-    position_t           m_startPos;
-    bool                 m_isOutOfRange{ false }; // True if target moved out of range during aim time
-};
 
-#endif
+    timer::duration m_aimTime{};                  // Phase 1: Delay based on weapon and job trait reductions. 120 delay = 1000 milliseconds.
+    timer::duration m_returnWeaponDelay = 800ms;  // Phase 2: Time to be locked in place while putting your weapon away after a shot.
+    timer::duration m_freePhaseTimeMob  = 1100ms; // Phase 3 (mobs/trusts): Cooldown before a ranged attack can fire again.
+    timer::duration m_freePhaseTimePlayer{};      // Phase 3 (players): Cooldown before a ranged attack can fire again, set from RANGED_ATTACK_FREE_PHASE_DELAY (Default 500ms)
+    bool            m_rapidShot{ false };
+    position_t      m_startPos;
+    bool            m_isOutOfRange{ false }; // True if target moved out of range during aim time
+};

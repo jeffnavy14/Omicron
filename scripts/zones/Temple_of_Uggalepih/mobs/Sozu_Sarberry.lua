@@ -34,7 +34,7 @@ entity.spawnPoints =
 
 entity.phList =
 {
-    [ID.mob.SOZU_SARBERRY - 3] = ID.mob.SOZU_SARBERRY, -- 89 0.499 -23
+    [ID.mob.SOZU_SARBERRY - 3] = ID.mob.SOZU_SARBERRY, -- Confirmed on retail
 }
 
 entity.onMobInitialize = function(mob)
@@ -46,7 +46,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.mobSkill.MIJIN_GAKURE_1, hpp = math.random(20, 30) },
+            { id = xi.mobSkill.MIJIN_GAKURE_1, hpp = math.randomInt(20, 30) },
         },
     })
 

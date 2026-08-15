@@ -22,6 +22,7 @@
 #pragma once
 
 #include "common/cbasetypes.h"
+
 #include "common/database.h"
 #include "common/logging.h"
 #include "common/mmo.h"
@@ -29,6 +30,9 @@
 #include "common/synchronized.h"
 #include "common/timer.h"
 #include "common/xirand.h"
+#include <fmt/ranges.h>
+
+#include <common/types/hash_map.h>
 
 // Ahead of <math.h> (not <cmath>)
 #ifndef _USE_MATH_DEFINES
@@ -128,6 +132,11 @@ auto       toEntitysLeft(const position_t& A, const position_t& B, uint8 coneAng
 auto       toEntitysRight(const position_t& A, const position_t& B, uint8 coneAngle) -> bool; // true if A is to the right side of B within coneAngle degrees (from perspective of B)
 position_t nearPosition(const position_t& A, float offset, float radian);                     // Returns a position near the given position
 
+auto sidestepPosition(const position_t& from, const position_t& referencePoint, float offset) -> position_t;
+
+// True when two positions are within ~1 yalm, i.e. effectively co-located.
+auto isNear(const position_t& a, const position_t& b) -> bool;
+
 int32 hasBit(uint16 value, const uint8* BitArray, uint32 size); // Check for the presence of a bit in the array
 int32 addBit(uint16 value, uint8* BitArray, uint32 size);       // Adds a bit to the array
 int32 delBit(uint16 value, uint8* BitArray, uint32 size);       // Deletes a bit from the array
@@ -172,6 +181,7 @@ bool definitelyGreaterThan(float a, float b);
 bool definitelyLessThan(float a, float b);
 
 void crash();
+void hang();
 
 template <typename T>
 std::set<std::filesystem::path> sorted_directory_iterator(std::string path_name)
@@ -213,7 +223,7 @@ auto getRandomSampleString(T min, T max) -> std::string
 } // namespace utils
 
 // clang-format off
-static Synchronized<std::unordered_map<std::string, timer::time_point>> lastExecutionTimes;
+static Synchronized<HashMap<std::string, timer::time_point>> lastExecutionTimes;
 #define RATE_LIMIT(duration, code)                                                    \
 {                                                                                     \
     const auto currentTime = timer::now();                                            \

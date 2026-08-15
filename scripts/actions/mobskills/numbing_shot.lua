@@ -13,7 +13,7 @@ end
 mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     local params = {}
 
-    params.baseDamage     = mob:getWeaponDmg()
+    params.baseDamage     = mob:getRangedDmg()
     params.numHits        = 1
     params.fTP            = { 3.0, 3.0, 3.0 }
     -- params.agi_wSC        = 0.6 -- TODO: Capture if mobskill weaponskills have wSC.
@@ -28,7 +28,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
-        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PARALYSIS, 30, 0, xi.mobskills.calculateDuration(skill:getTP(), 60, 180))
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.PARALYSIS, 30, 0, xi.mobskills.calculateDuration(skill:getTP(), 60, 300))
     end
 
     return info.damage

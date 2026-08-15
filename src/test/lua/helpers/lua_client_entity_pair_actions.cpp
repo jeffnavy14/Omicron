@@ -22,19 +22,21 @@
 #include "lua/helpers/lua_client_entity_pair_actions.h"
 
 #include "ai/ai_container.h"
-#include "common/logging.h"
 #include "common/timer.h"
 #include "common/utils.h"
+#include "enums/packet_s2c.h"
 #include "lua/helpers/lua_client_entity_pair_entities.h"
 #include "lua/helpers/lua_client_entity_pair_events.h"
 #include "lua/helpers/lua_client_entity_pair_packets.h"
 #include "lua/lua_client_entity_pair.h"
 #include "lua/lua_simulation.h"
-#include "lua/lua_spy.h"
 #include "map/ability.h"
 #include "map/ai/controllers/player_controller.h"
+#include "map/entities/char_entity.h"
 #include "map/enums/party_kind.h"
-#include "map/lua/lua_baseentity.h"
+#include "map/item_container.h"
+#include "map/items/item.h"
+#include "map/lua/lua_base_entity.h"
 #include "map/packets/c2s/0x01a_action.h"
 #include "map/packets/c2s/0x028_item_dump.h"
 #include "map/packets/c2s/0x029_item_move.h"
@@ -44,12 +46,22 @@
 #include "map/packets/c2s/0x036_item_transfer.h"
 #include "map/packets/c2s/0x037_item_use.h"
 #include "map/packets/c2s/0x03a_item_stack.h"
+#include "map/packets/c2s/0x051_equipset_set.h"
 #include "map/packets/c2s/0x053_lockstyle.h"
 #include "map/packets/c2s/0x06e_group_solicit_req.h"
 #include "map/packets/c2s/0x074_group_solicit_res.h"
+#include "map/packets/c2s/0x083_shop_buy.h"
 #include "map/packets/c2s/0x096_combine_ask.h"
+#include "map/packets/c2s/0x0aa_guild_buy.h"
+#include "map/packets/c2s/0x0ab_guild_buylist.h"
+#include "map/packets/c2s/0x0ac_guild_sell.h"
+#include "map/packets/c2s/0x0ad_guild_selllist.h"
+#include "map/packets/c2s/0x0fa_myroom_layout.h"
+#include "map/packets/c2s/0x0fc_myroom_plant_add.h"
+#include "map/packets/c2s/0x0fd_myroom_plant_check.h"
+#include "map/packets/c2s/0x0fe_myroom_plant_crop.h"
+#include "map/packets/c2s/0x0ff_myroom_plant_stop.h"
 #include "map/packets/c2s/0x102_extended_job.h"
-#include "map/spell.h"
 #include "map/status_effect_container.h"
 #include "packets/c2s/0x015_pos.h"
 #include "test_char.h"
@@ -125,7 +137,7 @@ void CLuaClientEntityPairActions::setBlueSpells(const sol::table& spellIds) cons
         const auto offsettedId               = static_cast<uint8>(spellId - 0x200);
         const auto packet                    = parent_->packets().createPacket<GP_CLI_COMMAND_EXTENDED_JOB>();
         auto*      bluPacket                 = packet->as<GP_CLI_COMMAND_EXTENDED_JOB>();
-        bluPacket->Data.bluData.JobIndex     = JOB_BLU;
+        bluPacket->Data.bluData.JobIndex     = static_cast<uint8_t>(xi::Job::BLU);
         bluPacket->Data.bluData.SpellId      = offsettedId;
         bluPacket->Data.bluData.Spells[slot] = offsettedId;
 
@@ -284,6 +296,90 @@ void CLuaClientEntityPairActions::trigger(CLuaBaseEntity* target, sol::optional<
     {
         parent_->events().expect(expectedEvent.value());
     }
+}
+
+/************************************************************************
+ *  Function: guildBuy()
+ *  Purpose : Emits packet to buy an item from a guild shop.
+ *  Example : player.actions:guildBuy(xi.item.CHUNK_OF_TIN_ORE, 1)
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::guildBuy(uint16 itemId, uint8 quantity) const
+{
+    const auto packet      = parent_->packets().createPacket<GP_CLI_COMMAND_GUILD_BUY>();
+    auto*      buy         = packet->as<GP_CLI_COMMAND_GUILD_BUY>();
+    buy->ItemNo            = itemId;
+    buy->PropertyItemIndex = 0;
+    buy->ItemNum           = quantity;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: guildSell()
+ *  Purpose : Emits packet to sell an item to a guild shop.
+ *  Example : player.actions:guildSell(xi.item.CHUNK_OF_TIN_ORE, 1)
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::guildSell(uint16 itemId, uint8 quantity) const
+{
+    const auto packet       = parent_->packets().createPacket<GP_CLI_COMMAND_GUILD_SELL>();
+    auto*      sell         = packet->as<GP_CLI_COMMAND_GUILD_SELL>();
+    sell->ItemNo            = itemId;
+    sell->PropertyItemIndex = 0;
+    sell->ItemNum           = quantity;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: guildBuyList()
+ *  Purpose : Requests a guild shop's buy list and returns it decoded
+ *  Example : local list = player.actions:guildBuyList()
+ ************************************************************************/
+
+auto CLuaClientEntityPairActions::guildBuyList() const -> sol::table
+{
+    parent_->packets().clear();
+
+    const auto packet = parent_->packets().createPacket<GP_CLI_COMMAND_GUILD_BUYLIST>();
+    parent_->packets().sendBasicPacket(*packet);
+
+    return parent_->packets().guildList(static_cast<uint16>(PacketS2C::GP_SERV_COMMAND_GUILD_BUYLIST));
+}
+
+/************************************************************************
+ *  Function: guildSellList()
+ *  Purpose : Requests a guild shop's sell list and returns it decoded
+ *  Example : local list = player.actions:guildSellList()
+ ************************************************************************/
+
+auto CLuaClientEntityPairActions::guildSellList() const -> sol::table
+{
+    parent_->packets().clear();
+
+    const auto packet = parent_->packets().createPacket<GP_CLI_COMMAND_GUILD_SELLLIST>();
+    parent_->packets().sendBasicPacket(*packet);
+
+    return parent_->packets().guildList(static_cast<uint16>(PacketS2C::GP_SERV_COMMAND_GUILD_SELLLIST));
+}
+
+/************************************************************************
+ *  Function: shopBuy()
+ *  Purpose : Emits packet 0x083 to buy from the currently open shop.
+ *  Example : p1.actions:shopBuy(0, 1)
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::shopBuy(uint16 shopSlot, uint32 quantity) const
+{
+    const auto packet      = parent_->packets().createPacket<GP_CLI_COMMAND_SHOP_BUY>();
+    auto*      buy         = packet->as<GP_CLI_COMMAND_SHOP_BUY>();
+    buy->ItemNum           = quantity;
+    buy->ShopNo            = 0;
+    buy->ShopItemIndex     = shopSlot;
+    buy->PropertyItemIndex = 0;
+
+    parent_->packets().sendBasicPacket(*packet);
 }
 
 /************************************************************************
@@ -491,13 +587,13 @@ void CLuaClientEntityPairActions::tradeOffer(uint8 tradeIndex, uint8 invSlot, ui
  *  Example : p1.actions:tradeClearSlot(0)
  ************************************************************************/
 
-void CLuaClientEntityPairActions::tradeClearSlot(uint8 tradeIndex) const
+void CLuaClientEntityPairActions::tradeClearSlot(uint8 tradeIndex, uint8 invSlot, uint16 itemId) const
 {
     const auto packet = parent_->packets().createPacket<GP_CLI_COMMAND_TRADE_LIST>();
     auto*      data   = packet->as<GP_CLI_COMMAND_TRADE_LIST>();
     data->TradeIndex  = tradeIndex;
-    data->ItemIndex   = 0;
-    data->ItemNo      = 0;
+    data->ItemIndex   = invSlot;
+    data->ItemNo      = itemId;
     data->ItemNum     = 0;
 
     parent_->packets().sendBasicPacket(*packet);
@@ -621,12 +717,12 @@ void CLuaClientEntityPairActions::skillchain(CLuaBaseEntity* target, sol::variad
     {
         PChar->health.tp = 3000;
 
-        PChar->PAI->Internal_WeaponSkill(PMob->targid, wsIds[i]);
+        PChar->PAI->Internal_WeaponSkill(EntityId(PMob), wsIds[i]);
         parent_->simulation()->skipTime(2);
 
         if (i >= 1)
         {
-            if (!PMob->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN, 0))
+            if (!PMob->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Skillchain, 0))
             {
                 TestError("Skillchain effect not found after weaponskill #{}", i + 1);
             }
@@ -637,7 +733,7 @@ void CLuaClientEntityPairActions::skillchain(CLuaBaseEntity* target, sol::variad
             parent_->simulation()->skipTime(3);
 
             // Backdate skillchain effect to bypass 3s timing window for next WS
-            if (auto* scEffect = PMob->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN, 0))
+            if (auto* scEffect = PMob->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Skillchain, 0))
             {
                 scEffect->SetStartTime(timer::now() - 5s);
             }
@@ -709,6 +805,40 @@ void CLuaClientEntityPairActions::setLockstyle(const uint8 mode, sol::optional<s
 }
 
 /************************************************************************
+ *  Function: equipSet()
+ *  Purpose : Emits the 0x51 equipset packet to equip a list of items.
+ *  Example : player.actions:equipSet({ { index = 1, kind = xi.slot.MAIN, container = xi.inv.INVENTORY } })
+ *  Notes   : Each entry: index (bag slot), kind (equip slot), container (bag id).
+ *            Targets a specific item copy by slot, unlike equipItem by item id.
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::equipSet(const sol::table& entries) const
+{
+    const auto packet = parent_->packets().createPacket<GP_CLI_COMMAND_EQUIPSET_SET>();
+    auto*      p      = packet->as<GP_CLI_COMMAND_EQUIPSET_SET>();
+    p->Count          = 0;
+
+    uint8 idx = 0;
+    for (const auto& [key, val] : entries)
+    {
+        if (!val.is<sol::table>() || idx >= 16)
+        {
+            break;
+        }
+
+        auto entry                  = val.as<sol::table>();
+        p->Equipment[idx].ItemIndex = entry.get_or<uint8_t>("index", 0);
+        p->Equipment[idx].EquipKind = entry.get_or<uint8_t>("kind", 0);
+        p->Equipment[idx].Category  = entry.get_or<uint8_t>("container", 0); // 0 == LOC_INVENTORY
+        ++idx;
+    }
+
+    p->Count = idx;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
  *  Function: craft()
  *  Purpose : Emits packet to start a synthesis with the given crystal +
  *            ingredient item IDs (looked up in the player's inventory).
@@ -762,6 +892,135 @@ void CLuaClientEntityPairActions::craft(const uint16 crystalItemId, const sol::t
     parent_->packets().sendBasicPacket(*packet);
 }
 
+namespace
+{
+
+auto storageItemNo(CCharEntity* PChar, const uint8 container, const uint8 slot) -> uint16
+{
+    CItemContainer* PContainer = PChar->getStorage(container);
+    CItem*          PItem      = PContainer ? PContainer->GetItem(slot) : nullptr;
+
+    return PItem ? PItem->getID() : 0;
+}
+
+} // namespace
+
+/************************************************************************
+ *  Function: plantAdd()
+ *  Purpose : Sow a seed or feed a crystal into a gardening pot.
+ *  Notes   : Pot and add item must both be in a mog safe.
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::plantAdd(const uint8 potContainer, const uint8 potSlot, const uint8 addContainer, const uint8 addSlot) const
+{
+    auto* PChar = parent_->testChar()->entity();
+
+    const auto packet       = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_PLANT_ADD>();
+    auto*      p            = packet->as<GP_CLI_COMMAND_MYROOM_PLANT_ADD>();
+    p->MyroomPlantItemNo    = storageItemNo(PChar, potContainer, potSlot);
+    p->MyroomAddItemNo      = storageItemNo(PChar, addContainer, addSlot);
+    p->MyroomPlantItemIndex = potSlot;
+    p->MyroomAddItemIndex   = addSlot;
+    p->MyroomPlantCategory  = potContainer;
+    p->MyroomAddCategory    = addContainer;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: plantCheck()
+ *  Purpose : Examine a plant, resetting its wilt timer.
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::plantCheck(const uint8 potContainer, const uint8 potSlot) const
+{
+    auto* PChar = parent_->testChar()->entity();
+
+    const auto packet       = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_PLANT_CHECK>();
+    auto*      p            = packet->as<GP_CLI_COMMAND_MYROOM_PLANT_CHECK>();
+    p->MyroomPlantItemNo    = storageItemNo(PChar, potContainer, potSlot);
+    p->MyroomPlantItemIndex = potSlot;
+    p->MyroomPlantCategory  = potContainer;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: plantHarvest()
+ *  Purpose : Harvest a mature plant; uproot clears the pot instead.
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::plantHarvest(const uint8 potContainer, const uint8 potSlot, const sol::optional<bool> uproot) const
+{
+    auto* PChar = parent_->testChar()->entity();
+
+    const auto packet       = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_PLANT_CROP>();
+    auto*      p            = packet->as<GP_CLI_COMMAND_MYROOM_PLANT_CROP>();
+    p->MyroomPlantItemNo    = storageItemNo(PChar, potContainer, potSlot);
+    p->MyroomPlantItemIndex = potSlot;
+    p->MyroomPlantCategory  = potContainer;
+    p->CancellFlg           = uproot.value_or(false) ? 1 : 0;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: plantDry()
+ *  Purpose : Dry a plant so it stops growing and won't wilt.
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::plantDry(const uint8 potContainer, const uint8 potSlot) const
+{
+    auto* PChar = parent_->testChar()->entity();
+
+    const auto packet       = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_PLANT_STOP>();
+    auto*      p            = packet->as<GP_CLI_COMMAND_MYROOM_PLANT_STOP>();
+    p->MyroomPlantItemNo    = storageItemNo(PChar, potContainer, potSlot);
+    p->MyroomPlantItemIndex = potSlot;
+    p->MyroomPlantCategory  = potContainer;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: placeFurniture()
+ *  Purpose : Install a furnishing on the 1st floor at grid cell (x, z).
+ *  Example : player.actions:placeFurniture(xi.inv.MOGSAFE, slot, 0, 0)
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::placeFurniture(const uint8 container, const uint8 slot, const uint8 x, const uint8 z) const
+{
+    auto* PChar = parent_->testChar()->entity();
+
+    const auto packet  = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_LAYOUT>();
+    auto*      p       = packet->as<GP_CLI_COMMAND_MYROOM_LAYOUT>();
+    p->MyroomItemNo    = storageItemNo(PChar, container, slot);
+    p->MyroomItemIndex = slot;
+    p->MyroomCategory  = container;
+    p->MyroomFloorFlg  = 0;
+    p->x               = x;
+    p->z               = z;
+    p->y               = 0;
+    p->v               = 0;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
+/************************************************************************
+ *  Function: finishFurnishing()
+ *  Purpose : Finish placing furniture; recomputes the active moghancement.
+ *  Example : player.actions:finishFurnishing()
+ ************************************************************************/
+
+void CLuaClientEntityPairActions::finishFurnishing() const
+{
+    const auto packet = parent_->packets().createPacket<GP_CLI_COMMAND_MYROOM_LAYOUT>();
+    auto*      p      = packet->as<GP_CLI_COMMAND_MYROOM_LAYOUT>();
+    p->MyroomItemNo   = 0;
+
+    parent_->packets().sendBasicPacket(*packet);
+}
+
 void CLuaClientEntityPairActions::Register()
 {
     SOL_USERTYPE("CClientEntityPairActions", CLuaClientEntityPairActions);
@@ -774,6 +1033,11 @@ void CLuaClientEntityPairActions::Register()
     SOL_REGISTER("rangedAttack", CLuaClientEntityPairActions::rangedAttack);
     SOL_REGISTER("useItem", CLuaClientEntityPairActions::useItem);
     SOL_REGISTER("trigger", CLuaClientEntityPairActions::trigger);
+    SOL_REGISTER("guildBuy", CLuaClientEntityPairActions::guildBuy);
+    SOL_REGISTER("guildSell", CLuaClientEntityPairActions::guildSell);
+    SOL_REGISTER("guildBuyList", CLuaClientEntityPairActions::guildBuyList);
+    SOL_REGISTER("guildSellList", CLuaClientEntityPairActions::guildSellList);
+    SOL_REGISTER("shopBuy", CLuaClientEntityPairActions::shopBuy);
     SOL_REGISTER("inviteToParty", CLuaClientEntityPairActions::inviteToParty);
     SOL_REGISTER("formAlliance", CLuaClientEntityPairActions::formAlliance);
     SOL_REGISTER("acceptPartyInvite", CLuaClientEntityPairActions::acceptPartyInvite);
@@ -791,5 +1055,12 @@ void CLuaClientEntityPairActions::Register()
     SOL_REGISTER("sortContainer", CLuaClientEntityPairActions::sortContainer);
     SOL_REGISTER("dropItem", CLuaClientEntityPairActions::dropItem);
     SOL_REGISTER("setLockstyle", CLuaClientEntityPairActions::setLockstyle);
+    SOL_REGISTER("equipSet", CLuaClientEntityPairActions::equipSet);
     SOL_REGISTER("craft", CLuaClientEntityPairActions::craft);
+    SOL_REGISTER("plantAdd", CLuaClientEntityPairActions::plantAdd);
+    SOL_REGISTER("plantCheck", CLuaClientEntityPairActions::plantCheck);
+    SOL_REGISTER("plantHarvest", CLuaClientEntityPairActions::plantHarvest);
+    SOL_REGISTER("plantDry", CLuaClientEntityPairActions::plantDry);
+    SOL_REGISTER("placeFurniture", CLuaClientEntityPairActions::placeFurniture);
+    SOL_REGISTER("finishFurnishing", CLuaClientEntityPairActions::finishFurnishing);
 }

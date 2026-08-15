@@ -27,6 +27,7 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.UFASTCAST, 85)
     mob:setMod(xi.mod.DOUBLE_ATTACK, 10)
     mob:setMod(xi.mod.POWER_MULTIPLIER_SPELL, 25)
+    mob:setLocalVar('death', 0)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
@@ -49,9 +50,9 @@ end
 entity.onMobDespawn = function(mob)
     local lumberDeath = mob:getLocalVar('death')
 
-    if lumberDeath then
+    if lumberDeath == 1 then
         -- Lumber Jack died, Set Weeping Willow's respawn time (21-24 hours)
-        GetMobByID(mob:getID() -6):setRespawnTime(math.random(75600, 86400))
+        GetMobByID(mob:getID() -6):setRespawnTime(math.randomInt(75600, 86400))
     else
         -- Lumber Jack idle despawned, set Weeping Willow to 30 min respawn
         GetMobByID(mob:getID() -6):setRespawnTime(1800)

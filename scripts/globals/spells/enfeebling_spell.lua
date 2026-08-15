@@ -2,10 +2,6 @@
 -- Enfeebling Spell Utilities
 -- Used for spells that deal negative status effects upon targets.
 -----------------------------------
-require('scripts/globals/combat/magic_hit_rate')
-require('scripts/globals/jobpoints')
-require('scripts/globals/magicburst')
------------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
 xi.spells.enfeebling = xi.spells.enfeebling or {}
@@ -83,7 +79,8 @@ local pTable =
     [xi.magic.spell.LUMINOHELIX_II] = { xi.effect.HELIX,              2, xi.mod.INT,    0,  10,  30, 0, false,   0 },
 
     -- White Magic
-    [xi.magic.spell.ADDLE         ] = { xi.effect.ADDLE,              1, xi.mod.MND,   30,   0, 180, 0, true,    0 },
+    [xi.magic.spell.ADDLE         ] = { xi.effect.ADDLE,              1, xi.mod.MND,   20,   0, 180, 0, true,   20 },
+    [xi.magic.spell.ADDLE_II      ] = { xi.effect.ADDLE,              2, xi.mod.MND,   50,   0, 180, 0, true,   20 },
     [xi.magic.spell.FLASH         ] = { xi.effect.FLASH,              1, xi.mod.MND,    0,   0,  12, 0, true,  512 },
     [xi.magic.spell.INUNDATION    ] = { xi.effect.INUNDATION,         1, xi.mod.MND,    1,   0, 300, 0, false,   0 },
     [xi.magic.spell.PARALYZE      ] = { xi.effect.PARALYSIS,          1, xi.mod.MND,    0,   0, 120, 0, true,  -10 },
@@ -180,7 +177,7 @@ local function executeImmunobreak(caster, target, spell, effectId)
 
     -- Calculate Immunobreack chance.
     local immunobreakChance = caster:getMerit(xi.merit.IMMUNOBREAK_CHANCE) + 20 / (immunobreakValue + 1) -- TODO: Add immunobreak gear?
-    if math.random(1, 100) > immunobreakChance then
+    if math.randomInt(1, 100) > immunobreakChance then
         return
     end
 
@@ -198,6 +195,10 @@ xi.spells.enfeebling.calculatePotency = function(caster, target, spellId, spellE
     -- Calculate base potency for spells.
     switch (spellEffect) : caseof
     {
+        [xi.effect.ADDLE] = function()
+            potency = potency + utils.clamp(math.floor(statDiff / 5), 0, 20) -- Values from JP wiki: http://wiki.ffo.jp/html/21127.html
+        end,
+
         [xi.effect.BLINDNESS] = function()
             statDiff = caster:getStat(statUsed) - target:getStat(xi.mod.MND)
 
@@ -320,7 +321,7 @@ xi.spells.enfeebling.calculateDuration = function(caster, target, spellId, spell
     local duration = pTable[spellId][column.BASE_DURATION] -- Get base duration.
 
     if spellEffect == xi.effect.BIND then
-        duration = math.random(13, 60)
+        duration = math.randomInt(13, 60)
     end
 
     -- Additions to base duration.
@@ -412,11 +413,24 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
     ------------------------------
     -- STEP 2: Calculate resist tiers.
     ------------------------------
-    local spellGroup = spell:getSpellGroup()
-    local statUsed   = pTable[spellId][column.STAT_USED]
-    local message    = pTable[spellId][column.MESSAGE_OFFSET]
-    local bonusMacc  = pTable[spellId][column.BONUS_MACC]
-    local resistRate = xi.combat.magicHitRate.calculateResistRate(caster, target, spellGroup, skillType, 0, spellElement, statUsed, spellEffect, bonusMacc)
+    local spellGroup     = spell:getSpellGroup()
+    local statUsed       = pTable[spellId][column.STAT_USED]
+    local message        = pTable[spellId][column.MESSAGE_OFFSET]
+    local bonusMacc      = pTable[spellId][column.BONUS_MACC]
+    local magicBurstTier = xi.combat.magicBurst.getMagicBurstTier(target, spellElement)
+
+    local maccParams =
+    {
+        effectId       = spellEffect,
+        magicalElement = spellElement,
+        magicBurstTier = magicBurstTier,
+        actorStat      = statUsed,
+        skillType      = skillType,
+        spellGroup     = spellGroup,
+        bonusMacc      = bonusMacc,
+    }
+
+    local resistRate = xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams)
 
     if spellEffect ~= xi.effect.NONE then
         -- Stymie
@@ -463,7 +477,7 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
     elseif spellEffect == xi.effect.SLEEP_I then
         subpotency = spellElement
 
-    -- Addle: Has sub-effect.
+    -- Addle: Sub-effect -> Slows casting time.
     elseif spellEffect == xi.effect.ADDLE then
         subpotency = 20 + utils.clamp(math.floor((caster:getStat(statUsed) - target:getStat(statUsed)) / 5), 0, 20)
 
@@ -490,18 +504,8 @@ xi.spells.enfeebling.useEnfeeblingSpell = function(caster, target, spell)
     -- STEP 6: Final Operations.
     ------------------------------
     if target:addStatusEffect(spellEffect, { power = potency, duration = duration, origin = caster, tick = tick, subPower = subpotency, tier = tier }) then
-        -- Delete Stymie effect
-        if
-            skillType == xi.skill.ENFEEBLING_MAGIC and
-            caster:hasStatusEffect(xi.effect.STYMIE)
-        then
-            caster:delStatusEffect(xi.effect.STYMIE)
-        end
-
         -- Add "Magic Burst!" message
-        local _, skillchainCount = xi.magicburst.formMagicBurst(target, spellElement) -- External function. Not present in magic.lua.
-
-        if skillchainCount > 0 then
+        if magicBurstTier > 0 then
             spell:setMsg(xi.msg.basic.MAGIC_BURST_ENFEEB_IS - message * 3)
             caster:triggerRoeEvent(xi.roeTrigger.MAGIC_BURST)
         else

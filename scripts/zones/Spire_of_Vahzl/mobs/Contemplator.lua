@@ -2,6 +2,8 @@
 -- Area: Spire of Vahzl
 --  Mob: Contemplator
 -----------------------------------
+mixins = { require('scripts/mixins/families/empty_terroanima') }
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
 
@@ -26,7 +28,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.WINDS_OF_PROMYVION_1)
     end
 
-    return tpMoves[math.random(#tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 entity.onMobFight = function(mob, target)

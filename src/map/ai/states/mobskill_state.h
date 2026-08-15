@@ -19,8 +19,7 @@
 ===========================================================================
 */
 
-#ifndef _CMOBSKILL_TATE_H
-#define _CMOBSKILL_TATE_H
+#pragma once
 
 #include "mobskill.h"
 #include "state.h"
@@ -30,41 +29,33 @@ class CBattleEntity;
 class CMobSkillState : public CState
 {
 public:
-    CMobSkillState(CBattleEntity* PEntity, uint16 targid, uint16 wsid, Maybe<timer::duration> castTimeOverride);
+    CMobSkillState(xi::Badge<CState>, CBattleEntity* PEntity, const EntityId& target, uint16 wsid, Maybe<timer::duration> castTimeOverride);
 
-    CMobSkill* GetSkill();
+    auto init() -> StateErrorOr<void> override;
 
-    int16 GetSpentTP()
-    {
-        return m_spentTP;
-    }
+    auto GetSkill() const -> CMobSkill*;
+    auto GetSpentTP() const -> int16;
 
 protected:
-    virtual bool CanChangeState() override
-    {
-        return false;
-    }
-    virtual bool CanFollowPath() override
-    {
-        return false;
-    }
-    virtual bool CanInterrupt() override
-    {
-        return true;
-    }
-    virtual bool Update(timer::time_point tick) override;
-    virtual void Cleanup(timer::time_point tick) override;
-    void         SpendCost();
+    auto CanChangeState() -> bool override;
+    auto CanFollowPath() -> bool override;
+    auto CanInterrupt() -> bool override;
+
+    auto Update(timer::time_point tick) -> bool override;
+    void Cleanup(timer::time_point tick) override;
+    void SpendCost();
 
 private:
-    CBattleEntity* const       m_PEntity;
-    std::unique_ptr<CMobSkill> m_PSkill;
-    timer::time_point          m_finishTime;
-    timer::duration            m_castTime{};
-    int16                      m_spentTP;
-    bool                       m_skillSuccess{ false };
+    // Shadows CState::m_PEntity
+    CBattleEntity* const m_PEntity;
+
+    const uint16                 m_wsid;
+    const Maybe<timer::duration> m_castTimeOverride;
+    std::unique_ptr<CMobSkill>   m_PSkill;
+    timer::time_point            m_finishTime;
+    timer::duration              m_castTime{};
+    int16                        m_spentTP;
+    bool                         m_skillSuccess{ false };
 
     void reduceTpOnInterrupt() const;
 };
-
-#endif

@@ -24,7 +24,7 @@
 
 #include "common/cbasetypes.h"
 #include "common/mmo.h"
-#include "entities/baseentity.h"
+#include "entities/base_entity.h"
 
 #include <vector>
 
@@ -108,7 +108,7 @@ public:
     void addAllInParty(CBattleEntity* PTarget, bool withPet);
     void addAllInMobList(CBattleEntity* PTarget, bool withPet);
     void addAllInEnmityList();
-    void addAllInRange(CBattleEntity* PTarget, float radius, ALLEGIANCE_TYPE allegiance);
+    void addAllInRange(CBattleEntity* PTarget, float radius, xi::Allegiance allegiance);
     void addEntity(CBattleEntity* PTarget, bool withPet);
 
     // helpers
@@ -121,7 +121,8 @@ public:
     bool isWithinCone(position_t* pos);
     bool isWithinRange(position_t* pos, float range);
 
-    CBattleEntity* getValidTarget(uint16 actionTargetID, uint16 validTargetFlags);
+    auto getValidTarget(uint16 actionTargetID, uint16 validTargetFlags) const -> CBattleEntity*;
+    auto getValidTarget(CBattleEntity* PTarget, uint16 validTargetFlags) const -> CBattleEntity*;
 
     std::vector<CBattleEntity*> m_targets; // contains all found entities
 
@@ -135,10 +136,10 @@ protected:
     CBattleEntity* m_PMasterTarget; // mater of target
     CBattleEntity* m_PTarget;       // first target
 
-    uint16    m_zone;
-    FIND_TYPE m_findType;
-    uint8     m_findFlags;   // what to search for
-    uint16    m_targetFlags; // targetflags to reject potentially bad targets
+    xi::ZoneId m_zone;
+    FIND_TYPE  m_findType;
+    uint8      m_findFlags;   // what to search for
+    uint16     m_targetFlags; // targetflags to reject potentially bad targets
 
     // conal vars
     bool        m_conal;

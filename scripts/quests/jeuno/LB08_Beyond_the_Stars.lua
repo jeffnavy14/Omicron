@@ -16,8 +16,6 @@ local quest = Quest:new(xi.questLog.JEUNO, xi.quest.id.jeuno.BEYOND_THE_STARS)
 
 quest.reward =
 {
-    fame = 50,
-    fameArea = xi.fameArea.JEUNO,
 }
 
 quest.sections =
@@ -116,7 +114,7 @@ quest.sections =
                     end
 
                     -- Degenhard move choice.
-                    local degenhardMove = math.random(0, 2)
+                    local degenhardMove = math.randomInt(0, 2)
 
                     -- Rock-Paper-Scissors: Red beats Blue; Blue beats Green; Green beats Red.
                     local clashOutcome = 1 -- Assume Degenhard wins

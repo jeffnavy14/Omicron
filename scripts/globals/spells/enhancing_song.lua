@@ -1,8 +1,6 @@
 -----------------------------------
 -- Song Utilities
 -----------------------------------
-require('scripts/globals/jobpoints')
------------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
 xi.spells.enhancing = xi.spells.enhancing or {}
@@ -132,14 +130,10 @@ xi.spells.enhancing.calculateSongPower = function(caster, target, spell, spellId
 
     if caster:isPC() then
         -- Add ranged skill level ONLY if it's an instrument.
-        local rangeType = caster:getWeaponSkillType(xi.slot.RANGED)
+        local rangeType    = caster:getWeaponSkillType(xi.slot.RANGED)
+        local isInstrument = rangeType == xi.skill.WIND_INSTRUMENT or rangeType == xi.skill.STRING_INSTRUMENT
 
-        -- String instruments have half the skill effectiveness and amplify the AoE in exchange.
-        if rangeType == xi.skill.WIND_INSTRUMENT then
-            singingLvl = singingLvl + caster:getSkillLevel(rangeType)
-        elseif rangeType == xi.skill.STRING_INSTRUMENT then
-            singingLvl = singingLvl + math.floor(caster:getSkillLevel(rangeType) / 2)
-        end
+        singingLvl = isInstrument and singingLvl + caster:getSkillLevel(rangeType) or singingLvl
     else
         singingLvl = singingLvl * 2
     end
@@ -237,7 +231,6 @@ xi.spells.enhancing.calculateSongDuration = function(caster, target, spell, inst
 
     if caster:hasStatusEffect(xi.effect.MARCATO) then
         duration = math.floor(duration + caster:getJobPointLevel(xi.jp.MARCATO_EFFECT))
-        caster:delStatusEffect(xi.effect.MARCATO)
     end
 
     if caster:hasStatusEffect(xi.effect.TENUTO) then
@@ -295,11 +288,6 @@ xi.spells.enhancing.useEnhancingSong = function(caster, target, spell)
     -- EXCEPTION: March Songs effect conversion.
     if songEffect == xi.effect.MARCH then
         power = math.floor((power / 1024) * 10000)
-    end
-
-    -- Handle Status Effects.
-    if caster:hasStatusEffect(xi.effect.MARCATO) then
-        caster:delStatusEffect(xi.effect.MARCATO)
     end
 
     -- Change message when higher effect already in place.

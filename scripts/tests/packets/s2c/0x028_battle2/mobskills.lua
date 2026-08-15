@@ -314,7 +314,7 @@ local packets =
     {
         test = function(player, mob)
             player:gotoZone(xi.zone.DYNAMIS_WINDURST)
-            local yagudo = player.entities:moveTo('Vanguard_Chanter')
+            local yagudo = player.entities:moveTo('Vanguard_Sentinel')
             yagudo:updateEnmity(player)
             yagudo:addTP(3000)
             yagudo:useMobAbility(xi.mobSkill.SWEEP, player, 5, true)
@@ -390,8 +390,7 @@ local packets =
     },
     ['Mob dies mid-ready'] =
     {
-        test = function(player)
-            local mob = player.entities:moveTo('Clipper')
+        test = function(player, mob)
             mob:useMobAbility(xi.mobSkill.BIG_SCISSORS_1, player, 10)
             xi.test.world:tickEntity(mob)
             mob:setHP(0)              -- Kill mob while in "ready" state

@@ -8,6 +8,10 @@ mixins = { require('scripts/mixins/rage') }
 ---@type TMobEntity
 local entity = {}
 
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.ALWAYS_AGGRO, 1)
+end
+
 entity.onMobSpawn = function(mob)
     -- If respawn and variable is not 0, then it respawned before someone killed all 10 crabs
     local kingArthro = GetMobByID(ID.mob.KING_ARTHRO)
@@ -17,9 +21,6 @@ entity.onMobSpawn = function(mob)
 
     -- 5 minute rage timer (ffxiah says 5, ffxiclopedia says 5-10, bg doesn't say at all)
     mob:setLocalVar('[rage]timer', 300)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)

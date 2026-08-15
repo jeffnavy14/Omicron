@@ -21,7 +21,6 @@
 
 #include "petskill.h"
 
-#include "enums/action/category.h"
 #include "mobskill.h" // used for skillflags
 
 CPetSkill::CPetSkill(uint16 id)
@@ -356,12 +355,12 @@ void CPetSkill::setTertiarySkillchain(uint8 skillchain)
     m_tertiarySkillchain = skillchain;
 }
 
-auto CPetSkill::getAttackType() const -> ATTACK_TYPE
+auto CPetSkill::getAttackType() const -> xi::AttackType
 {
     return m_attackType;
 }
 
-void CPetSkill::setAttackType(const ATTACK_TYPE attackType)
+void CPetSkill::setAttackType(const xi::AttackType attackType)
 {
     m_attackType = attackType;
 }

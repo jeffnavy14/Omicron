@@ -163,7 +163,7 @@ local function switchMobForm(mob, form, aggressive)
     local originalEva = mob:getLocalVar('originalEVA')
 
     -- Reset to base stats first
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 0)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 0)
     mob:setMod(xi.mod.ATT, originalAtt)
     mob:setMod(xi.mod.DEF, originalDef)
     mob:setMod(xi.mod.EVA, originalEva)
@@ -177,7 +177,7 @@ local function switchMobForm(mob, form, aggressive)
     elseif form == 2 then
         -- Spider form
         -- ATT and DEF traits equivalent to 75 WAR
-        mob:setMobMod(xi.mobMod.WEAPON_BONUS, mob:getMainLvl() + 2)
+        mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, mob:getMainLvl() + 2)
         mob:setMod(xi.mod.ATT, originalAtt + 11)
         mob:setMod(xi.mod.DEF, originalDef + 11)
     elseif form == 3 then
@@ -213,11 +213,12 @@ g_mixins.families.ghrah = function(ghrahMob)
     initializeLookupTables() -- Initialize lookup tables once
 
     ghrahMob:addListener('SPAWN', 'GHRAH_SPAWN', function(mob)
-        local skin = math.random(1161, 1168)
+        local skin = math.randomInt(1161, 1168)
         mob:setModelId(skin)
         mob:setAnimationSub(0)
+        mob:setMagicCastingEnabled(false)
         mob:setAggressive(false)
-        mob:setLocalVar('changeTime', GetSystemTime() + math.random(40, 60)) -- Stagger first change
+        mob:setLocalVar('changeTime', GetSystemTime() + math.randomInt(40, 60)) -- Stagger first change
         mob:setLocalVar('targetForm', getTargetForm(mob))
         mob:addMod(xi.mod.MATT, 20) -- Ghrah have innate +20 MATT on top of BLM bonuses
         mob:addMod(xi.mod.DMGMAGIC, -1250)
@@ -237,10 +238,18 @@ g_mixins.families.ghrah = function(ghrahMob)
         handleFormChange(mob)
     end)
 
+    ghrahMob:addListener('ENGAGE', 'GHRAH_ENGAGE', function(mob)
+        mob:setMagicCastingEnabled(true) -- Enable casting when engaging
+    end)
+
     ghrahMob:addListener('COMBAT_TICK', 'GHRAH_COMBAT', function(mob)
         if not xi.combat.behavior.isEntityBusy(mob) then
             handleFormChange(mob)
         end
+    end)
+
+    ghrahMob:addListener('DISENGAGE', 'GHRAH_DISENGAGE', function(mob)
+        mob:setMagicCastingEnabled(false) -- Disable casting when idle
     end)
 end
 

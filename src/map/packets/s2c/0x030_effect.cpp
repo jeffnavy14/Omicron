@@ -21,7 +21,7 @@
 
 #include "0x030_effect.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 GP_SERV_COMMAND_EFFECT::GP_SERV_COMMAND_EFFECT(const CCharEntity* PChar, const SynthesisEffect effect, const uint8 param)
 {
@@ -31,5 +31,5 @@ GP_SERV_COMMAND_EFFECT::GP_SERV_COMMAND_EFFECT(const CCharEntity* PChar, const S
     packet.ActIndex  = PChar->targid;
     packet.EffectNum = effect;
     packet.Type      = param;
-    packet.Status    = PChar->animation;
+    packet.Status    = static_cast<int8_t>(PChar->animation);
 }

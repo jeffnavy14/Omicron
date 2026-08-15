@@ -22,7 +22,8 @@
 #include "validation.h"
 
 #include "ai/ai_container.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
+#include "item_container.h"
 #include "items/item_linkshell.h"
 #include "status_effect_container.h"
 #include "utils/charutils.h"
@@ -41,14 +42,14 @@ auto PacketValidator::blockedBy(const magic_enum::containers::bitset<BlockedStat
     CHECK_BLOCKED(BlockedState::Dead,           PChar_->isDead())
     CHECK_BLOCKED(BlockedState::Crafting,       PChar_->isCrafting())
     CHECK_BLOCKED(BlockedState::Fishing,        PChar_->isFishing())
-    CHECK_BLOCKED(BlockedState::Sitting,        PChar_->animation == ANIMATION_SIT || (PChar_->animation >= ANIMATION_SITCHAIR_0 && PChar_->animation <= ANIMATION_SITCHAIR_10))
+    CHECK_BLOCKED(BlockedState::Sitting,        PChar_->animation == xi::Animation::Sit || (PChar_->animation >= xi::Animation::Sitchair0 && PChar_->animation <= xi::Animation::Sitchair10))
     CHECK_BLOCKED(BlockedState::Mounted,        PChar_->isMounted())
     CHECK_BLOCKED(BlockedState::InEvent,        PChar_->isInEvent())
     CHECK_BLOCKED(BlockedState::Engaged,        PChar_->PAI->IsEngaged())
-    CHECK_BLOCKED(BlockedState::AbnormalStatus, PChar_->status != STATUS_TYPE::NORMAL)
+    CHECK_BLOCKED(BlockedState::AbnormalStatus, PChar_->status != xi::Status::Normal)
     CHECK_BLOCKED(BlockedState::Monstrosity,    PChar_->m_PMonstrosity != nullptr)
-    CHECK_BLOCKED(BlockedState::Healing,        PChar_->StatusEffectContainer->HasStatusEffect(EFFECT_HEALING) || PChar_->animation == ANIMATION_HEALING)
-    CHECK_BLOCKED(BlockedState::Charmed,        PChar_->StatusEffectContainer->HasStatusEffect({ EFFECT_CHARM, EFFECT_CHARM_II }))
+    CHECK_BLOCKED(BlockedState::Healing,        PChar_->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Healing) || PChar_->animation == xi::Animation::Healing)
+    CHECK_BLOCKED(BlockedState::Charmed,        PChar_->StatusEffectContainer->HasStatusEffect({ xi::StatusEffect::CharmI, xi::StatusEffect::CharmIi }))
     CHECK_BLOCKED(BlockedState::PreventAction,  PChar_->StatusEffectContainer->HasPreventActionEffect())
     // clang-format on
 
@@ -138,7 +139,7 @@ auto PacketValidator::hasLinkshellRank(const uint8_t slot, const LSTYPE rank) ->
     return *this;
 }
 
-auto PacketValidator::hasZoneMiscFlag(const ZONEMISC flag) -> PacketValidator&
+auto PacketValidator::hasZoneMiscFlag(const xi::ZoneMisc flag) -> PacketValidator&
 {
     if (!result_.valid())
     {
@@ -148,6 +149,21 @@ auto PacketValidator::hasZoneMiscFlag(const ZONEMISC flag) -> PacketValidator&
     if (PChar_->m_GMlevel == 0 && !PChar_->loc.zone->CanUseMisc(flag))
     {
         result_.addError(std::format("Zone {} does not allow misc flag {}.", PChar_->loc.zone->getName(), static_cast<uint16_t>(flag)));
+    }
+
+    return *this;
+}
+
+auto PacketValidator::isValidContainer(const std::string& fieldName, const uint32 containerId) -> PacketValidator&
+{
+    if (!result_.valid())
+    {
+        return *this;
+    }
+
+    if (containerId >= MAX_CONTAINER_ID || !PChar_->getStorage(static_cast<uint8>(containerId)))
+    {
+        result_.addError(std::format("{} value {} is not a valid container.", fieldName, containerId));
     }
 
     return *this;

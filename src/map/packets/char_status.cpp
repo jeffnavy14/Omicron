@@ -22,19 +22,12 @@
 #include "char_status.h"
 
 #include "aman.h"
-#include "common/logging.h"
-
-#include "common/vana_time.h"
 
 #include <cstring>
 
-#include "ai/ai_container.h"
-#include "ai/states/death_state.h"
-#include "entities/charentity.h"
-#include "item_container.h"
+#include "entities/char_entity.h"
 #include "items/item_linkshell.h"
 #include "status_effect_container.h"
-#include "utils/itemutils.h"
 #include "utils/mountutils.h"
 
 // https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037
@@ -120,7 +113,7 @@ struct flags5_t
 {
     uint8_t unknown_0_0 : 2;
     uint8_t unknown_0_2 : 2;
-    uint8_t unknown_0_4 : 4;
+    uint8_t unknown_0_4 : 4; // GateId for fenced content
 };
 
 struct flags6_t
@@ -214,11 +207,11 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     packet->id   = 0x037;
     packet->size = roundUpToNearestFour(sizeof(GP_SERV_SERVERSTATUS)) / 4;
 
-    std::memcpy(packet->BufStatus, PChar->StatusEffectContainer->m_StatusIcons, 32);
-    std::memcpy(&packet->BufStatusBits, &PChar->StatusEffectContainer->m_Flags, sizeof(status_bits_t));
+    std::memcpy(packet->BufStatus, PChar->StatusEffectContainer->statusIcons(), 32);
+    std::memcpy(&packet->BufStatusBits, &PChar->StatusEffectContainer->statusBits(), sizeof(status_bits_t));
 
     packet->UniqueNo      = PChar->id;
-    packet->server_status = PChar->animation;
+    packet->server_status = static_cast<uint8_t>(PChar->animation);
 
     CItemLinkshell* linkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK1);
 
@@ -241,7 +234,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     packet->model_hitbox_size = static_cast<uint8_t>(PChar->modelHitboxSize * 10);
     packet->mount_id          = 0;
 
-    if (PChar->animation == ANIMATION_FISHING_START)
+    if (PChar->animation == xi::Animation::NewFishingStart)
     {
         packet->fishing_timer = PChar->hookDelay;
     }
@@ -249,16 +242,16 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     // flags 0 starts at 0x28
     charStatusFlags::flags0_t flags0 = {};
 
-    flags0.HideFlag        = false; // This hides your UI. Probably used for the Live Vanadiel streams.
-    flags0.SleepFlag       = false; // Hides the player, probably also used for Live Vanadiel
-    flags0.GroundFlag      = false; // Do not ignore collision
-    flags0.CliPosInitFlag  = false; // Ready to render?
+    flags0.HideFlag        = PChar->m_isPCHidden; // Hides the player from themselves.
+    flags0.SleepFlag       = false;               // Hides the player, probably also used for Live Vanadiel
+    flags0.GroundFlag      = false;               // Do not ignore collision
+    flags0.CliPosInitFlag  = false;               // Ready to render?
     flags0.LfgFlag         = PChar->isSeekingParty();
     flags0.CfhFlag         = false; // Orange name for CFH, players don't currently use this?
     flags0.AwayFlag        = PChar->isAway();
     flags0.AnonymousFlag   = PChar->isAnon();
     flags0.Gender          = PChar->GetGender();
-    flags0.unknown_1_9     = PChar->loc.zone ? PChar->loc.zone->CanUseMisc(MISC_TREASURE) : 0; // Set global treasure pool;
+    flags0.unknown_1_9     = PChar->loc.zone ? PChar->loc.zone->CanUseMisc(xi::ZoneMisc::Treasure) : 0; // Set global treasure pool;
     flags0.unknown_1_10    = 0;
     flags0.GraphSize       = PChar->look.size;
     flags0.Chocobo_Index   = 0;
@@ -270,7 +263,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     flags0.unknown_3_28    = 0;     // Unknown
     flags0.GmLevel         = PChar->visibleGmLevel;
 
-    if (auto* effect = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_MOUNTED))
+    if (auto* effect = PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Mounted))
     {
         const auto [ChocoboIndex, CustomProperties] = mountutils::packetDefinition(PChar);
         packet->mount_id                            = effect->GetPower();
@@ -284,7 +277,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     flags1.Hackmove     = PChar->wallhackEnabled; // GM wallhack, walk through walls
     flags1.FreezeFlag   = PChar->isFrozenFlagged; // Freezes player in place, making them unable to move. Used when opening treasure chests, for instance.
     flags1.unknown_1_14 = 0;                      // Unknown.
-    flags1.InvisFlag    = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_INVISIBLE);
+    flags1.InvisFlag    = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffectByFlag(xi::StatusEffectFlag::Invisible);
     flags1.unknown_2_16 = 0; // Unknown.
     flags1.SpeedBase    = PChar->animationSpeed;
     flags1.unknown_3_25 = 0; // Unknown
@@ -297,7 +290,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     flags2.NamedFlag       = false; // disable "The"
     flags2.SingleFlag      = false; // singular entity
     flags2.AutoPartyFlag   = false; // Not implemented.
-    flags2.MotStopFlag     = PChar->StatusEffectContainer->HasStatusEffect(EFFECT_TERROR);
+    flags2.MotStopFlag     = PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Terror);
     flags2.CliPriorityFlag = PChar->priorityRender;
     flags2.BallistaFlg     = static_cast<uint8>(PChar->allegiance);
     flags2.unknown_3_29    = 0; // Unknown, one of three bits appears to be campaign battle Sword & Shield Icon?
@@ -312,7 +305,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
 
     flags3.LfgMasterFlag    = false; // /inv icon WITH mastery star. Not currently implemented, this is set with the "Request" button in the Party menu.
     flags3.TrialFlag        = false; // Trial account icon flag
-    flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK);
+    flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Sneak);
     flags3.NewCharacterFlag = PChar->isNewPlayer();
     flags3.MentorFlag       = PChar->aman().isMentor();
     flags3.unknown_0_5      = 0; // unknown
@@ -327,24 +320,27 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
     flags4.GeoIndiElement = 0;
     flags4.GeoIndiSize    = 1;
     flags4.GeoIndiFlag    = 0;
-    flags4.JobMasterFlag  = PChar->getMod(Mod::SUPERIOR_LEVEL) == 5 && PChar->m_jobMasterDisplay;
+    flags4.JobMasterFlag  = PChar->getMod(xi::Mod::SUPERIOR_LEVEL) == 5 && PChar->m_jobMasterDisplay;
 
     // GEO bubble effects, changes bubble effect depending on what effect is activated.
-    if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_COLURE_ACTIVE))
+    if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::ColureActive))
     {
-        flags4.GeoIndiElement = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_COLURE_ACTIVE)->GetPower();
+        flags4.GeoIndiElement = PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::ColureActive)->GetPower();
         flags4.GeoIndiFlag    = 1;
     }
 
     // Size shouldn't change until the bubble is re-casted, but currently WIDENED COMPASS will widen the size of the bubble on the effect instantly, so this aligns with the code.
     // TODO: fix the discrepancy with retail.
-    if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_WIDENED_COMPASS))
+    if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::WidenedCompass))
     {
         flags4.GeoIndiSize = 2;
     }
 
     // flags5 starts at 0x5A
-    charStatusFlags::flags5_t flags5 = {}; // All unknown, see https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037
+    charStatusFlags::flags5_t flags5 = {}; // Mostly unknown, see https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037
+
+    // Also known as "GateId". Fenced content ID.
+    flags5.unknown_0_4 = PChar->StatusEffectContainer->GetConfrontationSubPower() & 0x0F;
 
     // flags6 starts at 0x5C
     charStatusFlags::flags6_t flags6 = {}; // All unknown, see https://github.com/atom0s/XiPackets/tree/main/world/server/0x0037
@@ -358,7 +354,7 @@ CCharStatusPacket::CCharStatusPacket(CCharEntity* PChar)
         packet->monstrosity_name_id2 = PChar->m_PMonstrosity->NamePrefix2;
 
         // Sword & Shield icon only shows outside of the Feretory
-        if (PChar->m_PMonstrosity->Belligerency && PChar->loc.zone->GetID() != ZONE_FERETORY)
+        if (PChar->m_PMonstrosity->Belligerency && PChar->loc.zone->GetID() != xi::ZoneId::Feretory)
         {
             packet->Flags2.BallistaFlg |= 0x08; // 0x18?
         }

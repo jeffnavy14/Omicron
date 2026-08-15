@@ -20,10 +20,9 @@
 */
 
 #include "gmcall_container.h"
-#include "common/database.h"
 #include "common/ipc_structs.h"
 #include "common/logging.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "ipc_client.h"
 #include "packets/s2c/0x0b6_set_gmmsg.h"
 
@@ -32,6 +31,7 @@
 
 namespace
 {
+
 constexpr std::size_t MAX_GMCALL_PACKETS = 6; // Arbitrary limit. Observed 3 packets at most.
 
 const std::unordered_set<std::string> ALLOWED_GMCALL_PARAMS = {
@@ -52,6 +52,7 @@ const std::unordered_set<std::string> ALLOWED_GMCALL_PARAMS = {
     "GMREPORT.BLOCK",
     "GMCALL.INPUT",
 };
+
 } // namespace
 
 // Store one GMCALL packet for later processing

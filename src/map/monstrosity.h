@@ -25,7 +25,7 @@
 
 #include "packets/basic.h"
 
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 #include "packets/c2s/0x01a_action.h"
 
 #include <array>
@@ -53,8 +53,8 @@ public:
     uint8 NamePrefix1;
     uint8 NamePrefix2;
 
-    JOBTYPE MainJob;
-    JOBTYPE SubJob;
+    xi::Job MainJob;
+    xi::Job SubJob;
     uint32  CurrentExp;
 
     std::array<uint16, 12> EquippedInstincts{ 0 };

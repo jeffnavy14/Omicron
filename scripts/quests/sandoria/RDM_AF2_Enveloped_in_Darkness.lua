@@ -1,5 +1,5 @@
 -----------------------------------
--- Enveloped in Darkness
+-- Enveloped in Darkness (RDM AF2)
 -- Variable Prefix: [0][85]
 -----------------------------------
 -- ZONE                 NPC          POS
@@ -14,7 +14,7 @@ local quest = Quest:new(xi.questLog.SANDORIA, xi.quest.id.sandoria.ENVELOPED_IN_
 quest.reward =
 {
     item     = xi.item.WARLOCKS_BOOTS,
-    fame     = 30,
+    fame     = 20,
     fameArea = xi.fameArea.SANDORIA,
 }
 

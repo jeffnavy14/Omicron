@@ -68,7 +68,7 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.SILENCE)
     mob:addImmunity(xi.immunity.TERROR)
     mob:setMobMod(xi.mobMod.ALWAYS_AGGRO, 1)
-    mob:setRespawnTime(math.random(75600, 86400)) -- 21 to 24 hours
+    mob:setRespawnTime(math.randomInt(75600, 86400)) -- 21 to 24 hours
 end
 
 entity.onMobSpawn = function(mob)
@@ -76,13 +76,10 @@ entity.onMobSpawn = function(mob)
     mob:setMaxMP(0) -- WHM but has no MP
 end
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     -- Set Woodland_Sage's spawnpoint and respawn time (21-24 hours)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(75600, 86400))
+    mob:setRespawnTime(math.randomInt(75600, 86400))
 end
 
 return entity

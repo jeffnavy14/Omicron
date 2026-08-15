@@ -36,10 +36,8 @@ local quest = Quest:new(xi.questLog.OUTLANDS, xi.quest.id.outlands.CHASING_DREAM
 
 quest.reward =
 {
-    fame     = 30,
-    item     = xi.item.VENERER_RING,
-    fameArea = xi.fameArea.SELBINA_RABAO,
-    gil      = 4000,
+    item = xi.item.VENERER_RING,
+    gil  = 4000,
 }
 
 local handleFlask = function(player)
@@ -266,8 +264,8 @@ quest.sections =
             {
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHasExactly(trade, { { 1664, 5 } }) and
-                        quest:getVar(player, 'Prog') == 6
+                        quest:getVar(player, 'Prog') == 6 and
+                        npcUtil.tradeHasExactly(trade, { { xi.item.EASTERN_GEM, 5 } })
                     then
                         return quest:progressEvent(323)
                     end
@@ -347,7 +345,10 @@ quest.sections =
             onEventFinish =
             {
                 [121] = function(player, csid, option, npc)
-                    quest:complete(player)
+                    if quest:complete(player) then
+                        player:addFame(xi.fameArea.SANDORIA, 10)
+                        player:addFame(xi.fameArea.BASTOK, 10)
+                    end
                 end,
             },
         },

@@ -23,15 +23,12 @@
 
 #include "ability.h"
 #include "ai/ai_container.h"
-#include "ai/states/death_state.h"
-#include "ai/states/inactive_state.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_weapon.h"
 #include "latent_effect_container.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "packets/s2c/0x058_assist.h"
 #include "recast_container.h"
-#include "roe.h"
 #include "status_effect_container.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
@@ -42,35 +39,38 @@ CPlayerController::CPlayerController(CCharEntity* _PChar)
 {
 }
 
+CPlayerController::~CPlayerController()
+{
+}
+
 auto CPlayerController::Tick(timer::time_point /*tick*/) -> Task<void>
 {
     co_return;
 }
 
-bool CPlayerController::Cast(uint16 targid, SpellID spellid)
+auto CPlayerController::Cast(const EntityId target, SpellID spellid) -> bool
 {
     auto* PChar = static_cast<CCharEntity*>(POwner);
     if (canAct() && !PChar->PRecastContainer->HasRecast(RECAST_MAGIC, static_cast<Recast>(spellid), 0s))
     {
-        if (auto target = PChar->GetEntity(targid); target && target->PAI->IsUntargetable())
+        if (const auto PTarget = target.resolve<CBattleEntity>(); PTarget && PTarget->PAI->IsUntargetable())
         {
             return false;
         }
-        return CController::Cast(targid, spellid);
+
+        return CController::Cast(target, spellid);
     }
-    else
-    {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToCast);
-        return false;
-    }
+
+    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToCast);
+    return false;
 }
 
-bool CPlayerController::Engage(uint16 targid)
+auto CPlayerController::Engage(const EntityId& target) -> bool
 {
     // TODO: pet engage/disengage
     std::unique_ptr<CBasicPacket> errMsg;
     auto*                         PChar   = static_cast<CCharEntity*>(POwner);
-    auto*                         PTarget = PChar->IsValidTarget(targid, TARGET_ENEMY, errMsg);
+    auto*                         PTarget = PChar->IsValidTarget(target, TARGET_ENEMY, errMsg);
 
     if (PTarget)
     {
@@ -78,7 +78,7 @@ bool CPlayerController::Engage(uint16 targid)
         {
             if (m_lastAttackTime + std::chrono::milliseconds(PChar->GetWeaponDelay(false)) < timer::now())
             {
-                if (CController::Engage(targid))
+                if (CController::Engage(target))
                 {
                     PChar->PLatentEffectContainer->CheckLatentsWeaponDraw(true);
                     PChar->pushPacket<GP_SERV_COMMAND_ASSIST>(PChar, PTarget);
@@ -102,17 +102,95 @@ bool CPlayerController::Engage(uint16 targid)
     return false;
 }
 
-bool CPlayerController::ChangeTarget(uint16 targid)
+auto CPlayerController::ChangeTarget(const EntityId& target) -> bool
 {
-    return CController::ChangeTarget(targid);
+    return CController::ChangeTarget(target);
 }
 
-bool CPlayerController::Disengage()
+auto CPlayerController::Disengage() -> bool
 {
     return CController::Disengage();
 }
 
-bool CPlayerController::Ability(uint16 targid, uint16 abilityid)
+auto CPlayerController::WeaponSkill(EntityId target, uint16 wsid) -> bool
+{
+    auto* PChar = static_cast<CCharEntity*>(POwner);
+    if (canAct() && PChar->PAI->CanChangeState())
+    {
+        // TODO: put all this in weaponskill_state
+        CWeaponSkill* PWeaponSkill = battleutils::GetWeaponSkill(wsid);
+
+        if (PWeaponSkill == nullptr)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseWeaponskill);
+            return false;
+        }
+
+        if (!charutils::hasWeaponSkill(PChar, PWeaponSkill->getID()) || !charutils::canUseWeaponSkill(PChar, wsid))
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseWeaponskill);
+            return false;
+        }
+
+        if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Amnesia) || (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Impairment) && (PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetPower() == 0x02 || PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Impairment)->GetPower() == 0x03)))
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseAnyWeaponskill);
+            return false;
+        }
+
+        if (PChar->health.tp < 1000)
+        {
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::NotEnoughTP);
+            return false;
+        }
+
+        if (static_cast<xi::SkillType>(PWeaponSkill->getType()) == xi::SkillType::Archery || static_cast<xi::SkillType>(PWeaponSkill->getType()) == xi::SkillType::Marksmanship)
+        {
+            auto* PItem  = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO));
+            auto* weapon = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_RANGED]);
+            auto* ammo   = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_AMMO]);
+
+            // before allowing ranged weapon skill...
+            if (PItem == nullptr || !weapon || !weapon->isRanged() || !ammo || !ammo->isRanged() || !PChar->getEquip(SLOT_AMMO))
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::NoRangedWeapon);
+                return false;
+            }
+        }
+
+        std::unique_ptr<CBasicPacket> errMsg;
+
+        auto* PTarget = PChar->IsValidTarget(target, battleutils::isValidSelfTargetWeaponskill(wsid) ? TARGET_SELF : TARGET_ENEMY, errMsg);
+        if (PTarget)
+        {
+            if (PTarget->PAI->IsUntargetable())
+            {
+                return false;
+            }
+
+            if (!facing(PChar->loc.p, PTarget->loc.p, 64) && PTarget != PChar)
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PTarget, 0, 0, MsgBasic::CannotSee);
+                return false;
+            }
+
+            m_lastWeaponSkill = PWeaponSkill;
+
+            return CController::WeaponSkill(target, wsid);
+        }
+        else if (errMsg)
+        {
+            PChar->pushPacket(std::move(errMsg));
+        }
+    }
+    else
+    {
+        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseWeaponskill);
+    }
+    return false;
+}
+
+auto CPlayerController::Ability(EntityId target, const uint16 abilityid) -> bool
 {
     auto* PChar = static_cast<CCharEntity*>(POwner);
     if (canAct() && PChar->PAI->CanChangeState())
@@ -140,130 +218,52 @@ bool CPlayerController::Ability(uint16 targid, uint16 abilityid)
             PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, static_cast<uint32>(std::max<int64>(timer::count_seconds(currentRecast), 0)), 0, MsgBasic::TimeLeft);
             return false;
         }
-        if (auto target = PChar->GetEntity(targid); target && target->PAI->IsUntargetable())
+
+        if (const auto PTarget = target.resolve<CBattleEntity>(); PTarget && PTarget->PAI->IsUntargetable())
         {
             return false;
         }
-        return PChar->PAI->Internal_Ability(targid, abilityid);
+
+        return PChar->PAI->Internal_Ability(target, abilityid);
     }
-    else
-    {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseJobAbility);
-        return false;
-    }
+
+    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseJobAbility);
+    return false;
 }
 
-bool CPlayerController::RangedAttack(uint16 targid)
+auto CPlayerController::RangedAttack(const EntityId target) -> bool
 {
     auto* PChar = static_cast<CCharEntity*>(POwner);
     if (canAct() && PChar->PAI->CanChangeState())
     {
-        if (auto target = PChar->GetEntity(targid); target && target->PAI->IsUntargetable())
+        if (const auto PTarget = target.resolve<CBattleEntity>(); PTarget && PTarget->PAI->IsUntargetable())
         {
             return false;
         }
-        return PChar->PAI->Internal_RangedAttack(targid);
+
+        return PChar->PAI->Internal_RangedAttack(target);
     }
-    else
-    {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WaitLonger);
-    }
+
+    PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::WaitLonger);
     return false;
 }
 
-bool CPlayerController::UseItem(uint16 targid, uint8 loc, uint8 slotid)
+auto CPlayerController::UseItem(const EntityId& target, const uint8 loc, const uint8 slotid) -> bool
 {
-    auto* PChar = static_cast<CCharEntity*>(POwner);
+    const auto* PChar = static_cast<CCharEntity*>(POwner);
     if (canAct() && PChar->PAI->CanChangeState())
     {
-        if (auto target = PChar->GetEntity(targid); target && target->PAI->IsUntargetable())
+        if (const auto PTarget = target.resolve<CBattleEntity>(); PTarget && PTarget->PAI->IsUntargetable())
         {
             return false;
         }
-        return PChar->PAI->Internal_UseItem(targid, loc, slotid);
+
+        return PChar->PAI->Internal_UseItem(target, loc, slotid);
     }
     return false;
 }
 
-bool CPlayerController::WeaponSkill(uint16 targid, uint16 wsid)
-{
-    auto* PChar = static_cast<CCharEntity*>(POwner);
-    if (canAct() && PChar->PAI->CanChangeState())
-    {
-        // TODO: put all this in weaponskill_state
-        CWeaponSkill* PWeaponSkill = battleutils::GetWeaponSkill(wsid);
-
-        if (PWeaponSkill == nullptr)
-        {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseWeaponskill);
-            return false;
-        }
-
-        if (!charutils::hasWeaponSkill(PChar, PWeaponSkill->getID()) || !charutils::canUseWeaponSkill(PChar, wsid))
-        {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseWeaponskill);
-            return false;
-        }
-
-        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_AMNESIA) || (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_IMPAIRMENT) && (PChar->StatusEffectContainer->GetStatusEffect(EFFECT_IMPAIRMENT)->GetPower() == 0x02 || PChar->StatusEffectContainer->GetStatusEffect(EFFECT_IMPAIRMENT)->GetPower() == 0x03)))
-        {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::CannotUseAnyWeaponskill);
-            return false;
-        }
-
-        if (PChar->health.tp < 1000)
-        {
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::NotEnoughTP);
-            return false;
-        }
-
-        if (PWeaponSkill->getType() == SKILL_ARCHERY || PWeaponSkill->getType() == SKILL_MARKSMANSHIP)
-        {
-            auto* PItem  = dynamic_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO));
-            auto* weapon = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_RANGED]);
-            auto* ammo   = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_AMMO]);
-
-            // before allowing ranged weapon skill...
-            if (PItem == nullptr || !weapon || !weapon->isRanged() || !ammo || !ammo->isRanged() || !PChar->getEquip(SLOT_AMMO))
-            {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::NoRangedWeapon);
-                return false;
-            }
-        }
-
-        std::unique_ptr<CBasicPacket> errMsg;
-
-        auto* PTarget = PChar->IsValidTarget(targid, battleutils::isValidSelfTargetWeaponskill(wsid) ? TARGET_SELF : TARGET_ENEMY, errMsg);
-        if (PTarget)
-        {
-            if (PTarget->PAI->IsUntargetable())
-            {
-                return false;
-            }
-
-            if (!facing(PChar->loc.p, PTarget->loc.p, 64) && PTarget != PChar)
-            {
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PTarget, 0, 0, MsgBasic::CannotSee);
-                return false;
-            }
-
-            m_lastWeaponSkill = PWeaponSkill;
-
-            return CController::WeaponSkill(targid, wsid);
-        }
-        else if (errMsg)
-        {
-            PChar->pushPacket(std::move(errMsg));
-        }
-    }
-    else
-    {
-        PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar, 0, 0, MsgBasic::UnableToUseWeaponskill);
-    }
-    return false;
-}
-
-timer::time_point CPlayerController::getLastAttackTime()
+auto CPlayerController::getLastAttackTime() -> timer::time_point
 {
     return m_lastAttackTime;
 }
@@ -273,7 +273,7 @@ void CPlayerController::setLastAttackTime(timer::time_point _lastAttackTime)
     m_lastAttackTime = _lastAttackTime;
 }
 
-timer::time_point CPlayerController::getLastSpellFinishedTime()
+auto CPlayerController::getLastSpellFinishedTime() -> timer::time_point
 {
     return m_spellFinishedTime;
 }
@@ -288,12 +288,12 @@ void CPlayerController::setLastErrMsgTime(timer::time_point _LastErrMsgTime)
     m_errMsgTime = _LastErrMsgTime;
 }
 
-timer::time_point CPlayerController::getLastErrMsgTime()
+auto CPlayerController::getLastErrMsgTime() -> timer::time_point
 {
     return m_errMsgTime;
 }
 
-CWeaponSkill* CPlayerController::getLastWeaponSkill()
+auto CPlayerController::getLastWeaponSkill() -> CWeaponSkill*
 {
     return m_lastWeaponSkill;
 }
@@ -301,7 +301,7 @@ CWeaponSkill* CPlayerController::getLastWeaponSkill()
 // Spells, JAs, ranged attacks and items can't be used instantly after a spell finishes
 // Engaging seems to be immune to this
 // TODO: there seems to be a penalty or rate limit to incoming 0x01As if you act too early
-bool CPlayerController::canAct()
+auto CPlayerController::canAct() -> bool
 {
     auto timeSinceLastSpell = timer::now() - getLastSpellFinishedTime();
 

@@ -12,7 +12,7 @@ zoneObject.onInitialize = function(zone)
 end
 
 zoneObject.onGameHour = function(zone)
-    local destinationId = math.random(1, 100) <= 10 and xi.zone.SHIP_BOUND_FOR_MHAURA_PIRATES or xi.zone.SHIP_BOUND_FOR_MHAURA
+    local destinationId = math.randomInt(1, 100) <= 10 and xi.zone.SHIP_BOUND_FOR_MHAURA_PIRATES or xi.zone.SHIP_BOUND_FOR_MHAURA
     zone:setLocalVar('[Pirate]Zone', destinationId)
 end
 
@@ -23,7 +23,7 @@ zoneObject.onZoneTick = function(zone)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
-    local cs = -1
+    local cs = { }
 
     if
         player:getXPos() == 0 and
@@ -35,18 +35,11 @@ zoneObject.onZoneIn = function(player, prevZone)
             (prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA or
             prevZone == xi.zone.SHIP_BOUND_FOR_SELBINA_PIRATES)
         then
-            cs = 202
+            cs = { 202, -1, bit.bor(xi.cutsceneFlag.RESET_CAMERA, xi.cutsceneFlag.NO_PCS) }
             player:setPos(32.500, -2.500, -45.500, 192)
         else
             player:setPos(17.981, -16.806, 99.83, 64)
         end
-    end
-
-    if
-        player:hasKeyItem(xi.ki.SEANCE_STAFF) and
-        player:getCharVar('Enagakure_Killed') == 1
-    then
-        cs = 1101
     end
 
     return cs
@@ -63,7 +56,14 @@ zoneObject.onTransportEvent = function(player, prevZoneId, transportId)
     end
 
     if player:hasKeyItem(xi.ki.FERRY_TICKET) then
-        player:startEvent(200)
+        player:startEvent(200, {
+            isHidden = true,
+            flags    = bit.bor(
+                xi.cutsceneFlag.RESET_CAMERA,
+                xi.cutsceneFlag.NO_PCS,
+                xi.cutsceneFlag.NO_IDLE_WAIT
+            ),
+        })
     else
         player:startEvent(204)
     end
@@ -78,13 +78,6 @@ zoneObject.onEventFinish = function(player, csid, option, npc)
         local zone          = player:getZone()
         local destinationId = zone and zone:getLocalVar('[Pirate]Zone') or xi.zone.SHIP_BOUND_FOR_MHAURA
         player:setPos(0, 0, 0, 0, destinationId)
-
-    -- Quest logic. TODO: Convert quest to interaction.
-    elseif
-        csid == 1101 and
-        npcUtil.completeQuest(player, xi.questLog.OUTLANDS, xi.quest.id.outlands.I_LL_TAKE_THE_BIG_BOX, { item = 14226, fameArea = xi.fameArea.NORG, var = { 'Enagakure_Killed', 'illTakeTheBigBoxCS' } })
-    then
-        player:delKeyItem(xi.ki.SEANCE_STAFF)
     end
 end
 

@@ -8,6 +8,7 @@
 local entity = {}
 
 entity.onTrigger = function(player, npc)
+<<<<<<< HEAD
      local rank = xi.besieged.getMercenaryRank(player)
      local haveimperialIDtag
      local tokens = 3 --player:getAssaultPoint(ILRUSI_ASSAULT_POINT)
@@ -20,6 +21,15 @@ entity.onTrigger = function(player, npc)
 
     if rank > 0 then
         player:startEvent(278, rank, haveimperialIDtag, tokens, player:getCurrentAssault())
+=======
+    local rank          = xi.besieged.getMercenaryRank(player)
+    local haveIDTag     = player:hasKeyItem(xi.ki.IMPERIAL_ARMY_ID_TAG) and 1 or 0
+    local assaultPoints = player:getAssaultPoint(xi.assault.assaultArea.NYZUL_ISLE)
+
+    if rank > 0 and xi.settings.main.NYZUL_ENABLED then
+        -- TODO: Add toggle for displaying Nyzul Isle Uncharted Area Survey option
+        player:startEvent(278, rank, haveIDTag, assaultPoints, player:getCurrentAssault())
+>>>>>>> upstream/base
     else
         player:startEvent(284) -- no rank
     end

@@ -12,12 +12,12 @@ local entity = {}
 entity.onTrigger = function(player, npc)
     local guardian = GetMobByID(ID.mob.TEMPLE_GUARDIAN)
 
-    if npc:getAnimation() == xi.anim.CLOSE_DOOR then
+    if npc:getAnimation() == xi.animation.CLOSE_DOOR then
         player:messageSpecial(ID.text.PROTECTED_BY_UNKNOWN_FORCE)
     end
 
     if guardian ~= nil and guardian:getHP() > 0 and guardian:getTarget() == nil then
-        guardian:updateClaim(player)
+        guardian:engage(player:getTargID())
     end
 end
 

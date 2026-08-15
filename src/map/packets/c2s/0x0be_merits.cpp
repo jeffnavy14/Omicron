@@ -21,7 +21,7 @@
 
 #include "0x0be_merits.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/s2c/0x029_battle_message.h"
@@ -64,7 +64,7 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
         {
             if (PChar->inMogHouse()) // Note: This has been verified as allowed in a shared mog house.
             {
-                if (const auto merit = static_cast<MERIT_TYPE>(this->Param2 << 1); PChar->PMeritPoints->IsMeritExist(merit))
+                if (const auto merit = static_cast<xi::Merit>(this->Param2 << 1); PChar->PMeritPoints->IsMeritExist(merit))
                 {
                     const Merit_t* PMerit = PChar->PMeritPoints->GetMerit(merit);
 

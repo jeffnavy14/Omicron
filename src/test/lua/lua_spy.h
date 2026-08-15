@@ -33,13 +33,14 @@ public:
     void called(sol::optional<size_t> times = sol::nullopt);
     void calledWith(sol::variadic_args expected) const;
     void clear();
+
     auto calls() const -> sol::table
     {
         return calls_;
     }
 
     auto original() const -> sol::object;
-    auto path() const -> std::string;
+    auto path() const -> const std::string&;
 
     virtual auto operator()(sol::variadic_args args) -> sol::as_returns_t<std::vector<sol::object>>;
     static void  Register();

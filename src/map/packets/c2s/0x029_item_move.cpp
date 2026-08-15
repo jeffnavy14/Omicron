@@ -21,7 +21,8 @@
 
 #include "0x029_item_move.h"
 
-#include "entities/charentity.h"
+#include "common/settings.h"
+#include "entities/char_entity.h"
 #include "items.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x020_item_attr.h"
@@ -67,12 +68,12 @@ const auto validContainers = [](const CCharEntity* PChar) -> std::set<CONTAINER_
     };
 
     // Retail allows injecting into Safe from anywhere in a zone with a Nomad Moogle.
-    if (PChar->loc.zone->CanUseMisc(MISC_MOGMENU) || PChar->m_moghouseID == PChar->id)
+    if (PChar->loc.zone->CanUseMisc(xi::ZoneMisc::Mogmenu) || PChar->m_moghouseID == PChar->id)
     {
         allowedContainers.insert(LOC_MOGSAFE);
 
         // Bitflag indicating if Mog 2F is unlocked
-        if (PChar->profile.mhflag & 0x20)
+        if ((PChar->profile.mhflag & 0x20) && settings::get<bool>("main.ENABLE_MOG_HOUSE_2F"))
         {
             allowedContainers.insert(LOC_MOGSAFE2);
         }
@@ -153,12 +154,15 @@ auto GP_CLI_COMMAND_ITEM_MOVE::validate(MapSession* PSession, const CCharEntity*
         .blockedBy({ BlockedState::InEvent })
         .oneOf("Category1", static_cast<CONTAINER_ID>(this->Category1), validContainersForChar)
         .oneOf("Category2", static_cast<CONTAINER_ID>(this->Category2), validContainersForChar)
-        .mustEqual(isValidMovement(PChar,
-                                   static_cast<CONTAINER_ID>(this->Category1),
-                                   static_cast<CONTAINER_ID>(this->Category2),
-                                   this->ItemIndex1),
-                   true,
-                   "Illegal movement");
+        .custom([&](PacketValidator& v)
+                {
+                    v.mustEqual(isValidMovement(PChar,
+                                                static_cast<CONTAINER_ID>(this->Category1),
+                                                static_cast<CONTAINER_ID>(this->Category2),
+                                                this->ItemIndex1),
+                                true,
+                                "Illegal movement");
+                });
 }
 
 void GP_CLI_COMMAND_ITEM_MOVE::process(MapSession* PSession, CCharEntity* PChar) const

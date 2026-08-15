@@ -24,16 +24,10 @@
 #include "common/logging.h"
 #include "common/timer.h"
 
-#include "entities/charentity.h"
-#include "entities/npcentity.h"
-#include "lua_baseentity.h"
-#include "map/navmesh/navmesh.h"
+#include "entities/npc_entity.h"
+#include "lua_base_entity.h"
 #include "trigger_area.h"
-#include "utils/mobutils.h"
 #include "zone.h"
-#include "zone_entities.h"
-
-#include <map/ximesh/ximesh.h>
 
 CLuaZone::CLuaZone(CZone* PZone)
 : m_pLuaZone(PZone)
@@ -80,7 +74,7 @@ auto CLuaZone::getLocalVars() -> sol::table
 /************************************************************************
  *  Function: setLocalVar()
  *  Purpose : Assigns a local variable to a zone
- *  Example : zone:setLocalVar("pop", GetSystemTime() + math.random(1200,7200));
+ *  Example : zone:setLocalVar("pop", GetSystemTime() + math.randomInt(1200, 7200));
  *  Notes   :
  ************************************************************************/
 
@@ -166,7 +160,7 @@ sol::table CLuaZone::getMobs()
     return table;
 }
 
-ZONEID CLuaZone::getID()
+auto CLuaZone::getID() -> xi::ZoneId
 {
     return m_pLuaZone->GetID();
 }
@@ -181,23 +175,23 @@ REGION_TYPE CLuaZone::getRegionID()
     return m_pLuaZone->GetRegionID();
 }
 
-ZONE_TYPE CLuaZone::getTypeMask()
+xi::ZoneType CLuaZone::getTypeMask()
 {
     return m_pLuaZone->GetTypeMask();
 }
 
 auto CLuaZone::getBattlefieldByInitiator(uint32 charID) -> CBattlefield*
 {
-    if (m_pLuaZone->m_BattlefieldHandler)
+    if (m_pLuaZone->battlefieldHandler())
     {
-        return m_pLuaZone->m_BattlefieldHandler->GetBattlefieldByInitiator(charID);
+        return m_pLuaZone->battlefieldHandler()->GetBattlefieldByInitiator(charID);
     }
     return nullptr;
 }
 
-auto CLuaZone::getWeather() const -> Weather
+auto CLuaZone::getWeather() const -> xi::Weather
 {
-    return m_pLuaZone->GetWeather();
+    return m_pLuaZone->weather().current();
 }
 
 uint32 CLuaZone::getUptime()
@@ -233,6 +227,34 @@ void CLuaZone::rebuildNavmesh(const sol::table& table)
     config.filterLowHangingObstacles    = table.get_or("filterLowHangingObstacles", config.filterLowHangingObstacles);
     config.filterLedgeSpans             = table.get_or("filterLedgeSpans", config.filterLedgeSpans);
     config.filterWalkableLowHeightSpans = table.get_or("filterWalkableLowHeightSpans", config.filterWalkableLowHeightSpans);
+    config.generateOffMeshLinks         = table.get_or("generateOffMeshLinks", config.generateOffMeshLinks);
+    config.offMeshMaxDrop               = table.get_or("offMeshMaxDrop", config.offMeshMaxDrop);
+    config.offMeshHorizReach            = table.get_or("offMeshHorizReach", config.offMeshHorizReach);
+
+    if (const auto ySkipPlanes = table.get<sol::optional<sol::table>>("ySkipPlanes"))
+    {
+        for (const auto& [_, value] : *ySkipPlanes)
+        {
+            config.ySkipPlanes.push_back(value.as<float>());
+        }
+    }
+
+    if (const auto skipSpheres = table.get<sol::optional<sol::table>>("skipSpheres"))
+    {
+        for (const auto& [_, value] : *skipSpheres)
+        {
+            const auto sphere = value.as<sol::table>();
+
+            config.skipSpheres.push_back(NavMeshSkipSphere{
+                .center = {
+                    sphere.get_or("x", 0.0f),
+                    sphere.get_or("y", 0.0f),
+                    sphere.get_or("z", 0.0f),
+                },
+                .radius = sphere.get_or("radius", 0.0f),
+            });
+        }
+    }
 
     m_pLuaZone->RebuildNavMesh(config);
 }
@@ -411,7 +433,7 @@ void CLuaZone::Register()
 
 std::ostream& operator<<(std::ostream& os, const CLuaZone& zone)
 {
-    std::string id = zone.m_pLuaZone ? std::to_string(zone.m_pLuaZone->GetID()) : "nullptr";
+    std::string id = zone.m_pLuaZone ? std::to_string(static_cast<uint16>(zone.m_pLuaZone->GetID())) : "nullptr";
     return os << "CLuaZone(" << id << ")";
 }
 

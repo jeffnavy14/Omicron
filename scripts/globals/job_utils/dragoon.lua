@@ -2,8 +2,6 @@
 -- Dragoon Job Utilities
 -----------------------------------
 require('scripts/globals/ability')
-require('scripts/globals/combat/magic_hit_rate')
-require('scripts/globals/jobpoints')
 require('scripts/globals/spells/damage_spell')
 require('scripts/globals/weaponskills')
 -----------------------------------
@@ -75,7 +73,7 @@ local function performWSJump(player, target, action, params, abilityID)
     end
 
     -- Jumps add JUMP_TP_BONUS regardless of 0 dmg or miss and is affected by Store TP but not the target's subtle blow
-    local storeTPModifier = (100 + player:getMod(xi.mod.STORETP)) / 100
+    local storeTPModifier = (100 + player:getMod(xi.mod.STORETP) + player:getMerit(xi.merit.STORE_TP_EFFECT)) / 100
     local extraTP         = player:getMod(xi.mod.JUMP_TP_BONUS)
 
     -- Spirit jump specific TP bonus
@@ -98,7 +96,7 @@ xi.job_utils.dragoon.cutEmpathyEffectTable = function(validEffects, i, maxCount)
     local delindex = 1
 
     while maxCount < i do
-        delindex = math.random(1, i)
+        delindex = math.randomInt(1, i)
 
         while validEffects[delindex + 1] ~= nil do
             validEffects[delindex] = validEffects[delindex + 1]
@@ -214,12 +212,7 @@ end
 
 xi.job_utils.dragoon.useAncientCircle = function(player, target, ability)
     local duration = 180 + player:getMod(xi.mod.ANCIENT_CIRCLE_DURATION)
-    local jpValue  = player:getJobPointLevel(xi.jp.ANCIENT_CIRCLE_EFFECT)
-    local power    = 5
-
-    if player:getMainJob() == xi.job.DRG then
-        power = 15 + jpValue
-    end
+    local power    = player:getMainJob() == xi.job.DRG and 15 or 5
 
     power = power + player:getMod(xi.mod.ANCIENT_CIRCLE_POTENCY)
 
@@ -308,13 +301,13 @@ xi.job_utils.dragoon.checkForRemovableEffectsOnSpiritLink = function(player, wyv
         end
 
         if #validEffects > 0 then
-            local removeIndex = math.random(1, #validEffects)
+            local removeIndex = math.randomInt(1, #validEffects)
 
             wyvern:delStatusEffect(validEffects[removeIndex])
             table.remove(validEffects, removeIndex)
 
             if #validEffects > 0 then
-                wyvern:delStatusEffect(validEffects[math.random(1, #validEffects)])
+                wyvern:delStatusEffect(validEffects[math.randomInt(1, #validEffects)])
             end
         end
     end
@@ -379,21 +372,19 @@ xi.job_utils.dragoon.useSpiritLink = function(player, target, ability, action)
     local drainamount = 0
 
     if wyvern:getHP() ~= wyvern:getMaxHP() then
-        drainamount = (math.random(25, 35) / 100) * playerHP
+        drainamount = (math.randomInt(25, 35) / 100) * playerHP
         drainamount = drainamount * (1 - (0.01 * player:getJobPointLevel(xi.jp.SPIRIT_LINK_EFFECT)))
     end
 
     -- Handle Stoneskin.
     local stoneskinPower = 0
-
-    if player:hasStatusEffect(xi.effect.STONESKIN) then
-        stoneskinPower = player:getMod(xi.mod.STONESKIN)
+    local stoneskin      = player:getStatusEffect(xi.effect.STONESKIN)
+    if stoneskin then
+        stoneskinPower = stoneskin:getPower()
 
         -- If stoneskin is more powerfull than the amount to be drained.
         if stoneskinPower > drainamount then
-            local effect = player:getStatusEffect(xi.effect.STONESKIN)
-            effect:setPower(effect:getPower() - drainamount) -- Fixes the status effect so when it ends it uses the new power instead of old.
-            player:delMod(xi.mod.STONESKIN, drainamount)     -- Removes the amount from the mod.
+            stoneskin:setPower(stoneskinPower - drainamount) -- Fixes the status effect so when it ends it uses the new power instead of old.
 
         -- If stoneskin is as powerful or less than the amount to be drained.
         else
@@ -701,19 +692,25 @@ xi.job_utils.dragoon.useDamageBreath = function(wyvern, target, skill, action, d
         wyvern:addTP(strafeMeritPower * 5) -- add 50 TP per merit with augmented AF2 legs
     end
 
-    local bonusMacc          = strafeMeritPower + master:getMod(xi.mod.WYVERN_BREATH_MACC)
-    local element            = damageType - xi.damageType.ELEMENTAL
-    local _, skillchainCount = xi.magicburst.formMagicBurst(target, element)
+    local element         = damageType - xi.damageType.ELEMENTAL
+    local skillchainCount = xi.combat.magicBurst.getMagicBurstTier(target, element)
 
     -- Breath accuracy is directly affected by a wyvern's current HP, but no data exists.
-    local resist              = xi.combat.magicHitRate.calculateResistRate(wyvern, target, 0, 0, 0, element, 0, 0, bonusMacc)
+    local maccParams =
+    {
+        magicalElement = damageType - xi.damageType.ELEMENTAL,
+        magicBurstTier = skillchainCount,
+        bonusMacc      = strafeMeritPower + master:getMod(xi.mod.WYVERN_BREATH_MACC),
+    }
+
+    local resist              = xi.combat.magicHitRate.calculateResistRate(wyvern, target, maccParams)
     local sdt                 = xi.combat.damage.magicalElementSDT(target, element)
-    local absorb              = xi.spells.damage.calculateAbsorption(target, element, true)
-    local nullify             = xi.spells.damage.calculateNullification(target, element, true, true)
+    local absorb              = xi.spells.damage.calculateAbsorption(target, element, false, true, false, true)
+    local nullify             = xi.spells.damage.calculateNullification(target, element, false, true, false, true)
     local magicBurst          = 1
 
     if skillchainCount > 0 then
-        magicBurst = xi.spells.damage.calculateIfMagicBurst(target, element, skillchainCount)
+        magicBurst = xi.spells.damage.calculateIfMagicBurst(wyvern, target, element, skillchainCount)
     end
 
     -- It appears that MB breaths don't do more damage based on testing.

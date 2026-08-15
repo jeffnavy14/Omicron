@@ -22,15 +22,14 @@
 #ifndef _MODULEUTILS_H
 #define _MODULEUTILS_H
 
-#include "common/database.h"
-#include "common/logging.h"
 #include "lua/luautils.h"
 
 #include <string>
-#include <vector>
+#include <string_view>
 
 // Forward declare
 class CPPModule;
+
 namespace moduleutils
 {
 
@@ -58,6 +57,7 @@ public:
     virtual void OnCharZoneIn(CCharEntity* PChar) {};
     virtual void OnCharZoneOut(CCharEntity* PChar) {};
     virtual void OnPushPacket(CCharEntity* PChar, const std::unique_ptr<CBasicPacket>& packet) {};
+
     virtual auto OnIncomingPacket(MapSession* session, CCharEntity* PChar, CBasicPacket& packet) -> bool
     {
         return false;
@@ -110,8 +110,12 @@ auto OnIncomingPacket(MapSession* PSession, CCharEntity* PChar, CBasicPacket& pa
 
 void LoadLuaModules(IPP mapIPP);
 void CleanupLuaModules();
+
+// Empties both Lua module registries.
+void ClearLuaModuleRegistries();
 void TryApplyLuaModules(const std::vector<std::string>& parts, bool isReload = false);
 void TryApplyRemainingLuaModules();
+auto GetDataModules(const std::string_view name, const std::string_view extension) -> std::vector<std::string>;
 void ReportLuaModuleUsage();
 
 }; // namespace moduleutils

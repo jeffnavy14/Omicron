@@ -71,8 +71,6 @@ local questItemSets =
 
 quest.reward =
 {
-    fame = 50,
-    fameArea = xi.fameArea.JEUNO,
     gil = 4000,
     title = xi.title.DUCAL_DUPE,
 }
@@ -93,7 +91,7 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     local warriorsPathComplete = player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.THE_WARRIORS_PATH) and 1 or 0
-                    local questItemSet = math.random(#questItemSets)
+                    local questItemSet = math.randomInt(1, #questItemSets)
                     quest:setVar(player, 'ItemSet', questItemSet)
                     return quest:progressEvent(10057, {
                         [0] = warriorsPathComplete,
@@ -163,6 +161,9 @@ quest.sections =
             {
                 [10058] = function(player, csid, option, npc)
                     if quest:complete(player) then
+                        player:addFame(xi.fameArea.SANDORIA, 5)
+                        player:addFame(xi.fameArea.BASTOK, 5)
+                        player:addFame(xi.fameArea.WINDURST, 5)
                         player:confirmTrade()
                         quest:setMustZone(player)
                     end
@@ -202,7 +203,7 @@ quest.sections =
                         return quest:progressEvent(10060, { [0] = warriorsPathComplete })
                     else
                         -- Player has the quest active and needs the item list again
-                        questItemSet = math.random(#questItemSets)
+                        questItemSet = math.randomInt(1, #questItemSets)
                         quest:setVar(player, 'ItemSet', questItemSet)
                         return quest:progressEvent(10057, {
                             [0] = warriorsPathComplete,
@@ -245,7 +246,9 @@ quest.sections =
                         quest:setMustZone(player)
                         quest:setVar(player, 'ItemSet', 0)
                         npcUtil.giveCurrency(player, 'gil', 4000)
-                        player:addFame(xi.fameArea.JEUNO, 50)
+                        player:addFame(xi.fameArea.SANDORIA, 5)
+                        player:addFame(xi.fameArea.BASTOK, 5)
+                        player:addFame(xi.fameArea.WINDURST, 5)
                     end
                 end,
             },

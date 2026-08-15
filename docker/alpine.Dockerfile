@@ -3,7 +3,7 @@
 ########
 # Base #
 ########
-ARG BASE_TAG=3.22
+ARG BASE_TAG=3.24
 FROM --platform=$BUILDPLATFORM alpine:$BASE_TAG AS base
 
 # Install runtime dependencies.
@@ -12,6 +12,7 @@ apk --update-cache add \
     bash \
     binutils \
     git \
+    libdwarf \
     lua5.1-dev \
     luajit \
     mariadb-client \
@@ -56,7 +57,7 @@ SHELL ["/bin/bash", "-c"]
 ###########
 FROM base AS staging
 
-ARG LLVM_VERSION=20
+ARG LLVM_VERSION=22
 
 # Install build dependencies.
 RUN --mount=type=cache,target=/var/cache/apk,id=cache-apk,sharing=locked <<EOF
@@ -65,13 +66,15 @@ apk --update-cache add \
     ccache \
     cmake \
     g++ \
+    libdwarf-dev \
     linux-headers \
     luajit-dev \
     make \
     mariadb-dev \
+    ninja-build \
+    ninja-is-really-ninja \
     openssl-dev \
     python3-dev \
-    samurai \
     zeromq-dev \
     zlib-dev \
     zstd-dev
@@ -124,6 +127,7 @@ if [[ $COMPILER == clang* || $ENABLE_CLANG_TIDY == ON ]]; then
         clang$LLVM_VERSION \
         clang$LLVM_VERSION-extra-tools \
         compiler-rt \
+        lld$LLVM_VERSION \
         llvm$LLVM_VERSION
     apk cache clean
 fi
@@ -139,7 +143,6 @@ COPY --chown=$UNAME:$UGROUP \
     --exclude=.git \
     --exclude=navmeshes/** \
     --exclude=ximeshes/** \
-    --exclude=scripts \
     --exclude=sql \
     . /server
 
@@ -148,11 +151,20 @@ ARG TRACY_ENABLE=OFF
 ARG PCH_ENABLE=ON
 ARG WARNINGS_AS_ERRORS=TRUE
 
+# A toolchain or base image bump must change this id, or the new compiler reuses old objects.
+# BASE_TAG is a pre-FROM global, so it needs re-declaring to be in scope here.
+ARG BASE_TAG
+ARG BUILD_CACHE_ID=$BASE_TAG-$COMPILER$LLVM_VERSION-$CMAKE_BUILD_TYPE-tracy$TRACY_ENABLE-pch$PCH_ENABLE
+
 ENV CCACHE_DIR=/xiadmin/.ccache
-RUN --mount=type=cache,target=/xiadmin/build,uid=$UID,gid=$GID,id=build-alpine-$COMPILER-$CMAKE_BUILD_TYPE-tracy$TRACY_ENABLE-pch$PCH_ENABLE \
-    --mount=type=cache,target=/xiadmin/.ccache,uid=$UID,gid=$GID,id=ccache-alpine-$COMPILER-$CMAKE_BUILD_TYPE-tracy$TRACY_ENABLE-pch$PCH_ENABLE \
+ENV CCACHE_MAXSIZE=2G
+# mtime+size is the default, and a same-size toolchain swap defeats it.
+ENV CCACHE_COMPILERCHECK=content
+# Without this ccache reports every PCH compilation as uncacheable.
+ENV CCACHE_SLOPPINESS=pch_defines,time_macros
+RUN --mount=type=cache,target=/xiadmin/build,uid=$UID,gid=$GID,id=build-alpine-$BUILD_CACHE_ID \
+    --mount=type=cache,target=/xiadmin/.ccache,uid=$UID,gid=$GID,id=ccache-alpine-$BUILD_CACHE_ID \
     --mount=type=bind,source=.git,target=/server/.git \
-    --mount=type=bind,source=scripts,target=/server/scripts \
     --mount=type=bind,source=sql,target=/server/sql <<EOF
 set -eo pipefail
 cp -p /xiadmin/build/version.cpp /server/src/common/ 2> /dev/null || true
@@ -161,6 +173,7 @@ cp -p /xiadmin/build/xi_* /server/ 2> /dev/null || true
 if [[ $COMPILER == clang* || $ENABLE_CLANG_TIDY == ON ]]; then
     export CC=/usr/bin/clang-$LLVM_VERSION
     export CXX=/usr/bin/clang++-$LLVM_VERSION
+    export LDFLAGS="-fuse-ld=lld"
 fi
 
 cmake -G Ninja -S /server -B /xiadmin/build --fresh \
@@ -188,13 +201,14 @@ USER $UNAME
 
 COPY --chown=$UNAME:$UGROUP LICENSE /server/LICENSE
 COPY --chown=$UNAME:$UGROUP res/compress.dat res/decompress.dat /server/res/
-COPY --chown=$UNAME:$UGROUP scripts /server/scripts
 COPY --chown=$UNAME:$UGROUP sql /server/sql
 COPY --chown=$UNAME:$UGROUP tools /server/tools
 COPY --chown=$UNAME:$UGROUP modules /server/modules
 COPY --chown=$UNAME:$UGROUP settings /server/settings
 
 COPY --chown=$UNAME:$UGROUP --from=staging $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --chown=$UNAME:$UGROUP --from=build /server/data /server/data
+COPY --chown=$UNAME:$UGROUP --from=build /server/scripts /server/scripts
 COPY --chown=$UNAME:$UGROUP --from=build /server/xi_* /server/
 COPY --chown=$UNAME:$UGROUP --from=build /server/build.log /server/build.log
 

@@ -2,6 +2,8 @@
 -- Area: Spire of Vahzl
 --  Mob: Repiner
 -----------------------------------
+mixins = { require('scripts/mixins/families/empty_terroanima') }
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
 
@@ -25,7 +27,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.PROMYVION_BRUME_2)
     end
 
-    return tpMoves[math.random(#tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 return entity

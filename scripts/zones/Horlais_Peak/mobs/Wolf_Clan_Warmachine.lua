@@ -5,7 +5,8 @@
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobDeath = function(mob, player, optParams)
+entity.onMobInitialize = function(mob)
+    mob:addImmunity(xi.immunity.PETRIFY)
 end
 
 return entity

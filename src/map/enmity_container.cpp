@@ -19,18 +19,14 @@
 ===========================================================================
 */
 
-#include "common/logging.h"
 #include "common/settings.h"
 #include "common/utils.h"
 
-#include "ai/ai_container.h"
-#include "alliance.h"
 #include "enmity_container.h"
-#include "entities/battleentity.h"
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
+#include "entities/battle_entity.h"
+#include "entities/char_entity.h"
+#include "entities/mob_entity.h"
 #include "notoriety_container.h"
-#include "packets/entity_update.h"
 #include "status_effect_container.h"
 #include "utils/battleutils.h"
 #include "utils/zoneutils.h"
@@ -138,15 +134,15 @@ float CEnmityContainer::CalculateEnmityBonus(CBattleEntity* PEntity)
 {
     TracyZoneScoped;
 
-    int enmityBonus = PEntity->getMod(Mod::ENMITY);
+    int enmityBonus = PEntity->getMod(xi::Mod::ENMITY);
 
     if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
     {
-        enmityBonus += PChar->PMeritPoints->GetMeritValue(MERIT_ENMITY_INCREASE, PChar) - PChar->PMeritPoints->GetMeritValue(MERIT_ENMITY_DECREASE, PChar);
+        enmityBonus += PChar->PMeritPoints->GetMeritValue(xi::Merit::EnmityIncrease, PChar) - PChar->PMeritPoints->GetMeritValue(xi::Merit::EnmityDecrease, PChar);
 
-        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SOULEATER))
+        if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Souleater))
         {
-            enmityBonus -= PChar->PMeritPoints->GetMeritValue(MERIT_MUTED_SOUL, PChar);
+            enmityBonus -= PChar->PMeritPoints->GetMeritValue(xi::Merit::MutedSoul, PChar);
         }
     }
 
@@ -180,13 +176,13 @@ void CEnmityContainer::UpdateEnmity(CBattleEntity* PEntity, int32 CE, int32 VE, 
     // Apply TH only if this was a direct action
     if (directAction)
     {
-        int16 THlevel = std::min<int16>(8, PEntity->getMod(Mod::TREASURE_HUNTER));
-        int16 GFlevel = PEntity->getMod(Mod::GILFINDER); // Is there a cap? Theoretical GF level cap could be GF 8 for 128/256 + 8*16 = 256/256
+        int16 THlevel = std::min<int16>(8, PEntity->getMod(xi::Mod::TREASURE_HUNTER));
+        int16 GFlevel = PEntity->getMod(xi::Mod::GILFINDER); // Is there a cap? Theoretical GF level cap could be GF 8 for 128/256 + 8*16 = 256/256
 
         // Enforce TH8 as max for THF main and TH4 as non-THF main
-        if (PEntity->GetMJob() != JOB_THF)
+        if (PEntity->GetMJob() != xi::Job::THF)
         {
-            THlevel = std::min<int16>(4, PEntity->getMod(Mod::TREASURE_HUNTER));
+            THlevel = std::min<int16>(4, PEntity->getMod(xi::Mod::TREASURE_HUNTER));
         }
 
         if (m_EnmityHolder->m_THLvl < THlevel)
@@ -452,7 +448,7 @@ void CEnmityContainer::UpdateEnmityFromAttack(CBattleEntity* PEntity, int32 Dama
 
     if (auto enmity_obj = m_EnmityList.find(PEntity->id); enmity_obj != m_EnmityList.end())
     {
-        float reduction = (100.0f - std::min<int16>(PEntity->getMod(Mod::ENMITY_LOSS_REDUCTION), 100)) / 100.0f;
+        float reduction = (100.0f - std::min<int16>(PEntity->getMod(xi::Mod::ENMITY_LOSS_REDUCTION), 100)) / 100.0f;
         int32 CE        = (int32)(-1800.0f * Damage / PEntity->GetMaxHP() * reduction);
 
         enmity_obj->second.CE = std::clamp(enmity_obj->second.CE + CE, 0, EnmityCap);
@@ -488,9 +484,9 @@ CBattleEntity* CEnmityContainer::GetHighestEnmity()
             {
                 // Deal with ties by preferring current battle target
                 // Check if there is a tie, the current highest entity is valid, the mob has a battle target,
-                if (Enmity == HighestEnmity && highest != m_EnmityList.end() && m_EnmityHolder->GetBattleTargetID() != 0 &&
+                if (Enmity == HighestEnmity && highest != m_EnmityList.end() && m_EnmityHolder->battleTarget().isSet() &&
                     // the current highest entity is the current battle target
-                    highest->second.PEnmityOwner && highest->second.PEnmityOwner->targid == m_EnmityHolder->GetBattleTargetID())
+                    highest->second.PEnmityOwner && m_EnmityHolder->battleTarget() == highest->second.PEnmityOwner)
                 {
                     continue;
                 }
@@ -538,7 +534,7 @@ bool CEnmityContainer::IsWithinEnmityRange(CBattleEntity* PEntity) const
     {
         return false;
     }
-    float maxRange = m_EnmityHolder->m_Type == MOBTYPE_NOTORIOUS ? 28.0f : 25.0f;
+    float maxRange = m_EnmityHolder->m_Type == xi::MobType::Notorious ? 28.0f : 25.0f;
     return isWithinDistance(m_EnmityHolder->loc.p, PEntity->loc.p, maxRange);
 }
 

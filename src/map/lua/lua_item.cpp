@@ -25,15 +25,9 @@
 #include "items/exdata.h"
 #include "items/item.h"
 #include "items/item_equipment.h"
-#include "items/item_fish.h"
-#include "items/item_flowerpot.h"
 #include "items/item_furnishing.h"
-#include "items/item_general.h"
-#include "items/item_linkshell.h"
 #include "items/item_usable.h"
 #include "items/item_weapon.h"
-#include "map/enums/item_state.h"
-#include "utils/itemutils.h"
 
 CLuaItem::CLuaItem(CItem* PItem)
 : m_readItem(PItem)
@@ -130,7 +124,7 @@ auto CLuaItem::state() const -> ItemState
     return m_readItem->state();
 }
 
-void CLuaItem::setReservedValue(uint8 reserved)
+void CLuaItem::setReservedValue(uint32 reserved)
 {
     if (!m_writeItem)
     {
@@ -140,7 +134,7 @@ void CLuaItem::setReservedValue(uint8 reserved)
     m_writeItem->setReserve(reserved);
 }
 
-uint8 CLuaItem::getReservedValue()
+auto CLuaItem::getReservedValue() -> uint32
 {
     return m_readItem->getReserve();
 }
@@ -163,8 +157,8 @@ uint16 CLuaItem::getReqLvl()
 
 int16 CLuaItem::getMod(uint16 modID)
 {
-    auto* PItem = static_cast<const CItemEquipment*>(m_readItem);
-    Mod   mod   = static_cast<Mod>(modID);
+    auto*   PItem = static_cast<const CItemEquipment*>(m_readItem);
+    xi::Mod mod   = static_cast<xi::Mod>(modID);
 
     return PItem->getModifier(mod);
 }
@@ -176,8 +170,8 @@ void CLuaItem::addMod(uint16 modID, int16 power)
         return;
     }
 
-    auto* PItem = static_cast<CItemEquipment*>(m_writeItem);
-    Mod   mod   = static_cast<Mod>(modID);
+    auto*   PItem = static_cast<CItemEquipment*>(m_writeItem);
+    xi::Mod mod   = static_cast<xi::Mod>(modID);
 
     PItem->addModifier(CModifier(mod, power));
 }
@@ -189,8 +183,8 @@ void CLuaItem::delMod(uint16 modID, int16 power)
         return;
     }
 
-    auto* PItem = static_cast<CItemEquipment*>(m_writeItem);
-    Mod   mod   = static_cast<Mod>(modID);
+    auto*   PItem = static_cast<CItemEquipment*>(m_writeItem);
+    xi::Mod mod   = static_cast<xi::Mod>(modID);
 
     PItem->addModifier(CModifier(mod, -power));
 }
@@ -213,7 +207,7 @@ auto CLuaItem::getAugment(uint8 slot) -> sol::table
 uint8 CLuaItem::getSkillType()
 {
     auto* PItem = dynamic_cast<const CItemWeapon*>(m_readItem);
-    return PItem ? PItem->getSkillType() : -1;
+    return PItem ? static_cast<uint8>(PItem->getSkillType()) : -1;
 }
 
 uint16 CLuaItem::getWeaponskillPoints()

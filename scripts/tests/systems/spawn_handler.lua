@@ -8,22 +8,36 @@ describe('Spawn Handler', function()
 
     describe('basic respawns', function()
         it('respawns a killed mob after its timer expires', function()
-            local mob = player.entities:moveTo('Wild_Rabbit')
+            local mob = player.entities:moveTo('Forest_Funguar')
             player:claimAndKillMob(mob)
-            xi.test.world:skipTime(65)
+            xi.test.world:skipTime(305)
             xi.test.world:tick(xi.tick.SPAWN)
             mob.assert:isSpawned()
         end)
 
+        it('does not inherit queued actions from its previous life', function()
+            local mob = player.entities:moveTo('Forest_Funguar')
+
+            -- deadline well past the despawn, so the only way it can leave the queue is the respawn dropping it
+            mob:queue(60000, function()
+            end)
+
+            assert(not mob:actionQueueEmpty(), 'precondition: the action is queued')
+
+            mob:respawn()
+
+            assert(mob:actionQueueEmpty(), 'a queued action outlived the respawn')
+        end)
+
         it('does not respawn a mob before its timer expires', function()
-            local mob = player.entities:moveTo('Wild_Rabbit')
+            local mob = player.entities:moveTo('Forest_Funguar')
             player:claimAndKillMob(mob)
             xi.test.world:tick(xi.tick.SPAWN)
             mob.assert.no:isSpawned()
         end)
 
         it('respawns after deaggro with 60 second timer', function()
-            local mob = player.entities:moveTo('Wild_Sheep')
+            local mob = player.entities:moveTo('River_Crab')
             mob:setPos(mob:getXPos() + 200, mob:getYPos(), mob:getZPos())
             mob:disengage()
 
@@ -107,18 +121,20 @@ describe('Spawn Handler', function()
         end)
 
         it('spawns evening mobs during evening', function()
+            player:gotoZone(xi.zone.YUGHOTT_GROTTO)
             xi.test.world:setVanaTime(18, 0)
 
-            local mob = player.entities:moveTo('Ding_Bats')
+            local mob = player.entities:moveTo('Grotto_Bats')
             mob:setRespawnTime(1)
             xi.test.world:tick(xi.tick.SPAWN)
             mob.assert:isSpawned()
         end)
 
         it('blocks evening mobs during day', function()
+            player:gotoZone(xi.zone.YUGHOTT_GROTTO)
             xi.test.world:setVanaTime(12, 0)
 
-            local mob = player.entities:moveTo('Ding_Bats')
+            local mob = player.entities:moveTo('Grotto_Bats')
             mob:despawn()
             mob:setRespawnTime(1)
             xi.test.world:tick(xi.tick.SPAWN)
@@ -217,7 +233,7 @@ describe('Spawn Handler', function()
 
     describe('spawn wave window', function()
         it('only spawns mobs within the 15 second window', function()
-            local mob = player.entities:moveTo('Wild_Rabbit')
+            local mob = player.entities:moveTo('Forest_Funguar')
             mob:setRespawnTime(50)
             mob:despawn()
 
@@ -260,19 +276,22 @@ describe('Spawn Handler', function()
 
             xolotl.assert:isSpawned()
 
-            -- Move to dawn (4:00) - should trigger natural despawn
-            xi.test.world:setVanaTime(4, 0)
-            xi.test.world:tick(xi.tick.TIME)
-            for _ = 1, 10 do
-                xi.test.world:skipTime(5)
+            -- Advance hour by hour until the window closes and the natural despawn fires.
+            local despawned = false
+            for _ = 1, 24 do
+                xi.test.world:tick(xi.tick.VANA_HOUR)
+                xi.test.world:skipTime(1)
                 xi.test.world:tickEntity(xolotl)
+                if not xolotl:isSpawned() then
+                    despawned = true
+                    break
+                end
             end
 
-            xolotl.assert.no:isSpawned()
+            assert(despawned, 'Xolotl did not despawn after its window closed')
 
             -- Next night it should spawn
             xi.test.world:setVanaTime(22, 0)
-            xolotl:setRespawnTime(1)
             xi.test.world:tick(xi.tick.SPAWN)
 
             xolotl.assert:isSpawned()
@@ -344,6 +363,131 @@ describe('Spawn Handler', function()
             for _, crab in ipairs(knightCrabs) do
                 crab.assert:isSpawned()
             end
+        end)
+    end)
+
+    -- Per-mob spawn windows: spawnHour/despawnHour on mob_spawn_points.
+    describe('per-mob spawn windows', function()
+        -- Carpenters' Landing slot 3: two Bulldog Bats, 20:00-06:00, nothing else in the slot.
+        local batSlot = 3
+        -- West Ronfaure slot 3: Ding Bats (18:00-04:00) sharing with a Wild Rabbit that has no window.
+        local sharedSlot = 3
+
+        local function isBat(mob)
+            return string.find(mob:getName(), 'Bat') ~= nil
+        end
+
+        local function anyBatUp(slot)
+            for _, mob in ipairs(slot) do
+                if isBat(mob) and mob:isSpawned() then
+                    return true
+                end
+            end
+
+            return false
+        end
+
+        -- Despawn the slot and let the wave re-roll it under the current time.
+        local function reroll(slot)
+            for _, mob in ipairs(slot) do
+                mob:despawn()
+            end
+
+            for _ = 1, 20 do
+                xi.test.world:tick(xi.tick.SPAWN)
+            end
+        end
+
+        it('spawns a bat inside its window', function()
+            player:gotoZone(xi.zone.CARPENTERS_LANDING)
+            xi.test.world:setVanaTime(22, 0)
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.CARPENTERS_LANDING, batSlot)
+            reroll(slot)
+
+            assert(anyBatUp(slot), 'no bat spawned in window')
+        end)
+
+        it('does not spawn a bat outside its window', function()
+            player:gotoZone(xi.zone.CARPENTERS_LANDING)
+            xi.test.world:setVanaTime(12, 0)
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.CARPENTERS_LANDING, batSlot)
+            reroll(slot)
+
+            assert(not anyBatUp(slot), 'bat spawned outside its window')
+        end)
+
+        it('handles a window that wraps past midnight', function()
+            player:gotoZone(xi.zone.CARPENTERS_LANDING)
+            xi.test.world:setVanaTime(2, 0) -- inside 20:00-06:00
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.CARPENTERS_LANDING, batSlot)
+            reroll(slot)
+
+            assert(anyBatUp(slot), 'bat did not spawn after midnight')
+        end)
+
+        it('despawns a bat when its window closes', function()
+            player:gotoZone(xi.zone.CARPENTERS_LANDING)
+            xi.test.world:setVanaTime(22, 0)
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.CARPENTERS_LANDING, batSlot)
+            reroll(slot)
+            assert(anyBatUp(slot), 'no bat up before closing the window')
+
+            -- Advance hour by hour; onGameHour despawns the bat once its window closes.
+            local despawned = false
+            for _ = 1, 24 do
+                xi.test.world:tick(xi.tick.VANA_HOUR)
+                xi.test.world:skipTime(1)
+                for _, mob in ipairs(slot) do
+                    xi.test.world:tickEntity(mob)
+                end
+
+                if not anyBatUp(slot) then
+                    despawned = true
+                    break
+                end
+            end
+
+            assert(despawned, 'bat still up after its window closed')
+        end)
+
+        it('blocks the bat but keeps its slot-mate during the day', function()
+            xi.test.world:setVanaTime(12, 0)
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.WEST_RONFAURE, sharedSlot)
+            reroll(slot)
+
+            local mateUp = false
+            for _, mob in ipairs(slot) do
+                if isBat(mob) then
+                    assert(not mob:isSpawned(), 'bat spawned during the day')
+                else
+                    mateUp = mateUp or mob:isSpawned()
+                end
+            end
+
+            assert(mateUp, 'slot sat empty during the day')
+        end)
+
+        it('lets the bat win its shared slot at night', function()
+            xi.test.world:setVanaTime(22, 0)
+
+            local slot = xi.test.world:getSpawnSlot(xi.zone.WEST_RONFAURE, sharedSlot)
+
+            -- Bat and slot-mate are both eligible at night, so re-roll until the bat wins.
+            local won = false
+            for _ = 1, 30 do
+                reroll(slot)
+                if anyBatUp(slot) then
+                    won = true
+                    break
+                end
+            end
+
+            assert(won, 'bat never won its shared slot at night')
         end)
     end)
 

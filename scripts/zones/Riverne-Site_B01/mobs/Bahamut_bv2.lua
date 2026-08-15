@@ -55,7 +55,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
     mob:setMobMod(xi.mobMod.SOUND_RANGE, 20)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 45)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 156)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 156)
     mob:setMod(xi.mod.UFASTCAST, 15)
     mob:setMod(xi.mod.ATT, 376)
     mob:setMod(xi.mod.INT, 21)
@@ -117,7 +117,7 @@ entity.onMobFight = function(mob, target)
             end)
 
         elseif flarePhase < 9 then
-            mob:messageText(mob, ID.text.BAHAMUT_TAUNT + (math.random(0, 1) == 0 and 2 or 14))
+            mob:messageText(mob, ID.text.BAHAMUT_TAUNT + (math.randomInt(0, 1) == 0 and 2 or 14))
             mob:setLocalVar('messagePlayed', 2)
 
         elseif flarePhase == 9 then
@@ -201,7 +201,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
     if mob:getLocalVar('flarePhase') == 10 then
         return xi.mobSkill.TERAFLARE
     else
-        return skillList[math.random(1, #skillList)]
+        return skillList[math.randomInt(1, #skillList)]
     end
 end
 
@@ -220,7 +220,10 @@ entity.onMobSpellChoose = function(mob, target, spellId)
         [10] = { xi.magic.spell.PHALANX,   mob,    false, xi.action.type.ENHANCING_FORCE_SELF, xi.effect.PHALANX,   0, 100 },
     }
 
-    if target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) then
+    if
+        target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) and
+        mob:isEngaged()
+    then
         table.insert(spellList, #spellList + 1, { xi.magic.spell.DISPELGA, target, false, xi.action.type.NONE, nil, 0, 100 })
     end
 

@@ -22,22 +22,21 @@
 #include "puppetutils.h"
 #include "battleutils.h"
 #include "charutils.h"
-#include "entities/automatonentity.h"
+#include "entities/automaton_entity.h"
 #include "enums/automaton.h"
 #include "items/item_puppet.h"
 #include "itemutils.h"
-#include "job_points.h"
 #include "lua/luautils.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "petutils.h"
 #include "status_effect_container.h"
-#include "zoneutils.h"
 
 namespace puppetutils
 {
 
 namespace
 {
+
 // Returns automaton model ID for given frame and head
 auto calculateAutomatonModel(const AutomatonFrame frame, const AutomatonHead head) -> uint16
 {
@@ -115,6 +114,7 @@ auto calculateAutomatonModel(const AutomatonFrame frame, const AutomatonHead hea
 
     return 0x07B9; // Fallback: Harlequin frame + Harlequin head
 }
+
 } // namespace
 
 void LoadAutomaton(CCharEntity* PChar)
@@ -130,33 +130,31 @@ void LoadAutomaton(CCharEntity* PChar)
     {
         db::extractFromBlob(rset, "unlocked_attachments", PChar->m_unlockedAttachments);
 
-        if (PChar->GetMJob() == JOB_PUP || PChar->GetSJob() == JOB_PUP)
+        if (PChar->GetMJob() == xi::Job::PUP || PChar->GetSJob() == xi::Job::PUP)
         {
-            PChar->automatonInfo.m_automatonName = rset->get<std::string>("name");
-
-            if (PChar->automatonInfo.m_automatonName.empty())
+            if (const auto name = rset->get<std::string>("name"); !name.empty())
             {
-                PChar->automatonInfo.m_automatonName = "Automaton";
+                PChar->automatonInfo_.automatonName = name;
             }
 
-            automaton_equip_t tempEquip{};
+            AutomatonEquip tempEquip{};
             db::extractFromBlob(rset, "equipped_attachments", tempEquip);
 
             // If any of this happens then the Automaton failed to load properly and should just reset (Should only occur with older characters or if DB is
             // missing)
-            if (tempEquip.Head < AutomatonHead::Harlequin ||
-                tempEquip.Head > AutomatonHead::Spiritreaver ||
-                tempEquip.Frame < AutomatonFrame::Harlequin ||
-                tempEquip.Frame > AutomatonFrame::Stormwaker)
+            if (tempEquip.head < AutomatonHead::Harlequin ||
+                tempEquip.head > AutomatonHead::Spiritreaver ||
+                tempEquip.frame < AutomatonFrame::Harlequin ||
+                tempEquip.frame > AutomatonFrame::Stormwaker)
             {
                 PChar->setAutomatonHead(AutomatonHead::Harlequin);
-                tempEquip.Head = AutomatonHead::Harlequin;
+                tempEquip.head = AutomatonHead::Harlequin;
                 PChar->setAutomatonFrame(AutomatonFrame::Harlequin);
-                tempEquip.Frame = AutomatonFrame::Harlequin;
+                tempEquip.frame = AutomatonFrame::Harlequin;
 
                 for (int i = 0; i < 12; i++)
                 {
-                    tempEquip.Attachments[i] = 0;
+                    tempEquip.attachments[i] = 0;
                 }
 
                 for (int i = 0; i < 6; i++)
@@ -169,34 +167,34 @@ void LoadAutomaton(CCharEntity* PChar)
 
                 for (int i = 0; i < 8; i++)
                 {
-                    PChar->automatonInfo.m_ElementEquip[i] = 0;
+                    PChar->automatonInfo_.elementEquip[i] = 0;
                 }
             }
 
             // Add the elemental bonus before we set the head and frame
-            PChar->setAutomatonElementalCapacityBonus(PChar->getMod(Mod::AUTO_ELEM_CAPACITY));
+            PChar->setAutomatonElementalCapacityBonus(PChar->getMod(xi::Mod::AUTO_ELEM_CAPACITY));
 
-            setHead(PChar, tempEquip.Head);
-            setFrame(PChar, tempEquip.Frame);
+            setHead(PChar, tempEquip.head);
+            setFrame(PChar, tempEquip.frame);
 
             petutils::CalculateAutomatonStats(PChar, PChar->PPet);
 
             // Always load Optic Fiber and Optic Fiber II first
             for (int i = 0; i < 12; i++)
             {
-                if (static_cast<AutomatonAttachment>(tempEquip.Attachments[i]) == AutomatonAttachment::OpticFiber ||
-                    static_cast<AutomatonAttachment>(tempEquip.Attachments[i]) == AutomatonAttachment::OpticFiberII)
+                if (static_cast<AutomatonAttachment>(tempEquip.attachments[i]) == AutomatonAttachment::OpticFiber ||
+                    static_cast<AutomatonAttachment>(tempEquip.attachments[i]) == AutomatonAttachment::OpticFiberII)
                 {
-                    setAttachment(PChar, i, tempEquip.Attachments[i]);
+                    setAttachment(PChar, i, tempEquip.attachments[i]);
                 }
             }
 
             for (int i = 0; i < 12; i++)
             {
-                if (static_cast<AutomatonAttachment>(tempEquip.Attachments[i]) != AutomatonAttachment::OpticFiber &&
-                    static_cast<AutomatonAttachment>(tempEquip.Attachments[i]) != AutomatonAttachment::OpticFiberII)
+                if (static_cast<AutomatonAttachment>(tempEquip.attachments[i]) != AutomatonAttachment::OpticFiber &&
+                    static_cast<AutomatonAttachment>(tempEquip.attachments[i]) != AutomatonAttachment::OpticFiberII)
                 {
-                    setAttachment(PChar, i, tempEquip.Attachments[i]);
+                    setAttachment(PChar, i, tempEquip.attachments[i]);
                 }
             }
         }
@@ -214,12 +212,12 @@ void SaveAttachments(CCharEntity* PChar)
 
 void SaveAutomaton(CCharEntity* PChar)
 {
-    if (PChar->GetMJob() == JOBTYPE::JOB_PUP || PChar->GetSJob() == JOBTYPE::JOB_PUP)
+    if (PChar->GetMJob() == xi::Job::PUP || PChar->GetSJob() == xi::Job::PUP)
     {
         db::preparedStmt("UPDATE char_pet SET "
                          "equipped_attachments = ? "
                          "WHERE charid = ? LIMIT 1",
-                         PChar->automatonInfo.m_Equip,
+                         PChar->automatonInfo_.equip,
                          PChar->id);
     }
 }
@@ -407,7 +405,7 @@ void setFrame(CCharEntity* PChar, AutomatonFrame frame)
     }
 
     PChar->setAutomatonFrame(frame);
-    PChar->automatonInfo.automatonLook.modelid = calculateAutomatonModel(frame, PChar->getAutomatonHead());
+    PChar->automatonInfo_.automatonLook.modelid = calculateAutomatonModel(frame, PChar->getAutomatonHead());
 
     for (int element = 0; element < 8; element++)
     {
@@ -450,7 +448,7 @@ void setHead(CCharEntity* PChar, AutomatonHead head)
     }
 
     PChar->setAutomatonHead(head);
-    PChar->automatonInfo.automatonLook.modelid = calculateAutomatonModel(PChar->getAutomatonFrame(), head);
+    PChar->automatonInfo_.automatonLook.modelid = calculateAutomatonModel(PChar->getAutomatonFrame(), head);
 
     for (int element = 0; element < 8; element++)
     {
@@ -458,7 +456,7 @@ void setHead(CCharEntity* PChar, AutomatonHead head)
     }
 }
 
-auto getSkillCap(const CCharEntity* PChar, const SKILLTYPE skill, const uint8 level) -> uint16
+auto getSkillCap(const CCharEntity* PChar, const xi::SkillType skill, const uint8 level) -> uint16
 {
     if (PChar == nullptr)
     {
@@ -466,76 +464,70 @@ auto getSkillCap(const CCharEntity* PChar, const SKILLTYPE skill, const uint8 le
         return 0;
     }
 
-    int8 rank = 0;
-    if (skill < SKILL_AUTOMATON_MELEE || skill > SKILL_AUTOMATON_MAGIC)
+    if (skill < xi::SkillType::AutomatonMelee || skill > xi::SkillType::AutomatonMagic)
     {
         return 0;
     }
-    switch (PChar->getAutomatonFrame())
+
+    const auto frame    = static_cast<uint8>(PChar->getAutomatonFrame());
+    const auto head     = static_cast<uint8>(PChar->getAutomatonHead());
+    const auto skillKey = static_cast<uint8>(skill);
+
+    const auto maybeSkillCaps = lua["xi"]["pets"]["automaton"]["skillCaps"].get<sol::optional<sol::table>>();
+    if (!maybeSkillCaps)
     {
-        default: // case Harlequin:
-            rank = 5;
-            break;
-        case AutomatonFrame::Valoredge:
-            if (skill == SKILL_AUTOMATON_MELEE)
-            {
-                rank = 2;
-            }
-            break;
-        case AutomatonFrame::Sharpshot:
-            if (skill == SKILL_AUTOMATON_MELEE)
-            {
-                rank = 6;
-            }
-            else if (skill == SKILL_AUTOMATON_RANGED)
-            {
-                rank = 3;
-            }
-            break;
-        case AutomatonFrame::Stormwaker:
-            if (skill == SKILL_AUTOMATON_MELEE)
-            {
-                rank = 7;
-            }
-            else if (skill == SKILL_AUTOMATON_MAGIC)
-            {
-                rank = 3;
-            }
-            break;
+        ShowError("puppetutils::getSkillCap() - Missing xi.pets.automaton.skillCaps");
+        return 0;
     }
 
-    switch (PChar->getAutomatonHead())
+    const auto& skillCaps = *maybeSkillCaps;
+
+    const auto maybeFrames = skillCaps["frames"].get<sol::optional<sol::table>>();
+    if (!maybeFrames)
     {
-        case AutomatonHead::Valoredge:
-            if (skill == SKILL_AUTOMATON_MELEE)
-            {
-                rank -= 1;
-            }
-            break;
-        case AutomatonHead::Sharpshot:
-            if (skill == SKILL_AUTOMATON_RANGED)
-            {
-                rank -= 1;
-            }
-            break;
-        case AutomatonHead::Stormwaker:
-            if (skill == SKILL_AUTOMATON_MELEE || skill == SKILL_AUTOMATON_MAGIC)
-            {
-                rank -= 1;
-            }
-            break;
-        case AutomatonHead::Soulsoother:
-        case AutomatonHead::Spiritreaver:
-            if (skill == SKILL_AUTOMATON_MAGIC)
-            {
-                rank -= 2;
-            }
-            break;
-        default:
-            break;
+        ShowError("puppetutils::getSkillCap() - Missing xi.pets.automaton.skillCaps.frames");
+        return 0;
     }
 
-    // only happens if a head gives bonus to a rank of 0 - making it G or F rank
+    const auto& frames = *maybeFrames;
+
+    const auto maybeFrameCaps = frames[frame].get<sol::optional<sol::table>>();
+    if (!maybeFrameCaps)
+    {
+        ShowErrorFmt("puppetutils::getSkillCap() - Missing automaton skill caps for frame {}", static_cast<uint16>(frame));
+        return 0;
+    }
+
+    const auto& frameCaps = *maybeFrameCaps;
+
+    // Grab the skill cap for the frame, then apply the bonus from the head if applicable.
+    int8 rank = 0;
+
+    const auto maybeFrameRank = frameCaps[skillKey].get<sol::optional<int8>>();
+    if (maybeFrameRank)
+    {
+        rank = *maybeFrameRank;
+    }
+
+    const auto maybeHeads = skillCaps["heads"].get<sol::optional<sol::table>>();
+    if (maybeHeads)
+    {
+        const auto& heads = *maybeHeads;
+
+        const auto maybeHeadCaps = heads[head].get<sol::optional<sol::table>>();
+        if (maybeHeadCaps)
+        {
+            const auto& headCaps = *maybeHeadCaps;
+
+            const auto maybeHeadRank = headCaps[skillKey].get<sol::optional<int8>>();
+            if (maybeHeadRank)
+            {
+                rank += *maybeHeadRank;
+            }
+        }
+    }
+
+    // Handle automaton frames with no native skill being combined with heads that give a bonus to that rank.
     if (rank < 0)
     {
         rank = 13 + rank;
@@ -544,7 +536,7 @@ auto getSkillCap(const CCharEntity* PChar, const SKILLTYPE skill, const uint8 le
     return battleutils::GetMaxSkill(rank, level > 99 ? 99 : level);
 }
 
-void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)
+void TrySkillUP(CAutomatonEntity* PAutomaton, xi::SkillType SkillID, uint8 lvl)
 {
     if (!PAutomaton->PMaster || PAutomaton->PMaster->objtype != TYPE_PC)
     {
@@ -553,9 +545,9 @@ void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)
     }
 
     auto* PChar = static_cast<CCharEntity*>(PAutomaton->PMaster);
-    if (getSkillCap(PChar, SkillID, PAutomaton->GetMLevel()) != 0 && !(PAutomaton->WorkingSkills.skill[SkillID] & 0x8000))
+    if (getSkillCap(PChar, SkillID, PAutomaton->GetMLevel()) != 0 && !(PAutomaton->WorkingSkills.skill[static_cast<uint8>(SkillID)] & 0x8000))
     {
-        const uint16 CurSkill = PChar->RealSkills.skill[SkillID];
+        const uint16 CurSkill = PChar->RealSkills.skill[static_cast<uint8>(SkillID)];
         uint16       MaxSkill = getSkillCap(PChar, SkillID, std::min(PAutomaton->GetMLevel(), lvl));
 
         const int16 Diff          = MaxSkill - CurSkill / 10;
@@ -568,7 +560,7 @@ void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)
             SkillUpChance = 0.5;
         }
 
-        SkillUpChance *= ((100.0f + PAutomaton->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.0f);
+        SkillUpChance *= ((100.0f + PAutomaton->getMod(xi::Mod::COMBAT_SKILLUP_RATE)) / 100.0f);
 
         if (Diff > 0 && random < SkillUpChance)
         {
@@ -625,19 +617,19 @@ void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)
             if (SkillAmount + CurSkill >= MaxSkill)
             {
                 SkillAmount = MaxSkill - CurSkill;
-                PAutomaton->WorkingSkills.skill[SkillID] |= 0x8000;
+                PAutomaton->WorkingSkills.skill[static_cast<uint8>(SkillID)] |= 0x8000;
             }
 
-            PChar->RealSkills.skill[SkillID] += SkillAmount;
-            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PAutomaton, PAutomaton, SkillID, SkillAmount, MsgBasic::SkillGain);
+            PChar->RealSkills.skill[static_cast<uint8>(SkillID)] += SkillAmount;
+            PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PAutomaton, PAutomaton, static_cast<uint8>(SkillID), SkillAmount, MsgBasic::SkillGain);
 
             if ((CurSkill / 10) < (CurSkill + SkillAmount) / 10) // if gone up a level
             {
-                PChar->WorkingSkills.skill[SkillID] += 1;
-                PAutomaton->WorkingSkills.skill[SkillID] += 1;
-                if (SkillID == SKILL_AUTOMATON_MAGIC)
+                PChar->WorkingSkills.skill[static_cast<uint8>(SkillID)] += 1;
+                PAutomaton->WorkingSkills.skill[static_cast<uint8>(SkillID)] += 1;
+                if (SkillID == xi::SkillType::AutomatonMagic)
                 {
-                    const uint16 amaSkill                     = PAutomaton->WorkingSkills.skill[SKILL_AUTOMATON_MAGIC];
+                    const uint16 amaSkill                     = PAutomaton->WorkingSkills.skill[static_cast<uint8>(xi::SkillType::AutomatonMagic)];
                     PAutomaton->WorkingSkills.automaton_magic = amaSkill;
                     PAutomaton->WorkingSkills.healing         = amaSkill;
                     PAutomaton->WorkingSkills.enhancing       = amaSkill;
@@ -647,24 +639,24 @@ void TrySkillUP(CAutomatonEntity* PAutomaton, SKILLTYPE SkillID, uint8 lvl)
                 }
 
                 charutils::SendExtendedJobPackets(PChar);
-                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PAutomaton, PAutomaton, SkillID, (CurSkill + SkillAmount) / 10, MsgBasic::SkillLevelUp);
+                PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PAutomaton, PAutomaton, static_cast<uint8>(SkillID), (CurSkill + SkillAmount) / 10, MsgBasic::SkillLevelUp);
             }
-            charutils::SaveCharSkills(PChar, SkillID);
+            charutils::SaveCharSkills(PChar, static_cast<uint8>(SkillID));
         }
     }
 }
 
-void CheckAttachmentsForManeuver(const CCharEntity* PChar, const EFFECT maneuver, const bool gain)
+void CheckAttachmentsForManeuver(const CCharEntity* PChar, const xi::StatusEffect maneuver, const bool gain)
 {
     auto* PAutomaton = dynamic_cast<CAutomatonEntity*>(PChar->PPet);
     if (PAutomaton)
     {
-        uint8 element = maneuver - EFFECT_FIRE_MANEUVER;
+        uint8 element = static_cast<uint8>(static_cast<uint16>(maneuver) - static_cast<uint16>(xi::StatusEffect::FireManeuver));
         for (uint8 i = 0; i < 12; i++)
         {
-            if (PAutomaton->getAttachment(i) != 0)
+            if (PAutomaton->attachment(i) != 0)
             {
-                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->getAttachment(i));
+                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->attachment(i));
 
                 if (PAttachment && (PAttachment->getElementSlots() >> (element * 4)) & 0xF)
                 {
@@ -688,9 +680,9 @@ void EquipAttachments(CAutomatonEntity* PAutomaton)
     {
         for (uint8 i = 0; i < 12; i++)
         {
-            if (PAutomaton->getAttachment(i) != 0)
+            if (PAutomaton->attachment(i) != 0)
             {
-                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->getAttachment(i));
+                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->attachment(i));
                 if (PAttachment)
                 {
                     luautils::OnAttachmentEquip(PAutomaton, PAttachment);
@@ -707,13 +699,13 @@ void UpdateAttachments(const CCharEntity* PChar)
     {
         for (uint8 i = 0; i < 12; i++)
         {
-            if (PAutomaton->getAttachment(i) != 0)
+            if (PAutomaton->attachment(i) != 0)
             {
-                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->getAttachment(i));
+                auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + PAutomaton->attachment(i));
 
                 if (PAttachment)
                 {
-                    int32 maneuver = EFFECT_FIRE_MANEUVER;
+                    int32 maneuver = static_cast<int32>(xi::StatusEffect::FireManeuver);
                     for (int j = 0; j < 8; j++)
                     {
                         if (PAttachment->getElementSlots() >> (j * 4) & 0xF)
@@ -722,7 +714,7 @@ void UpdateAttachments(const CCharEntity* PChar)
                             break;
                         }
                     }
-                    luautils::OnUpdateAttachment(PAutomaton, PAttachment, PChar->StatusEffectContainer->GetEffectsCount(static_cast<EFFECT>(maneuver)));
+                    luautils::OnUpdateAttachment(PAutomaton, PAttachment, PChar->StatusEffectContainer->GetEffectsCount(static_cast<xi::StatusEffect>(maneuver)));
                 }
             }
         }
@@ -736,7 +728,7 @@ void PreLevelRestriction(const CCharEntity* PChar)
     {
         for (int i = 0; i < 12; i++)
         {
-            uint8 attachment = PAutomaton->getAttachment(i);
+            uint8 attachment = PAutomaton->attachment(i);
 
             if (attachment != 0)
             {
@@ -761,7 +753,7 @@ void PostLevelRestriction(const CCharEntity* PChar)
     {
         for (int i = 0; i < 12; i++)
         {
-            const uint8 attachment = PAutomaton->getAttachment(i);
+            const uint8 attachment = PAutomaton->attachment(i);
             if (attachment != 0)
             {
                 auto* PAttachment = xi::items::lookup<CItemPuppet>(0x2100 + attachment);
@@ -776,6 +768,43 @@ void PostLevelRestriction(const CCharEntity* PChar)
         // Now re-run the maneuvers apply logic on all attachments
         UpdateAttachments(PChar);
     }
+}
+
+auto CalculateAutomatonSkills(CCharEntity* PMaster, uint8 mlvl) -> skills_t&
+{
+    auto& tempSkills = PMaster->automatonInfo_.automatonSkills;
+
+    tempSkills.automaton_melee  = std::min(puppetutils::getSkillCap(PMaster, xi::SkillType::AutomatonMelee, mlvl), PMaster->GetSkill(xi::SkillType::AutomatonMelee));
+    tempSkills.automaton_ranged = std::min(puppetutils::getSkillCap(PMaster, xi::SkillType::AutomatonRanged, mlvl), PMaster->GetSkill(xi::SkillType::AutomatonRanged));
+    tempSkills.automaton_magic  = std::min(puppetutils::getSkillCap(PMaster, xi::SkillType::AutomatonMagic, mlvl), PMaster->GetSkill(xi::SkillType::AutomatonMagic));
+
+    // Set capped flags
+    for (int i = 22; i <= 24; ++i)
+    {
+        if ((tempSkills.skill[i] & 0x7FFF) == (puppetutils::getSkillCap(PMaster, (xi::SkillType)i, mlvl)))
+        {
+            tempSkills.skill[i] |= 0x8000;
+        }
+    }
+
+    const auto meritbonus  = PMaster->PMeritPoints->GetMeritValue(xi::Merit::AutomatonSkills, PMaster);
+    const auto magicBonus  = PMaster->getMod(xi::Mod::AUTO_MAGIC_SKILL);
+    const auto meleeBonus  = PMaster->getMod(xi::Mod::AUTO_MELEE_SKILL);
+    const auto rangedBonus = PMaster->getMod(xi::Mod::AUTO_RANGED_SKILL);
+
+    tempSkills.automaton_magic = tempSkills.automaton_magic + magicBonus + meritbonus;
+
+    // copy magic skills into generic skills
+    tempSkills.healing    = tempSkills.automaton_magic;
+    tempSkills.enhancing  = tempSkills.automaton_magic;
+    tempSkills.enfeebling = tempSkills.automaton_magic;
+    tempSkills.elemental  = tempSkills.automaton_magic;
+    tempSkills.dark       = tempSkills.automaton_magic;
+
+    tempSkills.automaton_ranged = tempSkills.automaton_ranged + meritbonus + rangedBonus;
+    tempSkills.automaton_melee  = tempSkills.automaton_melee + meritbonus + meleeBonus;
+
+    return tempSkills;
 }
 
 } // namespace puppetutils

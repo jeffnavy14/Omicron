@@ -21,14 +21,12 @@
 
 #include "aman.h"
 
-#include "common/database.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "ipc_client.h"
 #include "lua/luautils.h"
 #include "packets/s2c/0x02a_talknumwork.h"
 #include "roe.h"
 #include "utils/charutils.h"
-#include "utils/zoneutils.h"
 
 namespace
 {
@@ -87,7 +85,7 @@ CAMANContainer::CAMANContainer(CCharEntity* PChar)
         }
 
         // If you're not in an Assist Channel zone, don't bother evaluating membership.
-        if (!m_player->loc.zone || !m_player->loc.zone->CanUseMisc(MISC_ASSIST))
+        if (!m_player->loc.zone || !m_player->loc.zone->CanUseMisc(xi::ZoneMisc::Assist))
         {
             return;
         }
@@ -157,7 +155,7 @@ auto CAMANContainer::isAssistChannelEligible() const -> bool
         return false;
     }
 
-    if (!m_player->loc.zone->CanUseMisc(MISC_ASSIST))
+    if (!m_player->loc.zone->CanUseMisc(xi::ZoneMisc::Assist))
     {
         return false;
     }

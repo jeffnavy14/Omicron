@@ -120,13 +120,13 @@ local pathingSections =
 
 -- Choose a section of the room to path to and meander around in for a bit
 local selectPatrolPath = function(mob)
-    local selectedCircle = pathingSections[math.random(1, 9)]
+    local selectedCircle = pathingSections[math.randomInt(1, 9)]
     if not selectedCircle then
         return nil
     end
 
     local shuffledPositions = utils.shuffle(selectedCircle)
-    local numPositions = math.random(1, 4)
+    local numPositions = math.randomInt(1, 4)
     local pathPositions = {}
 
     for i = 1, numPositions do
@@ -184,6 +184,7 @@ end
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
+    -- TODO: Check Petrify immunity, other Sky NMs seem to have it.
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.SILENCE)
@@ -280,7 +281,7 @@ end
 
 entity.onMobDespawn = function(mob)
     mob:removeListener('MG_SPIKES')
-    mob:setRespawnTime(math.random(10800, 21600)) -- 3 to 6 hours
+    mob:setRespawnTime(math.randomInt(10800, 21600)) -- 3 to 6 hours.
 end
 
 return entity

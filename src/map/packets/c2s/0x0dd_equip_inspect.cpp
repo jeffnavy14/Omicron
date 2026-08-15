@@ -21,11 +21,11 @@
 
 #include "0x0dd_equip_inspect.h"
 
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
+#include "data/enums/mob_mod.h"
+#include "entities/char_entity.h"
+#include "entities/mob_entity.h"
 #include "enums/msg_std.h"
 #include "items/item_weapon.h"
-#include "mob_modifier.h"
 #include "packets/s2c/0x009_message.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "packets/s2c/0x0c9_equip_inspect_equipment.h"
@@ -78,13 +78,13 @@ void GP_CLI_COMMAND_EQUIP_INSPECT::process(MapSession* PSession, CCharEntity* PC
             if (PMobTarget)
             {
                 // /check on a mob
-                if (PMobTarget->m_Type & MOBTYPE_NOTORIOUS || PMobTarget->m_Type & MOBTYPE_BATTLEFIELD || PMobTarget->getMobMod(MOBMOD_CHECK_AS_NM) > 0)
+                if ((PMobTarget->m_Type & xi::MobType::Notorious) != xi::MobType::Normal || (PMobTarget->m_Type & xi::MobType::Battlefield) != xi::MobType::Normal || PMobTarget->getMobMod(xi::MobMod::CheckAsNm) > 0)
                 {
                     PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PMobTarget, 0, 0, MsgBasic::CheckImpossibleToGauge);
                 }
                 else
                 {
-                    int32          mobLvl   = PMobTarget->GetMLevel() + PMobTarget->getMod(Mod::EXP_LVL_MOD);
+                    int32          mobLvl   = PMobTarget->GetMLevel() + PMobTarget->getMod(xi::Mod::EXP_LVL_MOD);
                     EMobDifficulty mobCheck = charutils::CheckMob(PChar->GetMLevel(), PMobTarget);
 
                     // Calculate main /check message (64 is Too Weak)
@@ -196,12 +196,12 @@ void GP_CLI_COMMAND_EQUIP_INSPECT::process(MapSession* PSession, CCharEntity* PC
                 }
                 if (PChar->getEquip(SLOT_RANGED) && PChar->getEquip(SLOT_RANGED)->isType(ITEM_WEAPON))
                 {
-                    const int skill = static_cast<CItemWeapon*>(PChar->getEquip(SLOT_RANGED))->getSkillType();
+                    const int skill = static_cast<uint8>(static_cast<CItemWeapon*>(PChar->getEquip(SLOT_RANGED))->getSkillType());
                     PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar->PPet, PChar->PPet->RACC(), PChar->PPet->RATT(skill), MsgBasic::CheckparamRange);
                 }
                 else if (PChar->getEquip(SLOT_AMMO) && PChar->getEquip(SLOT_AMMO)->isType(ITEM_WEAPON))
                 {
-                    const int skill = static_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO))->getSkillType();
+                    const int skill = static_cast<uint8>(static_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO))->getSkillType());
                     PChar->pushPacket<GP_SERV_COMMAND_BATTLE_MESSAGE>(PChar, PChar->PPet, PChar->PPet->RACC(), PChar->PPet->RATT(skill), MsgBasic::CheckparamRange);
                 }
                 else

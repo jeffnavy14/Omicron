@@ -43,8 +43,29 @@
 
 #define SOL_READONLY(PropName, Func) typeBuilder[PropName] = sol::readonly_property(&Func)
 
-#define SOL_BIND_DEC(LuaType, CppType) \
-    int sol_lua_push(sol::types<CppType*>, lua_State* L, CppType* obj);
+#define SOL_BIND_ARG_DEC(LuaType)                                                                                 \
+    const LuaType* sol_lua_get(sol::types<const LuaType*>, lua_State* L, int i, sol::stack::record& tr);          \
+    template <typename H>                                                                                         \
+    bool sol_lua_check(sol::types<const LuaType*>, lua_State* L, int i, H&& h, sol::stack::record& tr)            \
+    {                                                                                                             \
+        return sol::stack::check<LuaType*>(L, i, std::forward<H>(h), tr);                                         \
+    }                                                                                                             \
+    template <typename H>                                                                                         \
+    sol::optional<const LuaType*> sol_lua_check_get(sol::types<const LuaType*>, lua_State* L, int i, H&& h, sol::stack::record& tr) \
+    {                                                                                                             \
+        sol::optional<LuaType*> r = sol::stack::check_get<LuaType*>(L, i, std::forward<H>(h), tr);                \
+        return r ? sol::optional<const LuaType*>(*r) : sol::nullopt;                                              \
+    }
+
+#define SOL_BIND_ARG_DEF(LuaType)                                                                       \
+    const LuaType* sol_lua_get(sol::types<const LuaType*>, lua_State* L, int i, sol::stack::record& tr) \
+    {                                                                                                   \
+        return sol::stack::get<LuaType*>(L, i, tr);                                                     \
+    }
+
+#define SOL_BIND_DEC(LuaType, CppType)                                  \
+    int sol_lua_push(sol::types<CppType*>, lua_State* L, CppType* obj); \
+    SOL_BIND_ARG_DEC(LuaType)
 
 #define SOL_BIND_DEC_SUB(LuaType, BaseCppType, CppType) \
     int sol_lua_push(sol::types<CppType*>, lua_State* L, CppType* obj);
@@ -53,12 +74,22 @@
     int sol_lua_push(sol::types<CppType*>, lua_State* L, CppType* obj)                      \
     {                                                                                       \
         return obj ? sol::stack::push<LuaType>(L, obj) : sol::stack::push(L, sol::lua_nil); \
-    }
+    }                                                                                       \
+    SOL_BIND_ARG_DEF(LuaType)
 
 #define SOL_BIND_DEF_SUB(LuaType, BaseCppType, CppType)                                                   \
     int sol_lua_push(sol::types<CppType*>, lua_State* L, CppType* obj)                                    \
     {                                                                                                     \
         return obj ? sol::stack::push<LuaType>(L, (BaseCppType*)obj) : sol::stack::push(L, sol::lua_nil); \
+    }
+
+#define SOL_BIND_DEC_CONST(LuaType, CppType) \
+    int sol_lua_push(sol::types<const CppType*>, lua_State* L, const CppType* obj);
+
+#define SOL_BIND_DEF_CONST(LuaType, CppType)                                                \
+    int sol_lua_push(sol::types<const CppType*>, lua_State* L, const CppType* obj)          \
+    {                                                                                       \
+        return obj ? sol::stack::push<LuaType>(L, obj) : sol::stack::push(L, sol::lua_nil); \
     }
 // clang-format on
 
@@ -110,6 +141,7 @@ SOL_BIND_DEC(CLuaInstance, CInstance);
 class CLuaItem;
 class CItem;
 SOL_BIND_DEC(CLuaItem, CItem);
+SOL_BIND_DEC_CONST(CLuaItem, CItem);
 
 class CItemCurrency;
 class CItemEquipment;
@@ -146,7 +178,7 @@ class CLuaPetSkill;
 class CPetSkill;
 SOL_BIND_DEC(CLuaPetSkill, CPetSkill);
 
-class CLuaWeaponSkillSkill;
+class CLuaWeaponSkill;
 class CWeaponSkill;
 SOL_BIND_DEC(CLuaWeaponSkill, CWeaponSkill);
 
@@ -161,6 +193,10 @@ SOL_BIND_DEC(CLuaStatusEffect, CStatusEffect);
 class CLuaTradeContainer;
 class CTradeContainer;
 SOL_BIND_DEC(CLuaTradeContainer, CTradeContainer);
+
+class CLuaTrait;
+class CTrait;
+SOL_BIND_DEC(CLuaTrait, CTrait);
 
 class CLuaTriggerArea;
 class ITriggerArea;

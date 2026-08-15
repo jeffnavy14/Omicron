@@ -19,42 +19,28 @@
 ===========================================================================
 */
 
-#ifndef _CINACTIVE_STATE_H
-#define _CINACTIVE_STATE_H
+#pragma once
 
 #include "state.h"
 
 class CInactiveState : public CState
 {
 public:
-    CInactiveState(CBaseEntity* PEntity, timer::duration _duration, bool canChangeState, bool untargetable);
+    CInactiveState(xi::Badge<CState>, CBaseEntity* PEntity, timer::duration _duration, bool canChangeState, bool untargetable);
 
-    bool GetUntargetable()
-    {
-        return m_untargetable;
-    }
+    auto init() -> StateErrorOr<void> override;
+
+    auto GetUntargetable() const -> bool;
 
 protected:
-    virtual bool CanChangeState() override
-    {
-        return m_canChangeState;
-    }
-    virtual bool CanFollowPath() override
-    {
-        return false;
-    }
-    virtual bool CanInterrupt() override
-    {
-        return false;
-    }
-
-    virtual bool Update(timer::time_point tick) override;
-    virtual void Cleanup(timer::time_point tick) override;
+    auto CanChangeState() -> bool override;
+    auto CanFollowPath() -> bool override;
+    auto CanInterrupt() -> bool override;
+    auto Update(timer::time_point tick) -> bool override;
+    void Cleanup(timer::time_point tick) override;
 
 private:
     timer::duration m_duration;
     bool            m_canChangeState{ false };
     bool            m_untargetable{ false };
 };
-
-#endif

@@ -12,7 +12,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = 857, hpp = math.random(30, 55) }, -- uses Earthen Fury once while near 50% HPP.
+            { id = 857, hpp = math.randomInt(30, 55) }, -- uses Earthen Fury once while near 50% HPP.
         },
     })
 
@@ -28,6 +28,7 @@ entity.onMobSpawn = function(mob)
     -- online videos show that 24/27 SL were unresisted on retail
     -- this reduction in MEVA roughly gives roughly the correct resist rate
     mob:addMod(xi.mod.LIGHT_MEVA, -35)
+    mob:setMod(xi.mod.LIGHT_RES_RANK, 0)
 
     mob:addImmunity(xi.immunity.BLIND)
     mob:addImmunity(xi.immunity.SLOW)
@@ -56,12 +57,6 @@ end
 entity.onMobEngage = function(mob, target)
     -- always uses a tp move when first engaged
     mob:setTP(3000)
-end
-
-entity.onMobFight = function(mob, target)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

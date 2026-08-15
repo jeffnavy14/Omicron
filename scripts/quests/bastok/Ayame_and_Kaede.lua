@@ -16,8 +16,9 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.AYAME_AND_KAEDE)
 
 quest.reward =
 {
-    fame     = 30,
-    fameArea = xi.fameArea.BASTOK,
+    fame     = 20,
+    fameArea = xi.fameArea.NORG,
+    keyItem  = xi.ki.JOB_GESTURE_NINJA,
     title    = xi.title.SHADOW_WALKER,
 }
 
@@ -89,10 +90,10 @@ quest.sections =
                             quest:setLocalVar(player, 'isActor', 1)
 
                             for nmId = korrolokaID.mob.KORROLOKA_LEECH, korrolokaID.mob.KORROLOKA_LEECH + 2 do
-                                SpawnMob(nmId)
+                                SpawnMob(nmId):updateClaim(player)
                             end
 
-                            return quest:messageSpecial(korrolokaID.text.SENSE_OF_FOREBODING)
+                            return quest:messageText(korrolokaID.text.HAIR_STANDS_ON_END)
                         end
                     end
                 end,
@@ -183,6 +184,7 @@ quest.sections =
 
                 [246] = function(player, csid, option, npc)
                     if quest:complete(player) then
+                        player:delKeyItem(xi.ki.SEALED_DAGGER)
                         player:unlockJob(xi.job.NIN)
                         player:messageSpecial(portBastokID.text.UNLOCK_NINJA)
                     end

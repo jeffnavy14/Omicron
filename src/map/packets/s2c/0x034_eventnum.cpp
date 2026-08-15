@@ -21,9 +21,7 @@
 
 #include "0x034_eventnum.h"
 
-#include <cstring>
-
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "event_info.h"
 
 GP_SERV_COMMAND_EVENTNUM::GP_SERV_COMMAND_EVENTNUM(const CCharEntity* PChar, const EventInfo* eventInfo)
@@ -49,7 +47,7 @@ GP_SERV_COMMAND_EVENTNUM::GP_SERV_COMMAND_EVENTNUM(const CCharEntity* PChar, con
         }
     }
 
-    packet.EventNum  = PChar->getZone();
+    packet.EventNum  = static_cast<uint16>(PChar->getZone());
     packet.EventPara = eventInfo->eventId;
 
     if (eventInfo->textTable != -1)
@@ -58,7 +56,7 @@ GP_SERV_COMMAND_EVENTNUM::GP_SERV_COMMAND_EVENTNUM(const CCharEntity* PChar, con
     }
     else
     {
-        packet.EventNum2 = PChar->getZone();
+        packet.EventNum2 = static_cast<uint16>(PChar->getZone());
     }
 
     if (eventInfo->eventFlags != 0)

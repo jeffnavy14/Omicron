@@ -43,11 +43,11 @@ xi.data.statusEffect.dataTable =
     [xi.effect.BURN               ] = { 2, xi.effect.DROWN,         0,               xi.effect.FROST,    xi.element.FIRE,    0,                      0,                  0,                          0,                    0                           },
     [xi.effect.CHARM_I            ] = { 1, 0,                       0,               0,                  xi.element.LIGHT,   0,                      xi.mod.CHARMRES,    0,                          xi.mod.CHARM_MEVA,    0                           }, -- TODO: charm should be moved from a mob property to a regular immunity
     [xi.effect.CHOKE              ] = { 2, xi.effect.FROST,         0,               xi.effect.RASP,     xi.element.WIND,    0,                      0,                  0,                          0,                    0                           },
-    [xi.effect.CURSE_I            ] = { 2, 0,                       0,               0,                  xi.element.DARK,    0,                      xi.mod.CURSERES,    0,                          xi.mod.CURSE_MEVA,    0                           },
+    [xi.effect.CURSE_I            ] = { 2, 0,                       0,               0,                  xi.element.DARK,    xi.immunity.CURSE,      xi.mod.CURSERES,    0,                          xi.mod.CURSE_MEVA,    0                           },
     [xi.effect.DEFENSE_DOWN       ] = { 3, 0,                       0,               0,                  xi.element.WIND,    0,                      0,                  0,                          0,                    0                           },
     [xi.effect.DIA                ] = { 4, 0,                       xi.effect.BIO,   0,                  xi.element.LIGHT,   0,                      0,                  0,                          0,                    0                           },
     [xi.effect.DROWN              ] = { 2, xi.effect.SHOCK,         0,               xi.effect.BURN,     xi.element.WATER,   0,                      0,                  0,                          0,                    0                           },
-    [xi.effect.ELEGY              ] = { 1, 0,                       0,               0,                  xi.element.EARTH,   0,                      0,                  0,                          0,                    0                           },
+    [xi.effect.ELEGY              ] = { 1, 0,                       0,               0,                  xi.element.EARTH,   xi.immunity.ELEGY,      xi.mod.SLOWRES,     0,                          0,                    0                           },
     [xi.effect.EVASION_DOWN       ] = { 3, 0,                       0,               0,                  xi.element.ICE,     0,                      0,                  0,                          0,                    0                           },
     [xi.effect.FLASH              ] = { 1, 0,                       0,               0,                  xi.element.LIGHT,   xi.immunity.BLIND,      xi.mod.BLINDRES,    xi.mod.BLIND_RES_RANK,      xi.mod.BLIND_MEVA,    xi.mod.BLIND_IMMUNOBREAK    },
     [xi.effect.FROST              ] = { 2, xi.effect.BURN,          0,               xi.effect.CHOKE,    xi.element.ICE,     0,                      0,                  0,                          0,                    0                           },
@@ -56,6 +56,7 @@ xi.data.statusEffect.dataTable =
     [xi.effect.INHIBIT_TP         ] = { 1, 0,                       0,               0,                  xi.element.DARK,    0,                      0,                  0,                          0,                    0                           },
     [xi.effect.INUNDATION         ] = { 2, 0,                       0,               0,                  xi.element.LIGHT,   0,                      0,                  0,                          0,                    0                           },
     [xi.effect.MAGIC_EVASION_DOWN ] = { 3, 0,                       0,               0,                  xi.element.DARK,    0,                      0,                  0,                          0,                    0                           },
+    [xi.effect.MUTE               ] = { 1, 0,                       0,               0,                  xi.element.WIND,    xi.immunity.SILENCE,    xi.mod.SILENCERES,  xi.mod.SILENCE_RES_RANK,    xi.mod.SILENCE_MEVA,  xi.mod.SILENCE_IMMUNOBREAK  },
     [xi.effect.NOCTURNE           ] = { 1, xi.effect.ADDLE,         0,               0,                  xi.element.FIRE,    xi.immunity.ADDLE,      xi.mod.SLOWRES,     0,                          0,                    0                           },
     [xi.effect.NONE               ] = { 1, 0,                       0,               0,                  xi.element.DARK,    xi.immunity.DISPEL,     0,                  0,                          0,                    0                           },
     [xi.effect.PARALYSIS          ] = { 1, 0,                       0,               0,                  xi.element.ICE,     xi.immunity.PARALYZE,   xi.mod.PARALYZERES, xi.mod.PARALYZE_RES_RANK,   xi.mod.PARALYZE_MEVA, xi.mod.PARALYZE_IMMUNOBREAK },
@@ -71,7 +72,7 @@ xi.data.statusEffect.dataTable =
     [xi.effect.STUN               ] = { 2, xi.effect.PETRIFICATION, 0,               0,                  xi.element.THUNDER, xi.immunity.STUN,       xi.mod.STUNRES,     xi.mod.STUN_RES_RANK,       xi.mod.STUN_MEVA,     0                           },
     [xi.effect.TERROR             ] = { 2, 0,                       0,               0,                  0,                  xi.immunity.TERROR,     0,                  0,                          0,                    0                           }, -- TODO: implement Resist Terror https://www.bg-wiki.com/ffxi/Resist_Terror, TODO: sometimes Terror has an element, but sometimes it does not. It seems it may only be player based effects?
     [xi.effect.THRENODY           ] = { 1, 0,                       0,               0,                  xi.element.NONE,    0,                      0,                  0,                          0,                    0                           },
-    [xi.effect.WEIGHT             ] = { 1, 0,                       0,               0,                  xi.element.WIND,    xi.immunity.GRAVITY,    xi.mod.GRAVITYRES,  0,                          xi.mod.GRAVITY_MEVA,  xi.mod.GRAVITY_IMMUNOBREAK  },
+    [xi.effect.WEIGHT             ] = { 1, 0,                       0,               0,                  xi.element.WIND,    xi.immunity.GRAVITY,    xi.mod.GRAVITYRES,  xi.mod.GRAVITY_RES_RANK,    xi.mod.GRAVITY_MEVA,  xi.mod.GRAVITY_IMMUNOBREAK  },
 }
 
 -----------------------------------
@@ -266,7 +267,7 @@ xi.data.statusEffect.isTargetResistant = function(actor, target, effectId)
         resistancePower = math.floor(resistancePower / 2)
     end
 
-    if math.random(1, 100) <= resistancePower then
+    if math.randomInt(1, 100) <= resistancePower then
         return true
     end
 

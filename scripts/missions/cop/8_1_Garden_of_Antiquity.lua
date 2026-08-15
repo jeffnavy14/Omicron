@@ -83,13 +83,13 @@ local rubiousOnTrigger = function(player, npc)
             local completedTowers = utils.mask.countBits(getRubiousMask(player), 3)
 
             if completedTowers == 1 then
-                return mission:progressEvent(161, towerOption[npcName])
+                return mission:progressCutscene(161, towerOption[npcName])
             elseif completedTowers == 3 then
-                return mission:progressEvent(163)
+                return mission:progressCutscene(163)
             else
                 for towerNum = 2, 0, -1 do
                     if not getMissionStatusBit(player, towerNum) then
-                        return mission:progressEvent(162, towerNum)
+                        return mission:progressCutscene(162, towerNum)
                     end
                 end
             end
@@ -112,9 +112,9 @@ mission.sections =
                     local missionStatus = mission:getVar(player, 'Status')
 
                     if missionStatus == 0 then
-                        return mission:progressEvent(164)
+                        return mission:progressCutscene(164)
                     elseif getRubiousMask(player) == 7 then
-                        return mission:progressEvent(100)
+                        return mission:progressOptionalCutscene(100, { cs_option = 0, canSkip = true })
                     end
                 end,
             },
@@ -215,7 +215,7 @@ mission.sections =
 
         [xi.zone.ALTAIEU] =
         {
-            ['_0x0'] = mission:progressEvent(100),
+            ['_0x0'] = mission:progressOptionalCutscene(100, { cs_option = 0, canSkip = true }),
 
             onEventFinish =
             {

@@ -21,10 +21,9 @@
 
 #include "blacklistutils.h"
 
-#include "common/database.h"
 #include "common/utils.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 #include "packets/s2c/0x041_black_list.h"
 

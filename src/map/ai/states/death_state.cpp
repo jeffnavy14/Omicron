@@ -22,37 +22,43 @@
 #include "death_state.h"
 
 #include "ai/ai_container.h"
-#include "entities/battleentity.h"
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
+#include "entities/battle_entity.h"
+#include "entities/char_entity.h"
+#include "entities/mob_entity.h"
 #include "packets/s2c/0x0f9_res.h"
-#include "status_effect.h"
 #include "status_effect_container.h"
 
 namespace
 {
 
-static const timer::duration TIME_TO_SEND_RERAISE_MENU = 8s;
+static constexpr timer::duration TIME_TO_SEND_RERAISE_MENU = 8s;
 
 }
 
-CDeathState::CDeathState(CBattleEntity* PEntity, timer::duration death_time)
-: CState(PEntity, PEntity->targid)
+CDeathState::CDeathState(xi::Badge<CState>, CBattleEntity* PEntity, timer::duration death_time)
+: CState(PEntity, PEntity->entityId())
 , m_PEntity(PEntity)
 , m_deathTime(death_time)
 , m_raiseTime(GetEntryTime() + TIME_TO_SEND_RERAISE_MENU)
 {
-    m_PEntity->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DEATH, EffectNotice::Silent);
+    // Capture constructor arguments into members and nothing else. All other logic goes into init().
+}
 
-    m_PEntity->animation = ANIMATION_DEATH;
+auto CDeathState::init() -> StateErrorOr<void>
+{
+    m_PEntity->StatusEffectContainer->DelStatusEffectsByFlag(xi::StatusEffectFlag::Death, EffectNotice::Silent);
+
+    m_PEntity->animation = xi::Animation::Death;
     m_PEntity->updatemask |= UPDATE_HP;
     if (m_PEntity->PAI->PathFind)
     {
         m_PEntity->PAI->PathFind->Clear();
     }
+
+    return Success();
 }
 
-bool CDeathState::Update(timer::time_point tick)
+auto CDeathState::Update(const timer::time_point tick) -> bool
 {
     if (m_PEntity->objtype != TYPE_PC)
     {
@@ -62,12 +68,12 @@ bool CDeathState::Update(timer::time_point tick)
         }
         else
         {
-            auto time = GetEntryTime() + m_deathTime - std::chrono::seconds(m_PEntity->getMod(Mod::DESPAWN_TIME_REDUCTION));
+            const auto time = GetEntryTime() + m_deathTime - std::chrono::seconds(m_PEntity->getMod(xi::Mod::DESPAWN_TIME_REDUCTION));
             if (tick > time)
             {
-                auto* PMob = dynamic_cast<CMobEntity*>(m_PEntity);
+                const auto* PMob = dynamic_cast<CMobEntity*>(m_PEntity);
                 // RAISABLE mobs should stay in death state indefinitely until raised
-                if (PMob && (PMob->m_Behavior & BEHAVIOR_RAISABLE))
+                if (PMob && ((PMob->m_Behavior & xi::Behavior::Raisable) != xi::Behavior::None))
                 {
                     return false;
                 }
@@ -79,14 +85,13 @@ bool CDeathState::Update(timer::time_point tick)
     }
     else
     {
-        CCharEntity* PChar = static_cast<CCharEntity*>(m_PEntity);
-
-        auto time = GetEntryTime() + m_deathTime - std::chrono::seconds(m_PEntity->getMod(Mod::DESPAWN_TIME_REDUCTION));
+        auto*      PChar = static_cast<CCharEntity*>(m_PEntity);
+        const auto time  = GetEntryTime() + m_deathTime - std::chrono::seconds(m_PEntity->getMod(xi::Mod::DESPAWN_TIME_REDUCTION));
 
         // exit state after 2 seconds on raise
         if (m_raiseAccepted && IsCompleted() && tick > m_raiseAcceptedTime + 2s)
         {
-            m_PEntity->animation = ANIMATION_NONE; // TODO: should this be set in acceptRaise or after 2 seconds?
+            m_PEntity->animation = xi::Animation::None; // TODO: should this be set in acceptRaise or after 2 seconds?
             m_PEntity->updatemask |= UPDATE_HP;
 
             return true;
@@ -124,4 +129,23 @@ void CDeathState::acceptRaise()
     m_raiseAcceptedTime = timer::now();
     m_raiseAccepted     = true;
     Complete();
+}
+
+void CDeathState::Cleanup(timer::time_point tick)
+{
+}
+
+auto CDeathState::CanChangeState() -> bool
+{
+    return false;
+}
+
+auto CDeathState::CanFollowPath() -> bool
+{
+    return false;
+}
+
+auto CDeathState::CanInterrupt() -> bool
+{
+    return false;
 }

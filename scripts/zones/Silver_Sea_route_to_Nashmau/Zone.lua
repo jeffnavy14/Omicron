@@ -30,16 +30,16 @@ zoneObject.onZoneIn = function(player, prevZone)
     -- Check if Proteus pops this boat ride.
     if
         currentTime > proteus:getLocalVar('respawn') and
-        math.random(1, 100) <= 10
+        math.randomInt(1, 100) <= 10
     then
-        proteus:setRespawnTime(math.random(120, 180)) -- 2 to 3 minutes
+        proteus:setRespawnTime(math.randomInt(120, 180)) -- 2 to 3 minutes
     end
 
     return cs
 end
 
 zoneObject.onTransportEvent = function(player, prevZoneId, transportId)
-    player:startEvent(1025)
+    player:startEvent(1028)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
@@ -49,7 +49,7 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
-    if csid == 1025 then
+    if csid == 1028 then
         player:setPos(0, 0, 0, 0, xi.zone.NASHMAU)
     end
 end

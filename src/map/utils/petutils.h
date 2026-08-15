@@ -161,10 +161,10 @@ enum PETID
 
 struct Pet_t
 {
-    uint16      PetID; // ID in pet_list.sql
-    look_t      look;
-    std::string name;
-    ECOSYSTEM   EcoSystem;
+    uint16        PetID; // ID in pet_list.sql
+    look_t        look;
+    std::string   name;
+    xi::Ecosystem EcoSystem;
 
     uint8 minLevel;
     uint8 maxLevel;
@@ -181,9 +181,9 @@ struct Pet_t
     float HPscale; // HP boost percentage
     float MPscale; // MP boost percentage
 
-    uint16      cmbDelay;
-    DAMAGE_TYPE m_dmgType;
-    uint8       speed;
+    uint16         cmbDelay;
+    xi::DamageType m_dmgType;
+    uint8          speed;
     // stat ranks
     uint8 strRank;
     uint8 dexRank;
@@ -237,10 +237,12 @@ struct Pet_t
     int8 light_sleep_res_rank;
     int8 dark_sleep_res_rank;
     int8 blind_res_rank;
+    int8 stun_res_rank;
+    int8 gravity_res_rank;
 
     Pet_t()
     : PetID(0)
-    , EcoSystem(ECOSYSTEM::UNCLASSIFIED)
+    , EcoSystem(xi::Ecosystem::Unclassified)
     , minLevel(-1)
     , maxLevel(99)
     , name_prefix(0)
@@ -249,10 +251,10 @@ struct Pet_t
     , mJob(0)
     , sJob(0)
     , m_Element(0)
-    , HPscale(0.f)
-    , MPscale(0.f)
+    , HPscale(1.f)
+    , MPscale(1.f)
     , cmbDelay(0)
-    , m_dmgType(DAMAGE_TYPE::NONE)
+    , m_dmgType(xi::DamageType::None)
     , speed(0)
     , strRank(0)
     , dexRank(0)
@@ -297,6 +299,8 @@ struct Pet_t
     , light_sleep_res_rank(0)
     , dark_sleep_res_rank(0)
     , blind_res_rank(0)
+    , stun_res_rank(0)
+    , gravity_res_rank(0)
     {
     }
 };

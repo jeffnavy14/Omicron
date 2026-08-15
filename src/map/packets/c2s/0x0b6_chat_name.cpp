@@ -21,10 +21,9 @@
 
 #include "0x0b6_chat_name.h"
 
-#include "common/database.h"
 #include "common/ipc_structs.h"
 #include "common/settings.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "ipc_client.h"
 #include "lua/luautils.h"
 #include "packets/s2c/0x029_battle_message.h"
@@ -57,8 +56,8 @@ const auto auditTell = [](Scheduler& scheduler, CCharEntity* PChar, const std::s
 auto GP_CLI_COMMAND_CHAT_NAME::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator(PChar)
-        .mustEqual(this->unknown00, 3, "unknown00 not 3")
-        .mustEqual(this->unknown01, 0, "unknown01 not 0");
+        .mustEqual(this->unknown04, 3, "unknown04 not 3")
+        .mustEqual(this->unknown05, 0, "unknown05 not 0");
 }
 
 void GP_CLI_COMMAND_CHAT_NAME::process(MapSession* PSession, CCharEntity* PChar) const

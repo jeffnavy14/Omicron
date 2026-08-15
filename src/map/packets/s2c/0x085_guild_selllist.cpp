@@ -21,17 +21,13 @@
 
 #include "0x085_guild_selllist.h"
 
-#include "entities/charentity.h"
-#include "item_container.h"
-#include "items/item_shop.h"
+#include "entities/char_entity.h"
 
-#include <cstring>
-
-GP_SERV_COMMAND_GUILD_SELLLIST::GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const CItemContainer* PGuild)
+GP_SERV_COMMAND_GUILD_SELLLIST::GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const std::vector<GP_GUILD_ITEM>& items)
 {
-    if (PChar == nullptr || PGuild == nullptr)
+    if (PChar == nullptr)
     {
-        ShowError("GP_SERV_COMMAND_GUILD_SELLLIST - PChar or PGuild was null.");
+        ShowError("GP_SERV_COMMAND_GUILD_SELLLIST - PChar was null.");
         return;
     }
 
@@ -40,22 +36,8 @@ GP_SERV_COMMAND_GUILD_SELLLIST::GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PCha
     uint8 ItemCount   = 0;
     uint8 PacketCount = 0;
 
-    for (uint8 SlotID = 1; SlotID <= PGuild->GetSize(); ++SlotID)
+    for (const auto& item : items)
     {
-        auto* PItem = static_cast<CItemShop*>(PGuild->GetItem(SlotID));
-
-        if (PItem == nullptr)
-        {
-            ShowError("GP_SERV_COMMAND_GUILD_SELLLIST - PItem was null for SlotID: %d", SlotID);
-            return;
-        }
-
-        if (PItem->hasFlag(ItemFlag::NoSale))
-        {
-            // Skip items that cannot be sold to NPCs
-            continue;
-        }
-
         if (ItemCount == 30)
         {
             packet.Count = ItemCount;
@@ -69,11 +51,7 @@ GP_SERV_COMMAND_GUILD_SELLLIST::GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PCha
             std::memset(&packet, 0, sizeof(PacketData));
         }
 
-        packet.List[ItemCount].ItemNo = PItem->getID();
-        packet.List[ItemCount].Count  = PItem->getQuantity();
-        packet.List[ItemCount].Max    = PItem->getStackSize();
-        packet.List[ItemCount].Price  = PItem->getSellPrice();
-
+        packet.List[ItemCount] = item;
         ItemCount++;
     }
 

@@ -2,6 +2,7 @@
 -- Area: Grand Palace of Hu'Xzoi
 --   NM: Jailer of Temperance
 -----------------------------------
+local ID           = zones[xi.zone.GRAND_PALACE_OF_HUXZOI]
 local huxzoiGlobal = require('scripts/zones/Grand_Palace_of_HuXzoi/globals')
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
@@ -45,7 +46,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:addMobMod(xi.mobMod.WEAPON_BONUS, 13) -- 100 total weapon damage
+    mob:addMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 13) -- 100 total weapon damage
     mob:addMod(xi.mod.EVA, 10)
     mob:addMod(xi.mod.MDEF, 20)
     mob:addMod(xi.mod.ATT, mob:getMod(xi.mod.ATT) * 0.65) -- Increase attack by 65%
@@ -59,8 +60,8 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.random(65, 70) },
-            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.random(35, 40) },
+            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.randomInt(65, 70) },
+            { id = xi.mobSkill.MEIKYO_SHISUI_1, hpp = math.randomInt(35, 40) },
         },
     })
 
@@ -70,7 +71,7 @@ entity.onMobSpawn = function(mob)
         mob:setMod(xi.data.element.getElementalSDTModifier(element), -10000)
     end
 
-    mob:setLocalVar('changeTime', GetSystemTime() + math.random(30, 180))
+    mob:setLocalVar('changeTime', GetSystemTime() + math.randomInt(30, 180))
 end
 
 entity.onMobFight = function(mob)
@@ -80,10 +81,10 @@ entity.onMobFight = function(mob)
 
     -- Apply the form change
     if currentTime >= changeTime then
-        local newForm = math.random(1, 3)
+        local newForm = math.randomInt(1, 3)
 
         while newForm == currentForm do
-            newForm = math.random(1, 3)
+            newForm = math.randomInt(1, 3)
         end
 
         -- Briefly transition to animationSub 1, then change to new form
@@ -97,7 +98,7 @@ entity.onMobFight = function(mob)
             end
         end)
 
-        mob:setLocalVar('changeTime', currentTime + math.random(30, 390))
+        mob:setLocalVar('changeTime', currentTime + math.randomInt(30, 390))
     end
 end
 
@@ -108,7 +109,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
     switch (form): caseof
     {
         [1] = function()
-            if math.random(1, 100) <= 75 then
+            if math.randomInt(1, 100) <= 75 then
                 table.insert(tpMoves, xi.mobSkill.OPTIC_INDURATION)
             end
         end,
@@ -124,14 +125,27 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         end,
     }
 
-    return tpMoves[math.random(1, #tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 entity.onMobDespawn = function(mob)
-    local ph = mob:getLocalVar('ph')
-    DisallowRespawn(mob:getID(), true)
-    DisallowRespawn(ph, false)
-    GetMobByID(ph):setRespawnTime(GetMobRespawnTime(ph))
+    local phId = mob:getLocalVar('ph')
+
+    -- Temperance can spawn outside of the zdei system with no placeholder set, so pick one at random.
+    if phId == 0 then
+        local phTable = ID.mob.JAILER_OF_TEMPERANCE_PH
+        phId = phTable[math.randomInt(1, #phTable)]
+    end
+
+    local ph = GetMobByID(phId)
+
+    -- allow the placeholder to respawn
+    if ph then
+        DisallowRespawn(mob:getID(), true)
+        DisallowRespawn(phId, false)
+        ph:setRespawnTime(GetMobRespawnTime(phId))
+    end
+
     mob:setLocalVar('pop', GetSystemTime() + 900) -- 15 mins
     huxzoiGlobal.pickTemperancePH()
 end

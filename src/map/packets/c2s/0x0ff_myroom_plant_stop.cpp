@@ -21,14 +21,12 @@
 
 #include "0x0ff_myroom_plant_stop.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/msg_std.h"
 #include "items/item_flowerpot.h"
-#include "packets/char_status.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x020_item_attr.h"
 #include "packets/s2c/0x0fa_myroom_operation.h"
-#include "utils/charutils.h"
 
 namespace
 {
@@ -48,7 +46,7 @@ auto GP_CLI_COMMAND_MYROOM_PLANT_STOP::validate(MapSession* PSession, const CCha
 void GP_CLI_COMMAND_MYROOM_PLANT_STOP::process(MapSession* PSession, CCharEntity* PChar) const
 {
     CItemContainer* PItemContainer = PChar->getStorage(this->MyroomPlantCategory);
-    CItemFlowerpot* PItem          = static_cast<CItemFlowerpot*>(PItemContainer->GetItem(this->MyroomPlantItemIndex));
+    CItemFlowerpot* PItem          = dynamic_cast<CItemFlowerpot*>(PItemContainer->GetItem(this->MyroomPlantItemIndex));
 
     if (PItem != nullptr && PItem->isPlanted() && PItem->getStage() > FLOWERPOT_STAGE_INITIAL && PItem->getStage() < FLOWERPOT_STAGE_WILTED && !PItem->isDried())
     {

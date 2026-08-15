@@ -23,7 +23,7 @@
 
 #include "alliance.h"
 #include "common/ipc_structs.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "ipc_client.h"
 #include "packets/s2c/0x009_message.h"
 #include "party.h"
@@ -39,7 +39,7 @@ auto GP_CLI_COMMAND_GROUP_SOLICIT_RES::validate(MapSession* PSession, const CCha
 
 void GP_CLI_COMMAND_GROUP_SOLICIT_RES::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    if (CCharEntity* PInviter = zoneutils::GetCharFromWorld(PChar->InvitePending.id, PChar->InvitePending.targid); PInviter != nullptr)
+    if (CCharEntity* PInviter = zoneutils::GetCharFromWorld(PChar->InvitePending.UniqueNo, PChar->InvitePending.ActIndex); PInviter != nullptr)
     {
         // This switch statement only occurs when both the invitee and inviter are on the same process
         switch (static_cast<GP_CLI_COMMAND_GROUP_SOLICIT_RES_RES>(this->Res))
@@ -96,7 +96,7 @@ void GP_CLI_COMMAND_GROUP_SOLICIT_RES::process(MapSession* PSession, CCharEntity
                 // the rest is for a standard party invitation
                 if (PChar->PParty == nullptr)
                 {
-                    if (!(PChar->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC) && PChar->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_RESTRICTION)))
+                    if (!(PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::LevelSync) && PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::LevelRestriction)))
                     {
                         ShowDebug("%s is not under lvl sync or restriction", PChar->getName());
                         if (PInviter->PParty == nullptr)
@@ -135,8 +135,8 @@ void GP_CLI_COMMAND_GROUP_SOLICIT_RES::process(MapSession* PSession, CCharEntity
         message::send(ipc::PartyInviteResponse{
             .inviteeId     = PChar->id,
             .inviteeTargId = PChar->targid,
-            .inviterId     = PChar->InvitePending.id,
-            .inviterTargId = PChar->InvitePending.targid,
+            .inviterId     = PChar->InvitePending.UniqueNo,
+            .inviterTargId = PChar->InvitePending.ActIndex,
             .inviteAnswer  = this->Res,
         });
     }

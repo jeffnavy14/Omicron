@@ -14,16 +14,23 @@ local callPetParams =
 
 local function spawnArkAngelPet(mob)
     local battlefield = mob:getBattlefield()
+
     if not battlefield then
+        return
+    end
+
+    local pet = mob:getPet()
+
+    if pet and pet:isAlive() then
         return
     end
 
     local battlefieldId    = battlefield:getID()
     local battlefieldArea  = battlefield:getArea()
     local content          = xi.battlefield.contents[battlefieldId]
-    local selectedPetGroup = math.random(2, 3) -- 2 = Tiger, 3 = Mandragora
+    local selectedPetGroup = math.randomInt(2, 3) -- 2 = Tiger, 3 = Mandragora
     local petId            = content.groups[selectedPetGroup]['mobIds'][battlefieldArea][1]
-    local pet              = GetMobByID(petId)
+    pet                    = GetMobByID(petId)
 
     if xi.mob.callPets(mob, petId, callPetParams) then
         pet = GetMobByID(petId)

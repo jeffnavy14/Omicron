@@ -22,13 +22,13 @@
 #include "common/utils.h"
 
 #include "common/logging.h"
+#include "common/macros.h"
 #include "common/md52.h"
 #include "common/stdext.h"
 
 #include <algorithm>
 #include <cctype>
 #include <charconv>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <regex>
@@ -231,6 +231,28 @@ position_t nearPosition(const position_t& A, float offset, float radian)
     B.moving   = A.moving;
 
     return B;
+}
+
+auto sidestepPosition(const position_t& from, const position_t& referencePoint, float offset) -> position_t
+{
+    // Adding 64 (a quarter turn in the 0..255 rotation byte) gives a vector perpendicular to from -> referencePoint.
+    const auto perpendicularAngle = worldAngle(from, referencePoint) + 64;
+    const auto radians            = rotationToRadian(perpendicularAngle);
+
+    return position_t{
+        from.x - std::cosf(radians) * offset,
+        referencePoint.y,
+        from.z + std::sinf(radians) * offset,
+        0,
+        0,
+    };
+}
+
+auto isNear(const position_t& a, const position_t& b) -> bool
+{
+    // Below this, positions are effectively co-located and a path query would be trivial/empty.
+    constexpr float kNearThreshold = 1.0f;
+    return distance(a, b) < kNearThreshold;
 }
 
 /************************************************************************
@@ -729,30 +751,32 @@ std::vector<std::string> split(const std::string& s, const std::string& delimite
 
 std::string to_lower(const std::string& s)
 {
+    // Branchless ASCII uppercase. Avoids the locale-aware std::tolower (a non-inlined,
+    // table-indirected call per character); all keys/names this is used on are ASCII.
     std::string data = s;
-    std::transform(
-        data.begin(),
-        data.end(),
-        data.begin(),
-        [](unsigned char c)
+    for (char& c : data)
+    {
+        if (c >= 'A' && c <= 'Z')
         {
-            return std::tolower(c);
-        });
+            c += ('a' - 'A');
+        }
+    }
 
     return data;
 }
 
 std::string to_upper(const std::string& s)
 {
+    // Branchless ASCII uppercase. Avoids the locale-aware std::toupper (a non-inlined,
+    // table-indirected call per character); all keys/names this is used on are ASCII.
     std::string data = s;
-    std::transform(
-        data.begin(),
-        data.end(),
-        data.begin(),
-        [](unsigned char c)
+    for (char& c : data)
+    {
+        if (c >= 'a' && c <= 'z')
         {
-            return std::toupper(c);
-        });
+            c -= ('a' - 'A');
+        }
+    }
 
     return data;
 }
@@ -795,7 +819,7 @@ bool matches(const std::string& target, const std::string& pattern)
 
 bool starts_with(const std::string& target, const std::string& pattern)
 {
-    return target.rfind(pattern, 0) != std::string::npos;
+    return target.starts_with(pattern);
 }
 
 std::string replace(const std::string& target, const std::string& search, const std::string& replace)
@@ -890,15 +914,20 @@ bool definitelyLessThan(float a, float b)
     return (b - a) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
 }
 
-void crash()
+XI_NOINLINE void crash()
 {
-#ifndef _DEBUG
-    ShowInfo("crash command is likely optimized out in release mode.");
-#endif
-
-    int* volatile ptr = nullptr;
+    unsigned long long* volatile ptr = nullptr;
     // cppcheck-suppress nullPointer
-    *ptr = 0xDEAD;
+    *ptr = 0xDEADBEEF;
+}
+
+XI_NOINLINE void hang()
+{
+    // NOLINTNEXTLINE(bugprone-infinite-loop): the hang is deliberate.
+    for (volatile bool spin = true; spin;)
+    {
+        // Spin! Wheeeee!
+    }
 }
 
 std::unique_ptr<FILE> utils::openFile(const std::string& path, const std::string& mode)

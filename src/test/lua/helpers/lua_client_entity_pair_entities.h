@@ -25,9 +25,9 @@
 
 #include <sol/sol.hpp>
 
-class CLuaBaseEntity;
 class CLuaTestEntity;
 class CLuaClientEntityPair;
+
 class CLuaClientEntityPairEntities
 {
 public:

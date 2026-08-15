@@ -21,24 +21,27 @@
 
 #include "instanceutils.h"
 
-#include "common/database.h"
 #include "common/logging.h"
+
+#include <common/types/hash_map.h>
 
 #include "lua/luautils.h"
 
 #include "instance_loader.h"
-#include "map_engine.h"
 #include "zoneutils.h"
 
 #include <coroutine>
+#include <filesystem>
 #include <queue>
+
+#include <fmt/ranges.h>
 
 namespace instanceutils
 {
 
-std::unordered_map<uint16, InstanceData_t> InstanceData;
-std::queue<std::pair<uint32, uint16>>      LoadQueue; // player id, instance id
-detail::LazyLoadState                      lazyLoad;
+HashMap<uint16, InstanceData_t>       InstanceData;
+std::queue<std::pair<uint32, uint16>> LoadQueue; // player id, instance id
+detail::LazyLoadState                 lazyLoad;
 
 namespace
 {
@@ -85,7 +88,7 @@ auto LoadInstances(const std::vector<uint16>& instanceIds) -> void
         // Main data
         data.id            = rset->get<uint16>("instanceid");
         data.instance_name = rset->get<std::string>("instance_name");
-        data.instance_zone = rset->get<uint16>("instance_zone");
+        data.instance_zone = rset->get<xi::ZoneId>("instance_zone");
         data.entrance_zone = rset->get<uint16>("entrance_zone");
         data.time_limit    = rset->get<uint16>("time_limit");
         data.start_x       = rset->get<float>("start_x");
@@ -115,13 +118,23 @@ auto LoadInstances(const std::vector<uint16>& instanceIds) -> void
         // Meta data
         data.instance_zone_name = rset->get<std::string>("zone_name");
         data.entrance_zone_name = rset->get<std::string>("zone_name");
-        data.filename           = fmt::format("./scripts/zones/{}/instances/{}.lua", data.instance_zone_name, data.instance_name);
+
+        // Determine if instance exists at new assault path
+        data.filename = fmt::format("./scripts/assaults/{}/{}.lua", data.instance_zone_name, data.instance_name);
+        if (std::filesystem::exists(data.filename))
+        {
+            luautils::LoadLuaObjectFromFile(data.filename, true);
+        }
+
+        // If not, fall back to regular instance path
+        else
+        {
+            data.filename = fmt::format("./scripts/zones/{}/instances/{}.lua", data.instance_zone_name, data.instance_name);
+            luautils::LoadLuaObjectFromFile(data.filename);
+        }
 
         // Add to data cache
         InstanceData[data.id] = data;
-
-        // Add to Lua cache
-        luautils::CacheLuaObjectFromFile(data.filename);
     }
 }
 
@@ -176,6 +189,8 @@ auto CheckInstance(Scheduler& scheduler, MapConfig config) -> Task<void>
 
     auto loader = std::make_unique<CInstanceLoader>(instanceId, PRequester);
     loader->LoadInstance();
+
+    co_return;
 }
 
 auto LoadInstance(uint32 instanceid, CCharEntity* PRequester) -> void

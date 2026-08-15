@@ -42,21 +42,10 @@ end
 -- Ability Use Functions
 -----------------------------------
 xi.job_utils.dark_knight.useArcaneCircle = function(player, target, ability)
-    -- TODO:
-    -- Create Bonus vs Ecosystem handling
-    -- https://www.bg-wiki.com/ffxi/Arcane_Circle
     -- Main (DRK) job gives a unique 15% damage bonus against arcana, 15% damage resistance from arcana, and likely +15% Arcana Killer.
     -- When subbed, gives 5% of these bonuses.
-
-    -- Job Points bonus will need to be handled in the Bonus vs Ecosystem handling system
-    -- https://www.bg-wiki.com/ffxi/Job_Points#Dark_Knight
-    -- Arcane Circle Effect: Reduces the amount of damage taken from arcana while under the effects of Arcane Circle.
     local duration = 180 + player:getMod(xi.mod.ARCANE_CIRCLE_DURATION)
-    local power    = 15
-
-    if player:getMainJob() ~= xi.job.DRK then
-        power = 5
-    end
+    local power    = player:getMainJob() == xi.job.DRK and 15 or 5
 
     power = power + player:getMod(xi.mod.ARCANE_CIRCLE_POTENCY)
 
@@ -159,9 +148,17 @@ xi.job_utils.dark_knight.useWeaponBash = function(player, target, ability, actio
         not xi.data.statusEffect.isTargetResistant(player, target, xi.effect.STUN) and
         not xi.data.statusEffect.isEffectNullified(target, xi.effect.STUN, 0)
     then
-        local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.A_PLUS, xi.element.THUNDER, xi.mod.INT, xi.effect.STUN, 0)
+        local maccParams =
+        {
+            effectId       = xi.effect.STUN,
+            magicalElement = xi.element.THUNDER,
+            skillRank      = xi.skillRank.A_PLUS,
+            actorStat      = xi.mod.INT,
+        }
+
+        local resistanceRate = xi.combat.magicHitRate.calculateResistRate(player, target, maccParams)
         if xi.data.statusEffect.isResistRateSuccessfull(xi.effect.STUN, resistanceRate, 0) then
-            target:addStatusEffect(xi.effect.STUN, { power = 1, duration = math.random(2, 8) * resistanceRate, origin = player })
+            target:addStatusEffect(xi.effect.STUN, { power = 1, duration = math.randomInt(2, 8) * resistanceRate, origin = player })
         end
     end
 

@@ -23,11 +23,11 @@
 
 #include "ai/ai_container.h"
 #include "common/utils.h"
-#include "entities/charentity.h"
 #include "status_effect_container.h"
 
 CPlayerCharmController::CPlayerCharmController(CCharEntity* PChar)
 : CPlayerController(PChar)
+, charmer_(PChar->PMaster)
 {
     POwner->PAI->PathFind = std::make_unique<CPathFind>(PChar);
 }
@@ -39,16 +39,17 @@ CPlayerCharmController::~CPlayerCharmController()
         POwner->PAI->Internal_Disengage();
     }
     POwner->PAI->PathFind.reset();
-    POwner->allegiance = ALLEGIANCE_TYPE::PLAYER;
+    POwner->allegiance = xi::Allegiance::Player;
 }
 
-auto CPlayerCharmController::Tick(timer::time_point tick) -> Task<void>
+auto CPlayerCharmController::Tick(const timer::time_point tick) -> Task<void>
 {
     m_Tick = tick;
 
-    if (POwner->PMaster == nullptr || !POwner->PMaster->isAlive())
+    auto* PMaster = charmer_.resolve<CBattleEntity>();
+    if (PMaster == nullptr || !PMaster->isAlive())
     {
-        POwner->StatusEffectContainer->DelStatusEffect(EFFECT_CHARM);
+        POwner->StatusEffectContainer->DelStatusEffect(xi::StatusEffect::CharmI);
         co_return;
     }
 
@@ -62,15 +63,15 @@ auto CPlayerCharmController::Tick(timer::time_point tick) -> Task<void>
     }
 }
 
-void CPlayerCharmController::DoCombatTick(timer::time_point tick)
+void CPlayerCharmController::DoCombatTick(timer::time_point tick) const
 {
     if (!POwner->PMaster->PAI->IsEngaged())
     {
         POwner->PAI->Internal_Disengage();
     }
-    if (POwner->PMaster->GetBattleTargetID() != POwner->GetBattleTargetID())
+    if (POwner->PMaster->battleTarget() != POwner->battleTarget())
     {
-        POwner->PAI->Internal_ChangeTarget(POwner->PMaster->GetBattleTargetID());
+        POwner->PAI->Internal_ChangeTarget(POwner->PMaster->battleTarget());
     }
     auto* PTarget{ POwner->GetBattleTarget() };
     if (PTarget)
@@ -83,7 +84,7 @@ void CPlayerCharmController::DoCombatTick(timer::time_point tick)
             {
                 if (POwner->GetSpeed() > 0)
                 {
-                    POwner->PAI->PathFind->PathAround(PTarget->loc.p, 2.0f, PATHFLAG_WALLHACK | PATHFLAG_RUN);
+                    POwner->PAI->PathFind->PathAround(PTarget->loc.p, 2.0f, PATHFLAG_RUN);
                     POwner->PAI->PathFind->FollowPath(m_Tick);
                 }
             }
@@ -91,11 +92,11 @@ void CPlayerCharmController::DoCombatTick(timer::time_point tick)
     }
 }
 
-void CPlayerCharmController::DoRoamTick(timer::time_point tick)
+void CPlayerCharmController::DoRoamTick(timer::time_point tick) const
 {
     if (POwner->PMaster->PAI->IsEngaged())
     {
-        POwner->PAI->Internal_Engage(POwner->PMaster->GetBattleTargetID());
+        POwner->PAI->Internal_Engage(POwner->PMaster->battleTarget());
     }
 
     float currentDistance = distance(POwner->loc.p, POwner->PMaster->loc.p);
@@ -104,7 +105,7 @@ void CPlayerCharmController::DoRoamTick(timer::time_point tick)
     {
         if (POwner->PAI->PathFind)
         {
-            if (currentDistance < 35.0f && POwner->PAI->PathFind->PathAround(POwner->PMaster->loc.p, 2.0f, PATHFLAG_RUN | PATHFLAG_WALLHACK))
+            if (currentDistance < 35.0f && POwner->PAI->PathFind->PathAround(POwner->PMaster->loc.p, 2.0f, PATHFLAG_RUN))
             {
                 POwner->PAI->PathFind->FollowPath(m_Tick);
             }
@@ -114,4 +115,29 @@ void CPlayerCharmController::DoRoamTick(timer::time_point tick)
             }
         }
     }
+}
+
+auto CPlayerCharmController::Cast(const EntityId target, SpellID spellid) -> bool
+{
+    return false;
+}
+
+auto CPlayerCharmController::ChangeTarget(const EntityId& target) -> bool
+{
+    return false;
+}
+
+auto CPlayerCharmController::WeaponSkill(EntityId target, uint16 wsid) -> bool
+{
+    return false;
+}
+
+auto CPlayerCharmController::Ability(EntityId target, uint16 abilityid) -> bool
+{
+    return false;
+}
+
+auto CPlayerCharmController::RangedAttack(const EntityId target) -> bool
+{
+    return false;
 }

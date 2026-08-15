@@ -2,8 +2,6 @@
 -- Area: Konschtat Highlands
 --   NM: Highlander Lizard
 -----------------------------------
-require('scripts/quests/tutorial')
------------------------------------
 ---@type TMobEntity
 local entity = {}
 
@@ -18,7 +16,7 @@ entity.spawnPoints =
 
 entity.onMobInitialize = function(mob)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(1200, 1800)) -- When server restarts, reset timer
+    mob:setRespawnTime(math.randomInt(1200, 1800)) -- When server restarts, reset timer
 
     -- Higher TP Gain per melee hit than normal lizards.
     -- It is definitly NOT regain.
@@ -33,12 +31,11 @@ entity.onMobDeath = function(mob, player, optParams)
     -- I think he still counts the FoV pages? Most NM's do not though.
     xi.regime.checkRegime(player, mob, 20, 2, xi.regime.type.FIELDS)
     xi.regime.checkRegime(player, mob, 82, 2, xi.regime.type.FIELDS)
-    xi.tutorial.onMobDeath(player)
 end
 
 entity.onMobDespawn = function(mob)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(1200, 1800)) -- 20~30 min repop
+    mob:setRespawnTime(math.randomInt(1200, 1800)) -- 20~30 min repop
 end
 
 return entity

@@ -8,7 +8,7 @@ local entity = {}
 
 local function enterFlight(mob)
     mob:setMobSkillAttack(732)
-    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, origin = mob, icon = 0 })
+    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, duration = 7200, origin = mob, icon = 0 })
     mob:setBehavior(bit.band(mob:getBehavior(), bit.bnot(xi.behavior.NO_TURN)))
     mob:setAnimationSub(1)
 end
@@ -33,7 +33,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setSpawnAnimation(1)
+    mob:setSpawnAnimation(xi.spawnAnimation.SPECIAL)
     mob:setMobSkillAttack(0)
     mob:setAnimationSub(0)
     mob:setMod(xi.mod.ATT, 322)
@@ -50,7 +50,7 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.UDMGBREATH, -5000)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 40)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 146)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 146)
     mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.NO_TURN))
     mob:setMobMod(xi.mobMod.DETECTION, bit.bor(xi.detects.SIGHT, xi.detects.HEARING))
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
@@ -142,7 +142,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(skillList, xi.mobSkill.HORRID_ROAR_4)
     end
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 -- If under 25% HP, uses Horrid Roar 3 times in a row.

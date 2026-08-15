@@ -10,6 +10,10 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
 end
 
+entity.onMobSpawn = function(mob)
+    mob:setfTPModifierOverride(xi.mobSkill.FLYING_HIP_PRESS, 7.0, 7.0, 7.0)
+end
+
 entity.onMobFight = function(mob, target)
     if xi.combat.behavior.isEntityBusy(mob) then
         return
@@ -54,9 +58,9 @@ entity.onMobFight = function(mob, target)
     }
     if
         mob:getLocalVar('skillUsed') ~= 0 and
-        math.random(1, 100) <= 50
+        math.randomInt(1, 100) <= 50
     then
-        mob:useMobAbility(followUpSkills[math.random(1, #followUpSkills)])
+        mob:useMobAbility(followUpSkills[math.randomInt(1, #followUpSkills)])
         mob:setLocalVar('skillUsed', 1)
     else
         mob:setLocalVar('skillUsed', 0)
@@ -74,9 +78,6 @@ entity.onMobWeaponSkill = function(mob, target, skill, action)
     else
         mob:setLocalVar('skillUsed', 1)
     end
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

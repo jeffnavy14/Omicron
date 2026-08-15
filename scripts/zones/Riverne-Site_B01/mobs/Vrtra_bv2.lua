@@ -52,7 +52,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setSpawnAnimation(1)
+    mob:setSpawnAnimation(xi.spawnAnimation.SPECIAL)
     mob:setMobSkillAttack(0)
     mob:setAnimationSub(0)
     mob:setMod(xi.mod.DEF, 436)
@@ -71,7 +71,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.DETECTION, bit.bor(xi.detects.SIGHT, xi.detects.HEARING))
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
     mob:setMobMod(xi.mobMod.SOUND_RANGE, 15)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 137)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 137)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 40)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
 
@@ -94,7 +94,7 @@ end
 
 entity.onMobEngage = function(mob, target)
     local currentTime = GetSystemTime()
-    mob:setLocalVar('addTime', currentTime + math.random(25, 30))
+    mob:setLocalVar('addTime', currentTime + math.randomInt(25, 30))
 end
 
 entity.onMobFight = function(mob, target)
@@ -106,7 +106,7 @@ entity.onMobFight = function(mob, target)
     local addTime = mob:getLocalVar('addTime')
 
     if currentTime > addTime then
-        mob:setLocalVar('addTime', currentTime + math.random(55, 60))
+        mob:setLocalVar('addTime', currentTime + math.randomInt(55, 60))
         xi.mob.callPets(mob, utils.shuffle(pets), callPetParams)
     end
 
@@ -136,7 +136,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         xi.mobSkill.HORRID_ROAR_6,
     }
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 entity.onMobSpellChoose = function(mob, target, spellId)
@@ -147,7 +147,10 @@ entity.onMobSpellChoose = function(mob, target, spellId)
         [3] = { xi.magic.spell.SLEEPGA_II, target, false, xi.action.type.ENFEEBLING_TARGET, xi.effect.SLEEP_I,   0, 100 },
     }
 
-    if target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) then
+    if
+        target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) and
+        mob:isEngaged()
+    then
         table.insert(spellList, #spellList + 1, { xi.magic.spell.DISPELGA, target, false, xi.action.type.NONE, nil, 0, 100 })
     end
 

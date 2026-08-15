@@ -49,7 +49,7 @@ entity.onAdditionalEffect = function(mob, target, damage)
     local pTable =
     {
         chance   = 25,
-        effectId = effectTable[math.random(1, #effectTable)],
+        effectId = effectTable[math.randomInt(1, #effectTable)],
         power    = 20,
         duration = 60,
     }
@@ -59,8 +59,8 @@ end
 
 entity.onMobDespawn = function(mob)
     DisallowRespawn(ID.mob.VOLUPTUOUS_VILMA, true)
-    DisallowRespawn(ID.mob.ROSE_GARDEN_PH, false)
-    GetMobByID(ID.mob.ROSE_GARDEN_PH):setRespawnTime(GetMobRespawnTime(ID.mob.ROSE_GARDEN_PH))
+    DisallowRespawn(ID.mob.ROSE_GARDEN - 1, false)
+    GetMobByID(ID.mob.ROSE_GARDEN - 1):setRespawnTime(GetMobRespawnTime(ID.mob.ROSE_GARDEN - 1))
 end
 
 return entity

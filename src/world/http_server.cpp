@@ -100,7 +100,7 @@ HTTPServer::HTTPServer(Scheduler& scheduler)
                 {
                     auto   maybeZoneId = req.matches[1].str();
                     uint16 zoneId      = std::strtol(maybeZoneId.c_str(), nullptr, 10);
-                    if (zoneId && zoneId < ZONEID::MAX_ZONEID)
+                    if (zoneId && zoneId < MAX_ZONEID)
                     {
                         LockingUpdate();
                         apiDataCache_.read(
@@ -133,17 +133,19 @@ HTTPServer::HTTPServer(Scheduler& scheduler)
                     settings::visit(
                         [&](const auto& key, const auto& variant)
                         {
+                            // Keys are stored verbatim (mixed case), and the omit list is lowercase,
+                            // so match case-insensitively to still catch e.g. "...PASSWORD".
+                            const auto lowerKey = to_lower(key);
                             for (const auto& text : textToOmit)
                             {
-                                // NOTE: Remember that keys are stored as uppercase
-                                if (key.find(to_upper(text)) != std::string::npos)
+                                if (lowerKey.find(text) != std::string::npos)
                                 {
                                     return;
                                 }
                             }
 
-                            std::visit(
-                                xi::overload{
+                            variant.visit(
+                                overload{
                                     [&](const bool& arg)
                                     {
                                         j[key] = arg;
@@ -157,8 +159,7 @@ HTTPServer::HTTPServer(Scheduler& scheduler)
                                         // JSON can't handle non-ASCII characters, so strip them out
                                         j[key] = utils::toASCII(arg, '?');
                                     },
-                                },
-                                variant);
+                                });
                         });
 
                     res.set_content(j.dump(), "application/json");

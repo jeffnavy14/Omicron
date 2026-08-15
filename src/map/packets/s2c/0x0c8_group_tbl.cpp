@@ -22,13 +22,10 @@
 #include "0x0c8_group_tbl.h"
 
 #include "alliance.h"
-#include "common/database.h"
-#include "common/logging.h"
-#include "map_engine.h"
 #include "party.h"
 
-#include "entities/charentity.h"
-#include "entities/trustentity.h"
+#include "entities/char_entity.h"
+#include "entities/trust_entity.h"
 #include "enums/party_kind.h"
 #include "utils/zoneutils.h"
 
@@ -95,7 +92,7 @@ GP_SERV_COMMAND_GROUP_TBL::GP_SERV_COMMAND_GROUP_TBL(CParty* PParty, const bool 
                     packet.GroupTbl[i].AllianceRFlg      = 0;
                     packet.GroupTbl[i].unknown06         = 0;
                     packet.GroupTbl[i].unknown07         = 0;
-                    packet.GroupTbl[i].ZoneNo            = PTrust->getZone();
+                    packet.GroupTbl[i].ZoneNo            = static_cast<uint16>(PTrust->getZone());
                     i++;
                 }
             }

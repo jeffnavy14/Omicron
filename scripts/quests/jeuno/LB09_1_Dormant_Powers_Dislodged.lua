@@ -31,8 +31,6 @@ local itemWantedTable =
 
 quest.reward =
 {
-    fame     = 50,
-    fameArea = xi.fameArea.JEUNO,
     keyItem  = xi.ki.SOUL_GEM,
 }
 
@@ -71,7 +69,7 @@ quest.sections =
 
                     -- Save item Chosen
                     if itemChosen < 0 then
-                        itemChosen = math.random(0, 9)
+                        itemChosen = math.randomInt(0, 9)
                         quest:setVar(player, 'itemWanted', itemChosen + 1)
                     end
 

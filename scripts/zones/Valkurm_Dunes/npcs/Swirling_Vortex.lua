@@ -11,7 +11,7 @@ local entity = {}
 
 entity.onTrigger = function(player, npc)
     if player:hasCompletedMission(xi.mission.log_id.COP, xi.mission.id.cop.THE_MOTHERCRYSTALS) then
-        player:startEvent(12)
+        player:startOptionalCutscene(12, { cs_option = 0, canSkip = true })
     else
         player:messageSpecial(ID.text.AN_EMPTY_LIGHT_SWIRLS)
     end

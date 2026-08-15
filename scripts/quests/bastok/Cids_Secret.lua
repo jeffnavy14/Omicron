@@ -10,7 +10,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.CIDS_SECRET)
 
 quest.reward =
 {
-    fame     = 30,
+    fame     = 40,
     fameArea = xi.fameArea.BASTOK,
     item     = xi.item.RAM_MANTLE,
 }
@@ -72,8 +72,8 @@ quest.sections =
             {
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHasExactly(trade, xi.item.ROLANBERRY_874_CE) and
-                        quest:getVar(player, 'Prog') == 1
+                        quest:getVar(player, 'Prog') == 1 and
+                        npcUtil.tradeMatches(trade, { { xi.item.ROLANBERRY_874_CE, 1 } })
                     then
                         return quest:progressEvent(133)
                     end
@@ -91,7 +91,7 @@ quest.sections =
                 end,
 
                 [133] = function(player, csid, option, npc)
-                    player:confirmTrade()
+                    player:tradeComplete()
 
                     npcUtil.giveKeyItem(player, xi.ki.UNFINISHED_LETTER)
                 end,

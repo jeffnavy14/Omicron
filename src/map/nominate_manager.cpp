@@ -22,7 +22,7 @@
 #include "nominate_manager.h"
 
 #include "alliance.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/msg_std.h"
 #include "linkshell.h"
 #include "party.h"
@@ -36,12 +36,14 @@
 
 #include "common/logging.h"
 
+#include <common/types/hash_map.h>
+
 namespace
 {
 
-constexpr uint16                                                      maxOptions = 8;
-constexpr timer::duration                                             cooldown{ std::chrono::seconds(60) };
-const std::unordered_map<GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND, uint16> scopeCapacity = {
+constexpr uint16                                           maxOptions = 8;
+constexpr timer::duration                                  cooldown{ std::chrono::seconds(60) };
+const HashMap<GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND, uint16> scopeCapacity = {
     { GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND::Party, 18 },
     { GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND::Linkshell1, 64 },
     { GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND::Linkshell2, 64 },

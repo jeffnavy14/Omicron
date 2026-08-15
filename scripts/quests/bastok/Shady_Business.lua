@@ -9,9 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.SHADY_BUSINESS)
 
 quest.reward =
 {
-    fame     = 80,
-    fameArea = xi.fameArea.NORG,
-    gil      = 350,
+    gil = 350,
 }
 
 quest.sections =
@@ -31,7 +29,7 @@ quest.sections =
                 end,
 
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHas(trade, { { xi.item.CHUNK_OF_ZINC_ORE, 4 } }) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.CHUNK_OF_ZINC_ORE, 4 } }) then
                         return quest:progressEvent(91)
                     end
                 end,
@@ -49,7 +47,8 @@ quest.sections =
 
                 [91] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:addFame(xi.fameArea.NORG, 30)
+                        player:tradeComplete()
                     end
                 end,
 

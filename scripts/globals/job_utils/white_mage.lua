@@ -96,7 +96,10 @@ xi.job_utils.white_mage.useBenediction = function(player, target, ability)
 
     local power = 33 --chance to remove Doom. Basing off of Holy Water?
 
-    if target:hasStatusEffect(xi.effect.DOOM) and power > math.random(1, 100) then
+    if
+        target:hasStatusEffect(xi.effect.DOOM) and
+        power > math.randomInt(1, 100)
+    then
         target:delStatusEffect(xi.effect.DOOM)
     end
 
@@ -114,7 +117,7 @@ xi.job_utils.white_mage.useDevotion = function(player, target, ability, action)
     local damageHP   = math.floor(player:getHP() * 0.25)
 
     -- If stoneskin is present, it should absorb damage
-    damageHP = utils.handleStoneskin(player, damageHP)
+    damageHP = utils.handleStoneskin(player, damageHP, xi.attackType.MAGICAL)
 
     local healMP = player:getHP() * mpPercent
     healMP = utils.clamp(healMP, 0, target:getMaxMP() - target:getMP())
@@ -150,7 +153,7 @@ xi.job_utils.white_mage.useMartyr = function(player, target, ability, action)
     healHP = utils.clamp(healHP, 0, target:getMaxHP() - target:getHP())
 
     -- If stoneskin is present, it should absorb damage
-    damageHP = utils.handleStoneskin(player, damageHP)
+    damageHP = utils.handleStoneskin(player, damageHP, xi.attackType.MAGICAL)
     player:delHP(damageHP)
     target:addHP(healHP)
 

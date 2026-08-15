@@ -32,7 +32,7 @@ function utils.attemptShadowMitigation(actor, attemptedRemovals)
     -- Through research, a skill's shadowBehavior acts as a counter for how many shadow mitigation attempts are made(attemptedRemovals).
     -- Example: An AoE skill that takes 4 shadows will attempt the mitgation step below 4 times. A shadow will only be mitigated if it passes the proc chance check.
     for i = 1, attemptedRemovals do
-        if math.random(1, 100) <= procChance then
+        if math.randomInt(1, 100) <= procChance then
             mitigated = mitigated + 1
         end
     end
@@ -73,7 +73,7 @@ function utils.takeShadows(actor, damage, shadowsToRemove)
     -- Handle Blink shadow removal
     if shadowType == xi.mod.BLINK then
         for _ = 1, shadowsToRemove do
-            if shadowsRemaining > 0 and math.random(1, 100) <= 80 then
+            if shadowsRemaining > 0 and math.randomInt(1, 100) <= 80 then
                 shadowsRemaining = shadowsRemaining - 1
                 shadowsUsed      = shadowsUsed + 1
             end
@@ -153,6 +153,7 @@ function utils.shadowAbsorb(target, shadowsToRemove)
         local effect = target:getStatusEffect(xi.effect.COPY_IMAGE)
         if effect then
             if targetShadows == 0 then
+                effect:setIcon(xi.effect.COPY_IMAGE)
                 target:delStatusEffect(xi.effect.COPY_IMAGE)
             elseif targetShadows == 1 then
                 effect:setIcon(xi.effect.COPY_IMAGE)
@@ -169,7 +170,7 @@ function utils.shadowAbsorb(target, shadowsToRemove)
 
     -- Blink has a random chance of triggering when no utsusemi is present.
     elseif blinkMod > 0 then
-        if math.random(1, 100) <= 20 then
+        if math.randomInt(1, 100) <= 20 then
             absorbHit = false
 
             return absorbHit, 0
@@ -232,36 +233,69 @@ function utils.handleOneForAll(actor, damage)
 end
 
 -- Calculates Stoneskin damage reduction.
+-- Optional attackType: subType 1 = physical/ranged only, 2 = magical only (frozen_mist / hydro_wave / Rampart).
+-- Omitting attackType preserves previous absorb-all behavior.
 ---@nodiscard
 ---@param actor CBaseEntity
 ---@param damage integer
+---@param attackType xi.attackType?
 ---@return integer
-function utils.handleStoneskin(actor, damage)
+function utils.handleStoneskin(actor, damage, attackType)
+    -- Early return: No damage to mitigate.
     if damage <= 0 then
         return damage
     end
 
-    local stoneskinRemaining = actor:getMod(xi.mod.STONESKIN)
+    -- Early return: No effect present.
+    local effect = actor:getStatusEffect(xi.effect.STONESKIN)
+    if not effect then
+        return damage
+    end
+
+    -- Early return: Stoneskin type doesn't mitigate damage type.
+    local stoneskinType = effect:getSubType()
+    if stoneskinType == 2 then
+        if
+            attackType == xi.attackType.PHYSICAL or
+            attackType == xi.attackType.RANGED
+        then
+            return damage
+        end
+    elseif stoneskinType == 1 then
+        if
+            attackType == xi.attackType.MAGICAL or
+            attackType == xi.attackType.BREATH or
+            attackType == xi.attackType.SPECIAL
+        then
+            return damage
+        end
+    end
+
+    -- Early return: Stoneskin can't mitigate any more damage.
+    local stoneskinRemaining = effect:getPower()
     if stoneskinRemaining <= 0 then
         return damage
     end
 
-    -- Absorb all damage
+    -- Absorb all damage.
     if stoneskinRemaining > damage then
-        actor:delMod(xi.mod.STONESKIN, damage)
+        effect:setPower(stoneskinRemaining - damage)
 
         return 0
 
     -- Wear off if mitigated damage exceeds stoneskin.
     else
         actor:delStatusEffect(xi.effect.STONESKIN)
-        actor:setMod(xi.mod.STONESKIN, 0)
 
-        return damage - stoneskinRemaining
+        return utils.clamp(damage - stoneskinRemaining, 0, 99999)
     end
 end
 
--- Handles Automaton attachment "Analyzer" which decreases damage from successive special attacks.
+-- Handles Automaton attachment "Analyzer", which decreases damage from successive special attacks.
+---@param actor CBaseEntity
+---@param skill CPetSkill|CMobSkill
+---@param damage integer
+---@return integer
 function utils.handleAutomatonAutoAnalyzer(actor, skill, damage)
     local analyzerModifier = actor:getMod(xi.mod.AUTO_ANALYZER)
 

@@ -21,7 +21,7 @@
 
 #include "0x0c4_group_comlink_active.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/item_lockflg.h"
 #include "enums/msg_std.h"
 #include "item_container.h"
@@ -191,7 +191,8 @@ auto GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE::validate(MapSession* PSession, const C
         .range("b", this->b, 0, 15)
         .mustEqual(this->a, 15, "a not 15")
         .oneOf<GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE_ACTIVEFLG>(this->ActiveFlg)
-        .oneOf<GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE_LINKSHELLID>(this->LinkshellId);
+        .oneOf<GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE_LINKSHELLID>(this->LinkshellId)
+        .isValidContainer("Category", this->Category);
 }
 
 void GP_CLI_COMMAND_GROUP_COMLINK_ACTIVE::process(MapSession* PSession, CCharEntity* PChar) const

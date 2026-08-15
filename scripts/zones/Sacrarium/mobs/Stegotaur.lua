@@ -29,10 +29,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.MORTAL_RAY_1)
     end
 
-    return tpMoves[math.random(1, #tpMoves)]
-end
-
-entity.onMobDeath = function(mob, player, optParams)
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 return entity

@@ -18,6 +18,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
+    xi.hunts.checkHunt(mob, player, 489)
 end
 
 return entity

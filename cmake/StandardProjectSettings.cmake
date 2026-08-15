@@ -1,5 +1,14 @@
 # Set a default build type if none was specified
-if(NOT CMAKE_BUILD_TYPE)
+get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(isMultiConfig)
+  set(CMAKE_CONFIGURATION_TYPES
+      "RelWithDebInfo;Debug;Release;MinSizeRel"
+      CACHE STRING "Available build configurations" FORCE)
+
+  if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
+    set(CMAKE_DEFAULT_BUILD_TYPE "RelWithDebInfo")
+  endif()
+elseif(NOT CMAKE_BUILD_TYPE)
   message(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")
   set(CMAKE_BUILD_TYPE
       "RelWithDebInfo"
@@ -8,10 +17,11 @@ if(NOT CMAKE_BUILD_TYPE)
   set_property(
     CACHE CMAKE_BUILD_TYPE
     PROPERTY STRINGS
-             "Debug"
-             "Release"
-             "MinSizeRel"
-             "RelWithDebInfo")
+        "RelWithDebInfo"
+        "Debug"
+        "Release"
+        "MinSizeRel"
+    )
 endif()
 
 option(ENABLE_IPO "Enable Interprocedural Optimization, aka Link Time Optimization (LTO)" ON)
@@ -41,8 +51,6 @@ if(MSVC)
     list(APPEND FLAGS_AND_DEFINES
         -D_CONSOLE
         -D_MBCS
-        -DNOMINMAX
-        -D_CRT_SECURE_NO_WARNINGS
         -D_CRT_NONSTDC_NO_DEPRECATE
         # TODO: This is being overwritten by /Ob0
         # /Ob2 # Inline Function Expansion
@@ -68,7 +76,7 @@ if(MSVC)
         )
     endif()
 
-    link_libraries(WS2_32 dbghelp Shlwapi)
+    link_libraries(ws2_32 dbghelp shlwapi winmm shell32 user32)
 endif()
 
 if(UNIX)
@@ -87,33 +95,48 @@ string(REPLACE ";" " " FLAGS_AND_DEFINES_STR "${FLAGS_AND_DEFINES}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAGS_AND_DEFINES_STR}")
 
 function(set_target_output_directory target)
-    message(STATUS "Setting output directory for ${target} to ${CMAKE_SOURCE_DIR}")
+    # Run from the repo root: data, scripts, settings and the runtime DLLs all live there.
+    # DEBUGGER_WORKING_DIRECTORY (CMake 4.0+): Ninja and other non-VS generators.
+    # VS_DEBUGGER_WORKING_DIRECTORY: Visual Studio generator (takes precedence there).
     set_target_properties(${target} PROPERTIES
-        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_ASAN "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_UBSAN "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_TSAN "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_MSAN "${CMAKE_SOURCE_DIR}"
-        RUNTIME_OUTPUT_DIRECTORY_LSAN "${CMAKE_SOURCE_DIR}"
-    )
+        DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+    message(STATUS "${target}: staging build artifact to ${CMAKE_SOURCE_DIR} after build")
+    add_custom_command(TARGET ${target} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "$<TARGET_FILE:${target}>"
+                "${CMAKE_SOURCE_DIR}/$<TARGET_FILE_NAME:${target}>"
+        VERBATIM)
+
+    if(MSVC)
+        add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND "$<$<CONFIG:Debug,RelWithDebInfo>:${CMAKE_COMMAND};-E;copy_if_different;$<TARGET_PDB_FILE:${target}>;${CMAKE_SOURCE_DIR}/$<TARGET_PDB_FILE_NAME:${target}>>"
+            COMMAND_EXPAND_LISTS
+            VERBATIM)
+    endif()
+
+    if(APPLE)
+        # Under LTO the linker merges codegen objects into temp files and deletes after linking.
+        # We need to preserve those for the next step!
+        # -object_path_lto persists those codegen objects to a real, per-target directory so
+        # dsymutil can gather their DWARF into the .dSYM.
+        if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+            set(lto_object_dir "${CMAKE_BINARY_DIR}/lto-objects/${target}")
+            file(MAKE_DIRECTORY "${lto_object_dir}")
+            target_link_options(${target} PRIVATE "-Wl,-object_path_lto,${lto_object_dir}")
+        endif()
+
+        # dsymutil consolidates the DWARF into a self-contained .dSYM that travels with the
+        # binary, and atos picks it up automatically.
+        add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND "$<$<CONFIG:Debug,RelWithDebInfo>:dsymutil;$<TARGET_FILE:${target}>;-o;${CMAKE_SOURCE_DIR}/$<TARGET_FILE_NAME:${target}>.dSYM>"
+            COMMAND_EXPAND_LISTS
+            VERBATIM)
+    endif()
 endfunction()
 
 function(disable_lto target)
     target_compile_options(${target} PRIVATE -fno-lto)
     target_link_options(${target} PRIVATE -fno-lto)
 endfunction()
-
-# If we're on Unix and the system is 32-bit (void* is 4-bytes wide),
-# then there's a good chance we're compiling for Raspberry Pi.
-# Currently, CMake doesn't detect this properly and needs some help
-# to link libatomic.
-# Source: https://gitlab.kitware.com/cmake/cmake/-/issues/21174
-#
-# TODO: Use include(CheckCXXSourceCompiles) to make this check better.
-if(UNIX AND CMAKE_SIZEOF_VOID_P EQUAL 4)
-    set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -latomic")
-endif()

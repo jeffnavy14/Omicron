@@ -7,16 +7,16 @@ local ID = zones[xi.zone.MAZE_OF_SHAKHRAMI]
 local zoneObject = {}
 
 zoneObject.onInitialize = function(zone)
-    if math.random(1, 100) <= 50 then
+    if math.randomInt(1, 100) <= 50 then
         DisallowRespawn(ID.mob.LEECH_KING, true)
         DisallowRespawn(ID.mob.ARGUS, false)
         xi.mob.updateNMSpawnPoint(ID.mob.ARGUS)
-        GetMobByID(ID.mob.ARGUS):setRespawnTime(math.random(900, 7200))
+        GetMobByID(ID.mob.ARGUS):setRespawnTime(math.randomInt(900, 7200))
     else
         DisallowRespawn(ID.mob.ARGUS, true)
         DisallowRespawn(ID.mob.LEECH_KING, false)
         xi.mob.updateNMSpawnPoint(ID.mob.LEECH_KING)
-        GetMobByID(ID.mob.LEECH_KING):setRespawnTime(math.random(900, 7200))
+        GetMobByID(ID.mob.LEECH_KING):setRespawnTime(math.randomInt(900, 7200))
     end
 
     xi.treasure.initZone(zone)
@@ -48,6 +48,27 @@ zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
+end
+
+zoneObject.onGameHour = function(zone)
+    local qmRSE = GetNPCByID(ID.npc.QM_RSE)
+    if not qmRSE then
+        return
+    end
+
+    local currentRSELocation = VanadielRSELocation()
+    local rseEventActive     = qmRSE:getLocalVar('rseEventActive')
+
+    if currentRSELocation ~= 2 then
+        qmRSE:setLocalVar('rseEventActive', 0)
+        qmRSE:setStatus(xi.status.DISAPPEAR)
+        return
+    end
+
+    if rseEventActive == 0 then
+        qmRSE:setLocalVar('rseEventActive', 1)
+        qmRSE:setStatus(xi.status.NORMAL)
+    end
 end
 
 return zoneObject

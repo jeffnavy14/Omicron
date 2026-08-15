@@ -21,9 +21,8 @@
 
 #include "0x05a_motionmes.h"
 
-#include "entities/charentity.h"
-#include "entities/npcentity.h"
-#include "item_container.h"
+#include "entities/char_entity.h"
+#include "entities/npc_entity.h"
 #include "items/item_weapon.h"
 
 GP_SERV_COMMAND_MOTIONMES::GP_SERV_COMMAND_MOTIONMES(const CCharEntity* PChar, const uint32 targetId, const uint16 targetIndex, Emote emoteId, EmoteMode emoteMode, const uint16 extra)
@@ -54,11 +53,11 @@ GP_SERV_COMMAND_MOTIONMES::GP_SERV_COMMAND_MOTIONMES(const CCharEntity* PChar, c
         const CItemWeapon* PWeapon = static_cast<CItemWeapon*>(PChar->getEquip(SLOT_RANGED));
         if (PWeapon && PWeapon->getID() != 65535)
         {
-            if (PWeapon->getSkillType() == SKILL_THROWING)
+            if (PWeapon->getSkillType() == xi::SkillType::Throwing)
             {
                 packet.Param = PWeapon->getID();
             }
-            else if (PWeapon->getSkillType() == SKILL_MARKSMANSHIP || PWeapon->getSkillType() == SKILL_ARCHERY)
+            else if (PWeapon->getSkillType() == xi::SkillType::Marksmanship || PWeapon->getSkillType() == xi::SkillType::Archery)
             {
                 const CItemWeapon* PAmmo = static_cast<CItemWeapon*>(PChar->getEquip(SLOT_AMMO));
                 if (PAmmo && PAmmo->getID() != 65535)

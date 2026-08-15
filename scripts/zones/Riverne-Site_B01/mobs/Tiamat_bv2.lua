@@ -8,7 +8,7 @@ local entity = {}
 
 local function enterFlight(mob)
     mob:setMobSkillAttack(730)
-    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, origin = mob, icon = 0 })
+    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, duration = 7200, origin = mob, icon = 0 })
     mob:setBehavior(bit.band(mob:getBehavior(), bit.bnot(xi.behavior.NO_TURN)))
     mob:setAnimationSub(1)
 end
@@ -32,7 +32,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setSpawnAnimation(1)
+    mob:setSpawnAnimation(xi.spawnAnimation.SPECIAL)
     mob:setMobSkillAttack(0)
     mob:setAnimationSub(0)
     mob:setMod(xi.mod.ACC, 361)
@@ -49,7 +49,7 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.UFASTCAST, 25)
     mob:setMod(xi.mod.VIT, 12)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 139)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 139)
     mob:setBehavior(bit.bor(mob:getBehavior(), xi.behavior.NO_TURN))
     mob:setMobMod(xi.mobMod.DETECTION, bit.bor(xi.detects.SIGHT, xi.detects.HEARING))
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
@@ -159,7 +159,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(skillList, xi.mobSkill.HORRID_ROAR_3)
     end
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 entity.onMobSpellChoose = function(mob, target, spellId)

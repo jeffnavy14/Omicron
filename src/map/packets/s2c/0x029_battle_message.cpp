@@ -21,8 +21,7 @@
 
 #include "0x029_battle_message.h"
 
-#include "entities/baseentity.h"
-#include "enums/msg_std.h"
+#include "entities/base_entity.h"
 
 GP_SERV_COMMAND_BATTLE_MESSAGE::GP_SERV_COMMAND_BATTLE_MESSAGE(const CBaseEntity* PSender, const CBaseEntity* PTarget, const int32 param, const int32 value, const MsgStd messageId)
 {

@@ -20,7 +20,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setLocalVar('everyonesRancorHPP', math.random(20, 30))
+    mob:setLocalVar('everyonesRancorHPP', math.randomInt(20, 30))
 end
 
 entity.onMobFight = function(mob, target)
@@ -35,9 +35,6 @@ end
 
 entity.onMobDisengage = function(mob)
     mob:setLocalVar('everyonesRancorUsed', 0)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

@@ -4,15 +4,35 @@ cmake_minimum_required(VERSION 3.25)
 cmake_policy(SET CMP0141 NEW)
 set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
 
+# On macOS, pin the deployment target to the host OS version (must happen before
+# project()). Without this, some compilers infer it from the Darwin kernel version
+# using the pre-macOS-26 numbering scheme (e.g. Homebrew LLVM 20 maps Darwin 25 to
+# "macOS 16.0" instead of 26), and every link against a Homebrew dylib stamped with
+# the real version warns:
+#   ld: warning: building for macOS-16.0, but linking with dylib built for newer version 26.0
+# Overridable as usual via -DCMAKE_OSX_DEPLOYMENT_TARGET or MACOSX_DEPLOYMENT_TARGET.
+if(CMAKE_HOST_APPLE AND "${CMAKE_OSX_DEPLOYMENT_TARGET}" STREQUAL "" AND "$ENV{MACOSX_DEPLOYMENT_TARGET}" STREQUAL "")
+    execute_process(
+        COMMAND sw_vers -productVersion
+        OUTPUT_VARIABLE host_macos_version
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    string(REGEX MATCH "^[0-9]+" host_macos_major "${host_macos_version}")
+    if(host_macos_major)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "${host_macos_major}.0")
+    endif()
+endif()
+
 project(server C CXX)
 
 # https://cmake.org/cmake/help/latest/policy/CMP0069.html
 cmake_policy(SET CMP0069 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 set(LINKER_LANGUAGE CXX)
 set(USE_FOLDERS ON)
 
@@ -98,7 +118,6 @@ endif()
 
 # Find MariaDB
 find_package(MariaDB REQUIRED)
-find_package(MariaDBCPP REQUIRED)
 
 # Find ZMQ
 find_package(ZeroMQ REQUIRED)
@@ -113,29 +132,39 @@ find_package(OpenSSLlibcrypto REQUIRED)
 find_package(OpenSSLlibssl REQUIRED)
 
 if(UNIX AND NOT APPLE)
-# zstd is sometimes a prereq for binutils
+    # zstd is sometimes a prereq for binutils
     find_package(Zstd REQUIRED)
     find_package(Binutils REQUIRED)
 endif()
 
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(project_options INTERFACE)
-target_compile_features(project_options INTERFACE cxx_std_17)
+target_compile_features(project_options INTERFACE cxx_std_23)
+
+# Windows-only preprocessor defines for our first-party code ONLY.
+if(WIN32)
+    target_compile_definitions(project_options INTERFACE
+        NOMINMAX
+        WIN32_LEAN_AND_MEAN
+        _CRT_SECURE_NO_WARNINGS
+    )
+endif()
 
 # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
 add_library(project_warnings INTERFACE)
 set_project_warnings(project_warnings)
 
-# Globally define SOL_ALL_SAFETIES_ON so sol can be included anywhere
-# If SOL_NO_CHECK_NUMBER_PRECISION is defined, turns off number precision and integer
-# precision fitting when pushing numbers into sol
-# add_compile_definitions() comes with CMake 3.12
-add_definitions(
-    -DSOL_ALL_SAFETIES_ON=1
-    -DSOL_NO_CHECK_NUMBER_PRECISION=1
-    -DSOL_DEFAULT_PASS_ON_ERROR=1
-    -DSOL_PRINT_ERRORS=0
-    -DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
+add_compile_definitions(
+    # Globally define SOL_ALL_SAFETIES_ON so sol can be included anywhere.
+    SOL_ALL_SAFETIES_ON=1
+    # If SOL_NO_CHECK_NUMBER_PRECISION is defined, turns off number precision and integer
+    # precision fitting when pushing numbers into sol.
+    SOL_NO_CHECK_NUMBER_PRECISION=1
+    SOL_DEFAULT_PASS_ON_ERROR=1
+    SOL_PRINT_ERRORS=0
+    SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
+    XI_CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+    XI_BUILD_TYPE="$<CONFIG>"
 )
 
 # For external libs
@@ -153,6 +182,8 @@ message(STATUS "TRACY_ENABLE: ${TRACY_ENABLE}")
 
 add_subdirectory(ext)
 
+# After add_subdirectory(ext) so third-party targets never inherit CMAKE_CXX_CLANG_TIDY.
+# Dependencies pulled in later have to be wrapped in suspend_clang_tidy()/resume_clang_tidy().
 include(ClangTidy)
 include(Fuzzing)
 
@@ -176,6 +207,44 @@ execute_process(
 if (NOT IPC_EXIT_CODE EQUAL 0)
     message(FATAL_ERROR "Failed to generate IPC stubs")
 endif()
+
+execute_process(
+    COMMAND ${Python_EXECUTABLE} -c "import jinja2, jsonschema; from ruamel.yaml import YAML"
+    RESULT_VARIABLE CODEGEN_DEPS_EXIT_CODE
+    OUTPUT_QUIET
+    ERROR_QUIET
+)
+if(NOT CODEGEN_DEPS_EXIT_CODE EQUAL 0)
+    message(FATAL_ERROR
+        "Codegen requires the Python packages jinja2, jsonschema, and ruamel.yaml, "
+        "but they are not installed for the interpreter CMake selected:\n"
+        "    ${Python_EXECUTABLE}\n"
+        "Install them by running this command exactly as shown (the interpreter path "
+        "matters, so the packages land in the environment this build uses):\n"
+        "    ${Python_EXECUTABLE} -m pip install -r ${CMAKE_SOURCE_DIR}/tools/requirements.txt"
+    )
+endif()
+
+set(ENUM_CODEGEN_STAMP ${CMAKE_BINARY_DIR}/generated/.enum_codegen.stamp)
+if(NOT EXISTS ${ENUM_CODEGEN_STAMP})
+    message(STATUS "Bootstrapping enum codegen")
+    execute_process(
+        COMMAND ${Python_EXECUTABLE} -m tools.codegen ${CMAKE_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RESULT_VARIABLE CODEGEN_EXIT_CODE
+    )
+    if(NOT CODEGEN_EXIT_CODE EQUAL 0)
+        message(FATAL_ERROR "Enum codegen failed")
+    endif()
+endif()
+
+add_custom_target(enum_codegen
+    COMMAND ${Python_EXECUTABLE} -m tools.codegen ${CMAKE_BINARY_DIR}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    BYPRODUCTS ${ENUM_CODEGEN_STAMP}
+    USES_TERMINAL
+    VERBATIM
+)
 
 include_directories(${CMAKE_BINARY_DIR}/generated) # Globally include the build/generated directory
 

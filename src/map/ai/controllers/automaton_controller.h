@@ -23,7 +23,7 @@
 
 #include <common/types/maybe.h>
 
-#include "entities/automatonentity.h"
+#include "entities/automaton_entity.h"
 
 #include "pet_controller.h"
 #include "spell.h"
@@ -49,11 +49,11 @@ struct AutomatonAbility
 
 struct AutomatonSpell
 {
-    uint16              skilllevel{ 0 };
-    uint8               heads{ 0 };
-    EFFECT              enfeeble{ EFFECT_KO };
-    IMMUNITY            immunity{ IMMUNITY_NONE };
-    std::vector<EFFECT> removes;
+    uint16                        skilllevel{ 0 };
+    uint8                         heads{ 0 };
+    xi::StatusEffect              enfeeble{ xi::StatusEffect::Ko };
+    xi::Immunity                  immunity{ xi::Immunity::None };
+    std::vector<xi::StatusEffect> removes;
 };
 
 class CAutomatonEntity;
@@ -63,18 +63,16 @@ class CAutomatonController : public CPetController
 public:
     CAutomatonController(CAutomatonEntity* PPet);
 
-    virtual auto Disengage() -> bool override;
+    auto Disengage() -> bool override;
 
 protected:
-    virtual auto DoCombatTick(timer::time_point tick) -> Task<void> override;
-    virtual void Move() override;
-
+    auto DoCombatTick(timer::time_point tick) -> Task<void> override;
+    void Move() override;
     void setCooldowns();
     void setMagicCooldowns();
-
-    virtual auto CanCastSpells(IgnoreRecastsAndCosts ignoreRecastsAndCosts) -> bool override;
-    virtual auto Cast(uint16 targid, SpellID spellid) -> bool override;
-    virtual auto MobSkill(uint16 targid, uint16 wsid, Maybe<timer::duration> castTimeOverride) -> bool override;
+    auto CanCastSpells(IgnoreRecastsAndCosts ignoreRecastsAndCosts) -> bool override;
+    auto Cast(EntityId target, SpellID spellid) -> bool override;
+    auto MobSkill(EntityId target, uint16 wsid, Maybe<timer::duration> castTimeOverride) -> bool override;
 
 private:
     auto TryAction() -> bool;
@@ -121,9 +119,9 @@ namespace automaton
 {
 
 void LoadAutomatonSpellList();
-bool CanUseSpell(CAutomatonEntity* PCaster, SpellID spellid);
-bool CanUseEnfeeble(CBattleEntity* PTarget, SpellID spell);
-auto FindNaSpell(CStatusEffect* PStatus) -> Maybe<SpellID>;
+auto CanUseSpell(CAutomatonEntity* PCaster, SpellID spellid) -> bool;
+auto CanUseEnfeeble(CBattleEntity* PTarget, SpellID spell) -> bool;
+auto FindNaSpell(const CStatusEffect* PStatus) -> Maybe<SpellID>;
 void LoadAutomatonAbilities();
 
 }; // namespace automaton

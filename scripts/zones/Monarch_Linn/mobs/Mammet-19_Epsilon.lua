@@ -62,36 +62,36 @@ entity.onMobFight = function(mob, target)
         not cannotChangeForm
     then
         -- Pick a new form --
-        local rand = math.random(0, 3)
+        local rand = math.randomInt(0, 3)
         mob:setAnimationSub(rand)
         switch (rand): caseof
         {
             [forms.UNARMED] = function()
                 mob:setMagicCastingEnabled(false)
                 mob:setDelay(240)
-                mob:setDamage(40)
+                mob:setDamage(40, xi.slot.MAIN)
             end,
 
             [forms.SWORD] = function()
                 mob:setMagicCastingEnabled(false)
                 mob:setDelay(120)
-                mob:setDamage(40)
+                mob:setDamage(40, xi.slot.MAIN)
             end,
 
             [forms.POLEARM] = function()
                 mob:setMagicCastingEnabled(false)
                 mob:setDelay(300)
-                mob:setDamage(75)
+                mob:setDamage(75, xi.slot.MAIN)
             end,
 
             [forms.STAFF] = function()
                 mob:setMobMod(xi.mobMod.MAGIC_COOL, 20)
                 mob:setMagicCastingEnabled(true)
                 mob:setDelay(240)
-                mob:setDamage(40)
+                mob:setDamage(40, xi.slot.MAIN)
             end,
         }
-        mob:setLocalVar('formTimeTracker', mob:getBattleTime() + math.random(30, 60))
+        mob:setLocalVar('formTimeTracker', mob:getBattleTime() + math.randomInt(30, 60))
     end
 end
 
@@ -99,7 +99,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
     local form  = mob:getAnimationSub()
     local moves = tpMoves[form]
 
-    return moves[math.random(1, #moves)]
+    return moves[math.randomInt(1, #moves)]
 end
 
 return entity

@@ -22,10 +22,15 @@
 #include "map_session.h"
 
 #include "common/md52.h"
+#include "entities/char_entity.h"
+
+MapSession::MapSession()  = default;
+MapSession::~MapSession() = default;
 
 void MapSession::incrementBlowfish()
 {
-    prev_blowfish = blowfish;
+    hasDecryptedPacket = false;
+    prev_blowfish      = blowfish;
 
     blowfish.key[4] += 2;
 
@@ -50,4 +55,12 @@ void MapSession::initBlowfish()
 auto MapSession::toString() -> std::string
 {
     return fmt::format("MapSession: client_ipp: {}", client_ipp.toString());
+}
+
+void MapSession::tapLastUpdate()
+{
+    if (!forceLinkDead)
+    {
+        last_update = earth_time::now();
+    }
 }

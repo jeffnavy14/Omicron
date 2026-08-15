@@ -21,8 +21,8 @@ local riverneA01Global =
         click on unstable displacement NPC
         ..............................................................................................]]
     unstableDisplacementTrigger = function(player, npc, event)
-        if npc:getAnimation() == xi.anim.OPEN_DOOR then
-            player:startEvent(event)
+        if npc:getAnimation() == xi.animation.OPEN_DOOR then
+            player:startOptionalCutscene(event, { cs_option = 0, canSkip = true })
         else
             player:messageSpecial(ID.text.SD_VERY_SMALL)
         end

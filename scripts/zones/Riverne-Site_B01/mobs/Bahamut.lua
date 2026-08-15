@@ -36,7 +36,7 @@ entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.SIGHT_RANGE, 20)
     mob:setMobMod(xi.mobMod.SOUND_RANGE, 20)
     mob:setMobMod(xi.mobMod.MAGIC_COOL, 50)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 51)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 51)
     mob:setMod(xi.mod.UFASTCAST, 60)
     mob:setMod(xi.mod.ATT, 425)
     mob:addMod(xi.mod.REGAIN, 50)
@@ -134,7 +134,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         xi.mobSkill.HORRIBLE_ROAR_BAHAMUT
     }
 
-    return skills[math.random(1, #skills)]
+    return skills[math.randomInt(1, #skills)]
 end
 
 entity.onMobSpellChoose = function(mob, target, spellId)
@@ -152,7 +152,10 @@ entity.onMobSpellChoose = function(mob, target, spellId)
         [10] = { xi.magic.spell.PHALANX,   mob,    false, xi.action.type.ENHANCING_FORCE_SELF, xi.effect.PHALANX,   0, 100 },
     }
 
-    if target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) then
+    if
+        target:hasStatusEffectByFlag(xi.effectFlag.DISPELABLE) and
+        mob:isEngaged()
+    then
         table.insert(spellList, #spellList + 1, { xi.magic.spell.DISPELGA, target, false, xi.action.type.NONE, nil, 0, 100 })
     end
 

@@ -40,6 +40,21 @@ xi.data.element.dataTable =
     [xi.element.DARK   ] = { xi.element.LIGHT,   xi.day.DARKSDAY,     xi.weather.GLOOM,      xi.weather.DARKNESS,      xi.mod.DARK_SDT,    xi.mod.DARK_RES_RANK,    xi.mod.DARK_NULL,  xi.mod.DARK_ABSORB,  xi.mod.DARK_MAB,    xi.mod.DARK_MACC,    xi.mod.DARK_MEVA,    xi.mod.DARK_FTP_BONUS,    xi.mod.DARK_STAFF_BONUS,    xi.mod.FORCE_DARK_DWBONUS,      0,                     0,                                0                                 },
 }
 
+-- Table with skillchain elemental properties, keyed by element: Row -> Element; Column -> Skillchain ID
+xi.data.element.skillchainElementTable =
+{
+--                           1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16
+--                           T  C  L  S  R  D  I  I  G  D  F  F  L  D  L  D
+    [xi.element.FIRE   ] = { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+    [xi.element.ICE    ] = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
+    [xi.element.WIND   ] = { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0 },
+    [xi.element.EARTH  ] = { 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1 },
+    [xi.element.THUNDER] = { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0 },
+    [xi.element.WATER  ] = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1 },
+    [xi.element.LIGHT  ] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+    [xi.element.DARK   ] = { 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1 },
+}
+
 -- Get element to which the element being checked is weak against.
 xi.data.element.getElementWeakness = function(element)
     -- Validate fed value.

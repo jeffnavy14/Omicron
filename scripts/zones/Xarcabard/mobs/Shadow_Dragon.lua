@@ -10,9 +10,6 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.GIL_MAX, 3000)
 end
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     local biastTimeOfDeath = GetServerVariable('[POP]Biast')
     local xPos = mob:getXPos()
@@ -24,7 +21,7 @@ entity.onMobDespawn = function(mob)
         biastTimeOfDeath <= GetSystemTime() and
         not GetMobByID(mob:getID() + 1):isSpawned()
     then
-        if math.random(1, 20) == 5 then
+        if math.randomInt(1, 20) == 5 then
             SpawnMob(mob:getID() + 1)
             GetMobByID(mob:getID() + 1):setPos(xPos, yPos, zPos)
             GetMobByID(mob:getID() + 1):setSpawn(xPos, yPos, zPos)

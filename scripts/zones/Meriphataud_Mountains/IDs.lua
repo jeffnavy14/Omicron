@@ -8,56 +8,79 @@ zones[xi.zone.MERIPHATAUD_MOUNTAINS] =
     text =
     {
         NOTHING_HAPPENS               = 141,   -- Nothing happens...
-        ITEM_CANNOT_BE_OBTAINED       = 6407,  -- You cannot obtain the <item>. Come back after sorting your inventory.
-        ITEM_OBTAINED                 = 6415,  -- Obtained: <item>.
-        GIL_OBTAINED                  = 6416,  -- Obtained <number> gil.
-        KEYITEM_OBTAINED              = 6418,  -- Obtained key item: <keyitem>.
-        KEYITEM_LOST                  = 6419,  -- Lost key item: <keyitem>.
-        FELLOW_MESSAGE_OFFSET         = 6444,  -- I'm ready. I suppose.
-        CARRIED_OVER_POINTS           = 7026,  -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY       = 7027,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
-        LOGIN_NUMBER                  = 7028,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
-        MEMBERS_LEVELS_ARE_RESTRICTED = 7048,  -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7093,  -- Tallying conquest results...
-        BEASTMEN_BANNER               = 7174,  -- There is a beastmen's banner.
-        FISHING_MESSAGE_OFFSET        = 7252,  -- You can't fish here.
-        DIG_THROW_AWAY                = 7265,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
-        FIND_NOTHING                  = 7267,  -- You dig and you dig, but find nothing.
-        AMK_DIGGING_OFFSET            = 7333,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
-        FOUND_ITEM_WITH_EASE          = 7342,  -- It appears your chocobo found this item with ease.
-        NOTHING_FOUND                 = 7511,  -- You find nothing.
-        CONQUEST                      = 7923,  -- You've earned conquest points!
-        ITEMS_ITEMS_LA_LA             = 8297,  -- You can hear a strange voice... Items, items, la la la la la
-        GOBLIN_SLIPPED_AWAY           = 8303,  -- The Goblin slipped away when you were not looking...
-        GARRISON_BASE                 = 8313,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-        PLAYER_OBTAINS_ITEM           = 8360,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 8361,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 8362,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 8363,  -- You already possess that temporary item.
-        NO_COMBINATION                = 8368,  -- You were unable to enter a combination.
-        VOIDWALKER_DESPAWN            = 8399,  -- The monster fades before your eyes, a look of disappointment on its face.
-        UNITY_WANTED_BATTLE_INTERACT  = 8430,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
-        TIME_ELAPSED                  = 8508,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
-        REGIME_REGISTERED             = 10608, -- New training regime registered!
-        VOIDWALKER_NO_MOB             = 11727, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
-        VOIDWALKER_MOB_TOO_FAR        = 11728, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
-        VOIDWALKER_MOB_HINT           = 11729, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
-        VOIDWALKER_SPAWN_MOB          = 11730, -- A monster materializes out of nowhere!
-        VOIDWALKER_UPGRADE_KI_1       = 11732, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
-        VOIDWALKER_UPGRADE_KI_2       = 11733, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
-        VOIDWALKER_BREAK_KI           = 11734, -- The <keyitem> shatters into tiny fragments.
-        VOIDWALKER_OBTAIN_KI          = 11735, -- Obtained key item: <keyitem>!
-        COMMON_SENSE_SURVIVAL         = 12637, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        ITEM_CANNOT_BE_OBTAINED       = 6409,  -- You cannot obtain the <item>. Come back after sorting your inventory.
+        ITEM_OBTAINED                 = 6417,  -- Obtained: <item>.
+        GIL_OBTAINED                  = 6418,  -- Obtained <number> gil.
+        KEYITEM_OBTAINED              = 6420,  -- Obtained key item: <keyitem>.
+        KEYITEM_LOST                  = 6421,  -- Lost key item: <keyitem>.
+        FELLOW_MESSAGE_OFFSET         = 6446,  -- I'm ready. I suppose.
+        CARRIED_OVER_POINTS           = 7028,  -- You have carried over <number> login point[/s].
+        LOGIN_CAMPAIGN_UNDERWAY       = 7029,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
+        LOGIN_NUMBER                  = 7030,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
+        MEMBERS_LEVELS_ARE_RESTRICTED = 7050,  -- Your party is unable to participate because certain members' levels are restricted.
+        CONQUEST_BASE                 = 7095,  -- Tallying conquest results...
+        REGION_POINTS_SANDORIA        = 7160,  -- San d'Oria's region points have increased!
+        EXP_FORCE_KILL_SANDORIA       = 7163,  -- San d'Orian E.F. defeats beastmen hordes... Maintain current momentum.
+        BEASTMEN_BANNER_CURSE         = 7174,  -- There was a curse on the beastmen's banner!
+        BEASTMEN_BANNER_LIFTED        = 7175,  -- The curse of the beastmen's banner has been lifted!
+        BEASTMEN_BANNER               = 7176,  -- There is a beastmen's banner.
+        FISHING_MESSAGE_OFFSET        = 7254,  -- You can't fish here.
+        DIG_THROW_AWAY                = 7267,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
+        FIND_NOTHING                  = 7269,  -- You dig and you dig, but find nothing.
+        AMK_DIGGING_OFFSET            = 7335,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
+        FOUND_ITEM_WITH_EASE          = 7344,  -- It appears your chocobo found this item with ease.
+        NOTHING_FOUND                 = 7513,  -- You find nothing.
+        CONQUEST                      = 7925,  -- You've earned conquest points!
+        ITEMS_ITEMS_LA_LA             = 8299,  -- You can hear a strange voice... Items, items, la la la la la
+        GOBLIN_SLIPPED_AWAY           = 8305,  -- The Goblin slipped away when you were not looking...
+        GARRISON_BASE                 = 8315,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+        PLAYER_OBTAINS_ITEM           = 8362,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 8363,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 8364,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 8365,  -- You already possess that temporary item.
+        NO_COMBINATION                = 8370,  -- You were unable to enter a combination.
+        VOIDWALKER_DESPAWN            = 8401,  -- The monster fades before your eyes, a look of disappointment on its face.
+        UNITY_WANTED_BATTLE_INTERACT  = 8432,  -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
+        TIME_ELAPSED                  = 8510,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
+        REGIME_REGISTERED             = 10610, -- New training regime registered!
+        VOIDWALKER_NO_MOB             = 11729, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
+        VOIDWALKER_MOB_TOO_FAR        = 11730, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
+        VOIDWALKER_MOB_HINT           = 11731, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
+        VOIDWALKER_SPAWN_MOB          = 11732, -- A monster materializes out of nowhere!
+        VOIDWALKER_UPGRADE_KI_1       = 11734, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
+        VOIDWALKER_UPGRADE_KI_2       = 11735, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
+        VOIDWALKER_BREAK_KI           = 11736, -- The <keyitem> shatters into tiny fragments.
+        VOIDWALKER_OBTAIN_KI          = 11737, -- Obtained key item: <keyitem>!
+        COMMON_SENSE_SURVIVAL         = 12639, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
 
     mob =
     {
+        COO_KEJA_THE_UNSEEN    = GetFirstID('Coo_Keja_the_Unseen'),
+        DAGGERCLAW_DRACOS      = GetFirstID('Daggerclaw_Dracos'),
+        HOBGOBLIN_BEASTMASTER  = GetFirstID('Hobgoblin_Beastmaster'),
+        HOBGOBLIN_BLACK_MAGE   = GetFirstID('Hobgoblin_Black_Mage'),
+        HOBGOBLIN_DARK_KNIGHT  = GetFirstID('Hobgoblin_Dark_Knight'),
+        HOBGOBLIN_RANGER       = GetFirstID('Hobgoblin_Ranger'),
+        HOBGOBLIN_RED_MAGE     = GetFirstID('Hobgoblin_Red_Mage'),
+        HOBGOBLIN_THIEF        = GetFirstID('Hobgoblin_Thief'),
+        HOBGOBLIN_WARRIOR      = GetFirstID('Hobgoblin_Warrior'),
+        HOBGOBLIN_WHITE_MAGE   = GetFirstID('Hobgoblin_White_Mage'),
         NAA_ZEKU_THE_UNWAITING = GetFirstID('Naa_Zeku_the_Unwaiting'),
         PATRIPATAN             = GetFirstID('Patripatan'),
-        DAGGERCLAW_DRACOS      = GetFirstID('Daggerclaw_Dracos'),
+        THEOYAGUDO_BARD        = GetFirstID('Theoyagudo_Bard'),
+        THEOYAGUDO_BLACK_MAGE  = GetFirstID('Theoyagudo_Black_Mage'),
+        THEOYAGUDO_MONK        = GetFirstID('Theoyagudo_Monk'),
+        THEOYAGUDO_NINJA       = GetFirstID('Theoyagudo_Ninja'),
+        THEOYAGUDO_SAMURAI     = GetFirstID('Theoyagudo_Samurai'),
+        THEOYAGUDO_SUMMONER    = GetFirstID('Theoyagudo_Summoner'),
+        THEOYAGUDO_WHITE_MAGE  = GetFirstID('Theoyagudo_White_Mage'),
         WARAXE_BEAK            = GetFirstID('Waraxe_Beak'),
+<<<<<<< HEAD
         COO_KEJA_THE_UNSEEN    = GetFirstID('Coo_Keja_the_Unseen'),
         VOIDWATCH              = GetTableOfIDs('Lord_Asag'),
+=======
+>>>>>>> upstream/base
 
         VOIDWALKER =
         {
@@ -93,7 +116,8 @@ zones[xi.zone.MERIPHATAUD_MOUNTAINS] =
 
     npc =
     {
-        OVERSEER_BASE = GetFirstID('Chegourt_RK'),
+        BEASTMENS_BANNER = GetFirstID('Beastmens_Banner'),
+        OVERSEER_BASE    = GetFirstID('Chegourt_RK'),
     },
 }
 

@@ -73,6 +73,7 @@ local failMission = function(player, csid, option, npc)
     mission:setVar(player, 'EndTime', 0)
     mission:setVar(player, 'KillCount', 0)
     player:delKeyItem(xi.ki.CREATURE_COUNTER_MAGIC_DOLL)
+    player:setMissionStatus(mission.areaId, 0)
     player:delMission(mission.areaId, mission.missionId)
 end
 
@@ -236,8 +237,10 @@ mission.sections =
             ['Canyon_Crawler']        = { onMobDeath = killCounter, },
             ['Canyon_Rarab']          = { onMobDeath = killCounter, },
             ['Earth_Elemental']       = { onMobDeath = killCounter, },
+            ['Ghost']                 = { onMobDeath = killCounter, },
             ['Goblin_Ambusher']       = { onMobDeath = killCounter, },
             ['Goblin_Archaeologist']  = { onMobDeath = killCounter, },
+            ['Goblin_Butcher']        = { onMobDeath = killCounter, },
             ['Goblin_Digger']         = { onMobDeath = killCounter, },
             ['Goblin_Thug']           = { onMobDeath = killCounter, },
             ['Goblin_Tinkerer']       = { onMobDeath = killCounter, },
@@ -274,6 +277,7 @@ mission.sections =
         {
             ['Air_Elemental']         = { onMobDeath = killCounter, },
             ['Backoo']                = { onMobDeath = killCounter, },
+            ['Bogy']                  = { onMobDeath = killCounter, },
             ['Buburimboo']            = { onMobDeath = killCounter, },
             ['Bull_Dhalmel']          = { onMobDeath = killCounter, },
             ['Carnivorous_Crawler']   = { onMobDeath = killCounter, },
@@ -281,12 +285,13 @@ mission.sections =
             ['Goblin_Ambusher']       = { onMobDeath = killCounter, },
             ['Goblin_Bounty_Hunter']  = { onMobDeath = killCounter, },
             ['Goblin_Butcher']        = { onMobDeath = killCounter, },
+            ['Goblin_Digger']         = { onMobDeath = killCounter, },
             ['Goblin_Gambler']        = { onMobDeath = killCounter, },
             ['Goblin_Leecher']        = { onMobDeath = killCounter, },
             ['Goblin_Mugger']         = { onMobDeath = killCounter, },
             ['Goblin_Tinkerer']       = { onMobDeath = killCounter, },
             ['Helldiver']             = { onMobDeath = killCounter, },
-            ['Might_Rarab']           = { onMobDeath = killCounter, },
+            ['Mighty_Rarab']          = { onMobDeath = killCounter, },
             ['Poison_Leech']          = { onMobDeath = killCounter, },
             ['Shoal_Pugil']           = { onMobDeath = killCounter, },
             ['Snipper']               = { onMobDeath = killCounter, },

@@ -16,7 +16,7 @@ local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.ACTING_IN_GOO
 
 quest.reward =
 {
-    fame     = 30,
+    fame     = 40,
     fameArea = xi.fameArea.WINDURST,
     item     = xi.item.SCROLL_OF_TELEPORT_MEA,
     title    = xi.title.PILGRIM_TO_MEA,
@@ -92,7 +92,7 @@ quest.sections =
                     player:messageSpecial(eldiemeID.text.SPIRIT_INCENSE_EMITS_PUTRID_ODOR, xi.ki.SPIRIT_INCENSE)
                     player:delKeyItem(xi.ki.SPIRIT_INCENSE)
 
-                    npc:setPos(unpack(eldiemeID.npc.QM1_POS[math.random(1, 4)])) -- move QM1 randomly on quest completion
+                    npc:setPos(unpack(eldiemeID.npc.QM1_POS[math.randomInt(1, 4)])) -- move QM1 randomly on quest completion
                 end,
             },
         },

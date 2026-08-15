@@ -25,12 +25,12 @@ entity.onTrigger = function(player, npc)
     local reapstatus = player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW)
 
     if reapstatus == xi.questStatus.QUEST_AVAILABLE then
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(463, 0, xi.item.SOBBING_FUNGUS, xi.item.BAG_OF_HERB_SEEDS)                 -- REAP WHAT YOU SOW + HERB SEEDS: QUEST START
         end
     elseif reapstatus == xi.questStatus.QUEST_ACCEPTED then
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(464, 0, xi.item.SOBBING_FUNGUS, xi.item.BAG_OF_HERB_SEEDS)                  -- REAP WHAT YOU SOW + HERB SEEDS: OBJECTIVE REMINDER
         else
@@ -43,7 +43,7 @@ entity.onTrigger = function(player, npc)
         not player:needToZone() and
         player:getCharVar('QuestReapSow_var') == 0
     then
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(479, 0, xi.item.SOBBING_FUNGUS, xi.item.BAG_OF_HERB_SEEDS)                -- REAP WHAT YOU SOW + HERB SEEDS: REPEATABLE QUEST START
         end
@@ -51,7 +51,7 @@ entity.onTrigger = function(player, npc)
         reapstatus == xi.questStatus.QUEST_COMPLETED and
         player:getCharVar('QuestReapSow_var') == 1
     then
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(464, 0, xi.item.SOBBING_FUNGUS, xi.item.BAG_OF_HERB_SEEDS)                  -- REAP WHAT YOU SOW + HERB SEEDS: OBJECTIVE REMINDER
         else
@@ -84,11 +84,11 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:needToZone(true)
         if player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW) == xi.questStatus.QUEST_ACCEPTED then
             player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW)
-            player:addFame(xi.fameArea.WINDURST, 75)
+            player:addFame(xi.fameArea.WINDURST, 10)
             player:addItem(xi.item.STATIONERY_SET)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.STATIONERY_SET)
         elseif player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW) == xi.questStatus.QUEST_COMPLETED then
-            player:addFame(xi.fameArea.WINDURST, 8)
+            player:addFame(xi.fameArea.WINDURST, 10)
             player:setCharVar('QuestReapSow_var', 0)
         end
     elseif csid == 477 then                                -- REAP WHAT YOU SOW + GIL + Stationary Set: Quest Turn In: Deathball turned in
@@ -97,11 +97,11 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:needToZone(true)
         if player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW) == xi.questStatus.QUEST_ACCEPTED then
             player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW)
-            player:addFame(xi.fameArea.WINDURST, 75)
+            player:addFame(xi.fameArea.WINDURST, 10)
             player:addItem(xi.item.STATIONERY_SET)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.STATIONERY_SET)
         elseif player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.REAP_WHAT_YOU_SOW) == xi.questStatus.QUEST_COMPLETED then
-            player:addFame(xi.fameArea.WINDURST, 8)
+            player:addFame(xi.fameArea.WINDURST, 10)
             player:setCharVar('QuestReapSow_var', 0)
         end
     elseif csid == 479 and option == 3 then                 -- REAP WHAT YOU SOW + HERB SEEDS: REPEATABLE QUEST START - ACCEPTED

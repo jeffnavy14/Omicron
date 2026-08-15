@@ -9,8 +9,9 @@ local entity = {}
 
 entity.phList =
 {
-    [ID.mob.SABOTENDER_BAILARINA - 5] = ID.mob.SABOTENDER_BAILARINA, -- -458 0 780
-    [ID.mob.SABOTENDER_BAILARINA - 1] = ID.mob.SABOTENDER_BAILARINA, -- -522 1 779
+    [ID.mob.SABOTENDER_BAILARINA - 5] = ID.mob.SABOTENDER_BAILARINA, -- Confirmed on retail
+    [ID.mob.SABOTENDER_BAILARINA - 1] = ID.mob.SABOTENDER_BAILARINA, -- Confirmed on retail
+    [ID.mob.SABOTENDER_BAILARINA + 3] = ID.mob.SABOTENDER_BAILARINA, -- Confirmed on retail
 }
 
 entity.onMobFight = function(mob, target)
@@ -43,7 +44,7 @@ entity.onMobFight = function(mob, target)
     end
 
     if mob:getLocalVar('1000') == 3 then
-        local move = math.random(1, 2)
+        local move = math.randomInt(1, 2)
 
         if move == 1 and (currentTime >= 6 and currentTime <= 18) then -- photosynthesis during daytime only
             mob:useMobAbility(304)
@@ -53,7 +54,7 @@ entity.onMobFight = function(mob, target)
 
         mob:setLocalVar('1000', 2)
     elseif mob:getLocalVar('1000') == 2 then
-        local move = math.random(1, 2)
+        local move = math.randomInt(1, 2)
 
         if move == 1 and (currentTime >= 6 and currentTime <= 18) then
             mob:useMobAbility(304)
@@ -63,7 +64,7 @@ entity.onMobFight = function(mob, target)
 
         mob:setLocalVar('1000', 1)
     elseif mob:getLocalVar('1000') == 1 then
-        local move = math.random(1, 2)
+        local move = math.randomInt(1, 2)
 
         if move == 1 and (currentTime >= 6 and currentTime <= 18) then
             mob:useMobAbility(304)

@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -21,36 +21,30 @@
 
 #pragma once
 
-#include <common/blowfish.h>
 #include <common/cbasetypes.h>
 #include <common/ipp.h>
-#include <common/scheduler.h>
+#include <common/types/box.h>
 
-#include "map_constants.h"
+#include <map/socket.h>
 
-#include <asio/ip/network_v4.hpp>
-#include <asio/ip/udp.hpp>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
+class Scheduler;
+class MapStatistics;
 
-class MapSocket
+// MapSocket owns a dedicated networking thread. That thread does nothing but drain the OS
+// receive buffer as fast as the kernel will hand us datagrams (pushing them into a lockless
+// ingress ring) and drain our egress ring back out to the wire.
+class MapSocket final : public Socket
 {
 public:
-    using ReceiveFn = std::function<void(ByteSpan, const IPP&)>;
+    MapSocket(Scheduler& scheduler, MapStatistics& mapStatistics, uint16 port, ReceiveFn onReceiveFn);
+    ~MapSocket() override;
 
-    MapSocket(Scheduler& scheduler, uint16 port, ReceiveFn onReceiveFn);
-    ~MapSocket();
+    DISALLOW_COPY_AND_MOVE(MapSocket);
 
-    void send(const IPP& ipp, ByteSpan buffer);
+    void send(const IPP& ipp, ByteSpan buffer) override;
+    void flushDiagnostics() override;
 
 private:
-    void receive();
-
-    Scheduler&              scheduler_;
-    uint16                  port_;
-    asio::ip::udp::socket   socket_;
-    NetworkBuffer           buffer_; // TODO: Pass in the global buffer, or only use this one
-    asio::ip::udp::endpoint remoteEndpoint_;
-
-    ReceiveFn onReceiveFn_;
+    struct Impl;
+    Box<Impl> impl_;
 };

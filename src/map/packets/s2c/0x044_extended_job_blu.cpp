@@ -21,13 +21,13 @@
 
 #include "0x044_extended_job_blu.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 GP_SERV_COMMAND_EXTENDED_JOB::BLU::BLU(const CCharEntity* PChar, const bool mjob)
 {
     auto& packet = this->data();
 
-    packet.Job      = JOB_BLU;
+    packet.Job      = static_cast<uint8_t>(xi::Job::BLU);
     packet.IsSubJob = !mjob;
     std::memcpy(packet.SetSpells, &PChar->m_SetBlueSpells, 20);
 }

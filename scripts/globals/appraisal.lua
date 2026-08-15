@@ -2,7 +2,6 @@
 -- Appraisal Utilities
 -- desc: Common functionality for Appraisals
 -----------------------------------
-require('scripts/globals/assault')
 require('scripts/globals/npc_util')
 -----------------------------------
 xi = xi or {}
@@ -1533,13 +1532,13 @@ xi.appraisal.appraisalItems =
 xi.appraisal.appraiseItem = function(player, npc, trade, gil, appraisalCsid)
     if player:getGil() >= gil then
         for _, tradedItem in pairs(xi.appraisal.unappraisedItems) do
-            if npcUtil.tradeHasExactly(trade, tradedItem) then
+            if trade:getItemQty(tradedItem) == 1 then
                 local tradeID        = trade:getItemId()
                 local info           = xi.appraisal.appraisalItems[tradeID]
                 local appraisalID    = trade:getItem():getAppraisalID()
                 local appraisedItem  = xi.appraisal.itemPick(player, info, appraisalID)
 
-                if appraisedItem ~= 0 then
+                if appraisedItem ~= 0 and trade:confirmItem(tradedItem) then
                     player:startEvent(appraisalCsid, 1, appraisedItem)
                     player:setLocalVar('Appraisal', appraisedItem) -- anticheat
                     player:confirmTrade()
@@ -1563,7 +1562,7 @@ xi.appraisal.itemPick = function(player, info, appraisalID)
 
     -- pick weighted result
     local item = 0
-    local pick = math.random(1, sum)
+    local pick = math.randomInt(1, sum)
     sum = 0
 
     for i = 1, #items do
@@ -1583,65 +1582,5 @@ xi.appraisal.appraisalOnEventFinish = function(player, csid, option, gil, apprai
         player:addTreasure(appraisedItem, npc)
         player:delGil(gil)
         player:setLocalVar('Appraisal', 0)
-    end
-end
-
-xi.appraisal.canGetUnappraisedItem = function(player, area)
-    local instance = player:getInstance()
-    local result   = false
-    local cap      = instance:getLevelCap()
-
-    if cap == 0 or cap >= xi.assault.missionInfo[area].suggestedLevel then
-        result = true
-    end
-
-    return result
-end
-
-xi.appraisal.pickUnappraisedItem = function(player, npc, qItemTable)
-    if npc:getLocalVar('UnappraisedItem') == 0 then
-        local selectedLoot = utils.selectFromLootGroups(player, qItemTable)
-        if #selectedLoot > 0 then
-            npc:setLocalVar('UnappraisedItem', selectedLoot[1].itemId)
-        end
-    end
-end
-
-xi.appraisal.assaultChestTrigger = function(player, npc, qItemTable, regItemTable)
-    local instance = player:getInstance()
-    local chars    = instance:getChars()
-    local area     = player:getCurrentAssault()
-
-    if instance:completed() and npc:getLocalVar('open') == 0 then
-        if xi.appraisal.canGetUnappraisedItem(player, area) then
-            xi.appraisal.pickUnappraisedItem(player, npc, qItemTable)
-            local unappraisedItem = npc:getLocalVar('UnappraisedItem')
-            if player:getFreeSlotsCount() == 0 then
-                player:messageSpecial(zones[player:getZoneID()].text.ITEM_CANNOT_BE_OBTAINED, unappraisedItem)
-                return
-            else
-                player:addItem({ id = unappraisedItem, appraisal = area })
-                for _, players in pairs(chars) do
-                    players:messageName(zones[player:getZoneID()].text.PLAYER_OBTAINS_ITEM, player, unappraisedItem)
-                end
-            end
-        end
-
-        npc:entityAnimationPacket(xi.animationString.OPEN_CRATE_GLOW)
-        npc:setLocalVar('open', 1)
-        npc:setUntargetable(true)
-        npc:timer(15000, function(npcArg)
-            npcArg:entityAnimationPacket(xi.animationString.STATUS_DISAPPEAR)
-        end)
-
-        npc:timer(16000, function(npcArg)
-            npcArg:setStatus(xi.status.DISAPPEAR)
-        end)
-
-        local selectedLoot = utils.selectFromLootGroups(player, regItemTable)
-        for _, entry in ipairs(selectedLoot) do
-            -- regItemTable is guaranteed to not have xi.item.GIL in the table
-            player:addTreasure(entry.itemId, npc)
-        end
     end
 end

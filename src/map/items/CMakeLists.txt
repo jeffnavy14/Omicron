@@ -93,8 +93,12 @@ set(ITEM_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/craft_state.h
     ${CMAKE_CURRENT_SOURCE_DIR}/transaction.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/transaction.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/transactions/guild_sell.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/transactions/guild_sell.h
     ${CMAKE_CURRENT_SOURCE_DIR}/transactions/item_use.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/transactions/item_use.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/transactions/player_trade.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/transactions/player_trade.h
     ${CMAKE_CURRENT_SOURCE_DIR}/transactions/synth.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/transactions/synth.h
     PARENT_SCOPE

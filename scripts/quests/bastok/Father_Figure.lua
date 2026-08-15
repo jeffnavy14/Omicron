@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.FATHER_FIGURE)
 
 quest.reward =
 {
-    fame     = 120,
+    fame     = 20,
     fameArea = xi.fameArea.BASTOK,
     gil      = 2200,
 }
@@ -46,7 +46,7 @@ quest.sections =
             ['Michea'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.SILVER_INGOT) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.SILVER_INGOT, 1 } }) then
                         return quest:progressEvent(241)
                     end
                 end,
@@ -56,7 +56,7 @@ quest.sections =
             {
                 [241] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                     end
                 end,
             },

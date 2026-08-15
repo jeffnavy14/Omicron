@@ -34,7 +34,7 @@ entity.onTrigger = function(player, npc)
     then
         local prog = player:getCharVar('QuestNeverToReturn_prog')
         if prog <= 2 then
-            local fortune = math.random(1, 99)
+            local fortune = math.randomInt(1, 99)
             player:startEvent(204, fortune) -- Required to get fortune read 3x on 3 diff game days before quest is kicked off
         elseif prog == 3 then
             player:startEvent(202) -- Start 'Never to return' quest
@@ -87,7 +87,9 @@ entity.onEventFinish = function(player, csid, option, npc)
             npcUtil.giveCurrency(player, 'gil', 1200)
             player:addItem(xi.item.GARNET_RING)
             player:messageSpecial(ID.text.ITEM_OBTAINED, xi.item.GARNET_RING)
-            player:addFame(xi.fameArea.JEUNO, 30)
+            player:addFame(xi.fameArea.SANDORIA, 17)
+            player:addFame(xi.fameArea.BASTOK, 17)
+            player:addFame(xi.fameArea.WINDURST, 17)
             player:tradeComplete()
             player:completeQuest(xi.questLog.JEUNO, xi.quest.id.jeuno.NEVER_TO_RETURN)
         end

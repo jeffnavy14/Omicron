@@ -2,8 +2,29 @@
 -- Area: Spire of Vahzl
 --  Mob: Agonizer
 -----------------------------------
+mixins = { require('scripts/mixins/families/empty_terroanima') }
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
+
+local function engageNextMob(mob, target)
+    if not target then
+        return
+    end
+
+    local nextMob = GetMobByID(mob:getID() + 6) -- Cumulator
+
+    if not nextMob then
+        return
+    end
+
+    if
+        nextMob:isAlive() and
+        not nextMob:isEngaged()
+    then
+        nextMob:updateEnmity(target)
+    end
+end
 
 entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
@@ -34,7 +55,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.WINDS_OF_PROMYVION_1)
     end
 
-    return tpMoves[math.random(#tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 entity.onMobFight = function(mob, target)
@@ -44,11 +65,14 @@ entity.onMobFight = function(mob, target)
         mob:setMod(xi.mod.REGAIN, 100)
     end
 
-    if mob:getHPP() < 20 then
-        local nextMob = GetMobByID(mob:getID() + 6) --Cumulator aggros at <20%
-        if nextMob and not nextMob:isEngaged() then
-            nextMob:updateEnmity(target)
-        end
+    if mob:getHPP() < 20 then -- Cumulator engages < 20% HP.
+        engageNextMob(mob, target)
+    end
+end
+
+entity.onMobDeath = function(mob, player, optParams)
+    if optParams.isKiller or optParams.noKiller then
+        engageNextMob(mob, player)
     end
 end
 

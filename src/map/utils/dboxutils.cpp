@@ -21,17 +21,14 @@
 
 #include "dboxutils.h"
 
-#include "common/database.h"
 #include "common/logging.h"
 #include "common/macros.h"
 #include "common/settings.h"
-#include "common/tracy.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
-#include "utils/zoneutils.h"
 
 #include "packets/c2s/0x04d_pbx.h"
 #include "packets/s2c/0x01d_item_same.h"
@@ -40,6 +37,7 @@
 
 namespace
 {
+
 auto isDeliveryBoxInflightAtCapacity(uint32 charid) -> bool
 {
     static const uint32 maxInflight = settings::get<uint32>("map.DELIVERY_BOX_MAX_INFLIGHT");
@@ -47,6 +45,7 @@ auto isDeliveryBoxInflightAtCapacity(uint32 charid) -> bool
     const auto rset = db::preparedStmt("SELECT COUNT(*) AS cnt FROM delivery_box WHERE charid = ? AND box = 1 AND slot >= 8", charid);
     return rset && rset->next() && rset->get<uint32>("cnt") >= maxInflight;
 }
+
 } // anonymous namespace
 
 void dboxutils::SendOldItems(CCharEntity* PChar, GP_CLI_COMMAND_PBX_BOXNO BoxNo)
@@ -133,7 +132,7 @@ void dboxutils::AddItemsToBeSent(CCharEntity* PChar, GP_CLI_COMMAND_PBX_BOXNO Bo
         return;
     }
 
-    if (PItem->getQuantity() < ItemStacks || PItem->getReserve() > 0 || PItem->isSubType(ITEM_LOCKED))
+    if (PItem->getQuantity() < ItemStacks || PItem->getReserve() > 0 || PItem->isBusy() || PItem->isSubType(ITEM_LOCKED))
     {
         ShowWarningFmt("DBOX: {} attempted to send insufficient/reserved/locked {}: {} ({})", PChar->getName(), ItemStacks, PItem->getName(), PItem->getID());
         return;

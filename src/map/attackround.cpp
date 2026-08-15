@@ -20,9 +20,8 @@
 */
 
 #include "attackround.h"
-#include "ai/ai_container.h"
+#include "data/enums/mob_mod.h"
 #include "items/item_weapon.h"
-#include "mob_modifier.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "status_effect_container.h"
 
@@ -61,7 +60,7 @@ CAttackRound::CAttackRound(CBattleEntity* attacker, CBattleEntity* defender)
             bool h2hSingleSwing = false;
             if (dynamic_cast<CMobEntity*>(m_attacker))
             {
-                h2hSingleSwing = static_cast<CMobEntity*>(m_attacker)->getMobMod(MOBMOD_H2H_SINGLE_SWING) > 0;
+                h2hSingleSwing = static_cast<CMobEntity*>(m_attacker)->getMobMod(xi::MobMod::H2hSingleSwing) > 0;
             }
 
             CreateAttacks(PMain, LEFTATTACK);
@@ -94,7 +93,7 @@ CAttackRound::CAttackRound(CBattleEntity* attacker, CBattleEntity* defender)
     m_attackSwings[0].SetAsFirstSwing();
 
     // Delete the haste samba effect.
-    attacker->StatusEffectContainer->DelStatusEffect(EFFECT_HASTE_SAMBA_HASTE);
+    attacker->StatusEffectContainer->DelStatusEffect(xi::StatusEffect::HasteSambaHaste);
 }
 
 /************************************************************************
@@ -183,7 +182,7 @@ bool CAttackRound::IsH2H()
 {
     if (auto* weapon = dynamic_cast<CItemWeapon*>(m_attacker->m_Weapons[SLOT_MAIN]))
     {
-        return weapon->getSkillType() == SKILL_HAND_TO_HAND;
+        return weapon->getSkillType() == xi::SkillType::HandToHand;
     }
     return false;
 }
@@ -250,16 +249,16 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
     }
 
     // Existance of "Occasionally attacks X times" overwrites PWeapon hit count
-    if (isPC && m_attacker->getMod(Mod::MAX_SWINGS))
+    if (isPC && m_attacker->getMod(xi::Mod::MAX_SWINGS))
     {
-        auto modSwings = std::min<uint8>((uint8) static_cast<CCharEntity*>(m_attacker)->getMod(Mod::MAX_SWINGS), 8);
+        auto modSwings = std::min<uint8>((uint8) static_cast<CCharEntity*>(m_attacker)->getMod(xi::Mod::MAX_SWINGS), 8);
         num            = battleutils::getHitCount(modSwings);
     }
 
     // If the attacker is a mobentity or derived from mobentity, check to see if it has any special mutli-hit capabilties
     if (dynamic_cast<CMobEntity*>(m_attacker))
     {
-        auto multiHitMax = (uint8) static_cast<CMobEntity*>(m_attacker)->getMobMod(MOBMOD_MULTI_HIT);
+        auto multiHitMax = (uint8) static_cast<CMobEntity*>(m_attacker)->getMobMod(xi::MobMod::MultiHit);
 
         if (multiHitMax > 0)
         {
@@ -268,15 +267,15 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
     }
 
     // Checking the players triple, double and quadruple attack
-    int16 tripleAttack     = m_attacker->getMod(Mod::TRIPLE_ATTACK);
-    int16 doubleAttack     = m_attacker->getMod(Mod::DOUBLE_ATTACK);
-    int16 quadAttack       = m_attacker->getMod(Mod::QUAD_ATTACK);
+    int16 tripleAttack     = m_attacker->getMod(xi::Mod::TRIPLE_ATTACK);
+    int16 doubleAttack     = m_attacker->getMod(xi::Mod::DOUBLE_ATTACK);
+    int16 quadAttack       = m_attacker->getMod(xi::Mod::QUAD_ATTACK);
     bool  multiHitOccurred = false;
     bool  isMainHand       = (IsH2H() && !m_attackSwings.empty()) || direction == RIGHTATTACK;
 
     // Checking for Mythic Weapon Aftermath
-    int16 occAttThriceRate = std::clamp<int16>(m_attacker->getMod(Mod::MYTHIC_OCC_ATT_THRICE), 0, 100);
-    int16 occAttTwiceRate  = std::clamp<int16>(m_attacker->getMod(Mod::MYTHIC_OCC_ATT_TWICE), 0, 100);
+    int16 occAttThriceRate = std::clamp<int16>(m_attacker->getMod(xi::Mod::MYTHIC_OCC_ATT_THRICE), 0, 100);
+    int16 occAttTwiceRate  = std::clamp<int16>(m_attacker->getMod(xi::Mod::MYTHIC_OCC_ATT_TWICE), 0, 100);
 
     // Checking for merit upgrades
     if (isPC)
@@ -286,19 +285,19 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
         // Merit chance only applies if player has the job trait
         if (charutils::hasTrait(PChar, TRAIT_TRIPLE_ATTACK))
         {
-            tripleAttack += PChar->PMeritPoints->GetMeritValue(MERIT_TRIPLE_ATTACK_RATE, PChar);
+            tripleAttack += PChar->PMeritPoints->GetMeritValue(xi::Merit::TripleAttackRate, PChar);
         }
 
         // Ambush Augment adds +1% Triple Attack per merit (need to satisfy conditions for Ambush)
-        if (charutils::hasTrait(PChar, TRAIT_AMBUSH) && PChar->getMod(Mod::AUGMENTS_AMBUSH) > 0 &&
+        if (charutils::hasTrait(PChar, TRAIT_AMBUSH) && PChar->getMod(xi::Mod::AUGMENTS_AMBUSH) > 0 &&
             abs(m_defender->loc.p.rotation - m_attacker->loc.p.rotation) < 23)
         {
-            tripleAttack += PChar->PMeritPoints->GetMerit(MERIT_AMBUSH)->count;
+            tripleAttack += PChar->PMeritPoints->GetMerit(xi::Merit::Ambush)->count;
         }
 
         if (charutils::hasTrait(PChar, TRAIT_DOUBLE_ATTACK))
         {
-            doubleAttack += PChar->PMeritPoints->GetMeritValue(MERIT_DOUBLE_ATTACK_RATE, PChar);
+            doubleAttack += PChar->PMeritPoints->GetMeritValue(xi::Merit::DoubleAttackRate, PChar);
         }
         // TODO: Quadruple attack merits when SE release them.
 
@@ -306,7 +305,7 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
         // TODO: Double check correct priority for Empyrian armor modifiers? Outsource? Lua function?
         if (!isMainHand)
         {
-            doubleAttack += m_attacker->getMod(Mod::EXTRA_DUAL_WIELD_ATTACK);
+            doubleAttack += m_attacker->getMod(xi::Mod::EXTRA_DUAL_WIELD_ATTACK);
         }
     }
 
@@ -316,12 +315,12 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
 
     // Preference matters! The following are additional hits to the default hit that don't stack up
     // Mikage > Quad > Triple > Double > Mythic Aftermath > Occasionally Attacks > Hasso + Zanshin
-    // Daken is handled separately in CreateDakenAttack() and Zanshin in src/map/entities/battleentity.cpp#L1768
+    // Daken is handled separately in CreateDakenAttack() and Zanshin in src/map/entities/battle_entity.cpp#L1768
 
     // Checking Mikage Effect - Hits Vary With Num of Utsusemi Shadows for Main Weapon
-    if (m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_MIKAGE) && m_attacker->m_Weapons[SLOT_MAIN] && m_attacker->m_Weapons[SLOT_MAIN]->getID() == PWeapon->getID())
+    if (m_attacker->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Mikage) && m_attacker->m_Weapons[SLOT_MAIN] && m_attacker->m_Weapons[SLOT_MAIN]->getID() == PWeapon->getID())
     {
-        auto shadows = (uint8)m_attacker->getMod(Mod::UTSUSEMI);
+        auto shadows = (uint8)m_attacker->getMod(xi::Mod::UTSUSEMI);
         AddAttackSwing(PHYSICAL_ATTACK_TYPE::NORMAL, direction, shadows);
     }
     // Quad/Triple/Double Attack
@@ -357,7 +356,7 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
     }
 
     // Additional swing modifier (stacks!), mostly for Amood weapons
-    if (isPC && xirand::GetRandomNumber(100) < m_attacker->getMod(Mod::ADDITIONAL_SWING_CHANCE))
+    if (isPC && xirand::GetRandomNumber(100) < m_attacker->getMod(xi::Mod::ADDITIONAL_SWING_CHANCE))
     {
         AddAttackSwing(PHYSICAL_ATTACK_TYPE::NORMAL, direction, 1);
     }
@@ -375,11 +374,11 @@ void CAttackRound::CreateAttacks(CItemWeapon* PWeapon, PHYSICAL_ATTACK_DIRECTION
  *  Return true if the attackType attack swing eligible to proc followUpType
  *  Virtue Stone, TODO Raetic, TODO Dynamis [D]
  ************************************************************************/
-bool CAttackRound::IsAttackTypeEligibleForFollowUp(Mod followUpType, PHYSICAL_ATTACK_TYPE attackType)
+bool CAttackRound::IsAttackTypeEligibleForFollowUp(xi::Mod followUpType, PHYSICAL_ATTACK_TYPE attackType)
 {
     switch (followUpType)
     {
-        case Mod::AMMO_SWING:
+        case xi::Mod::AMMO_SWING:
         {
             switch (attackType)
             {
@@ -408,7 +407,7 @@ void CAttackRound::ProcFollowUpAttacks()
 {
     if (CCharEntity* PChar = dynamic_cast<CCharEntity*>(m_attacker))
     {
-        if (PChar->getMod(Mod::AMMO_SWING))
+        if (PChar->getMod(xi::Mod::AMMO_SWING))
         {
             // iterate through attackSwings and attempt to proc and store a follow-up swing
             for (auto& attack : m_attackSwings)
@@ -417,7 +416,7 @@ void CAttackRound::ProcFollowUpAttacks()
                 PHYSICAL_ATTACK_TYPE      type      = attack.GetAttackType();
                 CItemEquipment*           PWeapon   = nullptr;
 
-                if (IsAttackTypeEligibleForFollowUp(Mod::AMMO_SWING, type))
+                if (IsAttackTypeEligibleForFollowUp(xi::Mod::AMMO_SWING, type))
                 {
                     if (IsH2H() || direction == RIGHTATTACK)
                     {
@@ -428,7 +427,7 @@ void CAttackRound::ProcFollowUpAttacks()
                         PWeapon = PChar->getEquip(SLOT_SUB);
                     }
 
-                    if (PWeapon && xirand::GetRandomNumber(100) < battleutils::GetScaledItemModifier(PChar, PWeapon, Mod::AMMO_SWING))
+                    if (PWeapon && xirand::GetRandomNumber(100) < battleutils::GetScaledItemModifier(PChar, PWeapon, xi::Mod::AMMO_SWING))
                     {
                         CItemEquipment*     PAmmo       = PChar->getEquip(SLOT_AMMO);
                         static const uint16 virtueStone = 18244;
@@ -444,7 +443,6 @@ void CAttackRound::ProcFollowUpAttacks()
                                 if (PAmmo->getQuantity() == 1)
                                 {
                                     charutils::UnequipItem(PChar, SLOT_AMMO);
-                                    PChar->RequestPersist(CHAR_PERSIST::EQUIP);
                                 }
 
                                 charutils::UpdateItem(PChar, loc, slot, -1);
@@ -498,11 +496,11 @@ void CAttackRound::CreateKickAttacks()
     if (IsH2H())
     {
         // kick attack mod (All jobs)
-        uint16 kickAttack = m_attacker->getMod(Mod::KICK_ATTACK_RATE);
+        uint16 kickAttack = m_attacker->getMod(xi::Mod::KICK_ATTACK_RATE);
 
-        if (m_attacker->GetMJob() == JOB_MNK && m_attacker->objtype == TYPE_PC) // MNK (Main job)
+        if (m_attacker->GetMJob() == xi::Job::MNK && m_attacker->objtype == TYPE_PC) // MNK (Main job)
         {
-            kickAttack += ((CCharEntity*)m_attacker)->PMeritPoints->GetMeritValue(MERIT_KICK_ATTACK_RATE, (CCharEntity*)m_attacker);
+            kickAttack += ((CCharEntity*)m_attacker)->PMeritPoints->GetMeritValue(xi::Merit::KickAttackRate, (CCharEntity*)m_attacker);
         }
 
         kickAttack = std::clamp<uint16>(kickAttack, 0, 100);
@@ -514,7 +512,7 @@ void CAttackRound::CreateKickAttacks()
         }
 
         // Tantra set mod: Try an extra left kick attack.
-        if (m_kickAttackOccured && xirand::GetRandomNumber(100) < m_attacker->getMod(Mod::EXTRA_KICK_ATTACK))
+        if (m_kickAttackOccured && xirand::GetRandomNumber(100) < m_attacker->getMod(xi::Mod::EXTRA_KICK_ATTACK))
         {
             AddAttackSwing(PHYSICAL_ATTACK_TYPE::KICK, LEFTATTACK, 1);
         }
@@ -533,7 +531,7 @@ void CAttackRound::CreateDakenAttack()
         auto* PAmmo = static_cast<CItemWeapon*>(m_attacker->m_Weapons[SLOT_AMMO]);
         if (PAmmo && PAmmo->isShuriken())
         {
-            uint16 daken = m_attacker->getMod(Mod::DAKEN);
+            uint16 daken = m_attacker->getMod(xi::Mod::DAKEN);
             if (xirand::GetRandomNumber(100) < daken)
             {
                 AddAttackSwing(PHYSICAL_ATTACK_TYPE::DAKEN, RIGHTATTACK, 1);

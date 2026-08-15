@@ -19,9 +19,12 @@
 ===========================================================================
 */
 
-#include "common/lua.h"
-#include "common/tracy.h"
-#include "test_application.h"
+#include <test/test_application.h>
+
+#include <common/lua.h>
+#include <common/tracy.h>
+
+#include <catch2/catch_session.hpp>
 
 #include <iostream>
 #include <memory>
@@ -32,7 +35,23 @@ int main(int argc, char** argv)
 
     auto testApp = std::make_unique<TestApplication>(argc, argv);
 
-    testApp->run();
+    {
+        std::cout << "[----------] Running C++ unit tests with Catch2\n";
+
+        const char* catchArgv[] = { argv[0] };
+        if (Catch::Session().run(1, catchArgv) != 0)
+        {
+            std::cerr << "C++ unit tests failed; skipping the Lua test suite.\n";
+
+            testApp.reset();
+            lua_cleanup();
+            return EXIT_FAILURE;
+        }
+    }
+
+    const auto success = testApp->run();
+
+    const auto exitCode = success ? EXIT_SUCCESS : EXIT_FAILURE;
 
     // Explicitly destroy TestApplication before the lua state get cleaned up
     testApp.reset();
@@ -48,5 +67,5 @@ int main(int argc, char** argv)
     std::cin.get();
 #endif
 
-    return 0;
+    return exitCode;
 }

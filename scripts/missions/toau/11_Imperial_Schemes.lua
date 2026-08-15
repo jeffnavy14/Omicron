@@ -25,12 +25,18 @@ mission.sections =
             ['Naja_Salaheem'] =
             {
                 onTrigger = function(player, npc)
-                    local dialog = mission:getVar(player, 'Option') + 1 -- Captured values 1 and 2
-                    if dialog == 1 then
-                        mission:setVar(player, 'Option', 1)
+                    -- Option cycles between 2 and either a 1 or a 0.
+                    local dialog = mission:getVar(player, 'Option')
+                    if dialog == 2 then
+                        -- Condition for Naja being friendly is unknown.
+                        -- My character was a BLU with no mercenary rank and got friendly alt dialog.
+                        local altOption = 0 -- 1 -> Friendly. 0 -> Not.
+                        dialog = altOption
                     else
-                        mission:setVar(player, 'Option', 0)
+                        dialog = 2
                     end
+
+                    mission:setVar(player, 'Option', dialog)
 
                     return mission:event(3053, xi.besieged.getMercenaryRank(player), 1, 0, 0, 0, 0, 0, dialog, 0)
                 end,
@@ -60,10 +66,7 @@ mission.sections =
             onEventFinish =
             {
                 [3070] = function(player, csid, option, npc)
-                    if mission:complete(player) then
-                        player:setCharVar('Mission[4][11]Timer', VanadielUniqueDay() + 1)
-                        player:setLocalVar('Mission[4][11]mustZone', 1)
-                    end
+                    mission:complete(player)
                 end,
             },
         },

@@ -18,7 +18,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     params.fTP            = { 1.0, 1.0, 1.0 }
     --params.vit_wSC      = 0.3 -- TODO: Capture if mobskill weaponskills have wSC.
     params.attackType     = xi.attackType.PHYSICAL
-    params.damageType     = xi.damageType.HTH
+    params.damageType     = xi.damageType.HAND_TO_HAND
     params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_2
 
     local info = xi.mobskills.mobPhysicalMove(mob, target, skill, action, params)
@@ -26,7 +26,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
 
-        local duration = xi.mobskills.calculateDuration(skill:getTP(), 2, 6)
+        local duration = xi.mobskills.calculateDuration(skill:getTP(), 2, 10)
         xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STUN, 1, 0, duration)
     end
 

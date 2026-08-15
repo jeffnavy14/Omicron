@@ -21,11 +21,20 @@
 
 #include "interrupts.h"
 
+#include "action/action.h"
+#include "enums/action/resolution.h"
+#include "spell.h"
+
+#include "enums/action/category.h"
+#include "enums/four_cc.h"
+#include "zone.h"
+
 #include "packets/s2c/0x028_battle2.h"
 #include "petskill.h"
 
 namespace ActionInterrupts
 {
+
 void AvatarOutOfRange(CBattleEntity* PAvatar, const CPetSkill* PSkill, const CBattleEntity* PTarget)
 {
     // Avatars using BP against an enemy out of range use a specific set of BATTLE2 packets:
@@ -38,12 +47,12 @@ void AvatarOutOfRange(CBattleEntity* PAvatar, const CPetSkill* PSkill, const CBa
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .param     = PSkill->getMobSkillID() > 0 ? PSkill->getMobSkillID() : PSkill->getID(),
-                           .messageID = MsgBasic::TooFarAwayRed,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .param     = PSkill->getMobSkillID() > 0 ? PSkill->getMobSkillID() : PSkill->getID(),
+                        .messageID = MsgBasic::TooFarAwayRed,
                     },
                 },
             },
@@ -57,10 +66,10 @@ void AvatarOutOfRange(CBattleEntity* PAvatar, const CPetSkill* PSkill, const CBa
         .actionid   = static_cast<uint32_t>(FourCC::SkillInterrupt),
         .targets    = {
             {
-                   .actorId = PAvatar->id,
-                   .results = {
+                .actorId = PAvatar->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
+                        .animation = ActionAnimation::SkillInterrupt,
                     },
                 },
             },
@@ -83,13 +92,13 @@ void WyvernOutOfRange(CBattleEntity* PWyvern, const CPetSkill* PSkill, const CBa
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .resolution = ActionResolution::Miss,
-                           .animation  = ActionAnimation::SkillInterrupt,
-                           .param      = PSkill->getMobSkillID() > 0 ? PSkill->getMobSkillID() : PSkill->getID(),
-                           .messageID  = MsgBasic::TooFarAwayRed,
+                        .resolution = ActionResolution::Miss,
+                        .animation  = ActionAnimation::SkillInterrupt,
+                        .param      = PSkill->getMobSkillID() > 0 ? PSkill->getMobSkillID() : PSkill->getID(),
+                        .messageID  = MsgBasic::TooFarAwayRed,
                     },
                 },
             },
@@ -103,10 +112,10 @@ void WyvernOutOfRange(CBattleEntity* PWyvern, const CPetSkill* PSkill, const CBa
         .actionid   = static_cast<uint32_t>(FourCC::SkillInterrupt),
         .targets    = {
             {
-                   .actorId = PWyvern->id,
-                   .results = {
+                .actorId = PWyvern->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
+                        .animation = ActionAnimation::SkillInterrupt,
                     },
                 },
             },
@@ -125,8 +134,8 @@ void WyvernSkillReady(CBattleEntity* PWyvern)
         .actionid   = static_cast<uint32_t>(FourCC::SkillInterrupt),
         .targets    = {
             {
-                   .actorId = PWyvern->id,
-                   .results = {
+                .actorId = PWyvern->id,
+                .results = {
                     {
                         // Empty result
                     },
@@ -146,8 +155,8 @@ void AbilityInterrupt(CBattleEntity* PEntity)
         .actionid   = static_cast<uint32_t>(FourCC::SkillInterrupt),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
                         // Empty result
                     },
@@ -167,10 +176,10 @@ void RangedInterrupt(CBattleEntity* PEntity)
         .actionid   = static_cast<uint32_t>(FourCC::RangedInterrupt),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
+                        .animation = ActionAnimation::SkillInterrupt,
                     },
                 },
             },
@@ -187,11 +196,11 @@ void MobSkillNoTargetInRange(CBattleEntity* PEntity)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::NoTargetInAreaOfEffect,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::NoTargetInAreaOfEffect,
                     },
                 },
             },
@@ -208,11 +217,11 @@ void MobSkillOutOfRange(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::TooFarAway,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::TooFarAway,
                     },
                 },
             },
@@ -229,11 +238,11 @@ void WeaponSkillOutOfRange(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::TooFarAway,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::TooFarAway,
                     },
                 },
             },
@@ -250,11 +259,11 @@ void RangedParalyzed(CBattleEntity* PEntity)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsParalyzed2,
                     },
                 },
             },
@@ -273,10 +282,10 @@ void MagicInterrupt(CBattleEntity* PEntity, CSpell* PSpell)
         .actionid   = static_cast<uint32_t>(PSpell->getFourCC(true)),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .param = static_cast<int32_t>(PSpell->getID()),
+                        .param = static_cast<int32_t>(PSpell->getID()),
                     },
                 },
             },
@@ -295,11 +304,11 @@ void MagicParalyzed(CBattleEntity* PEntity, CSpell* PSpell, const CBattleEntity*
         .recast     = 2s,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsParalyzed2,
                     },
                 },
             },
@@ -312,11 +321,11 @@ void MagicParalyzed(CBattleEntity* PEntity, CSpell* PSpell, const CBattleEntity*
         .actionid   = static_cast<uint32_t>(PSpell->getFourCC(true)),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .param     = static_cast<int32_t>(PSpell->getID()),
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .param     = static_cast<int32_t>(PSpell->getID()),
                     },
                 },
             },
@@ -336,11 +345,11 @@ void MagicIntimidated(CBattleEntity* PEntity, CSpell* PSpell, const CBattleEntit
         .recast     = 2s,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsIntimidated,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsIntimidated,
                     },
                 },
             },
@@ -354,11 +363,11 @@ void MagicIntimidated(CBattleEntity* PEntity, CSpell* PSpell, const CBattleEntit
         .recast     = 2s,
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .param     = static_cast<int32_t>(PSpell->getID()),
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .param     = static_cast<int32_t>(PSpell->getID()),
                     },
                 },
             },
@@ -376,11 +385,11 @@ void AttackParalyzed(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsParalyzed2,
                     },
                 },
             },
@@ -397,11 +406,11 @@ void AttackIntimidated(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsIntimidated,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsIntimidated,
                     },
                 },
             },
@@ -413,42 +422,23 @@ void AttackIntimidated(CBattleEntity* PEntity, const CBattleEntity* PTarget)
 
 void AbilityParalyzed(CBattleEntity* PEntity, const CBattleEntity* PTarget)
 {
-    // 1. Generic MagicFinish with Paralyzed message
-    auto magicFinishSelfAction = action_t{
+    auto magicFinishAction = action_t{
         .actorId    = PEntity->id,
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsParalyzed2,
                     },
                 },
             },
         },
     };
 
-    // 2. Generic MagicFinish with Paralyzed message
-    auto magicFinishTargetAction = action_t{
-        .actorId    = PEntity->id,
-        .actiontype = ActionCategory::MagicFinish,
-        .targets    = {
-            {
-                   .actorId = PTarget->id,
-                   .results = {
-                    {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
-                    },
-                },
-            },
-        },
-    };
-
-    PEntity->loc.zone->PushPacket(PEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE2>(magicFinishSelfAction));
-    PEntity->loc.zone->PushPacket(PEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE2>(magicFinishTargetAction));
+    PEntity->loc.zone->PushPacket(PEntity, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_BATTLE2>(magicFinishAction));
 }
 
 void ItemInterrupt(CBattleEntity* PEntity)
@@ -459,8 +449,8 @@ void ItemInterrupt(CBattleEntity* PEntity)
         .actionid   = static_cast<uint32_t>(FourCC::ItemInterrupt),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
                         // Empty result
                     },
@@ -480,11 +470,11 @@ void ItemParalyzed(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsParalyzed2,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsParalyzed2,
                     },
                 },
             },
@@ -498,10 +488,10 @@ void ItemParalyzed(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actionid   = static_cast<uint32_t>(FourCC::ItemInterrupt),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
+                        .animation = ActionAnimation::SkillInterrupt,
                     },
                 },
             },
@@ -520,11 +510,11 @@ void ItemIntimidated(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actiontype = ActionCategory::MagicFinish,
         .targets    = {
             {
-                   .actorId = PTarget->id,
-                   .results = {
+                .actorId = PTarget->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
-                           .messageID = MsgBasic::IsIntimidated,
+                        .animation = ActionAnimation::SkillInterrupt,
+                        .messageID = MsgBasic::IsIntimidated,
                     },
                 },
             },
@@ -538,10 +528,10 @@ void ItemIntimidated(CBattleEntity* PEntity, const CBattleEntity* PTarget)
         .actionid   = static_cast<uint32_t>(FourCC::ItemInterrupt),
         .targets    = {
             {
-                   .actorId = PEntity->id,
-                   .results = {
+                .actorId = PEntity->id,
+                .results = {
                     {
-                           .animation = ActionAnimation::SkillInterrupt,
+                        .animation = ActionAnimation::SkillInterrupt,
                     },
                 },
             },

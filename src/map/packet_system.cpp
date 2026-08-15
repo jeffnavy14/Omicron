@@ -21,10 +21,12 @@
 
 #include "packet_system.h"
 
+#include "common/logging_context.h"
+
 #include "common/logging.h"
 #include "common/tracy.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "map_session.h"
 #include "packets/basic.h"
 #include "packets/c2s/0x00a_login.h"
@@ -217,7 +219,7 @@ void ValidatedPacketHandler(MapSession* const PSession, CCharEntity* const PChar
     }
     else
     {
-        ShowWarningFmt("Invalid {} packet from {}: {} ", T::name, PChar->getName(), result.errorString());
+        ShowWarningFmt("Invalid {} packet from {}: {}", T::name, PChar->getName(), result.errorString());
     }
 }
 

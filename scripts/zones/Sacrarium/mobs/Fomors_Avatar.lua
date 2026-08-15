@@ -7,7 +7,8 @@ mixins = { require('scripts/mixins/families/avatar') }
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobDeath = function(mob, player, optParams)
+entity.onMobInitialize = function(mob)
+    mob:setMobMod(xi.mobMod.AVATAR_PETID, xi.petId.FENRIR)
 end
 
 return entity

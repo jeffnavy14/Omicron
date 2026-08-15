@@ -2,7 +2,6 @@
 -- Area: Behemoth's Dominion
 --  HNM: King Behemoth
 -----------------------------------
-local ID = zones[xi.zone.BEHEMOTHS_DOMINION]
 mixins = { require('scripts/mixins/rage') }
 -----------------------------------
 ---@type TMobEntity
@@ -26,13 +25,11 @@ end
 entity.onMobSpawn = function(mob)
     mob:setLocalVar('[rage]timer', 3600) -- 60 minutes
     mob:setMobMod(xi.mobMod.NO_MOVE, 0)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 58) -- 145 total weapaon damage
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 58) -- 145 total weapaon damage
     mob:setMod(xi.mod.MDEF, 20)
     mob:setMod(xi.mod.ATT, 462)
     mob:setMod(xi.mod.DEF, 500)
     mob:setMod(xi.mod.EVA, 370)
-    -- Despawn the ???
-    GetNPCByID(ID.npc.BEHEMOTH_QM):setStatus(xi.status.DISAPPEAR)
 end
 
 entity.onMobRoam = function(mob)
@@ -71,7 +68,7 @@ entity.onMobFight = function(mob, target)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.STUN, { chance = 20, duration = math.random(4, 9) })
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.STUN, { chance = 20, duration = math.randomInt(4, 9) })
 end
 
 entity.onSpellPrecast = function(mob, spell)
@@ -87,11 +84,6 @@ entity.onMobDeath = function(mob, player, optParams)
     if player then
         player:addTitle(xi.title.BEHEMOTH_DETHRONER)
     end
-end
-
-entity.onMobDespawn = function(mob)
-    -- Respawn the ???
-    GetNPCByID(ID.npc.BEHEMOTH_QM):updateNPCHideTime(xi.settings.main.FORCE_SPAWN_QM_RESET_TIME)
 end
 
 return entity

@@ -30,18 +30,12 @@ entity.onAdditionalEffect = function(mob, target, damage)
         chance         = 100,
         attackType     = xi.attackType.MAGICAL,
         magicalElement = xi.element.FIRE,
-        basePower      = math.random(150, 200),
+        basePower      = math.randomInt(150, 200),
         actorStat      = xi.mod.INT,
         canResist      = true,
     }
 
     return xi.combat.action.executeAddEffectDamage(mob, target, pTable)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
-    if player:getCharVar('TheRequiemCS') == 3 then
-        player:setCharVar('TheRequiemYumKilled', 1)
-    end
 end
 
 return entity

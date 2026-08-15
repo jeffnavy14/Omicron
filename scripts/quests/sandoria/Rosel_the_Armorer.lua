@@ -36,7 +36,7 @@ quest.sections =
                     -- Using questStage directly eliminates the need for an additional questProgress state
                     -- and the subsequent need for an additional db write on that change.
                     if questStage == 0 then
-                        questStage = math.random(1, 2)
+                        questStage = math.randomInt(1, 2)
                         quest:setVar(player, 'Stage', questStage)
                     end
 
@@ -93,12 +93,15 @@ quest.sections =
             {
                 [527] = function(player, csid, option, npc)
                     local gilReward = 100
+                    local fameReward = 10
 
                     if option == 0 then
                         gilReward = 200
+                        fameReward = 20
                     end
 
                     npcUtil.giveCurrency(player, 'gil', gilReward)
+                    player:addFame(xi.fameArea.SANDORIA, fameReward)
                     quest:complete(player)
                 end,
             },

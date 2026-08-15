@@ -23,10 +23,9 @@
 
 #include "char_update.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_linkshell.h"
 #include "status_effect_container.h"
-#include "utils/itemutils.h"
 #include "utils/mountutils.h"
 
 namespace
@@ -281,13 +280,13 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
         const auto [ChocoboIndex, CustomProperties] = mountutils::packetDefinition(PChar);
 
         packet->Hpp             = PChar->GetHPP();
-        packet->server_status   = PChar->animation;
+        packet->server_status   = static_cast<uint8_t>(PChar->animation);
         packet->ModelHitboxSize = static_cast<uint8_t>(PChar->modelHitboxSize * 10); // TODO: verify this value and if it changes (Monstrosity?)
 
         packet->Flags1.MonsterFlag = false; // TODO: Is this ever set for Monstrosity PVP?
-        packet->Flags1.HideFlag    = PChar->m_zoneInCutscene;
-        packet->Flags1.SleepFlag   = 0;                                                                // Something to do with events. // TODO: figure out when/if this is set. Probably when you're in a cutscene?
-        packet->Flags1.unknown_0_3 = PChar->loc.zone ? PChar->loc.zone->CanUseMisc(MISC_TREASURE) : 0; // Set global treasure pool
+        packet->Flags1.HideFlag    = PChar->m_isPCHidden;
+        packet->Flags1.SleepFlag   = 0;                                                                         // Something to do with events. // TODO: figure out when/if this is set. Probably when you're in a cutscene?
+        packet->Flags1.unknown_0_3 = PChar->loc.zone ? PChar->loc.zone->CanUseMisc(xi::ZoneMisc::Treasure) : 0; // Set global treasure pool
         packet->Flags1.unknown_0_4 = 0;
 
         // All mounts need a valid ChocoboIndex
@@ -313,7 +312,7 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
         packet->Flags1.TalkUcoffFlag   = 0; // Unknown, but used with events. // TOOD: verify how/when this is used.
         packet->Flags1.GmLevel         = PChar->visibleGmLevel;
         packet->Flags1.HackMove        = PChar->wallhackEnabled;
-        packet->Flags1.InvisFlag       = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_INVISIBLE);
+        packet->Flags1.InvisFlag       = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffectByFlag(xi::StatusEffectFlag::Invisible);
         packet->Flags1.TurnFlag        = 0; // I do not believe we currently use this. // TOOD: get the lerp values from retail somehow.
         packet->Flags1.BazaarFlag      = PChar->hasBazaar();
 
@@ -338,12 +337,12 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
         packet->Flags3.TrustFlag        = 0;
         packet->Flags3.LfgMasterFlag    = 0; // Not implemented. This is LFP while job mastered when seeking a master party. (job master star next to inv icon)
         packet->Flags3.PetNewFlag       = 0;
-        packet->Flags3.MotStopFlag      = PChar->StatusEffectContainer->HasStatusEffect(EFFECT_TERROR);
+        packet->Flags3.MotStopFlag      = PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Terror);
         packet->Flags3.CliPriorityFlag  = PChar->priorityRender;
         packet->Flags3.PetFlag          = 0;
         packet->Flags3.BallistaTeam     = static_cast<uint8_t>(PChar->allegiance); // Also used during Ballista with slightly different values.
         packet->Flags3.MonStat          = 0;                                       // Some monstrosity flag. // TODO: verify if we already use this.
-        packet->Flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK);
+        packet->Flags3.SilenceFlag      = PChar->m_isGMHidden || PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Sneak);
         packet->Flags3.NewCharacterFlag = !PChar->playerConfig.NewAdventurerOffFlg;
         packet->Flags3.MentorFlag       = PChar->playerConfig.MentorFlg;
 
@@ -352,20 +351,20 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
         packet->Flags5.GeoIndiElement = 0;
 
         // GEO bubble effects, changes bubble effect depending on what effect is activated.
-        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_COLURE_ACTIVE))
+        if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::ColureActive))
         {
-            packet->Flags5.GeoIndiElement = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_COLURE_ACTIVE)->GetPower();
+            packet->Flags5.GeoIndiElement = PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::ColureActive)->GetPower();
             packet->Flags5.GeoIndiFlag    = 1;
         }
 
         // Size shouldn't change until the bubble is re-casted, but currently WIDENED COMPASS will widen the size of the bubble on the effect instantly, so this aligns with the code.
         // TODO: fix the discrepancy with retail.
-        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_WIDENED_COMPASS))
+        if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::WidenedCompass))
         {
             packet->Flags5.GeoIndiSize = 2;
         }
 
-        packet->Flags6.GateId = 0; // Set as "Confrontation" sub power? This will make other players invisible that dont also have this status.
+        packet->Flags6.GateId = PChar->StatusEffectContainer->GetConfrontationSubPower() & 0x0F;
         packet->size          = roundUpToNearestFour(general_size) / 4;
     }
 
@@ -400,7 +399,7 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
             packet->GrapIDTbl[0] = PChar->m_PMonstrosity->Look;
             packet->GrapIDTbl[8] = 0xFFFF;
             // Sword & Shield icon only shows outside of the Feretory
-            if (PChar->m_PMonstrosity->Belligerency && PChar->loc.zone->GetID() != ZONE_FERETORY)
+            if (PChar->m_PMonstrosity->Belligerency && PChar->loc.zone->GetID() != xi::ZoneId::Feretory)
             {
                 packet->Flags3.BallistaTeam |= 0x08; // 0x18?
             }
@@ -438,6 +437,6 @@ void CCharUpdatePacket::updateWith(CCharEntity* PChar, ENTITYUPDATE type, uint8 
         }
 
         packet->Flags4.TrialFlag     = 0; // Trial accounts not implemented.
-        packet->Flags4.JobMasterFlag = PChar->getMod(Mod::SUPERIOR_LEVEL) == 5 && PChar->m_jobMasterDisplay;
+        packet->Flags4.JobMasterFlag = PChar->getMod(xi::Mod::SUPERIOR_LEVEL) == 5 && PChar->m_jobMasterDisplay;
     }
 }

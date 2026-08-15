@@ -3,15 +3,17 @@
 -- San d'Oria M9-1
 -----------------------------------
 -- !addmission 0 22
--- Ambrotien             : !pos 93.419 -0.001 -57.347 230
--- Grilau                : !pos -241.987 6.999 57.887 231
--- Endracion             : !pos -110 1 -34 230
--- (_6h4) Great Hall     : !pos 0 -1 13 233
--- qm2 (VoS)             : !pos 91 -3 -16 128
--- qm5 (Xarcabard)       : !pos 179 -33 82 112
--- qm3 (Batallia Downs)  : !pos 210 17 -615 105
+-- Ambrotien                  : !pos 93.419 -0.001 -57.347 230
+-- Grilau                     : !pos -241.987 6.999 57.887 231
+-- Endracion                  : !pos -110 1 -34 230
+-- (_6h4) Great Hall          : !pos 0 -1 13 233
+-- qm_breaking_barriers (VoS) : !pos 91 -3 -16 128
+-- qm5 (Xarcabard)            : !pos 179 -33 82 112
+-- qm3 (Batallia Downs)       : !pos 210 17 -615 105
 -----------------------------------
-local batalliaID = zones[xi.zone.BATALLIA_DOWNS]
+local batalliaID  = zones[xi.zone.BATALLIA_DOWNS]
+local valleyID    = zones[xi.zone.VALLEY_OF_SORROWS]
+local xarcabardID = zones[xi.zone.XARCABARD]
 -----------------------------------
 
 local mission = Mission:new(xi.mission.log_id.SANDORIA, xi.mission.id.sandoria.BREAKING_BARRIERS)
@@ -24,10 +26,6 @@ mission.reward =
 local handleAcceptMission = function(player, csid, option, npc)
     if option == 22 then
         mission:begin(player)
-
-        -- At this point, Prince cutscenes from M8-2 are no longer available.  Reset this var for
-        -- cleanliness.
-        player:setCharVar('Mission[0][21]Option', 0)
     end
 end
 
@@ -115,13 +113,22 @@ mission.sections =
 
         [xi.zone.VALLEY_OF_SORROWS] =
         {
-            ['qm2'] =
+            ['qm_breaking_barriers'] =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId) == 1 then
-                        player:setMissionStatus(mission.areaId, 2)
-                        return mission:keyItem(xi.ki.FIGURE_OF_TITAN)
+                        return mission:progressEvent(0)
+                    else
+                        return mission:messageSpecial(valleyID.text.SOMETHING_BURRIED)
                     end
+                end,
+            },
+
+            onEventFinish =
+            {
+                [0] = function(player, csid, option, npc)
+                    npcUtil.giveKeyItem(player, xi.ki.FIGURE_OF_TITAN)
+                    player:setMissionStatus(mission.areaId, 2)
                 end,
             },
         },
@@ -132,9 +139,18 @@ mission.sections =
             {
                 onTrigger = function(player, npc)
                     if player:getMissionStatus(mission.areaId) == 2 then
-                        player:setMissionStatus(mission.areaId, 3)
-                        return mission:keyItem(xi.ki.FIGURE_OF_GARUDA)
+                        return mission:progressEvent(12)
+                    else
+                        return mission:messageSpecial(xarcabardID.text.SOMETHING_BURIED)
                     end
+                end,
+            },
+
+            onEventFinish =
+            {
+                [12] = function(player, csid, option, npc)
+                    npcUtil.giveKeyItem(player, xi.ki.FIGURE_OF_GARUDA)
+                    player:setMissionStatus(mission.areaId, 3)
                 end,
             },
         },
@@ -161,6 +177,8 @@ mission.sections =
                             SpawnMob(batalliaID.mob.SUPARNA_FLEDGLING)
                             return mission:messageSpecial(batalliaID.text.SENSE_SOMETHING_LURKING)
                         end
+                    else
+                        return mission:messageSpecial(batalliaID.text.SOMEONE_HAS_BURIED)
                     end
                 end,
             },

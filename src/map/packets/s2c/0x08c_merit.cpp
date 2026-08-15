@@ -21,7 +21,7 @@
 
 #include "0x08c_merit.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 // Constructor for full merit categories (multiple packets)
 GP_SERV_COMMAND_MERIT::GP_SERV_COMMAND_MERIT(CCharEntity* PChar)
@@ -62,7 +62,7 @@ GP_SERV_COMMAND_MERIT::GP_SERV_COMMAND_MERIT(CCharEntity* PChar)
 }
 
 // Constructor for single merit update
-GP_SERV_COMMAND_MERIT::GP_SERV_COMMAND_MERIT(const CCharEntity* PChar, const MERIT_TYPE merit)
+GP_SERV_COMMAND_MERIT::GP_SERV_COMMAND_MERIT(const CCharEntity* PChar, const xi::Merit merit)
 {
     auto& packet = this->data();
 
@@ -73,9 +73,9 @@ GP_SERV_COMMAND_MERIT::GP_SERV_COMMAND_MERIT(const CCharEntity* PChar, const MER
 
     const Merit_t* PMerit = PChar->PMeritPoints->GetMerit(merit);
     packet.merits[0]      = {
-             .index = PMerit->id,
-             .next  = PMerit->next,
-             .count = PMerit->count
+        .index = PMerit->id,
+        .next  = PMerit->next,
+        .count = PMerit->count
     };
 
     // Set size for single merit update: header + count/padding + 2 merits (retail sends padding)

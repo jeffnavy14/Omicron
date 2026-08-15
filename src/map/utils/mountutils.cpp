@@ -21,8 +21,8 @@
 
 #include "mountutils.h"
 
-#include "entities/baseentity.h"
-#include "entities/charentity.h"
+#include "entities/base_entity.h"
+#include "entities/char_entity.h"
 #include "status_effect.h"
 #include "status_effect_container.h"
 
@@ -35,7 +35,7 @@ namespace mountutils
 // CustomProperties[1] is used for Noble Chocobo, and is set to 1.
 auto packetDefinition(const CCharEntity* PChar) -> MountPacketDefinition
 {
-    const auto* effect = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_MOUNTED);
+    const auto* effect = PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Mounted);
     if (!effect)
     {
         return MountPacketDefinition{

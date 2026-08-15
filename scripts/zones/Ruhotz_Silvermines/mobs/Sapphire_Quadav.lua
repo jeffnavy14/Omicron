@@ -18,14 +18,11 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.mobSkill.BENEDICTION_1, hpp = math.random(40, 60) },
+            { id = xi.mobSkill.BENEDICTION_1, hpp = math.randomInt(40, 60) },
         },
     })
 
     mob:pathThrough(pathNodes, xi.path.flag.PATROL)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

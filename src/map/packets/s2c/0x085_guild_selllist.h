@@ -21,13 +21,10 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-
 #include "0x083_guild_buylist.h"
 #include "base.h"
 
 class CCharEntity;
-class CItemContainer;
 
 // https://github.com/atom0s/XiPackets/tree/main/world/server/0x0085
 // This packet is sent by the server to inform the client of a guild shops item list it is accepting for player sales.
@@ -41,5 +38,5 @@ public:
         uint8_t       Stat;
     };
 
-    GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const CItemContainer* PGuild);
+    GP_SERV_COMMAND_GUILD_SELLLIST(CCharEntity* PChar, const std::vector<GP_GUILD_ITEM>& items);
 };

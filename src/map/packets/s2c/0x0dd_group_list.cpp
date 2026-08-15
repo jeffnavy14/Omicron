@@ -21,12 +21,11 @@
 
 #include "0x0dd_group_list.h"
 
-#include "alliance.h"
 #include "common/logging.h"
-#include "entities/charentity.h"
-#include "entities/trustentity.h"
+#include "entities/char_entity.h"
+#include "entities/trust_entity.h"
 
-GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CCharEntity* PChar, const uint8_t MemberNumber, const uint16_t memberflags, const uint16_t ZoneID)
+GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CCharEntity* PChar, const uint8_t MemberNumber, const uint16_t memberflags, const xi::ZoneId ZoneID)
 {
     if (PChar == nullptr)
     {
@@ -48,7 +47,7 @@ GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CCharEntity* PChar,
 
     if (PChar->getZone() != ZoneID)
     {
-        packet.ZoneNo = PChar->getZone();
+        packet.ZoneNo = static_cast<uint16>(PChar->getZone());
     }
     else
     {
@@ -62,9 +61,9 @@ GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CCharEntity* PChar,
 
         if (!PChar->isAnon())
         {
-            packet.mjob_no = PChar->GetMJob();
+            packet.mjob_no = static_cast<uint8_t>(PChar->GetMJob());
             packet.mjob_lv = PChar->GetMLevel();
-            packet.sjob_no = PChar->GetSJob();
+            packet.sjob_no = static_cast<uint8_t>(PChar->GetSJob());
             packet.sjob_lv = PChar->GetSLevel();
         }
     }
@@ -96,9 +95,9 @@ GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CTrustEntity* PTrus
     packet.MemberNumber = MemberNumber;
     packet.Hpp          = PTrust->GetHPP();
     packet.Mpp          = PTrust->GetMPP();
-    packet.mjob_no      = PTrust->GetMJob();
+    packet.mjob_no      = static_cast<uint8_t>(PTrust->GetMJob());
     packet.mjob_lv      = PTrust->GetMLevel();
-    packet.sjob_no      = PTrust->GetSJob();
+    packet.sjob_no      = static_cast<uint8_t>(PTrust->GetSJob());
     packet.sjob_lv      = PTrust->GetSLevel();
 
     const auto nameSize       = std::min<size_t>(PTrust->getName().size(), sizeof(packet.Name));
@@ -110,7 +109,7 @@ GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const CTrustEntity* PTrus
     this->setSize(sizeof(GP_SERV_HEADER) + sizeof(PacketData) - 16 + packetNameSize);
 }
 
-GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const uint32_t id, const std::string& name, const uint16_t memberFlags, const uint8_t MemberNumber, const uint16_t ZoneID)
+GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const uint32_t id, const std::string& name, const uint16_t memberFlags, const uint8_t MemberNumber, const xi::ZoneId ZoneID)
 {
     auto& packet = this->data();
 
@@ -123,7 +122,7 @@ GP_SERV_COMMAND_GROUP_LIST::GP_SERV_COMMAND_GROUP_LIST(const uint32_t id, const 
     packet.GAttr.unknown06         = (memberFlags >> 6) & 0x01; // Bit 6: MasterComFlg
     packet.GAttr.unknown07         = (memberFlags >> 7) & 0x01; // Bit 7: SubMasterComFlg
     packet.GAttr.LevelSyncFlg      = (memberFlags >> 8) & 0x01; // Bit 8: LevelSyncFlg
-    packet.ZoneNo                  = ZoneID;
+    packet.ZoneNo                  = static_cast<uint16>(ZoneID);
 
     const auto nameSize       = std::min<size_t>(name.size(), sizeof(packet.Name));
     const auto packetNameSize = roundUpToNearestFour(static_cast<uint32_t>(nameSize)) + 4; // Always 4 bytes of padding after name

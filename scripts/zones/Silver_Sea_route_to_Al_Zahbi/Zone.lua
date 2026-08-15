@@ -30,9 +30,9 @@ zoneObject.onZoneIn = function(player, prevZone)
     -- Check if Apkallu pops this boat ride.
     if
         currentTime > almightyapkallu:getLocalVar('respawn') and
-        math.random(1, 100) <= 20
+        math.randomInt(1, 100) <= 20
     then
-        almightyapkallu:setRespawnTime(math.random(120, 180)) -- 2 to 3 minutes
+        almightyapkallu:setRespawnTime(math.randomInt(120, 180)) -- 2 to 3 minutes
     end
 
     return cs
@@ -42,14 +42,14 @@ zoneObject.onTriggerAreaEnter = function(player, triggerArea)
 end
 
 zoneObject.onTransportEvent = function(player, prevZoneId, transportId)
-    player:startEvent(1025)
+    player:startEvent(1028)
 end
 
 zoneObject.onEventUpdate = function(player, csid, option, npc)
 end
 
 zoneObject.onEventFinish = function(player, csid, option, npc)
-    if csid == 1025 then
+    if csid == 1028 then
         player:setPos(0, 0, 0, 0, xi.zone.AHT_URHGAN_WHITEGATE)
     end
 end

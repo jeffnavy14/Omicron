@@ -24,8 +24,9 @@
 
 #include "zone_entities.h"
 
+#include <common/types/hash_map.h>
+
 #include <set>
-#include <unordered_map>
 
 enum INSTANCE_STATUS
 {
@@ -50,7 +51,9 @@ public:
 
     void RegisterChar(CCharEntity*);
 
-    uint16             GetID() const;
+    uint16 GetID() const;
+    auto   runId() const -> uint32;
+
     uint8              GetLevelCap() const;
     const std::string& GetName();
     position_t         GetEntryLoc();                          // Get entry location
@@ -91,6 +94,7 @@ public:
 private:
     void LoadInstance();
 
+    uint32              runId_{ 0 };
     uint32              m_instanceid{ 0 };
     uint16              m_entrance{ 0 };
     std::string         m_instanceName;
@@ -111,7 +115,7 @@ private:
     std::set<uint32>    m_enteredChars;
     uint32              overlayId_{ 0 };
 
-    std::unordered_map<std::string, uint64_t> localVars_;
+    HashMap<std::string, uint64_t> localVars_;
 };
 
 #endif

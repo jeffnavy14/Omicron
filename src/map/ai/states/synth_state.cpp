@@ -21,47 +21,55 @@
 
 #include "synth_state.h"
 
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 
 #include "ai/ai_container.h"
 #include "utils/synthutils.h"
 
-CSynthState::CSynthState(CCharEntity* PChar, SKILLTYPE skill)
-: CState(PChar, PChar->targid)
+CSynthState::CSynthState(xi::Badge<CState>, CCharEntity* PChar, const xi::SkillType skill)
+: CState(PChar, PChar->entityId())
 , m_PEntity(PChar)
+, m_skill(skill)
 {
-    switch (skill)
+    // Capture constructor arguments into members and nothing else. All other logic goes into init().
+}
+
+auto CSynthState::init() -> StateErrorOr<void>
+{
+    switch (m_skill)
     {
-        case SKILL_WOODWORKING:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_WOODWORKING));
+        case xi::SkillType::Woodworking:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_WOODWORKING));
             break;
-        case SKILL_SMITHING:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_SMITHING));
+        case xi::SkillType::Smithing:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_SMITHING));
             break;
-        case SKILL_GOLDSMITHING:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_GOLDSMITHING));
+        case xi::SkillType::Goldsmithing:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_GOLDSMITHING));
             break;
-        case SKILL_CLOTHCRAFT:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_CLOTHCRAFT));
+        case xi::SkillType::Clothcraft:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_CLOTHCRAFT));
             break;
-        case SKILL_LEATHERCRAFT:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_LEATHERCRAFT));
+        case xi::SkillType::Leathercraft:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_LEATHERCRAFT));
             break;
-        case SKILL_BONECRAFT:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_BONECRAFT));
+        case xi::SkillType::Bonecraft:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_BONECRAFT));
             break;
-        case SKILL_ALCHEMY:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_ALCHEMY));
+        case xi::SkillType::Alchemy:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_ALCHEMY));
             break;
-        case SKILL_COOKING:
-            m_synthFinishTime -= std::chrono::milliseconds(PChar->getMod(Mod::SYNTH_SPEED_COOKING));
+        case xi::SkillType::Cooking:
+            m_synthFinishTime -= std::chrono::milliseconds(m_PEntity->getMod(xi::Mod::SYNTH_SPEED_COOKING));
             break;
         default:
             break;
     }
+
+    return Success();
 }
 
-bool CSynthState::Update(timer::time_point tick)
+auto CSynthState::Update(timer::time_point tick) -> bool
 {
     // Exit state if dead
     if (m_PEntity->isDead())
@@ -75,30 +83,32 @@ bool CSynthState::Update(timer::time_point tick)
         synthutils::sendSynthDone(m_PEntity);
         return true;
     }
-    else
-    {
-        m_synthFinishTime -= (m_PEntity->PAI->getTick() - m_PEntity->PAI->getPrevTick());
-    }
+
+    m_synthFinishTime -= (m_PEntity->PAI->getTick() - m_PEntity->PAI->getPrevTick());
     return false;
 }
 
-void CSynthState::Cleanup(timer::time_point tick)
+void CSynthState::Cleanup(const timer::time_point tick)
 {
     std::ignore = tick;
 }
 
-void CSynthState::UpdateTarget(CBaseEntity* target)
+auto CSynthState::SynthReady() const -> bool
 {
-    std::ignore = target;
+    return m_synthFinishTime <= 0ms && m_PEntity->isAlive();
 }
 
-// stub
-void CSynthState::UpdateTarget(uint16 targid)
+auto CSynthState::CanChangeState() -> bool
 {
-    std::ignore = targid;
+    return false;
 }
 
-bool CSynthState::SynthReady()
+auto CSynthState::CanFollowPath() -> bool
 {
-    return m_synthFinishTime < 0ms && m_PEntity->isAlive();
+    return false;
+}
+
+auto CSynthState::CanInterrupt() -> bool
+{
+    return false;
 }

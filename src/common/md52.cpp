@@ -20,7 +20,6 @@
 */
 
 #include "md52.h"
-#include <cstring>
 
 // clang-format off
 #define GET_UINT32(n,b,i)                       \
@@ -176,6 +175,7 @@ void md5_process( md5_context *ctx, const uint8 data[64] )
     ctx->state[2] += C;
     ctx->state[3] += D;
 }
+
 // clang-format on
 
 void md5_update(md5_context* ctx, uint8* input, uint32 length)

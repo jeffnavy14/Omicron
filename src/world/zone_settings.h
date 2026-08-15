@@ -21,14 +21,18 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-#include "common/database.h"
-#include "common/ipp.h"
-#include "common/logging.h"
+#include <common/cbasetypes.h>
+
+#include "data/enums/zone.h"
+#include "data/enums/zone_misc.h"
+#include <common/database.h>
+#include <common/ipp.h>
+#include <common/logging.h>
+
+#include <common/types/hash_map.h>
 
 #include <ranges>
 #include <set>
-#include <unordered_map>
 #include <vector>
 
 class ZoneSettings final
@@ -36,9 +40,9 @@ class ZoneSettings final
 private:
     struct ZoneSettingsEntry final
     {
-        uint16 zoneid{};
-        IPP    ipp{};
-        uint32 misc{};
+        xi::ZoneId zoneid{};
+        IPP        ipp{};
+        uint32     misc{};
     };
 
 public:
@@ -62,18 +66,18 @@ public:
             const uint64 port = rset->get<uint64>("zoneport");
 
             ZoneSettingsEntry zone_settings{};
-            zone_settings.zoneid = rset->get<uint16>("zoneid");
+            zone_settings.zoneid = rset->get<xi::ZoneId>("zoneid");
             zone_settings.ipp    = IPP(ip, port);
             zone_settings.misc   = rset->get<uint32>("misc");
 
             mapEndpointSet.insert(zone_settings.ipp);
 
-            if (zone_settings.misc & ZONEMISC::MISC_YELL)
+            if (zone_settings.misc & static_cast<uint32>(xi::ZoneMisc::Yell))
             {
                 yellMapEndpointSet.insert(zone_settings.ipp);
             }
 
-            if (zone_settings.misc & ZONEMISC::MISC_ASSIST)
+            if (zone_settings.misc & static_cast<uint32>(xi::ZoneMisc::Assist))
             {
                 assistMapEndpointSet.insert(zone_settings.ipp);
             }
@@ -88,8 +92,8 @@ public:
 
     // TODO: Properly encapsulate this
     // private:
-    std::unordered_map<uint16, ZoneSettingsEntry> zoneSettingsMap_;
-    std::vector<IPP>                              mapEndpoints_;
-    std::vector<IPP>                              yellMapEndpoints_;
-    std::vector<IPP>                              assistMapEndpoints_;
+    HashMap<xi::ZoneId, ZoneSettingsEntry> zoneSettingsMap_;
+    std::vector<IPP>                       mapEndpoints_;
+    std::vector<IPP>                       yellMapEndpoints_;
+    std::vector<IPP>                       assistMapEndpoints_;
 };

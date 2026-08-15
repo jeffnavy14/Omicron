@@ -27,6 +27,7 @@
 
 class CAbility;
 enum class Recast : uint16_t;
+
 class CLuaAbility
 {
     CAbility* m_PLuaAbility;
@@ -60,7 +61,7 @@ public:
     int32 getVE();
     void  setVE(int32 ve);
     void  setRange(float range);
-    void  setPostActionCleanupEffect(EFFECT effectToCleanup);
+    void  setPostActionCleanupEffect(xi::StatusEffect effectToCleanup);
 
     bool operator==(const CLuaAbility& other) const
     {

@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.BRYGID_THE_STYLIS
 
 quest.reward =
 {
-    fame     = 30,
+    fame     = 10,
     fameArea = xi.fameArea.BASTOK,
     title    = xi.title.BASTOKS_SECOND_BEST_DRESSED,
 }
@@ -87,7 +87,7 @@ local getRandomEquippableItem = function(player, itemList)
         end
     end
 
-    return equippableItems[math.random(1, #equippableItems)]
+    return equippableItems[math.randomInt(1, #equippableItems)]
 end
 
 local hasArtifactArmorEquipped = function(player)
@@ -145,7 +145,7 @@ quest.sections =
             ['Brygid'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, optionToItems[quest:getVar(player, 'Option')][2]) then
+                    if npcUtil.tradeMatches(trade, { { optionToItems[quest:getVar(player, 'Option')][2], 1 } }) then
                         return quest:progressEvent(383)
                     end
                 end,
@@ -196,7 +196,7 @@ quest.sections =
 
                 [383] = function(player, csid, option, npc)
                     if npcUtil.giveItem(player, optionToItems[quest:getVar(player, 'Option')][1]) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                         quest:complete(player)
                     end
                 end,

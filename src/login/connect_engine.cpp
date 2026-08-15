@@ -28,7 +28,11 @@ namespace
 
 auto getZMQEndpointString() -> std::string
 {
-    return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
+    return fmt::format(
+        "{}://{}:{}",
+        settings::get<std::string>("network.ZMQ_TRANSPORT"),
+        settings::get<std::string>("network.ZMQ_IP"),
+        settings::get<uint16>("network.ZMQ_PORT"));
 }
 
 auto getZMQRoutingId() -> uint64
@@ -45,12 +49,12 @@ constexpr auto kSessionCleanTime = 15min;
 
 } // namespace
 
-ConnectEngine::ConnectEngine(Scheduler& scheduler)
+ConnectEngine::ConnectEngine(Scheduler& scheduler, ZMQService& zmqService)
 : scheduler_(scheduler)
-, zmqDealerWrapper_(getZMQEndpointString(), getZMQRoutingId())
-, m_authHandler(scheduler_, settings::get<uint32>("network.LOGIN_AUTH_PORT"), zmqDealerWrapper_)
-, m_dataHandler(scheduler_, settings::get<uint32>("network.LOGIN_DATA_PORT"), zmqDealerWrapper_)
-, m_viewHandler(scheduler_, settings::get<uint32>("network.LOGIN_VIEW_PORT"), zmqDealerWrapper_)
+, dealerChannel_(zmqService.registerDealer(getZMQEndpointString(), getZMQRoutingId()))
+, m_authHandler(scheduler_, settings::get<uint32>("network.LOGIN_AUTH_PORT"), dealerChannel_)
+, m_dataHandler(scheduler_, settings::get<uint32>("network.LOGIN_DATA_PORT"), dealerChannel_)
+, m_viewHandler(scheduler_, settings::get<uint32>("network.LOGIN_VIEW_PORT"), dealerChannel_)
 {
     periodicCleanupToken_ = scheduler.intervalOnMainThread(
         kSessionCleanTime,
@@ -62,6 +66,10 @@ ConnectEngine::ConnectEngine(Scheduler& scheduler)
 
 ConnectEngine::~ConnectEngine()
 {
+    // authenticatedSessions_ is a file-scope global, so it is torn down by the
+    // C++ runtime _after_ main() returns. We should clear it manually now.
+    // TODO: Proper lifetime management for authenticatedSessions_.
+    loginHelpers::getAuthenticatedSessions().clear();
 }
 
 void ConnectEngine::periodicCleanup()

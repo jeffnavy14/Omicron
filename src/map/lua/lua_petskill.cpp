@@ -111,7 +111,7 @@ float CLuaPetSkill::getTP()
     return static_cast<float>(m_PLuaPetSkill->getTP());
 }
 
-auto CLuaPetSkill::getMobHP() const -> uint8
+auto CLuaPetSkill::getMobHP() const -> int32
 {
     return m_PLuaPetSkill->getHP();
 }
@@ -122,12 +122,12 @@ uint8 CLuaPetSkill::getMobHPP()
     return m_PLuaPetSkill->getHPP();
 }
 
-auto CLuaPetSkill::getAttackType() const -> ATTACK_TYPE
+auto CLuaPetSkill::getAttackType() const -> xi::AttackType
 {
     return m_PLuaPetSkill->getAttackType();
 }
 
-void CLuaPetSkill::setAttackType(const ATTACK_TYPE attackType) const
+void CLuaPetSkill::setAttackType(const xi::AttackType attackType) const
 {
     m_PLuaPetSkill->setAttackType(attackType);
 }

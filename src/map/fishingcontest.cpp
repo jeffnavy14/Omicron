@@ -23,13 +23,9 @@
 
 #include <algorithm>
 #include <cstring>
-#include <time.h>
 
-#include "common/vana_time.h"
 #include "lua/luautils.h"
 #include "utils/charutils.h"
-#include "utils/itemutils.h"
-#include "utils/zoneutils.h"
 
 namespace
 {
@@ -533,7 +529,7 @@ bool SubmitFish(CCharEntity* PChar, uint32 score)
     entry.slvl        = PChar->GetSLevel();
     entry.race        = PChar->mainlook.race;
     entry.allegiance  = (uint8)PChar->allegiance;
-    entry.fishRank    = PChar->RealSkills.rank[SKILLTYPE::SKILL_FISHING];
+    entry.fishRank    = PChar->RealSkills.rank[static_cast<uint8>(xi::SkillType::Fishing)];
     entry.score       = score;
     entry.submitTime  = earth_time::vanadiel_timestamp();
     entry.contestRank = 0;

@@ -21,12 +21,9 @@
 
 #include "0x04b_fragments.h"
 
-#include "entities/charentity.h"
-#include "enums/chat_message_type.h"
+#include "entities/char_entity.h"
 #include "fishingcontest.h"
 #include "lua/luautils.h"
-#include "packets/char_sync.h"
-#include "packets/s2c/0x017_chat_std.h"
 #include "packets/s2c/0x04d_fragments_fishranking.h"
 #include "packets/s2c/0x04d_fragments_servmes.h"
 
@@ -121,7 +118,7 @@ void GP_CLI_COMMAND_FRAGMENTS::process(MapSession* PSession, CCharEntity* PChar)
                 selfEntry.slvl       = PChar->GetSLevel();
                 selfEntry.race       = PChar->mainlook.race;
                 selfEntry.allegiance = static_cast<uint8>(PChar->allegiance);
-                selfEntry.fishRank   = PChar->RealSkills.rank[SKILLTYPE::SKILL_FISHING];
+                selfEntry.fishRank   = PChar->RealSkills.rank[static_cast<uint8>(xi::SkillType::Fishing)];
                 selfEntry.submitTime = earth_time::vanadiel_timestamp();
             }
         }

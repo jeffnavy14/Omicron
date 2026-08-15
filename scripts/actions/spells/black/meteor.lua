@@ -38,15 +38,15 @@ spellObject.onSpellCast = function(caster, target, spell)
         damage = ((100 + caster:getMod(xi.mod.MATT)) / (100 + target:getMod(xi.mod.MDEF))) * (caster:getStat(xi.mod.INT) + (caster:getMaxSkillLevel(caster:getMainLvl(), xi.job.BLM, xi.skill.ELEMENTAL_MAGIC)) / 6) * 9.4
     end
 
-    damage = math.floor(damage * xi.spells.damage.calculateAbsorption(target, xi.element.NONE, true))
-    damage = math.floor(damage * xi.spells.damage.calculateNullification(target, xi.element.NONE, true, false))
+    damage = math.floor(damage * xi.spells.damage.calculateAbsorption(target, xi.element.NONE, false, true, false, false))
+    damage = math.floor(damage * xi.spells.damage.calculateNullification(target, xi.element.NONE, false, true, false, false))
     damage = math.floor(damage * xi.spells.damage.calculateMTDR(caster, spell))
     damage = math.floor(damage * xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false))
 
     -- Handle Phalanx, One for All, Stoneskin.
     damage = utils.clamp(utils.handlePhalanx(target, damage), 0, 99999)
     damage = utils.clamp(utils.handleOneForAll(target, damage), 0, 99999)
-    damage = utils.clamp(utils.handleStoneskin(target, damage), -99999, 99999)
+    damage = utils.handleStoneskin(target, damage, xi.attackType.MAGICAL)
 
     -- Handle final adjustments. Most are located in core. TODO: Decide if we want core handling this.
     -- Check if the mob has a damage cap

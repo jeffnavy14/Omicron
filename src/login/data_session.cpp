@@ -23,7 +23,10 @@
 
 #include "common/database.h"
 #include "common/ipc.h"
+#include "common/md52.h"
 #include "common/utils.h"
+
+#include <asio/write.hpp>
 
 void data_session::deleteCharFromCharInfo(uint32_t ffxi_id)
 {
@@ -51,6 +54,21 @@ void data_session::addCharIntoCharInfo(const lpkt_chr_info_sub2& charInfo)
     }
 }
 
+// Keep the cached lobby list in sync after a rename.
+void data_session::renameCharInCharInfo(const uint32_t charId, const std::string& newName)
+{
+    for (auto& charInfo : characterInfoResponse.character_info)
+    {
+        if (charInfo.ffxi_id == charId)
+        {
+            std::memset(charInfo.character_name, 0, sizeof(charInfo.character_name));
+            std::memcpy(charInfo.character_name, newName.c_str(), std::min(newName.size(), sizeof(charInfo.character_name) - 1));
+            charInfo.renamef = 0;
+            break;
+        }
+    }
+}
+
 void data_session::read_func()
 {
     auto sessionHash = loginHelpers::getHashFromPacket(ipAddress, buffer_.data());
@@ -68,7 +86,7 @@ void data_session::read_func()
     session_t& session = loginHelpers::get_authenticated_session(ipAddress, sessionHash);
     if (!session.data_session)
     {
-        session.data_session              = std::make_shared<data_session>(std::forward<asio::ssl::stream<asio::ip::tcp::socket>>(socket_), zmqDealerWrapper_);
+        session.data_session              = std::make_shared<data_session>(std::forward<asio::ssl::stream<asio::ip::tcp::socket>>(socket_), dealerChannel_);
         session.data_session->sessionHash = sessionHash;
     }
 
@@ -106,11 +124,15 @@ void data_session::read_func()
                                                     "race, face, head, body, hands, legs, feet, main, sub,"
                                                     "war, mnk, whm, blm, rdm, thf, pld, drk, bst, brd, rng,"
                                                     "sam, nin, drg, smn, blu, cor, pup, dnc, sch, geo, run, "
-                                                    "gmlevel, nation, size, sjob "
+                                                    "gmlevel, nation, size, sjob, COALESCE(char_flags.`rename`, 0) AS `rename`, "
+                                                    "EXISTS(SELECT 1 FROM char_vars "
+                                                    "WHERE char_vars.charid = chars.charid "
+                                                    "AND varname = '[RaceChange]Eligible' AND value > UNIX_TIMESTAMP()) AS race_change "
                                                     "FROM chars "
                                                     "INNER JOIN char_stats USING(charid) "
                                                     "INNER JOIN char_look  USING(charid) "
                                                     "INNER JOIN char_jobs  USING(charid) "
+                                                    "LEFT JOIN  char_flags USING(charid) "
                                                     "WHERE accid = ? "
                                                     "LIMIT ?",
                                                     session.accountID,
@@ -129,7 +151,7 @@ void data_session::read_func()
 
                 uint32_t i = 0;
 
-                // Generate on first time read from db
+                // Generate on first time read from db or after the account logs out after a log in
                 if (!generatedCharInfo)
                 {
                     characterInfoResponse            = {};
@@ -163,9 +185,9 @@ void data_session::read_func()
                             characterInfo.ffxi_id           = contentId;
                             characterInfo.ffxi_id_world     = charIdMain;
                             characterInfo.worldid           = worldId;
-                            characterInfo.status            = 1; // 0 = Invalid/Hidden, 1 = Available, 2 = Disabled (unpaid)
-                            characterInfo.race_change       = 0; // 0 = no race change service, 1 = race change service (gold star icon) (NOT YET SUPPORTED!)
-                            characterInfo.renamef           = 0; // 0 = no rename required, 1 = rename required (NOT YET SUPPORTED!)
+                            characterInfo.status            = 1;                                        // 0 = Invalid/Hidden, 1 = Available, 2 = Disabled (unpaid)
+                            characterInfo.race_change       = rset1->get<uint8>("race_change") ? 1 : 0; // Shows a gold star icon if character eligible for race change
+                            characterInfo.renamef           = rset1->get<uint8>("rename") ? 1 : 0;      // Forces client to input a new name if set
                             characterInfo.ffxi_id_world_tbl = charIdExtra;
 
                             std::memcpy(characterInfo.character_name, &strCharName, 16);
@@ -313,7 +335,7 @@ void data_session::read_func()
 
             uint32 ZoneIP   = 0;
             uint16 ZonePort = 0;
-            uint16 ZoneID   = 0;
+            auto   ZoneID   = xi::ZoneId::Unknown;
             uint16 PrevZone = 0;
             uint16 gmlevel  = 0;
 
@@ -326,7 +348,7 @@ void data_session::read_func()
 
             if (rset && rset->rowsCount() && rset->next())
             {
-                ZoneID   = rset->get<uint16>("zoneid");
+                ZoneID   = rset->get<xi::ZoneId>("zoneid");
                 PrevZone = rset->get<uint16>("pos_prevzone");
                 gmlevel  = rset->get<uint16>("gmlevel");
 
@@ -499,6 +521,19 @@ void data_session::read_func()
                 }
             }
 
+            // Log and return error to client if we're somehow trying to send a char to a disabled zone
+            if (characterSelectionResponse.server_ip == 0)
+            {
+                ShowWarning(fmt::format("data_session: no map address for charid {} (zone {}); check zone_settings", charid, ZoneID));
+                if (auto viewSession = session.view_session.get())
+                {
+                    loginHelpers::generateErrorMessage(viewSession->buffer_.data(), loginErrors::errorCode::UNABLE_TO_CONNECT_TO_WORLD_SERVER);
+                    viewSession->do_write(0x24);
+                }
+
+                return;
+            }
+
             unsigned char Hash[16] = {};
             md5(reinterpret_cast<uint8*>(&characterSelectionResponse), Hash, sizeof(lpkt_next_login));
 
@@ -507,13 +542,26 @@ void data_session::read_func()
             if (auto viewSession = session.view_session.get())
             {
                 std::memcpy(viewSession->buffer_.data(), &characterSelectionResponse, sizeof(characterSelectionResponse));
-                viewSession->do_write(sizeof(characterSelectionResponse));
 
-                viewSession->socket_.lowest_layer().shutdown(asio::socket_base::shutdown_both); // Client waits for us to close the socket
-                viewSession->socket_.lowest_layer().close();
+                // Write synchronously here to ensure the write() completes before the subsequent shutdown
+                std::error_code writeEc;
+                asio::write(viewSession->socket_.next_layer(),
+                            asio::buffer(viewSession->buffer_.data(), sizeof(characterSelectionResponse)),
+                            writeEc);
+                if (writeEc)
+                {
+                    ShowError(fmt::format("data_session: failed to write charselect reply to {}: {}", ipAddress, writeEc.message()));
+                }
+
+                // Client waits for us to close the socket.
+                std::error_code closeEc;
+                viewSession->socket_.lowest_layer().shutdown(asio::socket_base::shutdown_both, closeEc);
+                viewSession->socket_.lowest_layer().close(closeEc);
                 session.view_session = nullptr;
 
-                session.incrementKeyValue = 0; // Reset incremented key after inserting into db
+                session.incrementKeyValue  = 0;     // Reset incremented key after inserting into db
+                session.justCreatedNewChar = false; // The client only advances its key for character creation once
+                generatedCharInfo          = false; // Reset this so next time we log out it regenerates the char info
 
                 const auto payload = ipc::toBytesWithHeader(ipc::CharZone{
                     .charId            = charid,
@@ -523,7 +571,7 @@ void data_session::read_func()
                 db::preparedStmt("UPDATE char_flags SET disconnecting = 0 WHERE charid = ?", charid);
                 db::preparedStmt("UPDATE char_stats SET zoning = 2 WHERE charid = ?", charid);
 
-                zmqDealerWrapper_.outgoingQueue_.enqueue(zmq::message_t(payload.data(), payload.size()));
+                dealerChannel_.send(zmq::message_t(payload.data(), payload.size()));
             }
 
             if (settings::get<bool>("login.LOG_USER_IP"))

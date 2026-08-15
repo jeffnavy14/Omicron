@@ -37,9 +37,24 @@ xi.settings.network =
     HTTP_HOST   = 'localhost',
     HTTP_PORT   = 8088,
 
-    -- Central message server settings (ensure these are the same on both all map servers and the central (lobby) server
-    ZMQ_IP   = '127.0.0.1',
-    ZMQ_PORT = 54003,
+    -- Central message server settings
+    ZMQ_TRANSPORT = 'tcp',
+    ZMQ_IP        = '127.0.0.1',
+    ZMQ_PORT      = 54003,
+
+    -- Minimum milliseconds between two handled copies of the same packet from one player.
+    PACKET_RATE_LIMITS =
+    {
+        GP_CLI_COMMAND_SUBCONTAINER    = 1000, -- Mannequin Equip
+        GP_CLI_COMMAND_MOTION          = 1000, -- Emotes
+        GP_CLI_COMMAND_SHOP_BUY        = 250,  -- Vendor Shop Purchase
+        GP_CLI_COMMAND_GUILD_BUY       = 250,  -- Guild Shop Purchase
+        GP_CLI_COMMAND_ASSIST_CHANNEL  = 1000, -- Assist Channel
+        GP_CLI_COMMAND_TRACKING_LIST   = 1000, -- Wide Scan
+        GP_CLI_COMMAND_TRACKING_START  = 1000, -- Wide Scan Track
+        GP_CLI_COMMAND_MASTERY_DISPLAY = 2000, -- Set Job Master Display
+        GP_CLI_COMMAND_JUMP            = 2000, -- Jump
+    },
 
     -- ===========================
     -- NOTE: The settings that follow will not necessarily need to be modified

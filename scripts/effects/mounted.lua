@@ -3,6 +3,7 @@
 -----------------------------------
 ---@type TEffect
 local effectObject = {}
+local attohwaChasmGlobal = require('scripts/zones/Attohwa_Chasm/globals')
 
 effectObject.onEffectGain = function(target, effect)
     local mountId = effect:getPower()
@@ -14,11 +15,11 @@ effectObject.onEffectGain = function(target, effect)
         mountId == xi.mount.CHOCOBO or
         mountId == xi.mount.NOBLE_CHOCOBO
     then
-        target:changeMusic(4, 212)
-        animation = xi.anim.CHOCOBO
+        target:changeMusic(xi.musicSlot.MOUNT, 212)
+        animation = xi.animation.CHOCOBO
     else
-        target:changeMusic(4, 84)
-        animation = xi.anim.MOUNT
+        target:changeMusic(xi.musicSlot.MOUNT, 84)
+        animation = xi.animation.MOUNT
     end
 
     if not target:isInEvent() then
@@ -30,6 +31,8 @@ effectObject.onEffectGain = function(target, effect)
     if pet ~= nil and pet:isCharmed() then
         target:despawnPet()
     end
+
+    attohwaChasmGlobal.removeMimeoKIs(target)
 end
 
 effectObject.onEffectTick = function(target, effect)
@@ -37,7 +40,7 @@ end
 
 effectObject.onEffectLose = function(target, effect)
     if not target:isInEvent() then -- Paranoia safety check
-        target:setAnimation(xi.anim.NONE)
+        target:setAnimation(xi.animation.NONE)
     end
 
     -- Remove CharVars from player participating in chocobo riding game

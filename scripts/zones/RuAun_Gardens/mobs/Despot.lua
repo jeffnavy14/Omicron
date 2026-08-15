@@ -38,6 +38,7 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.GIL_MIN, 18000)
     mob:setMobMod(xi.mobMod.GIL_MAX, 18000)
     mob:setMobMod(xi.mobMod.MUG_GIL, 3250)
+    -- TODO: Check Petrify immunity, other Sky NMs seem to have it.
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.ELEGY)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
@@ -63,7 +64,7 @@ entity.onMobInitialize = function(mob)
             target:isAlive() and
             counter < maxCount
         then
-            mob:useMobAbility(xi.mobSkill.PANZERFAUST, target, 0)
+            mob:useMobAbility(xi.mobSkill.PANZERFAUST, target, 1)
 
         -- Break sequence.
         else
@@ -123,7 +124,7 @@ entity.onMobMobskillChoose = function(mob, target)
     -- Initialize sequence.
     if maxCount == 0 then
         mob:setAutoAttackEnabled(false)
-        mob:setLocalVar('panzerfaustMax', math.random(2, 5))
+        mob:setLocalVar('panzerfaustMax', math.randomInt(2, 5))
     end
 
     return xi.mobSkill.PANZERFAUST

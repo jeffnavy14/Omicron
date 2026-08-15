@@ -24,6 +24,13 @@ mission.sections =
 
         [xi.zone.GRAND_PALACE_OF_HUXZOI] =
         {
+            ['_iya'] =
+            {
+                onTrigger = function(player, npc)
+                    return mission:messageSpecial(huxoiID.text.DOES_NOT_RESPOND):setPriority(1000)
+                end,
+            },
+
             ['_iyq'] =
             {
                 onTrigger = function(player, npc)
@@ -36,7 +43,7 @@ mission.sections =
                         SpawnMob(huxoiID.mob.IXGHRAH):updateClaim(player)
                         return mission:messageSpecial(huxoiID.text.PRESENCE_HAS_DRAWN)
                     elseif missionStatus == 1 then
-                        return mission:progressEvent(3)
+                        return mission:progressCutscene(3)
                     end
                 end,
             },

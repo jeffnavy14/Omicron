@@ -21,18 +21,18 @@
 
 #include "0x0fb_myroom_bankin.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/item_lockflg.h"
 #include "items/exdata/mannequin.h"
 #include "items/item_furnishing.h"
 #include "lua/luautils.h"
-#include "packets/char_status.h"
 #include "packets/s2c/0x01c_item_max.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x01f_item_list.h"
 #include "packets/s2c/0x020_item_attr.h"
 #include "packets/s2c/0x026_item_subcontainer.h"
 #include "utils/charutils.h"
+
 namespace
 {
 

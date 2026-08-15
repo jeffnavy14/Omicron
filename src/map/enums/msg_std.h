@@ -50,6 +50,7 @@ enum class MsgStd : uint16_t
     PollProposalParty            = 101, // Player Name's proposal to the party (cast vote with command: "/vote ?"):
     PollProposalLinkshell        = 102, // Player Name's proposal to the linkshell group (cast vote with command: "/vote ?"):
     PollProposalSystem           = 103, // Player Name's proposal to everyone (cast vote with command: "/vote ?"):
+    TradeCanceled                = 107, // Trade canceled. Either your or your target's inventory is full, or an error occurred during the transaction.
     LinkshellEquipBeforeUsing    = 108, // Equip a linkshell, pearlsack, or linkpearl before using that command.
     LinkshellKicked              = 109, // You have been kicked out of the linkshell group.
     LinkshellNoLongerExists      = 110, // That linkshell group no longer exists. This item is unusable.
@@ -60,7 +61,7 @@ enum class MsgStd : uint16_t
     MoogleDriesPlant             = 133, // Your moogle dries the plant in the <item>.
     MoogleUsesItemOnPLant        = 136, // Your moogle uses the <item> on the plant.
     MoghouseCantPickUp           = 137, // Kupo... I can't pick anything right now, kupo.
-    ChocoboRefusedToEnte         = 138, // The chocobo refused to enter the next area.
+    CannotEnterAreaWhileMounted  = 138, // You cannot enter the next area while mounted.
     CurrentPollResultsSystem     = 140, // Player Name's proposal - Current poll results:
     FinalPollResultsSystem       = 141, // Player Name's proposal - Final poll results:
     CannotUseCommandAtTheMoment  = 142, // You cannot use that command at the moment. Please try again later.

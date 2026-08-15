@@ -19,11 +19,9 @@
 ===========================================================================
 */
 
-#ifndef _CPARTYLISTPACKET_H_
-#define _CPARTYLISTPACKET_H_
+#pragma once
 
 #include "common/cbasetypes.h"
-#include <string.h>
 
 class CPartyListPacket
 {
@@ -31,15 +29,13 @@ public:
     CPartyListPacket(uint32 partyid, uint32 Total);
     ~CPartyListPacket() = default;
 
-    void AddPlayer(SearchEntity* PPlayer);
+    auto AddPlayer(const SearchEntity& player) -> bool;
 
-    uint8* GetData();
-    uint16 GetSize() const;
+    auto GetData() -> uint8*;
+    auto GetSize() const -> uint16;
 
 private:
     uint32 m_offset{};
 
     uint8 m_data[1024]{};
 };
-
-#endif

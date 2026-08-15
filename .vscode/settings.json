@@ -355,6 +355,20 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true
     },
+    "[yaml]": {
+        "editor.defaultFormatter": "jkillian.custom-local-formatters",
+        "editor.formatOnSave": true
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "yaml.format.enable": false,
+    "customLocalFormatters.formatters": [
+        {
+            "command": "python tools/yaml/format.py --stdin",
+            "languages": ["yaml"]
+        }
+    ],
     "files.associations": {
         "algorithm": "cpp",
         "any": "cpp",

@@ -2,10 +2,8 @@
 -- Rune Fencer Job Utilities
 -----------------------------------
 require('scripts/globals/ability')
-require('scripts/globals/combat/magic_hit_rate')
-require('scripts/globals/weaponskills')
-require('scripts/globals/jobpoints')
 require('scripts/globals/spells/damage_spell')
+require('scripts/globals/weaponskills')
 -----------------------------------
 xi = xi or {}
 xi.job_utils = xi.job_utils or {}
@@ -22,7 +20,7 @@ end
 
 local function applyRuneEnhancement(effectType, player)
     local runLevel      = getRUNLevel(player)
-    local meritBonus    = player:getMerit(xi.merit.MERIT_RUNE_ENHANCE) -- 2 more elemental resistance per merit for a maximum total of (2*5) = 10 (power of merit is 2 per level)
+    local meritBonus    = player:getMerit(xi.merit.RUNE_ENHANCE) -- 2 more elemental resistance per merit for a maximum total of (2*5) = 10 (power of merit is 2 per level)
     local jobPointBonus = player:getJobPointLevel(xi.jp.RUNE_ENCHANTMENT_EFFECT) -- 1 more elemental resistance per level for a maximum total of 20
 
     -- see https://www.bg-wiki.com/ffxi/Category:Rune
@@ -110,7 +108,7 @@ local function calculateVivaciousPulseHealing(target)
     end
 
     if debuffCount > 0 and target:getMod(xi.mod.AUGMENTS_VIVACIOUS_PULSE) > 0 then -- add random removal of Poison, Paralyze, Blind, Silence, Mute, Curse, Bane, Doom, Virus, Plague, Petrification via AF3 head (source: https://www.bg-wiki.com/ffxi/Erilaz_Galea)
-        target:delStatusEffect(debuffs[math.random(1, debuffCount)])
+        target:delStatusEffect(debuffs[math.randomInt(1, debuffCount)])
     end
 
     hpHealAmount = hpHealAmount * bonusPct
@@ -324,7 +322,7 @@ xi.job_utils.rune_fencer.useSwordplay = function(player, target, ability)
     power       = power + power * player:getMod(xi.mod.SWORDPLAY) -- "Swordplay + X" Where X is TICKS.
 
     -- Calculate subPower. (Subtle blow) https://www.bg-wiki.com/ffxi/Sleight_of_Sword
-    local subPower = player:getMerit(xi.merit.MERIT_SLEIGHT_OF_SWORD)                            -- Each merit adds 5 "Subtle Blow".
+    local subPower = player:getMerit(xi.merit.SLEIGHT_OF_SWORD)                            -- Each merit adds 5 "Subtle Blow".
     subPower       = subPower + (subPower / 5) * player:getMod(xi.mod.AUGMENTS_SLEIGHT_OF_SWORD) -- Add augment effect IF player has augment.
 
     player:addStatusEffect(xi.effect.SWORDPLAY, { power = power, duration = 120, origin = player, tick = 3, subPower = subPower })
@@ -418,8 +416,8 @@ xi.job_utils.rune_fencer.useVallationValiance = function(player, target, ability
 
     local runeEffects           = target:getAllRuneEffects()
     local sdtPower              = 15
-    local meritBonus            = player:getMerit(xi.merit.MERIT_VALLATION_EFFECT)
-    local inspirationMerits     = player:getMerit(xi.merit.MERIT_INSPIRATION)
+    local meritBonus            = player:getMerit(xi.merit.VALLATION_EFFECT)
+    local inspirationMerits     = player:getMerit(xi.merit.INSPIRATION)
     local inspirationFCBonus    = inspirationMerits + inspirationMerits / 10 * player:getMod(xi.mod.ENHANCES_INSPIRATION)  -- 10 FC per merit level, plus 2% per level from AF2 leg aug
     local jobPointBonusDuration = player:getJobPointLevel(xi.jp.VALLATION_DURATION)
 
@@ -482,7 +480,7 @@ end
 
 -- see https://www.bg-wiki.com/ffxi/Battuta
 xi.job_utils.rune_fencer.useBattuta = function(player, target, ability, action)
-    local meritPower      = player:getMerit(xi.merit.MERIT_BATTUTA) -- power is 4
+    local meritPower      = player:getMerit(xi.merit.BATTUTA) -- power is 4
     local modBonus        = 1 + (player:getMod(xi.mod.ENHANCES_BATTUTA) * meritPower / 4) / 100
     local inquartataPower = 36 + meritPower -- base 36% + merit power of 4% each = max of 56%
     local spikesPower     = 6 + meritPower  -- damage is static 26 per rune barring SDT/MDT at 5/5 Battuta merits. 6 + 4*5 = 26.
@@ -516,24 +514,23 @@ xi.job_utils.rune_fencer.onBattutaEffectLose = function(target, effect)
 end
 
 local function getSwipeLungeDamageMultipliers(player, target, element, bonusMacc) -- get these multipliers once and store them
-    local multipliers = {}
+    local skillchainCount = xi.combat.magicBurst.getMagicBurstTier(target, element)
+    local multipliers     = {}
 
     multipliers.eleStaffBonus       = xi.spells.damage.calculateElementalStaffBonus(player, element)
     multipliers.eleAffinityBonus    = xi.spells.damage.calculateElementalAffinityBonus(player, element)
     multipliers.SDT                 = xi.combat.damage.magicalElementSDT(target, element)
-    multipliers.resist              = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, 0, element, 0, 0, bonusMacc)
+    multipliers.resist              = xi.combat.magicHitRate.calculateResistRate(player, target, { magicalElement = element, magicBurstTier = skillchainCount, bonusMacc = bonusMacc })
     multipliers.dayAndWeather       = xi.spells.damage.calculateDayAndWeather(player, element, false)
     multipliers.magicBonusDiff      = xi.spells.damage.calculateMagicBonusDiff(player, target, 0, 0, element, 0)
     multipliers.TMDA                = xi.combat.damage.calculateDamageAdjustment(target, false, true, false, false)
-    multipliers.absorb              = xi.spells.damage.calculateAbsorption(target, element, true)
-    multipliers.nullify             = xi.spells.damage.calculateNullification(target, element, true, false)
+    multipliers.absorb              = xi.spells.damage.calculateAbsorption(target, element, false, true, false, false)
+    multipliers.nullify             = xi.spells.damage.calculateNullification(target, element, false, true, false, false)
     multipliers.magicBurst          = 1
     multipliers.magicBurstBonus     = 1
 
-    local _, skillchainCount = xi.magicburst.formMagicBurst(target, element)
-
     if skillchainCount > 0 then
-        multipliers.magicBurst      = xi.spells.damage.calculateIfMagicBurst(target, element, skillchainCount)
+        multipliers.magicBurst      = xi.spells.damage.calculateIfMagicBurst(player, target, element, skillchainCount)
         multipliers.magicBurstBonus = xi.spells.damage.calculateIfMagicBurstBonus(player, target, 0, element)
     end
 
@@ -560,7 +557,7 @@ local function calculateSwipeLungeDamage(player, target, skillModifier, gearBonu
     if damage > 0 then
         damage = utils.clamp(utils.handlePhalanx(target, damage), 0, 99999)
         damage = utils.clamp(utils.handleOneForAll(target, damage), 0, 99999)
-        damage = utils.clamp(utils.handleStoneskin(target, damage), -99999, 99999)
+        damage = utils.handleStoneskin(target, damage, xi.attackType.MAGICAL)
     end
 
     return damage
@@ -575,7 +572,7 @@ xi.job_utils.rune_fencer.useSwipeLunge = function(player, target, ability, actio
     local weaponSkillType        = player:getWeaponSkillType(xi.slot.MAIN)
     local gearBonus              = player:getMod(xi.mod.SWIPE)
     local jobPointBonus          = player:getJobPointLevel(xi.jp.SWIPE_EFFECT)
-    local bonusMacc              = player:getMerit(xi.merit.MERIT_RUNE_ENHANCE)
+    local bonusMacc              = player:getMerit(xi.merit.RUNE_ENHANCE)
     local numHits                = 1
 
     if abilityID == xi.jobAbility.LUNGE then   -- Lunge uses each rune individually
@@ -720,7 +717,7 @@ end
 xi.job_utils.rune_fencer.usePflug = function(player, target, ability, action)
     local highestRune  = player:getHighestRuneEffect()
     local baseStrength = 10
-    local meritBonus   = player:getMerit(xi.merit.MERIT_PFLUG_EFFECT)
+    local meritBonus   = player:getMerit(xi.merit.PFLUG_EFFECT)
 
     if player:getMainJob() == xi.job.RUN then
         baseStrength = 15
@@ -770,8 +767,8 @@ end
 xi.job_utils.rune_fencer.useRayke = function(player, target, ability, action)
     local highestRune     = player:getHighestRuneEffect()
     local weaponSkillType = player:getWeaponSkillType(xi.slot.MAIN)
-    local meritValue      = player:getMerit(xi.merit.MERIT_RAYKE)
-    local duration        = 27 + player:getMerit(xi.merit.MERIT_RAYKE)              -- 1 merit = 30 seconds (27 + 3)
+    local meritValue      = player:getMerit(xi.merit.RAYKE)
+    local duration        = 27 + player:getMerit(xi.merit.RAYKE)              -- 1 merit = 30 seconds (27 + 3)
     local modDuration     = player:getMod(xi.mod.RAYKE_DURATION) * meritValue / 3 -- Futhark boots aug
 
     action:info(target:getID(), getSpecEffectElementEffusion(highestRune)) -- set element color for animation.

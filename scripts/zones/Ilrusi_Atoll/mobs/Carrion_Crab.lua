@@ -7,9 +7,6 @@ local ID = zones[xi.zone.ILRUSI_ATOLL]
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     local instance = mob:getInstance()
     if not instance then
@@ -17,7 +14,7 @@ entity.onMobDespawn = function(mob)
     end
 
     local crabMob  = GetMobByID(ID.mob.UNDEAD_CRAB, instance)
-    local randVal  = math.random(1, 5)
+    local randVal  = math.randomInt(1, 5)
 
     if
         randVal == 1 and

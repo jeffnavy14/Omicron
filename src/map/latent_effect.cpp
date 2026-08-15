@@ -19,16 +19,16 @@
 ===========================================================================
 */
 
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_weapon.h"
 #include "latent_effect.h"
 #include "packets/s2c/0x0ac_command_data.h"
 #include "status_effect_container.h"
 #include "utils/charutils.h"
 
-CLatentEffect::CLatentEffect(CBattleEntity* owner, LATENT conditionsId, uint16 conditionsValue, uint8 slot, Mod modValue, int16 modPower)
+CLatentEffect::CLatentEffect(CBattleEntity* owner, xi::Latent conditionsId, uint16 conditionsValue, uint8 slot, xi::Mod modValue, int16 modPower)
 : m_POwner(owner)
 , m_ConditionsID(conditionsId)
 , m_ConditionsValue(conditionsValue)
@@ -46,7 +46,7 @@ CLatentEffect::~CLatentEffect()
     }
 }
 
-LATENT CLatentEffect::GetConditionsID() const
+auto CLatentEffect::GetConditionsID() const -> xi::Latent
 {
     return m_ConditionsID;
 }
@@ -61,7 +61,7 @@ uint8 CLatentEffect::GetSlot() const
     return m_SlotID;
 }
 
-Mod CLatentEffect::GetModValue() const
+xi::Mod CLatentEffect::GetModValue() const
 {
     return m_ModValue;
 }
@@ -81,7 +81,7 @@ CBattleEntity* CLatentEffect::GetOwner() const
     return m_POwner;
 }
 
-void CLatentEffect::SetConditionsId(LATENT id)
+void CLatentEffect::SetConditionsId(xi::Latent id)
 {
     m_ConditionsID = id;
 }
@@ -96,7 +96,7 @@ void CLatentEffect::SetSlot(uint8 slot)
     m_SlotID = slot;
 }
 
-void CLatentEffect::SetModValue(Mod value)
+void CLatentEffect::SetModValue(xi::Mod value)
 {
     m_ModValue = value;
 }
@@ -106,24 +106,30 @@ void CLatentEffect::SetModPower(int16 power)
     m_ModPower = power;
 }
 
-bool CLatentEffect::ModOnItemOnly(Mod modID)
+bool CLatentEffect::ModOnItemOnly(xi::Mod modID)
 {
-    if (modID == Mod::DMG_RATING ||
-        modID == Mod::ITEM_ADDEFFECT_TYPE ||
-        modID == Mod::ITEM_SUBEFFECT ||
-        modID == Mod::ITEM_ADDEFFECT_DMG ||
-        modID == Mod::ITEM_ADDEFFECT_CHANCE ||
-        modID == Mod::ITEM_ADDEFFECT_ELEMENT ||
-        modID == Mod::ITEM_ADDEFFECT_STATUS ||
-        modID == Mod::ITEM_ADDEFFECT_POWER ||
-        modID == Mod::ITEM_ADDEFFECT_DURATION ||
-        modID == Mod::ADDS_WEAPONSKILL ||
-        modID == Mod::MOVE_SPEED_GEAR_BONUS ||
-        modID == Mod::CRITHITRATE_ONLY_WEP)
+    if (modID == xi::Mod::DMG_RATING ||
+        modID == xi::Mod::ITEM_ADDEFFECT_TYPE ||
+        modID == xi::Mod::ITEM_SUBEFFECT ||
+        modID == xi::Mod::ITEM_ADDEFFECT_DMG ||
+        modID == xi::Mod::ITEM_ADDEFFECT_CHANCE ||
+        modID == xi::Mod::ITEM_ADDEFFECT_ELEMENT ||
+        modID == xi::Mod::ITEM_ADDEFFECT_STATUS ||
+        modID == xi::Mod::ITEM_ADDEFFECT_POWER ||
+        modID == xi::Mod::ITEM_ADDEFFECT_DURATION ||
+        modID == xi::Mod::ADDS_WEAPONSKILL ||
+        modID == xi::Mod::MOVE_SPEED_GEAR_BONUS ||
+        modID == xi::Mod::CRITHITRATE_ONLY_WEP)
     {
         return true;
     }
     return false;
+}
+
+bool CLatentEffect::SkillMod(xi::Mod modID)
+{
+    return (modID >= xi::Mod::HTH && modID <= xi::Mod::STAFF) ||
+           (modID >= xi::Mod::AUTO_MELEE_SKILL && modID <= xi::Mod::HANDBELL_SKILL);
 }
 
 bool CLatentEffect::Activate()
@@ -148,6 +154,12 @@ bool CLatentEffect::Activate()
         else
         {
             m_POwner->addModifier(m_ModValue, m_ModPower);
+
+            if (SkillMod(GetModValue()))
+            {
+                CCharEntity* PChar = static_cast<CCharEntity*>(m_POwner);
+                charutils::BuildingCharSkillsTable(PChar);
+            }
         }
 
         m_Activated = true;
@@ -175,6 +187,12 @@ bool CLatentEffect::Deactivate()
         else
         {
             m_POwner->delModifier(m_ModValue, m_ModPower);
+
+            if (SkillMod(GetModValue()))
+            {
+                CCharEntity* PChar = static_cast<CCharEntity*>(m_POwner);
+                charutils::BuildingCharSkillsTable(PChar);
+            }
         }
 
         m_Activated = false;

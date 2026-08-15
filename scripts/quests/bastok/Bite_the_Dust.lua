@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.BITE_THE_DUST)
 
 quest.reward =
 {
-    fame     = 8,
+    fame     = 10,
     fameArea = xi.fameArea.BASTOK,
     gil      = 350,
     title    = xi.title.SAND_BLASTER,
@@ -46,7 +46,7 @@ quest.sections =
             ['Yazan'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.SAND_BAT_FANG) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.SAND_BAT_FANG, 1 } }) then
                         return quest:progressEvent(193)
                     end
                 end,
@@ -65,13 +65,9 @@ quest.sections =
             onEventFinish =
             {
                 [193] = function(player, csid, option, npc)
-                    player:confirmTrade()
-
-                    if player:getQuestStatus(quest.areaId, quest.questId) == xi.questStatus.QUEST_ACCEPTED then
-                        player:addFame(xi.fameArea.BASTOK, 112)
+                    if quest:complete(player) then
+                        player:tradeComplete()
                     end
-
-                    quest:complete(player)
                 end,
             },
         },

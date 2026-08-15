@@ -44,7 +44,7 @@ entity.onTrigger = function(player, npc)
         not player:hasStatusEffect(xi.effect.BANE) and
         not player:hasStatusEffect(xi.effect.PLAGUE)
     then
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(248) -- CATCH IT IF YOU CAN: During Quest 1
         else
@@ -77,9 +77,9 @@ entity.onEventFinish = function(player, csid, option, npc)
 
         if player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.CATCH_IT_IF_YOU_CAN) == xi.questStatus.QUEST_ACCEPTED then
             player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.CATCH_IT_IF_YOU_CAN)
-            player:addFame(xi.fameArea.WINDURST, 75)
+            player:addFame(xi.fameArea.WINDURST, 10)
         else
-            player:addFame(xi.fameArea.WINDURST, 8)
+            player:addFame(xi.fameArea.WINDURST, 10)
         end
     end
 end

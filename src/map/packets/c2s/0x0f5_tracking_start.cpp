@@ -21,7 +21,7 @@
 
 #include "0x0f5_tracking_start.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "utils/charutils.h"
 
 auto GP_CLI_COMMAND_TRACKING_START::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
@@ -46,9 +46,6 @@ void GP_CLI_COMMAND_TRACKING_START::process(MapSession* PSession, CCharEntity* P
     // Only allow players to track targets that are actually scannable, and within their wide scan range
     if (target->isWideScannable() && dist <= charutils::getWideScanRange(PChar))
     {
-        PChar->WideScanTarget = EntityID_t{
-            .id     = target->id,
-            .targid = target->targid
-        };
+        PChar->WideScanTarget = target->entityId();
     }
 }

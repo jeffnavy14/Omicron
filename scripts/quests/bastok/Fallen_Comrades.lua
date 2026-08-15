@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.FALLEN_COMRADES)
 
 quest.reward =
 {
-    fame     = 8,
+    fame     = 10,
     fameArea = xi.fameArea.BASTOK,
     gil      = 550,
 }
@@ -45,7 +45,7 @@ quest.sections =
             ['Pavvke'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.SILVER_NAME_TAG) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.SILVER_NAME_TAG, 1 } }) then
                         if player:hasCompletedQuest(quest.areaId, quest.questId) then
                             return quest:progressEvent(92)
                         else
@@ -59,15 +59,14 @@ quest.sections =
             {
                 [91] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
-
-                        player:addFame(xi.fameArea.BASTOK, 112)
+                        player:tradeComplete()
                     end
                 end,
 
                 [92] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
+                        player:addFame(xi.fameArea.BASTOK, 10)
                     end
                 end,
             },

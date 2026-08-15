@@ -9,7 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.TILL_DEATH_DO_US_
 
 quest.reward =
 {
-    fame     = 160,
+    fame     = 30,
     fameArea = xi.fameArea.BASTOK,
     gil      = 2000,
     title    = xi.title.QIJIS_RIVAL,
@@ -55,7 +55,7 @@ quest.sections =
             ['Romilda'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.COTTON_GLOVES) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.COTTON_GLOVES, 1 } }) then
                         return quest:progressEvent(129)
                     end
                 end,
@@ -65,7 +65,7 @@ quest.sections =
             {
                 [129] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                     end
                 end,
             },

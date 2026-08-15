@@ -21,14 +21,12 @@
 
 #include "0x0eb_reqsubmapnum.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "packets/s2c/0x10e_reqsubmapnum.h"
 
 auto GP_CLI_COMMAND_REQSUBMAPNUM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    // No parameter to validate.
-    return PacketValidator(PChar)
-        .blockedBy({ BlockedState::InEvent });
+    return PacketValidator(PChar);
 }
 
 void GP_CLI_COMMAND_REQSUBMAPNUM::process(MapSession* PSession, CCharEntity* PChar) const

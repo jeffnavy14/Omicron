@@ -11,12 +11,7 @@ local entity = {}
 
 entity.phList =
 {
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 6] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 181.000 -18.000 -63.000
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 5] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 181.000 -19.000 -77.000
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 4] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 195.000 -18.000 -95.000
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 3] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 220.000 -19.000 -80.000
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 2] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 219.000 -18.000 -59.000
-    [ID.mob.ZORAAL_JAS_PKUUCHA - 1] = ID.mob.ZORAAL_JAS_PKUUCHA, -- 203.000 -16.000 -74.000
+    [ID.mob.ZORAAL_JAS_PKUUCHA - 1] = ID.mob.ZORAAL_JAS_PKUUCHA, -- Confirmed on retail
 }
 
 entity.spawnPoints =
@@ -38,7 +33,7 @@ end
 
 -- Chooses the HP percentage at which to spawn Percipient Zoraal Ja
 entity.onMobSpawn = function(mob)
-    mob:setLocalVar('whenToPopZoraal', math.random(20, 50))
+    mob:setLocalVar('whenToPopZoraal', math.randomInt(20, 50))
     mob:setLocalVar('hasPoppedZoraal', 0)
     mob:setUnkillable(true)
 end
@@ -68,7 +63,7 @@ entity.onMobFight = function(mob, target)
         not GetMobByID(ID.mob.PERCIPIENT_ZORAAL_JA):isSpawned() and
         mob:getLocalVar('hasPoppedZoraal') == 0
     then
-        GetMobByID(ID.mob.PERCIPIENT_ZORAAL_JA):setSpawn(mob:getXPos() + math.random(-2, 2), mob:getYPos(), mob:getZPos() + math.random(-2, 2))
+        GetMobByID(ID.mob.PERCIPIENT_ZORAAL_JA):setSpawn(mob:getXPos() + math.randomInt(-2, 2), mob:getYPos(), mob:getZPos() + math.randomInt(-2, 2))
         SpawnMob(ID.mob.PERCIPIENT_ZORAAL_JA):updateEnmity(target)
         mob:setHP(mob:getMaxHP())
         mob:setLocalVar('hasPoppedZoraal', 1)

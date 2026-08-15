@@ -34,6 +34,10 @@ global_objects=(
     _
     _G
 
+    math.randomFloat
+    math.randomInt
+    math.randomNormal
+
     Module
     Override
     super
@@ -78,6 +82,7 @@ global_objects=(
     BattlefieldQuest
     Limbus
     SeasonalEvent
+    InstanceAssault
 
     onBattlefieldHandlerInitialize
     applyResistanceAddEffect

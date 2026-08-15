@@ -21,11 +21,14 @@
 
 #pragma once
 
+#include "common/cbasetypes.h"
+
+#include <common/types/hash_map.h>
+
 #include "ai/ai_container.h"
 #include "ai/controllers/trust_controller.h"
-#include "common/cbasetypes.h"
-#include "entities/charentity.h"
-#include "entities/trustentity.h"
+#include "entities/char_entity.h"
+#include "entities/trust_entity.h"
 #include "mob_spell_container.h"
 #include "status_effect.h"
 #include "status_effect_container.h"
@@ -292,6 +295,7 @@ public:
     : POwner(trust)
     {
     }
+
     ~CGambitsContainer() = default;
 
     auto NewGambitIdentifier(const Gambit_t& gambit) const -> std::string;
@@ -307,7 +311,7 @@ public:
     uint16                    tp_value;
 
 private:
-    bool CheckTrigger(const CBattleEntity* triggerTarget, const Gambit_t& gambit, size_t predicateGroupIndex, PredicateGroup_t& predicateGroup);
+    auto CheckTrigger(const CBattleEntity* triggerTarget, const Gambit_t& gambit, size_t predicateGroupIndex, PredicateGroup_t& predicateGroup) -> bool;
     bool TryTrustSkill();
     bool PartyHasHealer();
     bool PartyHasTank();
@@ -316,34 +320,34 @@ private:
     timer::time_point     m_lastAction;
     std::vector<Gambit_t> gambits;
 
-    std::unordered_map<std::string, timer::time_point> m_timerConditionLastTrigger;
+    HashMap<std::string, timer::time_point> m_timerConditionLastTrigger;
 
-    std::set<JOBTYPE> melee_jobs = {
-        JOB_WAR,
-        JOB_MNK,
-        JOB_THF,
-        JOB_PLD,
-        JOB_DRK,
-        JOB_BST,
-        JOB_SAM,
-        JOB_NIN,
-        JOB_DRG,
-        JOB_BLU,
-        JOB_PUP,
-        JOB_DNC,
-        JOB_RUN,
+    std::set<xi::Job> melee_jobs = {
+        xi::Job::WAR,
+        xi::Job::MNK,
+        xi::Job::THF,
+        xi::Job::PLD,
+        xi::Job::DRK,
+        xi::Job::BST,
+        xi::Job::SAM,
+        xi::Job::NIN,
+        xi::Job::DRG,
+        xi::Job::BLU,
+        xi::Job::PUP,
+        xi::Job::DNC,
+        xi::Job::RUN,
     };
 
-    std::set<JOBTYPE> caster_jobs = {
-        JOB_WHM,
-        JOB_BLM,
-        JOB_RDM,
-        JOB_BRD,
-        JOB_SMN,
-        JOB_BLU,
-        JOB_SCH,
-        JOB_GEO,
-        JOB_RUN,
+    std::set<xi::Job> caster_jobs = {
+        xi::Job::WHM,
+        xi::Job::BLM,
+        xi::Job::RDM,
+        xi::Job::BRD,
+        xi::Job::SMN,
+        xi::Job::BLU,
+        xi::Job::SCH,
+        xi::Job::GEO,
+        xi::Job::RUN,
     };
 };
 

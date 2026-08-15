@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -22,13 +22,11 @@
 #include "lua/helpers/lua_client_entity_pair_events.h"
 
 #include "common/logging.h"
-#include "common/lua.h"
 #include "lua/helpers/lua_client_entity_pair_packets.h"
 #include "lua/lua_client_entity_pair.h"
 #include "lua/lua_simulation.h"
 #include "lua/sol_bindings.h"
-#include "map/entities/charentity.h"
-#include "map/map_engine.h"
+#include "map/entities/char_entity.h"
 #include "map/packets/c2s/0x05b_eventend.h"
 #include "packets/basic.h"
 #include "test_char.h"
@@ -133,7 +131,7 @@ void CLuaClientEntityPairEvents::expect(sol::table expectedEvent) const
 
     if (updates.has_value())
     {
-        const sol::table updateTable = updates.value();
+        const sol::table& updateTable = updates.value();
         for (const auto& pair : updateTable)
         {
             if (pair.second.is<uint32>())

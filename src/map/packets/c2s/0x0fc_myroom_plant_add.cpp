@@ -21,11 +21,10 @@
 
 #include "0x0fc_myroom_plant_add.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/msg_std.h"
 #include "items.h"
 #include "items/item_flowerpot.h"
-#include "packets/char_status.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x020_item_attr.h"
 #include "packets/s2c/0x0fa_myroom_operation.h"
@@ -51,10 +50,27 @@ auto GP_CLI_COMMAND_MYROOM_PLANT_ADD::validate(MapSession* PSession, const CChar
 
 void GP_CLI_COMMAND_MYROOM_PLANT_ADD::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    CItemContainer* PPotItemContainer = PChar->getStorage(this->MyroomPlantCategory);
-    auto*           PPotItem          = static_cast<CItemFlowerpot*>(PPotItemContainer->GetItem(this->MyroomPlantItemIndex));
+    CItemContainer* PItemContainer = PChar->getStorage(this->MyroomPlantCategory);
+    auto*           PItem          = PItemContainer->GetItem(this->MyroomPlantItemIndex);
+    auto*           PPotItem       = dynamic_cast<CItemFlowerpot*>(PItem);
+
     if (PPotItem == nullptr)
     {
+        if (PItem)
+        {
+            ShowWarning(fmt::format("GP_CLI_COMMAND_MYROOM_PLANT_ADD::process: {} has tried to use invalid gardening pot {} ({})",
+                                    PChar->getName(),
+                                    PItem->getID(),
+                                    PItem->getName()));
+            return;
+        }
+        else
+        {
+            ShowWarning(fmt::format("GP_CLI_COMMAND_MYROOM_PLANT_ADD::process: {} has tried to use invalid gardening pot item (MyroomPlantCategory = {}, MyroomPlantItemIndex = {})",
+                                    PChar->getName(),
+                                    this->MyroomPlantCategory,
+                                    this->MyroomPlantItemIndex));
+        }
         return;
     }
 
@@ -67,8 +83,6 @@ void GP_CLI_COMMAND_MYROOM_PLANT_ADD::process(MapSession* PSession, CCharEntity*
         return;
     }
 
-    CItemContainer* PItemContainer = PChar->getStorage(this->MyroomAddCategory);
-    const CItem*    PItem          = PItemContainer->GetItem(this->MyroomAddItemIndex);
     if (PItem == nullptr || PItem->getQuantity() < 1)
     {
         return;
@@ -87,7 +101,7 @@ void GP_CLI_COMMAND_MYROOM_PLANT_ADD::process(MapSession* PSession, CCharEntity*
         gardenutils::GrowToNextStage(PPotItem);
         updatedPot = true;
     }
-    else if (this->MyroomAddItemNo >= FIRE_CRYSTAL && this->MyroomAddItemNo <= DARK_CLUSTER)
+    else if (this->MyroomAddItemNo >= FIRE_CRYSTAL && this->MyroomAddItemNo <= DARK_CRYSTAL)
     {
         // Feeding the plant a crystal
         PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(this->MyroomAddItemNo, MsgStd::MoogleUsesItemOnPLant);

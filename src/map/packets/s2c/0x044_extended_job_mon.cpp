@@ -21,13 +21,13 @@
 
 #include "0x044_extended_job_mon.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 
 GP_SERV_COMMAND_EXTENDED_JOB::MON::MON(const CCharEntity* PChar)
 {
     auto& packet = this->data();
 
-    packet.Job = JOB_MON;
+    packet.Job = static_cast<uint8_t>(xi::Job::MON);
     if (PChar->m_PMonstrosity)
     {
         packet.Species = PChar->m_PMonstrosity->Species;

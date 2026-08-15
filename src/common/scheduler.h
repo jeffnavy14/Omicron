@@ -41,11 +41,13 @@
 #include <asio/use_awaitable.hpp>
 
 #include <common/types/maybe.h>
+#include <common/xirand.h>
 
 #include <atomic>
 #include <chrono>
 #include <concepts>
 #include <cstdio>
+#include <exception>
 #include <format>
 #include <iostream>
 #include <iterator>
@@ -106,6 +108,37 @@ concept IsInvocableReturnsAwaitableVoid = IsInvocable<T> && IsAwaitableReturnsVo
 
 template <typename T>
 concept IsInvocableReturnsVoidOrAwaitableVoid = IsInvocableReturnsAwaitableVoid<T> || IsInvocableReturnsVoid<T>;
+
+// onUnhandledTaskException
+//   Re-activates an exception that escaped a fire-and-forget task and routes it
+//   through std::terminate, which the installed terminate handler turns into a
+//   tombstone.
+[[noreturn]] inline void onUnhandledTaskException(std::exception_ptr eptr) noexcept
+{
+    try
+    {
+        std::rethrow_exception(eptr);
+    }
+    catch (...)
+    {
+        std::terminate();
+    }
+}
+
+// FatalOnException
+//   Drop-in replacement for asio::detached as the completion handler of fire-and-
+//   forget tasks. On success it does nothing; on failure it routes the escaped
+//   exception to onUnhandledTaskException instead of swallowing it.
+struct FatalOnException
+{
+    void operator()(std::exception_ptr eptr) const noexcept
+    {
+        if (eptr)
+        {
+            onUnhandledTaskException(eptr);
+        }
+    }
+};
 
 } // namespace detail
 
@@ -329,7 +362,7 @@ public:
     template <detail::IsAwaitableReturnsVoid T>
     void postToMainThread(T&& task)
     {
-        asio::co_spawn(mainContext_.get_executor(), std::forward<T>(task), asio::bind_allocator(asio::recycling_allocator<void>(), asio::detached));
+        asio::co_spawn(mainContext_.get_executor(), std::forward<T>(task), asio::bind_allocator(asio::recycling_allocator<void>(), detail::FatalOnException{}));
     }
 
     // postToMainThread
@@ -337,7 +370,7 @@ public:
     template <detail::IsInvocableReturnsAwaitableVoid T>
     void postToMainThread(T&& func)
     {
-        asio::co_spawn(mainContext_.get_executor(), std::forward<T>(func), asio::bind_allocator(asio::recycling_allocator<void>(), asio::detached));
+        asio::co_spawn(mainContext_.get_executor(), std::forward<T>(func), asio::bind_allocator(asio::recycling_allocator<void>(), detail::FatalOnException{}));
     }
 
     // postToMainThread
@@ -353,7 +386,7 @@ public:
     template <detail::IsAwaitableReturnsVoid T>
     void postToWorkerThread(T&& task)
     {
-        asio::co_spawn(workerPool_.executor(), std::forward<T>(task), asio::bind_allocator(asio::recycling_allocator<void>(), asio::detached));
+        asio::co_spawn(workerPool_.executor(), std::forward<T>(task), asio::bind_allocator(asio::recycling_allocator<void>(), detail::FatalOnException{}));
     }
 
     // postToWorkerThread
@@ -361,7 +394,7 @@ public:
     template <detail::IsInvocableReturnsAwaitableVoid T>
     void postToWorkerThread(T&& func)
     {
-        asio::co_spawn(workerPool_.executor(), std::forward<T>(func), asio::bind_allocator(asio::recycling_allocator<void>(), asio::detached));
+        asio::co_spawn(workerPool_.executor(), std::forward<T>(func), asio::bind_allocator(asio::recycling_allocator<void>(), detail::FatalOnException{}));
     }
 
     // postToWorkerThread
@@ -373,7 +406,8 @@ public:
     }
 
     // intervalOnMainThread
-    //   Queues a task on the main thread that repeats at the specified interval.
+    //   Queues a task on the main thread that repeats on a fixed period.
+    //   First run is jittered by 0..interval, not exactly one interval after this call.
     //   Returns a Token that can be used to cancel the task.
     //   The task will stop if the token goes out of scope, or if the scheduler is stopped.
     //   Since a coroutine cannot be restarted once it has been completed, we must either pass in
@@ -383,12 +417,18 @@ public:
     {
         auto signal = std::make_shared<asio::cancellation_signal>();
 
+        // Offset the start by a random phase so timers created together don't all fire on the same grid point.
+        const auto durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+        const auto phase      = std::chrono::milliseconds(xirand::GetRandomNumber<int64_t>(0, durationMs));
+
         asio::co_spawn(
             mainContext_.get_executor(),
-            [this, duration, signal, fn = std::forward<T>(func)]() mutable -> Task<void>
+            [this, duration, phase, signal, fn = std::forward<T>(func)]() mutable -> Task<void>
             {
                 try
                 {
+                    // Seed the grid with the random phase so a batch of timers doesn't stay in lockstep.
+                    auto deadline = std::chrono::steady_clock::now() + phase;
                     while (!this->closeRequested())
                     {
                         if constexpr (detail::IsInvocableReturnsVoid<T>)
@@ -399,7 +439,16 @@ public:
                         {
                             co_await fn();
                         }
-                        co_await yieldFor(duration);
+
+                        deadline += duration;
+
+                        // Overran a whole period -> resync to now rather than bursting.
+                        if (const auto now = std::chrono::steady_clock::now(); deadline < now)
+                        {
+                            deadline = now;
+                        }
+
+                        co_await yieldUntil(deadline);
                     }
                 }
                 catch (const asio::system_error& e)
@@ -411,7 +460,7 @@ public:
                     }
                 }
             },
-            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), asio::detached)));
+            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), detail::FatalOnException{})));
 
         return Token(std::move(signal));
     }
@@ -455,7 +504,7 @@ public:
                     }
                 }
             },
-            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), asio::detached)));
+            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), detail::FatalOnException{})));
 
         return Token(std::move(signal));
     }
@@ -499,7 +548,7 @@ public:
                     }
                 }
             },
-            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), asio::detached)));
+            asio::bind_allocator(asio::recycling_allocator<void>(), asio::bind_cancellation_slot(signal->slot(), detail::FatalOnException{})));
 
         return Token(std::move(signal));
     }
@@ -520,6 +569,17 @@ public:
         const auto executor = co_await asio::this_coro::executor;
         auto       timer    = asio::steady_timer(executor);
         timer.expires_after(duration);
+        co_await timer.async_wait(asio::bind_allocator(asio::recycling_allocator<void>(), asio::use_awaitable));
+    }
+
+    // yieldUntil
+    //   co_await on this to hand control back to the scheduler, without re-scheduling until
+    //   the time point has passed
+    [[nodiscard]] static auto yieldUntil(const std::chrono::steady_clock::time_point deadline) -> Task<void>
+    {
+        const auto executor = co_await asio::this_coro::executor;
+        auto       timer    = asio::steady_timer(executor);
+        timer.expires_at(deadline);
         co_await timer.async_wait(asio::bind_allocator(asio::recycling_allocator<void>(), asio::use_awaitable));
     }
 

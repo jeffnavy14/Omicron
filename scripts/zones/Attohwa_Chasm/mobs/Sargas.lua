@@ -17,26 +17,22 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.STUN, { chance = 65, duration = math.random(5, 15) })
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.STUN, { chance = 65, duration = math.randomInt(5, 15) })
 end
 
 entity.onSpikesDamage = function(mob, target, damage)
-    local intDiff = mob:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
-    local dmg = damage + intDiff
-    local params = {}
-    params.bonusmab = 0
-    params.includemab = false
-    dmg = addBonusesAbility(mob, xi.element.THUNDER, target, dmg, params)
-    dmg = dmg * applyResistanceAddEffect(mob, target, xi.element.THUNDER, 0)
-    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.THUNDER, true))
-    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.THUNDER, true, false))
-    dmg = finalMagicNonSpellAdjustments(mob, target, xi.element.THUNDER, dmg)
+    local pTable =
+    {
+        basePower       = damage,
+        attackType      = xi.attackType.MAGICAL,
+        magicalElement  = xi.element.THUNDER,
+        actorStat       = xi.mod.INT,
+        canMAB          = true,
+        canResist       = true,
+        canResistExtra  = true,
+    }
 
-    if dmg < 0 then
-        dmg = 0
-    end
-
-    return xi.subEffect.SHOCK_SPIKES, xi.msg.basic.SPIKES_EFFECT_DMG, dmg
+    return xi.combat.action.executeSpikesDamage(mob, target, pTable)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
@@ -45,7 +41,7 @@ end
 
 entity.onMobDespawn = function(mob)
     -- xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(7200, 10800)) -- 2 to 3 hrs
+    mob:setRespawnTime(math.randomInt(7200, 10800)) -- 2 to 3 hrs
 end
 
 return entity

@@ -10,6 +10,11 @@ local watersID   = zones[xi.zone.WINDURST_WATERS]
 
 local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.SAY_IT_WITH_FLOWERS)
 
+quest.reward =
+{
+    title = xi.title.CUPIDS_FLORIST,
+}
+
 local flowerList =
 {
     [0] = { itemId = xi.item.CARNATION,  gil = 300 },
@@ -140,7 +145,7 @@ quest.sections =
                     if npcUtil.giveItem(player, xi.item.IRON_SWORD) then
                         quest:complete(player)
                         player:confirmTrade()
-                        player:addFame(xi.fameArea.WINDURST, 30)
+                        player:addFame(xi.fameArea.WINDURST, 10)
                         quest:setMustZone(player)
                         quest:setVar(player, 'Stage', 1)
                         player:setCharVar('SIWFSword', 0) -- Removes the var so the player cannot obtain the sword again.
@@ -151,7 +156,7 @@ quest.sections =
                     if quest:complete(player) then
                         player:confirmTrade()
                         player:addFame(xi.fameArea.WINDURST, 10)
-                        player:addGil(100) -- Obtained gil text baked into the cs
+                        player:addGil(100)
                         quest:setMustZone(player)
                     end
                 end,
@@ -159,7 +164,7 @@ quest.sections =
                 [525] = function(player, csid, option, npc) -- Cactus trade repeat
                     if quest:complete(player) then
                         player:confirmTrade()
-                        player:addFame(xi.fameArea.WINDURST, 30)
+                        player:addFame(xi.fameArea.WINDURST, 10)
                         player:addGil(400) -- Obtained gil text baked into the cs
                         quest:setMustZone(player)
                         quest:setVar(player, 'Stage', 1)

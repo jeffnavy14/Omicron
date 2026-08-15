@@ -2,10 +2,6 @@
 -- Enfeebling Song Utilities
 -- Used for songs that deal negative status effects upon targets.
 -----------------------------------
-require('scripts/globals/combat/magic_hit_rate')
-require('scripts/globals/jobpoints')
-require('scripts/globals/magicburst')
------------------------------------
 xi = xi or {}
 xi.spells = xi.spells or {}
 xi.spells.enfeebling = xi.spells.enfeebling or {}
@@ -74,7 +70,7 @@ xi.spells.enfeebling.calculateSongPower = function(caster, spellEffect, basePowe
     if spellEffect == xi.effect.REQUIEM then
         power = power + utils.clamp(gearBoost - 1, 0, 20) + caster:getJobPointLevel(xi.jp.REQUIEM_EFFECT) * 3
     elseif spellEffect == xi.effect.ELEGY then
-        power = power + gearBoost * 6375 / 256 -- Simplified numbers of: 25.5 * 10000/1024
+        power = power + math.floor(gearBoost * 25.6) * 10000 / 1024
     elseif spellEffect == xi.effect.THRENODY then
         power = power + gearBoost * 5
     elseif spellEffect == xi.effect.NOCTURNE then
@@ -180,12 +176,24 @@ xi.spells.enfeebling.useEnfeeblingSong = function(caster, target, spell)
     local gearBoost = caster:getMod(pTable[spellId][column.SONG_MODIFIER]) + caster:getMod(xi.mod.ALL_SONGS_EFFECT)
 
     -- Finale has innate +175 to magic accuracy.
+    local magicBurstTier = xi.combat.magicBurst.getMagicBurstTier(target, spellElement)
     local bonusMagicAcc = 0
     if spellEffect == xi.effect.NONE then
         bonusMagicAcc = 175 + gearBoost * 5
     end
 
-    local resistRate = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.magic.spellGroup.SONG, xi.skill.SINGING, 0, spellElement, xi.mod.CHR, spellEffect, bonusMagicAcc)
+    local maccParams =
+    {
+        effectId       = spellEffect,
+        magicalElement = spellElement,
+        magicBurstTier = magicBurstTier,
+        actorStat      = xi.mod.CHR,
+        skillType      = xi.skill.SINGING,
+        spellGroup     = xi.magic.spellGroup.SONG,
+        bonusMacc      = bonusMagicAcc,
+    }
+
+    local resistRate = xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams)
     if not xi.data.statusEffect.isResistRateSuccessfull(spellEffect, resistRate, 0) then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         return spellEffect
@@ -228,8 +236,11 @@ xi.spells.enfeebling.useEnfeeblingSong = function(caster, target, spell)
 
     -- Virelai applies a charm. Quit early.
     elseif spellEffect == xi.effect.CHARM_I then
-        target:addStatusEffect(xi.effect.CHARM_I, { duration = duration, origin = caster })
-        caster:charm(target)
+        -- Should be tracking status effect here with : target:addStatusEffect(xi.effect.CHARM_I, { duration = duration, origin = caster })
+        -- Currently when applied it disables the mobs AI.
+        caster:charm(target, duration)
+        -- Makes charmed mob act as a bodyguard, like avatars.
+        target:setMobMod(xi.mobMod.BODYGUARD, 1)
         if caster:isPC() then
             spell:setMsg(xi.msg.basic.MAGIC_ENFEEB)
         else
@@ -243,8 +254,7 @@ xi.spells.enfeebling.useEnfeeblingSong = function(caster, target, spell)
     -- STEP 5: Attempt to apply the status effect. Check for magic burst.
     ------------------------------
     if target:addStatusEffect(spellEffect, { power = power, duration = duration, origin = caster, tick = tick, subPower = subEffect, tier = spellTier }) then
-        local _, skillchainCount = xi.magicburst.formMagicBurst(target, spellElement)
-        if skillchainCount > 0 then
+        if magicBurstTier > 0 then
             spell:setMsg(xi.msg.basic.MAGIC_BURST_ENFEEB)
             caster:triggerRoeEvent(xi.roeTrigger.MAGIC_BURST)
         else

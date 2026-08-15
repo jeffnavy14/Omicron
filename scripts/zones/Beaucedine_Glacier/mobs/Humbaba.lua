@@ -15,7 +15,7 @@ entity.spawnPoints =
 
 entity.onMobInitialize = function(mob)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(3600, 4200)) -- When server restarts, reset timer
+    mob:setRespawnTime(math.randomInt(3600, 4200)) -- When server restarts, reset timer
 
     mob:setMobMod(xi.mobMod.AUTO_SPIKES, 1)
     mob:addStatusEffect(xi.effect.ICE_SPIKES, { power = 50, origin = mob })
@@ -27,22 +27,18 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onSpikesDamage = function(mob, target, damage)
-    local intDiff = mob:getStat(xi.mod.INT) - target:getStat(xi.mod.INT)
-    local dmg = damage + intDiff
-    local params = {}
-    params.bonusmab = 0
-    params.includemab = false
-    dmg = addBonusesAbility(mob, xi.element.ICE, target, dmg, params)
-    dmg = dmg * applyResistanceAddEffect(mob, target, xi.element.ICE, 0)
-    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.ICE, true))
-    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.ICE, true, false))
-    dmg = finalMagicNonSpellAdjustments(mob, target, xi.element.ICE, dmg)
+    local pTable =
+    {
+        basePower       = damage,
+        attackType      = xi.attackType.MAGICAL,
+        magicalElement  = xi.element.ICE,
+        actorStat       = xi.mod.INT,
+        canMAB          = true,
+        canResist       = true,
+        canResistExtra  = true,
+    }
 
-    if dmg < 0 then
-        dmg = 0
-    end
-
-    return xi.subEffect.ICE_SPIKES, xi.msg.basic.SPIKES_EFFECT_DMG, dmg
+    return xi.combat.action.executeSpikesDamage(mob, target, pTable)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
@@ -51,7 +47,7 @@ end
 
 entity.onMobDespawn = function(mob)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(3600, 4200)) -- 60 to 70 minutes
+    mob:setRespawnTime(math.randomInt(3600, 4200)) -- 60 to 70 minutes
 end
 
 return entity

@@ -16,15 +16,12 @@ entity.spawnPoints =
 
 entity.phList =
 {
-    [ID.mob.HASTATUS_XI_XII - 4] = ID.mob.HASTATUS_XI_XII, -- -343.859 -0.411 751.608
+    [ID.mob.HASTATUS_XI_XII - 4] = ID.mob.HASTATUS_XI_XII, -- Confirmed on retail
 }
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.GIL_MIN, 650)
     mob:setMobMod(xi.mobMod.GIL_MAX, 1450)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

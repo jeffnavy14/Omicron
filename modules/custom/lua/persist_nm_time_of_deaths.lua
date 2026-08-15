@@ -20,7 +20,7 @@ local nmsToPersist =
         'Behemoths_Dominion',
         'Behemoth',
         function()
-            return 75600 + math.random(0, 6) * 1800
+            return 75600 + math.randomInt(0, 6) * 1800
         end
     },
 }
@@ -59,5 +59,3 @@ for _, entry in pairs(nmsToPersist) do
         end
     end)
 end
-
-return m

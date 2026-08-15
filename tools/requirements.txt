@@ -2,6 +2,7 @@ mariadb
 gitpython
 pylint
 pyyaml
+ruamel.yaml
 colorama
 zmq
 black
@@ -9,3 +10,5 @@ regex
 argparse
 requests
 bcrypt
+jinja2
+jsonschema>=4.18

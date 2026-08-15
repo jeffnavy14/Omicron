@@ -23,6 +23,33 @@ local requiredTradeItems =
     { xi.item.TWITHERYM_SCALE,           1 },
 }
 
+-- Castoff Point navigation, available once the player has earned Watercrafting and completed the quest.
+local castoffData =
+{
+    [xi.zone.CIRDAS_CAVERNS]        = { eventId = 11, pad0Bank = 1 },
+    [xi.zone.FORET_DE_HENNETIEL]    = { eventId = 18, isRiverRoute = true },
+    [xi.zone.MORIMAR_BASALT_FIELDS] = { eventId = 18, pad0Bank = 0 },
+    [xi.zone.SIH_GATES]             = { eventId = 12, pad0Bank = 1 },
+    [xi.zone.YAHSE_HUNTING_GROUNDS] = { eventId = 16, pad0Bank = 0 },
+}
+
+local function castoffPointWarp(player, npc)
+    local zoneId   = player:getZoneID()
+    local data     = castoffData[zoneId]
+    local padIndex = npc:getID() - zones[zoneId].npc.CASTOFF_POINT_OFFSET
+    if data.isRiverRoute then
+        return quest:event(data.eventId, padIndex)
+    end
+
+    return quest:event(data.eventId, (data.pad0Bank + padIndex) % 2)
+end
+
+-- Foret's six river docks all navigatable post quest.
+local foretCastoffPads = {}
+for i = 0, 5 do
+    foretCastoffPads['Castoff_Point_' .. i] = { onTrigger = castoffPointWarp }
+end
+
 quest.sections =
 {
     {
@@ -128,6 +155,18 @@ quest.sections =
                 end,
             },
         },
+    },
+
+    {
+        check = function(player, status, vars)
+            return status == xi.questStatus.QUEST_COMPLETED
+        end,
+
+        [xi.zone.CIRDAS_CAVERNS]        = { ['Castoff_Point'] = { onTrigger = castoffPointWarp } },
+        [xi.zone.FORET_DE_HENNETIEL]    = foretCastoffPads,
+        [xi.zone.MORIMAR_BASALT_FIELDS] = { ['Castoff_Point'] = { onTrigger = castoffPointWarp } },
+        [xi.zone.SIH_GATES]             = { ['Castoff_Point'] = { onTrigger = castoffPointWarp } },
+        [xi.zone.YAHSE_HUNTING_GROUNDS] = { ['Castoff_Point'] = { onTrigger = castoffPointWarp } },
     },
 }
 

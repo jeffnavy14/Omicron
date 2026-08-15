@@ -87,8 +87,8 @@ function npcUtil.popFromQM(player, qm, mobId, params)
     for _, mob in pairs(mobs) do
         -- choose random position uniformly from within radius
         if params.radius and type(params.radius) == 'number' then
-            local r = params.radius * math.sqrt(math.random())
-            local theta = math.random() * 2 * math.pi
+            local r = params.radius * math.sqrt(math.randomFloat(0, 1))
+            local theta = math.randomFloat(0, 1) * 2 * math.pi
             local x = r * math.cos(theta)
             local z = r * math.sin(theta)
             mob:setSpawn(qm:getXPos() + x, qm:getYPos(), qm:getZPos() + z)
@@ -209,7 +209,7 @@ function npcUtil.pickNewPosition(npcID, positionTable, allowCurrentPosition)
     local npc = GetNPCByID(npcID)
     local positionIndex  = 1 -- Default to position one in the table if it can't be found.
     local tableSize      = 0
-    local newPosition    = math.random(1, tableSize)
+    local newPosition    = math.randomInt(1, tableSize)
     allowCurrentPosition = allowCurrentPosition or false
 
     for i, v in ipairs(positionTable) do   -- Looking for the current position
@@ -232,7 +232,7 @@ function npcUtil.pickNewPosition(npcID, positionTable, allowCurrentPosition)
     if not allowCurrentPosition then
         -- Pick a new pos that isn't the current
         repeat
-            newPosition = math.random(1, tableSize)
+            newPosition = math.randomInt(1, tableSize)
         until (newPosition ~= positionIndex)
     end
 
@@ -249,7 +249,7 @@ end
         npcUtil.giveItem(player, { xi.item.CHUNK_OF_COPPER_ORE, 1 , xi.item.CHUNK_OF_TIN_ORE, 1 })         -- copper ore x1, tin ore x1
         npcUtil.giveItem(player, { { xi.item.CHUNK_OF_COPPER_ORE, 2 } })                                   -- copper ore x2
         npcUtil.giveItem(player, { { xi.item.CHUNK_OF_COPPER_ORE, 12 }, { xi.item.CHUNK_OF_TIN_ORE, 3 } }) -- copper ore x12 tin ore x3
-        npcUtil.giveItem(target, { { xi.item.CHUNK_OF_COPPER_ORE, math.random(3, 15) } })                  -- random 3-15 copper ores
+        npcUtil.giveItem(target, { { xi.item.CHUNK_OF_COPPER_ORE, math.randomInt(3, 15) } })                  -- random 3-15 copper ores
         enum can be found in scripts/enum/item.lua
 
     params (table) can contain the following parameters:
@@ -582,7 +582,7 @@ function npcUtil.giveReward(player, params)
     end
 
     if params['fame'] == nil then
-        params['fame'] = 30
+        params['fame'] = 20
     end
 
     if
@@ -936,6 +936,60 @@ function npcUtil.tradeHasExactly(trade, items)
     return npcUtil.tradeHas(trade, items, true)
 end
 
+-- Function to check if a trade contains exactly what's defined. Does not lock items. Use player:tradeComplete()
+function npcUtil.tradeMatches(trade, itemTable)
+    -- Create table of traded items.
+    --[[ Structure:
+    local tradedItemsTable =
+    {
+        [itemId1] = amount1,
+        [itemId2] = amount2,
+    }
+    ]]--
+
+    local tradedItemsTable = {}
+    local tradedItemId
+    local tradedQuantity
+    for slot = 0, trade:getSlotCount() - 1 do
+        tradedItemId                   = trade:getItemId(slot)
+        tradedQuantity                 = trade:getItemQty(tradedItemId)
+        tradedItemsTable[tradedItemId] = tradedQuantity
+    end
+
+    -- Create table of needed items, matching structure above.
+    local neededItemsTable = {}
+    local neededItemId
+    local neededQuantity
+    for _, entry in pairs(itemTable) do
+        neededItemId   = entry[1]
+        neededQuantity = entry[2]
+
+        -- Insert new entry or update previous entry quantity.
+        if neededItemId then
+            neededItemsTable[neededItemId] = neededItemsTable[neededItemId] == nil and neededQuantity or neededItemsTable[neededItemId] + neededQuantity
+        end
+    end
+
+    -- Check if all needed items have been traded. Remove from list if so.
+    for itemNeeded, quantityNeeded in pairs(neededItemsTable) do
+        local tradedQty = tradedItemsTable[itemNeeded] == nil and 0 or tradedItemsTable[itemNeeded]
+        if quantityNeeded > tradedQty then
+            return false
+        else
+            tradedItemsTable[itemNeeded] = tradedQty - quantityNeeded
+        end
+    end
+
+    -- Check if any excess items were traded.
+    for _, v in pairs(tradedItemsTable) do
+        if v > 0 then
+            return false
+        end
+    end
+
+    return true
+end
+
 -- Checks to see if a trade only contains one item, but the total count can be variable
 function npcUtil.tradeHasOnly(trade, itemID)
     return npcUtil.tradeHasExactly(trade, { { itemID, trade:getItemCount() } })
@@ -962,7 +1016,7 @@ function npcUtil.UpdateNPCSpawnPoint(id, minTime, maxTime, posTable, serverVar)
         return
     end
 
-    local respawnTime = math.random(minTime, maxTime)
+    local respawnTime = math.randomInt(minTime, maxTime)
     local newPosition = npcUtil.pickNewPosition(npc:getID(), posTable, true)
     serverVar = serverVar or nil -- serverVar is optional
 
@@ -991,31 +1045,31 @@ function npcUtil.fishingAnimation(npc, phaseDuration, func)
     npc:timer(phaseDuration * 1000, function(npcArg)
         local anims =
         {
-            [xi.anim.FISHING_NPC] = { duration = 5, nextAnim = { xi.anim.FISHING_START } },
-            [xi.anim.FISHING_START] = { duration = 10, nextAnim = { xi.anim.FISHING_FISH } },
-            [xi.anim.FISHING_FISH] =
+            [xi.animation.FISHING_NPC] = { duration = 5, nextAnim = { xi.animation.FISHING_START } },
+            [xi.animation.FISHING_START] = { duration = 10, nextAnim = { xi.animation.FISHING_FISH } },
+            [xi.animation.FISHING_FISH] =
             {
                 duration = 10,
                 nextAnim =
                 {
-                    xi.anim.FISHING_CAUGHT,
-                    xi.anim.FISHING_ROD_BREAK,
-                    xi.anim.FISHING_LINE_BREAK,
+                    xi.animation.FISHING_CAUGHT,
+                    xi.animation.FISHING_ROD_BREAK,
+                    xi.animation.FISHING_LINE_BREAK,
                 }
             },
 
-            [xi.anim.FISHING_ROD_BREAK] = { duration = 3, nextAnim = { xi.anim.FISHING_NPC } },
-            [xi.anim.FISHING_LINE_BREAK] = { duration = 3, nextAnim = { xi.anim.FISHING_NPC } },
-            [xi.anim.FISHING_CAUGHT] = { duration = 5, nextAnim = { xi.anim.FISHING_NPC } },
-            [xi.anim.FISHING_STOP] = { duration = 3, nextAnim = { xi.anim.FISHING_NPC } },
+            [xi.animation.FISHING_ROD_BREAK] = { duration = 3, nextAnim = { xi.animation.FISHING_NPC } },
+            [xi.animation.FISHING_LINE_BREAK] = { duration = 3, nextAnim = { xi.animation.FISHING_NPC } },
+            [xi.animation.FISHING_CAUGHT] = { duration = 5, nextAnim = { xi.animation.FISHING_NPC } },
+            [xi.animation.FISHING_STOP] = { duration = 3, nextAnim = { xi.animation.FISHING_NPC } },
         }
 
         local anim = anims[npcArg:getAnimation()]
-        local nextAnimationId = xi.anim.FISHING_NPC
+        local nextAnimationId = xi.animation.FISHING_NPC
         local nextAnimationDuration = 10
         local nextAnim = nil
         if anim then
-            nextAnim = anim.nextAnim[math.random(1, #anim.nextAnim)]
+            nextAnim = anim.nextAnim[math.randomInt(1, #anim.nextAnim)]
         end
 
         if nextAnim then

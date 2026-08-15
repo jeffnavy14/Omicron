@@ -63,7 +63,7 @@ zoneObject.afterZoneIn = function(player)
 end
 
 zoneObject.onTriggerAreaEnter = function(player, triggerArea)
-    player:startEvent(19 + triggerArea:getTriggerAreaID())
+    player:startOptionalCutscene(19 + triggerArea:getTriggerAreaID(), { cs_option = 0, canSkip = true })
 end
 
 zoneObject.onTriggerAreaLeave = function(player, triggerArea)

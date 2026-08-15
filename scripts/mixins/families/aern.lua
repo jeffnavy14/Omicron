@@ -1,14 +1,16 @@
+-----------------------------------
 -- Aern family mixin
 -- Customization:
---   Setting AERN_RERAISE_MAX will determine the number of times it will reraise.
---   By default, this will be 1 40% of the time and 0 the rest (ie. default aern behavior).
---   For multiple reraises, this can be set on spawn for more reraises.
---   To run a function when a reraise occurs, add a listener to AERN_RERAISE
-
+-- Setting AERN_RERAISE_MAX will determine the number of times it will reraise.
+-- By default, this will be 1 40% of the time and 0 the rest (ie. default aern behavior).
+-- For multiple reraises, this can be set on spawn for more reraises.
+-- To run a function when a reraise occurs, add a listener to AERN_RERAISE
+-----------------------------------
 require('scripts/globals/mixins')
-
+-----------------------------------
 g_mixins = g_mixins or {}
 g_mixins.families = g_mixins.families or {}
+-----------------------------------
 
 g_mixins.families.aern = function(aernMob)
     local petDeath = function(mob)
@@ -36,7 +38,7 @@ g_mixins.families.aern = function(aernMob)
             -- SMN Aerns only spawn 5 elementals
             local eleCount = mob:getLocalVar('aernElementalCount')
             if eleCount <= 5 then
-                local elemental = math.random(xi.magic.spell.FIRE_SPIRIT, xi.magic.spell.DARK_SPIRIT)
+                local elemental = math.randomInt(xi.magic.spell.FIRE_SPIRIT, xi.magic.spell.DARK_SPIRIT)
                 mob:castSpell(elemental, mob)
                 mob:setLocalVar('aernElementalCount', eleCount + 1)
 
@@ -76,6 +78,8 @@ g_mixins.families.aern = function(aernMob)
 
     -- Prevent BSTs and SMNs from summoning pets while idle
     aernMob:addListener('SPAWN', 'AERN_SPAWN', function(mob)
+        mob:setMagicCastingEnabled(false)
+
         if mob:getMainJob() == xi.job.BST then
             mob:setMobMod(xi.mobMod.SPECIAL_SKILL, 0)
         elseif mob:getMainJob() == xi.job.SMN then
@@ -97,7 +101,6 @@ g_mixins.families.aern = function(aernMob)
 
     -- Despawn pets when Aern is out of combat
     aernMob:addListener('ROAM_TICK', 'AERN_ROAM', function(mob)
-        mob:setMagicCastingEnabled(false) -- Disable casting when idle
         mob:setAnimationSub(1)
 
         local pet = mob:getPet()
@@ -151,6 +154,10 @@ g_mixins.families.aern = function(aernMob)
         end
     end)
 
+    aernMob:addListener('DISENGAGE', 'AERN_DISENGAGE', function(mob)
+        mob:setMagicCastingEnabled(false) -- Disable casting when idle
+    end)
+
     aernMob:addListener('DEATH', 'AERN_DEATH', function(mob, killer)
         if not killer then
             return
@@ -165,7 +172,7 @@ g_mixins.families.aern = function(aernMob)
 
         if
             currReraise >= reraises or
-            math.random(1, 100) <= 60
+            math.randomInt(1, 100) <= 60
         then
             mob:setMobMod(xi.mobMod.NO_DROPS, 0)
 
@@ -182,10 +189,10 @@ g_mixins.families.aern = function(aernMob)
 
         if target then
             targetID = target:getID()
-        end
 
-        if target:isPet() and target:getMaster() then
-            masterID = target:getMaster():getID()
+            if target:isPet() and target:getMaster() then
+                masterID = target:getMaster():getID()
+            end
         end
 
         mob:timer(12000, function(mobArg)

@@ -19,11 +19,26 @@
 ===========================================================================
 */
 
-#ifndef _LUAUTILS_H
-#define _LUAUTILS_H
+#pragma once
+
+//
+// GOTCHA: Never index a Lua table (sol) with a std::string_view key, e.g. lua["xi"][view] or
+// table[view].
+// sol's lazy table_proxy stores the key by value (sol::detail::proxy_key_t). A std::string
+// is stored as an owning copy, but a std::string_view is stored as a non-owning view, so the
+// deferred lookup reads a key that is no longer valid. (sol DOES encode a string_view as a proper
+// Lua string when it is actually pushed, the problem is the proxy key storage, not the encoding.)
+//
+// Always pass function/key names as const std::string& (or const char*), never std::string_view.
+//
 
 #include <common/cbasetypes.h>
+#include <common/types/flag.h>
 #include <common/types/maybe.h>
+
+#include <string>
+#include <string_view>
+#include <type_traits>
 
 #include "common/lua.h"
 extern sol::state lua;
@@ -43,7 +58,7 @@ extern sol::state lua;
 #include "lua_ability.h"
 #include "lua_action.h"
 #include "lua_attack.h"
-#include "lua_baseentity.h"
+#include "lua_base_entity.h"
 #include "lua_battlefield.h"
 #include "lua_instance.h"
 #include "lua_item.h"
@@ -111,6 +126,7 @@ enum class Emote : uint8;
 
 namespace luautils
 {
+
 namespace detail
 {
 
@@ -126,7 +142,23 @@ namespace detail
 // void cacheObject(const std::string& objName, sol::reference obj);
 auto findGlobalLuaFunction(const std::string& funcName) -> sol::function;
 
+// Whether a data lookup should create the entity's table, or report its absence.
+using CreateEntityData = xi::Flag<struct CreateEntityDataTag>;
+
+// The entity's data table itself. Kept in detail deliberately: handing a sol::table to general
+// callers leaks Lua impl details.
+auto getEntityDataTable(CBaseEntity* PEntity, CreateEntityData create) -> sol::table;
+
+// Walk `table` along the given keys and convert the value at the end to T. Also in detail: the
+// intermediate levels are sol::tables and must not escape.
+template <typename T, typename Key, typename... Rest>
+auto readEntityDataPath(const sol::table& table, const Key& key, const Rest&... rest) -> Maybe<T>;
+
 } // namespace detail
+
+//
+// Lua lifetime
+//
 
 void init(IPP mapIPP, bool isRunningInCI);
 void garbageCollectStep();
@@ -148,74 +180,74 @@ void cleanup();
 // NOTE: This is slower (but safet) than looking up something manually like this:
 //     : lua["xi"]["server"]["onTimeServerTick"]();
 template <typename T, typename... Targs>
-auto callGlobal(const std::string& funcName, Targs... args)
-{
-    auto func = detail::findGlobalLuaFunction(funcName);
-    if (!func.valid())
-    {
-        ShowError("luautils::callGlobalFunction: %s: Function not found", funcName);
-        if constexpr (std::is_void_v<T>)
-        {
-            return;
-        }
-        else
-        {
-            return T{};
-        }
-    }
-
-    const auto result = func(std::forward<Targs>(args)...);
-    if (!result.valid())
-    {
-        sol::error err = result;
-        ShowError("luautils::callGlobalFunction: %s: %s", funcName, err.what());
-        if constexpr (std::is_void_v<T>)
-        {
-            return;
-        }
-        else
-        {
-            return T{};
-        }
-    }
-
-    if constexpr (std::is_void_v<T>)
-    {
-        return;
-    }
-    else
-    {
-        auto returnObject = result.template get<sol::object>();
-        if (returnObject.template is<T>())
-        {
-            return returnObject.template as<T>();
-        }
-        else
-        {
-            ShowError("luautils::callGlobalFunction: %s: Invalid return type", funcName);
-            return T{};
-        }
-    }
-}
+auto callGlobal(const std::string& funcName, Targs... args);
 
 void TryReloadFilewatchList();
 
 auto GetContainerFilenamesList() -> std::vector<std::string>;
 
-// Cache helpers
-auto getEntityCachedFunction(CBaseEntity* PEntity, std::string funcName) -> sol::function;
-void CacheLuaObjectFromFile(const std::string& filename, bool overwriteCurrentEntry = false);
-auto GetCacheEntryFromFilename(const std::string& filename) -> sol::table;
+//
+// Lua script loading: read a file from disk into the Lua state, and look up the object it
+// returned. Loading happens once per (re)load; the lookup walks the live Lua state.
+//
+
+void LoadLuaObjectFromFile(const std::string& filename, bool overwriteCurrentEntry = false);
+auto GetLuaObjectFromFilename(const std::string& filename) -> sol::table;
+
+//
+// Cache: memoize resolved Lua functions (keyed by entity/spell/effect/file + function name) so we
+// don't walk the Lua state on every call. The intermediate tables are never cached -- only the
+// resolved functions. See LuaCache.
+//
+
+auto getEntityCachedFunction(CBaseEntity* PEntity, const std::string& funcName) -> sol::function;
+auto getCachedFileFunction(const std::string& filename, const std::string& funcName) -> sol::function;
+
+//
+// Freeform per-entity Lua data
+//
+
+template <typename T, typename... Keys>
+auto getEntityData(CBaseEntity* PEntity, const Keys&... keys) -> Maybe<T>;
+void resetEntityData(CBaseEntity* PEntity);
+
 void OnEntityLoad(CBaseEntity* PEntity);
 
 void LoadExpDifficultyCurves(const sol::table& expToDifficultyTable, const uint8 incrediblyEasyPreyLevel, const uint16 incrediblyEasyPreyMinExp);
 
+// Base experience values, indexed by [levelDifference + 44][(charLevel - 1) / 5] for level differences -44 to +15.
+using ExperiencePointsTable = std::array<std::array<uint16, 20>, 60>;
+
+struct CalcExpInput
+{
+    uint32 baseExp            = 0;
+    uint8  mobDifficulty      = 0;
+    uint8  memberLevel        = 0;
+    uint8  highestMemberLevel = 0;
+    uint8  partySize          = 0;
+    uint32 memberTNL          = 0;
+    uint32 highestMemberTNL   = 0;
+    uint8  regionId           = 0;
+    uint16 chainNumber        = 0;
+    bool   chainActive        = false;
+};
+
+struct CalcExpResult
+{
+    uint32 exp         = 0;
+    bool   wasChained  = false;
+    uint16 chainWindow = 0;
+};
+
+auto SetupExperiencePoints() -> Maybe<ExperiencePointsTable>; // Validate functions and set up the base experience points table.
+auto CalculateExperiencePoints(CCharEntity* PMember, CMobEntity* PMob, const CalcExpInput& input) -> Maybe<CalcExpResult>;
+
 void PopulateIDLookupsByFilename(Maybe<std::string> maybeFilename = std::nullopt);
-void PopulateIDLookupsByZone(Maybe<uint16> maybeZoneId = std::nullopt);
+void PopulateIDLookupsByZone(Maybe<xi::ZoneId> maybeZoneId = std::nullopt);
 
 void SendEntityVisualPacket(uint32 npcId, const char* command);
 void InitInteractionGlobal();
-auto GetZone(uint16 zoneId) -> CZone*;
+auto GetZone(xi::ZoneId zoneId) -> CZone*;
 auto GetItemByID(uint32 itemId) -> const CItem*;
 auto GetItemFlagsByID(uint32 itemId) -> ItemFlag;
 auto GetItemLevelRequirementsByID(uint32 itemId) -> uint8;
@@ -230,7 +262,7 @@ uint8 GetNationRank(uint8 nation);
 uint8 GetConquestBalance();
 bool  IsConquestAlliance();
 void  SetRegionalConquestOverseers(uint8 regionID); // Update NPC Conquest Guard
-void  SendLuaFuncStringToZone(uint16 requestingZoneId, uint16 executorZoneId, const std::string& str);
+void  SendLuaFuncStringToZone(xi::ZoneId requestingZoneId, xi::ZoneId executorZoneId, const std::string& str);
 
 void UpdateSanrakusMobs(); // Update sanraku's (ZNM) subject of interest and recommended fauna
 void ZNMPopPriceDecay();   // Price of ZNM pop items decay over time
@@ -293,25 +325,25 @@ void  SetCharVar(uint32 charId, const std::string& varName, int32 value, const s
 void  ClearCharVarFromAll(const std::string& varName);                                               // Deletes a specific player variable from all players
 void  Terminate();                                                                                   // Logs off all characters and terminates the server
 
-int32 GetTextIDVariable(uint16 ZoneID, const char* variable); // Load the value of the TextID variable of the specified zone
-bool  IsContentEnabled(const std::string& content);
+auto GetTextIDVariable(xi::ZoneId ZoneID, const char* variable) -> int32; // Load the value of the TextID variable of the specified zone
+bool IsContentEnabled(const std::string& content);
 
 void OnGameDay(CZone* PZone);
 void OnGameHour(CZone* PZone);
-void OnZoneWeatherChange(uint16 zoneId, Weather weather);
-void OnTOTDChange(uint16 ZoneID, uint8 TOTD);
+void OnZoneWeatherChange(xi::ZoneId zoneId, xi::Weather weather);
+void OnTOTDChange(xi::ZoneId ZoneID, uint8 TOTD);
 
 void OnGameIn(CCharEntity* PChar, bool zoning);
 void OnZoneIn(CCharEntity* PChar);
 void OnZoneOut(CCharEntity* PChar);
 void AfterZoneIn(CBaseEntity* PChar);
-void OnZoneInitialize(uint16 ZoneID);
+void OnZoneInitialize(xi::ZoneId ZoneID);
 void OnZoneTick(CZone* PZone);
 
 void OnTriggerAreaEnter(CCharEntity* PChar, const std::unique_ptr<ITriggerArea>& PTriggerArea); // when player enters a trigger area in a zone
 void OnTriggerAreaLeave(CCharEntity* PChar, const std::unique_ptr<ITriggerArea>& PTriggerArea); // when player leaves a trigger area in a zone
 
-void OnTransportEvent(CCharEntity* PChar, uint16 prevZoneId, uint16 transportId);
+void OnTransportEvent(CCharEntity* PChar, xi::ZoneId prevZoneId, uint16 transportId);
 void OnTimeTrigger(CNpcEntity* PNpc, uint8 triggerID);
 void OnConquestUpdate(CZone* PZone, ConquestUpdate type, uint8 influence, uint8 owner, uint8 ranking, bool isConquestAlliance); // conquest update (hourly or tally)
 
@@ -415,16 +447,16 @@ bool OnCanUseSpell(CBattleEntity* PChar, CSpell* Spell); // triggers when CanUse
 
 auto GetCachedInstanceScript(uint16 instanceId) -> sol::table;
 
-void  OnInstanceZoneIn(CCharEntity* PChar, CInstance* PInstance);
-void  AfterInstanceRegister(CBaseEntity* PChar);                             // triggers after a character is registered and zoned into an instance (the first time)
-int32 OnInstanceLoadFailed(CZone* PZone);                                    // triggers when an instance load is failed (ie. instance no longer exists)
-void  OnInstanceTimeUpdate(CZone* PZone, CInstance* PInstance, uint32 time); // triggers every second for an instance
-void  OnInstanceFailure(CInstance* PInstance);                               // triggers when an instance is failed
-void  OnInstanceCreatedCallback(CCharEntity* PChar, CInstance* PInstance);   // triggers when an instance is created (per character - waiting outside for entry)
-void  OnInstanceCreated(CInstance* PInstance);                               // triggers when an instance is created (instance setup)
-void  OnInstanceProgressUpdate(CInstance* PInstance);
-void  OnInstanceStageChange(CInstance* PInstance);
-void  OnInstanceComplete(CInstance* PInstance);
+void OnInstanceZoneIn(CCharEntity* PChar, CInstance* PInstance);
+void AfterInstanceRegister(CBaseEntity* PChar);                             // triggers after a character is registered and zoned into an instance (the first time)
+auto OnInstanceLoadFailed(CZone* PZone) -> xi::ZoneId;                      // triggers when an instance load is failed (ie. instance no longer exists)
+void OnInstanceTimeUpdate(CZone* PZone, CInstance* PInstance, uint32 time); // triggers every second for an instance
+void OnInstanceFailure(CInstance* PInstance);                               // triggers when an instance is failed
+void OnInstanceCreatedCallback(CCharEntity* PChar, CInstance* PInstance);   // triggers when an instance is created (per character - waiting outside for entry)
+void OnInstanceCreated(CInstance* PInstance);                               // triggers when an instance is created (instance setup)
+void OnInstanceProgressUpdate(CInstance* PInstance);
+void OnInstanceStageChange(CInstance* PInstance);
+void OnInstanceComplete(CInstance* PInstance);
 
 uint32 GetMobRespawnTime(uint32 mobid);
 void   DisallowRespawn(uint32 mobid, bool allowRespawn);
@@ -485,7 +517,104 @@ auto GetSynergyRecipeByTrade(CLuaTradeContainer luaTradeContainer) -> sol::table
 
 }; // namespace luautils
 
-// template impl
+//
+// template impls
+//
+
+template <typename T, typename Key, typename... Rest>
+auto luautils::detail::readEntityDataPath(const sol::table& table, const Key& key, const Rest&... rest) -> Maybe<T>
+{
+    if constexpr (sizeof...(Rest) == 0)
+    {
+        // sol::optional yields an empty optional on a type mismatch rather than throwing.
+        if (const auto value = table[key].template get<sol::optional<T>>())
+        {
+            return *value;
+        }
+
+        return std::nullopt;
+    }
+    else
+    {
+        const auto next = table[key];
+        if (!next.valid() || next.get_type() != sol::type::table)
+        {
+            return std::nullopt;
+        }
+
+        return readEntityDataPath<T>(next.template get<sol::table>(), rest...);
+    }
+}
+
+template <typename T, typename... Keys>
+auto luautils::getEntityData(CBaseEntity* PEntity, const Keys&... keys) -> Maybe<T>
+{
+    static_assert(std::is_integral_v<T> || std::is_floating_point_v<T> || std::is_same_v<T, std::string>,
+                  "getEntityData<T> only returns scalars and strings. Lua types must not escape luautils.");
+    static_assert(sizeof...(Keys) > 0, "getEntityData needs at least one key");
+    static_assert((!std::is_same_v<std::decay_t<Keys>, std::string_view> && ...),
+                  "A key reaches sol's deferred lookup, which stores a string_view without owning it. See the GOTCHA at the top of this header.");
+
+    const auto table = detail::getEntityDataTable(PEntity, detail::CreateEntityData::No);
+    if (!table.valid())
+    {
+        return std::nullopt;
+    }
+
+    return detail::readEntityDataPath<T>(table, keys...);
+}
+
+template <typename T, typename... Targs>
+auto luautils::callGlobal(const std::string& funcName, Targs... args)
+{
+    auto func = detail::findGlobalLuaFunction(funcName);
+    if (!func.valid())
+    {
+        ShowError("luautils::callGlobalFunction: %s: Function not found", funcName);
+        if constexpr (std::is_void_v<T>)
+        {
+            return;
+        }
+        else
+        {
+            return T{};
+        }
+    }
+
+    const auto result = func(std::forward<Targs>(args)...);
+    if (!result.valid())
+    {
+        sol::error err = result;
+        ShowError("luautils::callGlobalFunction: %s: %s", funcName, err.what());
+        if constexpr (std::is_void_v<T>)
+        {
+            return;
+        }
+        else
+        {
+            return T{};
+        }
+    }
+
+    if constexpr (std::is_void_v<T>)
+    {
+        return;
+    }
+    else
+    {
+        auto returnObject = result.template get<sol::object>();
+        if (returnObject.template is<T>())
+        {
+            return returnObject.template as<T>();
+        }
+        else
+        {
+            ShowError("luautils::callGlobalFunction: %s: Invalid return type", funcName);
+            return T{};
+        }
+    }
+}
+
 template <typename... Targs>
 int32 luautils::invokeBattlefieldEvent(uint16 battlefieldId, const std::string& eventName, Targs... args)
 {
@@ -519,5 +648,3 @@ int32 luautils::invokeBattlefieldEvent(uint16 battlefieldId, const std::string& 
 
     return 0;
 }
-
-#endif // _LUAUTILS_H -

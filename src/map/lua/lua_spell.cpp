@@ -164,7 +164,7 @@ uint16 CLuaSpell::getMPCost()
 
 uint8 CLuaSpell::getSkillType()
 {
-    return m_PLuaSpell->getSkillType();
+    return static_cast<uint8>(m_PLuaSpell->getSkillType());
 }
 
 uint8 CLuaSpell::getSpellGroup()
@@ -182,7 +182,7 @@ uint8 CLuaSpell::getFlag()
     return m_PLuaSpell->getFlag();
 }
 
-uint8 CLuaSpell::getLevel(JOBTYPE jobId)
+auto CLuaSpell::getLevel(xi::Job jobId) -> uint8
 {
     return m_PLuaSpell->getJob(jobId);
 }

@@ -1,7 +1,7 @@
 -----------------------------------
 -- Dynamic Implosion
 -- Family: Shadow Lord
--- Description: Deals damage to players within an area of effect. Additional Effect: Stun
+-- Description: Deals damage to players within an area of effect. Additional Effect: Terror
 -- Notes: Used by Dynamis Lord
 -----------------------------------
 ---@type TMobSkill
@@ -16,7 +16,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     params.baseDamage     = mob:getWeaponDmg()
     params.numHits        = 1
-    params.fTP            = { 2.5, 2.5, 2.5 } -- TODO: Capture fTPs
+    params.fTP            = { 4.0, 4.0, 4.0 }
     params.attackType     = xi.attackType.PHYSICAL
     params.damageType     = xi.damageType.SLASHING
     params.shadowBehavior = xi.mobskills.shadowBehavior.NUMSHADOWS_3 -- TODO: Capture shadowBehavior
@@ -26,7 +26,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
     if xi.mobskills.processDamage(mob, target, skill, action, info) then
         target:takeDamage(info.damage, mob, info.attackType, info.damageType)
 
-        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.STUN, 1, 0, 7) -- TODO: Capture stun duration
+        xi.mobskills.mobStatusEffectMove(mob, target, xi.effect.TERROR, 1, 0, 30)
     end
 
     return info.damage

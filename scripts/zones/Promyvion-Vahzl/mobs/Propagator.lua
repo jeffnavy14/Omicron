@@ -2,7 +2,11 @@
 -- Area: Promyvion - Vahzl
 --   NM: Propagator
 -----------------------------------
-mixins = { require('scripts/mixins/families/gorger_nm') }
+mixins =
+{
+    require('scripts/mixins/families/gorger_nm'),
+    require('scripts/mixins/families/empty_terroanima'),
+}
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
@@ -25,7 +29,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.FISSION)
     end
 
-    return tpMoves[math.random(1, #tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 return entity

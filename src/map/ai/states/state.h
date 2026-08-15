@@ -20,79 +20,108 @@
 ===========================================================================
 */
 
-#ifndef _CSTATE_H
-#define _CSTATE_H
+#pragma once
 
 #include "common/timer.h"
-#include "entities/baseentity.h"
+#include "common/types/badge.h"
+#include "common/types/error_or.h"
+#include "entities/base_entity.h"
 #include "packets/basic.h"
+
+#include <concepts>
 #include <memory>
 
 class CBattleEntity;
 
-class CStateInitException : public std::exception
+//
+// StateErrorOr<T>
+//
+//   The result of entering a state.
+//
+//       return Success();
+//       return Error{ std::make_unique<GP_SERV_COMMAND_BATTLE_MESSAGE>(...) };
+//       return RefuseSilently();
+//
+template <typename T>
+using StateErrorOr = ErrorOr<T, std::unique_ptr<CBasicPacket>>;
+
+//
+// RefuseSilently()
+//
+//   Refuse to enter a state without telling the entity why.
+//
+inline auto RefuseSilently() -> Error<std::unique_ptr<CBasicPacket>>
 {
-public:
-    explicit CStateInitException(std::unique_ptr<CBasicPacket> _msg)
-    : std::exception()
-    , packet(std::move(_msg))
-    {
-    }
-    std::unique_ptr<CBasicPacket> packet;
-};
+    // Despite being a whole lot of words, this is essentially just nullptr.
+    return Error{ std::unique_ptr<CBasicPacket>{ nullptr } };
+}
 
 class CState
 {
 public:
-    CState(CBaseEntity* PEntity, uint16 _targid);
+    //
+    // The only way to create a state.
+    //
+    //   Every state constructor takes a Badge<CState>, and only this function can make
+    //   one.
+    //
+    template <typename T, typename... Args>
+        requires std::derived_from<T, CState>
+    static auto make(Args&&... args) -> std::unique_ptr<T>
+    {
+        return std::unique_ptr<T>(new T(xi::Badge<CState>{}, std::forward<Args>(args)...));
+    }
+
+    virtual auto init() -> StateErrorOr<void>
+    {
+        return Success();
+    }
 
     virtual ~CState() = default;
 
-    CBaseEntity* GetTarget() const;
-    void         SetTarget(uint16 targid);
+    auto target() const -> EntityId;
 
-    bool HasErrorMsg() const;
+    auto HasErrorMsg() const -> bool;
+    auto GetErrorMsg() const -> std::unique_ptr<CBasicPacket>;
 
-    auto GetErrorMsg() -> std::unique_ptr<CBasicPacket>;
+    auto DoUpdate(timer::time_point tick) -> bool;
 
-    bool DoUpdate(timer::time_point tick);
+    // true while this state's own Update is running. Interrupting it there would free it under its own frame.
+    auto isExecuting() const -> bool;
+
     // try interrupt (on hit)
-    virtual void TryInterrupt(CBattleEntity* PAttacker)
-    {
-    }
+    virtual void TryInterrupt(CBattleEntity* PAttacker);
 
     // called when state completes
     virtual void Cleanup(timer::time_point tick) = 0;
     // whether the state can be changed by normal means
-    virtual bool CanChangeState() = 0;
-    virtual bool CanFollowPath()  = 0;
+    virtual auto CanChangeState() -> bool = 0;
+    virtual auto CanFollowPath() -> bool  = 0;
     // whether the state can be interrupted (including by stun/sleep)
-    virtual bool CanInterrupt() = 0;
-    bool         IsCompleted() const;
+    virtual auto CanInterrupt() -> bool = 0;
+    auto         IsCompleted() const -> bool;
     void         ResetEntryTime();
+    void         SetTarget(const EntityId& target);
 
 protected:
-    // state logic done per tick - returns whether to exit the state or not
-    virtual bool Update(timer::time_point tick) = 0;
-    virtual void UpdateTarget(uint16 targid);
-    virtual void UpdateTarget(CBaseEntity* target);
+    CState(CBaseEntity* PEntity, const EntityId& target);
 
-    uint16            GetTargetID() const;
-    void              Complete();
-    timer::time_point GetEntryTime() const;
-    bool              WasExitDelayed();
-    void              DelayExitTime(std::chrono::milliseconds delayMilliseconds);
+    auto refuseWithErrorMsg() const -> Error<std::unique_ptr<CBasicPacket>>;
+
+    // state logic done per tick - returns whether to exit the state or not
+    virtual auto Update(timer::time_point tick) -> bool = 0;
+    virtual void UpdateTarget(const EntityId& target);
+
+    void Complete();
+    auto GetEntryTime() const -> timer::time_point;
 
     std::unique_ptr<CBasicPacket> m_errorMsg;
 
     CBaseEntity* const m_PEntity;
-    uint16             m_targid{ 0 };
 
 private:
-    CBaseEntity*      m_PTarget{ nullptr };
+    EntityId          target_{};
     bool              m_completed{ false };
-    bool              m_wasDelayed{ false };
+    bool              m_executing{ false };
     timer::time_point m_entryTime{ timer::now() };
 };
-
-#endif

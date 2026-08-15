@@ -9,8 +9,8 @@ local petTable =
         job = xi.job.PLD,
         skillList =
         {
-            xi.mobSkill.CHIMERA_RIPPER,
-            xi.mobSkill.STRING_CLIPPER,
+            xi.mobSkill.CHIMERA_RIPPER_AUTOMATON,
+            xi.mobSkill.STRING_CLIPPER_AUTOMATON,
         },
     },
 
@@ -20,8 +20,8 @@ local petTable =
         job = xi.job.RNG,
         skillList =
         {
-            xi.mobSkill.ARCUBALLISTA,
-            xi.mobSkill.DAZE,
+            xi.mobSkill.ARCUBALLISTA_AUTOMATON,
+            xi.mobSkill.DAZE_AUTOMATON,
         },
     },
 
@@ -31,8 +31,8 @@ local petTable =
         job = xi.job.RDM,
         skillList =
         {
-            xi.mobSkill.SLAPSTICK,
-            xi.mobSkill.KNOCKOUT,
+            xi.mobSkill.SLAPSTICK_AUTOMATON,
+            xi.mobSkill.KNOCKOUT_AUTOMATON,
         },
     },
 }
@@ -42,7 +42,7 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    local petChosen = math.random(1, #petTable)
+    local petChosen = math.randomInt(1, #petTable)
     local petInfo  = petTable[petChosen]
 
     mob:setModelId(petInfo.modelId)
@@ -76,7 +76,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         return 0
     end
 
-    return petInfo.skillList[math.random(1, #petInfo.skillList)]
+    return petInfo.skillList[math.randomInt(1, #petInfo.skillList)]
 end
 
 entity.onMobDeath = function(mob, player, optParams)

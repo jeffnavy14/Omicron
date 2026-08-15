@@ -22,7 +22,7 @@
 #include "0x037_item_use.h"
 
 #include "ai/ai_container.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "packets/s2c/0x029_battle_message.h"
 #include "universal_container.h"
 
@@ -104,7 +104,7 @@ void GP_CLI_COMMAND_ITEM_USE::process(MapSession* PSession, CCharEntity* PChar) 
     // TODO: Using a charged item on a non-eligible target (i.e. Soultrapper): Cannot use the <item> on <target>.
     if (PChar->UContainer->GetType() != UCONTAINER_USEITEM)
     {
-        PChar->PAI->UseItem(this->ActIndex, this->Category, this->PropertyItemIndex);
+        PChar->PAI->UseItem(EntityId(PChar->GetEntity(this->ActIndex)), this->Category, this->PropertyItemIndex);
     }
     else
     {

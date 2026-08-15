@@ -90,11 +90,17 @@ local ids =
     SAFEHOLD_EARRING      = 79,
     NORG_EARRING          = 80,
     NASHMAU_EARRING       = 81,
-    EAST_SANDY_GLYPH      = 82,
-    BASTOK_MINES_GLYPH    = 83,
-    WINDY_WOODS_GLYPH     = 84,
-    CUMULUS_MASQUE        = 85,
-    WYRMKING_SUIT         = 86,
+    BASTOK_MINES_GLYPH    = 82,
+    BASTOK_MARKETS_GLYPH  = 83,
+    PORT_BASTOK_GLYPH     = 84,
+    EAST_SANDY_GLYPH      = 85,
+    WEST_SANDY_GLYPH      = 86,
+    NORTH_SANDY_GLYPH     = 87,
+    WINDY_WATERS_GLYPH    = 88,
+    PORT_WINDY_GLYPH      = 89,
+    WINDY_WOODS_GLYPH     = 90,
+    CUMULUS_MASQUE        = 91,
+    WYRMKING_SUIT         = 92,
 }
 xi.teleport.id = ids
 
@@ -177,9 +183,15 @@ xi.teleport.destination =
     [ids.SAFEHOLD_EARRING]      = {   -7.737,  -28.012,  111.883, 128,  26 }, -- Tavnazian Safehold
     [ids.NORG_EARRING]          = {  -24.375,    0.389,  -48.209, 207, 252 }, -- Norg
     [ids.NASHMAU_EARRING]       = {   -7.710,    0.000,  -43.301, 193,  53 }, -- Nashmau
-    [ids.EAST_SANDY_GLYPH]      = {  101.292,    1.000,  -48.889,  31, 230 }, -- Southern San d'Oria East Gate
     [ids.BASTOK_MINES_GLYPH]    = {   -2.658,   -1.001, -120.508,  70, 234 }, -- Bastok Mines Gate
-    [ids.WINDY_WOODS_GLYPH]     = {  108.726,   -5.000,  -43.588,   0, 241 }, -- Windurst Woods Gate
+    [ids.BASTOK_MARKETS_GLYPH]  = { -344.331,  -10.001, -181.252,  88, 235 }, -- Bastok Markets South Gate
+    [ids.PORT_BASTOK_GLYPH]     = {  127.048,    8.500,   -0.777, 223, 236 }, -- Port Bastok Gate
+    [ids.EAST_SANDY_GLYPH]      = {  102.877,    0.000,  -50.330,  35, 230 }, -- Southern San d'Oria East Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
+    [ids.WEST_SANDY_GLYPH]      = { -102.522,    0.000,  -50.585,  95, 230 }, -- Southern San d'Oria West Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
+    [ids.NORTH_SANDY_GLYPH]     = { -243.710,    6.999,   41.196, 125, 231 }, -- Northern San d'Oria West Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
+    [ids.WINDY_WATERS_GLYPH]    = {  -30.192,   -4.920,  223.038, 186, 238 }, -- Windurst Waters Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
+    [ids.PORT_WINDY_GLYPH]      = { -223.678,   -7.999,  209.021, 131, 240 }, -- Port Windurst Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
+    [ids.WINDY_WOODS_GLYPH]     = {  103.500,   -5.000,  -48.693,   5, 241 }, -- Windurst Woods Gate -- TODO: Set to 3.5 yalms in front of npc. Get retail coordinates.
     [ids.CUMULUS_MASQUE]        = {  260.000,  -87.000,   86.000, 192, 291 }, -- Reisenjima Place of Parting
     [ids.WYRMKING_SUIT]         = { -506.157,   -8.500, -384.025, 220,  30 }, -- Riverne Site #B-01
 }
@@ -334,7 +346,7 @@ end
 -----------------------------------
 
 xi.teleport.toChamberOfPassage = function(player)
-    if math.random(1, 100) <= 50 then
+    if math.randomInt(1, 100) <= 50 then
         player:setPos(133.400, 1.485, 47.427, 96, 50) -- (R) Aht Urhgan Whitegate Chamber of Passage Left
     else
         player:setPos(116.670, 1.485, 47.427, 32, 50) -- (R) Aht Urhgan Whitegate Chamber of Passage Right
@@ -404,6 +416,8 @@ local escapeDestinations =
     [ 68] = {  95.251,     -16,  428.910,  64,  51 }, -- Aydeewa Subterrane to Wajaom Woodlands (I-6)
     [ 69] = {  495.45,   -28.3,  -478.43,  32,  79 }, -- Leujaoam Sanctum to Caedarva Mire (?-??)
     [ 72] = {  14.186,   -29.8,  590.427,   0,  52 }, -- Alzadaal Undersea Ruins to Bhaflau Thickets (F-6)
+    [ 73] = {    -580,       0,     -460,  64,  72 }, -- Zhayolm Remnants to Alzadaal Undersea Ruins ZR
+    [ 74] = {    -580,       0,     -100, 192,  72 }, -- Arrapago Remnants to Alzadaal Undersea Ruins AR
     [ 75] = {     620,       0,     -260,  64,  72 }, -- Bhaflau Remnants I/II to Alzadaal Undersea Ruins BR (H-8)
     [ 76] = {     580,       0,      500, 192,  72 }, -- Silver Sea Remnants I/II to Alzadaal Undersea Ruins SSR (H-8)
     [ 77] = {     180,       0,       20,   0,  72 }, -- Nyzul Isle Investigation/Uncharted Region to Alzadaal Undersea Ruins (?-??)
@@ -412,10 +426,10 @@ local escapeDestinations =
     [ 92] = { 548.199,      25, -341.959, 128,  90 }, -- Beadeaux (S) to Pashhow Marshlands (S) (K-11)
     [ 99] = { 720.589,     -32,  -81.495, 162,  97 }, -- Castle Oztroja (S) to Meriphataud Mountains (S) (L-8)
     [138] = {    -414,     -44,       19,   0, 137 }, -- Castle Zvahl Baileys (S) to Xarcabard (S) (G-7)
-    [139] = {    -720,     -61,      600,  64, 100 }, -- Ghelsba Outpost to West Ronfaure (E-4)
-    [140] = {    -720,     -61,      600,  64, 100 }, -- Fort Ghelsba to West Ronfaure (E-4)
-    [141] = {    -720,     -61,      600,  64, 100 }, -- Yughott Grotto to West Ronfaure (E-4)
-    [142] = {    -720,     -61,      600,  64, 100 }, -- Horlais Peak to West Ronfaure (E-4)
+    [139] = {    -720,     -61,      600,  64, 100 }, -- Horlais Peak to West Ronfaure (E-4)
+    [140] = {    -720,     -61,      600,  64, 100 }, -- Ghelsba Outpost to West Ronfaure (E-4)
+    [141] = {    -720,     -61,      600,  64, 100 }, -- Fort Ghelsba to West Ronfaure (E-4)
+    [142] = {    -720,     -61,      600,  64, 100 }, -- Yughott Grotto to West Ronfaure (E-4)
     [143] = {     483,     -31,     1159, 128, 106 }, -- Palborough Mines to North Gustaberg (K-3)
     [144] = {     483,     -31,     1159, 128, 106 }, -- Waughroon Shrine to North Gustaberg (K-3)
     [145] = {    -360,     -20,       78, 192, 115 }, -- Giddeus to West Sarutabaruta (F-8)
@@ -429,6 +443,7 @@ local escapeDestinations =
     [153] = {   509.5,       1,     -575, 128, 121 }, -- The Boyahda Tree to The Sanctuary of Zi'Tah (K-12)
     [154] = {   509.5,       1,     -575, 128, 121 }, -- Dragon's Aery to The Sanctuary of Zi'Tah (K-12)
     [155] = {    -414,     -44,       19,   0, 137 }, -- Castle Zvahl Keep (S) to Xarcabard (S) (G-7)
+    [156] = {    -414,     -44,       19,   0, 137 }, -- Throne Room (S) to Xarcabard (S) (G-7)
     [157] = {    -267,     -20,      320,   0, 126 }, -- Middle Delkfutt's Tower to Qufim Island (F-6)
     [158] = {    -267,     -20,      320,   0, 126 }, -- Upper Delkfutt's Tower to Qufim Island (F-6)
     [159] = {     298,      -2,     -445, 192, 124 }, -- Temple of Uggalepih to Yhoator Jungle (J-11)

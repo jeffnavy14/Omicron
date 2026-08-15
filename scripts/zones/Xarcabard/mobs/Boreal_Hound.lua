@@ -5,6 +5,7 @@
 -- !pos -21 -25 -490 112
 -----------------------------------
 local ID = zones[xi.zone.XARCABARD]
+mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
@@ -38,7 +39,7 @@ local function rotateMob(mob)
             rotationChange = -1 * rotationChange
         end
 
-        if math.random(1, 100) <= 25 then
+        if math.randomInt(1, 100) <= 25 then
             rotationChange = 0
             mob:setLocalVar('rotationDirection', (rotationDirection + 1) % 2)
         end
@@ -51,9 +52,9 @@ local function rotateMob(mob)
 end
 
 entity.onPathPoint = function(mob)
-    if math.random(1, 100) <= 50 then
+    if math.randomInt(1, 100) <= 50 then
         mob:setBaseSpeed(0)
-        mob:timer(math.random(4000, 8000), function(mobArg)
+        mob:timer(math.randomInt(4000, 8000), function(mobArg)
             mobArg:setBaseSpeed(baseSpeed)
         end)
 
@@ -72,7 +73,7 @@ entity.onMobRoam = function(mob)
         mob:getSpeed() ~= 0
     then
         local pathFlag = xi.pathflag.SLIDE
-        if math.random(1, 100) <= 50 then
+        if math.randomInt(1, 100) <= 50 then
             -- sometimes he runs between points
             pathFlag = pathFlag + xi.pathflag.RUN
         end
@@ -88,14 +89,21 @@ entity.onMobEngage = function(mob)
 end
 
 entity.onMobSpawn = function(mob)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 50)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 50)
     mob:setMobMod(xi.mobMod.ALWAYS_AGGRO, 1)
     mob:setMobMod(xi.mobMod.NO_MOVE, 0)
     mob:addImmunity(xi.immunity.BIND)
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.PARALYZE)
     mob:addImmunity(xi.immunity.SILENCE)
+    mob:setMod(xi.mod.REFRESH, 500) -- Never seem to run out of MP.
     mob:setBaseSpeed(baseSpeed)
+    xi.mix.jobSpecial.config(mob, {
+        specials =
+        {
+            { id = xi.mobSkill.BLOOD_WEAPON_1, hpp = math.randomInt(30, 80) },
+        },
+    })
     -- Failsafe to make sure NPC is down when NM is up
     if xi.settings.main.OLDSCHOOL_G2 then
         GetNPCByID(ID.npc.BOREAL_HOUND_QM):showNPC(0)

@@ -12,8 +12,8 @@ local function dive(mob)
     mob:setAutoAttackEnabled(false)
     mob:setMobAbilityEnabled(false)
 
-    -- Om'hpedme in north half of Al'Taieu do not dive or become untargetable
-    if mob:getPool() ~= xi.mobPool.HPEMDE_NO_DIVING then
+    -- Om'hpedme in south half of Al'Taieu dive and become untargetable
+    if mob:getPool() == xi.mobPool.HPEMDE_DIVING then
         mob:hideName(true)
         mob:setUntargetable(true)
         mob:setAnimationSub(5)
@@ -32,14 +32,14 @@ end
 
 -- Hpemde take 100% increased damage and deal 2x base damage in open mouth form
 local function openMouth(mob)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, mob:getMainLvl() + 2)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, mob:getMainLvl() + 2)
     mob:setMod(xi.mod.DMG, 10000)
     mob:setAnimationSub(3)
     mob:wait(2000)
 end
 
 local function closeMouth(mob)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 0)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 0)
     mob:setMod(xi.mod.DMG, 0)
     mob:setLocalVar('[hpemde]changeTime', mob:getBattleTime() + 30)
     mob:setAnimationSub(6)
@@ -58,7 +58,7 @@ g_mixins.families.hpemde = function(hpemdeMob)
         end
 
         if
-            mob:getPool() ~= xi.mobPool.HPEMDE_NO_DIVING and
+            mob:getPool() == xi.mobPool.HPEMDE_DIVING and
             mob:getAnimationSub() ~= 5
         then
             dive(mob)

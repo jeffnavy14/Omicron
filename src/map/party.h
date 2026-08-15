@@ -22,6 +22,9 @@
 #pragma once
 
 #include "common/cbasetypes.h"
+
+#include "data/enums/zone.h"
+
 #include "packets/s2c/0x009_message.h"
 
 #include <vector>
@@ -37,6 +40,7 @@ enum PARTYTYPE : uint8
     PARTY_PCS,
     PARTY_MOBS,
 };
+
 DECLARE_FORMAT_AS_UNDERLYING(PARTYTYPE);
 
 enum PARTYFLAG : uint16
@@ -49,6 +53,7 @@ enum PARTYFLAG : uint16
     PARTY_QM        = 0x0010,
     PARTY_SYNC      = 0x0100,
 };
+
 DECLARE_FORMAT_AS_UNDERLYING(PARTYFLAG);
 
 /************************************************************************
@@ -66,7 +71,7 @@ public:
 
     uint32 GetPartyID() const;
     uint16 GetMemberFlags(CBattleEntity* PEntity);
-    uint8  MemberCount(uint16 ZoneID);
+    auto   MemberCount(xi::ZoneId ZoneID) -> uint8;
 
     CBattleEntity* GetLeader();
     CBattleEntity* GetSyncTarget();
@@ -99,7 +104,7 @@ public:
 
     std::size_t GetMemberCountAcrossAllProcesses();
 
-    void PushPacket(uint32 senderID, uint16 ZoneID, const std::unique_ptr<CBasicPacket>& packet); // Send a packet to all group members, with the exception of PPartyMember
+    void PushPacket(uint32 senderID, xi::ZoneId ZoneID, const std::unique_ptr<CBasicPacket>& packet); // Send a packet to all group members, with the exception of PPartyMember
     void PushEffectsPacket();
     void EffectsChanged();
 

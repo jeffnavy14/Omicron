@@ -24,8 +24,7 @@
 #include <cstring>
 
 #include "aman.h"
-#include "entities/charentity.h"
-#include "monstrosity.h"
+#include "entities/char_entity.h"
 
 GP_SERV_COMMAND_JOB_INFO::GP_SERV_COMMAND_JOB_INFO(CCharEntity* PChar)
 {
@@ -51,7 +50,7 @@ GP_SERV_COMMAND_JOB_INFO::GP_SERV_COMMAND_JOB_INFO(CCharEntity* PChar)
 
     if (PChar->m_PMonstrosity != nullptr)
     {
-        packet.dancer.mjob_no = JOB_MON;
-        packet.dancer.sjob_no = JOB_MON;
+        packet.dancer.mjob_no = xi::Job::MON;
+        packet.dancer.sjob_no = xi::Job::MON;
     }
 }

@@ -8,8 +8,6 @@ mixins =
     require('scripts/mixins/job_special'),
     require('scripts/mixins/draw_in'),
 }
-require('scripts/quests/tutorial')
------------------------------------
 ---@type TMobEntity
 local entity = {}
 
@@ -36,7 +34,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.mobSkill.MIGHTY_STRIKES_1, hpp = math.random(95, 100), cooldown = 60 } -- "Uses ... Mighty Strikes, which can be used multiple times."
+            { id = xi.mobSkill.MIGHTY_STRIKES_1, hpp = math.randomInt(95, 100), cooldown = 60 } -- "Uses ... Mighty Strikes, which can be used multiple times."
         }
     })
 end
@@ -44,7 +42,6 @@ end
 entity.onMobDeath = function(mob, player, optParams)
     if player then
         player:addTitle(xi.title.THE_HORNSPLITTER)
-        xi.tutorial.onMobDeath(player)
     end
 end
 

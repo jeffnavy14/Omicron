@@ -21,14 +21,8 @@
 
 #include "transport.h"
 
-#include "common/timer.h"
 #include "common/vana_time.h"
-#include "map_engine.h"
 
-#include <cstdlib>
-
-#include "entities/charentity.h"
-#include "packets/entity_update.h"
 #include "utils/zoneutils.h"
 #include "zone.h"
 
@@ -36,14 +30,14 @@ void Transport_Ship::setVisible(bool visible) const
 {
     if (visible)
     {
-        this->npc->status = STATUS_TYPE::NORMAL;
+        this->npc->status = xi::Status::Normal;
         // This appears to be some sort of magic bit/flag set. In QSC 0x8001 is observed on the effects that light up the weight on the weighted doors.
         // The effect of 0x8001 appears to be to "stay in place" and not "stand on top of" things, such as the floor -- most likely fixes positions to the exact X/Y/Z coords supplied in 0x00E.
         this->npc->loc.p.moving = 0x8007;
     }
     else
     {
-        this->npc->status = STATUS_TYPE::DISAPPEAR;
+        this->npc->status = xi::Status::Disappear;
         // Missing 0x0001 bit here
         this->npc->loc.p.moving = 0x8006;
     }
@@ -53,7 +47,7 @@ void Transport_Ship::animateSetup(uint8 animationID, vanadiel_time::time_point h
 {
     if (animationID > 0)
     {
-        this->npc->animation = animationID;
+        this->npc->animation = static_cast<xi::Animation>(animationID);
     }
 
     this->npc->SetLocalVar("TransportTimestamp", earth_time::vanadiel_timestamp(vanadiel_time::to_earth_time(horizonTime)));
@@ -77,7 +71,7 @@ void TransportZone_Town::openDoor(bool sendPacket) const
         return;
     }
 
-    this->npcDoor->animation = ANIMATION_OPEN_DOOR;
+    this->npcDoor->animation = xi::Animation::OpenDoor;
 
     if (sendPacket)
     {
@@ -92,7 +86,7 @@ void TransportZone_Town::closeDoor(bool sendPacket) const
         return;
     }
 
-    this->npcDoor->animation = ANIMATION_CLOSE_DOOR;
+    this->npcDoor->animation = xi::Animation::CloseDoor;
 
     if (sendPacket)
     {
@@ -107,13 +101,13 @@ void TransportZone_Town::depart() const
 
 void Elevator_t::openDoor(CNpcEntity* npc) const
 {
-    npc->animation = ANIMATION_OPEN_DOOR;
+    npc->animation = xi::Animation::OpenDoor;
     zoneutils::GetZone(this->zoneID)->UpdateEntityPacket(npc, ENTITY_SPAWN, UPDATE_ALL_MOB, true);
 }
 
 void Elevator_t::closeDoor(CNpcEntity* npc) const
 {
-    npc->animation = ANIMATION_CLOSE_DOOR;
+    npc->animation = xi::Animation::CloseDoor;
     zoneutils::GetZone(this->zoneID)->UpdateEntityPacket(npc, ENTITY_SPAWN, UPDATE_ALL_MOB, true);
 }
 
@@ -146,14 +140,14 @@ void CTransportHandler::InitializeTransport(IPP mapIPP)
         TransportZone_Town zoneTown;
 
         zoneTown.ship.transportId = rset->get<uint8>("id");
-        zoneTown.ship.dock.zone   = zoneutils::GetZone((rset->get<uint32>("transport") >> 12) & 0x0FFF);
+        zoneTown.ship.dock.zone   = zoneutils::GetZone(static_cast<xi::ZoneId>((rset->get<uint32>("transport") >> 12) & 0x0FFF));
 
         zoneTown.ship.dock.p.x        = rset->get<float>("dock_x");
         zoneTown.ship.dock.p.y        = rset->get<float>("dock_y");
         zoneTown.ship.dock.p.z        = rset->get<float>("dock_z");
         zoneTown.ship.dock.p.rotation = rset->get<uint8>("dock_rot");
         zoneTown.ship.dock.boundary   = rset->get<uint16>("boundary");
-        zoneTown.ship.dock.prevzone   = rset->get<uint8>("zone");
+        zoneTown.ship.dock.prevzone   = rset->get<xi::ZoneId>("zone");
 
         auto npcDoorId   = rset->get<uint32>("door");
         zoneTown.npcDoor = nullptr;
@@ -169,7 +163,7 @@ void CTransportHandler::InitializeTransport(IPP mapIPP)
             continue;
         }
 
-        static_cast<CNpcEntity*>(zoneTown.ship.npc)->m_alwaysRelevant = true;
+        static_cast<CNpcEntity*>(zoneTown.ship.npc)->setAlwaysRelevant(true);
 
         zoneTown.ship.animationArrive = rset->get<uint8>("anim_arrive");
         zoneTown.ship.animationDepart = rset->get<uint8>("anim_depart");
@@ -216,9 +210,9 @@ void CTransportHandler::InitializeTransport(IPP mapIPP)
     {
         TransportZone_Voyage voyageZone{};
 
-        auto voyageZoneId     = rset->get<uint16>("zone");
+        auto voyageZoneId     = rset->get<xi::ZoneId>("zone");
         voyageZone.voyageZone = nullptr;
-        if (voyageZoneId > 0)
+        if (voyageZoneId != xi::ZoneId::Unknown)
         {
             voyageZone.voyageZone = zoneutils::GetZone(voyageZoneId);
         }
@@ -236,7 +230,7 @@ void CTransportHandler::InitializeTransport(IPP mapIPP)
 
             voyageZoneList.emplace_back(voyageZone);
         }
-        else if (voyageZoneId > 0)
+        else if (voyageZoneId != xi::ZoneId::Unknown)
         {
             ShowErrorFmt("TransportZone {}: zone not found", rset->get<uint16>("zone"));
         }
@@ -455,7 +449,7 @@ void CTransportHandler::insertElevator(Elevator_t elevator)
         return;
     }
 
-    elevator.Elevator->m_alwaysRelevant = true;
+    elevator.Elevator->setAlwaysRelevant(true);
 
     // check to see if this elevator already exists
     for (auto& i : ElevatorList)
@@ -476,11 +470,11 @@ void CTransportHandler::insertElevator(Elevator_t elevator)
 
     // Initialize the elevator into the correct state based on
     // its animation value in the database.
-    if (elevator.Elevator->animation == ANIMATION_ELEVATOR_DOWN)
+    if (elevator.Elevator->animation == xi::Animation::ElevatorDown)
     {
         elevator.state = STATE_ELEVATOR_BOTTOM;
     }
-    else if (elevator.Elevator->animation == ANIMATION_ELEVATOR_UP)
+    else if (elevator.Elevator->animation == xi::Animation::ElevatorUp)
     {
         elevator.state = STATE_ELEVATOR_TOP;
     }
@@ -499,8 +493,8 @@ void CTransportHandler::insertElevator(Elevator_t elevator)
     // Ensure that the doors start in the correct positions
     // regardless of their values in the database.
 
-    elevator.LowerDoor->animation = (elevator.state == STATE_ELEVATOR_TOP) ? ANIMATION_CLOSE_DOOR : ANIMATION_OPEN_DOOR;
-    elevator.UpperDoor->animation = (elevator.state == STATE_ELEVATOR_TOP) ? ANIMATION_OPEN_DOOR : ANIMATION_CLOSE_DOOR;
+    elevator.LowerDoor->animation = (elevator.state == STATE_ELEVATOR_TOP) ? xi::Animation::CloseDoor : xi::Animation::OpenDoor;
+    elevator.UpperDoor->animation = (elevator.state == STATE_ELEVATOR_TOP) ? xi::Animation::OpenDoor : xi::Animation::CloseDoor;
 
     ElevatorList.emplace_back(elevator);
 }
@@ -538,13 +532,13 @@ void CTransportHandler::startElevator(Elevator_t* elevator)
     if (elevator->state == STATE_ELEVATOR_TOP)
     {
         elevator->state               = STATE_ELEVATOR_DESCEND;
-        elevator->Elevator->animation = elevator->animationsReversed ? ANIMATION_ELEVATOR_UP : ANIMATION_ELEVATOR_DOWN;
+        elevator->Elevator->animation = elevator->animationsReversed ? xi::Animation::ElevatorUp : xi::Animation::ElevatorDown;
         elevator->closeDoor(elevator->UpperDoor);
     }
     else if (elevator->state == STATE_ELEVATOR_BOTTOM)
     {
         elevator->state               = STATE_ELEVATOR_ASCEND;
-        elevator->Elevator->animation = elevator->animationsReversed ? ANIMATION_ELEVATOR_DOWN : ANIMATION_ELEVATOR_UP;
+        elevator->Elevator->animation = elevator->animationsReversed ? xi::Animation::ElevatorDown : xi::Animation::ElevatorUp;
         elevator->closeDoor(elevator->LowerDoor);
     }
     else

@@ -21,14 +21,14 @@
 
 #include "0x03a_item_stack.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "utils/charutils.h"
 
 auto GP_CLI_COMMAND_ITEM_STACK::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator(PChar)
-        .oneOf<CONTAINER_ID>(this->Category); // Retail honors _every_ container, even if you don't presently have access.
+        .isValidContainer("Category", this->Category); // Retail honors _every_ container, even if you don't presently have access.
 }
 
 void GP_CLI_COMMAND_ITEM_STACK::process(MapSession* PSession, CCharEntity* PChar) const
@@ -56,6 +56,7 @@ void GP_CLI_COMMAND_ITEM_STACK::process(MapSession* PSession, CCharEntity* PChar
         // Skip items that are invalid, locked, reserved or already meeting stack size.
         if (!PItem ||
             PItem->getReserve() > 0 ||
+            PItem->isBusy() ||
             PItem->isSubType(ITEM_LOCKED) ||
             PItem->getQuantity() >= PItem->getStackSize())
         {
@@ -70,6 +71,7 @@ void GP_CLI_COMMAND_ITEM_STACK::process(MapSession* PSession, CCharEntity* PChar
             if (!PItem2 ||
                 PItem2->getID() != PItem->getID() ||
                 PItem2->getReserve() > 0 ||
+                PItem2->isBusy() ||
                 PItem2->isSubType(ITEM_LOCKED) ||
                 PItem2->getQuantity() >= PItem2->getStackSize())
             {

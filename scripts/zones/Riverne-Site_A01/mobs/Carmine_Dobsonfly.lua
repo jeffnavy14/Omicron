@@ -25,9 +25,6 @@ entity.onMobDisengage = function(mob)
     mob:setMagicCastingEnabled(false)
 end
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     -- each dead dobsonfly should stay despawned until all 10 are killed. then they respawn as a group.
 
@@ -39,7 +36,7 @@ entity.onMobDespawn = function(mob)
     end
 
     if allFliesDead then
-        local respawnTime = math.random(75600, 86400)
+        local respawnTime = math.randomInt(75600, 86400)
         for i = ID.mob.CARMINE_DOBSONFLY_OFFSET, ID.mob.CARMINE_DOBSONFLY_OFFSET + 9 do
             DisallowRespawn(i, false)
             GetMobByID(i):setRespawnTime(respawnTime)

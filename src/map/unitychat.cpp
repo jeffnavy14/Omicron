@@ -14,13 +14,8 @@
 ===========================================================================
 */
 
-#include "common/utils.h"
-
-#include <cstring>
-
-#include "entities/charentity.h"
-#include "ipc_client.h"
 #include "unitychat.h"
+#include "entities/char_entity.h"
 #include "utils/jailutils.h"
 
 CUnityChat::CUnityChat(uint32 leader)
@@ -59,7 +54,7 @@ void CUnityChat::PushPacket(uint32 senderID, const std::unique_ptr<CBasicPacket>
 {
     for (auto& member : members)
     {
-        if (member->id != senderID && member->status != STATUS_TYPE::DISAPPEAR && !jailutils::InPrison(member))
+        if (member->id != senderID && member->status != xi::Status::Disappear && !jailutils::InPrison(member))
         {
             member->pushPacket(packet->copy());
         }

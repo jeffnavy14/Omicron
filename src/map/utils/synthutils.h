@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-
 /************************************************************************
  *                                                                       *
  *  Methods required for the synthesis to work                           *
@@ -44,7 +42,7 @@ enum SYNTHESIS_ELEMENT
     ELEMENT_LIGHTNING = 4,
     ELEMENT_WATER     = 5,
     ELEMENT_LIGHT     = 6,
-    ELEMENT_DARK      = 7
+    ELEMENT_DARK      = 7,
 };
 
 enum SYNTHESIS_RESULT
@@ -53,7 +51,7 @@ enum SYNTHESIS_RESULT
     SYNTHESIS_SUCCESS = 1,
     SYNTHESIS_HQ      = 2,
     SYNTHESIS_HQ2     = 3,
-    SYNTHESIS_HQ3     = 4
+    SYNTHESIS_HQ3     = 4,
 };
 
 void LoadSynthRecipes();

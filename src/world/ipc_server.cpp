@@ -27,10 +27,8 @@
 #include "colonization_system.h"
 #include "conquest_system.h"
 
-#include <concurrentqueue.h>
 #include <memory>
 
-#include "common/database.h"
 #include "common/logging.h"
 
 namespace
@@ -38,14 +36,18 @@ namespace
 
 auto getZMQEndpointString() -> std::string
 {
-    return fmt::format("tcp://{}:{}", settings::get<std::string>("network.ZMQ_IP"), settings::get<uint16>("network.ZMQ_PORT"));
+    return fmt::format(
+        "{}://{}:{}",
+        settings::get<std::string>("network.ZMQ_TRANSPORT"),
+        settings::get<std::string>("network.ZMQ_IP"),
+        settings::get<uint16>("network.ZMQ_PORT"));
 }
 
 } // namespace
 
-IPCServer::IPCServer(WorldEngine& worldServer)
+IPCServer::IPCServer(WorldEngine& worldServer, ZMQService& zmqService)
 : worldServer_(worldServer)
-, zmqRouterWrapper_(getZMQEndpointString())
+, channel_(zmqService.registerRouter(getZMQEndpointString()))
 {
     TracyZoneScoped;
 }
@@ -98,7 +100,7 @@ auto IPCServer::getIPPForCharName(const std::string& charName) -> Maybe<IPP>
     return std::nullopt;
 }
 
-auto IPCServer::getIPPForZoneId(uint16 zoneId) -> Maybe<IPP>
+auto IPCServer::getIPPForZoneId(const xi::ZoneId zoneId) -> Maybe<IPP>
 {
     TracyZoneScoped;
 
@@ -121,8 +123,8 @@ auto IPCServer::getIPPsForParty(uint32 partyId) -> std::vector<IPP>
 
     // TODO: Simplify query now that there's alliance versions?
     const auto query = "SELECT server_addr, server_port, MIN(charid) FROM accounts_sessions JOIN accounts_parties USING (charid) "
-                       "WHERE IF (allianceid <> 0, allianceid = (SELECT MAX(allianceid) FROM accounts_parties WHERE partyid = ?), "
-                       "partyid = ?) GROUP BY server_addr, server_port";
+                       "WHERE (allianceid <> 0 AND allianceid = (SELECT MAX(allianceid) FROM accounts_parties WHERE partyid = ?)) "
+                       "OR (allianceid = 0 AND partyid = ?) GROUP BY server_addr, server_port";
 
     const auto rset = db::preparedStmt(query, partyId, partyId);
     if (rset && rset->rowsCount())
@@ -272,7 +274,7 @@ void IPCServer::rerouteMessageToCharName(const std::string& charName, const auto
     }
 }
 
-void IPCServer::rerouteMessageToZoneId(uint16 zoneId, const auto& message)
+void IPCServer::rerouteMessageToZoneId(const xi::ZoneId zoneId, const auto& message)
 {
     TracyZoneScoped;
 
@@ -365,9 +367,9 @@ void IPCServer::handleIncomingMessages()
 {
     TracyZoneScoped;
 
-    // TODO: Can we stop more messages appearing on the queue while we're processing?
+    // TODO: Should we stop more messages appearing on the queue while we're processing?
     IPPMessage message;
-    while (zmqRouterWrapper_.incomingQueue_.try_dequeue(message))
+    while (channel_.tryReceive(message))
     {
         const auto firstByte = message.payload[0];
         const auto msgType   = ipc::toString(static_cast<ipc::MessageType>(firstByte));
@@ -403,7 +405,7 @@ void IPCServer::handleMessage_CharZone(const IPP& ipp, const ipc::CharZone& mess
     TracyZoneScoped;
 
     // Update cache
-    if (message.destinationZoneId == 0xFFFF)
+    if (message.destinationZoneId == ZONE_NO_DESTINATION)
     {
         characterCache_.removeCharacter(message.charId);
     }
@@ -618,8 +620,8 @@ void IPCServer::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
     // Get zone ID from query and try to send to _just_ the previous zone
     if (rset && rset->rowsCount() && rset->next())
     {
-        const auto prevZoneID = rset->get<uint32>("pos_prevzone");
-        const auto nextZoneID = rset->get<uint32>("pos_zone");
+        const auto prevZoneID = rset->get<xi::ZoneId>("pos_prevzone");
+        const auto nextZoneID = rset->get<xi::ZoneId>("pos_zone");
 
         if (prevZoneID != nextZoneID)
         {
@@ -686,7 +688,7 @@ void IPCServer::handleMessage_EntityInformationRequest(const IPP& ipp, const ipc
     }
     else
     {
-        const auto zoneId = (message.targetId >> 12) & 0x0FFF;
+        const auto zoneId = static_cast<xi::ZoneId>((message.targetId >> 12) & 0x0FFF);
         rerouteMessageToZoneId(zoneId, message);
     }
 }

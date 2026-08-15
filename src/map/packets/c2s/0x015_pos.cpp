@@ -21,14 +21,14 @@
 
 #include "0x015_pos.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "packets/s2c/0x0f5_tracking_pos.h"
 
 auto GP_CLI_COMMAND_POS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator(PChar)
-        .mustNotEqual(PChar->status, STATUS_TYPE::DISAPPEAR, "Character is disappearing")
-        .mustNotEqual(PChar->status, STATUS_TYPE::SHUTDOWN, "Character is shutting down");
+        .mustNotEqual(PChar->status, xi::Status::Disappear, "Character is disappearing")
+        .mustNotEqual(PChar->status, xi::Status::Shutdown, "Character is shutting down");
 }
 
 void GP_CLI_COMMAND_POS::process(MapSession* PSession, CCharEntity* PChar) const
@@ -66,11 +66,20 @@ void GP_CLI_COMMAND_POS::process(MapSession* PSession, CCharEntity* PChar) const
         PChar->loc.p.rotation = newRotation;
 
         PChar->m_TargID = newTargID;
+
+        PChar->m_lastMoveDistance = distance(PChar->m_previousLocation.p, PChar->loc.p, true);
     }
 
     if (moved)
     {
         PChar->updatemask |= UPDATE_POS; // Indicate that we want to update this PChar's PChar->loc or targID
+
+        PChar->setPersist(CharPersist::Position);
+
+        if (PChar->loc.zone != nullptr)
+        {
+            PChar->loc.zone->onEntityMoved(PChar);
+        }
 
         // Calculate rough amount of steps taken
         if (PChar->m_previousLocation.zone->GetID() == PChar->loc.zone->GetID())
@@ -91,11 +100,11 @@ void GP_CLI_COMMAND_POS::process(MapSession* PSession, CCharEntity* PChar) const
         PChar->WideScanTarget,
         [&](const auto& wideScanTarget)
         {
-            if (const auto* PWideScanEntity = PChar->GetEntity(wideScanTarget.targid, TYPE_MOB | TYPE_NPC))
+            if (const auto* PWideScanEntity = wideScanTarget.resolve())
             {
                 PChar->pushPacket<GP_SERV_COMMAND_TRACKING_POS>(PWideScanEntity);
 
-                if (PWideScanEntity->status == STATUS_TYPE::DISAPPEAR)
+                if (PWideScanEntity->status == xi::Status::Disappear)
                 {
                     PChar->WideScanTarget = std::nullopt;
                 }

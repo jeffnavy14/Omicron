@@ -7,20 +7,23 @@ local ID = zones[xi.zone.MHAURA]
 local zoneObject = {}
 
 zoneObject.onGameHour = function(zone)
+    -- Script for Laughing Bison sign flip animations.
     local laughingBison = GetNPCByID(ID.npc.LAUGHING_BISON)
     if laughingBison then
-        -- Script for Laughing Bison sign flip animations
-        local timer = 1152 - (GetSystemTime() - 1009810802) % 1152
+        local departureTime = VanadielHour() % 8
 
-        -- Next ferry is Al Zhabi for higher values.
-        if timer >= 576 then
+        -- Next ferry is Al Zhabi.
+        if departureTime == 0 then
             laughingBison:setAnimationSub(1)
-        else
+
+        -- Next ferry is Selbina.
+        elseif departureTime == 4 then
             laughingBison:setAnimationSub(0)
         end
     end
 
-    local destinationId = math.random(1, 100) <= 10 and xi.zone.SHIP_BOUND_FOR_SELBINA_PIRATES or xi.zone.SHIP_BOUND_FOR_SELBINA
+    -- Pirate logic.
+    local destinationId = math.randomInt(1, 100) <= 10 and xi.zone.SHIP_BOUND_FOR_SELBINA_PIRATES or xi.zone.SHIP_BOUND_FOR_SELBINA
     zone:setLocalVar('[Pirate]Zone', destinationId)
 end
 
@@ -29,7 +32,7 @@ zoneObject.onInitialize = function(zone)
 end
 
 zoneObject.onZoneIn = function(player, prevZone)
-    local cs = -1
+    local cs = { }
 
     if
         player:getXPos() == 0 and
@@ -42,7 +45,7 @@ zoneObject.onZoneIn = function(player, prevZone)
             prevZone == xi.zone.OPEN_SEA_ROUTE_TO_MHAURA or
             prevZone == xi.zone.SHIP_BOUND_FOR_MHAURA_PIRATES)
         then
-            cs = 202
+            cs = { 202, -1, bit.bor(xi.cutsceneFlag.RESET_CAMERA, xi.cutsceneFlag.NO_PCS) }
             player:setPos(14.960, -3.430, 18.423, 192)
         else
             player:setPos(0.003, -6.252, 117.971, 65)
@@ -70,14 +73,28 @@ zoneObject.onTransportEvent = function(player, prevZoneId, transportId)
             player:hasKeyItem(xi.ki.BOARDING_PERMIT) and
             player:hasKeyItem(xi.ki.FERRY_TICKET)
         then
-            player:startEvent(200)
+            player:startEvent(200, {
+                isHidden = true,
+                flags    = bit.bor(
+                    xi.cutsceneFlag.RESET_CAMERA,
+                    xi.cutsceneFlag.NO_PCS,
+                    xi.cutsceneFlag.NO_IDLE_WAIT
+                ),
+            })
         else
             player:startEvent(204)
             player:messageSpecial(ID.text.DO_NOT_POSSESS, xi.ki.BOARDING_PERMIT)
         end
     else
         if player:hasKeyItem(xi.ki.FERRY_TICKET) then
-            player:startEvent(200)
+            player:startEvent(200, {
+                isHidden = true,
+                flags    = bit.bor(
+                    xi.cutsceneFlag.RESET_CAMERA,
+                    xi.cutsceneFlag.NO_PCS,
+                    xi.cutsceneFlag.NO_IDLE_WAIT
+                ),
+            })
         else
             player:startEvent(204)
         end

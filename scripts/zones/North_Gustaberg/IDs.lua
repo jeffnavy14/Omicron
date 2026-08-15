@@ -9,49 +9,49 @@ zones[xi.zone.NORTH_GUSTABERG] =
     {
         CONQUEST_BASE                 = 0,     -- Tallying conquest results...
         NOTHING_HAPPENS               = 300,   -- Nothing happens...
-        ITEM_CANNOT_BE_OBTAINED_TWICE = 6565,  -- You cannot obtain any more.
-        ITEM_CANNOT_BE_OBTAINED       = 6566,  -- You cannot obtain the <item>. Come back after sorting your inventory.
-        FULL_INVENTORY_AFTER_TRADE    = 6570,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
-        ITEM_OBTAINED                 = 6574,  -- Obtained: <item>.
-        GIL_OBTAINED                  = 6575,  -- Obtained <number> gil.
-        KEYITEM_OBTAINED              = 6577,  -- Obtained key item: <keyitem>.
-        KEYITEM_LOST                  = 6578,  -- Lost key item: <keyitem>.
-        ITEMS_OBTAINED                = 6583,  -- You obtain <number> <item>!
-        NOTHING_OUT_OF_ORDINARY       = 6588,  -- There is nothing out of the ordinary here.
-        FELLOW_MESSAGE_OFFSET         = 6603,  -- I'm ready. I suppose.
-        CARRIED_OVER_POINTS           = 7185,  -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY       = 7186,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
-        LOGIN_NUMBER                  = 7187,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
-        MEMBERS_LEVELS_ARE_RESTRICTED = 7207,  -- Your party is unable to participate because certain members' levels are restricted.
-        FISHING_MESSAGE_OFFSET        = 7252,  -- You can't fish here.
-        DIG_THROW_AWAY                = 7265,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
-        FIND_NOTHING                  = 7267,  -- You dig and you dig, but find nothing.
-        FOUND_ITEM_WITH_EASE          = 7342,  -- It appears your chocobo found this item with ease.
-        SENSE_EVIL_PRESENCE           = 7356,  -- You sense an evil presence...
-        SPARKLING_LIGHT               = 7397,  -- The ground is sparkling with a strange light.
-        SHINING_OBJECT_SLIPS_AWAY     = 7461,  -- The shining object slips through your fingers and is washed further down the stream.
-        REACH_WATER_FROM_HERE         = 7468,  -- You can reach the water from here.
-        CONQUEST                      = 7504,  -- You've earned conquest points!
-        ITEMS_ITEMS_LA_LA             = 7856,  -- You can hear a strange voice... Items, items, la la la la la
-        GOBLIN_SLIPPED_AWAY           = 7862,  -- The Goblin slipped away when you were not looking...
-        GARRISON_BASE                 = 7872,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-        PLAYER_OBTAINS_ITEM           = 8087,  -- <name> obtains <item>!
-        UNABLE_TO_OBTAIN_ITEM         = 8088,  -- You were unable to obtain the item.
-        PLAYER_OBTAINS_TEMP_ITEM      = 8089,  -- <name> obtains the temporary item: <item>!
-        ALREADY_POSSESS_TEMP          = 8090,  -- You already possess that temporary item.
-        NO_COMBINATION                = 8095,  -- You were unable to enter a combination.
-        VOIDWALKER_DESPAWN            = 8126,  -- The monster fades before your eyes, a look of disappointment on its face.
-        TIME_ELAPSED                  = 8202,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
-        REGIME_REGISTERED             = 10418, -- New training regime registered!
-        VOIDWALKER_NO_MOB             = 11537, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
-        VOIDWALKER_MOB_TOO_FAR        = 11538, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
-        VOIDWALKER_MOB_HINT           = 11539, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
-        VOIDWALKER_SPAWN_MOB          = 11540, -- A monster materializes out of nowhere!
-        VOIDWALKER_UPGRADE_KI_1       = 11542, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
-        VOIDWALKER_UPGRADE_KI_2       = 11543, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
-        VOIDWALKER_BREAK_KI           = 11544, -- The <keyitem> shatters into tiny fragments.
-        VOIDWALKER_OBTAIN_KI          = 11545, -- Obtained key item: <keyitem>!
-        COMMON_SENSE_SURVIVAL         = 12491, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        ITEM_CANNOT_BE_OBTAINED_TWICE = 6567,  -- You cannot obtain any more.
+        ITEM_CANNOT_BE_OBTAINED       = 6568,  -- You cannot obtain the <item>. Come back after sorting your inventory.
+        FULL_INVENTORY_AFTER_TRADE    = 6572,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
+        ITEM_OBTAINED                 = 6576,  -- Obtained: <item>.
+        GIL_OBTAINED                  = 6577,  -- Obtained <number> gil.
+        KEYITEM_OBTAINED              = 6579,  -- Obtained key item: <keyitem>.
+        KEYITEM_LOST                  = 6580,  -- Lost key item: <keyitem>.
+        ITEMS_OBTAINED                = 6585,  -- You obtain <number> <item>!
+        NOTHING_OUT_OF_ORDINARY       = 6590,  -- There is nothing out of the ordinary here.
+        FELLOW_MESSAGE_OFFSET         = 6605,  -- I'm ready. I suppose.
+        CARRIED_OVER_POINTS           = 7187,  -- You have carried over <number> login point[/s].
+        LOGIN_CAMPAIGN_UNDERWAY       = 7188,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
+        LOGIN_NUMBER                  = 7189,  -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
+        MEMBERS_LEVELS_ARE_RESTRICTED = 7209,  -- Your party is unable to participate because certain members' levels are restricted.
+        FISHING_MESSAGE_OFFSET        = 7254,  -- You can't fish here.
+        DIG_THROW_AWAY                = 7267,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
+        FIND_NOTHING                  = 7269,  -- You dig and you dig, but find nothing.
+        FOUND_ITEM_WITH_EASE          = 7344,  -- It appears your chocobo found this item with ease.
+        SENSE_EVIL_PRESENCE           = 7358,  -- You sense an evil presence...
+        SPARKLING_LIGHT               = 7399,  -- The ground is sparkling with a strange light.
+        SHINING_OBJECT_SLIPS_AWAY     = 7463,  -- The shining object slips through your fingers and is washed further down the stream.
+        REACH_WATER_FROM_HERE         = 7470,  -- You can reach the water from here.
+        CONQUEST                      = 7506,  -- You've earned conquest points!
+        ITEMS_ITEMS_LA_LA             = 7858,  -- You can hear a strange voice... Items, items, la la la la la
+        GOBLIN_SLIPPED_AWAY           = 7864,  -- The Goblin slipped away when you were not looking...
+        GARRISON_BASE                 = 7874,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+        PLAYER_OBTAINS_ITEM           = 8089,  -- <name> obtains <item>!
+        UNABLE_TO_OBTAIN_ITEM         = 8090,  -- You were unable to obtain the item.
+        PLAYER_OBTAINS_TEMP_ITEM      = 8091,  -- <name> obtains the temporary item: <item>!
+        ALREADY_POSSESS_TEMP          = 8092,  -- You already possess that temporary item.
+        NO_COMBINATION                = 8097,  -- You were unable to enter a combination.
+        VOIDWALKER_DESPAWN            = 8128,  -- The monster fades before your eyes, a look of disappointment on its face.
+        TIME_ELAPSED                  = 8204,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
+        REGIME_REGISTERED             = 10420, -- New training regime registered!
+        VOIDWALKER_NO_MOB             = 11539, -- The <keyitem> quivers ever so slightly, but emits no light. There seem to be no monsters in the area.
+        VOIDWALKER_MOB_TOO_FAR        = 11540, -- The <keyitem> quivers ever so slightly and emits a faint light. There seem to be no monsters in the immediate vicinity.
+        VOIDWALKER_MOB_HINT           = 11541, -- The <keyitem> resonates [feebly/softly/solidly/strongly/very strongly/furiously], sending a radiant beam of light lancing towards a spot roughly <number> [yalm/yalms] [east/southeast/south/southwest/west/northwest/north/northeast] of here.
+        VOIDWALKER_SPAWN_MOB          = 11542, -- A monster materializes out of nowhere!
+        VOIDWALKER_UPGRADE_KI_1       = 11544, -- The <keyitem> takes on a slightly deeper hue and becomes <keyitem>!
+        VOIDWALKER_UPGRADE_KI_2       = 11545, -- The <keyitem> takes on a deeper, richer hue and becomes <keyitem>!
+        VOIDWALKER_BREAK_KI           = 11546, -- The <keyitem> shatters into tiny fragments.
+        VOIDWALKER_OBTAIN_KI          = 11547, -- Obtained key item: <keyitem>!
+        COMMON_SENSE_SURVIVAL         = 12493, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
@@ -107,7 +107,20 @@ zones[xi.zone.NORTH_GUSTABERG] =
 
     npc =
     {
-        OVERSEER_BASE = GetFirstID('Ennigreaud_RK'),
+        OVERSEER_BASE  = GetFirstID('Ennigreaud_RK'),
+        SIRENS_TEAR_QM = GetFirstID('qm1'),
+    },
+
+    positions =
+    {
+        sirensTear =
+        {
+            [1] = { 310.445, 1.511, 323.755 },
+            [2] = { 290.113, 1.877, 319.272 },
+            [3] = { 330.155, 1.929, 159.144 },
+            [4] = { 349.703, 1.938, 162.502 },
+            [5] = { 340.213, 2.869, 223.788 },
+        }
     },
 }
 

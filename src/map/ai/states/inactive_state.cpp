@@ -21,24 +21,31 @@
 
 #include "inactive_state.h"
 #include "ai/ai_container.h"
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 #include "status_effect_container.h"
 
-CInactiveState::CInactiveState(CBaseEntity* PEntity, timer::duration _duration, bool canChangeState, bool untargetable)
-: CState(PEntity, 0)
+CInactiveState::CInactiveState(xi::Badge<CState>, CBaseEntity* PEntity, const timer::duration _duration, const bool canChangeState, const bool untargetable)
+: CState(PEntity, PEntity->entityId())
 , m_duration(_duration)
 , m_canChangeState(canChangeState)
 , m_untargetable(untargetable)
 {
-    if (!canChangeState)
-    {
-        PEntity->PAI->InterruptStates();
-    }
+    // Capture constructor arguments into members and nothing else. All other logic goes into init().
 }
 
-bool CInactiveState::Update(timer::time_point tick)
+auto CInactiveState::init() -> StateErrorOr<void>
 {
-    auto* PBattleEntity{ dynamic_cast<CBattleEntity*>(m_PEntity) };
+    if (!m_canChangeState)
+    {
+        m_PEntity->PAI->InterruptStates();
+    }
+
+    return Success();
+}
+
+auto CInactiveState::Update(const timer::time_point tick) -> bool
+{
+    const auto* PBattleEntity{ dynamic_cast<CBattleEntity*>(m_PEntity) };
     if (PBattleEntity && m_duration == 0ms)
     {
         if (PBattleEntity->isDead())
@@ -47,7 +54,7 @@ bool CInactiveState::Update(timer::time_point tick)
         }
 
         if (!PBattleEntity->StatusEffectContainer->HasPreventActionEffect() ||
-            (PBattleEntity->StatusEffectContainer->HasStatusEffect({ EFFECT_CHARM, EFFECT_CHARM_II }) && !PBattleEntity->StatusEffectContainer->HasPreventActionEffect(true)))
+            (PBattleEntity->StatusEffectContainer->HasStatusEffect({ xi::StatusEffect::CharmI, xi::StatusEffect::CharmIi }) && !PBattleEntity->StatusEffectContainer->HasPreventActionEffect(true)))
         {
             return true;
         }
@@ -58,4 +65,24 @@ bool CInactiveState::Update(timer::time_point tick)
 
 void CInactiveState::Cleanup(timer::time_point tick)
 {
+}
+
+auto CInactiveState::GetUntargetable() const -> bool
+{
+    return m_untargetable;
+}
+
+auto CInactiveState::CanChangeState() -> bool
+{
+    return m_canChangeState;
+}
+
+auto CInactiveState::CanFollowPath() -> bool
+{
+    return false;
+}
+
+auto CInactiveState::CanInterrupt() -> bool
+{
+    return false;
 }

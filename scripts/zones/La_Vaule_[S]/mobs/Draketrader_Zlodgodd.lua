@@ -46,13 +46,10 @@ entity.onMobSpawn = function(mob)
     end)
 end
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     mob:removeListener('TRIPLE_JUMP')
     mob:resetLocalVars()
-    mob:setRespawnTime(math.random(7200, 18000)) -- 2 to 5 hours
+    mob:setRespawnTime(math.randomInt(7200, 18000)) -- 2 to 5 hours
 end
 
 return entity

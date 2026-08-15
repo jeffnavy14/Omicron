@@ -22,11 +22,11 @@
 #pragma once
 
 #include "base.h"
-#include <vector>
 
 class CCharEntity;
 
 #pragma pack(push, 1)
+
 struct partymemberbuffs_t
 {
     uint32_t UniqueNo;
@@ -35,6 +35,7 @@ struct partymemberbuffs_t
     uint64_t Bits;
     uint8_t  Buffs[32];
 };
+
 #pragma pack(pop)
 
 // https://github.com/atom0s/XiPackets/tree/main/world/server/0x0076

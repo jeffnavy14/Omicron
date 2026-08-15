@@ -22,7 +22,7 @@
 #pragma once
 
 #include "common/cbasetypes.h"
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 #include "enums/action/animation.h"
 #include "enums/action/category.h"
 #include "enums/action/hit_distortion.h"
@@ -32,15 +32,13 @@
 #include "enums/action/proc_kind.h"
 #include "enums/action/react_kind.h"
 #include "enums/action/resolution.h"
-#include "enums/four_cc.h"
 #include "spell.h"
-#include "zone.h"
 
 #define MAX_ACTION_TARGETS 64
 
 struct attack_outcome_t
 {
-    ATTACK_TYPE    atkType{ ATTACK_TYPE::PHYSICAL };
+    xi::AttackType atkType{ xi::AttackType::Physical };
     int32          damage{ 0 };
     CBattleEntity* target{ nullptr };
     bool           isCritical{ false };

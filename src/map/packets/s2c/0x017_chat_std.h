@@ -23,10 +23,13 @@
 
 #include "base.h"
 
+#include "data/enums/zone.h"
+
 #include <string>
 
 enum CHAT_MESSAGE_TYPE : uint8_t;
 class CCharEntity;
+
 namespace ipc
 {
 
@@ -53,7 +56,7 @@ public:
     GP_SERV_COMMAND_CHAT_STD(const CCharEntity* PChar, CHAT_MESSAGE_TYPE MessageType, const std::string& message, const std::string& sender = std::string());
 
     // Zone-based constructor
-    GP_SERV_COMMAND_CHAT_STD(const std::string& name, uint16 zone, CHAT_MESSAGE_TYPE MessageType, const std::string& message, uint8 gmLevel = 0);
+    GP_SERV_COMMAND_CHAT_STD(const std::string& name, xi::ZoneId zone, CHAT_MESSAGE_TYPE MessageType, const std::string& message, uint8 gmLevel = 0);
 
     // IPC assist constructor
     GP_SERV_COMMAND_CHAT_STD(const ipc::ChatMessageAssist& payload);

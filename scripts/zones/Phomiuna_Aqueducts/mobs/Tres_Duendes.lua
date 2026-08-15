@@ -37,7 +37,7 @@ entity.onMobFight = function(mob, target)
 
         local selectedForm
         if form == 12 or form == 13 then
-            selectedForm = math.random(1, 2) == 1 and formConfigs.vertical or formConfigs.horizontal
+            selectedForm = math.randomInt(1, 2) == 1 and formConfigs.vertical or formConfigs.horizontal
         else
             selectedForm = formConfigs.normal
         end
@@ -48,7 +48,7 @@ entity.onMobFight = function(mob, target)
             mobArg:setAutoAttackEnabled(true)
         end)
 
-        mob:setMobMod(xi.mobMod.WEAPON_BONUS, selectedForm.bonus)
+        mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, selectedForm.bonus)
         mob:setDelay(selectedForm.delay)
         mob:setAnimationSub(selectedForm.animSub)
         mob:setMod(xi.mod.TRIPLE_ATTACK, selectedForm.tripleAtk)
@@ -71,19 +71,19 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpMoves, xi.mobSkill.KNIFE_EDGE_CIRCLE)
     end
 
-    return tpMoves[math.random(1, #tpMoves)]
+    return tpMoves[math.randomInt(1, #tpMoves)]
 end
 
 entity.onMobDisengage = function(mob)
     -- Reset to normal form with normal mode stats
     mob:setAnimationSub(13)
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 0)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 0)
     mob:setDelay(240)
     mob:setMod(xi.mod.TRIPLE_ATTACK, 0)
 end
 
 entity.onMobDespawn = function(mob)
-    mob:setRespawnTime(math.random(75600, 86400)) -- 21 to 24 hours
+    mob:setRespawnTime(math.randomInt(75600, 86400)) -- 21 to 24 hours
 end
 
 return entity

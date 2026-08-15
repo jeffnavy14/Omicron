@@ -21,12 +21,9 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = xi.mobSkill.EES_AERN, hpp = math.random(90, 95), cooldown = 120 }
+            { id = xi.mobSkill.EES_AERN, hpp = math.randomInt(90, 95), cooldown = 120 }
         }
     })
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

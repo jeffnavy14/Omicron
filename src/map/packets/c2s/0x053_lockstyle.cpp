@@ -26,8 +26,11 @@
 #include "packets/char_sync.h"
 #include "packets/s2c/0x009_message.h"
 #include "packets/s2c/0x051_grap_list.h"
+#include "packets/s2c/0x11c_lockstyle_error.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
+
+#include <vector>
 
 namespace
 {
@@ -58,7 +61,7 @@ void GP_CLI_COMMAND_LOCKSTYLE::process(MapSession* PSession, CCharEntity* PChar)
             if (PChar->getStyleLocked())
             {
                 charutils::SetStyleLock(PChar, false);
-                PChar->RequestPersist(CHAR_PERSIST::EQUIP);
+                PChar->setPersist(CharPersist::Look);
                 updateClientAppearance(PChar);
             }
         }
@@ -78,6 +81,9 @@ void GP_CLI_COMMAND_LOCKSTYLE::process(MapSession* PSession, CCharEntity* PChar)
             // TODO: First, move this to charutils.
             // TODO: Missing a handful of retail checks here
             charutils::SetStyleLock(PChar, true);
+
+            // Any items that we fail to lockstyle will be reported to the client
+            std::vector<uint16_t> failedItemIds;
 
             // Build new lockstyle
             for (int i = 0; i < this->Count; i++)
@@ -100,12 +106,29 @@ void GP_CLI_COMMAND_LOCKSTYLE::process(MapSession* PSession, CCharEntity* PChar)
                 {
                     itemId = 0;
                 }
+                else if (!charutils::HasItem(PChar, itemId, IncludeRecycleBin::No)) // valid for the slot but not owned
+                {
+                    failedItemIds.push_back(itemId);
+                    itemId = 0;
+                }
+                else if (!charutils::canEquipItemOnAnyJob(PChar, PItem)) // owned but no leveled job can equip it
+                {
+                    failedItemIds.push_back(itemId);
+                    itemId = 0;
+                }
+                else if ((item.EquipKind == SLOT_MAIN || item.EquipKind == SLOT_SUB || item.EquipKind == SLOT_RANGED) &&
+                         !charutils::hasValidStyle(PChar, PChar->getEquip(static_cast<SLOTTYPE>(item.EquipKind)), PItem))
+                {
+                    // A weapon appearance can only be locked over a weapon of the same skill type
+                    failedItemIds.push_back(itemId);
+                    itemId = 0;
+                }
 
                 PChar->styleItems[item.EquipKind] = itemId;
 
-                if (i == SLOT_MAIN)
+                if (i == SLOT_MAIN && itemId != 0)
                 {
-                    if (const CItemWeapon* PItemWeapon = dynamic_cast<const CItemWeapon*>(PItem); PItemWeapon)
+                    if (auto* PItemWeapon = dynamic_cast<const CItemWeapon*>(PItem); PItemWeapon)
                     {
                         if (PItemWeapon->isHandToHand())
                         {
@@ -165,7 +188,13 @@ void GP_CLI_COMMAND_LOCKSTYLE::process(MapSession* PSession, CCharEntity* PChar)
             }
 
             charutils::UpdateRemovedSlotsLookForLockStyle(PChar);
-            PChar->RequestPersist(CHAR_PERSIST::EQUIP);
+
+            if (!failedItemIds.empty())
+            {
+                PChar->pushPacket<GP_SERV_COMMAND_LOCKSTYLE_ERROR>(failedItemIds);
+            }
+
+            PChar->setPersist(CharPersist::Look);
             updateClientAppearance(PChar);
         }
         break;
@@ -173,7 +202,7 @@ void GP_CLI_COMMAND_LOCKSTYLE::process(MapSession* PSession, CCharEntity* PChar)
         {
             charutils::SetStyleLock(PChar, true);
             charutils::UpdateRemovedSlotsLookForLockStyle(PChar);
-            PChar->RequestPersist(CHAR_PERSIST::EQUIP);
+            PChar->setPersist(CharPersist::Look);
             updateClientAppearance(PChar);
         }
         break;

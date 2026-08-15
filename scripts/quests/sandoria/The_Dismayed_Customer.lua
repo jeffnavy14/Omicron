@@ -12,7 +12,7 @@ local quest = Quest:new(xi.questLog.SANDORIA, xi.quest.id.sandoria.THE_DISMAYED_
 
 quest.reward =
 {
-    fame = 30,
+    fame = 20,
     fameArea = xi.fameArea.SANDORIA,
     gil = 560,
     title = xi.title.LOST_FOUND_OFFICER,
@@ -47,7 +47,7 @@ quest.sections =
                 [605] = function(player, csid, option, npc)
                     if option == 0 then
                         quest:begin(player)
-                        quest:setVar(player, 'Stage', math.random(1, 3))
+                        quest:setVar(player, 'Stage', math.randomInt(1, 3))
                     end
                 end,
             },

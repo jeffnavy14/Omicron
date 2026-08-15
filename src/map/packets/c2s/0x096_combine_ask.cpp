@@ -21,7 +21,7 @@
 
 #include "0x096_combine_ask.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "enums/msg_std.h"
 #include "items.h"
 #include "items/transactions/synth.h"
@@ -30,6 +30,8 @@
 #include "universal_container.h"
 #include "utils/jailutils.h"
 #include "utils/synthutils.h"
+
+#include <array>
 
 namespace
 {
@@ -91,40 +93,12 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
         return;
     }
 
-    // NOTE: This section is intended to be temporary to ensure that duping shenanigans aren't possible.
-    // It should be replaced by something more robust or more stateful as soon as is reasonable
-    auto* PTarget = static_cast<CCharEntity*>(PChar->GetEntity(PChar->TradePending.targid, TYPE_PC));
-
-    // Clear pending trades on synthesis start
-    if (PTarget && PChar->TradePending.id == PTarget->id)
-    {
-        PChar->TradePending.clean();
-        PTarget->TradePending.clean();
-    }
-
-    // Clears out trade session and blocks synthesis at any point in trade process after accepting
-    // trade request.
     if (PChar->UContainer->GetType() != UCONTAINER_EMPTY)
     {
-        if (PTarget)
-        {
-            ShowDebug("%s trade request with %s was canceled because %s tried to craft.",
-                      PChar->getName(),
-                      PTarget->getName(),
-                      PChar->getName());
-
-            PTarget->TradePending.clean();
-            PTarget->UContainer->Clean();
-            PTarget->pushPacket<GP_SERV_COMMAND_ITEM_TRADE_RES>(PChar, GP_ITEM_TRADE_RES_KIND::Cancell);
-            PChar->pushPacket<GP_SERV_COMMAND_ITEM_TRADE_RES>(PTarget, GP_ITEM_TRADE_RES_KIND::Cancell);
-        }
-
         PChar->pushPacket<GP_SERV_COMMAND_MESSAGE>(MsgStd::CannotBeProcessed);
-        PChar->TradePending.clean();
         PChar->UContainer->Clean();
         return;
     }
-    // End temporary additions
 
     const auto* PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(this->CrystalIdx);
     if (!PItem ||
@@ -145,10 +119,10 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
     }
 
     SynthOffer offer{
-        .crystal = { this->Crystal, this->CrystalIdx },
+        .crystal = { .itemId = this->Crystal, .invSlot = this->CrystalIdx },
     };
 
-    std::vector<uint8> slotQty(MAX_CONTAINER_SIZE);
+    std::array<uint8, 256> slotQty{};
     for (int32 slotId = 0; slotId < this->Items; ++slotId)
     {
         const uint16 itemId    = this->ItemNo[slotId];
@@ -170,7 +144,7 @@ void GP_CLI_COMMAND_COMBINE_ASK::process(MapSession* PSession, CCharEntity* PCha
             continue;
         }
 
-        offer.ingredients[slotId] = { itemId, invSlotId };
+        offer.ingredients[slotId] = { .itemId = itemId, .invSlot = invSlotId };
     }
 
     synthutils::startSynth(PChar, offer);

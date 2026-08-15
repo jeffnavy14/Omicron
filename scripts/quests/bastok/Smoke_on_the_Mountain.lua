@@ -13,7 +13,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.SMOKE_ON_THE_MOUN
 
 quest.reward =
 {
-    fame     = 5,
+    fame     = 10,
     fameArea = xi.fameArea.BASTOK,
     gil      = 300,
     title    = xi.title.HOT_DOG,
@@ -49,7 +49,7 @@ quest.sections =
             ['Hungry_Wolf'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.GALKAN_SAUSAGE) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.GALKAN_SAUSAGE, 1 } }) then
                         return quest:progressEvent(429)
                     end
                 end,
@@ -58,13 +58,9 @@ quest.sections =
             onEventFinish =
             {
                 [429] = function(player, csid, option, npc)
-                    player:confirmTrade()
-
-                    if player:getQuestStatus(quest.areaId, quest.questId) == xi.questStatus.QUEST_ACCEPTED then
-                        player:addFame(xi.fameArea.BASTOK, 25)
+                    if quest:complete(player) then
+                        player:tradeComplete()
                     end
-
-                    quest:complete(player)
                 end,
             },
         },
@@ -79,9 +75,9 @@ quest.sections =
             ['qm2'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.SLICE_OF_GIANT_SHEEP_MEAT) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.SLICE_OF_GIANT_SHEEP_MEAT, 1 } }) then
                         if quest:getLocalVar(player, 'Timer') == 0 then
-                            player:confirmTrade()
+                            player:tradeComplete()
                             quest:setLocalVar(player, 'Timer', GetSystemTime() + 60)
 
                             return quest:messageSpecial(southGustabergID.text.FIRE_PUT, xi.item.SLICE_OF_GIANT_SHEEP_MEAT)

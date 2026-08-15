@@ -253,11 +253,17 @@ end
 
 xi.nyzul.specifiedEnemySet = function(mob)
     local instance = mob:getInstance()
+    local targetId = instance:getLocalVar('Nyzul_Specified_Enemy')
 
-    if instance:getStage() == xi.nyzul.objective.ELIMINATE_SPECIFIED_ENEMY then
-        if instance:getLocalVar('Nyzul_Specified_Enemy') == 0 then
-            mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
-        end
+    -- Clear potential NM status from previous floor
+    mob:setMobMod(xi.mobMod.CHECK_AS_NM, 0)
+
+    if
+        instance:getStage() == xi.nyzul.objective.ELIMINATE_SPECIFIED_ENEMY and
+        targetId ~= 0 and
+        mob:getID() == targetId
+    then
+        mob:setMobMod(xi.mobMod.CHECK_AS_NM, 1)
     end
 end
 
@@ -297,6 +303,10 @@ xi.nyzul.activateRuneOfTransfer = function(instance)
 end
 
 xi.nyzul.vigilWeaponDrop = function(player, mob)
+    if not player then
+        return
+    end
+
     local instance = mob:getInstance()
 
     -- Only floor 100 Bosses to drop 1 random weapon guarenteed and 1 of the disk holders job
@@ -315,11 +325,11 @@ xi.nyzul.vigilWeaponDrop = function(player, mob)
             end
         end
 
-        player:addTreasure(xi.nyzul.baseWeapons[math.random(1, #xi.nyzul.baseWeapons)], mob)
+        player:addTreasure(xi.nyzul.baseWeapons[math.randomInt(1, #xi.nyzul.baseWeapons)], mob)
 
     -- Every NM can randomly drop a vigil weapon
-    elseif math.random(1, 100) <= 20 and xi.settings.main.ENABLE_VIGIL_DROPS then
-        player:addTreasure(xi.nyzul.baseWeapons[math.random(1, #xi.nyzul.baseWeapons)], mob)
+    elseif math.randomInt(1, 100) <= 20 and xi.settings.main.ENABLE_VIGIL_DROPS then
+        player:addTreasure(xi.nyzul.baseWeapons[math.randomInt(1, #xi.nyzul.baseWeapons)], mob)
     end
 end
 
@@ -353,7 +363,7 @@ xi.nyzul.spawnChest = function(mob, player)
         mobID < ID.mob.BOSS_OFFSET and
         xi.settings.main.ENABLE_NYZUL_CASKETS
     then
-        if math.random(1, 100) <= 6 then
+        if math.randomInt(1, 100) <= 6 then
             for casketID = ID.npc.TREASURE_CASKET_OFFSET, ID.npc.TREASURE_CASKET_OFFSET + 3 do
                 local casket = GetNPCByID(casketID, instance)
 

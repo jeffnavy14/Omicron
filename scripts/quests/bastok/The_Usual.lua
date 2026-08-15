@@ -10,7 +10,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.THE_USUAL)
 
 quest.reward =
 {
-    fame     = 30,
+    fame     = 50,
     fameArea = xi.fameArea.BASTOK,
     item     = xi.item.SPEED_BOW,
     title    = xi.title.STEAMING_SHEEP_REGULAR,
@@ -51,8 +51,8 @@ quest.sections =
             {
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHasExactly(trade, xi.item.KING_TRUFFLE) and
-                        not player:hasKeyItem(xi.ki.STEAMING_SHEEP_INVITATION)
+                        not player:hasKeyItem(xi.ki.STEAMING_SHEEP_INVITATION) and
+                        npcUtil.tradeMatches(trade, { { xi.item.KING_TRUFFLE, 1 } })
                     then
                         return quest:progressEvent(135)
                     end
@@ -68,7 +68,7 @@ quest.sections =
             onEventFinish =
             {
                 [135] = function(player, csid, option, npc)
-                    player:confirmTrade()
+                    player:tradeComplete()
 
                     npcUtil.giveKeyItem(player, xi.ki.STEAMING_SHEEP_INVITATION)
                 end,

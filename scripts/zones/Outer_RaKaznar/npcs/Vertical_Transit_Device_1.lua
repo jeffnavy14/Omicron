@@ -1,17 +1,13 @@
 -----------------------------------
 -- Area: Outer Ra'Kaznar
---  NPC: Vertical Transit Device (1)
--- !pos -506.698 -141 -20 274
+--  NPC: Vertical Transit Device
+-- !pos -460 -141 -66.807 274
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(43, 0, 300, 0, 100, 269951, 1, 301643, 0)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-    -- TODO: Verify that CS moves the player
+    player:startEvent(43, 0, 300, 0, 100, 0, 1, 0, 0)
 end
 
 return entity

@@ -22,14 +22,11 @@
 #include "xirand.h"
 
 #include <array>
-#include <cstddef>
 #include <fstream>
-#include <stdexcept>
 
 // https://stackoverflow.com/a/45069417
 #ifdef _WIN32
 
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 #include <wincrypt.h>

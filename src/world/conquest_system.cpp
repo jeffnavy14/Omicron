@@ -23,8 +23,9 @@
 
 #include "ipc_server.h"
 
-#include "common/database.h"
 #include "common/ipp.h"
+
+#include "common/settings.h"
 
 ConquestSystem::ConquestSystem(WorldEngine& worldServer)
 : worldServer_(worldServer)
@@ -57,6 +58,24 @@ bool ConquestSystem::handleMessage(uint8 messageType, IPPMessage&& message)
                 // Influence updates are sent periodically via time_server instead.
                 // It is okay for map servers to be eventually consistent.
                 updateInfluencePoints((*object).points, (*object).nation, static_cast<REGION_TYPE>((*object).region));
+            }
+            return true;
+        }
+        break;
+        case ConquestMessage::M2W_AddMobKills:
+        {
+            if (const auto object = ipc::fromBytes<ConquestAddCounter>(message.payload))
+            {
+                addMobKills((*object).count, static_cast<REGION_TYPE>((*object).region));
+            }
+            return true;
+        }
+        break;
+        case ConquestMessage::M2W_AddPlayerHomepoints:
+        {
+            if (const auto object = ipc::fromBytes<ConquestAddCounter>(message.payload))
+            {
+                addPlayerHomepoints((*object).count, static_cast<REGION_TYPE>((*object).region));
             }
             return true;
         }
@@ -108,50 +127,100 @@ bool ConquestSystem::updateInfluencePoints(int points, unsigned int nation, REGI
         return false;
     }
 
-    const auto rset = db::preparedStmt("SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system WHERE region_id = ?",
+    if (nation > NATION_WINDURST)
+    {
+        return false;
+    }
+
+    const auto rset = db::preparedStmt("SELECT sandoria_influence, bastok_influence, windurst_influence FROM conquest_system WHERE region_id = ?",
                                        static_cast<uint8>(region));
     if (!rset || rset->rowsCount() == 0 || !rset->next())
     {
         return false;
     }
 
-    int influences[4] = {
+    int influences[3] = {
         rset->get<int>("sandoria_influence"),
         rset->get<int>("bastok_influence"),
         rset->get<int>("windurst_influence"),
-        rset->get<int>("beastmen_influence"),
     };
 
-    if (influences[nation] == 5000)
-    {
-        return false;
-    }
+    const int total = influences[0] + influences[1] + influences[2];
 
-    auto lost = 0;
-    for (auto i = 0u; i < 4; ++i)
+    // Read from main settings. Protect against 0 or too high of number.
+    // Restricted by a factor of 100 because of packet lines in 0x05e_conquest.cpp
+    const int32 influenceCapSetting = std::clamp<int32>(settings::get<int32>("main.CONQUEST_INFLUENCE_CAP"), 1, 20000000);
+
+    // Account for situation where influenceCapSetting was reduced midweek.
+    const int32 influenceCap = std::max<int32>(influenceCapSetting, total);
+
+    const int room = influenceCap - total;
+
+    if (points <= room) // Pool is not capped and there is space. Straight add.
     {
-        if (i == nation)
+        influences[nation] += points;
+    }
+    else // Pool is full. Gains come out of the other nations.
+    {
+        // Fill the remaining room first, then redistribute the overflow.
+        influences[nation] += room;
+
+        // Do not adjust anything if the nation is already at the pool maximum.
+        if (influences[nation] < influenceCap)
         {
-            continue;
+            const int overflow = points - room;
+
+            auto lost = 0;
+            for (auto i = 0u; i < 3; ++i)
+            {
+                if (i == nation)
+                {
+                    continue;
+                }
+
+                const int64 share = static_cast<int64>(overflow) * influences[i] / (influenceCap - influences[nation]);
+                auto        loss  = std::min<int>(static_cast<int>(share), influences[i]);
+                influences[i] -= loss;
+                lost += loss;
+            }
+
+            influences[nation] += lost;
         }
-
-        auto loss = std::min<int>(points * influences[i] / (5000 - influences[nation]), influences[i]);
-        influences[i] -= loss;
-        lost += loss;
     }
-
-    influences[nation] += lost;
 
     const auto rset2 = db::preparedStmt(
         "UPDATE conquest_system SET sandoria_influence = ?, bastok_influence = ?, "
-        "windurst_influence = ?, beastmen_influence = ? WHERE region_id = ?",
+        "windurst_influence = ? WHERE region_id = ?",
         influences[0],
         influences[1],
         influences[2],
-        influences[3],
         static_cast<uint8>(region));
 
     return !rset2;
+}
+
+void ConquestSystem::addMobKills(int32 count, REGION_TYPE region)
+{
+    const auto rset = db::preparedStmt("UPDATE conquest_system SET mob_kills = mob_kills + ? WHERE region_id = ?",
+                                       count,
+                                       static_cast<uint8>(region));
+
+    if (!rset)
+    {
+        ShowError("addMobKills: Failed to update mob_kills");
+    }
+}
+
+void ConquestSystem::addPlayerHomepoints(int32 count, REGION_TYPE region)
+{
+    const auto rset = db::preparedStmt("UPDATE conquest_system SET player_homepoints = player_homepoints + ? WHERE region_id = ?",
+                                       count,
+                                       static_cast<uint8>(region));
+
+    if (!rset)
+    {
+        ShowError("addPlayerHomepoints: Failed to update player_homepoints");
+    }
 }
 
 void ConquestSystem::updateWeekConquest()
@@ -160,19 +229,56 @@ void ConquestSystem::updateWeekConquest()
 
     sendTallyStartMsg();
 
-    const auto query = "UPDATE conquest_system SET region_control = "
-                       "IF(sandoria_influence > bastok_influence AND sandoria_influence > windurst_influence AND "
-                       "sandoria_influence > beastmen_influence, 0, "
-                       "IF(bastok_influence > sandoria_influence AND bastok_influence > windurst_influence AND "
-                       "bastok_influence > beastmen_influence, 1, "
-                       "IF(windurst_influence > bastok_influence AND windurst_influence > sandoria_influence AND "
-                       "windurst_influence > beastmen_influence, 2, 3)))";
+    // Update the nation that controlled the region previously. Used in rare situations.
+    db::preparedStmt("UPDATE conquest_system SET region_control_prev = region_control");
 
-    const auto rset = db::preparedStmt(query);
-    if (!rset)
+    const auto influences = getRegionalInfluences();
+    if (influences.empty())
     {
-        ShowError("handleWeeklyUpdate() failed");
+        ShowError("updateWeekConquest: no influence rows returned");
     }
+
+    for (uint8 regionId = 0; regionId < influences.size(); ++regionId)
+    {
+        const auto& influence = influences[regionId];
+
+        const int32 sandoria = influence.sandoria_influence;
+        const int32 bastok   = influence.bastok_influence;
+        const int32 windurst = influence.windurst_influence;
+        const int32 beastmen = ConquestData::CalculateBeastmenInfluence(static_cast<REGION_TYPE>(regionId), influence);
+
+        uint8 control = NATION_NEUTRAL;
+        if (sandoria > bastok && sandoria > windurst && sandoria > beastmen)
+        {
+            control = NATION_SANDORIA;
+        }
+        else if (bastok > sandoria && bastok > windurst && bastok > beastmen)
+        {
+            control = NATION_BASTOK;
+        }
+        else if (windurst > sandoria && windurst > bastok && windurst > beastmen)
+        {
+            control = NATION_WINDURST;
+        }
+        else if (beastmen > sandoria && beastmen > bastok && beastmen > windurst)
+        {
+            control = NATION_BEASTMEN;
+        }
+
+        db::preparedStmt("UPDATE conquest_system SET region_control = ? WHERE region_id = ?", control, regionId);
+    }
+
+    // Reset influence for the new week.
+    const auto resetRset = db::preparedStmt("UPDATE conquest_system SET sandoria_influence = 0, bastok_influence = 0, "
+                                            "windurst_influence = 0, mob_kills = 0, player_homepoints = 0");
+
+    if (!resetRset)
+    {
+        ShowError("updateWeekConquest: Failed to reset influence");
+    }
+
+    // Push the reset influence out.
+    sendInfluencesMsg(ShouldUpdateZones::No);
 
     sendRegionControlsMsg(ConquestMessage::W2M_WeeklyUpdateEnd);
 }
@@ -189,7 +295,7 @@ void ConquestSystem::updateVanaHourlyConquest()
 
 auto ConquestSystem::getRegionalInfluences() -> std::vector<influence_t> const
 {
-    const auto rset = db::preparedStmt("SELECT sandoria_influence, bastok_influence, windurst_influence, beastmen_influence FROM conquest_system");
+    const auto rset = db::preparedStmt("SELECT sandoria_influence, bastok_influence, windurst_influence, mob_kills, player_homepoints FROM conquest_system ORDER BY region_id");
 
     std::vector<influence_t> influences;
     if (rset && rset->rowsCount())
@@ -197,10 +303,11 @@ auto ConquestSystem::getRegionalInfluences() -> std::vector<influence_t> const
         while (rset->next())
         {
             influence_t influence{};
-            influence.sandoria_influence = rset->get<uint16>("sandoria_influence");
-            influence.bastok_influence   = rset->get<uint16>("bastok_influence");
-            influence.windurst_influence = rset->get<uint16>("windurst_influence");
-            influence.beastmen_influence = rset->get<uint16>("beastmen_influence");
+            influence.sandoria_influence = rset->get<int32>("sandoria_influence");
+            influence.bastok_influence   = rset->get<int32>("bastok_influence");
+            influence.windurst_influence = rset->get<int32>("windurst_influence");
+            influence.mob_kills          = rset->get<int32>("mob_kills");
+            influence.player_homepoints  = rset->get<int32>("player_homepoints");
             influences.emplace_back(influence);
         }
     }

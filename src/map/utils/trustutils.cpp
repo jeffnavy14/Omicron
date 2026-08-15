@@ -23,14 +23,13 @@
 
 #include "common/utils.h"
 
+#include <common/types/hash_map.h>
+
 #include <algorithm>
-#include <cstring>
-#include <vector>
 
 #include "battleutils.h"
-#include "charutils.h"
+#include "data/loader.h"
 #include "mobutils.h"
-#include "zoneutils.h"
 
 #include "grades.h"
 #include "mob_spell_list.h"
@@ -38,13 +37,11 @@
 #include "ai/ai_container.h"
 #include "ai/controllers/trust_controller.h"
 #include "ai/helpers/gambits_container.h"
-#include "entities/mobentity.h"
-#include "entities/trustentity.h"
+#include "entities/trust_entity.h"
 #include "items/item_weapon.h"
 #include "mobskill.h"
 #include "status_effect_container.h"
 #include "weapon_skill.h"
-#include "zone_instance.h"
 
 //
 // Forward declarations
@@ -67,13 +64,13 @@ static std::unordered_set<SpellID> passiveTrustIDs = {
 
 struct TrustData
 {
-    uint32      trustID{};
-    bool        isPassiveTrust{};
-    uint32      pool{};
-    look_t      look;        // appearance data
-    std::string name;        // script name string
-    std::string packet_name; // packet name string
-    ECOSYSTEM   EcoSystem{}; // ecosystem
+    uint32        trustID{};
+    bool          isPassiveTrust{};
+    uint32        pool{};
+    look_t        look;        // appearance data
+    std::string   name;        // script name string
+    std::string   packet_name; // packet name string
+    xi::Ecosystem EcoSystem{}; // ecosystem
 
     uint8  name_prefix{};
     uint8  modelSize{ 0 };
@@ -82,8 +79,8 @@ struct TrustData
 
     uint8 mJob{};
     uint8 sJob{};
-    float HPscale{}; // HP boost percentage
-    float MPscale{}; // MP boost percentage
+    float HPscale{ 1.f };
+    float MPscale{ 1.f };
 
     uint8  cmbSkill{};
     uint16 cmbDmgMult{};
@@ -143,9 +140,11 @@ struct TrustData
     int8 light_sleep_res_rank{};
     int8 dark_sleep_res_rank{};
     int8 blind_res_rank{};
+    int8 stun_res_rank{};
+    int8 gravity_res_rank{};
 };
 
-std::unordered_map<uint16, std::unique_ptr<TrustData>> g_PTrustData;
+HashMap<uint16, std::unique_ptr<TrustData>> g_PTrustData;
 
 void trustutils::LoadTrustList()
 {
@@ -218,21 +217,6 @@ void BuildTrustData(uint32 TrustID)
                                        "mob_pools.modelSize, "
                                        "mob_pools.modelHitboxSize, "
                                        "spell_list.spellid, "
-                                       "mob_species_system.ecosystemID, "
-                                       "(mob_species_system.HP / 100) AS HP, "
-                                       "(mob_species_system.MP / 100) AS MP, "
-                                       "mob_species_system.speed, "
-                                       "mob_species_system.STR, "
-                                       "mob_species_system.DEX, "
-                                       "mob_species_system.VIT, "
-                                       "mob_species_system.AGI, "
-                                       "mob_species_system.INT, "
-                                       "mob_species_system.MND, "
-                                       "mob_species_system.CHR, "
-                                       "mob_species_system.DEF, "
-                                       "mob_species_system.ATT, "
-                                       "mob_species_system.ACC, "
-                                       "mob_species_system.EVA, "
                                        "mob_resistances.slash_sdt, mob_resistances.pierce_sdt, "
                                        "mob_resistances.h2h_sdt, mob_resistances.impact_sdt, "
                                        "mob_resistances.magical_sdt, "
@@ -247,12 +231,12 @@ void BuildTrustData(uint32 TrustID)
                                        "mob_resistances.paralyze_res_rank, mob_resistances.bind_res_rank, "
                                        "mob_resistances.silence_res_rank, mob_resistances.slow_res_rank, "
                                        "mob_resistances.poison_res_rank, mob_resistances.light_sleep_res_rank, "
-                                       "mob_resistances.dark_sleep_res_rank, mob_resistances.blind_res_rank "
-                                       "FROM spell_list, mob_pools, mob_species_system, mob_resistances "
+                                       "mob_resistances.dark_sleep_res_rank, mob_resistances.blind_res_rank, "
+                                       "mob_resistances.stun_res_rank, mob_resistances.gravity_res_rank "
+                                       "FROM spell_list, mob_pools, mob_resistances "
                                        "WHERE spell_list.spellid = ? "
                                        "AND (spell_list.spellid + 5000) = mob_pools.poolid "
                                        "AND mob_pools.resist_id = mob_resistances.resist_id "
-                                       "AND mob_pools.speciesid = mob_species_system.speciesID "
                                        "ORDER BY spell_list.spellid",
                                        TrustID);
 
@@ -289,24 +273,14 @@ void BuildTrustData(uint32 TrustID)
 
             data->modelSize       = rset->getOrDefault<uint8>("modelSize", 0);
             data->modelHitboxSize = std::max<float>(0.0f, rset->getOrDefault<float>("modelHitboxSize", 0) / 10.f);
-            data->EcoSystem       = rset->get<ECOSYSTEM>("ecosystemID");
-            data->HPscale         = rset->get<float>("HP");
-            data->MPscale         = rset->get<float>("MP");
+            const auto& species   = mobutils::GetSpeciesData(data->m_Species);
+
+            data->EcoSystem = species.Ecosystem;
 
             data->baseSpeed      = 62;
             data->animationSpeed = 50;
 
-            data->strRank = rset->get<uint8>("STR");
-            data->dexRank = rset->get<uint8>("DEX");
-            data->vitRank = rset->get<uint8>("VIT");
-            data->agiRank = rset->get<uint8>("AGI");
-            data->intRank = rset->get<uint8>("INT");
-            data->mndRank = rset->get<uint8>("MND");
-            data->chrRank = rset->get<uint8>("CHR");
-            data->defRank = rset->get<uint8>("DEF");
-            data->attRank = rset->get<uint8>("ATT");
-            data->accRank = rset->get<uint8>("ACC");
-            data->evaRank = rset->get<uint8>("EVA");
+            mobutils::ApplyStatRanks(*data, species.MobAttributes.Stats);
 
             // resistances
             data->slash_sdt  = rset->get<int16>("slash_sdt");
@@ -342,6 +316,8 @@ void BuildTrustData(uint32 TrustID)
             data->light_sleep_res_rank = rset->get<int8>("light_sleep_res_rank");
             data->dark_sleep_res_rank  = rset->get<int8>("dark_sleep_res_rank");
             data->blind_res_rank       = rset->get<int8>("blind_res_rank");
+            data->stun_res_rank        = rset->get<int8>("stun_res_rank");
+            data->gravity_res_rank     = rset->get<int8>("gravity_res_rank");
 
             g_PTrustData[TrustID] = std::move(data);
         }
@@ -359,11 +335,10 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
 
     auto* trustData = itr->second.get();
 
-    auto* PTrust = new CTrustEntity(PMaster);
+    auto* PTrust = new CTrustEntity(PMaster, trustData->trustID, IsPassiveTrust{ trustData->isPassiveTrust });
 
-    PTrust->loc              = PMaster->loc;
-    PTrust->m_OwnerID.id     = PMaster->id;
-    PTrust->m_OwnerID.targid = PMaster->targid;
+    PTrust->loc       = PMaster->loc;
+    PTrust->m_OwnerID = EntityId(PMaster);
 
     // spawn me randomly around master
     PTrust->loc.p = nearPosition(PMaster->loc.p, CTrustController::SpawnDistance + (PMaster->PTrusts.size() * CTrustController::SpawnDistance), (float)M_PI);
@@ -379,13 +354,13 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     PTrust->MPscale        = trustData->MPscale;
     PTrust->baseSpeed      = trustData->baseSpeed;
     PTrust->animationSpeed = trustData->animationSpeed;
+
     PTrust->UpdateSpeed();
-    PTrust->m_TrustID        = trustData->trustID;
-    PTrust->m_isPassiveTrust = trustData->isPassiveTrust;
-    PTrust->status           = STATUS_TYPE::NORMAL;
-    PTrust->modelSize        = trustData->modelSize;
-    PTrust->modelHitboxSize  = trustData->modelHitboxSize;
-    PTrust->m_EcoSystem      = trustData->EcoSystem;
+
+    PTrust->status          = xi::Status::Normal;
+    PTrust->modelSize       = trustData->modelSize;
+    PTrust->modelHitboxSize = trustData->modelHitboxSize;
+    PTrust->m_EcoSystem     = trustData->EcoSystem;
 
     PTrust->SetMJob(trustData->mJob);
     PTrust->SetSJob(trustData->sJob);
@@ -397,7 +372,8 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     LoadTrustStatsAndSkills(PTrust);
 
     // Use Mob formulas to work out base "weapon" damage, but scale down to reasonable values.
-    const float  mobStyleDamage   = static_cast<float>(mobutils::GetWeaponDamage(PTrust, SLOT_MAIN));
+    // TODO: Verify trust base damage.
+    const float  mobStyleDamage   = static_cast<float>(mobutils::GetBaseWeaponDamage(PTrust, SLOT_MAIN));
     const float  baseDamage       = mobStyleDamage * 0.5f;
     const float  damageMultiplier = static_cast<float>(trustData->cmbDmgMult) / 100.0f;
     const float  adjustedDamage   = baseDamage * damageMultiplier;
@@ -408,7 +384,7 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
     if (auto* mainWeapon = dynamic_cast<CItemWeapon*>(PTrust->m_Weapons[SLOT_MAIN]))
     {
         mainWeapon->setMaxHit(1);
-        mainWeapon->setSkillType(trustData->cmbSkill);
+        mainWeapon->setSkillType(static_cast<xi::SkillType>(trustData->cmbSkill));
 
         mainWeapon->setDamage(finalDamage);
         mainWeapon->setDelay(trustData->cmbDelay);
@@ -464,8 +440,8 @@ auto LoadTrust(CCharEntity* PMaster, uint32 TrustID) -> CTrustEntity*
 
     // NOTE: Trusts don't really have weapons, and they don't really have combat skills. They only have
     // a damage type, and whether or not they are multi-hit. We handle this wrong everywhere.
-    // To give any Trust multi-hit, you need to give them cmbSkill == SKILL_HAND_TO_HAND (1).
-    if (trustData->cmbSkill == SKILL_HAND_TO_HAND)
+    // To give any Trust multi-hit, you need to give them cmbSkill == xi::SkillType::HandToHand (1).
+    if (trustData->cmbSkill == static_cast<uint8>(xi::SkillType::HandToHand))
     {
         PTrust->m_dualWield = true;
     }
@@ -482,16 +458,16 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
 {
     if (settings::get<uint8>("main.ENABLE_TRUST_ALTER_EGO_EXPO") > 0) // Alter Ego Expo HPP/MPP +50%, All Status Resistance +25%
     {
-        PTrust->addModifier(Mod::HPP, 50);
-        PTrust->addModifier(Mod::MPP, 50);
-        PTrust->addModifier(Mod::STATUSRES, 25);
+        PTrust->addModifier(xi::Mod::HPP, 50);
+        PTrust->addModifier(xi::Mod::MPP, 50);
+        PTrust->addModifier(xi::Mod::STATUSRES, 25);
     }
 
     // add mob pool mods ahead of applying stats
     mobutils::AddSqlModifiers(PTrust);
 
-    JOBTYPE mJob = PTrust->GetMJob();
-    JOBTYPE sJob = PTrust->GetSJob();
+    xi::Job mJob = PTrust->GetMJob();
+    xi::Job sJob = PTrust->GetSJob();
     uint8   mLvl = PTrust->GetMLevel();
     uint8   sLvl = PTrust->GetSLevel();
 
@@ -517,7 +493,7 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
 
     // HP/MP ========================
     // This is the same system as used in charutils.cpp, but modified
-    // to use parts from mob_species_system instead of hardcoded player
+    // to use parts from data/ecosystems.yaml instead of hardcoded player
     // race tables.
 
     // http://ffxi-stat-calc.sourceforge.net/cgi-bin/ffxistats.cgi?mode=document
@@ -676,9 +652,9 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
     PTrust->stats.CHR   = static_cast<uint16>((fCHR + mCHR + sCHR) * statMultiplier);
 
     // Skills =======================
-    for (int i = SKILL_DIVINE_MAGIC; i <= SKILL_BLUE_MAGIC; i++)
+    for (int i = static_cast<int>(xi::SkillType::DivineMagic); i <= static_cast<int>(xi::SkillType::BlueMagic); i++)
     {
-        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, mJob, mLvl > 99 ? 99 : mLvl);
+        uint16 maxSkill = battleutils::GetMaxSkill((xi::SkillType)i, mJob, mLvl > 99 ? 99 : mLvl);
         if (maxSkill != 0)
         {
             PTrust->WorkingSkills.skill[i] = static_cast<uint16>(maxSkill * settings::get<float>("map.ALTER_EGO_SKILL_MULTIPLIER"));
@@ -686,7 +662,7 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
         else // if the mob is WAR/BLM and can cast spell
         {
             // set skill as high as main level, so their spells won't get resisted
-            uint16 maxSubSkill = battleutils::GetMaxSkill((SKILLTYPE)i, sJob, mLvl > 99 ? 99 : mLvl);
+            uint16 maxSubSkill = battleutils::GetMaxSkill((xi::SkillType)i, sJob, mLvl > 99 ? 99 : mLvl);
 
             if (maxSubSkill != 0)
             {
@@ -695,25 +671,25 @@ void LoadTrustStatsAndSkills(CTrustEntity* PTrust)
         }
     }
 
-    for (int i = SKILL_HAND_TO_HAND; i <= SKILL_STAFF; i++)
+    for (int i = static_cast<int>(xi::SkillType::HandToHand); i <= static_cast<int>(xi::SkillType::Staff); i++)
     {
-        uint16 maxSkill = battleutils::GetMaxSkill((SKILLTYPE)i, mLvl > 99 ? 99 : mLvl);
+        uint16 maxSkill = battleutils::GetMaxSkill(static_cast<uint8>(i), mLvl > 99 ? 99 : mLvl);
         if (maxSkill != 0)
         {
             PTrust->WorkingSkills.skill[i] = static_cast<uint16>(maxSkill * settings::get<float>("map.ALTER_EGO_SKILL_MULTIPLIER"));
         }
     }
 
-    PTrust->addModifier(Mod::DEF, mobutils::GetBaseSkill(PTrust, PTrust->defRank));
-    PTrust->addModifier(Mod::EVA, mobutils::GetBaseSkill(PTrust, PTrust->evaRank));
-    PTrust->addModifier(Mod::ATT, mobutils::GetBaseSkill(PTrust, PTrust->attRank));
-    PTrust->addModifier(Mod::ACC, mobutils::GetBaseSkill(PTrust, PTrust->accRank));
+    PTrust->addModifier(xi::Mod::DEF, mobutils::GetBaseSkill(PTrust, PTrust->defRank));
+    PTrust->addModifier(xi::Mod::EVA, mobutils::GetBaseSkill(PTrust, PTrust->evaRank));
+    PTrust->addModifier(xi::Mod::ATT, mobutils::GetBaseSkill(PTrust, PTrust->attRank));
+    PTrust->addModifier(xi::Mod::ACC, mobutils::GetBaseSkill(PTrust, PTrust->accRank));
 
-    PTrust->addModifier(Mod::RATT, mobutils::GetBaseSkill(PTrust, PTrust->attRank));
-    PTrust->addModifier(Mod::RACC, mobutils::GetBaseSkill(PTrust, PTrust->accRank));
+    PTrust->addModifier(xi::Mod::RATT, mobutils::GetBaseSkill(PTrust, PTrust->attRank));
+    PTrust->addModifier(xi::Mod::RACC, mobutils::GetBaseSkill(PTrust, PTrust->accRank));
 
     // Natural magic evasion
-    PTrust->addModifier(Mod::MEVA, mobutils::GetMagicEvasion(PTrust));
+    PTrust->addModifier(xi::Mod::MEVA, mobutils::GetMagicEvasion(PTrust));
 
     // Add traits for sub and main
     battleutils::AddTraits(PTrust, traits::GetTraits(mJob), mLvl);

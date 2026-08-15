@@ -11,8 +11,6 @@ local quest = Quest:new(xi.questLog.JEUNO, xi.quest.id.jeuno.SHATTERING_STARS)
 
 quest.reward =
 {
-    fame     = 80,
-    fameArea = xi.fameArea.JEUNO,
     title    = xi.title.STAR_BREAKER,
 }
 
@@ -100,7 +98,7 @@ quest.sections =
                     local properTestimony = xi.item.WARRIORS_TESTIMONY + playerJob - 1
 
                     if
-                        npcUtil.tradeHasExactly(trade, properTestimony) and
+                        trade:getItemQty(properTestimony) > 0 and
                         quest:getVar(player, 'Prog') == 0
                     then
                         return quest:progressEvent(64, playerJob)

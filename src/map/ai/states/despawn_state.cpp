@@ -20,32 +20,40 @@
 */
 
 #include "despawn_state.h"
-#include "ai/ai_container.h"
-#include "entities/baseentity.h"
-#include "entities/mobentity.h"
+#include "entities/base_entity.h"
+#include "entities/mob_entity.h"
 #include "enums/four_cc.h"
 #include "packets/s2c/0x038_schedulor.h"
 #include "spawn_handler.h"
 #include "zone.h"
 
-CDespawnState::CDespawnState(CBaseEntity* _PEntity, bool instantDespawn)
-: CState(_PEntity, _PEntity->targid)
-, despawnTime_(timer::now() + (instantDespawn ? 0s : 3s))
+CDespawnState::CDespawnState(xi::Badge<CState>, CBaseEntity* PEntity, const bool instantDespawn)
+: CState(PEntity, PEntity->entityId())
+, instantDespawn_(instantDespawn)
 {
-    if (!instantDespawn && (_PEntity->status != STATUS_TYPE::DISAPPEAR && !(static_cast<CMobEntity*>(_PEntity)->m_Behavior & BEHAVIOR_NO_DESPAWN)))
-    {
-        _PEntity->loc.zone->PushPacket(_PEntity, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_SCHEDULOR>(_PEntity, _PEntity, FourCC::FadeOut));
-    }
-
-    if (auto* PMob = dynamic_cast<CMobEntity*>(_PEntity); PMob && PMob->m_AllowRespawn && PMob->loc.zone != nullptr)
-    {
-        PMob->loc.zone->spawnHandler()->registerForRespawn(PMob);
-    }
+    // Capture constructor arguments into members and nothing else. All other logic goes into init().
 }
 
-bool CDespawnState::Update(timer::time_point tick)
+auto CDespawnState::init() -> StateErrorOr<void>
 {
-    if (!IsCompleted() && !(static_cast<CMobEntity*>(m_PEntity)->m_Behavior & BEHAVIOR_NO_DESPAWN))
+    despawnTime_ = timer::now() + (instantDespawn_ ? 0s : 3s);
+
+    if (!instantDespawn_ && (m_PEntity->status != xi::Status::Disappear && !((static_cast<CMobEntity*>(m_PEntity)->m_Behavior & xi::Behavior::NoDespawn) != xi::Behavior::None)))
+    {
+        m_PEntity->loc.zone->PushPacket(m_PEntity, CHAR_INRANGE, std::make_unique<GP_SERV_COMMAND_SCHEDULOR>(m_PEntity, m_PEntity, FourCC::FadeOut));
+    }
+
+    if (auto* PMob = dynamic_cast<CMobEntity*>(m_PEntity); PMob && PMob->m_AllowRespawn && PMob->loc.zone != nullptr)
+    {
+        PMob->loc.zone->spawnHandler().registerForRespawn(PMob);
+    }
+
+    return Success();
+}
+
+auto CDespawnState::Update(const timer::time_point tick) -> bool
+{
+    if (!IsCompleted() && (static_cast<CMobEntity*>(m_PEntity)->m_Behavior & xi::Behavior::NoDespawn) == xi::Behavior::None)
     {
         if (tick >= despawnTime_)
         {
@@ -60,7 +68,17 @@ void CDespawnState::Cleanup(timer::time_point tick)
 {
 }
 
-bool CDespawnState::CanChangeState()
+auto CDespawnState::CanChangeState() -> bool
+{
+    return false;
+}
+
+auto CDespawnState::CanFollowPath() -> bool
+{
+    return false;
+}
+
+auto CDespawnState::CanInterrupt() -> bool
 {
     return false;
 }

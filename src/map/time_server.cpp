@@ -24,12 +24,11 @@
 #include "common/logging.h"
 #include "common/vana_time.h"
 
-#include "daily_system.h"
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "latent_effect_container.h"
 #include "lua/luautils.h"
-#include "map_constants.h"
 #include "roe.h"
+#include "spawn_handler.h"
 #include "timetriggers.h"
 #include "transport.h"
 #include "utils/guildutils.h"
@@ -115,14 +114,23 @@ auto time_server(Scheduler& scheduler, MapConfig config) -> Task<void>
     {
         // Vana'diel Hour
         zoneutils::ForEachZone(
-            [](CZone* PZone)
+            [vanaHour](CZone* PZone)
             {
                 luautils::OnGameHour(PZone);
+                PZone->spawnHandler().onGameHour(vanaHour);
                 PZone->ForEachChar(
                     [](CCharEntity* PChar)
                     {
                         PChar->PLatentEffectContainer->CheckLatentsHours();
                         PChar->PLatentEffectContainer->CheckLatentsMoonPhase();
+
+                        if (PChar->guildShopNpc_.UniqueNo != 0)
+                        {
+                            if (auto* PNpc = zoneutils::GetEntity(PChar->guildShopNpc_.UniqueNo, TYPE_NPC))
+                            {
+                                luautils::callGlobal<void>("xi.guildShops.onGameHour", PChar, PNpc);
+                            }
+                        }
                     });
             });
 
@@ -144,7 +152,6 @@ auto time_server(Scheduler& scheduler, MapConfig config) -> Task<void>
                         });
                 });
 
-            guildutils::UpdateGuildsStock();
             zoneutils::SavePlayTime();
         }
 

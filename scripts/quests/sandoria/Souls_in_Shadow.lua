@@ -11,7 +11,7 @@ local quest = Quest:new(xi.questLog.SANDORIA, xi.quest.id.sandoria.SOULS_IN_SHAD
 
 quest.reward =
 {
-    fame = 30,
+    fame = 20,
     fameArea = xi.fameArea.SANDORIA,
 }
 
@@ -115,7 +115,7 @@ quest.sections =
 
         [xi.zone.DEN_OF_RANCOR] =
         {
-            ['qm2'] =
+            ['qm_mokumokuren'] =
             {
                 onTrigger = function(player, npc)
                     if player:getLocalVar('killed_wsnm') == 1 then

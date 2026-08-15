@@ -34,10 +34,14 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.EVA, math.floor(mob:getEVA() * 0.275)) -- +27.5% EVA
     mob:setMobMod(xi.mobMod.HP_STANDBACK, -1)
 
-    xi.mix.jobSpecial.config(mob, { specials = { { id = xi.mobSkill.MANAFONT_1, cooldown = math.random(60, 240) } } })
+    xi.mix.jobSpecial.config(mob, { specials = { { id = xi.mobSkill.MANAFONT_1, cooldown = math.randomInt(60, 240) } } })
 end
 
 entity.onMobFight = function(mob)
+    if xi.combat.behavior.isEntityBusy(mob) then
+        return
+    end
+
     -- Forms: 0 = Closed  1 = Closed  2 = Open 3 = Closed
     local changeTime = mob:getLocalVar('changeTime')
 
@@ -46,25 +50,22 @@ entity.onMobFight = function(mob)
         if mob:getAnimationSub() == 1 then
             -- Euvhi deal 50% extra base damage with mouth open
             local damage = 1 + mob:getMainLvl() / 2
-            mob:setMobMod(xi.mobMod.WEAPON_BONUS, damage)
+            mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, damage)
             mob:setAnimationSub(2)
             mob:setMod(xi.mod.DMG, 1250) -- +12.5% damage taken with mouth open
             mob:setLocalVar('changeTime', GetSystemTime() + 180)
         else -- Change from open to close
             mob:setAnimationSub(1)
-            mob:setMobMod(xi.mobMod.WEAPON_BONUS, 0)
+            mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 0)
             mob:setMod(xi.mod.DMG, -2500) -- -25% damage taken with mouth closed
             mob:setLocalVar('changeTime', GetSystemTime() + 60)
         end
     end
 end
 
-entity.onMobDeath = function(mob)
-end
-
 entity.onMobDespawn = function(mob)
     -- Move QM to random location
-    GetNPCByID(ID.npc.QM_JAILER_OF_FAITH):setPos(unpack(gardenGlobal.qmPosFaithTable[math.random(1, 5)]))
+    GetNPCByID(ID.npc.QM_JAILER_OF_FAITH):setPos(unpack(gardenGlobal.qmPosFaithTable[math.randomInt(1, 5)]))
 end
 
 return entity

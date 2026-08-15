@@ -5,16 +5,13 @@
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobDeath = function(mob, player, optParams)
-end
-
 entity.onMobDespawn = function(mob)
     local instance = mob:getInstance()
     if not instance then
         return
     end
 
-    local progress = math.random(1, 4)
+    local progress = math.randomInt(1, 4)
     instance:setProgress(instance:getProgress() + progress)
 end
 

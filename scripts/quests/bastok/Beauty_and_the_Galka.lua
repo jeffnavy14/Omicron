@@ -9,8 +9,8 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.BEAUTY_AND_THE_GA
 
 quest.reward =
 {
-    fame     = 75,
-    fameArea = xi.fameArea.BASTOK,
+    fame     = 30,
+    fameArea = xi.fameArea.NORG,
     item     = xi.item.BRONZE_KNIFE,
 }
 
@@ -52,14 +52,14 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if quest:getVar(player, 'Prog') == 1 then
-                        return quest:progressEvent(6) -- Denied Cornelia's request.
+                        return quest:progressEvent(7) -- Cornelia told the player of Parraggoh's predicament.
                     end
                 end,
             },
 
             onEventFinish =
             {
-                [6] = function(player, csid, option, npc)
+                [7] = function(player, csid, option, npc)
                     if option == 0 then
                         quest:begin(player)
                     end
@@ -83,8 +83,8 @@ quest.sections =
 
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHas(trade, xi.item.CHUNK_OF_ZINC_ORE) and
-                        not player:hasKeyItem(xi.ki.PALBOROUGH_MINES_LOGS)
+                        not player:hasKeyItem(xi.ki.PALBOROUGH_MINES_LOGS) and
+                        npcUtil.tradeMatches(trade, { { xi.item.CHUNK_OF_ZINC_ORE, 1 } })
                     then
                         return quest:progressEvent(3)
                     end
@@ -94,7 +94,7 @@ quest.sections =
             onEventFinish =
             {
                 [3] = function(player, csid, option, npc)
-                    player:confirmTrade()
+                    player:tradeComplete()
                     npcUtil.giveKeyItem(player, xi.ki.PALBOROUGH_MINES_LOGS)
                 end,
             },
@@ -106,8 +106,8 @@ quest.sections =
             {
                 onTrigger = function(player, npc)
                     if player:hasKeyItem(xi.ki.PALBOROUGH_MINES_LOGS) then
-                        return quest:progressEvent(10)
-                    elseif math.random(1, 100) <= 50 then
+                        return quest:progressEvent(10, quest:getVar(player, 'Prog'))
+                    elseif math.randomInt(1, 100) <= 50 then
                         return quest:event(8)
                     else
                         return quest:event(9)

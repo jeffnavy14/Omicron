@@ -124,7 +124,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(tpTable, xi.mobSkill.VORPAL_BLADE_1)
     end
 
-    return tpTable[math.random(1, #tpTable)]
+    return tpTable[math.randomInt(1, #tpTable)]
 end
 
 entity.onMobWeaponSkill = function(mob, target)
@@ -173,13 +173,13 @@ entity.onMobSpellChoose = function(mob, target, spell)
 end
 
 entity.onMobDeath = function(mob, player, optParams)
-    mob:showText(mob, ID.text.GOWAM_DEATH)
-end
+    if optParams.isKiller or optParams.noKiller then
+        mob:showText(mob, ID.text.GOWAM_DEATH)
 
-entity.onMobDespawn = function(mob)
-    local instance = mob:getInstance()
-    if instance then
-        instance:setProgress(instance:getProgress() + 1)
+        local instance = mob:getInstance()
+        if instance then
+            instance:setProgress(instance:getProgress() + 1)
+        end
     end
 end
 

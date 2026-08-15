@@ -64,18 +64,6 @@ INSERT INTO `mob_pool_mods` VALUES (459,430,20,0); -- QUAD_ATTACK: 20
 
 -- Bugbby
 INSERT INTO `mob_pool_mods` VALUES (559,62,-50,0);   -- ATTP: -50
--- Byakko
-INSERT INTO `mob_pool_mods` VALUES (592,3,100,1);  -- MP_BASE: 100
-INSERT INTO `mob_pool_mods` VALUES (592,68,15,0);  -- EVA: 15
-INSERT INTO `mob_pool_mods` VALUES (592,302,45,0); -- TRIPLE_ATTACK: 45
-
--- Cargo Crab Colin
-INSERT INTO `mob_pool_mods` VALUES (639,63,25,0); -- DEFP: 25
-
--- Cerberus
-INSERT INTO `mob_pool_mods` VALUES (680,1,322,0);   -- DEF: 322
-INSERT INTO `mob_pool_mods` VALUES (680,31,200,0);  -- MEVA: 200
-INSERT INTO `mob_pool_mods` VALUES (680,251,-50,0); -- STUNRES: -50
 
 -- Citipati
 INSERT INTO `mob_pool_mods` VALUES (733,302,5,0); -- TRIPLE_ATTACK: 5
@@ -188,9 +176,6 @@ INSERT INTO `mob_pool_mods` VALUES (2271,165,15,0); -- CRITHITRATE: 15
 
 -- Ladon
 INSERT INTO `mob_pool_mods` VALUES (2314,28,23,1); -- EXP_BONUS: 23
-
--- Mammet-19 Epsilon
-INSERT INTO `mob_pool_mods` VALUES (2499,240,90,0); -- SLEEPRES: 90
 
 -- Minotaur
 INSERT INTO `mob_pool_mods` VALUES (2675,4,25,1); -- SIGHT_RANGE: 25
@@ -466,29 +451,6 @@ INSERT INTO `mob_pool_mods` VALUES (4672,3,100,1); -- MP_BASE: 100
 
 -- Suzaku Pet
 INSERT INTO `mob_pool_mods` VALUES (4673,3,100,1); -- MP_BASE: 100
-
--- Maat Blm
-INSERT INTO `mob_pool_mods` VALUES (4836,62,1,1); -- NO_STANDBACK: 1
-
--- Maat Rng
-INSERT INTO `mob_pool_mods` VALUES (4837,62,1,1); -- NO_STANDBACK: 1
-
--- Maat Bst
-INSERT INTO `mob_pool_mods` VALUES (4932,30,1017,1); -- SPECIAL_SKILL: 1017
-INSERT INTO `mob_pool_mods` VALUES (4932,33,50,1);   -- SPECIAL_COOL: 50
-
--- Maat Nin
-INSERT INTO `mob_pool_mods` VALUES (5403,62,1,1); -- NO_STANDBACK: 1
-
--- Maat Pld
-INSERT INTO `mob_pool_mods` VALUES (5408,30,1036,1); -- SPECIAL_SKILL: 1036
-INSERT INTO `mob_pool_mods` VALUES (5408,33,50,1);   -- SPECIAL_COOL: 50
-INSERT INTO `mob_pool_mods` VALUES (5408,58,40,1);   -- SPECIAL_DELAY: 40
-
--- Maat Drk
-INSERT INTO `mob_pool_mods` VALUES (5409,30,1036,1); -- SPECIAL_SKILL: 1036
-INSERT INTO `mob_pool_mods` VALUES (5409,33,50,1);   -- SPECIAL_COOL: 50
-INSERT INTO `mob_pool_mods` VALUES (5409,58,40,1);   -- SPECIAL_DELAY: 40
 
 -- Trust: Shikaree Z
 INSERT INTO `mob_pool_mods` VALUES (5915,6,100,0);      -- MPP: 100

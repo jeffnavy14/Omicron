@@ -7,38 +7,39 @@ zones[xi.zone.DYNAMIS_XARCABARD] =
 {
     text =
     {
-        ITEM_CANNOT_BE_OBTAINED       = 6385, -- You cannot obtain the <item>. Come back after sorting your inventory.
-        ITEM_OBTAINED                 = 6393, -- Obtained: <item>.
-        GIL_OBTAINED                  = 6394, -- Obtained <number> gil.
-        KEYITEM_OBTAINED              = 6396, -- Obtained key item: <keyitem>.
-        CARRIED_OVER_POINTS           = 7004, -- You have carried over <number> login point[/s].
-        LOGIN_CAMPAIGN_UNDERWAY       = 7005, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
-        LOGIN_NUMBER                  = 7006, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
-        MEMBERS_LEVELS_ARE_RESTRICTED = 7026, -- Your party is unable to participate because certain members' levels are restricted.
-        CONQUEST_BASE                 = 7077, -- Tallying conquest results...
-        DYNAMIS_TIME_BEGIN            = 7236, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
-        DYNAMIS_TIME_EXTEND           = 7237, -- Your stay in Dynamis has been extended by <number> minute[/s].
-        DYNAMIS_TIME_UPDATE_1         = 7238, -- You will be expelled from Dynamis in <number> [second/minute] (Earth time).
-        DYNAMIS_TIME_UPDATE_2         = 7239, -- You will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
-        DYNAMIS_TIME_EXPIRED          = 7241, -- The sands of the hourglass have emptied...
-        OMINOUS_PRESENCE              = 7253, -- You feel an ominous presence, as if something might happen if you possessed <item>.
-        ANIMATED_KNUCKLES_DIALOG      = 7320, -- I am known as the Fists of Mystics. Come, show me your fighting spirit.
-        ANIMATED_DAGGER_DIALOG        = 7352, -- I am called the Ornate Blade. Now, show me your strength.
-        ANIMATED_LONGSWORD_DIALOG     = 7384, -- People have named me the Holy Blade. I will try thy resolution.
-        ANIMATED_CLAYMORE_DIALOG      = 7416, -- I am the Intricate Blade. Show me the depths of your fury!
-        ANIMATED_TABAR_DIALOG         = 7448, -- Me, axe. Runaeic, Axe. You, die?
-        ANIMATED_GREATAXE_DIALOG      = 7480, -- I have been given the title of Seraphic Axe. Will you attempt to survive my love?
-        ANIMATED_SPEAR_DIALOG         = 7512, -- I am the Stellar Spear. It is time to test your courage.
-        ANIMATED_SCYTHE_DIALOG        = 7544, -- I am known as the Tenebrous Scythe. Overwhelm me with your greed for power.
-        ANIMATED_KUNAI_DIALOG         = 7576, -- I am called the Demoniac Blade. Allow me to witness your technique.
-        ANIMATED_TACHI_DIALOG         = 7608, -- I am the Divine Blade. I demand a test of your will.
-        ANIMATED_HAMMER_DIALOG        = 7640, -- People have named me the Heavenly Hammer. I will test your might to its very limits.
-        ANIMATED_STAFF_DIALOG         = 7672, -- I am called the Celestial Staff. I will glimpse into your mind's eye...
-        ANIMATED_LONGBOW_DIALOG       = 7704, -- I am known as the Snarled Bow. I will measure the limits of your determination.
-        ANIMATED_GUN_DIALOG           = 7736, -- I am known as the Ethereal Rifle. Do you realize my incredible value?
-        ANIMATED_HORN_DIALOG          = 7768, -- I am called the Mysterial Horn. Show me your true intentions.
-        ANIMATED_SHIELD_DIALOG        = 7800, -- I am Aegis, the impervious shield of everlasting.
-        PRISON_OF_SOULS_HAS_SET_FREE  = 7832, -- The prison of souls has set free its captive spirits!
+        ITEM_CANNOT_BE_OBTAINED       = 6387, -- You cannot obtain the <item>. Come back after sorting your inventory.
+        ITEM_OBTAINED                 = 6395, -- Obtained: <item>.
+        GIL_OBTAINED                  = 6396, -- Obtained <number> gil.
+        KEYITEM_OBTAINED              = 6398, -- Obtained key item: <keyitem>.
+        CARRIED_OVER_POINTS           = 7006, -- You have carried over <number> login point[/s].
+        LOGIN_CAMPAIGN_UNDERWAY       = 7007, -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
+        LOGIN_NUMBER                  = 7008, -- In celebration of your most recent login (login no. <number>), we have provided you with <number> points! You currently have a total of <number> points.
+        MEMBERS_LEVELS_ARE_RESTRICTED = 7028, -- Your party is unable to participate because certain members' levels are restricted.
+        CONQUEST_BASE                 = 7079, -- Tallying conquest results...
+        DYNAMIS_TIME_BEGIN            = 7238, -- The sands of the <item> have begun to fall. You have <number> minutes (Earth time) remaining in Dynamis.
+        DYNAMIS_TIME_EXTEND           = 7239, -- Your stay in Dynamis has been extended by <number> minute[/s].
+        DYNAMIS_TIME_UPDATE_1         = 7240, -- You will be expelled from Dynamis in <number> [second/minute] (Earth time).
+        DYNAMIS_TIME_UPDATE_2         = 7241, -- You will be expelled from Dynamis in <number> [seconds/minutes] (Earth time).
+        DYNAMIS_TIME_EXPIRED          = 7243, -- The sands of the hourglass have emptied...
+        OMINOUS_PRESENCE              = 7255, -- You feel an ominous presence, as if something might happen if you possessed <item>.
+        DYNAMIS_LORD_DIALOGUE         = 7297, -- Writhing Worms... Look at you crawl before me. I will end your meaningless existence.
+        ANIMATED_KNUCKLES_DIALOG      = 7322, -- I am known as the Fists of Mystics. Come, show me your fighting spirit.
+        ANIMATED_DAGGER_DIALOG        = 7354, -- I am called the Ornate Blade. Now, show me your strength.
+        ANIMATED_LONGSWORD_DIALOG     = 7386, -- People have named me the Holy Blade. I will try thy resolution.
+        ANIMATED_CLAYMORE_DIALOG      = 7418, -- I am the Intricate Blade. Show me the depths of your fury!
+        ANIMATED_TABAR_DIALOG         = 7450, -- Me, axe. Runaeic, Axe. You, die?
+        ANIMATED_GREATAXE_DIALOG      = 7482, -- I have been given the title of Seraphic Axe. Will you attempt to survive my love?
+        ANIMATED_SPEAR_DIALOG         = 7514, -- I am the Stellar Spear. It is time to test your courage.
+        ANIMATED_SCYTHE_DIALOG        = 7546, -- I am known as the Tenebrous Scythe. Overwhelm me with your greed for power.
+        ANIMATED_KUNAI_DIALOG         = 7578, -- I am called the Demoniac Blade. Allow me to witness your technique.
+        ANIMATED_TACHI_DIALOG         = 7610, -- I am the Divine Blade. I demand a test of your will.
+        ANIMATED_HAMMER_DIALOG        = 7642, -- People have named me the Heavenly Hammer. I will test your might to its very limits.
+        ANIMATED_STAFF_DIALOG         = 7674, -- I am called the Celestial Staff. I will glimpse into your mind's eye...
+        ANIMATED_LONGBOW_DIALOG       = 7706, -- I am known as the Snarled Bow. I will measure the limits of your determination.
+        ANIMATED_GUN_DIALOG           = 7738, -- I am known as the Ethereal Rifle. Do you realize my incredible value?
+        ANIMATED_HORN_DIALOG          = 7770, -- I am called the Mysterial Horn. Show me your true intentions.
+        ANIMATED_SHIELD_DIALOG        = 7802, -- I am Aegis, the impervious shield of everlasting.
+        PRISON_OF_SOULS_HAS_SET_FREE  = 7834, -- The prison of souls has set free its captive spirits!
     },
     mob =
     {
@@ -94,27 +95,30 @@ zones[xi.zone.DYNAMIS_XARCABARD] =
             },
         },
 
-        DYNAMIS_LORD      = 17330177,
-        YING              = 17330183,
-        YANG              = 17330184,
-        COUNT_ZAEBOS      = GetFirstID('Count_Zaebos'),
-        DUKE_GOMORY       = GetFirstID('Duke_Gomory'),
-        PRINCE_SEERE      = GetFirstID('Prince_Seere'),
-        MARQUIS_ORIAS     = GetFirstID('Marquis_Orias'),
-        DUKE_BERITH       = GetFirstID('Duke_Berith'),
         COUNT_RAUM        = GetFirstID('Count_Raum'),
-        MARQUIS_SABNAK    = GetFirstID('Marquis_Sabnak'),
-        DUKE_SCOX         = GetFirstID('Duke_Scox'),
-        MARQUIS_ANDRAS    = GetFirstID('Marquis_Andras'),
-        MARQUIS_DECARABIA = GetFirstID('Marquis_Decarabia'),
-        MARQUIS_CIMERIES  = GetFirstID('Marquis_Cimeries'),
         COUNT_VINE        = GetFirstID('Count_Vine'),
-        MARQUIS_GAMYGYN   = GetFirstID('Marquis_Gamygyn'),
+        COUNT_ZAEBOS      = GetFirstID('Count_Zaebos'),
+        DUKE_BERITH       = GetFirstID('Duke_Berith'),
+        DUKE_GOMORY       = GetFirstID('Duke_Gomory'),
+        DUKE_SCOX         = GetFirstID('Duke_Scox'),
+        DYNAMIS_LORD      = GetFirstID('Dynamis_Lord'),
         KING_ZAGAN        = GetFirstID('King_Zagan'),
+        MARQUIS_ANDRAS    = GetFirstID('Marquis_Andras'),
+        MARQUIS_CIMERIES  = GetFirstID('Marquis_Cimeries'),
+        MARQUIS_DECARABIA = GetFirstID('Marquis_Decarabia'),
+        MARQUIS_GAMYGYN   = GetFirstID('Marquis_Gamygyn'),
         MARQUIS_NEBIROS   = GetFirstID('Marquis_Nebiros'),
+        MARQUIS_ORIAS     = GetFirstID('Marquis_Orias'),
+        MARQUIS_SABNAK    = GetFirstID('Marquis_Sabnak'),
+        PRINCE_SEERE      = GetFirstID('Prince_Seere'),
+        YANG              = GetFirstID('Yang'),
+        YING              = GetFirstID('Ying'),
     },
+
     npc =
     {
+        DYNAMIS_LORD_DIRECTOR = GetFirstID('qm0'), -- Dynamis Lord pop QM, holds the encounter variables.
+
         QM =
         {
             [17330781] =

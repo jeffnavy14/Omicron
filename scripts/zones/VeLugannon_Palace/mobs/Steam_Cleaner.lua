@@ -7,7 +7,7 @@ local entity = {}
 
 entity.onMobInitialize = function(mob)
     mob:setMobMod(xi.mobMod.ADD_EFFECT, 1)
-
+-- TODO: Check Petrify immunity, other Sky NMs seem to have it.
     mob:addImmunity(xi.immunity.DARK_SLEEP)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.SILENCE)
@@ -18,11 +18,11 @@ entity.onMobInitialize = function(mob)
 end
 
 entity.onAdditionalEffect = function(mob, target, damage)
-    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.TP_DRAIN, { power = (math.random(500, 1000)) })
+    return xi.mob.onAddEffect(mob, target, damage, xi.mob.ae.TP_DRAIN, { power = (math.randomInt(500, 1000)) })
 end
 
 entity.onMobDespawn = function(mob)
-    SetServerVariable('[POP]SteamCleaner', GetSystemTime() + math.random(7200, 14400))
+    SetServerVariable('[POP]SteamCleaner', GetSystemTime() + 7200) -- Lottery opens after 2 hours.
 end
 
 return entity

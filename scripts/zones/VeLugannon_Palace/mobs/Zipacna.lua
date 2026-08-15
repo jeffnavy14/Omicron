@@ -272,7 +272,7 @@ local pathNodes =
 
 local setZipPath = function(mob, door, currPath)
     if door then
-        if door:getAnimation() == xi.anim.OPEN_DOOR then
+        if door:getAnimation() == xi.animation.OPEN_DOOR then
             if currentDirection == pathingDirection.TO_EAST then
                 mob:pathThrough(pathNodes[currPath + 1], xi.path.flag.COORDS)
                 if currPath + 1 == paths.YELLOW_TO_BASEMENT then
@@ -306,6 +306,7 @@ entity.onMobInitialize = function(mob)
     mob:addImmunity(xi.immunity.LIGHT_SLEEP)
     mob:addImmunity(xi.immunity.TERROR)
     mob:addImmunity(xi.immunity.PLAGUE)
+    mob:addImmunity(xi.immunity.PETRIFY)
     mob:setMobMod(xi.mobMod.BASE_DAMAGE_MULTIPLIER, 150)
 end
 
@@ -331,12 +332,12 @@ end
 
 entity.onMobMobskillChoose = function(mob, target, skillId)
     -- Zipacna heavily prefers using Crystal Rain and Crystal Weapon
-    local roll = math.random(1, 100)
+    local roll = math.randomInt(1, 100)
 
     if roll <= 30 then
         return xi.mobSkill.CRYSTAL_RAIN_1
     elseif roll <= 60 then
-        local weaponEle = math.random(xi.mobSkill.CRYSTAL_WEAPON_FIRE_1, xi.mobSkill.CRYSTAL_WEAPON_WATER_1)
+        local weaponEle = math.randomInt(xi.mobSkill.CRYSTAL_WEAPON_FIRE_1, xi.mobSkill.CRYSTAL_WEAPON_WATER_1)
         return weaponEle
     end
 end
@@ -392,7 +393,7 @@ end
 
 entity.onMobDespawn = function(mob)
     xi.mob.updateNMSpawnPoint(mob)
-    mob:setRespawnTime(math.random(10800, 14400)) -- respawn 3-4 hrs
+    mob:setRespawnTime(math.randomInt(10800, 21600)) -- 3 to 6 hours.
 end
 
 return entity

@@ -23,8 +23,8 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
 
     dmg = math.floor(dmg * 2.5)
     dmg = math.floor(dmg * xi.combat.damage.calculateDamageAdjustment(target, false, false, false, true))
-    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.NONE, false))
-    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.NONE, false, true))
+    dmg = math.floor(dmg * xi.spells.damage.calculateAbsorption(target, xi.element.NONE, false, false, false, true))
+    dmg = math.floor(dmg * xi.spells.damage.calculateNullification(target, xi.element.NONE, false, false, false, true))
     dmg = math.floor(target:handleSevereDamage(dmg, false))
     dmg = utils.handlePhalanx(target, dmg)
 
@@ -32,7 +32,7 @@ mobskillObject.onMobWeaponSkill = function(mob, target, skill, action)
         return 0
     end
 
-    dmg = utils.handleStoneskin(target, dmg)
+    dmg = utils.handleStoneskin(target, dmg, xi.attackType.BREATH)
 
     if dmg > 0 then
         target:wakeUp()

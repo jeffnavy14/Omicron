@@ -55,6 +55,7 @@
 //
 
 #pragma pack(push, 1)
+
 struct XimeshHeader
 {
     uint16 gridWidth{};
@@ -94,6 +95,7 @@ struct PlacementFlags
     uint32 mapIdHigh : 2;
     uint32 padding2 : 4;
 };
+
 #pragma pack(pop)
 
 //
@@ -107,6 +109,8 @@ struct MeshBlock
     std::vector<uint16>       indices;       // 3 per triangle
     std::vector<TriangleMeta> metas;         // 1 per triangle
     bool                      hasBarriers{}; // true if any triangle in this block is a barrier
+    Vector3                   aabbMin{};     // local-space bounds, for ray broad-phase culling
+    Vector3                   aabbMax{};     // local-space bounds, for ray broad-phase culling
 };
 
 struct MeshPlacement

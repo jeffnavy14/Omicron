@@ -12,7 +12,7 @@ quest.reward =
 {
     keyItem = xi.ki.MAP_OF_THE_DANGRUF_WADI,
     fameArea = xi.fameArea.BASTOK,
-    fame = 60,
+    fame = 20,
     exp = 2000,
 }
 
@@ -50,7 +50,7 @@ quest.sections =
             ['Degenhard'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.BONE_CHIP) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.BONE_CHIP, 1 } }) then
                         return quest:progressEvent(258)
                     end
                 end,
@@ -60,7 +60,7 @@ quest.sections =
             {
                 [258] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                     end
                 end,
             },

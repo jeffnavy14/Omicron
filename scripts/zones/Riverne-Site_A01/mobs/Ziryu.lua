@@ -37,14 +37,14 @@ local spawnPoints =
 }
 
 entity.onMobInitialize = function(mob)
-    local spawnPoint = spawnPoints[math.random(1, #spawnPoints)]
+    local spawnPoint = spawnPoints[math.randomInt(1, #spawnPoints)]
     mob:setSpawn(spawnPoint.x, spawnPoint.y, spawnPoint.z)
 end
 
 entity.onMobSpawn = function(mob)
     mob:setMobMod(xi.mobMod.CHARMABLE, 1)
     mob:setMobMod(xi.mobMod.SOUND_RANGE, 30)
-    mob:setMobMod(xi.mobMod.ROAM_DISTANCE, 500)
+    mob:setMobMod(xi.mobMod.ROAM_DISTANCE, 10)
     mob:setMobMod(xi.mobMod.ROAM_RATE, 10)
     mob:setRoamFlags(xi.roamFlag.WORM)
 end
@@ -64,7 +64,7 @@ entity.onMobSpellChoose = function(mob, target, spellId)
 end
 
 entity.onMobDespawn = function(mob)
-    local spawnPoint = spawnPoints[math.random(1, #spawnPoints)]
+    local spawnPoint = spawnPoints[math.randomInt(1, #spawnPoints)]
     mob:setSpawn(spawnPoint.x, spawnPoint.y, spawnPoint.z)
 end
 

@@ -58,7 +58,7 @@ mission.sections =
                     if not getMissionStatusBit(player, 2) then
                         local dalham = player:getZone():queryEntitiesByName('Dalham')[1]
                         if mission:getLocalVar(player, 'nmBibiki') == 1 then
-                            return mission:progressEvent(41)
+                            return mission:progressCutscene(41)
                         elseif not dalham:isSpawned() then
                             dalham:spawn()
                             dalham:updateClaim(player)
@@ -94,7 +94,7 @@ mission.sections =
                         local nmProgress = mission:getLocalVar(player, 'carpentersNm')
 
                         if nmProgress == 15 then
-                            return mission:progressEvent(37)
+                            return mission:progressCutscene(37)
                         elseif not isCarpentersNmSpawned() then
                             local executor = GetMobByID(carpentersID.mob.CRYPTONBERRY_EXECUTOR)
 
@@ -146,7 +146,7 @@ mission.sections =
                 onTrigger = function(player, npc)
                     if not getMissionStatusBit(player, 0) then
                         if mission:getLocalVar(player, 'nmMisareaux') == 1 then
-                            return mission:progressEvent(13, { [1] = xi.item.DUCAL_GUARDS_RING })
+                            return mission:progressCutscene(13, { [1] = xi.item.DUCAL_GUARDS_RING })
                         elseif not GetMobByID(misareauxID.mob.BOGGELMANN):isSpawned() then
                             SpawnMob(misareauxID.mob.BOGGELMANN):updateClaim(player)
 

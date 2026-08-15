@@ -44,7 +44,7 @@ entity.onTrigger = function(player, npc)
             player:startEvent(286, 0, 937) -- Post Making Amens! dialogue (before Wonder Wands)
         end
     else
-        local rand = math.random(1, 2)
+        local rand = math.randomInt(1, 2)
         if rand == 1 then
             player:startEvent(225)   -- Standard Conversation
         else
@@ -61,7 +61,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:delKeyItem(xi.ki.BROKEN_WAND)
         player:addTitle(xi.title.HAKKURU_RINKURUS_BENEFACTOR)
         npcUtil.giveCurrency(player, 'gil', 6000)
-        player:addFame(xi.fameArea.WINDURST, 150)
+        player:addFame(xi.fameArea.WINDURST, 40)
         player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.MAKING_AMENS)
     end
 end

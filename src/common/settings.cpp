@@ -23,7 +23,6 @@
 
 #include "logging.h"
 #include "lua.h"
-#include "tracy.h"
 #include "utils.h"
 
 #include <filesystem>
@@ -34,7 +33,82 @@
 namespace settings
 {
 
-std::unordered_map<std::string, SettingsVariant> settingsMap;
+SettingsMap settingsMap;
+
+namespace
+{
+
+auto deepCopyTable(const sol::table& source) -> sol::table
+{
+    auto copy = lua.create_table();
+    for (const auto& [key, value] : source)
+    {
+        if (value.get_type() == sol::type::table)
+        {
+            copy.set(key, deepCopyTable(value.as<sol::table>()));
+        }
+        else
+        {
+            copy.set(key, value);
+        }
+    }
+
+    return copy;
+}
+
+auto isSequence(const sol::table& table) -> bool
+{
+    for (const auto& [key, value] : table)
+    {
+        if (key.get_type() != sol::type::number)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void fillMissingKeys(const sol::table& defaults, sol::table target, int depth)
+{
+    constexpr int fileDepth = 1;
+
+    for (const auto& [key, defaultValue] : defaults)
+    {
+        const auto isTable = defaultValue.get_type() == sol::type::table;
+        if (!isTable && depth <= fileDepth)
+        {
+            continue;
+        }
+
+        const auto existing = target.get<sol::object>(key);
+        if (!existing.valid())
+        {
+            target.set(key, defaultValue);
+            continue;
+        }
+
+        if (!isTable)
+        {
+            continue;
+        }
+
+        const auto defaultTable = defaultValue.as<sol::table>();
+        if (existing.get_type() == sol::type::table && !isSequence(defaultTable))
+        {
+            fillMissingKeys(defaultTable, existing.as<sol::table>(), depth + 1);
+        }
+    }
+}
+
+} // namespace
+
+namespace detail
+{
+
+std::atomic<uint64_t> generation{ 0 };
+
+} // namespace detail
 
 // We need this to figure out which environment variables are numbers
 // so we can pass them to the lua settings properly typed.
@@ -51,11 +125,11 @@ bool isNumber(const std::string& stringValue)
     return true;
 }
 
-/**
- * @brief
- * Load the settings Lua files found in <root>/settings/. Default settings are loaded first from <root>/settings/default/,
- * and are then replaced by the settings found in <root>/settings/, if any.
- */
+//
+// @brief
+// Load the settings Lua files found in <root>/settings/. Default settings are loaded first from <root>/settings/default/,
+// and are then replaced by the settings found in <root>/settings/, if any.
+//
 void init()
 {
     // Load defaults
@@ -96,6 +170,8 @@ void init()
         }
     }
 
+    const auto defaultSettings = deepCopyTable(lua["xi"]["settings"].get<sol::table>());
+
     // Scrape defaults into cpp's settingsMap
     for (const auto& [outerKeyObj, outerValObj] : lua["xi"]["settings"].get<sol::table>())
     {
@@ -104,7 +180,9 @@ void init()
         for (const auto& [innerKeyObj, innerValObj] : outerValObj.as<sol::table>())
         {
             auto innerKey = innerKeyObj.as<std::string>();
-            auto key      = to_upper(fmt::format("{}.{}", outerKey, innerKey));
+            // Stored verbatim: settings::get is case-sensitive, and call sites use the
+            // conventional "<file>.<SETTING_NAME>" casing, so the key must match exactly.
+            auto key = fmt::format("{}.{}", outerKey, innerKey);
 
             if (innerValObj.is<bool>())
             {
@@ -159,6 +237,8 @@ void init()
         }
     }
 
+    fillMissingKeys(defaultSettings, lua["xi"]["settings"].get<sol::table>(), 0);
+
     // Scrape user settings into cpp's settingsMap
     // This will overwrite the defaults, if user settings exist. Otherwise the
     // defaults will be left intact.
@@ -169,7 +249,9 @@ void init()
         for (const auto& [innerKeyObj, innerValObj] : outerValObj.as<sol::table>())
         {
             auto innerKey = innerKeyObj.as<std::string>();
-            auto key      = to_upper(fmt::format("{}.{}", outerKey, innerKey));
+            // Stored verbatim: settings::get is case-sensitive, and call sites use the
+            // conventional "<file>.<SETTING_NAME>" casing, so the key must match exactly.
+            auto key = fmt::format("{}.{}", outerKey, innerKey);
 
             if (innerValObj.is<bool>())
             {
@@ -210,14 +292,22 @@ void init()
         }
     }
 
-    // Push the consolidated defaults + user settings back up into xi.settings
+    // Push the consolidated defaults + user settings back up into xi.settings.
+    // Push the held alternative, not the variant itself: sol only auto-unwraps
+    // std::variant exactly, and SettingsVariant is our derived Variant - assigning
+    // it directly would land in Lua as opaque userdata.
     for (const auto& [key, value] : settingsMap)
     {
-        auto parts                          = split(key, ".");
-        auto outer                          = to_lower(parts[0]);
-        auto inner                          = to_upper(parts[1]);
-        lua["xi"]["settings"][outer][inner] = value;
+        auto parts = split(key, ".");
+        auto outer = to_lower(parts[0]);
+        auto inner = to_upper(parts[1]);
+        value.visit([&](const auto& held)
+                    {
+                        lua["xi"]["settings"][outer][inner] = held;
+                    });
     }
+
+    detail::generation.fetch_add(1, std::memory_order_release);
 
     logging::SetPattern(get<std::string>("logging.PATTERN"));
 
@@ -227,7 +317,7 @@ void init()
     // lua.safe_script("require('settings/main'); require('settings/default/main'); print(xi.settings)");
 }
 
-void visit(const xi::Fn<void(std::string, SettingsVariant)>& visitor)
+void visit(const Fn<void(std::string, SettingsVariant) const>& visitor)
 {
     for (auto& [key, value] : settingsMap)
     {

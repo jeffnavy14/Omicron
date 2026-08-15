@@ -22,11 +22,15 @@
 #include "controller.h"
 
 #include "ai/ai_container.h"
-#include "entities/battleentity.h"
+#include "entities/battle_entity.h"
 
 CController::CController(CBattleEntity* _POwner)
 : m_Tick(timer::now())
 , POwner(_POwner)
+{
+}
+
+CController::~CController()
 {
 }
 
@@ -42,34 +46,34 @@ void CController::Reset()
 {
 }
 
-bool CController::Cast(uint16 targid, SpellID spellid)
+auto CController::Cast(const EntityId target, const SpellID spellid) -> bool
 {
     if (POwner)
     {
-        return POwner->PAI->Internal_Cast(targid, spellid);
+        return POwner->PAI->Internal_Cast(target, spellid);
     }
     return false;
 }
 
-bool CController::Engage(uint16 targid)
+auto CController::Engage(const EntityId& target) -> bool
 {
     if (POwner)
     {
-        return POwner->PAI->Internal_Engage(targid);
+        return POwner->PAI->Internal_Engage(target);
     }
     return false;
 }
 
-bool CController::ChangeTarget(uint16 targid)
+auto CController::ChangeTarget(const EntityId& target) -> bool
 {
     if (POwner)
     {
-        return POwner->PAI->Internal_ChangeTarget(targid);
+        return POwner->PAI->Internal_ChangeTarget(target);
     }
     return false;
 }
 
-bool CController::Disengage()
+auto CController::Disengage() -> bool
 {
     if (POwner)
     {
@@ -78,60 +82,65 @@ bool CController::Disengage()
     return false;
 }
 
-bool CController::WeaponSkill(uint16 targid, uint16 wsid)
+auto CController::WeaponSkill(const EntityId target, const uint16 wsid) -> bool
 {
     if (POwner)
     {
-        return POwner->PAI->Internal_WeaponSkill(targid, wsid);
+        return POwner->PAI->Internal_WeaponSkill(target, wsid);
     }
     return false;
 }
 
-bool CController::RangedAttack(uint16 targid)
+auto CController::RangedAttack(const EntityId target) -> bool
 {
     if (POwner)
     {
-        return POwner->PAI->Internal_RangedAttack(targid);
+        return POwner->PAI->Internal_RangedAttack(target);
     }
     return false;
 }
 
-bool CController::IsAutoAttackEnabled() const
+auto CController::Ability(EntityId target, uint16 abilityid) -> bool
+{
+    return false;
+}
+
+auto CController::IsAutoAttackEnabled() const -> bool
 {
     return m_AutoAttackEnabled;
 }
 
-void CController::SetAutoAttackEnabled(bool enabled)
+void CController::SetAutoAttackEnabled(const bool enabled)
 {
     m_AutoAttackEnabled = enabled;
 }
 
-bool CController::IsRangedAttackEnabled() const
+auto CController::IsRangedAttackEnabled() const -> bool
 {
     return m_RangedAttackEnabled;
 }
 
-void CController::SetRangedAttackEnabled(bool enabled)
+void CController::SetRangedAttackEnabled(const bool enabled)
 {
     m_RangedAttackEnabled = enabled;
 }
 
-bool CController::IsWeaponSkillEnabled() const
+auto CController::IsWeaponSkillEnabled() const -> bool
 {
     return m_WeaponSkillEnabled;
 }
 
-void CController::SetWeaponSkillEnabled(bool enabled)
+void CController::SetWeaponSkillEnabled(const bool enabled)
 {
     m_WeaponSkillEnabled = enabled;
 }
 
-bool CController::IsMagicCastingEnabled() const
+auto CController::IsMagicCastingEnabled() const -> bool
 {
     return m_MagicCastingEnabled;
 }
 
-void CController::SetMagicCastingEnabled(bool enabled)
+void CController::SetMagicCastingEnabled(const bool enabled)
 {
     m_MagicCastingEnabled = enabled;
 }

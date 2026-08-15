@@ -42,7 +42,7 @@ public:
     friend std::ostream& operator<<(std::ostream& out, const CLuaPetSkill& mobskill);
 
     float  getTP();
-    auto   getMobHP() const -> uint8;
+    auto   getMobHP() const -> int32;
     uint8  getMobHPP();
     uint16 getID();
     int16  getParam();
@@ -55,8 +55,8 @@ public:
     uint16 getTotalTargets();
     uint32 getPrimaryTargetID();
     void   setFinalAnimationSub(uint8 newAnimationSub);
-    auto   getAttackType() const -> ATTACK_TYPE;
-    void   setAttackType(ATTACK_TYPE attackType) const;
+    auto   getAttackType() const -> xi::AttackType;
+    void   setAttackType(xi::AttackType attackType) const;
     auto   isCritical() const -> bool;
     void   setCritical(bool isCritical) const;
 

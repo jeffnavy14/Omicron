@@ -13,7 +13,7 @@ entity.onTrigger = function(player, npc)
 
     local resultTable = zone:queryEntitiesByName('_76r')
 
-    resultTable[1]:openDoor(15)
+    resultTable[1]:openDoor(10)
 end
 
 return entity

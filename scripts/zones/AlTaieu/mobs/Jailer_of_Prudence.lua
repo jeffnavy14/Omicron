@@ -46,7 +46,7 @@ entity.onMobSpawn = function(mob)
     mob:setMod(xi.mod.TRIPLE_ATTACK, 20)
     mob:addMod(xi.mod.DEFP, 33)
     mob:addMod(xi.mod.MOVE_SPEED_STACKABLE, 20)
-    mob:addMobMod(xi.mobMod.WEAPON_BONUS, 72) -- 180 total weapon damage
+    mob:addMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 72) -- 180 total weapon damage
 end
 
 local teleportToTarget = function(mob, target, currentTargetId)
@@ -57,8 +57,8 @@ local teleportToTarget = function(mob, target, currentTargetId)
         end
 
         local targetX, targetY, targetZ = target:getXPos(), target:getYPos(), target:getZPos()
-        local offsetX = math.random(-2, 2)
-        local offsetZ = math.random(-2, 2)
+        local offsetX = math.randomInt(-2, 2)
+        local offsetZ = math.randomInt(-2, 2)
         mobArg:setStatus(xi.status.INVISIBLE)
         mobArg:setPos(targetX + offsetX, targetY, targetZ + offsetZ, target:getRotPos())
 

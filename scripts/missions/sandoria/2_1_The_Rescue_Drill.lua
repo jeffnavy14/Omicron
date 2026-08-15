@@ -375,7 +375,7 @@ mission.sections =
                 onTrade = function(player, npc, trade)
                     if
                         player:getMissionStatus(mission.areaId) == 9 and
-                        npcUtil.tradeHasExactly(trade, xi.item.BRONZE_SWORD)
+                        npcUtil.tradeMatches(trade, { { xi.item.BRONZE_SWORD, 1 } })
                     then
                         return mission:progressEvent(2)
                     end
@@ -400,13 +400,13 @@ mission.sections =
             onEventFinish =
             {
                 [1] = function(player, csid, option, npc)
-                    mission:setVar(player, 'Option', math.random(1, 3))
+                    mission:setVar(player, 'Option', math.randomInt(1, 3))
                     player:setMissionStatus(mission.areaId, 8)
                 end,
 
                 [2] = function(player, csid, option, npc)
                     player:setMissionStatus(mission.areaId, 10)
-                    player:confirmTrade()
+                    player:tradeComplete()
                 end,
             },
         },

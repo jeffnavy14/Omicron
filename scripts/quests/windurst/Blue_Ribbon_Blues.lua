@@ -13,7 +13,7 @@ local quest = Quest:new(xi.questLog.WINDURST, xi.quest.id.windurst.BLUE_RIBBON_B
 
 quest.reward =
 {
-    fame  = 140,
+    fame  = 50,
     fameArea = xi.fameArea.WINDURST,
     title = xi.title.GHOSTIE_BUSTER,
 }
@@ -25,7 +25,7 @@ quest.sections =
             return status == xi.questStatus.QUEST_AVAILABLE and
                 player:hasCompletedQuest(xi.questLog.WINDURST, xi.quest.id.windurst.WATER_WAY_TO_GO) and
                 player:getFameLevel(xi.fameArea.WINDURST) >= 5 and
-                not quest:getMustZone(player)
+                not xi.quest.getMustZone(player, xi.questLog.WINDURST, xi.quest.id.windurst.WATER_WAY_TO_GO)
         end,
 
         [xi.zone.WINDURST_WATERS] =

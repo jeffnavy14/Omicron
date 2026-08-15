@@ -24,14 +24,13 @@
 
 #include "ai/ai_container.h"
 #include "battlefield.h"
-#include "entities/charentity.h"
-#include "entities/mobentity.h"
-#include "entities/npcentity.h"
-#include "entities/trustentity.h"
-#include "lua_baseentity.h"
+#include "data/enums/mob_mod.h"
+#include "entities/char_entity.h"
+#include "entities/mob_entity.h"
+#include "entities/npc_entity.h"
+#include "entities/trust_entity.h"
+#include "lua_base_entity.h"
 #include "lua_battlefield.h"
-#include "mob_modifier.h"
-#include "status_effect_container.h"
 #include "utils/mobutils.h"
 #include "utils/zoneutils.h"
 
@@ -49,7 +48,7 @@ uint16 CLuaBattlefield::getID()
     return m_PLuaBattlefield->GetID();
 }
 
-uint16 CLuaBattlefield::getZoneID()
+auto CLuaBattlefield::getZoneID() -> xi::ZoneId
 {
     return m_PLuaBattlefield->GetZoneID();
 }
@@ -330,7 +329,7 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
 
         if (!entityIds.empty())
         {
-            uint32 stride = uint32(entityIds.size()) / m_PLuaBattlefield->GetZone()->m_BattlefieldHandler->MaxBattlefieldAreas();
+            uint32 stride = uint32(entityIds.size()) / m_PLuaBattlefield->GetZone()->battlefieldHandler()->MaxBattlefieldAreas();
 
             // Look to see if there's an Armoury Crate within the group of monsters
             static const std::string ARMOURY_CRATE = "Armoury_Crate";
@@ -531,7 +530,7 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
                     return;
                 }
 
-                PMob->setMobMod(MOBMOD_SUPERLINK, superlinkId);
+                PMob->setMobMod(xi::MobMod::Superlink, superlinkId);
                 PMob->saveMobModifiers();
             }
         }
@@ -548,9 +547,9 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
                     return;
                 }
 
-                PMob->setMobMod(MOBMOD_ROAM_RESET_FACING, 1);
+                PMob->setMobMod(xi::MobMod::RoamResetFacing, 1);
                 PMob->m_maxRoamDistance = 0.5f;
-                PMob->m_roamFlags |= ROAMFLAG_SCRIPTED;
+                PMob->m_roamFlags |= xi::RoamFlag::Scripted;
                 PMob->saveMobModifiers();
             }
         }
@@ -569,7 +568,7 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
 
                 for (const auto& modifier : mods.get<sol::table>())
                 {
-                    PMob->setModifier(modifier.first.as<Mod>(), modifier.second.as<uint16>());
+                    PMob->setModifier(modifier.first.as<xi::Mod>(), modifier.second.as<uint16>());
                 }
                 PMob->saveModifiers();
             }
@@ -590,7 +589,7 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
                 for (const auto& modifier : mobMods.get<sol::table>())
                 {
                     const auto mobMod = modifier.first.as<uint16>();
-                    PMob->setMobMod(mobMod, modifier.second.as<uint16>());
+                    PMob->setMobMod(static_cast<xi::MobMod>(mobMod), modifier.second.as<uint16>());
                 }
                 PMob->saveMobModifiers();
             }
@@ -720,7 +719,7 @@ void CLuaBattlefield::addGroups(const sol::table& groups, bool hasMultipleArenas
         if (auto* entity = dynamic_cast<CNpcEntity*>(zoneutils::GetEntity(m_PLuaBattlefield->GetArmouryCrate(), TYPE_NPC)))
         {
             m_PLuaBattlefield->InsertEntity(entity, true, CONDITION_DISAPPEAR_AT_START);
-            entity->SetUntargetable(true);
+            entity->setUntargetable(true);
             entity->ResetLocalVars();
             entity->PAI->EventHandler.removeListener("TRIGGER_CRATE");
         }

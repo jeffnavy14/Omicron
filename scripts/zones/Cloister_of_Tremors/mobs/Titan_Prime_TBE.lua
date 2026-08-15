@@ -28,7 +28,7 @@ entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = 857, hpp = math.random(30, 55) }, -- uses Earthen Fury once while near 50% HPP.
+            { id = 857, hpp = math.randomInt(30, 55) }, -- uses Earthen Fury once while near 50% HPP.
         },
     })
 
@@ -56,12 +56,6 @@ entity.onAdditionalEffect = function(mob, target, damage)
     }
 
     return xi.combat.action.executeAddEffectDamage(mob, target, pTable)
-end
-
-entity.onMobFight = function(mob, target)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

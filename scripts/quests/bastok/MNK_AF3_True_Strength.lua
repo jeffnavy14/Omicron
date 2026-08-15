@@ -12,7 +12,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.TRUE_STRENGTH)
 
 quest.reward =
 {
-    fame     = 60,
+    fame     = 20,
     fameArea = xi.fameArea.BASTOK,
     item     = xi.item.TEMPLE_HOSE,
     title    = xi.title.PARAGON_OF_MONK_EXCELLENCE,
@@ -52,11 +52,11 @@ quest.sections =
             {
                 onTrade = function(player, npc, trade)
                     if
-                        npcUtil.tradeHasExactly(trade, xi.item.BOTTLE_OF_YAGUDO_DRINK) and
+                        npcUtil.tradeMatches(trade, { { xi.item.BOTTLE_OF_YAGUDO_DRINK, 1 } }) and
                         not player:hasItem(xi.item.XALMO_FEATHER) and
                         npcUtil.popFromQM(player, npc, oztrojaID.mob.HUU_XALMO_THE_SAVAGE, { hide = 0 })
                     then
-                        player:confirmTrade()
+                        player:tradeComplete()
 
                         return quest:messageSpecial(oztrojaID.text.YOU_HOLD, xi.item.BOTTLE_OF_YAGUDO_DRINK)
                     end
@@ -69,7 +69,7 @@ quest.sections =
             ['Ayame'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.XALMO_FEATHER) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.XALMO_FEATHER, 1 } }) then
                         return quest:progressEvent(749)
                     end
                 end,
@@ -79,7 +79,7 @@ quest.sections =
             {
                 [749] = function(player, csid, option, npc)
                     if quest:complete(player) then
-                        player:confirmTrade()
+                        player:tradeComplete()
                     end
                 end,
             },

@@ -10,7 +10,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.FOREVER_TO_HOLD)
 
 quest.reward =
 {
-    fame     = 80,
+    fame     = 20,
     fameArea = xi.fameArea.BASTOK,
     gil      = 300,
     title    = xi.title.QIJIS_FRIEND,
@@ -47,7 +47,7 @@ quest.sections =
             ['Qiji'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.BRASS_HAIRPIN) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.BRASS_HAIRPIN, 1 } }) then -- Note: No trade complete.
                         return quest:event(124)
                     end
                 end,
@@ -62,7 +62,7 @@ quest.sections =
             ['Romilda'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.BRASS_HAIRPIN) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.BRASS_HAIRPIN, 1 } }) then
                         return quest:progressEvent(125)
                     end
                 end,
@@ -71,7 +71,7 @@ quest.sections =
             onEventFinish =
             {
                 [125] = function(player, csid, option, npc)
-                    player:confirmTrade()
+                    player:tradeComplete()
 
                     quest:setVar(player, 'Prog', 1)
                 end,

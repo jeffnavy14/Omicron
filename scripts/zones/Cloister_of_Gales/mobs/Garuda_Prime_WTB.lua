@@ -8,14 +8,11 @@ mixins = { require('scripts/mixins/job_special') }
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobInitialize = function(mob)
-end
-
 entity.onMobSpawn = function(mob)
     xi.mix.jobSpecial.config(mob, {
         specials =
         {
-            { id = 875, hpp = math.random(10, 90) },
+            { id = 875, hpp = math.randomInt(10, 90) },
         },
     })
 
@@ -71,8 +68,8 @@ entity.onMobWeaponSkill = function(mob, target, skill, action)
 end
 
 entity.onMobEngage = function(mob, target)
-    mob:setLocalVar('healTimer', GetSystemTime() + math.random(30, 60))
-    mob:setLocalVar('hateTimer', GetSystemTime() + math.random(10, 20))
+    mob:setLocalVar('healTimer', GetSystemTime() + math.randomInt(30, 60))
+    mob:setLocalVar('hateTimer', GetSystemTime() + math.randomInt(10, 20))
 end
 
 entity.onMobFight = function(mob, target)
@@ -90,7 +87,7 @@ entity.onMobFight = function(mob, target)
                 -- depending on if they are damaged
                 local spellTarget = nil
                 if elementalDamaged and avatarDamaged then
-                    if math.random(1, 100) <= 50 then
+                    if math.randomInt(1, 100) <= 50 then
                         spellTarget = mob
                     else
                         spellTarget = elemental
@@ -103,7 +100,7 @@ entity.onMobFight = function(mob, target)
 
                 if spellTarget then
                     elemental:castSpell(xi.magic.spell.AERO_IV, spellTarget)
-                    mob:setLocalVar('healTimer', GetSystemTime() + math.random(30, 60))
+                    mob:setLocalVar('healTimer', GetSystemTime() + math.randomInt(30, 60))
                     break
                 end
             end
@@ -117,13 +114,10 @@ entity.onMobFight = function(mob, target)
 
             if elemental and elemental:isAlive() then
                 elemental:updateEnmity(target)
-                mob:setLocalVar('hateTimer', GetSystemTime() + math.random(10, 20))
+                mob:setLocalVar('hateTimer', GetSystemTime() + math.randomInt(10, 20))
             end
         end
     end
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

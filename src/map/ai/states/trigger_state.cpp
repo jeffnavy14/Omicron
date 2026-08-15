@@ -21,26 +21,24 @@
 
 #include "trigger_state.h"
 
-#include "ai/ai_container.h"
-#include "entities/charentity.h"
-#include "entities/npcentity.h"
-#include "lua/luautils.h"
+#include "entities/char_entity.h"
 
-CTriggerState::CTriggerState(CBaseEntity* PEntity, uint16 targid, bool door)
-: CState(PEntity, targid)
+CTriggerState::CTriggerState(xi::Badge<CState>, CBaseEntity* PEntity, const EntityId& target, const bool door)
+: CState(PEntity, target)
 , door(door)
 {
+    // Capture constructor arguments into members and nothing else. All other logic goes into init().
 }
 
-bool CTriggerState::Update(timer::time_point tick)
+auto CTriggerState::Update(const timer::time_point tick) -> bool
 {
     if (!IsCompleted())
     {
-        auto* PChar = dynamic_cast<CCharEntity*>(GetTarget());
-        if (PChar && door && m_PEntity->animation == ANIMATION_CLOSE_DOOR)
+        const auto* PChar = target().resolve<CCharEntity>();
+        if (PChar && door && m_PEntity->animation == xi::Animation::CloseDoor)
         {
             close                = true;
-            m_PEntity->animation = ANIMATION_OPEN_DOOR;
+            m_PEntity->animation = xi::Animation::OpenDoor;
             m_PEntity->updatemask |= UPDATE_HP;
         }
         Complete();
@@ -49,7 +47,7 @@ bool CTriggerState::Update(timer::time_point tick)
     {
         if (tick > GetEntryTime() + 7s)
         {
-            m_PEntity->animation = ANIMATION_CLOSE_DOOR;
+            m_PEntity->animation = xi::Animation::CloseDoor;
             m_PEntity->updatemask |= UPDATE_HP;
             return true;
         }
@@ -61,12 +59,21 @@ bool CTriggerState::Update(timer::time_point tick)
     return false;
 }
 
-bool CTriggerState::CanChangeState()
+auto CTriggerState::CanChangeState() -> bool
 {
     return false;
 }
 
-bool CTriggerState::CanFollowPath()
+auto CTriggerState::CanFollowPath() -> bool
 {
     return false;
+}
+
+auto CTriggerState::CanInterrupt() -> bool
+{
+    return false;
+}
+
+void CTriggerState::Cleanup(timer::time_point tick)
+{
 }

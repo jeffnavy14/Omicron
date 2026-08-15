@@ -35,8 +35,6 @@ end
 
 quest.reward =
 {
-    fame     = 30,
-    fameArea = xi.fameArea.JEUNO,
     title    = xi.title.GOBLINS_EXCLUSIVE_FASHION_MANNEQUIN,
 }
 
@@ -56,7 +54,7 @@ quest.sections =
                         player:getMainLvl() >= 10 and
                         player:getFameLevel(xi.fameArea.JEUNO) >= 3
                     then
-                        return quest:progressEvent(10016)
+                        return quest:progressEvent(10016, VanadielRSELocation(), VanadielRSERace())
                     else
                         return quest:event(10020)
                     end
@@ -130,6 +128,9 @@ quest.sections =
 
                             if player:getQuestStatus(quest.areaId, quest.questId) == xi.questStatus.QUEST_ACCEPTED then
                                 quest:complete(player)
+                                player:addFame(xi.fameArea.SANDORIA, 5)
+                                player:addFame(xi.fameArea.BASTOK, 5)
+                                player:addFame(xi.fameArea.WINDURST, 5)
                             end
                         end
                     end

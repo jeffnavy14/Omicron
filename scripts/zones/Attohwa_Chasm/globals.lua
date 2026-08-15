@@ -35,18 +35,52 @@ local attohwaChasmGlobal =
 
     handleMiasma = function(npc)
         local timer    = npc:getLocalVar('timer')
-        local newTimer = math.random(30, 40)
+        local newTimer = math.randomInt(30, 40)
 
         if GetSystemTime() >= timer then
-            if npc:getAnimation() == xi.anim.CLOSE_DOOR then
-                npc:setAnimation(xi.anim.OPEN_DOOR)
+            if npc:getAnimation() == xi.animation.CLOSE_DOOR then
+                npc:setAnimation(xi.animation.OPEN_DOOR)
             else
-                npc:setAnimation(xi.anim.CLOSE_DOOR)
+                npc:setAnimation(xi.animation.CLOSE_DOOR)
             end
 
             npc:setLocalVar('timer', GetSystemTime() + newTimer)
         end
-    end
+    end,
+
+    handleLuminantUsed = function(npc)
+        npc:setStatus(xi.status.CUTSCENE_ONLY)
+
+        -- Reactivate a random deactivated luminant after 30-60 minutes
+        -- Because 3 luminants always start activated when the server starts,
+        -- the luminants will always be restored back to 3 active eventually.
+        npc:timer(math.randomInt(1800, 3600), function()
+            local luminantTable = ID.npc.LUMINANT
+            local shuffledTable = utils.shuffle(luminantTable) -- Reorder the luminantTable randomly.
+            for _, luminantId in ipairs(shuffledTable) do
+                local luminant = GetNPCByID(luminantId)
+                if
+                    luminant and
+                    luminant:getStatus() == xi.status.CUTSCENE_ONLY
+                then
+                    luminant:setStatus(xi.status.NORMAL)
+                    break
+                end
+            end
+        end)
+    end,
+
+    removeMimeoKIs = function(player)
+        if player:hasKeyItem(xi.ki.MIMEO_STONE) then
+            player:delKeyItem(xi.ki.MIMEO_STONE)
+            player:messageSpecial(ID.text.MIMEO_JEWEL_OFFSET + 4, xi.ki.MIMEO_STONE)
+        end
+
+        if player:hasKeyItem(xi.ki.MIMEO_JEWEL) then
+            player:delKeyItem(xi.ki.MIMEO_JEWEL)
+            player:messageSpecial(ID.text.MIMEO_JEWEL_OFFSET + 4, xi.ki.MIMEO_JEWEL)
+        end
+    end,
 }
 
 return attohwaChasmGlobal

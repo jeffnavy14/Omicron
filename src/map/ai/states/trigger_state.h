@@ -19,29 +19,22 @@
 ===========================================================================
 */
 
-#ifndef _CTRIGGER_STATE_H
-#define _CTRIGGER_STATE_H
+#pragma once
 
 #include "state.h"
 
 class CTriggerState : public CState
 {
 public:
-    CTriggerState(CBaseEntity* PEntity, uint16 targid, bool door = false);
-    virtual bool Update(timer::time_point tick) override;
-    virtual void Cleanup(timer::time_point tick) override
-    {
-    }
-    virtual bool CanChangeState() override;
-    virtual bool CanFollowPath() override;
-    virtual bool CanInterrupt() override
-    {
-        return false;
-    }
+    CTriggerState(xi::Badge<CState>, CBaseEntity* PEntity, const EntityId& target, bool door);
+
+    auto Update(timer::time_point tick) -> bool override;
+    void Cleanup(timer::time_point tick) override;
+    auto CanChangeState() -> bool override;
+    auto CanFollowPath() -> bool override;
+    auto CanInterrupt() -> bool override;
 
 private:
     bool close{ false };
     bool door{ false };
 };
-
-#endif

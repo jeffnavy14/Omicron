@@ -9,6 +9,7 @@ local quest = Quest:new(xi.questLog.BASTOK, xi.quest.id.bastok.VENGEFUL_WRATH)
 
 quest.reward =
 {
+    fame     = 16,
     fameArea = xi.fameArea.BASTOK,
     gil      = 900,
     title    = xi.title.AVENGER,
@@ -45,7 +46,7 @@ quest.sections =
             ['Goraow'] =
             {
                 onTrade = function(player, npc, trade)
-                    if npcUtil.tradeHasExactly(trade, xi.item.QUADAV_HELM) then
+                    if npcUtil.tradeMatches(trade, { { xi.item.QUADAV_HELM, 1 } }) then
                         return quest:progressEvent(107)
                     end
                 end,
@@ -54,13 +55,9 @@ quest.sections =
             onEventFinish =
             {
                 [107] = function(player, csid, option, npc)
-                    player:confirmTrade()
-
-                    if player:getQuestStatus(quest.areaId, quest.questId) == xi.questStatus.QUEST_ACCEPTED then
-                        player:addFame(xi.fameArea.BASTOK, 112)
+                    if quest:complete(player) then
+                        player:tradeComplete()
                     end
-
-                    quest:complete(player)
                 end,
             },
         },

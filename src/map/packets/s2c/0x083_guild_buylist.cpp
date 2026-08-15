@@ -21,17 +21,13 @@
 
 #include "0x083_guild_buylist.h"
 
-#include "entities/charentity.h"
-#include "item_container.h"
-#include "items/item_shop.h"
+#include "entities/char_entity.h"
 
-#include <cstring>
-
-GP_SERV_COMMAND_GUILD_BUYLIST::GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar, const CItemContainer* PGuild)
+GP_SERV_COMMAND_GUILD_BUYLIST::GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar, const std::vector<GP_GUILD_ITEM>& items)
 {
-    if (PChar == nullptr || PGuild == nullptr)
+    if (PChar == nullptr)
     {
-        ShowError("GP_SERV_COMMAND_GUILD_BUYLIST - PChar or PGuild was null.");
+        ShowError("GP_SERV_COMMAND_GUILD_BUYLIST - PChar was null.");
         return;
     }
 
@@ -40,38 +36,23 @@ GP_SERV_COMMAND_GUILD_BUYLIST::GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar,
     uint8 ItemCount   = 0;
     uint8 PacketCount = 0;
 
-    for (uint8 SlotID = 1; SlotID <= PGuild->GetSize(); ++SlotID)
+    for (const auto& item : items)
     {
-        CItemShop* PItem = (CItemShop*)PGuild->GetItem(SlotID);
-
-        if (PItem == nullptr)
+        if (ItemCount == 30)
         {
-            ShowError("GP_SERV_COMMAND_GUILD_BUYLIST - PItem was null for SlotID: %d", SlotID);
-            return;
+            packet.Count = ItemCount;
+            packet.Stat  = (PacketCount == 0 ? 0x40 : PacketCount);
+
+            PChar->pushPacket(this->copy());
+
+            ItemCount = 0;
+            PacketCount++;
+
+            std::memset(&packet, 0, sizeof(PacketData));
         }
 
-        if (PItem->IsInMenu())
-        {
-            if (ItemCount == 30)
-            {
-                packet.Count = ItemCount;
-                packet.Stat  = (PacketCount == 0 ? 0x40 : PacketCount);
-
-                PChar->pushPacket(this->copy());
-
-                ItemCount = 0;
-                PacketCount++;
-
-                std::memset(&packet, 0, sizeof(PacketData));
-            }
-
-            packet.List[ItemCount].ItemNo = PItem->getID();
-            packet.List[ItemCount].Count  = PItem->getQuantity();
-            packet.List[ItemCount].Max    = PItem->getStackSize();
-            packet.List[ItemCount].Price  = PItem->getBasePrice();
-
-            ItemCount++;
-        }
+        packet.List[ItemCount] = item;
+        ItemCount++;
     }
 
     packet.Count = ItemCount;

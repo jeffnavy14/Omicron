@@ -2,6 +2,9 @@
 -- xi.effect.HEALING
 -- Activated through the /heal command
 -----------------------------------
+require('scripts/quests/adoulin/Dances_with_Luopans')
+-----------------------------------
+
 ---@type TEffect
 local effectObject = {}
 
@@ -21,33 +24,8 @@ effectObject.onEffectGain = function(target, effect)
         end
     end
 
-    -- Dances with Luopans
-    if
-        target:getLocalVar('GEO_DWL_Locus_Area') == 1 and
-        target:getCharVar('GEO_DWL_Luopan') == 0
-    then
-        local ID                = zones[target:getZoneID()]
-        local maxWaitTime       = 480 -- Max wait of 8 minutes.
-        local secondsPerTick    = xi.settings.map.HEALING_TICK_DELAY
-        local minWaitTime       = math.min(3 * secondsPerTick, maxWaitTime)
-        local waitTimeInSeconds = math.random(minWaitTime, maxWaitTime)
-
-        target:messageSpecial(ID.text.ENERGIES_COURSE)
-        target:setLocalVar('GEO_DWL_Resting', GetSystemTime() + waitTimeInSeconds)
-
-        target:timer(waitTimeInSeconds * 1000, function(targetArg)
-            local finishTime = targetArg:getLocalVar('GEO_DWL_Resting')
-
-            if
-                finishTime > 0 and
-                GetSystemTime() >= finishTime
-            then
-                targetArg:messageSpecial(ID.text.MYSTICAL_WARMTH) -- You feel a mystical warmth welling up inside you!
-                targetArg:setLocalVar('GEO_DWL_Resting', 0)
-                targetArg:setCharVar('GEO_DWL_Luopan', 1)
-            end
-        end)
-    end
+    -- Dances with Luopans: charge the luopan while resting at an Ergon Locus
+    xi.dancesWithLuopans.onHealing(target)
 
     if target:getObjType() == xi.objType.PC then
         xi.voidwalker.onHealing(target)
@@ -79,7 +57,20 @@ effectObject.onEffectTick = function(target, effect)
             not target:hasStatusEffect(xi.effect.CURSE_II)
         then
             local healHP = 0
-            if
+            local healMP = 12 + ((healtime - 2) * (1 + target:getMod(xi.mod.CLEAR_MIND))) + target:getMod(xi.mod.MPHEAL)
+
+            if target:isAutomaton() then
+                -- TODO: Check lower level Automatons
+                local mainLevel = target:getMainLvl()
+                local hpBase    = 10 + 3 * math.floor((mainLevel - 1) / 10)
+                local mpBase    = math.min(33, 9 + 3 * math.floor(mainLevel / 10))
+                local hpRate    = math.min(5, 1 + math.floor(target:getMaxHP() / 300))
+                local mpRate    = math.min(4, 1 + math.floor(target:getMaxMP() / 300))
+
+                target:addTP(xi.settings.main.HEALING_TP_CHANGE)
+                healHP = hpBase + (healtime - 2) * hpRate
+                healMP = mpBase + (healtime - 2) * mpRate
+            elseif
                 target:getContinentID() == 1 and
                 target:hasStatusEffect(xi.effect.SIGNET)
             then
@@ -102,7 +93,7 @@ effectObject.onEffectTick = function(target, effect)
 
             target:addHPLeaveSleeping(healHP)
             target:updateEnmityFromCure(target, healHP)
-            target:addMP(12 + ((healtime - 2) * (1 + target:getMod(xi.mod.CLEAR_MIND))) + target:getMod(xi.mod.MPHEAL))
+            target:addMP(healMP)
         end
     end
 end
@@ -111,8 +102,8 @@ effectObject.onEffectLose = function(target, effect)
     target:setAnimation(xi.animation.NONE)
     target:delStatusEffectSilent(xi.effect.LEAVEGAME)
 
-    -- Dances with Luopans
-    target:setLocalVar('GEO_DWL_Resting', 0)
+    -- Dances with Luopans: stopping the rest cancels the luopan charge
+    xi.dancesWithLuopans.onEffectLose(target)
 end
 
 return effectObject

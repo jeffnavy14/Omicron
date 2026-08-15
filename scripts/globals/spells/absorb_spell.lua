@@ -2,7 +2,6 @@
 -- Absorb Spell Utilities
 -- Drain, Aspir, Absorb-TP, Absorb-STAT, Absorb-Attri
 -----------------------------------
-require('scripts/globals/combat/magic_hit_rate')
 require('scripts/globals/spells/damage_spell')
 -----------------------------------
 xi = xi or {}
@@ -10,7 +9,7 @@ xi.spells = xi.spells or {}
 xi.spells.absorb = xi.spells.absorb or {}
 -----------------------------------
 
-local absorbStatData =
+xi.spells.absorb.absorbStatData =
 {
     [xi.magic.spell.ABSORB_STR] = { boostEffect = xi.effect.STR_BOOST,      downEffect = xi.effect.STR_DOWN,      msg = xi.msg.basic.MAGIC_ABSORB_STR },
     [xi.magic.spell.ABSORB_DEX] = { boostEffect = xi.effect.DEX_BOOST,      downEffect = xi.effect.DEX_DOWN,      msg = xi.msg.basic.MAGIC_ABSORB_DEX },
@@ -25,11 +24,20 @@ local absorbStatData =
 -- https://www.bg-wiki.com/ffxi/Category:Absorb_Spell
 xi.spells.absorb.doAbsorbStatSpell = function(caster, target, spell)
     local spellId          = spell:getID()
-    local enhancingEffect  = absorbStatData[spellId].boostEffect
-    local enfeeblingEffect = absorbStatData[spellId].downEffect
+    local enhancingEffect  = xi.spells.absorb.absorbStatData[spellId].boostEffect
+    local enfeeblingEffect = xi.spells.absorb.absorbStatData[spellId].downEffect
 
     -- Calculate resistance (2 state effects: Either No resist, half resist or full resist)
-    local resist = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.magic.spellGroup.BLACK, xi.skill.DARK_MAGIC, 0, xi.element.DARK, xi.mod.INT, enfeeblingEffect, 0)
+    local maccParams =
+    {
+        effectId       = enfeeblingEffect,
+        magicalElement = xi.element.DARK,
+        actorStat      = xi.mod.INT,
+        skillType      = xi.skill.DARK_MAGIC,
+        spellGroup     = xi.magic.spellGroup.BLACK,
+    }
+
+    local resist = xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams)
     if resist < 0.5 then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         return 0
@@ -59,7 +67,7 @@ xi.spells.absorb.doAbsorbStatSpell = function(caster, target, spell)
     -- Apply debuff and buff if needed. Absorb effects can be overwriten via higher potency.
     if target:addStatusEffect(enfeeblingEffect, { power = finalPotency, duration = finalDuration, origin = caster }) then
         -- Set associated message.
-        spell:setMsg(absorbStatData[spellId].msg)
+        spell:setMsg(xi.spells.absorb.absorbStatData[spellId].msg)
 
         -- Force-overwrite associated buff.
         caster:delStatusEffect(enhancingEffect)
@@ -71,7 +79,7 @@ xi.spells.absorb.doAbsorbStatSpell = function(caster, target, spell)
     return enfeeblingEffect
 end
 
-local absorbPointsData =
+xi.spells.absorb.absorbPointsData =
 {
     -- [spell ID] = { parameter, { skill <= 300 }, { skill > 300 }, divisor, increase max HP? }
     [xi.magic.spell.DRAIN    ] = { xi.mod.HP, {   1,  20 }, { 0.625, 132.5 }, 0.50, false },
@@ -87,7 +95,7 @@ local absorbPointsData =
 xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     local finalDamage  = 0
     local spellId      = spell:getID()
-    local modAbsorbed  = absorbPointsData[spellId][1]
+    local modAbsorbed  = xi.spells.absorb.absorbPointsData[spellId][1]
     local targetPoints = target:getHP()
     local displayCap   = caster:getMaxHP() - caster:getHP()
 
@@ -104,8 +112,8 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
 
     -- Early return: Target absorbs or nullifies dark.
     if
-        xi.spells.damage.calculateAbsorption(target, xi.element.DARK, true) ~= 1 or
-        xi.spells.damage.calculateNullification(target, xi.element.DARK, true, false) ~= 1
+        xi.spells.damage.calculateAbsorption(target, xi.element.DARK, false, true, false, false) ~= 1 or
+        xi.spells.damage.calculateNullification(target, xi.element.DARK, false, true, false, false) ~= 1
     then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         return finalDamage
@@ -120,12 +128,20 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     -- Base damage.
     local casterSkill        = caster:getSkillLevel(xi.skill.DARK_MAGIC)
     local skillEquation      = casterSkill > 300 and 3 or 2
-    local maxDamagePotential = math.floor(casterSkill * absorbPointsData[spellId][skillEquation][1] + absorbPointsData[spellId][skillEquation][2])
-    local minDamagePotential = math.floor(maxDamagePotential * absorbPointsData[spellId][4])
-    local baseDamage         = math.random(minDamagePotential, maxDamagePotential)
+    local maxDamagePotential = math.floor(casterSkill * xi.spells.absorb.absorbPointsData[spellId][skillEquation][1] + xi.spells.absorb.absorbPointsData[spellId][skillEquation][2])
+    local minDamagePotential = math.floor(maxDamagePotential * xi.spells.absorb.absorbPointsData[spellId][4])
+    local baseDamage         = math.randomInt(minDamagePotential, maxDamagePotential)
+
+    local maccParams =
+    {
+        magicalElement = xi.element.DARK,
+        actorStat      = xi.mod.INT,
+        skillType      = xi.skill.DARK_MAGIC,
+        spellGroup     = xi.magic.spellGroup.BLACK,
+    }
 
     -- Multipliers.
-    local resistTier             = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.magic.spellGroup.BLACK, xi.skill.DARK_MAGIC, 0, xi.element.DARK, xi.mod.INT, 0, 0)
+    local resistTier             = xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams)
     local additionalResistTier   = xi.spells.damage.calculateAdditionalResistTier(caster, target, xi.element.DARK)
     local sdt                    = xi.combat.damage.magicalElementSDT(target, xi.element.DARK)
     local elementalStaffBonus    = xi.spells.damage.calculateElementalStaffBonus(caster, xi.element.DARK)
@@ -153,7 +169,7 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     if modAbsorbed == xi.mod.HP then
         finalDamage = utils.clamp(utils.handlePhalanx(target, finalDamage), 0, 99999)
         finalDamage = utils.clamp(utils.handleOneForAll(target, finalDamage), 0, 99999)
-        finalDamage = utils.clamp(utils.handleStoneskin(target, finalDamage), -99999, 99999)
+        finalDamage = utils.handleStoneskin(target, finalDamage, xi.attackType.MAGICAL)
         finalDamage = utils.clamp(finalDamage, 0, targetPoints)
         finalDamage = target:checkDamageCap(finalDamage)
 
@@ -170,7 +186,7 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     end
 
     -- Drain II and Drain III increase max HP via effect.
-    if absorbPointsData[spellId][5] then
+    if xi.spells.absorb.absorbPointsData[spellId][5] then
         -- Remove cap on damage displayed in log.
         displayCap = 9999 - caster:getHP()
 
@@ -219,8 +235,8 @@ xi.spells.absorb.doAbsorbTPSpell = function(caster, target, spell)
 
     -- Early return: Target absorbs or nullifies dark.
     if
-        xi.spells.damage.calculateAbsorption(target, xi.element.DARK, true) ~= 1 or
-        xi.spells.damage.calculateNullification(target, xi.element.DARK, true, false) ~= 1
+        xi.spells.damage.calculateAbsorption(target, xi.element.DARK, false, true, false, false) ~= 1 or
+        xi.spells.damage.calculateNullification(target, xi.element.DARK, false, true, false, false) ~= 1
     then
         spell:setMsg(xi.msg.basic.MAGIC_RESIST)
         return finalDamage
@@ -236,8 +252,16 @@ xi.spells.absorb.doAbsorbTPSpell = function(caster, target, spell)
     -- Base damage.
     local baseDamage = targetTP * 30 / 100
 
+    local maccParams =
+    {
+        magicalElement = xi.element.DARK,
+        actorStat      = xi.mod.INT,
+        skillType      = xi.skill.DARK_MAGIC,
+        spellGroup     = xi.magic.spellGroup.BLACK,
+    }
+
     -- Multipliers.
-    local resistTier           = xi.combat.magicHitRate.calculateResistRate(caster, target, xi.magic.spellGroup.BLACK, xi.skill.DARK_MAGIC, 0, xi.element.DARK, xi.mod.INT, 0, 0)
+    local resistTier           = xi.combat.magicHitRate.calculateResistRate(caster, target, maccParams)
     local additionalResistTier = xi.spells.damage.calculateAdditionalResistTier(caster, target, xi.element.DARK)
     local sdt                  = xi.combat.damage.magicalElementSDT(target, xi.element.DARK)
     local elementalStaffBonus  = xi.spells.damage.calculateElementalStaffBonus(caster, xi.element.DARK)

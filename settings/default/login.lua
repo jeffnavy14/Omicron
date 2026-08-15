@@ -12,7 +12,7 @@ xi.settings = xi.settings or {}
 xi.settings.login =
 {
     -- Expected Client version (wrong version cannot log in)
-    CLIENT_VER = '30260429_1',
+    CLIENT_VER = '30260805_0',
 
     -- 0 - disabled (every version allowed)
     -- 1 - enabled - strict (only exact CLIENT_VER allowed)
@@ -55,7 +55,6 @@ xi.settings.login =
 
     -- Feature display on client's login screen. This does NOT effect in game content whatsoever!
     -- Mog wardrobes are per character, so anything custom will not be able to reflect per-account login screen.
-    SECURE_TOKEN   = false, -- 2FA not supported yet
     MOG_WARDROBE_3 = true,
     MOG_WARDROBE_4 = true,
     MOG_WARDROBE_5 = true,

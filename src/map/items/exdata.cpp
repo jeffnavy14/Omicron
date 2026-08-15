@@ -23,7 +23,6 @@
 
 #include "item.h"
 #include "item_equipment.h"
-#include "item_furnishing.h"
 #include "item_weapon.h"
 
 #include "items.h"
@@ -151,16 +150,17 @@ auto getType(const CItem* item) -> Type
         return Type::Escutcheon;
     }
 
+    // Flowerpot check has to go before Furnishing because isType is a bitwise check and flowerpots are a child class
+    if (item->isType(ITEM_FLOWERPOT))
+    {
+        return Type::FlowerPot;
+    }
+
     if (item->isType(ITEM_FURNISHING))
     {
         if (item->isMannequin())
         {
             return Type::Mannequin;
-        }
-
-        if (static_cast<const CItemFurnishing*>(item)->isGardeningPot())
-        {
-            return Type::FlowerPot;
         }
 
         return Type::Furniture;

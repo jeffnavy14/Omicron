@@ -24,7 +24,7 @@
 #include "common/ipc.h"
 #include "common/ipp.h"
 #include "common/mmo.h"
-#include "common/zmq_dealer_wrapper.h"
+#include "common/zmq/zmq_service.h"
 
 #include "character_cache.h"
 #include "world_engine.h"
@@ -39,7 +39,7 @@
 class IPCServer final : public ipc::IPCMessageHandlerBase<IPCServer>
 {
 public:
-    IPCServer(WorldEngine& worldServer);
+    IPCServer(WorldEngine& worldServer, ZMQService& zmqService);
 
     void handleIncomingMessages();
 
@@ -55,7 +55,7 @@ public:
 
     auto getIPPForCharId(uint32 charId) -> Maybe<IPP>;
     auto getIPPForCharName(const std::string& charName) -> Maybe<IPP>;
-    auto getIPPForZoneId(uint16 zoneId) -> Maybe<IPP>;
+    auto getIPPForZoneId(xi::ZoneId zoneId) -> Maybe<IPP>;
     auto getIPPsForParty(uint32 partyId) -> std::vector<IPP>;
     auto getIPPsForAlliance(uint32 allianceId) -> std::vector<IPP>;
     auto getIPPsForLinkshell(uint32 linkshellId) -> std::vector<IPP>;
@@ -70,7 +70,7 @@ public:
 
     void rerouteMessageToCharId(uint32 charId, const auto& message);
     void rerouteMessageToCharName(const std::string& charName, const auto& message);
-    void rerouteMessageToZoneId(uint16 zoneId, const auto& message);
+    void rerouteMessageToZoneId(xi::ZoneId zoneId, const auto& message);
     void rerouteMessageToPartyMembers(uint32 partyId, const auto& message);
     void rerouteMessageToAllianceMembers(uint32 allianceId, const auto& message);
     void rerouteMessageToLinkshellMembers(uint32 linkshellId, const auto& message);
@@ -126,9 +126,10 @@ public:
 private:
     WorldEngine& worldServer_;
 
-    CharacterCache   characterCache_;
-    ZoneSettings     zoneSettings_;
-    ZMQRouterWrapper zmqRouterWrapper_;
+    CharacterCache characterCache_;
+    ZoneSettings   zoneSettings_;
+
+    ipc::Channel<IPPMessage> channel_;
 };
 
 //
@@ -143,9 +144,7 @@ void IPCServer::sendMessage(const IPP& ipp, const T& message)
     DebugIPCFmt("Sending {} message to {}", ipc::toStringV<T>, ipp.toString());
 
     const auto bytes = ipc::toBytesWithHeader<T>(message);
-    const auto out   = IPPMessage{ ipp, std::vector<uint8>{ bytes.begin(), bytes.end() } };
-
-    zmqRouterWrapper_.outgoingQueue_.enqueue(std::move(out));
+    channel_.send(IPPMessage{ ipp, std::vector<uint8>{ bytes.begin(), bytes.end() } });
 }
 
 template <typename T>
@@ -158,7 +157,6 @@ void IPCServer::broadcastMessage(const T& message)
     for (const auto& ipp : zoneSettings_.mapEndpoints_)
     {
         const auto bytes = ipc::toBytesWithHeader<T>(message);
-        const auto out   = IPPMessage{ ipp, std::vector<uint8>{ bytes.begin(), bytes.end() } };
-        zmqRouterWrapper_.outgoingQueue_.enqueue(std::move(out));
+        channel_.send(IPPMessage{ ipp, std::vector<uint8>{ bytes.begin(), bytes.end() } });
     }
 }

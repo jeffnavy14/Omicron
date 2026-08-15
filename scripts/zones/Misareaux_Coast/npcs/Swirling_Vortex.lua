@@ -7,7 +7,7 @@
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(554)
+    player:startOptionalCutscene(554, { cs_option = 0, canSkip = true })
 end
 
 entity.onEventFinish = function(player, csid, option, npc)

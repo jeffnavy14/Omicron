@@ -1,17 +1,13 @@
 -----------------------------------
 -- Area: Outer Ra'Kaznar
 --  NPC: Entwined Roots (3)
--- !pos -222.581 -150 -145.591 274
+-- !pos -657.482 -150 -265.664 274
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(33)
-end
-
-entity.onEventFinish = function(player, csid, option, npc)
-    -- TODO: Verify that CS moves the player
+    player:startEvent(33, 0, 0, 0, 0, 0, 3)
 end
 
 return entity

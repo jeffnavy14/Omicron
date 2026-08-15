@@ -21,7 +21,7 @@
 
 #include "0x0f5_tracking_pos.h"
 
-#include "entities/baseentity.h"
+#include "entities/base_entity.h"
 
 GP_SERV_COMMAND_TRACKING_POS::GP_SERV_COMMAND_TRACKING_POS(const CBaseEntity* PEntity)
 {
@@ -33,5 +33,5 @@ GP_SERV_COMMAND_TRACKING_POS::GP_SERV_COMMAND_TRACKING_POS(const CBaseEntity* PE
 
     packet.Level    = 1;
     packet.ActIndex = PEntity->targid;
-    packet.State    = PEntity->status == STATUS_TYPE::DISAPPEAR ? GP_TRACKING_POS_STATE::Lose : GP_TRACKING_POS_STATE::Start;
+    packet.State    = PEntity->status == xi::Status::Disappear ? GP_TRACKING_POS_STATE::Lose : GP_TRACKING_POS_STATE::Start;
 }

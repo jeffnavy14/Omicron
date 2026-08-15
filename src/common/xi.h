@@ -31,22 +31,18 @@
 #include <utility>
 #include <vector>
 
-#include "earth_time.h"
-#include "tracy.h"
-#include "vanadiel_clock.h"
+#include <common/earth_time.h>
+#include <common/tracy.h>
+#include <common/vanadiel_clock.h>
 
-#include "helpers/eraseif.h"
-#include "helpers/overload.h"
+#include <common/types/box.h>
+#include <common/types/flag.h>
+#include <common/types/fn.h>
+#include <common/types/maybe.h>
+#include <common/types/variant.h>
 
-#include "types/flag.h"
-#include "types/fn.h"
-#include "types/maybe.h"
 namespace xi
 {
-
-// TODO: A wrapper around std::variant to allow usage of:
-//     :   object.visit(overload{...});
-//     :   object.get<T>() -> Maybe<T>;
 
 // https://github.com/microsoft/GSL/blob/main/include/gsl/util
 // final_action allows you to ensure something gets run at the end of a scope

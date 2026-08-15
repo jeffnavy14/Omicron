@@ -21,7 +21,9 @@
 
 #include <algorithm>
 
-#include "mob_modifier.h"
+#include "entities/pet_entity.h"
+
+#include "data/enums/mob_mod.h"
 #include "mob_spell_container.h"
 #include "recast_container.h"
 #include "status_effect_container.h"
@@ -110,7 +112,7 @@ void CMobSpellContainer::RemoveSpell(SpellID spellId)
 {
     auto findAndRemove = [](std::vector<SpellID>& list, SpellID id)
     {
-        list.erase(std::remove(list.begin(), list.end(), id), list.end());
+        std::erase(list, id);
     };
 
     findAndRemove(m_gaList, spellId);
@@ -130,12 +132,12 @@ Maybe<SpellID> CMobSpellContainer::GetAvailable(SpellID spellId)
 {
     auto* spell    = spell::GetSpell(spellId);
     bool  enoughMP = spell->getMPCost() <= m_PMob->health.mp ||
-                    spell->getSkillType() == SKILL_NINJUTSU ||
-                    spell->getSkillType() == SKILL_SINGING ||
-                    spell->getSkillType() == SKILL_WIND_INSTRUMENT ||
-                    spell->getSkillType() == SKILL_STRING_INSTRUMENT ||
-                    spell->getSkillType() == SKILL_GEOMANCY ||
-                    m_PMob->StatusEffectContainer->HasStatusEffect(EFFECT_MANAFONT);
+                     spell->getSkillType() == xi::SkillType::Ninjutsu ||
+                     spell->getSkillType() == xi::SkillType::Singing ||
+                     spell->getSkillType() == xi::SkillType::WindInstrument ||
+                     spell->getSkillType() == xi::SkillType::StringInstrument ||
+                     spell->getSkillType() == xi::SkillType::Geomancy ||
+                     m_PMob->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Manafont);
 
     bool isNotInRecast = !m_PMob->PRecastContainer->Has(RECAST_MAGIC, static_cast<Recast>(spellId));
 
@@ -150,15 +152,15 @@ Maybe<SpellID> CMobSpellContainer::GetBestAvailable(SPELLFAMILY family)
     {
         for (auto id : list)
         {
-            auto* spell      = spell::GetSpell(id);
-            bool  sameFamily = (family == SPELLFAMILY_NONE) ? true : spell->getSpellFamily() == family;
-            bool  enoughMP   = spell->getMPCost() <= m_PMob->health.mp ||
-                            spell->getSkillType() == SKILL_NINJUTSU ||
-                            spell->getSkillType() == SKILL_SINGING ||
-                            spell->getSkillType() == SKILL_WIND_INSTRUMENT ||
-                            spell->getSkillType() == SKILL_STRING_INSTRUMENT ||
-                            spell->getSkillType() == SKILL_GEOMANCY;
-            bool isNotInRecast = !m_PMob->PRecastContainer->Has(RECAST_MAGIC, static_cast<Recast>(id));
+            auto* spell         = spell::GetSpell(id);
+            bool  sameFamily    = (family == SPELLFAMILY_NONE) ? true : spell->getSpellFamily() == family;
+            bool  enoughMP      = spell->getMPCost() <= m_PMob->health.mp ||
+                                  spell->getSkillType() == xi::SkillType::Ninjutsu ||
+                                  spell->getSkillType() == xi::SkillType::Singing ||
+                                  spell->getSkillType() == xi::SkillType::WindInstrument ||
+                                  spell->getSkillType() == xi::SkillType::StringInstrument ||
+                                  spell->getSkillType() == xi::SkillType::Geomancy;
+            bool  isNotInRecast = !m_PMob->PRecastContainer->Has(RECAST_MAGIC, static_cast<Recast>(id));
             if (sameFamily && enoughMP && isNotInRecast)
             {
                 matches.emplace_back(id);
@@ -193,12 +195,12 @@ Maybe<SpellID> CMobSpellContainer::GetBestIndiSpell(CBattleEntity* PTarget)
     auto mTarget       = PTarget->GetBattleTarget();
     auto hitrate       = battleutils::GetHitRate(PTarget, mTarget);
     bool accBuffNeeded = hitrate < 65 ? true : false;
-    auto mInt          = PTarget->getMod(Mod::INT);
-    auto tInt          = mTarget->getMod(Mod::INT);
+    auto mInt          = PTarget->getMod(xi::Mod::INT);
+    auto tInt          = mTarget->getMod(xi::Mod::INT);
     auto intDiff       = mInt - tInt + 10;
-    auto macc          = PTarget->getMod(Mod::MACC);
-    auto tMaeva        = mTarget->getMod(Mod::MEVA);
-    auto mSkill        = PTarget->GetSkill(SKILL_ELEMENTAL_MAGIC);
+    auto macc          = PTarget->getMod(xi::Mod::MACC);
+    auto tMaeva        = mTarget->getMod(xi::Mod::MEVA);
+    auto mSkill        = PTarget->GetSkill(xi::SkillType::ElementalMagic);
     auto maccFromInt   = mInt;
 
     if (mInt > tInt + 10)
@@ -215,18 +217,18 @@ Maybe<SpellID> CMobSpellContainer::GetBestIndiSpell(CBattleEntity* PTarget)
 
     switch (mJob)
     {
-        case JOB_WAR:
-        case JOB_MNK:
-        case JOB_THF:
-        case JOB_DRK:
-        case JOB_BST:
-        case JOB_RNG:
-        case JOB_SAM:
-        case JOB_DRG:
-        case JOB_BLU:
-        case JOB_COR:
-        case JOB_PUP:
-        case JOB_DNC:
+        case xi::Job::WAR:
+        case xi::Job::MNK:
+        case xi::Job::THF:
+        case xi::Job::DRK:
+        case xi::Job::BST:
+        case xi::Job::RNG:
+        case xi::Job::SAM:
+        case xi::Job::DRG:
+        case xi::Job::BLU:
+        case xi::Job::COR:
+        case xi::Job::PUP:
+        case xi::Job::DNC:
         {
             if (accBuffNeeded)
             {
@@ -239,18 +241,18 @@ Maybe<SpellID> CMobSpellContainer::GetBestIndiSpell(CBattleEntity* PTarget)
             subChoice = SpellID::Indi_Regen;
             break;
         }
-        case JOB_WHM:
-        case JOB_BRD:
-        case JOB_SMN:
-        case JOB_GEO:
+        case xi::Job::WHM:
+        case xi::Job::BRD:
+        case xi::Job::SMN:
+        case xi::Job::GEO:
         {
             choice    = SpellID::Indi_Refresh;
             subChoice = SpellID::Indi_Refresh;
             break;
         }
-        case JOB_BLM:
-        case JOB_RDM:
-        case JOB_SCH:
+        case xi::Job::BLM:
+        case xi::Job::RDM:
+        case xi::Job::SCH:
         {
             if (mAccBuffNeeded)
             {
@@ -263,9 +265,9 @@ Maybe<SpellID> CMobSpellContainer::GetBestIndiSpell(CBattleEntity* PTarget)
             subChoice = SpellID::Indi_Refresh;
             break;
         }
-        case JOB_PLD:
-        case JOB_RUN:
-        case JOB_NIN:
+        case xi::Job::PLD:
+        case xi::Job::RUN:
+        case xi::Job::NIN:
         {
             choice    = SpellID::Indi_Haste;
             subChoice = SpellID::Indi_Regen;
@@ -298,36 +300,36 @@ Maybe<SpellID> CMobSpellContainer::GetBestEntrustedSpell(CBattleEntity* PTarget)
 
     switch (mastersJob)
     {
-        case JOB_WAR:
-        case JOB_MNK:
-        case JOB_THF:
-        case JOB_DRK:
-        case JOB_BST:
-        case JOB_RNG:
-        case JOB_SAM:
-        case JOB_DRG:
-        case JOB_BLU:
-        case JOB_COR:
-        case JOB_PUP:
-        case JOB_DNC:
+        case xi::Job::WAR:
+        case xi::Job::MNK:
+        case xi::Job::THF:
+        case xi::Job::DRK:
+        case xi::Job::BST:
+        case xi::Job::RNG:
+        case xi::Job::SAM:
+        case xi::Job::DRG:
+        case xi::Job::BLU:
+        case xi::Job::COR:
+        case xi::Job::PUP:
+        case xi::Job::DNC:
             choice = SpellID::Indi_Frailty;
             break;
-        case JOB_WHM:
-        case JOB_BRD:
-        case JOB_SMN:
+        case xi::Job::WHM:
+        case xi::Job::BRD:
+        case xi::Job::SMN:
             choice = SpellID::Indi_Acumen;
             break;
-        case JOB_BLM:
-        case JOB_RDM:
-        case JOB_SCH:
-        case JOB_PLD:
-        case JOB_RUN:
+        case xi::Job::BLM:
+        case xi::Job::RDM:
+        case xi::Job::SCH:
+        case xi::Job::PLD:
+        case xi::Job::RUN:
             choice = SpellID::Indi_Refresh;
             break;
-        case JOB_NIN:
+        case xi::Job::NIN:
             choice = SpellID::Indi_Regen;
             break;
-        case JOB_GEO:
+        case xi::Job::GEO:
             break;
         default:
             break;
@@ -342,14 +344,14 @@ Maybe<SpellID> CMobSpellContainer::GetBestAgainstTargetWeakness(CBattleEntity* P
     // clang-format off
     std::vector<int16> resistances
     {
-        PTarget->getMod(Mod::FIRE_RES_RANK),
-        PTarget->getMod(Mod::ICE_RES_RANK),
-        PTarget->getMod(Mod::WIND_RES_RANK),
-        PTarget->getMod(Mod::EARTH_RES_RANK),
-        PTarget->getMod(Mod::THUNDER_RES_RANK),
-        PTarget->getMod(Mod::WATER_RES_RANK),
-        PTarget->getMod(Mod::LIGHT_RES_RANK),
-        PTarget->getMod(Mod::DARK_RES_RANK),
+        PTarget->getMod(xi::Mod::FIRE_RES_RANK),
+        PTarget->getMod(xi::Mod::ICE_RES_RANK),
+        PTarget->getMod(xi::Mod::WIND_RES_RANK),
+        PTarget->getMod(xi::Mod::EARTH_RES_RANK),
+        PTarget->getMod(xi::Mod::THUNDER_RES_RANK),
+        PTarget->getMod(xi::Mod::WATER_RES_RANK),
+        PTarget->getMod(xi::Mod::LIGHT_RES_RANK),
+        PTarget->getMod(xi::Mod::DARK_RES_RANK),
     };
     // clang-format on
 
@@ -417,14 +419,14 @@ Maybe<SpellID> CMobSpellContainer::EnSpellAgainstTargetWeakness(CBattleEntity* P
     // clang-format off
     std::vector<int16> resistances
     {
-        PTarget->getMod(Mod::FIRE_RES_RANK),
-        PTarget->getMod(Mod::ICE_RES_RANK),
-        PTarget->getMod(Mod::WIND_RES_RANK),
-        PTarget->getMod(Mod::EARTH_RES_RANK),
-        PTarget->getMod(Mod::THUNDER_RES_RANK),
-        PTarget->getMod(Mod::WATER_RES_RANK),
-        PTarget->getMod(Mod::LIGHT_RES_RANK),
-        PTarget->getMod(Mod::DARK_RES_RANK),
+        PTarget->getMod(xi::Mod::FIRE_RES_RANK),
+        PTarget->getMod(xi::Mod::ICE_RES_RANK),
+        PTarget->getMod(xi::Mod::WIND_RES_RANK),
+        PTarget->getMod(xi::Mod::EARTH_RES_RANK),
+        PTarget->getMod(xi::Mod::THUNDER_RES_RANK),
+        PTarget->getMod(xi::Mod::WATER_RES_RANK),
+        PTarget->getMod(xi::Mod::LIGHT_RES_RANK),
+        PTarget->getMod(xi::Mod::DARK_RES_RANK),
     };
     // clang-format on
 
@@ -474,14 +476,14 @@ Maybe<SpellID> CMobSpellContainer::StormDayAgainstTargetWeakness(CBattleEntity* 
     // clang-format off
     std::vector<int16> resistances
     {
-        PTarget->getMod(Mod::FIRE_RES_RANK),
-        PTarget->getMod(Mod::ICE_RES_RANK),
-        PTarget->getMod(Mod::WIND_RES_RANK),
-        PTarget->getMod(Mod::EARTH_RES_RANK),
-        PTarget->getMod(Mod::THUNDER_RES_RANK),
-        PTarget->getMod(Mod::WATER_RES_RANK),
-        PTarget->getMod(Mod::LIGHT_RES_RANK),
-        PTarget->getMod(Mod::DARK_RES_RANK),
+        PTarget->getMod(xi::Mod::FIRE_RES_RANK),
+        PTarget->getMod(xi::Mod::ICE_RES_RANK),
+        PTarget->getMod(xi::Mod::WIND_RES_RANK),
+        PTarget->getMod(xi::Mod::EARTH_RES_RANK),
+        PTarget->getMod(xi::Mod::THUNDER_RES_RANK),
+        PTarget->getMod(xi::Mod::WATER_RES_RANK),
+        PTarget->getMod(xi::Mod::LIGHT_RES_RANK),
+        PTarget->getMod(xi::Mod::DARK_RES_RANK),
     };
     // clang-format on
 
@@ -541,14 +543,14 @@ Maybe<SpellID> CMobSpellContainer::HelixAgainstTargetWeakness(CBattleEntity* PTa
     // clang-format off
     std::vector<int16> resistances
     {
-        PTarget->getMod(Mod::FIRE_RES_RANK),
-        PTarget->getMod(Mod::ICE_RES_RANK),
-        PTarget->getMod(Mod::WIND_RES_RANK),
-        PTarget->getMod(Mod::EARTH_RES_RANK),
-        PTarget->getMod(Mod::THUNDER_RES_RANK),
-        PTarget->getMod(Mod::WATER_RES_RANK),
-        PTarget->getMod(Mod::LIGHT_RES_RANK),
-        PTarget->getMod(Mod::DARK_RES_RANK),
+        PTarget->getMod(xi::Mod::FIRE_RES_RANK),
+        PTarget->getMod(xi::Mod::ICE_RES_RANK),
+        PTarget->getMod(xi::Mod::WIND_RES_RANK),
+        PTarget->getMod(xi::Mod::EARTH_RES_RANK),
+        PTarget->getMod(xi::Mod::THUNDER_RES_RANK),
+        PTarget->getMod(xi::Mod::WATER_RES_RANK),
+        PTarget->getMod(xi::Mod::LIGHT_RES_RANK),
+        PTarget->getMod(xi::Mod::DARK_RES_RANK),
     };
     // clang-format on
 
@@ -731,7 +733,7 @@ bool CMobSpellContainer::HasMPSpells() const
 Maybe<SpellID> CMobSpellContainer::GetAggroSpell()
 {
     // high chance to return ga spell
-    if (HasGaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_GA_CHANCE))
+    if (HasGaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::GaChance))
     {
         return GetGaSpell();
     }
@@ -743,14 +745,14 @@ Maybe<SpellID> CMobSpellContainer::GetAggroSpell()
 Maybe<SpellID> CMobSpellContainer::GetSpell()
 {
     // prioritize curing if health low enough
-    if (HasHealSpells() && m_PMob->GetHPP() <= m_PMob->getMobMod(MOBMOD_HP_HEAL_CHANCE) &&
-        xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_HEAL_CHANCE))
+    if (HasHealSpells() && m_PMob->GetHPP() <= m_PMob->getMobMod(xi::MobMod::HpHealChance) &&
+        xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::HealChance))
     {
         return GetHealSpell();
     }
 
     // almost always use na if I can
-    if (HasNaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_NA_CHANCE))
+    if (HasNaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::NaChance))
     {
         // will return -1 if no proper na spell exists
         auto naSpell = GetNaSpell();
@@ -761,18 +763,18 @@ Maybe<SpellID> CMobSpellContainer::GetSpell()
     }
 
     // try something really destructive
-    if (HasSevereSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_SEVERE_SPELL_CHANCE))
+    if (HasSevereSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::SevereSpellChance))
     {
         return GetSevereSpell();
     }
 
     // try ga spell
-    if (HasGaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_GA_CHANCE))
+    if (HasGaSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::GaChance))
     {
         return GetGaSpell();
     }
 
-    if (HasBuffSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(MOBMOD_BUFF_CHANCE))
+    if (HasBuffSpells() && xirand::GetRandomNumber(100) < m_PMob->getMobMod(xi::MobMod::BuffChance))
     {
         return GetBuffSpell();
     }
@@ -893,31 +895,31 @@ Maybe<SpellID> CMobSpellContainer::GetNaSpell()
     }
 
     // paralyna
-    if (HasNaSpell(SpellID::Paralyna) && m_PMob->StatusEffectContainer->HasStatusEffect(EFFECT_PARALYSIS))
+    if (HasNaSpell(SpellID::Paralyna) && m_PMob->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Paralysis))
     {
         return SpellID::Paralyna;
     }
 
     // cursna
-    if (HasNaSpell(SpellID::Cursna) && m_PMob->StatusEffectContainer->HasStatusEffect({ EFFECT_CURSE, EFFECT_CURSE_II }))
+    if (HasNaSpell(SpellID::Cursna) && m_PMob->StatusEffectContainer->HasStatusEffect({ xi::StatusEffect::CurseI, xi::StatusEffect::CurseIi }))
     {
         return SpellID::Cursna;
     }
 
     // erase
-    if (HasNaSpell(SpellID::Erase) && m_PMob->StatusEffectContainer->HasStatusEffectByFlag(EFFECTFLAG_ERASABLE))
+    if (HasNaSpell(SpellID::Erase) && m_PMob->StatusEffectContainer->HasStatusEffectByFlag(xi::StatusEffectFlag::Erasable))
     {
         return SpellID::Erase;
     }
 
     // blindna
-    if (HasNaSpell(SpellID::Blindna) && m_PMob->StatusEffectContainer->HasStatusEffect(EFFECT_BLINDNESS))
+    if (HasNaSpell(SpellID::Blindna) && m_PMob->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Blindness))
     {
         return SpellID::Blindna;
     }
 
     // poisona
-    if (HasNaSpell(SpellID::Poisona) && m_PMob->StatusEffectContainer->HasStatusEffect(EFFECT_POISON))
+    if (HasNaSpell(SpellID::Poisona) && m_PMob->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Poison))
     {
         return SpellID::Poisona;
     }

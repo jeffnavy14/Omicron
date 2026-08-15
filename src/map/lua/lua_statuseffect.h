@@ -27,6 +27,7 @@
 #include "status_effect.h"
 
 class CStatusEffect;
+
 class CLuaStatusEffect
 {
     CStatusEffect* m_PLuaStatusEffect;
@@ -50,6 +51,7 @@ public:
     uint16 getSubPower();
     uint16 getSubIcon();
     uint16 getTier();
+    uint8  getEffectSlot();
     uint32 getDuration();
     uint32 getStartTime();
     uint32 getLastTick();
@@ -65,6 +67,7 @@ public:
     void setSubPower(uint16 subpower);
     void setSubIcon(uint16 subIcon);
     void setTier(uint16 tier);
+    void setEffectSlot(uint8 slot);
     void setDuration(uint32 duration);
     void setTick(uint32 tick);
 

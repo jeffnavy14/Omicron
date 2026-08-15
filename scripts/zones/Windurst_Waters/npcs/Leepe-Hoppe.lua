@@ -186,19 +186,20 @@ entity.onEventFinish = function(player, csid, option, npc)
             -- Pact as Mount
         end
 
-        -- TODO: Reward is never nil since it is initialized; however, we should't run this block
-        -- if the player chooses an item, and they don't have space in their inventory.
+        -- Item rewards fail when the player has no inventory space.  Hand the item over
+        -- first and bail out if it could not be given, so the key item is not consumed and
+        -- the turn-in can be retried.  Options 6 to 8 need no inventory space.
+        if reward ~= xi.item.NONE and not npcUtil.giveItem(player, reward) then
+            return
+        end
+
         player:addTitle(xi.title.HEIR_OF_THE_NEW_MOON)
         player:delKeyItem(xi.ki.WHISPER_OF_THE_MOON)
         player:setCharVar('MoonlitPath_date', JstMidnight())
-        player:addFame(xi.fameArea.WINDURST, 30)
+        player:addFame(xi.fameArea.WINDURST, 60)
 
         if player:getQuestStatus(xi.questLog.WINDURST, xi.quest.id.windurst.THE_MOONLIT_PATH) == xi.questStatus.QUEST_ACCEPTED then
             player:completeQuest(xi.questLog.WINDURST, xi.quest.id.windurst.THE_MOONLIT_PATH)
-        end
-
-        if reward ~= 0 then
-            npcUtil.giveItem(player, reward)
         end
 
         if
@@ -234,6 +235,8 @@ entity.onEventFinish = function(player, csid, option, npc)
         npcUtil.completeQuest(player, xi.questLog.WINDURST, xi.quest.id.windurst.TUNING_OUT, {
             item = xi.item.CACHE_NEZ, -- Cache-Nez
             title = xi.title.FRIEND_OF_THE_HELMED,
+            fame = 40,
+            fameArea = xi.fameArea.WINDURST,
         })
     then
         player:setCharVar('TuningOut_Progress', 0) -- zero when quest is done

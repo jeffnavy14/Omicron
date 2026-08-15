@@ -21,7 +21,7 @@
 
 #include "0x00a_login.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "instance.h"
 #include "status_effect_container.h"
 #include "utils/zoneutils.h"
@@ -31,7 +31,7 @@ namespace
 
 // Returns the Model ID of the mog house to be used
 // This is not the same as the actual Zone ID!
-// (These used to be entries in the ZONEID enum, but that was wrong, knowing what we know now)
+// (These used to be entries in the xi::ZoneId enum, but that was wrong, knowing what we know now)
 auto GetMogHouseModelID(const CCharEntity* PChar) -> uint16
 {
     // Shift right 7 places, mask the bottom two bits.
@@ -127,9 +127,9 @@ GP_SERV_COMMAND_LOGIN::GP_SERV_COMMAND_LOGIN(CCharEntity* PChar, const EventInfo
     uint32_t   flags2        = 0;
 
     // Mount sub power in byte 0 (bits 0-7)
-    if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_MOUNTED))
+    if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Mounted))
     {
-        flags2 |= static_cast<uint8>(PChar->StatusEffectContainer->GetStatusEffect(EFFECT_MOUNTED)->GetSubPower());
+        flags2 |= static_cast<uint8>(PChar->StatusEffectContainer->GetStatusEffect(xi::StatusEffect::Mounted)->GetSubPower());
     }
 
     // Gender and size in byte 1 (bits 8-15)
@@ -145,17 +145,17 @@ GP_SERV_COMMAND_LOGIN::GP_SERV_COMMAND_LOGIN(CCharEntity* PChar, const EventInfo
         .Speed         = PChar->UpdateSpeed(),
         .SpeedBase     = PChar->animationSpeed,
         .HpMax         = PChar->GetHPP(),
-        .server_status = PChar->animation,
+        .server_status = static_cast<uint8_t>(PChar->animation),
         .flags2        = flags2,
         .flags4        = 0x0100,
     };
 
     // TODO: Previous weather
-    packet.WeatherNumber = static_cast<uint16>(PChar->loc.zone->GetWeather());
-    packet.WeatherTime   = PChar->loc.zone->GetWeatherChangeTime();
-    packet.ZoneNo        = PChar->getZone();
+    packet.WeatherNumber = static_cast<uint16>(PChar->loc.zone->weather().current());
+    packet.WeatherTime   = PChar->loc.zone->weather().changeTime();
+    packet.ZoneNo        = static_cast<uint16>(PChar->getZone());
     packet.ZoneSubNo     = PChar->PInstance ? PChar->PInstance->overlayId() : 0;
-    packet.MapNumber     = PChar->getZone();
+    packet.MapNumber     = static_cast<uint16>(PChar->getZone());
     packet.SubMapNumber  = PChar->loc.boundary;
     packet.PlayTime      = static_cast<uint32>(timer::count_seconds(PChar->GetPlayTime()));
     packet.MyRoomExitBit = GetMogHouseLeavingFlag(PChar);
@@ -179,18 +179,18 @@ GP_SERV_COMMAND_LOGIN::GP_SERV_COMMAND_LOGIN(CCharEntity* PChar, const EventInfo
     packet.MusicNum[1] = PChar->PInstance ? PChar->PInstance->GetBackgroundMusicNight() : PChar->loc.zone->GetBackgroundMusicNight();
     packet.MusicNum[2] = PChar->PInstance ? PChar->PInstance->GetSoloBattleMusic() : PChar->loc.zone->GetSoloBattleMusic();
     packet.MusicNum[3] = PChar->PInstance ? PChar->PInstance->GetPartyBattleMusic() : PChar->loc.zone->GetPartyBattleMusic();
-    packet.MusicNum[4] = PChar->animation == ANIMATION_MOUNT ? 0x54 : 0xD4;
+    packet.MusicNum[4] = PChar->animation == xi::Animation::Mount ? 0x54 : 0xD4;
 
     const auto csid = currentEvent->eventId;
     if (csid != -1)
     {
-        packet.EventNo   = PChar->currentEvent->textTable == -1 ? PChar->getZone() : PChar->currentEvent->textTable;
-        packet.EventNum  = PChar->getZone();
+        packet.EventNo   = PChar->currentEvent->textTable == -1 ? static_cast<uint16>(PChar->getZone()) : PChar->currentEvent->textTable;
+        packet.EventNum  = static_cast<uint16>(PChar->getZone());
         packet.EventPara = currentEvent->eventId;
         packet.EventMode = currentEvent->eventFlags & 0xFFFF;
 
-        PChar->animation             = ANIMATION_EVENT;
-        packet.PosHead.server_status = ANIMATION_EVENT;
+        PChar->animation             = xi::Animation::Event;
+        packet.PosHead.server_status = static_cast<uint8_t>(xi::Animation::Event);
     }
 
     if (PChar->inMogHouse())
@@ -209,16 +209,16 @@ GP_SERV_COMMAND_LOGIN::GP_SERV_COMMAND_LOGIN(CCharEntity* PChar, const EventInfo
     {
         packet.LoginState      = SAVE_LOGIN_STATE::SAVE_LOGIN_STATE_GAME;
         packet.MyroomMapNumber = 0x01FF;
-        packet.SendCount       = csid > 0 ? 0x01 : 0x00;                    // TODO: SendCount is where we should put the number of King NPCs needed for the upcoming CS
-        packet.MogZoneFlag     = PChar->loc.zone->CanUseMisc(MISC_MOGMENU); // flag allows you to use Mog Menu outside Mog House
+        packet.SendCount       = csid > 0 ? 0x01 : 0x00;                             // TODO: SendCount is where we should put the number of King NPCs needed for the upcoming CS
+        packet.MogZoneFlag     = PChar->loc.zone->CanUseMisc(xi::ZoneMisc::Mogmenu); // flag allows you to use Mog Menu outside Mog House
     }
 
     const auto& nameStr = PChar->getName();
     std::memcpy(packet.name, nameStr.data(), std::min(nameStr.size(), sizeof(packet.name)));
 
     packet.Dancer = {
-        .mjob_no = PChar->GetMJob(),
-        .sjob_no = PChar->GetSJob(),
+        .mjob_no = static_cast<uint8_t>(PChar->GetMJob()),
+        .sjob_no = static_cast<uint8_t>(PChar->GetSJob()),
         .hpmax   = PChar->GetMaxHP(),
         .mpmax   = PChar->GetMaxMP(),
         .sjobflg = static_cast<uint8_t>(PChar->jobs.unlocked & 1),
@@ -227,12 +227,12 @@ GP_SERV_COMMAND_LOGIN::GP_SERV_COMMAND_LOGIN(CCharEntity* PChar, const EventInfo
     std::memcpy(&packet.Dancer.bp_base, &PChar->stats, 14);
     std::memcpy(&packet.ConfData, &PChar->playerConfig, sizeof(SAVE_CONF_PKT));
 
-    if (PChar->GetMJob() == JOB_MON)
+    if (PChar->GetMJob() == xi::Job::MON)
     {
         monstrosity::ReadMonstrosityData(PChar);
     }
 
-    if (PChar->loc.zone->GetID() == ZONE_FERETORY)
+    if (PChar->loc.zone->GetID() == xi::ZoneId::Feretory)
     {
         // This disables the zone model, but also disables abilities etc.
         packet.LoginState      = SAVE_LOGIN_STATE::SAVE_LOGIN_STATE_MYROOM;

@@ -23,7 +23,7 @@
 
 #include <cstring>
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_weapon.h"
 #include "modifier.h"
 #include "roe.h"
@@ -39,46 +39,46 @@ GP_SERV_COMMAND_CLISTATUS::GP_SERV_COMMAND_CLISTATUS(CCharEntity* PChar)
     packet.statusdata.mjob_lv  = PChar->GetMLevel();
     packet.statusdata.sjob_no  = PChar->GetSJob();
     packet.statusdata.sjob_lv  = PChar->GetSLevel();
-    packet.statusdata.exp_now  = PChar->jobs.exp[PChar->GetMJob()];
-    packet.statusdata.exp_next = charutils::GetExpNEXTLevel(PChar->jobs.job[PChar->GetMJob()]);
+    packet.statusdata.exp_now  = PChar->jobs.exp[static_cast<uint8>(PChar->GetMJob())];
+    packet.statusdata.exp_next = charutils::GetExpNEXTLevel(PChar->jobs.job[static_cast<uint8>(PChar->GetMJob())]);
 
     std::memcpy(packet.statusdata.bp_base, &PChar->stats, sizeof(packet.statusdata.bp_base));
 
     // Hasso gives STR only if main weapon is two handed
     if (const auto* weapon = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[SLOT_MAIN]); weapon && weapon->isTwoHanded())
     {
-        packet.statusdata.bp_adj[0] = std::clamp<int16>(PChar->getMod(Mod::STR) + PChar->getMod(Mod::TWOHAND_STR), -999 + PChar->stats.STR, 999 - PChar->stats.STR);
+        packet.statusdata.bp_adj[0] = std::clamp<int16>(PChar->getMod(xi::Mod::STR) + PChar->getMod(xi::Mod::TWOHAND_STR), -999 + PChar->stats.STR, 999 - PChar->stats.STR);
     }
     else
     {
-        packet.statusdata.bp_adj[0] = std::clamp<int16>(PChar->getMod(Mod::STR), -999 + PChar->stats.STR, 999 - PChar->stats.STR);
+        packet.statusdata.bp_adj[0] = std::clamp<int16>(PChar->getMod(xi::Mod::STR), -999 + PChar->stats.STR, 999 - PChar->stats.STR);
     }
-    packet.statusdata.bp_adj[1] = std::clamp<int16>(PChar->getMod(Mod::DEX), -999 + PChar->stats.DEX, 999 - PChar->stats.DEX);
-    packet.statusdata.bp_adj[2] = std::clamp<int16>(PChar->getMod(Mod::VIT), -999 + PChar->stats.VIT, 999 - PChar->stats.VIT);
-    packet.statusdata.bp_adj[3] = std::clamp<int16>(PChar->getMod(Mod::AGI), -999 + PChar->stats.AGI, 999 - PChar->stats.AGI);
-    packet.statusdata.bp_adj[4] = std::clamp<int16>(PChar->getMod(Mod::INT), -999 + PChar->stats.INT, 999 - PChar->stats.INT);
-    packet.statusdata.bp_adj[5] = std::clamp<int16>(PChar->getMod(Mod::MND), -999 + PChar->stats.MND, 999 - PChar->stats.MND);
-    packet.statusdata.bp_adj[6] = std::clamp<int16>(PChar->getMod(Mod::CHR), -999 + PChar->stats.CHR, 999 - PChar->stats.CHR);
+    packet.statusdata.bp_adj[1] = std::clamp<int16>(PChar->getMod(xi::Mod::DEX), -999 + PChar->stats.DEX, 999 - PChar->stats.DEX);
+    packet.statusdata.bp_adj[2] = std::clamp<int16>(PChar->getMod(xi::Mod::VIT), -999 + PChar->stats.VIT, 999 - PChar->stats.VIT);
+    packet.statusdata.bp_adj[3] = std::clamp<int16>(PChar->getMod(xi::Mod::AGI), -999 + PChar->stats.AGI, 999 - PChar->stats.AGI);
+    packet.statusdata.bp_adj[4] = std::clamp<int16>(PChar->getMod(xi::Mod::INT), -999 + PChar->stats.INT, 999 - PChar->stats.INT);
+    packet.statusdata.bp_adj[5] = std::clamp<int16>(PChar->getMod(xi::Mod::MND), -999 + PChar->stats.MND, 999 - PChar->stats.MND);
+    packet.statusdata.bp_adj[6] = std::clamp<int16>(PChar->getMod(xi::Mod::CHR), -999 + PChar->stats.CHR, 999 - PChar->stats.CHR);
 
     packet.statusdata.atk = PChar->ATT(SLOT_MAIN);
     packet.statusdata.def = PChar->DEF();
 
-    packet.statusdata.def_elem[0] = PChar->getMod(Mod::FIRE_MEVA);
-    packet.statusdata.def_elem[1] = PChar->getMod(Mod::ICE_MEVA);
-    packet.statusdata.def_elem[2] = PChar->getMod(Mod::WIND_MEVA);
-    packet.statusdata.def_elem[3] = PChar->getMod(Mod::EARTH_MEVA);
-    packet.statusdata.def_elem[4] = PChar->getMod(Mod::THUNDER_MEVA);
-    packet.statusdata.def_elem[5] = PChar->getMod(Mod::WATER_MEVA);
-    packet.statusdata.def_elem[6] = PChar->getMod(Mod::LIGHT_MEVA);
-    packet.statusdata.def_elem[7] = PChar->getMod(Mod::DARK_MEVA);
+    packet.statusdata.def_elem[0] = PChar->getMod(xi::Mod::FIRE_MEVA);
+    packet.statusdata.def_elem[1] = PChar->getMod(xi::Mod::ICE_MEVA);
+    packet.statusdata.def_elem[2] = PChar->getMod(xi::Mod::WIND_MEVA);
+    packet.statusdata.def_elem[3] = PChar->getMod(xi::Mod::EARTH_MEVA);
+    packet.statusdata.def_elem[4] = PChar->getMod(xi::Mod::THUNDER_MEVA);
+    packet.statusdata.def_elem[5] = PChar->getMod(xi::Mod::WATER_MEVA);
+    packet.statusdata.def_elem[6] = PChar->getMod(xi::Mod::LIGHT_MEVA);
+    packet.statusdata.def_elem[7] = PChar->getMod(xi::Mod::DARK_MEVA);
 
     packet.statusdata.designation = PChar->profile.title;
     packet.statusdata.rank        = PChar->profile.rank[PChar->profile.nation];
     packet.statusdata.rankbar     = PChar->profile.rankpoints;
-    packet.statusdata.BindZoneNo  = PChar->profile.home_point.destination;
+    packet.statusdata.BindZoneNo  = static_cast<uint16>(PChar->profile.home_point.destination);
     packet.statusdata.nation      = PChar->profile.nation;
 
-    packet.statusdata.su_lv        = PChar->getMod(Mod::SUPERIOR_LEVEL);
+    packet.statusdata.su_lv        = PChar->getMod(xi::Mod::SUPERIOR_LEVEL);
     packet.statusdata.highest_ilvl = charutils::getMaxItemLevel(PChar);
     packet.statusdata.ilvl         = charutils::getItemLevelDifference(PChar);
     packet.statusdata.ilvl_mhand   = charutils::getMainhandItemLevel(PChar);

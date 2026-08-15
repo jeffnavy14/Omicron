@@ -21,7 +21,7 @@
 
 #include "0x0c9_equip_inspect_general.h"
 
-#include "entities/charentity.h"
+#include "entities/char_entity.h"
 #include "items/item_linkshell.h"
 
 GP_SERV_COMMAND_EQUIP_INSPECT::GENERAL::GENERAL(const CCharEntity* PChar, const CCharEntity* PTarget)
@@ -42,15 +42,15 @@ GP_SERV_COMMAND_EQUIP_INSPECT::GENERAL::GENERAL(const CCharEntity* PChar, const 
 
     if (PChar->visibleGmLevel >= 3 || !PTarget->isAnon())
     {
-        packet.job[0] = PTarget->GetMJob();
-        packet.job[1] = PTarget->GetSJob();
+        packet.job[0] = static_cast<uint8_t>(PTarget->GetMJob());
+        packet.job[1] = static_cast<uint8_t>(PTarget->GetSJob());
         packet.lvl[0] = PTarget->GetMLevel();
         packet.lvl[1] = PTarget->GetSLevel();
 
         // TODO: Master levels
-        packet.mjob   = PTarget->GetMJob(); // This is sent even if the job isnt mastered
-        packet.mlvl   = 0;                  // The checked entities master job level.
-        packet.mflags = 0;                  // 0x01: Leveling, 0x02: Capped
+        packet.mjob   = static_cast<uint8_t>(PTarget->GetMJob()); // This is sent even if the job isnt mastered
+        packet.mlvl   = 0;                                        // The checked entities master job level.
+        packet.mflags = 0;                                        // 0x01: Leveling, 0x02: Capped
     }
 
     // TODO: Ballista info

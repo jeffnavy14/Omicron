@@ -12,7 +12,7 @@ local quest = Quest:new(xi.questLog.OTHER_AREAS, xi.quest.id.otherAreas.RYCHARDE
 
 quest.reward =
 {
-    fame     = 120,
+    fame     = 20,
     fameArea = xi.fameArea.WINDURST,
     title    = xi.title.PURVEYOR_IN_TRAINING,
     gil      = 1500,
@@ -96,7 +96,7 @@ quest.sections =
                 onTrade = function(player, npc, trade)
                     if npcUtil.tradeHasExactly(trade, { { xi.item.SLICE_OF_DHALMEL_MEAT, 2 } }) then
                         return quest:progressEvent(74) -- Quest completed dialog.
-                    elseif npcUtil.tradeHasExactly(trade, { { xi.item.SLICE_OF_DHALMEL_MEAT, 1 } }) then
+                    elseif trade:hasItemQty(xi.item.SLICE_OF_DHALMEL_MEAT, 1)  then
                         return quest:event(73) -- "That's not enough!" dialog.
                     end
                 end,

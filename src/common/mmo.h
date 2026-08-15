@@ -23,6 +23,8 @@
 
 #include "cbasetypes.h"
 #include "timer.h"
+
+#include "data/enums/zone.h"
 #include "xi.h"
 
 #include <array>
@@ -30,6 +32,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+
+//
+// Types inferred or reversed from the client
+//
 
 #define FFXI_HEADER_SIZE 0x1C // common packet header size
 
@@ -108,6 +114,7 @@ struct filters2_t
 };
 
 #pragma pack(push, 1)
+
 struct SAVE_CONF
 {
     uint8_t InviteFlg : 1;
@@ -139,6 +146,7 @@ struct SAVE_CONF
     uint16_t   PvpFlg;
     uint8_t    AreaCode;
 };
+
 #pragma pack(pop)
 
 struct languages_t
@@ -157,14 +165,17 @@ struct languages_t
 struct look_t
 {
     uint16 size;
+
     union
     {
         struct
         {
             uint8 face, race;
         };
+
         uint16 modelid;
     };
+
     uint16 head, body, hands, legs, feet, main, sub, ranged;
 
     look_t()
@@ -227,9 +238,11 @@ struct skills_t
             // SkillID 63
             uint16 unknown2;
         };
+
         // index SkillID 0-63
         uint16 skill[64];
     };
+
     // Rank is used for crafts and loads main job or sub job skill rank, prioritizing main job skill rank.
     uint8 rank[64];
 };
@@ -334,6 +347,7 @@ struct nameflags_t
             uint8 byte3;
             uint8 byte4;
         };
+
         uint32 flags;
     };
 };
@@ -424,9 +438,9 @@ class char_mini
 public:
     int8 m_name[16];
 
-    uint8  m_mjob;
-    uint16 m_zone;
-    uint8  m_nation;
+    uint8      m_mjob;
+    xi::ZoneId m_zone;
+    uint8      m_nation;
 
     look_t m_look;
 };

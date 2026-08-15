@@ -21,8 +21,6 @@
 
 #include "0x061_clistatus.h"
 
-#include "entities/charentity.h"
-#include "packets/s2c/0x061_clistatus.h"
 #include "utils/charutils.h"
 
 auto GP_CLI_COMMAND_CLISTATUS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult

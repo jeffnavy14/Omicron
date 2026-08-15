@@ -152,7 +152,9 @@ quest.sections =
                     quest:setVar(player, 'Prog', 3)
                 end,
 
+                -- The title comes with this cutscene, not the battlefield win.
                 [7] = function(player, csid, option, npc)
+                    player:addTitle(xi.title.BREAKER_OF_THE_CHAINS)
                     player:setPos(-.0745, -10, -465.1132, 63, xi.zone.ALTAIEU)
                 end,
 
@@ -162,6 +164,7 @@ quest.sections =
                         quest:getVar(player, 'Prog') == 3
                     then
                         quest:setVar(player, 'Prog', 4)
+                        quest:setVar(player, 'Timer', VanadielUniqueDay() + 1)
                     end
                 end,
             },
@@ -189,7 +192,6 @@ quest.sections =
             {
                 [10057] = function(player, csid, option, npc)
                     quest:setVar(player, 'Prog', 5)
-                    quest:setVar(player, 'Timer', VanadielUniqueDay() + 1)
                 end,
             },
         },

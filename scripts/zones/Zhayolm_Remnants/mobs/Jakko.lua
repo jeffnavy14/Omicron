@@ -32,13 +32,10 @@ entity.onMobEngage = function(mob, target)
                 mob:checkDistance(member) <= 50
             then
                 mob:setCE(member, mob:getCE(member) + 1)
-                mob:setVE(member, mob:getVE(member) + (math.random(0, 6) * 20))
+                mob:setVE(member, mob:getVE(member) + (math.randomInt(0, 6) * 20))
             end
         end
     end
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

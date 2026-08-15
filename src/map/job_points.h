@@ -16,9 +16,7 @@
 
 #pragma once
 
-#include <vector>
-
-#include "./entities/battleentity.h"
+#include "./entities/battle_entity.h"
 #include "common/cbasetypes.h"
 #include "modifier.h"
 

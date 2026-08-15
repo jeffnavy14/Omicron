@@ -4,8 +4,6 @@
 -- Involved in Quest: Gullible's Travels, Even More Gullible's Travels,
 -- Location: (I-7)
 -----------------------------------
-local ID = zones[xi.zone.KAZHAM]
------------------------------------
 ---@type TNpcEntity
 local entity = {}
 
@@ -16,12 +14,9 @@ local pathNodes =
 }
 
 entity.onSpawn = function(npc)
-    -- Ensure that the correct Magriffon is given pathing information.
-    if npc:getID() == ID.npc.MAGRIFFON then
-        npc:initNpcAi()
-        npc:setPos(xi.path.first(pathNodes))
-        npc:pathThrough(pathNodes, xi.path.flag.PATROL)
-    end
+    npc:initNpcAi()
+    npc:setPos(xi.path.first(pathNodes))
+    npc:pathThrough(pathNodes, xi.path.flag.PATROL)
 end
 
 entity.onTrade = function(player, npc, trade)
@@ -41,7 +36,7 @@ end
 
 entity.onTrigger = function(player, npc)
     local gulliblesTravelsStatus = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.GULLIBLES_TRAVELS)
-    local evenmoreTravelsStatus = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.EVEN_MORE_GULLIBLES_TRAVELS)
+    local evenmoreTravelsStatus  = player:getQuestStatus(xi.questLog.OUTLANDS, xi.quest.id.outlands.EVEN_MORE_GULLIBLES_TRAVELS)
 
     if gulliblesTravelsStatus == xi.questStatus.QUEST_ACCEPTED then
         local magriffonGilRequest = player:getCharVar('MAGRIFFON_GIL_REQUEST')
@@ -50,7 +45,7 @@ entity.onTrigger = function(player, npc)
         gulliblesTravelsStatus == xi.questStatus.QUEST_AVAILABLE and
         player:getFameLevel(xi.fameArea.WINDURST) >= 6
     then
-        local gil = math.random(10, 30) * 1000
+        local gil = math.randomInt(10, 30) * 1000
         player:setCharVar('MAGRIFFON_GIL_REQUEST', gil)
         player:startEvent(144, 0, gil)
     elseif
@@ -105,7 +100,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         npcUtil.giveKeyItem(player, xi.ki.TREASURE_MAP)
     elseif csid == 152 then
         player:setCharVar('EVEN_MORE_GULLIBLES_PROGRESS', 0)
-        player:addFame(xi.fameArea.WINDURST, 30)
+        player:addFame(xi.fameArea.WINDURST, 70)
         player:completeQuest(xi.questLog.OUTLANDS, xi.quest.id.outlands.EVEN_MORE_GULLIBLES_TRAVELS)
     end
 end

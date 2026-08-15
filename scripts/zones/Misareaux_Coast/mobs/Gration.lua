@@ -53,12 +53,12 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         xi.mobSkill.GRAND_SLAM_1,
     }
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
--- All of Grations TP Moves have 0 Ready Time
+-- All of Grations TP Moves have 20ms Ready Time
 entity.onMobSkillReadyTime = function(mob, target, skill)
-    return 0
+    return 20
 end
 
 -- If Gration was spawned with a Picaroon's Shield, Power Attack repeats 2 additional times, otherwise only 1 additional time.

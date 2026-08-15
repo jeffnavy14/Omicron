@@ -1,7 +1,6 @@
 -----------------------------------
 -- Dancer Job Utilities
 -----------------------------------
-require('scripts/globals/jobpoints')
 require('scripts/globals/magic')
 require('scripts/globals/weaponskills')
 -----------------------------------
@@ -267,7 +266,7 @@ xi.job_utils.dancer.useStepAbility = function(player, target, ability, action, s
         player:delTP(100 + player:getMod(xi.mod.STEP_TP_CONSUMED))
     end
 
-    if math.random() <= hitRate then
+    if math.randomFloat(0, 1) <= hitRate then
         local maxSteps         = player:getMainJob() == xi.job.DNC and 10 or 5
         local debuffEffect     = target:getStatusEffect(stepEffect)
         local origDebuffStacks = 0
@@ -384,18 +383,27 @@ xi.job_utils.dancer.useDesperateFlourishAbility = function(player, target, abili
     setFinishingMoves(player, numMoves - 1)
 
     if
-        math.random() <= xi.weaponskills.getHitRate(player, target, player:getJobPointLevel(xi.jp.FLOURISH_I_EFFECT), xi.attackAnimation.LEFT_ATTACK) or
+        math.randomFloat(0, 1) <= xi.weaponskills.getHitRate(player, target, player:getJobPointLevel(xi.jp.FLOURISH_I_EFFECT), xi.attackAnimation.LEFT_ATTACK) or
         (player:hasStatusEffect(xi.effect.SNEAK_ATTACK) and player:isBehind(target))
     then
         infoValue = actionInfo[ability:getID()][2]
-        local resistRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.A_PLUS, xi.element.WIND, xi.mod.INT, xi.effect.WEIGHT, 0)
+
+        local maccParams =
+        {
+            effectId       = xi.effect.WEIGHT,
+            magicalElement = xi.element.WIND,
+            skillRank      = xi.skillRank.A_PLUS,
+            actorStat      = xi.mod.INT,
+        }
+
+        local resistRate = xi.combat.magicHitRate.calculateResistRate(player, target, maccParams)
 
         if
-            not xi.data.statusEffect.isTargetImmune(target, xi.effect.WEIGHT, xi.element.WIND) and -- Check immunity.
-            not xi.data.statusEffect.isTargetResistant(player, target, xi.effect.WEIGHT) and       -- Check resistance trigger.
-            not xi.data.statusEffect.isEffectNullified(target, xi.effect.WEIGHT, 0) and               -- Check conflicting effect.
-            resistRate > 0.25 and                                                                  -- Check actual resistance.
-            target:addStatusEffect(xi.effect.WEIGHT, { power = 50, duration = 60 * resistRate, origin = player })                       -- Check effect power.
+            not xi.data.statusEffect.isTargetImmune(target, xi.effect.WEIGHT, xi.element.WIND) and                -- Check immunity.
+            not xi.data.statusEffect.isTargetResistant(player, target, xi.effect.WEIGHT) and                      -- Check resistance trigger.
+            not xi.data.statusEffect.isEffectNullified(target, xi.effect.WEIGHT, 0) and                           -- Check conflicting effect.
+            resistRate > 0.25 and                                                                                 -- Check actual resistance.
+            target:addStatusEffect(xi.effect.WEIGHT, { power = 50, duration = 60 * resistRate, origin = player }) -- Check effect power.
         then
             ability:setMsg(xi.msg.basic.JA_ENFEEB_IS)
         else
@@ -422,7 +430,7 @@ xi.job_utils.dancer.useViolentFlourishAbility = function(player, target, ability
     setFinishingMoves(player, numMoves - 1)
 
     if
-        math.random() <= hitRate or
+        math.randomFloat(0, 1) <= hitRate or
         (player:hasStatusEffect(xi.effect.SNEAK_ATTACK) and player:isBehind(target))
     then
         infoValue          = actionInfo[ability:getID()][2]
@@ -437,16 +445,24 @@ xi.job_utils.dancer.useViolentFlourishAbility = function(player, target, ability
         local applyLevelCorrection = xi.data.levelCorrection.isLevelCorrectedZone(player)
         local baseDmg              = weaponDamage + xi.combat.physical.calculateMeleeStatFactor(player, target)
         local pdif                 = xi.combat.physical.calculateMeleePDIF(player, target, weaponType, 1.0, false, applyLevelCorrection, false, 0.0, false, xi.slot.MAIN, false)
-        local dmg                  = baseDmg * pdif
+        local dmg                  = math.floor(baseDmg * pdif)
 
-        dmg = utils.handleStoneskin(target, dmg)
+        dmg = utils.handleStoneskin(target, dmg, xi.attackType.PHYSICAL)
         target:takeDamage(dmg, player, xi.attackType.PHYSICAL, player:getWeaponDamageType(xi.slot.MAIN))
         target:updateEnmityFromDamage(player, dmg)
         action:recordDamage(target, xi.attackType.PHYSICAL, dmg)
 
         -- Effect
-        local bonusMacc  = player:getMod(xi.mod.VFLOURISH_MACC)
-        local resistRate = xi.combat.magicHitRate.calculateResistRate(player, target, 0, 0, xi.skillRank.A_PLUS, xi.element.THUNDER, xi.mod.INT, xi.effect.STUN, bonusMacc)
+        local maccParams =
+        {
+            effectId       = xi.effect.STUN,
+            magicalElement = xi.element.THUNDER,
+            skillRank      = xi.skillRank.A_PLUS,
+            actorStat      = xi.mod.INT,
+            bonusMacc      = player:getMod(xi.mod.VFLOURISH_MACC),
+        }
+
+        local resistRate = xi.combat.magicHitRate.calculateResistRate(player, target, maccParams)
 
         if
             not xi.data.statusEffect.isTargetImmune(target, xi.effect.STUN, xi.element.THUNDER) and -- Check immunity.

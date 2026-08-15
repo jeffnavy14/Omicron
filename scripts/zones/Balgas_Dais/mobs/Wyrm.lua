@@ -19,7 +19,7 @@ local entity = {}
 local function enterFlight(mob)
     mob:setMobSkillAttack(1146)
     mob:setMobMod(xi.mobMod.NO_MOVE, 1)
-    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, origin = mob, icon = 0 })
+    mob:addStatusEffect(xi.effect.ALL_MISS, { power = 1, duration = 7200, origin = mob, icon = 0 })
     mob:setBehavior(bit.band(mob:getBehavior(), bit.bnot(xi.behavior.NO_TURN)))
     mob:setAnimationSub(1)
 end
@@ -38,7 +38,7 @@ end
 -----------------------------------
 local function enrage(mob)
     -- JP Wiki claims it gains 10 levels https://wiki.ffo.jp/html/8145.html TODO: Verify actual level change with dLVL testing, for now this is 10 levels worth of stats. Damage matches up almost exactly.
-    mob:setMobMod(xi.mobMod.WEAPON_BONUS, 10)
+    mob:setMobMod(xi.mobMod.BASE_DAMAGE_MODIFIER, 10)
     mob:setMod(xi.mod.ATT, 396)
     mob:setMod(xi.mod.ACC, 361)
     mob:setMod(xi.mod.EVA, 334)
@@ -58,7 +58,7 @@ end
 local arenaCenters =
 {
     [1] = { x = -139.0, y =  56.5, z = -224.4 },
-    [2] = { x =  -21.0, y =  -3.4, z =  -24.3 },
+    [2] = { x =   21.0, y =  -3.4, z =  -24.3 },
     [3] = { x =  181.0, y = -63.5, z =  175.7 },
 }
 
@@ -214,7 +214,7 @@ entity.onMobMobskillChoose = function(mob, target, skillId)
         table.insert(skillList, xi.mobSkill.HORRID_ROAR_1)
     end
 
-    return skillList[math.random(1, #skillList)]
+    return skillList[math.randomInt(1, #skillList)]
 end
 
 -----------------------------------

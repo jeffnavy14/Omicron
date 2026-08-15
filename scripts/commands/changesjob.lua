@@ -24,7 +24,7 @@ commandObj.onTrigger = function(player, jobId, level)
     end
 
     jobId = tonumber(jobId) or xi.job[string.upper(jobId)]
-    if jobId == nil or jobId <= 0 or jobId >= xi.MAX_JOB_TYPE then
+    if jobId == nil or jobId <= 0 or jobId > xi.job.MON then
         error(player, 'Invalid jobID.  Use job short name, e.g. WAR, or its equivalent numeric ID.')
         return
     end
@@ -34,6 +34,20 @@ commandObj.onTrigger = function(player, jobId, level)
         if level < 1 or level > 99 then
             error(player, 'Invalid level. Level must be between 1 and 99!')
             return
+        end
+    end
+
+    if jobId == xi.job.PUP then
+        if player:getAutomatonName() == '' then
+            player:setPetName(xi.petType.AUTOMATON, xi.petName.MK_IV)
+        end
+
+        if not player:hasAttachment(xi.item.HARLEQUIN_FRAME) then
+            player:unlockAttachment(xi.item.HARLEQUIN_FRAME)
+        end
+
+        if not player:hasAttachment(xi.item.HARLEQUIN_HEAD) then
+            player:unlockAttachment(xi.item.HARLEQUIN_HEAD)
         end
     end
 

@@ -171,16 +171,6 @@ uint8 CItemFurnishing::getRotation()
     return this->exdata<Exdata::Furniture>().Rotation;
 }
 
-void CItemFurnishing::setOrder(uint8 order)
-{
-    this->exdata<Exdata::Furniture>().Order = order;
-}
-
-uint8 CItemFurnishing::getOrder()
-{
-    return this->exdata<Exdata::Furniture>().Order;
-}
-
 void CItemFurnishing::setMannequinRace(uint8 race)
 {
     this->exdata<Exdata::Mannequin>().Race = race;
@@ -223,15 +213,5 @@ void CItemFurnishing::setSignature(const std::string& signature)
 
 bool CItemFurnishing::isGardeningPot() const
 {
-    const auto id = CItem::getID();
-    return id == 216 ||  // porcelain_flowerpot
-           id == 217 ||  // brass_flowerpot
-           id == 218 ||  // earthen_flowerpot
-           id == 219 ||  // ceramic_flowerpot
-           id == 220 ||  // wooden_flowerpot
-           id == 221 ||  // arcane_flowerpot
-           id == 3744 || // mandragora_pot
-           id == 3745 || // korrigan_pot
-           id == 3746 || // adenium_pot
-           id == 3747;   // citrullus_pot
+    return this->isType(ITEM_FLOWERPOT);
 }

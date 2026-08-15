@@ -26,17 +26,17 @@
 #include <common/ipp.h>
 #include <common/scheduler.h>
 
-#include "map_config.h"
-#include "map_constants.h"
-#include "map_session.h"
-#include "map_session_container.h"
-#include "map_socket.h"
-#include "map_statistics.h"
-#include "packet_system.h"
+#include <map/map_config.h>
+#include <map/map_constants.h>
+#include <map/map_session.h>
+#include <map/map_session_container.h>
+#include <map/map_socket.h>
+#include <map/map_statistics.h>
+#include <map/packet_system.h>
+#include <map/packets/basic.h>
+#include <map/socket.h>
 
-class CBasicPacket;
-
-class MapNetworking
+class MapNetworking final
 {
 public:
     using UsePreviousKey = xi::Flag<struct UsePreviousKeyTag>;
@@ -93,23 +93,26 @@ public:
     auto ipp() const -> IPP;
     auto sessions() -> MapSessionContainer&;
     auto scheduler() -> Scheduler&;
-    auto socket() -> MapSocket&;
+    auto socket() -> Socket&;
     auto packetSystem() -> PacketSystem&;
 
 private:
-    Scheduler&                 scheduler_;
-    MapStatistics&             mapStatistics_;
-    IPP                        mapIPP_;
-    MapSessionContainer        mapSessions_;
-    std::unique_ptr<MapSocket> mapSocket_;
-    MapConfig                  config_;
+    Scheduler&              scheduler_;
+    MapStatistics&          mapStatistics_;
+    IPP                     mapIPP_;
+    MapSessionContainer     mapSessions_;
+    std::unique_ptr<Socket> socket_;
+    MapConfig               config_;
 
+    // TODO: All of these scratch buffers make MapNetworking thread un-safe. If we want to move away
+    //     : from this model, these are the first things to change.
     // TODO: We can probably dedupe these and move the main buffer into MapSocket, passing a span
     //     : to it back into here when we've got our buffer of network data.
     // TODO: Update the naming conventions of these
     NetworkBuffer PBuff;          // Global packet clipboard
     NetworkBuffer PBuffCopy;      // Copy of above, used to decrypt a second time if necessary.
     NetworkBuffer PScratchBuffer; // Temporary packet clipboard
+    CBasicPacket  parseScratchPacket_;
 
     PacketSystem packetSystem_;
 };

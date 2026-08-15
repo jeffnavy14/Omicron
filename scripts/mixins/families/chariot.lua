@@ -10,16 +10,16 @@ g_mixins.families.chariot = function(chariotMob)
 
     chariotMob:addListener('ENGAGE', 'CHARIOT_ENGAGE', function(mob)
         mob:setLocalVar('turnTime', GetSystemTime())
-        mob:setLocalVar('turnDelay', math.random(10, 30))
+        mob:setLocalVar('turnDelay', math.randomInt(10, 30))
     end)
 
     chariotMob:addListener('COMBAT_TICK', 'CHARIOT_COMBAT', function(mob)
         local time = GetSystemTime()
 
         if time >= mob:getLocalVar('turnTime') then
-            -- mob:face() -- We lack a lua function for c++ FaceTarget. TODO: code it.
+            -- mob:face() -- We lack a lua function for c++ LookAtTarget. TODO: code it.
 
-            mob:setLocalVar('turnTime', time + math.random(10, 30))
+            mob:setLocalVar('turnTime', time + math.randomInt(10, 30))
         end
     end)
 end

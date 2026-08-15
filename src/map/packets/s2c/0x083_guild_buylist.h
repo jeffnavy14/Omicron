@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include "common/cbasetypes.h"
-
 #include "base.h"
 
 class CCharEntity;
@@ -49,4 +47,5 @@ public:
     };
 
     GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar, const CItemContainer* PGuild);
+    GP_SERV_COMMAND_GUILD_BUYLIST(CCharEntity* PChar, const std::vector<GP_GUILD_ITEM>& items);
 };

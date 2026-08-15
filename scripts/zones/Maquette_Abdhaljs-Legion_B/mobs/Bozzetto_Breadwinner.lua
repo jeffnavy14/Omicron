@@ -23,7 +23,7 @@ doWarble = function(mob)
     -- 3972 -- water_meeble_warble
     -- 3973 -- aero_meeble_warble
     if mob:isEngaged() then
-        local randomOffset = math.random(0, 5)
+        local randomOffset = math.randomInt(0, 5)
         mob:useMobAbility(3968 + randomOffset)
 
         -- Again in 30s
@@ -58,15 +58,6 @@ entity.onMobEngage = function(mob, target)
     mob:timer(30000, function(mobArg)
         doWarble(mobArg)
     end)
-end
-
-entity.onMobFight = function(mob, target)
-end
-
-entity.onMobWeaponSkill = function(mob, target, skill, action)
-end
-
-entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity

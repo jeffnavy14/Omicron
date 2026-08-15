@@ -401,11 +401,13 @@ end
 --  - allowSubjob: Determines if character subjobs are enabled or disabled upon entry. Defaults to true. (optional)
 --  - hasWipeGrace: Grants players a 3 minute grace period on a full wipe before ejecting them. Defaults to true. (optional)
 --  - canLoseExp: Determines if a character loses experience points upon death while inside the battlefield. Defaults to true. (optional)
+--  - cleanupDebuffs: Removes negative status effects from players upon victory. Defaults to false. (optional)
 --  - showTimer: Show the time remaining in the battlefield in the UI for the player. Defaults to true. (optional)
 --  - delayToExit: Amount of time to wait before exiting the battlefield. Defaults to 5 seconds. (optional)
 --  - requiredItems: Items required to be traded to enter the battlefield.
 --                   Needs to be in the format of { itemid, quantity, useMessage = ID.text.*, wearMessage = ID.text.*, wornMessage = ID.text.* }. (optional)
---  - requiredKeyItems: Key items required to be able to enter the battlefield - these are removed upon entry unless 'keep = true' (optional)
+--  - requiredKeyItems: Key items required to be able to enter the battlefield - these are removed upon entry unless 'keep = true'.
+--                      Set 'onlyInitiator' to true to only require the initiator of the battlefield to have the key item. (optional)
 --  - title: Title given to players upon victory (optional)
 --  - grantXP: Amount of XP to grant upon victory (optional)
 --  - grantXPLockout: If true, players can only receive the grantXP once per day, resetting at JST midnight. (optional)
@@ -440,10 +442,11 @@ function Battlefield:new(data)
     obj.grantXPLockout   = data.grantXPLockout
     obj.levelCap         = data.levelCap or 0
     obj.allowSubjob      = (data.allowSubjob == nil or data.allowSubjob) or false
-    obj.allowTrusts      = data.allowTrusts and data.allowTrusts or false
+    obj.allowTrusts      = data.allowTrusts or false
     obj.hasWipeGrace     = (data.hasWipeGrace == nil or data.hasWipeGrace) or false
-    obj.isMission        = data.isMission and data.isMission or false
+    obj.isMission        = data.isMission or false
     obj.canLoseExp       = (data.canLoseExp == nil or data.canLoseExp) or false
+    obj.cleanupDebuffs   = data.cleanupDebuffs or false
     obj.showTimer        = (data.showTimer == nil or data.showTimer) or false
     obj.delayToExit      = data.delayToExit or 5
     obj.requiredItems    = data.requiredItems or {}
@@ -523,6 +526,7 @@ function Battlefield:register()
                 [32002] = utils.bind(Battlefield.redirectEventCall, 'onEventFinishLeave'),
                 [32003] = utils.bind(Battlefield.redirectEventCall, 'onEventFinishExit'),
                 [32004] = utils.bind(Battlefield.redirectEventCall, 'onEventFinishBattlefield'),
+                [32005] = utils.bind(Battlefield.redirectEventCall, 'onEventFinishBattlefield'),
             }
         })
         self.hasListeners = true
@@ -584,27 +588,38 @@ function Battlefield:checkRequirements(player, npc, isRegistrant, trade)
         return false
     end
 
-    for _, keyItem in ipairs(self.requiredKeyItems) do
-        if type(keyItem) == 'table' then
+    -- Everyone must hold the required key items by default.
+    -- Note : Key items are not consumed here, only checked, consumption is handled in onBattlefieldEnter
+    local needsKeyItems = true
 
-            -- Only need one from the group
-            local hasAny = false
+    -- Battlefields flagged 'onlyInitiator' only require them from the battlefield initiator to enter.
+    if self.requiredKeyItems.onlyInitiator then
+        needsKeyItems = isRegistrant
+    end
 
-            for _, subitem in ipairs(keyItem) do
-                if player:hasKeyItem(subitem) then
-                    hasAny = true
+    if needsKeyItems then
+        for _, keyItem in ipairs(self.requiredKeyItems) do
+            if type(keyItem) == 'table' then
 
-                    break
+                -- Some battlefields may be entered with one of several key items. (e.g. Requiem of Sin)
+                local hasAnyKeyItem = false
+
+                for _, subitem in ipairs(keyItem) do
+                    if player:hasKeyItem(subitem) then
+                        hasAnyKeyItem = true
+
+                        break
+                    end
                 end
-            end
 
-            if not hasAny then
-                return false
-            end
+                if not hasAnyKeyItem then
+                    return false
+                end
 
-        else
-            if not player:hasKeyItem(keyItem) then
-                return false
+            else
+                if not player:hasKeyItem(keyItem) then
+                    return false
+                end
             end
         end
     end
@@ -1074,6 +1089,8 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
 
     local initiatorId, _ = battlefield:getInitiator()
 
+    -- Handle key item consumption. Runs for every player that enters the battlefield.
+    -- If onlyInitiator is true, then only the player that registered the battlefield will have their key item consumed.
     if
         #self.requiredKeyItems > 0 and
         (not self.requiredKeyItems.onlyInitiator or player:getID() == initiatorId)
@@ -1132,7 +1149,13 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
         end
     end
 
-    -- Handle mob initial spell casts (blaze spikes, protect, etc)
+    -- TODO: Test on retail to find out...
+    -- Do mobs buff inside of BCNMs with long cutscenes?
+    -- Do mobs buff when not engaged?
+    -- With a second player that has completed the mission as a "helper" to go inside skiping the
+    -- CS and watch if the mobs actually dont start casting until the initiator is out of the CS
+
+    --[[
     if player:getID() == initiatorId then
         local mobs = battlefield:getMobs(true, true)
         for _, mob in pairs(mobs) do
@@ -1149,6 +1172,7 @@ function Battlefield:onBattlefieldEnter(player, battlefield)
             end
         end
     end
+    --]]
 
     local ID = zones[self.zoneId]
     player:messageSpecial(ID.text.ENTERING_THE_BATTLEFIELD_FOR, 0, self.index)
@@ -1178,6 +1202,13 @@ end
 
 ---@diagnostic disable-next-line: duplicate-set-field
 function Battlefield:onBattlefieldLeave(player, battlefield, leavecode)
+    if
+        self.cleanupDebuffs and
+        leavecode == xi.battlefield.leaveCode.WON
+    then
+        player:delStatusEffectsByFlag(xi.effectFlag.ERASABLE + xi.effectFlag.WALTZABLE)
+    end
+
     if leavecode == xi.battlefield.leaveCode.WON then
         self:onBattlefieldWin(player, battlefield)
     elseif leavecode == xi.battlefield.leaveCode.LOST then
